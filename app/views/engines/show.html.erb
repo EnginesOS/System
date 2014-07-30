@@ -20,8 +20,8 @@
 	
 <% 
 	if state != "nocontainer" 
-		stats = @engine.stats				
-				 	State: <%=@engine.state  %><br>
+		stats = @engine.stats	%>			
+				 	State: <%= @engine.state  %><br>
                   	Processes: <%=@engine.proc_cnt %>
                   	<% if state == "stopped" %>
                   		Stopped: <%=@engine.stopped_ts %> <br>
