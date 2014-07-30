@@ -48,25 +48,25 @@ class EnginesController < ApplicationController
   def destroy_engine
     @engine = ManagedContainer.load("container",params[:id])
     @result =@engine.destroy_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end 
   
   def deleteimage
     @engine = ManagedContainer.load("container",params[:id])
     @result =@engine.delete_image
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end 
   
   def restart
     @engine = ManagedContainer.load("container",params[:id])
     @result = @engine.restart_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end
   
   def create_engine
     @engine = ManagedContainer.load("container",params[:id])
         @result = @engine.create_container
-        redirect_to show_engine_path(@engine.containerName)
+        redirect_to engine_path(@engine.containerName)
   end
   
   def edit
