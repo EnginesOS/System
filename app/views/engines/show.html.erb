@@ -23,14 +23,14 @@
 		stats = @engine.stats
 		 if stats != nil	%>			
 				 	State: <%= stats.state  %><br>
-                  	Processes: <%=stats.proc_cnt %>
+                  	Processes: <%=stats.proc_cnt %><br>
                   	<% if state == "stopped" %>
                   		Stopped: <%=stats.stopped_ts %> <br>
                   	 <% else %> 
                   	 	Started: <%=stats.started_ts %> <br>
                   	 <%end%>
-                  	Memory Used: <%=stats.RSSMemory.to_s  %> 
-                  	CPU Time: <%=stats.cpuTime.to_s %> *Since Engine start
+                  	Memory Used:Virtual <%=stats.VSSMemory.to_s  %> Resident <%=stats.RSSMemory.to_s  %> <br>
+                  	CPU Time: <%=stats.cpuTime.to_s %> seconds *Since Engine start<br>
           <%end%>
 	
  <% end %>
