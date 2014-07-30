@@ -20,12 +20,12 @@
 		if state == "running"
 			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> Pause </td> <%
 		elsif state == "paused"
-			%> <td>Unpause</td> <%
+			%> <td><%= link_to 'Unpause', unpause_engine_path(engine.containerName) %></td> <%
 		elsif state == "stopped" 
-			%> <td>Start / Destroy
+			%> <td> <%= link_to 'Start', start_engine_path(engine.containerName) %> <%= link_to 'Destroy', destroy_engine_path(engine.containerName) %> 
 			</td> <%
 		elsif state == "nocontainer" 
-			%> <td>Create / Delete </td> 
+			%> <td> <%= link_to 'Delete', delete_engine_path(engine.containerName) %> <%= link_to 'Create', create_engine_path(engine.containerName) %> </td> 
 	<%  end %>
 	
 </tr>
