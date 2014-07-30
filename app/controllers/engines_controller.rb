@@ -5,4 +5,7 @@ class EnginesController < ApplicationController
   def index
     @engines = ManagedContainer.getManagedContainers("container")
   end
+  
+  def show
+  end
 end
