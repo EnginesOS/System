@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get :restart, :on => :member
     get :destroy_engine, :on => :member
     get :create_engine, :on => :member
+    get :show, :on => :member
   end
   
 
