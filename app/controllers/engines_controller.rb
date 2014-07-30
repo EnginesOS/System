@@ -24,7 +24,7 @@ class EnginesController < ApplicationController
   def stop
     @engine = ManagedContainer.load("container",params[:id])
     @result = @engine.stop_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end
   
   def start
@@ -63,7 +63,7 @@ class EnginesController < ApplicationController
     redirect_to show_engine_path(@engine.containerName)
   end
   
-  def create
+  def create_engine
     @engine = ManagedContainer.load("container",params[:id])
         @result = @engine.create_container
         redirect_to show_engine_path(@engine.containerName)
