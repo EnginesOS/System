@@ -1,5 +1,5 @@
-<h1>Engines#index</h1>
-<p>Find me in app/views/engines/index.html.erb</p>
+<h1>Engines</h1>
+
 <table>
 	<th>Name</th>
 	<th>Hostname</th>
@@ -18,7 +18,7 @@
 	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
 	<% 
 		if state == "running"
-			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> Pause </td> <%
+			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> </td> <%
 		elsif state == "paused"
 			%> <td><%= link_to 'Unpause', unpause_engine_path(engine.containerName) %></td> <%
 		elsif state == "stopped" 
