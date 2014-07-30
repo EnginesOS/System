@@ -21,10 +21,10 @@
 			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> Pause </td> <%
 		elsif state == "paused"
 			%> <td>Unpause</td> <%
-		elsif start == "stopped" 
+		elsif state == "stopped" 
 			%> <td>Start / Destroy
 			</td> <%
-		elsif start == "nocontainer" 
+		elsif state == "nocontainer" 
 			%> <td>Create / Delete </td> 
 	<%  end %>
 	
