@@ -17,3 +17,19 @@
 			%> <td>Create / Delete </td> 
 	<%  end %>
 	</tr></table>
+	
+<% 
+	if state != "nocontainer" 
+		stats = @engine.stats				
+				 	State: <%=@engine.state  %><br>
+                  	Processes: <%=@engine.proc_cnt %>
+                  	<% if state == "stopped" %>
+                  		Stopped: <%=@engine.stopped_ts %> <br>
+                  	 <% else %> 
+                  	 	Started: <%=@engine.started_ts %> <br>
+                  	 <%end%>
+                  	Memory Used: <%=@engine.RSSMemory.to_s  %> 
+                  	CPU Time: <%=@engine.cpuTime.to_s %> *Since Engine start
+	
+ <% end %>
+
