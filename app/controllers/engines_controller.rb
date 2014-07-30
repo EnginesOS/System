@@ -30,19 +30,19 @@ class EnginesController < ApplicationController
   def start
     @engine = ManagedContainer.load("container",params[:id])
     @result =  @engine.start_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end
   
   def pause
     @engine = ManagedContainer.load("container",params[:id])
     @result = @engine.pause_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
   end
   
   def unpause
      @engine = ManagedContainer.load("container",params[:id])
      @result = @engine.unpause_container
-    redirect_to show_engine_path(@engine.containerName)
+    redirect_to engine_path(@engine.containerName)
    end
    
   def destroy_engine
