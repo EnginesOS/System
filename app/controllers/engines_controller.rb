@@ -45,7 +45,7 @@ class EnginesController < ApplicationController
     redirect_to show_engine_path(@engine.containerName)
    end
    
-  def destroy
+  def destroy_engine
     @engine = ManagedContainer.load("container",params[:id])
     @result =@engine.destroy_container
     redirect_to show_engine_path(@engine.containerName)
