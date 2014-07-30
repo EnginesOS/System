@@ -30,6 +30,7 @@ class EnginesController < ApplicationController
   def start
     @engine = ManagedContainer.load("container",params[:id])
     @result =  @engine.start_container
+    redirect_to show_engine_path(@engine.containerName)
   end
   
   def pause
@@ -41,21 +42,31 @@ class EnginesController < ApplicationController
   def unpause
      @engine = ManagedContainer.load("container",params[:id])
      @result = @engine.unpause_container
+    redirect_to show_engine_path(@engine.containerName)
    end
    
   def destroy
     @engine = ManagedContainer.load("container",params[:id])
     @result =@engine.destroy_container
+    redirect_to show_engine_path(@engine.containerName)
   end 
   
   def deleteimage
     @engine = ManagedContainer.load("container",params[:id])
     @result =@engine.delete_image
+    redirect_to show_engine_path(@engine.containerName)
   end 
   
   def restart
     @engine = ManagedContainer.load("container",params[:id])
     @result = @engine.restart_container
+    redirect_to show_engine_path(@engine.containerName)
+  end
+  
+  def create
+    @engine = ManagedContainer.load("container",params[:id])
+        @result = @engine.create_container
+        redirect_to show_engine_path(@engine.containerName)
   end
   
   def edit
