@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get :delete, :on => :member
     get :restart, :on => :member
     get :destroy_engine, :on => :member
-    get :create, :on => :member
+    get :create_engine, :on => :member
   end
   
 
