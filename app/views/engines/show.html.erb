@@ -1,0 +1,19 @@
+<table>
+<tr>	
+	<td><%=engine.containerName %></td> 
+	<td><%=engine.fqdn %></td>
+	<td><%=engine.setState %></td>
+	<td><%=state %></td>
+	<td><%= link_to 'Show', engine_path(engine) %></td>
+	<% 
+		if state == "running"
+			%> <td>Stop Pause </td> <%
+		elsif state == "paused"
+			%> <td>Unpause</td> <%
+		elsif start == "stopped" 
+			%> <td>Start / Destroy
+			</td> <%
+		elsif start == "nocontainer" 
+			%> <td>Create / Delete </td> 
+	<%  end %>
+	</tr></table>
