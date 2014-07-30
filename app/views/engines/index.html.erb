@@ -18,7 +18,7 @@
 	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
 	<% 
 		if state == "running"
-			%> <td>Stop Pause </td> <%
+			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> Pause </td> <%
 		elsif state == "paused"
 			%> <td>Unpause</td> <%
 		elsif start == "stopped" 
