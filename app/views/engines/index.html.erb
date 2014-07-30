@@ -19,12 +19,12 @@
 	<% 
 		if state == "running"
 			%> <td>Stop Pause </td> <%
-		elseif state == "paused"
+		elsif state == "paused"
 			%> <td>Unpause</td> <%
-		elseif start == "stopped" 
+		elsif start == "stopped" 
 			%> <td>Start / Destroy
 			</td> <%
-		elseif start == "nocontainer" 
+		elsif start == "nocontainer" 
 			%> <td>Create / Delete </td> 
 	<%  end %>
 	
