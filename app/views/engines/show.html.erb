@@ -23,7 +23,7 @@
 		stats = @engine.stats
 		 if stats != nil	%>			
 				 	State: <%= stats.state  %><br>
-                  	Processes: <%=stats.proc_cnt %><br>
+                  	Processes: <%=stats.proc_cnt %> < b >List in ps list in .stats</b><br>
                   	<% if state == "stopped" %>
                   		Stopped: <%=stats.stopped_ts %> <br>
                   	 <% else %> 
