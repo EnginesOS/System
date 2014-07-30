@@ -21,15 +21,15 @@
 <% 
 	if state != "nocontainer" 
 		stats = @engine.stats	%>			
-				 	State: <%= @engine.state  %><br>
-                  	Processes: <%=@engine.proc_cnt %>
+				 	State: <%= stats.state  %><br>
+                  	Processes: <%=stats.proc_cnt %>
                   	<% if state == "stopped" %>
-                  		Stopped: <%=@engine.stopped_ts %> <br>
+                  		Stopped: <%=stats.stopped_ts %> <br>
                   	 <% else %> 
-                  	 	Started: <%=@engine.started_ts %> <br>
+                  	 	Started: <%=stats.started_ts %> <br>
                   	 <%end%>
-                  	Memory Used: <%=@engine.RSSMemory.to_s  %> 
-                  	CPU Time: <%=@engine.cpuTime.to_s %> *Since Engine start
+                  	Memory Used: <%=stats.RSSMemory.to_s  %> 
+                  	CPU Time: <%=stats.cpuTime.to_s %> *Since Engine start
 	
  <% end %>
 
