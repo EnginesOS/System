@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'engines/index'
-
+  resources :engines do
+    
+  end
   
 
   # The priority is based upon order of creation: first created -> highest priority.
