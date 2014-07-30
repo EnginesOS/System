@@ -7,5 +7,6 @@ class EnginesController < ApplicationController
   end
   
   def show
+    @engine = ManagedContainer.load("container",params[:containerName])
   end
 end
