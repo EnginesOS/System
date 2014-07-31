@@ -17,9 +17,8 @@
 			%> <td> <%= link_to 'Delete', delete_engine_path(@engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> </td> 
 	<%  end %>
 		
-
 	</tr></table>
- <h3>Statistics</h3>	
+	
 <% 
 	if state != "nocontainer" 
 		stats = @engine.stats
@@ -36,10 +35,4 @@
           <%end%>
 	
  <% end %>
- <p>
-<h3>Logs</h3>
-<% res = @engine.logs_container%>
-<pre><%= @engine.last_result %></pre>
- 	</p>
- 	<hr>
 <%= link_to 'Back', engines_path %>

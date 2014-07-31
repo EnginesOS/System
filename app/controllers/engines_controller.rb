@@ -68,7 +68,7 @@ class EnginesController < ApplicationController
         @result = @engine.create_container
         redirect_to engine_path(@engine.containerName)
   end
-  
+
   def edit
     @engine = ManagedContainer.load("container",params[:id])
       #only on nocontainer but with image 
