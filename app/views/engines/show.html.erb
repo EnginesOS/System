@@ -16,7 +16,7 @@
 	 	<% if @engine.eports && @engine.eports.length >0 %>
 	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
 	 			<% @engine.eports.each do |port| %>
-	 				<tr><td></td><td>port.to_s</td></tr>
+	 				<tr><td><%= port.name%></td><td><%= port.port.to_s %> <%= port.publicFacing%></td></tr>
 	 			<%end%>
 	 	<%end%>
 	 </table>
@@ -39,7 +39,7 @@
 			%> <td> <%= link_to 'Start', start_engine_path(@engine.containerName) %> <%= link_to 'Destroy', destroy_engine_engine_path(@engine.containerName) %> 
 			</td> <%
 		elsif state == "nocontainer" 
-			%> <td> <%= link_to 'Delete', delete_engine_path(@engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> </td> 
+			%> <td> <%= link_to 'Delete', deleteimage_engine_path(@engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> </td> 
 	<%  end %>
 		
 
