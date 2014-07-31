@@ -16,7 +16,8 @@
 	<td><%=engine.fqdn %></td>
 	<td><%=engine.setState %></td>
 	<td><%=state %></td>
-	<td><% if engine.monitored == false 
+	<td><% m="." 
+	if engine.monitored == false 
 				m="yes"
 			else 
 				m="no"
