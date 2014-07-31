@@ -8,6 +8,7 @@
 	<tr><td>State</td><td><%= state %></td></tr>
 	 <tr><td>Last Error</td><td><%= @engine.slast_error %></td></tr>
 	 <tr><td>Memory</td><td><%= @engine.memory %></td></tr>
+	  <tr><td>Monitored</td><td><%=@engine.monitored %></td></tr>
 	 <tr><td>Image</td><td><%= @engine.image %> </td></tr>
 	 <tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
 	 <tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
@@ -19,6 +20,12 @@
 	 			<%end%>
 	 	<%end%>
 	 </table>
+	 <p>
+	 	<% if @engine.monitored == true%>
+	 		<%= link_to 'Unmonitor', demonitor_engine_path(@engine.containerName) %>
+	 	<%else%>
+	 	<%end%>
+	 </p>
 	 <table>	
 	 	<tr>
 	<% 

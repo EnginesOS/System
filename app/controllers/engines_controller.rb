@@ -69,6 +69,18 @@ class EnginesController < ApplicationController
         redirect_to engine_path(@engine.containerName)
   end
 
+  def monitor
+    @engine = ManagedContainer.load("container",params[:id])
+            @result = @engine.monitor_site
+            redirect_to engine_path(@engine.containerName)
+  end
+  
+  def demonitor
+    @engine = ManagedContainer.load("container",params[:id])
+            @result = @engine.demonitor_site
+            redirect_to engine_path(@engine.containerName)
+  end
+  
   def edit
     @engine = ManagedContainer.load("container",params[:id])
       #only on nocontainer but with image 
