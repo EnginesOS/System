@@ -7,6 +7,7 @@
 	<th>Status</th>
 	<th>View</th>
 	<th>Actions</th>
+	<th>Monitored</th>
 <%@engines.each do |engine| 
  state = engine.read_state # faster than querying the docker api 5 times
 %>
@@ -15,6 +16,8 @@
 	<td><%=engine.fqdn %></td>
 	<td><%=engine.setState %></td>
 	<td><%=state %></td>
+	<td><%=engine.monitored %></td>
+	
 	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
 	<% 
 		if state == "running"
