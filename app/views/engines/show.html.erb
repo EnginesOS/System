@@ -1,10 +1,26 @@
+
+<%= link_to 'Back', engines_path %>
 <table>
 <tr>	<% state= @engine.read_state %>
-	<td><%=@engine.containerName %></td> 
-	<td><%=@engine.fqdn %></td>
-	<td><%=@engine.setState %></td>
-	<td><%= state %></td>
-	
+	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
+	<tr><td>Hostname</td><td><%=@engine.fqdn %></td></tr> 
+	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
+	<tr><td>State</td><td><%= state %></td></tr>
+	 <tr><td>Last Error</td><td><%= @engine.last_error %></td></tr>
+	 <tr><td>Memory</td><td><%= @engine.memory %></td></tr>
+	 <tr><td>Image</td><td><%= @engine.image %> </td></tr>
+	 <tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
+	 <tr><td>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
+	 <tr><td>Web Port</td><td><%= @engine.port%></td></tr>
+	 	<% if @engine.eports %>
+	 		<tr><td>These ports are internal to docker environ webport will need option to publish externally</td></tr>
+	 			<% @engine.eports.each do |port| %>
+	 				<tr><td></td><td>port.to_s</td></tr>
+	 			<%end%>
+	 	<%end%>
+	 </table>
+	 <table>	
+	 	<tr>
 	<% 
 	if state == "running"
 			%> <td><%= link_to 'Stop', stop_engine_path(@engine.containerName) %> <%= link_to 'Pause', pause_engine_path(@engine.containerName) %> </td> <%
@@ -50,7 +66,7 @@
  		
  	<% end %>
  	
- 	</table>>
+ 	</table>
  </p>
  <p>
 <h3>Logs</h3>
