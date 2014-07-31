@@ -64,7 +64,17 @@
     <%end%>	
     </table>
 	<h3>Database</h3>
-	belum
+		<table>
+		<th>Name</th>
+		
+	<% if @engine.databases && @engine.databases.length > 0 
+			@engine.databases.each do |db|%>
+			<tr>
+				<td><%=db %></td>
+			</tr>
+			<%end%>
+    <%end%>	
+    </table>
  <h3>Statistics</h3>	
 <% 
 	if state != "nocontainer" 
