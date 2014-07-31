@@ -53,8 +53,10 @@ class EnginesController < ApplicationController
   
   def deleteimage
     @engine = ManagedContainer.load("container",params[:id])
-    @result =@engine.delete_image
-    redirect_to engine_path(@engine.containerName)
+      if (@engine)      
+        @result =@engine.delete_image        
+        redirect_to engine_path(@engine.containerName)
+      end #FIX ME Need to go some
   end 
   
   def restart

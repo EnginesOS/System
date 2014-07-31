@@ -52,8 +52,9 @@
 			@engine.environments.each do |v|%>
 			    <% if v != nil %>
 				<tr>
-					<td><%=v[0] %></td>
-					<td><%=v[1]%></td>
+					<td><%=v.name %></td>
+					<td><%=v.value%></td>
+					<td><%=v.setatrun=%></td>
 				</tr>
 				<%end%>
 			<%end%>
