@@ -16,7 +16,12 @@
 	<td><%=engine.fqdn %></td>
 	<td><%=engine.setState %></td>
 	<td><%=state %></td>
-	<td><%=engine.monitored %></td>
+	<td><% if engine.monitored == false 
+				m="yes"
+			else 
+				m="no"
+			<%end%>
+			<%=m%></td>
 	
 	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
 	<% 
