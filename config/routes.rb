@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
+  get 'welcome/index'
+
+  get 'system/index'
+
+  get 'services/index'
+
   get 'engines/index'
+  
   resources :engines do
     get :pause, :on => :member
     get :unpause, :on => :member
