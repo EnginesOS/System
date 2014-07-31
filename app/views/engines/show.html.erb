@@ -41,7 +41,7 @@
  	<table>
  	<% res = @engine.ps_container %>
  	<% @engine.last_result.each_line do |line | 
- 		vals = line %>
+ 		vals = line.split %>
  		<tr>
  			<% vals.each do |v| %>	
  				<td><%= v %></td>
