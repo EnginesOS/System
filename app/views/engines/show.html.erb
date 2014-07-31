@@ -37,6 +37,11 @@
 	
  <% end %>
  <p>
+ 	<h3>Processes</h3>
+ 	<% res = @engine.ps_container %>
+ 	<pre><%= @engine.last_result %></pre>
+ </p>
+ <p>
 <h3>Logs</h3>
 <% res = @engine.logs_container%>
 <pre><%= @engine.last_result %></pre>
