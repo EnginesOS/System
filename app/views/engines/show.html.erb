@@ -39,7 +39,11 @@
  <p>
  	<h3>Processes</h3>
  	<% res = @engine.ps_container %>
- 	<pre><%= @engine.last_result %></pre>
+ 	<% @engine.last_result.each_line do |line | %>
+ 		<%= line %> <br>
+ 		
+ 	<% end %>
+ 	%>
  </p>
  <p>
 <h3>Logs</h3>
