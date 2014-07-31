@@ -12,7 +12,7 @@
 	 <tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
 	 <tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
 	 <tr><td>Web Port</td><td><%= @engine.port%></td></tr>
-	 	<% if @engine.eports && @engine.eports,length >0 %>
+	 	<% if @engine.eports && @engine.eports.length >0 %>
 	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
 	 			<% @engine.eports.each do |port| %>
 	 				<tr><td></td><td>port.to_s</td></tr>
