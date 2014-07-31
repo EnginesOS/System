@@ -41,10 +41,12 @@
 		<th>Value</th>
 	<% if @engine.environments&& @engine.environments.length > 0 
 			@engine.environments.each do |v|%>
-			<tr>
-				<td><%=v[0] %></td>
-				<td><%=v[1]%></td>
-			</tr>
+			    <% if v != nil %>
+				<tr>
+					<td><%=v[0] %></td>
+					<td><%=v[1]%></td>
+				</tr>
+				<%end%>
 			<%end%>
     <%end%>	
 	</table>
