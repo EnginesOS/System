@@ -1,9 +1,13 @@
 
 <%= link_to 'Back', engines_path %>
+<% if @result == false %>
+<strong><font color="red" size="+2">Error:@engine.slast_error</font></strong>
+<%end%>
+	
 <table>
 <tr>	<% state= @engine.read_state %>
 	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
-	<tr><td>Hostname</td><td><a href=http://<<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
+	<tr><td>Hostname</td><td><a href=http://<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
 	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
 	<tr><td>State</td><td><%= state %></td></tr>
 	 <tr><td>Last Error</td><td><%= @engine.slast_error %></td></tr>
@@ -16,7 +20,7 @@
 	 	<% if @engine.eports && @engine.eports.length >0 %>
 	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
 	 			<% @engine.eports.each do |port| %>
-	 				<tr><td><%= port.name%></td><td><%= port.port.to_s %> <%= port.publicFacing%></td></tr>
+	 				<tr><td><%= port.name%></td><td>Public:<%= port.port.to_s %> <%= port.publicFacing%></td></tr>
 	 			<%end%>
 	 	<%end%>
 	 </table>
