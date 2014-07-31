@@ -38,12 +38,19 @@
  <% end %>
  <p>
  	<h3>Processes</h3>
+ 	<table>
  	<% res = @engine.ps_container %>
- 	<% @engine.last_result.each_line do |line | %>
- 		<%= line %> <br>
+ 	<% @engine.last_result.each_line do |line | 
+ 		vals = line %>
+ 		<tr>
+ 			<% vals.each do |v| %>	
+ 				<td><%= v %></td>
+ 		   <% end %>
+ 		</tr>
  		
  	<% end %>
- 	%>
+ 	
+ 	</table>>
  </p>
  <p>
 <h3>Logs</h3>
