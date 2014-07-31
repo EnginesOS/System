@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     get :show, :on => :member
     get :monitor, :on => :member
     get :demonitor, :on => :member
+    get :register_site, :on => :member
+    get :deregister_site, :on => :member
     
   end
   

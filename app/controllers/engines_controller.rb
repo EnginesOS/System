@@ -81,6 +81,18 @@ class EnginesController < ApplicationController
             redirect_to engine_path(@engine.containerName)
   end
   
+  def register_site
+    @engine = ManagedContainer.load("container",params[:id])
+                @result = @engine.register_site
+                redirect_to engine_path(@engine.containerName)
+  end
+  
+  def deregister_site
+    @engine = ManagedContainer.load("container",params[:id])
+                @result = @engine.deregister_site
+                redirect_to engine_path(@engine.containerName)
+  end
+  
   def edit
     @engine = ManagedContainer.load("container",params[:id])
       #only on nocontainer but with image 
