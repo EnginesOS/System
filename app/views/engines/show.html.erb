@@ -22,8 +22,9 @@
 	 </table>
 	 <p>
 	 	<% if @engine.monitored == true%>
-	 		<%= link_to 'Unmonitor', demonitor_engine_path(@engine.containerName) %>
+	 		<%= link_to 'Stop Monitor', demonitor_engine_path(@engine.containerName) %>
 	 	<%else%>
+	 		<%= link_to 'Monitor', monitor_engine_path(@engine.containerName) %>
 	 	<%end%>
 	 </p>
 	 <table>	

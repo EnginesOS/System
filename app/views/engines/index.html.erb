@@ -16,13 +16,7 @@
 	<td><%=engine.fqdn %></td>
 	<td><%=engine.setState %></td>
 	<td><%=state %></td>
-	<td><% m="." 
-	if engine.monitored == false 
-				m="yes"
-			else 
-				m="no"
-			end %>
-			_<%= m %>_</td>
+	
 	
 	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
 	<% 
@@ -34,8 +28,16 @@
 			%> <td> <%= link_to 'Start', start_engine_path(engine.containerName) %> <%= link_to 'Destroy', destroy_engine_engine_path(engine.containerName) %> 
 			</td> <%
 		elsif state == "nocontainer" 
-			%> <td> <%= link_to 'Delete', delete_engine_path(engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(engine.containerName) %> </td> 
+			%> <td> <%= link_to 'Delete', delete_engine_path(engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(engine.containerName) %> </td>
+			 
 	<%  end %>
+	<td><% m="." 
+	if engine.monitored == false 
+				m="yes"
+			else 
+				m="no"
+			end %>
+			<%= m %>_</td>
 	
 </tr>
 <% end %>
