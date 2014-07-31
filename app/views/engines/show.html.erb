@@ -3,8 +3,12 @@
 <% if @result == false %>
 <strong><font color="red" size="+2">Error:@engine.slast_error</font></strong>
 <%end%>
+
+<% if @engine == nil%>
+	<strong><font color="red" size="+2">Error:Engine not found</font></strong>
+<%else%>
 	<% state= @engine.read_state %>
-<table>
+	<table>
 	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
 	<tr><td>Hostname</td><td><a href=http://<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
 	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
@@ -89,9 +93,9 @@
 			<%end%>
     <%end%>	
     </table>
- <h3>Statistics</h3>	
-<% 
-	if state != "nocontainer" 
+ 	<h3>Statistics</h3>	
+
+	<%if state != "nocontainer" 
 		stats = @engine.stats
 		 if stats != nil	%>			
 				 	State: <%= stats.state  %><br>
@@ -105,8 +109,8 @@
                   	CPU Time: <%=stats.cpuTime.to_s %> seconds *Since Engine start<br>
           <%end%>
 	
- <% end %>
- <p>
+ 	<% end %>
+ 	<p>
  	<h3>Processes</h3>
  	<table>
  	<% res = @engine.ps_container %>
@@ -121,11 +125,12 @@
  	<% end %>
  	
  	</table>
- </p>
- <p>
-<h3>Logs</h3>
-<% res = @engine.logs_container%>
-<pre><%= @engine.last_result %></pre>
  	</p>
+ 	<p>
+	<h3>Logs</h3>
+	<% res = @engine.logs_container%>
+	<pre><%= @engine.last_result %></pre>
+ 		</p>
+ <%end%>
  	<hr>
 <%= link_to 'Back', engines_path %>
