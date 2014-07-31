@@ -3,7 +3,7 @@
 <table>
 <tr>	<% state= @engine.read_state %>
 	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
-	<tr><td>Hostname</td><td><%=@engine.fqdn %></td></tr> 
+	<tr><td>Hostname</td><td><a href=<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
 	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
 	<tr><td>State</td><td><%= state %></td></tr>
 	 <tr><td>Last Error</td><td><%= @engine.slast_error %></td></tr>
