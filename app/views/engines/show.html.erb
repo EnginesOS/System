@@ -3,20 +3,20 @@
 <% if @result == false %>
 <strong><font color="red" size="+2">Error:@engine.slast_error</font></strong>
 <%end%>
-	
+	<% state= @engine.read_state %>
 <table>
-<tr>	<% state= @engine.read_state %>
 	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
 	<tr><td>Hostname</td><td><a href=http://<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
 	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
 	<tr><td>State</td><td><%= state %></td></tr>
-	 <tr><td>Last Error</td><td><%= @engine.slast_error %></td></tr>
-	 <tr><td>Memory</td><td><%= @engine.memory %></td></tr>
-	  <tr><td>Monitored</td><td><%=@engine.monitored %></td></tr>
-	 <tr><td>Image</td><td><%= @engine.image %> </td></tr>
-	 <tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
-	 <tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
-	 <tr><td>Web Port</td><td><%= @engine.port%></td></tr>
+	<tr><td>Last Error</td><td><%= @engine.slast_error %></td></tr>
+	<tr><td>Memory</td><td><%= @engine.memory %></td></tr>
+	<tr><td>Monitored</td><td><%=@engine.monitored %></td></tr>
+	<tr><td>Framework</td><td><%=@engine.framework %>/<%=@engine.langauge %></td></tr>
+	<tr><td>Image</td><td><%= @engine.image %> </td></tr>
+	<tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
+	<tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
+	<tr><td>Web Port</td><td><%= @engine.port%></td></tr>
 	 	<% if @engine.eports && @engine.eports.length >0 %>
 	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
 	 			<% @engine.eports.each do |port| %>
