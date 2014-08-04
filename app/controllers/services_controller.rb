@@ -18,4 +18,16 @@ class ServicesController < ApplicationController
           @result =true
         end
     end
+    
+    def stop
+      
+    end
+    
+    def pause
+    end
+    def unpause
+      
+    end
+    def recreate
+    end
 end

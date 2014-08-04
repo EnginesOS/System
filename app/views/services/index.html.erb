@@ -1,4 +1,28 @@
 <h1>Services#index</h1>
+<table>
 <% @services.each do |service| %>
-<br>service.containerName<br />
+
+
+ state = service.read_state # faster than querying the docker api 5 times
+%>
+<tr>	
+	<td><%=service.containerName %></td> 
+	<td><a href=http://<%=service.fqdn %>><%=service.fqdn %></a></td>
+	<td><%=service.setState %></td>
+	<td><%=state %></td>
+	
+	
+	<td><%= link_to 'Show', engine_path(service.containerName) %></td>
+	<% 
+		if state == "running"
+			%> <td><%= link_to 'Stop', stop_service_path(service.containerName) %> <%= link_to 'Pause', pause_service_path(service.containerName) %> </td> <%
+		elsif state == "paused"
+			%> <td><%= link_to 'Unpause', unpause_service_path(service.containerName) %></td> <%
+		elsif state == "stopped" 
+			%> <td> <%= link_to 'Start', start_service_path(service.containerName) %>  <%= link_to 'Recreate', recreate_service_path(service.containerName) %>  
+			</td> <%
+		
+	<%  end %>
+	</tr>
 <%end%>
+</table>
