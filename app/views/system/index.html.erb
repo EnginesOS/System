@@ -1,13 +1,13 @@
 <h1>System#index</h1>
 
 <h2>System Details</h2>
-<% cpu_cnt = @state.Cpu.length%>
+<% cpu_cnt = Vmstat.Cpu.length%>
 <%= cpu_cnt %> Cpus<br />
 
 <% 
-one = @stat.LoadAverage.one_minute
-five =  @stat.LoadAverage.five_minutes
-fithteen =  @stat.LoadAverage.fifteen_minutes
+one = Vmstat.LoadAverage.one_minute
+five =  Vmstat.LoadAverage.five_minutes
+fithteen =  Vmstat.LoadAverage.fifteen_minutes
  %>
  <strong>Load Averages</strong><br />
  1 Minute:<%= one %> 5 Minute:<%= five %> 15 Minute:<%= fithteen%> 
