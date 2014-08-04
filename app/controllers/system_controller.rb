@@ -1,5 +1,5 @@
 class SystemController < ApplicationController
   def index
-    @snapshop = Vmstat::Snapshop.new()
+    @snapshop = Vmstat.snapshot
   end
 end
