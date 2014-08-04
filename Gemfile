@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'vmstat'
 gem 'therubyracer'
 
 gem 'thin'

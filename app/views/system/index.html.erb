@@ -1,2 +1,16 @@
 <h1>System#index</h1>
-<p>Find me in app/views/system/index.html.erb</p>
+
+<h2>System Details</h2>
+<% cpu_cnt = @state.Cpu.length%>
+<%= cpu_cnt %> Cpus<br />
+
+<% 
+one = @stat.LoadAverage.one_minute
+five =  @stat.LoadAverage.five_minutes
+fithteen =  @stat.LoadAverage.fifteen_minutes
+ %>
+ <strong>Load Averages</strong><br />
+ 1 Minute:<%= one %> 5 Minute:<%= five %> 15 Minute:<%= fithteen%> 
+ 
+
+
