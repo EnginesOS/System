@@ -5,9 +5,9 @@
 <%= cpu_cnt %> Cpus<br />
 
 <% 
-one = Vmstat.loadAverage.one_minute
-five =  Vmstat.loadAverage.five_minutes
-fithteen =  Vmstat.loadAverage.fifteen_minutes
+one = Vmstat.load_average.one_minute
+five =  Vmstat.load_average.five_minutes
+fithteen =  Vmstat.load_average.fifteen_minutes
  %>
  <strong>Load Averages</strong><br />
  1 Minute:<%= one %> 5 Minute:<%= five %> 15 Minute:<%= fithteen%> 
