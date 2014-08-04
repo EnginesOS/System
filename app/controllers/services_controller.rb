@@ -42,6 +42,6 @@ class ServicesController < ApplicationController
       redirect_to service_path(@service.containerName)
     end
     
-    def recreate
+    def recreate 
     end
 end

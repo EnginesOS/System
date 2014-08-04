@@ -38,7 +38,7 @@
 		elsif state == "paused"
 			%> <td><%= link_to 'Unpause', unpause_service_path(@service.containerName) %></td> <%
 		elsif state == "stopped" 
-			%> <td> <%= link_to 'Start', start_service_path(@service.containerName) %> <%= link_to 'Recreate', recreate_service_service_path(@service.containerName) %> 
+			%> <td> <%= link_to 'Start', start_service_path(@service.containerName) %> <%= link_to 'Recreate', recreate_service_path(@service.containerName) %> 
 			</td> 
 		
 	<%  end %>
