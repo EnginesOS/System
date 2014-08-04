@@ -7,6 +7,15 @@ Rails.application.routes.draw do
 
   get 'engines/index'
   
+  resources :services do
+    get :pause, :on => :member
+        get :unpause, :on => :member
+        get :start, :on => :member
+        get :stop, :on => :member
+        get :restart, :on => :member
+        get :show, :on => :member
+        get :recreate, :on => :member
+  end
   resources :engines do
     get :pause, :on => :member
     get :unpause, :on => :member
