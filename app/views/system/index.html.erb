@@ -9,7 +9,7 @@
 	<th>nice</th>
 	<th>system</th>
 	<th>user</th>
-<% Vmstat.cpu.do each |cpu|%>
+<% Vmstat.cpu.each do  |cpu|%>
 	<tr>
 		<td><%=cpu.num%></td>
 		<td><%=cpu.idle%></td>
