@@ -1,4 +1,4 @@
-
+require "/opt/mpas/lib/ruby/ManagedContainer.rb"
 require "/opt/mpas/lib/ruby/ManagedService.rb"
 
 class ServicesController < ApplicationController
