@@ -36,10 +36,10 @@ fithteen =  @snapshop.load_average.fifteen_minutes
  	<strong>Memory</strong><br>
  	<% ps = @snapshop.memory.pagesize
  		ps = ps/1024
- 		active =  @snapshop.memory.active / 1024 
- 		free =   @snapshop.memory.free / 1024
- 		inactive =  @snapshop.memory.inactive / 1024
- 		wired =  @snapshop.memory.wired / 1024
+ 		active =  @snapshop.memory.active * ps
+ 		free =   @snapshop.memory.free * ps
+ 		inactive =  @snapshop.memory.inactive * ps
+ 		wired =  @snapshop.memory.wired *ps
  	%>
  	<table>
  		<th>Swap size</th>
@@ -50,7 +50,7 @@ fithteen =  @snapshop.load_average.fifteen_minutes
  		<th>Pageins</th>
  		<th>PageOuts</th>
  		<tr>
- 			<td><%=ps%></td>
+ 			<td>belum</td>
  			<td><%=free%></td>
  			<td><%=active%></td>
  			<td><%=inactive%></td>
