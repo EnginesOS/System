@@ -1,8 +1,10 @@
 <h1>Services#index</h1>
 <table>
+	
+	
 <% @services.each do |service| %>
 
-
+<%
  state = service.read_state # faster than querying the docker api 5 times
 %>
 <tr>	
