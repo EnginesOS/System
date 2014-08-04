@@ -42,6 +42,19 @@ class ServicesController < ApplicationController
       redirect_to service_path(@service.containerName)
     end
     
+  def register_site
+        @service = ManagedService.load(params[:id])
+                 @result = @service.register_site
+                 redirect_to service_path(@service.containerName)
+   end
+   
+   def deregister_site
+        @service = ManagedService.load(params[:id])
+                 @result = @service.deregister_site
+                 redirect_to service_path(@service.containerName)
+   end
+   
+    
     def recreate 
     end
 end
