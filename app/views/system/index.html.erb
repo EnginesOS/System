@@ -3,11 +3,29 @@
 <h2>System Details</h2>
 <% cpu_cnt = Vmstat.cpu.length%>
 <%= cpu_cnt %> Cpus<br />
+<table>
+	<th>CPU</th>
+	<th>idle</th>
+	<th>nice</th>
+	<th>system</th>
+	<th>user</th>
+<% Vmstat.cpu.do each |cpu|%>
+	<tr>
+		<td><%=cpu.num%></td>
+		<td><%=cpu.idle%></td>
+		<td><%=cpu.nice%></td>
+		<td><%=cpu.system%></td>
+		<td><%=cpu.user%></td>								
+		</tr>
+
+<% end%>
+
+
 
 <% 
 one = @snapshop.load_average.one_minute
-five =  Vmstat.load_average.five_minutes
-fithteen =  Vmstat.load_average.fifteen_minutes
+five =  @snapshop.load_average.five_minutes
+fithteen =  @snapshop.load_average.fifteen_minutes
  %>
  <strong>Load Averages</strong><br />
  1 Minute:<b><%= one %></b><br>
@@ -15,7 +33,32 @@ fithteen =  Vmstat.load_average.fifteen_minutes
  15 Minute:<b><%= fithteen%></b><br> 
  
  <p>
- 	<strong>Memory</strong>
+ 	<strong>Memory</strong><br>
+ 	<% ps = @snapshop.memory.pagesize
+ 		ps = ps/1024
+ 		active =  @snapshop.memory.active / 1024 
+ 		free =   @snapshop.memory.free / 1024
+ 		inactive =  @snapshop.memory.inactive / 1024
+ 		wired =  @snapshop.memory.wired / 1024
+ 	%>
+ 	<table>
+ 		<th>Swap size</th>
+ 		<th>Free</th>
+ 		<th>active</th>
+ 		<th>inactive</th>
+ 		<th>wired</th>
+ 		<th>Pageins</th>
+ 		<th>PageOuts</th>
+ 		<tr>
+ 			<td><%=ps%></td>
+ 			<td><%=free%></td>
+ 			<td><%=active%></td>
+ 			<td><%=inactive%></td>
+ 			<td><%=wired%></td>
+ 			<td><%=@snapshop.memory.pageouts%></td>
+ 			<td><%=@snapshop.memory.pageins%></td>
+ 		</tr>
+ 	</table>
  	
  	
  </p>
