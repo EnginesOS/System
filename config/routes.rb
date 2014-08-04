@@ -15,6 +15,8 @@ Rails.application.routes.draw do
         get :restart, :on => :member
         get :show, :on => :member
         get :recreate, :on => :member
+    get :register_site, :on => :member
+     get :deregister_site, :on => :member
   end
   resources :engines do
     get :pause, :on => :member
