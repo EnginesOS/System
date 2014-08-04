@@ -1,4 +1,6 @@
 
+require "/opt/mpas/lib/ruby/ManagedService.rb"
+
 class ServicesController < ApplicationController
   def index
     @services = ManagedService.getManagedServices()
