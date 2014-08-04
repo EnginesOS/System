@@ -1,0 +1,136 @@
+
+<%= link_to 'Back', services_path %>
+<% if @result == false %>
+<strong><font color="red" size="+2">Error:@service.slast_error</font></strong>
+<%end%>
+
+<% if @service == nil%>
+	<strong><font color="red" size="+2">Error:Engine not found</font></strong>
+<%else%>
+	<% state= @service.read_state %>
+	<table>
+	<tr><td>Name</td><td><%=@service.containerName %></td></tr> 
+	<tr><td>Hostname</td><td><a href=http://<%=@service.fqdn %>><%=@service.fqdn %></a></td></tr> 
+	<tr><td>Configured to</td><td><%=@service.setState %></td></tr> 
+	<tr><td>State</td><td><%= state %></td></tr>
+	<tr><td>Last Error</td><td><%= @service.slast_error %></td></tr>
+	<tr><td>Memory</td><td><%= @service.memory %></td></tr>
+	<tr><td>Monitored</td><td><%=@service.monitored %></td></tr>
+	<tr><td>Framework</td><td><%=@service.framework %>/<%=@service.runtime %></td></tr>
+	<tr><td>Image</td><td><%= @service.image %> </td></tr>
+	<tr><td>Blue print Source</td><td><%= @service.repo %> </td></tr>
+	<tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
+	<tr><td>Web Port</td><td><%= @service.port%></td></tr>
+	 	<% if @service.eports && @service.eports.length >0 %>
+	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
+	 			<% @service.eports.each do |port| %>
+	 				<tr><td><%= port.name%></td><td>Public:<%= port.port.to_s %> <%= port.publicFacing%></td></tr>
+	 			<%end%>
+	 	<%end%>
+	 </table>
+	 <p>
+	 	<% if @service.monitored == true%>
+	 		<%= link_to 'Stop Monitor', demonitor_service_path(@service.containerName) %>
+	 	<%else%>
+	 		<%= link_to 'Monitor', monitor_service_path(@service.containerName) %>
+	 	<%end%>
+	 </p>
+	 <%= link_to 'Register', register_site_service_path(@service.containerName) %> <%= link_to 'Deregister DNS', deregister_site_service_path(@service.containerName) %>
+	 <table>	
+	 	<tr>
+	<% 
+	if state == "running"
+			%> <td><%= link_to 'Stop', stop_service_path(@service.containerName) %> <%= link_to 'Pause', pause_service_path(@service.containerName) %> </td> <%
+		elsif state == "paused"
+			%> <td><%= link_to 'Unpause', unpause_service_path(@service.containerName) %></td> <%
+		elsif state == "stopped" 
+			%> <td> <%= link_to 'Start', start_service_path(@service.containerName) %> <%= link_to 'Destroy', destroy_service_service_path(@service.containerName) %> 
+			</td> <%
+		elsif state == "nocontainer" 
+			%> <td> <%= link_to 'Delete', deleteimage_service_path(@service.containerName) %> <%= link_to 'Create', create_service_service_path(@service.containerName) %> </td> 
+	<%  end %>
+		
+
+	</tr></table>
+	<h3>Environment</h3>
+	<table>
+		<th>Name</th>
+		<th>Value</th>
+	<% if @service.environments&& @service.environments.length > 0 
+			@service.environments.each do |v|%>
+			    <% if v != nil %>
+				<tr>
+					<td><%=v.name %></td>
+					<td><%=v.value%></td>
+					<td><%=v.setatrun=%></td>
+				</tr>
+				<%end%>
+			<%end%>
+    <%end%>	
+	</table>
+		
+	<h3>Volumes</h3>
+	<table>
+		<th>Name</th>
+		
+	<% if @service.volumes && @service.volumes.length > 0 
+			@service.volumes.each do |v|%>
+			<tr>
+				<td><%=v.name %></td>
+			</tr>
+			<%end%>
+    <%end%>	
+    </table>
+	<h3>Database</h3>
+		<table>
+		<th>Name</th>
+		
+	<% if @service.databases && @service.databases.length > 0 
+			@service.databases.each do |db|%>
+			<tr>
+				<td><%=db %></td>
+			</tr>
+			<%end%>
+    <%end%>	
+    </table>
+ 	<h3>Statistics</h3>	
+
+	<%if state != "nocontainer" 
+		stats = @service.stats
+		 if stats != nil	%>			
+				 	State: <%= stats.state  %><br>
+                  	Processes: <%=stats.proc_cnt %> < b >List in ps list in .stats</b><br>
+                  	<% if state == "stopped" %>
+                  		Stopped: <%=stats.stopped_ts %> <br>
+                  	 <% else %> 
+                  	 	Started: <%=stats.started_ts %> <br>
+                  	 <%end%>
+                  	Memory Used:Virtual <%=stats.VSSMemory.to_s  %> Resident <%=stats.RSSMemory.to_s  %> <br>
+                  	CPU Time: <%=stats.cpuTime.to_s %> seconds *Since Engine start<br>
+          <%end%>
+	
+ 	<% end %>
+ 	<p>
+ 	<h3>Processes</h3>
+ 	<table>
+ 	<% res = @service.ps_container %>
+ 	<% @service.last_result.each_line do |line | 
+ 		vals = line.split %>
+ 		<tr>
+ 			<% vals.each do |v| %>	
+ 				<td><%= v %></td>
+ 		   <% end %>
+ 		</tr>
+ 		
+ 	<% end %>
+ 	
+ 	</table>
+ 	</p>
+ 	<p>
+	<h3>Logs</h3>
+	<% res = @service.logs_container%>
+	<pre><%= @service.last_result %></pre>
+ 		</p>
+ <%end%>
+ 	<hr>
+<%= link_to 'Back', services_path %>

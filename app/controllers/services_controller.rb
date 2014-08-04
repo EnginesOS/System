@@ -20,14 +20,28 @@ class ServicesController < ApplicationController
     end
     
     def stop
-      
+      @service = ManagedService.load(params[:id])
+          @result = @service.stop_container
+          redirect_to service_path(@service.containerName)
+    end
+   def start
+       @service = ManagedService.load(params[:id])
+           @result = @service.start_container
+           redirect_to service_path(@service.containerName)
+   end
+     
+    def pause
+      @service = ManagedService.load(params[:id])
+      @result = @service.pause_container
+      redirect_to service_path(@service.containerName)
     end
     
-    def pause
-    end
     def unpause
-      
+      @service = ManagedService.load(params[:id])
+      @result = @service.unpause_container
+      redirect_to service_path(@service.containerName)
     end
+    
     def recreate
     end
 end
