@@ -45,7 +45,7 @@ class ServicesController < ApplicationController
     
   def register_site
         @service = ManagedService.load(params[:id])
-                 @result = @service.register_site
+                 @result = @service.registersite
                  redirect_to service_path(@service.containerName)
    end
    
