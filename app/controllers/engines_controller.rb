@@ -3,6 +3,7 @@ require "/opt/mpas/lib/ruby/SysConfig.rb"
 require "/opt/mpas/lib/ruby/ManagedEngine.rb"
 require "/opt/mpas/lib/ruby/ManagedService.rb"
 require "/opt/mpas/lib/ruby/NginxService.rb"
+require "/opt/mpas/lib/ruby/NagioService.rb"
 
 class EnginesController < ApplicationController
   
