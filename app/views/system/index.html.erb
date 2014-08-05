@@ -57,8 +57,8 @@ fithteen =  @snapshop.load_average.fifteen_minutes
  			<td><%=wired%></td>
  			<% rateout =@vm2.pageouts - @snapshop.memory.pageouts %>
  			<% ratein = @vm2.pageins - @snapshop.memory.pageins %>
- 			<td><%=rateout%></td>
- 			<td><%=ratein%></td>
+ 			<td><%=rateout @vm2.pageouts  @snapshop.memory.pageouts%></td>
+ 			<td><%=ratein @vm2.pageins  @snapshop.memory.pageins%></td>
  		</tr>
  	</table>
  	
