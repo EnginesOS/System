@@ -65,6 +65,6 @@ class ServicesController < ApplicationController
     
     def recreate 
       @service = ManagedService.load(params[:id])
-      @service.recreate
+      @result =  @service.recreate
     end
 end
