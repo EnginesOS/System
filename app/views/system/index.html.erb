@@ -16,8 +16,8 @@
 		nice = cpu.nice / total * 100
 		system = cpu.system / total * 100
 		user = cpu.user / total * 100 %>
-		<td><%=cpu.num%>%</td>
-		<td><%=idle%>%</td>
+		<td><%=cpu.num%> %</td>
+		<td><%=idle%> % <%=cpu.idle%> of <%=total%> </td>
 		<td><%=nice%>%</td>
 		<td><%=system%>%</td>
 		<td><%=user%>%</td>								
