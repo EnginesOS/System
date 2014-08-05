@@ -1,6 +1,7 @@
 require "/opt/mpas/lib/ruby/ManagedContainer.rb"
 require "/opt/mpas/lib/ruby/ManagedService.rb"
 require "/opt/mpas/lib/ruby/NginxService.rb"
+require "/opt/mpas/lib/ruby/NagiosService.rb"
 
 class ServicesController < ApplicationController
   def index
