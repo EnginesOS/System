@@ -19,12 +19,12 @@
 	<tr><td>Framework</td><td><%=@engine.framework %>/<%=@engine.runtime %></td></tr>
 	<tr><td>Image</td><td><%= @engine.image %> </td></tr>
 	<tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
-	<tr><td colspan=2>This port is internal to docker environ webport is always 443 and 80 externally</td></tr>
+	<tr><td colspan=2>Published as 443 and 80 externally</td></tr>
 	<tr><td>Web Port</td><td><%= @engine.port%></td></tr>
 	 	<% if @engine.eports && @engine.eports.length >0 %>
 	 		<tr><td colspan=2>These ports are internal to docker environ webport will need option to publish externally</td></tr>
 	 			<% @engine.eports.each do |port| %>
-	 				<tr><td><%= port.name%></td><td>Public:<%= port.port.to_s %> <%= port.publicFacing%></td></tr>
+	 				<tr><td><%= port.name%></td><td><%= port.port.to_s %>:<%= port.external.to_s %> <%= port.publicFacing%></td></tr>
 	 			<%end%>
 	 	<%end%>
 	 </table>
