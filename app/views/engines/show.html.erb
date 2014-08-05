@@ -29,11 +29,11 @@
 	 	<%end%>
 	 </table>
 	 <p>
-	 	<% if @engine.monitored == true%>
+	 	<% #if @engine.monitored == true%>
 	 		<%= link_to 'Stop Monitor', demonitor_engine_path(@engine.containerName) %>
-	 	<%else%>
+	 	<%#else%>
 	 		<%= link_to 'Monitor', monitor_engine_path(@engine.containerName) %>
-	 	<%end%>
+	 	<%#end%>
 	 </p>
 	 <%= link_to 'Register', register_site_engine_path(@engine.containerName) %> <%= link_to 'Deregister DNS', deregister_site_engine_path(@engine.containerName) %>
 	 <table>	

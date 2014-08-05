@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get :create_service, :on => :member
     get :register_site, :on => :member
      get :deregister_site, :on => :member
+     
   end
   resources :engines do
     get :pause, :on => :member
