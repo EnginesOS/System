@@ -39,8 +39,11 @@
 			%> <td><%= link_to 'Unpause', unpause_service_path(@service.containerName) %></td> <%
 		elsif state == "stopped" 
 			%> <td> <%= link_to 'Start', start_service_path(@service.containerName) %> <%= link_to 'Recreate', recreate_service_path(@service.containerName) %> 
-			</td> 
-		
+			</td>
+		<% else %>	 
+			<td>
+			<%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> 
+		</td>
 	<%  end %>
 		
 
