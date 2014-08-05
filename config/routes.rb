@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         get :restart, :on => :member
         get :show, :on => :member
         get :recreate, :on => :member
-        get :create, :on => :member
+        get :create_service, :on => :member
     get :register_site, :on => :member
      get :deregister_site, :on => :member
   end

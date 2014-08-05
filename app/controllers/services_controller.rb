@@ -56,9 +56,9 @@ class ServicesController < ApplicationController
                  redirect_to service_path(@service.containerName)
    end
    
-  def create
+  def create_service
     @engine = ManagedService.load(params[:id])
-        @result = @service.create
+        @result = @service.create_service
         redirect_to service_path(@service.containerName)
   end
 
