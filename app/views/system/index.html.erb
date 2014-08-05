@@ -11,11 +11,16 @@
 	<th>user</th>
 <% Vmstat.cpu.each do  |cpu|%>
 	<tr>
-		<td><%=cpu.num%></td>
-		<td><%=cpu.idle%></td>
-		<td><%=cpu.nice%></td>
-		<td><%=cpu.system%></td>
-		<td><%=cpu.user%></td>								
+		<% total = cpu.nice + cpu.idle + cpu.system + cpu.user %>
+		idle=cpu.idle/total * 100
+		nice = cpu.nice/total * 100
+		system = cpu.system/total * 100
+		user = cpu.user/total * 100
+		<td><%=cpu.num%>%</td>
+		<td><%=idle%>%</td>
+		<td><%=nice%>%</td>
+		<td><%=system%>%</td>
+		<td><%=user%>%</td>								
 		</tr>
 
 <% end%>
