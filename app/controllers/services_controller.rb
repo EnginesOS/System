@@ -66,5 +66,6 @@ class ServicesController < ApplicationController
     def recreate 
       @service = ManagedService.load(params[:id])
       @result =  @service.recreate
+      redirect_to service_path(@service.containerName)
     end
 end
