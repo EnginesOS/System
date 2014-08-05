@@ -17,10 +17,10 @@
 		system = cpu.system.to_f  / total.to_f * 100.0
 		user = cpu.user.to_f  / total.to_f * 100.0 %>
 		<td><%=cpu.num%> %</td>
-		<td><%=idle%> % <%=cpu.idle%> of <%=total%> </td>
-		<td><%=nice%>%</td>
-		<td><%=system%>%</td>
-		<td><%=user%>%</td>								
+		<td><%=idle.to_i%> </td>
+		<td><%=nice.to_i%>%</td>
+		<td><%=system.to_i%>%</td>
+		<td><%=user.to_i%>%</td>								
 		</tr>
 
 <% end%>
