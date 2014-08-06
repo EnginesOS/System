@@ -72,7 +72,7 @@
 	<% if @service.volumes && @service.volumes.length > 0 
 			@service.volumes.each do |v|%>
 			<tr>
-				<td><%=v.localpath%>/<%=v.name%>:<%=r.vemotepath%>/<%=v.name%></td>
+				<td><%=v.localpath%>/<%=v.name%>:<%=v.remotepath%>/<%=v.name%></td>
 			</tr>
 			<%end%>
     <%end%>	
