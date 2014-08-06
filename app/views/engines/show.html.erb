@@ -76,7 +76,7 @@
 	<% if @engine.volumes && @engine.volumes.length > 0 
 			@engine.volumes.each do |v|%>
 			<tr>
-				<td><%=v.name %></td>
+				<td><%=v.localpath%>/<%=v.name%>:<%=v.remotepath%>/<%=v.name%></td>
 			</tr>
 			<%end%>
     <%end%>	
@@ -113,7 +113,7 @@
  	<% end %>
  	<p>
  	<h3>Processes</h3>
- 	<table>
+ 	<table width=80% >
  	<% res = @engine.ps_container %>
  	<% @engine.last_result.each_line do |line | 
  		vals = line.split %>
