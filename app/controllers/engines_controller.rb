@@ -1,9 +1,9 @@
-require "/opt/mpas/lib/ruby/ManagedContainer.rb"
-require "/opt/mpas/lib/ruby/SysConfig.rb"
-require "/opt/mpas/lib/ruby/ManagedEngine.rb"
-require "/opt/mpas/lib/ruby/ManagedService.rb"
-require "/opt/mpas/lib/ruby/NginxService.rb"
-require "/opt/mpas/lib/ruby/NagiosService.rb"
+require "/opt/engos/lib/ruby/ManagedContainer.rb"
+require "/opt/engos/lib/ruby/SysConfig.rb"
+require "/opt/engos/lib/ruby/ManagedEngine.rb"
+require "/opt/engos/lib/ruby/ManagedService.rb"
+require "/opt/engos/lib/ruby/NginxService.rb"
+require "/opt/engos/lib/ruby/NagiosService.rb"
 
 class EnginesController < ApplicationController
   
