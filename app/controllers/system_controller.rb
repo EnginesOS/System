@@ -1,5 +1,5 @@
 class SystemController < ApplicationController
-  before_action :authenticate_admin!
+  before_action :authenticate_user!
   
   def index
     @snapshop = Vmstat.snapshot
