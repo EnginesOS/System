@@ -6,7 +6,7 @@ require "/opt/engos/lib/ruby/NginxService.rb"
 require "/opt/engos/lib/ruby/NagiosService.rb"
 
 class EnginesController < ApplicationController
-  
+  before_action :authenticate_user!
   def index
     @engines = ManagedEngine.getManagedEngines()
       if @engines == nil

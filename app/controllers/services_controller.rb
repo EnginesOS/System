@@ -4,6 +4,8 @@ require "/opt/engos/lib/ruby/NginxService.rb"
 require "/opt/engos/lib/ruby/NagiosService.rb"
 
 class ServicesController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @services = ManagedService.getManagedServices()
            if @services == nil
