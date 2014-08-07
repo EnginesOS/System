@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :skip => :registrations
   get 'welcome/index'
 
   get 'system/index'
