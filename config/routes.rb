@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   get 'engines/index'
   
+  resources :system do
+      get :reboot
+      get :restart_docker  
+  end
   resources :services do
     get :pause, :on => :member
         get :unpause, :on => :member
