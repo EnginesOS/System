@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   get 'engines/index'
   
- 
+  get 'gallery/index'
   
   resources :services do
     get :pause, :on => :member
