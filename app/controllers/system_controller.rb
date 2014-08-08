@@ -7,5 +7,8 @@ class SystemController < ApplicationController
     @vm2 = Vmstat.memory
   end
   
+  def show
+    index
+  end
   
 end
