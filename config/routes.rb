@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   
   get 'gallery/index'
   
+  root 'welcome#index'
+  
   resources :services do
     get :pause, :on => :member
         get :unpause, :on => :member
