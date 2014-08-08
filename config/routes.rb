@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, :skip => :registrations
+  devise_for :users #, :skip => :registrations
   get 'welcome/index'
 
   get 'system/index'
@@ -8,11 +8,8 @@ Rails.application.routes.draw do
 
   get 'engines/index'
   
-  resources :system do
-      get :reboot
-      get :restart_docker  
-      get  :show
-  end
+  resources :system 
+  
   resources :services do
     get :pause, :on => :member
         get :unpause, :on => :member
