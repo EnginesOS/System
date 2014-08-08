@@ -4,7 +4,7 @@ namespace :db do
     admin = User.create!(name: "Admin User",
                  login: "admin",
                  password: "EngOS",
-                 password_confirmation: "test1967")
+                 password_confirmation: "EngOS")
     admin.toggle!(:admin)
   end
 end
