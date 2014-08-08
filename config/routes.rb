@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :system do
       get :reboot
       get :restart_docker  
+      get  :show
   end
   resources :services do
     get :pause, :on => :member
