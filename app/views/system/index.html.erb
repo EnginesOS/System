@@ -26,18 +26,18 @@
 
 <% end%>
 
-
+</table>
 
 <% 
 one = @snapshop.load_average.one_minute
 five =  @snapshop.load_average.five_minutes
 fithteen =  @snapshop.load_average.fifteen_minutes
- %>
- <strong>Load Averages</strong><br />
+ %><p>
+ <strong>Load Averages</strong><br/>
  1 Minute:<b><%= one %></b><br>
  5 Minute:<b><%= five %></b><br /> 
  15 Minute:<b><%= fithteen%></b><br> 
- 
+ </p>
  <p>
  	<strong>Memory</strong><br>
  	<% ps = @snapshop.memory.pagesize
