@@ -15,7 +15,7 @@
 	
 	<td><%= link_to 'Show', service_path(service.containerName) %></td>
 	<% 
-		if state == "running"
+		if state == "running" && service.containerName != 'mgmt'  #FIXME use flag instead
 			%> <td><%= link_to 'Stop', stop_service_path(service.containerName) %> <%= link_to 'Pause', pause_service_path(service.containerName) %> </td> <%
 		elsif state == "paused"
 			%> <td><%= link_to 'Unpause', unpause_service_path(service.containerName) %></td> <%
