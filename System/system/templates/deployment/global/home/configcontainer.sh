@@ -3,7 +3,7 @@
 cd /home
 ###For Docker Envion
 SAR=app
-#CONTFSVolHome=/home/app/fs
+
 
 if test -f fs.env
         then
@@ -11,7 +11,7 @@ if test -f fs.env
 		mkdir -p $CONTFSVolHome
 fi
 
-#. /opt/mpas/etc/scripts.env 
+
 
 if test -f app.env
         then
@@ -298,8 +298,8 @@ echo "#!/bin/bash
  . /etc/profile.d/rvm.sh
 
 
-DATABASE_URL=mysql2://pubtest:pubtest@mysql.docker/publifydb-test-pubtest
 
+DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
 
 
 

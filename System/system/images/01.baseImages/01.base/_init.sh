@@ -8,7 +8,8 @@ if  test -z $ContGrp
         then
                 ContGrp=www-data
 fi
-echo  u $ContUser g $ContGrp  
+
+echo  u $ContUser  g $ContGrp  
 
 adduser -q --home /home/app --disabled-password  $ContUser
 addgroup $ContGrp
@@ -16,7 +17,7 @@ addgroup $ContGrp
 if test -f /home/fs.env
         then
 		. /home/fs.env
-                chown -R www-data.$ContGrp  $CONTFSVolHome
+                chown -R $ContUser.$ContGrp  $CONTFSVolHome
 fi
 
 chown -R  $ContUser.$ContGrp /home/app
