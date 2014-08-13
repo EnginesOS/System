@@ -14,3 +14,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+System/system/images/04.systemApps/mgmt/mgmt
+System/system/images/04.systemApps/nginx/ngnix
+System/system/images/04.systemApps/nagios/nagios
+System/system/images/03.serviceImages/mysql/mysql
