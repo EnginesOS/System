@@ -10,6 +10,11 @@ ENV RUBY_VERSION ruby-1.9.3-p547
 ENV RPATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin
 ENV PATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:/usr/bin/:/bin:/bin:/sbin/:/usr/sbin
 
+ENV ContUser ruby
+
+RUN echo "Y" | adduser -q --home /home/app --disabled-password ruby
+ADD profile /home/ruby/.profile
+RUN chown -R ruby /home/app
 
 RUN gem install rake
 RUN gem install bundle
