@@ -1,0 +1,44 @@
+--- !ruby/object:NginxService
+containerName: nginx
+ctype: service
+last_error: 
+memory: '32'
+hostName: nginx
+domainName: 
+environments:
+- 
+- 
+image: raspberry/nginx
+volumes: 
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: ssh
+  port: 22
+  publicFacing: false
+  external: 0
+- !ruby/object:WorkPort
+  name: https
+  port: 443
+  publicFacing: true
+  external: 443
+- !ruby/object:WorkPort
+  name: http
+  port: 80
+  publicFacing: true
+  external: 80
+repo: na
+last_result: |
+  nginx
+setState: running
+nginxored: false
+databases:
+- 
+registerSite: false
+consumers:
+- publify:publify.test:3000
+- moodle:moodle.test:80
+- invoicing:invoicing.test:80
+- phymyadmtest:phymyadmtest.test:80
+- monit:monit.test:80
+- invoices:invoices.test:80

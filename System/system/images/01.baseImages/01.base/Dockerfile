@@ -1,0 +1,24 @@
+#Base debian wheezy image
+
+FROM debian:wheezy
+
+
+
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN rm /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Australia/Sydney  /etc/localtime 
+RUN apt-get -y install sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2
+RUN mkdir -p /var/run
+
+
+
+ADD ddns.key /etc/
+ADD ddns.private /etc/
+ADD dns-init.sh /home/
+ADD init.sh /home/
+ADD _init.sh /home/
+
+CMD /bin/bash /home/init.sh
+
+

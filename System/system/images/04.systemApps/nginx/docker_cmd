@@ -1,0 +1,1 @@
+docker run -i -p 80:80 -t raspberry/nginx /bin/bash

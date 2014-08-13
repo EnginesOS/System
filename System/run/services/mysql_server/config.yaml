@@ -1,0 +1,31 @@
+--- !ruby/object:ManagedService
+containerName: mysql_server
+ctype: service
+last_error: 
+memory: '128'
+hostName: mysql
+domainName: 
+environments:
+- 
+- 
+image: raspberry/mysql
+volumes:
+- !ruby/object:Volume
+  name: mysql
+  remotepath: "/var/lib"
+  localpath: "/home"
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: mysql
+  port: 3306
+  publicFacing: false
+  external: 0
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases:
+- 
+registerSite: false

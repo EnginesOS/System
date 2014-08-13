@@ -1,0 +1,24 @@
+--- !ruby/object:NagiosService
+containerName: monit
+ctype: service
+last_error: 
+memory: '32'
+hostName: monit
+domainName: test
+environments:
+- 
+- 
+image: raspberry/nagios
+volumes: 
+port: 80
+eports: []
+repo: na
+last_result: |
+  monit
+setState: running
+databases:
+- 
+registerSite: true
+monitored: false
+consumers:
+- moodle:moodle.test:80

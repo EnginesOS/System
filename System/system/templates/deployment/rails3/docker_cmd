@@ -1,0 +1,29 @@
+#/!bin/bash
+#/!bin/bash
+
+. /opt/mpas/etc/scripts.env
+
+
+VOL=""
+
+if test -f home/fs.env
+         then
+                . home/fs.env
+                if test ! -f  /$FSVolHome/$VOLDIR
+                        then
+                                mkdir -p  /$FSVolHome/$VOLDIR
+                        echo creating $VOLDIR
+                        else
+                                using $VOLDIR
+                        fi
+
+                VOL=" -v /$FSVolHome/$VOLDIR:/$FSVolHome/$STACKATO_FILESYSTEM"
+        fi
+
+echo "running docker run  -h NAME $VOL -d -e PORT=3000 -t NAME/deploy "
+docker run  -h NAME --name NAME   --cidfile /opt/mpas/run/NAME.cid $VOL -d -e PORT=3000 -t NAME/deploy
+
+
+ssh -i  $NgnixID     rma@nginx.docker sudo sh /home/addsite.sh NAME test 3000
+
+
