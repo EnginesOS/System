@@ -65,6 +65,10 @@ end
 
 
 type= ARGV[0]
+if type== "engine"
+  type = "container"
+end
+
 cm = ARGV[1]
 cmd = ARGV[2]
 
