@@ -14,21 +14,20 @@ Blueprints are created by the Blueprint Designer and published in galleries.
 <br>
  Developers direct access to Endusers 
 <br>
- End users the freedom to mix and match soltutions with isolated and shared data in a single environment on a single bill.
+ End users the freedom to mix and match solutions with isolated and shared data in a single environment on a single bill.
 <br>   
 End users complete total control of their data
 <br>  
 End Users choice of jusristritions where they host, unlike SAS
  ...
 <p>
-<strong>This is the base system</strong>
-<br>
+<strong>This repository contains the base system</strong>
 <br>
 See https://github.com/EnginesOS/BluePrint-Designer.git for the Blue Print Designer
 <br>
 See https://github.com/EnginesOS/SystemGui.git for the System Gui
 <br>
-See https://github.com/EnginesOS-Blueprints for availble blueprints
+See https://github.com/EnginesOS-Blueprints for available blueprints
 <p>
 <strong> Commands 
 </strong>
@@ -79,13 +78,13 @@ lasterror
 <strong>Directorys in this Repository
 </strong>
 <p>
-bin
+bin<br>
 executable scripts
 <br>
 <p>
 lib
 <br>
-libaries used by scripts and gui
+libaries/Classes used by scripts and gui
 <p>
 etc
 <br>
