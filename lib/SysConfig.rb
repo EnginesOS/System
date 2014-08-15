@@ -15,7 +15,7 @@ class SysConfig
   @@LocalFSVolHome = "/var/engos/fs"
   @@galleriesDir = "/opt/engos/etc/galleries"
  
-  def galleriesDir
+  def SysConfig.galleriesDir
       return @@galleriesDir
   end
   def SysConfig.ContainersDir
