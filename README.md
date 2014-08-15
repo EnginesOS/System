@@ -4,8 +4,9 @@
 Engines are containerised servers and service providers that are defined by blueprints.
 <br>
 Blueprints are created by the Blueprint Designer and published in galleries.
-<br>
-Engine OS provides 
+<p>
+<strong>Engine OS provides
+</strong> 
 <br>
  End users with the ability to select and install engines from a gallery 
 <br>
