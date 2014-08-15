@@ -8,21 +8,26 @@ Blueprints are created by the Blueprint Designer and published in galleries.
 Engine OS provides 
 <br>
  End users with the ability to select and install engines from a gallery 
+<br>
  End users access to opensource source solutions without ever seeing a commandline
 <br>
  Developers direct access to Endusers 
 <br>
  End users the freedom to mix and match soltutions with isolated and shared data in a single environment on a single bill.
-<br>     
+<br>   
+End users complete total control of their data
+<br>  
+End Users choice of jusristritions where they host, unlike SAS
  ...
 <p>
 <strong>This is the base system</strong>
 <br>
 <br>
- see https://github.com/EnginesOS/BluePrint-Designer.git for the Blue Print Designer
+See https://github.com/EnginesOS/BluePrint-Designer.git for the Blue Print Designer
 <br>
- see https://github.com/EnginesOS/SystemGui.git for the System Gui
+See https://github.com/EnginesOS/SystemGui.git for the System Gui
 <br>
+See https://github.com/EnginesOS-Blueprints for availble blueprints
 <p>
 <strong> Commands 
 </strong>
