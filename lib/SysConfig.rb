@@ -13,7 +13,11 @@ class SysConfig
   @@DeploymentTemplates="/opt/engos/system/templates/deployment"
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/engos/fs"
+  @@galleriesDir = "/opt/engos/etc/galleries"
  
+  def galleriesDir
+      return @@galleriesDir
+  end
   def SysConfig.ContainersDir
     return @@ContainersDir
   end

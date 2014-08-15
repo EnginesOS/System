@@ -11,9 +11,7 @@ require "/opt/engos/lib/ruby/Container.rb"
 
 
 class ManagedContainer < Container
- 
-       
-        
+                
         def framework
           return @framework
         end
@@ -51,15 +49,15 @@ class ManagedContainer < Container
     end
     
     def ManagedContainer.load(type,name)
-      yfn = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
+      yam_file_name = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
      
-        if File.exists?(yfn) == false
-          puts("No such configuration:" + yfn )
+        if File.exists?(yam_file_name) == false
+          puts("No such configuration:" + yam_file_name )
           return nil
         end 
         
-      yf = File.open(yfn) 
-      managedContainer = YAML::load( yf)
+      yaml_file = File.open(yam_file_name) 
+      managedContainer = YAML::load( yaml_file)
       managedContainer
     end
 
@@ -326,9 +324,7 @@ class ManagedContainer < Container
                                      
                         else  
                          @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"                         
-                         end
-        
-                         
+                         end                                 
                 
                 clear_error(ret_val)
                 save_state()
