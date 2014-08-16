@@ -75,10 +75,10 @@ class EngineBuilder
 
      def load_blueprint
   
-          bfn = SysConfig.DeploymentDir + "/" + @buildname + "/blueprint.json"
-          bf = File.open(bfn,"r")
-          js = bf.read
-          bf.close 
+       blueprint_file_name= SysConfig.DeploymentDir + "/" + @buildname + "/blueprint.json"
+          blueprint_file = File.open(blueprint_file_name,"r")
+          blueprint_json_str = blueprint_file.read
+          blueprint_file.close 
     
           @bluePrint = JSON.parse( js)
      end
