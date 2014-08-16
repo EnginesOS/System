@@ -1,0 +1,10 @@
+--- !ruby/object:EngineGallery
+title: Engines OS Development Gallery
+short_name: enginesos_devel_gallery
+blueprints_url: http:/220.233.20.158:3001/json_published_softwares
+licence_type:
+maintainer:
+- !ruby/object:GalleryMaintainer
+ name: James L Vodanovich
+ email: james@jvodan.com
+ website: www.enginesos.com
