@@ -80,7 +80,7 @@ class EngineBuilder
           blueprint_json_str = blueprint_file.read
           blueprint_file.close 
     
-          @bluePrint = JSON.parse( js)
+          @bluePrint = JSON.parse(blueprint_json_str)
      end
 
      def clone_repo
