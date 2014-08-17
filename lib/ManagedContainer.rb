@@ -88,7 +88,7 @@ class ManagedContainer < Container
     
       #FIXME save or save_state ?  
       def save docker_api
-        docker_api.save_container       
+        docker_api.save_container self
       end
       
   def save_state(docker_api)
@@ -130,7 +130,7 @@ class ManagedContainer < Container
           docker_api.logs_container self    
         end
         
-        def ps_container get_docker_api 
+        def ps_container docker_api 
           docker_api.ps_container self
             
         end
