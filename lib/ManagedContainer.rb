@@ -56,7 +56,11 @@ class ManagedContainer < Container
           managedContainer = YAML::load( yaml )
           managedContainer
     end
-    
+
+  def set_docker_api docker_api
+    @docker_api = docker_api
+  end
+        
    # def ManagedContainer.aload(type,name)
     #  yam_file_name = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
      #
