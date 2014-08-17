@@ -9,7 +9,7 @@ class NagiosService < ManagedService
      if result == false
        return false
      end
-    
+    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s  
       if @consumers == nil
         @consumers = Array.new
       end
@@ -23,11 +23,10 @@ class NagiosService < ManagedService
    
    def remove_consumer engine
      result = @docker_api.rm_monitor(engine)
-     name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-     ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + name + " \"" 
      if result == false
            return false
          end
+     name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   
      if(@consumers !=  nil || @consumes.length>0)
             @consumers.delete(name)
          end    
