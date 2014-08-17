@@ -117,11 +117,7 @@ class Docker
     end
     
     def save_container container
-      serialized_object = YAML::dump(container)  
-      save_serialized(serialized_object,container)
-    end       
-      
-  def   save_serialized(serialized_object,container)
+      serialized_object = YAML::dump(container)       
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
