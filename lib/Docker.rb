@@ -107,7 +107,8 @@ class Docker
   
     def inspect_container container
        commandargs=" inspect " + container.containerName
-
+p commandargs
+p container
       return  run_docker(commandargs)
     end
 
