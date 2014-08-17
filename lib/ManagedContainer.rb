@@ -290,22 +290,22 @@ class ManagedContainer < Container
         end
 
        def register_site 
-         service =  EnginesOSapi.loadManagedService("nginx")       
+         service =  EnginesOSapi.loadManagedService("nginx",@docker_api)   
         return service.add_consumer(self)                
        end
        
        def monitor_site 
-         service =  EnginesOSapi.loadManagedService("monit")       
+         service =  EnginesOSapi.loadManagedService("monit",@docker_api)        
             return service.add_consumer(self)  
        end
        
        def deregister_site 
-         service =  EnginesOSapi.loadManagedService("nginx")       
+         service =  EnginesOSapi.loadManagedService("nginx",@docker_api)       
          return service.remove_consumer(self) 
        end
         
        def demonitor_site 
-         service =  EnginesOSapi.loadManagedService("monit")       
+         service =  EnginesOSapi.loadManagedService("monit",@docker_api)    
          return service.remove_consumer(self)          
        end
        
