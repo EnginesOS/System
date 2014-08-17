@@ -1,4 +1,7 @@
 class Docker
+  def initialize
+    
+  end
   
   def run_docker (args)
      ret_val=false
