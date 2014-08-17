@@ -38,7 +38,7 @@ class ManagedEngine < ManagedContainer
     return @ctype    
   end
   
-  def save_state(docker_api)
+  def save_state()
     docker_api.save_container self    
   end   
   

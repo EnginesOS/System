@@ -43,7 +43,7 @@ class ManagedService < ManagedContainer
          end
 
  
-  def save_state(docker_api)
+  def save_state()
       docker_api.save_container self
       
     end 
@@ -65,17 +65,17 @@ class ManagedService < ManagedContainer
 	
 	end
 	
-	def create_service(docker_api) 
+	def create_service() 
 	  puts ("create")
-    create_container(docker_api)
-    self.save_state(docker_api)
+    create_container()
+    self.save_state()
 	 #re add consumsers   
 	end
 		
   def recreate
-    destroy_container(docker_api)
-    create_service(docker_api)
-    reregister_consumers(docker_api)
+    destroy_container()
+    create_service()
+    reregister_consumers()
       
     end
     
