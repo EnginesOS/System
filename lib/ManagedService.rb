@@ -38,10 +38,11 @@ class ManagedService < ManagedContainer
         #   @CidDir=SysConfig.CidDir #"/opt/mpas/run"
       
          end
-    def save
-          serialized_object = YAML::dump(self)  
-          save_serialized(serialized_object)
-    end
+  #FIXME save or save_state ?  
+  def save docker_api
+    docker_api.save_container self
+  end
+   
     def ManagedService.getManagedServices
       return ManagedContainer.getManagedContainers("service")
     end

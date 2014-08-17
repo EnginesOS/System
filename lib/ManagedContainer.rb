@@ -86,11 +86,7 @@ class ManagedContainer < Container
            return ret_val
       end
     
-      #FIXME save or save_state ?  
-      def save docker_api
-        docker_api.save_container self
-      end
-      
+ 
   def save_state(docker_api)
      self.save docker_api
   end    

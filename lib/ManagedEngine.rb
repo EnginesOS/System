@@ -33,6 +33,10 @@ class ManagedEngine < ManagedContainer
       
          end 
          
+  #FIXME save or save_state ?  
+  def save docker_api
+    docker_api.save_container self
+  end
  
   
 end
