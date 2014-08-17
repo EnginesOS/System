@@ -9,11 +9,12 @@ require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
 
-@docker_api = Docker.new
+
 
 
 class ManagedContainer < Container
-                
+  @docker_api = Docker.new
+               
         def framework
           return @framework
         end
@@ -47,7 +48,6 @@ class ManagedContainer < Container
         
         def self.from_yaml( yaml )
           managedContainer = YAML::load( yaml )
-          managedContainer.docker_api = Docker.new
           managedContainer
     end
     
@@ -61,19 +61,16 @@ class ManagedContainer < Container
         
       yaml_file = File.open(yam_file_name) 
       managedContainer = YAML::load( yaml_file)
-      managedContainer.docker_api = Docker.new
       managedContainer
     end
 
       def ManagedContainer.getManagedContainers(type)
-        docker_api = Docker.new
         ret_val=Array.new
            Dir.entries(SysConfig.CidDir + "/" + type + "s/").each do |contdir|
              yfn = SysConfig.CidDir + "/" + type + "s/" + contdir + "/config.yaml"     
              if File.exists?(yfn) == true           
                yf = File.open(yfn)   
-               cont = ManagedContainer.from_yaml(yf)
-               cont.docker_api = docker_api               
+               cont = ManagedContainer.from_yaml(yf)          
                if cont                 
                  ret_val.push(cont)
                end
