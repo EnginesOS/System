@@ -43,10 +43,7 @@ class ManagedService < ManagedContainer
          end
 
  
-  def save_state()
-      docker_api.save_container self
-      
-    end 
+ 
     
   
 	def consumers
