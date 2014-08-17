@@ -91,7 +91,8 @@ class ManagedService < ManagedContainer
    end
   def self.from_yaml( yaml,docker_api )
           managedService = YAML::load( yaml )
-          managedService.set_docker_api docker_api
+          managedService.set_docker_api(docker_api)
+          return managedService
     end
 end
 	
