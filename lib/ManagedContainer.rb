@@ -44,12 +44,13 @@ class ManagedContainer < Container
           return @repo
         end
         
-      def docker_api
+      def get_docker_api
           if @@docker_api == nil
             @@docker_api =  Docker.new
           end
         return @@docker_api
       end
+      
         
         def self.from_yaml( yaml )
           managedContainer = YAML::load( yaml )
@@ -386,7 +387,7 @@ class ManagedContainer < Container
          stopped = output[0]["State"]["FinishedAt"]
          state = read_state
           
-         @docker_api.ps_container
+         get_docker_api.ps_container
          pcnt=-1
          rss=0 
          vss=0
@@ -436,7 +437,7 @@ class ManagedContainer < Container
      
        def inspect_container
 
-            ret_val = @docker_api.inspect_container                                                                            
+            ret_val = get_docker_api.inspect_container                                                                            
                             
            return ret_val
        end
