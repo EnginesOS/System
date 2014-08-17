@@ -57,7 +57,7 @@ class ManagedContainer < Container
           managedContainer
     end
     
-    def ManagedContainer.load(type,name)
+    def ManagedContainer.aload(type,name)
       yam_file_name = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
      
         if File.exists?(yam_file_name) == false
@@ -70,7 +70,7 @@ class ManagedContainer < Container
       managedContainer
     end
 
-      def ManagedContainer.getManagedContainers(type)
+      def ManagedContainer.agetManagedContainers(type)
         ret_val=Array.new
            Dir.entries(SysConfig.CidDir + "/" + type + "s/").each do |contdir|
              yfn = SysConfig.CidDir + "/" + type + "s/" + contdir + "/config.yaml"     
@@ -176,7 +176,7 @@ class ManagedContainer < Container
            
         def create_container  docker_api 
           ret_val =false
-          state = read_state
+          state = read_state(docker_api)
           
                        if state == "nocontainer"                             
                             ret_val = docker_api.create_container self 
@@ -186,7 +186,7 @@ class ManagedContainer < Container
                        end
                   if ret_val == true
                     if @registersite == true
-                      register_site
+                      register_site docker_api
                     end
                   end          
           clear_error(ret_val)
@@ -205,7 +205,7 @@ class ManagedContainer < Container
         end
     
   def unpause_container  docker_api
-      state = read_state
+      state = read_state(docker_api)
 
       ret_val = false
               if state == "paused"
@@ -216,13 +216,13 @@ class ManagedContainer < Container
               end
 
           clear_error(ret_val)
-          save_state()
+          save_state(docker_api)
       return ret_val        
        
   end  
            
   def pause_container  docker_api
-                state = read_state
+                state = read_state(docker_api)
 
                 ret_val = false
                         if state == "running"
@@ -239,7 +239,7 @@ class ManagedContainer < Container
 
   def stop_container  docker_api    
       ret_val = false
-      state = read_state
+      state = read_state(docker_api)
                   
         if state== "running"
           ret_val = docker_api.stop_container   self 
@@ -256,7 +256,7 @@ class ManagedContainer < Container
               
         def start_container docker_api
           ret_val=false
-          state = read_state
+          state = read_state(docker_api)
 
              
             if state == "stopped"
@@ -268,7 +268,7 @@ class ManagedContainer < Container
              
             if ret_val == true
               if @registersite == true
-                     register_site
+                     register_site docker_api
                end
             end
              
@@ -289,29 +289,29 @@ class ManagedContainer < Container
            return ret_val  
         end
 
-       def register_site 
+       def register_site docker_api
          service =  NginxService.load("nginx")       
         return service.add_consumer(self)                
        end
        
-       def monitor_site
+       def monitor_site docker_api
          service =  NagiosService.load("monit")       
             return service.add_consumer(self)  
        end
        
-       def deregister_site
+       def deregister_site docker_api
          service =  NginxService.load("nginx")       
          return service.remove_consumer(self) 
        end
         
-       def demonitor_site
+       def demonitor_site docker_api
          service =  NagiosService.load("monit")       
          return service.remove_consumer(self)          
        end
        
-       def register
-         register_site
-         monitor_site
+       def register docker_api
+         register_site docker_api
+         monitor_site docker_api
          #FIXME check results
        end
        
@@ -360,7 +360,7 @@ class ManagedContainer < Container
        end
        
        def status docker_api
-         s = read_state()      
+         s = read_state(docker_api)      
         # puts s 
        end  
          
