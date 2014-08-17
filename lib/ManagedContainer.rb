@@ -88,7 +88,7 @@ class ManagedContainer < Container
     
  
   def save_state(docker_api)
-     self.save docker_api
+     save docker_api
   end    
        
           
