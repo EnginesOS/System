@@ -102,7 +102,7 @@ class ManagedContainer < Container
 
 
      def read_state()
-          if (inspect_container() == false)
+          if (inspect_container == false)
               state="nocontainer"
             else     
               output = JSON.parse(last_result)
@@ -290,22 +290,22 @@ class ManagedContainer < Container
         end
 
        def register_site 
-         service =  NginxService.load("nginx")       
+         service =  EnginesOSapi.loadManagedService("nginx")       
         return service.add_consumer(self)                
        end
        
        def monitor_site 
-         service =  NagiosService.load("monit")       
+         service =  EnginesOSapi.loadManagedService("monit")       
             return service.add_consumer(self)  
        end
        
        def deregister_site 
-         service =  NginxService.load("nginx")       
+         service =  EnginesOSapi.loadManagedService("nginx")       
          return service.remove_consumer(self) 
        end
         
        def demonitor_site 
-         service =  NagiosService.load("monit")       
+         service =  EnginesOSapi.loadManagedService("monit")       
          return service.remove_consumer(self)          
        end
        
