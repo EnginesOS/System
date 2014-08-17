@@ -14,7 +14,7 @@ class NginxService < ManagedService
      end
  #FIXME check results
      puts ssh_cmd
-    self.save
+    save_state
     return system(ssh_cmd)
   end
   
@@ -25,7 +25,7 @@ class NginxService < ManagedService
         @consumers.delete(name)
      end
     #FIXME check results
-    self.save
+    save_state
     return system(ssh_cmd)
   end
   

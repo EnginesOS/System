@@ -17,7 +17,7 @@ class NagiosService < ManagedService
          @consumers.push(name)
       end
   #FIXME check results
-     self.save
+    save_state
      puts ssh_cmd
      return system(ssh_cmd)
    end
@@ -31,7 +31,7 @@ class NagiosService < ManagedService
             @consumers.delete(name)
          end
      #FIXME check results
-     self.save
+     save_state
      return system(ssh_cmd)
    end
    
