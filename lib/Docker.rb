@@ -5,15 +5,15 @@ class Docker
   
   def run_docker (args,container)
      ret_val=false
-    container.last_result = ""           
+    container.set_last_result  ""           
      cmd="docker " + args + " 2>&1"           
      res= %x<#{cmd}>        
     # puts(cmd + "\n\n" + res)
           if $? == 0 && res.include?("Error") == false
               ret_val = true
-            container.last_result = res
+            container.set_last_result res
           else                
-            container.last_error = res;               
+            container.set_last_error  res;               
           end            
      
       return ret_val

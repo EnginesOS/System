@@ -35,7 +35,14 @@ class ManagedContainer < Container
           return @setState
         end
         
-
+        def set_last_result result
+          @last_result = result
+        end
+        
+        def set_last_error result
+           @last_error = result
+         end
+         
         def port
           return @port
         end
