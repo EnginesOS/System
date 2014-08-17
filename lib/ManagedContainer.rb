@@ -44,7 +44,9 @@ class ManagedContainer < Container
           return @repo
         end
         
- 
+      def docker_api
+        return @docker_api
+      end
         
         def self.from_yaml( yaml )
           managedContainer = YAML::load( yaml )
