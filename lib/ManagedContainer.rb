@@ -317,14 +317,14 @@ class ManagedContainer < Container
        
        def stats docker_api
         
-         inspect_container docker_api
+         inspect_container(docker_api)
          
          output = JSON.parse(last_result)
          started = output[0]["State"]["StartedAt"]
          stopped = output[0]["State"]["FinishedAt"]
-         state = read_state
+         state = read_state(docker_api)
           
-        ps_container  docker_api
+        ps_container(docker_api)
          pcnt=-1
          rss=0 
          vss=0
