@@ -5,9 +5,10 @@ require "/opt/engos/lib/ruby/ManagedService.rb"
 class NagiosService < ManagedService
   
   def add_consumer(engine)   
-    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-  
-    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + name + " \"" 
+    result = @docker_api.add_monitor(engine)
+     if result == false
+       return false
+     end
     
       if @consumers == nil
         @consumers = Array.new
@@ -16,23 +17,22 @@ class NagiosService < ManagedService
       if @consumers.include?(name) == false     # only add if doesnt exists but allow register
          @consumers.push(name)
       end
-  #FIXME check results
     save_state
-     puts ssh_cmd
-     return system(ssh_cmd)
+     return true
    end
    
    def remove_consumer engine
-     
+     result = @docker_api.rm_monitor(engine)
      name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
      ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + name + " \"" 
-     
+     if result == false
+           return false
+         end
      if(@consumers !=  nil || @consumes.length>0)
             @consumers.delete(name)
-         end
-     #FIXME check results
+         end    
      save_state
-     return system(ssh_cmd)
+     return true
    end
    
    def recreate
@@ -42,7 +42,7 @@ class NagiosService < ManagedService
    end
      
   def reregister_consumers
-      sleep(60)
+     
      @consumers.each do |site|
        ssh_cmd=SysConfig.addSiteMonitorCmd  +  " \"" + site + " \"" 
        system(ssh_cmd)

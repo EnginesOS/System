@@ -116,6 +116,18 @@ class Docker
       return  run_docker(commandargs,container)
     end
     
+  def add_monitor(engine)
+    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s  
+    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + name + " \""
+    return system(ssh_cmd)
+  end 
+    
+  def rm_monitor(engine)
+       name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
+       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + name + " \""
+    return system(ssh_cmd)
+  end 
+         
     def save_container container
       serialized_object = YAML::dump(container)       
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
