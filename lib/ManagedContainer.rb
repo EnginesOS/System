@@ -436,7 +436,7 @@ class ManagedContainer < Container
        end
      
        def inspect_container
-
+       p get_docker_api
             ret_val = get_docker_api.inspect_container                                                                            
                             
            return ret_val
