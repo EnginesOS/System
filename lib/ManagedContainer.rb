@@ -387,7 +387,7 @@ class ManagedContainer < Container
          stopped = output[0]["State"]["FinishedAt"]
          state = read_state
           
-         @docker_api.ps_container
+         get_docker_api.ps_container
          pcnt=-1
          rss=0 
          vss=0
@@ -436,8 +436,8 @@ class ManagedContainer < Container
        end
      
        def inspect_container
-p @docker_api
-            ret_val = @docker_api.inspect_container                                                                            
+       p   get_docker_api 
+            ret_val = get_docker_api.inspect_container                                                                            
                             
            return ret_val
        end
