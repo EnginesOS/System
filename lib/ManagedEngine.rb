@@ -33,7 +33,7 @@ class ManagedEngine < ManagedContainer
       
          end 
          
-  #FIXME save or save_state ?  
+  
   def ctype
     return @ctype    
   end

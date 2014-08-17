@@ -63,9 +63,9 @@ class ManagedService < ManagedContainer
 	end
 	
 	def create_service() 
-	  puts ("create")
+	  puts("create")
     create_container()
-    self.save_state()
+    save_state()
 	 #re add consumsers   
 	end
 		
