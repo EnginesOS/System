@@ -40,6 +40,12 @@ class EnvironmentVariable
 end
 
 
+class Service
+  def initialize(type)
+    @serviceType=type
+  end
+end
+
 
 class Database < Service
   @serviceType="db"
@@ -53,11 +59,7 @@ class Database < Service
    end
 end
 
-class Service
-  def initialize(type)
-    @serviceType=type
-  end
-end
+
 
 class Volume < Service #Latter will include group and perhaps other attributes
    @serviceType="fs"
