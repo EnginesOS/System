@@ -38,18 +38,13 @@ class ManagedService < ManagedContainer
         #   @CidDir=SysConfig.CidDir #"/opt/mpas/run"
       
          end
-  #FIXME save or save_state ?  
-  def save docker_api
-    docker_api.save_container self
-  end
-   
-    def ManagedService.agetManagedServices
-      return ManagedContainer.getManagedContainers("service")
-    end
+
+ 
+  def save_state(docker_api)
+      docker_api.save_container self
+      
+    end 
     
-  def ManagedService.aload (name)
-    return ManagedContainer.load("service",name)      
-  end 
   
 	def consumers
 	    if @consumers == nil
@@ -92,8 +87,8 @@ class ManagedService < ManagedContainer
      #noop never do  this as need buildimage again or only for expert 
    end
   def self.from_yaml( yaml )
-          managedContainer = YAML::load( yaml )
-          managedContainer
+          managedService = YAML::load( yaml )
+          managedService
     end
 end
 	
