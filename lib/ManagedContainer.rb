@@ -101,7 +101,7 @@ class ManagedContainer < Container
           end
 
 
-     def read_state docker_api
+     def read_state(docker_api)
           if (inspect_container(docker_api) == false)
               state="nocontainer"
             else     
