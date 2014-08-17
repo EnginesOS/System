@@ -88,12 +88,10 @@ class ManagedContainer < Container
     
  
   def save_state(docker_api)
-     save docker_api
+    docker_api.save_container self    
   end    
        
-  def save docker_api
-      docker_api.save_container self
-    end     
+  
           def to_s
             "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
           end
