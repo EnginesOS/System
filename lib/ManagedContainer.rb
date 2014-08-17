@@ -13,7 +13,7 @@ require "/opt/engos/lib/ruby/Docker.rb"
 
 
 class ManagedContainer < Container
-  @docker_api = Docker.new
+  @@docker_api = Docker.new
                
         def framework
           return @framework
@@ -45,7 +45,7 @@ class ManagedContainer < Container
         end
         
       def docker_api
-        return @docker_api
+        return @@docker_api
       end
         
         def self.from_yaml( yaml )
