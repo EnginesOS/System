@@ -13,7 +13,7 @@ require "/opt/engos/lib/ruby/Docker.rb"
 
 
 class ManagedContainer < Container
-  @docker_api = Docker.new
+  
                
         def framework
           return @framework
@@ -50,14 +50,7 @@ class ManagedContainer < Container
         def repo
           return @repo
         end
-        
-      def get_docker_api
-          if @docker_api == nil
-            @docker_api =  Docker.new
-          end
-        return @docker_api
-      end
-      
+
         
         def self.from_yaml( yaml )
           managedContainer = YAML::load( yaml )
@@ -92,36 +85,23 @@ class ManagedContainer < Container
            end
            return ret_val
       end
-      
-      def save
-        serialized_object = YAML::dump(self)  
-        save_serialized(serialized_object)
+    
+      #FIXME save or save_state ?  
+      def save docker_api
+        docker_api.save_container       
       end
       
-       def   save_serialized(serialized_object)
-          stateDir=SysConfig.CidDir + "/"  + @ctype + "s/" + @containerName
-            if File.directory?(stateDir) ==false
-              Dir.mkdir(stateDir)
-            end
-          statefile=stateDir + "/config.yaml"
-            
-          f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
-          f.puts(serialized_object)
-          f.close
-        end
+  def save_state(docker_api)
+     self.save docker_api
+  end    
+       
           
           def to_s
             "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
           end
 
 
-        def save_state()#state)
-           self.save
-        end 
-        
-   
-
-     def read_state 
+     def read_state docker_api
           if (inspect_container == false)
               state="nocontainer"
             else     
@@ -146,12 +126,12 @@ class ManagedContainer < Container
          return state
      end
      
-        def logs_container
-          get_docker_api.logs_container self   
+        def logs_container docker_api
+          docker_api.logs_container self    
         end
         
-        def ps_container
-          get_docker_api.ps_container self
+        def ps_container get_docker_api 
+          docker_api.ps_container self
             
         end
         
@@ -161,55 +141,45 @@ class ManagedContainer < Container
             end
         end
 
-        def delete_image
+        def delete_image docker_api
               ret_val=false
                 state = read_state()
                         if state == "nocontainer"
-                                if (ret_val=get_docker_api.delete_image self  ) == true
-                                        stateDir=SysConfig.CidDir + "/"  + @ctype + "s/" + @containerName
-                                        FileUtils.rm_rf  stateDir
-                                        ret_val = true
-                                end
-                        else
-                                @last_error ="Cannot Delete the Image while container exists\ Please stop/destroy first"
+                              ret_val=docker_api.delete_image self  
+                         else    
+                             @last_error ="Cannot Delete the Image while container exists\ Please stop/destroy first"
                         end
                 clear_error(ret_val)        
                 return ret_val      
         end
 
-        def destroy_container
+        def destroy_container docker_api
               ret_val=false
   
                 state = read_state
                 @setState="nocontainer" #this represents the state we want and not necessarily the one we get
 
                          if state == "stopped"
-                                 ret_val=get_docker_api.destroy_container self  
-                                         if (ret_val == true)
-                                           if File.exists?(SysConfig.CidDir + "/" + @containerName + ".cid") ==true
-                                              File.delete(SysConfig.CidDir + "/" + @containerName + ".cid")
-                                           end
-                                         end
+                                 ret_val=docker_api.destroy_container self  
                         else if state == "nocontainer"
-                           @last_error ="No Active Container"    
-                                     
+                           @last_error ="No Active Container"                                         
                         else  
                          @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"                         
                          end                                 
                 
                 clear_error(ret_val)
-                save_state()
+                save_state(docker_api)
                 return ret_val
              end
         end
   
            
-        def create_container 
+        def create_container  docker_api 
           ret_val =false
           state = read_state
           
                        if state == "nocontainer"                             
-                            ret_val = get_docker_api.create_container self 
+                            ret_val = docker_api.create_container self 
                              @setState="running"                              
                        else
                          @last_error ="Cannot create container if container by the same name exists"
@@ -220,27 +190,27 @@ class ManagedContainer < Container
                     end
                   end          
           clear_error(ret_val)
-          save_state()
+          save_state(docker_api)
            return ret_val
         end
         
         
-        def recreate_container
+        def recreate_container docker_api
           ret_val =false
-              if(retval=destroy_container) == true
-                ret_val=create_container               
+              if(retval=destroy_container(docker_api)) == true
+                ret_val=create_container(docker_api)              
               end          
            
            return ret_val 
         end
     
-  def unpause_container 
+  def unpause_container  docker_api
       state = read_state
 
       ret_val = false
               if state == "paused"
                 @setState="running"
-                ret_val= get_docker_api.unpause_container self                  
+                ret_val= docker_api.unpause_container self                  
               else
                 @last_error ="Can't unpause Container as " + state
               end
@@ -251,46 +221,46 @@ class ManagedContainer < Container
        
   end  
            
-  def pause_container 
+  def pause_container  docker_api
                 state = read_state
 
                 ret_val = false
                         if state == "running"
                           @setState="paused"
-                          ret_val = get_docker_api.pause_container   self                      
+                          ret_val = docker_api.pause_container   self                      
                         else
                           @last_error ="Can't pause Container as " + state
                         end
 
               clear_error(ret_val)
-              save_state()
+              save_state(docker_api)
               return ret_val
    end
 
-  def stop_container      
+  def stop_container  docker_api    
       ret_val = false
       state = read_state
                   
         if state== "running"
-          ret_val = get_docker_api.stop_container   self 
+          ret_val = docker_api.stop_container   self 
           @setState="stopped"
         else  
           @last_error ="Can't stop Container as " + state
         end
       
       clear_error(ret_val)
-      save_state() 
+      save_state(docker_api) 
       return  ret_val
     end
    
               
-        def start_container
+        def start_container docker_api
           ret_val=false
           state = read_state
 
              
             if state == "stopped"
-               ret_val = get_docker_api.start_container self
+               ret_val = docker_api.start_container self
               @setState="running"                                               
              else
                 @last_error ="Can't Start Container as " + state
@@ -304,14 +274,14 @@ class ManagedContainer < Container
              
           
           clear_error(ret_val)
-          save_state()
+          save_state(docker_api)
           return ret_val  
         end
            
-        def restart_container
+        def restart_container docker_api
           ret_val=false
-             if (ret_val = stop_container) == true
-                  ret_val = start_container     
+             if (ret_val = stop_container docker_api ) == true
+                  ret_val = start_container docker_api     
              else 
                @last_error ="Fail to Stop Container "
              end
@@ -319,7 +289,7 @@ class ManagedContainer < Container
            return ret_val  
         end
 
-       def register_site
+       def register_site 
          service =  NginxService.load("nginx")       
         return service.add_consumer(self)                
        end
@@ -345,16 +315,16 @@ class ManagedContainer < Container
          #FIXME check results
        end
        
-       def stats
+       def stats docker_api
         
-         inspect_container
+         inspect_container docker_api
          
          output = JSON.parse(last_result)
          started = output[0]["State"]["StartedAt"]
          stopped = output[0]["State"]["FinishedAt"]
          state = read_state
           
-        ps_container 
+        ps_container  docker_api
          pcnt=-1
          rss=0 
          vss=0
@@ -389,7 +359,7 @@ class ManagedContainer < Container
           return statistics
        end
        
-       def status
+       def status docker_api
          s = read_state()      
         # puts s 
        end  
@@ -402,10 +372,8 @@ class ManagedContainer < Container
          return @last_result
        end
      
-       def inspect_container
-       p   get_docker_api 
-            ret_val = get_docker_api.inspect_container self                                                                          
-                       p ret_val     
+       def inspect_container  docker_api     
+            ret_val = docker_api.inspect_container self                                                                              
            return ret_val
        end
                                              

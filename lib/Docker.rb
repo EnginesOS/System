@@ -21,13 +21,26 @@ class Docker
    
   def delete_image container
            commandargs= " rmi " +   container.image
-           return  run_docker(commandargs,container)                
+           ret_val =  run_docker(commandargs,container)
+           if ret_val == true             
+                stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+                FileUtils.rm_rf  stateDir
+          end
+      return ret_val
    end
    
    def destroy_container container
      commandargs= " rm " +   container.containerName
      
-     return  run_docker(commandargs,container)      
+     ret_val = run_docker(commandargs,container)      
+     if (ret_val == true)
+       if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
+          File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
+       end
+     end
+     
+    return ret_val
+     
    end
    
   def create_container container             
@@ -70,46 +83,54 @@ class Docker
    
    def start_container   container      
      commandargs =" start " + container.containerName
- 
-     return  run_docker(commandargs,container)
-     
+     return  run_docker(commandargs,container)    
    end
    
    def stop_container container
      commandargs=" stop " + container.containerName
-
      return  run_docker(commandargs,container)
    end
    
    def pause_container container
      commandargs = " pause " + container.containerName
-
      return  run_docker(commandargs,container)    
    end
    
    def unpause_container container
       commandargs=" unpause " + container.containerName
-
      return  run_docker(commandargs,container)      
     end
     
    def ps_container container 
      commandargs=" top " + container.containerName + " axl"
-
      return  run_docker(commandargs,container)   
    end
    
    def logs_container container 
        commandargs=" logs " + container.containerName
-
        return  run_docker(commandargs,container)
      end
   
     def inspect_container container
        commandargs=" inspect " + container.containerName
-p commandargs
-p container
       return  run_docker(commandargs,container)
     end
+    
+    def save_container container
+      serialized_object = YAML::dump(container)  
+      save_serialized(serialized_object,container)
+    end       
+      
+  def   save_serialized(serialized_object)
+            stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+              if File.directory?(stateDir) ==false
+                Dir.mkdir(stateDir)
+              end
+            statefile=stateDir + "/config.yaml"
+              
+            f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
+            f.puts(serialized_object)
+            f.close
+          end
 
 end
