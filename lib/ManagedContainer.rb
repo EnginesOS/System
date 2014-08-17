@@ -13,7 +13,7 @@ require "/opt/engos/lib/ruby/Docker.rb"
 
 
 class ManagedContainer < Container
-  @@docker_api = Docker.new
+  @docker_api = Docker.new
                
         def framework
           return @framework
@@ -45,10 +45,10 @@ class ManagedContainer < Container
         end
         
       def get_docker_api
-          if @@docker_api == nil
-            @@docker_api =  Docker.new
+          if @docker_api == nil
+            @docker_api =  Docker.new
           end
-        return @@docker_api
+        return @docker_api
       end
       
         
@@ -387,7 +387,7 @@ class ManagedContainer < Container
          stopped = output[0]["State"]["FinishedAt"]
          state = read_state
           
-         get_docker_api.ps_container
+         @docker_api.ps_container
          pcnt=-1
          rss=0 
          vss=0
@@ -436,8 +436,8 @@ class ManagedContainer < Container
        end
      
        def inspect_container
-       p get_docker_api
-            ret_val = get_docker_api.inspect_container                                                                            
+p @docker_api
+            ret_val = @docker_api.inspect_container                                                                            
                             
            return ret_val
        end
