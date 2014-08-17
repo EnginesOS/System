@@ -115,7 +115,18 @@ class Docker
        commandargs=" inspect " + container.containerName
       return  run_docker(commandargs,container)
     end
-    
+  def register_site(engine)      
+      name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
+      ssh_cmd=SysConfig.addSiteCmd + " \"" + name +  "\""
+      return system(ssh_cmd)
+  end
+  
+  def deregister_site(engine)
+    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
+     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + name +  "\""
+    return system(ssh_cmd)
+  end
+  
   def add_monitor(engine)
     name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s  
     ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + name + " \""

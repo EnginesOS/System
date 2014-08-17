@@ -3,8 +3,11 @@ require "/opt/engos/lib/ruby/ManagedService.rb"
 class NginxService < ManagedService 
   
   def add_consumer(engine)    
+    ret_val = @docker_api.register_site(engine)
+    if ret_val == false
+      return false
+    end
     name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-    ssh_cmd=SysConfig.addSiteCmd + " \"" + name +  "\""
      if @consumers == nil
        @consumers = Array.new
      end
@@ -12,21 +15,23 @@ class NginxService < ManagedService
      if @consumers.include?(name) == false     # only add if doesnt exists but allow register
         @consumers.push(name)
      end
- #FIXME check results
-     puts ssh_cmd
     save_state
-    return system(ssh_cmd)
+    return true
   end
   
   def remove_consumer engine
+    ret_val = @docker_api.deregister_site(engine)
+        if ret_val == false
+          return false
+        end
     name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-    ssh_cmd=SysConfig.rmSiteCmd +  " \"" + name +  "\""
+
      if(@consumers !=  nil || @consumes.length>0)
         @consumers.delete(name)
      end
-    #FIXME check results
+
     save_state
-    return system(ssh_cmd)
+    return true
   end
   
   def reregister_consumers
