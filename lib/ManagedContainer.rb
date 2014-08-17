@@ -7,7 +7,9 @@ require "/opt/engos/lib/ruby/SysConfig.rb"
 require "/opt/engos/lib/ruby/ContainerStatistics.rb"
 require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/Container.rb"
+require "/opt/engos/lib/ruby/Docker.rb"
 
+@docker_api = Docker.new
 
 
 class ManagedContainer < Container
@@ -99,116 +101,11 @@ class ManagedContainer < Container
           end
 #DOCKER Wrappers to be moved to new class
           
-         def run_docker (args)
-           ret_val=false
-           @last_result = ""           
-           cmd="docker " + args + " 2>&1"           
-           res= %x<#{cmd}>        
-          # puts(cmd + "\n\n" + res)
-                if $? == 0 && res.include?("Error") == false
-                    ret_val = true
-                    @last_result = res
-                else                
-                    @last_error = res;               
-                end            
-           
-            return ret_val
-         end
+ 
          
-        def docker_delete_image
-                commandargs= " rmi " +   @image
-                return  run_docker(commandargs)                
-        end
+ 
         
-        def docker_destroy_container
-          commandargs= " rm " +   @containerName
-          
-          return  run_docker(commandargs)      
-        end
-        
-        def docker_create_container 
-     
-          
-          e_option =String.new
-           volume_option = String.new 
-           eportoption = String.new
-            if(@environments)
-               @environments.each do |environment|
-                 if environment != nil                                                       
-                        e_option = e_option + " -e " + environment.name + "=" + environment.value
-                 end
-              end
-            end
-            if(@volumes)
-              @volumes.each do |volume|
-                  if volume.name !=nil
-                    volume_option = volume_option + " -v " + volume.localpath + "/"  + volume.name + ":" + volume.remotepath + "/" + volume.name
-                  end
-              end
-            end
-            
-            if(@eports )
-                @eports.each do |eport|
-                  eportoption = eportoption +  " -p " + eport.port.to_s
-                    if eport.external >0
-                      eportoption = eportoption + ":" + eport.external.to_s + " "
-                    end
-                end
-            end
-           
-      
-           commandargs =  " run -h " + @hostName + e_option + " --memory=" + @memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + @containerName + ".cid --name " + @containerName + " -d  -t " + @image       + " /bin/bash /home/init.sh"                 
-          puts commandargs
-          cidfile = SysConfig.CidDir + "/"  + @containerName + ".cid"
-          if File.exists? cidfile
-            File.delete cidfile
-          end
-          return  run_docker(commandargs)
-        end
-        
-        def docker_start_container        
-          commandargs =" start " + @containerName
-      
-          return  run_docker(commandargs)
-          
-        end
-        
-        def docker_stop_container
-          commandargs=" stop " + @containerName
-
-          return  run_docker(commandargs)
-        end
-        
-        def docker_pause_container
-          commandargs = " pause " + @containerName
-
-          return  run_docker(commandargs)    
-        end
-        
-        def docker_unpause_container
-           commandargs=" unpause " + @containerName
-
-          return  run_docker(commandargs)      
-         end
-         
-        def docker_ps_container
-          commandargs=" top " + @containerName + " axl"
-   
-          return  run_docker(commandargs)   
-        end
-        
-        def docker_logs_container
-            commandargs=" logs " + @containerName
-
-            return  run_docker(commandargs)
-          end
-       
-         def docker_inspect_container
-            commandargs=" inspect " + @containerName
-
-           return  run_docker(commandargs)
-         end
-
+ 
 #Functions replicated/ported from /opt/engos/etc/functions.sh
  
   
@@ -276,11 +173,11 @@ class ManagedContainer < Container
      end
      
         def logs_container
-            docker_logs_container         
+            @docker_api.logs_container         
         end
         
         def ps_container
-            docker_ps_container
+            @docker_api.ps_container
             
         end
         
@@ -294,7 +191,7 @@ class ManagedContainer < Container
               ret_val=false
                 state = read_state()
                         if state == "nocontainer"
-                                if (ret_val=docker_delete_image()) == true
+                                if (ret_val=@docker_api.delete_image()) == true
                                         stateDir=SysConfig.CidDir + "/"  + @ctype + "s/" + @containerName
                                         FileUtils.rm_rf  stateDir
                                         ret_val = true
@@ -313,7 +210,7 @@ class ManagedContainer < Container
                 @setState="nocontainer" #this represents the state we want and not necessarily the one we get
 
                          if state == "stopped"
-                                 ret_val=docker_destroy_container()  
+                                 ret_val=@docker_api.destroy_container()  
                                          if (ret_val == true)
                                            if File.exists?(SysConfig.CidDir + "/" + @containerName + ".cid") ==true
                                               File.delete(SysConfig.CidDir + "/" + @containerName + ".cid")
@@ -338,7 +235,7 @@ class ManagedContainer < Container
           state = read_state
           
                        if state == "nocontainer"                             
-                            ret_val = docker_create_container
+                            ret_val = @docker_api.create_container
                              @setState="running"                              
                        else
                          @last_error ="Cannot create container if container by the same name exists"
@@ -369,7 +266,7 @@ class ManagedContainer < Container
       ret_val = false
               if state == "paused"
                 @setState="running"
-                ret_val= docker_unpause_container                
+                ret_val= @docker_api.unpause_container                
               else
                 @last_error ="Can't unpause Container as " + state
               end
@@ -386,7 +283,7 @@ class ManagedContainer < Container
                 ret_val = false
                         if state == "running"
                           @setState="paused"
-                          ret_val = docker_pause_container                        
+                          ret_val = @docker_api.pause_container                        
                         else
                           @last_error ="Can't pause Container as " + state
                         end
@@ -401,7 +298,7 @@ class ManagedContainer < Container
       state = read_state
                   
         if state== "running"
-          ret_val = docker_stop_container   
+          ret_val = @docker_api.stop_container   
           @setState="stopped"
         else  
           @last_error ="Can't stop Container as " + state
@@ -419,7 +316,7 @@ class ManagedContainer < Container
 
              
             if state == "stopped"
-               ret_val = docker_start_container
+               ret_val = @docker_api.start_container
               @setState="running"                                               
              else
                 @last_error ="Can't Start Container as " + state
@@ -483,7 +380,7 @@ class ManagedContainer < Container
          stopped = output[0]["State"]["FinishedAt"]
          state = read_state
           
-         docker_ps_container
+         @docker_api.ps_container
          pcnt=-1
          rss=0 
          vss=0
@@ -533,7 +430,7 @@ class ManagedContainer < Container
      
        def inspect_container
 
-            ret_val = docker_inspect_container                                                                            
+            ret_val = @docker_api.inspect_container                                                                            
                             
            return ret_val
        end
