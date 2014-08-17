@@ -45,6 +45,9 @@ class ManagedContainer < Container
         end
         
       def docker_api
+          if @@docker_api == nil
+            @@docker_api =  Docker.new
+          end
         return @@docker_api
       end
         
