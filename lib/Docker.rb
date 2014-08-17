@@ -3,17 +3,17 @@ class Docker
     
   end
   
-  def run_docker (args)
+  def run_docker (args,container)
      ret_val=false
-     @last_result = ""           
+    container.last_result = ""           
      cmd="docker " + args + " 2>&1"           
      res= %x<#{cmd}>        
     # puts(cmd + "\n\n" + res)
           if $? == 0 && res.include?("Error") == false
               ret_val = true
-              @last_result = res
+            container.last_result = res
           else                
-              @last_error = res;               
+            container.last_error = res;               
           end            
      
       return ret_val
@@ -21,13 +21,13 @@ class Docker
    
   def delete_image container
            commandargs= " rmi " +   container.image
-           return  run_docker(commandargs)                
+           return  run_docker(commandargs,container)                
    end
    
    def destroy_container container
      commandargs= " rm " +   container.containerName
      
-     return  run_docker(commandargs)      
+     return  run_docker(commandargs,container)      
    end
    
   def create_container container             
@@ -65,51 +65,51 @@ class Docker
      if File.exists? cidfile
        File.delete cidfile
      end
-     return  run_docker(commandargs)
+     return  run_docker(commandargs,container)
    end
    
    def start_container   container      
      commandargs =" start " + container.containerName
  
-     return  run_docker(commandargs)
+     return  run_docker(commandargs,container)
      
    end
    
    def stop_container container
      commandargs=" stop " + container.containerName
 
-     return  run_docker(commandargs)
+     return  run_docker(commandargs,container)
    end
    
    def pause_container container
      commandargs = " pause " + container.containerName
 
-     return  run_docker(commandargs)    
+     return  run_docker(commandargs,container)    
    end
    
    def unpause_container container
       commandargs=" unpause " + container.containerName
 
-     return  run_docker(commandargs)      
+     return  run_docker(commandargs,container)      
     end
     
    def ps_container container 
      commandargs=" top " + container.containerName + " axl"
 
-     return  run_docker(commandargs)   
+     return  run_docker(commandargs,container)   
    end
    
    def logs_container container 
        commandargs=" logs " + container.containerName
 
-       return  run_docker(commandargs)
+       return  run_docker(commandargs,container)
      end
   
     def inspect_container container
        commandargs=" inspect " + container.containerName
 p commandargs
 p container
-      return  run_docker(commandargs)
+      return  run_docker(commandargs,container)
     end
 
 end
