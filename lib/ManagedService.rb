@@ -5,7 +5,9 @@ class ManagedService < ManagedContainer
 	@ctype="service"
 	@consumers=Array.new
 	
-	
+	def ctype
+	  return @ctype
+	end
 	class Consumer
 	  def initialize(contName,service)
 	  end

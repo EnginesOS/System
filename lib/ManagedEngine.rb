@@ -34,6 +34,9 @@ class ManagedEngine < ManagedContainer
          end 
          
   #FIXME save or save_state ?  
+  def ctype
+    return @ctype    
+  end
   
   def save_state(docker_api)
     docker_api.save_container self    
