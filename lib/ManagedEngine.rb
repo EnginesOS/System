@@ -37,9 +37,9 @@ class ManagedEngine < ManagedContainer
     return ManagedContainer.getManagedContainers("container")
   end
   
-  def ManagedEngine.load name
-    ManagedContainer.load("container",name)
-  end
+#  def ManagedEngine.load name
+ #   ManagedContainer.load("container",name)
+  #end
   
 end
   
