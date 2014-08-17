@@ -38,6 +38,9 @@ class ManagedEngine < ManagedContainer
     docker_api.save_container self
   end
  
-  
+  def self.from_yaml( yaml )
+          managedContainer = YAML::load( yaml )
+          managedContainer
+    end
 end
   

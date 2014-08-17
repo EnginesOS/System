@@ -57,34 +57,34 @@ class ManagedContainer < Container
           managedContainer
     end
     
-    def ManagedContainer.aload(type,name)
-      yam_file_name = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
-     
-        if File.exists?(yam_file_name) == false
-          puts("No such configuration:" + yam_file_name )
-          return nil
-        end 
+   # def ManagedContainer.aload(type,name)
+    #  yam_file_name = SysConfig.CidDir + "/" + type + "s/" + name + "/config.yaml"
+     #
+     #   if File.exists?(yam_file_name) == false
+      #    puts("No such configuration:" + yam_file_name )
+       #   return nil
+       # end 
         
-      yaml_file = File.open(yam_file_name) 
-      managedContainer = YAML::load( yaml_file)
-      managedContainer
-    end
+     # yaml_file = File.open(yam_file_name) 
+     # managedContainer = YAML::load( yaml_file)
+      #managedContainer
+    #end
 
-      def ManagedContainer.agetManagedContainers(type)
-        ret_val=Array.new
-           Dir.entries(SysConfig.CidDir + "/" + type + "s/").each do |contdir|
-             yfn = SysConfig.CidDir + "/" + type + "s/" + contdir + "/config.yaml"     
-             if File.exists?(yfn) == true           
-               yf = File.open(yfn)   
-               cont = ManagedContainer.from_yaml(yf)          
-               if cont                 
-                 ret_val.push(cont)
-               end
-               yf.close
-             end
-           end
-           return ret_val
-      end
+     # def ManagedContainer.agetManagedContainers(type)
+      #  ret_val=Array.new
+       #    Dir.entries(SysConfig.CidDir + "/" + type + "s/").each do |contdir|
+        #     yfn = SysConfig.CidDir + "/" + type + "s/" + contdir + "/config.yaml"     
+         #    if File.exists?(yfn) == true           
+          #     yf = File.open(yfn)   
+           #    cont = ManagedContainer.from_yaml(yf)          
+            #   if cont                 
+             #    ret_val.push(cont)
+              # end
+               #yf.close
+             #end
+           #end
+           #return ret_val
+      #end
     
  
   def save_state(docker_api)

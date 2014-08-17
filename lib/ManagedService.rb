@@ -67,7 +67,7 @@ class ManagedService < ManagedContainer
 	
 	end
 	
-	def create_service
+	def create_service 
 	  puts ("create")
     create_container
     self.save
@@ -91,6 +91,9 @@ class ManagedService < ManagedContainer
    def deleteimage
      #noop never do  this as need buildimage again or only for expert 
    end
-	
+  def self.from_yaml( yaml )
+          managedContainer = YAML::load( yaml )
+          managedContainer
+    end
 end
 	
