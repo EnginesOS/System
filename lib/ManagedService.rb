@@ -8,6 +8,7 @@ class ManagedService < ManagedContainer
 	def ctype
 	  return @ctype
 	end
+	
 	class Consumer
 	  def initialize(contName,service)
 	  end
@@ -64,17 +65,17 @@ class ManagedService < ManagedContainer
 	
 	end
 	
-	def create_service 
+	def create_service(docker_api) 
 	  puts ("create")
-    create_container
-    self.save
+    create_container(docker_api)
+    self.save_state(docker_api)
 	 #re add consumsers   
 	end
 		
   def recreate
-    destroy_container
-    create_service
-    reregister_consumers
+    destroy_container(docker_api)
+    create_service(docker_api)
+    reregister_consumers(docker_api)
       
     end
     
@@ -88,9 +89,9 @@ class ManagedService < ManagedContainer
    def deleteimage
      #noop never do  this as need buildimage again or only for expert 
    end
-  def self.from_yaml( yaml )
+  def self.from_yaml( yaml,docker_api )
           managedService = YAML::load( yaml )
-          managedService
+          managedService.docker_api = docker_api
     end
 end
 	

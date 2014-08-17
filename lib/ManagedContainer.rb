@@ -217,19 +217,19 @@ class ManagedContainer < Container
        
   end  
            
-  def pause_container  docker_api
-                state = read_state(docker_api)
+  def pause_container 
+                state = read_state(@docker_api)
 
                 ret_val = false
                         if state == "running"
                           @setState="paused"
-                          ret_val = docker_api.pause_container   self                      
+                          ret_val = @docker_api.pause_container   self                      
                         else
                           @last_error ="Can't pause Container as " + state
                         end
 
               clear_error(ret_val)
-              save_state(docker_api)
+              save_state(@docker_api)
               return ret_val
    end
 
