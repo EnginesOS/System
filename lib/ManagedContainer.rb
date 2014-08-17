@@ -113,53 +113,13 @@ class ManagedContainer < Container
           def to_s
             "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
           end
-#DOCKER Wrappers to be moved to new class
-          
- 
-         
- 
-        
- 
-#Functions replicated/ported from /opt/engos/etc/functions.sh
- 
-  
-        def write_state(stateDir,state)
-                statefile=stateDir + "/state"
-                f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
-                f.puts(state)
-                f.close
-                #puts "state " + state
-        end
+
 
         def save_state()#state)
            self.save
-        #    stateDir=@CidDir + "/"  + @ctype + "s/" + @containerName       
-         #       if File.directory?(stateDir) == true
-          #          write_state(stateDir,state)
-           #     else if state != "nocontainer"
-            #        Dir.mkdir(stateDir)
-             #       write_state(stateDir,state)
-              #  end
-               #end
         end 
         
-        
-        def oread_state
-                 stateDir=SysConfig.CidDir + "/"  + @ctype + "s/" + @containerName
-                        if File.directory?(stateDir) == false
-                                return "nocontainer"
-                        end
-
-                statefile=stateDir  + "/state"
-                  if File.file?(statefile)
-                    f = File.open(statefile,"r")
-                    state = f.gets
-                    f.close
-                  else
-                      state = "nocontainer"
-                  end
-                return state.chomp
-        end
+   
 
      def read_state 
           if (inspect_container == false)
