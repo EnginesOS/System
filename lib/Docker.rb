@@ -121,7 +121,7 @@ class Docker
       save_serialized(serialized_object,container)
     end       
       
-  def   save_serialized(serialized_object)
+  def   save_serialized(serialized_object,container)
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
