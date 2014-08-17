@@ -43,11 +43,11 @@ class ManagedService < ManagedContainer
     docker_api.save_container self
   end
    
-    def ManagedService.getManagedServices
+    def ManagedService.agetManagedServices
       return ManagedContainer.getManagedContainers("service")
     end
     
-  def ManagedService.load (name)
+  def ManagedService.aload (name)
     return ManagedContainer.load("service",name)      
   end 
   
