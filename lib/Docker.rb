@@ -115,27 +115,23 @@ class Docker
        commandargs=" inspect " + container.containerName
       return  run_docker(commandargs,container)
     end
-  def register_site(engine)      
-      name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-      ssh_cmd=SysConfig.addSiteCmd + " \"" + name +  "\""
+  def register_site(site_string)      
+      ssh_cmd=SysConfig.addSiteCmd + " \"" + site_string +  "\""
       return system(ssh_cmd)
   end
   
-  def deregister_site(engine)
-    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + name +  "\""
+  def deregister_site(site_string)
+     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + site_string +  "\""
     return system(ssh_cmd)
   end
   
-  def add_monitor(engine)
-    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s  
-    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + name + " \""
+  def add_monitor(site_string)
+    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + site_string + " \""
     return system(ssh_cmd)
   end 
     
-  def rm_monitor(engine)
-       name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + name + " \""
+  def rm_monitor(site_string)
+       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + site_string + " \""
     return system(ssh_cmd)
   end 
          

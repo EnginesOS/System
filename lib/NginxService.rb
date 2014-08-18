@@ -2,44 +2,41 @@ require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/ManagedService.rb"
 class NginxService < ManagedService 
   
-  def add_consumer(engine)    
-    ret_val = @docker_api.register_site(engine)
+  def add_consumer(engine)
+    site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s    
+    ret_val = @docker_api.register_site(site_string)
     if ret_val == false
       return false
     end
-    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
+
      if @consumers == nil
        @consumers = Array.new
      end
      
-     if @consumers.include?(name) == false     # only add if doesnt exists but allow register
-        @consumers.push(name)
+     if @consumers.include?(site_string) == false     # only add if doesnt exists but allow register
+        @consumers.push(site_string)
      end
     save_state
     return true
   end
   
   def remove_consumer engine
-    ret_val = @docker_api.deregister_site(engine)
-        if ret_val == false
-          return false
-        end
-    name=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
-
+    site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s
+    ret_val = @docker_api.deregister_site(site_string)
+        
+#remove from list even if failed to remove from service ?
      if(@consumers !=  nil || @consumes.length>0)
-        @consumers.delete(name)
+        @consumers.delete(site_string)
      end
 
     save_state
-    return true
+    return rat_val
   end
   
   def reregister_consumers
-     sleep(60)
+ 
     @consumers.each do |site|
-      ssh_cmd=SysConfig.addSiteCmd +  " \"" + site +  "\""
-      system(ssh_cmd)
-      puts ssh_cmd
+      @docker_api.register_site(site_string)        
     end
   end
   
