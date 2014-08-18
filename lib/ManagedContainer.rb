@@ -51,6 +51,9 @@ class ManagedContainer < Container
           return @repo
         end
 
+         def last_error
+           return @last_error
+         end
         
         def self.from_yaml( yaml )
           managedContainer = YAML::load( yaml )
@@ -91,9 +94,7 @@ class ManagedContainer < Container
       #end
     
  
-  def save_state()
-    @docker_api.save_container self    
-  end    
+   
        
   
           def to_s
@@ -127,19 +128,15 @@ class ManagedContainer < Container
      end
      
         def logs_container 
-          @docker_api.logs_container self    
+          return @docker_api.logs_container(self)    
         end
         
         def ps_container  
-          @docker_api.ps_container self
+          return @docker_api.ps_container(self)
             
         end
         
-        def clear_error ret_val
-            if ret_val==true
-              @last_error=nil
-            end
-        end
+  
 
         def delete_image 
               ret_val=false
@@ -363,11 +360,7 @@ class ManagedContainer < Container
          s = read_state()      
         # puts s 
        end  
-         
-       def slast_error
-         return @last_error
-       end
-       
+   
        def last_result
          return @last_result
        end
@@ -376,6 +369,16 @@ class ManagedContainer < Container
             ret_val = @docker_api.inspect_container self                                                                              
            return ret_val
        end
+       
+protected
+   def save_state()
+      @docker_api.save_container self    
+   end
+def clear_error ret_val
+      if ret_val==true
+        @last_error=nil
+      end
+  end  
                                              
 end
 
