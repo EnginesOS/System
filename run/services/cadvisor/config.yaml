@@ -1,0 +1,34 @@
+--- !ruby/object:ManagedService
+containerName: cAdvisor
+ctype: service
+last_error: 
+memory: '128'
+hostName: cadvisor
+domainName: mpas.jvodan.com
+environments:
+-
+image: google/cadvisor:latest
+volumes:
+- !ruby/object:Volume
+  name: 
+  remotepath: "/var/run
+  localpath: "/var/run"
+- !ruby/object:Volume
+  name: docker
+  remotepath: "/var/lib"
+  localpath: "/var/lib"
+- !ruby/object:Volume
+  name: 
+  remotepath: "/sys/:ro"
+  localpath: "/sys/"
+port: 8080
+eports:
+- 
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: nocontainer
+nginxored: false
+databases:
+- 
+registerSite: false
