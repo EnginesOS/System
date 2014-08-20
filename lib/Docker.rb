@@ -56,7 +56,10 @@ class Docker
        end
        if(container.volumes)
          container.volumes.each do |volume|
-             if volume.name !=nil
+             if volume.name == nil
+               volume.name = ""
+             end
+           if volume.localpath != nil
                volume_option = volume_option + " -v " + volume.localpath + "/"  + volume.name + ":" + volume.remotepath + "/" + volume.name + ":" + volume.permissions
              end
          end
