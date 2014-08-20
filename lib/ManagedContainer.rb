@@ -11,6 +11,10 @@ require "/opt/engos/lib/ruby/Docker.rb"
 class ManagedContainer < Container
   @autorun=false
   
+  def autorun
+    return @autorun
+  end
+  
   def framework
     return @framework
   end

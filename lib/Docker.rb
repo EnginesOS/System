@@ -57,7 +57,7 @@ class Docker
        if(container.volumes)
          container.volumes.each do |volume|
              if volume.name !=nil
-               volume_option = volume_option + " -v " + volume.localpath + "/"  + volume.name + ":" + volume.remotepath + "/" + volume.name
+               volume_option = volume_option + " -v " + volume.localpath + "/"  + volume.name + ":" + volume.remotepath + "/" + volume.name + ":" + volume.persmissions
              end
          end
        end
@@ -71,8 +71,12 @@ class Docker
            end
        end
       
- 
-      commandargs =  " run -h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + " -d  -t " + container.image       + " /bin/bash /home/init.sh"                 
+      if container.autorun == false
+        start_cmd=" /bin/bash /home/init.sh"
+      else
+        start_cmd=" "
+      end
+      commandargs =  " run -h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + " -d  -t " + container.image + start_cmd                 
      puts commandargs
      cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
      if File.exists? cidfile
