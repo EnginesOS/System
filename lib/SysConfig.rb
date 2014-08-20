@@ -14,7 +14,17 @@ class SysConfig
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/engos/fs"
   @@galleriesDir = "/opt/engos/etc/galleries"
- 
+  @@ddnsKey = "/opt/engos/etc/keys/ddns.key"
+  @@internalDomain = "docker"
+  
+  def SysConfig.internalDomain 
+    return @@internalDomain
+  end
+  
+  def SysConfig.ddnsKey
+    return @@ddnsKey
+  end
+  
   def SysConfig.galleriesDir
       return @@galleriesDir
   end

@@ -124,6 +124,37 @@ class Docker
        commandargs=" inspect " + container.containerName
       return  run_docker(commandargs,container)
     end
+    
+  def register_dns(top_level_hostname,ip_addr_str)
+    fqdn_str = top_level_hostname + "" + SysConfig.internalDomain
+    #FIXME need unique name
+    dns_cmd_file_name="/tmp/.dns_cmd_file"
+     dns_cmd_file = File.new(dns_cmd_file_name,"w+") 
+     dns_cmd_file.puts("server " + SysConfig.defaultDNS)
+    dns_cmd_file.puts("update delete " + fqdn_str)
+    dns_cmd_file.puts("send")
+    dns_cmd_file.puts("add " + fqdn + " 30 A " + ip_addr_str)
+    dns_cmd_file.puts("send")
+    dns_cmd_file.close
+    cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
+    system(cmd_str) #FIXME need to check and report errors
+    File.delete(dns_cmd_file_name)
+  end
+  
+  def deregister_dns(top_level_hostname,ip_addr_str)
+    fqdn_str = top_level_hostname + "" + SysConfig.internalDomain
+        #FIXME need unique name
+        dns_cmd_file_name="/tmp/.dns_cmd_file"
+         dns_cmd_file = File.new(dns_cmd_file_name,"w") 
+         dns_cmd_file.puts("server " + SysConfig.defaultDNS)
+        dns_cmd_file.puts("update delete " + fqdn_str)
+        dns_cmd_file.puts("send")
+        dns_cmd_file.close
+        cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
+        system(cmd_str) #FIXME need to check and report errors
+        File.delete(dns_cmd_file_name)
+  end
+  
   def register_site(site_string)      
       ssh_cmd=SysConfig.addSiteCmd + " \"" + site_string +  "\""
       return system(ssh_cmd)
