@@ -9,10 +9,10 @@ require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
 
 class ManagedContainer < Container
-  @autorun=false
+  @self_start=false
   
-  def autorun
-    return @autorun
+  def self_start
+    return @self_start
   end
   
   def framework
