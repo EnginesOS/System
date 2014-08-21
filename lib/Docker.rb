@@ -126,7 +126,7 @@ class Docker
     end
     
   def register_dns(top_level_hostname,ip_addr_str)
-    fqdn_str = top_level_hostname + "" + SysConfig.internalDomain
+    fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
     #FIXME need unique name
     dns_cmd_file_name="/tmp/.dns_cmd_file"
      dns_cmd_file = File.new(dns_cmd_file_name,"w+") 
@@ -142,7 +142,7 @@ class Docker
   end
   
   def deregister_dns(top_level_hostname,ip_addr_str)
-    fqdn_str = top_level_hostname + "" + SysConfig.internalDomain
+    fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
         #FIXME need unique name
         dns_cmd_file_name="/tmp/.dns_cmd_file"
          dns_cmd_file = File.new(dns_cmd_file_name,"w") 
