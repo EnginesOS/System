@@ -37,7 +37,7 @@ class EngineBuilder
         return @bluePrint
     end
 
-    def backup_lastbuild      
+    def EngineBuilder.backup_lastbuild buildname      
       dir=SysConfig.DeploymentDir + "/" + buildname
    
           if Dir.exists?(dir)
@@ -429,7 +429,7 @@ class EngineBuilder
      
      def build_from_blue_print
   puts("Backup last build")
-          backup_lastbuild
+          backup_lastbuild buildname
   puts("Cloning Blueprint")  
           clone_repo  
   puts("Reading Blueprint")

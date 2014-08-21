@@ -3,6 +3,8 @@
 	<name>EnginesOS</name>
 	<comment></comment>
 	<projects>
+		<project>EngineOSGallery</project>
+		<project>EnginesOS_Gui</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
