@@ -267,12 +267,12 @@ class ManagedContainer < Container
   
   def register_dns 
     ip_str = get_ip_str
-    @docker_api.register_dns(@hostName)
+    @docker_api.register_dns(@hostName,ip_str)
   end
   
   def deregister_dns
     ip_str =  get_ip_str
-    @docker_api.deregister_dns(@hostName)
+    @docker_api.deregister_dns(@hostName,ip_str)
   
   end
 
