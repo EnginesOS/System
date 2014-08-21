@@ -19,7 +19,7 @@ class SysConfig
   @@defaultDNS ="172.17.42.1"
   
   def SysConfig.defaultDNS
-    return @@SysConfig.defaultDNS
+    return @@defaultDNS
   end
   def SysConfig.internalDomain 
     return @@internalDomain
