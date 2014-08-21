@@ -133,7 +133,7 @@ class Docker
      dns_cmd_file.puts("server " + SysConfig.defaultDNS)
     dns_cmd_file.puts("update delete " + fqdn_str)
     dns_cmd_file.puts("send")
-    dns_cmd_file.puts("add " + fqdn + " 30 A " + ip_addr_str)
+    dns_cmd_file.puts("add " + fqdn_str + " 30 A " + ip_addr_str)
     dns_cmd_file.puts("send")
     dns_cmd_file.close
     cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
