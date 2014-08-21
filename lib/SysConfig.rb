@@ -16,7 +16,11 @@ class SysConfig
   @@galleriesDir = "/opt/engos/etc/galleries"
   @@ddnsKey = "/opt/engos/etc/keys/ddns.key"
   @@internalDomain = "docker"
+  @@SysConfig.defaultDNS ="172.17.42.1"
   
+  def SysConfig.defaultDNS
+    return @@SysConfig.defaultDNS
+  end
   def SysConfig.internalDomain 
     return @@internalDomain
   end
