@@ -8,51 +8,58 @@ require 'fileutils'
 require 'json'
 
 class EngineBuilder 
-     @repoName=nil
-     @hostName=nil
-     @domainName=nil
-     @buildname=nil
-     @bluePrint=Hash.new
-     @framework=nil
-     @workerPorts=Array.new
-     @webPort=80
-     @vols=Array.new
-     @environments=Array.new
-     @runtime=String.new
-     @databases= Array.new
-     def initialize(repo,host,domain,env)
-          @hostName=host
-          @domainName=domain
-          @repoName=repo
-          @buildname = File.basename(repo)
-          @workerPorts=Array.new
-          @webPort=80
-          @vols=Array.new
-          @environments=Array.new(2)
-          @runtime=String.new
-          @databases= Array.new
-    end
+ 
+  
+  @repoName=nil
+  @hostName=nil
+  @domainName=nil
+  @buildname=nil
+  @bluePrint=Hash.new
+  @framework=nil
+  @workerPorts=Array.new
+  @webPort=80
+  @vols=Array.new
+  @environments=Array.new
+  @runtime=String.new
+  @databases= Array.new
+  
+  def initialize(repo,host,domain,env)
+       @hostName=host
+       @domainName=domain
+       @repoName=repo
+       @buildname = File.basename(repo)
+       @workerPorts=Array.new
+       @webPort=80
+       @vols=Array.new
+       @environments=Array.new(2)
+       @runtime=String.new
+       @databases= Array.new
+ end
+  
+  def EngineBuilder.backup_lastbuild buildname      
+    dir=SysConfig.DeploymentDir + "/" + buildname
+ 
+        if Dir.exists?(dir)
+            backup=dir + ".backup"
+              if Dir.exists?(backup)
+                FileUtils.rm_rf backup
+              end
+           FileUtils.mv(dir,backup)
+        end     
+  end
+
+
 
     def bluePrint
         return @bluePrint
     end
 
-    def EngineBuilder.backup_lastbuild buildname      
-      dir=SysConfig.DeploymentDir + "/" + buildname
-   
-          if Dir.exists?(dir)
-              backup=dir + ".backup"
-                if Dir.exists?(backup)
-                  FileUtils.rm_rf backup
-                end
-             FileUtils.mv(dir,backup)
-          end     
-    end
 
     def buildname
         return @buildname
     end
 
+    
 
      def add_custom_env
        envs = @bluePrint["software"]["environment_variables"]
