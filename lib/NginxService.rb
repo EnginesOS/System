@@ -30,7 +30,7 @@ class NginxService < ManagedService
      end
 
     save_state
-    return rat_val
+    return ret_val
   end
   
   def reregister_consumers
