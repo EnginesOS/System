@@ -28,12 +28,15 @@ class SysConfig
   def SysConfig.galleriesDir
       return @@galleriesDir
   end
+  
   def SysConfig.ContainersDir
     return @@ContainersDir
   end
+  
   def SysConfig.LocalFSVolHome
     return @@LocalFSVolHome
   end
+  
   def SysConfig.CONTFSVolHome 
     return @@CONTFSVolHome 
   end

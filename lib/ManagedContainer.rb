@@ -264,7 +264,26 @@ class ManagedContainer < Container
     service =  EnginesOSapi.loadManagedService("monit",@docker_api)
     return service.remove_consumer(self)
   end
+  
+  def register_dns 
+    ip_str = get_ip_str
+    @docker_api.register_dns(@hostName)
+  end
+  
+  def deregister_dns
+    ip_str =  get_ip_str
+    @docker_api.deregister_dns(@hostName)
+  
+  end
 
+  def get_ip_str
+    inspect_container
+    output = JSON.parse(@last_result)
+    ip_str=output[0]['NetworkSettings']['IPAddress']
+      return ip_str
+  end
+  
+  
   def register
     register_site
     monitor_site
