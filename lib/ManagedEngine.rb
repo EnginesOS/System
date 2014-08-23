@@ -25,10 +25,10 @@ class ManagedEngine < ManagedContainer
                  @framework=framework
                  @runtime=runtime
  #FIXME Is this the right place?
-    @self_start=false
-    @register_dns=false
-    @register_site=true
-    @monitor_site=false
+    @conf_self_start=false
+    @conf_register_dns=false
+    @conf_register_site=true
+    @conf_monitor_site=false
          
          end 
          

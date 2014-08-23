@@ -76,7 +76,7 @@ class Docker
            end
        end
       
-      if container.self_start == false
+      if container.conf_self_start == false
         start_cmd=" /bin/bash /home/init.sh"
       else
         start_cmd=" "

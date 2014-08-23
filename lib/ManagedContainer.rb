@@ -9,10 +9,12 @@ require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
 
 class ManagedContainer < Container
-  @self_start=false
-  @register_dns=false
-  @register_site=true
-  @monitor_site=false
+  @conf_self_start=false
+  @conf_register_dns=false
+  @conf_register_site=true
+  @conf_monitor_site=false
+  
+  def
   
   def self_start
     return @self_start
