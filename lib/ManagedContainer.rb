@@ -14,7 +14,7 @@ class ManagedContainer < Container
   @conf_register_site=true
   @conf_monitor_site=false
   
-  def
+ 
   
   def conf_self_start
     return @conf_self_start
