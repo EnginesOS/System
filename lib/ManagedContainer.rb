@@ -10,6 +10,9 @@ require "/opt/engos/lib/ruby/Docker.rb"
 
 class ManagedContainer < Container
   @self_start=false
+  @register_dns=false
+  @register_site=true
+  @monitor_site=false
   
   def self_start
     return @self_start
@@ -347,11 +350,13 @@ class ManagedContainer < Container
     return ret_val
   end
 
-  protected
+ 
 
   def save_state()
     @docker_api.save_container self
   end
+  
+protected
 
   def clear_error ret_val
     if ret_val==true
