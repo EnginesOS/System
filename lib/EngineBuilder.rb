@@ -36,7 +36,7 @@ class EngineBuilder
        @databases= Array.new
  end
   
-  def EngineBuilder.backup_lastbuild buildname      
+  def backup_lastbuild buildname      
     dir=SysConfig.DeploymentDir + "/" + buildname
  
         if Dir.exists?(dir)
