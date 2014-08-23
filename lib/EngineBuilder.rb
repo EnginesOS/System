@@ -489,10 +489,12 @@ class EngineBuilder
                                     @framework,
                                     @runtime
                                     )
-          mc.save
+          
        @workerPorts.each do |port|
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
+       
+       return mc
           
      end  
 end
