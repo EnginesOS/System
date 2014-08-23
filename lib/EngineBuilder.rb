@@ -380,7 +380,7 @@ class EngineBuilder
                if servicetype == "mysql"
                  dbname = service["name"]
                  dest = service["dest"]
-                   if dest =="local"
+                   if dest =="local" || dest == nil
                     add_db_service  dbname
                    end
                else if servicetype=="filesystem"
