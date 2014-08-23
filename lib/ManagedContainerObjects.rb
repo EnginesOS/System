@@ -68,7 +68,18 @@ class Volume < Service #Latter will include group and perhaps other attributes
    @permissions="rw"
    
   def initialize(name,localpath,remotepath)
-    initialize(name,localpath,remotepath,"rw")
+    @name = name
+           if remotepath !=nil        
+             @remotepath=remotepath
+           else
+             @remotepath=SysConfig.CONTFSVolHome
+           end
+           if localpath !=nil        
+             @localpath=localpath
+           else
+             @localpath=SysConfig.LocalFSVolHome
+           end
+    @permissions="rw"   
   end
   
   def initialize(name,localpath,remotepath,permissions)
@@ -83,6 +94,7 @@ class Volume < Service #Latter will include group and perhaps other attributes
         else
           @localpath=SysConfig.LocalFSVolHome
         end
+      @permissions=permissions
     end
     
   def permissions
