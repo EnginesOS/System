@@ -500,12 +500,12 @@ class EngineBuilder
 end
 
 
-b=EngineBuilder.new(ARGV[0], ARGV[1], ARGV[2],ARGV[3])
+#b=EngineBuilder.new(ARGV[0], ARGV[1], ARGV[2],ARGV[3])
 #FIXME roll this into engos script in bin
 
 
-b.build_from_blue_print
-puts b.bluePrint
+#b.build_from_blue_print
+#puts b.bluePrint
 
 #mc = ManagedContainer.new(ARGV[0],ARGV[1],ARGV[2],ARGV[3],ARGV[4],ARGV[5],ARGV[6],ARGV[7],ARGV[8],ARGV[9])
 #initialize(name,type,memory,hostname,domain_name,image,volume,port,eports,repo)
