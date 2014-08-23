@@ -16,8 +16,8 @@ class ManagedContainer < Container
   
   def
   
-  def self_start
-    return @self_start
+  def conf_self_start
+    return @conf_self_start
   end
   
   def framework
