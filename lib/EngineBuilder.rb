@@ -115,7 +115,7 @@ class EngineBuilder
        if Dir.exists?(SysConfig.LocalFSVolHome + "/" + name ) ==false
          Dir.mkdir(SysConfig.LocalFSVolHome + "/" + name)
        end
-       vol=Volume.new(name,SysConfig.LocalFSVolHome,dest)
+       vol=Volume.new(name,SysConfig.LocalFSVolHome,dest,"rw")
        @vols.push(vol)
        fsf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/fs.env","w")
        fsf.puts("VOLDIR=" + name)
