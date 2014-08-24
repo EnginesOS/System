@@ -309,7 +309,7 @@ class EngineBuilder
 
      
      def build_init  
-     cmd="cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker build -t " + @hostName + "/init ."
+     cmd="cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker build  -t " + @hostName + "/init ."
        puts cmd
        res= %x<#{cmd}>
        if $? == false
@@ -323,7 +323,7 @@ class EngineBuilder
       puts cmd
        res= %x<#{cmd}>
        
-       cmd = "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run   -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+       cmd = "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=32m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
          puts cmd
        res= %x<#{cmd}>
               if $? == false
@@ -342,7 +342,7 @@ class EngineBuilder
           @vols.each do |vol|
             volumes = volumes + " -v " + vol.localpath + "/" + vol.name + ":" + vol.remotepath + "/" + vol.name
           end
-       cmd= "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run  --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/c_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+       cmd= "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=32m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/c_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
          puts(cmd) 
        res= %x<#{cmd}>
        puts res
