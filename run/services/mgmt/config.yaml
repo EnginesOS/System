@@ -16,17 +16,17 @@ volumes:
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
-   permissions: rw
+  permissions: rw
 - !ruby/object:Volume
   name: docker
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
-   permissions: ro
+  permissions: ro
 - !ruby/object:Volume
   name: engos
   remotepath: "/opt/engos"
   localpath: "/opt/engos"
-   permissions: rw
+  permissions: rw
 port: 
 eports:
 - !ruby/object:WorkPort
