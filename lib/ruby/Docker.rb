@@ -75,10 +75,13 @@ class Docker
        
        if(container.eports )
          container.eports.each do |eport|
+           if eport != nil
+         
              eportoption = eportoption +  " -p " + eport.port.to_s
                if eport.external >0
                  eportoption = eportoption + ":" + eport.external.to_s + " "
                end
+           end
            end
        end
       
