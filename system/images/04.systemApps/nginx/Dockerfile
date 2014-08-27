@@ -5,7 +5,7 @@ RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 ADD sudoers /etc/
 RUN chown 0 /etc/sudoers
 
-ADD ngnix.pub /home/rma/.ssh/authorized_keys
+ADD nginx.pub /home/rma/.ssh/authorized_keys
 RUN chown -R rma /home/rma/.ssh
 
 
