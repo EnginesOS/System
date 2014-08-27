@@ -7,7 +7,7 @@ RUN chown 0 /etc/sudoers
 ADD apache2.nagios3.conf /etc/apache2/conf.d/nagios3.conf
 ADD apache2.conf /etc/apache2/
 ADD nagios.cfg /etc/nagios3/
-ADD known_hosts /home/rma/.ssh/known_hosts
+
 ADD nagios.pub /home/rma/.ssh/authorized_keys
 RUN chown rma -R /home/rma/.ssh
 
