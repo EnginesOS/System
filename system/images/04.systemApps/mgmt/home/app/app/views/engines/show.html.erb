@@ -1,0 +1,138 @@
+
+<%= link_to 'Back', engines_path %>
+<% if @result == false %>
+<strong><font color="red" size="+2">Error:@engine.last_error</font></strong>
+<%end%>
+
+<% if @engine == nil%>
+	<strong><font color="red" size="+2">Error:Engine not found</font></strong>
+<%else%>
+	<% state= @engine.read_state %>
+	<table>
+	<tr><td>Name</td><td><%=@engine.containerName %></td></tr> 
+	<tr><td>Hostname</td><td><a href=http://<%=@engine.fqdn %>><%=@engine.fqdn %></a></td></tr> 
+	<tr><td>Configured to</td><td><%=@engine.setState %></td></tr> 
+	<tr><td>State</td><td><%= state %></td></tr>
+	<tr><td>Last Error</td><td><%= @engine.last_error %></td></tr>
+	<tr><td>Memory</td><td><%= @engine.memory %></td></tr>
+	<tr><td>Monitored</td><td><%=@engine.monitored %></td></tr>
+	<tr><td>Framework</td><td><%=@engine.framework %>/<%=@engine.runtime %></td></tr>
+	<tr><td>Image</td><td><%= @engine.image %> </td></tr>
+	<tr><td>Blue print Source</td><td><%= @engine.repo %> </td></tr>
+	<tr><td colspan=2>Published as 443 and 80 externally</td></tr>
+	<tr><td>Web Port</td><td><%= @engine.port%></td></tr>
+	 	<% if @engine.eports && @engine.eports.length >0 %>
+	 		<tr><td colspan=2>Open Ports, Public ports are in the internaltoexternal port mapping</td></tr>
+	 			<% @engine.eports.each do |port| %>
+	 				<tr><td><%= port.name%></td><td><%= port.port.to_s %>:<%= port.external.to_s %> <%= port.publicFacing%></td></tr>
+	 			<%end%>
+	 	<%end%>
+	 </table>
+	 <p>
+	 	<% #if @engine.monitored == true%>
+	 		<%= link_to 'Stop Monitor', demonitor_engine_path(@engine.containerName) %>
+	 	<%#else%>
+	 		<%= link_to 'Monitor', monitor_engine_path(@engine.containerName) %>
+	 	<%#end%>
+	 </p>
+	 <%= link_to 'Register Site', register_site_engine_path(@engine.containerName) %> <%= link_to 'Deregister Site', deregister_site_engine_path(@engine.containerName) %>
+	 <%= link_to 'Register DNS', register_dns_engine_path(@engine.containerName) %> <%= link_to 'Deregister DNS', deregister_dns_engine_path(@engine.containerName) %>
+	 <table>	
+	 	<tr>
+	<% 
+	if state == "running"
+			%> <td><%= link_to 'Stop', stop_engine_path(@engine.containerName) %> <%= link_to 'Pause', pause_engine_path(@engine.containerName) %> </td> <%
+		elsif state == "paused"
+			%> <td><%= link_to 'Unpause', unpause_engine_path(@engine.containerName) %></td> <%
+		elsif state == "stopped" 
+			%> <td> <%= link_to 'Start', start_engine_path(@engine.containerName) %> <%= link_to 'Destroy', destroy_engine_engine_path(@engine.containerName) %> 
+			</td> <%
+		elsif state == "nocontainer" 
+			%> <td> <%= link_to 'Delete', deleteimage_engine_path(@engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> </td> 
+	<%  end %>
+		
+
+	</tr></table>
+	<h3>Environment</h3>
+	<table>
+		<th>Name</th>
+		<th>Value</th>
+	<% if @engine.environments&& @engine.environments.length > 0 
+			@engine.environments.each do |v|%>
+			    <% if v != nil %>
+				<tr>
+					<td><%=v.name %></td>
+					<td><%=v.value%></td>
+					<td><%=v.setatrun=%></td>
+				</tr>
+				<%end%>
+			<%end%>
+    <%end%>	
+	</table>
+		
+	<h3>Volumes</h3>
+	<table>
+		<th>Name</th>
+		
+	<% if @engine.volumes && @engine.volumes.length > 0 
+			@engine.volumes.each do |v|%>
+			<tr>
+				<td><%=v.localpath%>/<%=v.name%>:<%=v.remotepath%>/<%=v.name%></td>
+			</tr>
+			<%end%>
+    <%end%>	
+    </table>
+	<h3>Database</h3>
+		<table>
+		<th>Name</th>
+		
+	<% if @engine.databases && @engine.databases.length > 0 
+			@engine.databases.each do |db|%>
+			<tr>
+				<td><%=db %></td>
+			</tr>
+			<%end%>
+    <%end%>	
+    </table>
+
+ 	<h3>Statistics</h3>	
+
+	<%if state != "nocontainer" 
+		stats = @engine.stats
+		 if stats != nil	%>			
+				 	State: <%= stats.state  %><br>
+                  	Processes: <%=stats.proc_cnt %> < b >List in ps list in .stats</b><br>
+                  	<% if state == "stopped" %>
+                  		Stopped: <%=stats.stopped_ts %> <br>
+                  	 <% else %> 
+                  	 	Started: <%=stats.started_ts %> <br>
+                  	 <%end%>
+                  	Memory Used:Virtual <%=stats.VSSMemory.to_s  %> Resident <%=stats.RSSMemory.to_s  %> <br>
+                  	CPU Time: <%=stats.cpuTime.to_s %> seconds *Since Engine start<br>
+          <%end%>
+	
+ 	<% end %>
+ 	<p>
+ 	<h3>Processes</h3>
+ 	<table width=80% >
+ 	<% res = @engine.ps_container %>
+ 	<% @engine.last_result.each_line do |line | 
+ 		vals = line.split %>
+ 		<tr>
+ 			<% vals.each do |v| %>	
+ 				<td><%= v %></td>
+ 		   <% end %>
+ 		</tr>
+ 		
+ 	<% end %>
+ 	
+ 	</table>
+ 	</p>
+ 	<p>
+	<h3>Logs</h3>
+	<% res = @engine.logs_container%>
+	<pre><%= @engine.last_result %></pre>
+ 		</p>
+ <%end%>
+ 	<hr>
+<%= link_to 'Back', engines_path %>

@@ -1,0 +1,278 @@
+
+<strong>Required</strong>
+<p>
+	<%= @error_mesg %>
+	<p>
+<%= @blueprint["software"] %>
+		</p>
+		<%  license_name = @blueprint["software"]["license_name"]
+		  license_url = @blueprint["software"]["license_sourceurl"]
+		   memory = @blueprint["software"]["requiredmemory"]		   
+		   
+		   
+		   dbname=""
+		   volumename=""
+		   dbuser=""
+		   createdb_user=true
+		   dbpasswd=""
+		   createdb=true
+		   volume_names = Array.new
+	
+		     services =  @blueprint["software"]["softwareservices"]
+		   	services.each do |service|
+		   		p service
+		   		if service["servicetype_name"] == "mysql"
+		   			dbname = service["name"]
+		   			p "dbname " 
+		   			p dbname
+		   		elsif service["servicetype_name"] == "filesystem"
+		   			volume_name =  service["name"]
+		   			volume_names.push(volume_name)
+		   			p " vol " 
+		   			p volume_name
+		   		end
+		   	end
+		 %> 
+
+		<%= form_tag({controller: "gallerys", action: "install_from_blueprint"}, method: "post") do  %>
+			<%=  hidden_field_tag :blueprints_repository,@repository %>
+	<table>
+           <tr>        
+				<td>
+					 <%= label_tag(:license, "Agree to License" )%> <a href=<%= license_url %>><%= license_name %></a>
+				</td>
+				<td>
+					<%= check_box_tag(:license) %>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<strong>Host name Settings</strong>
+				</td>
+			</tr>
+				
+			<tr>
+				<td>
+					 <%= label_tag(:host_name, "Hostname Name" )%> [a-z0-9_] are allowed, size between 4 and 30
+				</td>
+				<td>
+					 <%= text_field_tag(:host_name) %>
+				</td>				
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:domain_name, "Domain Name" )%> no preceeding .
+				</td>
+				<td>
+					 <%= text_field_tag(:domain_name) %>
+				</td>
+			</tr>
+			
+			<tr>	<tr>
+				<td>
+				The following section is not supported yet.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Environment Variables</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= submit_tag("Install Software") %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Advanced Options</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:memory, "Memory" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:memory, memory) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:self_starts, "Self Starts" )%>
+				</td>
+				<td>
+					<%= check_box_tag(:self_starts,"1", false) %>
+				</td>
+			</tr>
+				<tr>
+				<td>
+					<strong>DNS </strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:monitor_site, "Enable Monitor" )%>
+				</td>
+				<td>
+					 <%= check_box_tag(:monitor_site) %>
+				</td>				
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:register_dns, "Register DNS" )%>
+				</td>
+				<td>
+					<%= check_box_tag(:register_dns) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Database Settings</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:dbhost, "Database Host" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:dbhost,SysConfig.DBHost) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					 <%= label_tag(:dbname, "Database Name" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:dbname,dbname) %>
+				</td>
+				<td>
+					<%= label_tag(:createdb, "Create DB" )%>
+					<%= check_box_tag(:createddb,"1", true) %>
+				</td>
+			</tr>			
+			<tr>
+				<td>
+					 <%= label_tag(:dbuser, "Database User" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:dbuser,dbuser) %>*
+				</td>
+				<td>
+					<%= label_tag(:createdb_user, "Create DB User" )%>
+					<%= check_box_tag(:createdb_user,"1", true) %>
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					 <%= label_tag(:dbpasswd, "Database User Password" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:dbpasswd) %>
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					*leave blank for system created 
+				</td>
+			</tr>
+			<% if  volume_names.length > 0%>
+			<tr>
+				<td>
+					<strong>Volume Settings</strong>
+				</td>
+			</tr>
+			<% volume_names.each do |volume_name| %>
+				
+			<tr>
+				<td>
+					<%= label_tag(:vol_src, "Source" )%>
+					<%= text_field_tag(:vol_src) %>*
+				</td>
+				<td>
+					<%=volume_name %>
+				</td>
+				
+			</tr>
+			<% end %>  
+			<tr>
+				<td>
+					*leave blank for system default 
+				</td>
+			</tr>
+			<%end%>
+			<tr>
+				<td>
+					<strong>Additional Volumes</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>					
+					 <%= label_tag(:new_vol_src, "Source" )%>
+					 <%= text_field_tag(:new_vol_src)%>
+					 
+				</td>
+				<td>
+					 <%= label_tag(:new_vol_dest, "Destination" )%>
+					 <%= text_field_tag(:vol_dest)%>
+					 
+				</td>
+
+				<td>
+					 <%= label_tag(:new_vol_rw_permission,"Write Access") %>
+			
+					<%= check_box_tag(:new_vol_rw_permission) %>
+				</td>
+			</tr>
+		
+		
+			<tr>
+				<td>
+					<strong>Web Protect</strong> 
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					Current Users
+				</td>
+				<td>
+					Availiable Users
+				</td>
+			</tr>
+			<tr>
+				<td>
+				 <%= label_tag(:add_web_user, "New User" )%>
+				</td>
+				<td>
+					 <%= text_field_tag(:add_web_user) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Group
+				</td>
+				<td>
+					 <%= text_field_tag(:add_web_group) %>
+				</td>
+				<td>
+					 <%= label_tag(:add_web_group, "Add New Group" )%>
+				</td>
+			</tr>		
+			<tr>
+				<td>
+					<strong>Firewall</strong>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>Configured Subnets/hosts</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>New Subnet or host</td>
+				<td> <%= text_field_tag(:subnet) %></td>
+				<td> <%= label_tag(:subnet, "Add" )%></td>
+			</tr>	
+	
+	<% end %>  
+</table>

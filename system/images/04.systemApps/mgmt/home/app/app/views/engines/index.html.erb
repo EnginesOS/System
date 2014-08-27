@@ -1,0 +1,45 @@
+<h1>Engines</h1>
+<%= link_to 'Back', welcome_index_path %>
+<table>
+	<th>Name</th>
+	<th>Hostname</th>
+	<th>Set As</th>
+	<th>Status</th>
+	<th>View</th>
+	<th>Actions</th>
+	<th>Monitored</th>
+<%@engines.each do |engine|  
+
+ state=engine.read_state # faster than querying the docker api 5 times
+%>
+<tr>	
+	<td><%=engine.containerName %></td> 
+	<td><a href=http://<%=engine.fqdn %>><%=engine.fqdn %></a></td>
+	<td><%=engine.setState %></td>
+	<td><%=state %></td>
+	
+	
+	<td><%= link_to 'Show', engine_path(engine.containerName) %></td>
+	<% 
+		if state == "running"
+			%> <td><%= link_to 'Stop', stop_engine_path(engine.containerName) %> <%= link_to 'Pause', pause_engine_path(engine.containerName) %> </td> <%
+		elsif state == "paused"
+			%> <td><%= link_to 'Unpause', unpause_engine_path(engine.containerName) %></td> <%
+		elsif state == "stopped" 
+			%> <td> <%= link_to 'Start', start_engine_path(engine.containerName) %> <%= link_to 'Destroy', destroy_engine_engine_path(engine.containerName) %> 
+			</td> <%
+		elsif state == "nocontainer" 
+			%> <td> <%= link_to 'Delete', deleteimage_engine_path(engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(engine.containerName) %> </td>
+			 
+	<%  end %>
+	<td><% m="." 
+	if engine.monitored == false 
+				m="no"
+			else 
+				m="yes"
+			end %>
+			<%= m %></td>
+	
+</tr>
+<% end %>
+</table>

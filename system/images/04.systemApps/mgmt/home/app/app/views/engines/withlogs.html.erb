@@ -1,0 +1,38 @@
+<table>
+<tr>	<% state= @engine.read_state %>
+	<td><%=@engine.containerName %></td> 
+	<td><%=@engine.fqdn %></td>
+	<td><%=@engine.setState %></td>
+	<td><%= state %></td>
+	
+	<% 
+	if state == "running"
+			%> <td><%= link_to 'Stop', stop_engine_path(@engine.containerName) %> <%= link_to 'Pause', pause_engine_path(@engine.containerName) %> </td> <%
+		elsif state == "paused"
+			%> <td><%= link_to 'Unpause', unpause_engine_path(@engine.containerName) %></td> <%
+		elsif state == "stopped" 
+			%> <td> <%= link_to 'Start', start_engine_path(@engine.containerName) %> <%= link_to 'Destroy', destroy_engine_engine_path(@engine.containerName) %> 
+			</td> <%
+		elsif state == "nocontainer" 
+			%> <td> <%= link_to 'Delete', delete_engine_path(@engine.containerName) %> <%= link_to 'Create', create_engine_engine_path(@engine.containerName) %> </td> 
+	<%  end %>
+		
+	</tr></table>
+	
+<% 
+	if state != "nocontainer" 
+		stats = @engine.stats
+		 if stats != nil	%>			
+				 	State: <%= stats.state  %><br>
+                  	Processes: <%=stats.proc_cnt %> < b >List in ps list in .stats</b><br>
+                  	<% if state == "stopped" %>
+                  		Stopped: <%=stats.stopped_ts %> <br>
+                  	 <% else %> 
+                  	 	Started: <%=stats.started_ts %> <br>
+                  	 <%end%>
+                  	Memory Used:Virtual <%=stats.VSSMemory.to_s  %> Resident <%=stats.RSSMemory.to_s  %> <br>
+                  	CPU Time: <%=stats.cpuTime.to_s %> seconds *Since Engine start<br>
+          <%end%>
+	
+ <% end %>
+<%= link_to 'Back', engines_path %>
