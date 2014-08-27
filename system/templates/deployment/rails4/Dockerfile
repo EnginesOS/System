@@ -1,4 +1,4 @@
-FROM  engines-os/rails4
+FROM  enginesos/rails4
 
 ADD home home
 

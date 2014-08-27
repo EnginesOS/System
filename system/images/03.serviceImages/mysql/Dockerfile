@@ -1,4 +1,4 @@
-FROM  engines-os/base
+FROM  enginesos/base
 RUN apt-get -y install mysql-server
 ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma

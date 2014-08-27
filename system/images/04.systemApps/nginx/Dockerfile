@@ -1,4 +1,4 @@
-FROM  raspberry/base
+FROM  enginesos/base
 RUN apt-get -y install nginx
 RUN apt-get -y install telnet
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma

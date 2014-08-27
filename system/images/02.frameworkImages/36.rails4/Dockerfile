@@ -1,4 +1,4 @@
-FROM  engines-os/ruby2.1.1
+FROM  enginesos/ruby2.1.1
 
 RUN gem install rails
 
