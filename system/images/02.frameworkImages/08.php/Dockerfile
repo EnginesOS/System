@@ -1,4 +1,4 @@
-FROM  raspberry/base
+FROM  engines-os/base
 
 RUN apt-get update
 RUN apt-get install -y apache2 libapache2-mod-php5 php5-mysql php5-mcrypt  php5-gd

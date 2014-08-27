@@ -68,6 +68,14 @@ describe "#from_yaml" do
         @engine.save_state.should eql false
     end
   end
+  describe "#setState" do
+    it "Returns setstate " do
+      @managedContainer.setState.should eql "nocontainer"
+    end
+    
+    
+  end
+  
 end
 
 

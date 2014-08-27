@@ -180,8 +180,7 @@ class Docker
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
               end
-            statefile=stateDir + "/config.yaml"
-              
+            statefile=stateDir + "/config.yaml"              
             f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
             f.puts(serialized_object)
             f.close

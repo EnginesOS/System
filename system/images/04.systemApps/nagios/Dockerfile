@@ -1,4 +1,4 @@
-FROM  raspberry/base
+FROM  engines-os/base
 RUN apt-get update
 RUN apt-get -y install nagios3
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma

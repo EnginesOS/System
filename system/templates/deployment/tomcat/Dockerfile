@@ -1,3 +1,3 @@
-FROM  raspberry/tomcat
+FROM  engines-os/tomcat
 ADD home home
 #ADD home/app/webapps/ /usr/share/tomcat7/webapps

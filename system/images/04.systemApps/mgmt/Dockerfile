@@ -1,4 +1,4 @@
-FROM  raspberry/rails4
+FROM  engines-os/rails4
 
 RUN /usr/sbin/addgroup --gid 999 docker
 RUN echo "Y" | adduser -q --uid 1001 --gid 999 --home /home/dockuser --disabled-password dockuser

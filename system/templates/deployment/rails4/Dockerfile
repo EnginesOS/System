@@ -1,4 +1,4 @@
-FROM  raspberry/rails4
+FROM  engines-os/rails4
 
 ADD home home
 
