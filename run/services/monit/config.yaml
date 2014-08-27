@@ -8,7 +8,7 @@ domainName: test
 environments:
 - 
 - 
-image: raspberry/nagios
+image: enginesos/nagios
 volumes: 
 port: 80
 eports: []

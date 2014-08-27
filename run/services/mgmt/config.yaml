@@ -10,20 +10,23 @@ environments:
  name: ContUser
  value: dockuser
  setatrun: false
-image: raspberry/mgmt
+image: enginesos/mgmt
 volumes:
 - !ruby/object:Volume
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
+   permissions: rw
 - !ruby/object:Volume
   name: docker
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
+   permissions: ro
 - !ruby/object:Volume
   name: engos
   remotepath: "/opt/engos"
   localpath: "/opt/engos"
+   permissions: rw
 port: 
 eports:
 - !ruby/object:WorkPort

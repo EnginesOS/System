@@ -14,6 +14,7 @@ volumes:
   name: mysql
   remotepath: "/var/lib"
   localpath: "/home"
+  permissions: rw
 port: 
 eports:
 - !ruby/object:WorkPort
