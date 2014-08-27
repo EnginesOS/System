@@ -62,6 +62,10 @@ class Docker
              else
                volume_name = volume.name 
              end
+             p volume_name
+             p volume.localpath
+             p volume.remotepath
+             p volume.vol_permissions
            if volume.localpath !=nil
                volume_option = volume_option + " -v " + volume.localpath + "/"  + volume_name + ":" + volume.remotepath + "/" + volume_name + ":" + volume.vol_permissions
              end
