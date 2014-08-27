@@ -98,9 +98,13 @@ class ManagedService < ManagedContainer
      #noop never do  this as need buildimage again or only for expert 
    end
   def self.from_yaml( yaml,docker_api )
+    begin
           managedService = YAML::load( yaml )
           managedService.set_docker_api(docker_api)
           return managedService
+    rescue Exception=>e
+      puts e.message + " with " + yaml
+    end
     end
 end
 	
