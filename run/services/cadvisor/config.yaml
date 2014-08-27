@@ -11,16 +11,19 @@ image: google/cadvisor:latest
 volumes:
 - !ruby/object:Volume
   name: 
-  remotepath: "/var/run
+  remotepath: "/var/run"
   localpath: "/var/run"
+  permissions: rw
 - !ruby/object:Volume
   name: docker
   remotepath: "/var/lib"
   localpath: "/var/lib"
+  permissions: rw
 - !ruby/object:Volume
   name: 
-  remotepath: "/sys/:ro"
+  remotepath: "/sys/"
   localpath: "/sys/"
+  permissions: ro
 port: 8080
 eports:
 - 
