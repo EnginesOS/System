@@ -128,7 +128,10 @@ class ManagedContainer < Container
         end
       end
     end
-    if (@setState && state != @setState)      
+    if (@setState && state != @setState)  
+      if    @last_error == nil
+        @last_error=""
+      end
      @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
     end
     return state
