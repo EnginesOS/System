@@ -14,13 +14,6 @@ ENV RUBY_VERSION ruby-2.1.1
 ENV RPATH /usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:
 ENV PATH /usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:/usr/local/bin:/usr/bin:/bin:/sbin/:/usr/sbin
 
-ENV ContUser ruby
-
-RUN echo "Y" | adduser -q --home /home/app --disabled-password ruby
-ADD profile /home/ruby/.profile
-RUN chown -R ruby /home/app
-
 
 RUN /usr/local/rvm/rubies/ruby-2.1.1/bin/gem install rake
 RUN /usr/local/rvm/rubies/ruby-2.1.1/bin/gem install bundle
-
