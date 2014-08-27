@@ -33,11 +33,6 @@ class NagiosService < ManagedService
      return result
    end
    
-   def recreate
-     recreate_container
-     reregister_consumers
-     #need to register sites here
-   end
      
   def reregister_consumers
      

@@ -1,10 +1,10 @@
 --- !ruby/object:ManagedEngine
 last_error: None
-containerName: name
+containerName: test-container
 memory: 32
-hostName: hostname
-domainName: domain_name
-image: image
+hostName: test
+domainName: test
+image: engines-os/test-image
 eports:
 - !ruby/object:WorkPort
   name: name
@@ -27,7 +27,7 @@ volumes:
     ro_group: ro_group
     rw_group: rw_group
 port: 88
-repo: repo
+repo: none
 last_result: ''
 setState: nocontainer
 databases:
@@ -40,11 +40,10 @@ databases:
   name: name
 monitored: false
 registerSite: true
-framework: framework
-runtime: runtime
+framework: test-framework
+runtime: test-runtime
 ctype: container
 conf_self_start: false
 conf_register_dns: false
 conf_register_site: true
 conf_monitor_site: false
-docker_api: 

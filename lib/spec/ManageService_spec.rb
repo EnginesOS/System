@@ -59,6 +59,8 @@ describe ManagedService do
          @managed_service.create_service.should eql false
        end
      end
+     
+     #do I need to duplicate these?
  describe "#memory" do
    it "Returns memory " do
      @managed_service.memory.should eql 32

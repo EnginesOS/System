@@ -32,12 +32,11 @@ class Docker
      commandargs= " rm " +   container.containerName
      
      ret_val = run_docker(commandargs,container)      
-     if (ret_val == true)
+     if (ret_val == true) #FIXME need to remove .cid if no such container but keep if container failed to stop
        if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
           File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
        end
-     end
-     
+     end   
     return ret_val
      
    end
@@ -175,7 +174,8 @@ class Docker
   end 
          
     def save_container container
-      serialized_object = YAML::dump(container)       
+      begin
+        serialized_object = YAML::dump(container)       
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
@@ -185,6 +185,13 @@ class Docker
             f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
             f.puts(serialized_object)
             f.close
+            return true
           end
+    rescue Exception=>e
+      container.set_last_error e.message
+      return false
+    end
+    
+    
 
 end

@@ -23,7 +23,8 @@ describe ManagedEngine do
     environments = Array.new
     env = EnvironmentVariable.new("name","value",true)
     environments.push env
-    @engine = ManagedEngine.new( "name",32,"hostname","domain_name","image",volumes,88,eports,"repo",dbs,environments,"framework","runtime")
+    @engine = ManagedEngine.new( "test-container",32,"test","test","engines-os/test-image",volumes,88,eports,"none",dbs,environments,"test-framework","test-runtime")
+    
     serialized_object = YAML::dump(@engine)
          statefile="spec/testdata/ManagedEngine.yaml"
                      
@@ -31,7 +32,8 @@ describe ManagedEngine do
                    f.puts(serialized_object)
                    f.close
          f = File.new(statefile,"r")
-    @engine = ManagedEngine.from_yaml(f,nil)
+    dockerApi= Docker.new()
+    @engine = ManagedEngine.from_yaml(f,dockerApi)
   end
   
   describe "#new" do
@@ -45,9 +47,8 @@ describe ManagedEngine do
         @engine.ctype.should eql "container"
       end
     end
-
     
-
+    
 describe "#from_yaml" do
     it "Returns from_yaml " do
       serialized_object = YAML::dump(@engine)
@@ -58,6 +59,13 @@ describe "#from_yaml" do
                 f.close
       f = File.new(statefile,"r")
       ManagedEngine.from_yaml(f,nil).should be_an_instance_of ManagedEngine
+    end
+  end
+  describe "#save_state" do
+      it "Saves Container State " do
+        @engine.save_state.should eql true
+        @engine.set_docker_api(nil)
+        @engine.save_state.should eql false
     end
   end
 end
