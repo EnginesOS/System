@@ -103,7 +103,7 @@ class ManagedService < ManagedContainer
           managedService.set_docker_api(docker_api)
           return managedService
     rescue Exception=>e
-      puts e.message + " with " + yaml
+      puts e.message + " with " + yaml.to_s
     end
     end
 end
