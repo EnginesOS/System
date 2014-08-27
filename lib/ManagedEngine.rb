@@ -1,12 +1,9 @@
 class ManagedEngine < ManagedContainer
-  @ctype="container"
 
   
-  def initialize(name,type,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
-            
-                 @ctype =type
-                 @last_error="None"
-                 
+  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
+                            
+                 @last_error="None"                 
                  @containerName=name
                  @memory=memory
                  @hostName=hostname
@@ -24,7 +21,8 @@ class ManagedEngine < ManagedContainer
                  @registerSite=true
                  @framework=framework
                  @runtime=runtime
- #FIXME Is this the right place?
+                 
+    @ctype ="container"
     @conf_self_start=false
     @conf_register_dns=false
     @conf_register_site=true
@@ -39,7 +37,7 @@ class ManagedEngine < ManagedContainer
   
  
   
-  def self.from_yaml( yaml ,docker_api )
+  def ManagedEngine.from_yaml( yaml ,docker_api )
           managedEngine = YAML::load( yaml )
           managedEngine.set_docker_api(docker_api)
           return managedEngine

@@ -1,6 +1,15 @@
 class Container
   
-  
+  def initialize(mem,name,host,domain,image,e_ports,vols,environs) #for test only
+    @memory = mem
+    @containerName = name
+    @hostName = host
+    @domainName = domain
+    @image = image
+    @eports = e_ports
+    @volumes = vols
+    @environments = environs
+  end
   def memory
      return @memory
    end

@@ -1,0 +1,50 @@
+--- !ruby/object:ManagedEngine
+last_error: None
+containerName: name
+memory: 32
+hostName: hostname
+domainName: domain_name
+image: image
+eports:
+- !ruby/object:WorkPort
+  name: name
+  port: 88
+  external: 88
+  publicFacing: true
+environments:
+- !ruby/object:EnvironmentVariable
+  name: name
+  value: value
+  setatrun: true
+volumes:
+- !ruby/object:Volume
+  name: name
+  remotepath: remotepath
+  localpath: localpath
+  mapping_permissions: rw
+  vol_permissions: !ruby/object:PermissionRights
+    owner: owner
+    ro_group: ro_group
+    rw_group: rw_group
+port: 88
+repo: repo
+last_result: ''
+setState: nocontainer
+databases:
+- !ruby/object:Database
+  serviceType: database
+  flavor: flavor
+  dbHost: host
+  dbUser: user
+  dbPass: pass
+  name: name
+monitored: false
+registerSite: true
+framework: framework
+runtime: runtime
+ctype: container
+conf_self_start: false
+conf_register_dns: false
+conf_register_site: true
+conf_monitor_site: false
+docker_api: 

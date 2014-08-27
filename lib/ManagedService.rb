@@ -63,27 +63,38 @@ class ManagedService < ManagedContainer
 	end
 	
 	def create_service() 
-	  puts("create")
-    create_container()
+	
+    if create_container() ==true
     save_state()
+    return true
+    else
+      return false
+    end
 	 #re add consumsers   
 	end
 		
   def recreate
-    destroy_container()
-    create_service()
-    reregister_consumers()
-      
+    if  destroy_container() ==true
+      if   create_service()==true
+            reregister_consumers()
+            return true
+      else
+        return false        
+      end
+    else
+      return false
+    end      
     end
     
     def reregister_consumers
     end
     
   def destroy 
-    
+    return false
    end
    
    def deleteimage
+     return false
      #noop never do  this as need buildimage again or only for expert 
    end
   def self.from_yaml( yaml,docker_api )

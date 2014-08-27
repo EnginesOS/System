@@ -14,8 +14,7 @@ class Docker
             container.set_last_result res
           else                
             container.set_last_error  res;               
-          end            
-     
+          end                 
       return ret_val
    end
    
@@ -125,9 +124,9 @@ class Docker
       return  run_docker(commandargs,container)
     end
     
-  def register_dns(top_level_hostname,ip_addr_str)
+  def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
     fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
-    #FIXME need unique name
+    #FIXME need unique name for temp file
     dns_cmd_file_name="/tmp/.dns_cmd_file"
      dns_cmd_file = File.new(dns_cmd_file_name,"w+") 
      dns_cmd_file.puts("server " + SysConfig.defaultDNS)

@@ -11,13 +11,50 @@ require "/opt/engos/lib/ruby/Docker.rb"
 class ManagedContainer < Container
   @conf_self_start=false
   @conf_register_dns=false
-  @conf_register_site=true
+  @conf_register_site=false
   @conf_monitor_site=false
   
+ def initialize(mem,name,host,domain,image,e_ports,vols,environs,framework,runtime,databases,setState,port,repo) #used for test only
+   @framework = framework
+   @runtime = runtime
+   @databases = databases
+   @setState = setState
+   @port = port
+   @repo = repo
+   @last_error = last_error
+   @memory = mem
+    @containerName = name
+    @hostName = host
+    @domainName = domain
+    @image = image
+    @eports = e_ports
+    @volumes = vols
+    @environments = environs
+   @conf_self_start=false
+   @conf_register_dns=false
+   @conf_register_site=false
+   @conf_monitor_site=false
+   @last_error=""
+ end
  
+  def docker_api 
+    return @docker_api
+  end
   
   def conf_self_start
     return @conf_self_start
+  end
+  
+  def conf_register_dns
+    @conf_register_dns
+  end
+  
+  def conf_register_site
+    return @conf_register_site
+  end
+  
+  def conf_monitor_site
+    return @conf_monitor_site
   end
   
   def framework
@@ -29,7 +66,7 @@ class ManagedContainer < Container
   end
 
   def monitored
-    return @monitored
+    return @conf_monitor_site
   end
 
   def databases
@@ -60,7 +97,7 @@ class ManagedContainer < Container
     return @last_error
   end
 
-  def self.from_yaml( yaml )
+  def ManagedContainer.from_yaml( yaml )
     managedContainer = YAML::load( yaml )
     managedContainer
   end
@@ -91,23 +128,34 @@ class ManagedContainer < Container
         end
       end
     end
-    if (@setState && state != @setState)
-      puts( "Warning State Mismatch set to " + @setState + " but in " + state + " state")
-
+    if (@setState && state != @setState)      
+     @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
     end
     return state
   end
 
-  def logs_container
+  def logs_container    
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     return @docker_api.logs_container(self)
   end
 
   def ps_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     return @docker_api.ps_container(self)
 
   end
 
   def delete_image
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val=false
     state = read_state()
     if state == "nocontainer"
@@ -120,6 +168,10 @@ class ManagedContainer < Container
   end
 
   def destroy_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val=false
 
     state = read_state
@@ -140,6 +192,10 @@ class ManagedContainer < Container
   end
 
   def create_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val =false
     state = read_state()
 
@@ -169,6 +225,10 @@ class ManagedContainer < Container
   end
 
   def unpause_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     state = read_state()
 
     ret_val = false
@@ -186,6 +246,10 @@ class ManagedContainer < Container
   end
 
   def pause_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     state = read_state()
 
     ret_val = false
@@ -202,6 +266,10 @@ class ManagedContainer < Container
   end
 
   def stop_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val = false
     state = read_state()
 
@@ -218,6 +286,10 @@ class ManagedContainer < Container
   end
 
   def start_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val=false
     state = read_state()
 
@@ -242,47 +314,70 @@ class ManagedContainer < Container
   def restart_container
     ret_val=false
     if (ret_val = stop_container  ) == true
-      ret_val = start_container
-    else
-      @last_error ="Fail to Stop Container "
+      ret_val = start_container        
     end
-
     return ret_val
   end
 
   def register_site
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
     return service.add_consumer(self)
   end
 
   def monitor_site
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     service =  EnginesOSapi.loadManagedService("monit",@docker_api)
     return service.add_consumer(self)
   end
 
   def deregister_site
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
     return service.remove_consumer(self)
   end
 
   def demonitor_site
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     service =  EnginesOSapi.loadManagedService("monit",@docker_api)
     return service.remove_consumer(self)
   end
   
   def register_dns 
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ip_str = get_ip_str
     @docker_api.register_dns(@hostName,ip_str)
   end
   
   def deregister_dns
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ip_str =  get_ip_str
     @docker_api.deregister_dns(@hostName,ip_str)
   
   end
 
   def get_ip_str
-    inspect_container
+    if inspect_container == false
+      return false
+    end
     output = JSON.parse(@last_result)
     ip_str=output[0]['NetworkSettings']['IPAddress']
       return ip_str
@@ -297,7 +392,9 @@ class ManagedContainer < Container
 
   def stats
 
-    inspect_container()
+    if inspect_container() == false
+      return false
+    end
 
     output = JSON.parse(last_result)
     started = output[0]["State"]["StartedAt"]
@@ -338,16 +435,16 @@ class ManagedContainer < Container
     return statistics
   end
 
-  def status
-    s = read_state()
-    # puts s
-  end
 
   def last_result
     return @last_result
   end
 
   def inspect_container
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
     ret_val = @docker_api.inspect_container self
     return ret_val
   end
@@ -355,10 +452,16 @@ class ManagedContainer < Container
  
 
   def save_state()
-    @docker_api.save_container self
+    if @docker_api == nil
+      @last_error="No connection to Engines OS System"      
+      return false
+    end
+    ret_val = @docker_api.save_container self
+    return ret_val
   end
   
 protected
+
 
   def clear_error ret_val
     if ret_val==true
