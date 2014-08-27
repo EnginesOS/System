@@ -55,7 +55,8 @@ class Docker
        if(container.volumes)
          container.volumes.each do |volume|
            if volume !=nil
-           
+             volume_option=""
+             
              if volume.name == nil
                volume_name = ""
              else
