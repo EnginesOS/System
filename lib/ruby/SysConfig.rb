@@ -1,8 +1,8 @@
 
 class SysConfig
 
-  @@addSiteCmd="ssh -i   /opt/engos/etc/keys/ngnix -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.docker sudo sh /home/addsite.sh"
-  @@rmSiteCmd="ssh -i  /opt/engos/etc/keys/ngnix -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.docker sudo sh /home/rmsite.sh"
+  @@addSiteCmd="ssh -i   /opt/engos/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.docker sudo sh /home/addsite.sh"
+  @@rmSiteCmd="ssh -i  /opt/engos/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.docker sudo sh /home/rmsite.sh"
   @@addSiteMonitorCmd="ssh -i  /opt/engos/etc/keys/nagios  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.docker sudo sh /home/addsite.sh"
   @@rmSiteMonitorCmd="ssh -i  /opt/engos/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.docker sudo sh /home/rmsite.sh"               
   @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engos/etc/keys/mysql rma@mysql.docker  /home/createdb.sh "
