@@ -5,11 +5,9 @@ last_error:
 memory: '32'
 hostName: nginx
 domainName: 
-environments:
-- 
-- 
+environments: []
 image: enginesos/nginx
-volumes: 
+volumes: []
 port: 
 eports:
 - !ruby/object:WorkPort
@@ -32,8 +30,6 @@ last_result: |
   nginx
 setState: running
 nginxored: false
-databases:
-- 
+databases: []
 registerSite: false
-consumers:
--
+consumers: []
