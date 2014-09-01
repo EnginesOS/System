@@ -1,0 +1,17 @@
+
+#getters
+#Drawn from Blueprint
+Cataloguename
+cataloguedescriptions
+imageurl
+
+#getters and setters
+#User Set
+customname
+customsdescription
+imageurl
+
+
+#Serialise to containers dir or services
+#services have system installed defaults
+#Containers Create init from blueprint at build time 
