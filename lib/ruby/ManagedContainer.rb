@@ -258,7 +258,7 @@ class ManagedContainer < Container
     ret_val = false
     if state == "running"
       @setState="paused"
-      ret_val = @docker_api.pause_container   self
+      ret_val = @docker_api.pause_container self
     else
       @last_error ="Can't pause Container as " + state
     end
