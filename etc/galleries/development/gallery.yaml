@@ -1,7 +1,7 @@
 --- !ruby/object:EngineGallery
-title: Engines OS Gallery
+title: Engines OS Development Gallery
 short_name: enginesos_gallery
-blueprints_url: http:/220.233.20.158:3001/json_published_softwares
+blueprints_url: http://220.233.20.158:3001/json_published_softwares
 licence_type:
 maintainer:
 - !ruby/object:GalleryMaintainer
