@@ -1,1 +1,1 @@
- docker run -p 202:22 -p 88:8000 -h mgmt --name mgmt -d -e ContUser=dockuser  -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/engos/fs /var/engos/fs -v /opt/engos:/opt/engos -v /usr/bin/docker:/usr/bin/docker -t enginesos/mgmt /home/init.sh
+ docker run -p 202:22 -p 88:8000 -h mgmt --name mgmt -d -e ContUser=dockuser  -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/engos/fs:/var/engos/fs -v /opt/engos:/opt/engos -v /usr/bin/docker:/usr/bin/docker -t enginesos/mgmt /home/init.sh
