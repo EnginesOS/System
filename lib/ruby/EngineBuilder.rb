@@ -360,7 +360,14 @@ class EngineBuilder
          
      end
      
-     def launch_deploy
+     def launch_deploy managed_container
+       if managed_container.create_container == true
+         return managed_container.start_container
+       else
+         return false
+       end
+       
+       
      end
      
      def copy_base_faults
@@ -469,8 +476,7 @@ class EngineBuilder
           build_setup
   puts("Building deploy image")
           build_deploy
-  puts("Launching")
-          launch_deploy
+  
           
          
           
@@ -493,6 +499,11 @@ class EngineBuilder
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
        
+       puts("Launching")
+       
+       if launch_deploy(mc) == false
+        puts "Failed to Launch"
+       end
        return mc
           
      end  
