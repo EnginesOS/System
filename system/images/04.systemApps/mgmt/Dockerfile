@@ -7,8 +7,7 @@ ADD profile /home/dockuser/.profile
 ADD ssh /home/dockuser/.ssh
 
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
-RUN chown -R dockuser /home/dockuser/.ssh
-
+RUN chown -R dockuser /home/dockuser/
 
 
 
