@@ -364,6 +364,7 @@ class EngineBuilder
        if managed_container.create_container == true
          return managed_container.start_container
        else
+         puts "Failed to Create"
          return false
        end
        
