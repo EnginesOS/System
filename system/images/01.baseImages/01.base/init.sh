@@ -2,6 +2,12 @@
 
 /home/dns-init.sh
 
+if test -f /home/firstrun.sh 
+	 then
+        bash /home/firstrun.sh 
+        mv /home/firstrun.sh /home/firstrun.sh.save
+fi
+
 if test -f /home/app.env
 	then
 		. /home/app.env

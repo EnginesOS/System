@@ -501,13 +501,17 @@ class EngineBuilder
        end
        
        puts("Launching")
-       
-       if launch_deploy(mc) == false
-        puts "Failed to Launch"
-       end
-       return mc
-          
-     end  
+      #this will fail as no api at this stage
+       if mc.docker_api !=nil
+      
+          if launch_deploy(mc) == false
+            puts "Failed to Launch"
+            end
+          return mc
+        end     
+ end  
+     
+     
 end
 
 
