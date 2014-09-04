@@ -28,7 +28,9 @@ class ManagedEngine < ManagedContainer
     @conf_register_dns=false
     @conf_register_site=true
     @conf_monitor_site=false
-         
+    
+    save_state # no config.yaml throws a no such container so save so others can use
+    
          end 
          
   

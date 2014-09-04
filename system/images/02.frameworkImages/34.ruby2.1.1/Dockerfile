@@ -18,8 +18,6 @@ ENV PATH /usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@globa
 RUN /usr/local/rvm/rubies/ruby-2.1.1/bin/gem install rake
 RUN /usr/local/rvm/rubies/ruby-2.1.1/bin/gem install bundle
 ENV ContUser ruby
-RUN gem install rake
-RUN gem install bundle
 
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby

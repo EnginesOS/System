@@ -502,6 +502,8 @@ class EngineBuilder
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
        
+       
+       
        puts("Launching")
       #this will fail as no api at this stage
        if mc.docker_api != nil

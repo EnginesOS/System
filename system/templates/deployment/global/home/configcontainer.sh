@@ -252,7 +252,8 @@ if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 
 if test $RUNTIME = ruby2
 	then
-			/usr/local/rvm/bin/rvm use ruby-2.1.1
+			
+			/usr/local/rvm/bin/rvm default  ruby-2.1.1
 #GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
 #GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
@@ -265,8 +266,8 @@ Bundle_Cmd=/usr/local/rvm/gems/ruby-2.1.1/wrappers/bundle
 			ruby -v
 	elif test $RUNTIME = ruby19
 		then 
-		 rvm  use ruby-1.9.3-p547
-		
+		 /usr/local/rvm/bin/ default ruby-1.9.3-p547
+
 #GEM_HOME=/usr/local/rvm/gems/ruby-1.9.3-p547
 #GEM_PATH=/usr/local/rvm/gems/ruby-1.9.3-p547:/usr/local/rvm/gems/ruby-1.9.3-p547@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-1.9.3-p547
