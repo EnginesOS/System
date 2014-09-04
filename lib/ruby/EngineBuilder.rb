@@ -432,7 +432,7 @@ class EngineBuilder
      def read_values
               @framework = @bluePrint["software"]["swframework_name"]   
                @runtime =  @bluePrint["software"]["langauge_name"]
-                 #FIXME need to read from framework 
+                 #FIXME need to read from framework and not some piece of static code
                  if @framework.include?("rails")
                    @webPort=3000  
                  end              
