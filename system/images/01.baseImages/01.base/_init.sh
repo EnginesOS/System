@@ -22,4 +22,4 @@ fi
 
 chown -R  $ContUser.$ContGrp /home/app
 
-su -s /bin/bash $ContUser /home/configcontainer.sh
+su -l -s /bin/bash $ContUser /home/configcontainer.sh
