@@ -363,7 +363,10 @@ class EngineBuilder
      
      def launch_deploy managed_container
        if managed_container.create_container == true
-         return managed_container.start_container
+         retval = managed_container.start_container 
+          if retval == true && managed_container.conf_register_site ==true
+            managed_container.register_site
+          end
        else
          puts "Failed to start"
          return false
