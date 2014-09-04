@@ -301,7 +301,7 @@ echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname  bundle e
 echo "Procfile Written "
 echo "#!/bin/bash
 #. /etc/profile.d/rvm.sh
- 
+ cd /home/app
 rvm use $ruby_version
 
 
