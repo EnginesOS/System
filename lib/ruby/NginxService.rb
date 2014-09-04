@@ -34,8 +34,8 @@ class NginxService < ManagedService
   end
   
   def reregister_consumers
- 
-    @consumers.each do |site|
+    
+    @consumers.each do |site_string|
       @docker_api.register_site(site_string)        
     end
   end
