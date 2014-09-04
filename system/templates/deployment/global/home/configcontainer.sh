@@ -300,9 +300,9 @@ echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname  bundle e
 " > Procfile
 echo "Procfile Written "
 echo "#!/bin/bash
- . /etc/profile.d/rvm.sh
+#. /etc/profile.d/rvm.sh
  
-rvm default $ruby_version
+rvm use $ruby_version
 
 
 
@@ -310,7 +310,7 @@ DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 
 
 
-PATH=$GPATH:$PATH
+#PATH=$GPATH:$PATH
 
 
 export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
