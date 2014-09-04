@@ -254,7 +254,7 @@ if test $RUNTIME = ruby2
 	then
 			ruby_version=ruby-2.1.1
 			/usr/local/rvm/bin/rvm default  ruby-2.1.1
-		
+		/usr/local/rvm/bin/rvm use ruby-2.1.1
 #GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
 #GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
@@ -269,7 +269,7 @@ Bundle_Cmd=/usr/local/rvm/gems/ruby-2.1.1/wrappers/bundle
 		then 
 		ruby_version=ruby-1.9.3-p547
 		 /usr/local/rvm/bin/ default ruby-1.9.3-p547
-		
+		 /usr/local/rvm/bin/ use  ruby-1.9.3-p547
 #GEM_HOME=/usr/local/rvm/gems/ruby-1.9.3-p547
 #GEM_PATH=/usr/local/rvm/gems/ruby-1.9.3-p547:/usr/local/rvm/gems/ruby-1.9.3-p547@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-1.9.3-p547
@@ -358,17 +358,20 @@ cat Gemfile | sed "/https/s//http/" >g
 cp g Gemfile
 
 echo running $Bundle_Cmd install --standalone
-$Bundle_Cmd install  --standalone
+#$Bundle_Cmd install  --standalone
+bundle install  --standalone
 
-
- $Bundle_Cmd	exec rake generate_secret_token
-
+# $Bundle_Cmd	exec rake generate_secret_token
+bundle exec rake generate_secret_token
 
 
 echo "running rake db:"
-  $Bundle_Cmd exec  rake db:create
-  $Bundle_Cmd exec  rake db:migrate
-  $Bundle_Cmd exec rake db:seed
+  #$Bundle_Cmd exec  rake db:create
+  #$Bundle_Cmd exec  rake db:migrate
+  #$Bundle_Cmd exec rake db:seed
+  bundle  exec  rake db:create
+  bundle exec  rake db:migrate
+  bundle exec rake db:seed
 
 
 fi
