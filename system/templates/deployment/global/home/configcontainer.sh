@@ -252,7 +252,7 @@ if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 
 if test $RUNTIME = ruby2
 	then
-			/usr/local/rvm/bin/rvm use 2.1.1
+			/usr/local/rvm/bin/rvm use ruby-2.1.1
 #GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
 #GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
