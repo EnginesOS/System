@@ -252,24 +252,26 @@ if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 
 if test $RUNTIME = ruby2
 	then
-		#	/usr/local/rvm/bin/rvm use 2.1.1
-GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
-GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
-MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
+			/usr/local/rvm/bin/rvm use 2.1.1
+#GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
+#GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
+#MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
 
-RUBY_VERSION=ruby-2.1.1
-PATH=/usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:$PATH
+#RUBY_VERSION=ruby-2.1.1
+#PATH=/usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:$PATH
 Bundle_Cmd=/usr/local/rvm/gems/ruby-2.1.1/wrappers/bundle
 
 
 			ruby -v
 	elif test $RUNTIME = ruby19
 		then 
-GEM_HOME=/usr/local/rvm/gems/ruby-1.9.3-p547
-GEM_PATH=/usr/local/rvm/gems/ruby-1.9.3-p547:/usr/local/rvm/gems/ruby-1.9.3-p547@global
-MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-1.9.3-p547
-RUBY_VERSION=ruby-1.9.3-p547
-PATH=/usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:$PATH
+		 rvm  use ruby-1.9.3-p547
+		
+#GEM_HOME=/usr/local/rvm/gems/ruby-1.9.3-p547
+#GEM_PATH=/usr/local/rvm/gems/ruby-1.9.3-p547:/usr/local/rvm/gems/ruby-1.9.3-p547@global
+#MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-1.9.3-p547
+#RUBY_VERSION=ruby-1.9.3-p547
+#PATH=/usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:$PATH
 Bundle_Cmd=/usr/local/rvm/gems/ruby-1.9.3-p547/wrappers/bundle
 
 
