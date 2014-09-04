@@ -252,8 +252,9 @@ if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 
 if test $RUNTIME = ruby2
 	then
-			
+			ruby_version=ruby-2.1.1
 			/usr/local/rvm/bin/rvm default  ruby-2.1.1
+		
 #GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
 #GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
@@ -266,8 +267,9 @@ Bundle_Cmd=/usr/local/rvm/gems/ruby-2.1.1/wrappers/bundle
 			ruby -v
 	elif test $RUNTIME = ruby19
 		then 
+		ruby_version=ruby-1.9.3-p547
 		 /usr/local/rvm/bin/ default ruby-1.9.3-p547
-
+		
 #GEM_HOME=/usr/local/rvm/gems/ruby-1.9.3-p547
 #GEM_PATH=/usr/local/rvm/gems/ruby-1.9.3-p547:/usr/local/rvm/gems/ruby-1.9.3-p547@global
 #MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-1.9.3-p547
@@ -299,6 +301,8 @@ echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname  bundle e
 echo "Procfile Written "
 echo "#!/bin/bash
  . /etc/profile.d/rvm.sh
+ 
+rvm default $ruby_version
 
 
 
