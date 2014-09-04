@@ -23,7 +23,7 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   
-  def initialize(repo,host,domain,env)
+  def initialize(repo,host,domain,env,docker_api)
        @hostName=host
        @domainName=domain
        @repoName=repo
@@ -34,6 +34,7 @@ class EngineBuilder
        @environments=Array.new(2)
        @runtime=String.new
        @databases= Array.new
+       @docker_api = docker_api
  end
   
   def backup_lastbuild buildname      
@@ -493,7 +494,8 @@ class EngineBuilder
                                     @databases,
                                     @environments,
                                     @framework,
-                                    @runtime
+                                    @runtime,
+                                    @docker_api                                 
                                     )
        #initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
        @workerPorts.each do |port|

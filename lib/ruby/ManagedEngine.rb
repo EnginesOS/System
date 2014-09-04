@@ -1,7 +1,7 @@
 class ManagedEngine < ManagedContainer
 
   
-  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
+  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,docker_api)
                             
                  @last_error="None"                 
                  @containerName=name
@@ -21,6 +21,7 @@ class ManagedEngine < ManagedContainer
                  @registerSite=true
                  @framework=framework
                  @runtime=runtime
+                 @docker_api= docker_api
                  
     @ctype ="container"
     @conf_self_start=false
