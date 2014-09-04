@@ -365,7 +365,7 @@ class EngineBuilder
        if managed_container.create_container == true
          return managed_container.start_container
        else
-         puts "Failed to Create"
+         puts "Failed to start"
          return false
        end
        
@@ -476,8 +476,8 @@ class EngineBuilder
           build_init
   puts("Running Setup")
           build_setup
-  puts("Building deploy image")
-          build_deploy
+       puts("Building deploy image")
+               build_deploy
   
           
          
@@ -503,7 +503,8 @@ class EngineBuilder
        end
        
        
-       
+       mc.save_state # no config.yaml throws a no such container so save so others can use
+           
        puts("Launching")
       #this will fail as no api at this stage
        if mc.docker_api != nil
