@@ -365,13 +365,13 @@ class EngineBuilder
        if managed_container.create_container == true
          retval = managed_container.start_container 
           if retval == true && managed_container.conf_register_site ==true
-            managed_container.register_site
+            managed_container.register_site #FIXME move to managed_container.start_container
           end
        else
          puts "Failed to start"
          return false
        end
-       
+       return retval
        
      end
      
