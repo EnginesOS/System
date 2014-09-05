@@ -209,7 +209,7 @@ class ManagedContainer < Container
       @last_error ="Cannot create container if container by the same name exists"
     end
     if ret_val == true
-      if @registersite == true
+      if conf_register_site == true
         register_site
       end
     end
@@ -304,9 +304,9 @@ class ManagedContainer < Container
     end
 
     if ret_val == true
-      if @registersite == true
+    #  if @registersite == true
         register_site
-      end
+     # end
     end
 
     clear_error(ret_val)
