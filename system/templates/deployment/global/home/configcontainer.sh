@@ -294,6 +294,7 @@ export RAILS_ENV
  . /home/stack.env
 
 HOME=/home/app
+
 export HOME
 echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname  bundle exec thin -p \$PORT  start
 
@@ -316,6 +317,7 @@ DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
 #bundle exec thin -p $PORT  start
 HOME=/home/app
+rvm use $ruby_version
 export HOME
 
 
@@ -356,8 +358,8 @@ echo "Thin added to Gemfile"
 
 cat Gemfile | sed "/https/s//http/" >g
 cp g Gemfile
-
-echo running $Bundle_Cmd install --standalone
+rvm use $ruby_version
+echo running bundle install --standalone
 #$Bundle_Cmd install  --standalone
 bundle install  --standalone
 
