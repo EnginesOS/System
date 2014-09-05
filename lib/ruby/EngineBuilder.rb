@@ -343,7 +343,8 @@ class EngineBuilder
           @vols.each do |vol|
             volumes = volumes + " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
           end
-       cmd= "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=196m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+          #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
+       cmd= "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=384m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
          puts(cmd) 
        res= %x<#{cmd}>
        puts res

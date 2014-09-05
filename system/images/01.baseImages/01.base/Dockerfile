@@ -8,7 +8,7 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Australia/Sydney  /etc/localtime 
-RUN apt-get -y install sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2
+RUN apt-get -y install sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2 zlibc
 RUN mkdir -p /var/run
 
 
