@@ -365,7 +365,7 @@ class EngineBuilder
      def launch_deploy managed_container
        retval =  managed_container.create_container
           if retval == false
-            puts "Failed to start"
+            puts "Failed to Start Container "
           end
        return retval
        
