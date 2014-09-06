@@ -364,16 +364,24 @@ echo running bundle install --standalone
 bundle install  --standalone
 
 # $Bundle_Cmd	exec rake generate_secret_token
-bundle exec rake generate_secret_token
+
 
 
 echo "running rake db:"
   #$Bundle_Cmd exec  rake db:create
   #$Bundle_Cmd exec  rake db:migrate
   #$Bundle_Cmd exec rake db:seed
+  #Fix me and move to blueprint ?
   bundle  exec  rake db:create
   bundle exec  rake db:migrate
   bundle exec rake db:seed
+  bundle exec rake generate_secret_token
+  
+  if test -f /home/rakelist
+  	for line in `cat /home/rakelist`
+  	  do
+  		bundle exec rake $line
+  	done
 
-
+ fi
 fi

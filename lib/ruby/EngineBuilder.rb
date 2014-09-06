@@ -315,8 +315,9 @@ class EngineBuilder
        rakefile = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/rakelist")
         rake_cmds.each do |rake_cmd|
           rake_action = rake_cmds["action"]
+            p rake_action
             if rake_action !=nil
-              rakefile.puts(rake_action)
+              rakefile.puts("\"" + rake_action + "\"")
             end
           
         end
