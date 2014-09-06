@@ -307,7 +307,20 @@ class EngineBuilder
        stef.close()
      end
 
-
+     def create_rake_list
+       rake_cmds = @bluePrint["software"]["rake_task"]
+         if rake_cmds == nil || rake_cmds.length == 0
+           return
+         end
+       rakefile = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/rakelist")
+        rake_cmds.each do |rake_cmd|
+          rake_action = rake_cmds["action"]
+            if rake_action !=nil
+              rakefile.puts(rake_action)
+            end
+          
+        end
+     end
      
      def build_init  
      cmd="cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker build  -t " + @hostName + "/init ."
