@@ -217,7 +217,7 @@ class Docker
                           Dir.mkdir(stateDir)
                         end
                       statefile=stateDir + "/blueprint.json"              
-                      f = File.new(statefile,File::OPEN)
+                      f = File.new(statefile,"r")
                       blueprint = f.read()
                       f.close
                       
