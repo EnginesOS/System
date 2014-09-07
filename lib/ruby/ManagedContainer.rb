@@ -463,6 +463,24 @@ class ManagedContainer < Container
     return ret_val
   end
   
+  def save_blueprint blueprint
+    if @docker_api == nil
+         @last_error="No connection to Engines OS System"      
+         return false
+       end
+       ret_val = @docker_api.save_blueprint(blueprint, self)
+       return ret_val
+  end
+  
+  def load_blueprint
+    if @docker_api == nil
+            @last_error="No connection to Engines OS System"      
+            return false
+          end
+          ret_val = @docker_api.load_blueprint( self)
+          return ret_val
+  end
+  
 protected
 
 

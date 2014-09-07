@@ -199,7 +199,29 @@ class Docker
       container.set_last_error e.message
       return false
     end
+   
+  def save_blueprint(blue_print,container)
+        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+                      if File.directory?(stateDir) ==false
+                        Dir.mkdir(stateDir)
+                      end
+                    statefile=stateDir + "/blueprint.json"              
+                    f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
+                    f.write(blueprint)
+                    f.close
+      end 
     
-    
+  def load_blueprint(container)
+          stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+                        if File.directory?(stateDir) ==false
+                          Dir.mkdir(stateDir)
+                        end
+                      statefile=stateDir + "/blueprint.json"              
+                      f = File.new(statefile,File::OPEN)
+                      blueprint = f.read()
+                      f.close
+                      
+                     return blueprint
+        end    
 
 end

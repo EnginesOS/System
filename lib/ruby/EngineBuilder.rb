@@ -455,6 +455,7 @@ class EngineBuilder
      end
            
     
+    
      
      def build_from_blue_print
   puts("Backup last build")
@@ -492,7 +493,7 @@ class EngineBuilder
        puts("Building deploy image")
                build_deploy
   
-          
+     
          
           
           mc = ManagedEngine.new(@hostName,
@@ -515,9 +516,10 @@ class EngineBuilder
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
        
-       
+       mc.save_blueprint(@blue_print)
        mc.save_state # no config.yaml throws a no such container so save so others can use
-           
+       bp = mc.load_blueprint
+       p  bp
        puts("Launching")
       #this will fail as no api at this stage
        if mc.docker_api != nil
