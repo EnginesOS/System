@@ -207,7 +207,7 @@ class Docker
                       end
                     statefile=stateDir + "/blueprint.json"              
                     f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
-                    f.write(blueprint)
+                    f.write(blueprint.to_json)
                     f.close
       end 
     
