@@ -378,6 +378,7 @@ echo "running rake db:"
   bundle exec rake generate_secret_token
   
   if test -f /home/rakelist
+   then
   	for line in `cat /home/rakelist`
   	  do
   		bundle exec rake $line
