@@ -522,8 +522,7 @@ class EngineBuilder
        p  bp
        puts("Launching")
       #this will fail as no api at this stage
-       if mc.docker_api != nil
-      
+       if mc.docker_api != nil      
           if launch_deploy(mc) == false
             puts "Failed to Launch"
             end

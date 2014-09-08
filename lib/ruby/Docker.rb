@@ -201,6 +201,11 @@ class Docker
     end
    
   def save_blueprint(blueprint,container)
+     p container
+     p blueprint
+     if blueprint != nill
+       puts blueprint.to_s
+     end
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                       if File.directory?(stateDir) ==false
                         Dir.mkdir(stateDir)
