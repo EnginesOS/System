@@ -1,0 +1,11 @@
+key DDNS_UPDATE { 
+algorithm HMAC-MD5.SIG-ALG.REG.INT;
+secret "lP4oC8uGZ713YYQjjZET+A==";
+};
+
+zone "engines.local" {
+type master;
+file "/var/lib/bind/engines/engines.dnsrecords";
+allow-update { key DDNS_UPDATE; };
+
+};
