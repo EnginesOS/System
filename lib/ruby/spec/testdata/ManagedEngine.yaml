@@ -11,6 +11,7 @@ eports:
   port: 88
   external: 88
   publicFacing: true
+  proto_type: proto
 environments:
 - !ruby/object:EnvironmentVariable
   name: name
@@ -42,6 +43,7 @@ monitored: false
 registerSite: true
 framework: test-framework
 runtime: test-runtime
+docker_api: !ruby/object:Docker {}
 ctype: container
 conf_self_start: false
 conf_register_dns: false

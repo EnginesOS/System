@@ -7,7 +7,7 @@ describe ManagedService do
        permissions = PermissionRights.new("owner","ro_group","rw_group")
        volume = Volume.new("name","localpath","remotepath","rw",permissions)
        volumes.push volume
-       eport = WorkPort.new("name",88,88,true)
+       eport = WorkPort.new("name",88,88,true,"proto")
        eports = Array.new
        eports.push(eport)
        environments = Array.new

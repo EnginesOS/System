@@ -4,15 +4,15 @@ class WorkPort
     @port=num
     @external=external
     @publicFacing=publicport
-    @type = type #'tcp' or 'udp'
+    @proto_type = type #'tcp' or 'udp'
   end
 
-  def type
-      @type
+  def proto_type
+      @proto_type
   end
     
-  def setType newtype
-    @type = newtype
+  def set_proto_type newtype
+    @proto_type = newtype
   end
   def name
     return @name

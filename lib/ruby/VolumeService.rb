@@ -24,21 +24,21 @@ class Volume < Service #Latter will include group and perhaps other attributes
     @mapping_permissions= mapping_permissions
     @vol_permissions=vol_permissions
   end
-  def initialize(name,localpath,remotepath,mapping_permissions)
-      @name = name
-             if remotepath !=nil        
-               @remotepath=remotepath
-             else
-               @remotepath=SysConfig.CONTFSVolHome
-             end
-             if localpath !=nil        
-               @localpath=localpath
-             else
-               @localpath=SysConfig.LocalFSVolHome
-             end
-      @mapping_permissions= mapping_permissions
-      @vol_permissions="rw"  # from others perspective ?
-    end
+#  def initialize(name,localpath,remotepath,mapping_permissions)
+ #     @name = name
+  #           if remotepath !=nil        
+   #            @remotepath=remotepath
+    #         else
+     #          @remotepath=SysConfig.CONTFSVolHome
+      #       end
+       #      if localpath !=nil        
+        #       @localpath=localpath
+         #    else
+          #     @localpath=SysConfig.LocalFSVolHome
+           #  end
+     # @mapping_permissions= mapping_permissions
+     # @vol_permissions="rw"  # from others perspective ?
+    #end
 
     
   def mapping_permissions

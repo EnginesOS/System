@@ -11,6 +11,7 @@ eports:
   port: 88
   external: 88
   publicFacing: true
+  proto_type: proto
 environments:
 - !ruby/object:EnvironmentVariable
   name: name

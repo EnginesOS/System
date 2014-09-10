@@ -79,10 +79,10 @@ class Docker
                if eport.external >0
                  eportoption = eportoption + ":" + eport.external.to_s
                end
-               if eport.type == nil
-                 eport.setType  'tcp'
+               if eport.proto_type == nil
+                 eport.set_proto_type 'tcp'
                end
-             eportoption = eportoption + "/"+ eport.type + " "
+             eportoption = eportoption + "/"+ eport.proto_type + " "
            end
            end
        end

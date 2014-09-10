@@ -14,7 +14,7 @@ describe ManagedEngine do
     permissions = PermissionRights.new("owner","ro_group","rw_group")
     volume = Volume.new("name","localpath","remotepath","rw",permissions)
     volumes.push volume
-    eport = WorkPort.new("name",88,88,true)
+    eport = WorkPort.new("name",88,88,true,"proto")
     eports = Array.new
     eports.push(eport)
     db = Database.new("name","host","user","pass","flavor")
@@ -23,7 +23,10 @@ describe ManagedEngine do
     environments = Array.new
     env = EnvironmentVariable.new("name","value",true)
     environments.push env
-    @engine = ManagedEngine.new( "test-container",32,"test","test","engines-os/test-image",volumes,88,eports,"none",dbs,environments,"test-framework","test-runtime")
+    docker_api = Docker.new
+    @engine = ManagedEngine.new("test-container",32,"test","test","engines-os/test-image",volumes,88,eports,"none",dbs,environments,"test-framework","test-runtime",docker_api)
+
+    
     
     serialized_object = YAML::dump(@engine)
          statefile="spec/testdata/ManagedEngine.yaml"
@@ -70,9 +73,15 @@ describe "#from_yaml" do
   end
   describe "#setState" do
     it "Returns setstate " do
-      @managedContainer.setState.should eql "nocontainer"
+      @engine.setState.should eql "nocontainer"
     end
     
+   describe "#docker_api" do
+     it "Returns docker_api" do
+       @engine.docker_api.should be_an_instance_of Docker
+     end
+     
+   end
     
   end
   
