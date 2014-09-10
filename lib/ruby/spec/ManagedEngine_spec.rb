@@ -81,6 +81,8 @@ describe "#from_yaml" do
        @engine.docker_api.should be_an_instance_of Docker
      end     
    end
+   
+    require 'EnginesOSapi.rb'
     
    describe "create_pause_unpause_stop_destroy_delete_container" do
     it "Creates the test container " do
