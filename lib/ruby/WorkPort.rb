@@ -7,6 +7,13 @@ class WorkPort
     @type = type #'tcp' or 'udp'
   end
 
+  def type
+      @type
+  end
+    
+  def type newtype
+    @type = newtype
+  end
   def name
     return @name
   end
