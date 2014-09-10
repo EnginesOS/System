@@ -70,7 +70,7 @@ describe "#createEngine" do
        end
      end  
      
-describe "Stop/Start Function tests" do
+describe "#Stop/Start Function tests" do
         it "Tests the Engine Start/Stop functions" do
         result =  @enginesapi.stopEngine("testcontainer")
         result.was_sucess.should eql true
@@ -93,7 +93,29 @@ describe "Stop/Start Function tests" do
        end
      end
      
-
+describe "#pause/unpause Function tests" do
+        it "Tests the Engine Pause/UnPause functions" do
+        result =  @enginesapi.pauseEngine("testcontainer")
+        result.was_sucess.should eql true
+        
+        engine = @enginesapi.loadManagedEngine("testcontainer")
+        @enginesapi.read_state(engine).should eql "paused"
+        
+        result =  @enginesapi.pauseEngine("testcontainer")
+        result.was_sucess.should eql false
+          
+        result =  @enginesapi.unpauseEngine("testcontainer")
+        result.was_sucess.should eql true 
+           
+        engine = @enginesapi.loadManagedEngine("testcontainer")
+        @enginesapi.read_state(engine).should eql "running"
+        
+         result =  @enginesapi.unpauseEngine("testcontainer")
+         result.was_sucess.should eql false
+          
+       end
+     end
+     
      
      
  end
