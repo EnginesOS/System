@@ -1,0 +1,29 @@
+--- !ruby/object:ManagedService
+containerName: dns
+ctype: service
+last_error: 
+memory: '32'
+hostName: dns
+domainName: 
+environments:
+- !ruby/object:EnvironmentVariable
+ name: ContUser
+ value: bind
+ setatrun: false
+image: enginesos/dns
+volumes:[]
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: web
+  port: 53
+  publicFacing: true
+  type: udp
+  external: 53
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+registerSite: false
