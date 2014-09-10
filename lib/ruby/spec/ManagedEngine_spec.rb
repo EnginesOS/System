@@ -87,6 +87,13 @@ describe "#from_yaml" do
     
    describe "create_pause_unpause_stop_destroy_delete_container" do
     it "Creates the test container " do
+      
+      #need to remove existing from past failed tests 
+      #no issues if these fail 
+      #BTW DO NOT delete the test image
+      @engine.stop_container
+      @engine.destroy_container
+      
       @engine.start_container
       @engine.last_error.should eql "Can't Start Container as nocontainer"
       
@@ -95,7 +102,7 @@ describe "#from_yaml" do
       
       p @engine.last_error
       p @engine.last_result
-      @engine.read_state.should eql "Running"
+      @engine.read_state.should eql "running"
       @engine.last_error.should eql nil
       @engine.pause_container.should eql true
       @engine.unpause_container.should eql true
@@ -105,7 +112,7 @@ describe "#from_yaml" do
       @engine.destroy_container.should eql true
       
       
-      @engine.delete_image.should eql true
+     # do not test until testing built from blueprint @engine.delete_image.should eql true
      end
    end
    
