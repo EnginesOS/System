@@ -90,7 +90,9 @@ describe "#from_yaml" do
       @engine.start_container
       @engine.last_error.should eql "Can't Start Container as nocontainer"
       
-      @engine.create_container
+      @engine.create_container 
+      @engine.last_error.should eql nil
+      
       p @engine.last_error
       p @engine.last_result
       @engine.read_state.should eql "Running"
