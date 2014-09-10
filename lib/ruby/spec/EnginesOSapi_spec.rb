@@ -74,13 +74,17 @@ describe "Stop/Start Function tests" do
         it "Tests the Engine Start/Stop functions" do
         result =  @enginesapi.stopEngine("testcontainer")
         result.was_sucess.should eql true
+        
+        engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "stopped"
         
         result =  @enginesapi.stopEngine("testcontainer")
         result.was_sucess.should eql false
           
         result =  @enginesapi.startEngine("testcontainer")
-        result.was_sucess.should eql true    
+        result.was_sucess.should eql true 
+           
+        engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "running"
         
          result =  @enginesapi.startEngine("testcontainer")
