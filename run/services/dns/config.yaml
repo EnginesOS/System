@@ -11,7 +11,7 @@ environments:
  value: bind
  setatrun: false
 image: enginesos/dns
-volumes:[]
+volumes: []
 eports:
 - !ruby/object:WorkPort
   name: web
