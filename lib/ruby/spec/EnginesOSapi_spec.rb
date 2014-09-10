@@ -31,7 +31,7 @@ describe"#getManagedServices" do
      
 describe"#getManagedService" do
        it "Returns  ManagedService nginx is used for test " do
-         @enginesapi. EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of ManagedService
+          EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of ManagedService
          
        end
      end 
