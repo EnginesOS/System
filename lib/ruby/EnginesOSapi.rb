@@ -234,8 +234,8 @@ class EnginesOSapi
 
   def createEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
-      return failed(engine_name,"no Engine","Create")
+    if engine.is_a?(EnginesOSapiResult)
+      return  engine #acutally EnginesOSapiResult
     end
     retval =   engine.create_container()
     if retval == false
