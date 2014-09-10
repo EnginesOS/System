@@ -87,7 +87,8 @@ describe "#from_yaml" do
     
    describe "create_pause_unpause_stop_destroy_delete_container" do
     it "Creates the test container " do
-      @engine.create_container.should eql true
+      
+      @engine.last_error.should eql nil
       @engine.pause_container.should eql true
       @engine.unpause_container.should eql true
       @engine.stop_container.should eql true
