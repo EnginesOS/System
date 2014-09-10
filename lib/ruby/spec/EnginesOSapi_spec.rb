@@ -31,19 +31,19 @@ describe"#getManagedServices" do
      
 describe"#EnginesOSapi.loadManagedService" do
        it "Returns  ManagedService nginx is used for test " do
-          EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of ManagedService
+          EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of NginxService
          
        end
      end 
 describe"#getManagedService" do
        it "Returns  ManagedService nginx is used for test " do
-         @enginesapi.getManagedService("nginx").should be_an_instance_of ManagedService
+         @enginesapi.getManagedService("nginx").should be_an_instance_of NginxService
          
        end
      end 
 describe"#getManagedService" do
        it "Returns  ManagedService nginx is used for test " do
-         @enginesapi.getManagedService("nginx").should be_an_instance_of ManagedService
+         @enginesapi.getManagedService("nginx").should be_an_instance_of NginxService
          
        end
      end 
