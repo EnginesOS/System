@@ -1,10 +1,12 @@
 class WorkPort
-  def initialize(name,num,external,publicport)
+  def initialize(name,num,external,publicport,type)
     @name=name
     @port=num
     @external=external
     @publicFacing=publicport
+    @type = type #'tcp' or 'udp'
   end
+
   def name
     return @name
   end

@@ -150,9 +150,13 @@ class EngineBuilder
                 portnum = port["port"]
                 name = port["name"]
                 external = port['external']
+                type = port['type']
+                  if type == nil
+                      type='tcp'
+                  end
                 #FIX ME when public ports supported
                 puts "Port " + portnum.to_s + ":" + external.to_s
-                @workerPorts.push(WorkPort.new(name,portnum,external,false))
+                @workerPorts.push(WorkPort.new(name,portnum,external,false,type))
              end
           end
          
