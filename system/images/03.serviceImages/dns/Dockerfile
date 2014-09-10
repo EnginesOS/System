@@ -10,3 +10,4 @@ RUN chown bind /var/lib/bind/engines
 ADD named.conf.default-zones.ad /etc/
 RUN cat /etc/named.conf.default-zones.ad >> /etc/bind/named.conf.default-zones
 ADD engines.local.domain /var/lib/bind/engines/engines.dnsrecords
+CMD /usr/sbin/named -c /etc/bind/named.conf -d 5 -u bind -g

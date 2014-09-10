@@ -1,6 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: dns
 ctype: service
+conf_self_start: true
 last_error: 
 memory: '32'
 hostName: dns

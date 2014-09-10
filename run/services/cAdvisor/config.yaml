@@ -32,3 +32,4 @@ setState: nocontainer
 nginxored: false
 databases: []
 registerSite: false
+conf_self_start: true
