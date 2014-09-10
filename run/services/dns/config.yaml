@@ -12,7 +12,6 @@ environments:
  setatrun: false
 image: enginesos/dns
 volumes:[]
-port: 
 eports:
 - !ruby/object:WorkPort
   name: web
