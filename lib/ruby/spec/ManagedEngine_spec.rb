@@ -12,9 +12,9 @@ describe ManagedEngine do
   before :each do
     volumes = Array.new
     permissions = PermissionRights.new("owner","ro_group","rw_group")
-    volume = Volume.new("name","localpath","remotepath","rw",permissions)
+    volume = Volume.new("test","/opt/engos/","/fs","rw",permissions)
     volumes.push volume
-    eport = WorkPort.new("name",88,88,true,"proto")
+    eport = WorkPort.new("name",888,888,true,"proto")
     eports = Array.new
     eports.push(eport)
     db = Database.new("name","host","user","pass","flavor")
@@ -24,7 +24,7 @@ describe ManagedEngine do
     env = EnvironmentVariable.new("name","value",true)
     environments.push env
     docker_api = Docker.new
-    @engine = ManagedEngine.new("test-container",32,"test","test","engines-os/test-image",volumes,88,eports,"none",dbs,environments,"test-framework","test-runtime",docker_api)
+    @engine = ManagedEngine.new("testcontainer",32,"test","test","enginesos/testimage",volumes,88,eports,"none",dbs,environments,"test-framework","test-runtime",docker_api)
 
     
     
@@ -79,10 +79,25 @@ describe "#from_yaml" do
    describe "#docker_api" do
      it "Returns docker_api" do
        @engine.docker_api.should be_an_instance_of Docker
-     end
-     
+     end     
    end
     
+   describe "create_pause_unpause_stop_destroy_delete_container" do
+    it "Creates the test container " do
+      @engine.create_container.should eql true
+      @engine.pause_container.should eql true
+      @engine.unpause_container.should eql true
+      @engine.stop_container.should eql true
+      @engine.start_container.should eql true
+      @engine.stop_container.should eql true
+      @engine.destroy_container.should eql true
+      @engine.delete_image.should eql true
+     end
+   end
+   
+   
+   
+   
   end
   
 end

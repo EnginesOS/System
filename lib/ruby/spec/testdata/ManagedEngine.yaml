@@ -1,15 +1,15 @@
 --- !ruby/object:ManagedEngine
 last_error: None
-containerName: test-container
+containerName: testcontainer
 memory: 32
 hostName: test
 domainName: test
-image: engines-os/test-image
+image: enginesos/testimage
 eports:
 - !ruby/object:WorkPort
   name: name
-  port: 88
-  external: 88
+  port: 888
+  external: 888
   publicFacing: true
   proto_type: proto
 environments:
@@ -19,9 +19,9 @@ environments:
   setatrun: true
 volumes:
 - !ruby/object:Volume
-  name: name
-  remotepath: remotepath
-  localpath: localpath
+  name: test
+  remotepath: "/fs"
+  localpath: "/opt/engos/"
   mapping_permissions: rw
   vol_permissions: !ruby/object:PermissionRights
     owner: owner

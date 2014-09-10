@@ -65,4 +65,7 @@ class Volume < Service #Latter will include group and perhaps other attributes
   def vol_permissions
     return @vol_permissions
   end
+  def permissions
+    @mapping_permissions
+  end
 end
