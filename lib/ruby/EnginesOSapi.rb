@@ -147,7 +147,7 @@ class EnginesOSapi
           return sucess(engine_name,"Stop")
         end
   end
-  #At this stage just wrappers
+ 
 
   def stopEngine engine_name
     engine = loadManagedEngine engine_name
