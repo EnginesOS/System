@@ -330,10 +330,11 @@ class EnginesOSapi
 
   def read_state container
     retval =   container.read_state()
-    if retval == false
-      return failed(container.containerName,"Failed to ReadState","read state")
-    end
-    return sucess(container.containerName,"read state")
+   # if retval == false
+    #  return failed(container.containerName,"Failed to ReadState","read state")
+    #end
+    #return sucess(container.containerName,"read state")
+    retval
   end
 
   def stopService service_name

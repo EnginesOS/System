@@ -58,7 +58,8 @@ describe "#createEngine" do
          result =  @enginesapi.createEngine("testcontainer")
         result.was_sucess.should eql true
         engine = @enginesapi.loadManagedEngine("testcontainer")
-         @enginesapi.read_state(engine).should eql "running"         
+         @enginesapi.read_state(engine).should eql true
+         
        end
      end  
 describe "#createEngine" do
