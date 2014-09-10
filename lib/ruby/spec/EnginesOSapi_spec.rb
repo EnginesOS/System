@@ -28,4 +28,11 @@ describe"#getManagedServices" do
          engines[0].should be_an_instance_of ManagedService
        end
      end
+     
+describe"#getManagedService" do
+       it "Returns  ManagedService nginx is used for test " do
+         @enginesapi. EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of ManagedService
+         
+       end
+     end 
  end
