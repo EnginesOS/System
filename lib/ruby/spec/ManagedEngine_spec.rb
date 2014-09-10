@@ -91,6 +91,7 @@ describe "#from_yaml" do
       @engine.last_error.should eql "Can't Start Container as nocontainer"
       
       @engine.create_container
+      @engine.should eql "Running"
       @engine.last_error.should eql nil
       @engine.pause_container.should eql true
       @engine.unpause_container.should eql true
@@ -98,6 +99,8 @@ describe "#from_yaml" do
       @engine.start_container.should eql true
       @engine.stop_container.should eql true
       @engine.destroy_container.should eql true
+      
+      
       @engine.delete_image.should eql true
      end
    end
