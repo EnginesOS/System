@@ -11,7 +11,7 @@ class WorkPort
       @type
   end
     
-  def type newtype
+  def setType newtype
     @type = newtype
   end
   def name
