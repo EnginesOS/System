@@ -159,7 +159,7 @@ class Docker
         dns_cmd_file.close
         cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
         system(cmd_str) #FIXME need to check and report errors
-        #File.delete(dns_cmd_file_name)
+        File.delete(dns_cmd_file_name)
   end
   
   def register_site(site_string)      
