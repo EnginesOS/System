@@ -4,6 +4,7 @@ require_relative '../DatabaseService'
 require_relative '../VolumeService'
 require_relative '../EnvironmentVariable'
 require_relative '../WorkPort'
+require_relative '../EnginesOSapi.rb'
 
 require 'yaml'
 require 'spec_helper'
