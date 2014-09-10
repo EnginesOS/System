@@ -16,7 +16,6 @@ class EnginesOSapi
   end
 
 
-
   class  EnginesOSapiResult
     
     def initialize(item_name,cmd)
@@ -34,9 +33,7 @@ class EnginesOSapi
       @result_mesg = msg
       @action = cmd
     end
-
-  
-    
+      
     def was_sucess
       return @was_sucess
     end
