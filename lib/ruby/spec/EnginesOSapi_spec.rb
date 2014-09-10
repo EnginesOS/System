@@ -55,7 +55,7 @@ describe "#loadManagedEngine" do
 
 describe "#createEngine" do
        it "Returns  createEngine testcontainer is used for test " do
-          @enginesapi.createEngine("testcontainer").should be_an_instance_of EnginesOSapi.EnginesOSapiResult
+         # @enginesapi.createEngine("testcontainer").should be_an_instance_of EnginesOSapi.EnginesOSapiResult
          result =  @enginesapi.createEngine("testcontainer")
         result.was_sucess.should eql true
        end
