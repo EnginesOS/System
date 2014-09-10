@@ -102,23 +102,32 @@ describe "#from_yaml" do
       
       p @engine.last_error
       p @engine.last_result
+      
       @engine.read_state.should eql "running"
       @engine.last_error.should eql nil
-      @engine.pause_container.should eql true
+      
+      @engine.pause_container.should eql true 
+      @engine.pause_container.should eql false
+      
       @engine.unpause_container.should eql true
+      @engine.unpause_container.should eql false
+      
       @engine.stop_container.should eql true
+      @engine.stop_container.should eql false
+      
       @engine.start_container.should eql true
+      @engine.start_container.should eql false
+      
       @engine.stop_container.should eql true
       @engine.destroy_container.should eql true
+      
+      @engine.start_container.should eql false
       
       
      # do not test until testing built from blueprint @engine.delete_image.should eql true
      end
    end
-   
-   
-   
-   
+      
   end
   
 end
