@@ -21,4 +21,11 @@ describe EnginesOSapi do
           engines[0].should be_an_instance_of ManagedEngine
         end
       end
+describe"#getManagedServices" do
+       it "Returns array of ManagedService s " do
+         @enginesapi.getManagedServices.should be_an_instance_of Array
+         engines = @enginesapi.getManagedServices
+         engines[0].should be_an_instance_of ManagedService
+       end
+     end
  end
