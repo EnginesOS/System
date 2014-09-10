@@ -28,7 +28,7 @@ describe"#getManagedServices" do
          engines[0].should be_an_instance_of ManagedService
        end
      end
-     
+     #FIXME create a test service and retain/move ngix tests
 describe"#EnginesOSapi.loadManagedService" do
        it "Returns  ManagedService nginx is used for test " do
           EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of NginxService
@@ -54,10 +54,22 @@ describe "#loadManagedEngine" do
      end  
 
 describe "#createEngine" do
-       it "Returns  createEngine testcontainer is used for test " do
-         # @enginesapi.createEngine("testcontainer").should be_an_instance_of EnginesOSapi.EnginesOSapiResult
+       it "Returns  createEngine testcontainer is used for test " do  
          result =  @enginesapi.createEngine("testcontainer")
         result.was_sucess.should eql true
+        engine = @enginesapi.loadManagedEngine("testcontainer")
+         @enginesapi.read_state(engine).should eql "running"         
        end
      end  
+describe "#createEngine" do
+       it "Returns  createEngine without a valid container name (does not exsit) is used for test " do  
+         result =  @enginesapi.createEngine("nocontainer")
+        result.was_sucess.should eql false
+        
+       end
+     end  
+     
+
+     
+     
  end
