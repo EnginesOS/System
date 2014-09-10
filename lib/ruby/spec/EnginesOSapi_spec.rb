@@ -29,10 +29,34 @@ describe"#getManagedServices" do
        end
      end
      
-describe"#getManagedService" do
+describe"#EnginesOSapi.loadManagedService" do
        it "Returns  ManagedService nginx is used for test " do
           EnginesOSapi.loadManagedService("nginx",@enginesapi.docker_api).should be_an_instance_of ManagedService
          
        end
      end 
+describe"#getManagedService" do
+       it "Returns  ManagedService nginx is used for test " do
+         @enginesapi.getManagedService("nginx").should be_an_instance_of ManagedService
+         
+       end
+     end 
+describe"#getManagedService" do
+       it "Returns  ManagedService nginx is used for test " do
+         @enginesapi.getManagedService("nginx").should be_an_instance_of ManagedService
+         
+       end
+     end 
+describe "#loadManagedEngine" do
+       it "Returns  ManagedEngine testcontainer is used for test " do
+         @enginesapi.loadManagedEngine("testcontainer").should be_an_instance_of ManagedEngine       
+       end
+     end  
+
+describe "#createEngine" do
+       it "Returns  createEngine testcontainer is used for test " do
+        result =  @enginesapi.createEngine("testcontainer").should be_an_instance_of EnginesOSapiResult
+        result.was_sucess.should eql true
+       end
+     end  
  end
