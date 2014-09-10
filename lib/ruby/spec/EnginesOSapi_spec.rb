@@ -115,7 +115,21 @@ describe "#pause/unpause Function tests" do
           
        end
      end
+          
      
-     
+describe "#recreate Function tests" do
+        it "Tests the Engine recreate functions" do
+        result =  @enginesapi.recreateEngine("testcontainer")
+        result.was_sucess.should eql false
+        
+        result =  @enginesapi.stopEngine("testcontainer")                  
+        result =  @enginesapi.recreateEngine("testcontainer")
+        result.was_sucess.should eql true 
+           
+        engine = @enginesapi.loadManagedEngine("testcontainer")
+        @enginesapi.read_state(engine).should eql "running"        
+          
+       end
+     end  
      
  end

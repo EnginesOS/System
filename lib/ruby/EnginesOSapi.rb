@@ -152,7 +152,7 @@ class EnginesOSapi
   def stopEngine engine_name
     engine = loadManagedEngine engine_name
     if engine == nil
-      return failed(engine_name,"no Engine","Stop")
+      return failed(engine_name,"No Engine","Stop")
     end
     retval = engine.stop_container()
     if retval == false
