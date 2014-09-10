@@ -82,7 +82,7 @@ describe "#from_yaml" do
      end     
    end
    
-    require 'EnginesOSapi.rb'
+
     
    describe "create_pause_unpause_stop_destroy_delete_container" do
     it "Creates the test container " do
