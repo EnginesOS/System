@@ -127,8 +127,20 @@ describe "#recreate Function tests" do
         result.was_sucess.should eql true 
            
         engine = @enginesapi.loadManagedEngine("testcontainer")
-        @enginesapi.read_state(engine).should eql "running"        
+        @enginesapi.read_state(engine).should eql "running"     
+        
+          result =  @enginesapi.destroyEngine("testcontainer")
+          result.was_sucess.should eql false
           
+          result =  @enginesapi.stopEngine("testcontainer")  
+          result.was_sucess.should eql true 
+          result =  @enginesapi.destroyEngine("testcontainer")
+          result.was_sucess.should eql true 
+          
+          result =  @enginesapi.createEngine("testcontainer")
+          engine = @enginesapi.loadManagedEngine("testcontainer")
+           @enginesapi.read_state(engine).should eql "running"     
+ 
        end
      end  
      
