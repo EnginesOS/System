@@ -10,7 +10,7 @@ describe EnginesOSapi do
   describe "#new" do
           it "takes no arguments and returns Service Object" do            
             @enginesapi.should be_an_instance_of EnginesOSapi
-            @enginesapi.docker_api.should be_an_instance of Docker
+            @enginesapi.docker_api.should be_an_instance_of Docker
           end
       end
       
