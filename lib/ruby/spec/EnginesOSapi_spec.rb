@@ -16,9 +16,9 @@ describe EnginesOSapi do
       
   describe"#getManagedEngines" do
         it "Returns array of ManagedEngine s " do
-          @enginesapi.getManagedEngines.should be_an_instance of Array
+          @enginesapi.getManagedEngines.should be_an_instance_of Array
           engines = @enginesapi.getManagedEngines
-          engines[0].should be_an_instance of ManagedEngine
+          engines[0].should be_an_instance_of ManagedEngine
         end
       end
  end
