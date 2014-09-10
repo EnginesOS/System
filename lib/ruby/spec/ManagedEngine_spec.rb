@@ -14,7 +14,7 @@ describe ManagedEngine do
     permissions = PermissionRights.new("owner","ro_group","rw_group")
     volume = Volume.new("test","/opt/engos/","/fs","rw",permissions)
     volumes.push volume
-    eport = WorkPort.new("name",888,888,true,"proto")
+    eport = WorkPort.new("name",888,888,true,"tcp")
     eports = Array.new
     eports.push(eport)
     db = Database.new("name","host","user","pass","flavor")
