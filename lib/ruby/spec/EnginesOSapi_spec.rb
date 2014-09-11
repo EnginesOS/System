@@ -185,8 +185,10 @@ describe "#Engine registration tests, checking they fail when dns down" do
      
 describe "#Engine registration tests, " do
         it "Tests the Engine registration" do
-          
+          #make sure dns up
           result =  @enginesapi.startService("dns")
+          result.was_sucess.should eql true 
+                    
           result = @enginesapi.registerEngineDNS("testcontainer")
           result.was_sucess.should eql true 
           

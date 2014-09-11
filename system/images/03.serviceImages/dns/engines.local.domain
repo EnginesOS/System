@@ -1,13 +1,14 @@
-$ORIGIN .
-$TTL 604800 ; 1 week
-engines.local IN SOA engines. root.engines. (
-999 ; serial
-604800 ; refresh (1 week)
-86400 ; retry (1 day)
-2419200 ; expire (4 weeks)
-604800 ; minimum (1 week)
-)
-NS 127.0.0.1
-A 127.0.0.1
-AAAA ::1
-$ORIGIN engines.local.
+@  IN SOA engines.local. root.engines.local. (
+                9999 ; serial
+                604800 ; refresh (1 week)
+                86400 ; retry (1 day)
+                2419200 ; expire (4 weeks)
+                104800 ; minimum (1 week)
+        )
+        IN      NS      ns.engines.local.
+        IN      NS      local.engines.local.
+
+
+local           A       127.0.0.1
+ns              A       172.17.42.1
+testhost        A       10.101.1.1
