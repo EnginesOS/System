@@ -230,6 +230,12 @@ describe "#Engine registration tests, checking they fail when dns down" do
      end
 describe "#Test Build from blueprint " do
         it "Test Build from blueprint" do
+          
+          #clear past tests
+          @enginesapi.stopEngine("testhost") 
+          @enginesapi.destroyEngine("testhost")
+          @enginesapi.deleteEngineImage("testhost")
+          
           environment=nil
           @enginesapi.buildEngine("https://github.com/EnginesOS-Blueprints/SimpleInvoices.git","testhost","testdomain.com",environment).should be_instance_of ManagedEngine
           engine = @enginesapi.loadManagedEngine("testhost")
