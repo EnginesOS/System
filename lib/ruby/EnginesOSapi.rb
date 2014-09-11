@@ -274,7 +274,7 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","DeRegister Engine Web Site")
     end
     retval =   engine.deregister_site()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"DeRegister Engine Web Site")
     end
     return sucess(engine_name,"DeRegister Engine Web Site")
