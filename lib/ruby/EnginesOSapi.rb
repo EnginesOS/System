@@ -286,7 +286,7 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
     retval = engine.register_dns()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"Register Engine DNS")
     end
     return sucess(engine_name,"Register Engine DNS")
@@ -298,7 +298,7 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","DeRegister Engine DNS")
     end
     retval = engine.deregister_dns()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"DeRegister Engine DNS")
     end
     return sucess(engine_name,"DeRegister Engine DNS")
@@ -310,7 +310,7 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","Monitor Engine") 
     end
     retval = engine.monitor_site()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"Monitor Engine")
     end
     return sucess(engine_name,"Monitor Engine")
@@ -322,20 +322,21 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","DeMonitor Engine")
     end
     retval = engine.demonitor_site()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"DeMonitor Engine")
     end
     return sucess(engine_name,"DeMonitor Engine")
   end
 
-  def read_state container
-    retval =   container.read_state()
+  #not needed as inherited
+ # def read_state container
+ #   retval =   container.read_state()
    # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
     #return sucess(container.containerName,"read state")
     retval
-  end
+#  end
 
   def stopService service_name
     service = getManagedService(service_name)
@@ -392,7 +393,7 @@ class EnginesOSapi
       return failed(service_name,"No Such Service","Register Service Web")
     end
     retval =   service.register_site()
-    if retval == false
+    if retval != true
       return failed(service_name,service.last_error,"Register Service Web")
     end
     return sucess(service_name,"Register Service Web")
@@ -404,7 +405,7 @@ class EnginesOSapi
       return  failed(service_name,"No Such Service","Deregister Service Web")
     end
     retval =   service.deregister_site()
-    if retval == false
+    if retval != true
       return failed(service_name,service.last_error,"Deregister Service Web")
     end
     return sucess(service_name,"Deregister Service Web")
@@ -416,7 +417,7 @@ class EnginesOSapi
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
     retval =   service.register_dns()
-    if retval == false
+    if retval != true
       return failed(service_name,service.last_error,"Register Service DNS")
     end
     return sucess(service_name,"Register Service DNS")
@@ -428,7 +429,7 @@ class EnginesOSapi
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
     retval =   service.deregister_dns()
-    if retval == false
+    if retval != true
       return failed(service_name,service.last_error,"Deregister Service DNS")
     end
     return sucess(service_name,"Deregister Service DNS")
