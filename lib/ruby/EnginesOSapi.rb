@@ -335,7 +335,7 @@ class EnginesOSapi
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
     #return sucess(container.containerName,"read state")
-    retval
+    #retval
 #  end
 
   def stopService service_name
