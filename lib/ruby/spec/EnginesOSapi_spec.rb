@@ -70,7 +70,7 @@ describe "#createEngine" do
        end
      end  
      
-describe "#Stop/Start Function tests" do
+describe "#Stop/Start Engine Function tests" do
         it "Tests the Engine Start/Stop functions" do
         result =  @enginesapi.stopEngine("testcontainer")
         result.was_sucess.should eql true
@@ -89,11 +89,17 @@ describe "#Stop/Start Function tests" do
         
          result =  @enginesapi.startEngine("testcontainer")
          result.was_sucess.should eql false
+         
+          result =  @enginesapi.restartEngine("testcontainer")
+           result.was_sucess.should eql true
+           
+          engine = @enginesapi.loadManagedEngine("testcontainer")
+          @enginesapi.read_state(engine).should eql "running"
           
        end
      end
      
-describe "#pause/unpause Function tests" do
+describe "#pause/unpause Engine Function tests" do
         it "Tests the Engine Pause/UnPause functions" do
         result =  @enginesapi.pauseEngine("testcontainer")
         result.was_sucess.should eql true
@@ -117,7 +123,7 @@ describe "#pause/unpause Function tests" do
      end
           
      
-describe "#recreate Function tests" do
+describe "#recreate Engine Function tests" do
         it "Tests the Engine recreate functions" do
         result =  @enginesapi.recreateEngine("testcontainer")
         result.was_sucess.should eql false
@@ -143,5 +149,36 @@ describe "#recreate Function tests" do
  
        end
      end  
+describe "#Engine registration tests tests" do
+        it "Tests the Engine recreate functions" do
+          result = @enginesapi.registerEngineDNS("testcontainer")
+          result.was_sucess.should eql true 
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.deregisterEngineDNS("testcontainer")
+           result.was_sucess.should eql true 
+          #Fixme check this actually works beyond saying it did
+                  
+          result = @enginesapi.registerEngineWebSite("testcontainer")
+         result.was_sucess.should eql true 
+           #Fixme check this actually works beyond saying it did
+           
+          result = @enginesapi.deregisterEngineWebSite("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.monitorEngine("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.demonitorEngine("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did
+                    
+        end
+        
+        
+     end
+     
      
  end
