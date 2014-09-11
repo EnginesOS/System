@@ -183,7 +183,6 @@ class Docker
   
   def register_site(site_string)      
       ssh_cmd=SysConfig.addSiteCmd + " \"" + site_string +  "\""
-        p ssh_cmd
       return run_system(ssh_cmd)
   end
   
