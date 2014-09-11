@@ -15,8 +15,8 @@ class NagiosService < ManagedService
         @consumers = Array.new
       end
       
-      if @consumers.include?(name) == false     # only add if doesnt exists but allow register
-         @consumers.push(name)
+      if @consumers.include?(site_string) == false     # only add if doesnt exists but allow register
+         @consumers.push(site_string)
       end
     save_state
      return true
