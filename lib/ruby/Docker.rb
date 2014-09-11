@@ -20,6 +20,7 @@ class Docker
    def run_system (cmd)
      cmd = cmd + " 2>&1"
      res= %x<#{cmd}>  
+     p res
      #FIXME should be case insensitive The last one is a pure kludge
      #really need to get stderr and stdout separately
      if $? == 0 && res.include?("Error") == false && res.include?("Failed") == false && res.include?("Name or service not known") == false
