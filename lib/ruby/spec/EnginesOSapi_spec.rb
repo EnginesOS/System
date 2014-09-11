@@ -245,8 +245,8 @@ describe "#Test Build from blueprint " do
          result.was_sucess.should eql true 
           result =  @enginesapi.destroyEngine("testhost")
             result.was_sucess.should eql true 
-          result =  @enginesapi.deleteEngineImage("testhost")
-               result.was_sucess.should eql true 
+         # result =  @enginesapi.deleteEngineImage("testhost")
+          #     result.was_sucess.should eql true 
         end
 end
  end

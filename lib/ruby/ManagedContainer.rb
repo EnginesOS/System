@@ -453,8 +453,6 @@ class ManagedContainer < Container
     return ret_val
   end
 
- 
-
   def save_state()
     if @docker_api == nil
       @last_error="No connection to Engines OS System"      
