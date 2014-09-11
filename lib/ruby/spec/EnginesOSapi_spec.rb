@@ -151,34 +151,40 @@ describe "#recreate Engine Function tests" do
      end  
 
      
-describe "#Engine registration tests, " do
-        it "Tests the Engine registration" do
+describe "#Engine DNS registration tests, " do
+        it "Tests the DNS Engine registration" do
           #make sure dns up
           result =  @enginesapi.startService("dns")
           
                     
           result = @enginesapi.registerEngineDNS("testcontainer")
           result.was_sucess.should eql true 
-          
           #Fixme check this actually works beyond saying it did
           
+          result = @enginesapi.deregisterEngineDNS("testcontainer")          
+          result.was_sucess.should eql true 
+            #Fixme check this actually works beyond saying it did
+          
+          #register is again so next tests can use hostname 
+          result = @enginesapi.registerEngineDNS("testcontainer")
+        end
+end
+         
+describe "#Engine website registration tests, " do
+        it "Tests the website Engine registration" do 
           #Do this prior to de registration of dns
           result = @enginesapi.registerEngineWebSite("testcontainer")
          result.was_sucess.should eql true 
            #Fixme check this actually works beyond saying it did
           
-          result = @enginesapi.deregisterEngineDNS("testcontainer")
-           result.was_sucess.should eql true 
-          #Fixme check this actually works beyond saying it did
-           
-          
-                  
-
            
           result = @enginesapi.deregisterEngineWebSite("testcontainer")
           result.was_sucess.should eql true          
           #Fixme check this actually works beyond saying it did
-          
+          end
+end
+describe "#Engine website monitor tests, " do
+        it "Tests the website Engine monitor registration" do 
           result = @enginesapi.monitorEngine("testcontainer")
           result.was_sucess.should eql true          
           #Fixme check this actually works beyond saying it did
@@ -188,6 +194,7 @@ describe "#Engine registration tests, " do
           #Fixme check this actually works beyond saying it did                  
         end                
      end
+     
 describe "#Engine registration tests, checking they fail when dns down" do
         it "Tests the Engine registration functions fail when dns down" do
           result =  @enginesapi.stopService("dns")
