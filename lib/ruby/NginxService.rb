@@ -5,7 +5,7 @@ class NginxService < ManagedService
   def add_consumer(engine)
     site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s    
     ret_val = @docker_api.register_site(site_string)
-    if ret_val == false
+    if ret_val != true
       return false
     end
 

@@ -7,8 +7,8 @@ class NagiosService < ManagedService
   def add_consumer(engine)
     site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s    
     result = @docker_api.add_monitor(site_string)
-     if result == false
-       return false
+     if result != true
+       return result
      end
  
       if @consumers == nil
@@ -19,7 +19,7 @@ class NagiosService < ManagedService
          @consumers.push(site_string)
       end
     save_state
-     return true
+     return result
    end
    
    def remove_consumer engine
