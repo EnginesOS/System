@@ -17,7 +17,7 @@ class NginxService < ManagedService
         @consumers.push(site_string)
      end
     save_state
-    return true
+    return ret_val
   end
   
   def remove_consumer engine
