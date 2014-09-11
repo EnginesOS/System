@@ -150,7 +150,7 @@ describe "#recreate Engine Function tests" do
        end
      end  
 describe "#Engine registration tests, checking they fail when dns down" do
-        it "Tests the Engine recreate functions fail when dns down" do
+        it "Tests the Engine registration functions fail when dns down" do
           result =  @enginesapi.stopService("dns")
           
           result = @enginesapi.registerEngineDNS("testcontainer")
@@ -183,5 +183,34 @@ describe "#Engine registration tests, checking they fail when dns down" do
         end                
      end
      
+describe "#Engine registration tests, " do
+        it "Tests the Engine registration" do
+          
+          result =  @enginesapi.startService("dns")
+          result = @enginesapi.registerEngineDNS("testcontainer")
+          result.was_sucess.should eql true 
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.deregisterEngineDNS("testcontainer")
+           result.was_sucess.should eql true 
+          #Fixme check this actually works beyond saying it did
+                  
+          result = @enginesapi.registerEngineWebSite("testcontainer")
+         result.was_sucess.should eql true 
+           #Fixme check this actually works beyond saying it did
+           
+          result = @enginesapi.deregisterEngineWebSite("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.monitorEngine("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did
+          
+          result = @enginesapi.demonitorEngine("testcontainer")
+          result.was_sucess.should eql true          
+          #Fixme check this actually works beyond saying it did                  
+        end                
+     end
      
  end
