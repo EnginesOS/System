@@ -189,6 +189,7 @@ describe "#Engine registration tests, " do
           result =  @enginesapi.startService("dns")
           result = @enginesapi.registerEngineDNS("testcontainer")
           result.was_sucess.should eql true 
+          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.deregisterEngineDNS("testcontainer")
@@ -208,6 +209,7 @@ describe "#Engine registration tests, " do
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.demonitorEngine("testcontainer")
+          result.was_sucess.should_not be_an_instance_of String 
           result.was_sucess.should eql true          
           #Fixme check this actually works beyond saying it did                  
         end                
