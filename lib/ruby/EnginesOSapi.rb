@@ -309,7 +309,7 @@ class EnginesOSapi
     if engine == nil
       return failed(engine_name,"no Engine","Monitor Engine") 
     end
-    retval engine.monitor_site()
+    retval = engine.monitor_site()
     if retval == false
       return failed(engine_name,engine.last_error,"Monitor Engine")
     end
