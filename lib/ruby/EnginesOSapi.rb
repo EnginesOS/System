@@ -262,7 +262,7 @@ class EnginesOSapi
       return failed(engine_name,"no Engine","Register Engine Web Site")
     end
     retval =  engine.register_site()
-    if retval == false
+    if retval != true
       return failed(engine_name,engine.last_error,"Register Engine Web Site")
     end
     return sucess(engine_name,"Register Engine Web Site")
