@@ -160,6 +160,9 @@ describe "#Engine registration tests, checking they fail when dns down" do
           result = @enginesapi.deregisterEngineDNS("testcontainer")
            result.was_sucess.should eql false 
           #Fixme check this actually works beyond saying it did
+           
+          result = @enginesapi.registerEngineDNS("testcontainer")
+          #register DNS again pr it breaks register website
                   
           result = @enginesapi.registerEngineWebSite("testcontainer")
          result.was_sucess.should eql false 
