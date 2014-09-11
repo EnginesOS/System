@@ -18,6 +18,7 @@ class Docker
       return ret_val
    end
    def run_system (cmd)
+     cmd = cmd + " 2>&1"
      res= %x<#{cmd}>  
      #FIXME should be case insensitive The last one is a pure kludge
      #really need to get stderr and stdout separately
