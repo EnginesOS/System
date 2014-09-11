@@ -17,7 +17,17 @@ class Docker
           end                 
       return ret_val
    end
-   
+   def run_system (cmd)
+     res= %x<#{cmd}>  
+     #FIXME should be case insensitive
+     if $? == 0 && res.include?("Error") == false && res.include?("Failed") == false
+       return true
+     else
+       return res
+     end
+    
+        
+   end
   def delete_image container
            commandargs= " rmi " +   container.image
            ret_val =  run_docker(commandargs,container)
@@ -148,8 +158,9 @@ class Docker
     dns_cmd_file.puts("send")
     dns_cmd_file.close
     cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
-    system(cmd_str) #FIXME need to check and report errors
-   # File.delete(dns_cmd_file_name)
+    retval = run_system(cmd_str) 
+    File.delete(dns_cmd_file_name)
+    return retval
   end
   
   def deregister_dns(top_level_hostname,ip_addr_str)
@@ -162,28 +173,29 @@ class Docker
         dns_cmd_file.puts("send")
         dns_cmd_file.close
         cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
-        system(cmd_str) #FIXME need to check and report errors
+        retval =  run_system(cmd_str)
         File.delete(dns_cmd_file_name)
+        return retval
   end
   
   def register_site(site_string)      
       ssh_cmd=SysConfig.addSiteCmd + " \"" + site_string +  "\""
-      return system(ssh_cmd)
+      return run_system(ssh_cmd)
   end
   
   def deregister_site(site_string)
      ssh_cmd=SysConfig.rmSiteCmd +  " \"" + site_string +  "\""
-    return system(ssh_cmd)
+    return run_system(ssh_cmd)
   end
   
   def add_monitor(site_string)
     ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + site_string + " \""
-    return system(ssh_cmd)
+    return run_system(ssh_cmd)
   end 
     
   def rm_monitor(site_string)
        ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + site_string + " \""
-    return system(ssh_cmd)
+    return run_system(ssh_cmd)
   end 
          
     def save_container container
