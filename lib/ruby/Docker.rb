@@ -222,7 +222,7 @@ class Docker
   def save_blueprint(blueprint,container)
      p container
      p blueprint
-     if blueprint != nill
+     if blueprint != nil
        puts blueprint.to_s
      end
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
