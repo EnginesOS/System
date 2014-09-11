@@ -329,14 +329,14 @@ class EnginesOSapi
   end
 
   #not needed as inherited
- # def read_state container
- #   retval =   container.read_state()
+  def read_state container
+    retval =   container.read_state()
    # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
     #return sucess(container.containerName,"read state")
-    #retval
-#  end
+    retval
+  end
 
   def stopService service_name
     service = getManagedService(service_name)
