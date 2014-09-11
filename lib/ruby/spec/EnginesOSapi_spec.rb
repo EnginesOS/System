@@ -152,32 +152,30 @@ describe "#recreate Engine Function tests" do
 describe "#Engine registration tests tests" do
         it "Tests the Engine recreate functions" do
           result = @enginesapi.registerEngineDNS("testcontainer")
-          result.was_sucess.should eql true 
+          result.was_sucess.should eql false 
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.deregisterEngineDNS("testcontainer")
-           result.was_sucess.should eql true 
+           result.was_sucess.should eql false 
           #Fixme check this actually works beyond saying it did
                   
           result = @enginesapi.registerEngineWebSite("testcontainer")
-         result.was_sucess.should eql true 
+         result.was_sucess.should eql false 
            #Fixme check this actually works beyond saying it did
            
           result = @enginesapi.deregisterEngineWebSite("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_sucess.should eql false          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.monitorEngine("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_sucess.should eql false          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.demonitorEngine("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_sucess.should eql false          
           #Fixme check this actually works beyond saying it did
                     
-        end
-        
-        
+        end                
      end
      
      
