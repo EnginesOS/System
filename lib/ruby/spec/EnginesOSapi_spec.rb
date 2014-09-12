@@ -228,6 +228,33 @@ describe "#Engine registration tests, checking they fail when dns down" do
                     
         end                
      end
+     
+describ "#Test functions when applied to non existant container" do
+     it "tests error handling when container by containerName does not exit" do
+       result = @enginesapi.loadManagedEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.stopEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.startEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.pauseEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.unpauseEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.destroyEngine("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.deleteEngineImage("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.registerEngineDNS("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.deregisterEngineDNS("nocontainer")
+       result.was_sucess.should eql true
+       result = @enginesapi.registerEngineWebSite("nocontainer")
+       result.was_sucess.should eql true
+       
+     end
+end
+     
 describe "#Test Build from blueprint " do
         it "Test Build from blueprint" do
           
