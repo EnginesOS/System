@@ -270,7 +270,7 @@ describe "#Test Build from blueprint " do
           
           
            bp = engine.load_blueprint
-           bp["software"].should be_instance_of Hash
+           bp.should be_instance_of Hash
            
           result =  @enginesapi.stopEngine("testhost")  
          result.was_sucess.should eql true 
