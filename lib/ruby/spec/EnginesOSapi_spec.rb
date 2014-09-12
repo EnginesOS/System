@@ -229,7 +229,7 @@ describe "#Engine registration tests, checking they fail when dns down" do
         end                
      end
      
-describ "#Test functions when applied to non existant container" do
+describe "#Test functions when applied to non existant container" do
      it "tests error handling when container by containerName does not exit" do
        result = @enginesapi.loadManagedEngine("nocontainer")
        result.was_sucess.should eql true
