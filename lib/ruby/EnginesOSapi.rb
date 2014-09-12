@@ -116,9 +116,9 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
   def getManagedService(service_name)
 
     managed_service = EnginesOSapi.loadManagedService(service_name,@docker_api)
-    if managed_service == nil
-      return failed(service_name,"Fail to Load configuration:","Load Service")
-    end
+  #  if managed_service == nil
+   #   return failed(service_name,"Fail to Load configuration:","Load Service")
+    #end
     return managed_service
   end
 
@@ -140,8 +140,8 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
-        if engine == nil
-          return failed(engine_name,"no Engine","Stop")
+        if engine.is_a?(EnginesOSapiResult) 
+          return engine
         end
         retval = engine.recreate_container()
         if retval == false
@@ -154,8 +154,8 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def stopEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
-      return failed(engine_name,"No Engine","Stop")
+    if engine.is_a?(EnginesOSapiResult) 
+      return engine
     end
     retval = engine.stop_container()
     if retval == false
@@ -167,7 +167,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def startEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Start")
     end
 
@@ -185,7 +185,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def pauseEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Pause")
     end
 
@@ -200,7 +200,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Unpause")
     end
     retval =  engine.unpause_container()
@@ -213,7 +213,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def destroyEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Destroy")
     end
     retval =   engine.destroy_container()
@@ -225,7 +225,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def deleteEngineImage engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if   engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Delete")
     end
     retval =   engine.delete_image()
@@ -249,7 +249,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def restartEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Restart")
     end
     retval =   engine.restart_container()
@@ -261,7 +261,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def registerEngineWebSite engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Register Engine Web Site")
     end
     retval =  engine.register_site()
@@ -273,7 +273,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","DeRegister Engine Web Site")
     end
     retval =   engine.deregister_site()
@@ -285,7 +285,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def registerEngineDNS engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
     retval = engine.register_dns()
@@ -297,7 +297,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def deregisterEngineDNS engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","DeRegister Engine DNS")
     end
     retval = engine.deregister_dns()
@@ -309,7 +309,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def monitorEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Monitor Engine") 
     end
     retval = engine.monitor_site()
@@ -321,7 +321,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
 
   def demonitorEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine == nil
+    if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","DeMonitor Engine")
     end
     retval = engine.demonitor_site()
