@@ -337,7 +337,7 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
           return failed(engine_name,"no Engine","Load Engine Blueprint")
         end
         retval = engine.load_blueprint()
-        if retval != true
+        if retval == false
           return failed(engine_name,engine.last_error,"Load Engine Blueprint")
         end
         return retval
