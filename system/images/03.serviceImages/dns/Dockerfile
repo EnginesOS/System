@@ -7,6 +7,8 @@ RUN apt-get -y  --force-yes upgrade
 RUN apt-get -y install bind9
 
 RUN mkdir -p /var/lib/bind/engines
+RUN mkdir -p /var/run/named
+RUN chown bind /var/run/named
 RUN chown bind /var/lib/bind/engines
 ADD named.conf.default-zones.ad /etc/
 RUN cat /etc/named.conf.default-zones.ad >> /etc/bind/named.conf.default-zones
