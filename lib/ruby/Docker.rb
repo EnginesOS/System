@@ -224,6 +224,8 @@ class Docker
      p blueprint
      if blueprint != nil
        puts blueprint.to_s
+     else
+       return false
      end
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                       if File.directory?(stateDir) ==false
