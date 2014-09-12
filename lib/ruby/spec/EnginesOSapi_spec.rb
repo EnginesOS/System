@@ -232,25 +232,25 @@ describe "#Engine registration tests, checking they fail when dns down" do
 describe "#Test functions when applied to non existant container" do
      it "tests error handling when container by containerName does not exit" do
        result = @enginesapi.loadManagedEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.stopEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.startEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.pauseEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.unpauseEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.destroyEngine("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.deleteEngineImage("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.registerEngineDNS("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.deregisterEngineDNS("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        result = @enginesapi.registerEngineWebSite("nocontainer")
-       result.was_sucess.should eql true
+       result.was_sucess.should eql false
        
      end
 end
