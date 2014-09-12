@@ -4,8 +4,8 @@ FROM debian:wheezy
 
 
 
-RUN apt-get -y update
-RUN apt-get -y upgrade
+RUN apt-get -y  --force-yes update
+RUN apt-get -y  --force-yes upgrade
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Australia/Sydney  /etc/localtime 
 RUN apt-get -y install sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2 zlibc
