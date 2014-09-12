@@ -164,7 +164,7 @@ describe "#Engine DNS registration tests, " do
           result = @enginesapi.deregisterEngineDNS("testcontainer")          
           result.was_sucess.should eql true 
             #Fixme check this actually works beyond saying it did
-          
+  
           #register is again so next tests can use hostname 
           result = @enginesapi.registerEngineDNS("testcontainer")
         end
@@ -267,13 +267,17 @@ describe "#Test Build from blueprint " do
           @enginesapi.buildEngine("https://github.com/EnginesOS-Blueprints/SimpleInvoices.git","testhost","testdomain.com",environment).should be_instance_of ManagedEngine
           engine = @enginesapi.loadManagedEngine("testhost")
            @enginesapi.read_state(engine).should eql "running"     
+          
+          
+           bp = engine.load_blueprint
+           bp['software'].should be_instance_of Hash
            
           result =  @enginesapi.stopEngine("testhost")  
          result.was_sucess.should eql true 
           result =  @enginesapi.destroyEngine("testhost")
             result.was_sucess.should eql true 
-         # result =  @enginesapi.deleteEngineImage("testhost")
-          #     result.was_sucess.should eql true 
+          result =  @enginesapi.deleteEngineImage("testhost")
+               result.was_sucess.should eql true 
         end
 end
  end

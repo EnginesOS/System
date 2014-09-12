@@ -521,8 +521,8 @@ class EngineBuilder
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
        
-       if mc.save_blueprint(@blue_print) == false
-         puts "failed to save blueprint " + @blue_print.to_s
+       if mc.save_blueprint(@bluePrint) == false
+         puts "failed to save blueprint " + @bluePrint.to_s
        end
        mc.save_state # no config.yaml throws a no such container so save so others can use
        bp = mc.load_blueprint

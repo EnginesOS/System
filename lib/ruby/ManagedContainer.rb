@@ -476,7 +476,7 @@ class ManagedContainer < Container
             @last_error="No connection to Engines OS System"      
             return false
           end
-          ret_val = @docker_api.load_blueprint( self)
+          ret_val = @docker_api.load_blueprint(self)
           return ret_val
   end
   
