@@ -244,8 +244,7 @@ class Docker
                         end
                       statefile=stateDir + "/blueprint.json"              
                       f = File.new(statefile,"r")
-                      blueprint = JSON.parse( f.read())
-                      
+                      blueprint = JSON.parse( f.read())                      
                       f.close
                       
                      return blueprint
