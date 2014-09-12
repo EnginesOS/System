@@ -268,6 +268,8 @@ describe "#Test Build from blueprint " do
           engine = @enginesapi.loadManagedEngine("testhost")
            @enginesapi.read_state(engine).should eql "running"     
           
+          bp = @enginesapi.get_engine_blueprint(engine_name)
+          bp.should b_instance_of Hash
           
            bp = engine.load_blueprint
            bp.should be_instance_of Hash

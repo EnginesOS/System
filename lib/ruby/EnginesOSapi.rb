@@ -330,7 +330,19 @@ require "/opt/engos/lib/ruby/PermissionRights.rb"
     end
     return sucess(engine_name,"DeMonitor Engine")
   end
-
+  
+    def get_engine_blueprint engine_name      
+        engine = loadManagedEngine engine_name
+        if  engine.is_a?(EnginesOSapiResult) 
+          return failed(engine_name,"no Engine","Load Engine Blueprint")
+        end
+        retval = engine.load_blueprint()
+        if retval != true
+          return failed(engine_name,engine.last_error,"Load Engine Blueprint")
+        end
+        return retval
+      end
+  
   #not needed as inherited
   def read_state container
     retval =   container.read_state()
