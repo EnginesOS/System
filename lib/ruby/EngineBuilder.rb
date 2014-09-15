@@ -185,11 +185,11 @@ class EngineBuilder
            arc_extract=archive[ "extractcmd"]
            arc_dir=archive["extractdir"]
              if(n >0)
-               srcs = srcs + ","
-               names =names + ","
-               locations = locations + ","
-               extracts =extracts + ","
-               dirs =dirs + ","
+               srcs = srcs + " "
+               names =names + " "
+               locations = locations + " "
+               extracts =extracts + " "
+               dirs =dirs + " "
              end
              srcs = srcs + "\"" + arc_src + "\""
              names = names + "\"" + arc_name + "\""
