@@ -34,7 +34,7 @@ class Docker
   def delete_image container
            commandargs= " rmi " +   container.image
            ret_val =  run_docker(commandargs,container)
-           if ret_val == true             
+           if ret_val == true #only delete if sucessful or no such container             
                 stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                 FileUtils.rm_rf  stateDir
           end
@@ -56,7 +56,7 @@ class Docker
    
   def create_container container             
      e_option =String.new
-      volume_option = String.new 
+      volume_option = SysConfig.timeZone_fileMapping
       eportoption = String.new
        if(container.environments)
          container.environments.each do |environment|

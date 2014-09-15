@@ -66,8 +66,8 @@ ARCHIVE_CNT=${#ARCHIVES[@]}
 
 						if ! test -f $DOWNLOADCACHE/$ARCHIVE
 							then
-                                        			echo Downloading  $TAR_FILE
-                                        			wget -q $TAR_FILE -O $ARCHIVE
+                                   echo Downloading  $TAR_FILE
+                                   wget -q $TAR_FILE -O $ARCHIVE
 								cp $ARCHIVE $DOWNLOADCACHE
 							else
 								echo "Using download cache"
@@ -77,10 +77,8 @@ ARCHIVE_CNT=${#ARCHIVES[@]}
 					    if ! test "$EXTRACT_CMD" = "none"
 						then
                                         		echo "Extracting to $LOCATION"
-
                                         		echo $EXTRACT_CMD  $ARCHIVE 
                                        			$EXTRACT_CMD  $ARCHIVE >/dev/null
-
                                         		rm $ARCHIVE
 					    fi
 
@@ -92,8 +90,7 @@ ARCHIVE_CNT=${#ARCHIVES[@]}
 					  then
                                                 if test -n $APP_SRC_DIR 
                                                         then
-                                                        echo "Moving to Destination"
-                                                        cp -rfp $APP_SRC_DIR/* .
+                                                        echo "Moving to Destination"                                                        
                                                         cp -rfp $APP_SRC_DIR/* .
                                                         cp -rfp $APP_SRC_DIR/.g* .
                                                         rm -fr $APP_SRC_DIR
