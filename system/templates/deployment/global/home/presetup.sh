@@ -32,7 +32,7 @@ fi
 mkdir app
 cd app
 HOME=./
-##########
+#########
 
 n=0
 ARCHIVE_CNT=${#ARCHIVES[@]}
