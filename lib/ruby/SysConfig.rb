@@ -18,9 +18,9 @@ class SysConfig
   @@internalDomain = "engines.local"
   @@defaultDNS ="172.17.42.1"
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime "
-  
+
   def SysConfig.timeZone_fileMapping
-    return @timeZone_fileMapping
+    return @@timeZone_fileMapping
   end
   def SysConfig.defaultDNS
     return @@defaultDNS
