@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/opt/engos/bin/startup.sh & #Background 
+
 
 gem  install rake
 
