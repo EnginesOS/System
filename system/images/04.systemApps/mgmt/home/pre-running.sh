@@ -4,7 +4,7 @@ gem install bundle
 
 cd  /opt/engos/bin/
 
-bundle install
+su -l $ContUser bundle install
 
 su -l $ContUser bundle exec /opt/engos/bin/containers_startup.sh & #Background 
 
