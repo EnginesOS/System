@@ -3,8 +3,7 @@
 gem install bundle
 gem install git
 
-su -l $ContUser /opt/engos/bin/containers_startup.sh & #Background 
-
+su -l $ContUser /opt/engos/bin/containers_startup.sh 
 
 gem  install rake
 
