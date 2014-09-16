@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/opt/engos/bin/startup.sh & #Background 
+/opt/engos/bin/containers_startup.sh & #Background 
 
 
 gem  install rake
