@@ -141,7 +141,12 @@ def do_cmd(c_type,containerName,command)
     else
       eng = EnginesOSapi.loadManagedService(containerName,docker_api)
     end
-    res =  containerName + ":" +engines_api.read_state(eng)
+    state = engines_api.read_state(eng)
+    if eng.setState != state
+      res = "Error:" + containerName + ":" + state + ":set to:" + eng.setState 
+    else
+      res =  containerName + ":" + state
+    end 
             
     when  "lasterror"
     if c_type == "container"
@@ -180,7 +185,6 @@ containerName = ARGV[2]
     if c_type == "container"
       engines = engines_api.getManagedEngines()
       engines.each do |engine|     
-        puts engine.containerName
         do_cmd(c_type,engine.containerName,command)
       end
     elsif c_type == "service"
