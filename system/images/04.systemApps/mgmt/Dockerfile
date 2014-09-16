@@ -8,7 +8,7 @@ ADD ssh /home/dockuser/.ssh
 ENV ContUser dockuser
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
 RUN chown -R dockuser /home/dockuser/
-
+RUN echo ".  /etc/rvmrc " >> /home/dockuser/.profile
 
 
 
