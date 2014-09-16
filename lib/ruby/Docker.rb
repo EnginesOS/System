@@ -56,7 +56,7 @@ class Docker
    
   def create_container container             
      e_option =String.new
-      volume_option = SysConfig.timeZone_fileMapping
+    
       eportoption = String.new
        if(container.environments)
          container.environments.each do |environment|
@@ -66,6 +66,7 @@ class Docker
          end
        end
 
+    volume_option = SysConfig.timeZone_fileMapping
        if(container.volumes)
          container.volumes.each do |volume|
            if volume !=nil

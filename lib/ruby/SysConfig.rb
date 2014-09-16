@@ -17,7 +17,7 @@ class SysConfig
   @@ddnsKey = "/opt/engos/etc/keys/ddns.key"
   @@internalDomain = "engines.local"
   @@defaultDNS ="172.17.42.1"
-  @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime "
+  @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
 
   def SysConfig.timeZone_fileMapping
     return @@timeZone_fileMapping

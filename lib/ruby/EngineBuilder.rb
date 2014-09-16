@@ -96,7 +96,7 @@ class EngineBuilder
      end
 
      def add_db_service name
-       dbname=name + "-" + @hostName
+       dbname=name #+ "-" + @hostName This - leads to issue with JDBC 
        cmd = SysConfig.addDBServiceCmd + " " + dbname + " " + name + " " + name
        puts(cmd)
        system(cmd)
