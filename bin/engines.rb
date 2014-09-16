@@ -10,6 +10,24 @@ def do_cmd(c_type,containerName,command)
   docker_api = engines_api.docker_api
   
   case command
+  when "check_and_act"
+    if c_type == "container"
+          eng = engines_api.loadManagedEngine(containerName)
+        else
+          eng = EnginesOSapi.loadManagedService(containerName,docker_api)
+        end
+        state = engines_api.read_state(eng)
+        if eng.setState != state
+          res = "Error:" + containerName + ":" + state + ":set to:" + eng.setState 
+          case eng.setState
+          when "running"
+            do_cmd(c_type,containerName,"start")
+          when "stopped"
+            do_cmd(c_type,containerName,"stop")
+            
+          end
+        end 
+        
     when "stop" 
       if c_type == "container"
        res = engines_api.stopEngine(containerName)
@@ -169,7 +187,7 @@ def do_cmd(c_type,containerName,command)
          puts(res.result_mesg)
      end
      else
-       p res
+       puts res
      end
 end
 
