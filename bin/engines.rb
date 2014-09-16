@@ -3,7 +3,7 @@ require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/SysConfig.rb"
 require "/opt/engos/lib/ruby/ManagedEngine.rb"
 require "/opt/engos/lib/ruby/EnginesOSapi.rb"
-
+require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 
 def do_cmd(c_type,containerName,command)
   engines_api = EnginesOSapi.new() 
@@ -154,7 +154,7 @@ def do_cmd(c_type,containerName,command)
       res =  "command:" + cmd + " unknown" 
       
    end
-   
+ 
      if res !=nil && res.is_a?(EnginesOSapiResult)    
        if res.was_sucess == false
          puts ("Failed:" + res.result_mesg)
