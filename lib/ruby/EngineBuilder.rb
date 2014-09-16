@@ -524,6 +524,9 @@ class EngineBuilder
        if mc.save_blueprint(@bluePrint) == false
          puts "failed to save blueprint " + @bluePrint.to_s
        end
+       
+       mc.set_conf_register_site true # needs some intelligence here for worker only
+       
        mc.save_state # no config.yaml throws a no such container so save so others can use
        bp = mc.load_blueprint
        p  bp

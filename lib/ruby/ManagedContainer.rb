@@ -54,6 +54,10 @@ class ManagedContainer < Container
     return @conf_register_site
   end
   
+  def set_conf_register_site state
+    @conf_register_site = state
+  end
+  
   def conf_monitor_site
     return @conf_monitor_site
   end
@@ -305,9 +309,9 @@ class ManagedContainer < Container
     end
 
     if ret_val == true
-    #  if @registersite == true
+      if @registersite == true
         register_site
-     # end
+      end
     end
 
     clear_error(ret_val)
