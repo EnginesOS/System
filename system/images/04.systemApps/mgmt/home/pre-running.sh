@@ -1,6 +1,7 @@
 #!/bin/bash
+gem install git
 
-/opt/engos/bin/containers_startup.sh & #Background 
+su -l dockuser /opt/engos/bin/containers_startup.sh & #Background 
 
 
 gem  install rake
