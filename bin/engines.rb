@@ -178,7 +178,7 @@ def do_cmd(c_type,containerName,command)
     res =  eng.last_error
     
     else
-      res =  "command:" + cmd + " unknown" 
+      res =  "command:" + command + " unknown" 
       
    end
  
