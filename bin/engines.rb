@@ -137,7 +137,7 @@ def do_cmd(c_type,containerName,command)
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = engines_api.LoadMangedService(containerName,engines_api)
+      eng = engines_api.LoadManagedService(containerName,engines_api)
     end
     res =  containerName + ":" +engines_api.read_state(eng)
             
