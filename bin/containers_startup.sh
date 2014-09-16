@@ -1,7 +1,7 @@
 #!/bin/bash
 #FIXME
 rvm use ruby-2.1.1
-/opt/engos/bin/engines.rb service mgmt start 
+/opt/engos/bin/engines.rb service start mgmt  
 
 /opt/engos/bin/engines.rb service start dns 
 sleep 20
