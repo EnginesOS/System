@@ -43,7 +43,7 @@ def do_cmd(c_type,containerName,command)
     if c_type == "container"
          eng = engines_api.loadManagedEngine(containerName)
        else
-         eng = EnginesOSapi.LoadMangedService(containerName,engines_api)
+         eng = EnginesOSapi.loadManagedService(containerName,engines_api)
        end
        res =  containerName + ":" + engines_api.logs_container
 
@@ -51,7 +51,7 @@ def do_cmd(c_type,containerName,command)
     if c_type == "container"
          eng = engines_api.loadManagedEngine(containerName)
        else
-         eng = EnginesOSapi.LoadMangedService(containerName,engines_api)
+         eng = EnginesOSapi.loadManagedService(containerName,engines_api)
        end
        res =  containerName + ":" + engines_api.ps_container
     when "destroy"
@@ -118,7 +118,7 @@ def do_cmd(c_type,containerName,command)
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi.LoadMangedService(containerName,engines_api)
+      eng = EnginesOSapi.loadManagedService(containerName,engines_api)
     end
     if eng.is_a?(EnginesOSapiResult) == false
         res = eng.stats
@@ -145,7 +145,7 @@ def do_cmd(c_type,containerName,command)
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi.LoadMangedService(containerName,engines_api)
+      eng = EnginesOSapi.loadManagedService(containerName,engines_api)
     end
   
     res =  eng.last_error
