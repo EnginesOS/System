@@ -178,7 +178,7 @@ containerName = ARGV[2]
     if c_type == "container"
       engines = engines_api.getManagedEngines()
       engines.each do |engine|     
-        puts engine.containerNam
+        puts engine.containerName
         do_cmd(c_type,engine.containerName,command)
       end
     elsif c_type == "service"
