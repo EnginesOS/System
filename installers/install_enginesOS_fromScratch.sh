@@ -101,14 +101,27 @@ function set_permissions {
 	}
 
 function set_os_flavor {
-	if test $1 = "ubuntu"
+	if test `uname -v |grep Ubuntu |wc -c` -gt 0
 	then
 		files=`find /opt/engos/system/images/ -name "*.ubuntu"`
 			for file in $files
 				do
 					new_name=`echo $file | sed "/.ubuntu/s///"`
-					cp $file $new_name
+					rm $new_name
+					mv $file $new_name
 				done
+	elif test `uname -v |grep Debian  |wc -c` -gt 0
+	then
+		for file in $files
+				do
+					new_name=`echo $file | sed "/.debian/s///"`
+					rm $new_name
+					mv $file $new_name
+				done
+		else
+			echo "Unsupported Linux Flavor "
+			unname -v
+			exit	
 	fi
 }
 
