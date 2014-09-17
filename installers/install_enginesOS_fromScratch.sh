@@ -25,7 +25,7 @@ function configure_git {
 }
   
   function install_docker_and_components {
-		  cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" >> /tmp/rc.local
+		  cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
@@ -90,7 +90,7 @@ function generate_keys {
 	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
-	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//$key/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
+	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
 	cp ddns.* /opt/engos/system/images/01.baseImages/01.base/
 	mv ddns.* /opt/engos/etc/keys/
 }

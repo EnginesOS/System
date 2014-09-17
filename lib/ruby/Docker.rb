@@ -46,6 +46,7 @@ class Docker
      
      ret_val = run_docker(commandargs,container)      
      if (ret_val == true) #FIXME need to remove .cid if no such container but keep if container failed to stop
+       container.set_container_id = nil
        if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
           File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
        end
@@ -112,7 +113,13 @@ class Docker
      if File.exists? cidfile
        File.delete cidfile
      end
-     return  run_docker(commandargs,container)
+     retval = run_docker(commandargs,container)
+      if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
+        container.set_container_id container.last_result
+      end
+      
+     return retval  
+     
    end
    
    def start_container   container      

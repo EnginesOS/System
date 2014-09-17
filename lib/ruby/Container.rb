@@ -9,6 +9,14 @@ class Container
     @eports = e_ports
     @volumes = vols
     @environments = environs
+    @container_id
+  end
+  
+  def container_id
+    return @container_id
+  end
+  def set_container_id id
+    @container_id = id
   end
   def memory
      return @memory
