@@ -53,6 +53,7 @@ function configure_git {
 		 #Only Remove if not present
 		 if test $bind -eq 0
 		 	then
+		 	service bind9 stop
 		 		update-rc.d bind9 remove
 		 	fi
 		 
@@ -95,7 +96,7 @@ function generate_keys {
 }
 
 function set_permissions {
-	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/
+	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/ 
 	
 	}
 
@@ -155,9 +156,6 @@ mkdir -p /var/lib/engos/fs
 set_permissions
 
 su -l dockuser /opt/engos/bin/buildimages.sh
-
-
-
 
 
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
