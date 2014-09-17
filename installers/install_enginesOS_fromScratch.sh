@@ -147,12 +147,12 @@ install_docker_and_components
 configure_git 
 generate_keys
 set_os_flavor
-set_permissions
 
 setup_mgmt_git
 
+mkdir -p /var/lib/engos/fs
 
-mkdir -p /var/lib/engos
+set_permissions
 
 su -l dockuser /opt/engos/bin/buildimages.sh
 

@@ -232,7 +232,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval =  engine.register_site()
     if retval != true
-      return failed(engine_name,engine.last_error,"Register Engine Web Site")
+      return failed(engine_name,retval,"Register Engine Web Site")
     end
     return sucess(engine_name,"Register Engine Web Site")
   end
@@ -244,7 +244,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval =   engine.deregister_site()
     if retval != true
-      return failed(engine_name,engine.last_error,"DeRegister Engine Web Site")
+      return failed(engine_name,retval,"DeRegister Engine Web Site")
     end
     return sucess(engine_name,"DeRegister Engine Web Site")
   end
@@ -256,7 +256,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval = engine.register_dns()
     if retval != true
-      return failed(engine_name,engine.last_error,"Register Engine DNS")
+      return failed(engine_name,retval,"Register Engine DNS")
     end
     return sucess(engine_name,"Register Engine DNS")
   end
@@ -268,7 +268,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval = engine.deregister_dns()
     if retval != true
-      return failed(engine_name,engine.last_error,"DeRegister Engine DNS")
+      return failed(engine_name,retval,"DeRegister Engine DNS")
     end
     return sucess(engine_name,"DeRegister Engine DNS")
   end
@@ -280,7 +280,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval = engine.monitor_site()
     if retval != true
-      return failed(engine_name,engine.last_error,"Monitor Engine")
+      return failed(engine_name,retval,"Monitor Engine")
     end
     return sucess(engine_name,"Monitor Engine")
   end
@@ -292,7 +292,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     end
     retval = engine.demonitor_site()
     if retval != true
-      return failed(engine_name,engine.last_error,"DeMonitor Engine")
+      return failed(engine_name,retval,"DeMonitor Engine")
     end
     return sucess(engine_name,"DeMonitor Engine")
   end

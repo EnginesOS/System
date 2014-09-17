@@ -162,7 +162,7 @@ class Docker
     dns_cmd_file.puts("send")
     dns_cmd_file.close
     cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
-    retval = run_system(cmd_str) 
+    retval = run_system(cmd_str)      
     File.delete(dns_cmd_file_name)
     return retval
   end
