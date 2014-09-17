@@ -118,7 +118,7 @@ function create_services {
 function setup_mgmt_git {
 
 	 cd /opt/engos/system/images/04.systemApps/mgmt/home/app
-	  if !test -f .git/config
+	  if test ! -f .git/config
 		then
 			git init
 			echo '[core]
