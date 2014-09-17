@@ -120,7 +120,7 @@ function set_os_flavor {
 				done
 		else
 			echo "Unsupported Linux Flavor "
-			unname -v
+			uname -v
 			exit	
 	fi
 }
