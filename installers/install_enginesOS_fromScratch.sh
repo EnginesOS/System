@@ -116,6 +116,7 @@ function create_services {
 }
 
 function setup_mgmt_git {
+rm 
 	cd /opt/engos/system/images/04.systemApps/mgmt/home/app
 	git init
 	echo '[core]
