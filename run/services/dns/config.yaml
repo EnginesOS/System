@@ -18,7 +18,7 @@ eports:
   name: web
   port: 53
   publicFacing: true
-  type: udp
+  proto_type: udp
   external: 53
 repo: na
 last_result: |
