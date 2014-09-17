@@ -116,23 +116,26 @@ function create_services {
 }
 
 function setup_mgmt_git {
-rm 
-	cd /opt/engos/system/images/04.systemApps/mgmt/home/app
-	git init
-	echo '[core]
-		        repositoryformatversion = 0
-		        filemode = true
-		        bare = false
-		        logallrefupdates = true
-		[branch "master"]
-		[remote "origin"]
-		        url = https://github.com/EnginesOS/SystemGui.git
-		        fetch = +refs/heads/*:refs/remotes/origin/*
-		[branch "master"]
-		        remote = origin
-		        merge = refs/heads/master
-		' > .git/config
-	git pull
+
+	 cd /opt/engos/system/images/04.systemApps/mgmt/home/app
+	  if !test -f .git/config
+		then
+			git init
+			echo '[core]
+				        repositoryformatversion = 0
+				        filemode = true
+				        bare = false
+				        logallrefupdates = true
+				[branch "master"]
+				[remote "origin"]
+				        url = https://github.com/EnginesOS/SystemGui.git
+				        fetch = +refs/heads/*:refs/remotes/origin/*
+				[branch "master"]
+				        remote = origin
+				        merge = refs/heads/master
+				' > .git/config		
+		fi
+		git pull
 }
 
 install_docker_and_components
