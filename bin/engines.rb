@@ -22,11 +22,16 @@ def do_cmd(c_type,containerName,command)
           case eng.setState
           when "running"
             res = "Error:starting " + containerName + " was in " + state
-            do_cmd(c_type,containerName,"start")
+              if state == "noncontainer"
+                do_cmd(c_type,containerName,"create")
+              elsif state == "paused"
+                do_cmd(c_type,containerName,"unpause")
+              else
+                do_cmd(c_type,containerName,"start")
+              end
           when "stopped"
             res = "Error:stopping " + containerName + " was in " + state
-            do_cmd(c_type,containerName,"stop")
-            
+            do_cmd(c_type,containerName,"stop")            
           end
         end 
         
