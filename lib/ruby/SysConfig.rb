@@ -12,7 +12,7 @@ class SysConfig
   @@DeploymentDir="/home/dockuser/droplets/deployment/deployed"
   @@DeploymentTemplates="/opt/engos/system/templates/deployment"
   @@CONTFSVolHome = "/home/app/fs"
-  @@LocalFSVolHome = "/var/engos/fs"
+  @@LocalFSVolHome = "/var/lib/engos/fs"
   @@galleriesDir = "/opt/engos/etc/galleries"
   @@ddnsKey = "/opt/engos/etc/keys/ddns.key"
   @@internalDomain = "engines.local"

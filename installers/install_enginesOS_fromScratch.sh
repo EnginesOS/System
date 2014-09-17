@@ -25,7 +25,7 @@ function configure_git {
 }
   
   function install_docker_and_components {
-		  cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh/" >> /tmp/rc.local
+		  cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" >> /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
@@ -40,6 +40,11 @@ function configure_git {
 		 
 		 echo "DOCKER_OPTS=\"--dns  172.17.42.1 --dns 8.8.8.8\" " >> /etc/default/docker 
 		 
+		 #need to restart to get dns set
+		 service docker stop
+		 sleep 20
+		 service docker start
+		  
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
@@ -61,7 +66,7 @@ function configure_git {
 		
 		
 		/usr/local/rvm/bin/rvm install ruby-2.1.1
-		 rvm use ruby-2.1.1 
+		 /usr/local/rvm/bin/rvm use ruby-2.1.1 
 		
 gem install git
 
@@ -97,7 +102,7 @@ function set_permissions {
 function set_os_flavor {
 	if test $1 = "ubuntu"
 	then
-		files=`find system/images/ -name "*.ubuntu"`
+		files=`find /opt/engos/system/images/ -name "*.ubuntu"`
 			for file in $files
 				do
 					new_name=`echo $file | sed "/.ubuntu/s///"`
