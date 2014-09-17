@@ -196,6 +196,14 @@ end
 c_type= ARGV[0]
 if c_type== "engine"
   c_type = "container"
+elsif c_type != "service"
+  puts("unknown container type: Please use engine or service")
+  exit
+end
+
+if ARGV.length != 3
+  puts("Usage engines.rb service|engine command engine_name|service_name")
+  puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
 end
 
 command = ARGV[1]

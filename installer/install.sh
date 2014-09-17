@@ -14,8 +14,11 @@
  echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
  apt-get -y update
  apt-get -y install lxc-docker
+ 
+ #kludge to deal with the fact we install bind just to get dnssec-keygen
  bind=`service bind9 status  |grep unrecognized | wc -l`
- apt-get -y install imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget
+ 
+ apt-get -y install imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git
  
  #Only Remove if not present
  if test $bind -eq 0
@@ -41,6 +44,7 @@ mkdir -p /opt/engos/
 mkdir -p /var/lib/engos
 
 cd /opt/engos
+
 git init 
 
 echo '[core]\
@@ -57,6 +61,8 @@ echo '[core]\
         merge = refs/heads/master\
 ' > .git/config
 git pull
+
+cd /opt/engos
 
 dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 mv *private ddns.private
@@ -75,8 +81,19 @@ mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 
 key=`cat ddns.private |grep Key | cut -f2 -d" "`
 cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//$key/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
+mv ddns.* /opt/engos/etc/keys/
 
 chown -R dockuser /opt/engos/ /var/lib/engos
+
+if test $1 = "ubuntu"
+then
+	files=`find system/images/ -name "*.ubuntu"`
+		for file in $files
+			do
+				new_name=`echo $file | sed "/.ubuntu/s///"`
+				cp $file $new_name
+			done
+fi
 
 su -l dockuser /opt/engos/bin/buildimages.sh
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
