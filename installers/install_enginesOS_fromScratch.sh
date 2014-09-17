@@ -107,12 +107,12 @@ function set_os_flavor {
 }
 
 function create_services {
-	/opt/engos/bin/engines.rb service create dns
+	su -l dockuser /opt/engos/bin/engines.rb service create dns
 	sleep 30
-	/opt/engos/bin/engines.rb service create mysql_server
-	/opt/engos/bin/engines.rb service create nginx
-	/opt/engos/bin/engines.rb service create monit
-	/opt/engos/bin/engines.rb service create cAdvisor
+	su -l dockuser /opt/engos/bin/engines.rb service create mysql_server
+	su -l dockuser /opt/engos/bin/engines.rb service create nginx
+	su -l dockuser /opt/engos/bin/engines.rb service create monit
+	su -l dockuser /opt/engos/bin/engines.rb service create cAdvisor
 }
 
 function setup_mgmt_git {
@@ -148,7 +148,7 @@ mkdir -p /var/lib/engos
 
 su -l dockuser /opt/engos/bin/buildimages.sh
 
-create_services
+
 
 
 
