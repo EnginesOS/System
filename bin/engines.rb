@@ -22,7 +22,7 @@ def do_cmd(c_type,containerName,command)
           case eng.setState
           when "running"
             res = "Error:starting " + containerName + " was in " + state
-              if state == "noncontainer"
+              if state == "nocontainer"
                 do_cmd(c_type,containerName,"create")
               elsif state == "paused"
                 do_cmd(c_type,containerName,"unpause")
