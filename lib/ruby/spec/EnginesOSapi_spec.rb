@@ -155,7 +155,8 @@ describe "#Engine DNS registration tests, " do
         it "Tests the DNS Engine registration" do
           #make sure dns up
           result =  @enginesapi.startService("dns")
-          
+          #if dns was down need to register nginx(for time being)
+          @enginesapi.registerEngineDNS("nginx")
                     
           result = @enginesapi.registerEngineDNS("testcontainer")
           result.was_sucess.should eql true 
