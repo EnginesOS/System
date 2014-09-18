@@ -1,4 +1,4 @@
-#!/usr/local/rvm/rubies/ruby-2.1.1/bin/ruby
+#!/usr/local/rvm/bin/rvm-auto-ruby
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/SysConfig.rb"
 require "/opt/engos/lib/ruby/ManagedEngine.rb"

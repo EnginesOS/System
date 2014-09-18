@@ -119,7 +119,7 @@ echo "Building Images"
 remove_services
 create_services
 
-#Fix me need to do a full regen here or atlest trigger notifcation it needs to be done.
+#Fix me need to do a full regen here or atleast trigger notifcation it needs to be done.
 docker stop mgmt
 docker rm mgmt
 
