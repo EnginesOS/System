@@ -85,6 +85,7 @@ echo "Installing ruby"
   }
 
 function generate_keys {
+echo "Generating system Keys"
 	dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
@@ -107,11 +108,13 @@ function generate_keys {
 }
 
 function set_permissions {
+echo "Setting directory and file permissions"
 	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/ 
 	
 	}
 
 function set_os_flavor {
+echo "Configuring OS Specific Dockerfiles"
 	if test `uname -v |grep Ubuntu |wc -c` -gt 0
 	then
 		files=`find /opt/engos/system/images/ -name "*.ubuntu"`
@@ -137,6 +140,7 @@ function set_os_flavor {
 }
 
 function create_services {
+echo "Creating and startingg Engines OS Services"
 	su -l dockuser /opt/engos/bin/engines.rb service create dns
 	sleep 30
 	su -l dockuser /opt/engos/bin/engines.rb service create mysql_server
@@ -146,7 +150,7 @@ function create_services {
 }
 
 function setup_mgmt_git {
-
+echo "Seeding Mgmt Application source from repository"
 	 cd /opt/engos/system/images/04.systemApps/mgmt/home/app
 	  if test ! -f .git/config
 		then
@@ -179,10 +183,14 @@ mkdir -p /var/lib/engos/fs
 
 set_permissions
 
+echo "Building Images"
 su -l dockuser /opt/engos/bin/buildimages.sh
 
-
+echo "System startup"
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
+sleep 180
+hostname=`hostname`
+echo "Congratulations Engines OS is now installed please go to http://${hostname}:88/"
 
 
  
