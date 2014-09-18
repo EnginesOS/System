@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:DNSService
 containerName: dns
 ctype: service
 conf_self_start: true

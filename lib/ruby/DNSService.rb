@@ -1,6 +1,6 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/ManagedService.rb"
-class NginxService < ManagedService 
+class DNSService < ManagedService 
   
   def add_consumer_to_service(site_string,engine)
       ip_str = engine.get_ip_str
