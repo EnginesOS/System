@@ -190,6 +190,8 @@ set_permissions
 echo "Building Images"
 su -l dockuser /opt/engos/bin/buildimages.sh
 
+create_services
+
 echo "System startup"
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
 sleep 180
