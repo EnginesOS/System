@@ -102,8 +102,17 @@ echo "Seeding Mgmt Application source from repository"
 }
 
 
-cd /opt/engos
-git pull
+if test ! -f /tmp/updater.updated
+then
+	cd /opt/engos
+	echo "Downloading changes"
+	git pull
+	touch /tmp/updater.updated
+	echo "Applying changes"
+	$0
+	rm /tmp/updater.updated
+	exit
+fi
 
 
 generate_keys
@@ -119,7 +128,7 @@ echo "Building Images"
 remove_services
 create_services
 
-#Fix me need to do a full regen here or atleast trigger notifcation it needs to be done.
+#Fix me need to do a full regen here for all engines or atleast trigger notifcation it needs to be done.
 docker stop mgmt
 docker rm mgmt
 
