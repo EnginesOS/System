@@ -77,7 +77,7 @@ echo "Installing ruby"
 		
 		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
 
-		/usr/local/rvm/bin/rvm  --default use $RUBY_VER
+		rvm  --default use ruby-$RUBY_VER
 		 
 		gem install git
  		/usr/local/rvm/bin/rvm gemset create git

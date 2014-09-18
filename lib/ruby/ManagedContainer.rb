@@ -365,20 +365,24 @@ class ManagedContainer < Container
   
   def register_dns 
     if @docker_api == nil
-      @last_error="No connection to Engines OS System"      
-      return false
-    end
-    ip_str = get_ip_str
-    @docker_api.register_dns(@hostName,ip_str)
+       @last_error="No connection to Engines OS System"      
+       return false
+     end
+     service =  EnginesOSapi.loadManagedService("dns",@docker_api)
+     service.add_consumer(self)
+
+   
   end
   
   def deregister_dns
     if @docker_api == nil
-      @last_error="No connection to Engines OS System"      
-      return false
-    end
-    ip_str =  get_ip_str
-    @docker_api.deregister_dns(@hostName,ip_str)
+       @last_error="No connection to Engines OS System"      
+       return false
+     end
+     service =  EnginesOSapi.loadManagedService("dns",@docker_api)
+     service.rm_consumer(self)
+
+   
   
   end
 
