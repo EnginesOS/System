@@ -115,7 +115,7 @@ then
 fi
 
 
-generate_keys
+#generate_keys
 set_os_flavor
 
 setup_mgmt_git
