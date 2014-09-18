@@ -39,6 +39,7 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f nginx
 	
 	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/
+	mv  mgmt.pub  nagios.pub  mysql.pub  nginx.pub  /opt/engos/etc/keys/
 		
 	mv /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/
