@@ -132,8 +132,12 @@ class EngineBuilder
          workers.each do |worker|
            commands.push(worker["command"])  
          end  
-       if commands.length >0
+       if commands.length >0           
                 cmdf= File.open(SysConfig.DeploymentDir + "/" + buildname + "/home/pre-running.sh","w")
+                if !cmdf
+                  puts ("failed to open " + SysConfig.DeploymentDir + "/" + buildname + "/home/pre-running.sh")
+                  exit
+                end
                 cmdf.puts("#!/bin/bash")
                 cmdf.puts("cd /home/app")
                  commands.each do |command|
