@@ -1,5 +1,5 @@
  #!/bin/bash
-
+RUBY_VER=2.1.2
 
 
 function configure_git {
@@ -25,19 +25,26 @@ function configure_git {
 }
   
   function install_docker_and_components {
-		  cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" > /tmp/rc.local
+  
+  echo "updating OS to Latest"
+  apt-get -y  --force-yes update
+  apt-get -y  --force-yes upgrade
+  
+  echo "Adding startup script"
+		 cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
 		 chmod u+x  /etc/rc.local
 		 
 		
-		
+echo "Installing Docker"		
 		 apt-get install apt-transport-https
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
 		 apt-get -y  --force-yes install lxc-docker
-		 
+	
+echo "Configuring Docker DNS settings"	 
 		 echo "DOCKER_OPTS=\"--dns  172.17.42.1 --dns 8.8.8.8\" " >> /etc/default/docker 
 		 
 		 #need to restart to get dns set
@@ -45,6 +52,7 @@ function configure_git {
 		 sleep 20
 		 service docker start
 		  
+echo "Installing required  packages"
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
@@ -57,19 +65,22 @@ function configure_git {
 		 		update-rc.d bind9 remove
 		 	fi
 		 
+echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
 		 adduser -q --uid 21000 --ingroup docker  -gecos "Engines OS User"  --home /home/dockuser --disabled-password dockuser
 		 
 		echo "PATH=\"/opt/engos/bin:$PATH\"" >>~dockuser/.profile 
 		
+echo "Installing ruby"
 		\curl -L https://get.rvm.io | bash -s stable 
-		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 
+		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 		
 		
-		
-		/usr/local/rvm/bin/rvm install ruby-2.1.1
-		 /usr/local/rvm/bin/rvm use ruby-2.1.1 
-		
-gem install git
+		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
+
+		/usr/local/rvm/bin/rvm  --default use $RUBY_VER
+		 
+		gem install git
+ 		/usr/local/rvm/bin/rvm gemset create git
 
   }
 

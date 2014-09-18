@@ -334,6 +334,7 @@ class EngineBuilder
        res= %x<#{cmd}>
        if $? == false
          puts "build init failed " + res
+         return res
        end 
        puts res
      end
@@ -348,6 +349,7 @@ class EngineBuilder
        res= %x<#{cmd}>
               if $? == false
                 puts "build setup failed " +res
+                return res
               end 
        puts res     
      end
@@ -369,16 +371,18 @@ class EngineBuilder
        puts res
                      if $? == false
                        puts "build deploy failed " +res
+                       return res
                      end 
        cmd = "docker commit  deploy " + @hostName + "/deploy"
        res= %x<#{cmd}>
                           if $? == false
                             puts "build deploy commit failed " +res
+                            return res
                           end 
        cmd= "docker rm deploy "
        res= %x<#{cmd}>
        cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
-         
+       res= %x<#{cmd}>
      end
      
      def launch_deploy managed_container
