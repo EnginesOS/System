@@ -72,16 +72,7 @@ class ManagedService < ManagedContainer
      return ret_val
    end
 
-   def add_consumer_to_service(site_string,engine)
-     ip_str = engine.get_ip_str
-      return  engine.docker_api.register_dns(engine.hostName,ip_str)
-     
-   end
-   
-   def rm_consumer_from_service (site_string,engine)
-     ip_str = engine.get_ip_str
-      return  engine.docker_api.deregister_dns(engine.hostName,ip_str)
-   end
+  
 
   def remove_consumer engine
       site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   
