@@ -15,14 +15,11 @@ function remove_services {
 echo "Creating and starting Engines OS Services"
 
 	 /opt/engos/bin/engines.rb service stop dns
-	sleep 30
 	 /opt/engos/bin/engines.rb service stop mysql_server
 	 /opt/engos/bin/engines.rb service stop nginx
 	 /opt/engos/bin/engines.rb service stop monit
 	 /opt/engos/bin/engines.rb service stop cAdvisor
-	 
-	 /opt/engos/bin/engines.rb service rm dns
-	sleep 30
+	  docker rm dns
 	 docker rm mysql_server
 	 docker  rm nginx
 	 docker rm monit
@@ -34,6 +31,7 @@ echo "Generating system Keys"
 	dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
+	mv ddns.* /opt/engos/etc/keys/
 	
 	ssh-keygen -q -N "" -f nagios
 	ssh-keygen -q -N "" -f mysql
@@ -41,15 +39,16 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f nginx
 	
 	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/
-	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
-	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-	mv nginx.pub /opt/engos/system/images/04.systemApps/nginx/
-	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
+		
+	mv /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
+	mv /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/
+	mv /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/
+	mv /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	
-	key=`cat ddns.private |grep Key | cut -f2 -d" "`
+	key=`cat /opt/engos/etc/keys/ddns.private |grep Key | cut -f2 -d" "`
 	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cp ddns.* /opt/engos/system/images/01.baseImages/01.base/
-	mv ddns.* /opt/engos/etc/keys/
+	cp /opt/engos/etc/keys/ddns.* /opt/engos/system/images/01.baseImages/01.base/
+
 }
 
 function set_os_flavor {
