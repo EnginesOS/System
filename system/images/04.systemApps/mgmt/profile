@@ -21,11 +21,7 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-PATH=" /usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:/opt/mpas/bin:/opt/mpas/etc/services.d:$PATH"
-GEM_HOME=/usr/local/rvm/gems/ruby-2.1.1
-GEM_PATH=/usr/local/rvm/gems/ruby-2.1.1:/usr/local/rvm/gems/ruby-2.1.1@global
-MY_RUBY_HOME=/usr/local/rvm/rubies/ruby-2.1.1
-RPATH=/usr/local/rvm/gems/ruby-2.1.1/bin:/usr/local/rvm/gems/ruby-2.1.1@global/bin:/usr/local/rvm/rubies/ruby-2.1.1/bin:/usr/local/rvm/bin:
-RUBY_VERSION=ruby-2.1.1
+. /etc/profile.d/rvm.sh
+
 
 

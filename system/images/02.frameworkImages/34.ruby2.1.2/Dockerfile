@@ -22,3 +22,4 @@ ENV ContUser ruby
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
 RUN echo ".  /etc/rvmrc " >> /home/ruby/.profile
+RUN echo "rvm  --default use ruby-2.1.2" >> /home/ruby/.profile
