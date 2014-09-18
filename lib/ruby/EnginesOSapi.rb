@@ -7,7 +7,7 @@ require "/opt/engos/lib/ruby/NagiosService.rb"
 require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
-  
+require "/opt/engos/lib/ruby/DNSService.rb"
   
   class EnginesOSapi
   def initialize()
@@ -440,7 +440,7 @@ require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
     return sucess(service_name,"Recreate Service")
   end
 
-  protected
+  #protected if protected static cant call
 
   def sucess (item_name ,cmd)
     return  EnginesOSapiResult.new(true,0,item_name, "OK",cmd)

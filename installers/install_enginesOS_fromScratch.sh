@@ -81,7 +81,11 @@ echo "Installing ruby"
 		 
 		gem install git
  		/usr/local/rvm/bin/rvm gemset create git
-
+ 		#Following needed for rspec tests
+		gem install multi_json
+		/usr/local/rvm/bin/rvm gemset create multi_json
+		gem install multi_json rspec
+		/usr/local/rvm/bin/rvm gemset create 	rspec
   }
 
 function generate_keys {
