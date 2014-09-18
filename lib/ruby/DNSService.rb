@@ -19,7 +19,7 @@ class DNSService < ManagedService
       strings = site_string.split(':')
       ip_str = strings[2]
           hostName = strings[1]
-       return  @docker_api.deregister_dns(engine.hostName,ip_str)
+       return  @docker_api.deregister_dns(hostName,ip_str)
     end
   
 end
