@@ -53,10 +53,13 @@ class ManagedService < ManagedContainer
     return @consumers
 	end
 	
-
+	def get_site_string(engine)
+	  return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   	  
+	end
+	
   def add_consumer(engine)
-     site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s    
-     ret_val = add_consumer_to_service(site_string,engine)
+    site_string = get_site_string(engine)
+     ret_val = add_consumer_to_service(site_string)
      if ret_val != true
        return false
      end
@@ -75,8 +78,8 @@ class ManagedService < ManagedContainer
   
 
   def rm_consumer engine
-      site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   
-      result = rm_consumer_from_service(site_string,engine)
+    site_string = get_site_string(engine)
+      result = rm_consumer_from_service(site_string)
      
       if(@consumers !=  nil || @consumes.length>0)
              @consumers.delete(site_string)
@@ -84,6 +87,7 @@ class ManagedService < ManagedContainer
       save_state
       return result
     end
+    
 	def create_service() 
 	
     if create_container() ==true
@@ -109,6 +113,10 @@ class ManagedService < ManagedContainer
     end
     
     def reregister_consumers
+      @consumers.each do |site|
+         add_consumer_to_service(site_string,nil)
+      end
+           
     end
     
   def destroy 
