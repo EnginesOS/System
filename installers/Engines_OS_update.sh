@@ -41,10 +41,10 @@ echo "Generating system Keys"
 	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/
 	cp  mgmt.pub  nagios.pub  mysql.pub  nginx.pub  /opt/engos/etc/keys/
 		
-	mv /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
-	mv /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-	mv /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/
-	mv /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
+	cp /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
+	cp /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/
+	cp /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/
+	cp /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	
 	key=`cat /opt/engos/etc/keys/ddns.private |grep Key | cut -f2 -d" "`
 	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
