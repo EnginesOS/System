@@ -74,7 +74,7 @@ class ManagedService < ManagedContainer
 
   
 
-  def remove_consumer engine
+  def rm_consumer engine
       site_string=engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   
       result = rm_consumer_from_service(site_string,engine)
      
