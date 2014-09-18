@@ -23,10 +23,10 @@ echo "Creating and starting Engines OS Services"
 	 
 	 /opt/engos/bin/engines.rb service rm dns
 	sleep 30
-	 /opt/engos/bin/engines.rb service rm mysql_server
-	 /opt/engos/bin/engines.rb service rm nginx
-	 /opt/engos/bin/engines.rb service rm monit
-	 /opt/engos/bin/engines.rb service rm cAdvisor 
+	 docker rm mysql_server
+	 docker  rm nginx
+	 docker rm monit
+	 docker  rm cAdvisor 
 }
 
 function generate_keys {
