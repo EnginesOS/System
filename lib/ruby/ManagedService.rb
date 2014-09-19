@@ -68,7 +68,7 @@ class ManagedService < ManagedContainer
 
   
 
-  def rm_consumer engine
+  def remove_consumer engine
     site_string = get_site_string(engine)
       result = rm_consumer_from_service(site_string)
      

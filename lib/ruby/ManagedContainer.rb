@@ -380,7 +380,7 @@ class ManagedContainer < Container
        return false
      end
      service =  EnginesOSapi.loadManagedService("dns",@docker_api)
-    return service.rm_consumer(self)
+    return service.remove_consumer(self)
 
   end
 
