@@ -27,8 +27,11 @@ function configure_git {
   function install_docker_and_components {
   
   echo "updating OS to Latest"
+  
   apt-get -y  --force-yes update
-  apt-get -y  --force-yes upgrade
+  
+  #Not something we should do as can ask grub questions and will confuse no techy on aws
+  #apt-get -y  --force-yes upgrade
   
   echo "Adding startup script"
 		 cat /etc/rc.local | sed "/exit.*/s/su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh//" > /tmp/rc.local
