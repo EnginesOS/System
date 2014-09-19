@@ -6,7 +6,7 @@ class NginxService < ManagedService
       return  @docker_api.register_site(site_string) 
      end
   def rm_consumer_from_service (site_string)
-       return  @docker_api.derregister_site(site_string) 
+       return  @docker_api.deregister_site(site_string) 
     end 
      
 #  def add_consumer(engine)
