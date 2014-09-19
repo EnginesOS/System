@@ -106,7 +106,7 @@ class ManagedService < ManagedContainer
     
     def reregister_consumers
       @consumers.each do |site|
-         add_consumer_to_service(get_site_string)
+         add_consumer_to_service(site)
       end
            
     end
