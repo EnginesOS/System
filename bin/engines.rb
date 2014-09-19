@@ -189,7 +189,7 @@ def do_cmd(c_type,containerName,command)
  
      if res !=nil && res.is_a?(EnginesOSapiResult)    
        if res.was_sucess == false
-         puts ("Failed:" + res.result_mesg)
+         puts ("Failed:" + res.result_mesg.to_s)
        else
          puts(res.result_mesg)
      end
