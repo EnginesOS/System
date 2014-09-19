@@ -61,14 +61,15 @@ class ManagedService < ManagedContainer
     site_string = get_site_string(engine)
      ret_val = add_consumer_to_service(site_string)
      p ret_val
+    p site_string
      if ret_val != true
        return ret_val
      end
- 
+    p site_string
       if @consumers == nil
         @consumers = Array.new
       end
-      
+    p site_string
       if @consumers.include?(site_string) == false     # only add if doesnt exists but allow register
         p site_string
         @consumers.push(site_string)
