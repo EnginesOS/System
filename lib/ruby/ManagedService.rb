@@ -60,6 +60,7 @@ class ManagedService < ManagedContainer
   def add_consumer(engine)
     site_string = get_site_string(engine)
      ret_val = add_consumer_to_service(site_string)
+     p ret_val
      if ret_val != true
        return ret_val
      end
