@@ -398,8 +398,8 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
     retval =   service.register_dns()
-    if retval != true
-      return failed(service_name,service.last_error,"Register Service DNS")
+    if  retval.engine.is_a?(String)       
+      return failed(service_name,retval,"Register Service DNS")
     end
     return sucess(service_name,"Register Service DNS")
   end
@@ -410,8 +410,8 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
     retval =   service.deregister_dns()
-    if retval != true
-      return failed(service_name,service.last_error,"Deregister Service DNS")
+    if  retval.engine.is_a?(String)  
+      return failed(service_name,retval,"Deregister Service DNS")
     end
     return sucess(service_name,"Deregister Service DNS")
   end
