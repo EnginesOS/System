@@ -402,7 +402,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     end
     retval =   service.register_dns()
     p retval
-    if  retval.is_a?(String)       
+    if retval != true   
       return failed(service_name,retval,"Register Service DNS")
     end
     return sucess(service_name,"Register Service DNS")
@@ -414,7 +414,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
     retval =   service.deregister_dns()
-    if  retval.is_a?(String)  
+    if retval != true  
       return failed(service_name,retval,"Deregister Service DNS")
     end
     return sucess(service_name,"Deregister Service DNS")

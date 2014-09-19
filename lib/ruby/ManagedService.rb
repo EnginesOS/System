@@ -61,7 +61,7 @@ class ManagedService < ManagedContainer
     site_string = get_site_string(engine)
      ret_val = add_consumer_to_service(site_string)
      if ret_val != true
-       return false
+       return ret_val
      end
  
       if @consumers == nil
