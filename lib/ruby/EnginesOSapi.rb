@@ -401,7 +401,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
     retval =   service.register_dns()
-    p retval
+
     if retval != true   
       return failed(service_name,retval,"Register Service DNS")
     end
