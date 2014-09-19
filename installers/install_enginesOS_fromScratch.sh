@@ -48,7 +48,7 @@ echo "Installing Docker"
 		 apt-get -y  --force-yes install lxc-docker
 	
 echo "Configuring Docker DNS settings"	 
-		 echo "DOCKER_OPTS=\"--dns  172.17.42.1 --dns 8.8.8.8\" " >> /etc/default/docker 
+		 echo "DOCKER_OPTS=\"--dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker 
 		 
 		 #need to restart to get dns set
 		 service docker stop
@@ -93,7 +93,7 @@ echo "Installing ruby"
 
 function generate_keys {
 echo "Generating system Keys"
-	dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
+	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
 	

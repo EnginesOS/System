@@ -28,7 +28,7 @@ echo "Creating and starting Engines OS Services"
 
 function generate_keys {
 echo "Generating system Keys"
-	dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
+	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
 	mv ddns.* /opt/engos/etc/keys/
@@ -115,7 +115,7 @@ then
 fi
 
 
-#generate_keys
+generate_keys
 set_os_flavor
 
 setup_mgmt_git

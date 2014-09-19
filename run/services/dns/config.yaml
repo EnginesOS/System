@@ -15,7 +15,7 @@ image: enginesos/dns
 volumes: []
 eports:
 - !ruby/object:WorkPort
-  name: web
+  name: dns
   port: 53
   publicFacing: true
   proto_type: udp
