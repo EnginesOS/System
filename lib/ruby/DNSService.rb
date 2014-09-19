@@ -10,7 +10,7 @@ class DNSService < ManagedService
   def add_consumer_to_service(site_string)
     strings = site_string.split(':')
       ip_str = strings[2]
-      hostName = strings[1]
+      hostName = strings[0]
       puts "dns " + site_string
        return  @docker_api.register_dns(hostName,ip_str)
       
