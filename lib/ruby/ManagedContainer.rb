@@ -369,7 +369,7 @@ class ManagedContainer < Container
        return false
      end
      service =  EnginesOSapi.loadManagedService("dns",@docker_api)
-     service.add_consumer(self)
+    return service.add_consumer(self)
 
    
   end
@@ -380,10 +380,8 @@ class ManagedContainer < Container
        return false
      end
      service =  EnginesOSapi.loadManagedService("dns",@docker_api)
-     service.rm_consumer(self)
+    return service.rm_consumer(self)
 
-   
-  
   end
 
   def get_ip_str

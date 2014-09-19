@@ -19,7 +19,7 @@ class DNSService < ManagedService
     def rm_consumer_from_service (site_string)
       strings = site_string.split(':')
       ip_str = strings[2]
-          hostName = strings[1]
+          hostName = strings[0]
          
        return  @docker_api.deregister_dns(hostName,ip_str)
     end
