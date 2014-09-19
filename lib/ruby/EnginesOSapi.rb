@@ -255,7 +255,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
     retval = engine.register_dns()
-    if retval.engine.is_a?(String) 
+    if retval.is_a?(String) 
       return failed(engine_name,retval,"Register Engine DNS")
     end
     return sucess(engine_name,"Register Engine DNS")
@@ -267,7 +267,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return failed(engine_name,"no Engine","DeRegister Engine DNS")
     end
     retval = engine.deregister_dns()
-    if  retval.engine.is_a?(String) 
+    if  retval.is_a?(String) 
       return failed(engine_name,retval,"DeRegister Engine DNS")
     end
     return sucess(engine_name,"DeRegister Engine DNS")
@@ -279,7 +279,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return failed(engine_name,"no Engine","Monitor Engine") 
     end
     retval = engine.monitor_site()
-    if  retval.engine.is_a?(String) 
+    if  retval.is_a?(String) 
       return failed(engine_name,retval,"Monitor Engine")
     end
     return sucess(engine_name,"Monitor Engine")
@@ -291,7 +291,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return failed(engine_name,"no Engine","DeMonitor Engine")
     end
     retval = engine.demonitor_site()
-    if  retval.engine.is_a?(String) 
+    if  retval.is_a?(String) 
       return failed(engine_name,retval,"DeMonitor Engine")
     end
     return sucess(engine_name,"DeMonitor Engine")
@@ -398,7 +398,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
     retval =   service.register_dns()
-    if  retval.engine.is_a?(String)       
+    if  retval.is_a?(String)       
       return failed(service_name,retval,"Register Service DNS")
     end
     return sucess(service_name,"Register Service DNS")
@@ -410,7 +410,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
     retval =   service.deregister_dns()
-    if  retval.engine.is_a?(String)  
+    if  retval.is_a?(String)  
       return failed(service_name,retval,"Deregister Service DNS")
     end
     return sucess(service_name,"Deregister Service DNS")
