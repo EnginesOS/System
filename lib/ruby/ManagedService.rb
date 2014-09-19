@@ -33,19 +33,9 @@ class ManagedService < ManagedContainer
                  @registerSite=false
                  @framework=framework
                  @runtime=runtime
- 
-         #  @addSiteCmd= SysConfig.addSiteCmd #="ssh -i  " + @KeyPath + "/" + @NgnixID  + " -o UserKnownHostsFile=/dev/null   rma@nginx.docker sudo sh /home/addsite.sh"
-          # @rmSiteCmd=SysConfig.rmSiteCmd #"ssh -i  " + @KeyPath + "/" + @NgnixID  + " -o UserKnownHostsFile=/dev/null   rma@nginx.docker sudo sh /home/rmsite.sh"
-           #@addSiteMonitorCmd=SysConfig.addSiteMonitorCmd #"ssh -i " + @KeyPath + "/" + @MonitID + "  -o UserKnownHostsFile=/dev/null   rma@monit.docker sudo sh /home/addsite.sh"
-           #@rmSiteMonitorCmd=SysConfig.rmSiteMonitorCmd #"ssh -i " + @KeyPath + "/" + @MonitID + " -o UserKnownHostsFile=/dev/null   rma@monit.docker sudo sh /home/rmsite.sh"               
-        #   @CidDir=SysConfig.CidDir #"/opt/mpas/run"
-      
-         end
 
+         end
  
- 
-    
-  
 	def consumers
 	    if @consumers == nil
 	      @consumers = Array.new
@@ -92,6 +82,7 @@ class ManagedService < ManagedContainer
 	def create_service() 
 	
     if create_container() ==true
+    reregister_consumers()
     save_state()
     return true
     else
@@ -115,7 +106,7 @@ class ManagedService < ManagedContainer
     
     def reregister_consumers
       @consumers.each do |site|
-         add_consumer_to_service(site_string,nil)
+         add_consumer_to_service(site_string)
       end
            
     end
