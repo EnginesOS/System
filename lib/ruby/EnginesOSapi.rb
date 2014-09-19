@@ -441,12 +441,18 @@ require "/opt/engos/lib/ruby/DNSService.rb"
   end
 
   #protected if protected static cant call
-
-  def EnginesOSapi.sucess (item_name ,cmd)
+  def sucess(item_name ,cmd)
+    EnginesOSapi.sucess(item_name ,cmd)
+  end
+  def failed(item_name,mesg ,cmd)
+    EnginesOSapi.failed(item_name,mesg ,cmd)
+  end
+  def EnginesOSapi.sucess(item_name ,cmd)
     return  EnginesOSapiResult.new(true,0,item_name, "OK",cmd)
   end
 
-  def EnginesOSapi.failed (item_name,mesg ,cmd)
+  def EnginesOSapi.failed(item_name,mesg ,cmd)
     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
   end
-end
+  
+  end
