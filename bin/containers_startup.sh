@@ -16,7 +16,6 @@ else
 	/opt/engos/bin/engines.rb service start nginx 
 fi
 
-sleep 20
 
 sleep 20
 /opt/engos/bin/engines.rb service check_and_act all
