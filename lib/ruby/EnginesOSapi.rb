@@ -254,8 +254,9 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     if  engine.is_a?(EnginesOSapiResult) 
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
-    retval = engine.register_dns()
     puts "Register Engine DNS"
+    retval = engine.register_dns()
+   
     p retval
     if retval.is_a?(String) 
       p retval
