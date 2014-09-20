@@ -115,7 +115,7 @@ class EngineBuilder
         if db_service.is_a?(DBManagedService)        
           db_service.add_consumer(db)
         else
-          p db
+          p db_service
           p db.result_mesg
         end
 
