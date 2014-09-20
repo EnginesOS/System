@@ -5,7 +5,7 @@ require 'spec_helper'
 
 describe Database do
   before :each do
-    @database = Database.new("name","host","user","pass","flavor")
+    @database = DatabaseService.new("name","host","user","pass","flavor")
   end
   
   describe "#new" do
