@@ -358,7 +358,7 @@ class EngineBuilder
       puts cmd
        res= %x<#{cmd}>
        
-       cmd = "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=64m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+       cmd = "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=128m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
          puts cmd
        res= %x<#{cmd}>
               if $? == false
