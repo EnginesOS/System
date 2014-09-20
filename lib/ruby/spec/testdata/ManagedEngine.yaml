@@ -32,7 +32,7 @@ repo: none
 last_result: ''
 setState: nocontainer
 databases:
-- !ruby/object:Database
+- !ruby/object:DatabaseService
   serviceType: database
   flavor: flavor
   dbHost: host

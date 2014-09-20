@@ -27,7 +27,7 @@ repo: repo
 last_result: None
 setState: setState
 databases:
-- !ruby/object:Database
+- !ruby/object:DatabaseService
  serviceType: database
  name: database_name
  flavor: database_type
