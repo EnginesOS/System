@@ -7,8 +7,9 @@ class DBManagedService < ManagedService
     
 #overloaded for the moment
   def add_consumer_to_service(site_string)
-      return true
+    return  @docker_api.create_database(site_string) 
      end
+     
   def rm_consumer_from_service (site_string)
        return  true
     end 

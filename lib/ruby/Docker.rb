@@ -258,4 +258,22 @@ class Docker
                      return blueprint
         end    
 
+  def create_database db_url    
+  #mysql:simpleinvoicedb:simpleinvoicedb@mysql.engines.local/simpleinvoicedb
+
+  type_and_user_details = db_url.split(":")
+  type=type_and_user_details[0]
+  user=type_and_user_details[1]
+  pass_and_the_rest = type_and_user_details[2].split("@")
+  pass = pass_and_the_rest[1]
+  
+    host_and_dbname = pass_and_the_rest.split("/")
+    host=host_and_dbname[0]
+    dbname = host_and_dbname[1] 
+  
+  cmd = SysConfig.addDBServiceCmd + host + " /home/createdb.sh " + dbname + " " + user + " " + pass 
+   puts(cmd)
+   
+     return run_system(cmd)
+  end
 end

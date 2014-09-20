@@ -98,20 +98,22 @@ class EngineBuilder
 
      def add_db_service name
        dbname=name #+ "-" + @hostName This - leads to issue with JDBC 
-       cmd = SysConfig.addDBServiceCmd + " " + dbname + " " + name + " " + name
-       puts(cmd)
-       system(cmd)
+
        #FIXME need to check above worked
-       dbf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/db.env","w")
+       dbf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/db.env","a+")
        #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ? 
        dbf.puts("dbname=" + dbname)
        dbf.puts("dbhost=" + SysConfig.DBHost)
        dbf.puts("dbuser=" + name)
        dbf.puts("dbpasswd=" + name)
+       
+       
        db = DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql")
-       @databases.push(db)
-       #Fixme need intelligence in service name
+       @databases.push(db) 
+       
+       
        db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
+       
         if db_service.is_a?(DBManagedService)        
           db_service.add_consumer(db)
         else

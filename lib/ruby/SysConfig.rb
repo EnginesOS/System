@@ -5,7 +5,7 @@ class SysConfig
   @@rmSiteCmd="ssh -i  /opt/engos/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.engines.local sudo sh /home/rmsite.sh"
   @@addSiteMonitorCmd="ssh -i  /opt/engos/etc/keys/nagios  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.local sudo sh /home/addsite.sh"
   @@rmSiteMonitorCmd="ssh -i  /opt/engos/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.local sudo sh /home/rmsite.sh"               
-  @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engos/etc/keys/mysql rma@mysql.engines.local  /home/createdb.sh "
+  @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engos/etc/keys/mysql rma@"  
   @@DBHost="mysql.engines.local"
   @@CidDir="/opt/engos/run"
   @@ContainersDir="/opt/engos/run/containers/"
