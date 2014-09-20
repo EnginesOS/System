@@ -1,6 +1,7 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/DatabaseService.rb"
 require "/opt/engos/lib/ruby/ManagedService.rb"
+
 class DBManagedService < ManagedService
 
     
