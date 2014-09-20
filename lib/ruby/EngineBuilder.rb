@@ -1,5 +1,6 @@
 #!/usr/local/rvm/rubies/ruby-2.1.1/bin/ruby
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
+require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/ManagedEngine.rb"
 require "/opt/engos/lib/ruby/SysConfig.rb"
 require "rubygems"
