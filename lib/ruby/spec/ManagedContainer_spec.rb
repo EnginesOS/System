@@ -259,7 +259,7 @@ describe ManagedContainer do
   describe "#databases" do
     it "Returns databases " do
       @managedContainer.databases.should be_an_instance_of Array
-      @managedContainer.databases[0].should be_an_instance_of Database
+      @managedContainer.databases[0].should be_an_instance_of DatabaseService
     end
   end
   describe "#setState" do

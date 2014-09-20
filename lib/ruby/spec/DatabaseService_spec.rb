@@ -10,7 +10,7 @@ describe DatabaseService do
   
   describe "#new" do
          it "takes 5 arguments and returns Service Object" do
-           @database.should be_an_instance_of Database
+           @database.should be_an_instance_of DatabaseService
          end
      end
     describe "#serviceType" do
