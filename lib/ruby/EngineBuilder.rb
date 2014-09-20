@@ -99,35 +99,34 @@ class EngineBuilder
      def add_db_service name
        dbname=name #+ "-" + @hostName This - leads to issue with JDBC 
 
-       #FIXME need to check above worked
+       
        dbf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/db.env","a+")
        #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ? 
        dbf.puts("dbname=" + dbname)
        dbf.puts("dbhost=" + SysConfig.DBHost)
        dbf.puts("dbuser=" + name)
-       dbf.puts("dbpasswd=" + name)
-       
+       dbf.puts("dbpasswd=" + name)       
        
        db = DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql")
        @databases.push(db) 
-       
-       
-       db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
-       
-        if db_service.is_a?(DBManagedService)        
-          db_service.add_consumer(db)
-        else
-          p db_service
-          p db.result_mesg
-        end
 
        dbf.close
      end
-
+     
+ def create_database_service db   
+   db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
+   if db_service.is_a?(DBManagedService)        
+     db_service.add_consumer(db)
+     return true
+   else
+     p db_service
+     p db_service.result_mesg
+     return false
+   end
+ end
+ 
      def add_file_service(name,dest)
-       if Dir.exists?(SysConfig.LocalFSVolHome + "/" + name ) ==false
-         Dir.mkdir(SysConfig.LocalFSVolHome + "/" + name)
-       end
+       
        permissions = PermissionRights.new(@hostName,"","")
        vol=Volume.new(name,SysConfig.LocalFSVolHome,dest,"rw",permissions)
        @vols.push(vol)
@@ -135,6 +134,12 @@ class EngineBuilder
        fsf.puts("VOLDIR=" + name)
        fsf.puts("CONTFSVolHome=" + vol.remotepath) #not nesscessary the same as dest used in constructor
        fsf.close
+     end
+     
+     def create_file_service vol
+       if Dir.exists?(SysConfig.LocalFSVolHome + "/" + name ) ==false
+                Dir.mkdir(SysConfig.LocalFSVolHome + "/" + name)
+              end
      end
  
   
@@ -517,9 +522,6 @@ class EngineBuilder
           build_setup
        puts("Building deploy image")
                build_deploy
-  
-     
-         
           
           mc = ManagedEngine.new(@hostName,
                                     @bluePrint["software"]["requiredmemory"].to_s ,
@@ -541,16 +543,21 @@ class EngineBuilder
          puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
        end
        
+        @databases.each do |db|        
+          create_database_service db
+        end 
+        
+       @vols.each do |vol|        
+         create_file_service vol
+       end 
+       
        if mc.save_blueprint(@bluePrint) == false
          puts "failed to save blueprint " + @bluePrint.to_s
        end
        
        mc.set_conf_register_site true # needs some intelligence here for worker only
        
-     
-
-     
-       
+      
        mc.save_state # no config.yaml throws a no such container so save so others can use
        bp = mc.load_blueprint
        p  bp
@@ -568,14 +575,4 @@ class EngineBuilder
 end
 
 
-#b=EngineBuilder.new(ARGV[0], ARGV[1], ARGV[2],ARGV[3])
-#FIXME roll this into engos script in bin
-
-
-#b.build_from_blue_print
-#puts b.bluePrint
-
-#mc = ManagedContainer.new(ARGV[0],ARGV[1],ARGV[2],ARGV[3],ARGV[4],ARGV[5],ARGV[6],ARGV[7],ARGV[8],ARGV[9])
-#initialize(name,type,memory,hostname,domain_name,image,volume,port,eports,repo)
-#mc.save
 
