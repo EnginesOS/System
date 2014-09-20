@@ -1,4 +1,4 @@
-require_relative '../Service.rb'
+require_relative '../StaticService.rb'
 require_relative '../DatabaseService.rb'
 
 require 'spec_helper'
