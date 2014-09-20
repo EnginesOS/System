@@ -112,8 +112,13 @@ class EngineBuilder
        @databases.push(db)
        #Fixme need intelligence in service name
        db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
-       db_service.add_consumer(db)
-       #FIXME add uri and jdbcl_url ?
+        if db_service == true        
+          db_service.add_consumer(db)
+        else
+          p db
+          p db.result_mesg
+        end
+
        dbf.close
      end
 
