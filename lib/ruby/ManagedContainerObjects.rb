@@ -4,7 +4,7 @@ require_relative 'VolumeService.rb'
 require_relative 'StaticService.rb'
 require_relative 'DatabaseService.rb'
 
-require_relative 'DBManagedService'
+require_relative 'DBManagedService.rb'
 
 
 
