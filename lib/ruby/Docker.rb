@@ -265,9 +265,9 @@ class Docker
   type=type_and_user_details[0]
   user=type_and_user_details[1]
   pass_and_the_rest = type_and_user_details[2].split("@")
-  pass = pass_and_the_rest[1]
+  pass = pass_and_the_rest[0]
   
-    host_and_dbname = pass_and_the_rest.split("/")
+    host_and_dbname = pass_and_the_rest[1].split("/")
     host=host_and_dbname[0]
     dbname = host_and_dbname[1] 
   
