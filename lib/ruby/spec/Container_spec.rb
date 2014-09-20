@@ -10,7 +10,7 @@ describe Container do
        eport = WorkPort.new("name",88,88,true,"proto")
        eports = Array.new
        eports.push(eport)
-       db = Database.new("name","host","user","pass","flavor")
+       db = DatabaseService.new("name","host","user","pass","flavor")
        dbs = Array.new
        dbs.push( db)
        environments = Array.new
