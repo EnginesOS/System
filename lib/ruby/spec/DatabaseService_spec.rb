@@ -3,7 +3,7 @@ require_relative '../DatabaseService.rb'
 
 require 'spec_helper'
 
-describe Database do
+describe DatabaseService do
   before :each do
     @database = DatabaseService.new("name","host","user","pass","flavor")
   end
