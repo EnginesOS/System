@@ -1,6 +1,6 @@
-require_relative 'Service.rb'
+require_relative 'StaticService.rb'
 
-class Database < Service
+class Database < StaticService
 
   def initialize(name,host,user,pass,flavor)
      @serviceType="database"

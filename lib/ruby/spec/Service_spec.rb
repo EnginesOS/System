@@ -1,10 +1,10 @@
-require_relative '../Service.rb'
+require_relative '../StaticService.rb'
 
 require 'spec_helper'
 
-describe Service do
+describe StaticService do
   before :each do
-    @service = Service.new("type")
+    @service = StaticService.new("type")
   end
   
   describe "#new" do

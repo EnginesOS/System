@@ -107,7 +107,7 @@ class EngineBuilder
        dbf.puts("dbhost=" + SysConfig.DBHost)
        dbf.puts("dbuser=" + name)
        dbf.puts("dbpasswd=" + name)
-       @databases.push(name)
+       @databases.push(DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql"))
        #FIXME add uri and jdbcl_url ?
        dbf.close
      end
@@ -534,6 +534,11 @@ class EngineBuilder
        end
        
        mc.set_conf_register_site true # needs some intelligence here for worker only
+       
+        @databases.each do |db|
+          mc.add_consumer(db)
+        end
+     
        
        mc.save_state # no config.yaml throws a no such container so save so others can use
        bp = mc.load_blueprint

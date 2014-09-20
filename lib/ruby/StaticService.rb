@@ -1,4 +1,4 @@
-class Service
+class StaticService
   def initialize(type)
     @serviceType=type
   end

@@ -1,5 +1,5 @@
-require_relative 'Service.rb'
-class Volume < Service #Latter will include group and perhaps other attributes
+require_relative 'StaticService.rb'
+class Volume < StaticService #Latter will include group and perhaps other attributes
  
   def initialize(name)
    @serviceType="fs"
