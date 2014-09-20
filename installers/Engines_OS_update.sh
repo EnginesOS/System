@@ -115,7 +115,9 @@ then
 fi
 
 
-generate_keys
+#Need to rebuild evrything is generate_keys is run
+#generate_keys
+
 set_os_flavor
 
 setup_mgmt_git

@@ -105,6 +105,9 @@ class ManagedService < ManagedContainer
     end
     
     def reregister_consumers
+       if @consumers == nil
+         return
+       end
       @consumers.each do |site|
          add_consumer_to_service(site)
       end
