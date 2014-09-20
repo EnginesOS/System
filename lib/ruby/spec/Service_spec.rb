@@ -8,8 +8,8 @@ describe StaticService do
   end
   
   describe "#new" do
-         it "takes 1 arguments and returns Service Object" do
-           @service.should be_an_instance_of Service
+         it "takes 1 arguments and returns StaticService Object" do
+           @service.should be_an_instance_of StaticService
          end
      end
     describe "#serviceType" do

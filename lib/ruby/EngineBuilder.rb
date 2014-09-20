@@ -112,7 +112,7 @@ class EngineBuilder
        @databases.push(db)
        #Fixme need intelligence in service name
        db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
-        if db_service.is_a?(DatabaseService)        
+        if db_service.is_a?(DBManagedService)        
           db_service.add_consumer(db)
         else
           p db
