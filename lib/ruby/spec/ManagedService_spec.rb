@@ -11,7 +11,7 @@ describe ManagedService do
        eports = Array.new
        eports.push(eport)
        environments = Array.new
-    db = Database.new("name","host","user","pass","flavor")
+    db = DatabaseService.new("name","host","user","pass","flavor")
       dbs = Array.new
       dbs.push( db)
        env = EnvironmentVariable.new("name","value",true)

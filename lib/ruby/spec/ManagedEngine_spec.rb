@@ -18,7 +18,7 @@ describe ManagedEngine do
     eport = WorkPort.new("name",888,888,true,"tcp")
     eports = Array.new
     eports.push(eport)
-    db = Database.new("name","host","user","pass","flavor")
+    db = DatabaseService.new("name","host","user","pass","flavor")
     dbs = Array.new
     dbs.push( db)
     environments = Array.new
