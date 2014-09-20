@@ -108,7 +108,11 @@ class EngineBuilder
        dbf.puts("dbhost=" + SysConfig.DBHost)
        dbf.puts("dbuser=" + name)
        dbf.puts("dbpasswd=" + name)
-       @databases.push(DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql"))
+       db = DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql")
+       @databases.push(db)
+       #Fixme need intelligence in service name
+       db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
+       db_service.add_consumer(db)
        #FIXME add uri and jdbcl_url ?
        dbf.close
      end
@@ -536,9 +540,8 @@ class EngineBuilder
        
        mc.set_conf_register_site true # needs some intelligence here for worker only
        
-        @databases.each do |db|
-          mc.add_consumer(db)
-        end
+     
+
      
        
        mc.save_state # no config.yaml throws a no such container so save so others can use

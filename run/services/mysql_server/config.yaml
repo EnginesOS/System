@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:DBManagedService
 containerName: mysql_server
 ctype: service
 last_error: 
