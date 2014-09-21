@@ -23,5 +23,5 @@ fi
 
 . /etc/profile.d/rvm.sh
 
-
+rvm  --default use ruby-2.1.2
 
