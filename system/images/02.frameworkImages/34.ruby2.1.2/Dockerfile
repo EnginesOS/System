@@ -6,14 +6,17 @@ RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /usr/local/rvm/bin/rvm install ruby-2.1.2
 RUN /usr/local/rvm/bin/rvm  --default use ruby-2.1.2
 
-ENV MY_RUBY_HOME /usr/local/rvm/rubies/ruby-2.1.2
-ENV rvm_ruby_string ruby-2.1.2
+
+
 #ENV IRBRC /usr/local/rvm/rubies/ruby-2.1.2/.irbrc
-ENV GEM_HOME /usr/local/rvm/gems/ruby-2.1.2
 #ENV GEM_PATH /usr/local/rvm/gems/ruby-2.1.2:/usr/local/rvm/gems/ruby-2.1.2@global
 #ENV rvm_delete_flag 0
 #ENV RUBY_VERSION ruby-2.1.2
-ENV RPATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@global/bin:/usr/local/rvm/rubies/ruby-2.1.2/bin:/usr/local/rvm/bin:
+
+#ENV GEM_HOME /usr/local/rvm/gems/ruby-2.1.2
+#ENV MY_RUBY_HOME /usr/local/rvm/rubies/ruby-2.1.2
+#ENV rvm_ruby_string ruby-2.1.2
+#ENV RPATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@global/bin:/usr/local/rvm/rubies/ruby-2.1.2/bin:/usr/local/rvm/bin:
 ENV PATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@global/bin:/usr/local/rvm/rubies/ruby-2.1.2/bin:/usr/local/rvm/bin:/usr/local/bin:/usr/bin:/bin:/sbin/:/usr/sbin
 
 RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install rake
