@@ -16,6 +16,6 @@ RUN gem install bundle
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
 RUN echo ".  /etc/rvmrc " >> /home/ruby/.profile
-RUN echo "rvm  --default use ruby-2.1.2" >> /home/ruby/.profile
+RUN echo "rvm  --default use ruby-1.9.3-p547" >> /home/ruby/.profile
 
 
