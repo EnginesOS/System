@@ -6,7 +6,9 @@ cd /home/app
 
 git pull
 
+
 bundle install --path vendor/bundle
+
 bundle exec rake db:migrate
 bundle exec rake db:populate
 
