@@ -3,6 +3,7 @@
 
 cd /home/app
  . /etc/rvmrc 
+rvm  --default use ruby-2.1.2
 
 git pull
 

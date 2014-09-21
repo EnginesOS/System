@@ -1,5 +1,7 @@
 #!/bin/bash
  . /etc/rvmrc 
+ 
+rvm  --default use ruby-2.1.2
 
 gem install git
 rvm gemset create bundle
