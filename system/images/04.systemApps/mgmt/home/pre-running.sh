@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ . /etc/rvmrc 
 gem install bundle
 gem install git
 rvm gemset create bundle
