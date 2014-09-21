@@ -2,6 +2,7 @@
 
 
 cd /home/app
+ . /etc/rvmrc 
 
 git pull
 
