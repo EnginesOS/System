@@ -14,10 +14,9 @@ RUN /usr/local/rvm/bin/rvm  --default use ruby-2.1.2
 #ENV RPATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@global/bin:/usr/local/rvm/rubies/ruby-2.1.2/bin:/usr/local/rvm/bin:
 ENV PATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@global/bin:/usr/local/rvm/rubies/ruby-2.1.2/bin:/usr/local/rvm/bin:/usr/local/bin:/usr/bin:/bin:/sbin/:/usr/sbin
 
-#RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install rake
+
 RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install bundle
-RUN /usr/local/rvm/bin/rvm gemset create bundle
-RUN  /usr/local/rvm/bin/rvm gemset create rake
+
 
 ENV ContUser ruby
 
