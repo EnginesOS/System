@@ -484,14 +484,21 @@ class EngineBuilder
                  end
      end
            
-    
+    def get_blueprint_from_repo 
+      puts("Backup last build")
+              backup_lastbuild 
+      puts("Cloning Blueprint")  
+              clone_repo  
+    end
     
      
      def build_from_blue_print
-  puts("Backup last build")
-          backup_lastbuild buildname
-  puts("Cloning Blueprint")  
-          clone_repo  
+       get_blueprint_from_repo
+      return build_container
+     end
+     
+ def build_container 
+  
   puts("Reading Blueprint")
           load_blueprint
   puts("Reading Settings")
@@ -522,6 +529,27 @@ class EngineBuilder
           build_setup
        puts("Building deploy image")
                build_deploy
+          mc = create_managed_container()
+          return mc
+   end    
+   
+   def rebuild_managed_container engine
+    setup_rebuild engine
+    
+      return build_container 
+   end
+   
+   def setup_rebuild engine
+     #mkdir build dir
+     Dir.mkdir(SysConfig.DeploymentDir + "/" + buildname)
+     blueprint = @dockerapi.load_blueprint(engine)
+     statefile=SysConfig.DeploymentDir + "/"  + buildname + "/blueprint.json"              
+     f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
+     f.write(blueprint.to_json)
+     f.close
+   end
+   
+def create_managed_container
           
           mc = ManagedEngine.new(@hostName,
                                     @bluePrint["software"]["requiredmemory"].to_s ,
