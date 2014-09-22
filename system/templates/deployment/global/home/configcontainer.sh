@@ -298,6 +298,9 @@ HOME=/home/app
 rvm use --default $ruby_version
 export HOME
 
+mkdir -p /home/app/log/
+touch /home/app/log/development.log
+touch /home/app/log/production.log
 tail -f /home/app/log/development.log &
 tail -f /home/app/log/production.log &
 
