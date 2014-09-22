@@ -27,10 +27,9 @@ class Docker
        return true
      else
        return res
-     end
-    
-        
+     end           
    end
+   
   def delete_image container
            commandargs= " rmi " +   container.image
            ret_val =  run_docker(commandargs,container)
@@ -70,9 +69,7 @@ class Docker
     volume_option = SysConfig.timeZone_fileMapping
        if(container.volumes)
          container.volumes.each do |volume|
-           if volume !=nil
-    
-             
+           if volume !=nil          
              if volume.name == nil
                volume_name = ""
              else
@@ -120,6 +117,11 @@ class Docker
       
      return retval  
      
+   end
+   
+   def rebuild_image container
+     builder = EngineBuilder.new(container)
+    return  builder.rebuild_managed_container 
    end
    
    def start_container   container      

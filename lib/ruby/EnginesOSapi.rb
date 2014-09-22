@@ -313,15 +313,16 @@ require "/opt/engos/lib/ruby/DNSService.rb"
         return retval
       end
       
-      def rebuild_engine_image
+      def rebuild_engine_container
         engine = loadManagedEngine engine_name
         state = engine.get_state 
           if state == "running" || state == "paused"
             return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
           end
-        retval = engine.rebuild_image
+        retval = engine.rebuild_container
       #Fix Me check error and return Enginesospairesult
       end
+      
   
   #not needed as inherited
   def read_state container

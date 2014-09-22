@@ -65,6 +65,13 @@ def do_cmd(c_type,containerName,command)
     else
       res = engines_api.restartService(containerName)
     end
+    
+  when "rebuild"
+    if c_type == "container"
+         res = engines_api.rebuildEngine(containerName)
+       else
+         puts "Cannot rebuild Service"
+    end
   
     when "logs"
     if c_type == "container"

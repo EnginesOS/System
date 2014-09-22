@@ -486,7 +486,7 @@ class ManagedContainer < Container
           return ret_val
   end
   
-  def rebuild_image
+  def rebuild_container
     if @docker_api == nil
           @last_error="No connection to Engines OS System"      
            return false

@@ -24,6 +24,20 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   
+  def initialize(engine)
+    @engine = engine
+    @repo=engine.repo
+    @hostName=engine.hostName
+    @domainName=engine.domainName
+    @buildname = File.basename(@repo)
+    @workerPorts=engine.eports
+    @webPort=engine.port
+    @vols=engine.volumes
+    @environments=engine.environments 
+    @runtime=engine.runtime
+    @databases=engine.databases
+    @docker_api=engine.docker_api
+  end
   def initialize(repo,host,domain,env,docker_api)
        @hostName=host
        @domainName=domain
@@ -533,16 +547,16 @@ class EngineBuilder
           return mc
    end    
    
-   def rebuild_managed_container engine
-    setup_rebuild engine
+   def rebuild_managed_container 
+    setup_rebuild 
     
       return build_container 
    end
    
-   def setup_rebuild engine
+   def setup_rebuild 
      #mkdir build dir
      Dir.mkdir(SysConfig.DeploymentDir + "/" + buildname)
-     blueprint = @dockerapi.load_blueprint(engine)
+     blueprint = @dockerapi.load_blueprint(@engine)
      statefile=SysConfig.DeploymentDir + "/"  + buildname + "/blueprint.json"              
      f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
      f.write(blueprint.to_json)
