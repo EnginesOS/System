@@ -349,8 +349,8 @@ cp g Gemfile
 rvm use $ruby_version
 echo running bundle install --standalone
 #$Bundle_Cmd install  --standalone
-bundle install  --standalone
-bundle install  --deployment
+bundle install  --standalone --deployment
+
 
 
 
