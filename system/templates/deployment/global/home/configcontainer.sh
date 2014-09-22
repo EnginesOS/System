@@ -347,9 +347,11 @@ cat Gemfile | sed "/https/s//http/" >g
 cp g Gemfile
 
 rvm use $ruby_version
+RAILS_ENV=production
+export RAILS_ENV
 echo running bundle install --standalone
 #$Bundle_Cmd install  --standalone
-bundle install  --standalone --deployment
+bundle install  --standalone 
 
 
 
