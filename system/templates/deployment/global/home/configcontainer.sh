@@ -298,7 +298,8 @@ HOME=/home/app
 rvm use --default $ruby_version
 export HOME
 
-tail -f log/
+tail -f /home/app/log/development.log &
+tail -f /home/app/log/production.log &
 
 env DATABASE_URL=$DATABASE_URL bundle exec thin -p $PORT  start
 
