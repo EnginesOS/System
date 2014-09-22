@@ -120,9 +120,10 @@ class Docker
    end
    
    def rebuild_image container
-     builder = EngineBuilder.new()
-     builder.set_engine(container)
-    return  builder.rebuild_managed_container 
+
+     builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, container.docker_api)
+     
+    return  builder.rebuild_managed_container (container)
    end
    
    def start_container   container      
