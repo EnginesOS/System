@@ -293,10 +293,12 @@ DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 
 export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
 #bundle exec thin -p $PORT  start
+
 HOME=/home/app
-rvm use $ruby_version
+rvm use --default $ruby_version
 export HOME
 
+tail -f log/
 
 env DATABASE_URL=$DATABASE_URL bundle exec thin -p $PORT  start
 
@@ -329,18 +331,22 @@ production:
 
 echo "config.database.yml  Written"
 
+#FIX has to be a btter way that blindly adding thin
+
 echo "gem 'thin'" >> Gemfile
 cat Gemfile
 echo "Thin added to Gemfile"
 
+
+#FIXME SHOULD NOT NEED the follow 2 lines
 cat Gemfile | sed "/https/s//http/" >g
 cp g Gemfile
+
 rvm use $ruby_version
 echo running bundle install --standalone
 #$Bundle_Cmd install  --standalone
 bundle install  --standalone
-
-
+bundle install  --deployment
 
 
 
