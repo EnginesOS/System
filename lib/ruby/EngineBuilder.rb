@@ -151,8 +151,8 @@ class EngineBuilder
      end
      
      def create_file_service vol
-       if Dir.exists?(SysConfig.LocalFSVolHome + "/" + name ) ==false
-                Dir.mkdir(SysConfig.LocalFSVolHome + "/" + name)
+       if Dir.exists?(SysConfig.LocalFSVolHome + "/" + vol.localpath ) ==false
+                Dir.mkdir(SysConfig.LocalFSVolHome + "/" + vol.localpath)
               end
      end
  
