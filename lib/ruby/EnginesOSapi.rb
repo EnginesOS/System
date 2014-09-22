@@ -315,11 +315,20 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       
       def rebuild_engine_container engine_name
         engine = loadManagedEngine engine_name
-        state = engine.get_state 
+        if  engine.is_a?(EnginesOSapiResult) 
+           return failed(engine_name,"no Engine","Load Engine Blueprint")
+         end
+        state = engine.read_state 
           if state == "running" || state == "paused"
             return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
           end
         retval = engine.rebuild_container
+        if retval.is_a?(ManagedEngine)
+          sucess(engine_name,"Rebuild Engine Image")
+        else
+          return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
+         
+        end
       #Fix Me check error and return Enginesospairesult
       end
       
