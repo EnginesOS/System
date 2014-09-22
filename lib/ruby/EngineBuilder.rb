@@ -24,20 +24,7 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   
-  def initialize(engine)
-    @engine = engine
-    @repo=engine.repo
-    @hostName=engine.hostName
-    @domainName=engine.domainName
-    @buildname = File.basename(@repo)
-    @workerPorts=engine.eports
-    @webPort=engine.port
-    @vols=engine.volumes
-    @environments=engine.environments 
-    @runtime=engine.runtime
-    @databases=engine.databases
-    @docker_api=engine.docker_api
-  end
+
   def initialize(repo,host,domain,env,docker_api)
        @hostName=host
        @domainName=domain
@@ -51,7 +38,20 @@ class EngineBuilder
        @databases= Array.new
        @docker_api = docker_api
  end
-  
+  def set_engine(engine)
+    @engine = engine
+    @repo=engine.repo
+    @hostName=engine.hostName
+    @domainName=engine.domainName
+    @buildname = File.basename(@repo)
+    @workerPorts=engine.eports
+    @webPort=engine.port
+    @vols=engine.volumes
+    @environments=engine.environments 
+    @runtime=engine.runtime
+    @databases=engine.databases
+    @docker_api=engine.docker_api
+  end
   def backup_lastbuild       
     dir=SysConfig.DeploymentDir + "/" + @buildname
  

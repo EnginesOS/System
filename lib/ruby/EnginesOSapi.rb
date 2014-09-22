@@ -9,8 +9,8 @@ require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 require "/opt/engos/lib/ruby/DNSService.rb"
-  
-  class EnginesOSapi
+
+class EnginesOSapi
   def initialize()
     @docker_api = Docker.new
   end
@@ -19,16 +19,14 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     return @docker_api
   end
 
-
-  
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
-      if engine != nil
-        engine.save_state
-        return engine
-      end
-      return false #FIXME needs to return error object
+    if engine != nil
+      engine.save_state
+      return engine
+    end
+    return false #FIXME needs to return error object
 
   end
 
@@ -63,33 +61,32 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     end
     return ret_val
   end
-   
+
   def EnginesOSapi.loadManagedService(service_name,docker_api)
-     yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
- 
-     if File.exists?(yam_file_name) == false
-       return failed(yam_file_name,"No such configuration:","Load Service")
-     end
- 
-     yaml_file = File.open(yam_file_name)
-     # managed_service = YAML::load( yaml_file)
-     managed_service = ManagedService.from_yaml(yaml_file,docker_api)
-     if managed_service == nil
-       return failed(yam_file_name,"Fail to Load configuration:","Load Service")
-     end
-     return managed_service
-   end
+    yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
+
+    if File.exists?(yam_file_name) == false
+      return failed(yam_file_name,"No such configuration:","Load Service")
+    end
+
+    yaml_file = File.open(yam_file_name)
+    # managed_service = YAML::load( yaml_file)
+    managed_service = ManagedService.from_yaml(yaml_file,docker_api)
+    if managed_service == nil
+      return failed(yam_file_name,"Fail to Load configuration:","Load Service")
+    end
+    return managed_service
+  end
 
   def getManagedService(service_name)
 
     managed_service = EnginesOSapi.loadManagedService(service_name,@docker_api)
-  #  if managed_service == nil
-   #   return failed(service_name,"Fail to Load configuration:","Load Service")
+    #  if managed_service == nil
+    #   return failed(service_name,"Fail to Load configuration:","Load Service")
     #end
     return managed_service
   end
 
- 
   def loadManagedEngine(engine_name)
     yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
 
@@ -99,29 +96,28 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
     yaml_file = File.open(yam_file_name)
     managed_engine = ManagedEngine.from_yaml( yaml_file,@docker_api)
-      if(managed_engine == nil)
-        return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
-      end
+    if(managed_engine == nil)
+      return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
+    end
     return managed_engine
   end
 
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
-        if engine.is_a?(EnginesOSapiResult) 
-          return engine
-        end
-        retval = engine.recreate_container()
-        if retval == false
-          return failed(engine_name,"No Engine","Stop")
-        else
-          return sucess(engine_name,"Stop")
-        end
+    if engine.is_a?(EnginesOSapiResult)
+      return engine
+    end
+    retval = engine.recreate_container()
+    if retval == false
+      return failed(engine_name,"No Engine","Stop")
+    else
+      return sucess(engine_name,"Stop")
+    end
   end
- 
 
   def stopEngine engine_name
     engine = loadManagedEngine engine_name
-    if engine.is_a?(EnginesOSapiResult) 
+    if engine.is_a?(EnginesOSapiResult)
       return engine
     end
     retval = engine.stop_container()
@@ -134,7 +130,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def startEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Start")
     end
 
@@ -152,7 +148,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def pauseEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Pause")
     end
 
@@ -167,7 +163,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Unpause")
     end
     retval =  engine.unpause_container()
@@ -180,7 +176,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def destroyEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Destroy")
     end
     retval =   engine.destroy_container()
@@ -192,7 +188,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def deleteEngineImage engine_name
     engine = loadManagedEngine engine_name
-    if   engine.is_a?(EnginesOSapiResult) 
+    if   engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Delete")
     end
     retval =   engine.delete_image()
@@ -216,7 +212,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def restartEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Restart")
     end
     retval =   engine.restart_container()
@@ -228,7 +224,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def registerEngineWebSite engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Register Engine Web Site")
     end
     retval =  engine.register_site()
@@ -240,7 +236,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","DeRegister Engine Web Site")
     end
     retval =   engine.deregister_site()
@@ -252,13 +248,13 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def registerEngineDNS engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
-       
+
     retval = engine.register_dns()
-   
-    if retval.is_a?(String) 
+
+    if retval.is_a?(String)
       p retval
       return failed(engine_name,retval,"Register Engine DNS")
     end
@@ -267,11 +263,11 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def deregisterEngineDNS engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","DeRegister Engine DNS")
     end
     retval = engine.deregister_dns()
-    if  retval.is_a?(String) 
+    if  retval.is_a?(String)
       return failed(engine_name,retval,"DeRegister Engine DNS")
     end
     return sucess(engine_name,"DeRegister Engine DNS")
@@ -279,11 +275,11 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def monitorEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
-      return failed(engine_name,"no Engine","Monitor Engine") 
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","Monitor Engine")
     end
     retval = engine.monitor_site()
-    if  retval.is_a?(String) 
+    if  retval.is_a?(String)
       return failed(engine_name,retval,"Monitor Engine")
     end
     return sucess(engine_name,"Monitor Engine")
@@ -291,52 +287,50 @@ require "/opt/engos/lib/ruby/DNSService.rb"
 
   def demonitorEngine engine_name
     engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult) 
+    if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","DeMonitor Engine")
     end
     retval = engine.demonitor_site()
-    if  retval.is_a?(String) 
+    if  retval.is_a?(String)
       return failed(engine_name,retval,"DeMonitor Engine")
     end
     return sucess(engine_name,"DeMonitor Engine")
   end
-  
-    def get_engine_blueprint engine_name      
-        engine = loadManagedEngine engine_name
-        if  engine.is_a?(EnginesOSapiResult) 
-          return failed(engine_name,"no Engine","Load Engine Blueprint")
-        end
-        retval = engine.load_blueprint()
-        if retval == false
-          return failed(engine_name,engine.last_error,"Load Engine Blueprint")
-        end
-        return retval
-      end
-      
-      def rebuild_engine_container engine_name
-        engine = loadManagedEngine engine_name
-        if  engine.is_a?(EnginesOSapiResult) 
-           return failed(engine_name,"no Engine","Load Engine Blueprint")
-         end
-        state = engine.read_state 
-          if state == "running" || state == "paused"
-            return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
-          end
-        retval = engine.rebuild_container
-        if retval.is_a?(ManagedEngine)
-          sucess(engine_name,"Rebuild Engine Image")
-        else
-          return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
-         
-        end
-      #Fix Me check error and return Enginesospairesult
-      end
-      
-  
-  #not needed as inherited
+
+  def get_engine_blueprint engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","Load Engine Blueprint")
+    end
+    retval = engine.load_blueprint()
+    if retval == false
+      return failed(engine_name,engine.last_error,"Load Engine Blueprint")
+    end
+    return retval
+  end
+
+  def rebuild_engine_container engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","Load Engine Blueprint")
+    end
+    state = engine.read_state
+    if state == "running" || state == "paused"
+      return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
+    end
+    retval = engine.rebuild_container
+    if retval.is_a?(ManagedEngine)
+      sucess(engine_name,"Rebuild Engine Image")
+    else
+      return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
+
+    end
+  end
+
+  #not needed as inherited ???
   def read_state container
     retval =   container.read_state()
-   # if retval == false
+    # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
     #return sucess(container.containerName,"read state")
@@ -379,9 +373,8 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     return sucess(service_name,"Pause Service")
   end
 
-
   def  unpauseService service_name
-    service = getManagedService(service_name) 
+    service = getManagedService(service_name)
     if service == nil
       return failed(service_name,"No Such Service","Unpause Service")
     end
@@ -423,7 +416,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     end
     retval =   service.register_dns()
 
-    if retval != true   
+    if retval != true
       return failed(service_name,retval,"Register Service DNS")
     end
     return sucess(service_name,"Register Service DNS")
@@ -435,7 +428,7 @@ require "/opt/engos/lib/ruby/DNSService.rb"
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
     retval =   service.deregister_dns()
-    if retval != true  
+    if retval != true
       return failed(service_name,retval,"Deregister Service DNS")
     end
     return sucess(service_name,"Deregister Service DNS")
@@ -469,9 +462,11 @@ require "/opt/engos/lib/ruby/DNSService.rb"
   def sucess(item_name ,cmd)
     EnginesOSapi.sucess(item_name ,cmd)
   end
+
   def failed(item_name,mesg ,cmd)
     EnginesOSapi.failed(item_name,mesg ,cmd)
   end
+
   def EnginesOSapi.sucess(item_name ,cmd)
     return  EnginesOSapiResult.new(true,0,item_name, "OK",cmd)
   end
@@ -479,5 +474,5 @@ require "/opt/engos/lib/ruby/DNSService.rb"
   def EnginesOSapi.failed(item_name,mesg ,cmd)
     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
   end
-  
-  end
+
+end
