@@ -536,6 +536,7 @@ class EngineBuilder
    
    def rebuild_managed_container  engine
      @engine  = engine
+     backup_lastbuild
     setup_rebuild 
     
       return build_container 
