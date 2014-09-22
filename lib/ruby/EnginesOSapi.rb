@@ -322,6 +322,8 @@ class EnginesOSapi
     if retval.is_a?(ManagedEngine)
       sucess(engine_name,"Rebuild Engine Image")
     else
+      puts "rebuild error"
+      p engine.last_error
       return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
 
     end
