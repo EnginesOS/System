@@ -545,7 +545,7 @@ class EngineBuilder
    def setup_rebuild 
      #mkdir build dir
      Dir.mkdir(SysConfig.DeploymentDir + "/" + buildname)
-     blueprint = @dockerapi.load_blueprint(@engine)
+     blueprint = @docker_api.load_blueprint(@engine)
      statefile=SysConfig.DeploymentDir + "/"  + buildname + "/blueprint.json"              
      f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
      f.write(blueprint.to_json)

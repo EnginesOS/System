@@ -123,7 +123,7 @@ class Docker
 
      builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, container.docker_api)
      
-    return  builder.rebuild_managed_container (container)
+    return  builder.rebuild_managed_container(container)
    end
    
    def start_container   container      
