@@ -52,8 +52,8 @@ class EngineBuilder
        @docker_api = docker_api
  end
   
-  def backup_lastbuild buildname      
-    dir=SysConfig.DeploymentDir + "/" + buildname
+  def backup_lastbuild       
+    dir=SysConfig.DeploymentDir + "/" + @buildname
  
         if Dir.exists?(dir)
             backup=dir + ".backup"

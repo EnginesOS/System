@@ -52,8 +52,6 @@ require "/opt/engos/lib/ruby/DNSService.rb"
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
       yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
-        puts "yfn follows"
-        p yfn
       if File.exists?(yfn) == true
         yf = File.open(yfn)
         managed_service = ManagedService.from_yaml(yf,@docker_api)
