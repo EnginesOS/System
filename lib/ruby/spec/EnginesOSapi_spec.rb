@@ -278,12 +278,18 @@ describe "#Test Build from blueprint " do
            
           result =  @enginesapi.stopEngine("testhost")  
          result.was_sucess.should eql true 
+         
+         result =  @enginesapi.destroyEngine("testhost")
+         result.was_sucess.should eql true       
+            
           result =  @enginesapi.rebuild_engine_container("testhost")
           result.was_sucess.should eql true 
+          
           result =  @enginesapi.stopEngine("testhost")
           result.was_sucess.should eql true          
+          
           result =  @enginesapi.destroyEngine("testhost")
-            result.was_sucess.should eql true 
+
           result =  @enginesapi.deleteEngineImage("testhost")
                result.was_sucess.should eql true 
         end
