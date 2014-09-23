@@ -91,8 +91,8 @@ echo "Installing ruby"
 		/usr/local/rvm/bin/rvm gemset create 	rspec
 		
 	
-echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engine_restarts.log
-*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/service_restarts.log" >/tmp/ct
+echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engines/restarts.log
+*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/services/restarts.log" >/tmp/ct
 crontab /tmp/ct
 rm /tmp/ct
   }

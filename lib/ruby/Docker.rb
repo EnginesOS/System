@@ -280,4 +280,20 @@ class Docker
    
      return run_system(cmd)
   end
+  
+  def add_volume(site_string)
+    strs = site_string.split(":")
+    localpath =  strs[0]
+    if Dir.exists?( localpath ) ==false
+      Dir.mkdir(localpath)
+    end
+  end
+
+def rm_volume(site_string)
+  strs = site_string.split(":")
+  localpath =  strs[0]
+    puts "ould remove " + localpath
+end
+
+
 end

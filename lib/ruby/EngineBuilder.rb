@@ -129,9 +129,16 @@ class EngineBuilder
   end
 
   def create_file_service vol
-    if Dir.exists?( vol.localpath ) ==false
-      Dir.mkdir(vol.localpath)
-    end
+    vol_service = EnginesOSapi.loadManagedService("volmanager", @docker_api)
+       if vol_service.is_a?(VolumeService)
+         vol_service.add_consumer(vol)
+         return true
+       else
+         p vol_service
+         p vol_service.result_mesg
+         return false
+       end
+    
   end
 
   def create_workers
