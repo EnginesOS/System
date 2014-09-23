@@ -31,5 +31,6 @@ last_result: |
 setState: nocontainer
 nginxored: false
 databases: []
-registerSite: false
+conf_register_site: true
+conf_register_dns: true
 conf_self_start: true

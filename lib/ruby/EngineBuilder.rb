@@ -9,7 +9,6 @@ require 'fileutils'
 require 'json'
 
 class EngineBuilder
-
   @repoName=nil
   @hostName=nil
   @domainName=nil
@@ -22,6 +21,7 @@ class EngineBuilder
   @environments=Array.new
   @runtime=String.new
   @databases= Array.new
+  
   def initialize(repo,host,domain,env,docker_api)
     @hostName=host
     @domainName=domain
