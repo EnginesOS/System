@@ -37,7 +37,7 @@ class EnginesOSapi
         p yfn
       if File.exists?(yfn) == true       
         managed_engine = loadManagedEngine(contdir)
-        if managed_engine.is_?(ManagedEngine)
+        if managed_engine.is_a?(ManagedEngine)
           ret_val.push(managed_engine)
         else
           puts "failed to load " + yfn 
