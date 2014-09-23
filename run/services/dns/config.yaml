@@ -26,4 +26,4 @@ last_result: |
 setState: running
 nginxored: false
 databases: []
-registerSite: false
+conf_register_site: false
