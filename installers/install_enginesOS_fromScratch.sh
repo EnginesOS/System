@@ -92,7 +92,7 @@ echo "Installing ruby"
 		
 	
 echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engine_restarts.log
-*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all" >>/opt/engos/logs/service_restarts.log
+*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/service_restarts.log" >/tmp/ct
 crontab /tmp/ct
 rm /tmp/ct
   }
