@@ -2,6 +2,8 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/ManagedEngine.rb"
+require "/opt/engos/lib/ruby/VolumeService.rb"
+
 require "/opt/engos/lib/ruby/SysConfig.rb"
 require "rubygems"
 require "git"
