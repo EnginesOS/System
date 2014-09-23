@@ -156,11 +156,14 @@ class EngineBuilder
                   puts ("failed to open " + get_basedir + "/home/pre-running.sh")
                   exit
                 end
+                cmdf.chmod(0755)
                 cmdf.puts("#!/bin/bash")
                 cmdf.puts("cd /home/app")
                  commands.each do |command|
                    cmdf.puts(command)
                  end
+         cmdf.close
+          
         end
      end
      
