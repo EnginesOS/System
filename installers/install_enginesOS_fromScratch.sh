@@ -89,6 +89,12 @@ echo "Installing ruby"
 		/usr/local/rvm/bin/rvm gemset create multi_json
 		gem install multi_json rspec
 		/usr/local/rvm/bin/rvm gemset create 	rspec
+		
+	
+echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engine_restarts.log
+*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all" >>/opt/engos/logs/service_restarts.log
+crontab /tmp/ct
+rm /tmp/ct
   }
 
 function generate_keys {

@@ -11,7 +11,7 @@ require "/opt/engos/lib/ruby/Docker.rb"
 
 class ManagedContainer < Container
   @conf_self_start=false
-  @conf_register_dns=false
+  @conf_register_dns=true
   @conf_register_site=false
   @conf_monitor_site=false
   
@@ -32,7 +32,7 @@ class ManagedContainer < Container
    @volumes = vols
    @environments = environs
    @conf_self_start=false
-   @conf_register_dns=false
+   @conf_register_dns=true #do this even if self registers dns s it dd to the dns consumer (so record survives rebuild)
    @conf_register_site=false
    @conf_monitor_site=false
    @last_error=""
