@@ -34,16 +34,14 @@ class EnginesOSapi
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
       yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"
-      if File.exists?(yfn) == true
-        yf = File.open(yfn)
-        managed_engine = ManagedEngine.from_yaml(yf,@docker_api)
+      if File.exists?(yfn) == true       
+        managed_engine = loadManagedEngine(contdir)
         if managed_engine  != false
           ret_val.push(managed_engine)
         else
           puts "failed to load " + yf 
           p     managed_engine     
         end
-        yf.close
         return 
       end
     end
