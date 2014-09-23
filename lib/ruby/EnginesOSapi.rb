@@ -34,12 +34,14 @@ class EnginesOSapi
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
       yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"
+        p yfn
       if File.exists?(yfn) == true       
         managed_engine = loadManagedEngine(contdir)
         if managed_engine  != false
           ret_val.push(managed_engine)
+          puts "pushed " + managed_engine
         else
-          puts "failed to load " + yf 
+          puts "failed to load " + yfn 
           p     managed_engine     
         end
         return 
