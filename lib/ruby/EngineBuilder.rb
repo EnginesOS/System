@@ -221,7 +221,7 @@ class EngineBuilder
              n=n+1
          end
          
-       psf = File.open( get_base_dir + "/home/presettings.env","w")
+       psf = File.open( get_basedir + "/home/presettings.env","w")
        psf.puts("FRAMEWORK=" + @framework)
        psf.puts("declare -a ARCHIVES=(" + srcs + ")")
        psf.puts("declare -a ARCHIVENAMES=(" + names + ")")
