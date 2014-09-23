@@ -39,7 +39,7 @@ class EnginesOSapi
         managed_engine = loadManagedEngine(contdir)
         if managed_engine  != false
           ret_val.push(managed_engine)
-          puts "pushed " + managed_engine
+          puts "pushed " + managed_engine.to_s
         else
           puts "failed to load " + yfn 
           p     managed_engine     
