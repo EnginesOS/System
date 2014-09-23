@@ -67,7 +67,7 @@ class EngineBuilder
      def add_custom_env
        envs = @bluePrint["software"]["environment_variables"]
        envivronment = String.new
-       ef = File.open( get_basdir + "/home/app.env","w")
+       ef = File.open( get_basedir + "/home/app.env","w")
           envs.each do |env|
             name=env["name"]
             value=env["value"]
