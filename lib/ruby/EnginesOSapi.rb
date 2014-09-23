@@ -39,6 +39,9 @@ class EnginesOSapi
         managed_engine = ManagedEngine.from_yaml(yf,@docker_api)
         if managed_engine
           ret_val.push(managed_engine)
+        else
+          puts "failed to load " + yf
+          
         end
         yf.close
       end
