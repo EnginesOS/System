@@ -40,7 +40,7 @@ class EngineBuilder
  end
 
   def backup_lastbuild       
-    dir=SysConfig.DeploymentDir + "/" + @buildname
+    dir=get_basedir
  
         if Dir.exists?(dir)
             backup=dir + ".backup"
@@ -67,7 +67,7 @@ class EngineBuilder
      def add_custom_env
        envs = @bluePrint["software"]["environment_variables"]
        envivronment = String.new
-       ef = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/app.env","w")
+       ef = File.open( get_basdir + "/home/app.env","w")
           envs.each do |env|
             name=env["name"]
             value=env["value"]
@@ -85,7 +85,7 @@ class EngineBuilder
 
      def load_blueprint
   
-       blueprint_file_name= SysConfig.DeploymentDir + "/" + @buildname + "/blueprint.json"
+       blueprint_file_name= get_basedir + "/blueprint.json"
           blueprint_file = File.open(blueprint_file_name,"r")
           blueprint_json_str = blueprint_file.read
           blueprint_file.close 
@@ -101,7 +101,7 @@ class EngineBuilder
        dbname=name #+ "-" + @hostName This - leads to issue with JDBC 
 
        
-       dbf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/db.env","a+")
+       dbf = File.open( get_basedir + "/home/db.env","a+")
        #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ? 
        dbf.puts("dbname=" + dbname)
        dbf.puts("dbhost=" + SysConfig.DBHost)
@@ -131,7 +131,7 @@ class EngineBuilder
        permissions = PermissionRights.new(@hostName,"","")
        vol=Volume.new(name,SysConfig.LocalFSVolHome,dest,"rw",permissions)
        @vols.push(vol)
-       fsf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/fs.env","w")
+       fsf = File.open( get_basedir + "/home/fs.env","w")
        fsf.puts("VOLDIR=" + name)
        fsf.puts("CONTFSVolHome=" + vol.remotepath) #not nesscessary the same as dest used in constructor
        fsf.close
@@ -151,9 +151,9 @@ class EngineBuilder
            commands.push(worker["command"])  
          end  
        if commands.length >0           
-                cmdf= File.open(SysConfig.DeploymentDir + "/" + buildname + "/home/pre-running.sh","w")
+                cmdf= File.open(get_basedir + "/home/pre-running.sh","w")
                 if !cmdf
-                  puts ("failed to open " + SysConfig.DeploymentDir + "/" + buildname + "/home/pre-running.sh")
+                  puts ("failed to open " + get_basedir + "/home/pre-running.sh")
                   exit
                 end
                 cmdf.puts("#!/bin/bash")
@@ -221,7 +221,7 @@ class EngineBuilder
              n=n+1
          end
          
-       psf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/presettings.env","w")
+       psf = File.open( get_base_dir + "/home/presettings.env","w")
        psf.puts("FRAMEWORK=" + @framework)
        psf.puts("declare -a ARCHIVES=(" + srcs + ")")
        psf.puts("declare -a ARCHIVENAMES=(" + names + ")")
@@ -233,7 +233,7 @@ class EngineBuilder
      end
 
      def create_setup_env
-       suf = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/setup.env","w")
+       suf = File.open( get_basedir + "/home/setup.env","w")
        confd = @bluePrint["software"]["configuredfile"]
          if confd != nil
           suf.puts("CONFIGURED_FILE=" + confd)
@@ -312,7 +312,7 @@ class EngineBuilder
      end
 
      def create_stack_env
-       stef = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/stack.env","w")
+       stef = File.open(get_basedir + "/home/stack.env","w")
        stef.puts("Memory=" + @bluePrint["software"]["requiredmemory"].to_s)
        stef.puts("Hostname=" + @hostName)
        stef.puts("Domainname=" +  @domainName )
@@ -339,7 +339,7 @@ class EngineBuilder
          if rake_cmds == nil || rake_cmds.length == 0
            return
          end
-       rakefile = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/rakelist")
+       rakefile = File.open( get_basedir + "/home/rakelist")
         rake_cmds.each do |rake_cmd|
           rake_action = rake_cmds["action"]
             p rake_action
@@ -351,7 +351,7 @@ class EngineBuilder
      end
      
      def build_init  
-     cmd="cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker build  -t " + @hostName + "/init ."
+     cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
        puts cmd
        res= %x<#{cmd}>
        if $? == false
@@ -366,7 +366,7 @@ class EngineBuilder
       puts cmd
        res= %x<#{cmd}>
        
-       cmd = "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=128m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+       cmd = "cd " + get_basedir + "; docker run --memory=128m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
          puts cmd
        res= %x<#{cmd}>
               if $? == false
@@ -387,7 +387,7 @@ class EngineBuilder
             volumes = volumes + " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
           end
           #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
-       cmd= "cd " + SysConfig.DeploymentDir + "/" +  @buildname + "; docker run --memory=384m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+       cmd= "cd " + get_basedir + "; docker run --memory=384m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
          puts(cmd) 
        res= %x<#{cmd}>
        puts res
@@ -417,12 +417,12 @@ class EngineBuilder
      end
      
      def copy_base_faults
-          cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  +SysConfig.DeploymentDir + "/" + buildname          
+          cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  + get_basedir          
           system  cmd
      end
      
      def copy_framework_defaults
-            cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" + @framework + "/* "  +SysConfig.DeploymentDir + "/" + buildname 
+            cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" + @framework + "/* "  + get_basedir
             system  cmd
      end
      
@@ -447,8 +447,8 @@ class EngineBuilder
           end
      end
      def setup_dockerfile
-       Dir.mkdir(SysConfig.DeploymentDir + "/" + buildname + "/cron")
-       dfile = File.open(SysConfig.DeploymentDir + "/" + buildname + "/Dockerfile","a")
+       Dir.mkdir(get_basedir  + "/cron")
+       dfile = File.open(get_basedir + "/Dockerfile","a")
        ospackages = @bluePrint["software"]["ospackages"]
         packages=String.new
           ospackages.each do |package|
@@ -465,7 +465,7 @@ class EngineBuilder
     
      end
      def getwebport
-       stef = File.open( SysConfig.DeploymentDir + "/" + buildname + "/home/stack.env","r")
+       stef = File.open( get_basedir + "/home/stack.env","r")
                    while line=stef.gets do
                       if line.include?("PORT")
                         i= line.rindex('=')
@@ -544,9 +544,9 @@ class EngineBuilder
    
    def setup_rebuild 
      #mkdir build dir
-     Dir.mkdir(SysConfig.DeploymentDir + "/" + buildname)
+     Dir.mkdir(get_basedir)
      blueprint = @docker_api.load_blueprint(@engine)
-     statefile=SysConfig.DeploymentDir + "/"  + buildname + "/blueprint.json"              
+     statefile= get_basedir + "/blueprint.json"              
      f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
      f.write(blueprint.to_json)
      f.close
@@ -602,6 +602,10 @@ def create_managed_container
        return mc
  end  
      
+ protected
+ def get_basedir
+   return SysConfig.DeploymentDir + "/" + @buildname 
+ end
     
 end
 
