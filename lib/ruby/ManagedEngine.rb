@@ -44,7 +44,7 @@ class ManagedEngine < ManagedContainer
   
   def ManagedEngine.from_yaml( yaml ,docker_api )
           managedEngine = YAML::load( yaml )
-           if managedEngine == nil
+           if managedEngine.is_a?(ManagedEngine) == false
              return false
            end
           managedEngine.set_docker_api(docker_api)

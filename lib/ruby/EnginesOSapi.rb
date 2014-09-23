@@ -37,13 +37,14 @@ class EnginesOSapi
       if File.exists?(yfn) == true
         yf = File.open(yfn)
         managed_engine = ManagedEngine.from_yaml(yf,@docker_api)
-        if managed_engine
+        if managed_engine.is_a?(ManagedEngine)
           ret_val.push(managed_engine)
         else
-          puts "failed to load " + yf
-          
+          puts "failed to load " + yf 
+          p     managed_engine     
         end
         yf.close
+        return 
       end
     end
     return ret_val
