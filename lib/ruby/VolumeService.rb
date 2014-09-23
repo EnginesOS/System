@@ -4,10 +4,10 @@ class VolumeService < ManagedService
   
   def add_consumer_to_service(site_string)
    
-      return  @docker_api.add_volume_site(site_string) 
+      return  @docker_api.add_volume(site_string) 
      end
   def rm_consumer_from_service (site_string)
-       return  @docker_api.rm_volume_site(site_string)  
+       return  @docker_api.rm_volume(site_string)  
     end 
      
   def get_site_string(volume)
