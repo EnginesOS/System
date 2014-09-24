@@ -33,8 +33,7 @@ class EnginesOSapi
   def getManagedEngines()
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
-      yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"
-        p yfn
+      yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
       if File.exists?(yfn) == true       
         managed_engine = loadManagedEngine(contdir)
         if managed_engine.is_a?(ManagedEngine)
