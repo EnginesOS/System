@@ -11,8 +11,11 @@ class DNSService < ManagedService
     strings = site_string.split(':')
       ip_str = strings[2]
       hostName = strings[0]
-      
+      if ip_str.length > 7 #fixme need to check valid ip and that host is valid
        return  @docker_api.register_dns(hostName,ip_str)
+      else
+        return false
+      end
       
     end
     
@@ -20,8 +23,12 @@ class DNSService < ManagedService
       strings = site_string.split(':')
       ip_str = strings[2]
           hostName = strings[0]
-         
-       return  @docker_api.deregister_dns(hostName,ip_str)
+          if ip_str.length > 7 #fixme need to check valid ip and that host is valid  
+            return  @docker_api.deregister_dns(hostName,ip_str)
+          else
+            return false
+                 end
+                   
     end
   
 end
