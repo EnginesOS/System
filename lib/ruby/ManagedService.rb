@@ -22,10 +22,8 @@ class ManagedService < ManagedContainer
                  @image=image
                  @eports=eports 
                  @environments=environments                
-                 @volumes=volumes
-                 
-                 @port=port
-                               
+                 @volumes=volumes                 
+                 @port=port                               
                  @last_result=""
                  @setState="nocontainer"
                  @databases=dbs
