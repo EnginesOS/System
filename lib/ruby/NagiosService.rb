@@ -11,4 +11,8 @@ class NagiosService < ManagedService
        return  @docker_api.rm_monitor(site_string)
     end 
  
+  def get_site_string(engine)
+    return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s      
+  end
+  
 end 

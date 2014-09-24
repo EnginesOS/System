@@ -14,6 +14,8 @@ class ManagedContainer < Container
   @conf_register_dns=true
   @conf_register_site=false
   @conf_monitor_site=false
+  @http_and_https=true
+  @https_only=false
   
  def initialize(mem,name,host,domain,image,e_ports,vols,environs,framework,runtime,databases,setState,port,repo) #used for test only
    @framework = framework
@@ -38,6 +40,13 @@ class ManagedContainer < Container
    @http_and_https=true
    @https_only=false
    @last_error=""
+ end
+ 
+ def http_and_https
+   @http_and_https
+ end
+ def https_only
+   @https_only
  end
  
   def docker_api 

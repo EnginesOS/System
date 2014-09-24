@@ -5,13 +5,15 @@ fqdn=`echo $1 |cut -f2 -d:`
 port=`echo $1 |cut -f3 -d:`
 host=`echo $fqdn |cut -f1 -d.`
 
-proto=`echo $1 |cut -f4 -d:`
+protos=`echo $1 |cut -f4 -d:`
 
-	if test -z $proto
+	if test -z $protos
 		then
-			$proto="http"
+			protos="http"
 	fi
 
+ for proto in $protos
+ do
 	if test "https" = $proto
 		then
 		 	if test -f /etc/nginx/ssl/certs/$fqdn.crt
@@ -32,5 +34,7 @@ proto=`echo $1 |cut -f4 -d:`
 
  cat /home/tmpls/${proto}_site.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/${proto}_$fqdn.site
 cp /tmp/${proto}_$fqdn.site /etc/nginx/sites-enabled/
-/etc/init.d/nginx reload
+
+done
+service nginx restart
 

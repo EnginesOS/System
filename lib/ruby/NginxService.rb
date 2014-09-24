@@ -9,6 +9,16 @@ class NginxService < ManagedService
        return  @docker_api.deregister_site(site_string) 
     end 
      
-
+  
+  def get_site_string(engine)
+    if engine.https_only
+      proto="https"
+    elsif engine.http_and_https
+      proto="http https"
+    else
+      proto="http"
+    end
+    return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s + ":" + proto     
+  end
     
 end
