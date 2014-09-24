@@ -283,6 +283,8 @@ class ManagedContainer < Container
 
     if state== "running"
       ret_val = @docker_api.stop_container   self
+      deregister_site
+      deregister_dns
       @setState="stopped"
     else
       @last_error ="Can't stop Container as " + state
