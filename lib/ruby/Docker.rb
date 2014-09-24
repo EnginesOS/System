@@ -178,7 +178,7 @@ class Docker
     return retval
   end
   
-  def deregister_dns(top_level_hostname,ip_addr_str)
+  def deregister_dns(top_level_hostname)
     fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
         #FIXME need unique name
         dns_cmd_file_name="/tmp/.dns_cmd_file"
