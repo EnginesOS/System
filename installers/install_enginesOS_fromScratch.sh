@@ -162,6 +162,25 @@ echo "Creating and startingg Engines OS Services"
 	su -l dockuser /opt/engos/bin/engines.rb service create cAdvisor
 }
 
+function generate_ssl{
+echo "Generating Self Signed Cert"
+
+mkdir -p /opt/engos/etc/ssl/keys/
+mkdir -p /opt/engos/etc/ssl/certs/
+
+openssl genrsa -des3 -out server.key 2048
+ openssl rsa -in server.key -out server.key.insecure
+  mv server.key server.key.secure
+  mv server.key.insecure server.key
+  openssl req -new -key server.key -out server.csr
+  openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
+  mv server.key /opt/engos/etc/ssl/keys/engines.key
+  mv server.crt /opt/engos/etc/ssl/certs/engines.crt
+   
+   rm server.csr  server.key.secure
+  
+}
+
 function setup_mgmt_git {
 echo "Seeding Mgmt Application source from repository"
 	 cd /opt/engos/system/images/04.systemApps/mgmt/home/app
@@ -188,6 +207,7 @@ echo "Seeding Mgmt Application source from repository"
 install_docker_and_components
 configure_git 
 generate_keys
+generate_ssl
 set_os_flavor
 
 setup_mgmt_git

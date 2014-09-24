@@ -7,7 +7,12 @@ hostName: nginx
 domainName: 
 environments: []
 image: enginesos/nginx
-volumes: []
+volumes:
+- !ruby/object:Volume
+  name: sslcerts
+  remotepath: "/etc/nginx/ssl/"
+  localpath: "/engos/opt/etc/ssl/"
+  vol_permissions: "ro"
 port: 
 eports:
 - !ruby/object:WorkPort
