@@ -287,12 +287,14 @@ class Docker
     if Dir.exists?( localpath ) ==false
       Dir.mkdir(localpath)
     end
+    return true 
   end
 
 def rm_volume(site_string)
   strs = site_string.split(":")
   localpath =  strs[0]
     puts "ould remove " + localpath
+return true 
 end
 
 
