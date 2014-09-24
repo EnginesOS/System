@@ -3,7 +3,7 @@ require "/opt/engos/lib/ruby/ManagedService.rb"
 class VolumeService < ManagedService 
   
   def add_consumer_to_service(site_string)
-   
+        puts "dd vol consumer " + site_string
       return  @docker_api.add_volume(site_string) 
      end
   def rm_consumer_from_service (site_string)
