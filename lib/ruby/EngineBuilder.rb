@@ -132,7 +132,7 @@ class EngineBuilder
 
   def create_file_service vol
     vol_service = EnginesOSapi.loadManagedService("volmanager", @docker_api)
-       if vol_service.is_a?(VolumeService)
+       if vol_service.is_a?(EnginesOSapiResult) == false
          vol_service.add_consumer(vol)
          return true
        else
