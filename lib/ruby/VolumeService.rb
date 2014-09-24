@@ -11,7 +11,7 @@ class VolumeService < ManagedService
     end 
      
   def get_site_string(volume)
-    return volume.localpath + ":" + volume.remotepath + ":" + volume.mapping_permissions + ":" + volume.vol_permissions.owner + ":" + volume.vol_permissions.ro_group + ":" + volume.vol_permissions.rw_group
+    return volume.name + ":" + volume.localpath + ":" + volume.remotepath + ":" + volume.mapping_permissions + ":" + volume.vol_permissions.owner + ":" + volume.vol_permissions.ro_group + ":" + volume.vol_permissions.rw_group
    
    end
     

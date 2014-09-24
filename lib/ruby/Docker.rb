@@ -283,7 +283,7 @@ class Docker
   
   def add_volume(site_string)
     strs = site_string.split(":")
-    localpath =  strs[0]
+    localpath =  strs[1]
     if Dir.exists?( localpath ) ==false
       Dir.mkdir(localpath)
     end
@@ -292,7 +292,7 @@ class Docker
 
 def rm_volume(site_string)
   strs = site_string.split(":")
-  localpath =  strs[0]
+  localpath =  strs[1]
     puts "ould remove " + localpath
 return true 
 end
