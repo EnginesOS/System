@@ -35,6 +35,8 @@ class ManagedContainer < Container
    @conf_register_dns=true #do this even if self registers dns s it dd to the dns consumer (so record survives rebuild)
    @conf_register_site=false
    @conf_monitor_site=false
+   @http_and_https=true
+   @https_only=false
    @last_error=""
  end
  
@@ -334,8 +336,13 @@ class ManagedContainer < Container
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
-    return service.add_consumer(self)
+    if is_active == true 
+      service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
+      return service.add_consumer(self)
+     else
+            @last_error="Cannot register when Engine is inactive"
+            return false
+      end    
   end
 
   def monitor_site
@@ -361,8 +368,10 @@ class ManagedContainer < Container
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi.loadManagedService("monit",@docker_api)
-    return service.remove_consumer(self)
+  
+      service =  EnginesOSapi.loadManagedService("monit",@docker_api)
+      return service.remove_consumer(self)
+   
   end
   
   def register_dns 
@@ -370,10 +379,14 @@ class ManagedContainer < Container
        @last_error="No connection to Engines OS System"      
        return false
      end
-     service =  EnginesOSapi.loadManagedService("dns",@docker_api)
-    return service.add_consumer(self)
-
-   
+     
+     if is_active == true        
+      service =  EnginesOSapi.loadManagedService("dns",@docker_api)
+      return service.add_consumer(self)
+     else
+       @last_error="Cannot register when Engine is inactive"
+       return false
+     end   
   end
   
   def deregister_dns
@@ -496,7 +509,19 @@ class ManagedContainer < Container
     ret_val = @docker_api.rebuild_image(self)
     return ret_val
   end
+
   
+  def is_active
+    state = read_state
+   case state
+    when "running"
+      return true
+    when "paused"
+      return true
+    else
+      return false
+   end  
+  end
   
   protected
 
