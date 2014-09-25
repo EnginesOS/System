@@ -180,7 +180,7 @@ class ManagedContainer < Container
     if state == "nocontainer"
       ret_val=@docker_api.delete_image self
     else
-      @last_error ="Cannot Delete the Image while container exists\ Please stop/destroy first"
+      @last_error ="Cannot Delete the Image while container exists. Please stop/destroy first"
     end
     clear_error(ret_val)
     return ret_val
