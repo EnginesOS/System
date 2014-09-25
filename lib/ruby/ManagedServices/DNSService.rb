@@ -6,7 +6,7 @@ class DNSService < ManagedService
   def get_site_hash(engine)
     site_hash = Hash.new()
     site_hash[:name]=engine.containerName
-    site_hash[:container_type]=engine.c_type
+    site_hash[:container_type]=engine.ctype
     site_hash[:hostname]=engine.hostName
     site_hash[:ip]=engine.get_ip_str.to_s
     return site_hash
