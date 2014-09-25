@@ -4,7 +4,7 @@ class DNSService < ManagedService
   
   def get_site_string(engine)
    
-    return engine.hostName + ":" + engine.fqdn + ":" +     engine.get_ip_str 
+    return engine.hostName + ":" + engine.fqdn + ":" +     engine.get_ip_str.to_s
   end
   
   def add_consumer_to_service(site_string)
