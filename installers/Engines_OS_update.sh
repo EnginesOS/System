@@ -1,54 +1,56 @@
 #!/bin/bash
 
+LOGFILE=/tmp/updater.log
+
 function create_services {
 echo "Creating and starting Engines OS Services"
 
-	 /opt/engos/bin/engines.rb service create dns
+	 /opt/engos/bin/engines.rb service create dns >>$LOGFILE 
 	sleep 30
-	 /opt/engos/bin/engines.rb service create mysql_server
-	 /opt/engos/bin/engines.rb service create nginx
-	 /opt/engos/bin/engines.rb service create monit
-	 /opt/engos/bin/engines.rb service create cAdvisor
+	 /opt/engos/bin/engines.rb service create mysql_server >>$LOGFILE
+	 /opt/engos/bin/engines.rb service create nginx >>$LOGFILE
+	 /opt/engos/bin/engines.rb service create monit >>$LOGFILE
+	 /opt/engos/bin/engines.rb service create cAdvisor >>$LOGFILE
 }
 
 function remove_services {
 echo "Creating and starting Engines OS Services"
 
-	 /opt/engos/bin/engines.rb service stop dns
-	 /opt/engos/bin/engines.rb service stop mysql_server
-	 /opt/engos/bin/engines.rb service stop nginx
-	 /opt/engos/bin/engines.rb service stop monit
-	 /opt/engos/bin/engines.rb service stop cAdvisor
-	  docker rm dns
-	 docker rm mysql_server
-	 docker  rm nginx
-	 docker rm monit
-	 docker  rm cAdvisor 
+	 /opt/engos/bin/engines.rb service stop dns >>$LOGFILE
+	 /opt/engos/bin/engines.rb service stop mysql_server >>$LOGFILE
+	 /opt/engos/bin/engines.rb service stop nginx >>$LOGFILE
+	 /opt/engos/bin/engines.rb service stop monit >>$LOGFILE
+	 /opt/engos/bin/engines.rb service stop cAdvisor >>$LOGFILE
+	  docker rm dns >>$LOGFILE
+	 docker rm mysql_server >>$LOGFILE
+	 docker  rm nginx >>$LOGFILE
+	 docker rm monit >>$LOGFILE
+	 docker  rm cAdvisor  >>$LOGFILE
 }
 
 function generate_keys {
 echo "Generating system Keys"
-	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
-	mv *private ddns.private
-	mv *key ddns.key
-	mv ddns.* /opt/engos/etc/keys/
+	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE >>$LOGFILE
+	mv *private ddns.private 
+	mv *key ddns.key 
+	mv ddns.* /opt/engos/etc/keys/ 
 	
-	ssh-keygen -q -N "" -f nagios
-	ssh-keygen -q -N "" -f mysql
-	ssh-keygen -q -N "" -f mgmt
-	ssh-keygen -q -N "" -f nginx
+	ssh-keygen -q -N "" -f nagios >>$LOGFILE 
+	ssh-keygen -q -N "" -f mysql  >>$LOGFILE 
+	ssh-keygen -q -N "" -f mgmt >>$LOGFILE
+	ssh-keygen -q -N "" -f nginx >>$LOGFILE
 	
-	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/
-	cp  mgmt.pub  nagios.pub  mysql.pub  nginx.pub  /opt/engos/etc/keys/
+	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/ 
+	cp  mgmt.pub  nagios.pub  mysql.pub  nginx.pub  /opt/engos/etc/keys/ 
 		
-	cp /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
-	cp /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-	cp /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/
-	cp /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
+	cp /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/ 
+	cp /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/ 
+	cp /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/  
+	cp /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/ 
 	
-	key=`cat /opt/engos/etc/keys/ddns.private |grep Key | cut -f2 -d" "`
-	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cp /opt/engos/etc/keys/ddns.* /opt/engos/system/images/01.baseImages/01.base/
+	key=`cat /opt/engos/etc/keys/ddns.private |grep Key | cut -f2 -d" "` >>$LOGFILE
+	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad  
+	cp /opt/engos/etc/keys/ddns.* /opt/engos/system/images/01.baseImages/01.base/ 
 
 }
 
@@ -98,7 +100,7 @@ echo "Seeding Mgmt Application source from repository"
 				        merge = refs/heads/master
 				' > .git/config		
 		fi
-		git pull
+		git pull >>$LOGFILE 
 }
 
 
@@ -106,7 +108,7 @@ if test ! -f /tmp/updater.updated
 then
 	cd /opt/engos
 	echo "Downloading changes"
-	git pull
+	git pull >>$LOGFILE 
 	touch /tmp/updater.updated
 	echo "Applying changes"
 	$0
@@ -125,7 +127,7 @@ setup_mgmt_git
 
 
 echo "Building Images"
- /opt/engos/bin/buildimages.sh
+ /opt/engos/bin/buildimages.sh >>$LOGFILE 
  
 remove_services
 create_services
@@ -135,7 +137,7 @@ docker stop mgmt
 docker rm mgmt
 
 echo "Building System Gui"
-/opt/engos/bin/mgmt_startup.sh 
+/opt/engos/bin/mgmt_startup.sh  >>$LOGFILE 
 sleep 180
 hostname=`hostname`
 echo "Congratulations Engines OS is now upto date please go to http://${hostname}:88/"

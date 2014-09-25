@@ -329,7 +329,7 @@ class ManagedContainer < Container
          register_dns
       end
         if @conf_register_site == true
-          register_ste
+          register_site
         end
     end
 
