@@ -1,4 +1,4 @@
-require_relative '../VolumeService.rb'
+require_relative '../ManagedServices/VolumeService.rb'
 require_relative '../PermissionRights.rb'
 require 'spec_helper'
 

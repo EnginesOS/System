@@ -1,14 +1,11 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require "/opt/engos/lib/ruby/SysConfig.rb"
-require "/opt/engos/lib/ruby/ManagedEngine.rb"
-require "/opt/engos/lib/ruby/ManagedService.rb"
-require "/opt/engos/lib/ruby/NginxService.rb"
-require "/opt/engos/lib/ruby/NagiosService.rb"
-require "/opt/engos/lib/ruby/DBManagedService.rb"
+
 require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
-require "/opt/engos/lib/ruby/DNSService.rb"
+require "/opt/engos/lib/ruby/ManagedServices.rb"
+
 
 class EnginesOSapi
   def initialize()

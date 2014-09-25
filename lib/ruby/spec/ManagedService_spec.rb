@@ -1,4 +1,4 @@
-require_relative '../ManagedService'
+require_relative '../ManagedServices'
 require 'spec_helper'
 
 describe ManagedService do
