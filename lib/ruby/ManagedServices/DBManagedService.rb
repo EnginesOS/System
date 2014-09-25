@@ -22,6 +22,7 @@ class DBManagedService < ManagedService
      site_hash[:host]=database.dbHost 
      site_hash[:user]=database.dbUser
      site_hash[:pass]= database.dbPass
+       p site_hash
      return site_hash      
     
   end
