@@ -37,5 +37,5 @@ setState: running
 nginxored: false
 databases: []
 conf_register_site: false
-conf_register_dns: false
+conf_register_dns: true
 consumers: []

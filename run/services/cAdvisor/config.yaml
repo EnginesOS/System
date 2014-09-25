@@ -9,17 +9,17 @@ environments: []
 image: google/cadvisor:latest
 volumes:
 - !ruby/object:Volume
-  name: 
+  name: var/run
   remotepath: "/var/run"
   localpath: "/var/run"
   vol_permissions: "rw"
 - !ruby/object:Volume
-  name: docker
-  remotepath: "/var/lib"
-  localpath: "/var/lib"
+  name: lib/docker
+  remotepath: "/var/lib/docker"
+  localpath: "/var/lib/docker"
   vol_permissions: "rw"
 - !ruby/object:Volume
-  name: 
+  name: sys
   remotepath: "/sys/"
   localpath: "/sys/"
   vol_permissions: "ro"

@@ -10,8 +10,8 @@ image: enginesos/mysql
 volumes:
 - !ruby/object:Volume
   name: mysql
-  remotepath: "/var/lib"
-  localpath: "/home"
+  remotepath: "/var/lib/mysql"
+  localpath: "/home/mysql"
   vol_permissions: "rw"
 port: 
 eports:
