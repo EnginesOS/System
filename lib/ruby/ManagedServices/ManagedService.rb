@@ -36,7 +36,7 @@ class ManagedService < ManagedContainer
  
 	def consumers
 	    if @consumers == nil
-	      @consumers = Array.new
+	      @consumers = Hash.new
 	    end
     return @consumers
 	end
