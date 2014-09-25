@@ -1,7 +1,7 @@
 
 require_relative '../ManagedEngine'
-require_relative '../DatabaseService'
-require_relative '../VolumeService'
+
+require_relative '../ManagedServices'
 require_relative '../EnvironmentVariable'
 require_relative '../WorkPort'
 require_relative '../EnginesOSapi.rb'
