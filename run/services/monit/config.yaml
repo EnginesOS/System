@@ -17,6 +17,5 @@ setState: running
 databases: []
 registerSite: true
 monitored: false
-consumers: []
 conf_register_site: true
 conf_register_dns: true
