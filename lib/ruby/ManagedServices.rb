@@ -1,4 +1,4 @@
-require "/opt/engos/lib/ruby/ManagedServices/ManagedEngine.rb"
+
 require "/opt/engos/lib/ruby/ManagedServices/ManagedService.rb"
 require "/opt/engos/lib/ruby/ManagedServices/NginxService.rb"
 require "/opt/engos/lib/ruby/ManagedServices/NagiosService.rb"
