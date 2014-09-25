@@ -352,8 +352,8 @@ class EngineBuilder
   def build_init
     cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
     puts cmd
-    res= %x<#{cmd}>
-    if $? == false
+    res = run_system(cmd)
+    if res != true
       puts "build init failed " + res
       return res
     end
@@ -361,14 +361,12 @@ class EngineBuilder
   end
 
   def build_setup
-    cmd = " docker rm setup " #>&/dev/null "
-    puts cmd
-    res= %x<#{cmd}>
-
+    res = run_system(" docker rm setup ")
+    
     cmd = "cd " + get_basedir + "; docker run --memory=128m  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
-    puts cmd
-    res= %x<#{cmd}>
-    if $? == false
+    res = run_system(cmd)
+    
+    if res != true
       puts "build setup failed " +res
       return res
     end
@@ -378,40 +376,49 @@ class EngineBuilder
   def build_deploy
     cmd="docker commit setup " +  @hostName + "/setup"
     puts cmd
-    res= %x<#{cmd}>
-    cmd="docker rm setup"
-    res= %x<#{cmd}>
+    res = run_system(cmd)
+      
+      if res != true
+        puts "commit setup failed " +res
+        return res
+      end
+
+    run_system("docker rm setup")
+    
     volumes=String.new
     @vols.each do |vol|
       volumes = volumes + " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
-    end
-    
-    cmd="docker rm deploy"
-    res= %x<#{cmd}>
+    end   
+  
+    res = run_system("docker rm deploy")
     
     #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
     cmd= "cd " + get_basedir + "; docker run --memory=384m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
     puts(cmd)
-    res= %x<#{cmd}>
-    puts res
-    if $? == false
+    res = run_system(cmd)
+    if res != true
       puts "build deploy failed " +res
       return res
     end
    
     
     cmd = "docker commit  deploy " + @hostName + "/deploy"
-    res= %x<#{cmd}>
-    if $? == false
+    res=run_system(cmd)
+    if res != true
       puts "build deploy commit failed " +res
       return res
     end
-    cmd= "docker rm deploy "
-    res= %x<#{cmd}>
-    cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
-    res= %x<#{cmd}>
-  end
+    run_system("docker rm deploy ")
 
+    cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
+ 
+    res = run_system(cmd)
+    if res != true
+      puts "build cleanup failed " +res
+      return res
+  end
+  end
+  
   def launch_deploy managed_container
     retval =  managed_container.create_container
     if retval == false
@@ -610,6 +617,19 @@ class EngineBuilder
 
   protected
 
+    def run_system (cmd)
+      cmd = cmd + " 2>&1"
+      res= %x<#{cmd}>  
+      p res
+      #FIXME should be case insensitive The last one is a pure kludge
+      #really need to get stderr and stdout separately
+      if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
+        return true
+      else
+        return res
+      end           
+    end
+    
   def get_basedir
     return SysConfig.DeploymentDir + "/" + @buildname
   end
