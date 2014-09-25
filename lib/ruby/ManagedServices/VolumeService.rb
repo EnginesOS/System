@@ -10,7 +10,7 @@ class VolumeService < ManagedService
        return  @docker_api.rm_volume(site_string)  
     end 
      
-  def get_site_string(volume)
+  def get_site_hash(volume)
 
         site_hash = Hash.new()
         site_hash[:volume_name]=volume.name 
