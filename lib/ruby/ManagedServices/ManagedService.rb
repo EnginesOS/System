@@ -59,9 +59,9 @@ class ManagedService < ManagedContainer
        return ret_val
      end
   
-#      if @consumers == nil
-#        @consumers = Hash.new
-#      end
+      if @consumers == nil
+        @consumers = Hash.new
+      end
  
       if @consumers.include?(site_hash[:name]) == false     # only add if doesnt exists but allow register
         @consumers.store(site_hash[:name], site_hash)
