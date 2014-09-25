@@ -4,7 +4,7 @@ ctype: service
 last_error: 
 memory: '128'
 hostName: cadvisor
-domainName: mpas.jvodan.com
+domainName: enginesos.jvodan.com
 environments: []
 image: google/cadvisor:latest
 volumes:
