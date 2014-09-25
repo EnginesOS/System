@@ -1,5 +1,5 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
-require "/opt/engos/lib/ruby/ManagedService.rb"
+require_relative  "ManagedService.rb"
 class VolumeService < ManagedService 
   
   def add_consumer_to_service(site_string)
