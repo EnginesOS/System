@@ -17,11 +17,11 @@ class DBManagedService < ManagedService
 
   def get_site_hash(database)
     site_hash = Hash.new()
-     site_hash["name"]=database.name
-     site_hash["flavor"]=database.flavor
-     site_hash["host"]=database.dbHost 
-     site_hash["user"]=database.dbUser
-     site_hash["pass"]= database.dbPass
+     site_hash[:name]=database.name
+     site_hash[:flavor]=database.flavor
+     site_hash[:host]=database.dbHost 
+     site_hash[:user]=database.dbUser
+     site_hash[:pass]= database.dbPass
      return site_hash      
     
   end
