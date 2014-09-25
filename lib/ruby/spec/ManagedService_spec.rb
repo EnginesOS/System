@@ -35,7 +35,7 @@ describe ManagedService do
   
   describe "#consumers" do
      it "Returns consumers " do
-       @managed_service.consumers.should be_an_instance_of Array
+       @managed_service.consumers.should be_an_instance_of Hash
      end
    end
     
