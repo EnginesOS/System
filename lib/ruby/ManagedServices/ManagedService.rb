@@ -64,7 +64,7 @@ class ManagedService < ManagedContainer
       end
  
       if @consumers.include?(site_hash[:name]) == false     # only add if doesnt exists but allow register
-        @consumers[site_hash[:name]] = site_hash
+        @consumers.store(site_hash[:name], site_hash)
       end
      save_state
      return ret_val
