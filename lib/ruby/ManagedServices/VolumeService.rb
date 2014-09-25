@@ -2,12 +2,12 @@ require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require_relative  "ManagedService.rb"
 class VolumeService < ManagedService 
   
-  def add_consumer_to_service(site_string)
-        puts "dd vol consumer " + site_string
-      return  @docker_api.add_volume(site_string) 
+  def add_consumer_to_service(site_hash)
+    
+      return  @docker_api.add_volume(site_hash) 
      end
-  def rm_consumer_from_service (site_string)
-       return  @docker_api.rm_volume(site_string)  
+  def rm_consumer_from_service (site_hash)
+       return  @docker_api.rm_volume(site_hash)  
     end 
      
   def get_site_hash(volume)
