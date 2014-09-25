@@ -225,6 +225,9 @@ class ManagedContainer < Container
       @last_error ="Cannot create container if container by the same name exists"
     end
     if ret_val == true
+      if conf_register_dns == true
+          register_dns
+        end
       if conf_register_site == true
         register_site
       end

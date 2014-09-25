@@ -203,6 +203,8 @@ class EnginesOSapi
     end
     retval =   engine.create_container()
     if retval == false
+      p failed(engine_name,engine.last_error,"Create")
+
       return failed(engine_name,engine.last_error,"Create")
     end
     return sucess(engine_name,"Create")
