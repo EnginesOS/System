@@ -268,7 +268,7 @@ class Docker
         end    
 
   def create_database  site_hash   
-
+p site_hash
   cmd = SysConfig.addDBServiceCmd + site_hash["host"] + " /home/createdb.sh " + site_hash["name"] + " " + site_hash["user"] + " " + site_hash["pass"] 
    puts(cmd)
    
