@@ -41,13 +41,13 @@ class ManagedService < ManagedContainer
     return @consumers
 	end
 	
-	def get_site_string(engine)
+	def get_site_hash(engine)
 	  return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   	  
 	end
 	
   def add_consumer(engine)
-    site_string = get_site_string(engine)
-     ret_val = add_consumer_to_service(site_string)
+    site_hash = get_site_hash(engine)
+     ret_val = add_consumer_to_service(site_hash)
 
      if ret_val != true
        return ret_val
@@ -57,8 +57,8 @@ class ManagedService < ManagedContainer
         @consumers = Array.new
       end
  
-      if @consumers.include?(site_string) == false     # only add if doesnt exists but allow register
-        @consumers.push(site_string)
+      if @consumers.include?(site_hash) == false     # only add if doesnt exists but allow register
+        @consumers.push(site_hash)
       end
      save_state
      return ret_val
@@ -67,11 +67,11 @@ class ManagedService < ManagedContainer
   
 
   def remove_consumer engine
-    site_string = get_site_string(engine)
-      result = rm_consumer_from_service(site_string)
+    site_hash = get_site_hash(engine)
+      result = rm_consumer_from_service(site_hash)
      
       if(@consumers !=  nil || @consumes.length>0)
-             @consumers.delete(site_string)
+             @consumers.delete(site_hash)
           end    
       save_state
       return result
