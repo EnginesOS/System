@@ -2,7 +2,7 @@
 containerName: nginx
 ctype: service
 last_error: 
-memory: '32'
+memory: '64'
 hostName: nginx
 domainName: 
 environments: []
