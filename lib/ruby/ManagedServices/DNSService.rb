@@ -1,5 +1,5 @@
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
-require "/opt/engos/lib/ruby/ManagedService.rb"
+require_relative  "ManagedService.rb"
 class DNSService < ManagedService 
   
   def get_site_string(engine)

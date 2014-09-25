@@ -1,6 +1,6 @@
 
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
-require "/opt/engos/lib/ruby/ManagedService.rb"
+require_relative  "ManagedService.rb"
 
 class NagiosService < ManagedService
   
