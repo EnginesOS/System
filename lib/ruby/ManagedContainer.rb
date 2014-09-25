@@ -300,7 +300,10 @@ class ManagedContainer < Container
     else
       @last_error ="Can't stop Container as " + state
     end
-
+    if state != "paused"
+      deregister_site
+      deregister_dns
+    end
     clear_error(ret_val)
     save_state()
     return  ret_val
@@ -322,9 +325,12 @@ class ManagedContainer < Container
     end
 
     if ret_val == true
-      if @registersite == true
-        register_site
+       if @conf_register_dns ==true
+         register_dns
       end
+        if @conf_register_site == true
+          register_ste
+        end
     end
 
     clear_error(ret_val)

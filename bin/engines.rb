@@ -156,7 +156,7 @@ def do_cmd(c_type,containerName,command)
     end
     if eng.is_a?(EnginesOSapiResult) == false
         res = eng.stats
-                if res != nil
+                if res != nil && res != false
                   if res.state == "stopped"
                     res = "State:" + res.state + res.proc_cnt.to_s + " Procs " + "Stopped:" + res.stopped_ts + "Memory:V:" + res.RSSMemory.to_s + " R:" + res.VSSMemory.to_s +   " cpu:" + res.cpuTime.to_s 
                   else
