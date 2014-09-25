@@ -27,7 +27,7 @@ class ManagedEngine < ManagedContainer
                  
     @ctype ="container"
     @conf_self_start=false
-    @conf_register_dns=false
+    @conf_register_dns=true
     @conf_register_site=true
     @conf_monitor_site=false
     
