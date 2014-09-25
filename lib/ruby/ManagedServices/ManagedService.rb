@@ -44,7 +44,7 @@ class ManagedService < ManagedContainer
 	def get_site_hash(engine)
 	  site_hash = Hash.new()
 	  site_hash[:name]=engine.containerName
-    site_hash[:container_type]=engine.c_type
+    site_hash[:container_type]=engine.ctype
     site_hash[:fqdn]=engine.fqdn
     site_hash[:port]=engine.port.to_s
 	  return site_hash

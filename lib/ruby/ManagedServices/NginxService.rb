@@ -21,7 +21,7 @@ class NginxService < ManagedService
     end
     site_hash = Hash.new()
      site_hash["name"]=engine.containerName
-     site_hash["container_type"]=engine.c_type
+     site_hash["container_type"]=engine.ctype
      site_hash["fqdn"]=engine.fqdn
      site_hash["port"]=engine.port.to_s
      site_hash["proto"]= proto
