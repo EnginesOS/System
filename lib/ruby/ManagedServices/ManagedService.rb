@@ -76,7 +76,7 @@ class ManagedService < ManagedContainer
     site_hash = get_site_hash(engine)
       result = rm_consumer_from_service(site_hash)
      
-      if(@consumers !=  nil && @consumes.length>0)
+      if @consumers !=  nil
              @consumers.delete(site_hash[:name])
           end    
       save_state
