@@ -54,7 +54,7 @@ class ManagedService < ManagedContainer
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
      ret_val = add_consumer_to_service(site_hash)
-
+     p site_hash
      if ret_val != true
        return ret_val
      end
