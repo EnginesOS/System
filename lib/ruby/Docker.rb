@@ -193,23 +193,27 @@ class Docker
         return retval
   end
   
-  def register_site(site_string)      
-      ssh_cmd=SysConfig.addSiteCmd + " \"" + site_string +  "\""
+  def register_site(site_hash)     
+ 
+      ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
       return run_system(ssh_cmd)
   end
-  
-  def deregister_site(site_string)
-     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + site_string +  "\""
+  def hash_to_site_str(site_hash)      
+    return site_hash[:name] + ":" +  site_hash[:fqdn] + ":" + site_hash[:port]  +  "\""
+  end
+  def deregister_site(site_hash)
+         
+     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     return run_system(ssh_cmd)
   end
   
-  def add_monitor(site_string)
-    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + site_string + " \""
+  def add_monitor(site_hash)
+    ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
     return run_system(ssh_cmd)
   end 
     
-  def rm_monitor(site_string)
-       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + site_string + " \""
+  def rm_monitor(site_hash)
+       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
     return run_system(ssh_cmd)
   end 
          
@@ -262,38 +266,24 @@ class Docker
                      return blueprint
         end    
 
-  def create_database db_url    
-  #mysql:simpleinvoicedb:simpleinvoicedb@mysql.engines.local/simpleinvoicedb
+  def create_database  site_hash   
 
-  type_and_user_details = db_url.split(":")
-  type=type_and_user_details[0]
-  user=type_and_user_details[1]
-  pass_and_the_rest = type_and_user_details[2].split("@")
-  pass = pass_and_the_rest[0]
-  
-    host_and_dbname = pass_and_the_rest[1].split("/")
-    host=host_and_dbname[0]
-    dbname = host_and_dbname[1] 
-  
-  cmd = SysConfig.addDBServiceCmd + host + " /home/createdb.sh " + dbname + " " + user + " " + pass 
+  cmd = SysConfig.addDBServiceCmd + site_hash["host"] + " /home/createdb.sh " + site_hash["name"] + " " + site_hash["user"] + " " + site_hash["pass"] 
    puts(cmd)
    
      return run_system(cmd)
   end
   
-  def add_volume(site_string)
-    strs = site_string.split(":")
-    localpath =  strs[1]
-    if Dir.exists?( localpath ) ==false
-      Dir.mkdir(localpath)
+  def add_volume(site_hash)
+    if Dir.exists?(  site_hash[:localpath] ) ==false
+      Dir.mkdir( site_hash[:localpath])
     end
     return true 
   end
 
-def rm_volume(site_string)
-  strs = site_string.split(":")
-  localpath =  strs[1]
-    puts "ould remove " + localpath
+def rm_volume(site_hash)
+
+    puts "ould remove " + site_hash[:localpath] 
 return true 
 end
 

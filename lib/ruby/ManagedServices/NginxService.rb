@@ -2,15 +2,16 @@ require "/opt/engos/lib/ruby/ManagedContainer.rb"
 require_relative  "ManagedService.rb"
 class NginxService < ManagedService 
   
-  def add_consumer_to_service(site_string)
-      return  @docker_api.register_site(site_string) 
+  def add_consumer_to_service(site_hash)
+      return  @docker_api.register_site(site_hash) 
      end
-  def rm_consumer_from_service (site_string)
-       return  @docker_api.deregister_site(site_string) 
+  def rm_consumer_from_service (site_hash)
+       return  @docker_api.deregister_site(site_hash) 
     end 
      
   
-  def get_site_string(engine)
+  def get_site_hash(engine)
+ 
     if engine.https_only
       proto="https"
     elsif engine.http_and_https
@@ -18,7 +19,13 @@ class NginxService < ManagedService
     else
       proto="http"
     end
-    return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s + ":" + proto     
+    site_hash = Hash.new()
+     site_hash["name"]=engine.containerName
+     site_hash["container_type"]=engine.c_type
+     site_hash["fqdn"]=engine.fqdn
+     site_hash["port"]=engine.port.to_s
+     site_hash["proto"]= proto
+     return site_hash       
   end
     
-end
+end 

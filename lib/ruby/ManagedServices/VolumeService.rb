@@ -11,8 +11,18 @@ class VolumeService < ManagedService
     end 
      
   def get_site_string(volume)
-    return volume.name + ":" + volume.localpath + ":" + volume.remotepath + ":" + volume.mapping_permissions + ":" + volume.vol_permissions.owner + ":" + volume.vol_permissions.ro_group + ":" + volume.vol_permissions.rw_group
-   
+
+        site_hash = Hash.new()
+        site_hash[:volume_name]=volume.name 
+        site_hash[:localpath]=volume.localpath
+        site_hash[:remotepath]=volume.remotepath 
+        site_hash[:mapping_permission]=volume.mapping_permissions
+        site_hash[:permissions_owner]=volume.vol_permissions.owner
+        site_hash[:permission_ro_grp]=volume.vol_permissions.ro_group
+        site_hash[:permission_rw_grp]=volume.vol_permissions.rw_group
+        return site_hash
+          
    end
+   
     
 end

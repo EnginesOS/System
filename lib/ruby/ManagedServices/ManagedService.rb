@@ -42,7 +42,13 @@ class ManagedService < ManagedContainer
 	end
 	
 	def get_site_hash(engine)
-	  return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s   	  
+	  site_hash = Hash.new()
+	  site_hash[:name]=engine.containerName
+    site_hash[:container_type]=engine.c_type
+    site_hash[:fqdn]=engine.fqdn
+    site_hash[:port]=engine.port.to_s
+	  return site_hash
+	    
 	end
 	
   def add_consumer(engine)
@@ -54,11 +60,11 @@ class ManagedService < ManagedContainer
      end
   
       if @consumers == nil
-        @consumers = Array.new
+        @consumers = Hash.new
       end
  
-      if @consumers.include?(site_hash) == false     # only add if doesnt exists but allow register
-        @consumers.push(site_hash)
+      if @consumers.include?(site_hash[:name]) == false     # only add if doesnt exists but allow register
+        @consumers[site_hash[:name]] = site_hash
       end
      save_state
      return ret_val
@@ -71,7 +77,7 @@ class ManagedService < ManagedContainer
       result = rm_consumer_from_service(site_hash)
      
       if(@consumers !=  nil || @consumes.length>0)
-             @consumers.delete(site_hash)
+             @consumers.delete(site_hash[:name])
           end    
       save_state
       return result

@@ -4,15 +4,12 @@ require_relative  "ManagedService.rb"
 
 class NagiosService < ManagedService
   
-  def add_consumer_to_service(site_string)
-      return  @docker_api.add_monitor(site_string)
+  def add_consumer_to_service(site_hash)
+      return  @docker_api.add_monitor(site_hash)
      end
-  def rm_consumer_from_service (site_string)
-       return  @docker_api.rm_monitor(site_string)
+  def rm_consumer_from_service (site_hash)
+       return  @docker_api.rm_monitor(site_hash)
     end 
  
-  def get_site_string(engine)
-    return engine.containerName + ":" + engine.fqdn + ":" + engine.port.to_s      
-  end
-  
+
 end 

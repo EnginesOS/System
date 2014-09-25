@@ -6,17 +6,24 @@ class DBManagedService < ManagedService
 
     
 #overloaded for the moment
-  def add_consumer_to_service(site_string)
-    return  @docker_api.create_database(site_string) 
+  def add_consumer_to_service(site_hash)
+    return  @docker_api.create_database(site_hash) 
      end
      
-  def rm_consumer_from_service (site_string)
+  def rm_consumer_from_service (site_hash)
        return  true
     end 
     
 
-  def get_site_string(database)
-    return database.flavor + ":" + database.dbUser + ":" + database.dbPass + "@" + database.dbHost + "/" + database.name
+  def get_site_hash(database)
+    site_hash = Hash.new()
+     site_hash["name"]=database.name
+     site_hash["flavor"]=database.flavor
+     site_hash["host"]=database.dbHost 
+     site_hash["user"]=database.dbUser
+     site_hash["pass"]= database.dbPass
+     return site_hash      
+    
   end
     
 #noop overloads 
