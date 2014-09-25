@@ -198,8 +198,9 @@ class Docker
       ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
       return run_system(ssh_cmd)
   end
-  def hash_to_site_str(site_hash)      
-    return site_hash[:name] + ":" +  site_hash[:fqdn] + ":" + site_hash[:port]  +  "\""
+  def hash_to_site_str(site_hash)    
+      
+    return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  +  "\""
   end
   def deregister_site(site_hash)
          
