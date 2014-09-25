@@ -3,16 +3,13 @@ require "/opt/engos/lib/ruby/ManagedContainer.rb"
 
 class ManagedService < ManagedContainer
 	@ctype="service"
-	@consumers=Array.new
+	@consumers=Hash.new
 	
 	def ctype
 	  return @ctype
 	end
 	
-	class Consumer
-	  def initialize(contName,service)
-	  end
-	end
+	
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,dbs,environments,framework,runtime)                         
                  @last_error="None"                 
                  @containerName=name
