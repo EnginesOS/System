@@ -200,7 +200,7 @@ class Docker
   end
   def hash_to_site_str(site_hash)    
       
-    return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  +  "\""
+    return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  
   end
   def deregister_site(site_hash)
          
