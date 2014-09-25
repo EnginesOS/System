@@ -205,21 +205,32 @@ def do_cmd(c_type,containerName,command)
      end
 end
 
+containerName =""
 c_type= ARGV[0]
 if c_type== "engine"
   c_type = "container"
-elsif c_type != "service"
+elsif c_type == "engines"
+  c_type = "container"
+  containerName = "all"
+elsif  c_type == "services"
+  c_type = "service"
+  containerName = "all"
+elsif  c_type != "service"
   puts("unknown container type: Please use engine or service")
   exit
 end
 
-if ARGV.length != 3
+if ARGV.length != 3 && containerName != "all" || ARGV.length < 2 && containerName == "all"
   puts("Usage engines.rb service|engine command engine_name|service_name")
   puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
 end
 
 command = ARGV[1]
-containerName = ARGV[2]
+
+    if containerName != "all" #backward for scripts that use all instead of plural
+      containerName = ARGV[2]
+    end
+    
   if containerName == "all"
     engines_api = EnginesOSapi.new() 
     if c_type == "container"
