@@ -35,7 +35,7 @@ class Docker
            ret_val =  run_docker(commandargs,container)
            
            
-           if ret_val == true || ret_val.include?("No such image:")#only delete if sucessful or no such container             
+           if ret_val == true #only delete if sucessful or no such container             
                 stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                 FileUtils.rm_rf  stateDir
           end
