@@ -5,7 +5,7 @@ fqdn=`echo $1 |cut -f2 -d:`
 port=`echo $1 |cut -f3 -d:`
 host=`echo $fqdn |cut -f1 -d.`
 
-protos=`echo $1 |cut -f4 -d:`
+protos=`echo $1 $2  |cut -f4 -d:`
 
 	if test -z "$protos"
 		then
