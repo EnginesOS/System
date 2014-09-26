@@ -77,7 +77,7 @@ class Docker
              end
 
            if volume.localpath !=nil
-               volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s + ":" + volume.mapping_permissions.to_s
+               volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s + "/" + volume.name + ":" + volume.mapping_permissions.to_s
              end
           end
          end
