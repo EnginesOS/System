@@ -7,7 +7,7 @@ host=`echo $fqdn |cut -f1 -d.`
 
 protos=`echo $1 |cut -f4 -d:`
 
-	if test -z $protos
+	if test -z "$protos"
 		then
 			protos="http"
 	fi
@@ -20,7 +20,7 @@ protos=`echo $1 |cut -f4 -d:`
 		 		then
 		 			certname=$fqdn
 		 		else
-		 			dn=`awk -F.  '{for(i=1;i<2;i++) $i="";print}' |tr ' ' '.' |sed "/./s///"`
+		 			dn=`cat $fqdn | awk -F.  '{for(i=1;i<2;i++) $i="";print}' |tr ' ' '.' |sed "/./s///"`
 		 			if test -f /etc/nginx/ssl/certs/$dn.crt
 		 				then
 		 					certname=$dn
