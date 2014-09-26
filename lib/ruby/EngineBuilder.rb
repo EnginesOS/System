@@ -394,7 +394,7 @@ class EngineBuilder
     
     #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
     cmd= "cd " + get_basedir + "; docker run --memory=384m --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
-    puts(cmd)
+
     res = run_system(cmd)
     if res != true
       puts "build deploy failed " +res
@@ -630,7 +630,7 @@ class EngineBuilder
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
-        debug(res)
+        debug("ERROR: " + res)
         return true
       else
         debug(res)
