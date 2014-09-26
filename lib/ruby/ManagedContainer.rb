@@ -231,9 +231,13 @@ class ManagedContainer < Container
       if conf_register_site == true
         register_site
       end
+      if read_state != "running"
+        ret_val = false
+      end
     end
     clear_error(ret_val)
     save_state()
+    
     return ret_val
   end
 
