@@ -18,6 +18,8 @@ check=0
 			bash /home/blocking.sh
 	else		
 
+tail -f /var/log/apache2/error.log &
+
 		while test $check -lt 1
         		do
         			sleep 100
