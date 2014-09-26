@@ -204,7 +204,10 @@ echo "Seeding Mgmt Application source from repository"
 		git pull
 }
 
+dpkg-reconfigure tzdata
 install_docker_and_components
+
+
 configure_git 
 generate_keys
 generate_ssl
