@@ -619,6 +619,7 @@ class EngineBuilder
   protected
 
   def debug(fld)
+    puts "ERROR: " 
     p fld
   end
   
@@ -634,7 +635,7 @@ class EngineBuilder
         debug( res)
         return true
       else
-        debug("ERROR: " +res)
+        debug(res)
         return res
       end           
     end
