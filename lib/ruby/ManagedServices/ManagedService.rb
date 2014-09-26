@@ -109,8 +109,8 @@ class ManagedService < ManagedContainer
        if @consumers == nil
          return
        end
-      @consumers.each do |site|
-         add_consumer_to_service(site)
+      @consumers.each_value do |site_hash|
+         add_consumer_to_service(site_hash)
       end
            
     end
