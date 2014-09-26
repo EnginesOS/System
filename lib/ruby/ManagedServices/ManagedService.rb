@@ -111,8 +111,7 @@ class ManagedService < ManagedContainer
        end
       @consumers.each_value do |site_hash|
          add_consumer_to_service(site_hash)
-      end
-           
+      end           
     end
     
   def destroy 

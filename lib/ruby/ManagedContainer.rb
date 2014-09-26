@@ -303,6 +303,7 @@ class ManagedContainer < Container
     else
       @last_error ="Can't stop Container as " + state
     end
+#Hmm remove regardless might be drastic  or just forcefull
     if state != "paused"
       deregister_site
       deregister_dns
