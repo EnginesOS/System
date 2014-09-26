@@ -1,6 +1,6 @@
 #!/bin/sh
 
-//FIXME this is a kludge
+#//FIXME this is a kludge
  if test -f /home/fs.env
 	then 
 		. /home/fs.env
@@ -9,8 +9,10 @@
 	fi
 
 chown -R www-data  /home/app
-
+echo Starting Apache
 /etc/init.d/apache2 start
+touch /var/log/apache2/error.log 
+tail -f /var/log/apache2/error.log &
 
 check=0
 	if test -f /home/blocking.sh
@@ -18,7 +20,7 @@ check=0
 			bash /home/blocking.sh
 	else		
 
-tail -f /var/log/apache2/error.log &
+
 
 		while test $check -lt 1
         		do
