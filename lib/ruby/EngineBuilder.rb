@@ -629,11 +629,12 @@ class EngineBuilder
       p res
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
-      if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
-        debug("ERROR: " + res)
+      #res.downcase.include?("error") == false &&  too ristrictive (currently 
+      if $? == 0 && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
+        debug( res)
         return true
       else
-        debug(res)
+        debug("ERROR: " +res)
         return res
       end           
     end
