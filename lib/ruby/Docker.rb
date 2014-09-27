@@ -286,9 +286,32 @@ p site_hash
 
 def rm_volume(site_hash)
 
-    puts "ould remove " + site_hash[:localpath] 
+    puts "would remove " + site_hash[:localpath] 
 return true 
 end
 
+def create_backup site_hash
+  # 
+ #     
+ #    site_hash[:name]
+ #    site_hash[:source_type] #vol|mysql|pgsql|nosql|sys
+ #    site_hash[:source_name]
+ #    site_hash[:source_host]
+ #    site_hash[:source_user]
+ #    site_hash[:source_pass]
+ #      
+ #    site_hash[:dest_proto]
+ #    site_hash[:dest_port]
+ #    site_hash[:dest_address]
+ #    site_hash[:dest_folder]
+ #    site_hash[:dest_user]
+ #    site_hash[:dest_pass]
+ #cmd= site_hash[:name] + " create "
+#  mkdir 
+#  create conf
+#  add pre and post if needed
+   
+  
+end
 
 end
