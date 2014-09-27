@@ -112,7 +112,7 @@ echo "Generating system Keys"
 	mv  mgmt nagios mysql nginx backup /opt/engos/etc/keys/
 	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-	mv nginx.pub /opt/engos/system/images/04.systemApps/nginx/
+	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
 	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
 	
