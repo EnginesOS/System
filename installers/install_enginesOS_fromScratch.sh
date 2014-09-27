@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 RUBY_VER=2.1.2
 
 
@@ -164,7 +164,7 @@ echo "Creating and startingg Engines OS Services"
 	su -l dockuser /opt/engos/bin/engines.rb service create cAdvisor
 }
 
-function generate_ssl{
+function generate_ssl {
 echo "Generating Self Signed Cert"
 
 mkdir -p /opt/engos/etc/ssl/keys/
@@ -207,12 +207,15 @@ echo "Seeding Mgmt Application source from repository"
 }
 
 dpkg-reconfigure tzdata
+
+generate_ssl
+
 install_docker_and_components
 
 
 configure_git 
 generate_keys
-generate_ssl
+
 set_os_flavor
 
 setup_mgmt_git
