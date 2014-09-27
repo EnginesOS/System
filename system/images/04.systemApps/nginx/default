@@ -1,0 +1,20 @@
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server ipv6only=on;
+ 		listen 443 default_server;
+ 		
+        root /usr/share/nginx/html;
+        
+        index index.html index.htm;
+
+  
+        server_name localhost;
+
+        location / {
+
+        rewrite ^ https://$domain:88$request_uri? permanent;
+                
+        }
+}
+       

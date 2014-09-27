@@ -8,11 +8,8 @@ RUN chown 0 /etc/sudoers
 ADD nginx.pub /home/rma/.ssh/authorized_keys
 RUN chown -R rma /home/rma/.ssh
 
-
 ADD home home
-
-#ADD publify /etc/nginx/sites-enabled/publify
-#ADD phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
+ADD default /etc/nginx/sites-available/default
 
 EXPOSE 80
 EXPOSE 443
