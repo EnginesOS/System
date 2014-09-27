@@ -13,7 +13,7 @@ server {
 
         location / {
 
-        rewrite ^ https://$domain:88$request_uri? permanent;
+        rewrite ^ https://$host:88$request_uri? permanent;
                 
         }
 }
