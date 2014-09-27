@@ -24,5 +24,9 @@ class VolumeService < ManagedService
           
    end
    
-    
+  #noop overloads 
+   
+    def reregister_consumers
+          #No Need they are static
+    end
 end

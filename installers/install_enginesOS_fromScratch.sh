@@ -107,12 +107,14 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f mysql
 	ssh-keygen -q -N "" -f mgmt
 	ssh-keygen -q -N "" -f nginx
+	ssh-keygen -q -N "" -f backup
 	
-	mv  mgmt nagios mysql nginx /opt/engos/etc/keys/
+	mv  mgmt nagios mysql nginx backup /opt/engos/etc/keys/
 	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
 	mv nginx.pub /opt/engos/system/images/04.systemApps/nginx/
 	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
+	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
 	
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
 	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
