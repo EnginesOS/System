@@ -110,13 +110,13 @@ class ManagedService < ManagedContainer
          return
        end
        #FIXME need to put in another thread and start in 10secs
-       Thread.new {
+     #  Thread.new {
          sleep 10
        
       @consumers.each_value do |site_hash|
          add_consumer_to_service(site_hash)
       end          
-       } 
+      # } 
     end
     
   def destroy 
