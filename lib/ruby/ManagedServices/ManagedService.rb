@@ -113,7 +113,7 @@ class ManagedService < ManagedContainer
        end
        #FIXME need to put in another thread and start in 10secs
      #  Thread.new {
-         sleep 10 #let the service come up first need a better way that wait and hope
+         sleep 10 #let the service come up first need a better way than wait and hope
        
       @consumers.each_value do |site_hash|
          add_consumer_to_service(site_hash)

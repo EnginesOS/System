@@ -1,0 +1,30 @@
+--- !ruby/object:BackupService
+containerName: backup
+ctype: service
+last_error: 
+memory: '64'
+hostName: backup
+domainName: 
+environments: []
+image: enginesos/backup
+volumes:
+- !ruby/object:Volume
+  name: volumes
+  remotepath: "/volumes/"
+  localpath: "/var/lib/engos/fs"
+  vol_permissions: "ro"
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: ssh
+  port: 22
+  publicFacing: false
+  external: 0
+repo: na
+last_result: |
+  nginx
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
