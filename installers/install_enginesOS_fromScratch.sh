@@ -228,6 +228,8 @@ echo "System startup"
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
 sleep 180  # would be noce to tail docker logs -f mgmt and break when :8000 in log line
 hostname=`hostname`
+ln -s /opt/engos/bin/engines.rb /opt/engos/bin/engines
+
 echo "Congratulations Engines OS is now installed please go to http://${hostname}:88/"
 
 
