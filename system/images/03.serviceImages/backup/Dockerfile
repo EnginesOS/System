@@ -1,4 +1,4 @@
-FROM  TAG
+FROM  enginesos/python
 
 RUN apt-get -y install duply
 
