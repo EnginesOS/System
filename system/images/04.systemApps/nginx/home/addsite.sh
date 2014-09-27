@@ -20,7 +20,7 @@ protos=`echo $1 $2  |cut -f4 -d:`
 		 		then
 		 			certname=$fqdn
 		 		else
-		 			dn=`cat $fqdn | awk -F.  '{for(i=1;i<2;i++) $i="";print}' |tr ' ' '.' |sed "/./s///"`
+		 			dn=`echo $fqdn | awk -F.  '{for(i=1;i<2;i++) $i="";print}' |tr ' ' '.' |sed "/./s///"`
 		 			if test -f /etc/nginx/ssl/certs/$dn.crt
 		 				then
 		 					certname=$dn
