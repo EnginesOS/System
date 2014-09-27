@@ -1,0 +1,10 @@
+server {
+        listen 80;
+        server_name FQDN;
+        
+   location / {
+
+        rewrite ^ https://FQDN$request_uri? permanent;
+                
+        }
+}

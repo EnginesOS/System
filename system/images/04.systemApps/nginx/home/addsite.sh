@@ -36,5 +36,11 @@ protos=`echo $1 $2  |cut -f4 -d:`
 cp /tmp/${proto}_$fqdn.site /etc/nginx/sites-enabled/
 
 done
+ if test -f /tmp/https_$fqdn.site 
+	then
+		if test ! -f /tmp/http_$fqdn.site
+			then
+				cat /home/tmpls/http_to_https.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/http_$fqdn.site
+		
 service nginx restart
 
