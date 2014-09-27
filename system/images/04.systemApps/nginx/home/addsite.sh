@@ -41,6 +41,8 @@ done
 		if test ! -f /tmp/http_$fqdn.site
 			then
 				cat /home/tmpls/http_to_https.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/http_$fqdn.site
+				cp /tmp/http_$fqdn.site /etc/nginx/sites-enabled/
+		fi
 		
 service nginx restart
 
