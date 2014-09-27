@@ -51,7 +51,9 @@ class ManagedService < ManagedContainer
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
      ret_val = add_consumer_to_service(site_hash)
-  
+  #note we add to service regardless of whether the consumer is already registered 
+  #for a reason
+      
      if ret_val != true
        return ret_val
      end
