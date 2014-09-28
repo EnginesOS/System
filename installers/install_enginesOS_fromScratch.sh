@@ -77,7 +77,7 @@ echo "Setting up engines system user"
 echo "Installing ruby"
 		\curl -L https://get.rvm.io | bash -s stable 
 		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 		
-		
+		echo "rvm  --default use ruby-$RUBY_VER" >> ~dockuser/.profile
 		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
 
 		rvm  --default use ruby-$RUBY_VER
@@ -221,6 +221,7 @@ set_os_flavor
 setup_mgmt_git
 
 mkdir -p /var/lib/engos/fs
+/home/dockuser/droplets/deployment/deployed/
 
 set_permissions
 
