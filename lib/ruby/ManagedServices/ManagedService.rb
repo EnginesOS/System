@@ -62,7 +62,7 @@ class ManagedService < ManagedContainer
         @consumers = Hash.new
       end
  
-      if @consumers.include?(site_hash[:name]) == false     # only add if doesnt exists but allow register
+      if @consumers.has_key?(site_hash[:name]) == false     # only add if doesnt exists but allow register
         @consumers.store(site_hash[:name], site_hash)
       end
      save_state
