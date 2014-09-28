@@ -17,5 +17,5 @@ bundle exec rake db:populate
 	then
 		bundle exec thin -p 8000   --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
 	else
-		bundle exec thin -p 8000   
+		bundle exec thin -p 8000   start
 	fi
