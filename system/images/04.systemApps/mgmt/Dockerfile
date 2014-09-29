@@ -8,7 +8,7 @@ ADD ssh /home/dockuser/.ssh
 ENV ContUser dockuser
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
 RUN chown -R dockuser /home/dockuser/
-
+RUN chown -R dockuser /home/app/
 RUN echo ".  /etc/rvmrc " >> /root/.profile
 RUN echo "rvm  --default use ruby-2.1.2" >> /root/.profile
 
