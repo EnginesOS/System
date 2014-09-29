@@ -65,7 +65,7 @@ echo "Installing required  packages"
 		 if test $bind -eq 0
 		 	then
 		 	service bind9 stop
-		 		update-rc.d bind9 remove
+		 		update-rc.d bind9 disable
 		 	fi
 		 
 echo "Setting up engines system user"
