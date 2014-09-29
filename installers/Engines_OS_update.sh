@@ -45,7 +45,7 @@ echo "Generating system Keys"
 		
 	cp /opt/engos/etc/keys/mysql.pub /opt/engos/system/images/03.serviceImages/mysql/ 
 	cp /opt/engos/etc/keys/nagios.pub /opt/engos/system/images/04.systemApps/nagios/ 
-	cp /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/04.systemApps/nginx/  
+	cp /opt/engos/etc/keys/nginx.pub /opt/engos/system/images/03.serviceImages/nginx/  
 	cp /opt/engos/etc/keys/mgmt.pub  /opt/engos/system/images/03.serviceImages/mgmt/ 
 	
 	key=`cat /opt/engos/etc/keys/ddns.private |grep Key | cut -f2 -d" "` >>$LOGFILE
