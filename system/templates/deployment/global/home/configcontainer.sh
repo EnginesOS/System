@@ -321,15 +321,15 @@ echo "login: &login
 
 
 development:
-  database: publify_dev
+  database: $dbname_dev
   <<: *login
 
 test:
-  database: publify_tests
+  database: $dbname_tests
   <<: *login
 
 production:
-  database: publify
+  database: $dbname 
   <<: *login
 " > config/database.yml
 
@@ -359,17 +359,17 @@ bundle install  --standalone
 echo "running rake db:"
  
   #Fix me and move to blueprint ?
-  bundle  exec  rake db:create
-  bundle exec  rake db:migrate
-  bundle exec rake db:seed
-   bundle exec rake assets:precompile
-  bundle exec rake generate_secret_token
+  bundle  exec  rake db:create  RAILS_ENV=development 
+  bundle exec  rake db:migrate RAILS_ENV=development 
+  bundle exec rake db:seed RAILS_ENV=development  
+   bundle exec rake assets:precompile RAILS_ENV=development 
+  bundle exec rake generate_secret_token RAILS_ENV=development 
   
   if test -f /home/rakelist
    then
   	for line in `cat /home/rakelist`
   	  do
-  		bundle exec rake $line
+  		bundle exec rake $line RAILS_ENV=development 
   	done
 
  fi
