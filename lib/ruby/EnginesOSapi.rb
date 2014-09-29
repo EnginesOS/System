@@ -351,7 +351,7 @@ class EnginesOSapi
 
   def startService service_name
     service = getManagedService(service_name)
-    if service == nil
+    if service == nil || service.is_a?(EnginesOSapiResult)
       return failed(service_name,"No Such Service","Start Service")
     end
     retval = service.start_container()
