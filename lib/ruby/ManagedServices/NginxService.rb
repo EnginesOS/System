@@ -24,11 +24,11 @@ class NginxService < ManagedService
       proto="http"
     end
     site_hash = Hash.new()
-     site_hash[:name]=engine.containerName
-     site_hash[:container_type]=engine.ctype
-     site_hash[:fqdn]=engine.fqdn
-     site_hash[:port]=engine.port.to_s
-     site_hash[:proto]= proto
+    site_hash[:name]=engine.containerName
+    site_hash[:container_type]=engine.ctype
+    site_hash[:fqdn]=engine.fqdn
+    site_hash[:port]=engine.port.to_s
+    site_hash[:proto]= proto
   
      return site_hash       
     
