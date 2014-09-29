@@ -109,6 +109,20 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f nginx
 	ssh-keygen -q -N "" -f backup
 	
+	#remove host limits from pub key
+	
+	cat nginx.pub | awk '{ print $1 $2}' > nginx.p
+	mv nginx.p  nginx.pub 
+	
+	cat nagios.pub | awk '{ print $1 $2}' > nagios.p
+	mv nagios.p  nagios.pub 
+	
+	cat mgmt.pub | awk '{ print $1 $2}' > mgmt.p
+	mv mgmt.p  mgmt.pub 	
+	
+	cat mysql.pub | awk '{ print $1 $2}' > mysql.p
+	mv mysql.p  mysql.pub 	
+	
 	mv  mgmt nagios mysql nginx backup /opt/engos/etc/keys/
 	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
