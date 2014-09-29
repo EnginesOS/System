@@ -273,7 +273,7 @@ export RAILS_ENV
 HOME=/home/app
 
 export HOME
-echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname  bundle exec thin -p \$PORT  start
+echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname SECRET_KEY_BASE=`bundle exec rake secret`  bundle exec thin -p \$PORT  start
 
 " > Procfile
 echo "Procfile Written "
@@ -299,12 +299,11 @@ rvm use --default $ruby_version
 export HOME
 
 mkdir -p /home/app/log/
-touch /home/app/log/development.log
 touch /home/app/log/production.log
-tail -f /home/app/log/development.log &
+
 tail -f /home/app/log/production.log &
 
-env DATABASE_URL=$DATABASE_URL bundle exec thin -p $PORT  start
+env DATABASE_URL=$DATABASE_URL  SECRET_KEY_BASE=`bundle exec rake secret` bundle exec thin -e production -p $PORT  start
 
 
 
@@ -321,11 +320,11 @@ echo "login: &login
 
 
 development:
-  database: $dbname_dev
+  database: ${dbname}_dev
   <<: *login
 
 test:
-  database: $dbname_tests
+  database: ${dbname}_tests
   <<: *login
 
 production:
@@ -343,8 +342,8 @@ echo "Thin added to Gemfile"
 
 
 #FIXME SHOULD NOT NEED the follow 2 lines
-cat Gemfile | sed "/https/s//http/" >g
-cp g Gemfile
+#cat Gemfile | sed "/https/s//http/" >g
+#cp g Gemfile
 
 rvm use $ruby_version
 RAILS_ENV=production
@@ -359,17 +358,18 @@ bundle install  --standalone
 echo "running rake db:"
  
   #Fix me and move to blueprint ?
-  bundle  exec  rake db:create  RAILS_ENV=development 
-  bundle exec  rake db:migrate RAILS_ENV=development 
-  bundle exec rake db:seed RAILS_ENV=development  
-   bundle exec rake assets:precompile RAILS_ENV=development 
-  bundle exec rake generate_secret_token RAILS_ENV=development 
+  bundle  exec  rake db:create  RAILS_ENV=production 
+  bundle exec  rake db:migrate RAILS_ENV=production 
+  bundle exec rake db:seed RAILS_ENV=production  
+   bundle exec rake assets:precompile RAILS_ENV=production 
+  bundle exec rake generate_secret_token RAILS_ENV=production 
+  bundle exec rake secret
   
   if test -f /home/rakelist
    then
   	for line in `cat /home/rakelist`
   	  do
-  		bundle exec rake $line RAILS_ENV=development 
+  		 bundle exec rake $line RAILS_ENV=production 
   	done
 
  fi

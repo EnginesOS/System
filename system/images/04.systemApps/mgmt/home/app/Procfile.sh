@@ -10,12 +10,12 @@ git pull
 
 bundle install --path vendor/bundle
 
-bundle exec rake db:migrate
-bundle exec rake db:populate
+bundle exec rake db:migrate  RAILS_ENV=production 
+bundle exec rake db:populate  RAILS_ENV=production 
 
 	if test -f /opt/engos/etc/ssl/keys/engines.key -a  -f /opt/engos/etc/ssl/certs/engines.crt 
 	then
-		bundle exec thin -p 8000   --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
+	 env SECRET_KEY_BASE=`bundle exec rake secret` 	 bundle exec thin -p 8000   --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
 	else
-		bundle exec thin -p 8000   start
+	 env SECRET_KEY_BASE=`bundle exec rake secret` 	bundle exec thin -p 8000   start
 	fi
