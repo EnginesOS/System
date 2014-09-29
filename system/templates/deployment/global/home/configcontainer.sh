@@ -363,7 +363,7 @@ echo "running rake db:"
   bundle exec rake db:seed RAILS_ENV=production  
    bundle exec rake assets:precompile RAILS_ENV=production 
   bundle exec rake generate_secret_token RAILS_ENV=production 
-  bundle exec rake secret
+
   
   if test -f /home/rakelist
    then
