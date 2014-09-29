@@ -302,8 +302,8 @@ mkdir -p /home/app/log/
 touch /home/app/log/production.log
 
 tail -f /home/app/log/production.log &
-
-env DATABASE_URL=$DATABASE_URL  SECRET_KEY_BASE=`bundle exec rake secret` bundle exec thin -e production -p $PORT  start
+a=`bundle exec rake secret`
+env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e production -p $PORT  start
 
 
 
