@@ -342,6 +342,11 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Stop Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.stop_container()
     if retval == false
       return failed(service_name,service.last_error,"Stop Service")
@@ -351,9 +356,14 @@ class EnginesOSapi
 
   def startService service_name
     service = getManagedService(service_name)
-    if service == nil || service.is_a?(EnginesOSapiResult)
+    if service == nil  
       return failed(service_name,"No Such Service","Start Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval = service.start_container()
     if retval == false
       return failed(service_name,service.last_error,"Start Service")
@@ -366,6 +376,11 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Pause Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval = service.pause_container()
     if retval == false
       return failed(service_name,service.last_error,"Pause Service")
@@ -378,6 +393,11 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Unpause Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval = service.unpause_container()
     if retval == false
       return failed(service_name,service.last_error,"Unpause Service")
@@ -390,6 +410,11 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Register Service Web")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.register_site()
     if retval != true
       return failed(service_name,service.last_error,"Register Service Web")
@@ -402,6 +427,11 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,"No Such Service","Deregister Service Web")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.deregister_site()
     if retval != true
       return failed(service_name,service.last_error,"Deregister Service Web")
@@ -414,6 +444,11 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.register_dns()
 
     if retval != true
@@ -427,6 +462,11 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.deregister_dns()
     if retval != true
       return failed(service_name,retval,"Deregister Service DNS")
@@ -439,6 +479,11 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Create Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.create_service()
     if retval == false
       return failed(service_name,service.last_error,"Create Service")
@@ -451,6 +496,11 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Recreate Service")
     end
+    
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    
     retval =   service.recreate()
     if retval == false
       return failed(service_name,service.last_error,"Recreate Service")
