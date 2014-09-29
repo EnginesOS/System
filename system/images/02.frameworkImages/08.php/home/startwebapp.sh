@@ -7,7 +7,8 @@
  chown -R www-data /home/app/fs/$VOLDIR
 
 	fi
-
+	
+rm -f /var/run/apache2/apache2.pid 
 chown -R www-data  /home/app
 echo Starting Apache
 /etc/init.d/apache2 start
