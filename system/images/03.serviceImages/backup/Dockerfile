@@ -7,7 +7,7 @@ RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 ADD sudoers /etc/
 
 ADD backup.pub /home/rma/.ssh/authorized_keys
-ADD duply/Engines /home/rma/.duply
+
 RUN chown -R rma /home/rma/
 
 
