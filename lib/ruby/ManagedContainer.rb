@@ -40,6 +40,7 @@ class ManagedContainer < Container
    @http_and_https=true
    @https_only=false
    @last_error=""
+   @last_result=""
  end
  
  def http_and_https
@@ -551,13 +552,13 @@ class ManagedContainer < Container
   protected
   
 def trim_last_result
-  if last_result != nil && last_result.length >256
-    last_result=last_result.slice!(0,256)
+  if @last_result.is_a?(String) && @last_result.length >256
+    @last_result=@last_result.slice!(0,256)
   end
 end
 def trim_last_error
-  if last_error.length >256
-    last_error=last_error.slice!(0,256)
+  if  @last_error.is_a?(String) && @last_error.length >256
+    @last_error=@last_error.slice!(0,256)
   end
 end
 
