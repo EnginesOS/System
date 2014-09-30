@@ -2,6 +2,7 @@
 
 #temp while debugging
 /etc/init.d/ssh start
+chown -R rma /home/rma/.duply
 cron
 
 sleep 250

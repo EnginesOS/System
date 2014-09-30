@@ -27,7 +27,7 @@ volumes:
   name: Configurations
   remotepath: "/home/rma/.duply"
   localpath: "/opt/engos/etc/backup/configs"
-  vol_permissions: "ro"
+  vol_permissions: "rw"
 - !ruby/object:Volume
   name: Crontab
   remotepath: "/var/spool/cron/crontabs/rma"
