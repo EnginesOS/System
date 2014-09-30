@@ -30,7 +30,7 @@ volumes:
   vol_permissions: "ro"
 - !ruby/object:Volume
   name: Crontab
-  remotepath: "/var/spool/cron/rma"
+  remotepath: "/var/spool/cron/crontabs/rma"
   localpath: "/opt/engos/etc/backup/crontab"
   vol_permissions: "ro"
 - !ruby/object:Volume
