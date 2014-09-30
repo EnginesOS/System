@@ -2,12 +2,13 @@
 
 #temp while debugging
 /etc/init.d/ssh start
-chown -R rma /home/rma/.duply
+
+
 cron
 
-sleep 250
+sleep 25
 
-while test -f /var/run/cron.pid
+while test -f /var/run/crond.pid
 do
 	  sleep 120
 done
