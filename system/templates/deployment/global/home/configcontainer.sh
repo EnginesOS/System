@@ -276,7 +276,7 @@ export HOME
 
 #FIXME Kludge until using seperate serivce for static objects or more to puma
 cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
-cp /tmp/t home/app/config/environments/production.rb
+cp /tmp/t /home/app/config/environments/production.rb
 
 echo "Procfile Written "
 echo "#!/bin/bash

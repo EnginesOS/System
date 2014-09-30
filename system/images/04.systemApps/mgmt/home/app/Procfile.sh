@@ -8,7 +8,8 @@ rvm  --default use ruby-2.1.2
 git pull
 
 cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
-cp /tmp/t home/app/config/environments/production.rb
+cp /tmp/t /home/app/config/environments/production.rb
+
 
 bundle install --path vendor/bundle
 
@@ -21,5 +22,5 @@ bundle exec rake db:populate  RAILS_ENV=production
 	then
 	 env SECRET_KEY_BASE=`bundle exec rake secret` 	 bundle exec thin -p 8000 -e production  --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
 	else
-	 env SECRET_KEY_BASE=`bundle exec rake secret` 	bundle exec thin -p 8000  -e production  start
+	 env SECRET_KEY_BASE=`bundle exec rake secret` 	bundle exec thin -p 8000   start
 	fi
