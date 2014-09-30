@@ -234,8 +234,9 @@ set_os_flavor
 
 setup_mgmt_git
 
+mkdir -p  /var/lib/engos/backup_paths
 mkdir -p /var/lib/engos/fs
-/home/dockuser/droplets/deployment/deployed/
+mkdir -p /home/dockuser/droplets/deployment/deployed/
 
 set_permissions
 
