@@ -22,7 +22,7 @@ volumes:
   name: Destinations
   remotepath: "/var/lib/engos/local_backup_dests/"
   localpath: "/var/lib/engos/backup_paths"
-  vol_permissions: "ro"
+  vol_permissions: "rw"
 - !ruby/object:Volume
   name: Configurations
   remotepath: "/home/rma/.duply"
