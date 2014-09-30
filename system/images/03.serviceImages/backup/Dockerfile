@@ -11,5 +11,6 @@ ADD backup.pub /var/backups/.ssh/authorized_keys
 RUN chown -R backup /var/backups/
 
 
-VOLUME /backup_src/
+VOLUME /backup_src/volumes
+VOLUME /backup_src/engos
 VOLUME /local_backup_dests
