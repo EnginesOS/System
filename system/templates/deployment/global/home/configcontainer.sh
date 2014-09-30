@@ -357,7 +357,7 @@ echo running bundle install --standalone
 bundle install  --standalone 
 
 
-
+ bundle exec  rake db:migrate RAILS_ENV=development 
 
 echo "running rake db:"
  

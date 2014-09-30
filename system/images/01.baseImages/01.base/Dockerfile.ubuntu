@@ -17,6 +17,9 @@ ADD dns-init.sh /home/
 ADD init.sh /home/
 ADD _init.sh /home/
 
+mkdir /var/log/exim4/
+chown 102  /var/log/exim4/
+
 CMD /bin/bash /home/init.sh
 
 
