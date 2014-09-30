@@ -502,6 +502,8 @@ class ManagedContainer < Container
       @last_error="No connection to Engines OS System"      
       return false
     end
+    trim_last_result
+    trim_last_error
     ret_val = @docker_api.save_container self
     return ret_val
   end
@@ -547,7 +549,17 @@ class ManagedContainer < Container
   end
   
   protected
-
+  
+def trim_last_result
+  if last_result.length >256
+    last_result=last_result.slice!(0,256)
+  end
+end
+def trim_last_error
+  if last_error.length >256
+    last_error=last_error.slice!(0,256)
+  end
+end
 
   def clear_error ret_val
     if ret_val==true
