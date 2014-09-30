@@ -6,9 +6,9 @@ ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 ADD sudoers /etc/
 
-ADD backup.pub /home/rma/.ssh/authorized_keys
+ADD backup.pub /var/backups/.ssh/authorized_keys
 
-RUN chown -R rma /home/rma/
+RUN chown -R backup /var/backups/
 
 
 VOLUME /backup_src/
