@@ -277,6 +277,7 @@ export HOME
 #FIXME Kludge until using seperate serivce for static objects or more to puma
 cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
 cp /tmp/t /home/app/config/environments/production.rb
+cat /tmp/t
 
 echo "Procfile Written "
 echo "#!/bin/bash
@@ -304,7 +305,7 @@ mkdir -p /home/app/log/
 touch /home/app/log/production.log
 
 tail -f /home/app/log/production.log &
-a=`bundle exec rake secret`
+a=`/usr/local/rvm/gems/ruby-2.1.2@global/bin/bundle exec rake secret`
 env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e production -p $PORT  start
 
 
