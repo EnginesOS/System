@@ -551,7 +551,7 @@ class ManagedContainer < Container
   protected
   
 def trim_last_result
-  if last_result.length >256
+  if last_result != nil && last_result.length >256
     last_result=last_result.slice!(0,256)
   end
 end
