@@ -1,11 +1,13 @@
 #!/bin/sh
 
+#temp while debugging
 /etc/init.d/ssh start
+cron
 
 
-while test -f /var/run/
+while test -f /var/run/cron.pid
 do
-	  sleep 20
+	  sleep 120
 done
 
 

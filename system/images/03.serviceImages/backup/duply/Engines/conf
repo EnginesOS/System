@@ -1,0 +1,4 @@
+source '/backup_src/engos'
+TARGET='file:///var/lib/engos/local_backup_dests/'
+TARGET_USER=''
+TARGET_PASS=''

@@ -10,9 +10,35 @@ image: enginesos/backup
 volumes:
 - !ruby/object:Volume
   name: volumes
-  remotepath: "/volumes/"
+  remotepath: "/backup_src/volumes/"
   localpath: "/var/lib/engos/fs"
   vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Engines
+  remotepath: "/backup_src/engos/"
+  localpath: "/opt/engos/"
+  vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Destinations
+  remotepath: "/var/lib/engos/local_backup_dests/"
+  localpath: "/var/lib/engos/backup_paths"
+  vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Configurations
+  remotepath: "/home/rma/.duply"
+  localpath: "/opt/engos/etc/backup/configs"
+  vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Crontab
+  remotepath: "/var/spool/cron/rma"
+  localpath: "/opt/engos/etc/backup/crontab"
+  vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Logging
+  remotepath: "/var/log/"
+  localpath: "/var/log/engos/serivces/backup/"
+  vol_permissions: "ro"
+
 port: 
 eports:
 - !ruby/object:WorkPort
