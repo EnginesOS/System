@@ -273,9 +273,11 @@ export RAILS_ENV
 HOME=/home/app
 
 export HOME
-echo "web: env DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname SECRET_KEY_BASE=`bundle exec rake secret`  bundle exec thin -p \$PORT  start
 
-" > Procfile
+#FIXME Kludge until using seperate serivce for static objects or more to puma
+cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
+cp /tmp/t home/app/config/environments/production.rb
+
 echo "Procfile Written "
 echo "#!/bin/bash
 #. /etc/profile.d/rvm.sh
@@ -311,9 +313,7 @@ env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e production
 
 chmod +x Procfile.sh
 
-#FIXME Kludge until using seperate serivce for static objects or more to puma
-cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
-cp /tmp/t home/app/config/environments/production.rb
+
  
 echo "login: &login
   adapter: mysql2
