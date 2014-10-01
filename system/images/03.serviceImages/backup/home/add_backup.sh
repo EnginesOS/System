@@ -5,6 +5,7 @@
 #dest_url proto:user:pass@host/dir
 #file:::/backups/
 #ftp:back:backup@somehost.domain.com/dir
+ echo "$*" >/var/log/addbackup.log
 
 #
 # makebackconf.sh  publifydb  publify:mysql:publifydb:publifydb@mysql.engines.local/publifydb ftp:engback:back_eng@203.14.203.141/publifydb

@@ -1,0 +1,4 @@
+SOURCE='/backup_src/engos/'
+TARGET='ftp://203.14.203.141/TestSystem'
+TARGET_USER='engback'
+TARGET_PASS='back_eng'
