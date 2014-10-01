@@ -13,6 +13,11 @@ volumes:
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engos/etc/ssl/"
   vol_permissions: "ro"
+- !ruby/object:Volume
+  name: Logging
+  remotepath: "/var/log/nginx/"
+  localpath: "/var/log/engos/services/nginx/"
+  vol_permissions: "rw"  
 port: 
 eports:
 - !ruby/object:WorkPort

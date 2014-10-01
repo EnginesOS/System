@@ -27,8 +27,7 @@ volumes:
   name: Logging
   remotepath: "/var/log/"
   localpath: "/var/log/engos/services/backup/"
-  vol_permissions: "ro"
-
+  vol_permissions: "rw"
 port: 
 eports:
 - !ruby/object:WorkPort

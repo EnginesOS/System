@@ -142,7 +142,7 @@ echo "Generating system Keys"
 
 function set_permissions {
 echo "Setting directory and file permissions"
-	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/ 
+	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/  /var/log/engos
 	
 	}
 
@@ -241,6 +241,9 @@ mkdir -p  /var/lib/engos/backup_paths
 mkdir -p /var/lib/engos/fs
 mkdir -p /home/dockuser/droplets/deployment/deployed/
 mkdir -p /var/lib/engos/pgsql
+mkdir -p  /var/log/engos/services/nginx
+mkdir -p  /var/log/engos/services/backup
+
 set_permissions
 
 echo "Building Images"
