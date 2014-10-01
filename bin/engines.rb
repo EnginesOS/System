@@ -242,7 +242,19 @@ def do_cmd(c_type,containerName,command)
     dest_hash[:dest_pass]=args[7]
       p dest_hash
     res = engines_api.backup_volume(backup_name,engine_name,volume_name,dest_hash,docker_api)
-    
+when "backup_db"
+    args=containerName.split(":")
+    backup_name=args[0]
+    engine_name=args[1]
+    volume_name=args[2]
+    dest_hash = Hash.new
+    dest_hash[:dest_proto]=args[3]
+    dest_hash[:dest_address]=args[4]
+    dest_hash[:dest_folder]=args[5]
+    dest_hash[:dest_user]=args[6]
+    dest_hash[:dest_pass]=args[7]
+      p dest_hash
+    res = engines_api.backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
   else
     res =  "command:" + command + " unknown" 
     print_usage
