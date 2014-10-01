@@ -109,7 +109,7 @@ class EnginesOSapi
       backup_hash = dest_hash
       backup_hash.store(:name, backup_name)
     
-      engines.volumes.each do |volume|
+      engine.volumes.each do |volume|
         if volume.name == volume_name
           volume.add_backup_src_to_hash(backup_hash)                
         end
@@ -134,7 +134,7 @@ class EnginesOSapi
        backup_hash = dest_hash
        backup_hash.store(:name, backup_name)
      
-       engines.databases.each do |database|
+       engine.databases.each do |database|
          if database.name == database_name
            database.add_backup_src_to_hash(backup_hash)                
          end
