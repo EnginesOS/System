@@ -29,7 +29,7 @@ volumes:
   localpath: "/opt/engos/etc/backup/configs"
   vol_permissions: "rw"
 - !ruby/object:Volume
-  name: Crontab
+  name: CrontabThnak 
   remotepath: "/var/spool/cron/crontabs/backup"
   localpath: "/opt/engos/etc/backup/crontab"
   vol_permissions: "ro"
