@@ -17,7 +17,13 @@ def format_databases(volumes)
   end 
   return res
 end
-
+def format_backups(volumes)
+  res = String.new
+  volumes.keys.each do |key|
+    res = res + key +"\n"
+  end 
+  return res
+end
 def format_volumes(volumes)
   res = String.new
   volumes.keys.each do |key|
@@ -218,6 +224,9 @@ def do_cmd(c_type,containerName,command)
   when "volumes"
         volumes = engines_api.get_volumes
          res = format_volumes volumes
+  when "backups"
+      backups = engines_api.get_backups
+    res = format_backups backups
     
   else
     res =  "command:" + command + " unknown" 

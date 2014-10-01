@@ -570,10 +570,16 @@ class EnginesOSapi
     db_service = EnginesOSapi.loadManagedService("mysql_server",@dockerapi)
         if db_service == nil
            return failed("mysql_server","No Such Service","get_databases")
-         end
-         
-        return db_service.consumers
-          
+         end         
+        return db_service.consumers          
+  end
+  
+  def get_backups
+    backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
+    if backup_service == nil
+       return failed("backup service","No Such Service","get_backup list")
+     end         
+    return backup_service.consumers        
   end
     
   #protected if protected static cant call
