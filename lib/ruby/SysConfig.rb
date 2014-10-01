@@ -21,10 +21,10 @@ class SysConfig
   @@addBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   backup@backup.engines.local sudo sh /home/add_backup.sh "
   @@rmBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   backup@backup.engines.local sudo sh /home/rm_backup.sh "
   
-  def addBackupCmd
+  def SysConfig.addBackupCmd
     return @@addBackupCmd
   end
-  def rmBackupCmd
+  def SysConfig.rmBackupCmd
     return @@rmBackupCmd
   end
   def SysConfig.timeZone_fileMapping
