@@ -129,6 +129,7 @@ class EnginesOSapi
   if backup_service.is_a?(EnginesOSapiResult)
           return backup_service
         end
+    backup_hash = Hash.new
     backup_hash[:name]=backup_name
   backup_service.remove_consumer(backup_hash)
   return sucess(engine_name,"Stop Backup")
