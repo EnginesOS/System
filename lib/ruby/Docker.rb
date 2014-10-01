@@ -300,7 +300,7 @@ def create_backup(site_hash)
   if site_hash[:source_type] =="fs"
     site_src=containerName + ":fs:" + site_hash[:source_name] 
   else
-    site_dest=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
+    site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
   end
   
   site_dest=site_hash[:dest_proto] + ":" + site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
