@@ -230,7 +230,6 @@ generate_ssl
 
 install_docker_and_components
 
-
 configure_git 
 generate_keys
 
@@ -251,7 +250,7 @@ create_services
 
 echo "System startup"
 su -l dockuser /opt/engos/bin/mgmt_startup.sh 
-sleep 180  # would be noce to tail docker logs -f mgmt and break when :8000 in log line
+sleep 180  # would be nice to tail docker logs -f mgmt and break when :8000 in log line
 hostname=`hostname`
 ln -s /opt/engos/bin/engines.rb /opt/engos/bin/engines
 
