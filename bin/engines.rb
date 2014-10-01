@@ -189,6 +189,10 @@ def do_cmd(c_type,containerName,command)
   
     res =  eng.last_error
     
+  when "databases"
+    res = engines_api.get_databases
+  when "volumes"
+    res = engines_api.get_volumes
     else
       res =  "command:" + command + " unknown" 
       
@@ -215,7 +219,9 @@ elsif c_type == "engines"
 elsif  c_type == "services"
   c_type = "service"
   containerName = "all"
-elsif  c_type != "service"
+elsif  c_type == "service"
+  c_type = "service"
+else
   puts("unknown container type: Please use engine or service")
   exit
 end
