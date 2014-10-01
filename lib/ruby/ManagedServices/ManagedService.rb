@@ -48,6 +48,10 @@ class ManagedService < ManagedContainer
 	    
 	end
 	
+	def fetch_consumer name
+    return @consumers.fetch(name)
+	end
+	
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
      ret_val = add_consumer_to_service(site_hash)
