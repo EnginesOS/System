@@ -294,11 +294,12 @@ def rm_backup(site_hash)
   ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
 end
 
-def create_backup(site_hash,engine)
+def create_backup(site_hash)
+  containerName = site_hash[:engine_name]
   if site_hash[:source_type] =="fs"
-    site_src=engines.containerName +":fs:" + site_hash[:source_name] 
+    site_src=containerName + ":fs:" + site_hash[:source_name] 
   else
-    site_dest=engines.containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
+    site_dest=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
   end
   
   site_dest=site_hash[:dest_proto] + ":" + site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
