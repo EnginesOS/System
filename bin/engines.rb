@@ -228,6 +228,19 @@ def do_cmd(c_type,containerName,command)
       backups = engines_api.get_backups
     res = format_backups backups
     
+  when "backup_vol"
+    #backupname engine_name volumename proto host folder user pass
+    args=containerName.split(":")
+    backup_name=args[0]
+    engine_name=args[1]
+    volume_name=args[2]
+    dest_hash[:dest_proto]=args[3]
+    dest_hash[:dest_address]=args[4]
+    dest_hash[:dest_folder]=args[5]
+    dest_hash[:dest_user]=args[6]
+    dest_hash[:dest_pass]=args[7]
+    engines_api.backup_volume(backup_name,engine_name,volume_name,dest_hash)
+    
   else
     res =  "command:" + command + " unknown" 
     print_usage
