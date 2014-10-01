@@ -558,7 +558,7 @@ class EnginesOSapi
 
   def get_volumes
      
-    vol_service = loadManagedService("volmanager",@dockerapi)
+    vol_service = EnginesOSapi.loadManagedService("volmanager",@dockerapi)
     if vol_service == nil
        return failed("volmanager","No Such Service","get_volumes")
      end
@@ -567,7 +567,7 @@ class EnginesOSapi
       
     end
   def get_databases
-    db_service = loadManagedService("mysql_server",@dockerapi)
+    db_service = EnginesOSapi.loadManagedService("mysql_server",@dockerapi)
         if db_service == nil
            return failed("mysql_server","No Such Service","get_databases")
          end
