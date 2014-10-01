@@ -9,6 +9,23 @@ def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")
     puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
 end
+
+def format_volumes(volumes)
+  res = String.new
+  volumes.each.do |volume|
+    res = res + volume[:name] +"\n"
+  end 
+  return res
+end    
+
+def format_databases(volumes)
+  res = String.new
+  volumes.each.do |volume|
+    res = res + volume[:name] +"\n"
+  end 
+  return res
+    
+end
 def do_cmd(c_type,containerName,command)
   engines_api = EnginesOSapi.new() 
   docker_api = engines_api.docker_api
@@ -193,19 +210,14 @@ def do_cmd(c_type,containerName,command)
   
     res =  eng.last_error
     
-  when "list"
-    if containerName == "databases"
+  when "databases" 
       databases = engines_api.get_databases
-      databases.each.do |database|
-        res = res + database[:name] + "\n" 
-      end
-     
-    elsif containerName == "volumes"
+      res = format_databases databases
+      
+      
+  when "volumes"
         volumes = engines_api.get_volumes
-          volumes.each.do |volume|
-            res = res + volume[:name] + "\n" 
-          end
-    end
+         res = format_volumes volumes
     
   else
     res =  "command:" + command + " unknown" 
