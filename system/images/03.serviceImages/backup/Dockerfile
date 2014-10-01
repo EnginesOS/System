@@ -7,7 +7,7 @@ RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 ADD sudoers /etc/
 
 ADD backup.pub /var/backups/.ssh/authorized_keys
-
+ADD crontab  /var/spool/cron/crontabs/root
 RUN chown -R backup /var/backups/
 
 
