@@ -259,8 +259,11 @@ when "backup_db"
 when "stop_backup"
   backup_name= containerName
   res = engines_api.stop_backup(backup_name)
-  
- else
+when "register_consumers"
+    eng = EnginesOSapi.loadManagedService(containerName,docker_api)
+    eng.reregister_consumers
+
+else
     res =  "command:" + command + " unknown" 
     print_usage
       
