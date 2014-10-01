@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#temp while debugging
+
 /etc/init.d/ssh start
 
 

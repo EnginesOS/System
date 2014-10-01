@@ -8,14 +8,15 @@ class BackupService < ManagedService
      end
      
   def rm_consumer_from_service (site_hash)
-       return  true
+       return   @docker_api.rm_backup(site_hash) 
     end 
     
   def get_site_hash(site_hash)
+         
  # called with a hash no need to do anything accept return with arg1
 #     
 #    site_hash[:name]
-#    site_hash[:source_type] #vol|mysql|pgsql|nosql|sys
+#    site_hash[:source_type] #fs|mysql|pgsql|nosql|sys
 #    site_hash[:source_name]
 #    site_hash[:source_host]
 #    site_hash[:source_user]
@@ -31,9 +32,5 @@ class BackupService < ManagedService
     return site_hash       
    end
    
-  #noop overloads 
-   
-    def reregister_consumers
-          #No Need they are static
-    end
+ 
 end

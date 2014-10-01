@@ -270,7 +270,7 @@ class Docker
         end    
 
   def create_database  site_hash   
-p site_hash
+
   cmd = SysConfig.addDBServiceCmd + site_hash[:host] + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] 
    puts(cmd)
    
@@ -290,7 +290,20 @@ def rm_volume(site_hash)
 return true 
 end
 
-def create_backup site_hash
+def rm_backup(site_hash)
+  ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
+end
+
+def create_backup(site_hash,engine)
+  if site_hash[:source_type] =="fs"
+    site_src=engines.containerName +":fs:" + site_hash[:source_name] 
+  else
+    site_dest=engines.containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
+  end
+  
+  site_dest=site_hash[:dest_proto] + ":" + site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
+  ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
+  return run_system(ssh_cmd)
   # 
  #     
  #    site_hash[:name]
