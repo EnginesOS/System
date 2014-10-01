@@ -132,7 +132,7 @@ class EnginesOSapi
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
   backup_service.remove_consumer(backup_hash)
-  return sucess(engine_name,"Stop Backup")
+  return sucess(backup_name,"Stop Backup")
   end
   
   def backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
