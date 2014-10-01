@@ -99,7 +99,55 @@ class EnginesOSapi
     end
     return managed_engine
   end
+  
+  def backup_volume(backup_name,engine_name,volume_name,dest_hash)
+    engine = loadManagedEngine engine_name
+      if engine.is_a?(EnginesOSapiResult)
+        return engine
+      end
+   
+      backup_hash = dest_hash
+      backup_hash.store(:name, backup_name)
+    
+      engines.volumes.each do |volume|
+        if volume.name == volume_name
+          volume.add_backup_src_to_hash(backup_hash)                
+        end
+      end
+      
+      backup_service = loadManagedService("backup",@dockerapi)
+    if backup_service.is_a?(EnginesOSapiResult)
+            return backup_service
+          end
+    backup_service.add_consumer(backup_hash)
+    return sucess(engine_name,"Add Volume Backup")
+  end
+  
+  def backup_database(backup_name,engine_name,database_name,dest_hash)
+    
+     engine = loadManagedEngine engine_name
+       if engine.is_a?(EnginesOSapiResult)
+         return engine
+       end
+    
+       backup_hash = dest_hash
+       backup_hash.store(:name, backup_name)
+     
+       engines.databases.each do |database|
+         if database.name == database_name
+           database.add_backup_src_to_hash(backup_hash)                
+         end
+       end
+       
+       backup_service = loadManagedService("backup",@dockerapi)
+     if backup_service.is_a?(EnginesOSapiResult)
+             return backup_service
+           end
+     backup_service.add_consumer(backup_hash)
+     return sucess(engine_name,"Add Database Backup")
+   end
 
+  
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
     if engine.is_a?(EnginesOSapiResult)
@@ -508,6 +556,26 @@ class EnginesOSapi
     return sucess(service_name,"Recreate Service")
   end
 
+  def get_volumes
+     
+    vol_service = loadManagedService("volmanager",@dockerapi)
+    if vol_service == nil
+       return failed("volmanager","No Such Service","get_volumes")
+     end
+     
+    return vol_service.consumers
+      
+    end
+  def get_databases
+    db_service = loadManagedService("mysql_server",@dockerapi)
+        if db_service == nil
+           return failed("mysql_server","No Such Service","get_databases")
+         end
+         
+        return db_service.consumers
+          
+  end
+    
   #protected if protected static cant call
   def sucess(item_name ,cmd)
     EnginesOSapi.sucess(item_name ,cmd)
