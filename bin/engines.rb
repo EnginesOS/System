@@ -234,6 +234,7 @@ def do_cmd(c_type,containerName,command)
     backup_name=args[0]
     engine_name=args[1]
     volume_name=args[2]
+    dest_hash = Hash.new
     dest_hash[:dest_proto]=args[3]
     dest_hash[:dest_address]=args[4]
     dest_hash[:dest_folder]=args[5]
