@@ -12,16 +12,16 @@ end
 
 def format_databases(volumes)
   res = String.new
-  volumes.each do |volume|
-    res = res + volume[:name] +"\n"
+  volumes.keys.each do |key|
+    res = res + key +"\n"
   end 
   return res
 end
 
 def format_volumes(volumes)
   res = String.new
-  volumes.each do |volume|
-    res = res + volume[:name] +"\n"
+  volumes.keys.each do |key|
+    res = res + key +"\n"
   end 
   return res
 end  
