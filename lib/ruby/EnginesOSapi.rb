@@ -120,6 +120,7 @@ class EnginesOSapi
             return backup_service
           end
     backup_service.add_consumer(backup_hash)
+    p backup_hash
     return sucess(engine_name,"Add Volume Backup")
   end
   
