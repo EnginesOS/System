@@ -255,7 +255,12 @@ when "backup_db"
     dest_hash[:dest_pass]=args[7]
       p dest_hash
     res = engines_api.backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
-  else
+    
+when "stop_backup"
+  backup_name= containerName
+  res = engines_api.stop_backup(backup_name)
+  
+ else
     res =  "command:" + command + " unknown" 
     print_usage
       

@@ -124,6 +124,16 @@ class EnginesOSapi
     return sucess(engine_name,"Add Volume Backup")
   end
   
+  def stop_backup backup_name
+    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+  if backup_service.is_a?(EnginesOSapiResult)
+          return backup_service
+        end
+    backup_hash[:name]=backup_name
+  backup_service.remove_consumer(backup_hash)
+  return sucess(engine_name,"Stop Backup")
+  end
+  
   def backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
     
      engine = loadManagedEngine engine_name
