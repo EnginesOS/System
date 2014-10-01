@@ -100,7 +100,7 @@ class EnginesOSapi
     return managed_engine
   end
   
-  def backup_volume(backup_name,engine_name,volume_name,dest_hash)
+  def backup_volume(backup_name,engine_name,volume_name,dest_hash,docker_api)
     engine = loadManagedEngine engine_name
       if engine.is_a?(EnginesOSapiResult)
         return engine
@@ -115,7 +115,7 @@ class EnginesOSapi
         end
       end
       
-      backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
+      backup_service = EnginesOSapi.loadManagedService("backup",docker_api)
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
           end
@@ -124,7 +124,7 @@ class EnginesOSapi
     return sucess(engine_name,"Add Volume Backup")
   end
   
-  def backup_database(backup_name,engine_name,database_name,dest_hash)
+  def backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
     
      engine = loadManagedEngine engine_name
        if engine.is_a?(EnginesOSapiResult)
@@ -140,7 +140,7 @@ class EnginesOSapi
          end
        end
        
-       backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
+       backup_service = EnginesOSapi.loadManagedService("backup",docker_api)
      if backup_service.is_a?(EnginesOSapiResult)
              return backup_service
            end
