@@ -24,19 +24,9 @@ volumes:
   localpath: "/var/lib/engos/backup_paths"
   vol_permissions: "rw"
 - !ruby/object:Volume
-  name: Configurations
-  remotepath: "/var/backups/.duply"
-  localpath: "/opt/engos/etc/backup/configs"
-  vol_permissions: "rw"
-- !ruby/object:Volume
-  name: CrontabThnak 
-  remotepath: "/var/spool/cron/crontabs/backup"
-  localpath: "/opt/engos/etc/backup/crontab"
-  vol_permissions: "ro"
-- !ruby/object:Volume
   name: Logging
   remotepath: "/var/log/"
-  localpath: "/var/log/engos/serivces/backup/"
+  localpath: "/var/log/engos/services/backup/"
   vol_permissions: "ro"
 
 port: 
