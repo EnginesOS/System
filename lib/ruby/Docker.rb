@@ -292,7 +292,7 @@ end
 
 def rm_backup(site_hash)
   ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
-  return run_system(cmd)
+  return run_system(ssh_cmd)
 end
 
 def create_backup(site_hash)
