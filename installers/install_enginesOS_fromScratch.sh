@@ -108,8 +108,11 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f mgmt
 	ssh-keygen -q -N "" -f nginx
 	ssh-keygen -q -N "" -f backup
+	ssh-keygen -q -N "" -f pgsql
 	
 	#remove host limits from pub key
+	cat pgsql.pub | awk '{ print $1 $2}' > pgsql.p
+	mv pgsql.p  pgsql.pub 
 	
 	cat nginx.pub | awk '{ print $1 $2}' > nginx.p
 	mv nginx.p  nginx.pub 
@@ -123,7 +126,8 @@ echo "Generating system Keys"
 	cat mysql.pub | awk '{ print $1 $2}' > mysql.p
 	mv mysql.p  mysql.pub 	
 	
-	mv  mgmt nagios mysql nginx backup /opt/engos/etc/keys/
+	mv  mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
+	mv pgsql.pub /opt/engos/system/images/03.serviceImages/pgsql/
 	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
 	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
@@ -237,7 +241,7 @@ setup_mgmt_git
 mkdir -p  /var/lib/engos/backup_paths
 mkdir -p /var/lib/engos/fs
 mkdir -p /home/dockuser/droplets/deployment/deployed/
-
+mkdir -p /var/lib/engos/pgsql
 set_permissions
 
 echo "Building Images"
