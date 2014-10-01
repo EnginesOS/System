@@ -27,4 +27,13 @@ class DatabaseService < StaticService
    def name
      return @name
    end
+   
+  def add_backup_src_to_hash backup_hash
+     backup_hash[:source_type] = flavor
+     backup_hash[:source_name] = name
+     backup_hash[:source_host] =  dbHost
+     backup_hash[:source_user] = dbUser
+     backup_hash[:source_pass] = dbPass
+             
+   end
 end
