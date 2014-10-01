@@ -5,6 +5,10 @@ require "/opt/engos/lib/ruby/ManagedEngine.rb"
 require "/opt/engos/lib/ruby/EnginesOSapi.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 
+def print_usage
+  puts("Usage engines.rb service|engine command engine_name|service_name")
+    puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
+end
 def do_cmd(c_type,containerName,command)
   engines_api = EnginesOSapi.new() 
   docker_api = engines_api.docker_api
@@ -189,12 +193,23 @@ def do_cmd(c_type,containerName,command)
   
     res =  eng.last_error
     
-  when "databases"
-    res = engines_api.get_databases
-  when "volumes"
-    res = engines_api.get_volumes
-    else
-      res =  "command:" + command + " unknown" 
+  when "list"
+    if containerName == "databases"
+      databases = engines_api.get_databases
+      databases.each.do |database|
+        res = res + database[:name] + "\n" 
+      end
+     
+    elsif containerName == "volumes"
+        volumes = engines_api.get_volumes
+          volumes.each.do |volume|
+            res = res + volume[:name] + "\n" 
+          end
+    end
+    
+  else
+    res =  "command:" + command + " unknown" 
+    print_usage
       
    end
  
@@ -223,12 +238,13 @@ elsif  c_type == "service"
   c_type = "service"
 else
   puts("unknown container type: Please use engine or service")
+  print_usage
   exit
 end
 
-if ARGV.length != 3 && containerName != "all" || ARGV.length < 2 && containerName == "all"
-  puts("Usage engines.rb service|engine command engine_name|service_name")
-  puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
+if ARGV.length != 3 && containerName != "all" || ARGV.length < 2 && containerName == "all"  
+  print_usage
+  exit
 end
 
 command = ARGV[1]
