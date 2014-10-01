@@ -246,7 +246,7 @@ when "backup_db"
     args=containerName.split(":")
     backup_name=args[0]
     engine_name=args[1]
-    volume_name=args[2]
+    database_name=args[2]
     dest_hash = Hash.new
     dest_hash[:dest_proto]=args[3]
     dest_hash[:dest_address]=args[4]
