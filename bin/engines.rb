@@ -10,22 +10,22 @@ def print_usage
     puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
 end
 
-def format_volumes(volumes)
-  res = String.new
-  volumes.each.do |volume|
-    res = res + volume[:name] +"\n"
-  end 
-  return res
-end    
-
 def format_databases(volumes)
   res = String.new
-  volumes.each.do |volume|
+  volumes.each do |volume|
     res = res + volume[:name] +"\n"
   end 
   return res
-    
 end
+
+def format_volumes(volumes)
+  res = String.new
+  volumes.each do |volume|
+    res = res + volume[:name] +"\n"
+  end 
+  return res
+end  
+
 def do_cmd(c_type,containerName,command)
   engines_api = EnginesOSapi.new() 
   docker_api = engines_api.docker_api
