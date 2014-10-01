@@ -296,6 +296,7 @@ end
 
 def create_backup(site_hash)
   containerName = site_hash[:engine_name]
+    p site_hash
   if site_hash[:source_type] =="fs"
     site_src=containerName + ":fs:" + site_hash[:source_name] 
   else
