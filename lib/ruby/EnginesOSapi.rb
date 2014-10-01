@@ -115,7 +115,7 @@ class EnginesOSapi
         end
       end
       
-      backup_service = loadManagedService("backup",@dockerapi)
+      backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
           end
@@ -140,7 +140,7 @@ class EnginesOSapi
          end
        end
        
-       backup_service = loadManagedService("backup",@dockerapi)
+       backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
      if backup_service.is_a?(EnginesOSapiResult)
              return backup_service
            end
