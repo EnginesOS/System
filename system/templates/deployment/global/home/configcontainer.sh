@@ -344,8 +344,9 @@ echo "Thin added to Gemfile"
 
 
 #FIXME SHOULD NOT NEED the follow 2 lines
-cat Gemfile | sed "/https/s//http/" >g
-cp g Gemfile
+#cat Gemfile | sed "/https/s//http/" >g
+#cp g Gemfile
+
 echo "gem 'therubyracer'"  >> Gemfile
 
 rvm use $ruby_version
@@ -364,7 +365,7 @@ echo "running rake db:"
   bundle  exec  rake db:create  RAILS_ENV=production 
   bundle exec  rake db:migrate RAILS_ENV=production 
   bundle exec rake db:seed RAILS_ENV=production  
-   bundle exec rake assets:precompile RAILS_ENV=production 
+  bundle exec rake assets:precompile RAILS_ENV=production 
   bundle exec rake generate_secret_token RAILS_ENV=production 
 
   
