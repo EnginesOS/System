@@ -451,7 +451,7 @@ class EngineBuilder
       cmd = "mkdir " +  local_log_dir
       system  cmd
       
-      log_vol = Volume.new("Logging",local_log_dir,rmt_log_dir,"rw",nil) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
+      log_vol = Volume.new("Logging",local_log_dir,rmt_log_dir,"rw",PermissionRights.new("system","","")) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
       
       @vols.push(log_vol)
 
