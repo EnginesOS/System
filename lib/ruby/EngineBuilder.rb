@@ -443,7 +443,7 @@ class EngineBuilder
       rmt_log_dir_var_fname=get_basedir + "/LOG_DIR" 
       if File.exists?(rmt_log_dir_var_fname)
         rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-        rmt_log_dir=log_dir_varfile.read
+        rmt_log_dir = rmt_log_dir_varfile.read
       else
         rmt_log_dir="/var/log/"
       end
