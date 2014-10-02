@@ -447,7 +447,7 @@ class EngineBuilder
       else
         rmt_log_dir="/var/log/"
       end
-      local_log_dir = SysConfig.SystemLogRoot + "/" + @buildName
+      local_log_dir = SysConfig.SystemLogRoot + "/" + @buildname
       cmd = "mkdir " +  local_log_dir
       system  cmd
       
