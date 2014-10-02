@@ -3,7 +3,7 @@ containerName: dns
 ctype: service
 conf_self_start: true
 last_error: 
-memory: '32'
+memory: '42'
 hostName: dns
 domainName: 
 environments:
