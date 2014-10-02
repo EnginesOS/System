@@ -366,8 +366,10 @@ echo "running rake db:"
   bundle exec  rake db:migrate RAILS_ENV=production 
   bundle exec rake db:seed RAILS_ENV=production  
   bundle exec rake assets:precompile RAILS_ENV=production 
-  bundle exec rake generate_secret_token RAILS_ENV=production 
-
+  bundle exec rake generate_secret_token RAILS_ENV=production
+   
+  touch /home/app/log/production.log
+  touch /home/app/log/development.log
   
   if test -f /home/rakelist
    then
