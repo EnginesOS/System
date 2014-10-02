@@ -453,7 +453,7 @@ class EngineBuilder
       
       log_vol = Volume.new("Logging",local_log_dir,rmt_log_dir,"rw",nil) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
       
-      vols.add(log_vol)
+      @vols.add(log_vol)
 
     end
     
