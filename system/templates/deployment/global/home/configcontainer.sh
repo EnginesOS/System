@@ -344,8 +344,8 @@ echo "Thin added to Gemfile"
 
 
 #FIXME SHOULD NOT NEED the follow 2 lines
-#cat Gemfile | sed "/https/s//http/" >g
-#cp g Gemfile
+cat Gemfile | sed "/https/s//http/" >g
+cp g Gemfile
 echo "gem 'rubytheracer'"  >> Gemfile
 
 rvm use $ruby_version
