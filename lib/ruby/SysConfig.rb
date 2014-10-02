@@ -20,7 +20,11 @@ class SysConfig
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
   @@addBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   backup@backup.engines.local sudo sh /home/add_backup.sh "
   @@rmBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   backup@backup.engines.local sudo sh /home/rm_backup.sh "
+  @@SystemLogRoot ="/var/log/engos/"
   
+  def SysConfig.SystemLogRoot
+    return @@SystemLogRoot
+  end
   def SysConfig.addBackupCmd
     return @@addBackupCmd
   end

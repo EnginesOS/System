@@ -439,6 +439,24 @@ class EngineBuilder
     system  cmd
   end
 
+    def setup_framework_logging
+      rmt_log_dir_var_fname=get_basedir + "/LOG_DIR" 
+      if File.exists?(rmt_log_dir_var_fname)
+        rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
+        rmt_log_dir=log_dir_varfile.read
+      else
+        rmt_log_dir="/var/log/"
+      end
+      local_log_dir = SysConfig.SystemLogRoot + "/" + @buildName
+      cmd = "mkdir " +  local_log_dir
+      system  cmd
+      
+      log_vol = Volume.new("Logging",local_log_dir,rmt_log_dir,"rw",nil) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
+      
+      vols.add(log_vol)
+
+    end
+    
   def add_services
     services=@bluePrint["software"]["softwareservices"]
     services.each do |service|
@@ -533,6 +551,8 @@ class EngineBuilder
     create_setup_env
     puts("Configuring Application Environment")
     add_custom_env
+    puts("Setting up logging")
+    setup_framework_logging
     puts("Creating workers")
     create_workers
     puts("Saving stack Environment")
