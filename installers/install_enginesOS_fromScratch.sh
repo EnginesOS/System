@@ -238,11 +238,13 @@ set_os_flavor
 setup_mgmt_git
 
 mkdir -p  /var/lib/engos/backup_paths
-mkdir -p /var/lib/engos/fs
-mkdir -p /home/dockuser/droplets/deployment/deployed/
-mkdir -p /var/lib/engos/pgsql
-mkdir -p  /var/log/engos/services/nginx
+mkdir -p  /var/lib/engos/fs
+mkdir -p  /home/dockuser/droplets/deployment/deployed/
+mkdir -p  /var/lib/engos/pgsql
+mkdir -p  /var/log/engos/services/nginx/nginx
 mkdir -p  /var/log/engos/services/backup
+mkdir -p  /var/log/engos/services/mgmt
+
 
 set_permissions
 

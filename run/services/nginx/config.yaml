@@ -15,7 +15,7 @@ volumes:
   vol_permissions: "ro"
 - !ruby/object:Volume
   name: Logging
-  remotepath: "/var/log/nginx/"
+  remotepath: "/var/log/"
   localpath: "/var/log/engos/services/nginx/"
   vol_permissions: "rw"  
 port: 
