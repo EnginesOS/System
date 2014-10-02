@@ -440,7 +440,7 @@ class EngineBuilder
   end
 
     def setup_framework_logging
-      rmt_log_dir_var_fname=get_basedir + "/LOG_DIR" 
+      rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR" 
       if File.exists?(rmt_log_dir_var_fname)
         rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
         rmt_log_dir = rmt_log_dir_varfile.read
