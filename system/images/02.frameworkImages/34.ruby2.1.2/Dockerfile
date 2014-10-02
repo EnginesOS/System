@@ -17,7 +17,7 @@ ENV PATH /usr/local/rvm/gems/ruby-2.1.2/bin:/usr/local/rvm/gems/ruby-2.1.2@globa
 
 RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install bundle
 RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install mysql2
-RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install rubytheracer
+RUN  /usr/local/rvm/rubies/ruby-2.1.2/bin/gem install therubyracer
 
 ENV ContUser ruby
 
