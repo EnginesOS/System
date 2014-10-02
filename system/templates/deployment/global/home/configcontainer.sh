@@ -301,11 +301,9 @@ HOME=/home/app
 rvm use --default $ruby_version
 export HOME
 
-mkdir -p /home/app/log/
-touch /home/app/log/production.log
-
-tail -f /home/app/log/production.log &
-a=`/usr/local/rvm/gems/ruby-2.1.2@global/bin/bundle exec rake secret`
+bundle exec rake secret >/tmp/.sc
+a=`cat /tmp/.sc`
+rm /tmp/.sc
 env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e production -p $PORT  start
 
 
