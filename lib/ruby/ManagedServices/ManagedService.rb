@@ -1,5 +1,6 @@
 
 require "/opt/engos/lib/ruby/ManagedContainer.rb"
+require 'objspace'
 
 class ManagedService < ManagedContainer
 	@ctype="service"
@@ -138,6 +139,10 @@ class ManagedService < ManagedContainer
     begin
           managedService = YAML::load( yaml )
           managedService.set_docker_api(docker_api)
+      puts(" managed Service") 
+      p ObjectSpace.memsize_of(managedService)
+      puts("All managed Service") 
+           p ObjectSpace.memsize_of_all(ManagedService)
           return managedService
     rescue Exception=>e
       puts e.message + " with " + yaml.path
