@@ -17,8 +17,8 @@ then
 fi
 
 
-#Need to rebuild evrything is generate_keys is run
-if test $1 = "-k"
+#Need to rebuild everything is generate_keys is run
+if test $# -gt 1 -a $1 = "-k"
 then 
 	generate_keys
 fi
