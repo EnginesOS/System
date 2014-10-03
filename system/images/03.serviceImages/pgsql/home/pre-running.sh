@@ -1,4 +1,4 @@
 #!/bin/bash
 
-chown -R mysql /var/lib/mysql
+chown -R postgres /var/lib/postgres
 
