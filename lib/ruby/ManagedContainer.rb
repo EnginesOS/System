@@ -510,6 +510,7 @@ class ManagedContainer < Container
     trim_last_error
     puts("engine usage")
     p ObjectSpace.memsize_of(self)
+    p ObjectSpace.memsize_of(ManagedContainer)
     puts("api usage")
     p ObjectSpace.memsize_of(@docker_api)
     
