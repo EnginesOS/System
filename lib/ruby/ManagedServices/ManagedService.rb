@@ -142,7 +142,7 @@ class ManagedService < ManagedContainer
       puts(" managed Service") 
       p ObjectSpace.memsize_of(managedService)
       puts(" managed Service total") 
-      p ObjectSpace.reachable_objects_from(managedService)
+      p ObjectSpace.memsize_of_all(Hash)
       puts("All managed Service") 
       p ObjectSpace.memsize_of_all(ManagedService)
           return managedService

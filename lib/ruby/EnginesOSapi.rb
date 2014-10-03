@@ -42,9 +42,9 @@ class EnginesOSapi
       end
     end
     puts("engineapi usage")
-    p ObjectSpace.memsize_of_all(self)
+    p ObjectSpace.memsize_of(self)
     puts("engines usage")
-    p ObjectSpace.memsize_of_all(ret_val)
+    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
@@ -62,9 +62,9 @@ class EnginesOSapi
       end
     end
     puts("engineapi usage")
-    p ObjectSpace.memsize_of_all(self)
+    p ObjectSpace.memsize_of(self)
     puts("servicess usage")
-    p ObjectSpace.memsize_of_all(ret_val)
+    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
