@@ -512,12 +512,12 @@ class ManagedContainer < Container
     p ObjectSpace.memsize_of(self)
     puts("all managedContainers")
 
-        p ObjectSpace.reachable_objects_from(self)
+        p ObjectSpace.memsize_of_all(self)
     puts(" managed engin total")     
     p ObjectSpace.memsize_of_all(ManagedContainer)
 
     puts("api usage")
-    p ObjectSpace.reachable_objects_from(@docker_api)
+    p ObjectSpace.memsize_of_all(@docker_api)
     
     
     ret_val = @docker_api.save_container self
