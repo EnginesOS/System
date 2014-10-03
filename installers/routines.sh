@@ -1,7 +1,7 @@
 #!/bin/bash
 RUBY_VER=2.1.2
 
-. /opt/engos/installers/routines.sh
+
 
 function configure_git {
 	
@@ -179,10 +179,28 @@ echo "Creating and startingg Engines OS Services"
 	sleep 30
 	su -l dockuser /opt/engos/bin/engines.rb service create mysql_server
 	su -l dockuser /opt/engos/bin/engines.rb service create nginx
-	su -l dockuser /opt/engos/bin/engines.rb service create monit
+	#su -l dockuser /opt/engos/bin/engines.rb service create monit
 	su -l dockuser /opt/engos/bin/engines.rb service create cAdvisor
+	su -l dockuser /opt/engos/bin/engines.rb service create backup
 }
+function remove_services {
+echo "Creating and startingg Engines OS Services"
+	su -l dockuser /opt/engos/bin/engines.rb service stop dns
 
+	su -l dockuser /opt/engos/bin/engines.rb service stop mysql_server
+	su -l dockuser /opt/engos/bin/engines.rb service stop nginx
+	#su -l dockuser /opt/engos/bin/engines.rb service stop monit
+	su -l dockuser /opt/engos/bin/engines.rb service stop cAdvisor
+	su -l dockuser /opt/engos/bin/engines.rb service stop backup
+	
+	su -l dockuser /opt/engos/bin/engines.rb service destroy dns
+	
+	su -l dockuser /opt/engos/bin/engines.rb service destroy mysql_server
+	su -l dockuser /opt/engos/bin/engines.rb service destroy nginx
+	#su -l dockuser /opt/engos/bin/engines.rb service destroy monit
+	su -l dockuser /opt/engos/bin/engines.rb service destroy cAdvisor
+	su -l dockuser /opt/engos/bin/engines.rb service destroy backup
+}
 function generate_ssl {
 echo "Generating Self Signed Cert"
 
