@@ -198,21 +198,21 @@ echo "Creating and startingg Engines OS Services"
 }
 function remove_services {
 echo "Creating and startingg Engines OS Services"
-	su -l dockuser /opt/engos/bin/engines.rb service stop dns
+	 /opt/engos/bin/engines.rb service stop dns
 
-	su -l dockuser /opt/engos/bin/engines.rb service stop mysql_server
-	su -l dockuser /opt/engos/bin/engines.rb service stop nginx
-	#su -l dockuser /opt/engos/bin/engines.rb service stop monit
-	su -l dockuser /opt/engos/bin/engines.rb service stop cAdvisor
-	su -l dockuser /opt/engos/bin/engines.rb service stop backup
+	/opt/engos/bin/engines.rb service stop mysql_server
+	 /opt/engos/bin/engines.rb service stop nginx
+	# /opt/engos/bin/engines.rb service stop monit
+	 /opt/engos/bin/engines.rb service stop cAdvisor
+	/opt/engos/bin/engines.rb service stop backup
 	
-	su -l dockuser /opt/engos/bin/engines.rb service destroy dns
+	 /opt/engos/bin/engines.rb service destroy dns
 	
-	su -l dockuser /opt/engos/bin/engines.rb service destroy mysql_server
-	su -l dockuser /opt/engos/bin/engines.rb service destroy nginx
+	 /opt/engos/bin/engines.rb service destroy mysql_server
+	/opt/engos/bin/engines.rb service destroy nginx
 	#su -l dockuser /opt/engos/bin/engines.rb service destroy monit
-	su -l dockuser /opt/engos/bin/engines.rb service destroy cAdvisor
-	su -l dockuser /opt/engos/bin/engines.rb service destroy backup
+	 /opt/engos/bin/engines.rb service destroy cAdvisor
+	 /opt/engos/bin/engines.rb service destroy backup
 }
 function generate_ssl {
 echo "Generating Self Signed Cert"

@@ -6,20 +6,21 @@ export RUBY_VER
 
 dpkg-reconfigure tzdata
 
-generate_ssl
+
+make_dirs
+
+set_permissions
 
 install_docker_and_components
 
+
+generate_ssl
 configure_git 
 generate_keys
 
 set_os_flavor
 
 setup_mgmt_git
-
-make_dirs
-
-set_permissions
 
 echo "Building Images"
 su -l dockuser /opt/engos/bin/buildimages.sh
