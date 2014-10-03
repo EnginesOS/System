@@ -19,7 +19,14 @@ if test -z $ContUser
 		ContUser=www-data
 fi
 
-chown -r $ContUser `cat /home/LOG_DIR`
+if test -f /home/LOG_DIR
+then
+	log_dir=`cat /home/LOG_DIR`
+else
+	log_dir="/var/log/"
+fi
+
+chown -R $ContUser $log_dir
 
 #for setup of services 
 if test -f /home/pre-running.sh
