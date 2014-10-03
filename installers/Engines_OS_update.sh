@@ -28,13 +28,13 @@ set_os_flavor
 setup_mgmt_git
  
 
-
+echo "Building Images"
+ /opt/engos/bin/buildimages.sh >>$LOGFILE 
  
 remove_services
 create_services
 set_permissions
-echo "Building Images"
- /opt/engos/bin/buildimages.sh >>$LOGFILE 
+
  
 #Fix me need to do a full regen here for all engines or atleast trigger notifcation it needs to be done.
 docker stop mgmt
