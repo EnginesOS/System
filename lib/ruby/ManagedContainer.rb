@@ -511,6 +511,9 @@ class ManagedContainer < Container
     puts("engine usage")
     p ObjectSpace.memsize_of(self)
     puts("all managedContainers")
+
+        p ObjectSpace.reachable_objects_from(self)
+    puts(" managed engin total")     
     p ObjectSpace.memsize_of_all(ManagedContainer)
 
     puts("api usage")
