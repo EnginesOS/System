@@ -42,9 +42,9 @@ class EnginesOSapi
       end
     end
     puts("engineapi usage")
-    p ObjectSpace.memsize_of(self)
+    p ObjectSpace.reachable_objects_from(self)
     puts("engines usage")
-    p ObjectSpace.memsize_of(ret_val)
+    p ObjectSpace.reachable_objects_from(ret_val)
     return ret_val
   end
 
@@ -62,9 +62,9 @@ class EnginesOSapi
       end
     end
     puts("engineapi usage")
-    p ObjectSpace.memsize_of(self)
+    p ObjectSpace.reachable_objects_from(self)
     puts("servicess usage")
-    p ObjectSpace.memsize_of(ret_val)
+    p ObjectSpace.reachable_objects_from(ret_val)
     return ret_val
   end
 
@@ -81,10 +81,10 @@ class EnginesOSapi
     if managed_service == nil
       return failed(yam_file_name,"Fail to Load configuration:","Load Service")
     end
-    puts("engineapi usage")
-    p ObjectSpace.memsize_of(self)
-    puts("service usage")
-    p ObjectSpace.memsize_of(managed_service)
+    puts("engineapi (total) usage")
+    p ObjectSpace.reachable_objects_from(self)
+    puts("service (total) usage")
+    p ObjectSpace.reachable_objects_from(managed_service)
     return managed_service
   end
 
