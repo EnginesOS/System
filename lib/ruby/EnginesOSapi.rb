@@ -84,7 +84,7 @@ class EnginesOSapi
     puts("engineapi usage")
     p ObjectSpace.memsize_of(self)
     puts("service usage")
-    p ObjectSpace.memsize_of(ret_val)
+    p ObjectSpace.memsize_of(managed_service)
     return managed_service
   end
 

@@ -142,7 +142,7 @@ class ManagedService < ManagedContainer
       puts(" managed Service") 
       p ObjectSpace.memsize_of(managedService)
       puts("All managed Service") 
-           p ObjectSpace.memsize_of_all(ManagedService)
+      p ObjectSpace.memsize_of_all(ManagedService)
           return managedService
     rescue Exception=>e
       puts e.message + " with " + yaml.path
