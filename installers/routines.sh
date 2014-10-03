@@ -188,13 +188,13 @@ echo "Configuring OS Specific Dockerfiles"
 
 function create_services {
 echo "Creating and startingg Engines OS Services"
-	su -l dockuser /opt/engos/bin/engines.rb service create dns
+	 /opt/engos/bin/engines.rb service create dns
 	sleep 30
-	su -l dockuser /opt/engos/bin/engines.rb service create mysql_server
-	su -l dockuser /opt/engos/bin/engines.rb service create nginx
+	 /opt/engos/bin/engines.rb service create mysql_server
+	 /opt/engos/bin/engines.rb service create nginx
 	#su -l dockuser /opt/engos/bin/engines.rb service create monit
-	su -l dockuser /opt/engos/bin/engines.rb service create cAdvisor
-	su -l dockuser /opt/engos/bin/engines.rb service create backup
+	 /opt/engos/bin/engines.rb service create cAdvisor
+	 /opt/engos/bin/engines.rb service create backup
 }
 function remove_services {
 echo "Creating and startingg Engines OS Services"
