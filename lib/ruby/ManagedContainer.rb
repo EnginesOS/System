@@ -8,7 +8,7 @@ require "/opt/engos/lib/ruby/ContainerStatistics.rb"
 require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
-require "/opt/engos/lib/ruby/ManagedService.rb"
+require "/opt/engos/lib/ruby/ManagedServices.rb"
 require 'objspace'
 
 
