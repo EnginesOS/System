@@ -18,7 +18,10 @@ fi
 
 
 #Need to rebuild evrything is generate_keys is run
-#generate_keys
+if test $1 = "-k"
+then 
+	generate_keys
+fi
 
 set_os_flavor
 
