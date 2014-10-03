@@ -2,7 +2,7 @@
 BTICK='`'
 EXPECTED_ARGS=3
 E_BADARGS=65
-MYSQL=`which mysql`
+PQSQL=` su -l postgres  /usr/bin/perl   /usr/bin/psql `
 
 
 if [ $# -ne $EXPECTED_ARGS ]
