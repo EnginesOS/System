@@ -9,6 +9,9 @@ require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
 
+require 'objspace'
+
+
 class ManagedContainer < Container
   @conf_self_start=false
   @conf_register_dns=true
@@ -505,6 +508,7 @@ class ManagedContainer < Container
     end
     trim_last_result
     trim_last_error
+    p ObjectSpace.memsize_of(self)
     ret_val = @docker_api.save_container self
     return ret_val
   end
