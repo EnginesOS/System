@@ -1,7 +1,10 @@
 #!/bin/bash
+
 RUBY_VER=2.1.2
+
 export RUBY_VER
-. /opt/engos/installers/routines.sh
+
+. routines.sh
 
 
 dpkg-reconfigure tzdata
@@ -13,6 +16,8 @@ set_permissions
 
 install_docker_and_components
 
+passwd dockuser
 
+su -l dockuser /bin/bash ./complete_install.sh
 
  

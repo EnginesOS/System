@@ -1,7 +1,7 @@
 #!/bin/bash
 RUBY_VER=2.1.2
 export RUBY_VER
-. /opt/engos/installers/routines.sh
+. routines.sh
 
 generate_ssl
 configure_git 
