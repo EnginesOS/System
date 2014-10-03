@@ -8,7 +8,7 @@ require "/opt/engos/lib/ruby/ContainerStatistics.rb"
 require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engos/lib/ruby/Container.rb"
 require "/opt/engos/lib/ruby/Docker.rb"
-
+require "/opt/engos/lib/ruby/ManagedService.rb"
 require 'objspace'
 
 
@@ -510,9 +510,13 @@ class ManagedContainer < Container
     trim_last_error
     puts("engine usage")
     p ObjectSpace.memsize_of(self)
-    p ObjectSpace.memsize_of(ManagedContainer)
+    puts("all managedContainers")
+    p ObjectSpace.memsize_of_all(ManagedContainer)
+    puts("all managed Services") 
+    p ObjectSpace.memsize_of_all(ManagedServices)
     puts("api usage")
     p ObjectSpace.memsize_of(@docker_api)
+    
     
     ret_val = @docker_api.save_container self
     return ret_val
