@@ -508,7 +508,11 @@ class ManagedContainer < Container
     end
     trim_last_result
     trim_last_error
+    puts("engine usage")
     p ObjectSpace.memsize_of(self)
+    puts("api usage")
+    p ObjectSpace.memsize_of(@docker_api)
+    
     ret_val = @docker_api.save_container self
     return ret_val
   end
