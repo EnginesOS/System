@@ -5,7 +5,7 @@ require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 require "/opt/engos/lib/ruby/ManagedServices.rb"
-
+require 'objspace'
 
 class EnginesOSapi
   def initialize()
@@ -41,6 +41,10 @@ class EnginesOSapi
         end
       end
     end
+    puts("engineapi usage")
+    p ObjectSpace.memsize_of(self)
+    puts("engines usage")
+    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
@@ -57,6 +61,10 @@ class EnginesOSapi
         yf.close
       end
     end
+    puts("engineapi usage")
+    p ObjectSpace.memsize_of(self)
+    puts("servicess usage")
+    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
@@ -73,6 +81,10 @@ class EnginesOSapi
     if managed_service == nil
       return failed(yam_file_name,"Fail to Load configuration:","Load Service")
     end
+    puts("engineapi usage")
+    p ObjectSpace.memsize_of(self)
+    puts("service usage")
+    p ObjectSpace.memsize_of(ret_val)
     return managed_service
   end
 
