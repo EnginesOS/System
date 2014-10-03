@@ -509,7 +509,7 @@ class ManagedContainer < Container
     trim_last_result
     trim_last_error
     puts("engine usage")
-    p ObjectSpace.memsize_of(self)
+    p ObjectSpace.memsize_of_all(self)
     puts("all managedContainers")
 
         p ObjectSpace.memsize_of_all(self)
