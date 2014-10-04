@@ -279,6 +279,8 @@ cat /home/app/config/environments/production.rb |sed "/config.serve_static_asset
 cp /tmp/t /home/app/config/environments/production.rb
 cat /tmp/t
 
+rails_env_prod_or_devel=development
+
 echo "Procfile Written "
 echo "#!/bin/bash
 #. /etc/profile.d/rvm.sh
@@ -304,7 +306,7 @@ export HOME
 bundle exec rake secret >/tmp/.sc
 a=`cat /tmp/.sc`
 rm /tmp/.sc
-env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e production -p $PORT  start
+env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 
 
 
@@ -350,23 +352,25 @@ echo "Thin added to Gemfile"
 echo "gem 'therubyracer'"  >> Gemfile
 
 rvm use $ruby_version
-RAILS_ENV=production
+
+RAILS_ENV=$rails_env_prod_or_devel
+
 export RAILS_ENV
 echo running bundle install --standalone
 #$Bundle_Cmd install  --standalone
 bundle install  --standalone 
 
 
- bundle exec  rake db:migrate RAILS_ENV=development 
+ 
 
 echo "running rake db:"
  
   #Fix me and move to blueprint ?
-  bundle  exec  rake db:create  RAILS_ENV=production 
-  bundle exec  rake db:migrate RAILS_ENV=production 
-  bundle exec rake db:seed RAILS_ENV=production  
-  bundle exec rake assets:precompile RAILS_ENV=production 
-  bundle exec rake generate_secret_token RAILS_ENV=production
+  bundle  exec  rake db:create  RAILS_ENV=$rails_env_prod_or_devel 
+  bundle exec  rake db:migrate RAILS_ENV=$rails_env_prod_or_devel 
+  bundle exec rake db:seed RAILS_ENV=$rails_env_prod_or_devel  
+  bundle exec rake assets:precompile RAILS_ENV=$rails_env_prod_or_devel 
+  bundle exec rake generate_secret_token RAILS_ENV=$rails_env_prod_or_devel
    
   touch /home/app/log/production.log
   touch /home/app/log/development.log
@@ -375,7 +379,7 @@ echo "running rake db:"
    then
   	for line in `cat /home/rakelist`
   	  do
-  		 bundle exec rake $line RAILS_ENV=production 
+  		 bundle exec rake $line  
   	done
 
  fi
