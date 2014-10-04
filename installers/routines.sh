@@ -99,11 +99,16 @@ crontab -u dockuser /tmp/ct
 rm /tmp/ct
   }
 
-function generate_keys {
-echo "Generating system Keys"
+function make_dns_key {
 	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
+}
+
+function generate_keys {
+echo "Generating system Keys"
+	
+	
 	
 	ssh-keygen -q -N "" -f nagios
 	ssh-keygen -q -N "" -f mysql
@@ -136,11 +141,19 @@ echo "Generating system Keys"
 	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
 	
+	make_dns_key
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
+	while `echo $key |grep -e / |wc -c` -gt 0
+		do
+			make_dns_key
+			key=`cat ddns.private |grep Key | cut -f2 -d" "`
+		done
+			
 	echo DNS key $key
 	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
 	cp ddns.* /opt/engos/system/images/01.baseImages/01.base/
 	mv ddns.* /opt/engos/etc/keys/
+	
 }
 
 function make_dirs {
