@@ -35,7 +35,7 @@ function configure_git {
   #apt-get -y  --force-yes upgrade
   
   echo "Adding startup script"
-		 cat /etc/rc.local | sed "/exit.*$/s//su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh/" > /tmp/rc.local
+		 cat /etc/rc.local | sed "/^exit.*$/s//su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh/" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
