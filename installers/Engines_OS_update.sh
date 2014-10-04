@@ -18,7 +18,7 @@ fi
 
 
 #Need to rebuild everything is generate_keys is run
-if test $# -gt 1 -a $1 = "-k"
+if test $# -gt 0 -a $1 = "-k"
 then 
 	generate_keys
 fi
