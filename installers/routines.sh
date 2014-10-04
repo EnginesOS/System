@@ -81,20 +81,21 @@ echo "Installing ruby"
 		echo "rvm  --default use ruby-$RUBY_VER" >> ~dockuser/.profile
 		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
 
-		rvm  --default use ruby-$RUBY_VER
+		#/usr/local/rvm/bin/rvm  --default use ruby-$RUBY_VER
 		 
-		gem install git
- 		/usr/local/rvm/bin/rvm gemset create git
+		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git 
+ 		#/usr/local/rvm/bin/rvm gemset create git
+ 		
  		#Following needed for rspec tests
-		gem install multi_json
-		/usr/local/rvm/bin/rvm gemset create multi_json
-		gem install multi_json rspec
-		/usr/local/rvm/bin/rvm gemset create 	rspec
+		/usr/local/rvm/wrappers/ruby-2.1.2/gem install multi_json rspec
+		#/usr/local/rvm/bin/rvm gemset create multi_json
+
+		#/usr/local/rvm/bin/rvm gemset create 	rspec
 		
 	
 echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engines/restarts.log
 */10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/services/restarts.log" >/tmp/ct
-crontab /tmp/ct
+crontab -u dockuser /tmp/ct
 rm /tmp/ct
   }
 
@@ -146,12 +147,13 @@ mkdir -p  /var/lib/engos/backup_paths
 mkdir -p  /var/lib/engos/fs
 mkdir -p  /home/dockuser/droplets/deployment/deployed/
 mkdir -p  /var/lib/engos/pgsql
-mkdir -p  /var/log/engos/services/nginx/
+mkdir -p  /var/log/engos/services/nginx/nginx
 mkdir -p  /var/log/engos/services/backup
 mkdir -p  /var/log/engos/services/mgmt
 mkdir -p  /var/log/engos/services/pgsql/
 mkdir -p  /var/log/engos/services/mysql/
 mkdir -p  /var/log/engos/services/dns/
+mkdir -p /opt/engos/
 
 }
 function set_permissions {
