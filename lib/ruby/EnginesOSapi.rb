@@ -81,10 +81,11 @@ class EnginesOSapi
     if managed_service == nil
       return failed(yam_file_name,"Fail to Load configuration:","Load Service")
     end
-    puts("engineapi (total) usage")
-    p ObjectSpace.reachable_objects_from(self)
-    puts("service (total) usage")
-    p ObjectSpace.reachable_objects_from(managed_service)
+#
+#    puts("engineapi (total) usage")
+#    p ObjectSpace.reachable_objects_from(self)
+#    puts("service (total) usage")
+#    p ObjectSpace.reachable_objects_from(managed_service)
     return managed_service
   end
 
