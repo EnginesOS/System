@@ -7,6 +7,7 @@ class DBManagedService < ManagedService
     
 #overloaded for the moment
   def add_consumer_to_service(site_hash)
+    p site_hash
     return  @docker_api.create_database(site_hash) 
      end
      

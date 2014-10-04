@@ -110,6 +110,7 @@ class EngineBuilder
   def create_database_service db
     db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
     if db_service.is_a?(DBManagedService)
+      
       db_service.add_consumer(db)
       return true
     else
