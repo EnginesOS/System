@@ -17,6 +17,7 @@ class DNSService < ManagedService
   
       ip_str = site_hash[:ip]
       hostName = site_hash[:hostname]
+        puts hostName + " " + ip_str 
       if ip_str.length > 7 #fixme need to check valid ip and that host is valid
        return  @docker_api.register_dns(hostName,ip_str)
       else
