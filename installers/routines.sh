@@ -143,7 +143,7 @@ echo "Generating system Keys"
 	
 	make_dns_key
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
-	while `echo $key |grep -e / |wc -c` -gt 0
+	while test `echo $key |grep -e / |wc -c` -gt 0
 		do
 			make_dns_key
 			key=`cat ddns.private |grep Key | cut -f2 -d" "`
