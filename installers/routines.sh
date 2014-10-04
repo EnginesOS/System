@@ -201,21 +201,10 @@ echo "Creating and startingg Engines OS Services"
 }
 function remove_services {
 echo "Creating and startingg Engines OS Services"
-	 /opt/engos/bin/engines.rb service stop dns
 
-	/opt/engos/bin/engines.rb service stop mysql_server
-	 /opt/engos/bin/engines.rb service stop nginx
-	# /opt/engos/bin/engines.rb service stop monit
-	 /opt/engos/bin/engines.rb service stop cAdvisor
-	/opt/engos/bin/engines.rb service stop backup
+docker stop cAdvisor mysql_server backup nginx dns mgmt
+docker rm cAdvisor mysql_server backup nginx dns mgmt
 	
-	 /opt/engos/bin/engines.rb service destroy dns
-	
-	 /opt/engos/bin/engines.rb service destroy mysql_server
-	/opt/engos/bin/engines.rb service destroy nginx
-	#su -l dockuser /opt/engos/bin/engines.rb service destroy monit
-	 /opt/engos/bin/engines.rb service destroy cAdvisor
-	 /opt/engos/bin/engines.rb service destroy backup
 }
 function generate_ssl {
 echo "Generating Self Signed Cert"
