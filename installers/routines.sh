@@ -137,6 +137,7 @@ echo "Generating system Keys"
 	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
 	
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
+	echo DNS key $key
 	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
 	cp ddns.* /opt/engos/system/images/01.baseImages/01.base/
 	mv ddns.* /opt/engos/etc/keys/
