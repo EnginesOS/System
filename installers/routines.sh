@@ -113,19 +113,19 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f pgsql
 	
 	#remove host limits from pub key
-	cat pgsql.pub | awk '{ print $1 $2}' > pgsql.p
+	cat pgsql.pub | awk '{ print $1 " " $2}' > pgsql.p
 	mv pgsql.p  pgsql.pub 
 	
-	cat nginx.pub | awk '{ print $1 $2}' > nginx.p
+	cat nginx.pub | awk '{ print $1 " " $2}' > nginx.p
 	mv nginx.p  nginx.pub 
 	
-	cat nagios.pub | awk '{ print $1 $2}' > nagios.p
+	cat nagios.pub | awk '{ print $1 " " $2}' > nagios.p
 	mv nagios.p  nagios.pub 
 	
-	cat mgmt.pub | awk '{ print $1 $2}' > mgmt.p
+	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
 	mv mgmt.p  mgmt.pub 	
 	
-	cat mysql.pub | awk '{ print $1 $2}' > mysql.p
+	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
 	mv mysql.p  mysql.pub 	
 	
 	mv  mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
