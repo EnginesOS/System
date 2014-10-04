@@ -9,7 +9,7 @@ ADD home home
 
 ADD nginx.pub /home/rma/.ssh/authorized_keys
 RUN chown -R rma /home/rma/.ssh
-RUN chmod -R chmod 700 /home/rma/.ssh
+RUN chmod -R  700 /home/rma/.ssh
 
 ADD default /etc/nginx/sites-available/default
 
