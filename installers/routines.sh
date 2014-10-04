@@ -113,6 +113,7 @@ echo "nameserver 172.17.42.1" >>  /etc/resolv.conf
   }
 
 function make_dns_key {
+	rm -f ddns.private ddns.key
 	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
 	mv *private ddns.private
 	mv *key ddns.key
@@ -155,11 +156,14 @@ echo "Generating system Keys"
 	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
 	
 	make_dns_key
+	
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
+	
 	while test `echo $key |grep -e / |wc -c` -gt 0
 		do
 			make_dns_key
 			key=`cat ddns.private |grep Key | cut -f2 -d" "`
+			echo DNS key $key
 		done
 			
 	echo DNS key $key
