@@ -3,7 +3,7 @@
  
 #rvm  --default use ruby-2.1.2
 
-gem install git
+gem install git bundle oink
 #rvm gemset create bundle
 #rvm gemset create git
 
