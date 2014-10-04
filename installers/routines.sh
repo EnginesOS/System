@@ -97,6 +97,19 @@ echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/eng
 */10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/services/restarts.log" >/tmp/ct
 crontab -u dockuser /tmp/ct
 rm /tmp/ct
+
+#DHCP
+ if test -f /etc/dhcp/dhclient.conf
+ 	then
+		echo "prepend domain-name-servers 172.17.42.1;;" >> /etc/dhcp/dhclient.conf
+		
+		
+	fi
+	#temp while we wait for next dhcp renewal if using dhcp
+	
+echo "nameserver 172.17.42.1" >>  /etc/resolv.conf 
+
+
   }
 
 function make_dns_key {
