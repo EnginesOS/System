@@ -67,11 +67,10 @@ class ManagedService < ManagedContainer
         @consumers = Hash.new
       end
  
-      if @consumers.has_key?(site_hash[:name]) == false     # only add if doesnt exists but allow register above
+#      if @consumers.has_key?(site_hash[:name]) == true     # only add if doesnt exists but allow register above
         @consumers.store(site_hash[:name], site_hash)
-      else
-        @consumers.update(site_hash[:name], site_hash)
-      end
+
+     # end
      save_state
      return ret_val
    end
