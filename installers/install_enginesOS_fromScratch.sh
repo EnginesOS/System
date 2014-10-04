@@ -4,20 +4,23 @@ RUBY_VER=2.1.2
 
 export RUBY_VER
 
-. routines.sh
+. /tmp/203.14.203.141/EnginesInstaller/routines.sh
 
 
 dpkg-reconfigure tzdata
 
+install_docker_and_components
 
 make_dirs
 
 set_permissions
 
-install_docker_and_components
+
 
 passwd dockuser
 
-su -l dockuser /bin/bash ./complete_install.sh
+
+su -l dockuser -c /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
+
 
  
