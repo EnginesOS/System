@@ -1,5 +1,6 @@
 #!/bin/bash
 
+/opt/engos/bin/containers_startup.sh &
 
 if test ` docker ps -a |grep mgmt |wc -c` -eq 0
 then

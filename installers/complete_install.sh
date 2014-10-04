@@ -16,6 +16,8 @@ echo "Building Images"
 
 create_services
 
+/opt/engos/bin/containers_startup.sh 
+
 echo "System startup"
 /opt/engos/bin/mgmt_startup.sh 
 
