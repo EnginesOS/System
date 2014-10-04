@@ -7,8 +7,8 @@ rvm  --default use ruby-2.1.2
 
 git pull
 
-cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
-cp /tmp/t /home/app/config/environments/production.rb
+#cat /home/app/config/environments/production.rb |sed "/config.serve_static_assets = false/s//config.serve_static_assets = true/" >/tmp/t
+#cp /tmp/t /home/app/config/environments/production.rb
 
 
 bundle install --path vendor/bundle
