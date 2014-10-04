@@ -1,6 +1,6 @@
 #!/bin/bash
 #FIXME
-rvm use ruby-2.1.1
+#rvm use ruby-2.1.1
 
 if test `/opt/engos/bin/engines.rb service start dns |grep nocontainer |wc -c` -gt 0
 then
