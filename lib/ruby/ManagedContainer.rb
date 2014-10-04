@@ -432,7 +432,7 @@ class ManagedContainer < Container
     end
     output = JSON.parse(@last_result)
     ip_str=output[0]['NetworkSettings']['IPAddress']
-      puts containerName ip_str
+      puts containerName + ":" + ip_str
       return ip_str
   end
   
