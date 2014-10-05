@@ -1,9 +1,9 @@
 @  IN SOA engines.local. root.engines.local. (
                 9999 ; serial
-                604800 ; refresh (1 week)
-                86400 ; retry (1 day)
-                2419200 ; expire (4 weeks)
-                104800 ; minimum (1 week)
+                7200 ; refresh (2 hrs)
+                120 ; retry (2 mins)
+                604800 ; expire (1 weeks)
+                60 ; minimum (1 min)
         )
         IN      NS      ns.engines.local.
         IN      NS      local.engines.local.
