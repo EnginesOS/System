@@ -1,6 +1,7 @@
 #!/bin/bash
 
 chown -R postgres /var/lib/postgresql
+chown postgres -R /var/log/postgresql/
 
 
  echo listen_addresses = '*' >> /etc/postgresql/9.3/postgresql.conf
