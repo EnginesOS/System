@@ -7,7 +7,7 @@ pass="pass"
  then
 
 
-cp -rp /var/lib/postgresql_firstrun /var/lib/postgresql/9.3 
+cp -rp /var/lib/postgresql_firstrun/* /var/lib/postgresql/ 
 
 chown -R postgres /var/lib/postgresql
 chown postgres -R /var/log/postgresql
