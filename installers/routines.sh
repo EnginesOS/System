@@ -185,6 +185,7 @@ mkdir -p  /var/log/engos/services/mgmt
 mkdir -p  /var/log/engos/services/pgsql/
 mkdir -p  /var/log/engos/services/mysql/
 mkdir -p  /var/log/engos/services/dns/
+mkdir -p /var/log/engos/services/smtp/
 mkdir -p /opt/engos/
 
 }
