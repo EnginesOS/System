@@ -275,9 +275,11 @@ else
        else
          res = res.result_mesg
        end
-     end
-     if res.length >0
-      puts res
+           
+       if res.length >0
+        puts res
+      end
+      
      end
 end
 
