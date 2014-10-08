@@ -7,6 +7,6 @@ ADD sudoers /etc/
 ADD pgsql.pub /home/rma/.ssh/authorized_keys
 RUN chown -R rma /home/rma/.ssh
 RUN chmod -R  700 /home/rma/.ssh
-
+RUN cp -rp  /var/lib/postgresql /var/lib/postgresql_firstrun
 EXPOSE 3306
 EXPOSE 22
