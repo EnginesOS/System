@@ -56,7 +56,7 @@ describe "#loadManagedEngine" do
 describe "#createEngine" do
        it "Returns  createEngine testcontainer is used for test " do  
          result =  @enginesapi.createEngine("testcontainer")
-        result.was_sucess.should eql true
+        result.was_success.should eql true
         engine = @enginesapi.loadManagedEngine("testcontainer")
          @enginesapi.read_state(engine).should eql  "running"
          
@@ -65,7 +65,7 @@ describe "#createEngine" do
 describe "#createEngine" do
        it "Returns  createEngine without a valid container name (does not exsit) is used for test " do  
          result =  @enginesapi.createEngine("nocontainer")
-        result.was_sucess.should eql false
+        result.was_success.should eql false
         
        end
      end  
@@ -73,25 +73,25 @@ describe "#createEngine" do
 describe "#Stop/Start Engine Function tests" do
         it "Tests the Engine Start/Stop functions" do
         result =  @enginesapi.stopEngine("testcontainer")
-        result.was_sucess.should eql true
+        result.was_success.should eql true
         
         engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "stopped"
         
         result =  @enginesapi.stopEngine("testcontainer")
-        result.was_sucess.should eql false
+        result.was_success.should eql false
           
         result =  @enginesapi.startEngine("testcontainer")
-        result.was_sucess.should eql true 
+        result.was_success.should eql true 
            
         engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "running"
         
          result =  @enginesapi.startEngine("testcontainer")
-         result.was_sucess.should eql false
+         result.was_success.should eql false
          
           result =  @enginesapi.restartEngine("testcontainer")
-           result.was_sucess.should eql true
+           result.was_success.should eql true
            
           engine = @enginesapi.loadManagedEngine("testcontainer")
           @enginesapi.read_state(engine).should eql "running"
@@ -102,22 +102,22 @@ describe "#Stop/Start Engine Function tests" do
 describe "#pause/unpause Engine Function tests" do
         it "Tests the Engine Pause/UnPause functions" do
         result =  @enginesapi.pauseEngine("testcontainer")
-        result.was_sucess.should eql true
+        result.was_success.should eql true
         
         engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "paused"
         
         result =  @enginesapi.pauseEngine("testcontainer")
-        result.was_sucess.should eql false
+        result.was_success.should eql false
           
         result =  @enginesapi.unpauseEngine("testcontainer")
-        result.was_sucess.should eql true 
+        result.was_success.should eql true 
            
         engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "running"
         
          result =  @enginesapi.unpauseEngine("testcontainer")
-         result.was_sucess.should eql false
+         result.was_success.should eql false
           
        end
      end
@@ -126,22 +126,22 @@ describe "#pause/unpause Engine Function tests" do
 describe "#recreate Engine Function tests" do
         it "Tests the Engine recreate functions" do
         result =  @enginesapi.recreateEngine("testcontainer")
-        result.was_sucess.should eql false
+        result.was_success.should eql false
         
         result =  @enginesapi.stopEngine("testcontainer")                  
         result =  @enginesapi.recreateEngine("testcontainer")
-        result.was_sucess.should eql true 
+        result.was_success.should eql true 
            
         engine = @enginesapi.loadManagedEngine("testcontainer")
         @enginesapi.read_state(engine).should eql "running"     
         
           result =  @enginesapi.destroyEngine("testcontainer")
-          result.was_sucess.should eql false
+          result.was_success.should eql false
           
           result =  @enginesapi.stopEngine("testcontainer")  
-          result.was_sucess.should eql true 
+          result.was_success.should eql true 
           result =  @enginesapi.destroyEngine("testcontainer")
-          result.was_sucess.should eql true 
+          result.was_success.should eql true 
           
           result =  @enginesapi.createEngine("testcontainer")
           engine = @enginesapi.loadManagedEngine("testcontainer")
@@ -160,11 +160,11 @@ describe "#Engine DNS registration tests, " do
           #@enginesapi.registerEngineDNS("nginx")
                     
           result = @enginesapi.registerEngineDNS("testcontainer")
-          result.was_sucess.should eql true 
+          result.was_success.should eql true 
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.deregisterEngineDNS("testcontainer")          
-          result.was_sucess.should eql true 
+          result.was_success.should eql true 
             #Fixme check this actually works beyond saying it did
   
           #register is again so next tests can use hostname 
@@ -176,23 +176,23 @@ describe "#Engine website registration tests, " do
         it "Tests the website Engine registration" do 
           #Do this prior to de registration of dns
           result = @enginesapi.registerEngineWebSite("testcontainer")
-         result.was_sucess.should eql true 
+         result.was_success.should eql true 
            #Fixme check this actually works beyond saying it did
           
            
           result = @enginesapi.deregisterEngineWebSite("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_success.should eql true          
           #Fixme check this actually works beyond saying it did
           end
 end
 describe "#Engine website monitor tests, " do
         it "Tests the website Engine monitor registration" do 
           result = @enginesapi.monitorEngine("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_success.should eql true          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.demonitorEngine("testcontainer")
-          result.was_sucess.should eql true          
+          result.was_success.should eql true          
           #Fixme check this actually works beyond saying it did                  
         end                
      end
@@ -202,27 +202,27 @@ describe "#Engine registration tests, checking they fail when dns down" do
           result =  @enginesapi.stopService("dns")
           
           result = @enginesapi.registerEngineDNS("testcontainer")
-          result.was_sucess.should eql false 
+          result.was_success.should eql false 
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.deregisterEngineDNS("testcontainer")
-           result.was_sucess.should eql false 
+           result.was_success.should eql false 
           #Fixme check this actually works beyond saying it did
                   
           result = @enginesapi.registerEngineWebSite("testcontainer")
-         result.was_sucess.should eql false 
+         result.was_success.should eql false 
            #Fixme check this actually works beyond saying it did
            
           result = @enginesapi.deregisterEngineWebSite("testcontainer")
-          result.was_sucess.should eql false          
+          result.was_success.should eql false          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.monitorEngine("testcontainer")
-          result.was_sucess.should eql false          
+          result.was_success.should eql false          
           #Fixme check this actually works beyond saying it did
           
           result = @enginesapi.demonitorEngine("testcontainer")
-          result.was_sucess.should eql false          
+          result.was_success.should eql false          
           #Fixme check this actually works beyond saying it did
           
           
@@ -234,25 +234,25 @@ describe "#Engine registration tests, checking they fail when dns down" do
 describe "#Test functions when applied to non existant container" do
      it "tests error handling when container by containerName does not exit" do
        result = @enginesapi.loadManagedEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.stopEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.startEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.pauseEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.unpauseEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.destroyEngine("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.deleteEngineImage("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.registerEngineDNS("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.deregisterEngineDNS("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        result = @enginesapi.registerEngineWebSite("nocontainer")
-       result.was_sucess.should eql false
+       result.was_success.should eql false
        
      end
 end
@@ -277,21 +277,21 @@ describe "#Test Build from blueprint " do
            bp.should be_instance_of Hash
            
           result =  @enginesapi.stopEngine("testhost")  
-         result.was_sucess.should eql true 
+         result.was_success.should eql true 
          
          result =  @enginesapi.destroyEngine("testhost")
-         result.was_sucess.should eql true       
+         result.was_success.should eql true       
             
           result =  @enginesapi.rebuild_engine_container("testhost")
-          result.was_sucess.should eql true 
+          result.was_success.should eql true 
           
           result =  @enginesapi.stopEngine("testhost")
-          result.was_sucess.should eql true          
+          result.was_success.should eql true          
           
           result =  @enginesapi.destroyEngine("testhost")
 
           result =  @enginesapi.deleteEngineImage("testhost")
-               result.was_sucess.should eql true 
+               result.was_success.should eql true 
         end
 end
  end
