@@ -4,7 +4,7 @@
 
 
 
-while test -f /var/run/postgresql/postgresql.pid
+while test -f /var/run/postgresql/*.pid
 do
 	  sleep 200
 done
