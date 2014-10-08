@@ -1,7 +1,7 @@
 class  EnginesOSapiResult
     
     def initialize(item_name,cmd)
-        @was_sucess=true
+        @was_success=true
         @result_code = 0
         @item_name = item_name      
         @result_mesg = "OK"
@@ -9,15 +9,15 @@ class  EnginesOSapiResult
       end
       
     def initialize(result,code,item_name, msg,cmd)
-      @was_sucess=result
+      @was_success=result
       @result_code = code
       @item_name = item_name
       @result_mesg = msg
       @action = cmd
     end
       
-    def was_sucess
-      return @was_sucess
+    def was_success
+      return @was_success
     end
     def result_code
       return @result_code
