@@ -1,19 +1,18 @@
 #!/bin/bash
 pass="pass"
-	echo "listen_addresses = '*'" >> /etc/postgresql/9.3/main/postgresql.conf
- 	echo "host all all 172.17.42.0/16  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
+
+ 	#Run First Time on persistent DB
  	
  if ! test -f /var/lib/postgresql/conf
  then
 
+	cp -rp /var/lib/postgresql_firstrun/* /var/lib/postgresql/ 
 
-cp -rp /var/lib/postgresql_firstrun/* /var/lib/postgresql/ 
-
-chown -R postgres /var/lib/postgresql
-mkdir -p /var/log/postgresql
-chown postgres -R /var/log/postgresql
-
- service postgresql start
+	chown -R postgres /var/lib/postgresql
+	mkdir -p /var/log/postgresql
+	chown postgres -R /var/log/postgresql
+	
+ 	service postgresql start
  
  	touch /var/lib/postgresql/conf
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
@@ -25,4 +24,8 @@ chown postgres -R /var/log/postgresql
 	  rm /tmp/t.sql
 	 
  fi
-	 
+ 	 mkdir -p /var/log/postgresql
+ 	 chown -R postgres /var/lib/postgresql
+	 chown postgres -R /var/log/postgresql
+	echo "listen_addresses = '*'" >> /etc/postgresql/9.3/main/postgresql.conf
+ 	echo "host all all 172.17.42.0/16  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
