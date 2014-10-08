@@ -509,16 +509,16 @@ class ManagedContainer < Container
     end
     trim_last_result
     trim_last_error
-    puts("engine usage")
-    p ObjectSpace.memsize_of(self)
-    puts("all managedContainers")
-
-        p ObjectSpace.memsize_of(self)
-    puts(" managed engin total")     
-    p ObjectSpace.memsize_of_all(ManagedContainer)
-
-    puts("api usage")
-    p ObjectSpace.memsize_of(@docker_api)
+#    puts("engine usage")
+#    p ObjectSpace.memsize_of(self)
+#    puts("all managedContainers")
+#
+#        p ObjectSpace.memsize_of(self)
+#    puts(" managed engin total")     
+#    p ObjectSpace.memsize_of_all(ManagedContainer)
+#
+#    puts("api usage")
+#    p ObjectSpace.memsize_of(@docker_api)
     
     
     ret_val = @docker_api.save_container self

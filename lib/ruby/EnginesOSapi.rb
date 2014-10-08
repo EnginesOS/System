@@ -41,10 +41,10 @@ class EnginesOSapi
         end
       end
     end
-    puts("engineapi usage")
-    p ObjectSpace.memsize_of(self)
-    puts("engines usage")
-    p ObjectSpace.memsize_of(ret_val)
+#   # puts("engineapi usage")
+#    p ObjectSpace.memsize_of(self)
+#    puts("engines usage")
+#    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
@@ -61,10 +61,10 @@ class EnginesOSapi
         yf.close
       end
     end
-    puts("engineapi usage")
-    p ObjectSpace.memsize_of(self)
-    puts("servicess usage")
-    p ObjectSpace.memsize_of(ret_val)
+#    puts("engineapi usage")
+#    p ObjectSpace.memsize_of(self)
+#    puts("servicess usage")
+#    p ObjectSpace.memsize_of(ret_val)
     return ret_val
   end
 
@@ -133,7 +133,7 @@ class EnginesOSapi
             return backup_service
           end
     backup_service.add_consumer(backup_hash)
-    p backup_hash
+#    p backup_hash
     return success(engine_name,"Add Volume Backup")
   end
   
