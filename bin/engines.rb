@@ -272,13 +272,13 @@ else
  
      if res !=nil && res.is_a?(EnginesOSapiResult)    
        if res.was_success == false
-         puts ("Failed:" + res.result_mesg.to_s)
+        output = "Failed:" + res.result_mesg.to_s
        else
-         res = res.result_mesg
+         output = res.result_mesg
        end
            
-       if res.length >0
-        puts res
+       if output.length >0
+        puts output
       end
       
      end
