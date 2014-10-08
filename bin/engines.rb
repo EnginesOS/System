@@ -273,10 +273,11 @@ else
        if res.was_success == false
          puts ("Failed:" + res.result_mesg.to_s)
        else
-         puts(res.result_mesg)
+         res = res.result_mesg
+       end
      end
-     else
-       puts res
+     if res.length >0
+      puts res
      end
 end
 
