@@ -5,7 +5,7 @@ pass="pass"
  	
  if ! test -f /var/lib/postgresql/conf
  then
- chown -R postgres /var/lib/postgresql
+chown -R postgres /var/lib/postgresql
 chown postgres -R /var/log/postgresql/
 
 
@@ -14,7 +14,7 @@ chown postgres -R /var/log/postgresql/
  
  	touch /var/lib/postgresql/conf
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
-	 echo /usr/bin/perl   /usr/bin/psql -l > /tmp/t.sh
+	 echo "/usr/bin/perl   /usr/bin/psql -l" > /tmp/t.sh
 	 chmod +x /tmp/t.sh
 	  su postgres  /tmp/t.sh
 	  
@@ -23,4 +23,3 @@ chown postgres -R /var/log/postgresql/
 	 
  fi
 	 
-l

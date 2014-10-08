@@ -44,6 +44,11 @@ class ManagedContainer < Container
    @https_only=false
    @last_error=""
    @last_result=""
+   
+#   @userid
+#   @ro_groupid
+#   @rw_groupid
+      
  end
  
  def http_and_https
