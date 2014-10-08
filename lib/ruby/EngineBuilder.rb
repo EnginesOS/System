@@ -606,9 +606,9 @@ class EngineBuilder
     @docker_api
     )
     #initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
-    @workerPorts.each do |port|
-      puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
-    end
+#    @workerPorts.each do |port|
+#      puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
+#    end
 
     @databases.each do |db|
       create_database_service db
