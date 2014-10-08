@@ -134,7 +134,7 @@ class EnginesOSapi
           end
     backup_service.add_consumer(backup_hash)
     p backup_hash
-    return sucess(engine_name,"Add Volume Backup")
+    return success(engine_name,"Add Volume Backup")
   end
   
   def stop_backup backup_name
@@ -145,7 +145,7 @@ class EnginesOSapi
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
   backup_service.remove_consumer(backup_hash)
-  return sucess(backup_name,"Stop Backup")
+  return success(backup_name,"Stop Backup")
   end
   
   def backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
@@ -169,7 +169,7 @@ class EnginesOSapi
              return backup_service
            end
      backup_service.add_consumer(backup_hash)
-     return sucess(engine_name,"Add Database Backup")
+     return success(engine_name,"Add Database Backup")
    end
 
   
@@ -182,7 +182,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,"No Engine","Stop")
     else
-      return sucess(engine_name,"Stop")
+      return success(engine_name,"Stop")
     end
   end
 
@@ -195,7 +195,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,"No Engine","Stop")
     else
-      return sucess(engine_name,"Stop")
+      return success(engine_name,"Stop")
     end
   end
 
@@ -211,7 +211,7 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Start")
     end
  
-    return sucess(engine_name,"Start")
+    return success(engine_name,"Start")
 
   end
 
@@ -226,10 +226,58 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Pause")
     end
-    return sucess(engine_name,"Pause")
+    return success(engine_name,"Pause")
 
   end
 
+  def enable_https_for_engine engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","enable_https")
+    end
+    retval =  engine.enable_https()
+    if retval == false
+      return failed(engine_name,engine.last_error,"enable_https")
+    end
+    return success(engine_name,"enable_https")
+  end
+  def enable_httpsonly_for_engine engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","enable_httpsonly")
+    end
+    retval =  engine.enable_httpsonly()
+    if retval == false
+      return failed(engine_name,engine.last_error,"enable_httpsonly")
+    end
+    return success(engine_name,"enable_httpsonly")
+  end
+  
+  def disable_httpsonly_for_engine engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","disable_httpsonly")
+    end
+    retval =  engine.disable_httpsonly()
+    if retval == false
+      return failed(engine_name,engine.last_error,"disable_httpsonly")
+    end
+    return success(engine_name,"disable_httpsonly")
+  end
+  
+  def disable_https_for_engine engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","disable_https")
+    end
+    retval =  engine.disable_https()
+    if retval == false
+      return failed(engine_name,engine.last_error,"disable_https")
+    end
+    return success(engine_name,"disable_https")
+   end
+   
+   
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -239,7 +287,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Unpause")
     end
-    return sucess(engine_name,"unpause")
+    return success(engine_name,"unpause")
 
   end
 
@@ -252,7 +300,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Destroy")
     end
-    return sucess(engine_name,"Destroy")
+    return success(engine_name,"Destroy")
   end
 
   def deleteEngineImage engine_name
@@ -264,7 +312,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Delete")
     end
-    return sucess(engine_name,"Delete")
+    return success(engine_name,"Delete")
   end
 
   def createEngine engine_name
@@ -278,7 +326,7 @@ class EnginesOSapi
 
       return failed(engine_name,engine.last_error,"Create")
     end
-    return sucess(engine_name,"Create")
+    return success(engine_name,"Create")
   end
 
   def restartEngine engine_name
@@ -290,7 +338,7 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Restart")
     end
-    return sucess(engine_name,"Restart")
+    return success(engine_name,"Restart")
   end
 
   def registerEngineWebSite engine_name
@@ -302,7 +350,7 @@ class EnginesOSapi
     if retval != true
       return failed(engine_name,retval,"Register Engine Web Site")
     end
-    return sucess(engine_name,"Register Engine Web Site")
+    return success(engine_name,"Register Engine Web Site")
   end
 
   def deregisterEngineWebSite engine_name
@@ -314,7 +362,7 @@ class EnginesOSapi
     if retval != true
       return failed(engine_name,retval,"DeRegister Engine Web Site")
     end
-    return sucess(engine_name,"DeRegister Engine Web Site")
+    return success(engine_name,"DeRegister Engine Web Site")
   end
 
   def registerEngineDNS engine_name
@@ -329,7 +377,7 @@ class EnginesOSapi
       p retval
       return failed(engine_name,retval,"Register Engine DNS")
     end
-    return sucess(engine_name,"Register Engine DNS")
+    return success(engine_name,"Register Engine DNS")
   end
 
   def deregisterEngineDNS engine_name
@@ -341,7 +389,7 @@ class EnginesOSapi
     if  retval.is_a?(String)
       return failed(engine_name,retval,"DeRegister Engine DNS")
     end
-    return sucess(engine_name,"DeRegister Engine DNS")
+    return success(engine_name,"DeRegister Engine DNS")
   end
 
   def monitorEngine engine_name
@@ -353,7 +401,7 @@ class EnginesOSapi
     if  retval.is_a?(String)
       return failed(engine_name,retval,"Monitor Engine")
     end
-    return sucess(engine_name,"Monitor Engine")
+    return success(engine_name,"Monitor Engine")
   end
 
   def demonitorEngine engine_name
@@ -365,7 +413,7 @@ class EnginesOSapi
     if  retval.is_a?(String)
       return failed(engine_name,retval,"DeMonitor Engine")
     end
-    return sucess(engine_name,"DeMonitor Engine")
+    return success(engine_name,"DeMonitor Engine")
   end
 
   def get_engine_blueprint engine_name
@@ -391,7 +439,7 @@ class EnginesOSapi
     end
     retval = engine.rebuild_container
     if retval.is_a?(ManagedEngine)
-      sucess(engine_name,"Rebuild Engine Image")
+      success(engine_name,"Rebuild Engine Image")
     else
       puts "rebuild error"
       p engine.last_error
@@ -406,7 +454,7 @@ class EnginesOSapi
     # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
-    #return sucess(container.containerName,"read state")
+    #return success(container.containerName,"read state")
     retval
   end
 
@@ -424,7 +472,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Stop Service")
     end
-    return sucess(service_name,"Stop Service")
+    return success(service_name,"Stop Service")
   end
 
   def startService service_name
@@ -441,7 +489,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Start Service")
     end
-    return sucess(service_name,"Start Service")
+    return success(service_name,"Start Service")
   end
 
   def  pauseService service_name
@@ -458,7 +506,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Pause Service")
     end
-    return sucess(service_name,"Pause Service")
+    return success(service_name,"Pause Service")
   end
 
   def  unpauseService service_name
@@ -475,7 +523,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Unpause Service")
     end
-    return sucess(service_name,"Unpause Service")
+    return success(service_name,"Unpause Service")
   end
 
   def registerServiceWebSite service_name
@@ -492,7 +540,7 @@ class EnginesOSapi
     if retval != true
       return failed(service_name,service.last_error,"Register Service Web")
     end
-    return sucess(service_name,"Register Service Web")
+    return success(service_name,"Register Service Web")
   end
 
   def deregisterServiceWebSite service_name
@@ -509,7 +557,7 @@ class EnginesOSapi
     if retval != true
       return failed(service_name,service.last_error,"Deregister Service Web")
     end
-    return sucess(service_name,"Deregister Service Web")
+    return success(service_name,"Deregister Service Web")
   end
 
   def registerServiceDNS service_name
@@ -527,7 +575,7 @@ class EnginesOSapi
     if retval != true
       return failed(service_name,retval,"Register Service DNS")
     end
-    return sucess(service_name,"Register Service DNS")
+    return success(service_name,"Register Service DNS")
   end
 
   def deregisterServiceDNS service_name
@@ -544,7 +592,7 @@ class EnginesOSapi
     if retval != true
       return failed(service_name,retval,"Deregister Service DNS")
     end
-    return sucess(service_name,"Deregister Service DNS")
+    return success(service_name,"Deregister Service DNS")
   end
 
   def createService service_name
@@ -561,7 +609,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Create Service")
     end
-    return sucess(service_name,"Create Service")
+    return success(service_name,"Create Service")
   end
 
   def recreateService service_name
@@ -578,7 +626,7 @@ class EnginesOSapi
     if retval == false
       return failed(service_name,service.last_error,"Recreate Service")
     end
-    return sucess(service_name,"Recreate Service")
+    return success(service_name,"Recreate Service")
   end
 
   def get_volumes
@@ -608,15 +656,15 @@ class EnginesOSapi
   end
     
   #protected if protected static cant call
-  def sucess(item_name ,cmd)
-    EnginesOSapi.sucess(item_name ,cmd)
+  def success(item_name ,cmd)
+    EnginesOSapi.success(item_name ,cmd)
   end
 
   def failed(item_name,mesg ,cmd)
     EnginesOSapi.failed(item_name,mesg ,cmd)
   end
 
-  def EnginesOSapi.sucess(item_name ,cmd)
+  def EnginesOSapi.success(item_name ,cmd)
     return  EnginesOSapiResult.new(true,0,item_name, "OK",cmd)
   end
 

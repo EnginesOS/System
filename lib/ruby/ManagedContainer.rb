@@ -565,6 +565,35 @@ class ManagedContainer < Container
    end  
   end
   
+  def enable_https
+    http_and_https=true
+     https_only = false
+    register_site
+     save_state
+  end
+  
+  def disable_https
+    http_and_https=false
+    https_only = false
+    register_site
+    save_state
+  end
+  
+  def enable_httpsonly
+    https_only = true
+    http_and_https=false
+    register_site
+    save_state
+  end
+  
+ def disable_httpsonly
+   https_only = false
+   http_and_https=true
+   register_site
+   save_state
+ end
+  
+
   protected
   
 def trim_last_result
