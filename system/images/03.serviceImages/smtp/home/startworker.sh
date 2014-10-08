@@ -1,7 +1,7 @@
 #!/bin/sh
 
-
-service postfix start start
+service busybox-syslogd start
+service postfix start 
 
 while test -f /var/lib/postfix/master.lock 
 do
