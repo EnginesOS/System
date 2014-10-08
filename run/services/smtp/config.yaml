@@ -1,0 +1,26 @@
+--- !ruby/object:ManagedService
+containerName: smtp
+ctype: service
+last_error: 
+memory: '32'
+hostName: smtp
+domainName: 
+environments: []
+image: enginesos/smtp
+volumes:
+- !ruby/object:Volume
+  name: Logging
+  remotepath: "/var/log/"
+  localpath: "/var/log/engos/services/smtp/"
+  vol_permissions: "rw"  
+port: 
+eports: []
+repo: na
+last_result: |
+  nginx
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
+
