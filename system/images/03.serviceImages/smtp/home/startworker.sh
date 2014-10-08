@@ -1,5 +1,7 @@
 #!/bin/sh
 
+touch   /var/log/mail.err
+touch  /var/log/maillog
 service busybox-syslogd start
 service postfix start 
 
