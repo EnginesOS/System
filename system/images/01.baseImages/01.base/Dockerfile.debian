@@ -13,7 +13,4 @@ ADD init.sh /home/
 ADD _init.sh /home/
 ADD sshd_config /etc/ssh/
 
-RUN mkdir /var/log/exim4/
-RUN chown 102  /var/log/exim4/
-
 CMD /bin/bash /home/init.sh

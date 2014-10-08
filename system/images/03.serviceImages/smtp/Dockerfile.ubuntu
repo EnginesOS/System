@@ -1,6 +1,6 @@
 
-FROM ubuntu
+FROM enginesos/base
 
 RUN apt-get -y  --force-yes update
 RUN apt-get -y  --force-yes upgrade
-RUN apt-get -y install sendmail-bin
+RUN apt-get -y install postfix
