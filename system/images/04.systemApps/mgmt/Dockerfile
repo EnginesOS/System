@@ -7,8 +7,6 @@ ADD home home
 ADD profile /home/dockuser/.profile
 
 ADD ssh /home/dockuser/.ssh
-ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
-RUN chmod -R  700 /home/dockuser/.ssh
 
 RUN chown -R dockuser /home/dockuser/
 RUN chown -R dockuser /home/app/
@@ -17,6 +15,9 @@ RUN echo ".  /etc/rvmrc " >> /root/.profile
 RUN echo "rvm  --default use ruby-2.1.2" >> /root/.profile
 
 ENV ContUser dockuser
+
+ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
+RUN chmod -R  700 /home/dockuser/.ssh
 
 EXPOSE 80
 EXPOSE 22
