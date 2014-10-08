@@ -35,7 +35,8 @@ end
 def do_cmd(c_type,containerName,command)
   engines_api = EnginesOSapi.new() 
   docker_api = engines_api.docker_api
-   puts "Command" + command
+  
+   puts "Command" + command + " on " + containerName
   case command
   when "check_and_act"
     if c_type == "container"
