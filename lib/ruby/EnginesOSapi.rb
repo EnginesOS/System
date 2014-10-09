@@ -5,7 +5,7 @@ require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 require "/opt/engos/lib/ruby/ManagedServices.rb"
-require "/opt/engos/lib/prefs/SystemPreferences.rb"
+require "/opt/engos/lib/ruby/prefs/SystemPreferences.rb"
 require 'objspace'
 
 class EnginesOSapi
