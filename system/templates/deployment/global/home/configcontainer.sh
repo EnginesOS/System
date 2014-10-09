@@ -133,8 +133,9 @@ echo run state $run
 if   [ $run -ne 0 ]
  then
 n=0
+STR_CNT=${#SEDSTRS[@]}
 echo "performing  $ARCHIVE_CNT substitutions"
-        while test $n -lt $ARCHIVE_CNT
+        while test $n -lt $STR_CNT
         do
           SED_STR=${SEDSTRS[$n]}
           SED_FILE=${SEDTARGETS[$n]}
