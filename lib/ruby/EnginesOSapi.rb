@@ -5,6 +5,7 @@ require "/opt/engos/lib/ruby/EngineBuilder.rb"
 require "/opt/engos/lib/ruby/PermissionRights.rb"
 require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
 require "/opt/engos/lib/ruby/ManagedServices.rb"
+require "/opt/engos/lib/prefs/SystemPreferences.rb"
 require 'objspace'
 
 class EnginesOSapi
@@ -113,7 +114,7 @@ class EnginesOSapi
     return managed_engine
   end
   
-  def backup_volume(backup_name,engine_name,volume_name,dest_hash,docker_api)
+  def backup_volume(backup_name,engine_name,volume_name,dest_hash)
     engine = loadManagedEngine engine_name
       if engine.is_a?(EnginesOSapiResult)
         return engine
@@ -128,7 +129,7 @@ class EnginesOSapi
         end
       end
       
-      backup_service = EnginesOSapi.loadManagedService("backup",docker_api)
+      backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
           end
@@ -148,7 +149,7 @@ class EnginesOSapi
   return success(backup_name,"Stop Backup")
   end
   
-  def backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
+  def backup_database(backup_name,engine_name,database_name,dest_hash)
     
      engine = loadManagedEngine engine_name
        if engine.is_a?(EnginesOSapiResult)
@@ -164,7 +165,7 @@ class EnginesOSapi
          end
        end
        
-       backup_service = EnginesOSapi.loadManagedService("backup",docker_api)
+       backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
      if backup_service.is_a?(EnginesOSapiResult)
              return backup_service
            end
@@ -172,6 +173,13 @@ class EnginesOSapi
      return success(engine_name,"Add Database Backup")
    end
 
+   def get_system_preferences     
+     return docker_api.load_system_preferences
+   end
+   
+   def save_system_prefences
+     return docker_api.save_system_preferences
+   end
   
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
