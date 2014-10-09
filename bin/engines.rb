@@ -242,7 +242,7 @@ def do_cmd(c_type,containerName,command)
     dest_hash[:dest_user]=args[6]
     dest_hash[:dest_pass]=args[7]
       p dest_hash
-    res = engines_api.backup_volume(backup_name,engine_name,volume_name,dest_hash,docker_api)
+    res = engines_api.backup_volume(backup_name,engine_name,volume_name,dest_hash)
 when "backup_db"
     args=containerName.split(":")
     backup_name=args[0]
@@ -255,7 +255,7 @@ when "backup_db"
     dest_hash[:dest_user]=args[6]
     dest_hash[:dest_pass]=args[7]
       p dest_hash
-    res = engines_api.backup_database(backup_name,engine_name,database_name,dest_hash,docker_api)
+    res = engines_api.backup_database(backup_name,engine_name,database_name,dest_hash)
     
 when "stop_backup"
   backup_name= containerName
