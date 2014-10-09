@@ -7,9 +7,9 @@ ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 
 
-ADD backup.pub /var/backups/.ssh/authorized_keys
+ADD backup.pub //home/rma/.ssh/authorized_keys
 ADD crontab  /var/spool/cron/crontabs/root
-RUN chown -R backup /var/backups/
+RUN chown -R rma ~rma 
 
 
 VOLUME /backup_src/volumes
