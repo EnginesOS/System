@@ -37,69 +37,93 @@ HOME=./
 n=0
 ARCHIVE_CNT=${#ARCHIVES[@]}
 
-        while test $n -lt $ARCHIVE_CNT
-        do
-                TAR_FILE=${ARCHIVES[$n]}
-                EXTRACT_CMD=${ARCHEXTRACTCMDS[$n]}
-                ARCHIVE=${ARCHIVENAMES[$n]}
-                LOCATION=$HOME/${ARCHLOCATIONS[$n]}
-                APP_SRC_DIR=${ARCHDIRS[$n]}
+while test $n -lt $ARCHIVE_CNT
+do
+        TAR_FILE=${ARCHIVES[$n]}
+        EXTRACT_CMD=${ARCHEXTRACTCMDS[$n]}
+        ARCHIVE=${ARCHIVENAMES[$n]}
+        LOCATION=$HOME/${ARCHLOCATIONS[$n]}
+        APP_SRC_DIR=${ARCHDIRS[$n]}
 
 
-        echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_DIR"
+echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_DIR"
 
 
-                if test -n "$TAR_FILE"
-                        then
+    if test -n "$TAR_FILE"
+            then
 
-			if test "$EXTRACT_CMD" = "git"
-				then
-					git clone $TAR_FILE
-
-				else
-					pd=`pwd`
-						if test ! -d $LOCATION
-							then
-								mkdir $LOCATION
-							fi
-                                        cd $LOCATION
-
-						if ! test -f $DOWNLOADCACHE/$ARCHIVE
-							then
-                                   echo Downloading  $TAR_FILE
-                                   wget -q $TAR_FILE -O $ARCHIVE
-								cp $ARCHIVE $DOWNLOADCACHE
-							else
-								echo "Using download cache"
-								cp  $DOWNLOADCACHE/$ARCHIVE .
-
-						fi
-					    if ! test "$EXTRACT_CMD" = "none"
+		if test "$EXTRACT_CMD" = "git"
+			then
+				git clone $TAR_FILE
+	
+			else
+				pd=`pwd`
+				
+					if test ! -d $LOCATION
 						then
-                                        		echo "Extracting to $LOCATION"
-                                        		echo $EXTRACT_CMD  $ARCHIVE 
-                                       			$EXTRACT_CMD  $ARCHIVE >/dev/null
-                                        		rm $ARCHIVE
-					    fi
+							mkdir $LOCATION
+					fi
+					
+	            cd $LOCATION
+	
+					if ! test -f $DOWNLOADCACHE/$ARCHIVE
+						then
+	                           echo Downloading  $TAR_FILE
+	                           wget -q $TAR_FILE -O $ARCHIVE
+							cp $ARCHIVE $DOWNLOADCACHE
+						else
+							echo "Using download cache"
+							cp  $DOWNLOADCACHE/$ARCHIVE .
+	
+					fi
+					
+				    if ! test "$EXTRACT_CMD" = "none"
+					then
+	                		echo "Extracting to $LOCATION"
+	                		echo $EXTRACT_CMD  $ARCHIVE 
+	               			$EXTRACT_CMD  $ARCHIVE >/dev/null
+	                		rm $ARCHIVE
+				    fi
+	
+				cd $pd
+	
+			fi
 
-					cd $pd
-		
-		fi
+			if test ! -z $APP_SRC_DIR
+			  then
+                    if test -n $APP_SRC_DIR 
+                            then
+                            echo "Moving to Destination"                                                        
+                            cp -rfp $APP_SRC_DIR/* .
+                            cp -rfp $APP_SRC_DIR/.g* .
+                            rm -fr $APP_SRC_DIR
+                    fi
+			   fi
 
-					if test ! -z $APP_SRC_DIR
-					  then
-                                                if test -n $APP_SRC_DIR 
-                                                        then
-                                                        echo "Moving to Destination"                                                        
-                                                        cp -rfp $APP_SRC_DIR/* .
-                                                        cp -rfp $APP_SRC_DIR/.g* .
-                                                        rm -fr $APP_SRC_DIR
-                                                fi
-					   fi
+        fi
 
-                fi
+  	n=`expr $n + 1`
+done
 
-          n=`expr $n + 1`
-        done
-
-chown -R www-data /home/app/
+	if test -f /home/engines/configs/php/71-custom.ini
+		then
+			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache
+	fi
+	
+	if test -f /home/engines/configs/apache2/extra.conf
+		then
+			cp /home/engines/configs/apache2/extra.conf /etc/apache2/rc.d/
+	fi
+	
+	if test -f /home/engines/configs/apache2/site.conf
+		then
+			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf
+	fi
+	
+	if test -f /home/uid
+		$cont_user=`cat /tmp/uid`
+	else
+		$cont_user="www-data"
+	fi
+	
+chown -R $cont_user /home/app/
