@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. config_functions.sh
+
 cd /home
 SAR=app
 
@@ -31,6 +33,7 @@ TZ=`find /usr/share/zoneinfo -type f -exec sh -c "diff -q /etc/localtime '{}' > 
 state=`echo $TZ |cut -f2 -d/`
 country=`echo $TZ |cut -f1 -d/`
 TZ="$country\/$state"
+export TZ
 
 top=`pwd`
 
@@ -179,6 +182,8 @@ echo run state $run
 	            ln -s $FS/$file .
 	
 	           done
+	           
+	      copy_substituted_templates     
 	else
 	
 			echo setting up persistance
@@ -223,6 +228,7 @@ echo "loading system.env"
 		then	
 			. $top/system.env
 	fi
+
 
 
 	if test -z $FRAMEWORK
