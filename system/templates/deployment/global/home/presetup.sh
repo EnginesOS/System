@@ -121,6 +121,7 @@ done
 	fi
 	
 	if test -f /home/uid
+	then
 		$cont_user=`cat /tmp/uid`
 	else
 		$cont_user="www-data"
