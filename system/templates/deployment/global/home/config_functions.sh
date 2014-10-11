@@ -8,7 +8,7 @@ function copy_substituted_templates {
 export dbname dbport dbuser dbpass dbhost FRAMEWORK cont_user cont_grp FSCONTFSVolHome SAR TZ
 echo  $dbname $dbport $dbuser $dbpass $dbhost $FRAMEWORK $cont_user $cont_grp $FSCONTFSVolHome $SAR $TZ
 
-templates=`find /home/engines/templates/ -type f`
+templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         for file in $templates
         	do     
                 dest_file=`echo $file | sed "/^.*templates\//s///"`
