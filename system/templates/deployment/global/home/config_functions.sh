@@ -19,7 +19,8 @@ templates=`find /home/engines/templates/ -type f`
 				
                  while read line
                     do
-                         eval echo "$line" >> $dest_file
+                         #eval
+                          echo "$line" >> $dest_file
                     done <  $file
         done
 }
