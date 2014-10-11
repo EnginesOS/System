@@ -13,7 +13,9 @@ templates=`find /home/engines/templates/ -type f`
                 dest_dir=`basename $dest_file`
                 
                 mkdir -p $dest_dir
-				rm app/$dest_file
+				rm $dest_file
+				
+				echo doing $dest_file
 				
                  while read line
                     do
