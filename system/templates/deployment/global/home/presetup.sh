@@ -107,12 +107,12 @@ done
 
 	if test -f /home/engines/configs/php/71-custom.ini
 		then
-			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/
+			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/conf.d/
 	fi
 	
 	if test -f /home/engines/configs/apache2/extra.conf
 		then
-			cp /home/engines/configs/apache2/extra.conf /etc/apache2/rc.d/
+			cp /home/engines/configs/apache2/extra.conf /etc/apache2/conf.d/
 	fi
 	
 	if test -f /home/engines/configs/apache2/site.conf
