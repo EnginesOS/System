@@ -10,7 +10,7 @@ templates=`find /home/engines/templates/ -type f`
         for file in $templates
         	do     
                 dest_file=app/`echo $file | sed "/^.*templates\//s///"`
-                dest_dir=`basename $dest_file`
+                dest_dir=`dirname $dest_file`
                 
                 mkdir -p $dest_dir
 				rm $dest_file
