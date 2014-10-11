@@ -122,16 +122,16 @@ done
 	
 	if test -f /home/uid
 	then
-		$cont_user=`cat /home/uid`
+		cont_user=`cat /home/uid`
 	else
-		$cont_user="www-data"
+		cont_user="www-data"
 	fi
 	
 	if test -f /home/gid
 	then
-		$cont_grp=`cat /home/gid`
+		cont_grp=`cat /home/gid`
 	else
-		$cont_grp="www-data"
+		cont_grp="www-data"
 	fi
 	
 	
