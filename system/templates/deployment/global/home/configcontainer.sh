@@ -5,7 +5,6 @@
 cd /home
 SAR=app
 
-
 	if test -f fs.env
         then
          . ./fs.env
@@ -182,7 +181,7 @@ echo run state $run
 	            ln -s $FS/$file .
 	
 	           done
-	           
+	          
 	      copy_substituted_templates     
 	else
 	
