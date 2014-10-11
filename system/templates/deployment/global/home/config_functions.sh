@@ -3,13 +3,15 @@
 
 function copy_substituted_templates {
 
+#run with /home/app
+
 export dbname dbport dbuser dbpass dbhost FRAMEWORK cont_user cont_grp FSCONTFSVolHome SAR TZ
 echo  $dbname $dbport $dbuser $dbpass $dbhost $FRAMEWORK $cont_user $cont_grp $FSCONTFSVolHome $SAR $TZ
 
 templates=`find /home/engines/templates/ -type f`
         for file in $templates
         	do     
-                dest_file=app/`echo $file | sed "/^.*templates\//s///"`
+                dest_file=`echo $file | sed "/^.*templates\//s///"`
                 dest_dir=`dirname $dest_file`
                 
                 mkdir -p $dest_dir
