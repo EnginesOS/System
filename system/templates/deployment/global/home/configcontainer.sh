@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. config_functions.sh
+. /home/config_functions.sh
 
 cd /home
 SAR=app
