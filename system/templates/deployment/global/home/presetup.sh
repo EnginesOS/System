@@ -122,9 +122,17 @@ done
 	
 	if test -f /home/uid
 	then
-		$cont_user=`cat /tmp/uid`
+		$cont_user=`cat /home/uid`
 	else
 		$cont_user="www-data"
 	fi
 	
-chown -R $cont_user /home/app/
+	if test -f /home/gid
+	then
+		$cont_grp=`cat /home/gid`
+	else
+		$cont_grp="www-data"
+	fi
+	
+	
+chown -R ${cont_user}.${cont_grp} /home/app/
