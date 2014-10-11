@@ -107,6 +107,7 @@ done
 
 	if test -f /home/engines/configs/php/71-custom.ini
 		then
+		echo "cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/conf.d/"
 			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/conf.d/
 	fi
 	
