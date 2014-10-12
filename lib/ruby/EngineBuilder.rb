@@ -100,7 +100,7 @@ class EngineBuilder
     dbf.puts("dbhost=" + SysConfig.DBHost)
     dbf.puts("dbuser=" + name)
     dbf.puts("dbpasswd=" + name)
-    dbf.puts("flavor=" + "mysql")
+    dbf.puts("dbflavor=" + "mysql")
     db = DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql")
     @databases.push(db)
 
