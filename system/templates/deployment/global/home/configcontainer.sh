@@ -182,7 +182,7 @@ echo run state $run
 	
 	           done
 	          
-	      copy_substituted_templates     
+	      #copy_substituted_templates     
 	else
 	
 			echo setting up persistance
