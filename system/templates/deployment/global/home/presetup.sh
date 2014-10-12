@@ -24,8 +24,6 @@ if test "$FRAMEWORK" == "tomcat"
 fi
 	 
 
-
-
 . ./presettings.env
 
 ###needed for DOCKER Env
@@ -85,8 +83,7 @@ echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_
 	                		rm $ARCHIVE
 				    fi
 	
-				cd $pd
-	
+				cd $pd	
 			fi
 
 			if test ! -z $APP_SRC_DIR
@@ -99,7 +96,6 @@ echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_
                             rm -fr $APP_SRC_DIR
                     fi
 			   fi
-
         fi
 
   	n=`expr $n + 1`

@@ -51,7 +51,7 @@ setuppersistance=0
  		then
 			echo "reading in fs Config"
     		. ./fs.env
-			FS=$CONTFSVolHome/$VOLDIR
+			FS=$CONTFSVolHome
 
 				if test ! -d $FS
 		 			then
