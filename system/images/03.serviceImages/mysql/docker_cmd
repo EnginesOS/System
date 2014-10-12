@@ -1,3 +1,0 @@
-#!/bin/bash
-docker run  -h mysql -v /home/mysql:/var/lib/mysql -t raspberry/mysql 
-
