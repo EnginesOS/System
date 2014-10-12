@@ -92,7 +92,7 @@ class EngineBuilder
   end
 
   def add_db_service name
-    dbname=name #+ "-" + @hostName This - leads to issue with JDBC
+    dbname=name #+ "-" + @hostName  - leads to issue with JDBC
 
     dbf = File.open( get_basedir + "/home/db.env","a+")
     #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
@@ -100,7 +100,7 @@ class EngineBuilder
     dbf.puts("dbhost=" + SysConfig.DBHost)
     dbf.puts("dbuser=" + name)
     dbf.puts("dbpasswd=" + name)
-
+    dbf.puts("flavor=" + "mysql")
     db = DatabaseService.new(dbname,SysConfig.DBHost,name,name,"mysql")
     @databases.push(db)
 
