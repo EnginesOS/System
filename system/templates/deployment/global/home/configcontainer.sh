@@ -4,10 +4,15 @@
 
 cd /home
 SAR=app
+top=`pwd`
+Engines_HOME=/home/app
+
+
 
 	if test -f fs.env
         then
          . ./fs.env
+        FS=$CONTFSVolHome
 		mkdir -p $CONTFSVolHome
 	fi
 
@@ -23,19 +28,14 @@ SAR=app
          . ./stack.env
 	fi
 
+echo "loading system.env"
 
-#####
 
-#Setup Environment vaiables used in substitutions
-TZ=`find /usr/share/zoneinfo -type f -exec sh -c "diff -q /etc/localtime '{}' > /dev/null && echo {}" \; | sed "/.*info\//s///"`
-#TZ has country/state format and we need to escape the /
-state=`echo $TZ |cut -f2 -d/`
-country=`echo $TZ |cut -f1 -d/`
-TZ="$country\/$state"
-export TZ
-
-top=`pwd`
-
+	if test -f $top/system.env
+		then	
+			. $top/system.env
+	fi
+	
 	if test -f ./db.env
  		then
 			echo "reading in db Config"
@@ -44,26 +44,19 @@ top=`pwd`
 
 . ./setup.env
 
-setuppersistance=0
+export Engines_HOME Memory Hostname Domainname FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor
+echo $Engines_HOME $Memory $Hostname $Domainname $FRAMEWORK $RUNTIME $PORT $FS $VOLDIR  $dbname $dbhost $dbuser $dbpasswd $dbflavor
+#####
+
+#Setup Environment variables used in substitutions
+TZ=`find /usr/share/zoneinfo -type f -exec sh -c "diff -q /etc/localtime '{}' > /dev/null && echo {}" \; | sed "/.*info\//s///"`
+#TZ has country/state format and we need to escape the /
+state=`echo $TZ |cut -f2 -d/`
+country=`echo $TZ |cut -f1 -d/`
+TZ="$country\/$state"
+export TZ
 
 
-	if test -f ./fs.env
- 		then
-			echo "reading in fs Config"
-    		. ./fs.env
-			FS=$CONTFSVolHome
-
-				if test ! -d $FS
-		 			then
-						setuppersistance=1
-						mkdir -p $FS
-						echo " mkdir -p $FS"
-         		elif ! test -f $FS/.persistanceconfigured
-           			then
-              			touch $FS/.persistanceconfigured
-              			setuppersistance=1
-				fi
-	fi
 
     if test -n "$CRONJOBS"
        then
@@ -78,9 +71,17 @@ setuppersistance=0
 	fi
 
 
+setup_persistance=0
 
 
-echo dbname $dbname dbport $dbport dbuser $dbuser dbpass $dbpasswd dbhost $dbhost
+	if test -f ./fs.env
+ 		then
+			if  test -f $FS/.persistanceconfigured
+       			then
+          			touch $FS/.persistanceconfigured
+          			setup_persistance=1
+			fi
+	fi
 
 
 cd  $SAR
@@ -101,8 +102,7 @@ echo "Install $INSTALL_SCRIPT script"
             		fi
         	fi
  	fi
-ls
-pwd
+
   echo "Configured $CONFIGURED_FILE file"
 	if test ! -z  $CONFIGURED_FILE
  		then
@@ -112,8 +112,8 @@ pwd
            			echo "Configured $FS/$CONFIGURED_FILE file not found"
         	fi
  	fi
-#FIX ME
-	if  test $setuppersistance -eq 1
+
+	if  test $setup_persistance -eq 1
 		then
 			run=1
 	fi
@@ -143,9 +143,7 @@ echo run state $run
 		  					else
 									echo "cat $SED_FILE | sed $SED_STR > t.config.$n Failed"
 							fi
-
           				n=`expr $n + 1`
-
         		done
 		echo "config files written"
 	fi
@@ -153,7 +151,7 @@ echo run state $run
 
 #if ! [ -f $FS/$PERSISTANCE_CONFIGURED_FILE ]
 
-	if [ $setuppersistance -eq 1 ]
+	if [ $setup_persistance -eq 1 ]
 		then
 			echo "Creating and setting up persistance"
 	        for dir in $PERSISTANT_DIRS
@@ -162,23 +160,23 @@ echo run state $run
 				echo  mkdir -p $FS/$dir
 	        	mkdir -p $FS/$dir
 				echo " cp -rp ./$dir/*  $FS/$dir"
-	         	cp -rp ./$dir/*  $FS/$dir
-	        	rm -r  ./$dir
-	        	ln -s $FS/$dir  $dir
-				echo "ln -s $FS/$dir  $dir"
+	         	cp -rp $Engines_HOME/$dir/*  $FS/$dir
+	        	rm -r  $Engines_HOME/$dir
+	        	ln -s $FS/$dir  $Engines_HOME/$dir
+				echo "ln -s $FS/$dir  $Engines_HOME/$dir"
 	
 				ls -l $FS/$dir
 	         done
 	         
 	       for file in $PERSISTANT_FILES
 	         do
-				echo  cp $file  $FS/
+				echo  cp $Engines_HOME/$file  $FS/
 				#FIX ME as wont work if persistant file is not in /
-				echo "cp $file  $FS/"
-	            cp $file  $FS/
-	            rm $file
-				echo " ln -s $FS/$file $file"
-	            ln -s $FS/$file $file
+				echo "cp $Engines_HOME/$file  $FS/"
+	            cp $Engines_HOME/$file  $FS/
+	            rm $Engines_HOME/$file
+				echo " ln -s $FS/$file $Engines_HOME/$file"
+	            ln -s $FS/$file $Engines_HOME/$file
 	
 	           done
 	          
@@ -199,37 +197,30 @@ echo run state $run
 	
 			for dir in $PERSISTANT_DIRS
 		    	do		
-		          	rm -r  ./$dir
-		 		 	echo "rm -r ./$dir ; ln -s $FS/$dir  ./$dir"
+		          	rm -r  $Engines_HOME/$dir
+		 		 	echo "rm -r $Engines_HOME/$dir ; ln -s $FS/$dir  $Engines_HOME/$dir"
 					ls $FS/$dir
 					ls 
-						if ! test -e  $dir
+						if ! test -e  $Engines_HOME/$dir
 							then
-		              			ln -s $FS/$dir  $dir
+		              			ln -s $FS/$dir $Engines_HOME/$dir
 		              	else	
 		              		mkdir $FS/$dir
-		              		ln -s $FS/$dir  $dir
+		              		ln -s $FS/$dir  $Engines_HOME/$dir
 						fi
 		        done
 		
 		 	for file in $PERSISTANT_FILES
 		       do
-					echo rm $file
-					echo ln -s $FS/$file $file 
-		            rm $file
-		            ln -s $FS/$file $file
+					echo rm $Engines_HOME/$file
+					echo ln -s $FS/$file $Engines_HOME/$file 
+		            rm $Engines_HOME/$file
+		            ln -s $FS/$file $Engines_HOME/$file
 		        done
 	
 	fi
 
 
-echo "loading system.env"
-
-
-	if test -f $top/system.env
-		then	
-			. $top/system.env
-	fi
 
 
 
@@ -260,10 +251,8 @@ echo "loading system.env"
 	RAILS_ENV=production
 	export RAILS_ENV
 	
-	 . /home/stack.env
 	
-	HOME=/home/app
-	
+	HOME=$Engines_HOME	
 	export HOME
 	
 	#FIXME Kludge until using seperate service for static objects or move to puma
@@ -282,10 +271,8 @@ echo "loading system.env"
 	DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
 
 	export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
-	
-	HOME=/home/app
+
 	rvm use --default $ruby_version
-	export HOME
 	
 	bundle exec rake secret >/tmp/.sc
 	a=`cat /tmp/.sc`
