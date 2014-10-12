@@ -164,8 +164,8 @@ echo run state $run
 				echo " cp -rp ./$dir/*  $FS/$dir"
 	         	cp -rp ./$dir/*  $FS/$dir
 	        	rm -r  ./$dir
-	        	ln -s $FS/$dir  .
-				echo "ln -s $FS/$dir  ."
+	        	ln -s $FS/$dir  $dir
+				echo "ln -s $FS/$dir  $dir"
 	
 				ls -l $FS/$dir
 	         done
@@ -177,8 +177,8 @@ echo run state $run
 				echo "cp $file  $FS/"
 	            cp $file  $FS/
 	            rm $file
-				echo " ln -s $FS/$file ."
-	            ln -s $FS/$file .
+				echo " ln -s $FS/$file $file"
+	            ln -s $FS/$file $file
 	
 	           done
 	          
@@ -205,16 +205,19 @@ echo run state $run
 					ls 
 						if ! test -e  $dir
 							then
-		              			ln -s $FS/$dir  .
+		              			ln -s $FS/$dir  $dir
+		              	else	
+		              		mkdir $FS/$dir
+		              		ln -s $FS/$dir  $dir
 						fi
 		        done
 		
 		 	for file in $PERSISTANT_FILES
 		       do
 					echo rm $file
-					echo ln -s $FS/$file . 
+					echo ln -s $FS/$file $file 
 		            rm $file
-		            ln -s $FS/$file .
+		            ln -s $FS/$file $file
 		        done
 	
 	fi
