@@ -292,24 +292,25 @@ setup_persistance=1
 	
 	chmod +x Procfile.sh
 		 
-	echo "login: &login
-	  adapter: mysql2
-	  host: localhost
-	  username: root
-	  password:
-	
-	
-	development:
-	  database: ${dbname}_dev
-	  <<: *login
-	
-	test:
-	  database: ${dbname}_tests
-	  <<: *login
-	
-	production:
-	  database: $dbname 
-	  <<: *login
+	echo "
+login: &login
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+
+
+development:
+  database: ${dbname}_dev
+  <<: *login
+
+test:
+  database: ${dbname}_tests
+  <<: *login
+
+production:
+  database: $dbname 
+  <<: *login
 	" > config/database.yml
 	
 	echo "config.database.yml  Written"
