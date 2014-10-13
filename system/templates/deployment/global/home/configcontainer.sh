@@ -147,7 +147,13 @@ echo run state $run
 							fi
           				n=`expr $n + 1`
         		done
+        		
 		echo "config files written"
+		
+		if test -f /home/engines/setup.bash
+		then
+			bash /home/engines/setup.bash
+		fi
 	fi
 
 
@@ -346,7 +352,3 @@ setup_persistance=1
 	
 	 	fi
 	fi
-if test -f /home/engines/setup.bash
-	then
-		bash /home/engines/setup.bash
-fi
