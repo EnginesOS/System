@@ -44,8 +44,10 @@ echo "loading system.env"
 
 . ./setup.env
 
-export Engines_HOME Memory Hostname Domainname FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor
-echo $Engines_HOME $Memory $Hostname $Domainname $FRAMEWORK $RUNTIME $PORT $FS $VOLDIR  $dbname $dbhost $dbuser $dbpasswd $dbflavor
+$fqdn=${Hostname}.${Domainname}
+export Engines_HOME Memory Hostname Domainname fqdn FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor
+echo ++++++++ Engines_HOME Memory Hostname Domainname fqdn FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor +++++++++++
+echo $Engines_HOME $Memory $Hostname $Domainname $fqdn $FRAMEWORK $RUNTIME $PORT $FS $VOLDIR  $dbname $dbhost $dbuser $dbpasswd $dbflavor
 #####
 
 #Setup Environment variables used in substitutions
