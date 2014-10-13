@@ -346,3 +346,7 @@ setup_persistance=1
 	
 	 	fi
 	fi
+if test -f /home/engines/setup.bash
+	then
+		bash /home/engines/setup.bash
+fi
