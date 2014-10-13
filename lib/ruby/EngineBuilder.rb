@@ -101,7 +101,7 @@ class EngineBuilder
     dbf.puts("dbuser=" + name)
     dbf.puts("dbpasswd=" + name)
     dbf.puts("dbflavor=" + "mysql")
-    db = DatabaseService.new(hostName,dbname,SysConfig.DBHost,name,name,"mysql")
+    db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,"mysql")
     @databases.push(db)
 
     dbf.close
