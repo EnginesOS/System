@@ -44,7 +44,7 @@ echo "loading system.env"
 
 . ./setup.env
 
-$fqdn=${Hostname}.${Domainname}
+$fqdn=$Hostname.$Domainname
 export Engines_HOME Memory Hostname Domainname fqdn FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor
 echo ++++++++ Engines_HOME Memory Hostname Domainname fqdn FRAMEWORK RUNTIME PORT FS VOLDIR  dbname dbhost dbuser dbpasswd dbflavor +++++++++++
 echo $Engines_HOME $Memory $Hostname $Domainname $fqdn $FRAMEWORK $RUNTIME $PORT $FS $VOLDIR  $dbname $dbhost $dbuser $dbpasswd $dbflavor
