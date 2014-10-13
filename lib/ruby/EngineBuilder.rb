@@ -364,7 +364,7 @@ class EngineBuilder
   def build_setup
     res = run_system(" docker rm setup ")
     
-    cmd = "cd " + get_basedir + "; docker run --memory=128m  -v /etc/localtime:/etc/localtime:ro  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+    cmd = "cd " + get_basedir + "; docker run --memory=256m  -v /etc/localtime:/etc/localtime:ro  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
     res = run_system(cmd)
     
     if res != true
