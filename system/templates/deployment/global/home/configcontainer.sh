@@ -12,7 +12,7 @@ Engines_HOME=/home/app
 	if test -f fs.env
         then
          . ./fs.env
-        FS=$CONTFSVolHome
+        FS=$CONTFSVolHome/$VOLDIR/
 		mkdir -p $CONTFSVolHome
 	fi
 
@@ -73,7 +73,7 @@ export TZ
 
 setup_persistance=0
 
-
+echo checking $FS/.persistanceconfigured
 	if test -f ./fs.env
  		then
 			if  test -f $FS/.persistanceconfigured
@@ -149,13 +149,15 @@ echo run state $run
 	fi
 
 
-#if ! [ -f $FS/$PERSISTANCE_CONFIGURED_FILE ]
+
+setup_persistance=1
 
 	if [ $setup_persistance -eq 1 ]
 		then
 			echo "Creating and setting up persistance"
 	        for dir in $PERSISTANT_DIRS
 	                do
+	                echo Processing Dir $dir
 				ls -la $FS
 				echo  mkdir -p $FS/$dir
 	        	mkdir -p $FS/$dir
@@ -170,10 +172,9 @@ echo run state $run
 	         
 	       for file in $PERSISTANT_FILES
 	         do
-				echo  cp $Engines_HOME/$file  $FS/
-				#FIX ME as wont work if persistant file is not in /
-				echo "cp $Engines_HOME/$file  $FS/"
-	            cp $Engines_HOME/$file  $FS/
+	         	 echo Processing file $file
+				echo  cp $Engines_HOME/$file  $FS/$file
+	            cp $Engines_HOME/$file  $FS/$file
 	            rm $Engines_HOME/$file
 				echo " ln -s $FS/$file $Engines_HOME/$file"
 	            ln -s $FS/$file $Engines_HOME/$file
