@@ -2,13 +2,18 @@ require_relative 'StaticService.rb'
 
 class DatabaseService < StaticService
 
-  def initialize(name,host,user,pass,flavor)
+  def initialize(parent,name,host,user,pass,flavor)
      @serviceType="database"
      @flavor = flavor #mysql pgsql AWS_rdms etc
      @dbHost = host
      @dbUser = user
      @dbPass = pass
      @name = name
+     @owner = parent
+   end
+   
+   def owner
+     return @owner
    end
    
    def dbHost
