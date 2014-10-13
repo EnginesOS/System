@@ -316,6 +316,7 @@ class EngineBuilder
     stef.puts("Memory=" + @bluePrint["software"]["requiredmemory"].to_s)
     stef.puts("Hostname=" + @hostName)
     stef.puts("Domainname=" +  @domainName )
+    stef.puts("fqdn=" +  @hostName + "." + @domainName )
     stef.puts("FRAMEWORK=" + "\"" + @framework +"\"" )
     stef.puts("RUNTIME=" + "\"" + @runtime +"\"" )
     stef.puts("PORT=" + "\"" + @webPort.to_s + "\"" )
