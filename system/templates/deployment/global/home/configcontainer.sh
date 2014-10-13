@@ -292,8 +292,7 @@ setup_persistance=1
 	
 	chmod +x Procfile.sh
 		 
-	echo "
-login: &login
+echo "login: &login
   adapter: mysql2
   host: localhost
   username: root
@@ -311,7 +310,7 @@ test:
 production:
   database: $dbname 
   <<: *login
-	" > config/database.yml
+" > config/database.yml
 	
 	echo "config.database.yml  Written"
 	
