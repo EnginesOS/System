@@ -78,7 +78,7 @@ setup_persistance=0
 echo checking $FS/.persistanceconfigured
 	if test -f ./fs.env
  		then
-			if  test -f $FS/.persistanceconfigured
+			if  test ! -f $FS/.persistanceconfigured
        			then
           			touch $FS/.persistanceconfigured
           			setup_persistance=1
@@ -158,7 +158,7 @@ echo run state $run
 
 
 
-setup_persistance=1
+#setup_persistance=1
 
 	if [ $setup_persistance -eq 1 ]
 		then
