@@ -3,7 +3,7 @@ containerName: volmanager
 ctype: service
 conf_self_start: true
 last_error: 
-memory: '8'
+memory: '16'
 hostName: volmanager
 domainName: engines.local
 environments: []
