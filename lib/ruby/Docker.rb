@@ -227,7 +227,12 @@ class Docker
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
               end
-            statefile=stateDir + "/config.yaml"              
+            statefile=stateDir + "/config.yaml"          
+            # BACKUP Current file with rename
+            if File.exists?(statefile)
+              statefile_bak = statefile + ".bak"
+              File.rename( statefile,   statefile_bak)
+            end
             f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
             f.puts(serialized_object)
             f.close
