@@ -68,7 +68,7 @@ class Docker
          end
        end
 
-       volume_option = get_volume_option
+       volume_option = get_volume_option container
        
        if(container.eports )
          container.eports.each do |eport|
@@ -339,13 +339,13 @@ end
  end
   protected
   
-  def container_state_dir
+  def container_state_dir container
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName 
   end
   
-  def get_volume_option
+  def get_volume_option container
     volume_option = SysConfig.timeZone_fileMapping
-    volume_option += " -v " + container_state_dir + "/run/:/var/run:rw "
+    volume_option += " -v " + container_state_dir(container) + "/run/:/var/run:rw "
        if(container.volumes)
          container.volumes.each do |volume|
            if volume !=nil          
