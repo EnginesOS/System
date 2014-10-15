@@ -344,10 +344,19 @@ end
   def container_state_dir container
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName 
   end
+
+  def container_log_dir container
+      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName 
+  end
   
   def get_volume_option container
-    volume_option = SysConfig.timeZone_fileMapping
+    
+    #System
+    volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
     volume_option += " -v " + container_state_dir(container) + "/run/:/var/run:rw "
+    volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
+    
+    #container specific
        if(container.volumes)
          container.volumes.each do |volume|
            if volume !=nil          
