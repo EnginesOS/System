@@ -14,4 +14,7 @@ ADD engines.local.domain /var/lib/bind/engines/engines.dnsrecords
 RUN chown bind /var/run/named
 RUN chown bind /var/lib/bind/engines
 
+
+ADD home home
+
 CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g

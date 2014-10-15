@@ -1,7 +1,7 @@
 --- !ruby/object:DNSService
 containerName: dns
 ctype: service
-conf_self_start: true
+conf_self_start: false
 last_error: 
 memory: '42'
 hostName: dns
