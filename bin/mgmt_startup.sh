@@ -11,6 +11,6 @@ else
  docker start mgmt
 fi 
 
-sleep 120
+
 /opt/engos/bin/eservice register_consumers dns
 /opt/engos/bin/eservice register_consumers nginx
