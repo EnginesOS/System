@@ -116,6 +116,9 @@ class ManagedService < ManagedContainer
     if @consumers == nil
       return
     end
+    if is_running == false
+      return
+    end
     
     loop_cnt=0
     
