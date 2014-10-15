@@ -116,7 +116,7 @@ class ManagedService < ManagedContainer
     loop_cnt=0
     
     while is_startup_complete() == false && loop_cnt <10
-      loop_cnt = loop+cnt + 1
+      loop_cnt = loop_cnt + 1
       sleep 1    
       #really need to sched it not block for some random time
     end
