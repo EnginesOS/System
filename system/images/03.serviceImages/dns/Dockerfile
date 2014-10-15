@@ -1,7 +1,7 @@
 FROM  enginesos/base
 
 RUN apt-get -y  --force-yes update
-RUN apt-get -y  --force-yes upgrade
+#RUN apt-get -y  --force-yes upgrade
 RUN apt-get -y install bind9
 
 RUN mkdir -p /var/lib/bind/engines
