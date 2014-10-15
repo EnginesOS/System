@@ -323,7 +323,7 @@ end
  
   def is_startup_complete container
     runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
-      if File.exists?(runDir + "started")
+      if File.exists?(runDir + "startup_complete")
         return true
       else
         return false
