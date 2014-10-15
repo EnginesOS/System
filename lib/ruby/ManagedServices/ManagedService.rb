@@ -52,7 +52,9 @@ class ManagedService < ManagedContainer
 
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
-    ret_val = add_consumer_to_service(site_hash)
+    if is_running ==true    
+      ret_val = add_consumer_to_service(site_hash)
+    end
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
 
@@ -74,7 +76,9 @@ class ManagedService < ManagedContainer
 
   def remove_consumer engine
     site_hash = get_site_hash(engine)
-    result = rm_consumer_from_service(site_hash)
+      if is_running ==true   
+        result = rm_consumer_from_service(site_hash)
+      end
 
     if @consumers !=  nil
       @consumers.delete(site_hash[:name]) { |el| "#{el} not found" }
