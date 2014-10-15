@@ -121,7 +121,7 @@ class ManagedService < ManagedContainer
               sleep 120
             self.reregister_consumers() 
             p "registered consumers"           
-                }
+                }.fork
                 puts "trhead lauched"
             return true
       else
