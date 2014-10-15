@@ -113,8 +113,14 @@ class ManagedService < ManagedContainer
       return
     end
     
-    if is_running() == false
-      sleep 120
+    loop_cnt=0
+    
+    while is_running() == false
+      ++loop_cnt
+      sleep 1
+      if loop_cnt >10
+        break
+      end
       #really need to sched it not block for some random time
     end
     
