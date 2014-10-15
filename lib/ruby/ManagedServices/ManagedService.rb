@@ -117,7 +117,7 @@ class ManagedService < ManagedContainer
              #   sleep 10 #let the service come up first need a better way than wait and hope
                 p "sleeping"
               sleep 120
-            reregister_consumers() 
+            self.reregister_consumers() 
             p "registered consumers"
                 }
             return true
