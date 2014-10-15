@@ -123,6 +123,7 @@ class ManagedService < ManagedContainer
             p "registered consumers"
             exit
                 }.new
+                puts "trhead lauched"
             return true
       else
         return false        
