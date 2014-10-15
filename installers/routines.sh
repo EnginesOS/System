@@ -186,9 +186,10 @@ mkdir -p  /var/log/engos/services/pgsql/
 mkdir -p  /var/log/engos/services/mysql/
 mkdir -p  /var/log/engos/services/dns/
 mkdir -p /var/log/engos/services/smtp/
+mkdir -p /var/log/engos/containers/
 mkdir -p /opt/engos/
-
 }
+
 function set_permissions {
 echo "Setting directory and file permissions"
 	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/  /var/log/engos
