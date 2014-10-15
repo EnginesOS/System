@@ -120,9 +120,8 @@ class ManagedService < ManagedContainer
                 p "sleeping"
               sleep 120
             self.reregister_consumers() 
-            p "registered consumers"
-            exit
-                }.new
+            p "registered consumers"           
+                }
                 puts "trhead lauched"
             return true
       else
