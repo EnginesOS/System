@@ -13,11 +13,6 @@ volumes:
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engos/pgsql"
   vol_permissions: "rw"
-- !ruby/object:Volume
-  name: Logging
-  remotepath: "/var/log/"
-  localpath: "/var/log/engos/services/pgsql/"
-  vol_permissions: "rw"   
 port: 
 eports:
 - !ruby/object:WorkPort
