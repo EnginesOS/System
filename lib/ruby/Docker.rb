@@ -68,22 +68,7 @@ class Docker
          end
        end
 
-    volume_option = SysConfig.timeZone_fileMapping
-       if(container.volumes)
-         container.volumes.each do |volume|
-           if volume !=nil          
-             if volume.name == nil
-               volume_name = ""
-             else
-               volume_name = volume.name 
-             end
-
-           if volume.localpath !=nil
-               volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s +  ":" + volume.mapping_permissions.to_s
-             end
-          end
-         end
-       end
+       volume_option = get_volume_option
        
        if(container.eports )
          container.eports.each do |eport|
@@ -226,6 +211,7 @@ class Docker
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
+                Dir.mkdir(stateDir + "/run")
               end
             statefile=stateDir + "/config.yaml"          
             # BACKUP Current file with rename
@@ -264,8 +250,8 @@ class Docker
   def load_blueprint(container)
           stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                         if File.directory?(stateDir) ==false
-                          Dir.mkdir(stateDir)
-                        end
+                          return false
+                        end                          
                       statefile=stateDir + "/blueprint.json"              
                       f = File.new(statefile,"r")
                       blueprint = JSON.parse( f.read())                      
@@ -332,14 +318,49 @@ def create_backup(site_hash)
 #  mkdir 
 #  create conf
 #  add pre and post if needed
-   
-  
+     
+end
+ 
+  def is_startup_complete container
+    runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
+      if File.exists?(runDir + "started")
+        return true
+      else
+        return false
+      end
+  end
+
+def save_system_preferences
 end
   
-  def save_system_preferences
+
+
+ def load_system_preferences
+ end
+  protected
+  
+  def container_state_dir
+      return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName 
   end
   
-  def load_system_preferences
+  def get_volume_option
+    volume_option = SysConfig.timeZone_fileMapping
+    volume_option += " -v " + container_state_dir + "/run/:/var/run:rw "
+       if(container.volumes)
+         container.volumes.each do |volume|
+           if volume !=nil          
+             if volume.name == nil
+               volume_name = ""
+             else
+               volume_name = volume.name 
+             end
+
+           if volume.localpath !=nil
+               volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s +  ":" + volume.mapping_permissions.to_s
+             end
+          end
+         end
+       end
   end
   
-end
+  end
