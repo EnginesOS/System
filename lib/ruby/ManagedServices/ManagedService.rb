@@ -122,7 +122,7 @@ class ManagedService < ManagedContainer
             self.reregister_consumers() 
             p "registered consumers"
             exit
-                }.join
+                }.new
             return true
       else
         return false        
