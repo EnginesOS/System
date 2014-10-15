@@ -6,6 +6,10 @@
 mv /etc/mysql/my.cnf.sed /etc/mysql/my.cnf
 /etc/init.d/mysql start
 
+touch /var/run/startup_complete
+chown 21000 /var/run/startup_complete
+sleep 30
+
 while test -f /var/run/mysqld/mysqld.pid
 do
 	  sleep 20
