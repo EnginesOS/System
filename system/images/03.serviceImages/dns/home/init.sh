@@ -12,6 +12,7 @@ touch /var/run/startup_complete
 chown 21000 /var/run/startup_complete
 
 sleep 30
+
 while test -f /var/run/named.pid
 	do
 	  sleep 200
