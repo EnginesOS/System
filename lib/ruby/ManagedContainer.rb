@@ -565,6 +565,14 @@ def is_running
   end
 end
      
+def is_startup_complete
+    if @docker_api == nil
+           @last_error="No connection to Engines OS System"      
+            return false
+     end
+     ret_val = @docker_api.is_startup_complete(self)
+    return ret_val
+end
   
   def is_active
     state = read_state

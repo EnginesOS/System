@@ -115,7 +115,7 @@ class ManagedService < ManagedContainer
     
     loop_cnt=0
     
-    while is_running() == false
+    while startup_complete() == false
       ++loop_cnt
       sleep 1
       if loop_cnt >10
