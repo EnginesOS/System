@@ -370,7 +370,9 @@ end
     dir = container_state_dir(container)
    # Dir.unlink Will do but for moment
     #Dir.mkdir
-    File.unlink(dir+"/startup_complete")
+    if File.exists?(dir + "/startup_complete")    
+      File.unlink(dir + "/startup_complete")
+    end
   end
   
   end
