@@ -7,12 +7,7 @@ hostName: smtp
 domainName: 
 environments: []
 image: enginesos/smtp
-volumes:
-- !ruby/object:Volume
-  name: Logging
-  remotepath: "/var/log/"
-  localpath: "/var/log/engos/services/smtp/"
-  vol_permissions: "rw"  
+volumes: []
 port: 
 eports: []
 repo: na
