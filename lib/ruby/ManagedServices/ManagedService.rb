@@ -115,6 +115,8 @@ class ManagedService < ManagedContainer
         #FIXME need to put in another thread and start in 10secs
               Thread.new {
              #   sleep 10 #let the service come up first need a better way than wait and hope
+                p self
+                
                 p "sleeping"
               sleep 120
             self.reregister_consumers() 
