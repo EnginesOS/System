@@ -556,7 +556,15 @@ class ManagedContainer < Container
     ret_val = @docker_api.rebuild_image(self)
     return ret_val
   end
-
+def is_running
+   state = read_state
+  if state == "running"
+     return true
+  else
+    return false
+  end
+end
+     
   
   def is_active
     state = read_state
