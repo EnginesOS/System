@@ -113,7 +113,7 @@ class ManagedService < ManagedContainer
     if  destroy_container() ==true
       if   create_service()==true
         #FIXME need to put in another thread and start in 10secs
-              Thread.new {
+              Thread.new() {
              #   sleep 10 #let the service come up first need a better way than wait and hope
                 p self
                 
@@ -121,7 +121,8 @@ class ManagedService < ManagedContainer
               sleep 120
             self.reregister_consumers() 
             p "registered consumers"
-                }
+            exit
+                }.join
             return true
       else
         return false        
