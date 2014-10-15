@@ -12,8 +12,9 @@ rm -f /var/run/apache2/apache2.pid
 chown -R www-data  /home/app
 echo Starting Apache
 /etc/init.d/apache2 start
-touch /var/log/apache2/error.log 
-tail -f /var/log/apache2/error.log &
+
+touch /var/run/startup_complete
+chown 21000 /var/run/startup_complete
 
 check=0
 	if test -f /home/blocking.sh
