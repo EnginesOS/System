@@ -58,6 +58,8 @@ class Docker
    
   def create_container container             
      e_option =String.new
+     
+    clear_container_var_run(container)
     
       eportoption = String.new
        if(container.environments)
@@ -362,6 +364,13 @@ end
          end
        end
        return volume_option
+  end
+  
+  def clear_container_var_run(container)
+    dir = container_state_dir(container)
+   # Dir.unlink Will do but for moment
+    #Dir.mkdir
+    File.unlink(dir+"/startup_complete")
   end
   
   end
