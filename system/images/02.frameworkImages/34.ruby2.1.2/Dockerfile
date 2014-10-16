@@ -5,6 +5,7 @@ RUN apt-get -y install git-core curl zlib1g-dev build-essential libssl-dev libre
 RUN mkdir ~/node_js_src && cd $_;wget -N http://nodejs.org/dist/node-latest.tar.gz;tar xzvf node-latest.tar.gz && cd node-v*;./configure; make ;make install
 
 ENV ContUser ruby
+ENV ContGrp ruby
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
 RUN cd ~ ; git clone git://github.com/sstephenson/rbenv.git .rbenv
