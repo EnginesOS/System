@@ -1,9 +1,9 @@
 #!/bin/bash
-
+PATH="/.rbenv/bin:$PATH" 
 
 cd /home/app
- . /etc/rvmrc 
-rvm  --default use ruby-2.1.2
+ #. /etc/rvmrc 
+#rvm  --default use ruby-2.1.2
 
 git pull
 
@@ -11,7 +11,7 @@ git pull
 #cp /tmp/t /home/app/config/environments/production.rb
 
 
-bundle install --path vendor/bundle
+bundle install
 
 bundle exec rake db:migrate 
 # RAILS_ENV=production 

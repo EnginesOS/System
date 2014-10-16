@@ -20,8 +20,4 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-. /etc/profile.d/rvm.sh
-
-rvm  --default use ruby-2.1.2
-
+export PATH="/.rbenv/bin:$PATH" 
