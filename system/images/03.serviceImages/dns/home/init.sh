@@ -7,9 +7,9 @@ mkdir -p /var/log/named
 chown bind /var/log/named
 
 /usr/sbin/named -c /etc/bind/named.conf -u bind 
-
-touch /var/run/startup_complete
-chown 21000 /var/run/startup_complete
+mkdir -p /engines/var/run/
+touch  /engines/var/run/startup_complete
+chown 21000 /engines/var/run/startup_complete
 
 sleep 30
 

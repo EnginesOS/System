@@ -23,7 +23,5 @@ fi
 chown -R  $ContUser.$ContGrp /home/app
 
 
-mkdir -p /var/run/lock/
-chgrp  $ContGrp /var/run/lock/
-chmod g+w /var/run/lock/
+
 su -l -s /bin/bash $ContUser /home/configcontainer.sh

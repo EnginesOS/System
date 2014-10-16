@@ -4,8 +4,10 @@ touch   /var/log/mail.err
 touch  /var/log/maillog
 service busybox-syslogd start
 service postfix start 
-touch /var/run/startup_complete
-chown 21000 /var/run/startup_complete
+mkdir -p /engines/var/run/
+touch  /engines/var/run/startup_complete
+chown 21000 /engines/var/run/startup_complete
+
 sleep 30
 while test -f /var/lib/postfix/master.lock 
 do
