@@ -243,16 +243,16 @@ echo run state $run
 	if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 		then
 
-		if test $RUNTIME = ruby2
-			then
-				ruby_version=ruby-2.1.2
-				rvm use --default ruby-2.1.2
-				ruby -v
-		elif test $RUNTIME = ruby19
-			then 
-				ruby_version=ruby-1.9.3-p547
-			 	rvm  use --default ruby-1.9.3-p547
-		fi
+#		if test $RUNTIME = ruby2
+#			then
+#				ruby_version=ruby-2.1.2
+#				rvm use --default ruby-2.1.2
+#				ruby -v
+#		elif test $RUNTIME = ruby19
+#			then 
+#				ruby_version=ruby-1.9.3-p547
+#			 	rvm  use --default ruby-1.9.3-p547
+#		fi
 	
 	DATABASE_URL="mysql2://$dbuser:$dbpasswd@$dbhost/$dbname"
 	
@@ -275,13 +275,13 @@ echo run state $run
 	echo "#!/bin/bash
 	#. /etc/profile.d/rvm.sh
 	cd /home/app
-	rvm use $ruby_version
+	#rvm use $ruby_version
 
 	DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
 
 	export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
 
-	rvm use --default $ruby_version
+#	rvm use --default $ruby_version
 	
 	bundle exec rake secret >/tmp/.sc
 	a=`cat /tmp/.sc`
@@ -320,16 +320,17 @@ production:
 	cat Gemfile
 	echo "Thin added to Gemfile"
 	
-	echo "gem 'therubyracer'"  >> Gemfile
+	#echo "gem 'therubyracer'"  >> Gemfile
 	
-	rvm use $ruby_version
+	#rvm use $ruby_version
 	
 	RAILS_ENV=$rails_env_prod_or_devel
 	
 	export RAILS_ENV
 	echo running bundle install --standalone
 	#$Bundle_Cmd install  --standalone
-	bundle install  --standalone 
+	bundle install 
+	# --standalone 
 	
 	echo "running rake db:"
 	 
