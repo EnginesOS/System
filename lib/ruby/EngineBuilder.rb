@@ -105,6 +105,7 @@ class EngineBuilder
     @databases.push(db)
 
     dbf.close
+    create_database_service db
   end
 
   def create_database_service db
@@ -129,6 +130,7 @@ class EngineBuilder
     fsf.puts("VOLDIR=" + name)
     fsf.puts("CONTFSVolHome=" + vol.remotepath) #not nesscessary the same as dest used in constructor
     fsf.close
+    create_file_service vol
   end
 
   def create_file_service vol
@@ -611,13 +613,13 @@ class EngineBuilder
 #      puts(port.name + " " + port.port.to_s + ":" + port.external.to_s)
 #    end
 
-    @databases.each do |db|
-      create_database_service db
-    end
+   # @databases.each do |db|
+      #create_database_service db
+    #end
 
-    @vols.each do |vol|
-      create_file_service vol
-    end
+    #@vols.each do |vol|
+     # create_file_service vol
+    #end
 
     if mc.save_blueprint(@bluePrint) == false
       puts "failed to save blueprint " + @bluePrint.to_s
