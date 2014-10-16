@@ -8,13 +8,15 @@ ADD profile /home/dockuser/.profile
 
 ADD ssh /home/dockuser/.ssh
 
-
-RUN chown -R dockuser /home/app/
-
-RUN echo ".  /etc/rvmrc " >> /root/.profile
-RUN echo "rvm  --default use ruby-2.1.2" >> /root/.profile
-
 ENV ContUser dockuser
+ENV ContGrp ruby
+
+RUN chown -R dockuser /home/app/ ; useradd -G ruby dockuser
+
+#RUN echo ".  /etc/rvmrc " >> /root/.profile
+#RUN echo "rvm  --default use ruby-2.1.2" >> /root/.profile
+
+RUN cp -rp  ~/.gemrc ~/.rbenv ~/.bashrc ~dockuser
 
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
 RUN chown -R dockuser /home/dockuser/
