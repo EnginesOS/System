@@ -16,7 +16,7 @@ class BackupService < ManagedService
  # called with a hash no need to do anything accept return with arg1
 #     
 #    site_hash[:name]
-#    site_hash[:source_type] #fs|mysql|pgsql|nosql|sys
+#    site_hash[:source_type] #fs|db|sys
 #    site_hash[:source_name]
 #    site_hash[:source_host]
 #    site_hash[:source_user]
