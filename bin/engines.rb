@@ -124,7 +124,7 @@ def do_cmd(c_type,containerName,command)
     end
     when "deleteimage"
     if c_type == "container"
-      res = engines_api.delete_image(containerName)
+      res = engines_api.deleteEngineImage(containerName)
     else
       puts ("Error cannot delete a Service Image")
     end
