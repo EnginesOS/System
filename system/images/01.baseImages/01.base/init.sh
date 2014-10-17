@@ -26,6 +26,7 @@ else
 	log_dir="/var/log/"
 fi
 
+
 chown -R $ContUser $log_dir
 
 #for setup of services 
