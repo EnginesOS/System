@@ -8,3 +8,6 @@ RUN rm etc/apache2/sites-enabled/*
 ADD 000-default.conf /etc/apache2/sites-enabled/
 #ADD apache2.conf etc/apache2/
 EXPOSE 80
+
+ENV ContUser www-data
+ENV ContGrp www-data

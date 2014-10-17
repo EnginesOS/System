@@ -5,4 +5,3 @@ RUN ~/.rbenv/shims/gem install `cat /home/Gems` ;  ~/.rbenv/bin/rbenv rehash
 RUN chmod -R g+w /.rbenv ;chgrp -R ruby /.rbenv
 
 
-ENV ContUser ruby

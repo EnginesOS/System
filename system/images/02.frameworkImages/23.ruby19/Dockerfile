@@ -9,7 +9,7 @@ ENV MY_RUBY_HOME /usr/local/rvm/rubies/ruby-1.9.3-p547
 ENV RUBY_VERSION ruby-1.9.3-p547
 ENV RPATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin
 ENV PATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:/usr/bin/:/bin:/bin:/sbin/:/usr/sbin
-ENV ContUser ruby
+
 RUN gem install rake
 RUN gem install bundle
 
@@ -20,3 +20,6 @@ RUN echo "rvm  --default use ruby-1.9.3-p547" >> /home/ruby/.profile
 RUN echo "gem: --no-ri --no-rdoc" > /home/ruby/.gemrc
 
 RUN echo "gem: --no-ri --no-rdoc" > /root/.gemrc
+
+ENV ContUser ruby
+ENV ContGrp ruby
