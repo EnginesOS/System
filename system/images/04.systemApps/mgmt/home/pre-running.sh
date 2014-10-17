@@ -1,17 +1,8 @@
 #!/bin/bash
- . /etc/rvmrc 
- 
-#rvm  --default use ruby-2.1.2
 
-gem install git bundle oink
-#rvm gemset create bundle
-#rvm gemset create git
+~/.rbenv/shims/gem install git bundle oink
+~/.rbenv/shims/gem install vmstat
 
-#su -l $ContUser /opt/engos/bin/containers_startup.sh 
-
-
-gem install vmstat
-#rvm gemset create  vmstat
 
 /etc/init.d/ssh start
 
@@ -20,7 +11,6 @@ if test -z $ContUser
                 $ContUser=www-data
 fi
 
-#
 chown  -R   $ContUser /home/app
 
 
