@@ -401,7 +401,7 @@ end
     container_logdetails_file_name = false
     
     framework_logdetails_file_name =  SysConfig.FrameworksTemplateDir + "/" + container.framework + "/home/LOG_DIR"
-    
+    p framework_logdetails_file_name
     if File.exists?(framework_logdetails_file_name )
       container_logdetails_file_name = framework_logdetails_file_name       
     else
