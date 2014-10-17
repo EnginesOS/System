@@ -407,13 +407,14 @@ end
     else
       container_logdetails_file_name = SysConfig.FrameworksTemplateDir + "/global/home/LOG_DIR"
     end
-    
+    p     container_logdetails_file_name 
      begin
         container_logdetails = File.read(container_logdetails_file_name)
       rescue
         container_logdetails = "/var/log"
      end        
      
+     p container_logdetails
      return container_logdetails
   end
   
