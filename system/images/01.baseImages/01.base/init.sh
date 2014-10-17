@@ -19,6 +19,11 @@ if test -z $ContUser
 		ContUser=www-data
 fi
 
+if  test -z $ContGrp
+     then
+          ContGrp=www-data
+fi
+
 if test -f /home/LOG_DIR
 then
 	log_dir=`cat /home/LOG_DIR`
