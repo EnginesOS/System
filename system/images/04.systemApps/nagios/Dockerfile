@@ -24,3 +24,6 @@ ADD home home
 
 EXPOSE 80
 EXPOSE 22
+
+ENV ContUser www-data
+ENV ContGrp www-data

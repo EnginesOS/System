@@ -13,8 +13,6 @@ ENV ContGrp ruby
 
 RUN chown -R dockuser /home/app/ ; usermod -G ruby -a dockuser
 
-#RUN echo ".  /etc/rvmrc " >> /root/.profile
-#RUN echo "rvm  --default use ruby-2.1.2" >> /root/.profile
 
 RUN cp -rp  ~/.gemrc ~/.rbenv ~/.bashrc ~dockuser
 

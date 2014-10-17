@@ -10,3 +10,6 @@ RUN chmod -R  700 /home/rma/.ssh
 
 EXPOSE 3306
 EXPOSE 22
+
+ENV ContUser mysql
+ENV ContGrp mysql

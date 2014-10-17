@@ -17,4 +17,5 @@ EXPOSE 80
 EXPOSE 443
 EXPOSE 22
 
-#docker run -h nginx --memory=64m  -v /etc/localtime:/etc/localtime:ro  -v /opt/engos/etc/ssl/://etc/nginx/ssl/: -v /var/log/engos/services/nginx/://var/log/: -p 22/tcp  -p 443:443/tcp  -p 80:80/tcp  --cidfile /opt/engos/run/nginx.cid --name nginx -i  -t enginesos/nginx /bin/bash 
+ENV ContUser www-data
+ENV ContGrp www-data

@@ -16,3 +16,6 @@ RUN chmod 700 ~rma/.ssh
 VOLUME /backup_src/volumes
 VOLUME /backup_src/engos
 VOLUME /local_backup_dests
+
+ENV ContUser root
+ENV ContGrp wheel
