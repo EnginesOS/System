@@ -366,8 +366,8 @@ class EngineBuilder
 
   def build_setup
     res = run_system(" docker rm setup ")
-    
-    cmd = "cd " + get_basedir + "; docker run --memory=256m  -v /etc/localtime:/etc/localtime:ro  -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+   logvol =  get_framework_logging
+    cmd = "cd " + get_basedir + "; docker run --memory=256m  " + logvol + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
     res = run_system(cmd)
     
     if res != true
@@ -391,9 +391,11 @@ class EngineBuilder
     
     volumes=String.new
     @vols.each do |vol|
-      volumes = volumes + " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
+      volumes +=  " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
     end   
-  
+    logvol =  get_framework_logging
+    volumes += logvol
+      
     res = run_system("docker rm deploy")
     
     #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
@@ -443,18 +445,18 @@ class EngineBuilder
     system  cmd
   end
 
-    def setup_framework_logging
-#      rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR" 
-#      if File.exists?(rmt_log_dir_var_fname)
-#        rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-#        rmt_log_dir = rmt_log_dir_varfile.read
-#      else
-#        rmt_log_dir="/var/log"
-#      end
-#      local_log_dir = SysConfig.SystemLogRoot + "/" + @hostName 
-#      cmd = "mkdir " +  local_log_dir
-#      system  cmd
-#      
+    def get_framework_logging
+      rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR" 
+      if File.exists?(rmt_log_dir_var_fname)
+        rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
+        rmt_log_dir = rmt_log_dir_varfile.read
+      else
+        rmt_log_dir="/var/log"
+      end
+      local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName 
+      Dir.mkdir( local_log_dir)
+      
+      return " -v " + local_log_dir + ":" + local_log_dir + ":rw "
 #      log_vol = Volume.new("",local_log_dir,rmt_log_dir,"rw",PermissionRights.new("system","","")) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
 #      
 #      @vols.push(log_vol)
