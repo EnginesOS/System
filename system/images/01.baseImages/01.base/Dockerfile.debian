@@ -3,7 +3,7 @@ FROM debian:wheezy
 RUN apt-get -y  --force-yes update
 RUN apt-get -y  --force-yes upgrade
 
-RUN apt-get -y  --fix-missing install  sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2 zlibc libpq-dev libpq-dev
+RUN apt-get -y  --fix-missing install  sudo unzip  mysql-client openssh-server  vim curl dnsutils git libmysqlclient-dev wget bzip2 zlibc libpq-dev postgresql-client
 RUN mkdir -p /var/run
 
 ADD ddns.key /etc/
