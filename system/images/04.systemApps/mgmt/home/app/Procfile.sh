@@ -2,8 +2,10 @@
 PATH="/.rbenv/bin:$PATH" 
 
 cd /home/app
- #. /etc/rvmrc 
-#rvm  --default use ruby-2.1.2
+
+
+~/.rbenv/shims/gem install git bundle oink
+~/.rbenv/shims/gem install vmstat
 
 git pull
 
