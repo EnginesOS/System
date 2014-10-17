@@ -30,9 +30,11 @@ then
 else
 	log_dir="/var/log/"
 fi
-
-
-chown -R $ContUser $log_dir
+	if test ! $log_dir = "/var/log/"
+		then
+			mkdir -p $log_dir
+			chown -R $ContUser $log_dir
+	fi
 
 #for setup of services 
 if test -f /home/pre-running.sh
