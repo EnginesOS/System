@@ -47,7 +47,7 @@ echo "Building System Gui"
 /opt/engos/bin/mgmt_startup.sh  >>$LOGFILE 
 sleep 180
 hostname=`hostname`
-echo "Congratulations Engines OS is now upto date please go to http://${hostname}:88/"
+echo "Congratulations Engines OS is now upto date please go to https://${hostname}:88/"
 
 
  
