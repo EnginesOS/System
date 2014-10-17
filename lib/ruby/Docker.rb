@@ -214,6 +214,11 @@ class Docker
               if File.directory?(stateDir) ==false
                 Dir.mkdir(stateDir)
                 Dir.mkdir(stateDir + "/run")
+                
+                log_dir = container_log_dir(container)
+                if File.directory?(log_dir) ==false
+                  Dir.mkdir(log_dir)
+                end
               end
             statefile=stateDir + "/config.yaml"          
             # BACKUP Current file with rename
