@@ -21,11 +21,9 @@ class SysConfig
   @@addBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.local sudo sh /home/add_backup.sh "
   @@rmBackupCmd = "ssh -i  /opt/engos/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.local sudo sh /home/rm_backup.sh "
   @@SystemLogRoot ="/var/log/engos/"
-  @@FrameworksTemplateDir="/opt/engos/system/templates/"
+ 
   
-  def SysConfig.FrameworksTemplateDir
-    return @@FrameworksTemplateDir
-  end
+ 
   def SysConfig.SystemLogRoot
     return @@SystemLogRoot
   end
