@@ -18,9 +18,12 @@ fi
 
 
 #Need to rebuild everything is generate_keys is run
-if test $# -gt 0 -a $1 = "-k"
-then 
-	generate_keys
+if test $# -gt 0 
+ then
+ 	if test $1 = "-k"
+		then 
+			generate_keys
+	fi
 fi
 
 set_os_flavor
