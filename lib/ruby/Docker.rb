@@ -354,9 +354,10 @@ end
     #System
     volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
     volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
-      if container.ctype == "service"
-        volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
-      end
+     # if container.ctype == "service"
+      #  volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
+        volume_option += " -v " + container_log_dir(container) + "/" + get_container_logdir(container) + ":rw "
+      #end
     
     #container specific
        if(container.volumes)
@@ -386,27 +387,29 @@ end
     end
   end
   
-#  def get_framework_logdir container
-#    
-#    container_logdetails_file_name = false
-#    
-#    framework_logdetails_file_name =  SysConfig.FrameworksTemplateDir + "/" + container.framework + "/home/LOG_DIR"
-#    
-#    if File.exists?(framework_logdetails_file_name )
-#      container_logdetails_file_name = framework_logdetails_file_name       
-#    else
-#      container_logdetails_file_name SysConfig.FrameworksTemplateDir + "/global/home/LOG_DIR"
-#    end
-#    
-#      try
-#        container_logdetails = File.read(container_logdetails_file_name)
-#      rescue
-#        container_logdetails = "/var/log"
-#        
-#  
-#  
-#    
-#        
-#  end
-#  
+  def get_container_logdir container
+    
+    if container.framework == nil || container.framework.length ==0
+      return "/var/log"
+    end
+    
+    container_logdetails_file_name = false
+    
+    framework_logdetails_file_name =  SysConfig.FrameworksTemplateDir + "/" + container.framework + "/home/LOG_DIR"
+    
+    if File.exists?(framework_logdetails_file_name )
+      container_logdetails_file_name = framework_logdetails_file_name       
+    else
+      container_logdetails_file_name = SysConfig.FrameworksTemplateDir + "/global/home/LOG_DIR"
+    end
+    
+     begin
+        container_logdetails = File.read(container_logdetails_file_name)
+      rescue
+        container_logdetails = "/var/log"
+     end        
+     
+     return container_logdetails
+  end
+  
   end
