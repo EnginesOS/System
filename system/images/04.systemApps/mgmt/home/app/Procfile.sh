@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH="/.rbenv/bin:$PATH" 
+PATH="~/.rbenv/bin:$PATH" 
 
 cd /home/app
 
