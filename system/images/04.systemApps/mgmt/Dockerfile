@@ -1,5 +1,5 @@
 FROM  enginesos/rails4
-RUN atp-get -y install openssh-server
+RUN apt-get -y install openssh-server
 RUN /usr/sbin/addgroup --gid 999 docker
 RUN echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/dockuser --disabled-password dockuser
 
