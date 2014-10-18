@@ -20,7 +20,7 @@ result="FAIL"
 
 echo $result
 
-	if test $result == "OK"
+	if test $result = "OK"
 		then
 			service nginx reload
 	fi
