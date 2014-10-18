@@ -198,7 +198,7 @@ echo "Setting directory and file permissions"
 
 function set_os_flavor {
 echo "Configuring OS Specific Dockerfiles"
-	if test `uname -v |grep Ubuntu |wc -c` -gt 0
+	if test `uname -v |grep -i ubuntu |wc -c` -gt 0
 	then
 		files=`find /opt/engos/system/images/ -name "*.ubuntu"`
 			for file in $files
@@ -207,7 +207,7 @@ echo "Configuring OS Specific Dockerfiles"
 					rm $new_name
 					mv $file $new_name
 				done
-	elif test `uname -v |grep Debian  |wc -c` -gt 0
+	elif test `uname -v |grep -i debian  |wc -c` -gt 0
 	then
 		for file in $files
 				do
