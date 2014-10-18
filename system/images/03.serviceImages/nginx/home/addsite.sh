@@ -45,5 +45,5 @@ done
 		fi
 fi
 		
-service nginx restart
+service nginx reload
 
