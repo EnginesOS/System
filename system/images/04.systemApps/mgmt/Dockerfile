@@ -14,7 +14,7 @@ ENV ContGrp ruby
 RUN chown -R dockuser /home/app/ ; usermod -G ruby -a dockuser
 
 
-RUN cp -rp  ~/.gemrc ~/.rbenv ~/.bashrc ~dockuser
+RUN cp -rp  ~/.gemrc ~/.bashrc ~dockuser
 
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
 RUN chown -R dockuser /home/dockuser/
