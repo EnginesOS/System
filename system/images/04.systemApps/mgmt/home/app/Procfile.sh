@@ -24,7 +24,7 @@ git pull
 /usr/local/rbenv/shims/bundle exec rake generate_secret_token 
 # RAILS_ENV=production 
 
-mkdir -p /engines/var/run/
+
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete
 
