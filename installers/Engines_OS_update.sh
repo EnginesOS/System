@@ -3,7 +3,8 @@
 LOGFILE=/tmp/updater.log
 . /opt/engos/installers/routines.sh
 
-
+ make_dirs
+ 
 if test ! -f /tmp/updater.updated
 then
 	cd /opt/engos
