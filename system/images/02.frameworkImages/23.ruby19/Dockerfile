@@ -1,5 +1,5 @@
 FROM enginesos/frameworkbuild
-RUN apt-get -y install 
+
 RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /usr/local/rvm/bin/rvm install ruby-1.9
 RUN /usr/local/rvm/bin/rvm  --default use ruby-1.9
