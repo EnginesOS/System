@@ -11,7 +11,6 @@ RUN mkdir -p /usr/local/ ; cd /usr/local/ ; git clone git://github.com/sstephens
 RUN cd /usr/local/rbenv ; git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 RUN cd /usr/local/rbenv   ;echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc ; echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL ; /usr/local/rbenv/bin/rbenv install 2.1.2 ; /usr/local/rbenv/bin/rbenv global 2.1.2
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-RUN /usr/local/rbenv/shims/gem install rails
 RUN /usr/local/rbenv/bin/rbenv rehash
 RUN cp -rp  ~/.gemrc ~/.bashrc ~ruby
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R ruby /usr/local/rbenv/versions/
