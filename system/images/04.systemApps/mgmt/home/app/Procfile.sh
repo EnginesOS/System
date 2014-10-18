@@ -30,9 +30,9 @@ chown 21000 /engines/var/run/startup_complete
 
 	if test -f /opt/engos/etc/ssl/keys/engines.key -a  -f /opt/engos/etc/ssl/certs/engines.crt 
 	then
-	 env SECRET_KEY_BASE=`bundle exec rake secret` 	/usr/local/rbenv/shims/bundle exec thin -p 8000   --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
+	 env SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret` 	/usr/local/rbenv/shims/bundle exec thin -p 8000   --ssl --ssl-key-file /opt/engos/etc/ssl/keys/engines.key --ssl-cert-file /opt/engos/etc/ssl/certs/engines.crt start
 	else
-	 env SECRET_KEY_BASE=`bundle exec rake secret` 	/usr/local/rbenv/shims/bundle exec thin -p 8000   start
+	 env SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret` 	/usr/local/rbenv/shims/bundle exec thin -p 8000   start
 	fi
 	
 rm /engines/var/run/startup_complete
