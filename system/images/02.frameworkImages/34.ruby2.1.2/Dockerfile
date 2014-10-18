@@ -8,7 +8,7 @@ ENV ContGrp ruby
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
 RUN mkdir -p /usr/local/ ; cd /usr/local/ ; git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv 
-RUN cd /usr/local/rbenv ; git clone git://github.com/sstephenson/ruby-build.git/usr/local/rbenv/plugins/ruby-build
+RUN cd /usr/local/rbenv ; git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 RUN cd /usr/local/rbenv   ;echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc ; echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL ; /usr/local/rbenv/bin/rbenv install 2.1.2 ; /usr/local/rbenv/bin/rbenv global 2.1.2
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN /usr/local/rbenv/shims/gem install rails
