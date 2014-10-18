@@ -14,3 +14,4 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN /usr/local/rbenv/shims/gem install rails
 RUN /usr/local/rbenv/bin/rbenv rehash
 RUN cp -rp  ~/.gemrc ~/.bashrc ~ruby
+RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R ruby /usr/local/rbenv/versions/
