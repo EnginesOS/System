@@ -1,3 +1,0 @@
-FROM  enginesos/base
-RUN apt-get -y  --force-yes update
-RUN apt-get install -y  mysql-client git-core patch bzip2 gawk g++ gcc make libc6-dev patch libreadline6-dev zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libmagickcore-dev libmagickwand-dev libpq-dev libmysqlclient-dev postgresql-client
