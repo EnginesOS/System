@@ -76,10 +76,11 @@ class Docker
          container.eports.each do |eport|
            if eport != nil
          
-             eportoption = eportoption +  " -p " + eport.port.to_s
+             eportoption = eportoption +  " -p "
                if eport.external >0
-                 eportoption = eportoption + ":" + eport.external.to_s
+                 eportoption = eportoption + eport.external.to_s + ":" 
                end
+             eportoption = eportoption + eport.port.to_s
                if eport.proto_type == nil
                  eport.set_proto_type 'tcp'
                end
