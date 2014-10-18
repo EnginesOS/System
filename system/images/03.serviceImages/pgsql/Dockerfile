@@ -1,4 +1,5 @@
-FROM  enginesos/base
+FROM  enginesos/servicebase
+
 RUN apt-get -y install postgresql 
 ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma

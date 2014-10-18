@@ -1,6 +1,5 @@
-FROM  enginesos/base
-RUN   apt-get -y update ;
-RUN apt-get -y install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libmagickcore-dev libmagickwand-dev
+FROM enginesos/frameworkbase
+
 
 RUN mkdir ~/node_js_src && cd $_;wget -N http://nodejs.org/dist/node-latest.tar.gz;tar xzvf node-latest.tar.gz && cd node-v*;./configure; make ;make install
 

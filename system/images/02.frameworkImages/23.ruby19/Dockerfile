@@ -1,5 +1,5 @@
-FROM  enginesos/base
-RUN apt-get -y install patch bzip2 gawk g++ gcc make libc6-dev patch libreadline6-dev zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev 
+FROM enginesos/frameworkbase
+RUN apt-get -y install 
 RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /usr/local/rvm/bin/rvm install ruby-1.9
 RUN /usr/local/rvm/bin/rvm  --default use ruby-1.9

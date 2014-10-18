@@ -1,7 +1,5 @@
-FROM enginesos/base
+FROM enginesos/servicebase
 
-
-RUN apt-get -y  --force-yes update
 
 RUN apt-get -y install postfix syslogd
 

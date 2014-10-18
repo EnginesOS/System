@@ -1,6 +1,6 @@
 FROM  enginesos/python
 
-RUN apt-get -y install duply ncftp  python-paramiko python-gobject-2 cron
+RUN apt-get -y install sudo vim  openssh-server duply ncftp  python-paramiko python-gobject-2 cron
 
 ADD etc  etc
 ADD home home
