@@ -16,3 +16,4 @@ EXPOSE 22
 ENV ContUser postgres
 ENV ContGrp  postgres
 
+CMD /home/init.sh

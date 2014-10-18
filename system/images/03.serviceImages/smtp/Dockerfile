@@ -11,3 +11,5 @@ ADD postfix/mailname /etc/mailname
 
 ENV ContUser postfix
 ENV ContGrp postfix
+
+CMD /home/init.sh

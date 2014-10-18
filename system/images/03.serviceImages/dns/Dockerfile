@@ -22,3 +22,5 @@ CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g
 
 ENV ContUser bind
 ENV ContGrp bind
+
+CMD /home/init.sh
