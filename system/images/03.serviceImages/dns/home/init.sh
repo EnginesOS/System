@@ -2,9 +2,9 @@
 
 
 mkdir -p /var/run/named
-chown bind /var/run/named
+chown -R bind /var/run/named
 mkdir -p /var/log/named
-chown bind /var/log/named
+chown -R bind /var/log/named
 
 /usr/sbin/named -c /etc/bind/named.conf -u bind 
 
