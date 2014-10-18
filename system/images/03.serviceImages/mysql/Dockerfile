@@ -1,7 +1,9 @@
 FROM  enginesos/servicebase
 
 RUN apt-get -y install mysql-server
+
 ADD home home
+
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 ADD sudoers /etc/
 
@@ -14,3 +16,6 @@ EXPOSE 22
 
 ENV ContUser mysql
 ENV ContGrp mysql
+
+
+CMD /home/init.sh
