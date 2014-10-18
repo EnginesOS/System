@@ -18,4 +18,4 @@ while test -f /var/run/named/named.pid
 	  sleep 200
 	done
 
-
+rm /engines/var/run/startup_complete

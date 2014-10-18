@@ -13,3 +13,4 @@ do
 done
 
 
+rm /engines/var/run/startup_complete

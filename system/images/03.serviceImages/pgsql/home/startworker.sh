@@ -12,4 +12,4 @@ do
 	  sleep 200
 done
 
-
+rm /engines/var/run/startup_complete
