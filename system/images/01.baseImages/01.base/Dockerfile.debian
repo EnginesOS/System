@@ -2,7 +2,7 @@ FROM debian:wheezy
 
 RUN apt-get -y  --force-yes update
 RUN apt-get -y  --force-yes upgrade
-
+RUN apt-get -y  --force-yes update
 RUN apt-get -y  --fix-missing install   unzip  curl dnsutils git  wget bzip2 zlibc 
 RUN mkdir -p /var/run
 
