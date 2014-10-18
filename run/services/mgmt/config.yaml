@@ -27,6 +27,16 @@ volumes:
   remotepath: "/opt/engos"
   localpath: "/opt/engos"
   vol_permissions: rw
+- !ruby/object:Volume
+  name: engosfs
+  remotepath: "/var/lib/engos/fs"
+  localpath: "/var/lib/engos/fs"
+  vol_permissions: rw
+- !ruby/object:Volume
+  name: engoslogs
+  remotepath: "/var/logs/engos"
+  localpath: "/var/logs/engos"
+  vol_permissions: ro
 port: 
 eports:
 - !ruby/object:WorkPort
