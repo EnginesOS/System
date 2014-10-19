@@ -12,7 +12,7 @@ volumes:
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engos/etc/ssl/"
-  vol_permissions: "ro"
+  mapping_permissions: "ro"
 port: 
 eports:
 - !ruby/object:WorkPort

@@ -16,27 +16,27 @@ volumes:
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
-  vol_permissions: rw
+  mapping_permissions: rw
 - !ruby/object:Volume
   name: docker
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
-  vol_permissions: ro
+  mapping_permissions: ro
 - !ruby/object:Volume
   name: engos
   remotepath: "/opt/engos"
   localpath: "/opt/engos"
-  vol_permissions: rw
+  mapping_permissions: rw
 - !ruby/object:Volume
   name: engosfs
   remotepath: "/var/lib/engos/fs"
   localpath: "/var/lib/engos/fs"
-  vol_permissions: rw
+  mapping_permissions: rw
 - !ruby/object:Volume
   name: engoslogs
   remotepath: "/var/logs/engos"
   localpath: "/var/logs/engos"
-  vol_permissions: rw
+  mapping_permissions: rw
 port: 
 eports:
 - !ruby/object:WorkPort

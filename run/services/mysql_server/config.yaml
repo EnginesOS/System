@@ -12,7 +12,7 @@ volumes:
   name: mysql
   remotepath: "/var/lib/mysql"
   localpath: "/var/lib/engos/mysql"
-  vol_permissions: "rw"
+  mapping_permissions: "rw"
 port: 
 eports:
 - !ruby/object:WorkPort
