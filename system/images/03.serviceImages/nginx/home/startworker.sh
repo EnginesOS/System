@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/etc/init.d/nginx start
+service nginx start
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete
