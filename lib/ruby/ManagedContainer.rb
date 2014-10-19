@@ -310,20 +310,28 @@ class ManagedContainer < Container
 
     if state== "running"
       ret_val = @docker_api.stop_container   self
-      deregister_site
-      deregister_dns
+      deregister_registered
+      
       @setState="stopped"
     else
       @last_error ="Can't stop Container as " + state
+      if state != "paused" #force deregister if stopped or no container etc
+           deregister_registered
+         end
     end
-#Hmm remove regardless might be drastic  or just forcefull
-    if state != "paused"
-      deregister_site
-      deregister_dns
-    end
+   
     clear_error(ret_val)
     save_state()
     return  ret_val
+  end
+  
+  def deregister_registered
+    if @conf_register_site == false
+           deregister_site
+          end
+          if @conf_register_dns == true
+            deregister_dns
+          end
   end
 
   def start_container
