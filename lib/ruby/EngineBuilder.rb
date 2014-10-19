@@ -454,8 +454,10 @@ class EngineBuilder
         rmt_log_dir="/var/log"
       end
       local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName 
-      Dir.mkdir( local_log_dir)
-      
+      if Dir.exits(local_log_dir) == false
+        Dir.mkdir( local_log_dir)
+      end
+            
       return " -v " + local_log_dir + ":" + local_log_dir + ":rw "
 #      log_vol = Volume.new("",local_log_dir,rmt_log_dir,"rw",PermissionRights.new("system","","")) #(name,localpath,remotepath,mapping_permissions,vol_permissions)
 #      
