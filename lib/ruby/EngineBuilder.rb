@@ -454,7 +454,7 @@ class EngineBuilder
         rmt_log_dir="/var/log"
       end
       local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName 
-      if Dir.exists(local_log_dir) == false
+      if Dir.exists?(local_log_dir) == false
         Dir.mkdir( local_log_dir)
       end
             
