@@ -326,7 +326,7 @@ class ManagedContainer < Container
   end
   
   def deregister_registered
-    if @conf_register_site == false
+    if @conf_register_site == true
            deregister_site
           end
           if @conf_register_dns == true
