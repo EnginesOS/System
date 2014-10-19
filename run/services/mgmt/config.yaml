@@ -36,7 +36,7 @@ volumes:
   name: engoslogs
   remotepath: "/var/logs/engos"
   localpath: "/var/logs/engos"
-  vol_permissions: ro
+  vol_permissions: rw
 port: 
 eports:
 - !ruby/object:WorkPort
