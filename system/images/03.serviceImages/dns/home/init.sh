@@ -1,5 +1,5 @@
 #!/bin/sh
-
+rm -f /engines/var/run/startup_complete
 
 mkdir -p /var/run/named
 chown -R bind /var/run/named
