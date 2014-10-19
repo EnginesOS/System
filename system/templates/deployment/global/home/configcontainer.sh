@@ -283,10 +283,10 @@ echo run state $run
 
 #	rvm use --default $ruby_version
 	
-	bundle exec rake secret >/tmp/.sc
+	/usr/local/rbenv/shims/bundle exec rake secret >/tmp/.sc
 	a=`cat /tmp/.sc`
 	rm /tmp/.sc
-	env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
+	env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$a /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 
 	" > Procfile.sh
 	
@@ -329,17 +329,17 @@ production:
 	export RAILS_ENV
 	echo running bundle install --standalone
 	#$Bundle_Cmd install  --standalone
-	bundle install 
+	/usr/local/rbenv/shims/bundle install 
 	# --standalone 
 	
 	echo "running rake db:"
 	 
 	  #Fix me and move to blueprint ?
-	  bundle  exec  rake db:create  RAILS_ENV=$rails_env_prod_or_devel 
-	  bundle exec  rake db:migrate RAILS_ENV=$rails_env_prod_or_devel 
-	  bundle exec rake db:seed RAILS_ENV=$rails_env_prod_or_devel  
-	  bundle exec rake assets:precompile RAILS_ENV=$rails_env_prod_or_devel 
-	  bundle exec rake generate_secret_token RAILS_ENV=$rails_env_prod_or_devel
+	  /usr/local/rbenv/shims/bundle  exec  rake db:create  RAILS_ENV=$rails_env_prod_or_devel 
+	  /usr/local/rbenv/shims/bundle exec  rake db:migrate RAILS_ENV=$rails_env_prod_or_devel 
+	  /usr/local/rbenv/shims/bundle exec rake db:seed RAILS_ENV=$rails_env_prod_or_devel  
+	  /usr/local/rbenv/shims/bundle exec rake assets:precompile RAILS_ENV=$rails_env_prod_or_devel 
+	  /usr/local/rbenv/shims/bundle exec rake generate_secret_token RAILS_ENV=$rails_env_prod_or_devel
 	   
 	  touch /home/app/log/production.log
 	  touch /home/app/log/development.log
@@ -348,7 +348,7 @@ production:
 	   	then
 	  		for line in `cat /home/rakelist`
 	  	  		do
-	  				 bundle exec rake $line  
+	  				 /usr/local/rbenv/shims/bundle exec rake $line  
 	  		done
 	
 	 	fi
