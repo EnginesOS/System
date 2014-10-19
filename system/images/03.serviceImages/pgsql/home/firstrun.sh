@@ -12,7 +12,7 @@ pass="pass"
 	mkdir -p /var/log/postgresql
 	chown postgres -R /var/log/postgresql
 	
- 	service postgresql start
+ 	postgres  service postgresql start
  
  	touch /var/lib/postgresql/conf
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
