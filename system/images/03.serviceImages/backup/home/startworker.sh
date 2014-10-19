@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-/etc/init.d/ssh start
+service ssh start
 
 
 cron
