@@ -34,8 +34,8 @@ volumes:
   mapping_permissions: rw
 - !ruby/object:Volume
   name: engoslogs
-  remotepath: "/var/logs/engos"
-  localpath: "/var/logs/engos"
+  remotepath: "/var/log/engos"
+  localpath: "/var/log/engos"
   mapping_permissions: rw
 port: 
 eports:
