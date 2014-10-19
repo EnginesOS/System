@@ -23,6 +23,7 @@ cd $MasterImagesDir
 								if test $? -eq 0
 									then
 										echo "Built $tag"
+										touch last_built
 									else
 										echo "Failed to build $tag in $class/$dir"
 										exit
