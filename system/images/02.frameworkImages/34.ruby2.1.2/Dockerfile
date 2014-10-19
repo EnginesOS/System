@@ -6,7 +6,8 @@ RUN mkdir ~/node_js_src && cd $_;wget -N http://nodejs.org/dist/node-latest.tar.
 ENV ContUser ruby
 ENV ContGrp ruby
 ENV  RBENV_ROOT /usr/local/rbenv
-RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
+RUN groupadd ruby
+RUN echo "Y" | adduser -q -g ruby --home /home/ruby --disabled-password ruby
 RUN mkdir -p /usr/local/ ; cd /usr/local/ ; git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv 
 RUN cd /usr/local/rbenv ; git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 RUN cd /usr/local/rbenv   ;echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc ; echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL ; /usr/local/rbenv/bin/rbenv install 2.1.2 ; /usr/local/rbenv/bin/rbenv global 2.1.2
