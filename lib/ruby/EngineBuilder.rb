@@ -557,8 +557,8 @@ class EngineBuilder
     create_setup_env
     puts("Configuring Application Environment")
     add_custom_env
-    puts("Setting up logging")
-    setup_framework_logging
+  #  puts("Setting up logging")
+   # setup_framework_logging
     puts("Creating workers")
     create_workers
     puts("Saving stack Environment")
