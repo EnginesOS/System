@@ -91,7 +91,7 @@ class EngineBuilder
     g = Git.clone(@repoName, @buildname, :path => SysConfig.DeploymentDir)
   end
 
-  def add_db_service name
+  def add_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
     dbname=name #+ "-" + @hostName  - leads to issue with JDBC
 
     dbf = File.open( get_basedir + "/home/db.env","a+")
@@ -100,8 +100,8 @@ class EngineBuilder
     dbf.puts("dbhost=" + SysConfig.DBHost)
     dbf.puts("dbuser=" + name)
     dbf.puts("dbpasswd=" + name)
-    dbf.puts("dbflavor=" + "mysql")
-    db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,"mysql")
+    dbf.puts("dbflavor=" + flavor)
+    db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
     @databases.push(db)
 
     dbf.close
@@ -109,7 +109,8 @@ class EngineBuilder
   end
 
   def create_database_service db
-    db_service = EnginesOSapi.loadManagedService("mysql_server", @docker_api)
+    db_server_name=db.flavor + "_server"
+    db_service = EnginesOSapi.loadManagedService(db_server_name, @docker_api)
     if db_service.is_a?(DBManagedService)
       
       db_service.add_consumer(db)
@@ -469,18 +470,18 @@ class EngineBuilder
     services=@bluePrint["software"]["softwareservices"]
     services.each do |service|
       servicetype=service["servicetype_name"]
-      if servicetype == "mysql"
+      if servicetype == "mysql" || servicetype == "pqsql"
         dbname = service["name"]
         dest = service["dest"]
         if dest =="local" || dest == nil
-          add_db_service  dbname
+          add_db_service(dbname,servicetype)
         end
       else if servicetype=="filesystem"
           fsname = service["name"]
           dest = service["dest"]
           add_file_service(fsname, dest)
         else
-          echo "Unknown Service " + servicetype
+          p "Unknown Service " + servicetype
         end
       end
     end
