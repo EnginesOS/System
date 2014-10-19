@@ -12,22 +12,22 @@ volumes:
   name: volumes
   remotepath: "/backup_src/volumes/"
   localpath: "/var/lib/engos/fs"
-  vol_permissions: "ro"
+  mapping_permissions: "ro"
 - !ruby/object:Volume
   name: Engines
   remotepath: "/backup_src/engos/"
   localpath: "/opt/engos/"
-  vol_permissions: "ro"
+  mapping_permissions: "ro"
 - !ruby/object:Volume
   name: Destinations
   remotepath: "/var/lib/engos/local_backup_dests/"
   localpath: "/var/lib/engos/backup_paths"
-  vol_permissions: "rw"
+  mapping_permissions: "rw"
 - !ruby/object:Volume
   name: Logging
   remotepath: "/var/log/"
   localpath: "/var/log/engos/services/backup/"
-  vol_permissions: "rw"
+  mapping_permissions: "rw"
 port: 
 eports:
 - !ruby/object:WorkPort
