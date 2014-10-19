@@ -23,3 +23,4 @@ RUN chmod -R  700 /home/dockuser/.ssh
 EXPOSE 80
 EXPOSE 22
 
+CMD /home/init.sh
