@@ -13,5 +13,5 @@ while test -f /var/run/crond.pid
 do
 	  sleep 120
 done
-
+rm -f /engines/var/run/startup_complete
 
