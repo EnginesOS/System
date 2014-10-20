@@ -2,7 +2,7 @@
 BTICK='`'
 EXPECTED_ARGS=3
 E_BADARGS=65
-PQSQL=` su -l postgres  /usr/bin/perl   /usr/bin/psql `
+PQSQL=" su  postgres  -c  /usr/bin/psql `"
 
 
 if [ $# -ne $EXPECTED_ARGS ]
@@ -11,12 +11,8 @@ echo "Usage: $0 dbname dbuser dbpass"
 exit $E_BADARGS
 fi
 
-Q1="CREATE DATABASE IF NOT EXISTS ${BTICK}$1${BTICK};"
-Q2="GRANT ALL ON ${BTICK}$1${BTICK}.* TO '$2'@'%' IDENTIFIED BY '$3';"
-Q3="FLUSH PRIVILEGES;"
-SQL="${Q1}${Q2}${Q3}"
+echo "CREATE USER $2 WITH Encrypted PASSWORD ${BTICK}$3${BTICK};" >/tmp/t.sql
+echo "CREATE DATABASE $1;">>/tmp/t.sql
+echo "GRANT ALL PRIVILEGES ON DATABASE $1 to $2;" >>/tmp/t.sql
 
-#echo "$SQL"
-
-$MYSQL  -urma  -e "$SQL"
-
+result=`$PQSQL</tmpt.sql`
