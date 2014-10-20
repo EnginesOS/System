@@ -1,0 +1,30 @@
+--- !ruby/object:DBManagedService
+containerName: mongo_server
+ctype: service
+last_error: 
+memory: '128'
+hostName: mongo
+domainName: 
+environments: []
+image: enginesos/mongo
+volumes:
+- !ruby/object:Volume
+  name: mongo
+  remotepath: "/var/lib/mongodb/"
+  localpath: "/var/lib/engos/mongo"
+  mapping_permissions: "rw"
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: mongo
+  port: 3306
+  publicFacing: false
+  external: 0
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
