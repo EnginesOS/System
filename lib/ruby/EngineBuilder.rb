@@ -673,7 +673,7 @@ class EngineBuilder
 #  if @buildname.end_with?(".git") == true
 #    dir_name = @buildname.sub(/\.git$/,"")
 #    end
-    return SysConfig.DeploymentDir + "/" + dir_name
+    return SysConfig.DeploymentDir + "/" + @buildname
   end
 
 end
