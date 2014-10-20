@@ -122,43 +122,51 @@ function make_dns_key {
 
 function generate_keys {
 echo "Generating system Keys"
-	
-	
-	
-	ssh-keygen -q -N "" -f nagios
-	ssh-keygen -q -N "" -f mysql
-	ssh-keygen -q -N "" -f mgmt
-	ssh-keygen -q -N "" -f nginx
-	ssh-keygen -q -N "" -f backup
-	ssh-keygen -q -N "" -f pgsql
-	ssh-keygen -q -N "" -f mongo
-	
-	cat mongo pub | awk '{ print $1 " " $2}' > mongo.p
-	#remove host limits from pub key
-	cat pgsql.pub | awk '{ print $1 " " $2}' > pgsql.p
-	mv pgsql.p  pgsql.pub 
-	
-	cat nginx.pub | awk '{ print $1 " " $2}' > nginx.p
-	mv nginx.p  nginx.pub 
-	
-	cat nagios.pub | awk '{ print $1 " " $2}' > nagios.p
-	mv nagios.p  nagios.pub 
-	
-	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
-	mv mgmt.p  mgmt.pub 	
-	
-	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
-	mv mysql.p  mysql.pub 	
-	
-	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
-	mv pgsql.pub /opt/engos/system/images/03.serviceImages/pgsql/
-	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
-	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
-	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
-	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
-	mv mongo.pub /opt/engos/system/images/03.serviceImages/mongo
-	
+keys=" nagios mysql mgmt nginx backup pgsql mongo"
+
+	for key in $keys
+		do
+		  ssh-keygen -q -N "" -f $key
+	      cat $key.pub | awk '{ print $1 " " $2}' >$key.p
+	      mv  $key.p $key.pub
+	      mv $key /opt/engos/etc/keys/
+	      mv $key.pub /opt/engos/system/images/03.serviceImages/$key/
+	   done
+	   
+#	ssh-keygen -q -N "" -f nagios
+#	ssh-keygen -q -N "" -f mysql
+#	ssh-keygen -q -N "" -f mgmt
+#	ssh-keygen -q -N "" -f nginx
+#	ssh-keygen -q -N "" -f backup
+#	ssh-keygen -q -N "" -f pgsql
+#	ssh-keygen -q -N "" -f mongo
+#	
+#	cat mongo pub | awk '{ print $1 " " $2}' > mongo.p
+#	#remove host limits from pub key
+#	cat pgsql.pub | awk '{ print $1 " " $2}' > pgsql.p
+#	mv pgsql.p  pgsql.pub 
+#	
+#	cat nginx.pub | awk '{ print $1 " " $2}' > nginx.p
+#	mv nginx.p  nginx.pub 
+#	
+#	cat nagios.pub | awk '{ print $1 " " $2}' > nagios.p
+#	mv nagios.p  nagios.pub 
+#	
+#	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
+#	mv mgmt.p  mgmt.pub 	
+3	
+3	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
+#	mv mysql.p  mysql.pub 	
+#	
+#	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
+#	mv pgsql.pub /opt/engos/system/images/03.serviceImages/pgsql/
+#	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
+#	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
+#	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
+#	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
+#	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
+#	mv mongo.pub /opt/engos/system/images/03.serviceImages/mongo
+#	
 	make_dns_key
 	
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`
