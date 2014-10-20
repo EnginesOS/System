@@ -511,7 +511,7 @@ class EngineBuilder
     while line=stef.gets do
       if line.include?("PORT")
         i= line.rindex('=')
-        @webport= line.slice(i)
+        @webPort= line.slice(i)
       end
     end
   end
@@ -519,13 +519,14 @@ class EngineBuilder
   def read_values
     @framework = @bluePrint["software"]["swframework_name"]
     @runtime =  @bluePrint["software"]["langauge_name"]
-    #FIXME need to read from framework and not some piece of static code
-    if @framework.include?("rails")
-      @webPort=3000
-    end
-    if @framework.include?("tomcat")
-      @webPort=8080
-    end
+    getwebport
+#    #FIXME need to read from framework and not some piece of static code
+#    if @framework.include?("rails")
+#      @webPort=3000
+#    end
+#    if @framework.include?("tomcat")
+#      @webPort=8080
+#    end
   end
 
   def get_blueprint_from_repo
