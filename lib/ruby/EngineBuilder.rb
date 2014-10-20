@@ -670,6 +670,9 @@ class EngineBuilder
     end
     
   def get_basedir
+  if @buildname.end_with?(".git") == true
+    @buildname = @buildname.sub(/\.git$/,"")
+    end
     return SysConfig.DeploymentDir + "/" + @buildname
   end
 
