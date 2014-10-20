@@ -181,6 +181,10 @@ echo run state $run
 	       for file in $PERSISTANT_FILES
 	         do
 	         	 echo Processing file $file
+	         	 	if test ! -f $Engines_HOME/$file 
+	         	 		then
+	         	 			touch $Engines_HOME/$file 
+	         	 	fi
 				echo  cp $Engines_HOME/$file  $FS/$file
 	            cp $Engines_HOME/$file  $FS/$file
 	            rm $Engines_HOME/$file
@@ -237,6 +241,11 @@ echo run state $run
         then
         	FRAMEWORK=php
         fi
+        
+        
+
+        		
+      
 
 
 
