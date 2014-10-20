@@ -24,7 +24,8 @@ if test "$FRAMEWORK" == "tomcat"
 	ln -s /home/app/webapps /usr/share/tomcat7/
 fi
 
-if test "$FRAMEWORK" == "php"
+if test "$FRAMEWORK" = "php"
+  then
 	 if test -f $Engines_HOME/pear.list
         			then
         			  wget http://pear.php.net/go-pear.phar	
