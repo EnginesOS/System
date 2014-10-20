@@ -28,7 +28,7 @@ class EngineBuilder
     @hostName=host
     @domainName=domain
     @repoName=repo
-    @buildname = File.basename(repo)
+    @buildname = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=80
     @vols=Array.new
@@ -670,9 +670,9 @@ class EngineBuilder
     end
     
   def get_basedir
-  if @buildname.end_with?(".git") == true
-    dir_name = @buildname.sub(/\.git$/,"")
-    end
+#  if @buildname.end_with?(".git") == true
+#    dir_name = @buildname.sub(/\.git$/,"")
+#    end
     return SysConfig.DeploymentDir + "/" + dir_name
   end
 
