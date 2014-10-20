@@ -34,7 +34,7 @@ if test "$FRAMEWORK" == "php"
         			    fi
         			  php go-pear.phar
         			  
-        			  for module = `cat $Engines_HOME/pear.list`
+        			  for module in `cat $Engines_HOME/pear.list`
         			  	do
         			  		pear install $module
         			  done
