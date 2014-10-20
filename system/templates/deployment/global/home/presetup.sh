@@ -136,6 +136,9 @@ done
 	fi
 	
 	
+	
+	
+	
 	if test -f /home/uid
 	then
 		cont_user=`cat /home/uid`
