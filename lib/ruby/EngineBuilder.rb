@@ -510,8 +510,8 @@ class EngineBuilder
     stef = File.open( get_basedir + "/home/stack.env","r")
     while line=stef.gets do
       if line.include?("PORT")
-        i= line.rindex('=')
-        @webPort= line.slice(i)
+        i= line.split('=')
+        @webPort= i[1]
       end
     end
   end
