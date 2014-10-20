@@ -180,12 +180,15 @@ echo run state $run
 	         
 	       for file in $PERSISTANT_FILES
 	         do
-	         	 echo Processing file $file
+	         	 echo  Processing file $file
 	         	 	if test ! -f $Engines_HOME/$file 
 	         	 		then
+	         	 			mkdir -p ` dirname $Engines_HOME/$file `
 	         	 			touch $Engines_HOME/$file 
+	         	 			echo touch $Engines_HOME/$file 
 	         	 	fi
 				echo  cp $Engines_HOME/$file  $FS/$file
+				mkdir -p $FS`dirname  $file `
 	            cp $Engines_HOME/$file  $FS/$file
 	            rm $Engines_HOME/$file
 				echo " ln -s $FS/$file $Engines_HOME/$file"
