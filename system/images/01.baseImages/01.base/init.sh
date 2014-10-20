@@ -46,6 +46,11 @@ if test -f /home/pre-running.sh
         bash /home/pre-running.sh
 fi
 
+ if test -f  /home/app/custom_start.sh
+ then
+ 	su -l  $ContUser  -c /home/app/custom_start.sh
+fi
+
 #only for daemons that set user as in apace and tomcat
 if test -f /home/startwebapp.sh
    then					
