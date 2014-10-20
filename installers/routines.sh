@@ -131,7 +131,9 @@ echo "Generating system Keys"
 	ssh-keygen -q -N "" -f nginx
 	ssh-keygen -q -N "" -f backup
 	ssh-keygen -q -N "" -f pgsql
+	ssh-keygen -q -N "" -f mongo
 	
+	cat mongo pub | awk '{ print $1 " " $2}' > mongo.p
 	#remove host limits from pub key
 	cat pgsql.pub | awk '{ print $1 " " $2}' > pgsql.p
 	mv pgsql.p  pgsql.pub 
@@ -148,13 +150,14 @@ echo "Generating system Keys"
 	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
 	mv mysql.p  mysql.pub 	
 	
-	mv  mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
+	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
 	mv pgsql.pub /opt/engos/system/images/03.serviceImages/pgsql/
 	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
 	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
 	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
 	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
 	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
+	mv mongo.pub /opt/engos/system/images/03.serviceImages/mongo
 	
 	make_dns_key
 	
