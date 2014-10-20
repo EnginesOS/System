@@ -275,7 +275,7 @@ class EngineBuilder
     if dirs.length >1
       suf.puts("PERSISTANT_DIRS=\""+dirs+"\"")
     end
-
+                                    
     pfs =   @bluePrint["software"]["persistantfiles"]
     files= String.new
     pfs.each do |file|
@@ -283,7 +283,7 @@ class EngineBuilder
       pcf=path
       files = files + "\""+ path + "\" "
     end
-    if dirs.length >1
+    if files.length >1
       suf.puts("PERSISTANT_FILES="+files)
     end
     if pcf.length >1
