@@ -545,7 +545,8 @@ class EngineBuilder
 
     puts("Reading Blueprint")
     load_blueprint
-
+    puts("Reading Settings")
+    read_values
     puts("Copy in default templates")
     copy_templates
     puts("Setting Web port")
