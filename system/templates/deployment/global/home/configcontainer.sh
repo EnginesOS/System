@@ -150,11 +150,14 @@ echo run state $run
         		
 		echo "config files written"
 		
+		copy_substituted_templates 
+		
 		if test -f /home/engines/setup.bash
 		then
 			bash /home/engines/setup.bash
 		fi
 	fi
+	
 
 
 
