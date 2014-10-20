@@ -519,7 +519,7 @@ class EngineBuilder
   def read_values
     @framework = @bluePrint["software"]["swframework_name"]
     @runtime =  @bluePrint["software"]["langauge_name"]
- 
+ #   getwebport
 #    #FIXME need to read from framework and not some piece of static code
 #    if @framework.include?("rails")
 #      @webPort=3000
@@ -545,10 +545,9 @@ class EngineBuilder
 
     puts("Reading Blueprint")
     load_blueprint
+
     puts("Copy in default templates")
     copy_templates
-    puts("Reading Settings")
-    read_values
     puts("Setting Web port")
     getwebport
     puts("creating Worker port")
