@@ -1,5 +1,6 @@
 #!/bin/bash
 DOWNLOADCACHE=/opt/dl_cache
+Engines_HOME=/home/app
 
 if test `pwd` == "/"
 	then
@@ -22,7 +23,23 @@ if test "$FRAMEWORK" == "tomcat"
 	rm -r /usr/share/tomcat7/webapps
 	ln -s /home/app/webapps /usr/share/tomcat7/
 fi
-	 
+
+if test "$FRAMEWORK" == "php"
+	 if test -f $Engines_HOME/pear.list
+        			then
+        			  wget http://pear.php.net/go-pear.phar	
+        			  	if test -f  /etc/php5/conf.d/suhosin.ini
+        			  		then
+        			  			echo "suhosin.executor.include.whitelist = phar" >>/etc/php5/conf.d/suhosin.ini
+        			    fi
+        			  php go-pear.phar
+        			  
+        			  for module = `cat $Engines_HOME/pear.list`
+        			  	do
+        			  		pear install $module
+        			  done
+    fi
+fi
 
 . ./presettings.env
 
@@ -134,3 +151,5 @@ done
 	
 	
 chown -R ${cont_user}.${cont_grp} /home/app/
+
+
