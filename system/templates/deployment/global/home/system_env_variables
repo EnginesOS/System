@@ -14,3 +14,5 @@ smtphost
 CONTFSVolHome
 VOLDIR
 Memory
+
+#needs blank line at end
