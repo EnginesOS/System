@@ -33,21 +33,22 @@ while read line
                 for env_variable in $env_variables
                   do
                         search_arg=_ENGINES_${env_variable}
-                          if   grep -q '*'<<<$line 
+                         if   grep -q '*'<<<$line
                                 then
-                                        line=${line/$search_arg/\$${env_variable}}
-                                         raw=0
+                                        raw=1
                                 else
-                                		raw=1                                      
+                                        eval replacement_str='$'${env_variable}
+                                        line=${line/$search_arg/${replacement_str}} 
+                                        raw=0
                                 fi
                 done
-                
-	 if test $raw -eq 0
-	 then
-	 	echo $line >> $dest_file
-	 else
-	 	echo "$line" >> $dest_file
-	 fi
+
+         if test $raw -eq 0
+         then
+                echo $line
+         else
+                echo "$line"
+         fi                                                  
  
 done < $file
 
