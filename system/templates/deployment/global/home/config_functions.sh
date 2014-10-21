@@ -41,6 +41,7 @@ while read line
                                 then
                                         line=${line/$search_arg/\$${env_variable}}
                                         echo $line >> $dest_file
+                                        echo $line
                                 else
                                         echo " $line"  >> $dest_file
                                 fi
