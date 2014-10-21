@@ -2,6 +2,7 @@
 dbhost
 dbname
 dbflavor
+dbuser
 dbpasswd
 FRAMEWORK
 RUNTIME
