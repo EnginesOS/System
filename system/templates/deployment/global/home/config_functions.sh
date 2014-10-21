@@ -37,7 +37,7 @@ while read line
                 for env_variable in $env_variables
                   do
                         search_arg=_ENGINES_${env_variable}
-                          if test  `echo  "$line"       | grep '\*' |wc -c ` -eq 0
+                          if   grep -q '*'<<<$line 
                                 then
                                         line=${line/$search_arg/\$${env_variable}}
                                         echo $line >> $dest_file
