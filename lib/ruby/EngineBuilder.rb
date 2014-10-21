@@ -70,8 +70,9 @@ class EngineBuilder
       ask=env["ask_at_runtime"]
       @environments.push(EnvironmentVariable.new(name,value,ask))
       if ask == true
-          if @set_environments.key?(name)
+          if @set_environments.key?(name) == true
             value=@set_environments[name]
+          end
             #else write the default if none set                      
       end
       ef.puts(name + "=\"" + value +"\"")
