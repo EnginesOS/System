@@ -10,3 +10,6 @@ Hostname
 Domainname
 fqdn
 smtphost
+CONTFSVolHome
+VOLDIR
+Memory
