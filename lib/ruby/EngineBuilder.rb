@@ -33,6 +33,9 @@ class EngineBuilder
     @webPort=80
     @vols=Array.new  
     @environments=Array.new
+    env = Hash.new
+    #test code
+      env["Title"]="Title"
     @set_environments = env     
     @runtime=String.new
     @databases= Array.new
