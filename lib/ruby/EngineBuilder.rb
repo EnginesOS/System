@@ -31,8 +31,9 @@ class EngineBuilder
     @buildname = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=80
-    @vols=Array.new
-    @environments=Array.new(2)
+    @vols=Array.new  
+    @environments=Array.new
+    @set_environments = env     
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
@@ -68,12 +69,13 @@ class EngineBuilder
       value=env["value"]
       ask=env["ask_at_runtime"]
       @environments.push(EnvironmentVariable.new(name,value,ask))
-      #if ask== false
-        ef.puts(name + "=\"" + value +"\"")
-        #FIXME
-        #else
-        #ask
-      #end
+      if ask == true
+          if @set_environments.key?(name)
+            value=@set_environments[name]
+            #else write the default if none set                      
+      end
+      ef.puts(name + "=\"" + value +"\"")
+      
     end
     ef.close
   end
