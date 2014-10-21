@@ -19,10 +19,33 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 				
 				echo doing $dest_file
 				
-                 while read line
-                    do                         
-                         eval echo "$line" >> $dest_file
-                    done <  $file
+      #           while read line
+      #              do                         
+      #              #/eng_value/s//$value/
+      #                   eval echo "$line" >> $dest_file
+       #             done <  $file
+       			process_file 
         done
 }
 
+function process_file {
+touch /home/app/env_variables
+env_variables=`cat /opt/engsos/etc/env_variables /home/app/env_variables | grep -v #`
+
+while read line
+    do
+                for env_variable in $env_variables
+                  do
+                        search_arg=_ENGINES_${env_variable}
+                          if test  `echo  "$line"       | grep '*' |wc -c ` -eq 0
+                                then
+                                        line=${line/$search_arg/\$${env_variable}}
+                                        echo $line >> $dest_file
+                                else
+                                        echo " $line"  >> $dest_file
+                                fi
+                done
+
+done < $file
+
+}

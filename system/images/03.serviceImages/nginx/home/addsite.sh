@@ -36,6 +36,7 @@ protos=`echo $1 $2  |cut -f4 -d:`
 cp /tmp/${proto}_$fqdn.site /etc/nginx/sites-enabled/
 
 done
+
  if test -f /tmp/https_$fqdn.site 
 	then
 		if test ! -f /tmp/http_$fqdn.site

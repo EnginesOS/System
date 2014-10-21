@@ -1,0 +1,12 @@
+#list of all environment variables available to templates
+dbhost
+dbname
+dbflavor
+dbpasswd
+FRAMEWORK
+RUNTIME
+PORT
+Hostname
+Domainname
+fqdn
+smtphost
