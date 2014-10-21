@@ -30,7 +30,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 
 function process_file {
 touch /home/app/env_variables
-env_variables=`cat /opt/engos/etc/env_variables /home/app/env_variables | grep -v #`
+env_variables=`cat /opt/engos/etc/env_variables /home/app/env_variables | grep -v "#"`
 
 while read line
     do
