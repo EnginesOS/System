@@ -24,8 +24,8 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 }
 
 function process_file {
-touch /home/app/env_variables
-env_variables=`cat /home/app/system_env_variables /home/app/env_variables | grep -v "#"`
+touch /home/env_variables
+env_variables=`cat /home/system_env_variables /home/env_variables | grep -v "#"`
 echo "processing template $file"
 
 while read line
