@@ -27,7 +27,7 @@ function process_file {
 touch /home/env_variables
 env_variables=`cat /home/system_env_variables /home/env_variables | grep -v "#"`
 echo "processing template $file"
-
+raw=0
 while read line
     do
                 for env_variable in $env_variables
@@ -36,14 +36,19 @@ while read line
                           if   grep -q '*'<<<$line 
                                 then
                                         line=${line/$search_arg/\$${env_variable}}
-                                        echo $line >> $dest_file
-                                        echo $line
+                                         raw=0
                                 else
-                                        echo " $line"  >> $dest_file
-                                        echo "Has * $line"
+                                		raw=1                                      
                                 fi
                 done
-
+                
+	 if test $raw -eq 0
+	 then
+	 	echo $line >> $dest_file
+	 else
+	 	echo "$line" >> $dest_file
+	 fi
+ 
 done < $file
 
 }
