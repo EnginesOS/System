@@ -19,18 +19,13 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 				
 				echo doing $dest_file
 				
-      #           while read line
-      #              do                         
-      #              #/eng_value/s//$value/
-      #                   eval echo "$line" >> $dest_file
-       #             done <  $file
        			process_file 
         done
 }
 
 function process_file {
 touch /home/app/env_variables
-env_variables=`cat /opt/engos/etc/env_variables /home/app/env_variables | grep -v "#"`
+env_variables=`cat /home/app/system_env_variables /home/app/env_variables | grep -v "#"`
 echo "processing template $file"
 
 while read line
