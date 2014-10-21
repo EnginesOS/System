@@ -35,7 +35,7 @@ class EngineBuilder
     @environments=Array.new
     env = Hash.new
     #test code
-      env["Title"]="Title"
+      env["Title"]="User Entered Title"
     @set_environments = env     
     @runtime=String.new
     @databases= Array.new
