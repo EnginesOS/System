@@ -24,7 +24,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 }
 
 function process_file {
-cat /home/app.env |cut -f2 -d= >/home/app/app_env_variables
+cat /home/app.env |cut -f1 -d= >/home/app/app_env_variables
 env_variables=`cat /home/system_env_variables /home/app/app_env_variables | grep -v "#"`
 echo "processing template $file"
 raw=0
