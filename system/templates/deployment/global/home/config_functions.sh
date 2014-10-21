@@ -45,9 +45,9 @@ while read line
 
          if test $raw -eq 0
          then
-                echo $line
+                echo $line >> $dest_file
          else
-                echo "$line"
+                echo "$line">> $dest_file
          fi                                                  
  
 done < $file
