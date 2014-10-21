@@ -64,15 +64,16 @@ class EngineBuilder
     ef = File.open( get_basedir + "/home/app.env","w")
     envs.each do |env|
       name=env["name"]
+      name = name.gsub(" ","_")
       value=env["value"]
       ask=env["ask_at_runtime"]
       @environments.push(EnvironmentVariable.new(name,value,ask))
-      if ask== false
+      #if ask== false
         ef.puts(name + "=\"" + value +"\"")
         #FIXME
         #else
         #ask
-      end
+      #end
     end
     ef.close
   end
