@@ -199,7 +199,7 @@ class Docker
   def deregister_site(site_hash)
          
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-    
+    #FIXME Should write site conf file via template (either standard or supplied with blueprint)
     ssh_cmd = "/opt/engos/etc/nginx/scripts/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
     run_system(ssh_cmd)
     ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
