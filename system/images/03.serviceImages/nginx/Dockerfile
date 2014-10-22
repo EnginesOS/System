@@ -1,7 +1,7 @@
 FROM  enginesos/base
 
-RUN echo "Y" | adduser -q  --uid 22005 --disabled-password www-data
-
+#RUN echo "Y" | adduser -q  --uid 22005 --disabled-password www-data
+RUN usermod www-data -u 22005
 RUN apt-get -y install nginx
 
 ADD home home
