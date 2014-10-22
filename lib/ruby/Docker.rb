@@ -185,7 +185,8 @@ class Docker
   
   def register_site(site_hash)     
  
-      ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
+     # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
+    ssh_cmd = "/opt/engos/system/images/03.serviceImages/nginx/home/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
       return run_system(ssh_cmd)
   end
   def hash_to_site_str(site_hash)    
@@ -194,7 +195,8 @@ class Docker
   end
   def deregister_site(site_hash)
          
-     ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+   #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+    ssh_cmd = "/opt/engos/system/images/03.serviceImages/nginx/home/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""  
     return run_system(ssh_cmd)
   end
   

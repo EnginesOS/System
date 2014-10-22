@@ -130,8 +130,9 @@ keys=" nagios mysql mgmt nginx backup pgsql mongo"
 	      cat $key.pub | awk '{ print $1 " " $2}' >$key.p
 	      mv  $key.p $key.pub
 	      mv $key /opt/engos/etc/keys/
-	      mv $key.pub /opt/engos/system/images/03.serviceImages/$key/
+	      cp $key.pub /opt/engos/system/images/03.serviceImages/$key/
 	   done
+	   cp mgmt.pub /opt/engos/system/images/04.systemApps/mgmt/
 	   
 #	ssh-keygen -q -N "" -f nagios
 #	ssh-keygen -q -N "" -f mysql
@@ -154,8 +155,8 @@ keys=" nagios mysql mgmt nginx backup pgsql mongo"
 #	
 #	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
 #	mv mgmt.p  mgmt.pub 	
-3	
-3	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
+#	
+#	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
 #	mv mysql.p  mysql.pub 	
 #	
 #	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/

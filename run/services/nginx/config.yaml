@@ -11,8 +11,13 @@ volumes:
 - !ruby/object:Volume
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
-  localpath: "/opt/engos/etc/ssl/"
+  localpath: "/opt/engos/etc/nginx/ssl/"
   mapping_permissions: "ro"
+- !ruby/object:Volume
+  name: sites_enabled
+  remotepath: "/etc/nginx/sites-enabled/"
+  localpath: "/opt/engos/etc/nginx/sites-enabled/"
+  mapping_permissions: "ro" 
 port: 
 eports:
 - !ruby/object:WorkPort
