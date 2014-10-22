@@ -4,12 +4,7 @@ RUN apt-get -y install mysql-server
 
 ADD home home
 
-#RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
-#ADD sudoers /etc/
-
-#ADD mysql.pub /home/rma/.ssh/authorized_keys
-#RUN chown -R rma /home/rma/.ssh
-#RUN chmod -R  700 /home/rma/.ssh
+RUN echo "Y" | adduser -q --disabled-password -uid 22006 mysql
 
 EXPOSE 3306
 EXPOSE 22
