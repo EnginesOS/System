@@ -12,7 +12,7 @@ volumes:
   name: var/run
   remotepath: "/var/run"
   localpath: "/var/run"
-  vol_permissions: "rw"
+  mapping_permissions: "rw"
 - !ruby/object:Volume
   name: lib/docker
   remotepath: "/var/lib/docker"
@@ -22,7 +22,7 @@ volumes:
   name: sys
   remotepath: "/sys/"
   localpath: "/sys/"
-  vol_permissions: "ro"
+  mapping_permissions: "ro"
 port: 8080
 eports: []
 repo: na

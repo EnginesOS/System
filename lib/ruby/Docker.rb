@@ -277,8 +277,8 @@ class Docker
         end    
 
   def create_database  site_hash   
-   name =  site_hash[:flavor]=database.flavor + "_server"
-    cmd = "docker exec " + name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\"" 
+   container_name =  site_hash[:flavor] + "_server"
+    cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\"" 
    puts(cmd)
    
      return run_system(cmd)
