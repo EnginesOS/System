@@ -187,7 +187,9 @@ class Docker
  
      # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
     ssh_cmd = "/opt/engos/etc/nginx/scripts/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-      p ssh_cmd 
+    run_system(ssh_cmd)
+    ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
+    #run_system(ssh_cmd)
       return run_system(ssh_cmd)
   end
   def hash_to_site_str(site_hash)    
@@ -199,7 +201,8 @@ class Docker
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     
     ssh_cmd = "/opt/engos/etc/nginx/scripts/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-    p ssh_cmd 
+    run_system(ssh_cmd)
+    ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
     return run_system(ssh_cmd)
   end
   
