@@ -191,6 +191,8 @@ mkdir -p  /var/lib/engos/backup_paths
 mkdir -p  /var/lib/engos/fs
 mkdir -p  /home/dockuser/droplets/deployment/deployed/
 mkdir -p  /var/lib/engos/pgsql
+mkdir -p  /var/lib/engos/mysql
+mkdir -p  /var/lib/engos/mongo
 mkdir -p  /var/log/engos/services/nginx/nginx
 mkdir -p  /var/log/engos/services/backup
 mkdir -p  /var/log/engos/services/mgmt
@@ -205,7 +207,8 @@ mkdir -p /opt/engos/
 function set_permissions {
 echo "Setting directory and file permissions"
 	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/  /var/log/engos
-	
+	chown -R 22006  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
+	chown -R 22002	/var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
 	}
 
 function set_os_flavor {
