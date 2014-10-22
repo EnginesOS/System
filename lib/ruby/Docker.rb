@@ -186,7 +186,7 @@ class Docker
   def register_site(site_hash)     
  
      # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
-    ssh_cmd = "/opt/engos/etc/nginx/scripts/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+    ssh_cmd = "/opt/engos/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
     run_system(ssh_cmd)
     ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
     #run_system(ssh_cmd)
@@ -200,7 +200,7 @@ class Docker
          
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-    ssh_cmd = "/opt/engos/etc/nginx/scripts/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+    ssh_cmd = "/opt/engos/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
     run_system(ssh_cmd)
     ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
     return run_system(ssh_cmd)
@@ -277,8 +277,8 @@ class Docker
         end    
 
   def create_database  site_hash   
-
-  cmd = SysConfig.addDBServiceCmd + site_hash[:host] + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] 
+   name =  site_hash[:flavor]=database.flavor + "_server"
+    cmd = "docker exec " + name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\"" 
    puts(cmd)
    
      return run_system(cmd)
