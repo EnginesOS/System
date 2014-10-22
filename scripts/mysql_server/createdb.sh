@@ -18,5 +18,5 @@ SQL="${Q1}${Q2}${Q3}"
 
 #echo "$SQL"
 
-$MYSQL  -urma  -e "$SQL"
+$MYSQL  --socket=/opt/engos/run/services/mysql_server/run/mysqld.sock -urma  -e "$SQL"
 
