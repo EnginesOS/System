@@ -1,5 +1,9 @@
 #!/bin/bash
 pass="pass"
+mkdir /var/log/mysql
+chown mysql /var/log/mysql
+
+
  if ! test -f /var/lib/mysql/mysql
  then
 	/usr/bin/mysql_install_db
