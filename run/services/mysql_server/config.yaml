@@ -13,6 +13,11 @@ volumes:
   remotepath: "/var/lib/mysql"
   localpath: "/var/lib/engos/mysql"
   mapping_permissions: "rw"
+- !ruby/object:Volume
+  name: mysql
+  remotepath: "/var/run/mysqld/mysqld.sock"
+  localpath: "/opt/engos/run/services/mysql_server/run/mysqld.sock"
+  mapping_permissions: "rw"  
 port: 
 eports:
 - !ruby/object:WorkPort
