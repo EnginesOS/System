@@ -3,7 +3,7 @@
 mkdir -p /var/log/volmgr
 chown $ContUser.$CountGrp /var/log/volmgr
 
-service ssh start
+
 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete

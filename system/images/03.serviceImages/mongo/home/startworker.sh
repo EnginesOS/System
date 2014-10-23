@@ -1,6 +1,5 @@
 #!/bin/sh
 
-service ssh start
 
 service mongodb start
 
