@@ -516,11 +516,12 @@ class EngineBuilder
   def getwebport
     stef = File.open( get_basedir + "/home/stack.env","r")
     while line=stef.gets do
-      if line.include?("PORT")
+      if line.include?("PORT")        
         i= line.split('=')
-        @webPort= i[1]
+        @webPort= i[1].strip
       end
     end
+    
   end
 
   def read_values
