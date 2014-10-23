@@ -436,7 +436,7 @@ end
     
     nginx = EnginesOSapi.loadManagedService("nginx",self)
     nginxpid = nginx.container_pid
-    docker_cmd = "docker exec nginx kill -HUP " + nginxpid
+    docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
     p docker_cmd
     return run_system(docker_cmd)
   
