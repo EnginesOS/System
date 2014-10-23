@@ -54,7 +54,9 @@ class ManagedContainer < Container
  def container_pid
    if @container_pid == nil
      set_container_pid
+     p "set_container_pid"
    end
+   p @container_pid
    return @container_pid
  end
  
