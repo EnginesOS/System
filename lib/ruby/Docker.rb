@@ -432,9 +432,9 @@ end
      return container_logdetails
   end
   
-  def restart_nginx_process
-    
-    nginx = EnginesOSapi.loadManagedService("nginx",self)
+  def restart_nginx_process       
+    cmd= "ps ax |grep \"nginx: master\" |grep -v grep |cut -f1 -d\" \""
+    nginxpid system_cmd(cmd)
     nginxpid = nginx.container_pid
     docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
     p docker_cmd
