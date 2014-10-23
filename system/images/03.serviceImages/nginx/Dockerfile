@@ -15,4 +15,4 @@ ENV ContUser www-data
 ENV ContGrp www-data
 
 #CMD /home/init.sh
-CMD /usr/sbin/nginx 
+CMD service nginx start 
