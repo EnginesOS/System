@@ -298,7 +298,7 @@ echo run state $run
 
 #	rvm use --default $ruby_version
 	
-	a=`/usr/local/rbenv/shims/bundle exec rake secret </dev/random`
+	a=\`/usr/local/rbenv/shims/bundle exec rake secret </dev/random\`
 	
 	
 	echo "Starting with"
