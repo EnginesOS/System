@@ -18,7 +18,7 @@ volumes:
   remotepath: "/etc/nginx/sites-enabled/"
   localpath: "/opt/engos/etc/nginx/sites-enabled/"
   mapping_permissions: "ro" 
- - !ruby/object:Volume
+- !ruby/object:Volume
   name: sites_enabled
   remotepath: "/var/run/nginx/"
   localpath: "/opt/engos/run/services/nginx/run/nginx"
