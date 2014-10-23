@@ -45,7 +45,7 @@ class ManagedContainer < Container
    @last_error=""
    @last_result=""
    
-   @cont_userid=-1
+   @cont_userid="-1"
 #   @ro_groupid
 #   @rw_groupid
       
