@@ -25,7 +25,6 @@ echo running $docker_cmd
 $docker_cmd
 
 
-
 ssh_cmd="ssh -i  $NgnixID  rma@nginx.docker sudo sh /home/addsite.sh NAME test $PORT"
 echo running $ssh_cmd
 

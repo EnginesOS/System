@@ -7,5 +7,6 @@ ADD engines home/engines
 
 EXPOSE 3000
 
-
+RUN chown 2667 `find /var /usr/share /usr/local /home -user ruby`
+RUN /usr/sbin/usermod -u 2668 ruby
 
