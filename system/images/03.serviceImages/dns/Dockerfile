@@ -1,5 +1,5 @@
 FROM  enginesos/servicebase
-
+RUN echo "Y" | adduser -q --disabled-password --home /var/cache/bind -uid 22009 bind
 
 RUN apt-get -y install bind9
 

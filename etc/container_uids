@@ -8,6 +8,7 @@ nginx		nginx		22005
 mysql		mysql		22006
 volmgr		volmgr		22007
 mongo		mongo		22008
+bind		bind		22009
 
 
 #23000 -> applications assigned by volume manager
