@@ -9,4 +9,4 @@ ADD home /home
 ADD sudoers /etc/
 RUN chown 0 /etc/sudoers
 ADD volmgr.pub /home/volmgr/.ssh/authorized_keys
-RUN chown rma -R /home/volmgr/.ssh
+RUN chown volmgr -R /home/volmgr/.ssh
