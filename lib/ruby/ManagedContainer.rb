@@ -55,10 +55,8 @@ class ManagedContainer < Container
    if @container_pid == nil
      @container_pid = set_container_pid
       if @container_pid == false
-        @container_pid == -1
-      end
-        
-     p "set_container_pid"
+        @container_pid == "-1"
+      end            
    end
    p @container_pid
    return @container_pid
@@ -658,18 +656,8 @@ end
   end
 
     def set_container_pid
-     
-      if inspect_container == false
-          return false
-        end
-        output = JSON.parse(@last_result)
-      if output[0]["State"]["Pid"] != nil
-               pid = output[0]["State"]["Pid"].to_i
-       else
-         pid = -1
-      end
-      #    puts containerName + ":" + ip_str
-          return pid
+   return "-1"  
+   
       
     end
     
