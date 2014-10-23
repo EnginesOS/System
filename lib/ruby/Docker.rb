@@ -187,10 +187,12 @@ class Docker
  
      # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
     ssh_cmd = "/opt/engos/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-    run_system(ssh_cmd)
-    ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
+    result = run_system(ssh_cmd)
+    
+    
+    result = restart_nginx_process()
     #run_system(ssh_cmd)
-      return run_system(ssh_cmd)
+      return run_system(result)
   end
   def hash_to_site_str(site_hash)    
       
@@ -201,9 +203,10 @@ class Docker
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     #FIXME Should write site conf file via template (either standard or supplied with blueprint)
     ssh_cmd = "/opt/engos/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-    run_system(ssh_cmd)
-    ssh_cmd = "docker exec nginx /bin/sh -c \"service nginx reload\""
-    return run_system(ssh_cmd)
+    result = run_system(ssh_cmd)
+    result = restart_nginx_process()
+   
+    return run_system(result)
   end
   
   def add_monitor(site_hash)
@@ -427,4 +430,12 @@ end
      return container_logdetails
   end
   
+  def restart_nginx_process
+    
+    nginx = EnginesOSapi.loadManagedService("nginx",self)
+    nginxpid = nginx.container_pid
+    docker_cmd = "docker exec nginx kill -HUP " + nginxpid
+    return run_system(docker_cmd)
+  
+  end
   end

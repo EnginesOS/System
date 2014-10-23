@@ -51,6 +51,10 @@ class ManagedContainer < Container
       
  end
  
+ def container_pid
+   return @container_pid
+ end
+ 
  def http_and_https
    @http_and_https
  end
@@ -246,6 +250,7 @@ class ManagedContainer < Container
     end
     clear_error(ret_val)
     save_state()
+    set_container_pid
     
     return ret_val
   end
@@ -307,7 +312,8 @@ class ManagedContainer < Container
     end
     ret_val = false
     state = read_state()
-
+    @set_container_pid=-1
+    
     if state== "running"
       ret_val = @docker_api.stop_container   self
       deregister_registered
@@ -642,5 +648,21 @@ end
     end
   end
 
+    def set_container_pid
+     
+      if inspect_container == false
+          return false
+        end
+        output = JSON.parse(@last_result)
+      if output[0]["State"]["Pid"] 
+               pid = output[0]["State"]["Pid"].to_i
+       else
+         pid = -1
+      end
+      #    puts containerName + ":" + ip_str
+          return pid
+      
+    end
+    
 end
 
