@@ -192,7 +192,7 @@ class Docker
     
     result = restart_nginx_process()
     #run_system(ssh_cmd)
-      return run_system(result)
+      return result
   end
   def hash_to_site_str(site_hash)    
       
