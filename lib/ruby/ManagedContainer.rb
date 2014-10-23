@@ -45,7 +45,7 @@ class ManagedContainer < Container
    @last_error=""
    @last_result=""
    
-   @cont_userid="-1"
+   @cont_userid=-1
 #   @ro_groupid
 #   @rw_groupid
       
@@ -319,7 +319,7 @@ class ManagedContainer < Container
     end
     ret_val = false
     state = read_state()
-    @set_container_pid=-1
+    @set_container_pid="-1"
     
     if state== "running"
       ret_val = @docker_api.stop_container   self
