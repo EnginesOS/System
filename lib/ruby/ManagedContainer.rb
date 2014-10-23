@@ -53,7 +53,11 @@ class ManagedContainer < Container
  
  def container_pid
    if @container_pid == nil
-     set_container_pid
+     @container_pid = set_container_pid
+      if @container_pid == false
+        @container_pid == -1
+      end
+        
      p "set_container_pid"
    end
    p @container_pid
@@ -659,7 +663,7 @@ end
           return false
         end
         output = JSON.parse(@last_result)
-      if output[0]["State"]["Pid"] 
+      if output[0]["State"]["Pid"] != nil
                pid = output[0]["State"]["Pid"].to_i
        else
          pid = -1
