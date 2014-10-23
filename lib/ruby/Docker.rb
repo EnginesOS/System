@@ -438,7 +438,11 @@ end
     nginxpid = nginx.container_pid
     docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
     p docker_cmd
-    return run_system(docker_cmd)
+    if nginxpid.to_s != "-"    
+      return run_system(docker_cmd)
+    else
+      return false
+    end
   
   end
   end

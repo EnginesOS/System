@@ -162,6 +162,7 @@ class ManagedService < ManagedContainer
   def set_container_pid
  return -1  
  pid_file_name="/opt/engos/run/services/" + containerName + "/run/" + containerName + "/" + containerName + ".pid"
+   p pid_file_name
    if File.exists?(pid_file_name)   
     pid = IO.read(pid_file_name);
    else
