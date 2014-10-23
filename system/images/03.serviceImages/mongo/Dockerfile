@@ -6,10 +6,7 @@ RUN apt-get install -y mongodb-org
 
 ADD home home
 
-
-
 ENV ContUser mongo
 ENV ContGrp mongo
-
 
 CMD /home/init.sh
