@@ -7,7 +7,6 @@ RUN apt-get install -y mongodb-org
 ADD home home
 
 
-EXPOSE 22
 
 ENV ContUser mongo
 ENV ContGrp mongo
