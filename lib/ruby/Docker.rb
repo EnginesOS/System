@@ -206,7 +206,7 @@ class Docker
     result = run_system(ssh_cmd)
     result = restart_nginx_process()
    
-    return run_system(result)
+    return result
   end
   
   def add_monitor(site_hash)
