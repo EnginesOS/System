@@ -122,7 +122,7 @@ function make_dns_key {
 
 function generate_keys {
 echo "Generating system Keys"
-keys=" nagios mysql mgmt nginx backup pgsql mongo"
+keys=" nagios mgmt volmgr backup "
 
 	for key in $keys
 		do
