@@ -434,8 +434,8 @@ end
   
   def restart_nginx_process       
     cmd= "ps ax |grep \"nginx: master\" |grep -v grep |cut -f1 -d\" \""
-    nginxpid run_system(cmd)
-    nginxpid = nginx.container_pid
+    nginxpid = run_system(cmd)
+    
     docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
     p docker_cmd
     if nginxpid.to_s != "-"    
