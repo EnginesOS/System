@@ -207,9 +207,10 @@ mkdir -p /opt/engos/
 function set_permissions {
 echo "Setting directory and file permissions"
 	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/  /var/log/engos
-	chown -R 22006  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
-	chown -R 22002	/var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
-	chown -R 22005 /var/log/engos/services/nginx /opt/engos/run/services/nginx/run/nginx
+	chown -R 22006.22006  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
+	chown -R 22002.22002	/var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
+	chown -R 22005.22005 /var/log/engos/services/nginx /opt/engos/run/services/nginx/run/nginx
+    chown -R 22008.22008 /var/lib/engos/mongo /var/log/engos/services/mongo	/opt/engos/run/services/mongo_server/run/mongo/
 	
 	}
 

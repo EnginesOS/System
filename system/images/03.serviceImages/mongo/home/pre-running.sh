@@ -1,4 +1,4 @@
 #!/bin/bash
 
-chown -R mongodb /var/lib/mongodb
+chown -R mongodb.mongodb /data/db
 

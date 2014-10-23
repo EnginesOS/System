@@ -1,8 +1,8 @@
 #!/bin/sh
 
 
-service mongodb start
 
+start mongod    
 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete

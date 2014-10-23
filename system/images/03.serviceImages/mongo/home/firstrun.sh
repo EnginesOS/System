@@ -12,6 +12,6 @@ pass="pass"
 	# /usr/bin/mysqladmin -u root  password '$pass'
  #fi
  cat /etc/mongodb.conf |sed "/127.0.0.1/s//0.0.0.0/" /tmp/.t
- mv /tmp/.t /etc/mongodb.conf
+ #mv /tmp/.t /etc/mongodb.conf
  
 	 
