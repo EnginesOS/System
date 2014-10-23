@@ -187,6 +187,7 @@ class Docker
  
      # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
     ssh_cmd = "/opt/engos/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+      p ssh_cmd
     result = run_system(ssh_cmd)
     
     
@@ -203,6 +204,7 @@ class Docker
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     #FIXME Should write site conf file via template (either standard or supplied with blueprint)
     ssh_cmd = "/opt/engos/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+      p ssh_cmd
     result = run_system(ssh_cmd)
     result = restart_nginx_process()
    
