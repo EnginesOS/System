@@ -10,7 +10,7 @@ image: enginesos/mongo
 volumes:
 - !ruby/object:Volume
   name: mongo
-  remotepath: "/var/lib/mongodb/"
+  remotepath: "/data/db/"
   localpath: "/var/lib/engos/mongo"
   mapping_permissions: "rw"
 port: 
