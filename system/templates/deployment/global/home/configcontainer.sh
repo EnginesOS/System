@@ -12,7 +12,8 @@ Engines_HOME=/home/app
 	if test -f fs.env
         then
          . ./fs.env
-        FS=$CONTFSVolHome/$VOLDIR/
+        FS=$CONTFSVolHome
+        #FS=$CONTFSVolHome/$VOLDIR/
 		mkdir -p $CONTFSVolHome
 	fi
 

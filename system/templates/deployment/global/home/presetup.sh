@@ -107,10 +107,13 @@ echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_
 			if test ! -z $APP_SRC_DIR
 			  then
                     if test -n $APP_SRC_DIR 
-                            then
+                        then
                             echo "Moving to Destination"                                                        
                             cp -rfp $APP_SRC_DIR/* .
-                            cp -rfp $APP_SRC_DIR/.g* .
+                	            if test "$EXTRACT_CMD" = "git"
+									then
+                            			cp -rfp $APP_SRC_DIR/.git .
+                            	fi
                             rm -fr $APP_SRC_DIR
                     fi
 			   fi
@@ -139,21 +142,21 @@ done
 	
 	
 	
-	if test -f /home/uid
-	then
-		cont_user=`cat /home/uid`
-	else
-		cont_user="www-data"
-	fi
+#	if test -f /home/uid
+#	then
+#		cont_user=`cat /home/uid`
+#	else
+#		cont_user="www-data"
+#	fi
+#	
+#	if test -f /home/gid
+#	then
+#		cont_grp=`cat /home/gid`
+#	else
+#		cont_grp="www-data"
+#	fi
 	
-	if test -f /home/gid
-	then
-		cont_grp=`cat /home/gid`
-	else
-		cont_grp="www-data"
-	fi
 	
-	
-chown -R ${cont_user}.${cont_grp} /home/app/
+chown -R ${ContUser}.${ContGrp} /home/app/
 
 
