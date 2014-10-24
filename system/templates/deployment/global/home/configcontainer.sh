@@ -289,24 +289,18 @@ echo run state $run
 	
 	echo "Procfile Written "
 	echo "#!/bin/bash
-	#. /etc/profile.d/rvm.sh
-	cd /home/app
-	#rvm use $ruby_version
+	
+	cd /home/app	
 
 	DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
-
-	export DATABASE_URL GEM_HOME GEM_PATH MY_RUBY_HOME RUBY_VERSION PATH
-
-#	rvm use --default $ruby_version
 	
-	a=\`/usr/local/rbenv/shims/bundle exec rake secret </dev/random\`
+	SECRET_KEY_BASE=\`/usr/local/rbenv/shims/bundle exec rake secret </dev/random\`
 	
-	cd /home/app
 	
 	echo "Starting with"
 	echo "env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$a /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start"
-	
-	env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$a /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
+	export DATABASE_URL SECRET_KEY_BASE PORT 
+	/usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 
 	" > Procfile.sh
 	
