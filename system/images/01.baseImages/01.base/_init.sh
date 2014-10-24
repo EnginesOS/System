@@ -11,13 +11,14 @@ fi
 
 echo  u $ContUser  g $ContGrp  
 
-adduser -q --home /home/app --disabled-password  $ContUser
-addgroup $ContGrp
+#adduser -q --home /home/app --disabled-password  $ContUser
+#addgroup $ContGrp
 
 if test -f /home/fs.env
         then
 		. /home/fs.env
                 chown -R $ContUser.$ContGrp  $CONTFSVolHome
+                echo "chown -R $ContUser.$ContGrp  $CONTFSVolHome"
 fi
 
 chown -R  $ContUser.$ContGrp /home/app
