@@ -157,6 +157,6 @@ done
 #	fi
 	
 	
-chown -R ${ContUser}.${ContGrp} /home/app/
+#chown -R ${ContUser}.${ContGrp} /home/app/
 
 
