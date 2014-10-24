@@ -399,7 +399,7 @@ class EngineBuilder
     
     volumes=String.new
     @vols.each do |vol|
-      volumes +=  " -v " + vol.localpath + "/" + vol.name + ":/" + vol.remotepath + "/" + vol.name
+      volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
     end   
     logvol =  get_framework_logging
     volumes += logvol
