@@ -22,7 +22,7 @@ if test -f /home/fs.env
 fi
 
 chown -R  $ContUser.$ContGrp /home/app
-
+chown -R  $ContUser.$ContGrp `cat /home/LOG_DIR`
 
 
 su -l -s /bin/bash $ContUser /home/configcontainer.sh
