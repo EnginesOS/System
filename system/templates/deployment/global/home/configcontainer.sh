@@ -301,6 +301,7 @@ echo run state $run
 	
 	a=\`/usr/local/rbenv/shims/bundle exec rake secret </dev/random\`
 	
+	cd /home/app
 	
 	echo "Starting with"
 	echo "env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$a /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start"
