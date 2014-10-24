@@ -4,7 +4,7 @@
  if test -f /home/fs.env
 	then 
 		. /home/fs.env
- chown -R www-data /home/app/fs/$VOLDIR
+ chown -R www-data $CONTFSVolHome
 
 	fi
 	
