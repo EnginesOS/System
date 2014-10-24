@@ -15,6 +15,7 @@ Engines_HOME=/home/app
         FS=$CONTFSVolHome
         #FS=$CONTFSVolHome/$VOLDIR/
 		mkdir -p $CONTFSVolHome
+		echo "mkdir -p $CONTFSVolHome"
 	fi
 
 
