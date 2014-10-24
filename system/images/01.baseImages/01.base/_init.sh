@@ -23,6 +23,13 @@ fi
 
 chown -R  $ContUser.$ContGrp /home/app
 chown -R  $ContUser.$ContGrp `cat /home/LOG_DIR`
+if test -f /home/app.env
+	then
+		. /home/app.env
+		export ` cat /home/app.env |grep = |cut -f1 -d=`
+fi
+ 
 
+ 
 
 su -l -s /bin/bash $ContUser /home/configcontainer.sh
