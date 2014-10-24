@@ -14,5 +14,4 @@ EXPOSE 443
 ENV ContUser www-data
 ENV ContGrp www-data
 
-#CMD /home/init.sh
 CMD /home/startworker.sh

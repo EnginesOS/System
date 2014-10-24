@@ -2,7 +2,7 @@
 
 chown -R www-data /var/log/nginx/ 
 
-service nginx start
+nginx
 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
