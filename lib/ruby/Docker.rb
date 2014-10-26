@@ -433,7 +433,7 @@ end
   end
   
   def restart_nginx_process       
-    cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |cut -f1 -d\" \""
+    cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
     #nginxpid = run_system(cmd)
     p cmd
     nginxpid= %x<#{cmd}>
