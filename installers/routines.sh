@@ -132,8 +132,11 @@ keys=" nagios mgmt volmgr backup "
 	      mv $key /opt/engos/etc/keys/
 	      cp $key.pub /opt/engos/system/images/03.serviceImages/$key/
 	   done
-	   cp mgmt.pub /opt/engos/system/images/04.systemApps/mgmt/
 	   
+	   #FIXME add Intelligence to above loop ie use find
+	   cp mgmt.pub /opt/engos/system/images/04.systemApps/mgmt/
+	   cp nagios.pub /opt/engos/system/images/04.systemApps/nagios/
+	     
 #	ssh-keygen -q -N "" -f nagios
 #	ssh-keygen -q -N "" -f mysql
 #	ssh-keygen -q -N "" -f mgmt
