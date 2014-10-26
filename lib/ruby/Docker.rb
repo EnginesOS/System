@@ -438,6 +438,7 @@ end
     p cmd
     nginxpid= %x<#{cmd}>
     p  nginxpid
+    #FIXME read from pid file this is just silly
     docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
     p docker_cmd
     if nginxpid.to_s != "-"    
