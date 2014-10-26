@@ -202,6 +202,12 @@ mkdir -p  /var/log/engos/services/dns/
 mkdir -p /var/log/engos/services/smtp/
 mkdir -p /var/log/engos/containers/
 mkdir -p /opt/engos/
+mkdir -p  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
+mkdir -p /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
+mkdir -p /var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
+mkdir -p /var/log/engos/services/nginx /opt/engos/run/services/nginx/run/nginx
+mkdir -p /var/lib/engos/mongo /var/log/engos/services/mongo	/opt/engos/run/services/mongo_server/run/mongo/
+
 }
 
 function set_permissions {
