@@ -503,7 +503,7 @@ class EngineBuilder
       packages = packages + package["name"] + " "
     end
     if packages.length >1
-      dfile.puts("RUN apt-get install -y " + packages )
+      dfile.puts("\nRUN apt-get install -y " + packages )
     end
     @workerPorts.each do |port|
       dfile.puts("EXPOSE " + port.port.to_s)
