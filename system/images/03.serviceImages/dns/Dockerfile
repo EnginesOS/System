@@ -16,9 +16,9 @@ RUN chown bind /var/run/named
 RUN chown bind /var/lib/bind/engines
 
 
-ADD home home
+COPY home home
 
-CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g
+#CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g
 
 ENV ContUser bind
 ENV ContGrp bind
