@@ -42,8 +42,11 @@ cd /opt/engos/
 mv /opt/engos /opt/engines
 mv /var/log/engos /var/log/engines
 mv /var/lib/engos /var/lib/engines
-
-
+		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
+	     wget -qO- https://get.docker.io/gpg | apt-key add -
+		 apt-get -y update
+		 wget -qO- https://get.docker.io/gpg | apt-key add -
+		 apt-get -y  --force-yes install lxc-docker
 
 make_dirs
 set_permissions
