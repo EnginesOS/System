@@ -5,7 +5,7 @@ conf_self_start: true
 last_error: 
 memory: '16'
 hostName: volmanager
-domainName: engines.local
+domainName: 
 environments: []
 image: enginesos/fs
 volumes: []
