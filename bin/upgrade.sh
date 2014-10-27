@@ -35,12 +35,15 @@ echo "Setting directory and file permissions"
 	
 	}
 
+
 cd /opt/engos/
 #su dockuser git pull
 
 mv /opt/engos /opt/engines
 mv /var/log/engos /var/log/engines
 mv /var/lib/engos /var/lib/engines
+
+
 
 make_dirs
 set_permissions
@@ -49,6 +52,9 @@ cat ~dockuser/.profile |sed  "s/engos/engines/" >/tmp/t
 
 cp /tmp/t ~dockuser/.profile
 chown dockuser  ~dockuser/.profile
+rvm alias  create default ruby-2.1.2
+
+/opt/engines/bin/buildimages.sh
 
 su -l dockuser  /opt/engines/bin/engines stop
 su -l dockuser  /opt/engines/bin/eservices stop
@@ -58,7 +64,6 @@ docker stop `docker ps -a | grep -v CONTAINER|awk '{print $1}' `
 docker rm `docker ps -a | grep -v CONTAINER |awk '{print $1}' `
 
 
-rvm alias  create default ruby-2.1.2
 
  su -l dockuser  /opt/engines/bin/eservices create
  su -l dockuser  /opt/engines/bin/engines create
