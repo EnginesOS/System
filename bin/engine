@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/opt/engos/bin/engines.rb engine $1 $2 $3 $4
+/opt/engines/bin/engines.rb engine $1 $2 $3 $4

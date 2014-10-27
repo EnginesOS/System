@@ -1,11 +1,11 @@
-require "/opt/engos/lib/ruby/ManagedContainer.rb"
-require "/opt/engos/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/SysConfig.rb"
 
-require "/opt/engos/lib/ruby/EngineBuilder.rb"
-require "/opt/engos/lib/ruby/PermissionRights.rb"
-require "/opt/engos/lib/ruby/EnginesOSapiResult.rb"
-require "/opt/engos/lib/ruby/ManagedServices.rb"
-require "/opt/engos/lib/ruby/prefs/SystemPreferences.rb"
+require "/opt/engines/lib/ruby/EngineBuilder.rb"
+require "/opt/engines/lib/ruby/PermissionRights.rb"
+require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
+require "/opt/engines/lib/ruby/ManagedServices.rb"
+require "/opt/engines/lib/ruby/prefs/SystemPreferences.rb"
 require 'objspace'
 
 class EnginesOSapi

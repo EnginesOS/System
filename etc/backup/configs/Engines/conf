@@ -1,4 +1,4 @@
-source '/backup_src/engos'
-TARGET='file:///var/lib/engos/local_backup_dests/'
+source '/backup_src/engines'
+TARGET='file:///var/lib/engines/local_backup_dests/'
 TARGET_USER=''
 TARGET_PASS=''

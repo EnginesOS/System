@@ -1,13 +1,13 @@
 #!/bin/bash
 
 LOGFILE=/tmp/updater.log
-. /opt/engos/installers/routines.sh
+. /opt/engines/installers/routines.sh
 
  make_dirs
  
 if test ! -f /tmp/updater.updated
 then
-	cd /opt/engos
+	cd /opt/engines
 	echo "Downloading changes"
 	git pull >>$LOGFILE 
 	touch /tmp/updater.updated
@@ -33,7 +33,7 @@ setup_mgmt_git
  
 
 echo "Building Images"
- /opt/engos/bin/buildimages.sh >>$LOGFILE 
+ /opt/engines/bin/buildimages.sh >>$LOGFILE 
  
 remove_services
 create_services
@@ -45,7 +45,7 @@ docker stop mgmt
 docker rm mgmt
 
 echo "Building System Gui"
-/opt/engos/bin/mgmt_startup.sh  >>$LOGFILE 
+/opt/engines/bin/mgmt_startup.sh  >>$LOGFILE 
 sleep 180
 hostname=`hostname`
 echo "Congratulations Engines OS is now up to date please go to https://${hostname}:88/"

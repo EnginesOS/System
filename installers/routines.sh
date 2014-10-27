@@ -5,8 +5,8 @@ RUBY_VER=2.1.2
 
 function configure_git {
 	
-	mkdir -p /opt/engos/
-	cd /opt/engos/
+	mkdir -p /opt/engines/
+	cd /opt/engines/
 	git init 
 	
 	echo '[core]
@@ -35,7 +35,7 @@ function configure_git {
   #apt-get -y  --force-yes upgrade
   
   echo "Adding startup script"
-		 cat /etc/rc.local | sed "/^exit.*$/s//su -l dockuser \/opt\/engos\/bin\/mgmt_startup.sh/" > /tmp/rc.local
+		 cat /etc/rc.local | sed "/^exit.*$/s//su -l dockuser \/opt\/engines\/bin\/mgmt_startup.sh/" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
@@ -74,7 +74,7 @@ echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
 		 adduser -q --uid 21000 --ingroup docker  -gecos "Engines OS User"  --home /home/dockuser --disabled-password dockuser
 		 
-		echo "PATH=\"/opt/engos/bin:$PATH\"" >>~dockuser/.profile 
+		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~dockuser/.profile 
 		
 echo "Installing ruby"
 		\curl -L https://get.rvm.io | bash -s stable 
@@ -94,8 +94,8 @@ echo "Installing ruby"
 		#/usr/local/rvm/bin/rvm gemset create 	rspec
 		
 	
-echo "*/10 * * * * /opt/engos/bin/engines.sh engine check_and_act all >>/opt/engos/logs/engines/restarts.log
-*/10 * * * * /opt/engos/bin/engines.sh  service  check_and_act all >>/opt/engos/logs/services/restarts.log" >/tmp/ct
+echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
+*/10 * * * * /opt/engines/bin/engines.sh  service  check_and_act all >>/opt/engines/logs/services/restarts.log" >/tmp/ct
 crontab -u dockuser /tmp/ct
 rm /tmp/ct
 
@@ -129,13 +129,13 @@ keys=" nagios mgmt volmgr backup "
 		  ssh-keygen -q -N "" -f $key
 	      cat $key.pub | awk '{ print $1 " " $2}' >$key.p
 	      mv  $key.p $key.pub
-	      mv $key /opt/engos/etc/keys/
-	      cp $key.pub /opt/engos/system/images/03.serviceImages/$key/
+	      mv $key /opt/engines/etc/keys/
+	      cp $key.pub /opt/engines/system/images/03.serviceImages/$key/
 	   done
 	   
 	   #FIXME add Intelligence to above loop ie use find
-	   cp mgmt.pub /opt/engos/system/images/04.systemApps/mgmt/
-	   cp nagios.pub /opt/engos/system/images/04.systemApps/nagios/
+	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
+	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
 	     
 #	ssh-keygen -q -N "" -f nagios
 #	ssh-keygen -q -N "" -f mysql
@@ -162,14 +162,14 @@ keys=" nagios mgmt volmgr backup "
 #	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
 #	mv mysql.p  mysql.pub 	
 #	
-#	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engos/etc/keys/
-#	mv pgsql.pub /opt/engos/system/images/03.serviceImages/pgsql/
-#	mv mysql.pub /opt/engos/system/images/03.serviceImages/mysql/
-#	mv nagios.pub /opt/engos/system/images/04.systemApps/nagios/
-#	mv nginx.pub /opt/engos/system/images/03.serviceImages/nginx/
-#	mv mgmt.pub  /opt/engos/system/images/04.systemApps/mgmt/
-#	mv backup.pub /opt/engos/system/images/03.serviceImages/backup
-#	mv mongo.pub /opt/engos/system/images/03.serviceImages/mongo
+#	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engines/etc/keys/
+#	mv pgsql.pub /opt/engines/system/images/03.serviceImages/pgsql/
+#	mv mysql.pub /opt/engines/system/images/03.serviceImages/mysql/
+#	mv nagios.pub /opt/engines/system/images/04.systemApps/nagios/
+#	mv nginx.pub /opt/engines/system/images/03.serviceImages/nginx/
+#	mv mgmt.pub  /opt/engines/system/images/04.systemApps/mgmt/
+#	mv backup.pub /opt/engines/system/images/03.serviceImages/backup
+#	mv mongo.pub /opt/engines/system/images/03.serviceImages/mongo
 #	
 	make_dns_key
 	
@@ -183,43 +183,43 @@ keys=" nagios mgmt volmgr backup "
 		done
 			
 	echo DNS key $key
-	cat /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engos/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cp ddns.* /opt/engos/system/images/01.baseImages/01.base/
-	mv ddns.* /opt/engos/etc/keys/
+	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
+	cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
+	mv ddns.* /opt/engines/etc/keys/
 	
 }
 
 function make_dirs {
-mkdir -p  /var/lib/engos/backup_paths
-mkdir -p  /var/lib/engos/fs
+mkdir -p  /var/lib/engines/backup_paths
+mkdir -p  /var/lib/engines/fs
 mkdir -p  /home/dockuser/droplets/deployment/deployed/
-mkdir -p  /var/lib/engos/pgsql
-mkdir -p  /var/lib/engos/mysql
-mkdir -p  /var/lib/engos/mongo
-mkdir -p  /var/log/engos/services/nginx/nginx
-mkdir -p  /var/log/engos/services/backup
-mkdir -p  /var/log/engos/services/mgmt
-mkdir -p  /var/log/engos/services/pgsql/
-mkdir -p  /var/log/engos/services/mysql/
-mkdir -p  /var/log/engos/services/dns/
-mkdir -p /var/log/engos/services/smtp/
-mkdir -p /var/log/engos/containers/
-mkdir -p /opt/engos/
-mkdir -p  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
-mkdir -p /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
-mkdir -p /var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
-mkdir -p /var/log/engos/services/nginx /opt/engos/run/services/nginx/run/nginx
-mkdir -p /var/lib/engos/mongo /var/log/engos/services/mongo	/opt/engos/run/services/mongo_server/run/mongo/
+mkdir -p  /var/lib/engines/pgsql
+mkdir -p  /var/lib/engines/mysql
+mkdir -p  /var/lib/engines/mongo
+mkdir -p  /var/log/engines/services/nginx/nginx
+mkdir -p  /var/log/engines/services/backup
+mkdir -p  /var/log/engines/services/mgmt
+mkdir -p  /var/log/engines/services/pgsql/
+mkdir -p  /var/log/engines/services/mysql/
+mkdir -p  /var/log/engines/services/dns/
+mkdir -p /var/log/engines/services/smtp/
+mkdir -p /var/log/engines/containers/
+mkdir -p /opt/engines/
+mkdir -p  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
+mkdir -p /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
+mkdir -p /var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
+mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
+mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 
 }
 
 function set_permissions {
 echo "Setting directory and file permissions"
-	chown -R dockuser /opt/engos/ /var/lib/engos ~dockuser/  /var/log/engos
-	chown -R 22006.22006  /var/lib/engos/mysql /var/log/engos/services/mysql/ /opt/engos/run/services/mysql_server/run/mysqld
-	chown -R 22002.22002	/var/lib/engos/psql /var/log/engos/services/psql	/opt/engos/run/services/pgsql_server/run/postgres
-	chown -R 22005.22005 /var/log/engos/services/nginx /opt/engos/run/services/nginx/run/nginx
-    chown -R 22008.22008 /var/lib/engos/mongo /var/log/engos/services/mongo	/opt/engos/run/services/mongo_server/run/mongo/
+	chown -R dockuser /opt/engines/ /var/lib/engines ~dockuser/  /var/log/engines
+	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
+	chown -R 22002.22002	/var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
+	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
+    chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	
 	}
 
@@ -227,7 +227,7 @@ function set_os_flavor {
 echo "Configuring OS Specific Dockerfiles"
 	if test `uname -v |grep -i ubuntu |wc -c` -gt 0
 	then
-		files=`find /opt/engos/system/images/ -name "*.ubuntu"`
+		files=`find /opt/engines/system/images/ -name "*.ubuntu"`
 			for file in $files
 				do
 					new_name=`echo $file | sed "/.ubuntu/s///"`
@@ -251,13 +251,13 @@ echo "Configuring OS Specific Dockerfiles"
 
 function create_services {
 echo "Creating and startingg Engines OS Services"
-	 /opt/engos/bin/engines.rb service create dns
+	 /opt/engines/bin/engines.rb service create dns
 	sleep 30
-	 /opt/engos/bin/engines.rb service create mysql_server
-	 /opt/engos/bin/engines.rb service create nginx
-	#su -l dockuser /opt/engos/bin/engines.rb service create monit
-	 /opt/engos/bin/engines.rb service create cAdvisor
-	 /opt/engos/bin/engines.rb service create backup
+	 /opt/engines/bin/engines.rb service create mysql_server
+	 /opt/engines/bin/engines.rb service create nginx
+	#su -l dockuser /opt/engines/bin/engines.rb service create monit
+	 /opt/engines/bin/engines.rb service create cAdvisor
+	 /opt/engines/bin/engines.rb service create backup
 }
 function remove_services {
 echo "Creating and startingg Engines OS Services"
@@ -269,8 +269,8 @@ docker rm cAdvisor mysql_server backup nginx dns mgmt
 function generate_ssl {
 echo "Generating Self Signed Cert"
 
-mkdir -p /opt/engos/etc/ssl/keys/
-mkdir -p /opt/engos/etc/ssl/certs/
+mkdir -p /opt/engines/etc/ssl/keys/
+mkdir -p /opt/engines/etc/ssl/certs/
 
 openssl genrsa -des3 -out server.key 2048
  openssl rsa -in server.key -out server.key.insecure
@@ -278,8 +278,8 @@ openssl genrsa -des3 -out server.key 2048
   mv server.key.insecure server.key
   openssl req -new -key server.key -out server.csr
   openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
-  mv server.key /opt/engos/etc/ssl/keys/engines.key
-  mv server.crt /opt/engos/etc/ssl/certs/engines.crt
+  mv server.key /opt/engines/etc/ssl/keys/engines.key
+  mv server.crt /opt/engines/etc/ssl/certs/engines.crt
    
    rm server.csr  server.key.secure
   
@@ -287,7 +287,7 @@ openssl genrsa -des3 -out server.key 2048
 
 function setup_mgmt_git {
 echo "Seeding Mgmt Application source from repository"
-	 cd /opt/engos/system/images/04.systemApps/mgmt/home/app
+	 cd /opt/engines/system/images/04.systemApps/mgmt/home/app
 	  if test ! -f .git/config
 		then
 			git init

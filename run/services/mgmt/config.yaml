@@ -23,19 +23,19 @@ volumes:
   localpath: "/usr/bin/docker"
   mapping_permissions: ro
 - !ruby/object:Volume
-  name: engos
-  remotepath: "/opt/engos"
-  localpath: "/opt/engos"
+  name: engines
+  remotepath: "/opt/engines"
+  localpath: "/opt/engines"
   mapping_permissions: rw
 - !ruby/object:Volume
-  name: engosfs
-  remotepath: "/var/lib/engos/fs"
-  localpath: "/var/lib/engos/fs"
+  name: enginesfs
+  remotepath: "/var/lib/engines/fs"
+  localpath: "/var/lib/engines/fs"
   mapping_permissions: rw
 - !ruby/object:Volume
-  name: engoslogs
-  remotepath: "/var/log/engos"
-  localpath: "/var/log/engos"
+  name: engineslogs
+  remotepath: "/var/log/engines"
+  localpath: "/var/log/engines"
   mapping_permissions: rw
 port: 
 eports:

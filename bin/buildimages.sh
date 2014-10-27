@@ -1,6 +1,6 @@
 #/bin/sh
 
-. /opt/engos/etc/scripts.env
+. /opt/engines/etc/scripts.env
 
 
 

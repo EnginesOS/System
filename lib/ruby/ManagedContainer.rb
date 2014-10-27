@@ -3,11 +3,11 @@ require 'fileutils'
 require 'yaml'
 require "rubygems"
 require "json"
-require "/opt/engos/lib/ruby/SysConfig.rb"
-require "/opt/engos/lib/ruby/ContainerStatistics.rb"
-require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
-require "/opt/engos/lib/ruby/Container.rb"
-require "/opt/engos/lib/ruby/Docker.rb"
+require "/opt/engines/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/ContainerStatistics.rb"
+require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
+require "/opt/engines/lib/ruby/Container.rb"
+require "/opt/engines/lib/ruby/Docker.rb"
 
 require 'objspace'
 

@@ -1,4 +1,4 @@
-require "/opt/engos/lib/ruby/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require 'objspace'
 
 class ManagedService < ManagedContainer

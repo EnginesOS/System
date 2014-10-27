@@ -16,12 +16,12 @@ protos=`echo $1 $2  |cut -f4 -d:`
  do
 	if test "https" = $proto
 		then
-		 	if test -f /opt/engos/etc/nginx/ssl/certs/$fqdn.crt
+		 	if test -f /opt/engines/etc/nginx/ssl/certs/$fqdn.crt
 		 		then
 		 			certname=$fqdn
 		 		else
 		 			dn=`echo $fqdn | awk -F.  '{for(i=1;i<2;i++) $i="";print}' |tr ' ' '.' |sed "/./s///"`
-		 			if test -f /opt/engos/etc/nginx/ssl/certs/$dn.crt
+		 			if test -f /opt/engines/etc/nginx/ssl/certs/$dn.crt
 		 				then
 		 					certname=$dn
 		 				else
@@ -32,8 +32,8 @@ protos=`echo $1 $2  |cut -f4 -d:`
 	fi	
 		
 
-cat /opt/engos/etc/nginx/tmpls/${proto}_site.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/${proto}_$fqdn.site
-cp /tmp/${proto}_$fqdn.site /opt/engos/etc/nginx/sites-enabled/
+cat /opt/engines/etc/nginx/tmpls/${proto}_site.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/${proto}_$fqdn.site
+cp /tmp/${proto}_$fqdn.site /opt/engines/etc/nginx/sites-enabled/
 
 done
 
@@ -42,7 +42,7 @@ done
 		if test ! -f /tmp/http_$fqdn.site
 			then
 				cat /home/tmpls/http_to_https.tmpl | sed "/CERTNAME/s//$certname/"  | sed "/SERVER/s//$host/" | sed "/FQDN/s//$fqdn/" | sed "/PORT/s//$port/" >/tmp/http_$fqdn.site
-				cp /tmp/http_$fqdn.site /opt/engos/etc/nginx/sites-enabled/
+				cp /tmp/http_$fqdn.site /opt/engines/etc/nginx/sites-enabled/
 		fi
 fi
 		

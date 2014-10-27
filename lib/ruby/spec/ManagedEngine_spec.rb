@@ -13,7 +13,7 @@ describe ManagedEngine do
   before :each do
     volumes = Array.new
     permissions = PermissionRights.new("owner","ro_group","rw_group")
-    volume = Volume.new("test","/opt/engos/","/fs","rw",permissions)
+    volume = Volume.new("test","/opt/engines/","/fs","rw",permissions)
     volumes.push volume
     eport = WorkPort.new("name",888,888,true,"tcp")
     eports = Array.new

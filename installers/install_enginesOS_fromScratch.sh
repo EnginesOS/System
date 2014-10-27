@@ -5,7 +5,7 @@ RUBY_VER=2.1.2
 export RUBY_VER
 
 . /tmp/203.14.203.141/EnginesInstaller/routines.sh
-. /opt/engos/installers/routines.sh
+. /opt/engines/installers/routines.sh
 
 
 dpkg-reconfigure tzdata

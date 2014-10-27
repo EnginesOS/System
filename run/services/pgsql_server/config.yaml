@@ -11,7 +11,7 @@ volumes:
 - !ruby/object:Volume
   name: pgsql
   remotepath: "/var/lib/postgresql/"
-  localpath: "/var/lib/engos/pgsql"
+  localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
 port: 
 eports:

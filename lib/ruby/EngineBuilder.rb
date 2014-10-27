@@ -1,10 +1,10 @@
 #!/usr/local/rvm/rubies/ruby-2.1.1/bin/ruby
-require "/opt/engos/lib/ruby/ManagedContainer.rb"
-require "/opt/engos/lib/ruby/ManagedContainerObjects.rb"
-require "/opt/engos/lib/ruby/ManagedEngine.rb"
-require "/opt/engos/lib/ruby/ManagedServices.rb"
+require "/opt/engines/lib/ruby/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
+require "/opt/engines/lib/ruby/ManagedEngine.rb"
+require "/opt/engines/lib/ruby/ManagedServices.rb"
 
-require "/opt/engos/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/SysConfig.rb"
 require "rubygems"
 require "git"
 require 'fileutils'

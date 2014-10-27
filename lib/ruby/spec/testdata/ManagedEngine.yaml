@@ -21,7 +21,7 @@ volumes:
 - !ruby/object:Volume
   name: test
   remotepath: "/fs"
-  localpath: "/opt/engos/"
+  localpath: "/opt/engines/"
   mapping_permissions: rw
   vol_permissions: !ruby/object:PermissionRights
     owner: owner

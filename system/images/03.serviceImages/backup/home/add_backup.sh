@@ -50,7 +50,7 @@ dest_proto=`echo $3 |cut -f1 -d:`
         if test $dest_proto = "file"
                 then
                  path=`echo $3 |cut -f4 -d:`
-                  dest=/var/lib/engos/local_backup_dests/$path
+                  dest=/var/lib/engines/local_backup_dests/$path
           else
                 first=`echo $3 |cut -f1 -d@`
                 user=`echo $first |cut -f2 -d:`
