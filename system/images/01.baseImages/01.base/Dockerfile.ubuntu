@@ -10,6 +10,6 @@ ADD ddns.key /etc/
 ADD ddns.private /etc/
 ADD dns-init.sh /home/
 ADD init.sh /home/
-ADD _init.sh /home/
+#ADD _init.sh /home/
 
 CMD /bin/bash /home/init.sh
