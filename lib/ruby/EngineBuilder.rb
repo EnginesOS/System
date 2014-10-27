@@ -33,6 +33,7 @@ class EngineBuilder
     @webPort=80
     @vols=Array.new  
     @environments=Array.new
+p env
     env = Hash.new
     #test code
       env["Title"]="User Entered Title"
