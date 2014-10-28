@@ -12,7 +12,12 @@ environments:
  value: bind
  setatrun: false
 image: enginesos/dns
-volumes: []
+volumes: 
+- !ruby/object:Volume
+  name: config
+  remotepath: "/etc/bind/engines"
+  localpath: "/opt/engines/etc/dns/config"
+  mapping_permissions: "ro"
 eports:
 - !ruby/object:WorkPort
   name: dns
