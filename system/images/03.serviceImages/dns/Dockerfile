@@ -8,9 +8,9 @@ RUN mkdir -p /var/run/named
 
 ADD named.conf.local /etc/bind/named.conf.local
 ADD named.conf.default-zones.ad /etc/
-ADD named.conf.logging /etc/bind/named.conf.logging
+
 RUN cat /etc/named.conf.default-zones.ad >> /etc/bind/named.conf.default-zones
-ADD engines.local.domain /var/lib/bind/engines/engines.dnsrecords
+ADD engines.internal.domain /var/lib/bind/engines/engines.dnsrecords
 
 RUN chown bind /var/run/named
 RUN chown bind /var/lib/bind/engines

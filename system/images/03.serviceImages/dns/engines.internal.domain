@@ -1,12 +1,12 @@
-@  IN SOA engines.local. root.engines.local. (
+@  IN SOA engines.internal. root.engines.internal. (
                 9999 ; serial
                 7200 ; refresh (2 hrs)
                 120 ; retry (2 mins)
                 604800 ; expire (1 weeks)
                 60 ; minimum (1 min)
         )
-        IN      NS      ns.engines.local.
-        IN      NS      local.engines.local.
+        IN      NS      ns.engines.internal.
+        IN      NS      local.engines.internal.
 
 
 local           A       127.0.0.1

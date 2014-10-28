@@ -1,12 +1,12 @@
 
 class SysConfig
 
-  @@addSiteCmd="ssh -i   /opt/engines/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.engines.local sudo sh /home/addsite.sh"
-  @@rmSiteCmd="ssh -i  /opt/engines/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.engines.local sudo sh /home/rmsite.sh"
-  @@addSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.local sudo sh /home/addsite.sh"
-  @@rmSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.local sudo sh /home/rmsite.sh"               
+  @@addSiteCmd="ssh -i   /opt/engines/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.engines.internal sudo sh /home/addsite.sh"
+  @@rmSiteCmd="ssh -i  /opt/engines/etc/keys/nginx -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@nginx.engines.internal sudo sh /home/rmsite.sh"
+  @@addSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.internal sudo sh /home/addsite.sh"
+  @@rmSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.internal sudo sh /home/rmsite.sh"               
   @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engines/etc/keys/mysql rma@"  
-  @@DBHost="mysql.engines.local"
+  @@DBHost="mysql.engines.internal"
   @@CidDir="/opt/engines/run"
   @@ContainersDir="/opt/engines/run/containers/"
   @@DeploymentDir="/home/dockuser/droplets/deployment/deployed"
@@ -15,11 +15,11 @@ class SysConfig
   @@LocalFSVolHome = "/var/lib/engines/fs"
   @@galleriesDir = "/opt/engines/etc/galleries"
   @@ddnsKey = "/opt/engines/etc/keys/ddns.key"
-  @@internalDomain = "engines.local"
+  @@internalDomain = "engines.internal"
   @@defaultDNS ="172.17.42.1"
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
-  @@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.local sudo sh /home/add_backup.sh "
-  @@rmBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.local sudo sh /home/rm_backup.sh "
+  @@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/add_backup.sh "
+  @@rmBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/rm_backup.sh "
   @@SystemLogRoot ="/var/log/engines/"
  
   
