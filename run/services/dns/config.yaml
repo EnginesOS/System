@@ -19,7 +19,7 @@ volumes:
   localpath: "/opt/engines/etc/dns/config"
   mapping_permissions: "ro"
 - !ruby/object:Volume
-  name:varrun
+  name: "var_run"
   remotepath: "/var/run/"
   localpath: "/opt/engines/run/services/dns/run/dns"
   mapping_permissions: "rw" 
