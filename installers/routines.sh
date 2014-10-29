@@ -210,7 +210,7 @@ mkdir -p /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/ru
 mkdir -p /var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
 mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
 mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
-
+mkdir -p /opt/engines/run/services/dns/run/dns
 }
 
 function set_permissions {
@@ -220,7 +220,7 @@ echo "Setting directory and file permissions"
 	chown -R 22002.22002	/var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
-	
+	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	}
 
 function set_os_flavor {
