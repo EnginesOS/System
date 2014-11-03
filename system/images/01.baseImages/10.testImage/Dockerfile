@@ -1,4 +1,4 @@
-FROM enginesos/base
+FROM engines/base
 ADD home home
 RUN mkdir -p  /var/run/sshd
 CMD /usr/sbin/sshd -D

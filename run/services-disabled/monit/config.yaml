@@ -6,7 +6,7 @@ memory: '32'
 hostName: monit
 domainName: test
 environments: []
-image: enginesos/nagios
+image: engines/nagios
 volumes: 
 port: 80
 eports: []

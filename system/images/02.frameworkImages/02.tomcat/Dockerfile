@@ -1,4 +1,4 @@
-FROM enginesos/frameworkbase
+FROM engines/frameworkbase
 RUN apt-get -y  --force-yes update
 RUN apt-get install -y   tomcat7 
 RUN ln -s /var/log/tomcat7 /usr/share/tomcat7/logs

@@ -7,7 +7,7 @@ memory: '16'
 hostName: volmanager
 domainName: 
 environments: []
-image: enginesos/fs
+image: engines/fs
 volumes: []
 eports: []
 repo: na

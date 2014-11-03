@@ -1,4 +1,4 @@
-FROM enginesos/servicebase
+FROM engines/servicebase
 RUN echo "Y" | adduser -q --disabled-password --home=/home/volmgr -uid 22007 volmgr
 VOLUME /fs/
 

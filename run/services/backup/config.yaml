@@ -6,7 +6,7 @@ memory: '64'
 hostName: backup
 domainName: 
 environments: []
-image: enginesos/backup
+image: engines/backup
 volumes:
 - !ruby/object:Volume
   name: volumes

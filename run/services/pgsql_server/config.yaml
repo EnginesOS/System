@@ -6,7 +6,7 @@ memory: '128'
 hostName: pgsql
 domainName: 
 environments: []
-image: enginesos/pgsql
+image: engines/pgsql
 volumes:
 - !ruby/object:Volume
   name: pgsql

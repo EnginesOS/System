@@ -6,7 +6,7 @@ memory: '128'
 hostName: mongo
 domainName: 
 environments: []
-image: enginesos/mongo
+image: engines/mongo
 volumes:
 - !ruby/object:Volume
   name: mongo

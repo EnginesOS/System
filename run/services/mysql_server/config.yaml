@@ -6,7 +6,7 @@ memory: '128'
 hostName: mysql
 domainName: 
 environments: []
-image: enginesos/mysql
+image: engines/mysql
 volumes:
 - !ruby/object:Volume
   name: mysql

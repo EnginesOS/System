@@ -1,4 +1,4 @@
-FROM enginesos/frameworkbuild
+FROM engines/frameworkbuild
 
 RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /usr/local/rvm/bin/rvm install ruby-1.9

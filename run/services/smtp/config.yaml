@@ -6,7 +6,7 @@ memory: '32'
 hostName: smtp
 domainName: 
 environments: []
-image: enginesos/smtp
+image: engines/smtp
 volumes: []
 port: 
 eports: []

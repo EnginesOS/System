@@ -10,7 +10,7 @@ environments:
  name: ContUser
  value: dockuser
  setatrun: false
-image: enginesos/mgmt
+image: engines/mgmt
 volumes:
 - !ruby/object:Volume
   name: socket

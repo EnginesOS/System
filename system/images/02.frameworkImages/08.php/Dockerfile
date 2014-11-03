@@ -1,4 +1,4 @@
-FROM enginesos/frameworkbase
+FROM engines/frameworkbase
 
 
 RUN apt-get install -y  apache2 libapache2-mod-php5 php5-mysql php5-mcrypt  php5-gd

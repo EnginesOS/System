@@ -1,4 +1,4 @@
-FROM  enginesos/base
+FROM  engines/base
 
 RUN echo "Y" | adduser -q --disabled-password -uid 22002 postgres
 

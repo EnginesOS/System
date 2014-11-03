@@ -1,4 +1,4 @@
-FROM enginesos/ruby19
+FROM engines/ruby19
 
 
 RUN gem install rails --version 3.2.19

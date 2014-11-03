@@ -11,7 +11,7 @@ environments:
  name: ContUser
  value: bind
  setatrun: false
-image: enginesos/dns
+image: engines/dns
 volumes: 
 - !ruby/object:Volume
   name: config

@@ -1,4 +1,4 @@
-FROM enginesos/base
+FROM engines/base
 
 RUN echo "Y" | adduser -q --disabled-password --home /var/spool/postfix -uid 22003 postfix
 RUN apt-get -y install postfix syslogd
