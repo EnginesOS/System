@@ -13,5 +13,6 @@ EXPOSE 443
 
 ENV ContUser www-data
 ENV ContGrp www-data
-UESR www-data
-CMD nginx
+USER www-data
+
+CMD /home/startworker.sh
