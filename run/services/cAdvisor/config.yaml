@@ -19,7 +19,7 @@ volumes:
   localpath: "/var/lib/docker"
   vol_permissions: "rw"
 - !ruby/object:Volume
-  name: sys
+  name: system
   remotepath: "/sys/"
   localpath: "/sys/"
   mapping_permissions: "ro"
