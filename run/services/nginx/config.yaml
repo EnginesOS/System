@@ -32,12 +32,12 @@ eports:
   external: 0
 - !ruby/object:WorkPort
   name: https
-  port: 443
+  port: 4430
   publicFacing: true
   external: 443
 - !ruby/object:WorkPort
   name: http
-  port: 80
+  port: 8000
   publicFacing: true
   external: 80
 repo: na
