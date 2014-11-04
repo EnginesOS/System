@@ -165,6 +165,23 @@ chown -R  $ContUser.$ContGrp /home/app
 chown -R  $ContUser.$ContGrp `cat /home/LOG_DIR`
 
 
+
+if test -f /home/.logsetup
+ then
+	if test -f /home/LOG_DIR
+	then
+		log_dir=`cat /home/LOG_DIR`
+	else
+		log_dir="/var/log/"
+	fi
+		if test ! $log_dir = "/var/log/"
+			then
+				mkdir -p $log_dir
+				chown -R $ContUser $log_dir
+		fi
+	touch /home/.logsetup
+fi
+
 if test -f /home/app.env
 	then
 		. /home/app.env

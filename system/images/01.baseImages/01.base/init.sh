@@ -24,21 +24,7 @@ if  test -z $ContGrp
           ContGrp=www-data
 fi
 
-if test -f /home/.logsetup
- then
-	if test -f /home/LOG_DIR
-	then
-		log_dir=`cat /home/LOG_DIR`
-	else
-		log_dir="/var/log/"
-	fi
-		if test ! $log_dir = "/var/log/"
-			then
-				mkdir -p $log_dir
-				chown -R $ContUser $log_dir
-		fi
-	touch /home/.logsetup
-fi
+
 	
 #for setup of services 
 if test -f /home/pre-running.sh
@@ -48,7 +34,7 @@ fi
 
  if test -f  /home/engines/scripts/custom_start.sh
  then
- 	su -l  $ContUser  -c /home/engines/scripts/custom_start.sh
+ 	/home/engines/scripts/custom_start.sh
 fi
 
 #only for daemons that set user as in apace and tomcat
