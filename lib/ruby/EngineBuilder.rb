@@ -375,8 +375,15 @@ p env
 
   def build_setup
     res = run_system(" docker rm setup ")
-   logvol =  get_framework_logging
-    cmd = "cd " + get_basedir + "; docker run -u 0 --memory=256m  " + logvol + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+
+    volumes=String.new
+       @vols.each do |vol|
+         volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
+       end   
+       logvol =  get_framework_logging
+       volumes += logvol
+    cmd = "cd " + get_basedir + "; docker run -u 0 --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+   
     res = run_system(cmd)
     
     if res != true
