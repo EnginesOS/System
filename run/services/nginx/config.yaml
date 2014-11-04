@@ -20,16 +20,11 @@ volumes:
   mapping_permissions: "ro" 
 - !ruby/object:Volume
   name: var_run
-  remotepath: "/var/run/"
+  remotepath: "/var/run/nginx"
   localpath: "/opt/engines/run/services/nginx/run/nginx"
   mapping_permissions: "rw" 
 port: 
 eports:
-- !ruby/object:WorkPort
-  name: ssh
-  port: 22
-  publicFacing: false
-  external: 0
 - !ruby/object:WorkPort
   name: https
   port: 4430
