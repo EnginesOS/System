@@ -1,5 +1,5 @@
 FROM engines/frameworkbuild
-
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /usr/local/rvm/bin/rvm install ruby-1.9
 RUN /usr/local/rvm/bin/rvm  --default use ruby-1.9
