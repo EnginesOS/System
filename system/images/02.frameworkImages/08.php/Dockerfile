@@ -10,7 +10,7 @@ ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD ports.conf /etc/apache2/
 RUN mkdir -p /etc/apache2/ /var/run/apache2
 RUN chown www-data /var/run/apache2
-USER www-data
+
 
 ENV ContUser www-data
 ENV ContGrp www-data

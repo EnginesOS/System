@@ -384,7 +384,7 @@ p env
        end   
        logvol =  get_framework_logging
        volumes += logvol
-    cmd = "cd " + get_basedir + "; docker run -u root --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+    cmd = "cd " + get_basedir + "; docker run --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
    
     res = run_system(cmd)
     
