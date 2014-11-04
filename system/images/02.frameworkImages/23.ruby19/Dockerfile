@@ -12,7 +12,7 @@ ENV PATH /usr/local/rvm/gems/ruby-1.9.3-p550/bin:/usr/local/rvm/gems/ruby-1.9.3-
 RUN  /usr/local/rvm/rubies/ruby-1.9.3-p550/bin/gem install rake ; /usr/local/rvm/rubies/ruby-1.9.3-p550/bin/gem install bundle
 
 
-RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
+RUN echo "Y" | adduser -q --uid 22672 --home /home/ruby --disabled-password ruby
 RUN mkdir -p /home/ruby/ ;echo ".  /etc/rvmrc " >> /home/ruby/.profile
 RUN echo "rvm  --default use ruby-1.9.3-p550" >> /home/ruby/.profile
 RUN echo "gem: --no-ri --no-rdoc" > /home/ruby/.gemrc

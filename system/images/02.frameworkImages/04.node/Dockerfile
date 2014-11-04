@@ -7,4 +7,4 @@ ENV ContUser node
 ENV ContGrp node
 
 RUN groupadd node
-RUN echo "Y" | adduser -q --ingroup node --home /home/node --disabled-password node
+RUN echo "Y" | adduser --uid 22671 -q --ingroup node --home /home/node --disabled-password node

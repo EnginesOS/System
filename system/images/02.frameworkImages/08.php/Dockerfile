@@ -1,6 +1,6 @@
 FROM engines/frameworkbase
 
-RUN /usr/sbin/usermod -u 2671 www-data
+RUN /usr/sbin/usermod -u 22671 www-data
 RUN apt-get update -y
 RUN apt-get install -y  apache2 libapache2-mod-php5 php5-mysql php5-mcrypt  php5-gd
 ADD home home

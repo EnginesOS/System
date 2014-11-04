@@ -1,4 +1,5 @@
 #User		Group		UID
+#services
 mgmt		dockuser	21000
 rma			rma			22001
 postgres	postgres	22002
@@ -10,5 +11,10 @@ volmgr		volmgr		22007
 mongo		mongo		22008
 bind		bind		22009
 
-
+#Frameworks
+www-data	www-data	22671
+ruby	ruby			22672
+node	node			22673
+python	python			22674
+passenger passenger		22675
 #23000 -> applications assigned by volume manager
