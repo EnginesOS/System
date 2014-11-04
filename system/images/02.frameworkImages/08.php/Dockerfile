@@ -8,7 +8,7 @@ ADD 30-sendmail.ini /etc/php5/apache2/conf.d/
 RUN rm etc/apache2/sites-enabled/*
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD ports.conf /etc/apache2/
-USER www-data
+
 
 ENV ContUser www-data
 ENV ContGrp www-data
