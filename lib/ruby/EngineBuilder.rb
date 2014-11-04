@@ -529,7 +529,14 @@ p env
         @webPort= i[1].strip
       end
     end
-    
+    def getwebuser
+      stef = File.open( get_basedir + "/home/stack.env","r")
+      while line=stef.gets do
+        if line.include?("USER")        
+          i= line.split('=')
+          @webUser= i[1].strip
+        end
+      end 
   end
 
   def read_values
