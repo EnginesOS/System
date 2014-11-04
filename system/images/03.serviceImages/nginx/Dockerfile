@@ -6,10 +6,8 @@ RUN apt-get -y install nginx
 ADD nginx.conf /etc/nginx/
 ADD home home
 
-
-EXPOSE 80
-EXPOSE 443
-
+RUN mkdir -p /var/lib/nginx
+RUN chmod /var/lib/nginx
 
 ENV ContUser www-data
 ENV ContGrp www-data
