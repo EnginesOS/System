@@ -9,7 +9,7 @@ ENV MY_RUBY_HOME /usr/local/rvm/rubies/ruby-1.9.3-p547
 ENV RUBY_VERSION ruby-1.9.3-p547
 ENV RPATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin
 ENV PATH /usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:/usr/bin/:/bin:/bin:/sbin/:/usr/sbin
-RUN  /usr/local/rvm/gems/ruby-1.9.3-p547/gem install rake ;//usr/local/rvm/gems/ruby-1.9.3-p547/gem install bundle
+RUN  /usr/local/rvm/gems/ruby-1.9.3-p547/bin/gem install rake ;//usr/local/rvm/gems/ruby-1.9.3-p547/bin/gem install bundle
 
 
 RUN echo "Y" | adduser -q  --home /home/ruby --disabled-password ruby
