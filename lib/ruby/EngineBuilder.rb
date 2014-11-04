@@ -18,7 +18,7 @@ class EngineBuilder
   @bluePrint=Hash.new
   @framework=nil
   @workerPorts=Array.new
-  @webPort=80
+  @webPort=8000
   @vols=Array.new
   @environments=Array.new
   @runtime=String.new
@@ -30,7 +30,7 @@ class EngineBuilder
     @repoName=repo
     @buildname = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
-    @webPort=80
+    @webPort=8000
     @vols=Array.new  
     @environments=Array.new
 p env
