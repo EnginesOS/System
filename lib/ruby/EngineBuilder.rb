@@ -376,7 +376,7 @@ p env
   def build_setup
     res = run_system(" docker rm setup ")
    logvol =  get_framework_logging
-    cmd = "cd " + get_basedir + "; docker run --memory=256m  " + logvol + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+    cmd = "cd " + get_basedir + "; docker run -u 0 --memory=256m  " + logvol + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
     res = run_system(cmd)
     
     if res != true
@@ -408,7 +408,7 @@ p env
     res = run_system("docker rm deploy")
     
     #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
-    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+    cmd= "cd " + get_basedir + "; docker run -u0 --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
 
     res = run_system(cmd)
     if res != true
