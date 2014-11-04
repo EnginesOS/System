@@ -34,7 +34,7 @@ class EngineBuilder
     @webPort=8000
     @vols=Array.new  
     @environments=Array.new
-    @conf_self_start = true;
+    
 p env
     env = Hash.new
     #test code

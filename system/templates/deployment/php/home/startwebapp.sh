@@ -31,7 +31,7 @@ check=0
    #     			status=`/etc/init.d/apache2 status`
 #				check=` echo $status |grep NOT |wc -c`
  #       done
-#fi
+fi
 
 #$0 &
 
