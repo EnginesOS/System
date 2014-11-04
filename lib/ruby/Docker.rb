@@ -39,6 +39,13 @@ class Docker
                 stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                 FileUtils.rm_rf  stateDir
           end
+          
+          #kludge
+          if ret_val == false
+            container.last_error.contains("No such image")
+            stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+            FileUtils.rm_rf  stateDir
+          end
       return ret_val
    end
    
