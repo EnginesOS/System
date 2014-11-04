@@ -7,7 +7,7 @@ ADD nginx.conf /etc/nginx/
 ADD home home
 
 RUN mkdir -p /var/lib/nginx
-RUN chmod /var/lib/nginx
+RUN chown www-data /var/lib/nginx
 
 ENV ContUser www-data
 ENV ContGrp www-data
