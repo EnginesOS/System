@@ -24,6 +24,7 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   
+  
   def initialize(repo,host,domain,env,docker_api)
     @hostName=host
     @domainName=domain
@@ -33,6 +34,7 @@ class EngineBuilder
     @webPort=8000
     @vols=Array.new  
     @environments=Array.new
+    @conf_self_start = true;
 p env
     env = Hash.new
     #test code
