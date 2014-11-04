@@ -15,4 +15,4 @@ ENV ContUser www-data
 ENV ContGrp www-data
 USER www-data
 
-CMD /home/startworker.sh
+CMD nginx
