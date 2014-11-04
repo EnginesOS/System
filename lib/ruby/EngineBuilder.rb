@@ -415,7 +415,7 @@ p env
     res = run_system("docker rm deploy")
     
     #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
-    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -u " + @webUser + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
 
     res = run_system(cmd)
     if res != true
@@ -529,7 +529,9 @@ p env
         @webPort= i[1].strip
       end
     end
-    def getwebuser
+  end
+  
+  def getwebuser
       stef = File.open( get_basedir + "/home/stack.env","r")
       while line=stef.gets do
         if line.include?("USER")        
@@ -538,6 +540,7 @@ p env
         end
       end 
   end
+ 
 
   def read_values
     @framework = @bluePrint["software"]["swframework_name"]
@@ -574,6 +577,7 @@ p env
     copy_templates
     puts("Setting Web port")
     getwebport
+    getwebuser
     puts("creating Worker port")
     create_work_ports
     puts("Adding services")
