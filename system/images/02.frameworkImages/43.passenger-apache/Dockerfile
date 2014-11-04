@@ -10,6 +10,6 @@ RUN apt-get install -y apache2 libapache2-mod-passenger
 RUN a2enmod passenger
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/
 RUN /usr/local/rbenv/shims/gem install passenger
-RUN passenger-install-apache2-module -a --languages ruby,nodejs,python
+RUN /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python
 ADD ports.conf /etc/apache2/
 USER www-data
