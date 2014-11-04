@@ -1,6 +1,6 @@
 FROM engines/frameworkbase
 
-
+RUN apt-get update -y
 RUN apt-get install -y  python python-dev python-lxml
 
 ADD home home
