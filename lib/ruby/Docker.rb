@@ -42,7 +42,7 @@ class Docker
           
           #kludge
           if ret_val == false
-            container.last_error.contains("No such image")
+            container.last_error.include?("No such image")
             stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
             FileUtils.rm_rf  stateDir
           end

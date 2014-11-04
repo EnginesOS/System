@@ -70,7 +70,7 @@ fi
 if test -f /home/app/Procfile.sh
         then
 		cd /home/app/	
-        su -l  $ContUser   /home/app/Procfile.sh
+      /home/app/Procfile.sh
 fi
 
 
