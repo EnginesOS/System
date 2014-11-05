@@ -29,7 +29,7 @@ if test "$FRAMEWORK" == "tomcat"
 fi
 conf_file=/etc/apache2/sites-enabled/000-default.conf
 
-if test -d $conf_file
+if test -f $conf_file
 	then
 		cat $conf_file  | sed "s/^#SERVER_NAME/$fdn/" > /tmp/.ap_site_conf.tmp
 		#mv /tmp/.ap_site_conf.tmp $conf_file
