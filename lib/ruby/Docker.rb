@@ -218,6 +218,10 @@ class Docker
     return result
   end
   
+  def add_ftp_service(site_hash)
+  end
+  def rm_ftp_service(site_hash)
+  end
   def add_monitor(site_hash)
     ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
     return run_system(ssh_cmd)
