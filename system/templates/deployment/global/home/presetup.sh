@@ -28,10 +28,13 @@ if test "$FRAMEWORK" == "tomcat"
 	ln -s /home/app/webapps /usr/share/tomcat7/
 fi
 conf_file=/etc/apache2/apache2.conf
-
+echo "" >> $conf_file
+echo ServerName $fqdn >>$conf_file 
 if test -f $conf_file
 	then
-		cat $conf_file  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.ap_site_conf.tmp
+echo "" >> $conf_file
+echo ServerName $fqdn >>$conf_file 
+		cat $conf_file  | sed "s/^#SERVER_NAME/ ServerName $fqdn" > /tmp/.ap_site_conf.tmp
 		#mv /tmp/.ap_site_conf.tmp $conf_file
 		cp tmp/.ap_site_conf.tmp $conf_file
 	fi
