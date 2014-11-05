@@ -10,7 +10,7 @@ mysql		mysql		22006
 volmgr		volmgr		22007
 mongo		mongo		22008
 bind		bind		22009
-
+proftpd			proftpd	22010
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672
