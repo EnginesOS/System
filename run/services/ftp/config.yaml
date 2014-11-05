@@ -11,7 +11,7 @@ volumes:
 - !ruby/object:Volume
   name: sslcerts
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ftp/ssl/"
+  localpath: "/opt/engines/etc/ssl/"
   mapping_permissions: "ro"
 - !ruby/object:Volume
   name: fs_rw
@@ -35,6 +35,21 @@ eports:
   port: 20
   publicFacing: true
   external: 20
+- !ruby/object:WorkPort
+  name: ftps
+  port: 989
+  publicFacing: true
+  external: 989
+- !ruby/object:WorkPort
+  name: ftps-data
+  port: 990
+  publicFacing: true
+  external: 990
+- !ruby/object:WorkPort
+  name: sftp
+  port: 115
+  publicFacing: true
+  external: 115
 repo: na
 last_result: |
   nginx
