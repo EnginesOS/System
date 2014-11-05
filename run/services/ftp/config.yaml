@@ -1,0 +1,36 @@
+--- !ruby/object:FTPService
+containerName: ftp
+ctype: service
+last_error: 
+memory: '36'
+hostName: ftp
+domainName: 
+environments: []
+image: engines/ftp
+volumes:
+- !ruby/object:Volume
+  name: sslcerts
+  remotepath: "/etc/ssl/"
+  localpath: "/opt/engines/etc/ftp/ssl/"
+  mapping_permissions: "ro"
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: ftp
+  port: 21
+  publicFacing: true
+  external: 21
+- !ruby/object:WorkPort
+  name: ftp-data
+  port: 20
+  publicFacing: true
+  external: 20
+repo: na
+last_result: |
+  nginx
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
