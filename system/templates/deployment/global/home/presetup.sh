@@ -3,6 +3,9 @@
 DOWNLOADCACHE=/opt/dl_cache
 Engines_HOME=/home/app
 
+. ./presettings.env
+
+
 if test `pwd` == "/"
 	then
 		cd /home
@@ -24,6 +27,15 @@ if test "$FRAMEWORK" == "tomcat"
 	rm -r /usr/share/tomcat7/webapps
 	ln -s /home/app/webapps /usr/share/tomcat7/
 fi
+conf_file=/etc/apache2/sites-enabled/000-default.conf
+
+if test -d $conf_file
+	then
+		cat $conf_file  | sed "s/^#SERVER_NAME/$fdn/" > /tmp/.ap_site_conf.tmp
+		#mv /tmp/.ap_site_conf.tmp $conf_file
+		cp tmp/.ap_site_conf.tmp $conf_file
+	fi
+	
 
 if test "$FRAMEWORK" = "php"
   then
@@ -43,7 +55,7 @@ if test "$FRAMEWORK" = "php"
     fi
 fi
 
-. ./presettings.env
+
 
 ###needed for DOCKER Env
 mkdir app
