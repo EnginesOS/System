@@ -243,6 +243,7 @@ p env
     psf.puts("declare -a ARCHLOCATIONS=(" + locations + ")")
     psf.puts("declare -a ARCHEXTRACTCMDS=(" + extracts + ")")
     psf.puts("declare -a ARCHDIRS=(" + dirs + ")")
+    psf.puts("fqdn=" + @hostName + "." + @domainName)
     psf.close
 
   end
