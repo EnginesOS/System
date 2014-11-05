@@ -286,7 +286,7 @@ echo run state $run
 	cp /tmp/t /home/app/config/environments/production.rb
 	cat /tmp/t
 	
-	rails_env_prod_or_devel=development
+	rails_env_prod_or_devel=$RAILS_ENV
 	
 	echo "Procfile Written "
 	echo "#!/bin/bash
@@ -299,7 +299,7 @@ echo run state $run
 	
 	
 	echo "Starting with"
-	echo "env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$a /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start"
+	echo "env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$SECRET_KEY_BASE /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start"
 	export DATABASE_URL SECRET_KEY_BASE PORT 
 	/usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 
