@@ -7,6 +7,7 @@
 #ftp:back:backup@somehost.domain.com/dir
  echo "$*" >>/var/log/addbackup.log
 
+
 #
 # makebackconf.sh  publifydb  publify:mysql:publifydb:publifydb@mysql.engines.internal/publifydb ftp:engback:back_eng@203.14.203.141/publifydb
 #bash makebackconf.sh publify publify:fs:publifyfs ftp:engback:back_eng@203.14.203.141/publify
