@@ -297,10 +297,10 @@ echo run state $run
 	DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
 	
 	SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret </dev/random`
+
 	
-	
-	echo "Starting with"
-	echo "env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=$SECRET_KEY_BASE /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start"
+	echo Starting with
+	echo env DATABASE_URL=$DATABASE_URL SECRET_KEY_BASE=\$SECRET_KEY_BASE /usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 	export DATABASE_URL SECRET_KEY_BASE PORT 
 	/usr/local/rbenv/shims/bundle exec thin -e $rails_env_prod_or_devel -p $PORT  start
 
