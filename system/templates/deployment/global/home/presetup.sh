@@ -3,13 +3,13 @@
 DOWNLOADCACHE=/opt/dl_cache
 Engines_HOME=/home/app
 
+
+
+cd /home
+
+
 . ./presettings.env
 
-
-if test `pwd` == "/"
-	then
-		cd /home
-	fi
 
 if test -f app.env
 	then
