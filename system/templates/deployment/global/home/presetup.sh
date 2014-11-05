@@ -27,7 +27,7 @@ if test "$FRAMEWORK" == "tomcat"
 	rm -r /usr/share/tomcat7/webapps
 	ln -s /home/app/webapps /usr/share/tomcat7/
 fi
-conf_file=/etc/apache2/sites-enabled/000-default.conf
+conf_file=/etc/apache2/apache2.conf
 
 if test -f $conf_file
 	then
