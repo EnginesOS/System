@@ -13,6 +13,16 @@ volumes:
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/ftp/ssl/"
   mapping_permissions: "ro"
+- !ruby/object:Volume
+  name: fs_rw
+  remotepath: "/ftp/rw/"
+  localpath: "/var/lib/engines/fs/"
+  mapping_permissions: "rw"
+- !ruby/object:Volume
+  name: fs_ro
+  remotepath: "/ftp/ro/"
+  localpath: "/var/lib/engines/fs/"
+  mapping_permissions: "rw"
 port: 
 eports:
 - !ruby/object:WorkPort
