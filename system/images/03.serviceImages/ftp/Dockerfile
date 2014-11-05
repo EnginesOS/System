@@ -7,3 +7,4 @@ ADD tls.conf /etc/proftpd/
 ADD sql.conf /etc/proftpd/
 ADD modules.conf /etc/proftpd/
 RUN mkdir /ftp/
+CMD proftpd -n
