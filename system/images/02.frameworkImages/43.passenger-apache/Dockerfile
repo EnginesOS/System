@@ -8,7 +8,13 @@ RUN echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main
 RUN chmod 600 /etc/apt/sources.list.d/passenger.list
 RUN apt-get install -y apache2 libapache2-mod-passenger
 RUN a2enmod passenger
+
+ADD Gems /home/
+RUN /usr/local/rbenv/shims/gem  install `cat /home/Gems` 
+
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/
+RUN chown -R www-data /usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions
+
 RUN /usr/local/rbenv/shims/gem install passenger
 RUN /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python
 ADD ports.conf /etc/apache2/
