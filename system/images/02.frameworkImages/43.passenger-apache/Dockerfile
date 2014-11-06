@@ -8,7 +8,8 @@ RUN echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main
 RUN chmod 600 /etc/apt/sources.list.d/passenger.list
 RUN apt-get install -y apache2 libapache2-mod-passenger
 RUN a2enmod passenger
-
+RUN rm etc/apache2/sites-enabled/*
+ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD Gems /home/
 RUN /usr/local/rbenv/shims/gem  install `cat /home/Gems` 
 
