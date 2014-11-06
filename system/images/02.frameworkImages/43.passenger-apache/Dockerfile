@@ -13,6 +13,7 @@ RUN /usr/local/rbenv/shims/gem install passenger
 RUN /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python
 ADD ports.conf /etc/apache2/
 
+EUN mkdir /home/app ; chown  www-data /home/app
 ENV ContUser www-data
 ENV ContGrp www-data
 
