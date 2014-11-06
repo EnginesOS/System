@@ -296,7 +296,7 @@ echo run state $run
 
 	DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname 
 	
-	SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret </dev/random`
+	SECRET_KEY_BASE=\`/usr/local/rbenv/shims/bundle exec rake secret </dev/random\`
 
 	
 	echo Starting with
