@@ -1,7 +1,7 @@
 --- !ruby/object:EngineGallery
 title: Engines OS Development Gallery
 short_name: development
-blueprints_url: http://enginegallery.enginesos.jvodan.com/json_published_softwares
+blueprints_url: http://enginegallery.engines.onl/json_published_softwares
 local_blueprints_url: http://192.168.108.243:3001/json_published_softwares
 gallery_url: local
 licence_type:
