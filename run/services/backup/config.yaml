@@ -2,7 +2,7 @@
 containerName: backup
 ctype: service
 last_error: 
-memory: '64'
+memory: '48'
 hostName: backup
 domainName: 
 environments: []

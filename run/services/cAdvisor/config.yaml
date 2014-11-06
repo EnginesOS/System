@@ -2,7 +2,7 @@
 containerName: cAdvisor
 ctype: service
 last_error: 
-memory: '128'
+memory: '100'
 hostName: cadvisor
 domainName: enginesos.jvodan.com
 environments: []
