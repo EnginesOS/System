@@ -11,7 +11,7 @@ ENV ContUser dockuser
 ENV ContGrp ruby
 
 RUN chown -R dockuser /home/app/ /var/log/apache2 
-RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R dockuser /usr/local/rbenv/versions/
+RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/
 RUN chown -R dockuser /usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions
 
 
