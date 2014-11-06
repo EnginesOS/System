@@ -1,4 +1,4 @@
-FROM engines/ruby2.1.2
+FROM engines/rails4
 
 RUN apt-get update -y
 RUN /usr/sbin/usermod -u 22671 www-data
@@ -10,8 +10,6 @@ RUN apt-get install -y apache2 libapache2-mod-passenger
 RUN a2enmod passenger
 RUN rm etc/apache2/sites-enabled/*
 ADD 000-default.conf /etc/apache2/sites-enabled/
-ADD Gems /home/
-RUN /usr/local/rbenv/shims/gem  install `cat /home/Gems` 
 
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/
 RUN chown -R www-data /usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions
@@ -24,4 +22,4 @@ EUN mkdir /home/app ; chown  www-data /home/app
 ENV ContUser www-data
 ENV ContGrp www-data
 
-USER www-data
+#USER www-data
