@@ -126,10 +126,10 @@ echo "$EXTRACT_CMD $ARCHIVE to $LOCATION from $TAR_FILE  and move from $APP_SRC_
                         then
                             echo "Moving to Destination"                                                        
                             cp -rfp $APP_SRC_DIR/* .
-                	            if test "$EXTRACT_CMD" = "git"
-									then
-                            			cp -rfp $APP_SRC_DIR/.git .
-                            	fi
+                	            #if test "$EXTRACT_CMD" = "git"
+								#	then
+                            			cp -rfp $APP_SRC_DIR/.[a-z]* .
+                            	#fi
                             rm -fr $APP_SRC_DIR
                     fi
 			   fi
