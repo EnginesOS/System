@@ -23,4 +23,4 @@ RUN mkdir -p /var/log/apache2 ; chown -R www-data /var/log/apache2
 ENV ContUser www-data
 ENV ContGrp www-data
 
-USER www-data
+#USER www-data
