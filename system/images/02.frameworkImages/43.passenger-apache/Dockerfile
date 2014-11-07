@@ -1,12 +1,15 @@
 FROM engines/rails4
 
-RUN apt-get update -y
+
 RUN /usr/sbin/usermod -u 22671 www-data
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
 RUN	apt-get install -y apt-transport-https ca-certificates  apache2-threaded-dev libapr1-dev libaprutil1-dev
 RUN echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main  >/etc/apt/sources.list.d/passenger.list 
 RUN chmod 600 /etc/apt/sources.list.d/passenger.list
-RUN apt-get install -y apache2 libapache2-mod-passenger
+
+RUN apt-get update -y
+
+RUN apt-get install -y apache2 libapache2-mod-passenger passenger-dev
 RUN a2enmod passenger
 RUN rm etc/apache2/sites-enabled/*
 ADD 000-default.conf /etc/apache2/sites-enabled/
