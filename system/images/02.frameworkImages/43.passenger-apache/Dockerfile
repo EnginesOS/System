@@ -13,6 +13,7 @@ RUN apt-get install -y apache2 libapache2-mod-passenger passenger-dev
 RUN a2enmod passenger
 RUN rm etc/apache2/sites-enabled/*
 ADD 000-default.conf /etc/apache2/sites-enabled/
+ADD	passenger.conf  /etc/apache2/mods-enabled/
 
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/
 RUN chown -R www-data /usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions
