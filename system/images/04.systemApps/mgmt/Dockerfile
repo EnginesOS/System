@@ -19,6 +19,7 @@ RUN cp -rp  ~/.gemrc ~/.bashrc ~dockuser
 ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
 RUN chown -R dockuser /home/dockuser/
 RUN chmod -R  700 /home/dockuser/.ssh
+RUN mkdir -p /var/log/apache2/ /var/run/apache2
 RUN chown -R dockuser /home/app/ /var/log/apache2/ /var/run/apache2
 EXPOSE 80
 EXPOSE 22
