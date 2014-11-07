@@ -23,6 +23,9 @@ RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/ve
 RUN chown -R dockuser /usr/local/rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/extensions
 
 
+#After after chmod so not rewritable
+
+ADD Procfile.sh /home/app/
 
 CMD /home/app/Procfile.sh
 USER 21000
