@@ -10,9 +10,11 @@ RUN groupadd ruby
 RUN echo "Y" | adduser -q --ingroup ruby --uid 22672 --home /home/ruby --disabled-password ruby
 RUN mkdir -p /usr/local/ ; cd /usr/local/ ; git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv 
 RUN cd /usr/local/rbenv ; git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
-RUN cd /usr/local/rbenv   ;echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc ; echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL ; /usr/local/rbenv/bin/rbenv install 2.1.2 ; /usr/local/rbenv/bin/rbenv global 2.1.2
+RUN cd /usr/local/rbenv   ;echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc ; echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL ; /usr/local/rbenv/bin/rbenv install 2.1.3 ; /usr/local/rbenv/bin/rbenv global 2.1.3
+
 #support ruby 1.9x debugger
-RUN /usr/local/rbenv/shims/gem install debugger-ruby_core_source  && ARCHFLAGS="/usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/debugger-ruby_core_source-1.3.5/lib/debugger/ruby_core_source/ruby-2.1.2-p95 --include/vm_core.h"
+#RUN /usr/local/rbenv/shims/gem install debugger-ruby_core_source  && ARCHFLAGS="/usr/local/rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/debugger-ruby_core_source-1.3.5/lib/debugger/ruby_core_source/ruby-2.1.2-p95 --include/vm_core.h"
+
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN /usr/local/rbenv/bin/rbenv rehash
 RUN cp -rp  ~/.gemrc ~/.bashrc ~ruby
