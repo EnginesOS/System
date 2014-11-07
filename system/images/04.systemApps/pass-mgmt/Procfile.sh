@@ -2,13 +2,13 @@
 PATH="/usr/local/rbenv/bin:$PATH"
 
 cd /home/app
-cp /home/gitconfig /home/app/.git/config
+
 git pull
 
-RAILS_ENV=prodution
+RAILS_ENV=production
 
-SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
-export SECRET_KEY_BASE RAILS_ENV
+
+export  RAILS_ENV
 
 /usr/local/rbenv/shims/bundle install
 
@@ -18,8 +18,11 @@ export SECRET_KEY_BASE RAILS_ENV
 
 /usr/local/rbenv/shims/bundle exec rake assets:precompile
 
+SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
+export SECRET_KEY_BASE RAILS_ENV
 
 touch  /engines/var/run/startup_complete
 
 /usr/sbin/apache2ctl -D FOREGROUND
+
 rm /engines/var/run/startup_complete
