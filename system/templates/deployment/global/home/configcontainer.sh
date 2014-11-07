@@ -250,33 +250,18 @@ echo run state $run
         	FRAMEWORK=php
         fi
         
-        
-
-        		
-      
-
-
+   
 
 	if test $FRAMEWORK = rails3 -o $FRAMEWORK = rails4
 		then
 
-#		if test $RUNTIME = ruby2
-#			then
-#				ruby_version=ruby-2.1.2
-#				rvm use --default ruby-2.1.2
-#				ruby -v
-#		elif test $RUNTIME = ruby19
-#			then 
-#				ruby_version=ruby-1.9.3-p547
-#			 	rvm  use --default ruby-1.9.3-p547
-#		fi
-	
 	DATABASE_URL="mysql2://$dbuser:$dbpasswd@$dbhost/$dbname"
 	
 	export DATABASE_URL
 	#RAILS_ENV=production
 	RAILS_ENV=production
 	export RAILS_ENV
+	
 	
 	
 	HOME=$Engines_HOME	
@@ -335,10 +320,7 @@ production:
 	echo "gem 'thin'" >> Gemfile
 	cat Gemfile
 	echo "Thin added to Gemfile"
-	
-	#echo "gem 'therubyracer'"  >> Gemfile
-	
-	#rvm use $ruby_version
+
 	
 	RAILS_ENV=$rails_env_prod_or_devel
 	
