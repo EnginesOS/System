@@ -17,7 +17,7 @@ ADD gitconfig /home/app/.git/config
 
 RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat
 
-RUN chown -R dockuser /home/app/ /var/log/apache2/
+RUN chown -R dockuser /home/app/ /home/dockuser /var/log/apache2/
 
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/
 RUN chown -R dockuser /usr/local/rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/extensions
