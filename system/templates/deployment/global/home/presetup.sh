@@ -169,9 +169,8 @@ fi
 echo  u $ContUser  g $ContGrp  
 
 
-if test -f /home/fs.env
+if test -n $CONTFSVolHome
         then
-		. /home/fs.env
                 chown -R $ContUser.$ContGrp  $CONTFSVolHome
                 echo "chown -R $ContUser.$ContGrp  $CONTFSVolHome"
 fi
