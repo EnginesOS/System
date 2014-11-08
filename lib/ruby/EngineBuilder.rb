@@ -609,8 +609,7 @@ p env
     create_work_ports
     puts("Adding services")
     add_services
-    puts("Configuring install Environment")
-    create_presettings_env
+
     puts("Configuring Setup Environment")
     create_setup_env
     puts("Configuring Application Environment")
@@ -621,8 +620,12 @@ p env
     create_workers
     puts("Saving stack Environment")
     create_stack_env
+
     puts("Writing Dockerfile")
     setup_dockerfile
+    puts("Configuring install Environment")
+    create_presettings_env
+    
     puts("Building base")
     build_init
     puts("Running Setup")
