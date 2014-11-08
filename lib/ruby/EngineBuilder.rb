@@ -145,7 +145,8 @@ p env
     fsf.puts("#FS Env")
     fsf.puts("ENV VOLDIR " + name)
     fsf.puts("ENV CONTFSVolHome " + vol.remotepath) #not nesscessary the same as dest used in constructor
-    fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
+    #cant happen here as not mounted
+   # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
     fsf.close
     create_file_service vol
   end
@@ -535,6 +536,8 @@ p env
     @workerPorts.each do |port|
       dfile.puts("EXPOSE " + port.port.to_s)
     end
+    
+    
 
     dfile.close
 
