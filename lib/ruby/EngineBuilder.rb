@@ -141,7 +141,7 @@ p env
     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + name,dest,"rw",permissions)
     @vols.push(vol)
     #fsf = File.open( get_basedir + "/home/fs.env","w")
-    fsf = File.open( get_basedir + "Dockerfile","a")
+    fsf = File.open( get_basedir + "/Dockerfile","a")
     fsf.puts("#FS Env")
     fsf.puts("ENV VOLDIR " + name)
     fsf.puts("ENV CONTFSVolHome " + vol.remotepath) #not nesscessary the same as dest used in constructor
@@ -339,9 +339,9 @@ p env
     stef.puts("ENV Hostname " + @hostName)
     stef.puts("ENV Domainname " +  @domainName )
     stef.puts("ENV fqdn " +  @hostName + "." + @domainName )
-    stef.puts("ENV FRAMEWORK " + "\"" + @framework +"\"" )
-    stef.puts("ENV RUNTIME " + "\"" + @runtime +"\"" )
-    stef.puts("ENV PORT " + "\"" + @webPort.to_s + "\"" )
+    stef.puts("ENV FRAMEWORK " +   @framework  )
+    stef.puts("ENV RUNTIME "  + @runtime  )
+    stef.puts("ENV PORT " +  @webPort.to_s  )
     wports = String.new
     n=0
     @workerPorts.each do |port|
