@@ -68,7 +68,9 @@ p env
   def add_custom_env
     envs = @bluePrint["software"]["environment_variables"]
     envivronment = String.new
-    ef = File.open( get_basedir + "/home/app.env","w")
+    #ef = File.open( get_basedir + "/home/app.env","w")
+    ef = File.open( get_basedir + "/Dockerfile","a")
+    ef.puts("#Custom ENV")
     envs.each do |env|
       name=env["name"]
       name = name.gsub(" ","_")
@@ -81,7 +83,7 @@ p env
           end
             #else write the default if none set                      
       end
-      ef.puts(name + "=\"" + value +"\"")
+      ef.puts("ENV " + name + " \"" + value +"\"")
       
     end
     ef.close
@@ -104,13 +106,14 @@ p env
   def add_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
     dbname=name #+ "-" + @hostName  - leads to issue with JDBC
 
-    dbf = File.open( get_basedir + "/home/db.env","a+")
+    dbf = File.open( get_basedir + "/Dockerfile","a")
     #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
-    dbf.puts("dbname=" + dbname)
-    dbf.puts("dbhost=" + SysConfig.DBHost)
-    dbf.puts("dbuser=" + name)
-    dbf.puts("dbpasswd=" + name)
-    dbf.puts("dbflavor=" + flavor)
+    dbf.puts("#Database Env")
+    dbf.puts("ENV dbname " + dbname)
+    dbf.puts("ENV dbhost " + SysConfig.DBHost)
+    dbf.puts("ENV dbuser " + name)
+    dbf.puts("ENV dbpasswd " + name)
+    dbf.puts("ENV dbflavor " + flavor)
     db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
     @databases.push(db)
 
@@ -137,9 +140,11 @@ p env
     permissions = PermissionRights.new(@hostName,"","")
     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + name,dest,"rw",permissions)
     @vols.push(vol)
-    fsf = File.open( get_basedir + "/home/fs.env","w")
-    fsf.puts("VOLDIR=" + name)
-    fsf.puts("CONTFSVolHome=" + vol.remotepath) #not nesscessary the same as dest used in constructor
+    #fsf = File.open( get_basedir + "/home/fs.env","w")
+    fsf = File.open( get_basedir + "Dockerfile","a")
+    fsf.puts("#FS Env")
+    fsf.puts("ENV VOLDIR " + name)
+    fsf.puts("ENV CONTFSVolHome " + vol.remotepath) #not nesscessary the same as dest used in constructor
     fsf.close
     create_file_service vol
   end
@@ -326,14 +331,16 @@ p env
   end
 
   def create_stack_env
-    stef = File.open(get_basedir + "/home/stack.env","w")
-    stef.puts("Memory=" + @bluePrint["software"]["requiredmemory"].to_s)
-    stef.puts("Hostname=" + @hostName)
-    stef.puts("Domainname=" +  @domainName )
-    stef.puts("fqdn=" +  @hostName + "." + @domainName )
-    stef.puts("FRAMEWORK=" + "\"" + @framework +"\"" )
-    stef.puts("RUNTIME=" + "\"" + @runtime +"\"" )
-    stef.puts("PORT=" + "\"" + @webPort.to_s + "\"" )
+    stef = File.open(get_basedir + "/Dockerfile","a")
+   # stef = File.open(get_basedir + "/home/stack.env","w")
+    stef.puts("#Stack Env")
+    stef.puts("ENV Memory " + @bluePrint["software"]["requiredmemory"].to_s)
+    stef.puts("ENV Hostname " + @hostName)
+    stef.puts("ENV Domainname " +  @domainName )
+    stef.puts("ENV fqdn " +  @hostName + "." + @domainName )
+    stef.puts("ENV FRAMEWORK " + "\"" + @framework +"\"" )
+    stef.puts("ENV RUNTIME " + "\"" + @runtime +"\"" )
+    stef.puts("ENV PORT " + "\"" + @webPort.to_s + "\"" )
     wports = String.new
     n=0
     @workerPorts.each do |port|
