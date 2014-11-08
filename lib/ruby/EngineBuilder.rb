@@ -239,7 +239,12 @@ p env
       end
       
       if arc_extract == "git"
-        dockerfile.puts("RUN git clone " + arc_src + " ; mv " + arc_dir + " /home/app/" +  arc_loc)
+        if arc_loc == "./"
+          arc_loc=""
+          elsif arc_loc.ends_with("/")
+            arc_loc = arc_loc.chop() #not not String#chop 
+        end
+        dockerfile.puts("RUN git clone " + arc_src + " ; mv " + arc_dir + " /home/app" +  arc_loc)
       else
         srcs = srcs + "\"" + arc_src + "\""
         names = names + "\"" + arc_name + "\""
