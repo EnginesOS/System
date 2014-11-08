@@ -221,6 +221,8 @@ p env
     extracts=String.new
     dirs=String.new
 
+    dockerfile = File.open( get_basedir + "/Dockerfile","a")
+    
     archives.each do |archive|
       arc_src=archive["src"]
       arc_name=archive["name"]
@@ -234,12 +236,17 @@ p env
         extracts =extracts + " "
         dirs =dirs + " "
       end
-      srcs = srcs + "\"" + arc_src + "\""
-      names = names + "\"" + arc_name + "\""
-      locations = locations + "\"" + arc_loc + "\""
-      extracts = extracts + "\"" + arc_extract + "\""
-      dirs = dirs + "\"" + arc_dir + "\""
-      n=n+1
+      
+      if arc_extract == "git"
+        dockerfile.puts("RUN git clone " + arc_src + " ; mv " + arc_dir + "/home/app/" +  arc_loc)
+      else
+        srcs = srcs + "\"" + arc_src + "\""
+        names = names + "\"" + arc_name + "\""
+        locations = locations + "\"" + arc_loc + "\""
+        extracts = extracts + "\"" + arc_extract + "\""
+        dirs = dirs + "\"" + arc_dir + "\""
+        n=n+1
+      end
     end
 
     psf = File.open( get_basedir + "/home/presettings.env","w")
@@ -252,6 +259,7 @@ p env
     psf.puts("fqdn=" + @hostName + "." + @domainName)
     psf.close
 
+    dockerfile.close
   end
 
   def create_setup_env
