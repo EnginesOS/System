@@ -26,6 +26,7 @@ USER www-data
 ##############
 ### Must disable ruby login
 ###
+CMD usermod  -s  /usr/sbin/nologin $ContUser
 WORKDIR /home/app
 CMD /home/app/Rack.sh
 
