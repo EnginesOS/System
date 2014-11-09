@@ -238,17 +238,20 @@ p env
         dirs =dirs + " "
       end
       
+      #FIXME Need to strip any ../
+      if arc_loc == "./"
+        arc_loc=""
+        elsif arc_loc.ends_with("/")
+          arc_loc = arc_loc.chop() #note not String#chop 
+      end      
+      
       if arc_extract == "git"
-        if arc_loc == "./"
-          arc_loc=""
-          elsif arc_loc.ends_with("/")
-            arc_loc = arc_loc.chop() #note not String#chop 
-        end
-        dockerfile.puts("RUN su $ContUser git clone " + arc_src + " ;su $ContUser  mv " + arc_dir + " /home/app" +  arc_loc)
+        dockerfile.puts("WORKDIR /tmp")
+        dockerfile.puts("RUN su $ContUser -c \"git clone " + arc_src + "\" ;su $ContUser -c\" mv  " + arc_dir + " /home/app" +  arc_loc +"\"")
       else
         dockerfile.puts("RUN su $ContUser  wget " + arc_src )
         dockerfile.puts("RUN su $ContUser " + arc_extract +" " + arc_name) 
-        dockerfile.puts("RUN su $ContUser   mv " + arc_dir + " /home/app" +  arc_loc)
+        dockerfile.puts("RUN su $ContUser -c \"mv " + arc_dir + " /home/app" +  arc_loc + "\"")
 #        srcs = srcs + "\"" + arc_src + "\""
 #        names = names + "\"" + arc_name + "\""
 #        locations = locations + "\"" + arc_loc + "\""
