@@ -386,7 +386,11 @@ end
     volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
      # if container.ctype == "service"
       #  volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
-        volume_option += " -v " + container_log_dir(container) + ":/" + get_container_logdir(container) + ":rw "
+    incontainer_logdir = get_container_logdir(container) 
+        volume_option += " -v " + container_log_dir(container) + ":/" + incontainer_logdir + ":rw "
+          if incontainer_logdir !="/var/log" && incontainer_logdir !="/var/log/"
+            volume_option += " -v " + container_log_dir(container) + "/vlog:/var/log/:rw" 
+          end
       #end
     
     #container specific
