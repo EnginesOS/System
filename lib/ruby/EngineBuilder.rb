@@ -277,7 +277,7 @@ p env
      crons = String.new
      n=0
  
-     cron_file = File.open( get_basedir + "/home/crontab")   
+     cron_file = File.open( get_basedir + "/home/crontab","w")   
      cjs.each do |cj| 
        cron_file.puts(cj["cronjob"])     
        n=n+1
