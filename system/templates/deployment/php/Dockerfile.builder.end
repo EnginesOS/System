@@ -12,9 +12,10 @@ ADD home/startwebapp.sh /home/app/
 
 USER www-data
 ##############
-### Must disable ruby login
+### Must disable login
+CMD usermod  -s  /usr/sbin/nologin $ContUser
 ###
 WORKDIR /home/app
-CMD /home/app/startwebapp.sh
+
 
 
