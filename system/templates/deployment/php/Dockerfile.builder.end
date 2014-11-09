@@ -6,12 +6,15 @@ RUN groupadd -g $data_gid writegrp
 RUN usermod -G $data_gid www-data
 RUN chown -R  $data_uid.$data_gid  /home/app/
 
+
+
 ADD home/startwebapp.sh /home/app/
 
 USER www-data
 ##############
 ### Must disable ruby login
 ###
+WORKDIR /home/app
 CMD /home/app/startwebapp.sh
 
 

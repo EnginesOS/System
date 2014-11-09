@@ -26,6 +26,7 @@ USER www-data
 ##############
 ### Must disable ruby login
 ###
+WORKDIR /home/app
 CMD /home/app/Rack.sh
 
 
