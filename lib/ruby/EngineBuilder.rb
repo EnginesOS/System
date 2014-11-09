@@ -461,6 +461,7 @@ end
 
   def build_init
     cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
+    cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/deploy ." 
     puts cmd
     res = run_system(cmd)
     if res != true
@@ -715,9 +716,9 @@ end
     puts("Building base")
     build_init
     puts("Running Setup")
-    build_setup
+  #  build_setup
     puts("Building deploy image")
-    build_deploy
+   # build_deploy
     mc = create_managed_container()
     return mc
   end
