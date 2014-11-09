@@ -3,7 +3,7 @@
 #state=`echo $TZ |cut -f2 -d/`
 #country=`echo $TZ |cut -f1 -d/`
 #TZ="$country\/$state"
-
+USER 0
 RUN chown -R $ContUser /home/app
 
 
