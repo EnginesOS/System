@@ -4,6 +4,8 @@
 #country=`echo $TZ |cut -f1 -d/`
 #TZ="$country\/$state"
 
+USER 0
+
 RUN chown -R $ContUser /home/app
 
 RUN echo "login: &login" > /home/app/config/database.yml
