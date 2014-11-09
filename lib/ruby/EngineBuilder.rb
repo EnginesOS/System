@@ -400,7 +400,7 @@ p env
       rake_action = rake_cmds["action"]
       p rake_action
       if rake_action !=nil
-        docker_file.puts("RUN su $ContUser /usr/local/rbenv/shims/bundle exec rake " + rake_action )
+        docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_action )
       end      
     end
     docker_file.close    
@@ -445,15 +445,15 @@ def create_pear_list
     return
   end
   docker_file = File.open( get_basedir + "/Dockerfile","a")
-  docker_file.puts("RUN su $ContUser  wget http://pear.php.net/go-pear.phar; echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ")
-  docker_file.puts("RUN su $ContUser  php go-pear.phar")
+  docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar; echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ")
+  docker_file.puts("RUN   php go-pear.phar")
    
   
   pear_mods.each do |pear_mod|
     pear_mods = pear_mods["module"]
     p pear_mod
     if pear_mod !=nil
-      docker_file.puts("RUN su $ContUser  pear install pear_mod " + pear_mod )
+      docker_file.puts("RUN  pear install pear_mod " + pear_mod )
     end    
   end
   docker_file.close
