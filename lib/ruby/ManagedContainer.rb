@@ -88,7 +88,7 @@ class ManagedContainer < Container
   def set_conf_register_site state
     @conf_register_site = state
   end
-  def set_conf_self_start
+  def set_conf_self_start state
     @conf_self_start = state
      end
   def conf_monitor_site
