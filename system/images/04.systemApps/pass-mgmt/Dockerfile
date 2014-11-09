@@ -9,7 +9,7 @@ ADD profile /home/dockuser/.profile
 
 ENV ContUser dockuser
 ENV ContGrp ruby
-RUN mkdir /home/app 
+RUN mkdir -p /home/app 
 WORKDIR /home/app/
 RUN	git init
 
