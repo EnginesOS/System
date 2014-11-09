@@ -247,11 +247,16 @@ p env
       
       if arc_extract == "git"
         dockerfile.puts("WORKDIR /tmp")
-        dockerfile.puts("RUN su $ContUser -c \"git clone " + arc_src + "\" ; mv  " + arc_dir + " /home/app" +  arc_loc )
+        dockerfile.puts("RUN git clone " + arc_src )
+        dockerfile.puts("USER 0  ")
+        dockerfile.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+        dockerfile.puts("USER $ContUser")
       else
-        dockerfile.puts("RUN su $ContUser  wget " + arc_src )
-        dockerfile.puts("RUN su $ContUser " + arc_extract +" " + arc_name) 
+        dockerfile.puts("RUN   wget " + arc_src )
+        dockerfile.puts("RUN " + arc_extract +" " + arc_name)
+        dockerfile.puts("USER 0  ")
         dockerfile.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+        dockerfile.puts("USER $ContUser")
 #        srcs = srcs + "\"" + arc_src + "\""
 #        names = names + "\"" + arc_name + "\""
 #        locations = locations + "\"" + arc_loc + "\""
