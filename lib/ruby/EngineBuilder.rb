@@ -793,7 +793,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
     end
 
     mc.set_conf_register_site true # needs some intelligence here for worker only
-
+    mc.set_conf_self_start true 
     mc.save_state # no config.yaml throws a no such container so save so others can use
     bp = mc.load_blueprint
     p  bp
