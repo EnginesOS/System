@@ -6,14 +6,13 @@ RUN groupadd -g $data_gid writegrp
 RUN usermod -G $data_gid www-data
 RUN chown -R  $data_uid.$data_gid  /home/app/
 
-
+RUN mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/ 
+RUN mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
+ 
 ADD home/startwebapp.sh /home/app/
 
 USER www-data
-##############
-### Must disable login
-CMD usermod  -s  /usr/sbin/nologin $ContUser
-###
+
 WORKDIR /home/app
 
 
