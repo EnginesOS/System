@@ -10,8 +10,8 @@ RUN usermod -G $data_gid www-data
 RUN chown -R  $data_uid.$data_gid  /home/app/
 
 #open up write
-RUN mkdir -p /home/app/tmp/ /home/app/public/assets
-RUN chown www-data.$data_gid /home/app/tmp/ /home/app/public/assets
+RUN mkdir -p /home/app/tmp/ /home/app/public/assets /run/apache2
+RUN chown www-data.$data_gid /home/app/tmp/ /home/app/public/assets /run/apache2
 
 #recursive
 RUN chmod -R g+w /home/app/log  /home/app/app/assets
