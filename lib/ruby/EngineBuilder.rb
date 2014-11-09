@@ -692,8 +692,7 @@ end
     create_presettings_env
     
     set_container_user
-          
-    insert_framework_builder_in_dockerfile
+    insert_framework_frag_in_dockerfile("builder.mid")
     
     create_rake_list
     
@@ -702,6 +701,8 @@ end
     set_write_permissions_recursive
     
     set_write_permissions_single
+    
+    insert_framework_frag_in_dockerfile("builder.end")
     
     puts("Building base")
     build_init
@@ -721,13 +722,14 @@ end
     docker_file.close
         
   end
-  def insert_framework_builder_in_dockerfile
+def insert_framework_frag_in_dockerfile(frag_name)
     docker_file = File.open( get_basedir + "/Dockerfile","a")
-    frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile.builder")
+    frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile." +frag_name)
     builder_frag = frame_build_docker_frag.read
     docker_file.write(builder_frag)
     docker_file.close
   end
+ 
 
   def rebuild_managed_container  engine
     @engine  = engine
