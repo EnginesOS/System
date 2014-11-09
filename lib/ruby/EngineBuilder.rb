@@ -297,11 +297,11 @@ p env
   def create_setup_env
     suf = File.open( get_basedir + "/Dockerfile","a")
     confd = @bluePrint["software"]["configuredfile"]
-    if confd != nil
+    if confd != nil && confd !=""
       suf.puts("ENV CONFIGURED_FILE " + confd)
     end
     insted =  @bluePrint["software"]["toconfigurefile"]
-    if insted != nil
+    if insted != nil && insted !=""
       suf.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
