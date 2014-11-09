@@ -1,11 +1,10 @@
 
 
-
+USER 0
 #protect source
 RUN groupadd -g $data_gid writegrp
 RUN usermod -G $data_gid www-data
 RUN chown -R  $data_uid.$data_gid  /home/app/
-
 
 
 ADD home/startwebapp.sh /home/app/

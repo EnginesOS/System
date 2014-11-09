@@ -1,6 +1,6 @@
 
 
-
+USER 0
 #lock down gems Do I need to ? Long process
 RUN chown -R root /usr/local/rbenv/versions/$ruby_version/
 

@@ -25,9 +25,10 @@ RUN echo "  <<: *login" >> /home/app/config/database.yml
 RUN chown -R $ContUser /usr/local/rbenv/versions/$ruby_version/
 
 ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+USER $ContUser
+RUN cd /home/app ;  /usr/local/rbenv/shims/bundle install
+RUN  cd /home/app ; /usr/local/rbenv/shims/bundle exec rake db:migrate;/usr/local/rbenv/shims/bundle exec rake db:populate;/usr/local/rbenv/shims/bundle exec rake assets:precompile
 
-RUN cd /home/app ; su $ContUser /usr/local/rbenv/shims/bundle install
-RUN  cd /home/app ;su $ContUser /usr/local/rbenv/shims/bundle exec rake db:migrate;/usr/local/rbenv/shims/bundle exec rake db:populate;/usr/local/rbenv/shims/bundle exec rake assets:precompile
 #include custom rakes here
 
 
