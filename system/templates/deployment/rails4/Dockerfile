@@ -1,4 +1,4 @@
-FROM  engines/rails4
+FROM  engines/passenger
 
 ADD home home
 ADD engines home/engines
