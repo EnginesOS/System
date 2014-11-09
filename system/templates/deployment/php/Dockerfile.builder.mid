@@ -1,0 +1,11 @@
+
+
+#state=`echo $TZ |cut -f2 -d/`
+#country=`echo $TZ |cut -f1 -d/`
+#TZ="$country\/$state"
+
+RUN chown -R $ContUser /home/app
+
+
+ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+

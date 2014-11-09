@@ -1,0 +1,31 @@
+
+
+
+#lock down gems Do I need to ? Long process
+RUN chown -R root /usr/local/rbenv/versions/$ruby_version/
+
+#protect source
+RUN groupadd -g $data_gid writegrp
+RUN usermod -G $data_gid www-data
+RUN chown -R  $data_uid.$data_gid  /home/app/
+
+#open up write
+RUN mkdir -p /home/app/tmp/ /home/app/public/assets
+RUN chown www-data.$data_gid /home/app/tmp/ /home/app/public/assets
+
+#recursive
+RUN chmod -R g+w /home/app/log  /home/app/app/assets
+#non recursive
+RUN chmod g+w /home/app/db
+
+
+#after chmod so protected
+ADD Rack.sh /home/app/
+
+USER www-data
+##############
+### Must disable ruby login
+###
+CMD /home/app/Rack.sh
+
+

@@ -242,58 +242,67 @@ p env
         if arc_loc == "./"
           arc_loc=""
           elsif arc_loc.ends_with("/")
-            arc_loc = arc_loc.chop() #not not String#chop 
+            arc_loc = arc_loc.chop() #note not String#chop 
         end
-        dockerfile.puts("RUN git clone " + arc_src + " ; mv " + arc_dir + " /home/app" +  arc_loc)
+        dockerfile.puts("RUN su $ContUser git clone " + arc_src + " ;su $ContUser  mv " + arc_dir + " /home/app" +  arc_loc)
       else
-        srcs = srcs + "\"" + arc_src + "\""
-        names = names + "\"" + arc_name + "\""
-        locations = locations + "\"" + arc_loc + "\""
-        extracts = extracts + "\"" + arc_extract + "\""
-        dirs = dirs + "\"" + arc_dir + "\""
+        dockerfile.puts("RUN su $ContUser  wget " + arc_src )
+        dockerfile.puts("RUN su $ContUser " + arc_extract +" " + arc_name) 
+        dockerfile.puts("RUN su $ContUser   mv " + arc_dir + " /home/app" +  arc_loc)
+#        srcs = srcs + "\"" + arc_src + "\""
+#        names = names + "\"" + arc_name + "\""
+#        locations = locations + "\"" + arc_loc + "\""
+#        extracts = extracts + "\"" + arc_extract + "\""
+#        dirs = dirs + "\"" + arc_dir + "\""
         n=n+1
       end
     end
 
-    psf = File.open( get_basedir + "/home/presettings.env","w")
-    psf.puts("FRAMEWORK=" + @framework)
-    psf.puts("declare -a ARCHIVES=(" + srcs + ")")
-    psf.puts("declare -a ARCHIVENAMES=(" + names + ")")
-    psf.puts("declare -a ARCHLOCATIONS=(" + locations + ")")
-    psf.puts("declare -a ARCHEXTRACTCMDS=(" + extracts + ")")
-    psf.puts("declare -a ARCHDIRS=(" + dirs + ")")
-    psf.puts("fqdn=" + @hostName + "." + @domainName)
-    psf.close
+#    psf = File.open( get_basedir + "/home/presettings.env","w")
+#    psf.puts("FRAMEWORK=" + @framework)
+#    psf.puts("declare -a ARCHIVES=(" + srcs + ")")
+#    psf.puts("declare -a ARCHIVENAMES=(" + names + ")")
+#    psf.puts("declare -a ARCHLOCATIONS=(" + locations + ")")
+#    psf.puts("declare -a ARCHEXTRACTCMDS=(" + extracts + ")")
+#    psf.puts("declare -a ARCHDIRS=(" + dirs + ")")
+#    psf.puts("fqdn=" + @hostName + "." + @domainName)
+#    psf.close
 
     dockerfile.close
   end
+  
+  def add_cron_jobs 
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
+    cjs =  @bluePrint["software"]["cron_jobs"]
+     crons = String.new
+     n=0
+ 
+     cron_file = File.open( get_basedir + "/home/crontab")   
+     cjs.each do |cj| 
+       cron_file.puts(cj["cronjob"])     
+       n=n+1
+     end
+     if crons.length >0
+       docker_file.puts("ENV CRONJOBS YES")
+       docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+     end
+     cron_file.close
+    docker_file.close
+  end
 
+  
   def create_setup_env
-    suf = File.open( get_basedir + "/home/setup.env","w")
+    suf = File.open( get_basedir + "/Dockerfile","a")
     confd = @bluePrint["software"]["configuredfile"]
     if confd != nil
-      suf.puts("CONFIGURED_FILE=" + confd)
+      suf.puts("ENV CONFIGURED_FILE " + confd)
     end
     insted =  @bluePrint["software"]["toconfigurefile"]
     if insted != nil
-      suf.puts("INSTALL_SCRIPT=" + insted)
+      suf.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
-    cjs =  @bluePrint["software"]["cron_jobs"]
-    crons = String.new
-    n=0
-    cjs.each do |cj|
-      if n <0
-        crons = crons +" "
-      end
-
-      crons = crons + "\"" + cj["cronjob"]  + "\""
-      n=n+1
-    end
-    if crons.length >0
-      suf.puts("declare -a CRONJOBS=(" + crons + ")")
-    end
-
+    
     pcf = String.new
 
     pds =   @bluePrint["software"]["persistantdirs"]
@@ -304,7 +313,7 @@ p env
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      suf.puts("PERSISTANT_DIRS=\""+dirs+"\"")
+      suf.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
     pfs =   @bluePrint["software"]["persistantfiles"]
@@ -315,10 +324,10 @@ p env
       files = files + "\""+ path + "\" "
     end
     if files.length >1
-      suf.puts("PERSISTANT_FILES="+files)
+      suf.puts("ENV PERSISTANT_FILES "+files)
     end
     if pcf.length >1
-      suf.puts("PERSISTANCE_CONFIGURED_FILE=\"" + pcf + "\"")
+      suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end
     seds=@bluePrint["software"]["replacementstrings"]
     sedstrs = String.new
@@ -326,21 +335,23 @@ p env
     seddsts = String.new
     n=0
     seds.each do |sed|
-      if n >0
-        sedstrs = sedstrs + " "
-        sedtargets = sedtargets + "  "
-        seddsts = seddsts + "  "
-      end
-      sedstrs = sedstrs + "\"" + sed["sedstr"] +"\""
-      sedtargets = sedtargets + "\"" +  sed["file"]+"\""
-      seddsts = seddsts +  "\"" + sed["dest"]+"\""
+      suf.puts("RUN cat /home/app/" +  sed["file"] + " | sed " + sed["sedstr"] + " > /tmp/" + sed["file"] + "." + n )
+      suf.puts("RUN cp /tmp/" + sed["file"] + "." + n + " /home/app/" + sed["dest"])
+#      if n >0
+#        sedstrs = sedstrs + " "
+#        sedtargets = sedtargets + "  "
+#        seddsts = seddsts + "  "
+#      end
+#      sedstrs = sedstrs + "\"" + sed["sedstr"] +"\""
+#      sedtargets = sedtargets + "\"" +  sed["file"]+"\""
+#      seddsts = seddsts +  "\"" + sed["dest"]+"\""
       n=n+1
     end
-    if  sedstrs.length >1
-      suf.puts("declare -a SEDSTRS=(" + sedstrs + ")")
-      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
-      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
-    end
+#    if  sedstrs.length >1
+#      suf.puts("declare -a SEDSTRS=(" + sedstrs + ")")
+#      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
+#      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
+#    end
 
     suf.close
   end
@@ -366,7 +377,7 @@ p env
       n=n+1
     end
     if wports.length >0
-      stef.puts("WorkerPorts=" + "\"" + wports +"\"")
+      stef.puts("ENV WorkerPorts " + "\"" + wports +"\"")
     end
     stef.close()
   end
@@ -376,16 +387,69 @@ p env
     if rake_cmds == nil || rake_cmds.length == 0
       return
     end
-    rakefile = File.open( get_basedir + "/home/rakelist")
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
     rake_cmds.each do |rake_cmd|
       rake_action = rake_cmds["action"]
       p rake_action
       if rake_action !=nil
-        rakefile.puts("\"" + rake_action + "\"")
-      end
-
+        docker_file.puts("RUN su $ContUser /usr/local/rbenv/shims/bundle exec rake " + rake_action )
+      end      
     end
+    docker_file.close    
   end
+  
+def set_write_permissions_recursive
+   recursive_chmods = @bluePrint["software"]["chmod_recursive"]
+   if recursive_chmods == nil || recursive_chmods.length == 0
+     return
+   end
+   docker_file = File.open( get_basedir + "/Dockerfile","a")
+  recursive_chmods.each do |recursive_chmod|
+     directory = recursive_chmod["directory"]
+     #FIXME need to strip any ../ and any preceeding ./
+     if directory !=nil
+       docker_file.puts("RUN chmod -R /home/app/" + directory )
+     end    
+   end  
+  docker_file.close  
+ end
+ 
+def set_write_permissions_single
+   recursive_chmods = @bluePrint["software"]["chmod_recursive"]
+   if recursive_chmods == nil || recursive_chmods.length == 0
+     return
+   end
+   docker_file = File.open( get_basedir + "/Dockerfile","a")
+  recursive_chmods.each do |recursive_chmod|
+     directory = recursive_chmod["directory"]
+     #FIXME need to strip any ../ and any preceeding ./
+     if directory !=nil
+       docker_file.puts("RUN chmod -r /home/app/" + directory )
+     end     
+   end
+  docker_file.close    
+ end
+  
+  
+def create_pear_list
+  pear_mods = @bluePrint["software"]["pear_mod"]
+  if pear_mods == nil || pear_mods.length == 0
+    return
+  end
+  docker_file = File.open( get_basedir + "/Dockerfile","a")
+  docker_file.puts("RUN su $ContUser  wget http://pear.php.net/go-pear.phar; echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ")
+  docker_file.puts("RUN su $ContUser  php go-pear.phar")
+   
+  
+  pear_mods.each do |pear_mod|
+    pear_mods = pear_mods["module"]
+    p pear_mod
+    if pear_mod !=nil
+      docker_file.puts("RUN su $ContUser  pear install pear_mod " + pear_mod )
+    end    
+  end
+  docker_file.close
+end
 
   def build_init
     cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
@@ -528,18 +592,18 @@ p env
   end
 
   def setup_dockerfile
-    Dir.mkdir(get_basedir  + "/cron")
-    dfile = File.open(get_basedir + "/Dockerfile","a")
+    Dir.mkdir(get_basedir  + "/cron") #FIXME is this needed
+    docker_file = File.open(get_basedir + "/Dockerfile","a")
     ospackages = @bluePrint["software"]["ospackages"]
     packages=String.new
     ospackages.each do |package|
       packages = packages + package["name"] + " "
     end
     if packages.length >1
-      dfile.puts("\nRUN apt-get install -y " + packages )
+      docker_file.puts("\nRUN apt-get install -y " + packages )
     end
     @workerPorts.each do |port|
-      dfile.puts("EXPOSE " + port.port.to_s)
+      docker_file.puts("EXPOSE " + port.port.to_s)
     end
     
     
@@ -609,13 +673,14 @@ p env
     create_work_ports
     puts("Adding services")
     add_services
-
+    add_cron_jobs
     puts("Configuring Setup Environment")
     create_setup_env
     puts("Configuring Application Environment")
     add_custom_env
   #  puts("Setting up logging")
-   # setup_framework_logging
+   # setup_framework_logging?
+    
     puts("Creating workers")
     create_workers
     puts("Saving stack Environment")
@@ -626,6 +691,18 @@ p env
     puts("Configuring install Environment")
     create_presettings_env
     
+    set_container_user
+          
+    insert_framework_builder_in_dockerfile
+    
+    create_rake_list
+    
+    create_pear_list
+    
+    set_write_permissions_recursive
+    
+    set_write_permissions_single
+    
     puts("Building base")
     build_init
     puts("Running Setup")
@@ -634,6 +711,22 @@ p env
     build_deploy
     mc = create_managed_container()
     return mc
+  end
+
+  def set_container_user
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
+    #FIXME needs to by dynamic
+    docker_file.puts("ENV data_gid 11111")
+    docker_file.puts("ENV data_uid 11111")
+    docker_file.close
+        
+  end
+  def insert_framework_builder_in_dockerfile
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
+    frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile.builder")
+    builder_frag = frame_build_docker_frag.read
+    docker_file.write(builder_frag)
+    docker_file.close
   end
 
   def rebuild_managed_container  engine

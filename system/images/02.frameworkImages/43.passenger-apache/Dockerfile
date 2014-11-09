@@ -16,13 +16,13 @@ ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
 
 RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/
-RUN chown -R www-data /usr/local/rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/extensions
+RUN chown -R www-data /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions
 
 RUN /usr/local/rbenv/shims/gem install passenger
 RUN /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python
 ADD ports.conf /etc/apache2/
 
-RUN mkdir /home/app ; chown  www-data /home/app
+#RUN mkdir /home/app ; chown  www-data /home/app
 RUN mkdir -p /var/log/apache2 ; chown -R www-data /var/log/apache2
 ENV ContUser www-data
 ENV ContGrp www-data

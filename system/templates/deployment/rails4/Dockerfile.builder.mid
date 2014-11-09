@@ -1,0 +1,33 @@
+
+
+#state=`echo $TZ |cut -f2 -d/`
+#country=`echo $TZ |cut -f1 -d/`
+#TZ="$country\/$state"
+
+RUN chown -R $ContUser /home/app
+
+RUN echo "login: &login" > /home/app/config/database.yml
+RUN echo "  adapter: mysql2" >> /home/app/config/database.yml
+RUN echo "  host: localhost">> /home/app/config/database.yml
+RUN echo "  username: root">> /home/app/config/database.yml
+RUN echo "  password:">> /home/app/config/database.yml
+RUN echo "development:" >> /home/app/config/database.yml
+RUN echo "  database: ${dbname}_dev" >> /home/app/config/database.yml
+RUN echo "  <<: *login" >> /home/app/config/database.yml
+RUN echo "test:" >> /home/app/config/database.yml
+RUN echo "  database: ${dbname}_tests" >> /home/app/config/database.yml
+RUN echo "  <<: *login" >> /home/app/config/database.yml
+RUN echo "production:">> /home/app/config/database.yml
+RUN echo "  database: $dbname ">> /home/app/config/database.yml
+RUN echo "  <<: *login" >> /home/app/config/database.yml
+
+#unlock gems location for installation
+RUN chown -R $ContUser /usr/local/rbenv/versions/$ruby_version/
+
+ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+
+RUN cd /home/app ; su $ContUser /usr/local/rbenv/shims/bundle install
+RUN  cd /home/app ;su $ContUser /usr/local/rbenv/shims/bundle exec rake db:migrate;/usr/local/rbenv/shims/bundle exec rake db:populate;/usr/local/rbenv/shims/bundle exec rake assets:precompile
+#include custom rakes here
+
+
