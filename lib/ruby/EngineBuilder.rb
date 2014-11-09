@@ -608,7 +608,7 @@ end
     
     
 
-    dfile.close
+    docker_file.close
 
   end
 
