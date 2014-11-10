@@ -398,7 +398,8 @@ p env
       suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end
     if dirs.length >1 || files.length >1
-    suf.puts("VOLUME /home/fs/") 
+     suf.puts("VOLUME /home/fs/") 
+    end
     suf.close
   end
 
