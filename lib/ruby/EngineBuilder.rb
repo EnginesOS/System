@@ -371,7 +371,7 @@ p env
     pds.each do |dir|
       path = clean_path(dir["path"])
       suf.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome" + path + "/home/" + path)
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + path + " /home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
@@ -388,7 +388,7 @@ p env
       suf.puts("RUN mkdir -p /home/" + FILE.dirname(path))
       suf.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
       suf.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome" + path + " /home/" + path)
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
@@ -724,7 +724,7 @@ end
     add_services
     add_cron_jobs
     puts("Configuring Setup Environment")
-    create_setup_env
+   
     puts("Configuring Application Environment")
    
   #  puts("Setting up logging")
@@ -743,6 +743,7 @@ end
     set_container_user
     chown_home_app  
     create_sed_strings
+    create_setup_env
     insert_framework_frag_in_dockerfile("builder.mid")
     
 
