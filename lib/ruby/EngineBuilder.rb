@@ -136,15 +136,16 @@ p env
   end
 
   def add_file_service(name,dest)
-
+  
     permissions = PermissionRights.new(@hostName,"","")
     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + name,dest,"rw",permissions)
     @vols.push(vol)
     #fsf = File.open( get_basedir + "/home/fs.env","w")
     fsf = File.open( get_basedir + "/Dockerfile","a")
     fsf.puts("#FS Env")
-    fsf.puts("ENV VOLDIR " + name)
-    fsf.puts("ENV CONTFSVolHome " + vol.remotepath) #not nesscessary the same as dest used in constructor
+    fsf.puts("ENV VOLDIR " + name)   
+    fsf.puts("ENV CONTFSVolHome /home/" + vol.remotepath) #not nesscessary the same as dest used in constructor
+    fsf.puts("RUN mkdir -p $CONTFSVolHome")
     #cant happen here as not mounted
    # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
     fsf.close
@@ -225,11 +226,11 @@ p env
     dockerfile = File.open( get_basedir + "/Dockerfile","a")
     
     archives.each do |archive|
-      arc_src=archive["src"]
-      arc_name=archive["name"]
-      arc_loc =archive["dest"]
-      arc_extract=archive[ "extractcmd"]
-      arc_dir=archive["extractdir"]
+      arc_src=clean_path(archive["src"])
+      arc_name=clean_path(archive["name"])
+      arc_loc =clean_path(archive["dest"])
+      arc_extract=clean_path(archive[ "extractcmd"])
+      arc_dir=clean_path(archive["extractdir"])
       if(n >0)
         srcs = srcs + " "
         names =names + " "
@@ -301,50 +302,24 @@ p env
   
   def create_setup_env
     suf = File.open( get_basedir + "/Dockerfile","a")
-    confd = @bluePrint["software"]["configuredfile"]
+    confd =  arc_dir=clean_path(@bluePrint["software"]["configuredfile"])
     if confd != nil && confd !=""
       suf.puts("ENV CONFIGURED_FILE " + confd)
     end
-    insted =  @bluePrint["software"]["toconfigurefile"]
+    insted =   arc_dir=clean_path(@bluePrint["software"]["toconfigurefile"])
     if insted != nil && insted !=""
       suf.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
-    
-    pcf = String.new
-
-    pds =   @bluePrint["software"]["persistantdirs"]
-    dirs= String.new
-    pds.each do |dir|
-      path = dir["path"]
-      pcf=path
-      dirs = dirs + " " + path
-    end
-    if dirs.length >1
-      suf.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
-    end
-                                    
-    pfs =   @bluePrint["software"]["persistantfiles"]
-    files= String.new
-    pfs.each do |file|
-      path = file["path"]
-      pcf=path
-      files = files + "\""+ path + "\" "
-    end
-    if files.length >1
-      suf.puts("ENV PERSISTANT_FILES "+files)
-    end
-    if pcf.length >1
-      suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
-    end
     seds=@bluePrint["software"]["replacementstrings"]
-    sedstrs = String.new
-    sedtargets = String.new
-    seddsts = String.new
+
     n=0
     seds.each do |sed|
-      suf.puts("RUN cat /home/app/" +  sed["file"] + " | sed " + sed["sedstr"] + " > /tmp/" + sed["file"] + "." + n )
-      suf.puts("RUN cp /tmp/" + sed["file"] + "." + n + " /home/app/" + sed["dest"])
+      file = clean_path(sed["file"])
+      dest = clean_path(sed["dest"])
+      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n )
+      suf.puts("RUN cp /tmp/" + file + "." + n + " /home/app/" + dest)
+      
 #      if n >0
 #        sedstrs = sedstrs + " "
 #        sedtargets = sedtargets + "  "
@@ -360,6 +335,36 @@ p env
 #      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
 #      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
 #    end
+        
+    pcf = String.new
+
+    pds =   @bluePrint["software"]["persistantdirs"]
+    dirs= String.new
+    pds.each do |dir|
+      path = clean_path(dir["path"])
+      suf.puts("RUN mv /home/app/" + path + " $CONTFSVolHome" )
+      suf.puts("RUN ln -s $CONTFSVolHome" + path + "/home/" + path)
+      pcf=path
+      dirs = dirs + " " + path
+    end
+    if dirs.length >1
+      suf.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
+    end
+                                    
+    pfs =   @bluePrint["software"]["persistantfiles"]
+    files= String.new
+    pfs.each do |file|
+      path =  arc_dir=clean_path(file["path"])
+      pcf=path
+      files = files + "\""+ path + "\" "
+    end
+    if files.length >1
+      suf.puts("ENV PERSISTANT_FILES "+files)
+    end
+    if pcf.length >1
+      suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
+    end
+
 
     suf.close
   end
@@ -413,7 +418,7 @@ def set_write_permissions_recursive
    end
    docker_file = File.open( get_basedir + "/Dockerfile","a")
   recursive_chmods.each do |recursive_chmod|
-     directory = recursive_chmod["directory"]
+     directory = clean_path(recursive_chmod["directory"])
      #FIXME need to strip any ../ and any preceeding ./
      if directory !=nil
        docker_file.puts("RUN chmod -R /home/app/" + directory )
@@ -423,13 +428,13 @@ def set_write_permissions_recursive
  end
  
 def set_write_permissions_single
-   recursive_chmods = @bluePrint["software"]["chmod_recursive"]
-   if recursive_chmods == nil || recursive_chmods.length == 0
+  single_chmods = @bluePrint["software"]["chmod_single"]
+   if single_chmods == nil || single_chmods.length == 0
      return
    end
    docker_file = File.open( get_basedir + "/Dockerfile","a")
-  recursive_chmods.each do |recursive_chmod|
-     directory = recursive_chmod["directory"]
+  single_chmods.each do |single_chmod|
+     directory = clean_path(single_chmod["directory"])
      #FIXME need to strip any ../ and any preceeding ./
      if directory !=nil
        docker_file.puts("RUN chmod -r /home/app/" + directory )
@@ -590,8 +595,8 @@ end
           add_db_service(dbname,servicetype)
         end
       else if servicetype=="filesystem"
-          fsname = service["name"]
-          dest = service["dest"]
+          fsname = clean(service["name"])
+          dest = clean_path(service["dest"])
           add_file_service(fsname, dest)
         else
           p "Unknown Service " + servicetype
@@ -728,6 +733,8 @@ end
     #FIXME needs to by dynamic
     docker_file.puts("ENV data_gid 11111")
     docker_file.puts("ENV data_uid 11111")
+    @data_uid=11111
+    @data_gid=11111
     docker_file.close
         
   end
@@ -773,7 +780,9 @@ def insert_framework_frag_in_dockerfile(frag_name)
     @environments,
     @framework,
     @runtime,
-    @docker_api
+    @docker_api,
+    @data_uid,
+    @data_gid
     )
     #initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime)
 #    @workerPorts.each do |port|
@@ -829,6 +838,11 @@ def insert_framework_frag_in_dockerfile(frag_name)
         debug(res)
         return res
       end           
+    end
+    
+    def clean_path(path)
+      #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
+      return path
     end
     
   def get_basedir
