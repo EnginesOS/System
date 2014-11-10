@@ -843,6 +843,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
     
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
+      p path
       return path
     end
     
