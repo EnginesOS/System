@@ -15,12 +15,10 @@ then
 	service cron start
 fi
 
-RAILS_ENV=production
-
-DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
-
-
-export  RAILS_ENV DATABASE_URL
+#in Dockerfile
+#RAILS_ENV=production
+#DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+#export  RAILS_ENV DATABASE_URL
 
 #/usr/local/rbenv/shims/bundle install
 
@@ -32,7 +30,7 @@ export  RAILS_ENV DATABASE_URL
 
 
 SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
-export SECRET_KEY_BASE RAILS_ENV
+export SECRET_KEY_BASE 
 
 touch  /engines/var/run/startup_complete
 

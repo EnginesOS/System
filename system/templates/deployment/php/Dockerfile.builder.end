@@ -10,7 +10,7 @@ RUN mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/
 RUN mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
  
 ADD home/startwebapp.sh /home/app/
-
+ENV RAILS_ENV production
 USER www-data
 
 WORKDIR /home/app
