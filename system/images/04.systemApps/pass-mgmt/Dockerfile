@@ -27,4 +27,3 @@ ADD Procfile.sh /home/app/
 
 CMD /home/app/Procfile.sh
 USER 21000
-GROUP 999
