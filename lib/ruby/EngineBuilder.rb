@@ -318,8 +318,8 @@ p env
     seds.each do |sed|
       file = clean_path(sed["file"])
       dest = clean_path(sed["dest"])
-      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n )
-      suf.puts("RUN cp /tmp/" + file + "." + n + " /home/app/" + dest)
+      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
+      suf.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
       
 #      if n >0
 #        sedstrs = sedstrs + " "
@@ -843,7 +843,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
     
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
-      p path
+    
       return path
     end
     
