@@ -24,7 +24,7 @@ RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ Ser
 	echo "  database: $dbname ">> /home/app/config/database.yml;\ 
 	echo "  <<: *login" >> /home/app/config/database.yml;\ 
 \
-RUN chown -R $ContUser /usr/local/rbenv/versions/$ruby_version/
+	chown -R $ContUser /usr/local/rbenv/versions/$ruby_version/
 
 ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 USER $ContUser
