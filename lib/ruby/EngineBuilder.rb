@@ -303,6 +303,8 @@ p env
     docker_file = File.open( get_basedir + "/Dockerfile","a")
     docker_file.puts("USER 0")
     docker_file.puts("RUN chown -R $ContUser /home/app")
+    docker_file.puts("USER $ContUser")
+
     docker_file.close
   end
 
@@ -736,7 +738,7 @@ end
     create_sed_strings
     insert_framework_frag_in_dockerfile("builder.mid")
     
-    create_sed_strings
+
     
     create_rake_list
     
