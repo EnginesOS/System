@@ -303,7 +303,7 @@ p env
   def create_sed_strings
 
        seds=@bluePrint["software"]["replacementstrings"]
-         if seds == nil || seds.length =0
+         if seds == nil || seds.empty? == true
            return
          end
        docker_file = File.open( get_basedir + "/Dockerfile","a")
