@@ -144,7 +144,7 @@ p env
     fsf = File.open( get_basedir + "/Dockerfile","a")
     fsf.puts("#FS Env")
     fsf.puts("ENV VOLDIR " + name)   
-    fsf.puts("ENV CONTFSVolHome /home/fs/" + vol.remotepath) #not nesscessary the same as dest used in constructor
+    fsf.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
     fsf.puts("VOLUME /home/fs/")
     fsf.puts("RUN mkdir -p $CONTFSVolHome")
     #cant happen here as not mounted
@@ -371,8 +371,7 @@ p env
     pds.each do |dir|
       path = clean_path(dir["path"])
       suf.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome" )
-      suf.puts("RUN ln -s $CONTFSVolHome" + path + "/home/" + path)
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome" + path + "/home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
@@ -389,8 +388,7 @@ p env
       suf.puts("RUN mkdir -p /home/" + FILE.dirname(path))
       suf.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
       suf.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome" )
-      suf.puts("RUN ln -s $CONTFSVolHome" + path + "/home/" + path)
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome" + path + " /home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
