@@ -145,7 +145,7 @@ p env
     fsf.puts("#FS Env")
     fsf.puts("ENV VOLDIR " + name)   
     fsf.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
-    fsf.puts("VOLUME /home/fs/")
+  #  fsf.puts("VOLUME /home/fs/") Dont do this until files are written
     fsf.puts("RUN mkdir -p $CONTFSVolHome")
     #cant happen here as not mounted
    # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
@@ -397,8 +397,8 @@ p env
     if pcf.length >1
       suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end
-
-
+    if dirs.length >1 || files.length >1
+    suf.puts("VOLUME /home/fs/") 
     suf.close
   end
 
