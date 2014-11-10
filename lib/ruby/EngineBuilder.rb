@@ -370,12 +370,14 @@ p env
     dirs= String.new
     pds.each do |dir|
       path = clean_path(dir["path"])
-      suf.puts("RUN mv /home/app/" + path + " $CONTFSVolHome" )
+      suf.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome" )
       suf.puts("RUN ln -s $CONTFSVolHome" + path + "/home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
     if dirs.length >1
+      suf.puts("RUN chown -R $data_id.www-data /home/fs ;chmod g+w /home/fs")
       suf.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
@@ -384,6 +386,11 @@ p env
     pfs.each do |file|
       path =  arc_dir=clean_path(file["path"])
       pcf=path
+      suf.puts("RUN mkdir -p /home/" + FILE.dirname(path))
+      suf.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
+      suf.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
+      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome" )
+      suf.puts("RUN ln -s $CONTFSVolHome" + path + "/home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
@@ -709,6 +716,7 @@ end
     puts("Copy in default templates")
     copy_templates
     puts("Setting Web port")
+    add_custom_env
     getwebport
     getwebuser
     puts("creating Worker port")
@@ -719,7 +727,7 @@ end
     puts("Configuring Setup Environment")
     create_setup_env
     puts("Configuring Application Environment")
-    add_custom_env
+   
   #  puts("Setting up logging")
    # setup_framework_logging?
     
