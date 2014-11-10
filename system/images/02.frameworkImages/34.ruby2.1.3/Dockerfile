@@ -13,4 +13,4 @@ RUN mkdir ~/node_js_src && cd $_;wget -N http://nodejs.org/dist/node-latest.tar.
 	echo "gem: --no-ri --no-rdoc" > ~/.gemrc;\
 	/usr/local/rbenv/bin/rbenv rehash;\
 	cp -rp  ~/.gemrc ~/.bashrc ~ruby;\
-	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R ruby /usr/local/rbenv/versions/;\
+	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R ruby /usr/local/rbenv/versions/
