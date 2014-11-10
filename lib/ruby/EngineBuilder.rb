@@ -300,6 +300,25 @@ p env
     docker_file.close
   end
 
+  def create_sed_strings
+
+       seds=@bluePrint["software"]["replacementstrings"]
+         if seds == nil || seds.length =0
+           return
+         end
+       docker_file = File.open( get_basedir + "/Dockerfile","a")
+    
+       n=0
+       seds.each do |sed|
+         file = clean_path(sed["file"])
+         dest = clean_path(sed["dest"])
+         docker_file.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
+         docker_file.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
+
+         n=n+1
+       end
+    docker_file.close
+  end
   
   def create_setup_env
     suf = File.open( get_basedir + "/Dockerfile","a")
@@ -312,29 +331,29 @@ p env
       suf.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
-    seds=@bluePrint["software"]["replacementstrings"]
-
-    n=0
-    seds.each do |sed|
-      file = clean_path(sed["file"])
-      dest = clean_path(sed["dest"])
-      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
-      suf.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
-      
-#      if n >0
-#        sedstrs = sedstrs + " "
-#        sedtargets = sedtargets + "  "
-#        seddsts = seddsts + "  "
-#      end
-#      sedstrs = sedstrs + "\"" + sed["sedstr"] +"\""
-#      sedtargets = sedtargets + "\"" +  sed["file"]+"\""
-#      seddsts = seddsts +  "\"" + sed["dest"]+"\""
-      n=n+1
-    end
-#    if  sedstrs.length >1
-#      suf.puts("declare -a SEDSTRS=(" + sedstrs + ")")
-#      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
-#      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
+#    seds=@bluePrint["software"]["replacementstrings"]
+#
+#    n=0
+#    seds.each do |sed|
+#      file = clean_path(sed["file"])
+#      dest = clean_path(sed["dest"])
+#      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
+#      suf.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
+#      
+##      if n >0
+##        sedstrs = sedstrs + " "
+##        sedtargets = sedtargets + "  "
+##        seddsts = seddsts + "  "
+##      end
+##      sedstrs = sedstrs + "\"" + sed["sedstr"] +"\""
+##      sedtargets = sedtargets + "\"" +  sed["file"]+"\""
+##      seddsts = seddsts +  "\"" + sed["dest"]+"\""
+#      n=n+1
+#    end
+##    if  sedstrs.length >1
+##      suf.puts("declare -a SEDSTRS=(" + sedstrs + ")")
+##      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
+##      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
 #    end
         
     pcf = String.new
@@ -705,7 +724,7 @@ end
     setup_dockerfile
     puts("Configuring install Environment")
     create_presettings_env
-    
+    create_sed_strings
     set_container_user
     insert_framework_frag_in_dockerfile("builder.mid")
     
