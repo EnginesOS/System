@@ -144,7 +144,8 @@ p env
     fsf = File.open( get_basedir + "/Dockerfile","a")
     fsf.puts("#FS Env")
     fsf.puts("ENV VOLDIR " + name)   
-    fsf.puts("ENV CONTFSVolHome /home/" + vol.remotepath) #not nesscessary the same as dest used in constructor
+    fsf.puts("ENV CONTFSVolHome /home/fs/" + vol.remotepath) #not nesscessary the same as dest used in constructor
+    fsf.puts("VOLUME /home/fs/")
     fsf.puts("RUN mkdir -p $CONTFSVolHome")
     #cant happen here as not mounted
    # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
