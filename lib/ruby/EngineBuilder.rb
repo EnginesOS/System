@@ -483,8 +483,9 @@ def create_pear_list
     return
   end
   docker_file = File.open( get_basedir + "/Dockerfile","a")
-  docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar; echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ")
-  docker_file.puts("RUN   php go-pear.phar")
+  docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
+  docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
+  docker_file.puts("  php go-pear.phar")
    
   
   pear_mods.each do |pear_mod|

@@ -1,2 +1,2 @@
 FROM busybox
-ADD setup_vols.sh
+ADD setup_vols.sh /home/

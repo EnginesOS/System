@@ -15,7 +15,8 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
     chown -R www-data /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
 	/usr/local/rbenv/shims/gem install passenger;\
     /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python;\
-	mkdir -p /var/log/apache2 ; chown -R www-data /var/log/apache2
+	mkdir -p /var/log/apache2 ;\
+	chown -R www-data /var/log/apache2
 
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
