@@ -1,4 +1,4 @@
-#/bin/bash
+#/bin/sh
 #VOLUME /client/var/log
 #VOLUME /client/log
 #VOLUME /client/state
@@ -8,6 +8,6 @@ chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
-cp -rp  client/fs* /dest/fs/
+cp -rp  /home/fs/* /dest/fs/
 
 

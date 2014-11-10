@@ -5,4 +5,4 @@ VOLUME /client/log
 VOLUME /client/state
 VOLUME /client/fs
 VOLUME /dest/fs
-CMD /home/setup.sh
+CMD /home/setup_vols.sh
