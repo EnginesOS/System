@@ -299,6 +299,12 @@ p env
      cron_file.close
     docker_file.close
   end
+  def chown_home_app
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
+    docker_file.puts("USER 0")
+    docker_file.puts("RUN chown -R $ContUser /home/app")
+    docker_file.close
+  end
 
   def create_sed_strings
 
@@ -724,9 +730,13 @@ end
     setup_dockerfile
     puts("Configuring install Environment")
     create_presettings_env
-    create_sed_strings
+
     set_container_user
+    chown_home_app  
+    create_sed_strings
     insert_framework_frag_in_dockerfile("builder.mid")
+    
+    create_sed_strings
     
     create_rake_list
     
