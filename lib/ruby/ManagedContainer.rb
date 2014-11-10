@@ -20,7 +20,7 @@ class ManagedContainer < Container
   @http_and_https=true
   @https_only=false
   
- def initialize(mem,name,host,domain,image,e_ports,vols,environs,framework,runtime,databases,setState,port,repo) #used for test only
+ def initialize(mem,name,host,domain,image,e_ports,vols,environs,framework,runtime,databases,setState,port,repo,data_uid,data_gid) #used for test only
    @framework = framework
    @runtime = runtime
    @databases = databases
@@ -44,7 +44,8 @@ class ManagedContainer < Container
    @https_only=false
    @last_error=""
    @last_result=""
-   
+   @data_uid=data_uid
+   @data_gid=data_gid
    @cont_userid=-1
 #   @ro_groupid
 #   @rw_groupid
