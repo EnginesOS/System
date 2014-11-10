@@ -5,8 +5,8 @@
 #TZ="$country\/$state"
 
 USER 0
-RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn" > /tmp/.000-default.conf 
-RUN cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf 
+RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn" > /tmp/.000-default.conf;\ 
+	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf 
 
 
 ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname

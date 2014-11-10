@@ -1,28 +1,26 @@
 FROM engines/rails4
 
 
+
 RUN /usr/sbin/usermod -u 22671 www-data ;\
  	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7 ;\
 	apt-get install -y apt-transport-https ca-certificates  apache2-threaded-dev libapr1-dev libaprutil1-dev ;\
 	echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main  >/etc/apt/sources.list.d/passenger.list;\ 
-	chmod 600 /etc/apt/sources.list.d/passenger.list
+	chmod 600 /etc/apt/sources.list.d/passenger.list;\
+	apt-get update -y ;\
+	apt-get install -y apache2 libapache2-mod-passenger passenger-dev;\
+	a2enmod passenger;\
+    rm etc/apache2/sites-enabled/*;\
+    chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/;\
+    chown -R www-data /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
+	/usr/local/rbenv/shims/gem install passenger;\
+    /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python;\
+	mkdir -p /var/log/apache2 ; chown -R www-data /var/log/apache2
 
-RUN apt-get update -y ;\
-	 apt-get install -y apache2 libapache2-mod-passenger passenger-dev;\
-	 a2enmod passenger;\
-     rm etc/apache2/sites-enabled/*;\
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
-
-RUN chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R www-data /usr/local/rbenv/versions/;\
-    chown -R www-data /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions
-
-RUN /usr/local/rbenv/shims/gem install passenger;\
-    /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python
 ADD ports.conf /etc/apache2/
 
-
-RUN mkdir -p /var/log/apache2 ; chown -R www-data /var/log/apache2
 ENV ContUser www-data
 ENV ContGrp www-data
 

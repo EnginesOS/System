@@ -5,32 +5,31 @@
 #TZ="$country\/$state"
 
 USER 0
-RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf 
-RUN cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf 
-
-
-RUN echo "login: &login" > /home/app/config/database.yml
-RUN echo "  adapter: mysql2" >> /home/app/config/database.yml
-RUN echo "  host: localhost">> /home/app/config/database.yml
-RUN echo "  username: root">> /home/app/config/database.yml
-RUN echo "  password:">> /home/app/config/database.yml
-RUN echo "development:" >> /home/app/config/database.yml
-RUN echo "  database: ${dbname}_dev" >> /home/app/config/database.yml
-RUN echo "  <<: *login" >> /home/app/config/database.yml
-RUN echo "test:" >> /home/app/config/database.yml
-RUN echo "  database: ${dbname}_tests" >> /home/app/config/database.yml
-RUN echo "  <<: *login" >> /home/app/config/database.yml
-RUN echo "production:">> /home/app/config/database.yml
-RUN echo "  database: $dbname ">> /home/app/config/database.yml
-RUN echo "  <<: *login" >> /home/app/config/database.yml
-
-#unlock gems location for installation
+RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
+	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf ;\ 
+\
+\
+	echo "login: &login" > /home/app/config/database.yml;\ 
+	echo "  adapter: mysql2" >> /home/app/config/database.yml;\ 
+	echo "  host: localhost">> /home/app/config/database.yml;\ 
+	echo "  username: root">> /home/app/config/database.yml;\ 
+	echo "  password:">> /home/app/config/database.yml;\ 
+	echo "development:" >> /home/app/config/database.yml;\ 
+	echo "  database: ${dbname}_dev" >> /home/app/config/database.yml;\ 
+	echo "  <<: *login" >> /home/app/config/database.yml;\ 
+	echo "test:" >> /home/app/config/database.yml;\ 
+	echo "  database: ${dbname}_tests" >> /home/app/config/database.yml;\ 
+	echo "  <<: *login" >> /home/app/config/database.yml;\ 
+	echo "production:">> /home/app/config/database.yml;\ 
+	echo "  database: $dbname ">> /home/app/config/database.yml;\ 
+	echo "  <<: *login" >> /home/app/config/database.yml;\ 
+\
 RUN chown -R $ContUser /usr/local/rbenv/versions/$ruby_version/
 
 ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 USER $ContUser
-RUN cd /home/app ;  /usr/local/rbenv/shims/bundle install
-RUN  cd /home/app ; /usr/local/rbenv/shims/bundle exec rake db:migrate;/usr/local/rbenv/shims/bundle exec rake db:populate;/usr/local/rbenv/shims/bundle exec rake assets:precompile
+RUN cd /home/app ;  /usr/local/rbenv/shims/bundle install;\ 
+   /usr/local/rbenv/shims/bundle exec rake db:migrate;/usr/local/rbenv/shims/bundle exec rake db:populate;/usr/local/rbenv/shims/bundle exec rake assets:precompile
 
 #include custom rakes here
 
