@@ -329,14 +329,14 @@ p env
   end
   
   def create_setup_env
-    suf = File.open( get_basedir + "/Dockerfile","a")
+    docker_file = File.open( get_basedir + "/Dockerfile","a")
     confd =  arc_dir=clean_path(@bluePrint["software"]["configuredfile"])
     if confd != nil && confd !=""
-      suf.puts("ENV CONFIGURED_FILE " + confd)
+      docker_file.puts("ENV CONFIGURED_FILE " + confd)
     end
     insted =   arc_dir=clean_path(@bluePrint["software"]["toconfigurefile"])
     if insted != nil && insted !=""
-      suf.puts("ENV INSTALL_SCRIPT " + insted)
+      docker_file.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
 #    seds=@bluePrint["software"]["replacementstrings"]
@@ -371,14 +371,14 @@ p env
     pds.each do |dir|
       path = clean_path(dir["path"])
      
-      suf.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + path + " /home/" + path)
+      docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + path + " /home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      suf.puts("RUN chown -R $data_id.www-data /home/fs ;chmod g+w /home/fs")
-      suf.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
+      docker_file.puts("RUN chown -R $data_id.www-data /home/fs ;chmod g+w /home/fs")
+      docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
     pfs =   @bluePrint["software"]["persistantfiles"]
@@ -386,25 +386,25 @@ p env
     pfs.each do |file|
       path =  arc_dir=clean_path(file["path"])
       pcf=path
-      suf.puts("RUN mkdir -p /home/" + FILE.dirname(path))
-      suf.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
-      suf.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
-      suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + path)
+      docker_file.puts("RUN mkdir -p /home/" + FILE.dirname(path))
+      docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
+      docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
-      suf.puts("ENV PERSISTANT_FILES "+files)
+      docker_file.puts("ENV PERSISTANT_FILES "+files)
     end
     if pcf.length >1
-      suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
+      docker_file.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end
     
     docker_file.puts("USER $ContUser")
     
     if dirs.length >1 || files.length >1
-     suf.puts("VOLUME /home/fs/") 
+      docker_file.puts("VOLUME /home/fs/") 
     end
-    suf.close
+    docker_file.close
   end
 
   def create_stack_env
