@@ -377,7 +377,7 @@ p env
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      docker_file.puts("RUN chown -R $data_id.www-data /home/fs ;chmod -R g+w /home/fs")
+      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R g+w /home/fs")
       docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
