@@ -377,7 +377,7 @@ p env
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R g+w /home/fs")
+      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R 770 /home/fs")
       docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
@@ -400,13 +400,15 @@ p env
     end
     if pcf.length >1
       docker_file.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
+    end       
+    
+    if dirs.length >1 || files.length >1
+      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R 770 /home/fs")
+      docker_file.puts("VOLUME /home/fs/") 
     end
     
     docker_file.puts("USER $ContUser")
     
-    if dirs.length >1 || files.length >1
-      docker_file.puts("VOLUME /home/fs/") 
-    end
     docker_file.close
   end
 
