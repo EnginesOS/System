@@ -771,7 +771,7 @@ end
     puts("Building base")
     build_init
     puts("Running Setup")
-    run_volume_builder @hostName 
+    @docker_api.run_volume_builder @hostName 
   #  build_setup
     puts("Building deploy image")
    # build_deploy
