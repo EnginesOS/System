@@ -146,7 +146,7 @@ p env
     fsf.puts("ENV VOLDIR " + name)   
     fsf.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
   #  fsf.puts("VOLUME /home/fs/") Dont do this until files are written
-    fsf.puts("RUN mkdir -p $CONTFSVolHome/app")
+    fsf.puts("RUN mkdir -p $CONTFSVolHome")
     #cant happen here as not mounted
    # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
     fsf.close
@@ -370,9 +370,9 @@ p env
     dirs= String.new
     pds.each do |dir|
       path = clean_path(dir["path"])
-     
+      link_src = path.sub(/app/,"")
       docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
-      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + path + " /home/" + path)
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
@@ -390,9 +390,9 @@ p env
       docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
       docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
         
-      link_dest = path.sub(/app/,"")
+      link_src = path.sub(/app/,"")
         
-      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + link_dest)
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
