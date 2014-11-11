@@ -62,8 +62,8 @@ class Docker
     return ret_val
      
    end
-   
-  def create_container container             
+
+  def container_commandline_args container             
      e_option =String.new
      
     clear_container_var_run(container)
@@ -101,8 +101,15 @@ class Docker
       else
         start_cmd=" "
       end
-      commandargs =  " run -h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + " -d  -t " + container.image + start_cmd                 
-     puts commandargs
+      commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + " -d  -t " + container.image + start_cmd
+                       
+     return commandargs
+  end
+  
+  def create_container container
+    commandargs = container_commandline_args
+    commandargs = " run " + commandargs
+    p commandargs
      cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
      if File.exists? cidfile
        File.delete cidfile
@@ -115,7 +122,19 @@ class Docker
      return retval  
      
    end
+  
    
+   
+  def setup_container container
+    commandargs = container_commandline_args
+    commandargs = " create " + commandargs
+    p commandargs
+    retval = run_docker(commandargs,container)
+        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
+          container.set_container_id container.last_result
+        end
+  end
+  
    def rebuild_image container
 
      builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, container.docker_api)
