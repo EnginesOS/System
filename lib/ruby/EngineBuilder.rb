@@ -389,7 +389,10 @@ p env
       docker_file.puts("RUN mkdir -p /home/" + FILE.dirname(path))
       docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
       docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
-      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + path)
+        
+      link_dest = path.sub(/app/,"")
+        
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + path + " /home/" + link_dest)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
