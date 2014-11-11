@@ -146,7 +146,7 @@ p env
     fsf.puts("ENV VOLDIR " + name)   
     fsf.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
   #  fsf.puts("VOLUME /home/fs/") Dont do this until files are written
-    fsf.puts("RUN mkdir -p $CONTFSVolHome")
+    fsf.puts("RUN mkdir -p $CONTFSVolHome/app")
     #cant happen here as not mounted
    # fsf.puts("RUN chown -R $ContUser.$ContGrp  $CONTFSVolHome")
     fsf.close
@@ -377,7 +377,7 @@ p env
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      docker_file.puts("RUN chown -R $data_id.www-data /home/fs ;chmod g+w /home/fs")
+      docker_file.puts("RUN chown -R $data_id.www-data /home/fs ;chmod -R g+w /home/fs")
       docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
