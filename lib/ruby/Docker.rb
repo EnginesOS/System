@@ -107,7 +107,7 @@ class Docker
   end
   
   def create_container container
-    commandargs = container_commandline_args
+    commandargs = container_commandline_args container
     commandargs = " run " + commandargs
     p commandargs
      cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
@@ -126,7 +126,7 @@ class Docker
    
    
   def setup_container container
-    commandargs = container_commandline_args
+    commandargs = container_commandline_args container
     commandargs = " create " + commandargs
     p commandargs
     retval = run_docker(commandargs,container)
