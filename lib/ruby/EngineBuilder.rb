@@ -509,7 +509,7 @@ def create_pear_list
 end
 
   def build_init
-    cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
+   # cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
     cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/deploy ." 
     puts cmd
     res = run_system(cmd)
@@ -590,7 +590,7 @@ end
   end
   
   def launch_deploy managed_container
-    retval =  managed_container.create_container
+    retval =  managed_container.init_container
     if retval == false
       puts "Failed to Start Container " +  managed_container.last_error
     end

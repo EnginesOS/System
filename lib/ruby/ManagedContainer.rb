@@ -233,6 +233,28 @@ class ManagedContainer < Container
     end
   end
 
+   def setup_container
+     if @docker_api == nil
+       @last_error="No connection to Engines OS System"      
+       return false
+     end
+     ret_val =false
+     state = read_state()
+ 
+     if state == "nocontainer"
+       ret_val = @docker_api.setup_container self
+       @setState="stopped"
+     else
+       @last_error ="Cannot create container if container by the same name exists"
+     end
+    
+     clear_error(ret_val)
+     save_state()
+  
+     
+     return ret_val
+   end
+   
   def create_container
     if @docker_api == nil
       @last_error="No connection to Engines OS System"      
