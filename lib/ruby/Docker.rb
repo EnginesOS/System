@@ -17,6 +17,7 @@ class Docker
           end                 
       return ret_val
    end
+   
    def run_system (cmd)
      cmd = cmd + " 2>&1"
      res= %x<#{cmd}>  
@@ -106,6 +107,17 @@ class Docker
      return commandargs
   end
   
+ 
+  
+  def run_volume_builder   containerName
+    mapped_vols = get_volbuild_volmaps containerName
+    command = "docker run --name vb --memory=20m -e fw_user=22671 --cidfile /opt/engines/run/vb.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
+      p command
+    run_system(command)
+    command = "docker stop vb;  docker rm vb; rm /opt/engines/run/vb.cid"
+    run_system(command)
+  end
+  
   def create_container container
     commandargs = container_commandline_args container
     commandargs = " run " + commandargs
@@ -117,13 +129,9 @@ class Docker
      retval = run_docker(commandargs,container)
       if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
         container.set_container_id container.last_result
-      end
-      
-     return retval  
-     
-   end
-  
-   
+      end      
+     return retval       
+   end     
    
   def setup_container container
     commandargs = container_commandline_args container
@@ -328,7 +336,6 @@ class Docker
   end
 
 def rm_volume(site_hash)
-
     puts "would remove " + site_hash[:localpath] 
 return true 
 end
@@ -382,8 +389,7 @@ end
   end
 
 def save_system_preferences
-end
-  
+end  
 
 
  def load_system_preferences
@@ -393,11 +399,20 @@ end
   def container_state_dir container
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName 
   end
-
+  
   def container_log_dir container
       return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName 
   end
   
+  def get_volbuild_volmaps containerName
+    state_dir = SysConfig.CidDir + "/containers/" + container.containerName 
+    log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
+    volume_option += " -v " + state_dir + "/client/state:rw "    
+    volume_option += " -v " + log_dir + ":/client/log:rw "
+    volume_option += " --volumes-from " + SysConfig.LocalFSVolHome + "/" + containerName + ":/client/fs:rw"  
+     
+        return volume_option
+  end
   def get_volume_option container
     
     #System
