@@ -365,11 +365,12 @@ p env
 #    end
         
     pcf = String.new
-
+    docker_file.puts("USER 0")
     pds =   @bluePrint["software"]["persistantdirs"]
     dirs= String.new
     pds.each do |dir|
       path = clean_path(dir["path"])
+     
       suf.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
       suf.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + path + " /home/" + path)
       pcf=path
@@ -397,6 +398,9 @@ p env
     if pcf.length >1
       suf.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end
+    
+    docker_file.puts("USER $ContUser")
+    
     if dirs.length >1 || files.length >1
      suf.puts("VOLUME /home/fs/") 
     end
