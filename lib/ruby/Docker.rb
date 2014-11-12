@@ -410,7 +410,8 @@ end
     log_dir = SysConfig.SystemLogRoot + "/containers/" + containerName
     volume_option = " -v " + state_dir + ":/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
-    volume_option += " --volumes-from " + containerName + " -v " + SysConfig.LocalFSVolHome + "/" + containerName + ":/client/fs:rw"  
+    volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + containerName + ":/dest/fs:rw"  
+    volume_option += " --volumes-from " + containerName + " -v  /home/fs/:/home/fs:rw"  
      
         return volume_option
   end
