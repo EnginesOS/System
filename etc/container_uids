@@ -16,5 +16,5 @@ www-data	www-data	22671
 ruby	ruby			22672
 node	node			22673
 python	python			22674
-passenger passenger		22675
+
 #23000 -> applications assigned by volume manager

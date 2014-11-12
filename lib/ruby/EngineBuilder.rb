@@ -797,7 +797,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
     docker_file.write(builder_frag)
     docker_file.close
   end
- 
+
 
   def rebuild_managed_container  engine
     @engine  = engine
@@ -864,7 +864,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
       if launch_deploy(mc) == false
         puts "Failed to Launch"
       end
-      @docker_api.run_volume_builder @hostName 
+      @docker_api.run_volume_builder(@hostName ,@webUser)
       mc.start_container
     end
     return mc
