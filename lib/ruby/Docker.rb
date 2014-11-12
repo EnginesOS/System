@@ -102,7 +102,7 @@ class Docker
       else
         start_cmd=" "
       end
-      commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + " -d  -t " + container.image + start_cmd
+      commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + "  -t " + container.image + start_cmd
                        
      return commandargs
   end
@@ -120,7 +120,7 @@ class Docker
   
   def create_container container
     commandargs = container_commandline_args container
-    commandargs = " run " + commandargs
+    commandargs = " run  -d " + commandargs
     p commandargs
      cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
      if File.exists? cidfile
@@ -411,7 +411,7 @@ end
     volume_option = " -v " + state_dir + ":/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
     volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + containerName + ":/dest/fs:rw"  
-    volume_option += " --volumes-from " + containerName + " -v  /home/fs/:/home/fs:rw"  
+    volume_option += " --volumes-from " + containerName  
      
         return volume_option
   end
