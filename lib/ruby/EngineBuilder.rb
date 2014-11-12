@@ -255,7 +255,7 @@ p env
         dockerfile.puts("USER $ContUser")
       else
         dockerfile.puts("RUN   wget  \""  + arc_src + "\"" )
-        dockerfile.puts("RUN " + arc_extract + " \"" + arc_name + "\"")
+        dockerfile.puts("RUN " + arc_extract + " \"" + arc_name + "\*"")
         dockerfile.puts("USER 0  ")
         dockerfile.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
         dockerfile.puts("USER $ContUser")
@@ -772,7 +772,7 @@ end
     puts("Building base")
     build_init
     puts("Running Setup")
-    @docker_api.run_volume_builder (@hostName,@webUser)
+    @docker_api.run_volume_builder(@hostName,@webUser)
   #  build_setup
     puts("Building deploy image")
    # build_deploy
