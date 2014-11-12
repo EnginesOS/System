@@ -405,9 +405,10 @@ end
   end
   
   def get_volbuild_volmaps containerName
+    
     state_dir = SysConfig.CidDir + "/containers/" + containerName 
     log_dir = SysConfig.SystemLogRoot + "/containers/" + containerName
-    volume_option += " -v " + state_dir + "/client/state:rw "    
+    volume_option = " -v " + state_dir + "/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
     volume_option += " --volumes-from " + SysConfig.LocalFSVolHome + "/" + containerName + ":/client/fs:rw"  
      
