@@ -10,8 +10,8 @@ chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
-file=`ls /home/fs/`
-if test -z files
+files=`ls /home/fs/`
+if test -z $files
  then
   chown $fw_user /dest/fs/
 elif
