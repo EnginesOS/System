@@ -594,6 +594,7 @@ end
     if retval == false
       puts "Failed to Start Container " +  managed_container.last_error
     end
+    
     return retval
 
   end
@@ -863,6 +864,8 @@ def insert_framework_frag_in_dockerfile(frag_name)
       if launch_deploy(mc) == false
         puts "Failed to Launch"
       end
+      @docker_api.run_volume_builder @hostName 
+      mc.start_container
     end
     return mc
   end
