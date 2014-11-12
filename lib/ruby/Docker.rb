@@ -111,10 +111,10 @@ class Docker
   
   def run_volume_builder   containerName
     mapped_vols = get_volbuild_volmaps containerName
-    command = "docker run --name vb --memory=20m -e fw_user=22671 --cidfile /opt/engines/run/vb.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
+    command = "docker run --name volbuilder --memory=20m -e fw_user=22671 --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       p command
     run_system(command)
-    command = "docker stop vb;  docker rm vb; rm /opt/engines/run/vb.cid"
+    command = "docker stop volbuilder;  docker rm volbuilder; rm /opt/engines/run/volbuilder.cid"
     run_system(command)
   end
   
@@ -408,9 +408,9 @@ end
     
     state_dir = SysConfig.CidDir + "/containers/" + containerName 
     log_dir = SysConfig.SystemLogRoot + "/containers/" + containerName
-    volume_option = " -v " + state_dir + "/client/state:rw "    
+    volume_option = " -v " + state_dir + ":/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
-    volume_option += " --volumes-from " + SysConfig.LocalFSVolHome + "/" + containerName + ":/client/fs:rw"  
+    volume_option += " --volumes-from " + containerName + " -v " + SysConfig.LocalFSVolHome + "/" + containerName + ":/client/fs:rw"  
      
         return volume_option
   end
