@@ -10,6 +10,12 @@ chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
-cp -rp  /home/fs/* /dest/fs/
+file=`ls /home/fs/`
+if test -z files
+ then
+  chown $fw_user /dest/fs/
+elif
+	cp -rp  /home/fs/* /dest/fs/
+fi
 
 
