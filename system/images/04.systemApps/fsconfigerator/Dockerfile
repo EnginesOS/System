@@ -6,7 +6,7 @@ VOLUME /client/state
 VOLUME /client/fs
 VOLUME /dest/fs
 RUN	deluser www-data;\
-	adduser  -G www-data -u 22671 -D www-data;\
+	adduser   -u 22671 -D www-data;\
 	adduser  -G www-data -u 22672 -D -H /home/ruby  ruby;\
 	adduser  -G www-data -u 22673 -D node;\
 	adduser  -G www-data -u 22674 -D python
