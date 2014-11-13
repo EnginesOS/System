@@ -330,7 +330,7 @@ class Docker
   
   def add_volume(site_hash)
    if Dir.exists?(  site_hash[:localpath] ) == false
-      Dir.mkdir( site_hash[:localpath])
+      FileUtils.mkdir_p( site_hash[:localpath])
     end
 #currently the build scripts do this
     return true 
