@@ -521,74 +521,74 @@ end
     puts res
   end
 
-  def build_setup
-    res = run_system(" docker rm setup ")
-
-    volumes=String.new
-       @vols.each do |vol|
-         volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
-       end   
-       logvol =  get_framework_logging
-       volumes += logvol
-    cmd = "cd " + get_basedir + "; docker run --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
-   
-    res = run_system(cmd)
-    
-    if res != true
-      puts "build setup failed " +res
-      return res
-    end
-    puts res
-  end
-
-  def build_deploy
-    cmd="docker commit setup " +  @hostName + "/setup"
-    puts cmd
-    res = run_system(cmd)
-      
-      if res != true
-        puts "commit setup failed " +res
-        return res
-      end
-
-    run_system("docker rm setup")
-    
-    volumes=String.new
-    @vols.each do |vol|
-      volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
-    end   
-    logvol =  get_framework_logging
-    volumes += logvol
-      
-    res = run_system("docker rm deploy")
-    
-    #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
-    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -u " + @webUser + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
-
-    res = run_system(cmd)
-    if res != true
-      puts "build deploy failed " +res
-      return res
-    end
-   
-    
-    cmd = "docker commit  deploy " + @hostName + "/deploy"
-     
-    res=run_system(cmd)
-    if res != true
-      puts "build deploy commit failed " +res
-      return res
-    end
-    run_system("docker rm deploy ")
-
-   # cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
- 
-    res = run_system(cmd)
-    if res != true
-      puts "build cleanup failed " +res
-      return res
-  end
-  end
+#  def build_setup
+#    res = run_system(" docker rm setup ")
+#
+#    volumes=String.new
+#       @vols.each do |vol|
+#         volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
+#       end   
+#       logvol =  get_framework_logging
+#       volumes += logvol
+#    cmd = "cd " + get_basedir + "; docker run --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
+#   
+#    res = run_system(cmd)
+#    
+#    if res != true
+#      puts "build setup failed " +res
+#      return res
+#    end
+#    puts res
+#  end
+#
+#  def build_deploy
+#    cmd="docker commit setup " +  @hostName + "/setup"
+#    puts cmd
+#    res = run_system(cmd)
+#      
+#      if res != true
+#        puts "commit setup failed " +res
+#        return res
+#      end
+#
+#    run_system("docker rm setup")
+#    
+#    volumes=String.new
+#    @vols.each do |vol|
+#      volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
+#    end   
+#    logvol =  get_framework_logging
+#    volumes += logvol
+#      
+#    res = run_system("docker rm deploy")
+#    
+#    #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
+#    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -u " + @webUser + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
+#
+#    res = run_system(cmd)
+#    if res != true
+#      puts "build deploy failed " +res
+#      return res
+#    end
+#   
+#    
+#    cmd = "docker commit  deploy " + @hostName + "/deploy"
+#     
+#    res=run_system(cmd)
+#    if res != true
+#      puts "build deploy commit failed " +res
+#      return res
+#    end
+#    run_system("docker rm deploy ")
+#
+#   # cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
+# 
+#    res = run_system(cmd)
+#    if res != true
+#      puts "build cleanup failed " +res
+#      return res
+#  end
+#  end
   
   def launch_deploy managed_container
     retval =  managed_container.setup_container
@@ -757,9 +757,7 @@ end
     create_sed_strings
     create_setup_env
     insert_framework_frag_in_dockerfile("builder.mid")
-    
-
-    
+ 
     create_rake_list
     
     create_pear_list
@@ -771,7 +769,9 @@ end
     insert_framework_frag_in_dockerfile("builder.end")
     
     puts("Building base")
-    build_init
+   if  build_init == false
+     return false
+   end
     puts("Running Setup")
     @docker_api.run_volume_builder(@hostName,@webUser)
   #  build_setup
@@ -788,9 +788,9 @@ end
     docker_file.puts("ENV data_uid 11111")
     @data_uid=11111
     @data_gid=11111
-    docker_file.close
-        
+    docker_file.close        
   end
+  
 def insert_framework_frag_in_dockerfile(frag_name)
     docker_file = File.open( get_basedir + "/Dockerfile","a")
     frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile." +frag_name)
