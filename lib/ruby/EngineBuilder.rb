@@ -769,7 +769,9 @@ end
     insert_framework_frag_in_dockerfile("builder.end")
     
     puts("Building base")
+    
    if  build_init == false
+     puts ("Error Build Init failed")
      return false
    end
     puts("Running Setup")
