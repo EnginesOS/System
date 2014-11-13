@@ -26,7 +26,7 @@ fi
 
 #/usr/local/rbenv/shims/bundle exec rake db:populate
 
-/#usr/local/rbenv/shims/bundle exec rake assets:precompile
+#/usr/local/rbenv/shims/bundle exec rake assets:precompile
 
 
 SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
