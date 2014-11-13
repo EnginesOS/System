@@ -390,6 +390,7 @@ end
   end
 
 def save_system_preferences
+  return true
 end  
 
 

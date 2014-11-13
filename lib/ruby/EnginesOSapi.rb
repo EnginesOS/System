@@ -175,11 +175,12 @@ class EnginesOSapi
      return success(engine_name,"Add Database Backup")
    end
 
-   def get_system_preferences     
+   def get_system_preferences 
      return docker_api.load_system_preferences
    end
    
-   def save_system_prefences
+   def save_system_prefrences preferences
+     #preferences is a hash
      return docker_api.save_system_preferences
    end
   
