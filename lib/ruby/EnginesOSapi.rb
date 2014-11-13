@@ -179,7 +179,7 @@ class EnginesOSapi
      return docker_api.load_system_preferences
    end
    
-   def save_system_prefrences preferences
+   def save_system_preferences preferences
      #preferences is a hash
      return docker_api.save_system_preferences
    end
