@@ -110,7 +110,8 @@ class Docker
  
   
   def run_volume_builder (container,username)
-
+    command = "docker stop volbuilder;  docker rm volbuilder; rm /opt/engines/run/volbuilder.cid"
+    run_system(command)
     mapped_vols = get_volbuild_volmaps container
     command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       p command
