@@ -774,12 +774,13 @@ end
      puts ("Error Build Init failed")
      return false
    end
-    puts("Running Setup")
-    @docker_api.run_volume_builder(@hostName,@webUser)
-  #  build_setup
     puts("Building deploy image")
    # build_deploy
     mc = create_managed_container()
+    puts("Running Setup")
+    @docker_api.run_volume_builder(mc,@webUser)
+  #  build_setup
+
     return mc
   end
 
