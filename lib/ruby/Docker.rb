@@ -109,8 +109,9 @@ class Docker
   
  
   
-  def run_volume_builder (containerName,username)
-    mapped_vols = get_volbuild_volmaps containerName
+  def run_volume_builder (container,username)
+
+    mapped_vols = get_volbuild_volmaps container
     command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       p command
     run_system(command)
@@ -404,14 +405,21 @@ end
       return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName 
   end
   
-  def get_volbuild_volmaps containerName
+  def get_volbuild_volmaps container
     
-    state_dir = SysConfig.CidDir + "/containers/" + containerName + "/run/"
-    log_dir = SysConfig.SystemLogRoot + "/containers/" + containerName
+    state_dir = SysConfig.CidDir + "/containers/" + container.containerName + "/run/"
+    log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
     volume_option = " -v " + state_dir + "/run/:/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
-    volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + containerName + ":/dest/fs:rw"  
-    volume_option += " --volumes-from " + containerName  
+    if container.volumes != nil
+    
+     container.volumes.each do |vol|
+       volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + containerName + "/" +vol.name + ":/dest/fs:rw" 
+     end
+    end
+  
+    
+    volume_option += " --volumes-from " + container.containerName  
      
         return volume_option
   end

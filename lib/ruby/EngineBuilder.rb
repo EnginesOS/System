@@ -27,6 +27,7 @@ class EngineBuilder
   
   def initialize(repo,host,domain,env,docker_api)
     @hostName=host
+    @contName=@hostName
     @domainName=domain
     @repoName=repo
     @buildname = File.basename(repo).sub(/\.git$/,"")
@@ -640,7 +641,7 @@ end
           add_db_service(dbname,servicetype)
         end
       else if servicetype=="filesystem"
-          fsname = clean_path(service["name"])
+          fsname = @contName + "/" + clean_path(service["name"])
           dest = clean_path(service["dest"])
           add_file_service(fsname, dest)
         else
@@ -864,7 +865,7 @@ def insert_framework_frag_in_dockerfile(frag_name)
       if launch_deploy(mc) == false
         puts "Failed to Launch"
       end
-      @docker_api.run_volume_builder(@hostName ,@webUser)
+      @docker_api.run_volume_builder(mc ,@webUser)
       mc.start_container
     end
     return mc
