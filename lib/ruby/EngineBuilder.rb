@@ -441,7 +441,7 @@ p env
 
   def create_rake_list
     rake_cmds = @bluePrint["software"]["rake_tasks"]
-    if rake_cmds == nil || rake_cmds.length == 0
+    if rake_cmds == nil 
       return
     end
     docker_file = File.open( get_basedir + "/Dockerfile","a")
