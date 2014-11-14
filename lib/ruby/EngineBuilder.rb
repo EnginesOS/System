@@ -387,9 +387,9 @@ p env
     pfs.each do |file|
       path =  arc_dir=clean_path(file["path"])
       pcf=path
-      docker_file.puts("RUN mkdir -p /home/" + FILE.dirname(path))
+      docker_file.puts("RUN mkdir -p /home/" + File.dirname(path))
       docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then touch -p /home/" + path +" ; fi")
-      docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + FILE.dirname(path))
+      docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + File.dirname(path))
         
       link_src = path.sub(/app/,"")
         
