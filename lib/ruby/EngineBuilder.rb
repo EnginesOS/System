@@ -440,7 +440,7 @@ p env
   end
 
   def create_rake_list
-    rake_cmds = @bluePrint["software"]["rake_task"]
+    rake_cmds = @bluePrint["software"]["rake_tasks"]
     if rake_cmds == nil || rake_cmds.length == 0
       return
     end
