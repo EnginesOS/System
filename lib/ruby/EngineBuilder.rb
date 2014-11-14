@@ -446,7 +446,7 @@ p env
     end
     docker_file = File.open( get_basedir + "/Dockerfile","a")
     rake_cmds.each do |rake_cmd|
-      rake_action = rake_cmds["action"]
+      rake_action = rake_cmd["action"]
       p rake_action
       if rake_action !=nil
         docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_action )
