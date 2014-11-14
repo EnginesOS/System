@@ -8,7 +8,7 @@ class Docker
     container.set_last_result  ""           
      cmd="docker " + args + " 2>&1"           
      res= %x<#{cmd}>        
-    # puts(cmd + "\n\n" + res)
+     #puts(cmd + "\n\n" + res)
           if $? == 0 && res.include?("Error") == false
               ret_val = true
             container.set_last_result res
@@ -110,13 +110,20 @@ class Docker
  
   
   def run_volume_builder (container,username)
-    command = "docker stop volbuilder;  docker rm volbuilder; rm /opt/engines/run/volbuilder.cid"
+    command = "docker stop volbuilder;  docker rm volbuilder"
     run_system(command)
+    #FIXME use sysconfig for dir
+      if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
+        File.delete(SysConfig.CidDir + "/volbuilder.cid")
+      end
     mapped_vols = get_volbuild_volmaps container
     command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       p command
     run_system(command)
-    command = "docker stop volbuilder;  docker rm volbuilder; rm /opt/engines/run/volbuilder.cid"
+    command = "docker stop volbuilder;  docker rm volbuilder"
+    if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
+            File.delete(SysConfig.CidDir + "/volbuilder.cid")
+          end
     run_system(command)
   end
   
