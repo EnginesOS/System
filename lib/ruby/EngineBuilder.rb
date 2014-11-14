@@ -768,19 +768,15 @@ end
     
     insert_framework_frag_in_dockerfile("builder.end")
     
-    puts("Building base")
+    puts("Building Image")
     
    if  build_init == false
      puts ("Error Build Init failed")
      return false
    end
-    puts("Building deploy image")
-   # build_deploy
-    mc = create_managed_container()
-    puts("Running Setup")
-    @docker_api.run_volume_builder(mc,@webUser)
-  #  build_setup
+    puts("creatine deploy image")
 
+    mc = create_managed_container()
     return mc
   end
 
