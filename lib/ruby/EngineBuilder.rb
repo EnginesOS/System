@@ -751,21 +751,26 @@ end
     setup_dockerfile
     puts("Configuring install Environment")
     create_presettings_env
-
+    puts("set container user")
     set_container_user
+    puts("set chown app ")
     chown_home_app  
+    puts("set sed strings")
     create_sed_strings
+    puts("set setup_env")
+    
     create_setup_env
+    puts("add builder.mid")
     insert_framework_frag_in_dockerfile("builder.mid")
- 
+    puts("set rake list")
     create_rake_list
-    
+    puts("set pear list")
     create_pear_list
-    
+    puts("set permissions recussive")
     set_write_permissions_recursive
-    
+    puts("set permissions  single")
     set_write_permissions_single
-    
+    puts("add builder..end")
     insert_framework_frag_in_dockerfile("builder.end")
     
     puts("Building Image")
