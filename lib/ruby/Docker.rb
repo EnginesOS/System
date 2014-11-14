@@ -423,7 +423,7 @@ end
     if container.volumes != nil
     
      container.volumes.each do |vol|
-       volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + containerName + "/" +vol.name + ":/dest/fs:rw" 
+       volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + container.containerName + "/" +vol.name + ":/dest/fs:rw" 
      end
     end
   
