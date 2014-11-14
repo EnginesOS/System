@@ -4,10 +4,10 @@
 #country=`echo $TZ |cut -f1 -d/`
 #TZ="$country\/$state"
 
+WORKDIR /home/app
 USER 0
 RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
 	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf ;\ 
-WORKDIR /home/app
 \
 \
 	echo "login: &login" > config/database.yml;\ 
