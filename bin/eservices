@@ -1,3 +1,10 @@
 #!/bin/sh
 
-/opt/engines/bin/engines.rb services $1 $2 $3 $4
+if test $# -gt 1
+	then
+		echo "$0 only takes one argument"
+		exit
+	fi
+	
+
+/opt/engines/bin/engines.rb services $1 
