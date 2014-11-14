@@ -110,8 +110,8 @@ class Docker
  
   
   def run_volume_builder (container,username)
-    command = "docker stop volbuilder;  docker rm volbuilder"
-    run_system(command)
+    #command = "docker stop volbuilder;  docker rm volbuilder"
+    #run_system(command)
     #FIXME use sysconfig for dir
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
