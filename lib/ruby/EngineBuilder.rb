@@ -321,7 +321,7 @@ p env
        seds.each do |sed|
          file = clean_path(sed["file"])
          dest = clean_path(sed["dest"])
-         docker_file.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
+         docker_file.puts("RUN cat /home/app/" +  file + " | sed \"" + sed["sedstr"] + "\" > /tmp/" + file + "." + n.to_s )
          docker_file.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
 
          n=n+1
