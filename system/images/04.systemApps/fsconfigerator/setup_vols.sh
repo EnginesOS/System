@@ -5,7 +5,7 @@
 #VOLUME /client/state
 #VOLUME /home/fs
 #VOLUME /dest/fs
-cp -rp /var/log/*  /client/var/log
+cp -rp /var/log  /client/var/
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
