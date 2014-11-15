@@ -327,9 +327,16 @@ class EngineBuilder
        seds.each do |sed|
          file = clean_path(sed["file"])
          dest = clean_path(sed["dest"])
-           filename = File.basename(file)
-         docker_file.puts("RUN cat /home/app/" +  file + " | sed \"" + sed["sedstr"] + "\" > /tmp/" + filename + "." + n.to_s )
-         docker_file.puts("RUN cp /tmp/" + filename + "." + n.to_s + " /home/app/" + dest)
+        tmp_file = "/tmp/" + File.basename(file) + "." + n.to_
+         template_file = file.match(/^_TEMPLATES.*/)
+         if  template_file != nil
+          src_file = "/home/engines/templates/" +  template_file
+        else    
+          src_file = "/home/app/" +  file
+        end
+        dest_file = "/home/app/" +  dest
+         docker_file.puts("RUN cat " + src_file + " | sed \"" + sed["sedstr"] + "\" > " + tmp_file )
+         docker_file.puts("RUN cp " + tmp_file  + " " + dest_file)
 
          n=n+1
        end

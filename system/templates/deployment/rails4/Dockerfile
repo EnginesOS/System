@@ -1,7 +1,7 @@
 FROM  engines/passenger
 
 ADD home home
-ADD engines home/engines
+ADD engines home/.engines
 
 
 RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
