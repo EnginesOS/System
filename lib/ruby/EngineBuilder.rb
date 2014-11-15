@@ -327,7 +327,7 @@ class EngineBuilder
        seds.each do |sed|
          file = clean_path(sed["file"])
          dest = clean_path(sed["dest"])
-        tmp_file = "/tmp/" + File.basename(file) + "." + n.to_
+        tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
          template_file = file.match(/^_TEMPLATES.*/)
          if  template_file != nil
           src_file = "/home/engines/templates/" +  template_file
