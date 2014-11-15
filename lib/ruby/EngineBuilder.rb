@@ -34,7 +34,7 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new  
-    @set_environments = env     
+    @environments = env     
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
@@ -67,6 +67,7 @@ class EngineBuilder
     ef = File.open( get_basedir + "/Dockerfile","a")
     ef.puts("#Custom ENV")
     envs.each do |env|
+      p env
       name=env["name"]
       name = name.gsub(" ","_")
       value=env["value"]
