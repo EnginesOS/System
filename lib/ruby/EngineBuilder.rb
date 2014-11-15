@@ -74,6 +74,8 @@ class EngineBuilder
       value=env["value"]
       ask=env["ask_at_runtime"]
       @environments.push(EnvironmentVariable.new(name,value,ask))
+        puts("set_environments")
+     p @set_environments
       if ask == true
           if @set_environments.key?(name) == true
             value=@set_environments[name]
