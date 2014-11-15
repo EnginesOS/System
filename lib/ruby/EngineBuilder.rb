@@ -34,7 +34,7 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new  
-      if cust_env.instance_of?(Array) == true
+      if custom_env.instance_of?(Array) == true
         @environments = custom_env # happens on rebuild as custom env is saved in env on disk
         @set_environments = Hash.new
       else
