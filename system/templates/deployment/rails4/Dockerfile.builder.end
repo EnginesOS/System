@@ -24,7 +24,8 @@ USER www-data
 ##############
 ### Must disable ruby login
 ###
-
+VOLUME /home/app/
+VOLUME /var/log/
 WORKDIR /home/app
 CMD /home/app/Rack.sh
 
