@@ -34,7 +34,8 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new  
-    @environments = env     
+    @environments = Array.new
+    @set_environments = env    
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
