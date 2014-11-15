@@ -7,7 +7,7 @@
 #VOLUME /dest/fs
 
 logs=`ls /var/log/`
-
+echo logs
 for log in $logs
  do
 	cp -rp /var/log/$log  /client/var/
