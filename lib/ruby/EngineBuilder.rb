@@ -25,7 +25,7 @@ class EngineBuilder
   @databases= Array.new
   
   
-  def initialize(repo,host,domain,env,docker_api)
+  def initialize(repo,host,domain,custom_env,docker_api)
     @hostName=host
     @contName=@hostName
     @domainName=domain
@@ -34,8 +34,13 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new  
-    @environments = Array.new
-    @set_environments = env    
+      if cust_env.instance_of?(Array) == true
+        @environments = custom_env # happens on rebuild as custom env is saved in env on disk
+        @set_environments = Hash.new
+      else
+      @set_environments = custom_env
+      @environments = Array.new
+      end  
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
