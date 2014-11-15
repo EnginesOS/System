@@ -5,7 +5,13 @@
 #VOLUME /client/state
 #VOLUME /home/fs
 #VOLUME /dest/fs
-cp -rp /var/log  /client/var/
+
+logs=`ls /var/log/`
+
+for log in $logs
+ do
+	cp -rp /var/log/$log  /client/var/
+done
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
