@@ -82,11 +82,14 @@ class EngineBuilder
         puts("set_environments")
      p @set_environments
       if ask == true
+        puts("looking for")
+        p name
           if @set_environments.key?(name) == true
             value=@set_environments[name]
           end
             #else write the default if none set                      
       end
+    puts("ENV " + name + " \"" + value +"\"")
       ef.puts("ENV " + name + " \"" + value +"\"")
       
     end
