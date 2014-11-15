@@ -10,7 +10,7 @@ logs=`ls /var/log/`
 echo logs
 for log in $logs
  do
-	cp -rp /var/log/$log  /client/var/
+	cp -rp /var/log/$log  /client/var/log
 done
 
 chown $fw_user -R /client/log/
@@ -18,7 +18,7 @@ chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
 files=`ls /dest/fs/`
-if test -z $files
+if test -z "$files"
  then
   chown $fw_user /dest/fs/
 else
