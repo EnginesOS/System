@@ -144,8 +144,8 @@ class EngineBuilder
 
   def add_file_service(name,dest)
   
-    permissions = PermissionRights.new(@hostName,"","")
-    vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + name,dest,"rw",permissions)
+    permissions = PermissionRights.new(@contName,"","")
+    vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @contName + "/" + name,dest,"rw",permissions)
     @vols.push(vol)
     #fsf = File.open( get_basedir + "/home/fs.env","w")
     fsf = File.open( get_basedir + "/Dockerfile","a")
