@@ -424,7 +424,7 @@ end
     
      container.volumes.each do |vol|
        p vol
-       volume_option += " -v " +  SysConfig.LocalFSVolHome + "/" + container.containerName + "/" +vol.name + ":/dest/fs:rw" 
+       volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw" 
      end
     end
   
