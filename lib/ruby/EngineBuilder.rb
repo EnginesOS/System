@@ -655,7 +655,7 @@ end
           add_db_service(dbname,servicetype)
         end
       else if servicetype=="filesystem"
-          fsname = @contName + "/" + clean_path(service["name"])
+          fsname = clean_path(service["name"])
           dest = clean_path(service["dest"])
           add_file_service(fsname, dest)
         else
