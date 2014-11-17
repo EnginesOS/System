@@ -18,7 +18,7 @@ RUN	if [ -f /home/engines/configs/php/71-custom.ini ] ;\
 
 	
 
-CMD touch /var/run/startup_complete ;/usr/sbin/apache2ctl -D FOREGROUND ; rm -f /run/apache2/apache2.pid ;rm /engines/var/run/startup_complete
+CMD /home/start.bash
 
 
 

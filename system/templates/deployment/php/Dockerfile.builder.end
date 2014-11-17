@@ -14,10 +14,6 @@ USER www-data
 
 WORKDIR /home/app
 
-RUN if [ -f /home/engines/setup.bash ];
-	 then \
-	 	/bin/bash /home/engines/setup.bash ;\
-	 fi
 	 
 
 

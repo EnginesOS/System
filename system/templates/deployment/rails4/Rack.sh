@@ -5,10 +5,18 @@ cd /home/app
 
 
 
-if test -f /home/pre-running.sh
+
+
+if test -f /home/engines/scripts/setup.bash
 	then
-		bash	/home/pre-running.sh
-fi
+		bash /home/engines/scripts/setup.bash
+		mv /home/engines/scripts/setup.bash /home/engines/scripts/setup.bash.ran
+	fi
+	
+if test -f /home/engines/scripts/pre-running.sh
+	then
+		bash	/home/engines/scripts/pre-running.sh
+fi	
 
 if test -n "$CRONJOBS"
 then
