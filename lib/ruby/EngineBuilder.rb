@@ -330,7 +330,7 @@ class EngineBuilder
         tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
          template_file = file.gsub(/^_TEMPLATES/,"")
          if  template_file != nil
-          src_file = "/home/engines/templates/" +  template_file[0]
+          src_file = "/home/engines/templates/" +  template_file
         else    
           src_file = "/home/app/" +  file
         end
