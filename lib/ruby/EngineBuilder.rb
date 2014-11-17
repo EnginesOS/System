@@ -256,11 +256,14 @@ class EngineBuilder
       
       if arc_extract == "git"
         dockerfile.puts("WORKDIR /tmp")
+        dockerfile.puts("USER $ContUser")
         dockerfile.puts("RUN git clone " + arc_src )
         dockerfile.puts("USER 0  ")
         dockerfile.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
         dockerfile.puts("USER $ContUser")
       else
+        dockerfile.puts("WORKDIR /tmp")
+        dockerfile.puts("USER $ContUser")
         dockerfile.puts("RUN   wget  \""  + arc_src + "\"  > /dev/null" )
         dockerfile.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
         dockerfile.puts("USER 0  ")
@@ -325,6 +328,7 @@ class EngineBuilder
     
        n=0
        seds.each do |sed|
+         
          file = clean_path(sed["file"])
          dest = clean_path(sed["dest"])
         tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
@@ -341,8 +345,10 @@ class EngineBuilder
           src_file = "/home/app/" +  file
         end
         dest_file = "/home/app/" +  dest
-         docker_file.puts("RUN cat " + src_file + " | sed \"" + sed["sedstr"] + "\" > " + tmp_file )
-         docker_file.puts("RUN cp " + tmp_file  + " " + dest_file)
+         docker_file.puts("")
+         docker_file.puts("RUN cat " + src_file + " | sed \"" + sed["sedstr"] + "\" > " + tmp_file + " ;\\")
+         docker_file.puts("     cp " + tmp_file  + " " + dest_file)
+       
 
          n=n+1
        end
@@ -368,13 +374,21 @@ class EngineBuilder
     pds.each do |dir|
       path = clean_path(dir["path"])
       link_src = path.sub(/app/,"")
-      docker_file.puts("RUN  if [ ! -d /home/" + path + " ]; then mkdir -p /home/" + path +" ; fi")
-      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+      docker_file.puts("")
+      docker_file.puts("RUN  \\")
+      docker_file.puts("if [ ! -d /home/" + path + " ];\\")
+      docker_file.puts("  then \\")
+      docker_file.puts("    mkdir -p /home/" + path +" ;\\")
+      docker_file.puts("  fi;\\")
+      docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
+      docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
       pcf=path
       dirs = dirs + " " + path
     end
     if dirs.length >1
-      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R 770 /home/fs")
+      docker_file.puts("")
+      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
+      docker_file.puts("chmod -R 770 /home/fs")
       docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
     end
                                     
@@ -383,13 +397,18 @@ class EngineBuilder
     pfs.each do |file|
       path =  arc_dir=clean_path(file["path"])
       pcf=path
+      docker_file.puts("")
       docker_file.puts("RUN mkdir -p /home/" + File.dirname(path))
-      docker_file.puts("RUN  if [ ! -f /home/" + path + " ]; then touch  /home/" + path +" ; fi")
-      docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + File.dirname(path))
+      docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
+      docker_file.puts("    then \\")
+      docker_file.puts("      touch  /home/" + path +";\\")
+      docker_file.puts("    fi;\\")
+      docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
         
       link_src = path.sub(/app/,"")
-        
-      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ; ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+      docker_file.puts("")
+      docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
+      docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
       files = files + "\""+ path + "\" "
     end
     if files.length >1
@@ -398,9 +417,10 @@ class EngineBuilder
     if pcf.length >1
       docker_file.puts("ENV PERSISTANCE_CONFIGURED_FILE \"" + pcf + "\"")
     end       
-    
+    docker_file.puts("")
     if dirs.length >1 || files.length >1
-      docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;chmod -R 770 /home/fs")
+      docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
+      docker_file.puts("      chmod -R 770 /home/fs")
       docker_file.puts("VOLUME /home/fs/") 
     end
     
@@ -410,16 +430,17 @@ class EngineBuilder
   end
 
   def create_stack_env
-    stef = File.open(get_basedir + "/Dockerfile","a")
+    docker_file = File.open(get_basedir + "/Dockerfile","a")
    # stef = File.open(get_basedir + "/home/stack.env","w")
-    stef.puts("#Stack Env")
-    stef.puts("ENV Memory " + @bluePrint["software"]["requiredmemory"].to_s)
-    stef.puts("ENV Hostname " + @hostName)
-    stef.puts("ENV Domainname " +  @domainName )
-    stef.puts("ENV fqdn " +  @hostName + "." + @domainName )
-    stef.puts("ENV FRAMEWORK " +   @framework  )
-    stef.puts("ENV RUNTIME "  + @runtime  )
-    stef.puts("ENV PORT " +  @webPort.to_s  )
+    docker_file.puts("")
+    docker_file.puts("#Stack Env")
+    docker_file.puts("ENV Memory " + @bluePrint["software"]["requiredmemory"].to_s)
+    docker_file.puts("ENV Hostname " + @hostName)
+    docker_file.puts("ENV Domainname " +  @domainName )
+    docker_file.puts("ENV fqdn " +  @hostName + "." + @domainName )
+    docker_file.puts("ENV FRAMEWORK " +   @framework  )
+    docker_file.puts("ENV RUNTIME "  + @runtime  )
+    docker_file.puts("ENV PORT " +  @webPort.to_s  )
     wports = String.new
     n=0
     @workerPorts.each do |port|
@@ -430,9 +451,9 @@ class EngineBuilder
       n=n+1
     end
     if wports.length >0
-      stef.puts("ENV WorkerPorts " + "\"" + wports +"\"")
+      docker_file.puts("ENV WorkerPorts " + "\"" + wports +"\"")
     end
-    stef.close()
+    docker_file.close()
   end
 
   def create_rake_list
@@ -517,74 +538,6 @@ end
     puts res
   end
 
-#  def build_setup
-#    res = run_system(" docker rm setup ")
-#
-#    volumes=String.new
-#       @vols.each do |vol|
-#         volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
-#       end   
-#       logvol =  get_framework_logging
-#       volumes += logvol
-#    cmd = "cd " + get_basedir + "; docker run --memory=386m  " + volumes + " " + SysConfig.timeZone_fileMapping + " -v /opt/dl_cache/:/opt/dl_cache/ --name setup -t " + @hostName +  "/init /bin/bash /home/presetup.sh "
-#   
-#    res = run_system(cmd)
-#    
-#    if res != true
-#      puts "build setup failed " +res
-#      return res
-#    end
-#    puts res
-#  end
-#
-#  def build_deploy
-#    cmd="docker commit setup " +  @hostName + "/setup"
-#    puts cmd
-#    res = run_system(cmd)
-#      
-#      if res != true
-#        puts "commit setup failed " +res
-#        return res
-#      end
-#
-#    run_system("docker rm setup")
-#    
-#    volumes=String.new
-#    @vols.each do |vol|
-#      volumes +=  " -v " + vol.localpath + "/" + ":/" + vol.remotepath + "/" 
-#    end   
-#    logvol =  get_framework_logging
-#    volumes += logvol
-#      
-#    res = run_system("docker rm deploy")
-#    
-#    #fixME needs heaps of ram for gcc  (under ubuntu but not debian Why)
-#    cmd= "cd " + get_basedir + "; docker run --memory=384m  -v /etc/localtime:/etc/localtime:ro --name deploy " + volumes + " -u " + @webUser + " -t " +   @hostName + "/setup /bin/bash /home/_init.sh " # su -s /bin/bash www-data /home/configcontainer.sh"
-#
-#    res = run_system(cmd)
-#    if res != true
-#      puts "build deploy failed " +res
-#      return res
-#    end
-#   
-#    
-#    cmd = "docker commit  deploy " + @hostName + "/deploy"
-#     
-#    res=run_system(cmd)
-#    if res != true
-#      puts "build deploy commit failed " +res
-#      return res
-#    end
-#    run_system("docker rm deploy ")
-#
-#   # cmd="docker rmi  " + @hostName + "/setup " + @hostName + "/init"
-# 
-#    res = run_system(cmd)
-#    if res != true
-#      puts "build cleanup failed " +res
-#      return res
-#  end
-#  end
   
   def launch_deploy managed_container
     retval =  managed_container.setup_container
