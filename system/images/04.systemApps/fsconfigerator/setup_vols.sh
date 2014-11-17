@@ -17,12 +17,13 @@ chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
-files=`ls /dest/fs/`
-if test -n "$files"
+files=`ls /dest/fs/
+if test -f /dest/fs/.persistant
  then
   chown $fw_user /dest/fs/
 else
 	cp -rp  /home/fs/* /dest/fs/
+	touch /dest/fs/.persistant
 fi
 
 
