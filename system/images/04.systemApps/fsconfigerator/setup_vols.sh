@@ -26,4 +26,5 @@ else
 	touch /dest/fs/.persistant
 fi
 
-touch /home/.volsetup
+touch /client/state/.volsetup
+
