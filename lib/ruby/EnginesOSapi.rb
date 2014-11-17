@@ -24,7 +24,7 @@ class EnginesOSapi
       engine.save_state
       return engine
     end
-    return false #FIXME needs to return error object
+    return  EnginesOSapi.failed(host,"Failed","build_engine") #FIXME needs to return error object
 
   end
   def build_engine(params)
@@ -39,7 +39,7 @@ class EnginesOSapi
         engine.save_state
         return engine
       end
-      return false #FIXME needs to return error object
+      return EnginesOSapi.failed(host,"Failed","build_engine") #FIXME needs to return error object
   
     end
   def getManagedEngines()
