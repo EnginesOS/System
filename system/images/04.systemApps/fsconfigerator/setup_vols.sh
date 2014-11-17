@@ -26,5 +26,5 @@ else
 	touch /dest/fs/.persistant
 fi
 
-touch /client/state/.volsetup
+touch /client/state/volume_setup_complete
 

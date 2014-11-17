@@ -1,19 +1,22 @@
 #!/bin/bash
 
-  if test  ! -f /engines/var/run/.volsetup
+  if test  ! -f /engines/var/run/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "
- 	while test ! -f /engines/var/run/.volsetup
+ 	while test ! -f /engines/var/run/volume_setup_complete
  	  do
  	  echo  "."
  		sleep 10
  	 done
   fi
  
-if test -f /home/engines/scripts/setup.bash
+if test -f /home/engines/scripts/setup.bash 
 	then
-		bash /home/engines/scripts/setup.bash
-		mv /home/engines/scripts/setup.bash /home/engines/scripts/setup.bash.ran
+		if ! test -f /engines/var/run/setup_complete
+			then
+				bash /home/engines/scripts/setup.bash > /var/log/setup.log
+				touch  /engines/var/run/setup_complete
+		fi
 	fi
 	
 if test -f /home/engines/scripts/pre-running.sh
