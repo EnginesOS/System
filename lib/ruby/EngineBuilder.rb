@@ -360,30 +360,6 @@ class EngineBuilder
       docker_file.puts("ENV INSTALL_SCRIPT " + insted)
     end
 
-#    seds=@bluePrint["software"]["replacementstrings"]
-#
-#    n=0
-#    seds.each do |sed|
-#      file = clean_path(sed["file"])
-#      dest = clean_path(sed["dest"])
-#      suf.puts("RUN cat /home/app/" +  file + " | sed " + sed["sedstr"] + " > /tmp/" + file + "." + n.to_s )
-#      suf.puts("RUN cp /tmp/" + file + "." + n.to_s + " /home/app/" + dest)
-#      
-##      if n >0
-##        sedstrs = sedstrs + " "
-##        sedtargets = sedtargets + "  "
-##        seddsts = seddsts + "  "
-##      end
-##      sedstrs = sedstrs + "\"" + sed["sedstr"] +"\""
-##      sedtargets = sedtargets + "\"" +  sed["file"]+"\""
-##      seddsts = seddsts +  "\"" + sed["dest"]+"\""
-#      n=n+1
-#    end
-##    if  sedstrs.length >1
-##      suf.puts("declare -a SEDSTRS=(" + sedstrs + ")")
-##      suf.puts("declare -a SEDTARGETS=(" + sedtargets + ")")
-##      suf.puts("declare -a SEDDSTS=(" + seddsts + ")")
-#    end
         
     pcf = String.new
     docker_file.puts("USER 0")
