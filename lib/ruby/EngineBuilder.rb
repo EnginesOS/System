@@ -38,8 +38,8 @@ class EngineBuilder
         @environments = custom_env # happens on rebuild as custom env is saved in env on disk
         @set_environments = Hash.new
       else
-      @set_environments = custom_env
-      @environments = Array.new
+        @set_environments = custom_env
+        @environments = Array.new
       end  
     @runtime=String.new
     @databases= Array.new
