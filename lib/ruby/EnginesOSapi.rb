@@ -32,7 +32,7 @@ class EnginesOSapi
     container_name = params[:container_name]
     domain_name = params[:domain_name]
     host_name = params[:host_name]
-   evirons = params[:app_install_env_variables]
+   evirons = params[:env_variables]
       engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
       if engine != nil
