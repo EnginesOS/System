@@ -27,7 +27,21 @@ class EnginesOSapi
     return false #FIXME needs to return error object
 
   end
-
+  def buildEngine(params,environment)
+    repository = params[:repository]
+    container_name = params[:container_name]
+    domain_name = params[:domain_name]
+    host_name = params[:host_name]
+      
+      engine_builder = EngineBuilder.new(repository,host_name,domain_name,environment, @docker_api)
+      engine = engine_builder.build_from_blue_print
+      if engine != nil
+        engine.save_state
+        return engine
+      end
+      return false #FIXME needs to return error object
+  
+    end
   def getManagedEngines()
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
