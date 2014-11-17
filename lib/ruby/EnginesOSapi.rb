@@ -27,13 +27,13 @@ class EnginesOSapi
     return false #FIXME needs to return error object
 
   end
-  def build_engine(params,environment)
+  def build_engine(params)
     repository = params[:repository]
     container_name = params[:container_name]
     domain_name = params[:domain_name]
     host_name = params[:host_name]
       
-      engine_builder = EngineBuilder.new(repository,host_name,domain_name,environment, @docker_api)
+      engine_builder = EngineBuilder.new(repository,host_name,domain_name,params, @docker_api)
       engine = engine_builder.build_from_blue_print
       if engine != nil
         engine.save_state
