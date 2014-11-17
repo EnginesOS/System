@@ -373,7 +373,7 @@ class EngineBuilder
     dirs= String.new
     pds.each do |dir|
       path = clean_path(dir["path"])
-      #link_src = path.sub(/app/,"")
+      link_src = path.sub(/app/,"")
       docker_file.puts("")
       docker_file.puts("RUN  \\")
       docker_file.puts("if [ ! -d /home/" + path + " ];\\")

@@ -27,7 +27,7 @@ class EnginesOSapi
     return false #FIXME needs to return error object
 
   end
-  def buildNewEngine(params,environment)
+  def build_engine(params,environment)
     repository = params[:repository]
     container_name = params[:container_name]
     domain_name = params[:domain_name]
