@@ -27,8 +27,7 @@ class EnginesOSapi
     return  EnginesOSapi.failed(host,"Failed","build_engine") #FIXME needs to return error object
 
   end
-  def build_engine(params)
-    repository = params[:repository]
+  def build_engine(repository,params)    
     container_name = params[:container_name]
     domain_name = params[:domain_name]
     host_name = params[:host_name]
