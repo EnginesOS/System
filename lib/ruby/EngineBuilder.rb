@@ -84,8 +84,8 @@ class EngineBuilder
       if ask == true
         puts("looking for")
         p name
-          if @set_environments.key?(name) == true
-            value=@set_environments[name]
+          if @set_environments.key?(name.to_sym) == true
+            value=@set_environments[name.to_sym]
           end
             #else write the default if none set                      
       end
@@ -398,7 +398,7 @@ class EngineBuilder
       path =  arc_dir=clean_path(file["path"])
       pcf=path
       docker_file.puts("")
-      docker_file.puts("RUN mkdir -p /home/" + File.dirname(path))
+      docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
       docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
       docker_file.puts("    then \\")
       docker_file.puts("      touch  /home/" + path +";\\")
