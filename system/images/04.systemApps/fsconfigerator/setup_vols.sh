@@ -18,7 +18,7 @@ chown $fw_user -R /client/var/log
 chown $fw_user -R /client/state/
 
 files=`ls /dest/fs/`
-if test -z "$files"
+if test -n "$files"
  then
   chown $fw_user /dest/fs/
 else
