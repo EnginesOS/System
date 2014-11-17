@@ -1,7 +1,15 @@
 #!/bin/bash
 
-
-
+  if test  ! -f /home/.volsetup
+   then
+   echo "Waiting for Volume setup to Complete "
+ 	while test ! -f /home/.volsetup
+ 	  do
+ 	  echo -n "."
+ 		sleep 10
+ 	 done
+  fi
+ 
 if test -f /home/engines/scripts/setup.bash
 	then
 		bash /home/engines/scripts/setup.bash
