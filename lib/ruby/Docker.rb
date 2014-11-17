@@ -144,7 +144,7 @@ class Docker
    
   def setup_container container
     commandargs = container_commandline_args container
-    commandargs = " create " + commandargs
+    commandargs = " run " + commandargs
     p commandargs
     retval = run_docker(commandargs,container)
         if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
