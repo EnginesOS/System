@@ -418,7 +418,7 @@ end
     
     state_dir = SysConfig.CidDir + "/containers/" + container.containerName + "/run/"
     log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
-    volume_option = " -v " + state_dir + "/run/:/client/state:rw "    
+    volume_option = " -v " + state_dir + ":/client/state:rw "    
     volume_option += " -v " + log_dir + ":/client/log:rw "
     if container.volumes != nil
     
