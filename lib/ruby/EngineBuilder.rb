@@ -328,9 +328,15 @@ class EngineBuilder
          file = clean_path(sed["file"])
          dest = clean_path(sed["dest"])
         tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
-         template_file = file.gsub(/^_TEMPLATES/,"")
+          if file.match(/^_TEMPLATES.*/) != nil
+            template_file = file.gsub(/^_TEMPLATES/,"")
+          else
+            template_file = nil
+          end
+          
          if  template_file != nil
           src_file = "/home/engines/templates/" +  template_file
+          
         else    
           src_file = "/home/app/" +  file
         end
