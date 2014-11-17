@@ -355,7 +355,7 @@ class EngineBuilder
     docker_file.close
   end
   
-  def create_setup_env
+  def create_file_persistance
     docker_file = File.open( get_basedir + "/Dockerfile","a")
     confd =  arc_dir=clean_path(@bluePrint["software"]["configuredfile"])
     if confd != nil && confd !=""
@@ -708,7 +708,7 @@ end
     create_sed_strings
     puts("set setup_env")
     
-    create_setup_env
+    create_file_persistance
     puts("add builder.mid")
     insert_framework_frag_in_dockerfile("builder.mid")
     puts("set rake list")
