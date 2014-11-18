@@ -86,6 +86,8 @@ class EngineBuilder
         p name
           if @set_environments.key?(name) == true
             value=@set_environments[name]
+            env["value"] = value
+              p value
           end
             #else write the default if none set                      
       end
