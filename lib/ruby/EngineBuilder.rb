@@ -78,19 +78,18 @@ class EngineBuilder
       name = name.gsub(" ","_")
       value=env["value"]
       ask=env["ask_at_runtime"]
-      @environments.push(EnvironmentVariable.new(name,value,ask))
+     
         puts("set_environments")
      p @set_environments
       if ask == true
         puts("looking for")
         p name
           if @set_environments.key?(name) == true
-            value=@set_environments[name]
-            env["value"] = value
-              p value
+            value=@set_environments[name]            
           end
             #else write the default if none set                      
       end
+    @environments.push(EnvironmentVariable.new(name,value,ask))
     puts("ENV " + name + " \"" + value +"\"")
       ef.puts("ENV " + name + " \"" + value +"\"")
       
