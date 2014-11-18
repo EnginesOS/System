@@ -181,9 +181,11 @@ class EngineBuilder
     workers.each do |worker|
       commands.push(worker["command"])
     end
+    
     if Dir.exists?(scripts_path) == false
-      FileUtils.mkdir_(scripts_path)
+      FileUtils.mkdir_p(scripts_path)
     end
+    
     if commands.length >0
       cmdf= File.open(get_basedir + scripts_path + "pre-running.sh","w")
       if !cmdf
