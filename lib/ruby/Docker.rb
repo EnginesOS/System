@@ -73,7 +73,7 @@ class Docker
        if(container.environments)
          container.environments.each do |environment|
             if environment != nil                                                       
-                   e_option = e_option + " -e " + environment.name + "=" + environment.value
+                   e_option = e_option + " -e " + environment.name + "=\"" + environment.value + "\""
             end
          end
        end
