@@ -684,7 +684,31 @@ class EnginesOSapi
     domain_name = param[:domain_name]
     #FIXME Do stuff here
   end
+  
+  def add_self_hosted_domain params
+    return  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+  end
+  
+  def remove_self_hosted_domain params
+    return  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Remove self hosted domain")
+  end
+  
+  def list_self_hosted_domains params
+  domains = Hash.new
+  return Hash
+  end
+  
+  def attach_ftp_service(params)
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Attach ftp")
+  end
+  
+  def detach_ftp_service (params)
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Detach ftp")
+  end
       
+  def  change_ftp_service  (params)
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Change ftp")
+  end
   #protected if protected static cant call
   def success(item_name ,cmd)
     EnginesOSapi.success(item_name ,cmd)
@@ -701,5 +725,7 @@ class EnginesOSapi
   def EnginesOSapi.failed(item_name,mesg ,cmd)
     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
   end
+  
+  
 
 end
