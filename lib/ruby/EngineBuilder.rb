@@ -187,7 +187,7 @@ class EngineBuilder
     end
     
     if commands.length >0
-      cmdf= File.open(get_basedir + scripts_path + "pre-running.sh","w")
+      cmdf= File.open( scripts_path + "pre-running.sh","w")
       if !cmdf
         puts ("failed to open " + scripts_path + "pre-running.sh")
         exit
