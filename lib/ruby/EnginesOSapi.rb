@@ -678,7 +678,11 @@ class EnginesOSapi
      end         
     return backup_service.consumers        
   end
-    
+
+  def set_engine_hostname_details(engine_name,hostname,domain_name)
+    #FIXME Do stuff here
+  end
+      
   #protected if protected static cant call
   def success(item_name ,cmd)
     EnginesOSapi.success(item_name ,cmd)
