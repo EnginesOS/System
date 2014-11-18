@@ -24,7 +24,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 }
 
 function process_file {
-cat /home/app.env |cut -f1 -d= >/home/app/app_env_variables
+#cat /home/app.env |cut -f1 -d= >/home/app/app_env_variables
 #env_variables=`cat /home/system_env_variables /home/app/app_env_variables | grep -v "#"`
 env_variables=`set | awk '{print $1}'`
 echo "processing template $file"
@@ -37,10 +37,12 @@ while read line
                          if   grep -q '*'<<<$line
                                 then
                                         raw=1
-                                else
+                                elif  grep -q $search_arg <<<$line
                                         eval replacement_str='$'${env_variable}
                                         line=${line/$search_arg/${replacement_str}} 
                                         raw=0
+                                else
+                                		raw=1
                                 fi
                 done
 
