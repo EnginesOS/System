@@ -176,9 +176,10 @@ class EngineBuilder
   def create_workers
     commands = Array.new
     workers =@bluePrint["software"]["worker_commands"]
+    scripts_path = get_basedir + "/home/engines/scripts/"
+      
     workers.each do |worker|
       commands.push(worker["command"])
-    scripts_path = get_basedir + "/home/engines/scripts/"
     end
     if Dir.exists?(scripts_path) == false
       FileUtils.mkdir_(scripts_path)
