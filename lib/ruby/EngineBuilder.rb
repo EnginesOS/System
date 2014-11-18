@@ -271,7 +271,7 @@ class EngineBuilder
       else
         dockerfile.puts("WORKDIR /tmp")
         dockerfile.puts("USER $ContUser")
-        dockerfile.puts("RUN   wget  \""  + arc_src + "\"  > /dev/null" )
+        dockerfile.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
         dockerfile.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
         dockerfile.puts("USER 0  ")
         dockerfile.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
