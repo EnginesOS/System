@@ -178,11 +178,15 @@ class EngineBuilder
     workers =@bluePrint["software"]["worker_commands"]
     workers.each do |worker|
       commands.push(worker["command"])
+    scripts_path = get_basedir + "/home/engines/scripts/"
+    end
+    if Dir.exists?(scripts_path) == false
+      FileUtils.mkdir_(scripts_path)
     end
     if commands.length >0
-      cmdf= File.open(get_basedir + "/home/engines/scripts/pre-running.sh","w")
+      cmdf= File.open(get_basedir + scripts_path + "pre-running.sh","w")
       if !cmdf
-        puts ("failed to open " + get_basedir + "/home/pre-running.sh")
+        puts ("failed to open " + scripts_path + "pre-running.sh")
         exit
       end
       cmdf.chmod(0755)
