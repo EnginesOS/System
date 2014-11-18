@@ -549,7 +549,7 @@ end
 
   
   def launch_deploy managed_container
-    retval =  managed_container.setup_container
+    retval =  managed_container.create_container
     if retval == false
       puts "Failed to Start Container " +  managed_container.last_error
     end

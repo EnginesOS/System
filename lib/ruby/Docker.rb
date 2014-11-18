@@ -142,15 +142,15 @@ class Docker
      return retval       
    end     
    
-  def setup_container container
-    commandargs = container_commandline_args container
-    commandargs = " run " + commandargs
-    p commandargs
-    retval = run_docker(commandargs,container)
-        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-          container.set_container_id container.last_result
-        end
-  end
+#  def setup_container container
+#    commandargs = container_commandline_args container
+#    commandargs = " run " + commandargs
+#    p commandargs
+#    retval = run_docker(commandargs,container)
+#        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
+#          container.set_container_id container.last_result
+#        end
+#  end
   
    def rebuild_image container
 
