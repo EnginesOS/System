@@ -180,7 +180,7 @@ class EngineBuilder
       commands.push(worker["command"])
     end
     if commands.length >0
-      cmdf= File.open(get_basedir + "/home/pre-running.sh","w")
+      cmdf= File.open(get_basedir + "/home/engines/scripts/pre-running.sh","w")
       if !cmdf
         puts ("failed to open " + get_basedir + "/home/pre-running.sh")
         exit
