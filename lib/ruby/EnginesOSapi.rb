@@ -665,21 +665,23 @@ class EnginesOSapi
     end
   def get_databases
     db_service = EnginesOSapi.loadManagedService("mysql_server",@dockerapi)
-        if db_service == nil
-           return failed("mysql_server","No Such Service","get_databases")
-         end         
-        return db_service.consumers          
+    if db_service == nil
+      return failed("mysql_server","No Such Service","get_databases")
+    end         
+    return db_service.consumers          
   end
-  
   def get_backups
     backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
     if backup_service == nil
-       return failed("backup service","No Such Service","get_backup list")
-     end         
-    return backup_service.consumers        
+      return failed("backup service","No Such Service","get_backup list")
+    end
+    return backup_service.consumers
   end
 
-  def set_engine_hostname_details(engine_name,hostname,domain_name)
+  def set_engine_hostname_details(params)
+    engine_name = params[:engine_name]
+    hostname = param[:hostname]
+    domain_name = param[:domain_name]
     #FIXME Do stuff here
   end
       
