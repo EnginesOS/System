@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if test ! -f  /engines/var/run/subs_run
+	then
+		source /home/config_functions.sh
+		copy_substituted_templates
+		touch /engines/var/run/subs_run
+			
+	fi
+	
   if test  ! -f /engines/var/run/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "

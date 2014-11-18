@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if test -f  /engines/var/run/subs_run
+if test ! -f  /engines/var/run/subs_run
 	then
 		source /home/config_functions.sh
 		copy_substituted_templates
