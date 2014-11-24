@@ -26,7 +26,7 @@ begin
     #FIXME two sperate threads one stderr and the other stdout
 #stdout   
     begin
-      stdin.each { |line|
+      stdout.each { |line|
         print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
