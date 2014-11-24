@@ -840,20 +840,41 @@ def insert_framework_frag_in_dockerfile(frag_name)
   end
   
     def run_system (cmd)
-      debug(cmd)
-      cmd = cmd + " 2>&1"
-      res= %x<#{cmd}>  
-      p res
-      #FIXME should be case insensitive The last one is a pure kludge
-      #really need to get stderr and stdout separately
-      #res.downcase.include?("error") == false &&  too ristrictive (currently 
-      if $? == 0 #&& res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
-        #debug( res)
-        return true
-      else
-        debug(res)
-        return res
-      end           
+      require 'pty'
+      
+      res = String.new
+       
+      begin
+        PTY.spawn(cmd ) do |stdin, stdout, pid|
+          begin
+            stdin.each { |line|
+              print line
+              line = line.gsub(/\\\"/,"")
+               res += line.chop
+            }
+          rescue Errno::EIO
+          end
+        end
+      rescue PTY::ChildExited
+        puts "The child process exited!"
+      end
+      p "ASDASD"
+      print res
+     return res
+#      debug(cmd)
+#      cmd = cmd + " 2>&1"
+#      res= %x<#{cmd}>  
+#      p res
+#      #FIXME should be case insensitive The last one is a pure kludge
+#      #really need to get stderr and stdout separately
+#      #res.downcase.include?("error") == false &&  too ristrictive (currently 
+#      if $? == 0 #&& res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
+#        #debug( res)
+#        return true
+#      else
+#        debug(res)
+#        return res
+#      end           
     end
     
     def clean_path(path)
