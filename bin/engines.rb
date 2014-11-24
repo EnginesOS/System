@@ -38,6 +38,12 @@ def do_cmd(c_type,containerName,command)
   
  #  puts "Command" + command + " on " + containerName
   case command
+    when "list"
+       engines = engines_api.list_managed_engines
+         engines.each do |engine_name|
+           p engine_name
+    end 
+         
   when "check_and_act"
     if c_type == "container"
           eng = engines_api.loadManagedEngine(containerName)
@@ -195,11 +201,7 @@ def do_cmd(c_type,containerName,command)
          res = eng
     end
          
-  when "list"
-    engines = engines_api.list_managed_engines
-      engines.each do |engine_name|
-        p engine_name
-      end 
+ 
        
         
     when  "status"
