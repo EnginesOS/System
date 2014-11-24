@@ -845,11 +845,14 @@ def insert_framework_frag_in_dockerfile(frag_name)
       res = String.new
        
       begin
+        lf = File.new("/tmp/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
+        
         PTY.spawn(cmd ) do |stdin, stdout, pid|
           begin
             stdin.each { |line|
-              print line
+              #print line
               line = line.gsub(/\\\"/,"")
+              lf.print(line)
                res += line.chop
             }
           rescue Errno::EIO
@@ -857,9 +860,10 @@ def insert_framework_frag_in_dockerfile(frag_name)
         end
       rescue PTY::ChildExited
         puts "The child process exited!"
+        lf.flush
+        lf.close
       end
-      p "ASDASD"
-      print res
+
      return res
 #      debug(cmd)
 #      cmd = cmd + " 2>&1"
