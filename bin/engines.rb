@@ -322,9 +322,13 @@ command = ARGV[1]
       containerName = ARGV[2]
     end
     
+
+    
   if containerName == "all"
-    engines_api = EnginesOSapi.new() 
-    if c_type == "container"
+    engines_api = EnginesOSapi.new()
+    if command == 'list'
+      do_cmd(c_type,"none",command)
+    elsif c_type == "container"
       engines = engines_api.getManagedEngines()
       engines.each do |engine|     
         do_cmd(c_type,engine.containerName,command)
