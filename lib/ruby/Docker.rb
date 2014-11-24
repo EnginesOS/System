@@ -26,6 +26,7 @@ begin
     begin
       stdin.each { |line|
         print line
+        line = line.gsub(/\\\"/,"\"")
          res += line.chop
       }
     rescue Errno::EIO
