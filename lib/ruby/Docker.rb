@@ -36,7 +36,7 @@ rescue PTY::ChildExited
   puts "The child process exited!"
 end
 p "ASDASD"
-p res
+print res
     container.set_last_result(res)
     
     return true
