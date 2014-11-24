@@ -258,7 +258,7 @@ class EngineBuilder
       #FIXME Need to strip any ../
       if arc_loc == "./" 
         arc_loc=""
-        elsif arc_loc.ends_with("/")
+        elsif arc_loc.end_with?("/")
           arc_loc = arc_loc.chop() #note not String#chop 
       end      
       
