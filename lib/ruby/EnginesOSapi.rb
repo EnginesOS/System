@@ -41,6 +41,20 @@ class EnginesOSapi
       return EnginesOSapi.failed(host,"Failed","build_engine") #FIXME needs to return error object
   
     end
+    
+  def list_managed_engines()
+    ret_val=Array.new
+        Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
+          yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
+          if File.exists?(yfn) == true       
+            managed_engine = loadManagedEngine(contdir)
+            if managed_engine.is_a?(ManagedEngine)
+              ret_val.push(contdir)
+            end
+          end
+        end
+  end
+  
   def getManagedEngines()
     ret_val=Array.new
     Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
@@ -680,7 +694,7 @@ class EnginesOSapi
 
   def set_engine_hostname_details(params)
     engine_name = params[:engine_name]
-    hostname = param[:hostname]
+    hostname = param[:host_name]
     domain_name = param[:domain_name]
     #FIXME Do stuff here
   end
