@@ -44,6 +44,8 @@ class EngineBuilder
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
+    
+    @lf=  File.new("/tmp/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
   end
 
   def backup_lastbuild
@@ -677,66 +679,66 @@ end
 
   def build_container
 
-    puts("Reading Blueprint")
+    @lf.puts("Reading Blueprint")
     load_blueprint
-    puts("Reading Settings")
+    @lf.puts("Reading Settings")
     read_values
-    puts("Copy in default templates")
+    @lf.puts("Copy in default templates")
     copy_templates
-    puts("Setting Web port")
+    @lf.puts("Setting Web port")
     add_custom_env
     getwebport
     getwebuser
-    puts("creating Worker port")
+    @lf.puts("creating Worker port")
     create_work_ports
-    puts("Adding services")
+    @lf.puts("Adding services")
     add_services
     add_cron_jobs
-    puts("Configuring Setup Environment")
+    @lf.puts("Configuring Setup Environment")
    
-    puts("Configuring Application Environment")
+    @lf.puts("Configuring Application Environment")
    
   #  puts("Setting up logging")
    # setup_framework_logging?
     
-    puts("Creating workers")
+    @lf.puts("Creating workers")
     create_workers
-    puts("Saving stack Environment")
+    @lf.puts("Saving stack Environment")
     create_stack_env
 
-    puts("Writing Dockerfile")
+    @lf.puts("Writing Dockerfile")
     setup_dockerfile
-    puts("Configuring install Environment")
+    @lf.puts("Configuring install Environment")
     create_presettings_env
-    puts("set container user")
+    @lf.puts("set container user")
     set_container_user
-    puts("set chown app ")
+    @lf.puts("set chown app ")
     chown_home_app  
-    puts("set sed strings")
+    @lf.puts("set sed strings")
     create_sed_strings
-    puts("set setup_env")
+    @lf.puts("set setup_env")
     
     create_file_persistance
-    puts("add builder.mid")
+    @lf.puts("add builder.mid")
     insert_framework_frag_in_dockerfile("builder.mid")
-    puts("set rake list")
+    @lf.puts("set rake list")
     create_rake_list
-    puts("set pear list")
+    @lf.puts("set pear list")
     create_pear_list
-    puts("set permissions recussive")
+    @lf.puts("set permissions recussive")
     set_write_permissions_recursive
-    puts("set permissions  single")
+    @lf.puts("set permissions  single")
     set_write_permissions_single
-    puts("add builder.end")
+    @lf.puts("add builder.end")
     insert_framework_frag_in_dockerfile("builder.end")
     
-    puts("Building Image")
+    @lf.puts("Building Image")
     
    if  build_init == false
-     puts ("Error Build Init failed")
+     @lf.puts ("Error Build Init failed")
      return false
    end
-    puts("creatine deploy image")
+    @lf.puts("creatine deploy image")
 
     mc = create_managed_container()
     return mc
@@ -820,11 +822,11 @@ def insert_framework_frag_in_dockerfile(frag_name)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     bp = mc.load_blueprint
     p  bp
-    puts("Launching")
+    @lf.puts("Launching")
     #this will fail as no api at this stage
     if mc.docker_api != nil
       if launch_deploy(mc) == false
-        puts "Failed to Launch"
+        @lf.puts "Failed to Launch"
       end
       @docker_api.run_volume_builder(mc ,@webUser)
       mc.start_container
@@ -845,14 +847,15 @@ def insert_framework_frag_in_dockerfile(frag_name)
       res = String.new
        
       begin
-        lf = File.new("/tmp/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
+       
         
         PTY.spawn(cmd ) do |stdin, stdout, pid|
           begin
             stdin.each { |line|
               #print line
               line = line.gsub(/\\\"/,"")
-              lf.print(line)
+              @lf.puts(line)
+              @lf.flush
                res += line.chop
             }
           rescue Errno::EIO
@@ -860,8 +863,6 @@ def insert_framework_frag_in_dockerfile(frag_name)
         end
       rescue PTY::ChildExited
         puts "The child process exited!"
-        lf.flush
-        lf.close
       end
 
      return res
