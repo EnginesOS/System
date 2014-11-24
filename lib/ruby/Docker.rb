@@ -35,9 +35,9 @@ begin
       res += line.chop
     end
 #stderr
-  end
-rescue PTY::ChildExited
-  puts "The child process exited!"
+ 3 end
+#rescue PTY::ChildExited
+#  puts "The child process exited!"
 end
 p "ASDASD"
 print res
