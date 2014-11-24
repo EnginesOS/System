@@ -17,7 +17,7 @@ class Docker
 #          end                 
 #      return ret_val
     
-require pty
+require 'pty'
 begin
   PTY.spawn("docker " + args ) do |stdin, stdout, pid|
     begin
