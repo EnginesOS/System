@@ -17,7 +17,7 @@ class Docker
 #          end                 
 #      return ret_val
     
-require 'pty'
+require 'open3'
 
 res = String.new
  
