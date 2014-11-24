@@ -6,16 +6,29 @@ class Docker
   def run_docker (args,container)
      ret_val=false
     container.set_last_result  ""           
-     cmd="docker " + args + " 2>&1"           
-     res= %x<#{cmd}>        
+   #  cmd="docker " + args + " 2>&1"           
+    # res= %x<#{cmd}>        
      #puts(cmd + "\n\n" + res)
-          if $? == 0 && res.include?("Error") == false
-              ret_val = true
-            container.set_last_result res
-          else                
-            container.set_last_error  res;               
-          end                 
-      return ret_val
+#          if $? == 0 && res.include?("Error") == false
+#              ret_val = true
+#            container.set_last_result res
+#          else                
+#            container.set_last_error  res;               
+#          end                 
+#      return ret_val
+    
+require pty
+begin
+  PTY.spawn("docker " + args ) do |stdin, stdout, pid|
+    begin
+      stdin.each { |line| print line }
+    rescue Errno::EIO
+    end
+  end
+rescue PTY::ChildExited
+  puts "The child process exited!"
+end
+    
    end
    
    def run_system (cmd)
