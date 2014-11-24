@@ -518,4 +518,37 @@ end
     end
   
   end
+  
+  def list_managed_engines
+ 
+  ret_val=Array.new
+      Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
+        yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
+        if File.exists?(yfn) == true       
+         # managed_engine = loadManagedEngine(contdir)
+          #if managed_engine.is_a?(ManagedEngine)
+            ret_val.push(contdir)
+            p contdir
+          #end
+        end
+      end
+   return ret_val  
+  end
+    
+  def list_managed_services
+ 
+  ret_val=Array.new
+      Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
+        yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"       
+        if File.exists?(yfn) == true       
+         # managed_engine = loadManagedEngine(contdir)
+          #if managed_engine.is_a?(ManagedEngine)
+            ret_val.push(contdir)
+            p contdir
+          #end
+        end
+      end
+   return ret_val  
+   
+  end
   end
