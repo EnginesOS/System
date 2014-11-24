@@ -685,8 +685,8 @@ class EnginesOSapi
 
   def set_engine_hostname_details(params)
     engine_name = params[:engine_name]
-    hostname = param[:host_name]
-    domain_name = param[:domain_name]
+    hostname = params[:host_name]
+    domain_name = params[:domain_name]
     #FIXME Do stuff here
   end
   
