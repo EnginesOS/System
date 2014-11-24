@@ -687,6 +687,7 @@ class EnginesOSapi
     engine_name = params[:engine_name]
     hostname = params[:host_name]
     domain_name = params[:domain_name]
+      return false
     #FIXME Do stuff here
   end
   
