@@ -194,7 +194,14 @@ def do_cmd(c_type,containerName,command)
     else        
          res = eng
     end
-                       
+         
+  when "list"
+    engines = engines_api.list_managed_engines
+      engines.each do |engine_name|
+        p engine_name
+      end 
+       
+        
     when  "status"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
