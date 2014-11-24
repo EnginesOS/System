@@ -36,6 +36,7 @@ rescue PTY::ChildExited
 end
 p "ASDASD"
 p res
+    container.set_last_result res
     return res
     
    end
