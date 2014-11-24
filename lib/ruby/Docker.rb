@@ -22,7 +22,9 @@ require 'pty'
 res = String.new
  
 begin
-  PTY.spawn("docker " + args ) do |stdin, stdout, pid|
+  Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
+    #FIXME two sperate threads one stderr and the other stdout
+#stdout   
     begin
       stdin.each { |line|
         print line
@@ -31,6 +33,7 @@ begin
       }
     rescue Errno::EIO
     end
+#stderr
   end
 rescue PTY::ChildExited
   puts "The child process exited!"
