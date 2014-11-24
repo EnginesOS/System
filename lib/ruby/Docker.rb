@@ -34,6 +34,8 @@ begin
 rescue PTY::ChildExited
   puts "The child process exited!"
 end
+p "ASDASD"
+p res
     return res
     
    end
