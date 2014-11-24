@@ -42,12 +42,12 @@ class EnginesOSapi
   
     end
     
-  def list_managed_engines()
+  def list_apps()
   
     return @docker_api.list_managed_engines
   end
   
-  def list_managed_services()
+  def list_services()
    
      return @docker_api.list_managed_services
    end
