@@ -32,6 +32,7 @@ begin
          res += line.chop
       }
     rescue Errno::EIO
+      res += line.chop
     end
 #stderr
   end
