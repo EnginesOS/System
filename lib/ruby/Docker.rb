@@ -54,11 +54,7 @@ class Docker
       Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
         yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"       
         if File.exists?(yfn) == true       
-         # managed_engine = loadManagedEngine(contdir)
-          #if managed_engine.is_a?(ManagedEngine)
             ret_val.push(contdir)
-            p contdir
-          #end
         end
       end
    return ret_val  
