@@ -18,16 +18,23 @@ class Docker
 #      return ret_val
     
 require 'pty'
+
+res = String.new
+ 
 begin
   PTY.spawn("docker " + args ) do |stdin, stdout, pid|
     begin
-      stdin.each { |line| print line }
+      stdin.each { |line|
+        print line
+         res += line
+      }
     rescue Errno::EIO
     end
   end
 rescue PTY::ChildExited
   puts "The child process exited!"
 end
+    return res
     
    end
    
