@@ -37,6 +37,7 @@ rescue PTY::ChildExited
 end
 p "ASDASD"
 print res
+res = res +"]"
     container.set_last_result(res)
     
     return true
