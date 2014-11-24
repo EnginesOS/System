@@ -26,7 +26,7 @@ begin
     begin
       stdin.each { |line|
         print line
-         res += line
+         res += line.chop
       }
     rescue Errno::EIO
     end
