@@ -33,11 +33,15 @@ begin
          res += line.chop
         error_mesg += stderr.read_nonblock(1000)
       }
-    rescue Errno::EIO 
+    rescue Errno::EIO
       res += line.chop
       error_mesg += stderr.read_nonblock(1000)
+    rescue  IO::WaitReadable
+        retry
     end
+ 
   end
+  
 #stderr
   
 #rescue PTY::ChildExited
