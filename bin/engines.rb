@@ -210,12 +210,17 @@ def do_cmd(c_type,containerName,command)
     else
       eng = EnginesOSapi.loadManagedService(containerName,docker_api)
     end
+    if eng.instance_of?(EnginesOSapiResult)
+      res = "Error: No such Container:" + containerName
+    else
+    
     state = engines_api.read_state(eng)
     if eng.setState != state
       res = "Error:" + containerName + ":" + state + ":set to:" + eng.setState 
     else
       res =  containerName + ":" + state
     end 
+    end
     puts res
             
     when  "lasterror"
