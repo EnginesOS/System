@@ -25,7 +25,7 @@ begin
   Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
     #FIXME two sperate threads one stderr and the other stdout
 #stdout  
-
+line = String.new
     begin
       stdout.each { |line|
       #  print line
