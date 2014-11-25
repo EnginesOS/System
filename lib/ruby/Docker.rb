@@ -31,7 +31,7 @@ begin
       #  print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
-        
+        error_mesg += stderr.read_nonblock(1000)
       }
     rescue Errno::EIO 
       res += line.chop
