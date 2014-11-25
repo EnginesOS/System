@@ -695,8 +695,9 @@ class EnginesOSapi
         p engine
         return false        
       end
+      p engine
       return @dockerapi.set_engine_hostname_details(engine, params)
-    #FIXME Do stuff here
+    
   end
   
   def add_self_hosted_domain params

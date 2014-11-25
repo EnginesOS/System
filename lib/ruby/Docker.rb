@@ -478,7 +478,7 @@ end
         return false
       end
   end
-
+      
   def set_engine_hostname_details(container,params)
     engine_name = params[:engine_name]
     hostname = params[:host_name]
@@ -488,6 +488,7 @@ end
       saved_hostName = container.hostName
       saved_domainName =  container.domainName
 
+      p container
       nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
       nginx_service.remove_consumer(container)
 
