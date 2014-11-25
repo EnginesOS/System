@@ -41,9 +41,9 @@ begin
 end
 #p "ASDASD"
 #print res
-if res.start_with?("[") == true
+#if res.start_with?("[") == true
   res = res +"]"
-end
+#end
     container.set_last_result(res)
     
     return true
