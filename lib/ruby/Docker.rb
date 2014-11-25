@@ -38,8 +38,8 @@ begin
       error_mesg += stderr.read_nonblock(1000)
     rescue  IO::WaitReadable
         retry
-    rescue IO::EOFError
-      
+    rescue EOFError
+      res += line.chop
     end
  
   end
