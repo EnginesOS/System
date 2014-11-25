@@ -484,7 +484,7 @@ end
     hostname = params[:host_name]
     domain_name = params[:domain_name]
 
-    if container.hostName != hostname || container.domainName != domain_name
+   # if container.hostName != hostname || container.domainName != domain_name
       saved_hostName = container.hostName
       saved_domainName =  container.domainName
 
@@ -501,9 +501,9 @@ end
       nginx_service.add_consumer(container)
 
       return true
-    end
+    #end
     #true if no change
-    return true
+    #return true
   end
     
 def save_system_preferences
