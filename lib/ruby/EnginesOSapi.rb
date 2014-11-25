@@ -687,17 +687,13 @@ class EnginesOSapi
 #    engine_name = params[:engine_name]
 #    hostname = params[:host_name]
 #    domain_name = params[:domain_name]
-    puts "updating hostname details"
-    p params
     engine = loadManagedEngine(params[:engine_name])
       if engine == nil || engine.instance_of?(EnginesOSapiResult)
         p "p cant change name as cant load"
         p engine
         return false        
       end
-      p engine
       return @docker_api.set_engine_hostname_details(engine, params)
-    
   end
   
   def add_self_hosted_domain params

@@ -488,7 +488,6 @@ end
       saved_hostName = container.hostName
       saved_domainName =  container.domainName
 
-      p container
       nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
       nginx_service.remove_consumer(container)
 
