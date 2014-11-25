@@ -26,12 +26,16 @@ begin
     #FIXME two sperate threads one stderr and the other stdout
 #stdout  
 line = String.new
+stderr_is_open=true
+
     begin
       stdout.each { |line|
       #  print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
-        error_mesg += stderr.read_nonblock(1000)
+         if stderr_is_open                   
+            error_mesg += stderr.read_nonblock(1000)
+         end
       }
     rescue Errno::EIO
       res += line.chop
@@ -39,7 +43,10 @@ line = String.new
     rescue  IO::WaitReadable
         retry
     rescue EOFError
-      res += line.chop
+       if stdout.closed? == false
+         stderr_is_open = false
+         retry 
+       end
     end
  
   end
