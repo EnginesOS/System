@@ -696,7 +696,7 @@ class EnginesOSapi
         return false        
       end
       p engine
-      return @dockerapi.set_engine_hostname_details(engine, params)
+      return @docker_api.set_engine_hostname_details(engine, params)
     
   end
   
