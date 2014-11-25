@@ -27,7 +27,7 @@ begin
 #stdout   
     begin
       stdout.each { |line|
-        print line
+      #  print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
       }
@@ -35,13 +35,15 @@ begin
       res += line.chop
     end
 #stderr
- 3 end
+  end
 #rescue PTY::ChildExited
 #  puts "The child process exited!"
 end
-p "ASDASD"
-print res
-res = res +"]"
+#p "ASDASD"
+#print res
+if res.start_with?("[") == true
+  res = res +"]"
+end
     container.set_last_result(res)
     
     return true
