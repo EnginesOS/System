@@ -216,6 +216,7 @@ def do_cmd(c_type,containerName,command)
     else
       res =  containerName + ":" + state
     end 
+    puts res
             
     when  "lasterror"
     if c_type == "container"
