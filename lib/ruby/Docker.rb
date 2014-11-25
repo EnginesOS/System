@@ -495,7 +495,7 @@ end
       dns_service = EnginesOSapi.loadManagedService("dns",self)
       dns_service.remove_consumer(container)
 
-      container.set_hostname_details(host_name,domain_name)
+      container.set_hostname_details(hostname,domain_name)
 
       dns_service.add_consumer(container)
       nginx_service.add_consumer(container)
