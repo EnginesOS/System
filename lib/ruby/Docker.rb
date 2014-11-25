@@ -47,6 +47,7 @@ end
 #print res
 if error_mesg.include?("Error:")
   container.set_last_error(error_mesg)
+  p "docker_cmd error " + error_mesg
   return false
 else
   container.set_last_error("")
