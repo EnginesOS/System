@@ -689,6 +689,8 @@ class EnginesOSapi
 #    domain_name = params[:domain_name]
     engine = loadManagedEngine(params[:engine_name])
       if engine == nil || engine.instance_of?(EnginesOSapiResult)
+        p "p cant change name as cant load"
+        p engine
         return false        
       end
       return @dockerapi.set_engine_hostname_details(engine, params)

@@ -6,16 +6,7 @@ class Docker
   def run_docker (args,container)
      ret_val=false
     container.set_last_result  ""           
-   #  cmd="docker " + args + " 2>&1"           
-    # res= %x<#{cmd}>        
-     #puts(cmd + "\n\n" + res)
-#          if $? == 0 && res.include?("Error") == false
-#              ret_val = true
-#            container.set_last_result res
-#          else                
-#            container.set_last_error  res;               
-#          end                 
-#      return ret_val
+   
     
 require 'open3'
 
@@ -57,7 +48,7 @@ stderr_is_open=true
 #  puts "The child process exited!"
 end
 #p "ASDASD"
-print res
+#print res
 if error_mesg.include?("Error:")
   container.set_last_error(error_mesg)
   p "docker_cmd error " + error_mesg
