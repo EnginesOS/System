@@ -20,13 +20,12 @@ class Docker
 require 'open3'
 
 res = String.new
- 
+    error_mesg = String.new
 begin
   Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
     #FIXME two sperate threads one stderr and the other stdout
 #stdout  
-    error_mesg = String.new
-     
+
     begin
       stdout.each { |line|
       #  print line
