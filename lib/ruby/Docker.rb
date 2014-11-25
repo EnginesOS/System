@@ -24,27 +24,43 @@ res = String.new
 begin
   Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
     #FIXME two sperate threads one stderr and the other stdout
-#stdout   
+#stdout  
+    error_mesg = String.new
+     
     begin
       stdout.each { |line|
       #  print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
+        error_mesg += stderr.read_nonblock(1)
       }
     rescue Errno::EIO
       res += line.chop
+      error_mesg += stderr.read_nonblock(1)
     end
-#stderr
   end
+#stderr
+  
 #rescue PTY::ChildExited
 #  puts "The child process exited!"
 end
 #p "ASDASD"
 #print res
+if error_mesg.include?("Error:")
+  container.set_last_error(error_mesg)
+  return false
+else
+  container.set_last_error("")
+end
 if res.start_with?("[") == true
   res = res +"]"
 end
     container.set_last_result(res)
+    
+    if res.length <1
+      return false 
+      
+    end
     
     return true
     
