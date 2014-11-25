@@ -684,10 +684,14 @@ class EnginesOSapi
   end
 
   def set_engine_hostname_details(params)
-    engine_name = params[:engine_name]
-    hostname = params[:host_name]
-    domain_name = params[:domain_name]
-      return false
+#    engine_name = params[:engine_name]
+#    hostname = params[:host_name]
+#    domain_name = params[:domain_name]
+    engine = loadManagedEngine(params[:engine_name])
+      if engine == nil || engine.instance_of?(EnginesOSapiResult)
+        return false        
+      end
+      return @dockerapi.set_engine_hostname_details(engine, params)
     #FIXME Do stuff here
   end
   

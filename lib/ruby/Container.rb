@@ -56,4 +56,10 @@ class Container
    def environments
      return @environments
    end
+   
+   def set_hostname_details(host_name,domain_name)
+     @hostName = host_name
+     @domainName = domain_name
+   end
+   
 end

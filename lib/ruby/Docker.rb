@@ -488,6 +488,32 @@ end
       end
   end
 
+  def set_engine_hostname_details(container,params)
+    engine_name = params[:engine_name]
+    hostname = params[:host_name]
+    domain_name = params[:domain_name]
+
+    if container.hostName != hostname || container.domainName != domain_name
+      saved_hostName = container.hostName
+      saved_domainName =  container.domainName
+
+      nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
+      nginx_service.remove_consumer(container)
+
+      dns_service = EnginesOSapi.loadManagedService("dns",self)
+      dns_service.remove_consumer(container)
+
+      container.set_hostname_details(host_name,domain_name)
+
+      dns_service.add_consumer(container)
+      nginx_service.add_consumer(container)
+
+      return true
+    end
+    #true if no change
+    return true
+  end
+    
 def save_system_preferences
   return true
 end  
