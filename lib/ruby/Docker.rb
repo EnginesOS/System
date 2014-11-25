@@ -32,9 +32,9 @@ begin
       #  print line
         line = line.gsub(/\\\"/,"")
          res += line.chop
-        error_mesg += stderr.read_nonblock(1)
+        
       }
-    rescue Errno::EIO
+    rescue Errno::EIO 
       res += line.chop
       error_mesg += stderr.read_nonblock(1)
     end
