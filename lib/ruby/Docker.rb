@@ -40,7 +40,7 @@ begin
 #  puts "The child process exited!"
 end
 #p "ASDASD"
-#print res
+print res
 #if res.start_with?("[") == true
   res = res +"]"
 #end
