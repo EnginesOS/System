@@ -36,7 +36,7 @@ begin
       }
     rescue Errno::EIO 
       res += line.chop
-      error_mesg += stderr.read_nonblock(1)
+      error_mesg += stderr.read_nonblock(1000)
     end
   end
 #stderr
