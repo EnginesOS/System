@@ -50,7 +50,7 @@ line = String.new
 #  puts "The child process exited!"
 end
 #p "ASDASD"
-#print res
+print res
 if error_mesg.include?("Error:")
   container.set_last_error(error_mesg)
   p "docker_cmd error " + error_mesg
