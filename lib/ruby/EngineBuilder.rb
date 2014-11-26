@@ -546,10 +546,10 @@ end
     puts cmd
     res = run_system(cmd)
     if res != true
-      puts "build init failed " + res
+      puts "build init failed " + res.to_s
       return res
     end
-    puts res
+    return res
   end
 
   
