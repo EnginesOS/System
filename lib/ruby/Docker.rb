@@ -220,7 +220,7 @@ end
      retval = run_docker(commandargs,container)
       if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
         container_id = read_container_id(container.containerName)
-        container.set_container_id container_id
+        container.container_id container_id
       end      
      return retval       
    end     
