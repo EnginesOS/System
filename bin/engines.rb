@@ -45,7 +45,7 @@ def do_cmd(c_type,containerName,command)
     end 
     
   when "memory"
-    mem_use_hash = get_memory_statistics(engine_name)
+    mem_use_hash = get_memory_statistics(containerName)
     res = "\nCurrent:" + mem_use_hash[:current] + "\n"
     res = "Maximum:" + mem_use_hash[:maximum] + "\n"
     res = "Limit:" + mem_use_hash[l:imit] + "\n"
