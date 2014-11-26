@@ -557,10 +557,16 @@ end
    ret_val = Hash.new
    begin
   cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}' "
-  res= %x<#{cmd}>  
+  res= %x<#{cmd}>
+  p :SDAFRDFSS  
   p res
-  vals = res.split("bytes:")
+  p :Sdfsdf
   
+  vals = res.split("bytes:")
+  p :sdfdssssssssssss
+  p vals[0]
+  p vals[1]
+  p :sdf
   ret_val[:in] = vals[0]
    ret_val[:out] = vals[1]
    rescue

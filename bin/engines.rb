@@ -47,7 +47,7 @@ def do_cmd(c_type,containerName,command)
     when "network"
     net_use_hash = engines_api.get_container_network_metrics(containerName)
     res = "In:" + net_use_hash[:in].to_s + "Bytes Out:" + net_use_hash[:out].to_s + "Bytes"
-    print res
+   puts res
     
   when "memory"
     if c_type == "container"
