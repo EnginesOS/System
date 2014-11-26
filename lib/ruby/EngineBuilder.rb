@@ -890,13 +890,21 @@ begin
   #  print line
     line = line.gsub(/\\\"/,"")
      res += line.chop
-     if stderr_is_open                   
-        error_mesg += stderr.read_nonblock(1000)
+    @lf.puts(line)
+     if stderr_is_open
+       err  = stderr.read_nonblock(1000)                  
+        error_mesg += err
+       @lf.puts(err)        
      end
   }
 rescue Errno::EIO
   res += line.chop
-  error_mesg += stderr.read_nonblock(1000)
+  @lf.puts(line)
+  if stderr_is_open
+    err  = stderr.read_nonblock(1000)                  
+    error_mesg += err
+    @lf.puts(err) 
+  end
 rescue  IO::WaitReadable
     retry
 rescue EOFError
