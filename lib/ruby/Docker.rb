@@ -567,8 +567,8 @@ end
 #  p vals[0]
 #  p vals[1]
 #  p :sdf
-  ret_val[:in] = vals[1]
-   ret_val[:out] = vals[2]
+  ret_val[:in] = vals[1].chop
+   ret_val[:out] = vals[2].chop
    rescue
     ret_val[:in] = -1
     ret_val[:out] = -1
