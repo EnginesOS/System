@@ -49,8 +49,8 @@ def do_cmd(c_type,containerName,command)
       
     if mem_use_hash  != nil && mem_use_hash.instance_of?(Hash) 
       res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
-      res = "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
-      res = "Limit:" + mem_use_hash[:limit].to_s + "\n"
+      res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
+      res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
     else
       p mem_use_hash
     end
