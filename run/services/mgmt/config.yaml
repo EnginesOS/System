@@ -18,6 +18,17 @@ volumes:
   localpath: "/var/run/docker.sock"
   mapping_permissions: rw
 - !ruby/object:Volume
+  name: build
+  remotepath: "/home/dockuser/deployment"
+  localpath: "/home/dockuser/deployment"
+  mapping_permissions: rw
+- !ruby/object:Volume
+  name: sqlite
+  remotepath: "/home/app/app/db/development.sqlite"
+  localpath: "/home/dockuser/db/development.sqlite"
+  mapping_permissions: rw
+
+- !ruby/object:Volume
   name: docker
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
