@@ -75,9 +75,7 @@ def do_cmd(c_type,containerName,command)
           end
           
           res ="Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB"
-#          res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
-#          res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
-#          res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
+
         print res
         end           
     end
