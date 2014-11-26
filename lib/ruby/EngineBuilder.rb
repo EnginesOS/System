@@ -322,7 +322,11 @@ class EngineBuilder
   def chown_home_app
     docker_file = File.open( get_basedir + "/Dockerfile","a")
     docker_file.puts("USER 0")
-    docker_file.puts("RUN chown -R $ContUser /home/app")
+    docker_file.puts("RUN if [ ! -d /home/app ];\\")
+    docker_file.puts("  then \\")
+    docker_file.puts("    mkdir -p /home/app ;\\")
+    docker_file.puts("  fi;\\")
+    docker_file.puts(" chown -R $ContUser /home/app")
     docker_file.puts("USER $ContUser")
 
     docker_file.close
