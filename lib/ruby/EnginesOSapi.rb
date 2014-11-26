@@ -713,7 +713,7 @@ class EnginesOSapi
   end
   
   def remove_self_hosted_domain params
-    return  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Remove self hosted domain")
+    return  EnginesOSapiResult.new(true,0,params[:domain_name], "Success","Remove self hosted domain")
   end
   
   def list_self_hosted_domains params
@@ -722,15 +722,15 @@ class EnginesOSapi
   end
   
   def attach_ftp_service(params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Attach ftp")
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Attach ftp")
   end
   
   def detach_ftp_service (params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Detach ftp")
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
   end
       
   def  change_ftp_service  (params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "OK","Change ftp")
+    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Change ftp")
   end
   #protected if protected static cant call
   def success(item_name ,cmd)
@@ -742,7 +742,7 @@ class EnginesOSapi
   end
 
   def EnginesOSapi.success(item_name ,cmd)
-    return  EnginesOSapiResult.new(true,0,item_name, "OK",cmd)
+    return  EnginesOSapiResult.new(true,0,item_name, "Success",cmd)
   end
 
   def EnginesOSapi.failed(item_name,mesg ,cmd)

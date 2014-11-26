@@ -845,47 +845,84 @@ def insert_framework_frag_in_dockerfile(frag_name)
     p fld
   end
   
-    def run_system (cmd)
-      require 'pty'
-      
-      res = String.new
-       
-      begin
-       
-        
-        PTY.spawn(cmd ) do |stdin, stdout, pid|
-          begin
-            stdin.each { |line|
-              #print line
-              line = line.gsub(/\\\"/,"")
-              @lf.puts(line)
-              @lf.flush
-               res += line.chop
-            }
-          rescue Errno::EIO
-          end
-        end
-      rescue PTY::ChildExited
-        puts "The child process exited!"
-      end
+#    def run_system (cmd)
+#      require 'pty'
+#      
+#      res = String.new
+#       
+#      begin
+#               
+#        PTY.spawn(cmd ) do |stdin, stdout, pid|
+#          begin
+#            stdin.each { |line|
+#              #print line
+#              line = line.gsub(/\\\"/,"")
+#              @lf.puts(line)
+#              @lf.flush
+#               res += line.chop
+#            }
+#          rescue Errno::EIO
+#          end
+#        end
+#      rescue PTY::ChildExited
+#        puts "The child process exited!"
+#      end
+#
+#     return res
+#       
+#    end
+def run_system(cmd)
+ret_val=false
 
-     return res
-#      debug(cmd)
-#      cmd = cmd + " 2>&1"
-#      res= %x<#{cmd}>  
-#      p res
-#      #FIXME should be case insensitive The last one is a pure kludge
-#      #really need to get stderr and stdout separately
-#      #res.downcase.include?("error") == false &&  too ristrictive (currently 
-#      if $? == 0 #&& res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
-#        #debug( res)
-#        return true
-#      else
-#        debug(res)
-#        return res
-#      end           
-    end
-    
+require 'open3'
+
+res = String.new
+error_mesg = String.new
+begin
+Open3.popen3("docker " + cmd ) do |stdin, stdout, stderr, th|
+#FIXME two sperate threads one stderr and the other stdout
+#stdout  
+line = String.new
+stderr_is_open=true
+
+begin
+  stdout.each { |line|
+  #  print line
+    line = line.gsub(/\\\"/,"")
+     res += line.chop
+     if stderr_is_open                   
+        error_mesg += stderr.read_nonblock(1000)
+     end
+  }
+rescue Errno::EIO
+  res += line.chop
+  error_mesg += stderr.read_nonblock(1000)
+rescue  IO::WaitReadable
+    retry
+rescue EOFError
+   if stdout.closed? == false
+     stderr_is_open = false
+     retry 
+   end
+end
+
+end
+
+
+end
+#p "ASDASD"
+print res
+
+if error_mesg.include?("Error:")
+container.set_last_error(error_mesg)
+p "docker_cmd error " + error_mesg
+return false
+
+end
+return true
+
+end
+  
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
     
