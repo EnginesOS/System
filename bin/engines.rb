@@ -65,7 +65,7 @@ def do_cmd(c_type,containerName,command)
           
           current = current.round(0)
           maximum = maximum.round(0)
-          limit = maximum.round(0)
+          limit = limit.round(0)
           
           if !max_p.nan?
             max_p = max_p.round(0)
