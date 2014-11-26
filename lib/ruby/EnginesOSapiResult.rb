@@ -15,7 +15,8 @@ class  EnginesOSapiResult
       @result_mesg = msg
       @action = cmd
     end
-      
+    
+    
     def was_success
       return @was_success
     end

@@ -17,6 +17,8 @@ class EnginesOSapi
     return @docker_api
   end
 
+
+  
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
@@ -196,7 +198,7 @@ class EnginesOSapi
              return backup_service
            end
     if backup_service.read_state != "running"
-      return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+      return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
     end
      backup_service.add_consumer(backup_hash)
      return success(engine_name,"Add Database Backup")
@@ -746,7 +748,5 @@ class EnginesOSapi
   def EnginesOSapi.failed(item_name,mesg ,cmd)
     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
   end
-  
-  
 
 end
