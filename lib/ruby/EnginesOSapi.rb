@@ -503,7 +503,7 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Load Engine Blueprint")
     end
-    retval = engine.get_container_memory_stats()
+    retval = engine.get_container_memory_stats(@docker_api)
     return retval
     
   end
