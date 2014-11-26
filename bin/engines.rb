@@ -45,7 +45,11 @@ def do_cmd(c_type,containerName,command)
     end 
     
   when "memory"
-    mem_use_hash = engines_api.get_memory_statistics(containerName)
+    if c_type == "container"
+      mem_use_hash = engines_api.get_engine_memory_statistics(containerName)
+    else
+      mem_use_hash = engines_api.get_service_memory_statistics(containerName)
+    end
       
     if mem_use_hash  != nil && mem_use_hash.instance_of?(Hash) 
       res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
