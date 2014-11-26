@@ -535,7 +535,7 @@ end
    ret_val= Hash.new
  if container && container.container_id == nil || container.container_id == '-1'
    container_id = read_container_id(container.containerName)
-   container.set_container_id = container_id    
+   container.container_id = container_id    
    end
    if container && container.container_id != nil && container.container_id != '-1'
      path = "/sys/fs/cgroup/memory/docker/" + container.container_id
