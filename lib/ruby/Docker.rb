@@ -220,7 +220,7 @@ end
      retval = run_docker(commandargs,container)
       if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
         container_id = read_container_id(container.containerName)
-        container.container_id container_id
+        container.container_id = container_id
       end      
      return retval       
    end     
@@ -535,7 +535,7 @@ end
    ret_val= Hash.new
  if container && container.container_id == nil || container.container_id == '-1'
    container_id = read_container_id(container.containerName)
-   container.set_container_id container_id    
+   container.set_container_id = container_id    
    end
    if container && container.container_id != nil && container.container_id != '-1'
      path = "/sys/fs/cgroup/memory/docker/" + container.container_id
