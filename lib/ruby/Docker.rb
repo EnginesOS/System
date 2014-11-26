@@ -556,17 +556,17 @@ end
  def get_container_network_metrics(containerName) #FIXME Kludge
    ret_val = Hash.new
    begin
-  cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}' "
+  cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
   res= %x<#{cmd}>
-  p :SDAFRDFSS  
-  p res
-  p :Sdfsdf
+#  p :SDAFRDFSS  
+#  p res
+#  p :Sdfsdf
   
   vals = res.split("bytes:")
-  p :sdfdssssssssssss
-  p vals[0]
-  p vals[1]
-  p :sdf
+#  p :sdfdssssssssssss
+#  p vals[0]
+#  p vals[1]
+#  p :sdf
   ret_val[:in] = vals[1]
    ret_val[:out] = vals[2]
    rescue
