@@ -152,10 +152,8 @@ class EnginesOSapi
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
           end
-          p :back_running
-          p backup_service.get_state
-      if backup_service.get_state != "running"
-        return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+      if backup_service.read_state != "running"
+        return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
       end
     backup_service.add_consumer(backup_hash)
 #    p backup_hash
@@ -167,8 +165,8 @@ class EnginesOSapi
   if backup_service.is_a?(EnginesOSapiResult)
           return backup_service
         end
-    if backup_service.get_state != "running"
-      return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+    if backup_service.read_state != "running"
+      return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
     end
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
@@ -197,7 +195,7 @@ class EnginesOSapi
      if backup_service.is_a?(EnginesOSapiResult)
              return backup_service
            end
-    if backup_service.get_state != "running"
+    if backup_service.read_state != "running"
       return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
     end
      backup_service.add_consumer(backup_hash)
