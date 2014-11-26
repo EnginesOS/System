@@ -66,7 +66,7 @@ def do_cmd(c_type,containerName,command)
       max_p = max_p.round(0)
       curr_p = curr_p.round(0)
       
-      res ="Current: " + current.to_f + " / " + curr_p.to_s + "% Maximum: " + maximum.to_f + " / " + max_p.to_s + "% Limit: " + limit.to_f 
+      res ="Current: " + current.to_s + " / " + curr_p.to_s + "% Maximum: " + maximum.to_s + " / " + max_p.to_s + "% Limit: " + limit.to_s 
       res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
       res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
       res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
