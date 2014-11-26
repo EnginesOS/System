@@ -537,13 +537,13 @@ end
    if container && container.container_id != nil && container.container_id != '-1'
      path = "/sys/fs/cgroup/memory/docker/" + container.container_id
       if Dir.exists?(path)      
-        ret_val[:maximum] = file.read(path + "memory.max_usage_in_bytes")
-        ret_val[:current] = file.read(path + "memory.usage_in_bytes")
-        ret_val[:limit] = file.read(path + "memory.limit_in_bytes")
+        ret_val.store(:maximum , file.read(path + "memory.max_usage_in_bytes"))
+        ret_val.store(:current , file.read(path + "memory.usage_in_bytes"))
+        ret_val.store(:limit , file.read(path + "memory.limit_in_bytes"))
       else
-        ret_val[:maximum] = "No Container"
-        ret_val[:current] = "No Container"
-        ret_val[:limit] = "No Container"
+        ret_val.store(:maximum ,  "No Container")
+        ret_val.store(:current , "No Container")
+        ret_val.store(:limit ,  "No Container")
       end     
    end
    return ret_val
