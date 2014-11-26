@@ -676,7 +676,7 @@ class EnginesOSapi
     return db_service.consumers          
   end
   def get_backups
-    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
     if backup_service == nil
       return failed("backup service","No Such Service","get_backup list")
     end
@@ -697,7 +697,8 @@ class EnginesOSapi
   end
   
   def add_self_hosted_domain params
-    return  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+    return @docker_api.add_self_hosted_domain params
+    #  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
   end
   
   def remove_self_hosted_domain params

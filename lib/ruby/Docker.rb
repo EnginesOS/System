@@ -448,6 +448,12 @@ def create_backup(site_hash)
   site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
   ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
   return run_system(ssh_cmd)
+end
+
+  def add_self_hosted_domain params
+    
+    return EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+  end
   # 
  #     
  #    site_hash[:name]
@@ -467,8 +473,7 @@ def create_backup(site_hash)
 #  mkdir 
 #  create conf
 #  add pre and post if needed
-     
-end
+
  
   def is_startup_complete container
     runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
