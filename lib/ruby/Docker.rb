@@ -219,7 +219,8 @@ end
      end
      retval = run_docker(commandargs,container)
       if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-        container.set_container_id container.last_result
+        container_id = read_container_id(container.containerName)
+        container.set_container_id container_id
       end      
      return retval       
    end     
@@ -233,6 +234,13 @@ end
 #          container.set_container_id container.last_result
 #        end
 #  end
+   
+   def read_container_id containerName
+     cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
+     cid = File.read(cidfile)
+     p cid
+     return cid
+   end
   
    def rebuild_image container
 
