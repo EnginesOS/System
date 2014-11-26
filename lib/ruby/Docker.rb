@@ -137,7 +137,7 @@ end
      
      ret_val = run_docker(commandargs,container)      
      if (ret_val == true) #FIXME need to remove .cid if no such container but keep if container failed to stop
-       container.container_id  nil
+       container.container_id  = nil
        if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
           File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
        end
