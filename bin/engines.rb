@@ -56,7 +56,7 @@ def do_cmd(c_type,containerName,command)
       maximum = mem_use_hash[:maximum].to_f
       limit = mem_use_hash[:limit].to_f
       
-      if current.nan? == false
+      if current.nan? == false && maximum.nan? == false && limit.nan? == false
           current = current/1024
           maximum = maximum/1024
           limit = limit/1024
@@ -78,10 +78,7 @@ def do_cmd(c_type,containerName,command)
 #          res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
 #          res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
         print res
-        end
-        
-    else
-      p mem_use_hash
+        end           
     end
             
   when "check_and_act"
