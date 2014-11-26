@@ -553,6 +553,22 @@ end
    return ret_val
  end
  
+ def get_container_network_metrics(containerName) #FIXME Kludge
+   ret_value = Hash.new
+   begin
+  cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}' "
+  result = run_system(cmd)
+  vals = result.split(" ")
+  ret_value[:in] = vals[0]
+   ret_value[:out] = vals[1]
+   rescue
+    ret_value[:in] = -1
+    ret_value[:out] = -1
+     return ret_val 
+ end
+  return ret_val 
+ end
+ 
   protected
   
   def container_state_dir container

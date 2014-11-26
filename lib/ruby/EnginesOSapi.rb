@@ -516,6 +516,11 @@ class EnginesOSapi
      return retval    
    end
   
+ def get_container_network_metrics(containerName)
+   return @docker_api.get_container_network_metrics(containerName)
+ end
+   
+   
   def stopService service_name
     service = getManagedService(service_name)
     if service == nil
