@@ -56,20 +56,24 @@ def do_cmd(c_type,containerName,command)
       maximum = mem_use_hash[:maximum].to_f
       limit = mem_use_hash[:limit].to_f
       
-      current = current/1024
-      maximum = maximum/1024
-      limit = limit/1024
-      max_p = maximum / limit * 100
-      curr_p =  maximum / current * 100
-      current = current.round(0)
-      maximum = maximum.round(0)
-      max_p = max_p.round(0)
-      curr_p = curr_p.round(0)
-      
-      res ="Current: " + current.to_s + " / " + curr_p.to_s + "% Maximum: " + maximum.to_s + " / " + max_p.to_s + "% Limit: " + limit.to_s 
-      res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
-      res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
-      res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
+      if current.nan? == false
+          current = current/1024
+          maximum = maximum/1024
+          limit = limit/1024
+          max_p = maximum / limit * 100
+          curr_p =  maximum / current * 100
+          current = current.round(0)
+          maximum = maximum.round(0)
+          max_p = max_p.round(0)
+          curr_p = curr_p.round(0)
+          
+          res ="Current: " + current.to_s + " / " + curr_p.to_s + "% Maximum: " + maximum.to_s + " / " + max_p.to_s + "% Limit: " + limit.to_s 
+          res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
+          res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
+          res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
+        p res
+        end
+        
     else
       p mem_use_hash
     end
