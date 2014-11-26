@@ -236,7 +236,7 @@ end
 #  end
    
    def read_container_id containerName
-     cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
+     cidfile = SysConfig.CidDir + "/"  + containerName + ".cid"
      cid = File.read(cidfile)
      p cid
      return cid
