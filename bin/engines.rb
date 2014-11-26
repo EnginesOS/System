@@ -57,14 +57,15 @@ def do_cmd(c_type,containerName,command)
       limit = mem_use_hash[:limit].to_f
       
       if current.nan? == false && maximum.nan? == false && limit.nan? == false
-          current = current/1024
-          maximum = maximum/1024
-          limit = limit/1024
+          current = current / (1024 * 1024)
+          maximum = maximum / (1024 * 1024)
+          limit = limit / (1024 * 1024)
           max_p = maximum / limit * 100
           curr_p =  current / limit * 100
           
           current = current.round(0)
           maximum = maximum.round(0)
+          limit = maximum.round(0)
           
           if !max_p.nan?
             max_p = max_p.round(0)
@@ -73,7 +74,7 @@ def do_cmd(c_type,containerName,command)
             curr_p = curr_p.round(0)
           end
           
-          res ="Current: " + current.to_s + " / " + curr_p.to_s + "% Maximum: " + maximum.to_s + " / " + max_p.to_s + "% Limit: " + limit.to_s 
+          res ="Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB"
 #          res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
 #          res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
 #          res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
