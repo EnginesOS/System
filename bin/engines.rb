@@ -51,7 +51,22 @@ def do_cmd(c_type,containerName,command)
       mem_use_hash = engines_api.get_service_memory_statistics(containerName)
     end
       
-    if mem_use_hash  != nil && mem_use_hash.instance_of?(Hash) 
+    if mem_use_hash  != nil && !mem_use_hash.instance_of?(EnginesOSapiResult) 
+      current = mem_use_hash[:current].to_f
+      maximum = mem_use_hash[:maximum].to_f
+      limit = mem_use_hash[:limit].to_f
+      
+      current /= 1024.
+      maximum /= 1024.
+      limit /= 1024.
+      max_p = maximum / limit * 100.
+      curr_p =  maximum / current * 100.
+      current = current.round(0)
+      maximum = maximum.round(0)
+      max_p = max_p.round(0)
+      curr_p = curr_p.round(0)
+      
+      res ="Current: " + current.to_f + " / " + curr_p.to_s + "% Maximum: " + maximum.to_f + " / " + max_p.to_s + "% Limit: " + limit.to_f 
       res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
       res += "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
       res += "Limit:" + mem_use_hash[:limit].to_s + "\n"
