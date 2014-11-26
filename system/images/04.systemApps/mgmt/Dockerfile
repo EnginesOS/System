@@ -1,29 +1,31 @@
-FROM  engines/rails4
-RUN apt-get -y install openssh-server
-RUN /usr/sbin/addgroup --gid 999 docker
-RUN echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/dockuser --disabled-password dockuser
+FROM  engines/passenger
+
+RUN /usr/sbin/addgroup --gid 999 docker;\
+	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/dockuser --disabled-password dockuser
 
 ADD home home
 ADD profile /home/dockuser/.profile
 
-ADD ssh /home/dockuser/.ssh
 
 ENV ContUser dockuser
 ENV ContGrp ruby
 
-RUN chown -R dockuser /home/app/ ; usermod -G ruby -a dockuser
+WORKDIR /home/app/
+RUN	git init
+
+ADD gitconfig /home/app/.git/config
+
+RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
+	chown -R dockuser /home/app/ /home/dockuser /var/log/apache2/;\
+	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/;\
+	chown -R dockuser /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
+	mkdir -p  /run/apache2;\
+	chown -R 21000 /run/apache2
 
 
-RUN cp -rp  ~/.gemrc ~/.bashrc ~dockuser
+#After after chmod so not rewritable
 
-ADD mgmt.pub /home/dockuser/.ssh/authorized_keys
-RUN chown -R dockuser /home/dockuser/
-RUN chmod -R  700 /home/dockuser/.ssh
-RUN mkdir -p /var/log/apache2/ /var/run/apache2
-RUN chown -R dockuser /home/app/ /var/log/apache2/ /var/run/apache2
-EXPOSE 80
-EXPOSE 22
+ADD Procfile.sh /home/app/
 
 CMD /home/app/Procfile.sh
 USER 21000
-#GROUP 999
