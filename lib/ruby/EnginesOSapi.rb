@@ -152,6 +152,9 @@ class EnginesOSapi
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
           end
+      if backup_service.get_state != "running"
+        return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+      end
     backup_service.add_consumer(backup_hash)
 #    p backup_hash
     return success(engine_name,"Add Volume Backup")
@@ -162,6 +165,9 @@ class EnginesOSapi
   if backup_service.is_a?(EnginesOSapiResult)
           return backup_service
         end
+    if backup_service.get_state != "running"
+      return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+    end
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
   backup_service.remove_consumer(backup_hash)
@@ -189,6 +195,9 @@ class EnginesOSapi
      if backup_service.is_a?(EnginesOSapiResult)
              return backup_service
            end
+    if backup_service.get_state != "running"
+      return EnginesOSapi.failed(engine_name,"backup Service not running" ,"Backup Volume")
+    end
      backup_service.add_consumer(backup_hash)
      return success(engine_name,"Add Database Backup")
    end
