@@ -74,7 +74,7 @@ def do_cmd(c_type,containerName,command)
             curr_p = curr_p.round(0)
           end
           
-          res ="Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB"
+          res ="Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB\n"
 
         print res
         end           
