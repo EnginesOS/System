@@ -69,9 +69,13 @@ def do_cmd(c_type,containerName,command)
           
           if !max_p.nan?
             max_p = max_p.round(0)
+          else
+            max_p =0 
           end
           if !curr_p.nan?
             curr_p = curr_p.round(0)
+          else
+            curr_p = 0
           end
           
           res =containerName + ": Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB\n"
