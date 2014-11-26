@@ -558,6 +558,7 @@ end
    begin
   cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}' "
   res= %x<#{cmd}>  
+  p res
   vals = result.split("bytes:")
   
   ret_val[:in] = vals[0]
