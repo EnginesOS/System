@@ -244,7 +244,7 @@ end
       p cid
       return cid
      end
-     return -1;
+     return "-1";
    end
   
    def rebuild_image container
@@ -533,7 +533,10 @@ end
  
  def get_container_memory_stats(container)
    ret_val= Hash.new
-   
+ if container && container.container_id == nil || container.container_id == '-1'
+   container_id = read_container_id(container.containerName)
+   container.set_container_id container_id    
+   end
    if container && container.container_id != nil && container.container_id != '-1'
      path = "/sys/fs/cgroup/memory/docker/" + container.container_id
       if Dir.exists?(path)      
