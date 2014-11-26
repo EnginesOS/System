@@ -61,7 +61,7 @@ def do_cmd(c_type,containerName,command)
           maximum = maximum/1024
           limit = limit/1024
           max_p = maximum / limit * 100
-          curr_p =  maximum / current * 100
+          curr_p =  current / limit * 100
           
           current = current.round(0)
           maximum = maximum.round(0)
