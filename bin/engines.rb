@@ -56,11 +56,11 @@ def do_cmd(c_type,containerName,command)
       maximum = mem_use_hash[:maximum].to_f
       limit = mem_use_hash[:limit].to_f
       
-      current /= 1024.
-      maximum /= 1024.
-      limit /= 1024.
-      max_p = maximum / limit * 100.
-      curr_p =  maximum / current * 100.
+      current = current/1024
+      maximum = maximum/1024
+      limit = limit/1024
+      max_p = maximum / limit * 100
+      curr_p =  maximum / current * 100
       current = current.round(0)
       maximum = maximum.round(0)
       max_p = max_p.round(0)
