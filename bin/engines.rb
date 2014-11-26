@@ -46,9 +46,14 @@ def do_cmd(c_type,containerName,command)
     
   when "memory"
     mem_use_hash = engines_api.get_memory_statistics(containerName)
-    res = "\nCurrent:" + mem_use_hash[:current] + "\n"
-    res = "Maximum:" + mem_use_hash[:maximum] + "\n"
-    res = "Limit:" + mem_use_hash[:limit] + "\n"
+      
+    if mem_use_hash  != nil && mem_use_hash.instance_of?(Hash) 
+      res = "\nCurrent:" + mem_use_hash[:current].to_s + "\n"
+      res = "Maximum:" + mem_use_hash[:maximum].to_s + "\n"
+      res = "Limit:" + mem_use_hash[:limit].to_s + "\n"
+    else
+      p mem_use_hash
+    end
             
   when "check_and_act"
     if c_type == "container"
