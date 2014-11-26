@@ -43,7 +43,13 @@ def do_cmd(c_type,containerName,command)
          engines.each do |engine_name|
            p engine_name
     end 
-         
+    
+  when "memory"
+    mem_use_hash = get_memory_statistics(engine_name)
+    res = "\nCurrent:" + mem_use_hash[:current] + "\n"
+    res = "Maximum:" + mem_use_hash[:maximum] + "\n"
+    res = "Limit:" + mem_use_hash[l:imit] + "\n"
+            
   when "check_and_act"
     if c_type == "container"
           eng = engines_api.loadManagedEngine(containerName)

@@ -12,27 +12,8 @@ class Container
     @container_id
   end
   
-  def container_id
-    return @container_id
-  end
-  def set_container_id id
-    @container_id = id
-  end
-  def memory
-     return @memory
-   end
-  
-   def containerName
-           return @containerName
-  end
-  
-  def hostName
-    return @hostName
-  end
-  
-  def domainName
-    return @domainName
-  end
+  attr_accessor :container_id, :memory,:containerName ,:hostName,:domainName, :image, :eports,:volumes,:environments
+   
          
   def fqdn
     if @domainName == nil
@@ -40,26 +21,14 @@ class Container
     end
     return @hostName + "." + @domainName
   end
-  
-  def image
-    return @image
-  end
-  
-  def eports
-    return @eports
-  end
-  
-  def volumes
-     return @volumes
-   end
-   
-   def environments
-     return @environments
-   end
    
    def set_hostname_details(host_name,domain_name)
      @hostName = host_name
      @domainName = domain_name
+   end
+   
+   def get_container_memory_stats (docker_api)
+     return docker_api.get_container_memory_stats(self)
    end
    
 end

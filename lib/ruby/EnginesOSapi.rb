@@ -498,6 +498,15 @@ class EnginesOSapi
     retval
   end
 
+  def get_memory_statistics  engine_name
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","Load Engine Blueprint")
+    end
+    retval = engine.get_container_memory_stats()
+    return retval
+    
+  end
   def stopService service_name
     service = getManagedService(service_name)
     if service == nil
