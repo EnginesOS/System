@@ -6,79 +6,61 @@ class Docker
 def run_docker (args,container)
 require 'open3'
 
-res = String.new
-error_mesg = String.new
-begin
-  container.set_last_result  ""  
-
-  Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
-    #FIXME two sperate threads one stderr and the other stdout
-#stdout  
-line = String.new
-stderr_is_open=true
-
+    res = String.new
+    error_mesg = String.new
     begin
-      stdout.each { |line|
-      #  print line
-        line = line.gsub(/\\\"/,"")
-         res += line.chop
-         if stderr_is_open                   
-            error_mesg += stderr.read_nonblock(1000)
-         end
-      }
-    rescue Errno::EIO
-      res += line.chop
-      error_mesg += stderr.read_nonblock(1000)
-    rescue  IO::WaitReadable
-        retry
-    rescue EOFError
-       if stdout.closed? == false
-         stderr_is_open = false
-         retry        
-       else
-         container.set_last_result  res
-         container.set_last_error error_mesg
-       end
-    rescue
+      container.set_last_result  ""
+      Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
+        line = String.new
+        stderr_is_open=true
+        begin
+          stdout.each { |line|
+            #  print line
+            line = line.gsub(/\\\"/,"")
+            res += line.chop
+            if stderr_is_open
+              error_mesg += stderr.read_nonblock(1000)
+            end
+          }
+        rescue Errno::EIO
+          res += line.chop
+          error_mesg += stderr.read_nonblock(1000)
+        rescue  IO::WaitReadable
+          retry
+        rescue EOFError
+          if stdout.closed? == false
+            stderr_is_open = false
+            retry
+          else
+            container.set_last_result  res
+            container.set_last_error error_mesg
+          end
+        end
+        
+    if error_mesg.include?("Error")
+      container.set_last_error(error_mesg)
+      p "docker_cmd error " + error_mesg
       return false
+    else
+      container.set_last_error("")
     end
-    container.set_last_result  res
-    container.set_last_error ""
-     if error_mesg.include?("Error")
-       container.set_last_error error_mesg
-       return false
-     end
-    return true
-  end
-  
-#stderr
-  
-#rescue PTY::ChildExited
-#  puts "The child process exited!"
-end
-#p "ASDASD"
-#print res
-if error_mesg.include?("Error:")
-  container.set_last_error(error_mesg)
-  p "docker_cmd error " + error_mesg
-  return false
-else
-  container.set_last_error("")
-end
-if res.start_with?("[") == true
-  res = res +"]"
-end
+    
+    if res.start_with?("[") == true
+      res = res +"]"
+    end
     container.set_last_result(res)
-    
-    if res.length <1
-      return false 
-      
-    end
-    
     return true
-    
-   end
-   
+ end
+  rescue
+    container.set_last_result  res
+    container.set_last_error error_mesg
+    return false
+
+ end
+      
+  return true
+end
+
    def run_system (cmd)
      cmd = cmd + " 2>&1"
      res= %x<#{cmd}>  
