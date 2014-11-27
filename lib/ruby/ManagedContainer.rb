@@ -78,7 +78,8 @@ class ManagedContainer < Container
               :repo,\
               :data_uid,\
               :data_gid,\
-              :cont_userid
+              :cont_userid,\
+              :setState
               
    attr_accessor :docker_api
 # def http_and_https
