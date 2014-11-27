@@ -47,8 +47,6 @@ class ManagedContainer < Container
    @data_uid=data_uid
    @data_gid=data_gid
    @cont_userid=-1
-#   @ro_groupid
-#   @rw_groupid
       
  end
  
@@ -63,87 +61,107 @@ class ManagedContainer < Container
    return @container_pid
  end
  
- def http_and_https
-   @http_and_https
- end
- def https_only
-   @https_only
- end
- 
-  def docker_api 
-    return @docker_api
-  end
-  
-  def conf_self_start
-    return @conf_self_start
-  end
-  
-  def conf_register_dns
-    @conf_register_dns
-  end
-  
-  def conf_register_site
-    return @conf_register_site
-  end
-  
-  def set_conf_register_site state
-    @conf_register_site = state
-  end
-  def set_conf_self_start state
-    @conf_self_start = state
-     end
-  def conf_monitor_site
-    return @conf_monitor_site
-  end
-  
-  def framework
-    return @framework
-  end
-
-  def runtime
-    return @runtime
-  end
-
-  def monitored
-    return @conf_monitor_site
-  end
-
-  def databases
-    return @databases
-  end
-
-  def setState
-    return @setState
-  end
-
-  def set_last_result result
-    @last_result = result
-  end
-
-  def set_last_error result
-    @last_error = result
-  end
-
-  def port
-    return @port
-  end
-
-  def repo
-    return @repo
-  end
-
-  def last_error
-    return @last_error
-  end
+  attr_reader :http_and_https,\
+              :https_only,\
+              :docker_api,\
+              :conf_self_start,\
+              :conf_register_dns,\
+              :conf_register_site,\
+              :set_conf_self_start,\
+              :conf_monitor_site,\
+              :framework,:runtime,\
+              :conf_monitor_site,\
+              :databases,\
+              :last_result,\
+              :last_error,\
+              :port,\
+              :repo,\
+              :data_uid,\
+              :data_gid,\
+              :cont_userid
+              
+   attr_accessor :docker_api
+# def http_and_https
+#   @http_and_https
+# end
+# def https_only
+#   @https_only
+# end
+# 
+#  def docker_api 
+#    return @docker_api
+#  end
+#  
+#  def conf_self_start
+#    return @conf_self_start
+#  end
+#  
+#  def conf_register_dns
+#    @conf_register_dns
+#  end
+#  
+#  def conf_register_site
+#    return @conf_register_site
+#  end
+#  
+#  def set_conf_register_site state
+#    @conf_register_site = state
+#  end
+#  def set_conf_self_start state
+#    @conf_self_start = state
+#     end
+#  def conf_monitor_site
+#    return @conf_monitor_site
+#  end
+#  
+#  def framework
+#    return @framework
+#  end
+#
+#  def runtime
+#    return @runtime
+##  end
+#
+#  def monitored
+#    return @conf_monitor_site
+#  end
+#
+#  def databases
+#    return @databases
+#  end
+#
+#  def setState
+#    return @setState
+#  end
+#
+#  def set_last_result result
+#    @last_result = result
+#  end
+#
+#  def set_last_error result
+#    @last_error = result
+#  end
+#
+#  def port
+#    return @port
+#  end
+#
+#  def repo
+#    return @repo
+#  end
+#
+#  def last_error
+#    return @last_error
+#  end
 
   def ManagedContainer.from_yaml( yaml )
     managedContainer = YAML::load( yaml )
     managedContainer
   end
 
-  def set_docker_api docker_api
-    @docker_api = docker_api
-  end
+#  def set_docker_api docker_api
+#    @docker_api = docker_api
+#  end
 
   def to_s
     "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
@@ -560,18 +578,6 @@ class ManagedContainer < Container
     end
     trim_last_result
     trim_last_error
-#    puts("engine usage")
-#    p ObjectSpace.memsize_of(self)
-#    puts("all managedContainers")
-#
-#        p ObjectSpace.memsize_of(self)
-#    puts(" managed engin total")     
-#    p ObjectSpace.memsize_of_all(ManagedContainer)
-#
-#    puts("api usage")
-#    p ObjectSpace.memsize_of(@docker_api)
-    
-    
     ret_val = @docker_api.save_container self
     return ret_val
   end

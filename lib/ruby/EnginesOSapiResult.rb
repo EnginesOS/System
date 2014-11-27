@@ -1,4 +1,6 @@
 class  EnginesOSapiResult
+  
+  attr_reader :was_success,:result_code,:result_mesg,:item_name,:action
     
     def initialize(item_name,cmd)
         @was_success=true
@@ -16,20 +18,5 @@ class  EnginesOSapiResult
       @action = cmd
     end
     
-    
-    def was_success
-      return @was_success
-    end
-    def result_code
-      return @result_code
-    end
-    def item_name
-      return @item_name
-    end
-    def result_mesg
-      return @result_mesg
-    end
-    def action
-      return @action
-    end
+ 
   end
