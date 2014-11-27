@@ -45,8 +45,8 @@ class EngineBuilder
     @databases= Array.new
     @docker_api = docker_api
     
-    @log_file=  File.new("/tmp/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
-    @err_file=  File.new("/tmp/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
+    @log_file=  File.new(get_basedir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
+    @err_file=  File.new(get_basedir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
     
   end
 
@@ -902,7 +902,7 @@ end
       @docker_file.close  
       
     if  build_init == false
-      @log_file.puts ("Error Build Init failed")
+      @log_file.puts("Error Build Init failed")
       return false
     else
       @log_file.puts("creating deploy image")
