@@ -22,6 +22,9 @@ class EnginesOSapi
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
+    if engine == false
+      return  EnginesOSapi.failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
+    end
     if engine != nil
       engine.save_state
       return engine
@@ -36,6 +39,9 @@ class EnginesOSapi
    evirons = params[:env_variables]
       engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
+    if engine == false
+      return  EnginesOSapi.failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
+    end
       if engine != nil
         engine.save_state
         return engine
