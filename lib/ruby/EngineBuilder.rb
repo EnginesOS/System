@@ -912,7 +912,7 @@ end
     end
     return mc
  rescue Exception=>e
-   log_exception
+   log_exception(e)
    return false
   end
   end
