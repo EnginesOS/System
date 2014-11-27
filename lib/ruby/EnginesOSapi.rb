@@ -498,6 +498,13 @@ class EnginesOSapi
     retval
   end
 
+  def get_system_memory_info
+    return @docker_api.get_system_memory_info
+  end
+  
+  def get_system_load_info
+    return @docker_api.get_system_memory_info
+  end
   def get_engine_memory_statistics  engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)

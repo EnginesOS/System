@@ -563,17 +563,18 @@ end
     proc_mem_info_file = File.open("/proc/meminfo")
      proc_mem_info_file.each_line  do |line|
        values=line.split(/[ ].*/)
-      case values[0]
+       val = values[0]
+      case val
         when "MemTotal:"
-          ret_val[:total] = values[1]
+          ret_val[:total] = values[1]        
         when "MemFree:" 
-          ret_val[:free]= values[1]
+          ret_val[:free]= values[1]        
         when "Buffers:"
-          ret_val[:buffers]= values[1]
+          ret_val[:buffers]= values[1]       
         when "Cached:"
-          ret_val[:file_cache]= values[1]
+          ret_val[:file_cache]= values[1]       
         when "Active:"
-          ret_val[:active]= values[1]
+          ret_val[:active]= values[1]       
         when "Inactive:"
             ret_val[:inactive]= values[1]
         when "SwapTotal:"
@@ -582,9 +583,7 @@ end
             ret_val[:swap_free] = values[1]
      end
    end
-
-    
-    
+       
    rescue 
      ret_val[:total] = -1
      ret_val[:free] = -1
