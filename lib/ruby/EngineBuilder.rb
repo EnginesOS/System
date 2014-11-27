@@ -914,6 +914,7 @@ end
    log_exception
    return false
   end
+  end
 
   def set_container_user
    begin
@@ -1063,12 +1064,9 @@ rescue EOFError
      retry 
    end
 end
-
-
 end
 
-
-  rescue Exception=>e    
+rescue Exception=>e    
     log_exception(e)    
       return false
 end
@@ -1077,7 +1075,6 @@ end
 if error_mesg.include?("Error:")
 p "docker_cmd error " + error_mesg
 return false
-
 end
 return true
 end
