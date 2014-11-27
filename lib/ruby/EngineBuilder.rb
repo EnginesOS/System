@@ -1063,6 +1063,13 @@ rescue EOFError
    if stdout.closed? == false
      stderr_is_open = false
      retry 
+   else if  stderr.closed? == true
+     return
+   else
+     err  = stderr.read_nonblock(1000)                  
+         error_mesg += err
+         @err_file.puts(err) 
+     return
    end
 end
 end
