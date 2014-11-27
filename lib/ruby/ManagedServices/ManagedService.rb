@@ -145,6 +145,7 @@ class ManagedService < ManagedContainer
 
   def self.from_yaml( yaml,docker_api )
     begin
+      p yaml.path
       managedService = YAML::load( yaml )
       managedService.docker_api(docker_api)
       #      puts(" managed Service")
