@@ -879,7 +879,7 @@ require 'open3'
 res = String.new
 error_mesg = String.new
 begin
-Open3.popen3("docker " + cmd ) do |stdin, stdout, stderr, th|
+Open3.popen3( cmd ) do |stdin, stdout, stderr, th|
 #FIXME two sperate threads one stderr and the other stdout
 #stdout  
 line = String.new
