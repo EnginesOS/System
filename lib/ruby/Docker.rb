@@ -562,7 +562,7 @@ end
    begin
     proc_mem_info_file = File.open("/proc/meminfo")
      proc_mem_info_file.each_line  do |line|
-       values=line.scan(/[ ]*/)
+       values=line.split(" ")
        p line
        p values[0]
        p values[1]
