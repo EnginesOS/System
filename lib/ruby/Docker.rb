@@ -15,7 +15,6 @@ require 'open3'
         stderr_is_open=true
         begin
           stdout.each { |line|
-            #  print line
             line = line.gsub(/\\\"/,"")
             res += line.chop
             if stderr_is_open
@@ -62,6 +61,7 @@ require 'open3'
 end
 
    def run_system (cmd)
+     begin
      cmd = cmd + " 2>&1"
      res= %x<#{cmd}>  
      p res
@@ -71,9 +71,12 @@ end
        return true
      else
        return res
-     end           
+     end  
+ rescue Exception=>e
+   @last_error = e.to_s    
+   return ret_val               
    end
-   
+end
  
   def list_managed_engines
  
@@ -85,7 +88,8 @@ end
             ret_val.push(contdir)
         end
       end
-  rescue
+  rescue Exception=>e
+    @last_error = e.to_s  
     return ret_val  
   end
    return ret_val  
@@ -101,7 +105,8 @@ end
             ret_val.push(contdir)
         end
       end
-  rescue
+  rescue  Exception=>e
+    @last_error = e.to_s  
     return ret_val 
   end
    return ret_val  
@@ -109,10 +114,10 @@ end
   end
   
   def delete_image container
+    begin
            commandargs= " rmi " +   container.image
            ret_val =  run_docker(commandargs,container)
-           
-           
+                      
            if ret_val == true #only delete if sucessful or no such container             
                 stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                 FileUtils.rm_rf  stateDir
@@ -125,9 +130,15 @@ end
             FileUtils.rm_rf  stateDir
           end
       return ret_val
+    rescue Exception=>e
+      container.set_last_error "Failed To Delete " + e.to_s
+      @last_error = e.to_s  
+      return false
    end
+  end
    
    def destroy_container container
+     begin
      commandargs= " rm " +   container.containerName
      
      ret_val = run_docker(commandargs,container)      
@@ -138,10 +149,16 @@ end
        end
      end   
     return ret_val
-     
+   
+  rescue Exception=>e
+    container.set_last_error "Failed To Destroy " + e.to_s
+    @last_error = e.to_s  
+    return false
    end
+ end
 
-  def container_commandline_args container             
+  def container_commandline_args container
+    begin             
      e_option =String.new
      
     clear_container_var_run(container)
@@ -182,12 +199,16 @@ end
       commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + "  -t " + container.image + start_cmd
                        
      return commandargs
+    rescue Exception=>e
+      @last_error = e.to_s  
+      return nil
+    end
   end
   
  
   
   def run_volume_builder (container,username)
-
+begin
     #FIXME use sysconfig for dir
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
@@ -201,9 +222,14 @@ end
             File.delete(SysConfig.CidDir + "/volbuilder.cid")
           end
     run_system(command)
-  end
+rescue Exception=>e
+  @last_error = e.to_s  
+return false
+end
+ end
   
   def create_container container
+    begin
     commandargs = container_commandline_args container
     commandargs = " run  -d " + commandargs
     p commandargs
@@ -216,7 +242,12 @@ end
         container_id = read_container_id(container.containerName)
         container.container_id = container_id
       end      
-     return retval       
+     return retval
+    rescue Exception=>e
+      container.set_last_error "Failed To Create " + e.to_s
+      @last_error = e.to_s  
+      return false
+    end        
    end     
    
  
@@ -228,54 +259,95 @@ end
       cid = File.read(cidfile)
       return cid
      end
-     rescue
+     rescue  Exception=>e
+       @last_error = e.to_s  
       return "-1";
      end
    end
   
    def rebuild_image container
-
+begin
      builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, container.docker_api)
      
     return  builder.rebuild_managed_container(container)
-   end
+rescue  Exception=>e
+  @last_error = e.to_s  
+  return false
+end
+end
    
    def start_container   container      
+     begin
      commandargs =" start " + container.containerName
-     return  run_docker(commandargs,container)    
+     return  run_docker(commandargs,container)
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       return false
+     end
    end
    
    def stop_container container
+     begin
      commandargs=" stop " + container.containerName
      return  run_docker(commandargs,container)
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       return false
+     end
    end
    
    def pause_container container
+     begin
      commandargs = " pause " + container.containerName
-     return  run_docker(commandargs,container)    
+     return  run_docker(commandargs,container)  
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       return false
+     end  
    end
    
    def unpause_container container
+     begin
       commandargs=" unpause " + container.containerName
-     return  run_docker(commandargs,container)      
+     return  run_docker(commandargs,container)    
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       return false
+     end  
     end
     
    def ps_container container 
+     begin
      commandargs=" top " + container.containerName + " axl"
      return  run_docker(commandargs,container)   
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       rturn false
+     end
    end
    
    def logs_container container 
+     begin
        commandargs=" logs " + container.containerName
        return  run_docker(commandargs,container)
+     rescue  Exception=>e
+       @last_error = e.to_s  
+       return false
+     end
      end
   
     def inspect_container container
+      begin
        commandargs=" inspect " + container.containerName
       return  run_docker(commandargs,container)
+      rescue  Exception=>e
+        @last_error = e.to_s  
+        return false
+      end
     end
     
   def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
+    begin
     fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
     #FIXME need unique name for temp file
     dns_cmd_file_name="/tmp/.dns_cmd_file"
@@ -290,9 +362,14 @@ end
     retval = run_system(cmd_str)      
    File.delete(dns_cmd_file_name)
     return retval
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   
   def deregister_dns(top_level_hostname)
+    begin
     fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
         #FIXME need unique name
         dns_cmd_file_name="/tmp/.dns_cmd_file"
@@ -304,11 +381,16 @@ end
         cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name 
         retval =  run_system(cmd_str)
        File.delete(dns_cmd_file_name)
-        return retval
+      return retval
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
+      
   end
   
   def register_site(site_hash)     
- 
+ begin
      # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
     ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
       p ssh_cmd
@@ -318,13 +400,24 @@ end
     result = restart_nginx_process()
     #run_system(ssh_cmd)
       return result
+ rescue  Exception=>e
+   @last_error = e.to_s  
+   return false
+ end
+   
   end
-  def hash_to_site_str(site_hash)    
+  def hash_to_site_str(site_hash)
+    begin    
       
-    return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s 
+    return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s
+   
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   def deregister_site(site_hash)
-         
+    begin      
    #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
     #FIXME Should write site conf file via template (either standard or supplied with blueprint)
     ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
@@ -333,20 +426,48 @@ end
     result = restart_nginx_process()
    
     return result
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   
   def add_ftp_service(site_hash)
+    begin
+   p site_hash
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   def rm_ftp_service(site_hash)
+    begin
+      p site_hash
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   def add_monitor(site_hash)
+    begin
+
     ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
     return run_system(ssh_cmd)
+      rescue  Exception=>e
+        @last_error = e.to_s  
+        return false
+      end
   end 
     
   def rm_monitor(site_hash)
+    begin
+
        ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
     return run_system(ssh_cmd)
+      rescue  Exception=>e
+        @last_error = e.to_s  
+        return false
+      end
   end 
          
     def save_container container
@@ -371,16 +492,15 @@ end
             f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
             f.puts(serialized_object)
             f.close
-            return true
-          end
+            return true       
     rescue Exception=>e
       container.set_last_error e.message
       return false
     end
+  end
    
   def save_blueprint(blueprint,container)
-     p container
-     p blueprint
+ begin
      if blueprint != nil
        puts blueprint.to_s
      else
@@ -394,9 +514,15 @@ end
                     f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
                     f.write(blueprint.to_json)
                     f.close
-      end 
+   rescue  Exception=>e
+     @last_error = e.to_s  
+     return false
+   end
+ 
+end 
     
   def load_blueprint(container)
+    begin
           stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
                         if File.directory?(stateDir) ==false
                           return false
@@ -407,35 +533,60 @@ end
                       f.close
                       
                      return blueprint
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
         end    
 
   def create_database  site_hash   
+    begin
    container_name =  site_hash[:flavor] + "_server"
     cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\"" 
    puts(cmd)
    
      return run_system(cmd)
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   
   def add_volume(site_hash)
+    begin
    if Dir.exists?(  site_hash[:localpath] ) == false
       FileUtils.mkdir_p( site_hash[:localpath])
     end
 #currently the build scripts do this
     return true 
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
 
 def rm_volume(site_hash)
+  begin
     puts "would remove " + site_hash[:localpath] 
 return true 
+  rescue  Exception=>e
+    @last_error = e.to_s  
+    return false
+  end
 end
 
 def rm_backup(site_hash)
+  begin
   ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
   return run_system(ssh_cmd)
+  rescue  Exception=>e
+    @last_error = e.to_s  
+    return false
+  end
 end
 
 def create_backup(site_hash)
+  begin
   containerName = site_hash[:engine_name]
     p site_hash
   if site_hash[:source_type] =="fs"
@@ -447,11 +598,20 @@ def create_backup(site_hash)
   site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
   ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
   return run_system(ssh_cmd)
+  rescue  Exception=>e
+    @last_error = e.to_s  
+    return false
+  end
 end
 
   def add_self_hosted_domain params
+    begin
     
     return EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
   # 
  #     
@@ -475,15 +635,21 @@ end
 
  
   def is_startup_complete container
+    begin
     runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
       if File.exists?(runDir + "startup_complete")
         return true
       else
         return false
       end
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
       
   def set_engine_hostname_details(container,params)
+    begin
     engine_name = params[:engine_name]
     hostname = params[:host_name]
     domain_name = params[:domain_name]
@@ -507,14 +673,30 @@ end
     end
     #true if no change
     return true
+    rescue  Exception=>e
+      @last_error = e.to_s  
+      return false
+    end
   end
     
 def save_system_preferences
+  begin
+    p :pdsf
   return true
+  rescue  Exception=>e
+    @last_error = e.to_s  
+    return false
+  end
 end  
 
 
  def load_system_preferences
+   begin
+  p :psdfsd
+   rescue  Exception=>e
+     @last_error = e.to_s  
+     return false
+   end
  end
  
  def get_system_load_info
@@ -570,8 +752,8 @@ end
      end
    end
        
-   rescue 
-     ret_val[:total] = -1
+   rescue   Exception=>e
+     ret_val[:total] = e.to_s
      ret_val[:free] = -1
      ret_val[:active] = -1
      ret_val[:inactive] = -1  
@@ -588,6 +770,7 @@ end
  
  def get_container_memory_stats(container)
    ret_val= Hash.new
+   begin
  if container && container.container_id == nil || container.container_id == '-1'
    container_id = read_container_id(container.containerName)
    container.container_id = container_id    
@@ -606,6 +789,12 @@ end
    end
    
    return ret_val
+   rescue  Exception=>e
+     ret_val.store(:maximum ,  e.to_s)
+     ret_val.store(:current , "NA")
+     ret_val.store(:limit ,  "NA")
+     return ret_val
+   end
  end
  
  def get_container_network_metrics(containerName) #FIXME Kludge
@@ -613,9 +802,6 @@ end
    begin
   cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
   res= %x<#{cmd}>
-#  p :SDAFRDFSS  
-#  p res
-#  p :Sdfsdf
   
   vals = res.split("bytes:")
 #  p :sdfdssssssssssss
@@ -725,14 +911,13 @@ end
       rescue
         container_logdetails = "/var/log"
      end        
-     
-     p container_logdetails
+
      return container_logdetails
   end
   
   def restart_nginx_process       
     cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
-    #nginxpid = run_system(cmd)
+
     p cmd
     nginxpid= %x<#{cmd}>
     p  nginxpid
