@@ -3,16 +3,14 @@ class Docker
     
   end
   
-  def run_docker (args,container)
-     ret_val=false
-    container.set_last_result  ""           
-   
-    
+def run_docker (args,container)
 require 'open3'
 
 res = String.new
-    error_mesg = String.new
+error_mesg = String.new
 begin
+  container.set_last_result  ""  
+
   Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
     #FIXME two sperate threads one stderr and the other stdout
 #stdout  
@@ -36,10 +34,21 @@ stderr_is_open=true
     rescue EOFError
        if stdout.closed? == false
          stderr_is_open = false
-         retry 
+         retry        
+       else
+         container.set_last_result  res
+         container.set_last_error error_mesg
        end
+    rescue
+      return false
     end
- 
+    container.set_last_result  res
+    container.set_last_error ""
+     if error_mesg.include?("Error")
+       container.set_last_error error_mesg
+       return false
+     end
+    return true
   end
   
 #stderr
@@ -87,28 +96,32 @@ end
   def list_managed_engines
  
   ret_val=Array.new
+  begin
       Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
         yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
         if File.exists?(yfn) == true       
-         # managed_engine = loadManagedEngine(contdir)
-          #if managed_engine.is_a?(ManagedEngine)
             ret_val.push(contdir)
-            p contdir
-          #end
         end
       end
+  rescue
+    return ret_val  
+  end
    return ret_val  
   end
     
   def list_managed_services
  
   ret_val=Array.new
+  begin
       Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
         yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"       
         if File.exists?(yfn) == true       
             ret_val.push(contdir)
         end
       end
+  rescue
+    return ret_val 
+  end
    return ret_val  
    
   end
@@ -192,8 +205,7 @@ end
  
   
   def run_volume_builder (container,username)
-    #command = "docker stop volbuilder;  docker rm volbuilder"
-    #run_system(command)
+
     #FIXME use sysconfig for dir
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
@@ -225,26 +237,18 @@ end
      return retval       
    end     
    
-#  def setup_container container
-#    commandargs = container_commandline_args container
-#    commandargs = " run " + commandargs
-#    p commandargs
-#    retval = run_docker(commandargs,container)
-#        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-#          container.set_container_id container.last_result
-#        end
-#  end
-   
-   def read_container_id containerName
-    
-     cidfile = SysConfig.CidDir + "/"  + containerName + ".cid"
+ 
+   def read_container_id containerName    
+     begin
+      cidfile = SysConfig.CidDir + "/"  + containerName + ".cid"
        
      if File.exists?(cidfile)
       cid = File.read(cidfile)
-      p cid
       return cid
      end
-     return "-1";
+     rescue
+      return "-1";
+     end
    end
   
    def rebuild_image container
