@@ -744,7 +744,7 @@ class EnginesOSapi
   end
   
   def add_self_hosted_domain params
-    return @docker_api.add_self_hosted_domain params
+    return @docker_api.add_self_hosted_domain( params)
     #  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
   end
   
@@ -774,6 +774,9 @@ class EnginesOSapi
   end
 
   def failed(item_name,mesg ,cmd)
+    p item_name
+    p mesg
+    p cmd
     EnginesOSapi.failed(item_name,mesg ,cmd)
   end
 
