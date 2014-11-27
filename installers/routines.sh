@@ -192,7 +192,6 @@ keys=" nagios mgmt volmgr backup "
 function make_dirs {
 mkdir -p  /var/lib/engines/backup_paths
 mkdir -p  /var/lib/engines/fs
-mkdir -p  /home/dockuser/droplets/deployment/deployed/
 mkdir -p  /var/lib/engines/pgsql
 mkdir -p  /var/lib/engines/mysql
 mkdir -p  /var/lib/engines/mongo
@@ -211,6 +210,9 @@ mkdir -p /var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/s
 mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
 mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 mkdir -p /opt/engines/run/services/dns/run/dns
+mkdir -p /home/dockuser/db
+touch /home/dockuser/db/production.sqlite3
+mkdir -p /home/dockuser/deployment/deployed/
 }
 
 function set_permissions {
