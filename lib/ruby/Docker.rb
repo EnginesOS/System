@@ -11,7 +11,7 @@ class Docker
     res = String.new
     error_mesg = String.new
     begin
-      container.set_last_result  ""
+      container.last_result=(  "")
       Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
         line = String.new
         stderr_is_open=true
@@ -33,28 +33,28 @@ class Docker
             stderr_is_open = false
             retry
           else
-            container.set_last_result  res
-            container.set_last_error error_mesg
+            container.last_result=(  res)
+            container.last_error=( error_mesgs)
           end
         end
 
         if error_mesg.include?("Error")
-          container.set_last_error(error_mesg)
+          container.last_error=(error_mesg)
           p "docker_cmd error " + error_mesg
           return false
         else
-          container.set_last_error("")
+          container.last_error=("")
         end
 
         if res.start_with?("[") == true
           res = res +"]"
         end
-        container.set_last_result(res)
+        container.last_result=(res)
         return true
       end
     rescue
-      container.set_last_result  res
-      container.set_last_error error_mesg
+      container.last_result=(  res)
+      container.last_error=( error_mesgs)
       return false
 
     end
@@ -133,7 +133,7 @@ class Docker
       end
       return ret_val
     rescue Exception=>e
-      container.set_last_error "Failed To Delete " + e.to_s
+      container.last_error=( "Failed To Delete " + e.to_s)
       @last_error = e.to_s
       return false
     end
@@ -153,7 +153,7 @@ class Docker
       return ret_val
 
     rescue Exception=>e
-      container.set_last_error "Failed To Destroy " + e.to_s
+      container.last_error=( "Failed To Destroy " + e.to_s)
       @last_error = e.to_s
       return false
     end
@@ -244,7 +244,7 @@ class Docker
       end
       return retval
     rescue Exception=>e
-      container.set_last_error "Failed To Create " + e.to_s
+      container.last_error=("Failed To Create " + e.to_s)
       @last_error = e.to_s
       return false
     end
@@ -496,7 +496,7 @@ class Docker
       f.close
       return true
     rescue Exception=>e
-      container.set_last_error e.message
+      container.last_error=( e.message)
       return false
     end
   end

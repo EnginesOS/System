@@ -72,8 +72,6 @@ class ManagedContainer < Container
               :framework,:runtime,\
               :conf_monitor_site,\
               :databases,\
-              :last_result,\
-              :last_error,\
               :port,\
               :repo,\
               :data_uid,\
@@ -81,7 +79,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :docker_api
+   attr_accessor :docker_api,:last_result,:last_error
 # def http_and_https
 #   @http_and_https
 # end
