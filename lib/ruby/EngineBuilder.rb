@@ -22,6 +22,7 @@ class EngineBuilder
   @environments=Array.new
   @runtime=String.new
   @databases= Array.new
+  
   def initialize(repo,host,domain,custom_env,docker_api)
     @hostName=host
     @contName=@hostName

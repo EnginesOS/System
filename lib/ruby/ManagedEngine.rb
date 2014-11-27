@@ -50,7 +50,7 @@ class ManagedEngine < ManagedContainer
            if managedEngine == nil ||  managedEngine == false
              return false
            end
-          managedEngine.set_docker_api(docker_api)
+          managedEngine.docker_api(docker_api)
           return managedEngine
     end
 end

@@ -146,7 +146,7 @@ class ManagedService < ManagedContainer
   def self.from_yaml( yaml,docker_api )
     begin
       managedService = YAML::load( yaml )
-      managedService.set_docker_api(docker_api)
+      managedService.docker_api(docker_api)
       #      puts(" managed Service")
       #      p ObjectSpace.memsize_of(managedService)
       #      puts(" Hash total")
