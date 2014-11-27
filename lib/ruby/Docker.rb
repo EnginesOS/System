@@ -563,9 +563,7 @@ end
     proc_mem_info_file = File.open("/proc/meminfo")
      proc_mem_info_file.each_line  do |line|
        values=line.split(" ")
-       p line
-       p values[0]
-       p values[1]
+  
       case values[0]
         when "MemTotal:"
           ret_val[:total] = values[1]        

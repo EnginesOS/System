@@ -48,9 +48,14 @@ def do_cmd(c_type,containerName,command)
       mem_hash = engines_api.get_system_memory_info
       load_hash = engines_api.get_system_load_info
       
-      p mem_hash
-      p load_hash
+      p "Free:" + mem_hash[:free] + "/" + mem_hash[:total] + " Active/Inactive " + mem_hash[:active] + "/" + mem_hash[:inactive]
+      p " Buffers/Cache " + mem_hash[:buffers] + "/" + mem_hash[:file_cache]
+      p " Swap Free/Total " + mem_hash[:swap_free] + "/" + mem_hash[:swap_total]
+        
+      p "Average Processes waiting 1Min/5Min/15Min " + load_hash[:one]  + "/" + load_hash[:five]  + "/" + load_hash[:fithteen]
+      p "Processes running/idle " + load_hash[:running]  + "/" + load_hash[:idle]
   
+      return
     
     when "network"
     net_use_hash = engines_api.get_container_network_metrics(containerName)
