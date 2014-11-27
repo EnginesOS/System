@@ -53,7 +53,7 @@ class EngineBuilder
 
   def log_exception(e)
     @err_file.puts( e.to_s)
-    docker_api.last_error
+    docker_api.last_error(e.to_s) 
     puts(e.to_s)
   end
   
