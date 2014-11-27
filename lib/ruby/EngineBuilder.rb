@@ -45,8 +45,9 @@ class EngineBuilder
     @databases= Array.new
     @docker_api = docker_api
     
-    @log_file=  File.new(get_basedir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
-    @err_file=  File.new(get_basedir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
+    FileUtils.mkdir_p(get_basedir)
+    @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
+    @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
     
   end
 
