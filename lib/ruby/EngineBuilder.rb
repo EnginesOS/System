@@ -542,7 +542,7 @@ end
 
   def build_init
    # cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
-    cmd="docker build  -t " + @hostName + "/deploy " +  get_basedir
+    cmd="/usr/bin/docker build  -t " + @hostName + "/deploy " +  get_basedir
     puts cmd
     res = run_system(cmd)
     if res != true
