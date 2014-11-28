@@ -70,7 +70,7 @@ end
     puts(e.to_s)
     @last_error=  e.to_s
      e.backtrace.each do |bt |
-       p bt.t_so
+       p bt
      end
   end
 
