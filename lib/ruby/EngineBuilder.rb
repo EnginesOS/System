@@ -69,6 +69,9 @@ end
     @err_file.puts( e.to_s)    
     puts(e.to_s)
     @last_error=  e.to_s
+     e.backtrace.each do |bt |
+       p bt.t_so
+     end
   end
 
   def backup_lastbuild
