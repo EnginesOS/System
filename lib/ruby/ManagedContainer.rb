@@ -73,6 +73,11 @@ class ManagedContainer < Container
               
    attr_accessor :docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
+
+  def monitored
+    return conf_monitor_site
+  end
+ 
   def ManagedContainer.from_yaml( yaml )
     managedContainer = YAML::load( yaml )
     managedContainer
