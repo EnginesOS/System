@@ -25,7 +25,7 @@ class EngineBuilder
   class BuildException < Exception
     initialise(parent,method_name){
       @parent_exception = parent
-      @method_name = name
+      @method_name = method_name
     }
     att_reader :parent_exception,:method_name
     
