@@ -42,11 +42,14 @@ class EngineBuilder
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
-
+    
+begin
     FileUtils.mkdir_p(get_basedir)
     @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
     @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
-
+rescue
+  log_exception(e)
+end
   end
 
   def log_exception(e)
@@ -837,7 +840,7 @@ end #FIXME
         return false
       elsif  create_workers == false
         return false
-        elsif   setup_dockerfile == false
+      elsif   setup_dockerfile == false
           return false
       elsif  create_stack_env == false
         return false
