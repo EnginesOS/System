@@ -40,7 +40,9 @@ class ManagedEngine < ManagedContainer
          
   attr_reader :ctype
 
-  
+  def monitored
+    return conf_monitor_site
+  end
  
   
   def ManagedEngine.from_yaml( yaml ,docker_api )
