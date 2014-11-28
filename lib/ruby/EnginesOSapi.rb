@@ -153,7 +153,7 @@ class EnginesOSapi
       if engine.is_a?(EnginesOSapiResult)
         return engine
       end
-   
+    SystemUtils.debug_output("backing up " +volume_name + " to " +  dest_hash )
       backup_hash = dest_hash
       backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
