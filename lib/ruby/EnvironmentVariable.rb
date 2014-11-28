@@ -4,13 +4,7 @@ class EnvironmentVariable
     @value=value
     @setatrun=setatrun
   end
-  def setatrun
-    return @setatrun
-  end
-  def name
-    return @name
-  end
-  def value
-    return @value
-  end
+  
+  attr_reader :setatrun,:name,:value
+  
 end

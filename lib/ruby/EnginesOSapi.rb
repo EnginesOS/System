@@ -49,7 +49,14 @@ class EnginesOSapi
       end
       return EnginesOSapi.failed(host_name,"Failed","build_engine") #FIXME needs to return error object
   
+  end
+  def last_api_error
+    if @docker_api
+      return @docker_api.last_error
+    else
+      return ""
     end
+  end
     
   def list_apps()
   
@@ -771,22 +778,17 @@ class EnginesOSapi
   end
   #protected if protected static cant call
   def success(item_name ,cmd)
-    EnginesOSapi.success(item_name ,cmd)
+    EnginesOSapiResult.success(item_name ,cmd)
   end
 
   def failed(item_name,mesg ,cmd)
     p item_name
     p mesg
     p cmd
-    EnginesOSapi.failed(item_name,mesg ,cmd)
+    
+    EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
-  def EnginesOSapi.success(item_name ,cmd)
-    return  EnginesOSapiResult.new(true,0,item_name, "Success",cmd)
-  end
-
-  def EnginesOSapi.failed(item_name,mesg ,cmd)
-    return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
-  end
+ 
 
 end

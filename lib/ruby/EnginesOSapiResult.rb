@@ -6,7 +6,7 @@ class  EnginesOSapiResult
         @was_success=true
         @result_code = 0
         @item_name = item_name      
-        @result_mesg = "OK"
+        @result_mesg = "Success"
         @action = cmd
       end
       
@@ -18,5 +18,12 @@ class  EnginesOSapiResult
       @action = cmd
     end
     
+  def EnginesOSapiResult.success(item_name ,cmd)
+     return  EnginesOSapiResult.new(true,0,item_name, "Success",cmd)
+   end
+ 
+   def EnginesOSapiResult.failed(item_name,mesg ,cmd)
+     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
+   end
  
   end

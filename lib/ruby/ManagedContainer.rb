@@ -72,87 +72,13 @@ class ManagedContainer < Container
               :setState
               
    attr_accessor :docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
-# def http_and_https
-#   @http_and_https
-# end
-# def https_only
-#   @https_only
-# end
-# 
-#  def docker_api 
-#    return @docker_api
-#  end
-#  
-#  def conf_self_start
-#    return @conf_self_start
-#  end
-#  
-#  def conf_register_dns
-#    @conf_register_dns
-#  end
-#  
-#  def conf_register_site
-#    return @conf_register_site
-#  end
-#  
-#  def set_conf_register_site state
-#    @conf_register_site = state
-#  end
-#  def set_conf_self_start state
-#    @conf_self_start = state
-#     end
-#  def conf_monitor_site
-#    return @conf_monitor_site
-#  end
-#  
-#  def framework
-#    return @framework
-#  end
-#
-#  def runtime
-#    return @runtime
-##  end
-#
-#  def monitored
-#    return @conf_monitor_site
-#  end
-#
-#  def databases
-#    return @databases
-#  end
-#
-#  def setState
-#    return @setState
-#  end
-#
-#  def set_last_result result
-#    @last_result = result
-#  end
-#
-#  def set_last_error result
-#    @last_error = result
-#  end
-#
-#  def port
-#    return @port
-#  end
-#
-#  def repo
-#    return @repo
-#  end
-#
-#  def last_error
-#    return @last_error
-#  end
 
   def ManagedContainer.from_yaml( yaml )
     managedContainer = YAML::load( yaml )
     managedContainer
   end
 
-#  def set_docker_api docker_api
-#    @docker_api = docker_api
-#  end
+
 
   def to_s
     "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
@@ -549,9 +475,6 @@ class ManagedContainer < Container
   end
 
 
-  def last_result
-    return @last_result
-  end
 
   def inspect_container
     if @docker_api == nil

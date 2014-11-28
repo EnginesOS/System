@@ -12,26 +12,8 @@ class DatabaseService < StaticService
      @owner = parent
    end
    
-   def owner
-     return @owner
-   end
-   
-   def dbHost
-     return @dbHost
-   end
-   
-   def dbUser
-     return @dbUser
-   end
-   def dbPass
-     return @dbPass
-   end
-   def flavor
-     return @flavor
-   end
-   def name
-     return @name
-   end
+  attr_reader :owner,:dbHost,:dbUser,:dbPass,:flavor,:name
+ 
    
   def add_backup_src_to_hash backup_hash
      backup_hash[:source_type] = flavor

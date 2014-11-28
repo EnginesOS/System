@@ -12,7 +12,7 @@ class Container
     @container_id
   end
   
-  attr_accessor :container_id, :memory,:containerName ,:hostName,:domainName, :image, :eports,:volumes,:environments
+  attr_reader :container_id, :memory,:containerName ,:hostName,:domainName, :image, :eports,:volumes,:environments
    
          
   def fqdn

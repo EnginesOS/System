@@ -38,10 +38,8 @@ class ManagedEngine < ManagedContainer
     
          end 
          
-  
-  def ctype
-    return @ctype    
-  end
+  attr_reader :ctype
+
   
  
   

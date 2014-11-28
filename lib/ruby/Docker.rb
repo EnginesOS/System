@@ -3,7 +3,7 @@ class Docker
 
   end
 
- attr_accessor :last_error
+ attr_reader :last_error
     
   def run_docker (args,container)
     require 'open3'

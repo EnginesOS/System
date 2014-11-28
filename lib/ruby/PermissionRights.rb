@@ -5,15 +5,8 @@ class PermissionRights
     @rw_group =rw_group
   end
   
-  def owner
-    return @owner
-  end
+  attr_reader :owner,:ro_group,:rw_group
   
-  def ro_group
-    return @ro_group
-  end
-  def rw_group
-    return @rw_group
-  end
+
    
 end
