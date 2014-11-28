@@ -769,7 +769,7 @@ end #FIXME
   def getwebport
     @log_file.puts("Setting Web port")
     begin
-      stef = File.open( get_basedir + "/home/stack.env","r")
+      stef = File.open( get_basedir + "as/home/stack.env","r")
       while line=stef.gets do
         if line.include?("PORT")
           i= line.split('=')
@@ -778,7 +778,8 @@ end #FIXME
       end
     rescue Exception=>e
       log_exception(e)
-      return false
+      throw BuildException.new(e,"backup_lastbuild")
+#      return false
     end
   end
 
@@ -802,14 +803,6 @@ end #FIXME
     begin
       @framework = @bluePrint["software"]["swframework_name"]
       @runtime =  @bluePrint["software"]["langauge_name"]
-      #   getwebport
-      #    #FIXME need to read from framework and not some piece of static code
-      #    if @framework.include?("rails")
-      #      @webPort=3000
-      #    end
-      #    if @framework.include?("tomcat")
-      #      @webPort=8080
-      #    end
     rescue Exception=>e
       log_exception(e)
       return false
@@ -818,13 +811,17 @@ end #FIXME
 
   def get_blueprint_from_repo
     puts("Backup last build")
-    backup_lastbuild
+    if backup_lastbuild == false
+      return false
+    end
     puts("Cloning Blueprint")
-    clone_repo
+    return clone_repo
   end
 
   def build_from_blue_print
-    get_blueprint_from_repo
+    if get_blueprint_from_repo == false
+      return false 
+    end
     return build_container
   end
 
