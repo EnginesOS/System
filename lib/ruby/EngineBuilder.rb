@@ -84,7 +84,8 @@ end
       end
     rescue Exception=>e
       log_exception(e)
-      throw BuildException.new(e,"backup_lastbuild")
+      return false
+      #throw BuildException.new(e,"backup_lastbuild")
     end
   end
 
