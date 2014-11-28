@@ -61,16 +61,8 @@ class ManagedContainer < Container
    return @container_pid
  end
  
-  attr_reader :http_and_https,\
-              :https_only,\
-              :docker_api,\
-              :conf_self_start,\
-              :conf_register_dns,\
-              :conf_register_site,\
-              :set_conf_self_start,\
-              :conf_monitor_site,\
-              :framework,:runtime,\
-              :conf_monitor_site,\
+  attr_reader :framework,\
+              :runtime,\
               :databases,\
               :port,\
               :repo,\
@@ -79,7 +71,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :docker_api,:last_result,:last_error
+   attr_accessor :docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 # def http_and_https
 #   @http_and_https
 # end
