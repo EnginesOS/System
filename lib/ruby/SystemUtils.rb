@@ -3,13 +3,13 @@ class SystemUtils
   @@level=5
   
  def SystemUtils.debug_output object
-  if @debug == true  
+  if SystemUtils.debug == true  
     p object
   end  
  end
   
  def SystemUtils.debug_output(object,level)
-  if @level < level  
+  if SystemUtils.level < level  
     p object
   end 
  end
