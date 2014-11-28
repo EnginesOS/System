@@ -769,7 +769,7 @@ end #FIXME
   def getwebport
     @log_file.puts("Setting Web port")
     begin
-      stef = File.open( get_basedir + "as/home/stack.env","r")
+      stef = File.open( get_basedir + "/home/stack.env","r")
       while line=stef.gets do
         if line.include?("PORT")
           i= line.split('=')
@@ -778,8 +778,8 @@ end #FIXME
       end
     rescue Exception=>e
       log_exception(e)
-      throw BuildException.new(e,"backup_lastbuild")
-#      return false
+#      throw BuildException.new(e,"setting web port")
+      return false
     end
   end
 
