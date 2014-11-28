@@ -27,12 +27,12 @@ class Docker
             oline = line
             res += line.chop
             if stderr_is_open
-              error_mesg += stderr.read_nonblock(1000)
+              error_mesg += stderr.read_nonblock(256)
             end
           }
         rescue Errno::EIO
           res += oline.chop
-          error_mesg += stderr.read_nonblock(1000)
+          error_mesg += stderr.read_nonblock(256)
         rescue  IO::WaitReadable
           retry
         rescue EOFError
@@ -750,7 +750,9 @@ class Docker
       engine_name = params[:engine_name]
       hostname = params[:host_name]
       domain_name = params[:domain_name]
-
+      
+        SystemUtils.debug_output("Changing Domainame to " + domain_name)
+      
       if container.hostName != hostname || container.domainName != domain_name
         saved_hostName = container.hostName
         saved_domainName =  container.domainName
