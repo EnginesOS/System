@@ -80,7 +80,7 @@ end
         if Dir.exists?(backup)
           FileUtils.rm_rf backup
         end
-        FileUtils.mv(dir + "sdfds",backup)
+        FileUtils.mv(dir,backup)
       end
     rescue Exception=>e
       log_exception(e)
