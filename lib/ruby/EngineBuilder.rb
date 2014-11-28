@@ -961,8 +961,8 @@ end #FIXME
       puts "failed to save blueprint " + @bluePrint.to_s
     end
 
-    mc.set_conf_register_site true # needs some intelligence here for worker only
-    mc.set_conf_self_start true
+    mc.conf_register_site=( true) # needs some intelligence here for worker only
+    mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     bp = mc.load_blueprint
     p  bp
