@@ -13,7 +13,7 @@ class Docker
   def run_docker (args,container)
     clear_error
     require 'open3'
-
+    SystemUtils.debug_output(args)
     res = String.new
     error_mesg = String.new
     begin
@@ -25,6 +25,7 @@ class Docker
           stdout.each { |line|
             line = line.gsub(/\\\"/,"")
             oline = line
+            SystemUtils.debug_output(oline)
             res += line.chop
             if stderr_is_open
               error_mesg += stderr.read_nonblock(256)
