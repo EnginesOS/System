@@ -23,13 +23,13 @@ class EnginesOSapi
     engine_builder = EngineBuilder.new(repository,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
-      return  EnginesOSapi.failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
+      return  failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
     end
     if engine != nil
       engine.save_state
       return engine
     end
-    return  EnginesOSapi.failed(host,"Failed","build_engine") #FIXME needs to return error object
+    return  failed(host,"Failed","build_engine") #FIXME needs to return error object
 
   end
   def build_engine(repository,params)    
@@ -41,13 +41,13 @@ class EnginesOSapi
       engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
     if engine == false
-      return  EnginesOSapi.failed(host_name,@docker_api.last_error,"build_engine") #FIXME needs to return error object
+      return  failed(host_name,engine_builder.last_error,"build_engine") #FIXME needs to return error object
     end
       if engine != nil
         engine.save_state
         return engine
       end
-      return EnginesOSapi.failed(host_name,"Failed","build_engine") #FIXME needs to return error object
+      return failed(host_name,"Failed","build_engine") #FIXME needs to return error object
   
   end
   def last_api_error
@@ -114,7 +114,7 @@ class EnginesOSapi
     # managed_service = YAML::load( yaml_file)
     managed_service = ManagedService.from_yaml(yaml_file,docker_api)
     if managed_service == nil
-      return failed(yam_file_name,"Fail to Load configuration:","Load Service")
+      return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
     end
 #
 #    puts("engineapi (total) usage")
@@ -172,7 +172,7 @@ class EnginesOSapi
             return backup_service
           end
       if backup_service.read_state != "running"
-        return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
+        returnfailed(engine_name,"Backup Service not running" ,"Backup Volume")
       end
     backup_service.add_consumer(backup_hash)
 #    p backup_hash
@@ -185,7 +185,7 @@ class EnginesOSapi
           return backup_service
         end
     if backup_service.read_state != "running"
-      return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
+      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
     end
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
@@ -215,7 +215,7 @@ class EnginesOSapi
              return backup_service
            end
     if backup_service.read_state != "running"
-      return EnginesOSapi.failed(engine_name,"Backup Service not running" ,"Backup Volume")
+      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
     end
      backup_service.add_consumer(backup_hash)
      return success(engine_name,"Add Database Backup")
