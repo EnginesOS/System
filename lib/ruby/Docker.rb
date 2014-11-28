@@ -754,7 +754,7 @@ class Docker
       if container.hostName != hostname || container.domainName != domain_name
         saved_hostName = container.hostName
         saved_domainName =  container.domainName
-
+        SystemUtils.debug_output("Changing Domainame to " + domain_name)
         nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
         nginx_service.remove_consumer(container)
 
@@ -768,7 +768,6 @@ class Docker
 
         return true
       end
-      #true if no change
       return true
     rescue  Exception=>e
       log_error(e)
