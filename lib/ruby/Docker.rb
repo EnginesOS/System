@@ -25,7 +25,6 @@ class Docker
           stdout.each { |line|
             line = line.gsub(/\\\"/,"")
             oline = line
-            SystemUtils.debug_output(oline)
             res += line.chop
             if stderr_is_open
               error_mesg += stderr.read_nonblock(256)
@@ -33,6 +32,7 @@ class Docker
           }
         rescue Errno::EIO
           res += oline.chop
+          SystemUtils.debug_output(oline)
           error_mesg += stderr.read_nonblock(256)
         rescue  IO::WaitReadable
           retry
@@ -40,12 +40,18 @@ class Docker
           if stdout.closed? == false
             stderr_is_open = false
             retry
-          else
+          elsif stderr.closed? == false
+            error_mesg += stderr.read_nonblock(1000)
+            container.last_result=(  res)
+            container.last_error=( error_mesgs)
+           else
             container.last_result=(  res)
             container.last_error=( error_mesgs)
           end
         end
-
+        
+        @last_error=error_mesg
+        
         if error_mesg.include?("Error")
           container.last_error=(error_mesg)
           p "docker_cmd error " + error_mesg
@@ -60,11 +66,11 @@ class Docker
         container.last_result=(res)
         return true
       end
-    rescue
-      container.last_result=(  res)
-      container.last_error=( error_mesgs)
+    rescue Exceptption=>e
+      @last_error=error_mesg + e.to_s
+      container.last_result=(res)
+      container.last_error=(error_mesgs+ e.to_s)
       return false
-
     end
 
     return true

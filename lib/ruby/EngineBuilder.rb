@@ -656,6 +656,7 @@ end
 
       return retval
     rescue Exception=>e
+      
       log_exception(e)
       return false
     end
@@ -996,7 +997,7 @@ end #FIXME
     error_mesg = String.new
     begin
       Open3.popen3( cmd ) do |stdin, stdout, stderr, th|
-        line = String.new
+        oline = String.new
         stderr_is_open=true
 
         begin
@@ -1004,6 +1005,7 @@ end #FIXME
             #  print line
             line = line.gsub(/\\\"/,"")
             res += line.chop
+            oline = line
             @log_file.puts(line)
             if stderr_is_open
               err  = stderr.read_nonblock(1000)
@@ -1013,7 +1015,7 @@ end #FIXME
           }
         rescue Errno::EIO
           res += line.chop
-          @log_file.puts(line)
+          @log_file.puts(oline)
           if stderr_is_open
             err  = stderr.read_nonblock(1000)
             error_mesg += err

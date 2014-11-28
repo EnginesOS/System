@@ -217,6 +217,7 @@ class ManagedContainer < Container
         register_site
       end
       if read_state != "running"
+        @last_error ="Did not start"
         ret_val = false
       end
     end
