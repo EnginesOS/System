@@ -1,5 +1,5 @@
 class Docker
-  include "SystemUtils.rb"
+  require "SystemUtils.rb"
   
   def initialize
 
