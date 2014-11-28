@@ -22,6 +22,9 @@ class EngineBuilder
   @environments=Array.new
   @runtime=String.new
   @databases= Array.new
+  
+  attr_reader :last_error
+  
   class BuildException < Exception
     attr_reader :parent_exception,:method_name
     
@@ -63,9 +66,9 @@ end
   end
 
   def log_exception(e)
-    @err_file.puts( e.to_s)
-    @docker_api.last_error=(e.to_s)
+    @err_file.puts( e.to_s)    
     puts(e.to_s)
+    @last_error=  e.to_s
   end
 
   def backup_lastbuild
