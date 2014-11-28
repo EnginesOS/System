@@ -22,6 +22,14 @@ class EngineBuilder
   @environments=Array.new
   @runtime=String.new
   @databases= Array.new
+  class BuildException < Exception
+    initialise(parent,method_name){
+      @parent_exception = parent
+      @method_name = name
+    }
+    att_reader :parent_exception,:method_name
+    
+  end
   
   def initialize(repo,host,domain,custom_env,docker_api)
     @hostName=host
@@ -67,11 +75,11 @@ end
         if Dir.exists?(backup)
           FileUtils.rm_rf backup
         end
-        FileUtils.mv(dir,backup)
+        FileUtils.mv(dir + "sdfds",backup)
       end
     rescue Exception=>e
       log_exception(e)
-      return false
+      throw BuildException.new(e,"backup_lastbuild")
     end
   end
 
@@ -880,6 +888,10 @@ end #FIXME
         mc = create_managed_container()
       end
       return mc
+    rescue BuildException=>e
+      p e.method_name
+      p e.parent_exception
+      log_exception(e)
     rescue Exception=>e
       log_exception(e)
       return false
