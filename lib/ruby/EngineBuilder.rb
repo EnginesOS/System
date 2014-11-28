@@ -316,26 +316,26 @@ class EngineBuilder
         end
 
         if arc_extract == "git"
-          dockerfile.puts("WORKDIR /tmp")
-          dockerfile.puts("USER $ContUser")
-          dockerfile.puts("RUN git clone " + arc_src )
-          dockerfile.puts("USER 0  ")
-          dockerfile.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
-          dockerfile.puts("USER $ContUser")
+          @docker_file.puts("WORKDIR /tmp")
+          @docker_file.puts("USER $ContUser")
+          @docker_file.puts("RUN git clone " + arc_src )
+          @docker_file.puts("USER 0  ")
+          @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+          @docker_file.puts("USER $ContUser")
         else
-          dockerfile.puts("WORKDIR /tmp")
-          dockerfile.puts("USER $ContUser")
-          dockerfile.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
-          dockerfile.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
-          dockerfile.puts("USER 0  ")
-          dockerfile.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
-          dockerfile.puts("USER $ContUser")
+          @docker_file.puts("WORKDIR /tmp")
+          @docker_file.puts("USER $ContUser")
+          @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
+          @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
+          @docker_file.puts("USER 0  ")
+          @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+          @docker_file.puts("USER $ContUser")
 
           n=n+1
         end
       end
 
-      dockerfile.close
+     
     rescue Exception=>e
       log_exception(e)
       return false
