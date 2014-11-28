@@ -27,7 +27,7 @@ class EngineBuilder
       @parent_exception = parent
       @method_name = method_name
     }
-    att_reader :parent_exception,:method_name
+    attr_accessor :parent_exception,:method_name
     
   end
   
