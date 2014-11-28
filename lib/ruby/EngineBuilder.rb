@@ -93,9 +93,10 @@ class EngineBuilder
         ask=env["ask_at_runtime"]
 
         puts("set_environments")
-        p @set_environments
-        if ask == true  && @set_environments.key?(name) == true
-          value=@set_environments[name]
+        if @set_environments != nil
+          if ask == true  && @set_environments.key?(name) == true
+            value=@set_environments[name]
+          end
         end
         @environments.push(EnvironmentVariable.new(name,value,ask))
         puts("ENV " + name + " \"" + value +"\"")
@@ -291,7 +292,7 @@ class EngineBuilder
       extracts=String.new
       dirs=String.new
 
-      dockerfile = File.open( get_basedir + "/Dockerfile","a")
+      
 
       archives.each do |archive|
         arc_src=clean_path(archive["src"])
@@ -503,7 +504,7 @@ class EngineBuilder
   def create_stack_env
     begin
       @log_file.puts("Saving stack Environment")
-      @docker_file = File.open(get_basedir + "/Dockerfile","a")
+    
       # stef = File.open(get_basedir + "/home/stack.env","w")
       @docker_file.puts("")
       @docker_file.puts("#Stack Env")
@@ -727,7 +728,7 @@ end #FIXME
       begin
         @log_file.puts("Writing Dockerfile")
         Dir.mkdir(get_basedir  + "/cron") #FIXME is this needed
-        @docker_file = File.open(get_basedir + "/Dockerfile","a")
+       
         ospackages = @bluePrint["software"]["ospackages"]
         packages=String.new
         ospackages.each do |package|
@@ -836,9 +837,9 @@ end #FIXME
         return false
       elsif  create_workers == false
         return false
+        elsif   setup_dockerfile == false
+          return false
       elsif  create_stack_env == false
-        return false
-      elsif   setup_dockerfile == false
         return false
       elsif   create_presettings_env == false
         return false
