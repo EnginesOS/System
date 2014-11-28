@@ -160,10 +160,11 @@ class EnginesOSapi
     backup_hash.store(:backup_type, "fs")
       engine.volumes.each do |volume|
         if volume.name == volume_name
-          volume.add_backup_src_to_hash(backup_hash)                
-        end
+          volume.add_backup_src_to_hash(backup_hash)   
+          SystemUtils.debug_output backup_hash          
+        end    
       end
-      
+
       backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
     if backup_service.is_a?(EnginesOSapiResult)
             return backup_service
