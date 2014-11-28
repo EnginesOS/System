@@ -23,7 +23,7 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   class BuildException < Exception
-    initialise(parent,method_name){
+    initialize(parent,method_name){
       @parent_exception = parent
       @method_name = method_name
     }
