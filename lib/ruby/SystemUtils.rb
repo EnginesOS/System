@@ -16,4 +16,10 @@ class SystemUtils
   end 
  end
   
+  def SystemUtils.level
+      return @@level
+    end
+  def SystemUtils.debug
+       return @@debug
+     end
 end
