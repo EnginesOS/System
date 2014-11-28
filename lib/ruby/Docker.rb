@@ -1,5 +1,5 @@
 class Docker
-  require "SystemUtils.rb"
+  require "/opt/engines/lib/ruby/SystemUtils.rb"
   
   def initialize
 
