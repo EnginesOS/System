@@ -23,11 +23,13 @@ class EngineBuilder
   @runtime=String.new
   @databases= Array.new
   class BuildException < Exception
-    initialize(parent,method_name){
+    attr_reader :parent_exception,:method_name
+    
+   def initialize(parent,method_name)
       @parent_exception = parent
       @method_name = method_name
-    }
-    attr_accessor :parent_exception,:method_name
+   end
+   
     
   end
   
