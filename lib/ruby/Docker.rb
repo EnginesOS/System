@@ -6,6 +6,7 @@ class Docker
  attr_reader :last_error
     
   def run_docker (args,container)
+    clear_error
     require 'open3'
 
     res = String.new
@@ -13,18 +14,19 @@ class Docker
     begin
       container.last_result=(  "")
       Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
-        line = String.new
+        oline = String.new
         stderr_is_open=true
         begin
           stdout.each { |line|
             line = line.gsub(/\\\"/,"")
+            oline = line
             res += line.chop
             if stderr_is_open
               error_mesg += stderr.read_nonblock(1000)
             end
           }
         rescue Errno::EIO
-          res += line.chop
+          res += oline.chop
           error_mesg += stderr.read_nonblock(1000)
         rescue  IO::WaitReadable
           retry
@@ -63,6 +65,7 @@ class Docker
   end
 
   def run_system (cmd)
+    clear_error
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
@@ -75,13 +78,13 @@ class Docker
         return res
       end
     rescue Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return ret_val
     end
   end
 
   def list_managed_engines
-
+    clear_error
     ret_val=Array.new
     begin
       Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
@@ -91,13 +94,14 @@ class Docker
         end
       end
     rescue Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return ret_val
     end
     return ret_val
   end
 
   def list_managed_services
+    clear_error
 
     ret_val=Array.new
     begin
@@ -108,7 +112,7 @@ class Docker
         end
       end
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return ret_val
     end
     return ret_val
@@ -116,6 +120,7 @@ class Docker
   end
 
   def delete_image container
+    clear_error
     begin
       commandargs= " rmi " +   container.image
       ret_val =  run_docker(commandargs,container)
@@ -134,12 +139,13 @@ class Docker
       return ret_val
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def destroy_container container
+    clear_error
     begin
       commandargs= " rm " +   container.containerName
 
@@ -154,12 +160,13 @@ class Docker
 
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def container_commandline_args container
+    clear_error
     begin
       e_option =String.new
 
@@ -202,12 +209,13 @@ class Docker
 
       return commandargs
     rescue Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return nil
     end
   end
 
   def run_volume_builder (container,username)
+    clear_error
     begin
       #FIXME use sysconfig for dir
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
@@ -223,12 +231,13 @@ class Docker
       end
       run_system(command)
     rescue Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def create_container container
+    clear_error
     begin
       commandargs = container_commandline_args container
       commandargs = " run  -d " + commandargs
@@ -245,12 +254,13 @@ class Docker
       return retval
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def read_container_id containerName
+    clear_error
     begin
       cidfile = SysConfig.CidDir + "/"  + containerName + ".cid"
 
@@ -259,93 +269,102 @@ class Docker
         return cid
       end
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return "-1";
     end
   end
 
   def rebuild_image container
+    clear_error
     begin
       builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, container.docker_api)
 
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def start_container   container
+    clear_error
     begin
       commandargs =" start " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def stop_container container
+    clear_error
     begin
       commandargs=" stop " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def pause_container container
+    clear_error
     begin
       commandargs = " pause " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def unpause_container container
+    clear_error
     begin
       commandargs=" unpause " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def ps_container container
+    clear_error
     begin
       commandargs=" top " + container.containerName + " axl"
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       rturn false
     end
   end
 
   def logs_container container
+    clear_error
     begin
       commandargs=" logs " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def inspect_container container
+    clear_error
     begin
       commandargs=" inspect " + container.containerName
       return  run_docker(commandargs,container)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
+    clear_error
     begin
       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
       #FIXME need unique name for temp file
@@ -362,12 +381,13 @@ class Docker
       File.delete(dns_cmd_file_name)
       return retval
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def deregister_dns(top_level_hostname)
+    clear_error
     begin
       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
       #FIXME need unique name
@@ -382,13 +402,14 @@ class Docker
       File.delete(dns_cmd_file_name)
       return retval
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
 
   end
 
   def register_site(site_hash)
+    clear_error
     begin
       # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
       ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
@@ -399,24 +420,26 @@ class Docker
       #run_system(ssh_cmd)
       return result
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
 
   end
 
   def hash_to_site_str(site_hash)
+    clear_error
     begin
 
       return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s
 
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def deregister_site(site_hash)
+    clear_error
     begin
       #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
       #FIXME Should write site conf file via template (either standard or supplied with blueprint)
@@ -427,52 +450,57 @@ class Docker
 
       return result
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def add_ftp_service(site_hash)
+    clear_error
     begin
       p site_hash
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def rm_ftp_service(site_hash)
+    clear_error
     begin
       p site_hash
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def add_monitor(site_hash)
+    clear_error
     begin
 
       ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
       return run_system(ssh_cmd)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def rm_monitor(site_hash)
+    clear_error
     begin
 
       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
       return run_system(ssh_cmd)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def save_container container
+    clear_error
     begin
       serialized_object = YAML::dump(container)
       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
@@ -502,6 +530,7 @@ class Docker
   end
 
   def save_blueprint(blueprint,container)
+    clear_error
     begin
       if blueprint != nil
         puts blueprint.to_s
@@ -517,13 +546,14 @@ class Docker
       f.write(blueprint.to_json)
       f.close
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
 
   end
 
   def load_blueprint(container)
+    clear_error
     begin
       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
       if File.directory?(stateDir) ==false
@@ -536,12 +566,13 @@ class Docker
 
       return blueprint
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def create_database  site_hash
+    clear_error
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
@@ -549,12 +580,13 @@ class Docker
 
       return run_system(cmd)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def add_volume(site_hash)
+    clear_error
     begin
       if Dir.exists?(  site_hash[:localpath] ) == false
         FileUtils.mkdir_p( site_hash[:localpath])
@@ -562,32 +594,35 @@ class Docker
       #currently the build scripts do this
       return true
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def rm_volume(site_hash)
+    clear_error
     begin
       puts "would remove " + site_hash[:localpath]
       return true
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def rm_backup(site_hash)
+    clear_error
     begin
       ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
       return run_system(ssh_cmd)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def create_backup(site_hash)
+    clear_error
     begin
       containerName = site_hash[:engine_name]
       p site_hash
@@ -601,17 +636,18 @@ class Docker
       ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
       return run_system(ssh_cmd)
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def add_self_hosted_domain params
+    clear_error
     begin
 
       return EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
@@ -636,6 +672,7 @@ class Docker
   #  add pre and post if needed
 
   def is_startup_complete container
+    clear_error
     begin
       runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
       if File.exists?(runDir + "startup_complete")
@@ -644,12 +681,13 @@ class Docker
         return false
       end
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def set_engine_hostname_details(container,params)
+    clear_error
     begin
       engine_name = params[:engine_name]
       hostname = params[:host_name]
@@ -675,31 +713,34 @@ class Docker
       #true if no change
       return true
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def save_system_preferences
+    clear_error
     begin
       p :pdsf
       return true
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def load_system_preferences
+    clear_error
     begin
       p :psdfsd
     rescue  Exception=>e
-      @last_error = e.to_s
+      log_error(e)
       return false
     end
   end
 
   def get_system_load_info
+    clear_error
     ret_val = Hash.new
 
     begin
@@ -712,7 +753,8 @@ class Docker
       ret_val[:running] = run_idle[0]
       ret_val[:idle] = run_idle[1]
 
-    rescue
+    rescue Exception=>e
+      log_error(e)
       ret_val[:one] = -1
       ret_val[:five] = -1
       ret_val[:fithteen] = -1
@@ -725,6 +767,7 @@ class Docker
   end
 
   def get_system_memory_info
+    clear_error
     ret_val = Hash.new
 
     begin
@@ -753,6 +796,7 @@ class Docker
       end
 
     rescue   Exception=>e
+      log_error(e)
       ret_val[:total] = e.to_s
       ret_val[:free] = -1
       ret_val[:active] = -1
@@ -769,6 +813,7 @@ class Docker
   end
 
   def get_container_memory_stats(container)
+    clear_error
     ret_val= Hash.new
     begin
       if container && container.container_id == nil || container.container_id == '-1'
@@ -790,6 +835,7 @@ class Docker
 
       return ret_val
     rescue  Exception=>e
+      log_error(e)
       ret_val.store(:maximum ,  e.to_s)
       ret_val.store(:current , "NA")
       ret_val.store(:limit ,  "NA")
@@ -799,6 +845,7 @@ class Docker
 
   def get_container_network_metrics(containerName) #FIXME Kludge
     ret_val = Hash.new
+    clear_error
     begin
       cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
@@ -810,7 +857,8 @@ class Docker
       #  p :sdf
       ret_val[:in] = vals[1].chop
       ret_val[:out] = vals[2].chop
-    rescue
+    rescue Exception=>e
+      log_error(e)
       ret_val[:in] = -1
       ret_val[:out] = -1
       return ret_val
@@ -820,16 +868,26 @@ class Docker
 
   protected
 
+  def clear_error
+    @last_error = ""
+  end
+  
+  def log_error(e)
+    @last_error = e.to_s
+    p e
+  end
+  
   def container_state_dir container
     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
   end
 
   def container_log_dir container
+   
     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
   end
 
   def get_volbuild_volmaps container
-
+    clear_error
     state_dir = SysConfig.CidDir + "/containers/" + container.containerName + "/run/"
     log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
     volume_option = " -v " + state_dir + ":/client/state:rw "
@@ -848,7 +906,7 @@ class Docker
   end
 
   def get_volume_option container
-
+    clear_error
     #System
     volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
     volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
@@ -881,16 +939,24 @@ class Docker
   end
 
   def clear_container_var_run(container)
+    clear_error
+    begin
     dir = container_state_dir(container)
     # Dir.unlink Will do but for moment
     #Dir.mkdir
     if File.exists?(dir + "/startup_complete")
       File.unlink(dir + "/startup_complete")
     end
+    return true
+    
+    rescue Exception=>e
+      log_error(e)
+      return false
+    end
   end
 
   def get_container_logdir container
-
+    clear_error
     if container.framework == nil || container.framework.length ==0
       return "/var/log"
     end
@@ -915,6 +981,8 @@ class Docker
   end
 
   def restart_nginx_process
+    begin
+      clear_error
     cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
 
     p cmd
@@ -928,7 +996,10 @@ class Docker
     else
       return false
     end
-
+    rescue Exception=>e
+      log_error(e)
+      return false
+    end
   end
 
 end
