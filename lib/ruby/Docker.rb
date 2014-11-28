@@ -881,7 +881,7 @@ class Docker
   
   def log_error(e)
     @last_error = e.to_s
-    SystemUtils.debug_output(e,10)
+    SystemUtils.log_output(e,10)
   end
   
   def container_state_dir container
