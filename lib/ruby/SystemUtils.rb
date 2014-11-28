@@ -10,7 +10,7 @@ class SystemUtils
   end  
  end
   
- def SystemUtils.debug_output(object,level)
+ def SystemUtils.log_output(object,level)
   if SystemUtils.level < level  
     p object
   end 
