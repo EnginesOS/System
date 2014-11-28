@@ -1,4 +1,4 @@
-module SystemUtils
+class SystemUtils
   @@debug=true
   @@level=5
   
