@@ -1,10 +1,15 @@
 class Docker
+  include "SystemUtils.rb"
+  
   def initialize
 
   end
 
  attr_reader :last_error
-    
+    class System
+      
+    end
+ 
   def run_docker (args,container)
     clear_error
     require 'open3'
@@ -69,7 +74,7 @@ class Docker
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
-      p res
+      SystemUtils.debug_output res
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
@@ -223,7 +228,7 @@ class Docker
       end
       mapped_vols = get_volbuild_volmaps container
       command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
-      p command
+      SystemUtils.debug_output command
       run_system(command)
       command = "docker stop volbuilder;  docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
@@ -241,7 +246,7 @@ class Docker
     begin
       commandargs = container_commandline_args container
       commandargs = " run  -d " + commandargs
-      p commandargs
+      SystemUtils.debug_output commandargs
       cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
       if File.exists? cidfile
         File.delete cidfile
@@ -362,6 +367,59 @@ class Docker
       return false
     end
   end
+  def get_container_memory_stats(container)
+    clear_error
+    ret_val= Hash.new
+    begin
+      if container && container.container_id == nil || container.container_id == '-1'
+        container_id = read_container_id(container.containerName)
+        container.container_id = container_id
+      end
+      if container && container.container_id != nil && container.container_id != '-1'
+        path = "/sys/fs/cgroup/memory/docker/" + container.container_id
+        if Dir.exists?(path)
+          ret_val.store(:maximum , File.read(path + "/memory.max_usage_in_bytes"))
+          ret_val.store(:current , File.read(path + "/memory.usage_in_bytes"))
+          ret_val.store(:limit , File.read(path + "/memory.limit_in_bytes"))
+        else
+          ret_val.store(:maximum ,  "No Container")
+          ret_val.store(:current , "No Container")
+          ret_val.store(:limit ,  "No Container")
+        end
+      end
+
+      return ret_val
+    rescue  Exception=>e
+      log_error(e)
+      ret_val.store(:maximum ,  e.to_s)
+      ret_val.store(:current , "NA")
+      ret_val.store(:limit ,  "NA")
+      return ret_val
+    end
+  end
+
+  def get_container_network_metrics(containerName) #FIXME Kludge
+    ret_val = Hash.new
+    clear_error
+    begin
+      cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
+      res= %x<#{cmd}>
+
+      vals = res.split("bytes:")
+      #  p :sdfdssssssssssss
+      #  p vals[0]
+      #  p vals[1]
+      #  p :sdf
+      ret_val[:in] = vals[1].chop
+      ret_val[:out] = vals[2].chop
+    rescue Exception=>e
+      log_error(e)
+      ret_val[:in] = -1
+      ret_val[:out] = -1
+      return ret_val
+    end
+    return ret_val
+  end
 
   def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
     clear_error
@@ -413,7 +471,7 @@ class Docker
     begin
       # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
       ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-      p ssh_cmd
+      SystemUtils.debug_output ssh_cmd
       result = run_system(ssh_cmd)
 
       result = restart_nginx_process()
@@ -444,7 +502,7 @@ class Docker
       #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
       #FIXME Should write site conf file via template (either standard or supplied with blueprint)
       ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-      p ssh_cmd
+      SystemUtils.debug_output ssh_cmd
       result = run_system(ssh_cmd)
       result = restart_nginx_process()
 
@@ -458,7 +516,7 @@ class Docker
   def add_ftp_service(site_hash)
     clear_error
     begin
-      p site_hash
+      SystemUtils.debug_output site_hash
     rescue  Exception=>e
       log_error(e)
       return false
@@ -468,7 +526,7 @@ class Docker
   def rm_ftp_service(site_hash)
     clear_error
     begin
-      p site_hash
+      SystemUtils.debug_output site_hash
     rescue  Exception=>e
       log_error(e)
       return false
@@ -576,7 +634,7 @@ class Docker
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
-      puts(cmd)
+      SystemUtils.debug_output(cmd)
 
       return run_system(cmd)
     rescue  Exception=>e
@@ -625,7 +683,7 @@ class Docker
     clear_error
     begin
       containerName = site_hash[:engine_name]
-      p site_hash
+      SystemUtils.debug_output site_hash
       if site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else
@@ -721,7 +779,7 @@ class Docker
   def save_system_preferences
     clear_error
     begin
-      p :pdsf
+      SystemUtils.debug_output :pdsf
       return true
     rescue  Exception=>e
       log_error(e)
@@ -732,7 +790,7 @@ class Docker
   def load_system_preferences
     clear_error
     begin
-      p :psdfsd
+      SystemUtils.debug_output :psdfsd
     rescue  Exception=>e
       log_error(e)
       return false
@@ -812,59 +870,7 @@ class Docker
 
   end
 
-  def get_container_memory_stats(container)
-    clear_error
-    ret_val= Hash.new
-    begin
-      if container && container.container_id == nil || container.container_id == '-1'
-        container_id = read_container_id(container.containerName)
-        container.container_id = container_id
-      end
-      if container && container.container_id != nil && container.container_id != '-1'
-        path = "/sys/fs/cgroup/memory/docker/" + container.container_id
-        if Dir.exists?(path)
-          ret_val.store(:maximum , File.read(path + "/memory.max_usage_in_bytes"))
-          ret_val.store(:current , File.read(path + "/memory.usage_in_bytes"))
-          ret_val.store(:limit , File.read(path + "/memory.limit_in_bytes"))
-        else
-          ret_val.store(:maximum ,  "No Container")
-          ret_val.store(:current , "No Container")
-          ret_val.store(:limit ,  "No Container")
-        end
-      end
 
-      return ret_val
-    rescue  Exception=>e
-      log_error(e)
-      ret_val.store(:maximum ,  e.to_s)
-      ret_val.store(:current , "NA")
-      ret_val.store(:limit ,  "NA")
-      return ret_val
-    end
-  end
-
-  def get_container_network_metrics(containerName) #FIXME Kludge
-    ret_val = Hash.new
-    clear_error
-    begin
-      cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
-      res= %x<#{cmd}>
-
-      vals = res.split("bytes:")
-      #  p :sdfdssssssssssss
-      #  p vals[0]
-      #  p vals[1]
-      #  p :sdf
-      ret_val[:in] = vals[1].chop
-      ret_val[:out] = vals[2].chop
-    rescue Exception=>e
-      log_error(e)
-      ret_val[:in] = -1
-      ret_val[:out] = -1
-      return ret_val
-    end
-    return ret_val
-  end
 
   protected
 
@@ -874,7 +880,7 @@ class Docker
   
   def log_error(e)
     @last_error = e.to_s
-    p e
+    SystemUtils.debug_output(e,10)
   end
   
   def container_state_dir container
@@ -887,6 +893,7 @@ class Docker
   end
 
   def get_volbuild_volmaps container
+    begin
     clear_error
     state_dir = SysConfig.CidDir + "/containers/" + container.containerName + "/run/"
     log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
@@ -895,7 +902,7 @@ class Docker
     if container.volumes != nil
 
       container.volumes.each do |vol|
-        p vol
+        SystemUtils.debug_output vol
         volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
       end
     end
@@ -903,10 +910,15 @@ class Docker
     volume_option += " --volumes-from " + container.containerName
 
     return volume_option
+      rescue Exception=>e
+           log_error(e)
+           return false
+         end
   end
 
   def get_volume_option container
     clear_error
+    begin
     #System
     volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
     volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
@@ -936,6 +948,10 @@ class Docker
       end
     end
     return volume_option
+      rescue Exception=>e
+           log_error(e)
+           return false
+         end
   end
 
   def clear_container_var_run(container)
@@ -964,13 +980,14 @@ class Docker
     container_logdetails_file_name = false
 
     framework_logdetails_file_name =  SysConfig.DeploymentTemplates + "/" + container.framework + "/home/LOG_DIR"
-    p framework_logdetails_file_name
+    SystemUtils.debug_output(framework_logdetails_file_name)
+    
     if File.exists?(framework_logdetails_file_name )
       container_logdetails_file_name = framework_logdetails_file_name
     else
       container_logdetails_file_name = SysConfig.DeploymentTemplates + "/global/home/LOG_DIR"
     end
-    p     container_logdetails_file_name
+    SystemUtils.debug_output(container_logdetails_file_name)
     begin
       container_logdetails = File.read(container_logdetails_file_name)
     rescue
@@ -985,12 +1002,12 @@ class Docker
       clear_error
     cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
 
-    p cmd
+      SystemUtils.debug_output(cmd)
     nginxpid= %x<#{cmd}>
-    p  nginxpid
+      SystemUtils.debug_output(nginxpid)
     #FIXME read from pid file this is just silly
     docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
-    p docker_cmd
+      SystemUtils.debug_output(docker_cmd)
     if nginxpid.to_s != "-"
       return run_system(docker_cmd)
     else
