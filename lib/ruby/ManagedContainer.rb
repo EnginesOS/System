@@ -618,6 +618,13 @@ end
    return "-1"  
 
     end
-    
+def log_exception(e)
+    @err_file.puts( e.to_s)
+    puts(e.to_s)
+    #@last_error=  e.to_s
+    e.backtrace.each do |bt |
+      p bt
+    end
+  end   
 end
 
