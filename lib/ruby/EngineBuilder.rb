@@ -163,19 +163,17 @@ class EngineBuilder
 
     def write_sed_strings
       begin
-        @blueprint_reader.sed_strings[].each do |sed_string|
-
-          src_file sed_string[0]
-          dest_file = sed_strings[1]
-          tmp_file = sed_strings[2]
-          sedstr = sed_strings[3]
-
+        n=0
+        @blueprint_reader.sed_strings[:src_file].each do |src_file|
+          #src_file = @sed_strings[:src_file][n]
+          dest_file = @sed_strings[:dest_file][n]
+          sed_str =  @sed_strings[:sed_str][n]
+          temp_file =  @sed_strings[:tmp_file][n]          
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sedstr + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
-
           n=n+1
-        end
+      end
 
       rescue Exception=>e
         log_exception(e)
@@ -660,10 +658,10 @@ class EngineBuilder
     
 def add_file_service(name,dest)
    begin
-
+     @volumes=Array.new
      permissions = PermissionRights.new(@container_name,"","")
      vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
-     @vols.push(vol)
+     @volumes.push(vol)
 
      
    rescue Exception=>e
@@ -673,13 +671,15 @@ def add_file_service(name,dest)
  end
     
     def  add_db_service(dbname,servicetype)
-      
+      @databases=Array.new
       db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
       @databases.push(db)
       
     end
     def read_os_packages
       begin
+        @os_packages = Array.new
+        
         @log_file.puts("Writing Dockerfile")
         ospackages = @bluePrint["software"]["ospackages"]
         ospackages.each do |package|
@@ -875,7 +875,12 @@ def add_file_service(name,dest)
 
     def read_sed_strings
       begin
-        @sed_strings = Array.new(4)
+        @sed_strings = Hash.new
+        @sed_strings[:src_file] = Array.new
+        @sed_strings[:dest_file] = Array.new
+        @sed_strings[:sed_str] = Array.new
+        @sed_strings[:tmp_file] = Array.new
+               
         @log_file.puts("set sed strings")
         seds=@bluePrint["software"]["replacementstrings"]
         if seds == nil || seds.empty? == true
@@ -902,10 +907,10 @@ def add_file_service(name,dest)
           end
           dest_file = "/home/app/" +  dest
           sedstr = sed["sedstr"]
-          @sed_strings[0].push(src_file)
-          @sed_strings[1].push(dest_file)
-          @sed_strings[2].push(tmp_file)
-          @sed_strings[3].push(sedstr)
+          @sed_strings[:src_file].push(src_file)
+          @sed_strings[:dest_file].push(dest_file)
+          @sed_strings[:sed_str].push(tmp_file)
+          @sed_strings[:tmp_file].push(sedstr)
 
           n=n+1
         end
