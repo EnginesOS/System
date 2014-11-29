@@ -372,13 +372,13 @@ class EngineBuilder
         locations=String.new
         extracts=String.new
         dirs=String.new
-
-        @blueprint_reader.archives_details[0].each do |archive|
-          arc_src=@blueprint_reader..archives_details[0][n]
-          arc_name=@blueprint_reader..archives_details[1][n]
-          arc_loc =@blueprint_reader..archives_details[2][n]
-          arc_extract=@blueprint_reader..archives_details[3][n]
-          arc_dir=@blueprint_reader..archives_details[4][n]
+  
+        @blueprint_reader.archives_details[:arc_src].each do |archive|
+          arc_src=@blueprint_reader.archives_details[:arc_src][n]
+          arc_name=@blueprint_reader.archives_details[:arc_name][n]
+          arc_loc =@blueprint_reader.archives_details[:arc_loc][n]
+          arc_extract=@blueprint_reader.archives_details[:arc_extract][n]
+          arc_dir=@blueprint_reader.archives_details[:arc_dir][n]
           if(n >0)
             srcs = srcs + " "
             names =names + " "
@@ -746,7 +746,12 @@ def add_file_service(name,dest)
 
     def read_app_packages
       begin
-        @archives_details = Array.new(5)
+        @archives_details = Hash.new
+        @archives_details[:arc_src] = Array.new
+        @archives_details[:arc_name] = Array.new
+        @archives_details[:arc_extract] = Array.new
+        @archives_details[:arc_loc] = Array.new
+        @archives_details[:arc_dir] = Array.new      
         @log_file.puts("Configuring install Environment")
         archives = @bluePrint["software"]["installedpackages"]
         n=0
@@ -774,11 +779,11 @@ def add_file_service(name,dest)
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          @archives_details[0].push(arc_src)
-          @archives_details[1].push(arc_name)
-          @archives_details[2].push(arc_extract)
-          @archives_details[3].push(arc_loc)
-          @archives_details[4].push(arc_dir)
+          @archives_details[:arc_src].push(arc_src)
+          @archives_details[:arc_name].push(arc_name)
+          @archives_details[:arc_extract].push(arc_extract)
+          @archives_details[:arc_loc].push(arc_loc)
+          @archives_details[:arc_dir].push(arc_dir)
 
         end
 
