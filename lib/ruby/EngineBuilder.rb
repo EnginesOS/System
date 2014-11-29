@@ -965,7 +965,7 @@ def add_file_service(name,dest)
 
   def initialize(repo,contname,host,domain,custom_env,docker_api)
     @hostname=host
-    @contName=contname
+    @container_name=contname
     @domain_name=domain
     @repoName=repo
     @build_name = File.basename(repo).sub(/\.git$/,"")
@@ -1239,7 +1239,7 @@ end
 
       
 
-      @blueprint_reader = BluePrintReader.new(@build_name,@contName,@blueprint,@log_file,@err_file)
+      @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
