@@ -32,7 +32,7 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(builder,logfile)
+    def initialize(reader,logfile)
 
       @blueprint_reader = reader
       @log_file = logfile
@@ -717,6 +717,7 @@ class EngineBuilder
       @log_file.puts("Reading Settings")
       begin
         @framework = @bluePrint["software"]["swframework_name"]
+          p @framework 
         @runtime =  @bluePrint["software"]["langauge_name"]
         @memory =  @bluePrint["software"]["requiredmemory"]
       rescue Exception=>e
