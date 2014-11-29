@@ -1239,7 +1239,7 @@ end
 
       
 
-      @blueprint_reader = BluePrintReader.new(@build_name,@contName,blueprint,@log_file,@err_file)
+      @blueprint_reader = BluePrintReader.new(@build_name,@contName,@blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
