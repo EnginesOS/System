@@ -688,7 +688,7 @@ def add_file_service(name,dest)
  end
     
     def  add_db_service(dbname,servicetype)
-      
+      name=dbname 
       db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
       @databases.push(db)
       
