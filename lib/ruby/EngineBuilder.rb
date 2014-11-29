@@ -553,7 +553,7 @@ class EngineBuilder
   
         read_lang_fw_values
         read_pear_list
-        read_app_packages_env
+        read_app_packages
         read_write_permissions_recursive
         read_write_permissions_single
         read_worker_commands
