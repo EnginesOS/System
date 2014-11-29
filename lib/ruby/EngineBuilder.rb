@@ -1188,8 +1188,8 @@ class EngineBuilder
 
     
 
-      blueprint_reader = BluePrintReader.new(@log_file,blueprint)
-      blueprint_reader.process_blueprint
+      @blueprint_reader = BluePrintReader.new(@log_file,blueprint)
+      @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
             return false
