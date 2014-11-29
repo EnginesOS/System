@@ -730,7 +730,7 @@ def add_file_service(name,dest)
       begin
         @archives_details = Array.new(5)
         @log_file.puts("Configuring install Environment")
-        archives = bluePrint["software"]["installedpackages"]
+        archives = @bluePrint["software"]["installedpackages"]
         n=0
         srcs=String.new
         names=String.new
