@@ -315,11 +315,9 @@ class EngineBuilder
       end
     end
 
-    def write_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
+    def write_db_service
       begin
-        dbname=name #+ "-" + @hostname  - leads to issue with JDBC
-
-        #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
+            
         @blueprint_reader.databases.each do |db|
         @docker_file.puts("#Database Env")
         @docker_file.puts("ENV dbname " + db.dbname)
@@ -328,10 +326,6 @@ class EngineBuilder
         @docker_file.puts("ENV dbpasswd " + db.dbPass)
         @docker_file.puts("ENV dbflavor " + db.flavor)
         end
-        
-
-
-        
 
       rescue Exception=>e
         log_exception(e)
