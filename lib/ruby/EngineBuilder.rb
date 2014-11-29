@@ -691,37 +691,6 @@ def add_file_service(name,dest)
       end
     end
 
-    def read_web_port
-      @log_file.puts("Setting Web port")
-      begin
-        stef = File.open( get_basedir + "/home/stack.env","r")
-        while line=stef.gets do
-          if line.include?("PORT")
-            i= line.split('=')
-            @webPort= i[1].strip
-          end
-        end
-      rescue Exception=>e
-        log_exception(e)
-        #      throw BuildException.new(e,"setting web port")
-        return false
-      end
-    end
-
-    def read_web_user
-      begin
-        stef = File.open( get_basedir + "/home/stack.env","r")
-        while line=stef.gets do
-          if line.include?("USER")
-            i= line.split('=')
-            @webUser= i[1].strip
-          end
-        end
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def read_lang_fw_values
       @log_file.puts("Reading Settings")
@@ -1211,6 +1180,37 @@ end
     return build_container
   end
 
+def read_web_port
+  @log_file.puts("Setting Web port")
+  begin
+    stef = File.open( get_basedir + "/home/stack.env","r")
+    while line=stef.gets do
+      if line.include?("PORT")
+        i= line.split('=')
+        @webPort= i[1].strip
+      end
+    end
+  rescue Exception=>e
+    log_exception(e)
+    #      throw BuildException.new(e,"setting web port")
+    return false
+  end
+end
+
+def read_web_user
+  begin
+    stef = File.open( get_basedir + "/home/stack.env","r")
+    while line=stef.gets do
+      if line.include?("USER")
+        i= line.split('=')
+        @webUser= i[1].strip
+      end
+    end
+  rescue Exception=>e
+    log_exception(e)
+    return false
+  end
+end
   def build_container
     begin
 
@@ -1228,7 +1228,10 @@ end
       if  setup_default_files == false
             return false
           end
-          
+      
+      read_web_port
+      read_web_user
+      
       dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
