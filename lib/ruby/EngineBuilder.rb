@@ -163,12 +163,13 @@ class EngineBuilder
 
     def  write_file_service(name,dest)
       begin
-
         @docker_file.puts("#FS Env")
-        @docker_file.puts("ENV VOLDIR " + name)
-        @docker_file.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
-        @docker_file.puts("RUN mkdir -p $CONTFSVolHome")
-
+        @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
+        
+        @blueprint_reader.volumes.each do |vol|
+        @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
+        @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
+        end
       rescue Exception=>e
         log_exception(e)
         return false
