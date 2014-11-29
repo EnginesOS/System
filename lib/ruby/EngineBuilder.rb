@@ -488,7 +488,7 @@ class EngineBuilder
   class BluePrintReader
     def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
-      @container_name
+      @container_name = contname
       @log_file=logfile
       @err_file=errfile
       @bluePrint = blue_print
