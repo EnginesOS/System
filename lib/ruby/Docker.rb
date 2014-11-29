@@ -163,7 +163,7 @@ class Docker
 
       ret_val = run_docker(commandargs,container)
       if (ret_val == true) #FIXME need to remove .cid if no such container but keep if container failed to stop
-        container.container_id  = nil
+        container.container_id=(-1)
         if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
           File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
         end
@@ -260,8 +260,8 @@ class Docker
       end
       retval = run_docker(commandargs,container)
       if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-        container_id = read_container_id(container.containerName)
-        container.container_id = container_id
+        container_id= read_container_id(container.containerName) 
+        container.container_id=(container_id)
       end
       return retval
     rescue Exception=>e
@@ -380,7 +380,7 @@ class Docker
     begin
       if container && container.container_id == nil || container.container_id == '-1'
         container_id = read_container_id(container.containerName)
-        container.container_id = container_id
+        container.container_id=(container_id)
       end
       if container && container.container_id != nil && container.container_id != '-1'
         path = "/sys/fs/cgroup/memory/docker/" + container.container_id
