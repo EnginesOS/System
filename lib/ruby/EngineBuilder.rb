@@ -73,6 +73,19 @@ class EngineBuilder
 
     end
 
+    def write_environment_variables
+      begin
+
+        @blueprint_reader.environments do |env|
+          @docker_file.puts("#Custom ENV")          
+          @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
     def write_persistant_dirs
       begin
         @log_file.puts("set setup_env")
@@ -926,8 +939,6 @@ def add_file_service(name,dest)
           name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_runtime"]
-
-          puts("set_environments")
           if @set_environments != nil
             if ask == true  && @set_environments.key?(name) == true
               value=@set_environments[name]
@@ -935,15 +946,12 @@ def add_file_service(name,dest)
           end
           @environments.push(EnvironmentVariable.new(name,value,ask))
           puts("ENV " + name + " \"" + value +"\"")
-          @docker_file.puts("ENV " + name + " \"" + value +"\"")
         end
-
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-
   end
 
   def initialize(repo,contname,host,domain,custom_env,docker_api)
