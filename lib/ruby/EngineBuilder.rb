@@ -429,7 +429,7 @@ class EngineBuilder
 
     def write_container_user
       begin
-        log_file.puts("set container user")
+        @log_file.puts("set container user")
 
         #FIXME needs to by dynamic
         @blueprint_reader.data_uid=11111
@@ -445,7 +445,7 @@ class EngineBuilder
 
     def write_stack_env
       begin
-        log_file.puts("Saving stack Environment")
+        @log_file.puts("Saving stack Environment")
 
         # stef = File.open(get_basedir + "/home/stack.env","w")
         @docker_file.puts("")
