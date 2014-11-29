@@ -11,14 +11,14 @@ require 'json'
 
 class EngineBuilder
   @repoName=nil
-  @hostName=nil
+  @hostname=nil
   @domainName=nil
   @build_name=nil
 
 
   attr_reader :last_error,\
               :repoName,\
-              :hostName,\
+              :hostname,\
               :domainName,\
               :build_name
   
@@ -315,7 +315,7 @@ class EngineBuilder
 
     def write_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
       begin
-        dbname=name #+ "-" + @hostName  - leads to issue with JDBC
+        dbname=name #+ "-" + @hostname  - leads to issue with JDBC
 
         #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
         @blueprint_reader.databases.each do |db|
@@ -451,9 +451,9 @@ class EngineBuilder
         @docker_file.puts("")
         @docker_file.puts("#Stack Env")
         @docker_file.puts("ENV Memory " + @blueprint_reader.memory.to_s)
-        @docker_file.puts("ENV Hostname " + @blueprint_reader.hostName)
+        @docker_file.puts("ENV Hostname " + @blueprint_reader.hostname)
         @docker_file.puts("ENV Domainname " +  @blueprint_reader.domainName )
-        @docker_file.puts("ENV fqdn " +  @blueprint_reader.hostName + "." + @blueprint_reader.domainName )
+        @docker_file.puts("ENV fqdn " +  @blueprint_reader.hostname + "." + @blueprint_reader.domainName )
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
         @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
         @docker_file.puts("ENV PORT " +  @blueprint_reader.webPort.to_s  )
@@ -524,6 +524,7 @@ class EngineBuilder
     :archives_details,
     :worker_commands,
     :cron_jobs,\
+    :hostname,\
     :sed_strs
     
     def clean_path(path)
@@ -684,7 +685,7 @@ def add_file_service(name,dest)
     
     def  add_db_service(dbname,servicetype)
       @databases=Array.new
-      db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
+      db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
       @databases.push(db)
       
     end
@@ -954,7 +955,7 @@ def add_file_service(name,dest)
   end
 
   def initialize(repo,contname,host,domain,custom_env,docker_api)
-    @hostName=host
+    @hostname=host
     @contName=contname
     @domainName=domain
     @repoName=repo
@@ -1000,7 +1001,7 @@ def setup_framework_logging
     else
       rmt_log_dir="/var/log"
     end
-    local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName
+    local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
     if Dir.exists?(local_log_dir) == false
       Dir.mkdir( local_log_dir)
     end
@@ -1106,7 +1107,7 @@ end
 
   def create_db_service(name,flavor)
     begin
-      db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
+      db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
       databases.push(db)
       create_database_service db
     rescue Exception=>e
@@ -1119,8 +1120,8 @@ end
   def build_init
     begin
       @log_file.puts("Building Image")
-      # cmd="cd " + get_basedir + "; docker build  -t " + @hostName + "/init ."
-      cmd="/usr/bin/docker build  -t " + @hostName + "/deploy " +  get_basedir
+      # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
+      cmd="/usr/bin/docker build  -t " + @hostname + "/deploy " +  get_basedir
       puts cmd
       res = run_system(cmd)
       if res != true
@@ -1351,11 +1352,11 @@ end
 
   def create_managed_container
 
-    mc = ManagedEngine.new(@hostName,
+    mc = ManagedEngine.new(@hostname,
     @memory.to_s ,
-    @hostName,
+    @hostname,
     @domainName,
-    @hostName + "/deploy",
+    @hostname + "/deploy",
     @vols,
     @webPort,
     @workerPorts,
