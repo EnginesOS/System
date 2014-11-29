@@ -90,6 +90,7 @@ class ManagedContainer < Container
   end
 
   def read_state()
+    begin
     if (inspect_container == false)
       state="nocontainer"
     else
@@ -109,11 +110,18 @@ class ManagedContainer < Container
     end
     if (@setState && state != @setState)  
       if    @last_error == nil
-        @last_error=""
+        @last_error=" "
       end
+      p @setState
+      p @last_error
+      p state
      @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
     end
     return state
+rescue Exception=>e
+  log_exception(e)
+  return "nocontainer"
+end
   end
 
   def logs_container    
