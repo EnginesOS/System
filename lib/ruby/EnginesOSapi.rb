@@ -38,19 +38,23 @@ class EnginesOSapi
     host_name = params[:host_name]
    evirons = params[:env_variables]
      p params
-     if container_name == nil || domain_name == nil || host_name == nil|| domain_name == nil
-       return  failed(host_name,"Incorrect Parameters","build_engine") #FIXME needs to return error object
+     if container_name == nil || host_name == nil|| domain_name == nil
+       container_name = "test"
+       host_name ="test"
+       domain_name ="localdemo.jvodan.home"
+       #FIXME needs to return error object
+      # return  failed(host_name,"Incorrect Parameters","build_engine") 
      end
       engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host_name,engine_builder.last_error,"build_engine") #FIXME needs to return error object
+      return  failed(host_name,engine_builder.last_error,"build_engine") 
     end
       if engine != nil
         engine.save_state
         return engine
       end
-      return failed(host_name,"Failed","build_engine") #FIXME needs to return error object
+      return failed(host_name,"Failed","build_engine") 
   
   end
   def last_api_error
