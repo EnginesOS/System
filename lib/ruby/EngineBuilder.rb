@@ -1186,16 +1186,20 @@ class EngineBuilder
         return false
       end
 
-      if  setup_default_files == false
-        return false
-      end
+    
 
       blueprint_reader = BluePrintReader.new(@log_file,blueprint)
       blueprint_reader.process_blueprint
 
+      if  setup_default_files == false
+            return false
+          end
+          
       dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file)
       dockerfile_builder.write_files_for_docker
 
+
+          
       #
       #      if read_lang_fw_values == false
       #        return false
