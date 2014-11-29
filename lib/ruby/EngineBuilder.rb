@@ -207,6 +207,7 @@ class EngineBuilder
     def write_os_packages
       begin
         packages=String.new
+        
         @blueprint_reader.os_packages.each do |package|
           packages = packages + package + " "
         end
@@ -423,8 +424,7 @@ class EngineBuilder
         @log_file.puts("set container user")
 
         #FIXME needs to by dynamic
-        @blueprint_reader.data_uid=11111
-        @blueprint_reader.data_gid=11111
+
         @docker_file.puts("ENV data_gid " +  @blueprint_reader.data_uid)
         @docker_file.puts("ENV data_uid " + @blueprint_reader.data_gid)
 
@@ -491,6 +491,9 @@ class EngineBuilder
     def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
       
+      @data_uid=11111
+      @data_gid=11111
+      
       @container_name = contname
       @log_file=logfile
       @err_file=errfile
@@ -518,8 +521,10 @@ class EngineBuilder
     :cron_jobs,\
     :sed_strs,\
     :volumes,\
-     :databases
-    
+     :databases,\
+     :data_uid,\
+     :data_gid
+
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
       return path
@@ -554,6 +559,8 @@ class EngineBuilder
         read_cron_jobs
         read_sed_strings
         read_work_ports
+        read_os_packages
+        read_app_packages
         read_environment_variables
         read_persistant_files
         read_persistant_dirs
@@ -736,7 +743,7 @@ def add_file_service(name,dest)
       end
     end
 
-    def read_app_packages_env
+    def read_app_packages
       begin
         @archives_details = Array.new(5)
         @log_file.puts("Configuring install Environment")
