@@ -108,21 +108,24 @@ class ManagedContainer < Container
         end
       end
     end
+    if state == nil #Kludge
+      state = "nocontainer"
+    end
     if (@setState && state != @setState)  
       if    @last_error == nil
         @last_error=" "
       end
-      p @setState
-      p @last_error
-      p state
+
      @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
     end
     return state
+
+
 rescue Exception=>e
   log_exception(e)
   return "nocontainer"
 end
-  end
+end
 
   def logs_container    
     if @docker_api == nil
