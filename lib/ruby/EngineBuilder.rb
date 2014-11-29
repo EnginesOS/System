@@ -141,7 +141,6 @@ class EngineBuilder
           @docker_file.puts("")
           @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
           @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
-          files = files + "\""+ path + "\" "
         end
 
 
@@ -232,7 +231,7 @@ class EngineBuilder
       begin
         @log_file.puts(frag_name)
 
-        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." +frag_name)
+        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
 
