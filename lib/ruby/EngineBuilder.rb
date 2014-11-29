@@ -12,14 +12,14 @@ require 'json'
 class EngineBuilder
   @repoName=nil
   @hostname=nil
-  @domainName=nil
+  @domain_name=nil
   @build_name=nil
 
 
   attr_reader :last_error,\
               :repoName,\
               :hostname,\
-              :domainName,\
+              :domain_name,\
               :build_name
   
   class BuildException < Exception
@@ -958,7 +958,7 @@ def add_file_service(name,dest)
   def initialize(repo,contname,host,domain,custom_env,docker_api)
     @hostname=host
     @contName=contname
-    @domainName=domain
+    @domain_name=domain
     @repoName=repo
     @build_name = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
@@ -1356,7 +1356,7 @@ end
     mc = ManagedEngine.new(@hostname,
     @memory.to_s ,
     @hostname,
-    @domainName,
+    @domain_name,
     @hostname + "/deploy",
     @vols,
     @webPort,
