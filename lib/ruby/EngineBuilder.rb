@@ -330,9 +330,7 @@ class EngineBuilder
         if @blueprint_reader.single_chmods == nil
           return
         end
-        @blueprint_reader.single_chmods.each do |single_chmod|
-          directory = clean_path(single_chmod["directory"])
-          #FIXME need to strip any ../ and any preceeding ./
+        @blueprint_reader.single_chmods.each do |directory|       
           if directory !=nil
             @docker_file.puts("RUN chmod -r /home/app/" + directory )
           end
@@ -350,8 +348,6 @@ class EngineBuilder
           return
         end
         @blueprint_reader.recursive_chmods.each do |recursive_chmod|
-          directory = clean_path(recursive_chmod)
-          #FIXME need to strip any ../ and any preceeding ./
           if directory !=nil
             @docker_file.puts("RUN chmod -R /home/app/" + directory )
           end
@@ -516,7 +512,12 @@ class EngineBuilder
     :worker_commands,
     :cron_jobs,\
     :sed_strs
-
+    
+    def clean_path(path)
+      #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
+      return path
+    end
+    
     def get_basedir
        return SysConfig.DeploymentDir + "/" + @build_name
      end
@@ -782,8 +783,13 @@ class EngineBuilder
     def read_write_permissions_recursive
       begin
         @log_file.puts("set permissions recussive")
-        @recursive_chmods = @bluePrint["software"]["chmod_recursive"]
-        if recursive_chmods == nil || recursive_chmods.length == 0
+        chmods = @bluePrint["software"]["chmod_recursive"]
+        if chmods != nil
+          chmods.each do |chmod |
+          directory = clean_path(recursive_chmod)
+            recursive_chmods.push(directory)
+          end
+          #FIXME need to strip any ../ and any preceeding ./
           return
         end
 
@@ -796,11 +802,15 @@ class EngineBuilder
     def read_write_permissions_single
       begin
         @log_file.puts("set permissions  single")
-        @single_chmods = @bluePrint["software"]["chmod_single"]
-        if single_chmods == nil || single_chmods.length == 0
-          return
+        chmods = @bluePrint["software"]["chmod_single"]
+        if chmods != nil  
+          chmods.each do | single_chmod |            
+          directory = clean_path(single_chmod["directory"])
+          @single_chmods.push(directory)
+               end
         end
-
+        return true
+        
       rescue Exception=>e
         log_exception(e)
         return false
@@ -1413,10 +1423,7 @@ end
     end
   end
 
-  def clean_path(path)
-    #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
-    return path
-  end
+
 
   def get_basedir
     return SysConfig.DeploymentDir + "/" + @build_name
