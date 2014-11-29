@@ -108,8 +108,7 @@ class EngineBuilder
         if src_paths.length >1
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
-          @docker_file.puts("chmod -R 770 /home/fs")
-          @docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
+          @docker_file.puts("chmod -R 770 /home/fs")         
         end
 
       rescue Exception=>e
@@ -180,7 +179,7 @@ class EngineBuilder
           sed_str =  @blueprint_reader.sed_strings[:sed_str][n]
           temp_file =  @blueprint_reader.sed_strings[:tmp_file][n]          
           @docker_file.puts("")
-          @docker_file.puts("RUN cat " + src_file + " | sed \"" + sedstr + "\" > " + tmp_file + " ;\\")
+          @docker_file.puts("RUN cat " + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
           n=n+1
       end
@@ -274,7 +273,7 @@ class EngineBuilder
           cmdf.chmod(0755)
           cmdf.puts("#!/bin/bash")
           cmdf.puts("cd /home/app")
-          @blueprint_reader..worker_commands.each  do |command|
+          @blueprint_reader.worker_commands.each  do |command|
             cmdf.puts(command)
           end
           cmdf.close
@@ -1385,13 +1384,14 @@ end
     @data_gid
     )
 
-    if mc.save_blueprint(@bluePrint) == false
-      puts "failed to save blueprint " + @bluePrint.to_s
-    end
-
+ 
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
+    if mc.save_blueprint(@bluePrint) == false
+       puts "failed to save blueprint " + @bluePrint.to_s
+     end
+
     bp = mc.load_blueprint
     p  bp
     @log_file.puts("Launching")
