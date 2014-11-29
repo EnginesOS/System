@@ -37,7 +37,7 @@ class EngineBuilder
       @blueprint_reader = reader
       @log_file = logfile
       @err_file = errfile
-      @docker_file = File.open( builder.get_basedir + "/Dockerfile","a")
+      @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
 
     end
 
