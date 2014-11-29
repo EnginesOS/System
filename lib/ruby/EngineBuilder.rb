@@ -521,7 +521,9 @@ class EngineBuilder
     :archives_details,
     :worker_commands,
     :cron_jobs,\
-    :sed_strs
+    :sed_strs,\
+    :volumes,\
+     :databases
     
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
