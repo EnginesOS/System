@@ -534,7 +534,6 @@ class EngineBuilder
       begin
 
         read_rake_list
-        read_framework_logging
         read_services
         read_os_packages
         read_web_port
@@ -631,27 +630,7 @@ class EngineBuilder
       end
     end
 
-    def read_framework_logging
-      begin
-        rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
-        if File.exists?(rmt_log_dir_var_fname)
-          rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-          rmt_log_dir = rmt_log_dir_varfile.read
-        else
-          rmt_log_dir="/var/log"
-        end
-        local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName
-        if Dir.exists?(local_log_dir) == false
-          Dir.mkdir( local_log_dir)
-        end
 
-        return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def read_services
 
@@ -999,7 +978,28 @@ class EngineBuilder
       p bt
     end
   end
+  
+def setup_framework_logging
+  begin
+    rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
+    if File.exists?(rmt_log_dir_var_fname)
+      rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
+      rmt_log_dir = rmt_log_dir_varfile.read
+    else
+      rmt_log_dir="/var/log"
+    end
+    local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName
+    if Dir.exists?(local_log_dir) == false
+      Dir.mkdir( local_log_dir)
+    end
 
+    return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
+
+  rescue Exception=>e
+    log_exception(e)
+    return false
+  end
+end
   def backup_lastbuild
     begin
       dir=get_basedir
@@ -1207,7 +1207,7 @@ class EngineBuilder
       dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
-
+      setup_framework_logging
           
       #
       #      if read_lang_fw_values == false
