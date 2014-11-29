@@ -1104,7 +1104,8 @@ class EngineBuilder
       log_exception(e)
       return false
     end
-  end
+  end  
+  
 
   def build_init
     begin
