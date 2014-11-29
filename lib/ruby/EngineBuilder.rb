@@ -646,6 +646,9 @@ class EngineBuilder
 
     def read_services
 
+      @databases=Array.new
+      @volumes=Array.new
+      
       @log_file.puts("Adding services")
       services=@bluePrint["software"]["softwareservices"]
       services.each do |service|
@@ -669,7 +672,7 @@ class EngineBuilder
     
 def add_file_service(name,dest)
    begin
-     @volumes=Array.new
+
      permissions = PermissionRights.new(@container_name,"","")
      vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
      @volumes.push(vol)
@@ -682,7 +685,7 @@ def add_file_service(name,dest)
  end
     
     def  add_db_service(dbname,servicetype)
-      @databases=Array.new
+      
       db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
       @databases.push(db)
       
