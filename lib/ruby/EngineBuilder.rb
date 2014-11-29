@@ -103,11 +103,9 @@ class EngineBuilder
           @docker_file.puts("  fi;\\")
           @docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
           @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
-          pcf=path
-          dirs = dirs + " " + path
           n=n+1
         end
-        if dirs.length >1
+        if src_paths.length >1
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
           @docker_file.puts("chmod -R 770 /home/fs")
@@ -178,9 +176,9 @@ class EngineBuilder
         n=0
         @blueprint_reader.sed_strings[:src_file].each do |src_file|
           #src_file = @sed_strings[:src_file][n]
-          dest_file = @sed_strings[:dest_file][n]
-          sed_str =  @sed_strings[:sed_str][n]
-          temp_file =  @sed_strings[:tmp_file][n]          
+          dest_file = @blueprint_reader.sed_strings[:dest_file][n]
+          sed_str =  @blueprint_reader.sed_strings[:sed_str][n]
+          temp_file =  @blueprint_reader.sed_strings[:tmp_file][n]          
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sedstr + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
@@ -209,7 +207,7 @@ class EngineBuilder
     def write_os_packages
       begin
         packages=String.new
-        @blueprint_reader..os_packages.each do |package|
+        @blueprint_reader.os_packages.each do |package|
           packages = packages + package + " "
         end
         if packages.length >1
