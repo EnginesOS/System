@@ -161,7 +161,7 @@ class EngineBuilder
       end
     end
 
-    def  write_file_service(name,dest)
+    def  write_file_service
       begin
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
