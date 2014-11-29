@@ -307,17 +307,18 @@ class EngineBuilder
         dbname=name #+ "-" + @hostName  - leads to issue with JDBC
 
         #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
+        @blueprint_reader.databases.each do |db|
         @docker_file.puts("#Database Env")
-        @docker_file.puts("ENV dbname " + dbname)
-        @docker_file.puts("ENV dbhost " + SysConfig.DBHost)
-        @docker_file.puts("ENV dbuser " + name)
-        @docker_file.puts("ENV dbpasswd " + name)
-        @docker_file.puts("ENV dbflavor " + flavor)
+        @docker_file.puts("ENV dbname " + db.dbname)
+        @docker_file.puts("ENV dbhost " + db.dbHost)
+        @docker_file.puts("ENV dbuser " + db.dbUser)
+        @docker_file.puts("ENV dbpasswd " + db.dbPass)
+        @docker_file.puts("ENV dbflavor " + db.flavor)
+        end
+        
 
-        db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
-        @blueprint_reader.databases.push(db)
 
-        create_database_service db
+        
 
       rescue Exception=>e
         log_exception(e)
@@ -655,7 +656,27 @@ class EngineBuilder
         end
       end
     end #FIXME
+    
+def add_file_service(name,dest)
+   begin
 
+     permissions = PermissionRights.new(@contName,"","")
+     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @contName + "/" + name,dest,"rw",permissions)
+     @vols.push(vol)
+
+     
+   rescue Exception=>e
+     log_exception(e)
+     return false
+   end
+ end
+    
+    def  add_db_service(dbname,servicetype)
+      
+      db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
+      @databases.push(db)
+      
+    end
     def read_os_packages
       begin
         @log_file.puts("Writing Dockerfile")
@@ -1073,19 +1094,7 @@ end
     end
   end
 
-  def add_file_service(name,dest)
-    begin
-
-      permissions = PermissionRights.new(@contName,"","")
-      vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @contName + "/" + name,dest,"rw",permissions)
-      @vols.push(vol)
-
-      create_file_service vol
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
+ 
 
   def create_file_service vol
     begin
@@ -1279,8 +1288,16 @@ end
       else
         @log_file.puts("creating deploy image")
 
+        create_database_service db
+        create_file_service vol
+        
         mc = create_managed_container()
       end
+      
+      
+     
+      
+      
       return mc
     rescue BuildException=>e
       p e.method_name
