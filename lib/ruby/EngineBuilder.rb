@@ -226,7 +226,7 @@ class EngineBuilder
         @docker_file.write(builder_frag)
 
       rescue Exception=>e
-        log_execption(e)
+        log_exception(e)
         return false
       end
     end
@@ -355,7 +355,7 @@ class EngineBuilder
         end
       end
     rescue Exception=>e
-      log_execption(e)
+      log_exception(e)
       return false
     end
 
@@ -427,7 +427,7 @@ class EngineBuilder
         @docker_file.puts("ENV data_uid " + @blueprint_reader.data_gid)
 
       rescue Exception=>e
-        log_execption(e)
+        log_exception(e)
         return false
       end
     end
@@ -486,8 +486,9 @@ class EngineBuilder
   end
 
   class BluePrintReader
-    def initialize(build_name,blue_print,logfile,errfile)
+    def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
+      @container_name
       @log_file=logfile
       @err_file=errfile
       @bluePrint = blue_print
@@ -660,8 +661,8 @@ class EngineBuilder
 def add_file_service(name,dest)
    begin
 
-     permissions = PermissionRights.new(@contName,"","")
-     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @contName + "/" + name,dest,"rw",permissions)
+     permissions = PermissionRights.new(@container_name,"","")
+     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
      @vols.push(vol)
 
      
@@ -972,9 +973,9 @@ def add_file_service(name,dest)
 
   end
 
-  def initialize(repo,host,domain,custom_env,docker_api)
+  def initialize(repo,contname,host,domain,custom_env,docker_api)
     @hostName=host
-    @contName=@hostName
+    @contName=contname
     @domainName=domain
     @repoName=repo
     @build_name = File.basename(repo).sub(/\.git$/,"")
@@ -1216,7 +1217,7 @@ end
 
 
 
-      @blueprint_reader = BluePrintReader.new(@build_name,blueprint,@log_file,@err_file)
+      @blueprint_reader = BluePrintReader.new(@build_name,@contName,blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
@@ -1329,7 +1330,7 @@ end
       f.write(blueprint.to_json)
       f.close
     rescue Exception=>e
-      log_execption(e)
+      log_exception(e)
       return false
     end
   end
@@ -1370,7 +1371,7 @@ end
         @log_file.puts "Failed to Launch"
       end
       @docker_api.run_volume_builder(mc ,@webUser)
-      mc.start_container
+    #  mc.start_container
     end
     return mc
   end
