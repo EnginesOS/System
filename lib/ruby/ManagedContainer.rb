@@ -50,15 +50,15 @@ class ManagedContainer < Container
       
  end
  
- def container_pid
-   if @container_pid == nil
-     @container_pid = set_container_pid
-      if @container_pid == false
-        @container_pid == "-1"
+ def container_id
+   if @container_id == nil
+     @container_id = set_container_id
+      if @container_id == false
+        @container_id == "-1"
       end            
    end
-   p @container_pid
-   return @container_pid
+   p @container_id
+   return @container_id
  end
  
   attr_reader :framework,\
@@ -71,7 +71,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
+   attr_accessor :container_id,:docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
 
   def monitored
@@ -231,7 +231,7 @@ end
     end
     clear_error(ret_val)
     save_state()
-    set_container_pid
+    set_container_id
     
     return ret_val
   end
@@ -293,7 +293,7 @@ end
     end
     ret_val = false
     state = read_state()
-    @set_container_pid="-1"
+    @set_container_id="-1"
     
     if state== "running"
       ret_val = @docker_api.stop_container   self
@@ -614,7 +614,7 @@ end
     end
   end
 
-    def set_container_pid
+    def set_container_id
    return "-1"  
 
     end
