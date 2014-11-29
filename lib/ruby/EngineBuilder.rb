@@ -934,7 +934,7 @@ def add_file_service(name,dest)
     end
 
     def read_environment_variables
-      @environments = new Array
+      @environments = Array.new
       begin
         envs = @bluePrint["software"]["environment_variables"]
         envs.each do |env|
