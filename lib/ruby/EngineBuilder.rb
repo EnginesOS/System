@@ -1114,9 +1114,9 @@ end
 
   
 
-  def copy_base_templates
+  def setup_default_files
 
-    if copy_base_faults == false
+    if setup_global_faults == false
       return false
     else
       return copy_framework_defaults
@@ -1220,7 +1220,7 @@ def create_db_service(name,flavor)
               return false
       end
       
-      if  copy_base_templates == false
+      if  setup_default_files == false
         return false
         end
        
