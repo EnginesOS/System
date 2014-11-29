@@ -216,7 +216,7 @@ class EngineBuilder
         end
 
         #FIXME Wrong spot
-        @workerPorts.each do |port|
+        @blueprint_reader.each do |port|
           @docker_file.puts("EXPOSE " + port.port.to_s)
         end
 
