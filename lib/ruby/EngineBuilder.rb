@@ -126,6 +126,7 @@ class EngineBuilder
         src_paths = @blueprint_reader.persistant_files[:src_paths]
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
         n=0
+        
         src_paths.each do |link_src|
           path = dest_paths[n]
           @docker_file.puts("")
@@ -142,16 +143,13 @@ class EngineBuilder
           @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
           files = files + "\""+ path + "\" "
         end
-        if files.length >1
-          @docker_file.puts("ENV PERSISTANT_FILES "+files)
-        end
+
 
         @docker_file.puts("")
-        if dirs.length >1 || files.length >1
+
           @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
           @docker_file.puts("      chmod -R 770 /home/fs")
           @docker_file.puts("VOLUME /home/fs/")
-        end
 
         @docker_file.puts("USER $ContUser")
 
@@ -234,7 +232,7 @@ class EngineBuilder
       begin
         @log_file.puts(frag_name)
 
-        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile." +frag_name)
+        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." +frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
 
