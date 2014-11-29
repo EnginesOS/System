@@ -489,8 +489,10 @@ class EngineBuilder
   end
 
   class BluePrintReader
-    def initialize(logfile,blue_print)
+    def initialize(buildname,blue_print,logfile,errfile)
+      @build_name = buildname
       @log_file=logfile
+      @err_file=errfile
       @bluePrint = blue_print
     end
 
@@ -515,8 +517,12 @@ class EngineBuilder
     :cron_jobs,\
     :sed_strs
 
+    def get_basedir
+       return SysConfig.DeploymentDir + "/" + @build_name
+     end
+     
     def log_exception(e)
-      @log_file.puts( e.to_s)
+      @err_file.puts( e.to_s)
       puts(e.to_s)
       #@last_error=  e.to_s
       e.backtrace.each do |bt |
@@ -1189,9 +1195,9 @@ class EngineBuilder
         return false
       end
 
-    
 
-      @blueprint_reader = BluePrintReader.new(@log_file,blueprint)
+
+      @blueprint_reader = BluePrintReader.new(@buildName,blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
