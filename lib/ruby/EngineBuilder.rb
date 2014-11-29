@@ -21,44 +21,42 @@ class EngineBuilder
   @environments=Array.new
   @runtime=String.new
   @databases= Array.new
-  
+
   attr_reader :last_error
-  
   class BuildException < Exception
     attr_reader :parent_exception,:method_name
-    
-   def initialize(parent,method_name)
+    def initialize(parent,method_name)
       @parent_exception = parent
       @method_name = method_name
-   end
-   
-    
+    end
+
   end
-  
+
   class DockerFileBuilder
     def initialize(builder,logfile)
 
-    @blueprint_reader = reader
-    @log_file = logfile 
-    @docker_file = File.open( builder.get_basedir + "/Dockerfile","a")
+      @blueprint_reader = reader
+      @log_file = logfile
+      @docker_file = File.open( builder.get_basedir + "/Dockerfile","a")
 
-  end
+    end
+
     def log_exception(e)
-      @err_file.puts( e.to_s)    
+      @err_file.puts( e.to_s)
       puts(e.to_s)
       @last_error=  e.to_s
-       e.backtrace.each do |bt |
-         p bt
-       end
+      e.backtrace.each do |bt |
+        p bt
+      end
     end
-    
+
     def write_files_for_docker
 
       write_stack_env
       write_file_service
-      write_db_service      
+      write_db_service
       write_crontabs
-      write_os_packages      
+      write_os_packages
       write_app_archives
       write_container_user
       chown_home_app
@@ -71,16 +69,17 @@ class EngineBuilder
       write_pear_list
       write_write_permissions_single
       write_write_permissions_recursive
-      insert_framework_frag_in_dockerfile("builder.end") 
-      
+      insert_framework_frag_in_dockerfile("builder.end")
+
     end
+
     def write_persistant_dirs
       begin
         @log_file.puts("set setup_env")
         src_paths = @blueprint_reader.persistant_dirs[:src_paths]
         dest_paths =  @blueprint_reader.persistant_dirs[:dest_paths]
-           n=0
-        src_paths.each do |link_src|          
+        n=0
+        src_paths.each do |link_src|
           path = dest_paths[n]
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
@@ -100,92 +99,92 @@ class EngineBuilder
           @docker_file.puts("chmod -R 770 /home/fs")
           @docker_file.puts("ENV PERSISTANT_DIRS \""+dirs+"\"")
         end
-    
-   
+
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
-    def write_persistant_files
-        begin
-          @log_file.puts("set setup_env")
-          src_paths = @blueprint_reader.persistant_files[:src_paths]
-               dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
-                  n=0
-               src_paths.each do |link_src|          
-                 path = dest_paths[n]
-            @docker_file.puts("")
-            @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
-            @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
-            @docker_file.puts("    then \\")
-            @docker_file.puts("      touch  /home/" + path +";\\")
-            @docker_file.puts("    fi;\\")
-            @docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
-      
-            link_src = path.sub(/app/,"")
-            @docker_file.puts("")
-            @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
-            @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
-            files = files + "\""+ path + "\" "
-          end
-          if files.length >1
-            @docker_file.puts("ENV PERSISTANT_FILES "+files)
-          end
-         
-          @docker_file.puts("")
-          if dirs.length >1 || files.length >1
-            @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
-            @docker_file.puts("      chmod -R 770 /home/fs")
-            @docker_file.puts("VOLUME /home/fs/")
-          end
-      
-          @docker_file.puts("USER $ContUser")
-      
-        rescue Exception=>e
-          log_exception(e)
-          return false
-        end
-      end
-      
-    def  write_file_service(name,dest)
-        begin
 
-          @docker_file.puts("#FS Env")
-          @docker_file.puts("ENV VOLDIR " + name)
-          @docker_file.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
-          @docker_file.puts("RUN mkdir -p $CONTFSVolHome")
-    
-        rescue Exception=>e
-          log_exception(e)
-          return false
+    def write_persistant_files
+      begin
+        @log_file.puts("set setup_env")
+        src_paths = @blueprint_reader.persistant_files[:src_paths]
+        dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
+        n=0
+        src_paths.each do |link_src|
+          path = dest_paths[n]
+          @docker_file.puts("")
+          @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
+          @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
+          @docker_file.puts("    then \\")
+          @docker_file.puts("      touch  /home/" + path +";\\")
+          @docker_file.puts("    fi;\\")
+          @docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
+
+          link_src = path.sub(/app/,"")
+          @docker_file.puts("")
+          @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
+          @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+          files = files + "\""+ path + "\" "
         end
+        if files.length >1
+          @docker_file.puts("ENV PERSISTANT_FILES "+files)
+        end
+
+        @docker_file.puts("")
+        if dirs.length >1 || files.length >1
+          @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
+          @docker_file.puts("      chmod -R 770 /home/fs")
+          @docker_file.puts("VOLUME /home/fs/")
+        end
+
+        @docker_file.puts("USER $ContUser")
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
+    end
+
+    def  write_file_service(name,dest)
+      begin
+
+        @docker_file.puts("#FS Env")
+        @docker_file.puts("ENV VOLDIR " + name)
+        @docker_file.puts("ENV CONTFSVolHome /home/fs" )# + vol.remotepath) #not nesscessary the same as dest used in constructor
+        @docker_file.puts("RUN mkdir -p $CONTFSVolHome")
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
     def write_sed_strings
       begin
         @blueprint_reader.sed_strings[].each do |sed_string|
-        
-        src_file sed_string[0]
-        dest_file = sed_strings[1]
-        tmp_file = sed_strings[2]
-        sedstr = sed_strings[3]
-  
-  @docker_file.puts("")
-  @docker_file.puts("RUN cat " + src_file + " | sed \"" + sedstr + "\" > " + tmp_file + " ;\\")
-  @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
-  
+
+          src_file sed_string[0]
+          dest_file = sed_strings[1]
+          tmp_file = sed_strings[2]
+          sedstr = sed_strings[3]
+
+          @docker_file.puts("")
+          @docker_file.puts("RUN cat " + src_file + " | sed \"" + sedstr + "\" > " + tmp_file + " ;\\")
+          @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
+
           n=n+1
         end
-  
+
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
+
     def write_rake_list
-      begin    
+      begin
         @blueprint_reader.rake_actions.each do |rake_cmd|
           if rake_cmd !=nil
             @docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_cmd )
@@ -196,45 +195,45 @@ class EngineBuilder
         return false
       end
     end
-    
+
     def write_os_packages
-    begin
-          packages=String.new
-      @blueprint_reader..os_packages.each do |package|
-            packages = packages + package + " "
-          end
-          if packages.length >1
-            @docker_file.puts("\nRUN apt-get install -y " + packages )
-          end
-          
-          #FIXME Wrong spot          
-          @workerPorts.each do |port|
-            @docker_file.puts("EXPOSE " + port.port.to_s)
-          end
-  
-        rescue Exception=>e
-      log_exception(e)
-          return false
+      begin
+        packages=String.new
+        @blueprint_reader..os_packages.each do |package|
+          packages = packages + package + " "
         end
+        if packages.length >1
+          @docker_file.puts("\nRUN apt-get install -y " + packages )
+        end
+
+        #FIXME Wrong spot
+        @workerPorts.each do |port|
+          @docker_file.puts("EXPOSE " + port.port.to_s)
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
-   
+    end
+
     def insert_framework_frag_in_dockerfile(frag_name)
-       begin
-         @log_file.puts(frag_name)
-   
-         frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile." +frag_name)
-         builder_frag = frame_build_docker_frag.read
-         @docker_file.write(builder_frag)
-   
-       rescue Exception=>e
+      begin
+        @log_file.puts(frag_name)
+
+        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @framework + "/Dockerfile." +frag_name)
+        builder_frag = frame_build_docker_frag.read
+        @docker_file.write(builder_frag)
+
+      rescue Exception=>e
         log_execption(e)
-         return false
-       end
-     end
-  
+        return false
+      end
+    end
+
     def chown_home_app
       begin
-  
+
         @docker_file.puts("USER 0")
         @docker_file.puts("RUN if [ ! -d /home/app ];\\")
         @docker_file.puts("  then \\")
@@ -242,672 +241,662 @@ class EngineBuilder
         @docker_file.puts("  fi;\\")
         @docker_file.puts(" chown -R $ContUser /home/app")
         @docker_file.puts("USER $ContUser")
-  
+
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
+
     def write_worker_commands
-        begin
-        
-          if Dir.exists?(scripts_path) == false
-            FileUtils.mkdir_p(scripts_path)
-          end
-    
-          if @blueprint_reader.work_commands != nil && @blueprint_reader.worker_commands.length >0
-            cmdf= File.open( scripts_path + "pre-running.sh","w")
-            if !cmdf
-              puts("failed to open " + scripts_path + "pre-running.sh")
-              exit
-            end
-            cmdf.chmod(0755)
-            cmdf.puts("#!/bin/bash")
-            cmdf.puts("cd /home/app")
-            @blueprint_reader..worker_commands.each  do |command|
-              cmdf.puts(command)
-            end
-            cmdf.close    
-          end
-        rescue Exception=>e
-          log_exception(e)
-          return false
-        end
-      end
-      
-  def write_cron_jobs 
       begin
-    
-        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length <0
-    
-        cron_file = File.open( get_basedir + "/home/crontab","w")
-        crons.each do |cj|
-          cron_file.puts(cj)
-     
-          n=n+1
+
+        if Dir.exists?(scripts_path) == false
+          FileUtils.mkdir_p(scripts_path)
         end
-        
-        if @blueprint_reader.cron_jobs.length >0
-          @docker_file.puts("ENV CRONJOBS YES")
-          @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+
+        if @blueprint_reader.work_commands != nil && @blueprint_reader.worker_commands.length >0
+          cmdf= File.open( scripts_path + "pre-running.sh","w")
+          if !cmdf
+            puts("failed to open " + scripts_path + "pre-running.sh")
+            exit
+          end
+          cmdf.chmod(0755)
+          cmdf.puts("#!/bin/bash")
+          cmdf.puts("cd /home/app")
+          @blueprint_reader..worker_commands.each  do |command|
+            cmdf.puts(command)
+          end
+          cmdf.close
         end
-        cron_file.close
-        end
-     
-        return true 
-             
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    def write_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
-        begin
-          dbname=name #+ "-" + @hostName  - leads to issue with JDBC
-    
-          #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
-          @docker_file.puts("#Database Env")
-          @docker_file.puts("ENV dbname " + dbname)
-          @docker_file.puts("ENV dbhost " + SysConfig.DBHost)
-          @docker_file.puts("ENV dbuser " + name)
-          @docker_file.puts("ENV dbpasswd " + name)
-          @docker_file.puts("ENV dbflavor " + flavor)
-          
-          db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
-          @blueprint_reader.databases.push(db)
-    
-          create_database_service db
-          
-        rescue Exception=>e
-          log_exception(e)
-          return false
+
+    def write_cron_jobs
+      begin
+
+        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length <0
+
+          cron_file = File.open( get_basedir + "/home/crontab","w")
+          crons.each do |cj|
+            cron_file.puts(cj)
+
+            n=n+1
+          end
+
+          if @blueprint_reader.cron_jobs.length >0
+            @docker_file.puts("ENV CRONJOBS YES")
+            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+          end
+          cron_file.close
         end
+
+        return true
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
-      
-      
+    end
+
+    def write_db_service(name,flavor) #flavor mysql |pgsql  Needs to be dynamic latter
+      begin
+        dbname=name #+ "-" + @hostName  - leads to issue with JDBC
+
+        #FIXME need better password and with user set options (perhaps use envionment[dbpass] for this ?
+        @docker_file.puts("#Database Env")
+        @docker_file.puts("ENV dbname " + dbname)
+        @docker_file.puts("ENV dbhost " + SysConfig.DBHost)
+        @docker_file.puts("ENV dbuser " + name)
+        @docker_file.puts("ENV dbpasswd " + name)
+        @docker_file.puts("ENV dbflavor " + flavor)
+
+        db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
+        @blueprint_reader.databases.push(db)
+
+        create_database_service db
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
     def write_write_permissions_single
-        begin
+      begin
         if @blueprint_reader.single_chmods == nil
           return
         end
-          @blueprint_reader.single_chmods.each do |single_chmod|
+        @blueprint_reader.single_chmods.each do |single_chmod|
           directory = clean_path(single_chmod["directory"])
           #FIXME need to strip any ../ and any preceeding ./
           if directory !=nil
             @docker_file.puts("RUN chmod -r /home/app/" + directory )
           end
         end
-  
+
       rescue Exception=>e
-          log_exception(e)
+        log_exception(e)
         return false
       end
     end
-    
+
     def write_write_permissions_recursive
       begin
-      if @blueprint_reader.recursive_chmods == nil
-        return
-      end
+        if @blueprint_reader.recursive_chmods == nil
+          return
+        end
         @blueprint_reader.recursive_chmods.each do |recursive_chmod|
-        directory = clean_path(recursive_chmod)
-        #FIXME need to strip any ../ and any preceeding ./
-        if directory !=nil
-          @docker_file.puts("RUN chmod -R /home/app/" + directory )
+          directory = clean_path(recursive_chmod)
+          #FIXME need to strip any ../ and any preceeding ./
+          if directory !=nil
+            @docker_file.puts("RUN chmod -R /home/app/" + directory )
+          end
         end
       end
-     end
-      rescue Exception=>e
+    rescue Exception=>e
       log_execption(e)
-            return false
-  end 
-  
+      return false
+    end
+
     def write_app_archives
-           begin
-           
-             n=0
-             srcs=String.new
-             names=String.new
-             locations=String.new
-             extracts=String.new
-             dirs=String.new
-    
-             @blueprint_reader.archives_details[0].each do |archive|
-               arc_src=@blueprint_reader..archives_details[0][n]
-               arc_name=@blueprint_reader..archives_details[1][n]
-               arc_loc =@blueprint_reader..archives_details[2][n]
-               arc_extract=@blueprint_reader..archives_details[3][n]
-               arc_dir=@blueprint_reader..archives_details[4][n]
-               if(n >0)
-                 srcs = srcs + " "
-                 names =names + " "
-                 locations = locations + " "
-                 extracts =extracts + " "
-                 dirs =dirs + " "
-               end
-       
-               if arc_loc == "./"
-                 arc_loc=""
-               elsif arc_loc.end_with?("/")
-                 arc_loc = arc_loc.chop() #note not String#chop
-               end
-       
-               if arc_extract == "git"
-                 @docker_file.puts("WORKDIR /tmp")
-                 @docker_file.puts("USER $ContUser")
-                 @docker_file.puts("RUN git clone " + arc_src )
-                 @docker_file.puts("USER 0  ")
-                 @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
-                 @docker_file.puts("USER $ContUser")
-               else
-                 @docker_file.puts("WORKDIR /tmp")
-                 @docker_file.puts("USER $ContUser")
-                 @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
-                 @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
-                 @docker_file.puts("USER 0  ")
-                 @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
-                 @docker_file.puts("USER $ContUser")
-       
-                 n=n+1
-               end
-             end
-    
-           rescue Exception=>e
-            log_exception(e)
-             return false
-           end
-     
+      begin
+
+        n=0
+        srcs=String.new
+        names=String.new
+        locations=String.new
+        extracts=String.new
+        dirs=String.new
+
+        @blueprint_reader.archives_details[0].each do |archive|
+          arc_src=@blueprint_reader..archives_details[0][n]
+          arc_name=@blueprint_reader..archives_details[1][n]
+          arc_loc =@blueprint_reader..archives_details[2][n]
+          arc_extract=@blueprint_reader..archives_details[3][n]
+          arc_dir=@blueprint_reader..archives_details[4][n]
+          if(n >0)
+            srcs = srcs + " "
+            names =names + " "
+            locations = locations + " "
+            extracts =extracts + " "
+            dirs =dirs + " "
+          end
+
+          if arc_loc == "./"
+            arc_loc=""
+          elsif arc_loc.end_with?("/")
+            arc_loc = arc_loc.chop() #note not String#chop
+          end
+
+          if arc_extract == "git"
+            @docker_file.puts("WORKDIR /tmp")
+            @docker_file.puts("USER $ContUser")
+            @docker_file.puts("RUN git clone " + arc_src )
+            @docker_file.puts("USER 0  ")
+            @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+            @docker_file.puts("USER $ContUser")
+          else
+            @docker_file.puts("WORKDIR /tmp")
+            @docker_file.puts("USER $ContUser")
+            @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
+            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
+            @docker_file.puts("USER 0  ")
+            @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+            @docker_file.puts("USER $ContUser")
+
+            n=n+1
+          end
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
-      
-      
+
+    end
+
     def write_container_user
       begin
         log_file.puts("set container user")
-  
+
         #FIXME needs to by dynamic
         @blueprint_reader.data_uid=11111
         @blueprint_reader.data_gid=11111
         @docker_file.puts("ENV data_gid " +  @blueprint_reader.data_uid)
         @docker_file.puts("ENV data_uid " + @blueprint_reader.data_gid)
 
-  
       rescue Exception=>e
         log_execption(e)
         return false
       end
     end
-    
+
     def write_stack_env
-        begin
-          log_file.puts("Saving stack Environment")
-        
-          # stef = File.open(get_basedir + "/home/stack.env","w")
-          @docker_file.puts("")
-          @docker_file.puts("#Stack Env")
-          @docker_file.puts("ENV Memory " + @engine_builder.memory.to_s)
-          @docker_file.puts("ENV Hostname " + @engine_builder.hostName)
-          @docker_file.puts("ENV Domainname " +  @engine_builder.domainName )
-          @docker_file.puts("ENV fqdn " +  @engine_builder.hostName + "." + @engine_builder.domainName )
-          @docker_file.puts("ENV FRAMEWORK " +   @engine_builder.framework  )
-          @docker_file.puts("ENV RUNTIME "  + @engine_builder.runtime  )
-          @docker_file.puts("ENV PORT " +  @engine_builder.webPort.to_s  )
-          wports = String.new
-          n=0
-          @blueprint_reader.workerPorts.each do |port|
-            if n < 0
-              wports =wports + " "
-            end
-            @docker_file.puts("EXPOSE " + port)
-            wports = wports + port.port.to_s
-            n=n+1
+      begin
+        log_file.puts("Saving stack Environment")
+
+        # stef = File.open(get_basedir + "/home/stack.env","w")
+        @docker_file.puts("")
+        @docker_file.puts("#Stack Env")
+        @docker_file.puts("ENV Memory " + @engine_builder.memory.to_s)
+        @docker_file.puts("ENV Hostname " + @engine_builder.hostName)
+        @docker_file.puts("ENV Domainname " +  @engine_builder.domainName )
+        @docker_file.puts("ENV fqdn " +  @engine_builder.hostName + "." + @engine_builder.domainName )
+        @docker_file.puts("ENV FRAMEWORK " +   @engine_builder.framework  )
+        @docker_file.puts("ENV RUNTIME "  + @engine_builder.runtime  )
+        @docker_file.puts("ENV PORT " +  @engine_builder.webPort.to_s  )
+        wports = String.new
+        n=0
+        @blueprint_reader.workerPorts.each do |port|
+          if n < 0
+            wports =wports + " "
           end
-          if wports.length >0
-            @docker_file.puts("ENV WorkerPorts " + "\"" + wports +"\"")
-          end
-        rescue Exception=>e
-          log_exception(e)
-          return false
+          @docker_file.puts("EXPOSE " + port)
+          wports = wports + port.port.to_s
+          n=n+1
         end
-      end
-      
-def write_pear_list
-  if @blueprint_reader.pear_modules != nil
-  @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
-  @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
-  @docker_file.puts("  php go-pear.phar")
-
-    @blueprint_reader.pear_modules.each do |pear_mod|
-    if pear_mod !=nil
-      @docker_file.puts("RUN  pear install pear_mod " + pear_mod )
-    end
-  end
-  end
-rescue Exception=>e
-  log_exception(e)
-  return false
-end
-   
-   
-##################### End of 
-end
-
-
-class BluePrintReader
-
-  def initialize(logfile,blueprint)
-    @log_file=logfile
-    @bluePrint = blue_print
-  end
-  
-  attr_reader :persistant_files,\
-              :persistant_dirs,\
-              :last_error,\
-              :workerPorts,\
-              :environments,\
-              :recursive_chmods,\
-              :single_chmods,\
-              :cron_jobs,\
-              :framework,\
-              :runtime,\
-              :memory,\
-              :rake_actions,\
-              :os_packages,\
-              :webPort,\
-              :webUser,\
-              :pear_modules,\
-              :archives_details,
-              :worker_commands,
-              :cron_jobs,\
-              :sed_strs
-  def log_exception(e)
-    @err_file.puts( e.to_s)    
-    puts(e.to_s)
-    @last_error=  e.to_s
-     e.backtrace.each do |bt |
-       p bt
-     end
-  end
-  
-  def process_blueprint
-    begin
-      
-      read_rake_list
-      read_framework_logging
-      read_services
-      read_os_packages
-      read_web_port
-      read_web_user
-      read_lanf_fw_values
-      read_pear_list
-      read_app_packages_env
-      read_write_permissions_recursive
-      read_write_permissions_single
-      read_worker_commands
-      read_cron_jobs
-      read_sed_strings
-      read_work_ports
-      read_environment_variables
-      read_persistant_files
-      read_persistant_dirs
-      
-    rescue
-    end
-      
-  end
-  def read_persistant_dirs
-    begin
-      @log_file.puts("set setup_env")
-
-      @persistant_dirs = Hash.new
-      src_paths = Array.new
-      dest_paths = Array.new
-      
-      pds =   @bluePrint["software"]["persistantdirs"]
-     
-      pds.each do |dir|
-        path = clean_path(dir["path"])
-        link_src = path.sub(/app/,"")
-        src_paths.push(link_src)
-        dest_paths.push(path)
-      end
-      @persistant_dirs[:src_paths]= src_paths 
-      @persistant_dirs[:dest_paths]= dest_paths   
+        if wports.length >0
+          @docker_file.puts("ENV WorkerPorts " + "\"" + wports +"\"")
+        end
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
-def read_persistant_files
-    begin
-      @log_file.puts("set setup_env")
 
-      @persistant_files = Hash.new
-      src_paths = Array.new
-      dest_paths = Array.new
-       
-      pfs =   @bluePrint["software"]["persistantfiles"]
-      files= String.new
-      pfs.each do |file|
-        path =  arc_dir=clean_path(file["path"])
-        link_src = path.sub(/app/,"")
-        src_paths.push(link_src)
-         dest_paths.push(path)
-      end
-      
-      @persistant_files[:src_paths]= src_paths 
-      @persistant_files[:dest_paths]= dest_paths
-           
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
-  def read_rake_list
-    begin
-       @rake_actions = Array.new
-      @log_file.puts("set rake list")
-      rake_cmds = @bluePrint["software"]["rake_tasks"]
-      if rake_cmds == nil
-        return
-      end
+    def write_pear_list
+      if @blueprint_reader.pear_modules != nil
+        @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
+        @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
+        @docker_file.puts("  php go-pear.phar")
 
-      rake_cmds.each do |rake_cmd|
-        rake_action = rake_cmd["action"]
-        p rake_action
-        if rake_action !=nil
-          @rake_actions.push(rake_action)
+        @blueprint_reader.pear_modules.each do |pear_mod|
+          if pear_mod !=nil
+            @docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+          end
         end
       end
-
     rescue Exception=>e
       log_exception(e)
       return false
     end
+
+    ##################### End of
   end
 
-  def read_framework_logging
-    begin
-      rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
-      if File.exists?(rmt_log_dir_var_fname)
-        rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-        rmt_log_dir = rmt_log_dir_varfile.read
-      else
-        rmt_log_dir="/var/log"
-      end
-      local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName
-      if Dir.exists?(local_log_dir) == false
-        Dir.mkdir( local_log_dir)
-      end
-
-      return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
-
-    rescue Exception=>e
-      log_exception(e)
-      return false
+  class BluePrintReader
+    def initialize(logfile,blueprint)
+      @log_file=logfile
+      @bluePrint = blue_print
     end
-  end
 
-  def read_services
+    attr_reader :persistant_files,\
+    :persistant_dirs,\
+    :last_error,\
+    :workerPorts,\
+    :environments,\
+    :recursive_chmods,\
+    :single_chmods,\
+    :cron_jobs,\
+    :framework,\
+    :runtime,\
+    :memory,\
+    :rake_actions,\
+    :os_packages,\
+    :webPort,\
+    :webUser,\
+    :pear_modules,\
+    :archives_details,
+    :worker_commands,
+    :cron_jobs,\
+    :sed_strs
 
-    @log_file.puts("Adding services")
-    services=@bluePrint["software"]["softwareservices"]
-    services.each do |service|
-      servicetype=service["servicetype_name"]
-      if servicetype == "mysql" || servicetype == "pqsql"
-        dbname = service["name"]
-        dest = service["dest"]
-        if dest =="local" || dest == nil
-          add_db_service(dbname,servicetype)
+    def log_exception(e)
+      @err_file.puts( e.to_s)
+      puts(e.to_s)
+      @last_error=  e.to_s
+      e.backtrace.each do |bt |
+        p bt
+      end
+    end
+
+    def process_blueprint
+      begin
+
+        read_rake_list
+        read_framework_logging
+        read_services
+        read_os_packages
+        read_web_port
+        read_web_user
+        read_lanf_fw_values
+        read_pear_list
+        read_app_packages_env
+        read_write_permissions_recursive
+        read_write_permissions_single
+        read_worker_commands
+        read_cron_jobs
+        read_sed_strings
+        read_work_ports
+        read_environment_variables
+        read_persistant_files
+        read_persistant_dirs
+
+      rescue
+      end
+
+    end
+
+    def read_persistant_dirs
+      begin
+        @log_file.puts("set setup_env")
+
+        @persistant_dirs = Hash.new
+        src_paths = Array.new
+        dest_paths = Array.new
+
+        pds =   @bluePrint["software"]["persistantdirs"]
+
+        pds.each do |dir|
+          path = clean_path(dir["path"])
+          link_src = path.sub(/app/,"")
+          src_paths.push(link_src)
+          dest_paths.push(path)
         end
-      else if servicetype=="filesystem"
-          fsname = clean_path(service["name"])
-          dest = clean_path(service["dest"])
-          add_file_service(fsname, dest)
+        @persistant_dirs[:src_paths]= src_paths
+        @persistant_dirs[:dest_paths]= dest_paths
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_persistant_files
+      begin
+        @log_file.puts("set setup_env")
+
+        @persistant_files = Hash.new
+        src_paths = Array.new
+        dest_paths = Array.new
+
+        pfs =   @bluePrint["software"]["persistantfiles"]
+        files= String.new
+        pfs.each do |file|
+          path =  arc_dir=clean_path(file["path"])
+          link_src = path.sub(/app/,"")
+          src_paths.push(link_src)
+          dest_paths.push(path)
+        end
+
+        @persistant_files[:src_paths]= src_paths
+        @persistant_files[:dest_paths]= dest_paths
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_rake_list
+      begin
+        @rake_actions = Array.new
+        @log_file.puts("set rake list")
+        rake_cmds = @bluePrint["software"]["rake_tasks"]
+        if rake_cmds == nil
+          return
+        end
+
+        rake_cmds.each do |rake_cmd|
+          rake_action = rake_cmd["action"]
+          p rake_action
+          if rake_action !=nil
+            @rake_actions.push(rake_action)
+          end
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_framework_logging
+      begin
+        rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
+        if File.exists?(rmt_log_dir_var_fname)
+          rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
+          rmt_log_dir = rmt_log_dir_varfile.read
         else
-          p "Unknown Service " + servicetype
+          rmt_log_dir="/var/log"
         end
-      end
-    end
-end #FIXME
-
-def read_os_packages
-  begin
-         @log_file.puts("Writing Dockerfile")
-         ospackages = @bluePrint["software"]["ospackages"]
-            ospackages.each do |package|
-              @os_packages.push(package["name"])
-            end
-  rescue
-    log_exception(e)
-     return false
-  end  
-end
-
-   
-    
-
-  def read_web_port
-    @log_file.puts("Setting Web port")
-    begin
-      stef = File.open( get_basedir + "/home/stack.env","r")
-      while line=stef.gets do
-        if line.include?("PORT")
-          i= line.split('=')
-          @webPort= i[1].strip
+        local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostName
+        if Dir.exists?(local_log_dir) == false
+          Dir.mkdir( local_log_dir)
         end
-      end
-    rescue Exception=>e
-      log_exception(e)
-#      throw BuildException.new(e,"setting web port")
-      return false
-    end
-  end
 
-  def read_web_user
-    begin
-      stef = File.open( get_basedir + "/home/stack.env","r")
-      while line=stef.gets do
-        if line.include?("USER")
-          i= line.split('=')
-          @webUser= i[1].strip
-        end
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
+        return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
 
-  def read_lang_fw_values
-    @log_file.puts("Reading Settings")
-    begin
-      @framework = @bluePrint["software"]["swframework_name"]
-      @runtime =  @bluePrint["software"]["langauge_name"]
-        @memory =  @bluePrint["software"]["requiredmemory"]
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
-
-  
-  def read_pear_list
-    begin
-      @pear_modules = Array.new
-      
-      @log_file.puts("set pear list")
-      pear_mods = @bluePrint["software"]["pear_mod"]
-      if pear_mods == nil || pear_mods.length == 0
-        return
-        pear_mods.each do |pear_mod|    
-          mod =             pear_mod["module"]
-            if mod !=nil
-                  @pear_modules.push(mod)
-            end
-              
-              end
-      end
-      rescue Exception=>e
-         log_exception(e)
-         return false
-       end
-    end
-    
-
-  
-def read_app_packages_env
-     begin
-       @archives_details = Array.new(5)
-             log_file.puts("Configuring install Environment")
-             archives = bluePrint["software"]["installedpackages"]
-             n=0
-             srcs=String.new
-             names=String.new
-             locations=String.new
-             extracts=String.new
-             dirs=String.new
-    
-             archives.each do |archive|
-               arc_src=clean_path(archive["src"])
-               arc_name=clean_path(archive["name"])
-               arc_loc =clean_path(archive["dest"])
-               arc_extract=clean_path(archive[ "extractcmd"])
-               arc_dir=clean_path(archive["extractdir"])
-               if(n >0)
-                 srcs = srcs + " "
-                 names =names + " "
-                 locations = locations + " "
-                 extracts =extracts + " "
-                 dirs =dirs + " "
-               end
-               if arc_loc == "./"
-                 arc_loc=""
-               elsif arc_loc.end_with?("/")
-                 arc_loc = arc_loc.chop() #note not String#chop
-               end
-               @archives_details[0].push(arc_src)
-               @archives_details[1].push(arc_name)
-               @archives_details[2].push(arc_extract)
-               @archives_details[3].push(arc_loc)
-               @archives_details[4].push(arc_dir)
-                 
-             end
-    
-           rescue Exception=>e
-             log_exception(e)
-             return false
-           end
-         end
-  def read_write_permissions_recursive
-    begin
-      @log_file.puts("set permissions recussive")
-      @recursive_chmods = @bluePrint["software"]["chmod_recursive"]
-      if recursive_chmods == nil || recursive_chmods.length == 0
-        return
-      end
-
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
-  
-  def read_write_permissions_single
-    begin
-      @log_file.puts("set permissions  single")
-      @single_chmods = @bluePrint["software"]["chmod_single"]
-      if single_chmods == nil || single_chmods.length == 0
-        return
-      end
-  
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
 
-  def read_worker_commands
+    def read_services
+
+      @log_file.puts("Adding services")
+      services=@bluePrint["software"]["softwareservices"]
+      services.each do |service|
+        servicetype=service["servicetype_name"]
+        if servicetype == "mysql" || servicetype == "pqsql"
+          dbname = service["name"]
+          dest = service["dest"]
+          if dest =="local" || dest == nil
+            add_db_service(dbname,servicetype)
+          end
+        else if servicetype=="filesystem"
+            fsname = clean_path(service["name"])
+            dest = clean_path(service["dest"])
+            add_file_service(fsname, dest)
+          else
+            p "Unknown Service " + servicetype
+          end
+        end
+      end
+    end #FIXME
+
+    def read_os_packages
+      begin
+        @log_file.puts("Writing Dockerfile")
+        ospackages = @bluePrint["software"]["ospackages"]
+        ospackages.each do |package|
+          @os_packages.push(package["name"])
+        end
+      rescue
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_web_port
+      @log_file.puts("Setting Web port")
+      begin
+        stef = File.open( get_basedir + "/home/stack.env","r")
+        while line=stef.gets do
+          if line.include?("PORT")
+            i= line.split('=')
+            @webPort= i[1].strip
+          end
+        end
+      rescue Exception=>e
+        log_exception(e)
+        #      throw BuildException.new(e,"setting web port")
+        return false
+      end
+    end
+
+    def read_web_user
+      begin
+        stef = File.open( get_basedir + "/home/stack.env","r")
+        while line=stef.gets do
+          if line.include?("USER")
+            i= line.split('=')
+            @webUser= i[1].strip
+          end
+        end
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_lang_fw_values
+      @log_file.puts("Reading Settings")
+      begin
+        @framework = @bluePrint["software"]["swframework_name"]
+        @runtime =  @bluePrint["software"]["langauge_name"]
+        @memory =  @bluePrint["software"]["requiredmemory"]
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_pear_list
+      begin
+        @pear_modules = Array.new
+
+        @log_file.puts("set pear list")
+        pear_mods = @bluePrint["software"]["pear_mod"]
+        if pear_mods == nil || pear_mods.length == 0
+          return
+          pear_mods.each do |pear_mod|
+            mod =             pear_mod["module"]
+            if mod !=nil
+              @pear_modules.push(mod)
+            end
+
+          end
+        end
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_app_packages_env
+      begin
+        @archives_details = Array.new(5)
+        log_file.puts("Configuring install Environment")
+        archives = bluePrint["software"]["installedpackages"]
+        n=0
+        srcs=String.new
+        names=String.new
+        locations=String.new
+        extracts=String.new
+        dirs=String.new
+
+        archives.each do |archive|
+          arc_src=clean_path(archive["src"])
+          arc_name=clean_path(archive["name"])
+          arc_loc =clean_path(archive["dest"])
+          arc_extract=clean_path(archive[ "extractcmd"])
+          arc_dir=clean_path(archive["extractdir"])
+          if(n >0)
+            srcs = srcs + " "
+            names =names + " "
+            locations = locations + " "
+            extracts =extracts + " "
+            dirs =dirs + " "
+          end
+          if arc_loc == "./"
+            arc_loc=""
+          elsif arc_loc.end_with?("/")
+            arc_loc = arc_loc.chop() #note not String#chop
+          end
+          @archives_details[0].push(arc_src)
+          @archives_details[1].push(arc_name)
+          @archives_details[2].push(arc_extract)
+          @archives_details[3].push(arc_loc)
+          @archives_details[4].push(arc_dir)
+
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_write_permissions_recursive
+      begin
+        @log_file.puts("set permissions recussive")
+        @recursive_chmods = @bluePrint["software"]["chmod_recursive"]
+        if recursive_chmods == nil || recursive_chmods.length == 0
+          return
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_write_permissions_single
+      begin
+        @log_file.puts("set permissions  single")
+        @single_chmods = @bluePrint["software"]["chmod_single"]
+        if single_chmods == nil || single_chmods.length == 0
+          return
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
+    def read_worker_commands
       begin
         @log_file.puts("Creating Workers")
         @worker_commands = Array.new
         workers =@bluePrint["software"]["worker_commands"]
         scripts_path = get_basedir + "/home/engines/scripts/"
-  
+
         workers.each do |worker|
           @worker_commands.push(worker["command"])
         end
-        rescue Exception=>e
-          log_exception(e)
-          return false
-        end
-    end
-    
-
-  def read_cron_jobs
-    begin
-
-      cjs =  @bluePrint["software"]["cron_jobs"]
-      @cron_jobs = Array.new
-      n=0
-      cjs.each do |cj|
-        @cron_jobs.push(cj["cronjob"])
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
-      
-      return true
-   
-    rescue Exception=>e
-      log_exception(e)
-      return false
     end
-  end
 
+    def read_cron_jobs
+      begin
 
-  def read_sed_strings
-    begin
-      @sed_strings = Array.new(4)
-      @log_file.puts("set sed strings")
-      seds=@bluePrint["software"]["replacementstrings"]
-      if seds == nil || seds.empty? == true
-        return
-      end
-
-      n=0
-      seds.each do |sed|
-
-        file = clean_path(sed["file"])
-        dest = clean_path(sed["dest"])
-        tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
-        if file.match(/^_TEMPLATES.*/) != nil
-          template_file = file.gsub(/^_TEMPLATES/,"")
-        else
-          template_file = nil
+        cjs =  @bluePrint["software"]["cron_jobs"]
+        @cron_jobs = Array.new
+        n=0
+        cjs.each do |cj|
+          @cron_jobs.push(cj["cronjob"])
         end
 
-        if  template_file != nil
-          src_file = "/home/engines/templates/" +  template_file
+        return true
 
-        else
-          src_file = "/home/app/" +  file
-        end
-        dest_file = "/home/app/" +  dest
-        sedstr = sed["sedstr"]
-        @sed_strings[0].push(src_file)
-        @sed_strings[1].push(dest_file)
-        @sed_strings[2].push(tmp_file)
-        @sed_strings[3].push(sedstr)
-
-        n=n+1
+      rescue Exception=>e
+        log_exception(e)
+        return false
       end
-
-    rescue Exception=>e
-      log_exception(e)
-      return false
     end
-  end
- 
-  
+
+    def read_sed_strings
+      begin
+        @sed_strings = Array.new(4)
+        @log_file.puts("set sed strings")
+        seds=@bluePrint["software"]["replacementstrings"]
+        if seds == nil || seds.empty? == true
+          return
+        end
+
+        n=0
+        seds.each do |sed|
+
+          file = clean_path(sed["file"])
+          dest = clean_path(sed["dest"])
+          tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
+          if file.match(/^_TEMPLATES.*/) != nil
+            template_file = file.gsub(/^_TEMPLATES/,"")
+          else
+            template_file = nil
+          end
+
+          if  template_file != nil
+            src_file = "/home/engines/templates/" +  template_file
+
+          else
+            src_file = "/home/app/" +  file
+          end
+          dest_file = "/home/app/" +  dest
+          sedstr = sed["sedstr"]
+          @sed_strings[0].push(src_file)
+          @sed_strings[1].push(dest_file)
+          @sed_strings[2].push(tmp_file)
+          @sed_strings[3].push(sedstr)
+
+          n=n+1
+        end
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
     def read_work_ports
       begin
         @log_file.puts("Creating work Ports")
@@ -926,15 +915,15 @@ def read_app_packages_env
             puts "Port " + portnum.to_s + ":" + external.to_s
             @workerPorts.push(WorkPort.new(name,portnum,external,false,type))
           end
-  
+
         end
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
-  def read_environment_variables
+
+    def read_environment_variables
       begin
         envs = @bluePrint["software"]["environment_variables"]
         envivronment = String.new
@@ -945,7 +934,7 @@ def read_app_packages_env
           name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_runtime"]
-  
+
           puts("set_environments")
           if @set_environments != nil
             if ask == true  && @set_environments.key?(name) == true
@@ -956,16 +945,15 @@ def read_app_packages_env
           puts("ENV " + name + " \"" + value +"\"")
           @docker_file.puts("ENV " + name + " \"" + value +"\"")
         end
-  
+
       rescue Exception=>e
         log_exception(e)
         return false
       end
     end
-    
-end
 
-    
+  end
+
   def initialize(repo,host,domain,custom_env,docker_api)
     @hostName=host
     @contName=@hostName
@@ -986,23 +974,22 @@ end
     @databases= Array.new
     @docker_api = docker_api
 
-    
-begin
-    FileUtils.mkdir_p(get_basedir)
-    @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
-    @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
-rescue
-  log_exception(e)
-end
+    begin
+      FileUtils.mkdir_p(get_basedir)
+      @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
+      @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
+    rescue
+      log_exception(e)
+    end
   end
 
   def log_exception(e)
-    @err_file.puts( e.to_s)    
+    @err_file.puts( e.to_s)
     puts(e.to_s)
     @last_error=  e.to_s
-     e.backtrace.each do |bt |
-       p bt
-     end
+    e.backtrace.each do |bt |
+      p bt
+    end
   end
 
   def backup_lastbuild
@@ -1031,8 +1018,6 @@ end
     return @buildname
   end
 
-  
-
   def load_blueprint
     begin
       @log_file.puts("Reading Blueprint")
@@ -1041,7 +1026,7 @@ end
       blueprint_json_str = blueprint_file.read
       blueprint_file.close
 
-     # @bluePrint = JSON.parse(blueprint_json_str)
+      # @bluePrint = JSON.parse(blueprint_json_str)
       return JSON.parse(blueprint_json_str)
     rescue Exception=>e
       log_exception(e)
@@ -1057,8 +1042,6 @@ end
       return false
     end
   end
-
-  
 
   def create_database_service db
     begin
@@ -1086,7 +1069,6 @@ end
       vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @contName + "/" + name,dest,"rw",permissions)
       @vols.push(vol)
 
-  
       create_file_service vol
     rescue Exception=>e
       log_exception(e)
@@ -1112,35 +1094,26 @@ end
 
   end
 
-  
-
   def setup_default_files
 
-    if setup_global_faults == false
+    if setup_global_defaults == false
       return false
     else
-      return copy_framework_defaults
+      return setup_framework_defaults
     end
   end
 
+  def create_db_service(name,flavor)
+    begin
+      db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
+      databases.push(db)
+      create_database_service db
+    rescue Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
 
-
-
-
-
-  
-def create_db_service(name,flavor)
-        begin
-        db = DatabaseService.new(@hostName,dbname,SysConfig.DBHost,name,name,flavor)
-                  databases.push(db)            
-                  create_database_service db
-          rescue Exception=>e
-                   log_exception(e)
-                    return false
-                  end       
-      end
-    
-   
   def build_init
     begin
       @log_file.puts("Building Image")
@@ -1168,13 +1141,13 @@ def create_db_service(name,flavor)
 
       return retval
     rescue Exception=>e
-      
+
       log_exception(e)
       return false
     end
   end
 
-  def setup_global_faults
+  def setup_global_defaults
     begin
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  + get_basedir
       system  cmd
@@ -1206,85 +1179,83 @@ def create_db_service(name,flavor)
 
   def build_from_blue_print
     if get_blueprint_from_repo == false
-      return false 
+      return false
     end
     return build_container
   end
 
   def build_container
     begin
-      
+
       @log_file.puts("Reading Blueprint")
-      blueprint = load_blueprint 
-        if blueprint == false
-              return false
+      blueprint = load_blueprint
+      if blueprint == false
+        return false
       end
-      
+
       if  setup_default_files == false
         return false
-        end
-       
+      end
+
       blueprint_reader = BluePrintReader.new(@log_file,blueprint)
       blueprint_reader.process_blueprint
-      
+
       dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file)
       dockerfile_builder.write_files_for_docker
-      
-#      
-#      if read_lang_fw_values == false
-#        return false
-#      elsif copy_base_templates == false
-#        return false
-#      end      
-#      if read_environment_variables == false
-#        return false                
-#      elsif read_web_port == false
-#        return false
-#      elsif read_web_user == false
-#        return false
-#      elsif read_work_ports == false
-#        return false
-#      elsif read_services == false
-#        return false
-#      elsif read_cron_jobs == false
-#        return false
-#      elsif  create_workers == false
-#        return false
-#        
-#        elsif  dockerfile_builder.write_cronjobs == false
-#      elsif   setup_dockerfile == false
-#          return false
-#      elsif  dockerfile_builder.create_stack_env == false
-#        return false
-#        
-#      elsif   dockerfile_builder.create_presettings_env == false
-#        return false
-#        
-#      elsif  dockerfile_builder.set_container_user == false
-#        return false
-#      elsif  dockerfile_builder.chown_home_app   == false
-#        return false
-#        
-#      elsif  create_sed_strings == false
-#        return false
-#        
-#      elsif  create_file_persistance == false
-#        return false
-#      elsif  insert_framework_frag_in_dockerfile("builder.mid") == false
-#        return false
-#      elsif create_rake_list == false
-#        return false
-#      elsif create_pear_list == false
-#        return false
-#      elsif set_write_permissions_recursive == false
-#        return false
-#      elsif set_write_permissions_single == false
-#        return false
-#      elsif insert_framework_frag_in_dockerfile("builder.end") == false
-#        return false
-#      end
 
-    
+      #
+      #      if read_lang_fw_values == false
+      #        return false
+      #      elsif copy_base_templates == false
+      #        return false
+      #      end
+      #      if read_environment_variables == false
+      #        return false
+      #      elsif read_web_port == false
+      #        return false
+      #      elsif read_web_user == false
+      #        return false
+      #      elsif read_work_ports == false
+      #        return false
+      #      elsif read_services == false
+      #        return false
+      #      elsif read_cron_jobs == false
+      #        return false
+      #      elsif  create_workers == false
+      #        return false
+      #
+      #        elsif  dockerfile_builder.write_cronjobs == false
+      #      elsif   setup_dockerfile == false
+      #          return false
+      #      elsif  dockerfile_builder.create_stack_env == false
+      #        return false
+      #
+      #      elsif   dockerfile_builder.create_presettings_env == false
+      #        return false
+      #
+      #      elsif  dockerfile_builder.set_container_user == false
+      #        return false
+      #      elsif  dockerfile_builder.chown_home_app   == false
+      #        return false
+      #
+      #      elsif  create_sed_strings == false
+      #        return false
+      #
+      #      elsif  create_file_persistance == false
+      #        return false
+      #      elsif  insert_framework_frag_in_dockerfile("builder.mid") == false
+      #        return false
+      #      elsif create_rake_list == false
+      #        return false
+      #      elsif create_pear_list == false
+      #        return false
+      #      elsif set_write_permissions_recursive == false
+      #        return false
+      #      elsif set_write_permissions_single == false
+      #        return false
+      #      elsif insert_framework_frag_in_dockerfile("builder.end") == false
+      #        return false
+      #      end
 
       if  build_init == false
         @log_file.puts("Error Build Init failed")
@@ -1304,9 +1275,6 @@ def create_db_service(name,flavor)
       return false
     end
   end
-
-
- 
 
   def rebuild_managed_container  engine
     @engine  = engine
