@@ -259,6 +259,7 @@ class EngineBuilder
 
     def write_worker_commands
       begin
+        scripts_path = @blueprint_reader.get_basedir + "/home/engines/scripts/"
 
         if Dir.exists?(scripts_path) == false
           FileUtils.mkdir_p(scripts_path)
@@ -519,7 +520,7 @@ class EngineBuilder
     :archives_details,
     :worker_commands,
     :cron_jobs,\
-    :sed_strs,\
+    :sed_strings,\
     :volumes,\
      :databases,\
      :data_uid,\
@@ -831,8 +832,7 @@ def add_file_service(name,dest)
         @log_file.puts("Creating Workers")
         @worker_commands = Array.new
         workers =@bluePrint["software"]["worker_commands"]
-        scripts_path = get_basedir + "/home/engines/scripts/"
-
+       
         workers.each do |worker|
           @worker_commands.push(worker["command"])
         end
@@ -1309,8 +1309,12 @@ end
       else
         @log_file.puts("creating deploy image")
 
+        @blueprint_reader.databases do |db|
         create_database_service db
+        end
+        @blueprint_reader.volumes do |vol|
         create_file_service vol
+        end
         
         mc = create_managed_container()
       end
