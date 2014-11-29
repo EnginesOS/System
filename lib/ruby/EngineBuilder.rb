@@ -932,7 +932,6 @@ def add_file_service(name,dest)
       begin
         envs = @bluePrint["software"]["environment_variables"]
         envivronment = String.new
-        @docker_file.puts("#Custom ENV")
         envs.each do |env|
           p env
           name=env["name"]
