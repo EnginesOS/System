@@ -450,13 +450,13 @@ class EngineBuilder
         # stef = File.open(get_basedir + "/home/stack.env","w")
         @docker_file.puts("")
         @docker_file.puts("#Stack Env")
-        @docker_file.puts("ENV Memory " + @engine_builder.memory.to_s)
-        @docker_file.puts("ENV Hostname " + @engine_builder.hostName)
-        @docker_file.puts("ENV Domainname " +  @engine_builder.domainName )
-        @docker_file.puts("ENV fqdn " +  @engine_builder.hostName + "." + @engine_builder.domainName )
-        @docker_file.puts("ENV FRAMEWORK " +   @engine_builder.framework  )
-        @docker_file.puts("ENV RUNTIME "  + @engine_builder.runtime  )
-        @docker_file.puts("ENV PORT " +  @engine_builder.webPort.to_s  )
+        @docker_file.puts("ENV Memory " + @blueprint_reader.memory.to_s)
+        @docker_file.puts("ENV Hostname " + @blueprint_reader.hostName)
+        @docker_file.puts("ENV Domainname " +  @blueprint_reader.domainName )
+        @docker_file.puts("ENV fqdn " +  @blueprint_reader.hostName + "." + @blueprint_reader.domainName )
+        @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
+        @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
+        @docker_file.puts("ENV PORT " +  @blueprint_reader.webPort.to_s  )
         wports = String.new
         n=0
         @blueprint_reader.workerPorts.each do |port|
