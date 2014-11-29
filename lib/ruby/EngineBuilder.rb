@@ -488,7 +488,7 @@ class EngineBuilder
   end
 
   class BluePrintReader
-    def initialize(logfile,blueprint)
+    def initialize(logfile,blue_print)
       @log_file=logfile
       @bluePrint = blue_print
     end
