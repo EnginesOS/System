@@ -32,8 +32,9 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,logfile,errfile)
-
+    def initialize(reader,hostname,domain_name,logfile,errfile)
+      @hostname = hostname
+      @domain_name = domain_name
       @blueprint_reader = reader
       @log_file = logfile
       @err_file = errfile
@@ -452,8 +453,8 @@ class EngineBuilder
         @docker_file.puts("#Stack Env")
         @docker_file.puts("ENV Memory " + @blueprint_reader.memory.to_s)
         @docker_file.puts("ENV Hostname " + @blueprint_reader.hostname)
-        @docker_file.puts("ENV Domainname " +  @blueprint_reader.domainName )
-        @docker_file.puts("ENV fqdn " +  @blueprint_reader.hostname + "." + @blueprint_reader.domainName )
+        @docker_file.puts("ENV Domainname " +  @domain_name )
+        @docker_file.puts("ENV fqdn " +  @hostname + "." + @domain_name )
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
         @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
         @docker_file.puts("ENV PORT " +  @blueprint_reader.webPort.to_s  )
@@ -499,6 +500,7 @@ class EngineBuilder
   class BluePrintReader
     def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
+      
       @container_name = contname
       @log_file=logfile
       @err_file=errfile
@@ -524,7 +526,6 @@ class EngineBuilder
     :archives_details,
     :worker_commands,
     :cron_jobs,\
-    :hostname,\
     :sed_strs
     
     def clean_path(path)
@@ -1239,7 +1240,7 @@ end
       read_web_port
       read_web_user
       
-      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader ,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
