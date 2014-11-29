@@ -452,7 +452,7 @@ class EngineBuilder
         @docker_file.puts("")
         @docker_file.puts("#Stack Env")
         @docker_file.puts("ENV Memory " + @blueprint_reader.memory.to_s)
-        @docker_file.puts("ENV Hostname " + @blueprint_reader.hostname)
+        @docker_file.puts("ENV Hostname " + @hostname)
         @docker_file.puts("ENV Domainname " +  @domain_name )
         @docker_file.puts("ENV fqdn " +  @hostname + "." + @domain_name )
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
