@@ -1182,7 +1182,7 @@ end
       return false
     end
     puts("Cloning Blueprint")
-    return clone_repo
+    return clone_repo 
   end
 
   def build_from_blue_print
