@@ -1238,7 +1238,7 @@ end
       read_web_port
       read_web_user
       
-      dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader ,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
