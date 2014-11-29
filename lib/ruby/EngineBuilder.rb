@@ -985,8 +985,7 @@ end
     @runtime=String.new
     @databases= Array.new
     @docker_api = docker_api
-    @blueprint_reader = BluePrintReader.new(@log_file,@bluePrint)
-    @dockerfile_builder = DockerFileBuilder.new( @blueprint_reader ,@log_file)
+
     
 begin
     FileUtils.mkdir_p(get_basedir)
