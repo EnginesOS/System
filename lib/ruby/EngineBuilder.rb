@@ -32,10 +32,11 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,logfile)
+    def initialize(reader,logfile,errfile)
 
       @blueprint_reader = reader
       @log_file = logfile
+      @err_file = errfile
       @docker_file = File.open( builder.get_basedir + "/Dockerfile","a")
 
     end
@@ -545,7 +546,8 @@ class EngineBuilder
         read_persistant_files
         read_persistant_dirs
 
-      rescue
+      rescue Exception=>e
+        log_exception(e)
       end
 
     end
@@ -1196,7 +1198,7 @@ class EngineBuilder
             return false
           end
           
-      dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file)
+      dockerfile_builder = DockerFileBuilder.new( blueprint_reader ,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
 
