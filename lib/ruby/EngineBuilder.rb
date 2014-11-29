@@ -538,7 +538,7 @@ class EngineBuilder
         read_services
         read_os_packages
   
-        read_lanf_fw_values
+        read_lang_fw_values
         read_pear_list
         read_app_packages_env
         read_write_permissions_recursive
