@@ -1367,21 +1367,21 @@ end
   def create_managed_container
 
     mc = ManagedEngine.new(@hostname,
-    @memory.to_s ,
+    @blueprint_reader.memory.to_s ,
     @hostname,
     @domain_name,
-    @hostname + "/deploy",
-    @vols,
-    @webPort,
-    @workerPorts,
+    @container_name + "/deploy",
+    @blueprint_reader.volumes,
+    @blueprint_reader.webPort,
+    @blueprint_reader.workerPorts,
     @repoName,
-    @databases,
-    @environments,
-    @framework,
-    @runtime,
+    @blueprint_reader.databases,
+    @blueprint_reader.environments,
+    @blueprint_reader.framework,
+    @blueprint_reader.runtime,
     @docker_api,
-    @data_uid,
-    @data_gid
+    @blueprint_reader.data_uid,
+    @blueprint_reader.data_gid
     )
 
  
