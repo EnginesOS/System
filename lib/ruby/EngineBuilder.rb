@@ -14,15 +14,14 @@ class EngineBuilder
   @hostName=nil
   @domainName=nil
   @buildname=nil
-  @framework=nil
-  @workerPorts=Array.new
-  @webPort=8000
-  @vols=Array.new
-  @environments=Array.new
-  @runtime=String.new
-  @databases= Array.new
 
-  attr_reader :last_error
+
+  attr_reader :last_error,\
+              :repoName,\
+              :hostName,\
+              :domainName,\
+              :buildname
+  
   class BuildException < Exception
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -1010,13 +1009,6 @@ class EngineBuilder
     end
   end
 
-  def bluePrint
-    return @bluePrint
-  end
-
-  def buildname
-    return @buildname
-  end
 
   def load_blueprint
     begin
@@ -1160,7 +1152,7 @@ class EngineBuilder
   def setup_framework_defaults
     @log_file.puts("Copy in default templates")
     begin
-      cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" + @framework + "/* "  + get_basedir
+      cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" +  @blueprint_reader.framework + "/* "  + get_basedir
       system  cmd
     rescue Exception=>e
       log_exception(e)
