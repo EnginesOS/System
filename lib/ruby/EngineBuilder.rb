@@ -317,7 +317,7 @@ class EngineBuilder
             
         @blueprint_reader.databases.each do |db|
         @docker_file.puts("#Database Env")
-        @docker_file.puts("ENV dbname " + db.dbName)
+        @docker_file.puts("ENV dbname " + db.name)
         @docker_file.puts("ENV dbhost " + db.dbHost)
         @docker_file.puts("ENV dbuser " + db.dbUser)
         @docker_file.puts("ENV dbpasswd " + db.dbPass)
