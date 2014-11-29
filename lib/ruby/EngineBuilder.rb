@@ -787,12 +787,13 @@ def add_file_service(name,dest)
 
     def read_write_permissions_recursive
       begin
+        @recursive_chmods = Array.new
         @log_file.puts("set permissions recussive")
         chmods = @bluePrint["software"]["chmod_recursive"]
         if chmods != nil
           chmods.each do |chmod |
           directory = clean_path(recursive_chmod)
-            recursive_chmods.push(directory)
+            @recursive_chmods.push(directory)
           end
           #FIXME need to strip any ../ and any preceeding ./
           return
@@ -806,6 +807,7 @@ def add_file_service(name,dest)
 
     def read_write_permissions_single
       begin
+        @single_chmods =Array.new
         @log_file.puts("set permissions  single")
         chmods = @bluePrint["software"]["chmod_single"]
         if chmods != nil  
@@ -906,6 +908,7 @@ def add_file_service(name,dest)
 
     def read_work_ports
       begin
+        @workerPorts = Array.new
         @log_file.puts("Creating work Ports")
         ports =  @bluePrint["software"]["work_ports"]
         puts("Ports Json" + ports.to_s)
@@ -931,9 +934,9 @@ def add_file_service(name,dest)
     end
 
     def read_environment_variables
+      @environments = new Array
       begin
         envs = @bluePrint["software"]["environment_variables"]
-        envivronment = String.new
         envs.each do |env|
           p env
           name=env["name"]
@@ -946,7 +949,6 @@ def add_file_service(name,dest)
             end
           end
           @environments.push(EnvironmentVariable.new(name,value,ask))
-          puts("ENV " + name + " \"" + value +"\"")
         end
       rescue Exception=>e
         log_exception(e)
