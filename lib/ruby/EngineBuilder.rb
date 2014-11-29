@@ -497,7 +497,7 @@ class EngineBuilder
       @container_name = contname
       @log_file=logfile
       @err_file=errfile
-      @bluePrint = blue_print
+      @blueprint = blue_print
     end
 
     attr_reader :persistant_files,\
@@ -579,7 +579,7 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pds =   @bluePrint["software"]["persistantdirs"]
+        pds =   @blueprint["software"]["persistantdirs"]
 
         pds.each do |dir|
           path = clean_path(dir["path"])
@@ -603,7 +603,7 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @bluePrint["software"]["persistantfiles"]
+        pfs =   @blueprint["software"]["persistantfiles"]
         files= String.new
         pfs.each do |file|
           path =  arc_dir=clean_path(file["path"])
@@ -625,7 +625,7 @@ class EngineBuilder
       begin
         @rake_actions = Array.new
         @log_file.puts("set rake list")
-        rake_cmds = @bluePrint["software"]["rake_tasks"]
+        rake_cmds = @blueprint["software"]["rake_tasks"]
         if rake_cmds == nil
           return
         end
@@ -652,7 +652,7 @@ class EngineBuilder
       @volumes=Array.new
       
       @log_file.puts("Adding services")
-      services=@bluePrint["software"]["softwareservices"]
+      services=@blueprint["software"]["softwareservices"]
       services.each do |service|
         servicetype=service["servicetype_name"]
         if servicetype == "mysql" || servicetype == "pqsql"
@@ -697,7 +697,7 @@ def add_file_service(name,dest)
         @os_packages = Array.new
         
         @log_file.puts("Writing Dockerfile")
-        ospackages = @bluePrint["software"]["ospackages"]
+        ospackages = @blueprint["software"]["ospackages"]
         ospackages.each do |package|
           @os_packages.push(package["name"])
         end
@@ -711,10 +711,10 @@ def add_file_service(name,dest)
     def read_lang_fw_values
       @log_file.puts("Reading Settings")
       begin
-        @framework = @bluePrint["software"]["swframework_name"]
+        @framework = @blueprint["software"]["swframework_name"]
           p @framework 
-        @runtime =  @bluePrint["software"]["langauge_name"]
-        @memory =  @bluePrint["software"]["requiredmemory"]
+        @runtime =  @blueprint["software"]["langauge_name"]
+        @memory =  @blueprint["software"]["requiredmemory"]
       rescue Exception=>e
         log_exception(e)
         return false
@@ -726,7 +726,7 @@ def add_file_service(name,dest)
         @pear_modules = Array.new
 
         @log_file.puts("set pear list")
-        pear_mods = @bluePrint["software"]["pear_mod"]
+        pear_mods = @blueprint["software"]["pear_mod"]
         if pear_mods == nil || pear_mods.length == 0
           return
           pear_mods.each do |pear_mod|
@@ -752,7 +752,7 @@ def add_file_service(name,dest)
         @archives_details[:arc_loc] = Array.new
         @archives_details[:arc_dir] = Array.new      
         @log_file.puts("Configuring install Environment")
-        archives = @bluePrint["software"]["installedpackages"]
+        archives = @blueprint["software"]["installedpackages"]
         n=0
         srcs=String.new
         names=String.new
@@ -796,7 +796,7 @@ def add_file_service(name,dest)
       begin
         @recursive_chmods = Array.new
         @log_file.puts("set permissions recussive")
-        chmods = @bluePrint["software"]["chmod_recursive"]
+        chmods = @blueprint["software"]["chmod_recursive"]
         if chmods != nil
           chmods.each do |chmod |
           directory = clean_path(recursive_chmod)
@@ -816,7 +816,7 @@ def add_file_service(name,dest)
       begin
         @single_chmods =Array.new
         @log_file.puts("set permissions  single")
-        chmods = @bluePrint["software"]["chmod_single"]
+        chmods = @blueprint["software"]["chmod_single"]
         if chmods != nil  
           chmods.each do | single_chmod |            
           directory = clean_path(single_chmod["directory"])
@@ -835,7 +835,7 @@ def add_file_service(name,dest)
       begin
         @log_file.puts("Creating Workers")
         @worker_commands = Array.new
-        workers =@bluePrint["software"]["worker_commands"]
+        workers =@blueprint["software"]["worker_commands"]
        
         workers.each do |worker|
           @worker_commands.push(worker["command"])
@@ -849,7 +849,7 @@ def add_file_service(name,dest)
     def read_cron_jobs
       begin
 
-        cjs =  @bluePrint["software"]["cron_jobs"]
+        cjs =  @blueprint["software"]["cron_jobs"]
         @cron_jobs = Array.new
         n=0
         cjs.each do |cj|
@@ -873,7 +873,7 @@ def add_file_service(name,dest)
         @sed_strings[:tmp_file] = Array.new
                
         @log_file.puts("set sed strings")
-        seds=@bluePrint["software"]["replacementstrings"]
+        seds=@blueprint["software"]["replacementstrings"]
         if seds == nil || seds.empty? == true
           return
         end
@@ -916,7 +916,7 @@ def add_file_service(name,dest)
       begin
         @workerPorts = Array.new
         @log_file.puts("Creating work Ports")
-        ports =  @bluePrint["software"]["work_ports"]
+        ports =  @blueprint["software"]["work_ports"]
         puts("Ports Json" + ports.to_s)
         if ports != nil
           ports.each do |port|
@@ -942,7 +942,7 @@ def add_file_service(name,dest)
     def read_environment_variables
       @environments = Array.new
       begin
-        envs = @bluePrint["software"]["environment_variables"]
+        envs = @blueprint["software"]["environment_variables"]
         envs.each do |env|
           p env
           name=env["name"]
@@ -1049,7 +1049,7 @@ end
       blueprint_json_str = blueprint_file.read
       blueprint_file.close
 
-      # @bluePrint = JSON.parse(blueprint_json_str)
+      # @blueprint = JSON.parse(blueprint_json_str)
       return JSON.parse(blueprint_json_str)
     rescue Exception=>e
       log_exception(e)
@@ -1232,8 +1232,8 @@ end
     begin
 
       @log_file.puts("Reading Blueprint")
-      blueprint = load_blueprint
-      if blueprint == false
+      @blueprint = load_blueprint
+      if @blueprint == false
         return false
       end
 
@@ -1388,8 +1388,8 @@ end
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
-    if mc.save_blueprint(@bluePrint) == false
-       puts "failed to save blueprint " + @bluePrint.to_s
+    if mc.save_blueprint(@blueprint) == false
+       puts "failed to save blueprint " + @blueprint.to_s
      end
 
     bp = mc.load_blueprint
