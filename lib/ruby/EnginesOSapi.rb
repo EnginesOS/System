@@ -38,6 +38,9 @@ class EnginesOSapi
     host_name = params[:host_name]
    evirons = params[:env_variables]
      p params
+     if container_name == nil || domain_name == nil || host_name == nil|| domain_name == nil
+       return  failed(host_name,"Incorrect Parameters","build_engine") #FIXME needs to return error object
+     end
       engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
     if engine == false
