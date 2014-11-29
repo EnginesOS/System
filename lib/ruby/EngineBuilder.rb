@@ -1205,6 +1205,7 @@ def read_web_port
       if line.include?("PORT")
         i= line.split('=')
         @webPort= i[1].strip
+        p line
       end
     end
   rescue Exception=>e
@@ -1237,7 +1238,7 @@ end
         return false
       end
 
-
+      
 
       @blueprint_reader = BluePrintReader.new(@build_name,@contName,blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
