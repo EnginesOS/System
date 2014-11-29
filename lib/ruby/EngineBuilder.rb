@@ -264,8 +264,8 @@ class EngineBuilder
         if Dir.exists?(scripts_path) == false
           FileUtils.mkdir_p(scripts_path)
         end
-
-        if @blueprint_reader.work_commands != nil && @blueprint_reader.worker_commands.length >0
+        
+        if @blueprint_reader.worker_commands != nil && @blueprint_reader.worker_commands.length >0
           cmdf= File.open( scripts_path + "pre-running.sh","w")
           if !cmdf
             puts("failed to open " + scripts_path + "pre-running.sh")
@@ -492,8 +492,8 @@ class EngineBuilder
     def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
       
-      @data_uid=11111
-      @data_gid=11111
+      @data_uid="11111"
+      @data_gid="11111"
       
       @container_name = contname
       @log_file=logfile
@@ -689,7 +689,7 @@ def add_file_service(name,dest)
     
     def  add_db_service(dbname,servicetype)
   
-      db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,dbname,dbname,servicetype)
+      db = DatabaseService.new(@container_name,dbname,SysConfig.DBHost,dbname,dbname,servicetype)
       @databases.push(db)
       
     end
