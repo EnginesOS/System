@@ -13,14 +13,14 @@ class EngineBuilder
   @repoName=nil
   @hostName=nil
   @domainName=nil
-  @buildname=nil
+  @build_name=nil
 
 
   attr_reader :last_error,\
               :repoName,\
               :hostName,\
               :domainName,\
-              :buildname
+              :build_name
   
   class BuildException < Exception
     attr_reader :parent_exception,:method_name
@@ -489,8 +489,8 @@ class EngineBuilder
   end
 
   class BluePrintReader
-    def initialize(buildname,blue_print,logfile,errfile)
-      @build_name = buildname
+    def initialize(build_name,blue_print,logfile,errfile)
+      @build_name = build_name
       @log_file=logfile
       @err_file=errfile
       @bluePrint = blue_print
@@ -967,7 +967,7 @@ class EngineBuilder
     @contName=@hostName
     @domainName=domain
     @repoName=repo
-    @buildname = File.basename(repo).sub(/\.git$/,"")
+    @build_name = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
@@ -1037,7 +1037,7 @@ class EngineBuilder
 
   def clone_repo
     begin
-      g = Git.clone(@repoName, @buildname, :path => SysConfig.DeploymentDir)
+      g = Git.clone(@repoName, @build_name, :path => SysConfig.DeploymentDir)
     rescue Exception=>e
       log_exception(e)
       return false
@@ -1197,7 +1197,7 @@ class EngineBuilder
 
 
 
-      @blueprint_reader = BluePrintReader.new(@buildName,blueprint,@log_file,@err_file)
+      @blueprint_reader = BluePrintReader.new(@build_name,blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
@@ -1419,7 +1419,7 @@ class EngineBuilder
   end
 
   def get_basedir
-    return SysConfig.DeploymentDir + "/" + @buildname
+    return SysConfig.DeploymentDir + "/" + @build_name
   end
 end
 
