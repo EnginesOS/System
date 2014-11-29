@@ -177,7 +177,7 @@ class EngineBuilder
           #src_file = @sed_strings[:src_file][n]
           dest_file = @blueprint_reader.sed_strings[:dest_file][n]
           sed_str =  @blueprint_reader.sed_strings[:sed_str][n]
-          temp_file =  @blueprint_reader.sed_strings[:tmp_file][n]          
+          tmp_file =  @blueprint_reader.sed_strings[:tmp_file][n]          
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
@@ -900,8 +900,8 @@ def add_file_service(name,dest)
           sedstr = sed["sedstr"]
           @sed_strings[:src_file].push(src_file)
           @sed_strings[:dest_file].push(dest_file)
-          @sed_strings[:sed_str].push(tmp_file)
-          @sed_strings[:tmp_file].push(sedstr)
+          @sed_strings[:tmp_file].push(tmp_file)
+          @sed_strings[:sed_str].push(sedstr)
 
           n=n+1
         end
