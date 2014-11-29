@@ -729,7 +729,7 @@ def add_file_service(name,dest)
     def read_app_packages_env
       begin
         @archives_details = Array.new(5)
-        log_file.puts("Configuring install Environment")
+        @log_file.puts("Configuring install Environment")
         archives = bluePrint["software"]["installedpackages"]
         n=0
         srcs=String.new
