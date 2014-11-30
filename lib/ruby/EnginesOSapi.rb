@@ -10,7 +10,7 @@ require 'objspace'
 
 class EnginesOSapi
   def initialize()
-    @docker_api = Docker.new
+    @docker_api = Engines.new
   end
 
   def docker_api
