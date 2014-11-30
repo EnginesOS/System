@@ -7,7 +7,29 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
-
+    
+    def restart_nginx_process
+      begin
+        clear_error
+        cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
+  
+        SystemUtils.debug_output(cmd)
+        nginxpid= %x<#{cmd}>
+        SystemUtils.debug_output(nginxpid)
+        #FIXME read from pid file this is just silly
+        docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
+        SystemUtils.debug_output(docker_cmd)
+        if nginxpid.to_s != "-"
+          return run_system(docker_cmd)
+        else
+          return false
+        end
+      rescue Exception=>e
+        log_error(e)
+        return false
+      end
+    end
+    
     def clear_cid(container)
       container.container_id=(-1)
     end
@@ -1386,27 +1408,7 @@ end
     end
   end
 
-  def restart_nginx_process
-    begin
-      clear_error
-      cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
 
-      SystemUtils.debug_output(cmd)
-      nginxpid= %x<#{cmd}>
-      SystemUtils.debug_output(nginxpid)
-      #FIXME read from pid file this is just silly
-      docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
-      SystemUtils.debug_output(docker_cmd)
-      if nginxpid.to_s != "-"
-        return run_system(docker_cmd)
-      else
-        return false
-      end
-    rescue Exception=>e
-      log_error(e)
-      return false
-    end
-  end
 
   def create_database  site_hash
     clear_error
