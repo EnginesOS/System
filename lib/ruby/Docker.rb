@@ -1207,6 +1207,21 @@ end
     end
   end
 
+def delete_image(container)
+  begin
+    clear_error
+    if @docker_api.delete_image(container) == true
+      res = @system_api.delete_container_configs(container)
+      return res
+    else
+      return false
+    end
+  rescue Exception=>e
+    container.last_error=( "Failed To Delete " + e.to_s)
+    log_error(e)
+    return false
+  end
+end 
   def run_system(cmd)
     clear_error
     begin
