@@ -598,7 +598,26 @@ class Engines
     end
 protected
 
-def clear_error
+def run_system (cmd)
+    clear_error
+    begin
+      cmd = cmd + " 2>&1"
+      res= %x<#{cmd}>
+      SystemUtils.debug_output res
+      #FIXME should be case insensitive The last one is a pure kludge
+      #really need to get stderr and stdout separately
+      if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
+        return true
+      else
+        return res
+      end
+    rescue Exception=>e
+      log_error(e)
+      return ret_val
+    end
+  end
+
+  def clear_error
   @last_error = ""
 end
 
@@ -1261,6 +1280,7 @@ end
       return false
     end
   end
+  
 def create_database  site_hash
     clear_error
     begin
