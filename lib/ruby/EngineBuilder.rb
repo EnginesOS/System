@@ -15,13 +15,11 @@ class EngineBuilder
   @domain_name=nil
   @build_name=nil
 
-
   attr_reader :last_error,\
-              :repoName,\
-              :hostname,\
-              :domain_name,\
-              :build_name
-  
+  :repoName,\
+  :hostname,\
+  :domain_name,\
+  :build_name
   class BuildException < Exception
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -78,7 +76,7 @@ class EngineBuilder
       begin
 
         @blueprint_reader.environments do |env|
-          @docker_file.puts("#Custom ENV")          
+          @docker_file.puts("#Custom ENV")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
         end
 
@@ -87,6 +85,7 @@ class EngineBuilder
         return false
       end
     end
+
     def write_persistant_dirs
       begin
         @log_file.puts("set setup_env")
@@ -108,7 +107,7 @@ class EngineBuilder
         if src_paths.length >1
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
-          @docker_file.puts("chmod -R 770 /home/fs")         
+          @docker_file.puts("chmod -R 770 /home/fs")
         end
 
       rescue Exception=>e
@@ -123,7 +122,7 @@ class EngineBuilder
         src_paths = @blueprint_reader.persistant_files[:src_paths]
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
         n=0
-        
+
         src_paths.each do |link_src|
           path = dest_paths[n]
           @docker_file.puts("")
@@ -140,12 +139,11 @@ class EngineBuilder
           @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
         end
 
-
         @docker_file.puts("")
 
-          @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
-          @docker_file.puts("      chmod -R 770 /home/fs")
-          @docker_file.puts("VOLUME /home/fs/")
+        @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
+        @docker_file.puts("      chmod -R 770 /home/fs")
+        @docker_file.puts("VOLUME /home/fs/")
 
         @docker_file.puts("USER $ContUser")
 
@@ -159,10 +157,10 @@ class EngineBuilder
       begin
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
-        
+
         @blueprint_reader.volumes.each do |vol|
-        @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
-        @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
+          @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
+          @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
         end
       rescue Exception=>e
         log_exception(e)
@@ -177,12 +175,12 @@ class EngineBuilder
           #src_file = @sed_strings[:src_file][n]
           dest_file = @blueprint_reader.sed_strings[:dest_file][n]
           sed_str =  @blueprint_reader.sed_strings[:sed_str][n]
-          tmp_file =  @blueprint_reader.sed_strings[:tmp_file][n]          
+          tmp_file =  @blueprint_reader.sed_strings[:tmp_file][n]
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
           n=n+1
-      end
+        end
 
       rescue Exception=>e
         log_exception(e)
@@ -206,7 +204,7 @@ class EngineBuilder
     def write_os_packages
       begin
         packages=String.new
-        
+
         @blueprint_reader.os_packages.each do |package|
           packages = packages + package + " "
         end
@@ -263,7 +261,7 @@ class EngineBuilder
         if Dir.exists?(scripts_path) == false
           FileUtils.mkdir_p(scripts_path)
         end
-        
+
         if @blueprint_reader.worker_commands != nil && @blueprint_reader.worker_commands.length >0
           cmdf= File.open( scripts_path + "pre-running.sh","w")
           if !cmdf
@@ -313,14 +311,14 @@ class EngineBuilder
 
     def write_db_service
       begin
-            
+
         @blueprint_reader.databases.each do |db|
-        @docker_file.puts("#Database Env")
-        @docker_file.puts("ENV dbname " + db.name)
-        @docker_file.puts("ENV dbhost " + db.dbHost)
-        @docker_file.puts("ENV dbuser " + db.dbUser)
-        @docker_file.puts("ENV dbpasswd " + db.dbPass)
-        @docker_file.puts("ENV dbflavor " + db.flavor)
+          @docker_file.puts("#Database Env")
+          @docker_file.puts("ENV dbname " + db.name)
+          @docker_file.puts("ENV dbhost " + db.dbHost)
+          @docker_file.puts("ENV dbuser " + db.dbUser)
+          @docker_file.puts("ENV dbpasswd " + db.dbPass)
+          @docker_file.puts("ENV dbflavor " + db.flavor)
         end
 
       rescue Exception=>e
@@ -334,7 +332,7 @@ class EngineBuilder
         if @blueprint_reader.single_chmods == nil
           return
         end
-        @blueprint_reader.single_chmods.each do |directory|       
+        @blueprint_reader.single_chmods.each do |directory|
           if directory !=nil
             @docker_file.puts("RUN chmod -r /home/app/" + directory )
           end
@@ -371,7 +369,7 @@ class EngineBuilder
         locations=String.new
         extracts=String.new
         dirs=String.new
-  
+
         @blueprint_reader.archives_details[:arc_src].each do |archive|
           arc_src=@blueprint_reader.archives_details[:arc_src][n]
           arc_name=@blueprint_reader.archives_details[:arc_name][n]
@@ -490,10 +488,10 @@ class EngineBuilder
   class BluePrintReader
     def initialize(build_name,contname,blue_print,logfile,errfile)
       @build_name = build_name
-      
+
       @data_uid="11111"
       @data_gid="11111"
-      
+
       @container_name = contname
       @log_file=logfile
       @err_file=errfile
@@ -521,19 +519,19 @@ class EngineBuilder
     :cron_jobs,\
     :sed_strings,\
     :volumes,\
-     :databases,\
-     :data_uid,\
-     :data_gid
+    :databases,\
+    :data_uid,\
+    :data_gid
 
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
       return path
     end
-    
+
     def get_basedir
-       return SysConfig.DeploymentDir + "/" + @build_name
-     end
-     
+      return SysConfig.DeploymentDir + "/" + @build_name
+    end
+
     def log_exception(e)
       @err_file.puts( e.to_s)
       puts(e.to_s)
@@ -549,7 +547,7 @@ class EngineBuilder
         read_rake_list
         read_services
         read_os_packages
-  
+
         read_lang_fw_values
         read_pear_list
         read_app_packages
@@ -644,13 +642,11 @@ class EngineBuilder
       end
     end
 
-
-
     def read_services
 
       @databases=Array.new
       @volumes=Array.new
-      
+
       @log_file.puts("Adding services")
       services=@blueprint["software"]["softwareservices"]
       services.each do |service|
@@ -671,31 +667,31 @@ class EngineBuilder
         end
       end
     end #FIXME
-    
-def add_file_service(name,dest)
-   begin
 
-     permissions = PermissionRights.new(@container_name,"","")
-     vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
-     @volumes.push(vol)
+    def add_file_service(name,dest)
+      begin
 
-     
-   rescue Exception=>e
-     log_exception(e)
-     return false
-   end
- end
-    
+        permissions = PermissionRights.new(@container_name,"","")
+        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
+        @volumes.push(vol)
+
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
     def  add_db_service(dbname,servicetype)
-  
+
       db = DatabaseService.new(@container_name,dbname,SysConfig.DBHost,dbname,dbname,servicetype)
       @databases.push(db)
-      
+
     end
+
     def read_os_packages
       begin
         @os_packages = Array.new
-        
+
         @log_file.puts("Writing Dockerfile")
         ospackages = @blueprint["software"]["ospackages"]
         ospackages.each do |package|
@@ -707,12 +703,11 @@ def add_file_service(name,dest)
       end
     end
 
-
     def read_lang_fw_values
       @log_file.puts("Reading Settings")
       begin
         @framework = @blueprint["software"]["swframework_name"]
-          p @framework 
+        p @framework
         @runtime =  @blueprint["software"]["langauge_name"]
         @memory =  @blueprint["software"]["requiredmemory"]
       rescue Exception=>e
@@ -750,7 +745,7 @@ def add_file_service(name,dest)
         @archives_details[:arc_name] = Array.new
         @archives_details[:arc_extract] = Array.new
         @archives_details[:arc_loc] = Array.new
-        @archives_details[:arc_dir] = Array.new      
+        @archives_details[:arc_dir] = Array.new
         @log_file.puts("Configuring install Environment")
         archives = @blueprint["software"]["installedpackages"]
         n=0
@@ -799,7 +794,7 @@ def add_file_service(name,dest)
         chmods = @blueprint["software"]["chmod_recursive"]
         if chmods != nil
           chmods.each do |chmod |
-          directory = clean_path(recursive_chmod)
+            directory = clean_path(recursive_chmod)
             @recursive_chmods.push(directory)
           end
           #FIXME need to strip any ../ and any preceeding ./
@@ -817,14 +812,14 @@ def add_file_service(name,dest)
         @single_chmods =Array.new
         @log_file.puts("set permissions  single")
         chmods = @blueprint["software"]["chmod_single"]
-        if chmods != nil  
-          chmods.each do | single_chmod |            
-          directory = clean_path(single_chmod["directory"])
-          @single_chmods.push(directory)
-               end
+        if chmods != nil
+          chmods.each do | single_chmod |
+            directory = clean_path(single_chmod["directory"])
+            @single_chmods.push(directory)
+          end
         end
         return true
-        
+
       rescue Exception=>e
         log_exception(e)
         return false
@@ -836,7 +831,7 @@ def add_file_service(name,dest)
         @log_file.puts("Creating Workers")
         @worker_commands = Array.new
         workers =@blueprint["software"]["worker_commands"]
-       
+
         workers.each do |worker|
           @worker_commands.push(worker["command"])
         end
@@ -871,7 +866,7 @@ def add_file_service(name,dest)
         @sed_strings[:dest_file] = Array.new
         @sed_strings[:sed_str] = Array.new
         @sed_strings[:tmp_file] = Array.new
-               
+
         @log_file.puts("set sed strings")
         seds=@blueprint["software"]["replacementstrings"]
         if seds == nil || seds.empty? == true
@@ -1000,28 +995,29 @@ def add_file_service(name,dest)
       p bt
     end
   end
-  
-def setup_framework_logging
-  begin
-    rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
-    if File.exists?(rmt_log_dir_var_fname)
-      rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-      rmt_log_dir = rmt_log_dir_varfile.read
-    else
-      rmt_log_dir="/var/log"
-    end
-    local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
-    if Dir.exists?(local_log_dir) == false
-      Dir.mkdir( local_log_dir)
-    end
 
-    return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
+  def setup_framework_logging
+    begin
+      rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
+      if File.exists?(rmt_log_dir_var_fname)
+        rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
+        rmt_log_dir = rmt_log_dir_varfile.read
+      else
+        rmt_log_dir="/var/log"
+      end
+      local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
+      if Dir.exists?(local_log_dir) == false
+        Dir.mkdir( local_log_dir)
+      end
 
-  rescue Exception=>e
-    log_exception(e)
-    return false
+      return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
+
+    rescue Exception=>e
+      log_exception(e)
+      return false
+    end
   end
-end
+
   def backup_lastbuild
     begin
       dir=get_basedir
@@ -1039,7 +1035,6 @@ end
       #throw BuildException.new(e,"backup_lastbuild")
     end
   end
-
 
   def load_blueprint
     begin
@@ -1085,8 +1080,6 @@ end
     end
   end
 
- 
-
   def create_file_service vol
     begin
       vol_service = EnginesOSapi.loadManagedService("volmanager", @docker_api)
@@ -1123,8 +1116,7 @@ end
       log_exception(e)
       return false
     end
-  end  
-  
+  end
 
   def build_init
     begin
@@ -1186,7 +1178,7 @@ end
       return false
     end
     puts("Cloning Blueprint")
-    return clone_repo 
+    return clone_repo
   end
 
   def build_from_blue_print
@@ -1196,38 +1188,39 @@ end
     return build_container
   end
 
-def read_web_port
-  @log_file.puts("Setting Web port")
-  begin
-    stef = File.open( get_basedir + "/home/stack.env","r")
-    while line=stef.gets do
-      if line.include?("PORT")
-        i= line.split('=')
-        @webPort= i[1].strip
-        p line
+  def read_web_port
+    @log_file.puts("Setting Web port")
+    begin
+      stef = File.open( get_basedir + "/home/stack.env","r")
+      while line=stef.gets do
+        if line.include?("PORT")
+          i= line.split('=')
+          @webPort= i[1].strip
+          p line
+        end
       end
+    rescue Exception=>e
+      log_exception(e)
+      #      throw BuildException.new(e,"setting web port")
+      return false
     end
-  rescue Exception=>e
-    log_exception(e)
-    #      throw BuildException.new(e,"setting web port")
-    return false
   end
-end
 
-def read_web_user
-  begin
-    stef = File.open( get_basedir + "/home/stack.env","r")
-    while line=stef.gets do
-      if line.include?("USER")
-        i= line.split('=')
-        @webUser= i[1].strip
+  def read_web_user
+    begin
+      stef = File.open( get_basedir + "/home/stack.env","r")
+      while line=stef.gets do
+        if line.include?("USER")
+          i= line.split('=')
+          @webUser= i[1].strip
+        end
       end
+    rescue Exception=>e
+      log_exception(e)
+      return false
     end
-  rescue Exception=>e
-    log_exception(e)
-    return false
   end
-end
+
   def build_container
     begin
 
@@ -1237,76 +1230,20 @@ end
         return false
       end
 
-      
-
       @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,@log_file,@err_file)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
-            return false
-          end
-      
+        return false
+      end
+
       read_web_port
       read_web_user
-      
+
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
-          
-      #
-      #      if read_lang_fw_values == false
-      #        return false
-      #      elsif copy_base_templates == false
-      #        return false
-      #      end
-      #      if read_environment_variables == false
-      #        return false
-      #      elsif read_web_port == false
-      #        return false
-      #      elsif read_web_user == false
-      #        return false
-      #      elsif read_work_ports == false
-      #        return false
-      #      elsif read_services == false
-      #        return false
-      #      elsif read_cron_jobs == false
-      #        return false
-      #      elsif  create_workers == false
-      #        return false
-      #
-      #        elsif  dockerfile_builder.write_cronjobs == false
-      #      elsif   setup_dockerfile == false
-      #          return false
-      #      elsif  dockerfile_builder.create_stack_env == false
-      #        return false
-      #
-      #      elsif   dockerfile_builder.create_presettings_env == false
-      #        return false
-      #
-      #      elsif  dockerfile_builder.set_container_user == false
-      #        return false
-      #      elsif  dockerfile_builder.chown_home_app   == false
-      #        return false
-      #
-      #      elsif  create_sed_strings == false
-      #        return false
-      #
-      #      elsif  create_file_persistance == false
-      #        return false
-      #      elsif  insert_framework_frag_in_dockerfile("builder.mid") == false
-      #        return false
-      #      elsif create_rake_list == false
-      #        return false
-      #      elsif create_pear_list == false
-      #        return false
-      #      elsif set_write_permissions_recursive == false
-      #        return false
-      #      elsif set_write_permissions_single == false
-      #        return false
-      #      elsif insert_framework_frag_in_dockerfile("builder.end") == false
-      #        return false
-      #      end
 
       if  build_init == false
         @log_file.puts("Error Build Init failed")
@@ -1315,19 +1252,15 @@ end
         @log_file.puts("creating deploy image")
 
         @blueprint_reader.databases do |db|
-        create_database_service db
+          create_database_service db
         end
         @blueprint_reader.volumes do |vol|
-        create_file_service vol
+          create_file_service vol
         end
-        
+
         mc = create_managed_container()
       end
-      
-      
-     
-      
-      
+
       return mc
     rescue BuildException=>e
       p e.method_name
@@ -1384,13 +1317,12 @@ end
     @blueprint_reader.data_gid
     )
 
- 
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false
-       puts "failed to save blueprint " + @blueprint.to_s
-     end
+      puts "failed to save blueprint " + @blueprint.to_s
+    end
 
     bp = mc.load_blueprint
     p  bp
@@ -1401,7 +1333,7 @@ end
         @log_file.puts "Failed to Launch"
       end
       @docker_api.run_volume_builder(mc ,@webUser)
-    #  mc.start_container
+      #  mc.start_container
     end
     return mc
   end
@@ -1470,8 +1402,6 @@ end
       end
     end
   end
-
-
 
   def get_basedir
     return SysConfig.DeploymentDir + "/" + @build_name

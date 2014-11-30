@@ -17,7 +17,6 @@ class EnginesOSapi
     return @docker_api
   end
 
-
   
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @docker_api)
@@ -67,70 +66,31 @@ class EnginesOSapi
   end
     
   def list_apps()
-  
     return @docker_api.list_managed_engines
   end
   
-  def list_services()
-   
+  def list_services()   
      return @docker_api.list_managed_services
    end
    
-  def getManagedEngines()
-    ret_val=Array.new
-    Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
-      yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
-      if File.exists?(yfn) == true       
-        managed_engine = loadManagedEngine(contdir)
-        if managed_engine.is_a?(ManagedEngine)
-          ret_val.push(managed_engine)
-        else
-          puts "failed to load " + yfn 
-          p     managed_engine     
-        end
-      end
-    end
-
-    return ret_val
-  end
-
+   def getManagedEngines()
+     return  @docker_api.getManagedEngines()
+   end
+   
+  
   def getManagedServices()
-    ret_val=Array.new
-    Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
-      yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
-      if File.exists?(yfn) == true
-        yf = File.open(yfn)
-        managed_service = ManagedService.from_yaml(yf,@docker_api)
-        if managed_service
-          ret_val.push(managed_service)
-        end
-        yf.close
-      end
-    end
-
-    return ret_val
+    return @docker_api.getManagedEngines()        
   end
+ 
 
   def EnginesOSapi.loadManagedService(service_name,docker_api)
-    yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
-
-    if File.exists?(yam_file_name) == false
-      return failed(yam_file_name,"No such configuration:","Load Service")
-    end
-
-    yaml_file = File.open(yam_file_name)
-    # managed_service = YAML::load( yaml_file)
-    managed_service = ManagedService.from_yaml(yaml_file,docker_api)
-    if managed_service == nil
-      return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
-    end
-#
-#    puts("engineapi (total) usage")
-#    p ObjectSpace.reachable_objects_from(self)
-#    puts("service (total) usage")
-#    p ObjectSpace.reachable_objects_from(managed_service)
-    return managed_service
+    service = docker_api.loadManagedService(service_name)
+    if service == nil
+       return failed(service_name,"Could not load service" ,"Load Service")
+     end
+    return service
   end
+  
 
   def getManagedService(service_name)
 
@@ -141,21 +101,6 @@ class EnginesOSapi
     return managed_service
   end
 
-  def loadManagedEngine(engine_name)
-    yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
-
-    if File.exists?(yam_file_name) == false
-      return failed(yam_file_name,"No such configuration:","Load Engine")
-    end
-
-    yaml_file = File.open(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml( yaml_file,@docker_api)
-    if(managed_engine == nil || managed_engine == false)
-      return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
-    end
-    return managed_engine
-  end
-  
   
   
   def backup_volume(backup_name,engine_name,volume_name,dest_hash)
@@ -180,7 +125,7 @@ class EnginesOSapi
             return backup_service
           end
       if backup_service.read_state != "running"
-        returnfailed(engine_name,"Backup Service not running" ,"Backup Volume")
+        return failed(engine_name,"Backup Service not running" ,"Backup Volume")
       end
     backup_service.add_consumer(backup_hash)
 #    p backup_hash

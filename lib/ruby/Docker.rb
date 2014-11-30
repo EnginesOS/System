@@ -10,6 +10,110 @@ class Docker
       
     end
  
+  def getManagedEngines()
+    begin
+      ret_val=Array.new
+      Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
+        yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
+        if File.exists?(yfn) == true       
+          managed_engine = loadManagedEngine(contdir)
+          if managed_engine.is_a?(ManagedEngine)
+            ret_val.push(managed_engine)
+          else
+            puts "failed to load " + yfn 
+            p     managed_engine     
+          end
+        end
+      end
+  
+      return ret_val
+      rescue Exception=>e
+        container.last_error=( "Failed To get Managed Engines " + e.to_s)
+        log_error(e)
+      log_error(container.last_error)
+        return false
+      end      
+    end
+    
+  def loadManagedEngine(engine_name)
+    begin
+      yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
+  
+      if File.exists?(yam_file_name) == false
+        return failed(yam_file_name,"No such configuration:","Load Engine")
+      end
+  
+      yaml_file = File.open(yam_file_name)
+      managed_engine = ManagedEngine.from_yaml( yaml_file,self)
+      if(managed_engine == nil || managed_engine == false)
+        return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
+      end
+      return managed_engine
+      rescue Exception=>e
+      if engine_name == nil
+        container.last_error=( "Failed To get Managed Engine no engine name " + e.to_s)
+      else
+        container.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)
+      end
+      log_error(container.last_error)
+        log_error(e)
+        return false
+      end       
+    end
+    
+    
+  def loadManagedService(service_name)
+    begin
+      yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
+  
+      if File.exists?(yam_file_name) == false
+        return failed(yam_file_name,"No such configuration:","Load Service")
+      end
+  
+      yaml_file = File.open(yam_file_name)
+      # managed_service = YAML::load( yaml_file)
+      managed_service = ManagedService.from_yaml(yaml_file,self)
+      if managed_service == nil
+        return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
+      end
+      
+      return managed_service
+      rescue Exception=>e
+        if service_name == nil
+          container.last_error=( "Failed To get Managed Service no service name " + e.to_s)
+        else
+          container.last_error=( "Failed To get Managed Service " +  service_name + " " + e.to_s)
+        end
+        log_error(e)
+      log_error(container.last_error)
+        return false
+      end       
+  end
+  def getManagedServices()
+    begin
+    ret_val=Array.new
+    Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
+      yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
+      if File.exists?(yfn) == true
+        yf = File.open(yfn)
+        managed_service = ManagedService.from_yaml(yf,self)
+        if managed_service
+          ret_val.push(managed_service)
+        end
+        yf.close
+      end
+    end
+
+    return ret_val
+      return managed_service
+      rescue Exception=>e
+        container.last_error=( "Failed To get Managed Services " + e.to_s)
+      log_error(container.last_error)
+        log_error(e)
+        return false
+      end    
+  end
+    
   def run_docker (args,container)
     clear_error
     require 'open3'
@@ -54,7 +158,8 @@ class Docker
         
         if error_mesg.include?("Error")
           container.last_error=(error_mesg)
-          p "docker_cmd error " + error_mesg
+          log_error(container.last_error)
+
           return false
         else
           container.last_error=("")
@@ -70,6 +175,7 @@ class Docker
       @last_error=error_mesg + e.to_s
       container.last_result=(res)
       container.last_error=(error_mesgs+ e.to_s)
+      log_error(container.last_error)
       return false
     end
 
@@ -152,6 +258,7 @@ class Docker
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
       log_error(e)
+      log_error(container.last_error)
       return false
     end
   end
@@ -173,6 +280,7 @@ class Docker
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       log_error(e)
+      log_error(container.last_error)
       return false
     end
   end
@@ -267,6 +375,7 @@ class Docker
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
       log_error(e)
+      log_error(container.last_error)
       return false
     end
   end
@@ -590,6 +699,7 @@ class Docker
       return true
     rescue Exception=>e
       container.last_error=( e.message)
+      log_error(container.last_error)
       return false
     end
   end
