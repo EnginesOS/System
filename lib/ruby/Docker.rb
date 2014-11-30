@@ -124,7 +124,7 @@ class Engines
         File.delete(stateDir)
         return true
       rescue Exception=>e
-        container.last_error=( "Failed To Delete " + e.to_s)
+        container.last_error=( "Failed To Delete " )
         log_error(e)
         return false
       end
@@ -261,8 +261,8 @@ class Engines
         f.close
         return true
       rescue Exception=>e
-        container.last_error=( e.message)
-        log_error(container.last_error)
+        container.last_error=( "load error")
+        log_error(e.message)
         return false
       end
     end
@@ -767,7 +767,7 @@ end
         retval = run_docker(commandargs,container)
         return retval
       rescue Exception=>e
-        container.last_error=("Failed To Create " + e.to_s)
+        container.last_error=("Failed To Create ")
         log_error(e)
         log_error(container.last_error)
         return false
