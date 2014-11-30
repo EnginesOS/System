@@ -21,8 +21,7 @@ class Engines
         return false
       end
     end
-   
-
+  
     def clear_cid_file container
       clear_error
       begin
