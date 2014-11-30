@@ -20,17 +20,14 @@ class Docker
           if managed_engine.is_a?(ManagedEngine)
             ret_val.push(managed_engine)
           else
-            puts "failed to load " + yfn 
-            p     managed_engine     
+            log_error("failed to load " + yfn)              
           end
         end
       end
   
       return ret_val
       rescue Exception=>e
-        container.last_error=( "Failed To get Managed Engines " + e.to_s)
         log_error(e)
-      log_error(container.last_error)
         return false
       end      
     end
@@ -51,11 +48,11 @@ class Docker
       return managed_engine
       rescue Exception=>e
       if engine_name == nil
-        container.last_error=( "Failed To get Managed Engine no engine name " + e.to_s)
+        managed_engine.last_error=( "Failed To get Managed Engine no engine name " + e.to_s)
       else
-        container.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)
+        managed_engine.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)
       end
-      log_error(container.last_error)
+      log_error(managed_engine.last_error)
         log_error(e)
         return false
       end       
@@ -80,12 +77,12 @@ class Docker
       return managed_service
       rescue Exception=>e
         if service_name == nil
-          container.last_error=( "Failed To get Managed Service no service name " + e.to_s)
+          managed_service.last_error=( "Failed To get Managed Service no service name " + e.to_s)
         else
-          container.last_error=( "Failed To get Managed Service " +  service_name + " " + e.to_s)
+          managed_service.last_error=( "Failed To get Managed Service " +  service_name + " " + e.to_s)
         end
         log_error(e)
-      log_error(container.last_error)
+      log_error(managed_service.last_error)
         return false
       end       
   end
@@ -107,8 +104,8 @@ class Docker
     return ret_val
       return managed_service
       rescue Exception=>e
-        container.last_error=( "Failed To get Managed Services " + e.to_s)
-      log_error(container.last_error)
+      managed_service.last_error=( "Failed To get Managed Services " + e.to_s)
+      log_error(managed_service.last_error)
         log_error(e)
         return false
       end    
