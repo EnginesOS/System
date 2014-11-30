@@ -248,7 +248,7 @@ class Docker
       
       if ret_val == true ||  container.last_error.include?("No such image")   #only delete if sucessful or no such container       
        # FileUtils.rm_rf  stateDir
-        File.rm(stateDir)
+        File.delete(stateDir)
       end
 
       return ret_val
