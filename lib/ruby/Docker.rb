@@ -8,6 +8,9 @@ class Engines
       @engines_api = api
     end
 
+    def clear_cid(container)
+      container.container_id=(-1)
+    end
     def is_startup_complete container
       clear_error
       begin
