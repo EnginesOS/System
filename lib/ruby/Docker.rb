@@ -47,12 +47,14 @@ class Docker
       end
       return managed_engine
       rescue Exception=>e
-      if engine_name == nil
-        managed_engine.last_error=( "Failed To get Managed Engine no engine name " + e.to_s)
+      if engine_name != nil 
+        if managed_engine !=nil          
+          managed_engine.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)          
+          log_error(managed_engine.last_error)
+        end
       else
-        managed_engine.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)
+        log_error("nil Engine Name")
       end
-      log_error(managed_engine.last_error)
         log_error(e)
         return false
       end       
@@ -76,14 +78,16 @@ class Docker
       
       return managed_service
       rescue Exception=>e
-        if service_name == nil
-          managed_service.last_error=( "Failed To get Managed Service no service name " + e.to_s)
-        else
-          managed_service.last_error=( "Failed To get Managed Service " +  service_name + " " + e.to_s)
-        end
-        log_error(e)
-      log_error(managed_service.last_error)
-        return false
+      if service_name != nil 
+         if managed_service !=nil          
+           managed_service.last_error=( "Failed To get Managed Engine " +  service_name + " " + e.to_s)          
+           log_error(managed_service.last_error)
+         end
+       else
+         log_error("nil Service Name")
+       end
+         log_error(e)
+         return false
       end       
   end
   def getManagedServices()
@@ -104,8 +108,6 @@ class Docker
     return ret_val
       return managed_service
       rescue Exception=>e
-      managed_service.last_error=( "Failed To get Managed Services " + e.to_s)
-      log_error(managed_service.last_error)
         log_error(e)
         return false
       end    
