@@ -485,6 +485,7 @@ class Engines
         managed_engine = ManagedEngine.from_yaml( yaml_file,self)
 
         if(managed_engine == nil || managed_engine == false)
+          p :from_yaml_returned_nil
           return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
         end
         return managed_engine
