@@ -744,7 +744,7 @@ class EnginesOSapi
   end
   #protected if protected static cant call
   def success(item_name ,cmd)
-    EnginesOSapiResult.success(item_name ,cmd)
+   return EnginesOSapiResult.success(item_name ,cmd)
   end
 
   def failed(item_name,mesg ,cmd)
@@ -752,7 +752,7 @@ class EnginesOSapi
     p mesg
     p cmd
     
-    EnginesOSapiResult.failed(item_name,mesg ,cmd)
+    return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
  
