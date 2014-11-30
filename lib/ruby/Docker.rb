@@ -98,7 +98,7 @@ class Engines
       end
     end
 
-    def delete_container_configs
+    def delete_container_configs(container)
       clear_error
       begin
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/config.yaml"
@@ -1201,7 +1201,7 @@ class Engines
     clear_error
     begin
       if @docker_api.delete_image(container) == true
-        return @system_api.delete_container_configs
+        return @system_api.delete_container_configs(container)
       else
         return false
       end
