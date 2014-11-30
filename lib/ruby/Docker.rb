@@ -1201,7 +1201,7 @@ class Engines
     clear_error
     begin
       if @docker_api.delete_image(container) == true
-        return @system_ap.delete_container_configs
+        return @system_api.delete_container_configs
       else
         return false
       end
