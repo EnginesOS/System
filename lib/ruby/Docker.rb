@@ -37,13 +37,13 @@ class Docker
       yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
   
       if File.exists?(yam_file_name) == false
-        return failed(yam_file_name,"No such configuration:","Load Engine")
+        return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
   
       yaml_file = File.open(yam_file_name)
       managed_engine = ManagedEngine.from_yaml( yaml_file,self)
       if(managed_engine == nil || managed_engine == false)
-        return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
+        return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
       end
       return managed_engine
       rescue Exception=>e
@@ -66,14 +66,14 @@ class Docker
       yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
   
       if File.exists?(yam_file_name) == false
-        return failed(yam_file_name,"No such configuration:","Load Service")
+        return false # return failed(yam_file_name,"No such configuration:","Load Service")
       end
   
       yaml_file = File.open(yam_file_name)
       # managed_service = YAML::load( yaml_file)
       managed_service = ManagedService.from_yaml(yaml_file,self)
       if managed_service == nil
-        return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
+        return false # return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
       end
       
       return managed_service
