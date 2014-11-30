@@ -91,6 +91,14 @@ class EnginesOSapi
     return service
   end
   
+  def EnginesOSapi.loadManagedEngine(engine_name,docker_api)
+    engine = docker_api.loadManagedService(service_name)
+    if engine == nil
+       return failed(engine_name,"Could not load engine" ,"Load Engine")
+     end
+    return engine
+  end
+  
 
   def getManagedService(service_name)
 
