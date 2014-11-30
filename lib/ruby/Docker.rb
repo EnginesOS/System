@@ -1207,7 +1207,6 @@ end
     end
   end
 
-d
   def run_system(cmd)
     clear_error
     begin
