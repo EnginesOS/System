@@ -726,10 +726,6 @@ end
         commandargs = " run  -d " + commandargs
         SystemUtils.debug_output commandargs
         retval = run_docker(commandargs,container)
-        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-          container_id= read_container_id(container)
-          container.container_id=(container_id)
-        end
         return retval
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
