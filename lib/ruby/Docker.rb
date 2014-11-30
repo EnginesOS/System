@@ -761,7 +761,6 @@ def container_state_dir(container)
     end
 
     def pause_container container
-
       clear_error
       begin
         commandargs = " pause " + container.containerName
@@ -881,9 +880,7 @@ def container_state_dir(container)
               container.last_error=( error_mesgs)
             end
           end
-
           @last_error=error_mesg
-
           if error_mesg.include?("Error")
             container.last_error=(error_mesg)
             log_error(container.last_error)
@@ -949,7 +946,6 @@ def container_state_dir(container)
           start_cmd=" "
         end
         commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + "  -t " + container.image + start_cmd
-
         return commandargs
       rescue Exception=>e
         log_error(e)
