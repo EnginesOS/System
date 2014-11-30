@@ -11,8 +11,8 @@ class Engines
     def is_startup_complete container
       clear_error
       begin
-        runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/"
-        if File.exists?(runDir + "startup_complete")
+        runDir=container_state_dir(container)
+        if File.exists?(runDir + "/startup_complete")
           return true
         else
           return false
@@ -192,7 +192,6 @@ class Engines
     def add_monitor(site_hash)
       clear_error
       begin
-
         ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
         return run_system(ssh_cmd)
       rescue  Exception=>e
@@ -204,7 +203,6 @@ class Engines
     def rm_monitor(site_hash)
       clear_error
       begin
-
         ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
         return run_system(ssh_cmd)
       rescue  Exception=>e
@@ -252,7 +250,7 @@ class Engines
         else
           return false
         end
-        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+        stateDir=container_state_dir(container)
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
         end
@@ -269,7 +267,7 @@ class Engines
     def load_blueprint(container)
       clear_error
       begin
-        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+        stateDir=container_state_dir(container)
         if File.directory?(stateDir) ==false
           return false
         end
@@ -517,8 +515,11 @@ class Engines
         ret_val[:running] = -1
         ret_val[:idle] = -1
         return ret_val
-      end
-      return ret_val
+            
+rescue Exception=>e
+  log_error(e)
+  return false
+end   
     end
 
     def getManagedEngines()
@@ -559,8 +560,9 @@ class Engines
           return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
         end
         return managed_engine
+        
+        
       rescue Exception=>e
-
         if engine_name != nil
           if managed_engine !=nil
             managed_engine.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)
@@ -618,8 +620,6 @@ class Engines
             yf.close
           end
         end
-
-        return ret_val
         return managed_service
       rescue Exception=>e
         log_error(e)
@@ -1265,7 +1265,7 @@ class Engines
     end
   end
 
-  def create_container container
+  def create_container(container)
     clear_error
     begin
       if @system_api.clear_cid(container) != false
@@ -1286,7 +1286,7 @@ class Engines
     end
   end
 
-  def rebuild_image container
+  def rebuild_image(container)
     clear_error
     begin
       builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, self)
@@ -1296,28 +1296,23 @@ class Engines
       return false
     end
   end
-
-  def get_container_network_metrics(containerName) #FIXME Kludge
+#FIXME Kludge
+  def get_container_network_metrics(containerName)
+    begin
     ret_val = Hash.new
     clear_error
-    begin
       cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
-
       vals = res.split("bytes:")
-      #  p :sdfdssssssssssss
-      #  p vals[0]
-      #  p vals[1]
-      #  p :sdf
       ret_val[:in] = vals[1].chop
       ret_val[:out] = vals[2].chop
+      return ret_val
     rescue Exception=>e
       log_error(e)
       ret_val[:in] = -1
       ret_val[:out] = -1
       return ret_val
     end
-    return ret_val
   end
 
   def is_startup_complete container
