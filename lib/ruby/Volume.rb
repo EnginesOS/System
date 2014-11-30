@@ -2,7 +2,7 @@ require_relative 'StaticService.rb'
 class Volume < StaticService #Latter will include group and perhaps other attributes
  
   def initialize(name)
-    @name = name
+   @name = name
    @serviceType="fs"
    @localpath=SysConfig.LocalFSVolHome
    @remotepath=SysConfig.CONTFSVolHome
@@ -27,7 +27,6 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     @vol_permissions=vol_permissions
   end
 
-  
   attr_reader :mapping_permissions,:name,:remotepath,:localpath,:user,:group,:vol_permissions,:mapping_permissions
  
 #  def permissions

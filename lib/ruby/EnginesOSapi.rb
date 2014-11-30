@@ -10,17 +10,16 @@ require 'objspace'
 
 class EnginesOSapi
   def initialize()
-    @docker_api = Docker.new
+    @docker_api = Engines.new
   end
 
   def docker_api
     return @docker_api
   end
 
-
   
   def buildEngine(repository,host,domain_name,environment)
-    engine_builder = EngineBuilder.new(repository,host,domain_name,environment, @docker_api)
+    engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
       return  failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
@@ -37,17 +36,25 @@ class EnginesOSapi
     domain_name = params[:domain_name]
     host_name = params[:host_name]
    evirons = params[:env_variables]
+    container_name = host_name
      p params
-      engine_builder = EngineBuilder.new(repository,host_name,domain_name,evirons, @docker_api)
+#     if container_name == nil || host_name == nil|| domain_name == nil
+#       container_name = "test"
+#       host_name ="test"
+#       domain_name ="localdemo.jvodan.home"
+#       #FIXME needs to return error object
+#      # return  failed(host_name,"Incorrect Parameters","build_engine") 
+#     end
+      engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @docker_api)
       engine = engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host_name,engine_builder.last_error,"build_engine") #FIXME needs to return error object
+      return  failed(host_name,engine_builder.last_error,"build_engine") 
     end
       if engine != nil
         engine.save_state
         return engine
       end
-      return failed(host_name,"Failed","build_engine") #FIXME needs to return error object
+      return failed(host_name,"Failed","build_engine") 
   
   end
   def last_api_error
@@ -59,70 +66,39 @@ class EnginesOSapi
   end
     
   def list_apps()
-  
     return @docker_api.list_managed_engines
   end
   
-  def list_services()
-   
+  def list_services()   
      return @docker_api.list_managed_services
    end
    
-  def getManagedEngines()
-    ret_val=Array.new
-    Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
-      yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"       
-      if File.exists?(yfn) == true       
-        managed_engine = loadManagedEngine(contdir)
-        if managed_engine.is_a?(ManagedEngine)
-          ret_val.push(managed_engine)
-        else
-          puts "failed to load " + yfn 
-          p     managed_engine     
-        end
-      end
-    end
-
-    return ret_val
-  end
-
+   def getManagedEngines()
+     return  @docker_api.getManagedEngines()
+   end
+   
+  
   def getManagedServices()
-    ret_val=Array.new
-    Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
-      yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
-      if File.exists?(yfn) == true
-        yf = File.open(yfn)
-        managed_service = ManagedService.from_yaml(yf,@docker_api)
-        if managed_service
-          ret_val.push(managed_service)
-        end
-        yf.close
-      end
-    end
-
-    return ret_val
+    return @docker_api.getManagedEngines()        
   end
+ 
 
   def EnginesOSapi.loadManagedService(service_name,docker_api)
-    yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
-
-    if File.exists?(yam_file_name) == false
-      return failed(yam_file_name,"No such configuration:","Load Service")
-    end
-
-    yaml_file = File.open(yam_file_name)
-    # managed_service = YAML::load( yaml_file)
-    managed_service = ManagedService.from_yaml(yaml_file,docker_api)
-    if managed_service == nil
-      return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
-    end
-#
-#    puts("engineapi (total) usage")
-#    p ObjectSpace.reachable_objects_from(self)
-#    puts("service (total) usage")
-#    p ObjectSpace.reachable_objects_from(managed_service)
-    return managed_service
+    service = docker_api.loadManagedService(service_name)
+    if service == false
+       return failed(service_name,"Could not load service" ,"Load Service")
+     end
+    return service
   end
+  
+  def loadManagedEngine(engine_name)
+    engine = @docker_api.loadManagedEngine(engine_name)
+    if engine == false
+       return failed(engine_name,"Could not load engine" ,"Load Engine")
+     end
+    return engine
+  end
+  
 
   def getManagedService(service_name)
 
@@ -133,21 +109,6 @@ class EnginesOSapi
     return managed_service
   end
 
-  def loadManagedEngine(engine_name)
-    yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
-
-    if File.exists?(yam_file_name) == false
-      return failed(yam_file_name,"No such configuration:","Load Engine")
-    end
-
-    yaml_file = File.open(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml( yaml_file,@docker_api)
-    if(managed_engine == nil || managed_engine == false)
-      return failed(yam_file_name,"Failed to Load configuration:","Load Engine")
-    end
-    return managed_engine
-  end
-  
   
   
   def backup_volume(backup_name,engine_name,volume_name,dest_hash)
@@ -172,7 +133,7 @@ class EnginesOSapi
             return backup_service
           end
       if backup_service.read_state != "running"
-        returnfailed(engine_name,"Backup Service not running" ,"Backup Volume")
+        return failed(engine_name,"Backup Service not running" ,"Backup Volume")
       end
     backup_service.add_consumer(backup_hash)
 #    p backup_hash
@@ -783,7 +744,7 @@ class EnginesOSapi
   end
   #protected if protected static cant call
   def success(item_name ,cmd)
-    EnginesOSapiResult.success(item_name ,cmd)
+   return EnginesOSapiResult.success(item_name ,cmd)
   end
 
   def failed(item_name,mesg ,cmd)
@@ -791,7 +752,7 @@ class EnginesOSapi
     p mesg
     p cmd
     
-    EnginesOSapiResult.failed(item_name,mesg ,cmd)
+    return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
  

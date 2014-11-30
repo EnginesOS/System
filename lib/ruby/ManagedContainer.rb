@@ -50,15 +50,15 @@ class ManagedContainer < Container
       
  end
  
- def container_pid
-   if @container_pid == nil
-     @container_pid = set_container_pid
-      if @container_pid == false
-        @container_pid == "-1"
+ def container_id
+   if @container_id == nil
+     @container_id = set_container_id
+      if @container_id == false
+        @container_id == "-1"
       end            
    end
-   p @container_pid
-   return @container_pid
+   p @container_id
+   return @container_id
  end
  
   attr_reader :framework,\
@@ -71,7 +71,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
+   attr_accessor :container_id,:docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
 
   def monitored
@@ -90,6 +90,7 @@ class ManagedContainer < Container
   end
 
   def read_state()
+    begin
     if (inspect_container == false)
       state="nocontainer"
     else
@@ -107,14 +108,24 @@ class ManagedContainer < Container
         end
       end
     end
+    if state == nil #Kludge
+      state = "nocontainer"
+    end
     if (@setState && state != @setState)  
       if    @last_error == nil
-        @last_error=""
+        @last_error=" "
       end
+
      @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
     end
     return state
-  end
+
+
+rescue Exception=>e
+  log_exception(e)
+  return "nocontainer"
+end
+end
 
   def logs_container    
     if @docker_api == nil
@@ -223,7 +234,7 @@ class ManagedContainer < Container
     end
     clear_error(ret_val)
     save_state()
-    set_container_pid
+    set_container_id
     
     return ret_val
   end
@@ -285,7 +296,7 @@ class ManagedContainer < Container
     end
     ret_val = false
     state = read_state()
-    @set_container_pid="-1"
+    @set_container_id="-1"
     
     if state== "running"
       ret_val = @docker_api.stop_container   self
@@ -606,10 +617,17 @@ end
     end
   end
 
-    def set_container_pid
+    def set_container_id
    return "-1"  
 
     end
+def log_exception(e)
     
+    puts(e.to_s)
+    #@last_error=  e.to_s
+    e.backtrace.each do |bt |
+      p bt
+    end
+  end   
 end
 
