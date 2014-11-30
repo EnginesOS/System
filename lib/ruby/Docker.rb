@@ -37,6 +37,7 @@ class Docker
       yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
   
       if File.exists?(yam_file_name) == false
+            log_error("no such file " + yam_file_name )
         return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
   
@@ -55,7 +56,7 @@ class Docker
       else
         log_error("nil Engine Name")
       end
-        log_error(e)
+        log_error(e.to_s)
         return false
       end       
     end
@@ -996,8 +997,18 @@ class Docker
   end
   
   def log_error(e)
-    @last_error = e.to_s
-    SystemUtils.log_output(e,10)
+    if e.instance_of(Exception)
+      @last_error = e.to_s
+      e_str = e.to_str()
+      e.backtrace.each do |bt |
+        e_str += bt
+        end
+    else
+      e_str = e
+    end
+    
+      SystemUtils.log_output(e_str,10)
+    
   end
   
   def container_state_dir container
