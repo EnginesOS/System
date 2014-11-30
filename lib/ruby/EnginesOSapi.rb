@@ -92,7 +92,7 @@ class EnginesOSapi
   end
   
   def loadManagedEngine(engine_name)
-    engine = @docker_api.loadManagedService(engine_name)
+    engine = @docker_api.loadManagedEngine(engine_name)
     if engine == false
        return failed(engine_name,"Could not load engine" ,"Load Engine")
      end

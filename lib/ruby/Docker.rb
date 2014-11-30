@@ -43,11 +43,13 @@ class Docker
   
       yaml_file = File.open(yam_file_name)
       managed_engine = ManagedEngine.from_yaml( yaml_file,self)
+      
       if(managed_engine == nil || managed_engine == false)
         return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
       end
       return managed_engine
       rescue Exception=>e
+        
       if engine_name != nil 
         if managed_engine !=nil          
           managed_engine.last_error=( "Failed To get Managed Engine " +  engine_name + " " + e.to_s)          
@@ -56,7 +58,7 @@ class Docker
       else
         log_error("nil Engine Name")
       end
-        log_error(e.to_s)
+        log_error(e)
         return false
       end       
     end
