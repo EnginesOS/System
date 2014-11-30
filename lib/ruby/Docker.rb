@@ -173,7 +173,7 @@ class Docker
         container.last_result=(res)
         return true
       end
-    rescue Exceptption=>e
+    rescue Exception=>e
       @last_error=error_mesg + e.to_s
       container.last_result=(res)
       container.last_error=(error_mesgs+ e.to_s)
