@@ -547,7 +547,6 @@ class EngineBuilder
         read_rake_list
         read_services
         read_os_packages
-
         read_lang_fw_values
         read_pear_list
         read_app_packages
