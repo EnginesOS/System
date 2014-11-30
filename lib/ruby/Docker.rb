@@ -3,6 +3,10 @@ class Engines
   require "/opt/engines/lib/ruby/SystemUtils.rb"
 
   class SystemApi
+    
+    def initialize(api)
+      @engines_api = api
+    end
     def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
       clear_error
       begin
@@ -482,7 +486,7 @@ class Engines
         end
 
         yaml_file = File.open(yam_file_name)
-        managed_engine = ManagedEngine.from_yaml( yaml_file,self)
+        managed_engine = ManagedEngine.from_yaml( yaml_file,@engines_api)
 
         if(managed_engine == nil || managed_engine == false)
           p :from_yaml_returned_nil
@@ -514,7 +518,7 @@ class Engines
 
         yaml_file = File.open(yam_file_name)
         # managed_service = YAML::load( yaml_file)
-        managed_service = ManagedService.from_yaml(yaml_file,self)
+        managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
         if managed_service == nil
           return false # return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
         end
@@ -541,7 +545,7 @@ class Engines
           yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
           if File.exists?(yfn) == true
             yf = File.open(yfn)
-            managed_service = ManagedService.from_yaml(yf,self)
+            managed_service = ManagedService.from_yaml(yf,@engines_api)
             if managed_service
               ret_val.push(managed_service)
             end
@@ -619,8 +623,9 @@ end
   end
 
   def initialize
-    @system_api = SystemApi.new()
+
     @docker_api = DockerApi.new
+    @system_api = SystemApi.new(self)  #will change to to docker_api and not self 
   end
 
   attr_reader :last_error,:system_api
