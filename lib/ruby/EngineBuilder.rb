@@ -20,11 +20,10 @@ class EngineBuilder
   :hostname,\
   :domain_name,\
   :build_name
-  class BuildException < Exception
+  class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
-      @parent_exception = parent
-      @method_name = method_name
+      @parent_exception = parent      
     end
 
   end
@@ -37,7 +36,6 @@ class EngineBuilder
       @log_file = logfile
       @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
-
     end
 
     def log_exception(e)
@@ -47,6 +45,7 @@ class EngineBuilder
       e.backtrace.each do |bt |
         p bt
       end
+      raise BuildError.new(e)
     end
 
     def write_files_for_docker
