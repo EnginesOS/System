@@ -591,6 +591,24 @@ class Engines
       return ret_val
 
     end
+protected
+
+def clear_error
+  @last_error = ""
+end
+
+def log_error(e)
+  if e.instance_of?(Exception)
+    @last_error = e.to_s
+    e_str = e.to_str()
+    e.backtrace.each do |bt |
+      e_str += bt
+    end
+  else
+    e_str = e
+  end
+  SystemUtils.log_output(e_str,10)
+end
 
 
   end #END of SystemApi
