@@ -985,14 +985,7 @@ class EngineBuilder
     end
   end
 
-  def log_exception(e)
-    @err_file.puts( e.to_s)
-    puts(e.to_s)
-    @last_error=  e.to_s
-    e.backtrace.each do |bt |
-      p bt
-    end
-  end
+
 
   def setup_framework_logging
     begin
@@ -1337,7 +1330,14 @@ class EngineBuilder
   end
 
   protected
-
+def log_exception(e)
+  @err_file.puts( e.to_s)
+  puts(e.to_s)
+  @last_error=  e.to_s
+  e.backtrace.each do |bt |
+    p bt
+  end
+end
   def debug(fld)
     puts "ERROR: "
     p fld
