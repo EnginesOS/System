@@ -1193,7 +1193,7 @@ class Engines
     return @system_api.list_managed_services
   end
 
-  def delete_image container
+  def delete_image(container)
     clear_error
     begin
       if @docker_api.delete_image(container) == true
@@ -1208,7 +1208,7 @@ class Engines
     end
   end
 
-  def destroy_container (container)
+  def destroy_container(container)
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
@@ -1224,7 +1224,7 @@ class Engines
     end
   end
 
-  def run_system (cmd)
+  def run_system(cmd)
     clear_error
     begin
       cmd = cmd + " 2>&1"
@@ -1243,7 +1243,7 @@ class Engines
     end
   end
 
-  def run_volume_builder (container,username)
+  def run_volume_builder(container,username)
     clear_error
     begin
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
