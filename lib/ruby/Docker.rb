@@ -1195,7 +1195,7 @@ end
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        return @engines_api.destroy_container(container)
+        return @system_api.destroy_container(container)
       else
         return false
       end
