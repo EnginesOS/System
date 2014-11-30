@@ -38,15 +38,7 @@ class EngineBuilder
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
     end
 
-    def log_exception(e)
-      @err_file.puts( e.to_s)
-      puts(e.to_s)
-      @last_error=  e.to_s
-      e.backtrace.each do |bt |
-        p bt
-      end
-      raise BuildError.new(e)
-    end
+   
 
     def write_files_for_docker
 
@@ -451,7 +443,7 @@ class EngineBuilder
           if n < 0
             wports =wports + " "
           end
-          @docker_file.puts("EXPOSE " + port)
+          @docker_file.puts("EXPOSE " + port.to_s)
           wports = wports + port.port.to_s
           n=n+1
         end
@@ -481,6 +473,16 @@ class EngineBuilder
       return false
     end
 
+    protected
+def log_exception(e)
+     @err_file.puts( e.to_s)
+     puts(e.to_s)
+     @last_error=  e.to_s
+     e.backtrace.each do |bt |
+       p bt
+     end
+     return false
+   end
     ##################### End of
   end
 
