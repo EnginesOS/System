@@ -244,23 +244,17 @@ class Docker
     begin
       commandargs= " rmi " +   container.image
       ret_val =  run_docker(commandargs,container)
-
-      if ret_val == true #only delete if sucessful or no such container
-        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-        FileUtils.rm_rf  stateDir
+      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/config.yaml"
+      
+      if ret_val == true ||  container.last_error.include?("No such image")   #only delete if sucessful or no such container       
+       # FileUtils.rm_rf  stateDir
+        File.rm_f(stateDir)
       end
 
-      #kludge
-      if ret_val == false
-        container.last_error.include?("No such image")
-        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-        FileUtils.rm_rf  stateDir
-      end
       return ret_val
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
       log_error(e)
-      log_error(container.last_error)
       return false
     end
   end
