@@ -993,7 +993,7 @@ class Docker
   end
   
   def log_error(e)
-    if e.instance_of(Exception)
+    if e.instance_of?(Exception)
       @last_error = e.to_s
       e_str = e.to_str()
       e.backtrace.each do |bt |
