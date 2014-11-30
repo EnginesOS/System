@@ -1190,7 +1190,6 @@ end
     return @system_api.list_managed_services
   end
 
- 
 
   def destroy_container(container)
     clear_error
