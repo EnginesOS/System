@@ -21,13 +21,7 @@ class Engines
         return false
       end
     end
-    def container_state_dir container
-      return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-    end
-
-    def container_log_dir container
-      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
-    end
+   
 
     def clear_cid_file container
       clear_error
@@ -101,7 +95,7 @@ class Engines
     def delete_container_configs(container)
       clear_error
       begin
-        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/config.yaml"
+        stateDir = container_state_dir(container) + "/config.yaml"
         File.delete(stateDir)
         return true
       rescue Exception=>e
@@ -677,7 +671,13 @@ class Engines
 
     end
     protected
+def container_state_dir(container)
+     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+   end
 
+   def container_log_dir container
+     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+   end
     def run_system (cmd)
       clear_error
       begin
@@ -718,14 +718,7 @@ class Engines
 
   class DockerApi
     attr_reader :last_error
-    def container_state_dir container
-      return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-    end
-
-    def container_log_dir container
-      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
-    end
-
+   
     def create_container container
       clear_error
       begin
@@ -1029,6 +1022,13 @@ class Engines
     end
 
     protected
+    def container_state_dir(container)
+         return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+       end
+   
+       def container_log_dir container
+         return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+       end
 
     def clear_error
       @last_error = ""
