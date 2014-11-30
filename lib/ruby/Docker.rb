@@ -682,7 +682,9 @@ end
   def save_system_preferences
     return @system_api.save_system_preferences
   end
-
+def register_site(site_hash)
+  return @system_api. register_site(site_hash)
+end
   def deregister_site(site_hash)
     return @system_api.deregister_site(site_hash)
   end
