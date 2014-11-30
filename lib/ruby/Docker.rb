@@ -461,26 +461,27 @@ class Engines
       begin
         proc_mem_info_file = File.open("/proc/meminfo")
         proc_mem_info_file.each_line  do |line|
-          values=line.split(" ")
+                values=line.split(" ")
           case values[0]
-          when "MemTotal:"
-            ret_val[:total] = values[1]
-          when "MemFree:"
-            ret_val[:free]= values[1]
-          when "Buffers:"
-            ret_val[:buffers]= values[1]
-          when "Cached:"
-            ret_val[:file_cache]= values[1]
-          when "Active:"
-            ret_val[:active]= values[1]
-          when "Inactive:"
-            ret_val[:inactive]= values[1]
-          when "SwapTotal:"
-            ret_val[:swap_total]= values[1]
-          when "SwapFree:"
-            ret_val[:swap_free] = values[1]
-          end
-        end
+                        when "MemTotal:"
+                          ret_val[:total] = values[1]
+                        when "MemFree:"
+                          ret_val[:free]= values[1]
+                        when "Buffers:"
+                          ret_val[:buffers]= values[1]
+                        when "Cached:"
+                          ret_val[:file_cache]= values[1]
+                        when "Active:"
+                          ret_val[:active]= values[1]
+                        when "Inactive:"
+                          ret_val[:inactive]= values[1]
+                        when "SwapTotal:"
+                          ret_val[:swap_total]= values[1]
+                        when "SwapFree:"
+                          ret_val[:swap_free] = values[1]
+                        end
+              end        
+       return ret_val
       rescue   Exception=>e
         log_error(e)
         ret_val[:total] = e.to_s
@@ -493,7 +494,6 @@ class Engines
         ret_val[:swap_free] = -1
         return ret_val
       end
-      return ret_val
     end
 
     def get_system_load_info
@@ -509,7 +509,6 @@ class Engines
         run_idle = values[3].split("/")
         ret_val[:running] = run_idle[0]
         ret_val[:idle] = run_idle[1]
-
       rescue Exception=>e
         log_error(e)
         ret_val[:one] = -1
@@ -520,7 +519,6 @@ class Engines
         return ret_val
       end
       return ret_val
-
     end
 
     def getManagedEngines()
@@ -537,7 +535,6 @@ class Engines
             end
           end
         end
-
         return ret_val
       rescue Exception=>e
         log_error(e)
@@ -670,6 +667,7 @@ class Engines
     def container_cid_file(container)
      return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
     end
+    
     def container_state_dir(container)
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
     end
@@ -1046,7 +1044,6 @@ class Engines
   end#END of DockerApi
 
   def initialize
-
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
   end
@@ -1134,7 +1131,7 @@ class Engines
   end
 
   def register_site(site_hash)
-    return @system_api. register_site(site_hash)
+    return @system_api.register_site(site_hash)
   end
 
   def deregister_site(site_hash)
@@ -1194,8 +1191,8 @@ class Engines
   end
 
   def delete_image(container)
-    clear_error
     begin
+      clear_error
       if @docker_api.delete_image(container) == true
         return @system_api.delete_container_configs(container)
       else
