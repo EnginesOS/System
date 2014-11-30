@@ -7,7 +7,20 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
-
+    def is_startup_complete container
+      clear_error
+      begin
+        runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
+        if File.exists?(runDir + "startup_complete")
+          return true
+        else
+          return false
+        end
+      rescue  Exception=>e
+        log_error(e)
+        return false
+      end
+    end
     def container_state_dir container
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
     end
@@ -1315,20 +1328,15 @@ class Engines
     return ret_val
   end
 
-  def is_startup_complete container
-    clear_error
-    begin
-      runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
-      if File.exists?(runDir + "startup_complete")
-        return true
-      else
-        return false
-      end
-    rescue  Exception=>e
-      log_error(e)
-      return false
-    end
+def is_startup_complete container
+  clear_error
+  begin
+     return @system_api.is_startup_complete(container)
+  rescue  Exception=>e
+    log_error(e)
+    return false
   end
+end
 
   protected
 

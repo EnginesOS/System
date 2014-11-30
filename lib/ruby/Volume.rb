@@ -2,7 +2,7 @@ require_relative 'StaticService.rb'
 class Volume < StaticService #Latter will include group and perhaps other attributes
  
   def initialize(name)
-    @name = name
+   @name = name
    @serviceType="fs"
    @localpath=SysConfig.LocalFSVolHome
    @remotepath=SysConfig.CONTFSVolHome
