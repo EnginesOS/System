@@ -7,6 +7,7 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
+
     def is_startup_complete container
       clear_error
       begin
@@ -21,7 +22,7 @@ class Engines
         return false
       end
     end
-  
+
     def clear_cid_file container
       clear_error
       begin
@@ -457,12 +458,10 @@ class Engines
     def get_system_memory_info
       clear_error
       ret_val = Hash.new
-
       begin
         proc_mem_info_file = File.open("/proc/meminfo")
         proc_mem_info_file.each_line  do |line|
           values=line.split(" ")
-
           case values[0]
           when "MemTotal:"
             ret_val[:total] = values[1]
@@ -482,7 +481,6 @@ class Engines
             ret_val[:swap_free] = values[1]
           end
         end
-
       rescue   Exception=>e
         log_error(e)
         ret_val[:total] = e.to_s
@@ -493,11 +491,9 @@ class Engines
         ret_val[:buffers] = -1
         ret_val[:swap_total] = -1
         ret_val[:swap_free] = -1
-
         return ret_val
       end
       return ret_val
-
     end
 
     def get_system_load_info
@@ -670,13 +666,15 @@ class Engines
 
     end
     protected
-def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-   end
 
-   def container_log_dir container
-     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
-   end
+    def container_state_dir(container)
+      return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+    end
+
+    def container_log_dir container
+      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+    end
+
     def run_system (cmd)
       clear_error
       begin
@@ -717,7 +715,6 @@ def container_state_dir(container)
 
   class DockerApi
     attr_reader :last_error
-   
     def create_container container
       clear_error
       begin
@@ -1017,13 +1014,14 @@ def container_state_dir(container)
     end
 
     protected
+
     def container_state_dir(container)
-         return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-       end
-   
-       def container_log_dir container
-         return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
-       end
+      return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+    end
+
+    def container_log_dir container
+      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+    end
 
     def clear_error
       @last_error = ""
@@ -1200,7 +1198,6 @@ def container_state_dir(container)
       else
         return false
       end
-      return ret_val
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
       log_error(e)
@@ -1323,15 +1320,15 @@ def container_state_dir(container)
     return ret_val
   end
 
-def is_startup_complete container
-  clear_error
-  begin
-     return @system_api.is_startup_complete(container)
-  rescue  Exception=>e
-    log_error(e)
-    return false
+  def is_startup_complete container
+    clear_error
+    begin
+      return @system_api.is_startup_complete(container)
+    rescue  Exception=>e
+      log_error(e)
+      return false
+    end
   end
-end
 
   protected
 
