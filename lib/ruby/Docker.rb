@@ -47,7 +47,7 @@ class Engines
         return false
       end
     end
-
+    
     def clear_cid_file container
       clear_error
       begin
@@ -686,7 +686,24 @@ end
       end
       return ret_val
     end
-    
+
+def clear_container_var_run(container)
+  clear_error
+  begin
+    dir = container_state_dir(container)
+    # Dir.unlink Will do but for moment
+    #Dir.mkdir
+    if File.exists?(dir + "/startup_complete")
+      File.unlink(dir + "/startup_complete")
+    end
+    return true
+
+  rescue Exception=>e
+    log_error(e)
+    return false
+  end
+end
+
     protected
 
     def container_cid_file(container)
@@ -1295,7 +1312,7 @@ end
     clear_error
     begin
       if @system_api.clear_cid(container) != false
-        clear_container_var_run(container)#FIXME belongs ina an api
+        @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
           cid = @system_api.read_container_id(container)
           container.container_id=(cid)
@@ -1389,23 +1406,6 @@ end
     end
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
-  end
-
-  def clear_container_var_run(container)
-    clear_error
-    begin
-      dir = container_state_dir(container)
-      # Dir.unlink Will do but for moment
-      #Dir.mkdir
-      if File.exists?(dir + "/startup_complete")
-        File.unlink(dir + "/startup_complete")
-      end
-      return true
-
-    rescue Exception=>e
-      log_error(e)
-      return false
-    end
   end
 
 

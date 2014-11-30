@@ -755,6 +755,13 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
- 
+
+  def  EnginesOSapi.failed(item_name,mesg ,cmd)
+  p item_name
+  p mesg
+  p cmd
+  
+  return EnginesOSapiResult.failed(item_name,mesg ,cmd)
+end
 
 end
