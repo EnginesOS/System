@@ -11,12 +11,12 @@ class Engines
     def is_startup_complete container
       clear_error
       begin
-        runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/run/"
+        runDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName + "/"
         if File.exists?(runDir + "startup_complete")
           return true
         else
           return false
-        end
+        end 
       rescue  Exception=>e
         log_error(e)
         return false
@@ -26,7 +26,7 @@ class Engines
     def clear_cid_file container
       clear_error
       begin
-        cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
+        cidfile =  container_cid_file(container)
         if File.exists? cidfile
           File.delete cidfile
         end
@@ -42,7 +42,7 @@ class Engines
     def read_container_id(container)
       clear_error
       begin
-        cidfile = SysConfig.CidDir + "/"  + container.containerName + ".cid"
+        cidfile =  container_cid_file(container)
         if File.exists?(cidfile)
           cid = File.read(cidfile)
           return cid
@@ -57,8 +57,8 @@ class Engines
       clear_error
       begin
         container.container_id=(-1)
-        if File.exists?(SysConfig.CidDir + "/" + container.containerName + ".cid") ==true
-          File.delete(SysConfig.CidDir + "/" + container.containerName + ".cid")
+        if File.exists?( container_cid_file(container)) ==true
+          File.delete( container_cid_file(container))
         end
         return true #File may or may not exist
       rescue Exception=>e
@@ -663,10 +663,13 @@ class Engines
         return ret_val
       end
       return ret_val
-
     end
+    
     protected
 
+    def container_cid_file(container)
+     return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
+    end
     def container_state_dir(container)
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
     end
