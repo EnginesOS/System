@@ -1260,6 +1260,7 @@ def log_exception(e)
       end
 
       return mc
+      
     rescue BuildException=>e
       p e.method_name
       p e.parent_exception
