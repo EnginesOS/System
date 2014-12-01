@@ -409,6 +409,8 @@ class Engines
     def add_self_hosted_domain params
       clear_error
       begin
+        p :Lachlan_Sent_parrams
+        p params
         domains = load_self_hosted_domains()
         domains[params[:domain_name]] = params
         save_self_hosted_domains(domains)
