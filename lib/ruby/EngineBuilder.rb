@@ -1189,8 +1189,13 @@ def log_exception(e)
         if line.include?("PORT")
           i= line.split('=')
           @webPort= i[1].strip
+          p :web_port_line
           p line
+      
+          
         end
+        p @webPort
+        puts(@webPort)
       end
     rescue Exception=>e
       log_exception(e)
