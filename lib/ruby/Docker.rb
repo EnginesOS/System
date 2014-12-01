@@ -1280,8 +1280,8 @@ class Engines
     return @system_api.list_self_hosted_domains()
   end
 
-  def  update_self_hosted_domain( params)
-    @system_api.update_self_hosted_domain( params)
+  def  update_self_hosted_domain(old_domain_name, params)
+    @system_api.update_self_hosted_domain(old_domain_name, params)
   end
 
   def load_system_preferences
