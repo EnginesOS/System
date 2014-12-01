@@ -14,22 +14,10 @@ class Engines
     def create_container(container)
       clear_error
       begin
-
+        read_container_id(container)
+        container.container_id=(cid)        
         if save_container == true
-          if container.conf_register_dns == true
-            if container.register_dns() == true
-              if container.conf_register_site() == true
-                if container.register_site == true
-                  return true
-                else
-                  return false  #failed to register
-                end
-              end # if reg site
-            else
-              return false #reg dns failed
-            end
-          end #if reg dns
-          return true #save_container true
+            return register_dns_and_site(container)          
         else
           return false #save_container false
         end
@@ -42,6 +30,25 @@ class Engines
       end
     end
 
+    def register_dns_and_site(container)
+      if container.conf_register_dns == true
+        if container.register_dns() == true
+          if container.conf_register_site() == true
+            if container.register_site == true
+              return true
+            else
+              return false  #failed to register
+            end
+          end # if reg site
+        else
+          return false #reg dns failed
+        end
+      end #if reg dns
+      return true
+    end
+   
+    
+    
     def restart_nginx_process
       begin
         clear_error
@@ -1177,7 +1184,9 @@ class Engines
   attr_reader :last_error
 
   def start_container(container)
-    return @docker_api.start_container(container)
+    if @docker_api.start_container(container) == true
+      return @systens_api.register_dns_and_site(container)              
+    end
   end
 
   def inspect_container(container)
@@ -1185,7 +1194,10 @@ class Engines
   end
 
   def stop_container(container)
-    return @docker_api.stop_container(container)
+   if @docker_api.stop_container(container) == true
+     return container.deregister_registered    
+   end
+   return false 
   end
 
   def pause_container(container)
@@ -1414,8 +1426,6 @@ class Engines
       if @system_api.clear_cid(container) != false
         @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
-          cid = @system_api.read_container_id(container)
-          container.container_id=(cid)
           return @system_api.create_container(container)
         end
       else
