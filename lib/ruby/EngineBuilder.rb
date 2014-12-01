@@ -90,12 +90,12 @@ class EngineBuilder
           path = dest_paths[n]
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
+          @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+          @docker_file.puts("mv /home/app/" + path + " $CONTFSVolHome ;\\")
+          @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/app/" + path)
           n=n+1
         end
         if src_paths.length >1
@@ -120,14 +120,14 @@ class EngineBuilder
         src_paths.each do |link_src|
           path = dest_paths[n]
           @docker_file.puts("")
-          @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
-          @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
+          @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
+          @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
           @docker_file.puts("    then \\")
-          @docker_file.puts("      touch  /home/" + path +";\\")
+          @docker_file.puts("      touch  /home/app/" + path +";\\")
           @docker_file.puts("    fi;\\")
           @docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
 
-          link_src = path.sub(/app/,"")
+        
           @docker_file.puts("")
           @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
           @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
