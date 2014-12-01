@@ -728,7 +728,7 @@ class EnginesOSapi
   
   def list_self_hosted_domains params
   domains = Hash.new
-  return Hash
+  return domains
   end
   
   def attach_ftp_service(params)
