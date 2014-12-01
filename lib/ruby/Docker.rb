@@ -793,8 +793,14 @@ class Engines
 
     def load_self_hosted_domains
       begin
-        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile)
-        self_hosted_domains = YAML::load( yaml )
+        if File.exists?(SysConfig.HostedDomainsFile) == false
+           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+          self_hosted_domain_file.close
+          return Hash.new
+        else
+          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
+        end
+        self_hosted_domains = YAML::load( self_hosted_domain_file )
         return self_hosted_domains
       rescue Exception=>e
         self_hosted_domains = Hash.new
