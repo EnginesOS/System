@@ -20,11 +20,10 @@ class EngineBuilder
   :hostname,\
   :domain_name,\
   :build_name
-  class BuildException < Exception
+  class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
-      @parent_exception = parent
-      @method_name = method_name
+      @parent_exception = parent      
     end
 
   end
@@ -37,17 +36,9 @@ class EngineBuilder
       @log_file = logfile
       @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
-
     end
 
-    def log_exception(e)
-      @err_file.puts( e.to_s)
-      puts(e.to_s)
-      @last_error=  e.to_s
-      e.backtrace.each do |bt |
-        p bt
-      end
-    end
+   
 
     def write_files_for_docker
 
@@ -452,7 +443,7 @@ class EngineBuilder
           if n < 0
             wports =wports + " "
           end
-          @docker_file.puts("EXPOSE " + port)
+          @docker_file.puts("EXPOSE " + port.to_s)
           wports = wports + port.port.to_s
           n=n+1
         end
@@ -482,6 +473,16 @@ class EngineBuilder
       return false
     end
 
+    protected
+def log_exception(e)
+     @err_file.puts( e.to_s)
+     puts(e.to_s)
+     @last_error=  e.to_s
+     e.backtrace.each do |bt |
+       p bt
+     end
+     return false
+   end
     ##################### End of
   end
 
@@ -986,14 +987,7 @@ class EngineBuilder
     end
   end
 
-  def log_exception(e)
-    @err_file.puts( e.to_s)
-    puts(e.to_s)
-    @last_error=  e.to_s
-    e.backtrace.each do |bt |
-      p bt
-    end
-  end
+
 
   def setup_framework_logging
     begin
@@ -1338,7 +1332,14 @@ class EngineBuilder
   end
 
   protected
-
+def log_exception(e)
+  @err_file.puts( e.to_s)
+  puts(e.to_s)
+  @last_error=  e.to_s
+  e.backtrace.each do |bt |
+    p bt
+  end
+end
   def debug(fld)
     puts "ERROR: "
     p fld

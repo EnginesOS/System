@@ -7,7 +7,32 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
-
+    
+    def restart_nginx_process
+      begin
+        clear_error
+        cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
+  
+        SystemUtils.debug_output(cmd)
+        nginxpid= %x<#{cmd}>
+        SystemUtils.debug_output(nginxpid)
+        #FIXME read from pid file this is just silly
+        docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
+        SystemUtils.debug_output(docker_cmd)
+        if nginxpid.to_s != "-"
+          return run_system(docker_cmd)
+        else
+          return false
+        end
+      rescue Exception=>e
+        log_error(e)
+        return false
+      end
+    end
+    
+    def clear_cid(container)
+      container.container_id=(-1)
+    end
     def is_startup_complete container
       clear_error
       begin
@@ -22,7 +47,7 @@ class Engines
         return false
       end
     end
-
+    
     def clear_cid_file container
       clear_error
       begin
@@ -99,7 +124,7 @@ class Engines
         File.delete(stateDir)
         return true
       rescue Exception=>e
-        container.last_error=( "Failed To Delete " + e.to_s)
+        container.last_error=( "Failed To Delete " )
         log_error(e)
         return false
       end
@@ -236,8 +261,8 @@ class Engines
         f.close
         return true
       rescue Exception=>e
-        container.last_error=( e.message)
-        log_error(container.last_error)
+        container.last_error=( "load error")
+        log_error(e.message)
         return false
       end
     end
@@ -661,7 +686,24 @@ end
       end
       return ret_val
     end
-    
+
+def clear_container_var_run(container)
+  clear_error
+  begin
+    dir = container_state_dir(container)
+    # Dir.unlink Will do but for moment
+    #Dir.mkdir
+    if File.exists?(dir + "/startup_complete")
+      File.unlink(dir + "/startup_complete")
+    end
+    return true
+
+  rescue Exception=>e
+    log_error(e)
+    return false
+  end
+end
+
     protected
 
     def container_cid_file(container)
@@ -723,13 +765,9 @@ end
         commandargs = " run  -d " + commandargs
         SystemUtils.debug_output commandargs
         retval = run_docker(commandargs,container)
-        if retval == true #FIXME KLUDGE ALERT needs to be done better in docker api
-          container_id= read_container_id(container)
-          container.container_id=(container_id)
-        end
         return retval
       rescue Exception=>e
-        container.last_error=("Failed To Create " + e.to_s)
+        container.last_error=("Failed To Create ")
         log_error(e)
         log_error(container.last_error)
         return false
@@ -1195,7 +1233,7 @@ end
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        return @engines_api.destroy_container(container)
+        return @system_api.destroy_container(container)
       else
         return false
       end
@@ -1274,7 +1312,7 @@ end
     clear_error
     begin
       if @system_api.clear_cid(container) != false
-        clear_container_var_run(container)#FIXME belongs ina an api
+        @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
           cid = @system_api.read_container_id(container)
           container.container_id=(cid)
@@ -1370,44 +1408,7 @@ end
     SystemUtils.log_output(e_str,10)
   end
 
-  def clear_container_var_run(container)
-    clear_error
-    begin
-      dir = container_state_dir(container)
-      # Dir.unlink Will do but for moment
-      #Dir.mkdir
-      if File.exists?(dir + "/startup_complete")
-        File.unlink(dir + "/startup_complete")
-      end
-      return true
 
-    rescue Exception=>e
-      log_error(e)
-      return false
-    end
-  end
-
-  def restart_nginx_process
-    begin
-      clear_error
-      cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
-
-      SystemUtils.debug_output(cmd)
-      nginxpid= %x<#{cmd}>
-      SystemUtils.debug_output(nginxpid)
-      #FIXME read from pid file this is just silly
-      docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
-      SystemUtils.debug_output(docker_cmd)
-      if nginxpid.to_s != "-"
-        return run_system(docker_cmd)
-      else
-        return false
-      end
-    rescue Exception=>e
-      log_error(e)
-      return false
-    end
-  end
 
   def create_database  site_hash
     clear_error
