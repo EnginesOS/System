@@ -63,7 +63,8 @@ class EngineBuilder
       write_write_permissions_single
       write_write_permissions_recursive
       insert_framework_frag_in_dockerfile("builder.end")
-
+      @docker_file.close
+      
     end
 
     def write_environment_variables
@@ -239,8 +240,8 @@ class EngineBuilder
         @docker_file.puts("  then \\")
         @docker_file.puts("    mkdir -p /home/app ;\\")
         @docker_file.puts("  fi;\\")
-        @docker_file.puts(" mkdir -p /home/fs ;\\")
-        @docker_file.puts(" chown -R $ContUser /home/app /home/fs")
+        @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local \\")
+        @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
         @docker_file.puts("USER $ContUser")
 
       rescue Exception=>e
