@@ -16,7 +16,7 @@ class Engines
       begin
         cid = read_container_id(container)
         container.container_id=(cid)        
-        if save_container == true
+        if save_container(container)  == true
             return register_dns_and_site(container)          
         else
           return false #save_container false
@@ -279,7 +279,7 @@ class Engines
       end
     end
 
-    def save_container container
+    def save_container(container)
       clear_error
       begin
         serialized_object = YAML::dump(container)
