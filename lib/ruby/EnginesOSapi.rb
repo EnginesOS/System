@@ -712,8 +712,8 @@ class EnginesOSapi
       return @docker_api.set_engine_hostname_details(engine, params)
   end
   
-  def update_self_hosted_domain(params)
-    if @docker_api.update_self_hosted_domain( params) ==true
+  def update_self_hosted_domain(old_domain_name,params)
+    if @docker_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
       end
       return failed(params[:domain_name],@docker_api.last_error, "Update self hosted domain")
