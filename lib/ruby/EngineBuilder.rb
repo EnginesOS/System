@@ -1261,8 +1261,8 @@ def log_exception(e)
       return mc
       
     rescue Exception=>e
-      p e.method_name
-      p e.parent_exception
+      
+
       log_exception(e)
     rescue Exception=>e
       log_exception(e)
