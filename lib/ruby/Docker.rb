@@ -63,7 +63,7 @@ class Engines
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -93,7 +93,7 @@ class Engines
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -834,7 +834,7 @@ end
       rescue Exception=>e
         container.last_error=("Failed To Create ")
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -924,7 +924,7 @@ end
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -984,7 +984,7 @@ end
           @last_error=error_mesg
           if error_mesg.include?("Error")
             container.last_error=(error_mesg)
-            log_error(container.last_error)
+           
 
             return false
           else
@@ -1001,7 +1001,7 @@ end
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
         container.last_error=(error_mesgs+ e.to_s)
-        log_error(container.last_error)
+       log_error(e)
         return false
       end
 
@@ -1315,7 +1315,7 @@ def  update_self_hosted_domain( params)
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       log_error(e)
-      log_error(container.last_error)
+     
       return false
     end
   end
@@ -1399,7 +1399,7 @@ end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
       log_error(e)
-      log_error(container.last_error)
+     
       return false
     end
   end
