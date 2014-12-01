@@ -1197,7 +1197,7 @@ class Engines
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return @systens_api.register_dns_and_site(container)              
+      return @systems_api.register_dns_and_site(container)              
     end
   end
 
@@ -1294,7 +1294,7 @@ class Engines
 
   def register_site(site_hash)
     return @system_api.register_site(site_hash)
-  end
+  end 
 
   def deregister_site(site_hash)
     return @system_api.deregister_site(site_hash)
