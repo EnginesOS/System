@@ -714,23 +714,23 @@ class EnginesOSapi
   
   def update_self_hosted_domain(params)
     if @docker_api.update_self_hosted_domain( params) ==true
-      return sucess(params[:domain_name], "Update self hosted domain")
+      return success(params[:domain_name], "Update self hosted domain")
       end
       return failed(params[:domain_name],@docker_api.last_error, "Update self hosted domain")
   end
   
   
   def add_self_hosted_domain params
-    return true
-#    if @docker_api.add_self_hosted_domain( params) ==true
-#      return sucess(params[:domain_name], "Add self hosted domain")
-#      end
-#      return failed(params[:domain_name],@docker_api.last_error, "Add self hosted domain")
+  
+    if @docker_api.add_self_hosted_domain( params) ==true
+      return success(params[:domain_name], "Add self hosted domain")
+      end
+      return failed(params[:domain_name],@docker_api.last_error, "Add self hosted domain")
   end
   
   def remove_self_hosted_domain params
     if @docker_api.remove_self_hosted_domain( params) ==true
-        return sucess(params[:domain_name], "Remove self hosted domain")
+        return success(params[:domain_name], "Remove self hosted domain")
         end
         return failed(params[:domain_name],@docker_api.last_error, "Remove self hosted domain")
   end
