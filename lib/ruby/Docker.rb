@@ -1387,6 +1387,7 @@ class Engines
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
         return true
       else
+        @last_error = res
         SystemUtils.debug_output res
         return false
       end
@@ -1414,7 +1415,12 @@ class Engines
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
-      run_system(command)
+      res = run_system(command)
+      if  res != true
+        log_error(res)
+        return false
+      end
+      return true
     rescue Exception=>e
       log_error(e)
       return false
