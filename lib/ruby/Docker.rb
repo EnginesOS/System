@@ -288,12 +288,12 @@ class Engines
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
           Dir.mkdir(stateDir + "/run")
-
+         end
           log_dir = container_log_dir(container)
-          if File.directory?(log_dir) ==false
+         if File.directory?(log_dir) ==false
             Dir.mkdir(log_dir)
-          end
-        end
+         end
+
         statefile=stateDir + "/config.yaml"
         # BACKUP Current file with rename
         if File.exists?(statefile)
@@ -306,7 +306,7 @@ class Engines
         return true
       rescue Exception=>e
         container.last_error=( "load error")
-        log_error(e.message)
+        log_error(e)
         return false
       end
     end
