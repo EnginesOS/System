@@ -730,7 +730,7 @@ class EnginesOSapi
   
   def remove_self_hosted_domain domain_name
     if @docker_api.remove_self_hosted_domain( domain_name) ==true
-        return success(domain_name "Remove self hosted domain")
+        return success(domain_name, "Remove self hosted domain")
         end
         return failed(domain_name,@docker_api.last_error, "Remove self hosted domain")
   end
