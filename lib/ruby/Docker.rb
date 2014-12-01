@@ -742,16 +742,12 @@ end
     end
 
     def log_error(e)
-      if e.instance_of?(Exception)
-        e_str = e.to_str()
-        e.backtrace.each do |bt |
-          e_str += bt
-        end
-      else
-        e_str = e
-      end
-      @last_error = e_str
-      SystemUtils.log_output(e_str,10)
+      e_str = e.to_str()
+         e.backtrace.each do |bt |
+           e_str += bt
+         end
+       @last_error = e_str
+       SystemUtils.log_output(e_str,10)
     end
 
   end #END of SystemApi
@@ -1067,15 +1063,12 @@ end
     end
 
     def log_error(e)
-      if e.instance_of?(Exception)
-        e_str = e.to_str()
-        e.backtrace.each do |bt |
-          e_str += bt
-        end
-      else
-        e_str = e
-      end
-      @last_error = e_str
+      e_str = e.to_str()
+         e.backtrace.each do |bt |
+           e_str += bt
+         end
+       @last_error = e_str
+       SystemUtils.log_output(e_str,10)
       SystemUtils.log_output(e_str,10)
     end
 
@@ -1396,14 +1389,10 @@ end
   end
 
   def log_error(e)
-    if e.instance_of?(Exception)
       e_str = e.to_str()
       e.backtrace.each do |bt |
         e_str += bt
       end
-    else
-      e_str = e
-    end
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
   end
