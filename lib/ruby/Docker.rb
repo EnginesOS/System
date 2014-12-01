@@ -833,8 +833,7 @@ end
         return retval
       rescue Exception=>e
         container.last_error=("Failed To Create ")
-        log_error(e)
-       
+        log_error(e)       
         return false
       end
     end
@@ -1350,7 +1349,8 @@ end
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
         return true
       else
-        return res
+        SystemUtils.debug_output res
+        return false
       end
     rescue Exception=>e
       log_error(e)
