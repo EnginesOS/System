@@ -1382,6 +1382,7 @@ end
             err  = stderr.read_nonblock(1000)
             error_mesg += err
             @err_file.puts(err)
+            retry
           end
         rescue  IO::WaitReadable
           retry
