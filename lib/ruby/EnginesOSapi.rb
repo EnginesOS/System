@@ -760,6 +760,7 @@ class EnginesOSapi
   end
 
   def failed(item_name,mesg ,cmd)
+    p :engines_os_api_fail_on
     p item_name
     p mesg
     p cmd
@@ -771,6 +772,7 @@ class EnginesOSapi
 
 
   def  EnginesOSapi.failed(item_name,mesg ,cmd)
+    p :engines_os_api_fail_on_static
   p item_name
   p mesg
   p cmd
