@@ -20,6 +20,7 @@ class EngineBuilder
   :hostname,\
   :domain_name,\
   :build_name
+  
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -436,7 +437,7 @@ class EngineBuilder
         @docker_file.puts("ENV fqdn " +  @hostname + "." + @domain_name )
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
         @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
-        @docker_file.puts("ENV PORT " +  @blueprint_reader.webPort.to_s  )
+        @docker_file.puts("ENV PORT " +  @webPort.to_s  )
         wports = String.new
         n=0
         @blueprint_reader.workerPorts.each do |port|
@@ -512,8 +513,6 @@ def log_exception(e)
     :memory,\
     :rake_actions,\
     :os_packages,\
-    :webPort,\
-    :webUser,\
     :pear_modules,\
     :archives_details,
     :worker_commands,
