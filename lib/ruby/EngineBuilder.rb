@@ -94,6 +94,7 @@ class EngineBuilder
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
+          if path.include?())
           @docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
           @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
           n=n+1
@@ -239,7 +240,8 @@ class EngineBuilder
         @docker_file.puts("  then \\")
         @docker_file.puts("    mkdir -p /home/app ;\\")
         @docker_file.puts("  fi;\\")
-        @docker_file.puts(" chown -R $ContUser /home/app")
+        @docker_file.puts(" mkdir -p /home/fs ;\\")
+        @docker_file.puts(" chown -R $ContUser /home/app /home/fs")
         @docker_file.puts("USER $ContUser")
 
       rescue Exception=>e
