@@ -742,7 +742,7 @@ end
     end
 
     def log_error(e)
-      e_str = e.to_str()
+      e_str = e.to_s()
          e.backtrace.each do |bt |
            e_str += bt
          end
@@ -1063,7 +1063,7 @@ end
     end
 
     def log_error(e)
-      e_str = e.to_str()
+      e_str = e.to_s()
          e.backtrace.each do |bt |
            e_str += bt
          end
@@ -1389,7 +1389,7 @@ end
   end
 
   def log_error(e)
-      e_str = e.to_str()
+      e_str = e.to_s()
       e.backtrace.each do |bt |
         e_str += bt
       end
