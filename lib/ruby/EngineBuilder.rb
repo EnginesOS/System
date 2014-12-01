@@ -446,7 +446,7 @@ class EngineBuilder
           if n < 0
             wports =wports + " "
           end
-          @docker_file.puts("EXPOSE " + port.to_s)
+          @docker_file.puts("EXPOSE " + port.port.to_s)
           wports = wports + port.port.to_s
           n=n+1
         end
