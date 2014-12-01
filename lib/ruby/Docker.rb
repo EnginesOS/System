@@ -8,8 +8,9 @@ class Engines
       @engines_api = api
     end
 
-    def  @docker_api.update_self_hosted_domain( params)
-    end
+#    def  
+#      @docker_api.update_self_hosted_domain( params)
+#    end
 
     def create_container(container)
       clear_error
@@ -432,11 +433,12 @@ class Engines
       end
     end
 
-    def  update_self_hosted_domain( params)
+    def  update_self_hosted_domain(old_domain_name, params)
       clear_error
       begin
-        domains = load_self_hosted_domains()
-        domains[params[:domain_name]] = params
+        domains = load_self_hosted_domains()        
+        domains[old_domain_name] =nil
+        domains[params[:domain_name]] = params         
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
@@ -449,7 +451,7 @@ class Engines
       clear_error
       begin
         domains = load_self_hosted_domains()
-        domains[params[:domain_name]] = params
+        domains[params[:domain_name]] = nil
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
