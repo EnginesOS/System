@@ -20,6 +20,7 @@ class EngineBuilder
   :hostname,\
   :domain_name,\
   :build_name
+  
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -436,7 +437,7 @@ class EngineBuilder
         @docker_file.puts("ENV fqdn " +  @hostname + "." + @domain_name )
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
         @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
-        @docker_file.puts("ENV PORT " +  @blueprint_reader.webPort.to_s  )
+        @docker_file.puts("ENV PORT " +  @webPort.to_s  )
         wports = String.new
         n=0
         @blueprint_reader.workerPorts.each do |port|
@@ -512,8 +513,6 @@ def log_exception(e)
     :memory,\
     :rake_actions,\
     :os_packages,\
-    :webPort,\
-    :webUser,\
     :pear_modules,\
     :archives_details,
     :worker_commands,
@@ -1189,8 +1188,13 @@ def log_exception(e)
         if line.include?("PORT")
           i= line.split('=')
           @webPort= i[1].strip
+          p :web_port_line
           p line
+      
+          
         end
+        p @webPort
+        puts(@webPort)
       end
     rescue Exception=>e
       log_exception(e)
@@ -1255,9 +1259,10 @@ def log_exception(e)
       end
 
       return mc
-    rescue BuildException=>e
-      p e.method_name
-      p e.parent_exception
+      
+    rescue Exception=>e
+      
+
       log_exception(e)
     rescue Exception=>e
       log_exception(e)
@@ -1298,7 +1303,7 @@ def log_exception(e)
     @domain_name,
     @container_name + "/deploy",
     @blueprint_reader.volumes,
-    @blueprint_reader.webPort,
+    @webPort,
     @blueprint_reader.workerPorts,
     @repoName,
     @blueprint_reader.databases,

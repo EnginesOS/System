@@ -7,16 +7,53 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
- 
+
     def  @docker_api.update_self_hosted_domain( params)
-     end
-     
-  
+    end
+
+    def create_container(container)
+      clear_error
+      begin
+        cid = read_container_id(container)
+        container.container_id=(cid)        
+        if save_container(container)  == true
+            return register_dns_and_site(container)          
+        else
+          return false #save_container false
+        end
+
+      rescue Exception=>e
+        container.last_error=("Failed To Create " + e.to_s)
+        log_error(e)
+
+        return false
+      end
+    end
+
+    def register_dns_and_site(container)
+      if container.conf_register_dns == true
+        if container.register_dns() == true
+          if container.conf_register_site() == true
+            if container.register_site == true
+              return true
+            else
+              return false  #failed to register
+            end
+          end # if reg site
+        else
+          return false #reg dns failed
+        end
+      end #if reg dns
+      return true
+    end
+   
+    
+    
     def restart_nginx_process
       begin
         clear_error
         cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
-  
+
         SystemUtils.debug_output(cmd)
         nginxpid= %x<#{cmd}>
         SystemUtils.debug_output(nginxpid)
@@ -33,10 +70,11 @@ class Engines
         return false
       end
     end
-    
+
     def clear_cid(container)
       container.container_id=(-1)
     end
+
     def is_startup_complete container
       clear_error
       begin
@@ -45,13 +83,13 @@ class Engines
           return true
         else
           return false
-        end 
+        end
       rescue  Exception=>e
         log_error(e)
         return false
       end
     end
-    
+
     def clear_cid_file container
       clear_error
       begin
@@ -63,7 +101,7 @@ class Engines
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
         log_error(e)
-       
+
         return false
       end
     end
@@ -93,7 +131,7 @@ class Engines
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-       
+
         return false
       end
     end
@@ -158,6 +196,7 @@ class Engines
     def register_site(site_hash)
       clear_error
       begin
+        
         # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
         ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
         SystemUtils.debug_output ssh_cmd
@@ -240,7 +279,7 @@ class Engines
       end
     end
 
-    def save_container container
+    def save_container(container)
       clear_error
       begin
         serialized_object = YAML::dump(container)
@@ -366,8 +405,34 @@ class Engines
         return false
       end
     end
-  
+
     def add_self_hosted_domain params
+      clear_error
+      begin
+        p :Lachlan_Sent_parrams
+        p params
+        domains = load_self_hosted_domains()
+        domains[params[:domain_name]] = params
+        save_self_hosted_domains(domains)
+        return true
+      rescue  Exception=>e
+        log_error(e)
+        return false
+      end
+    end
+
+    def list_self_hosted_domains()
+      clear_error
+      begin
+        domains = load_self_hosted_domains()
+        return domains
+      rescue  Exception=>e
+        log_error(e)
+        return false
+      end
+    end
+
+    def  update_self_hosted_domain( params)
       clear_error
       begin
         domains = load_self_hosted_domains()
@@ -378,44 +443,20 @@ class Engines
         log_error(e)
         return false
       end
-  end
-    
-  
-  def list_self_hosted_domains()
-    clear_error
-         begin
-            domains = load_self_hosted_domains()
-           return domains
-         rescue  Exception=>e
-           log_error(e)
-           return false
-         end
-   end
-   
-  def  update_self_hosted_domain( params)
-    clear_error
-           begin
-              domains = load_self_hosted_domains()
-              domains[params[:domain_name]] = params
-              save_self_hosted_domains(domains)
-           return true
-         rescue  Exception=>e
-           log_error(e)
-           return false
-         end
-   end
-def   remove_self_hosted_domain( params)
-   clear_error
-          begin
-             domains = load_self_hosted_domains()
-             domains[params[:domain_name]] = params
-             save_self_hosted_domains(domains)
-          return true
-        rescue  Exception=>e
-          log_error(e)
-          return false
-        end
-  end
+    end
+
+    def   remove_self_hosted_domain( params)
+      clear_error
+      begin
+        domains = load_self_hosted_domains()
+        domains[params[:domain_name]] = params
+        save_self_hosted_domains(domains)
+        return true
+      rescue  Exception=>e
+        log_error(e)
+        return false
+      end
+    end
     #
     #
     #    site_hash[:name]
@@ -501,20 +542,19 @@ def   remove_self_hosted_domain( params)
           saved_hostName = container.hostName
           saved_domainName =  container.domainName
           SystemUtils.debug_output("Changing Domainame to " + domain_name)
- 
 
           if container.set_hostname_details(hostname,domain_name) == true
             nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
-             nginx_service.remove_consumer(container)
-   
-             dns_service = EnginesOSapi.loadManagedService("dns",self)
-             dns_service.remove_consumer(container)
-             
-             dns_service.add_consumer(container)
-             nginx_service.add_consumer(container)
-             save_container(container)
+            nginx_service.remove_consumer(container)
+
+            dns_service = EnginesOSapi.loadManagedService("dns",self)
+            dns_service.remove_consumer(container)
+
+            dns_service.add_consumer(container)
+            nginx_service.add_consumer(container)
+            save_container(container)
           end
-          
+
           return true
         end
         return true
@@ -530,27 +570,27 @@ def   remove_self_hosted_domain( params)
       begin
         proc_mem_info_file = File.open("/proc/meminfo")
         proc_mem_info_file.each_line  do |line|
-                values=line.split(" ")
+          values=line.split(" ")
           case values[0]
-                        when "MemTotal:"
-                          ret_val[:total] = values[1]
-                        when "MemFree:"
-                          ret_val[:free]= values[1]
-                        when "Buffers:"
-                          ret_val[:buffers]= values[1]
-                        when "Cached:"
-                          ret_val[:file_cache]= values[1]
-                        when "Active:"
-                          ret_val[:active]= values[1]
-                        when "Inactive:"
-                          ret_val[:inactive]= values[1]
-                        when "SwapTotal:"
-                          ret_val[:swap_total]= values[1]
-                        when "SwapFree:"
-                          ret_val[:swap_free] = values[1]
-                        end
-              end        
-       return ret_val
+          when "MemTotal:"
+            ret_val[:total] = values[1]
+          when "MemFree:"
+            ret_val[:free]= values[1]
+          when "Buffers:"
+            ret_val[:buffers]= values[1]
+          when "Cached:"
+            ret_val[:file_cache]= values[1]
+          when "Active:"
+            ret_val[:active]= values[1]
+          when "Inactive:"
+            ret_val[:inactive]= values[1]
+          when "SwapTotal:"
+            ret_val[:swap_total]= values[1]
+          when "SwapFree:"
+            ret_val[:swap_free] = values[1]
+          end
+        end
+        return ret_val
       rescue   Exception=>e
         log_error(e)
         ret_val[:total] = e.to_s
@@ -586,11 +626,11 @@ def   remove_self_hosted_domain( params)
         ret_val[:running] = -1
         ret_val[:idle] = -1
         return ret_val
-            
-rescue Exception=>e
-  log_error(e)
-  return false
-end   
+
+      rescue Exception=>e
+        log_error(e)
+        return false
+      end
     end
 
     def getManagedEngines()
@@ -631,8 +671,7 @@ end
           return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
         end
         return managed_engine
-        
-        
+
       rescue Exception=>e
         if engine_name != nil
           if managed_engine !=nil
@@ -733,52 +772,52 @@ end
       return ret_val
     end
 
-def clear_container_var_run(container)
-  clear_error
-  begin
-    dir = container_state_dir(container)
-    # Dir.unlink Will do but for moment
-    #Dir.mkdir
-    if File.exists?(dir + "/startup_complete")
-      File.unlink(dir + "/startup_complete")
-    end
-    return true
-
-  rescue Exception=>e
-    log_error(e)
-    return false
-  end
-end
-
-    protected
-    def load_self_hosted_domains
+    def clear_container_var_run(container)
+      clear_error
       begin
-        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile)             
-        self_hosted_domains = YAML::load( yaml )
-        return self_hosted_domains        
-        rescue Exception=>e
-            self_hosted_domains = Hash.new
-            log_error(e)
-            return self_hosted_domains
-          end   
-    end
-    
-def save_self_hosted_domains(domains)
-  begin
-    self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")             
-    self_hosted_domain_file.write(domains.to_yaml())
-    return true        
-    rescue Exception=>e        
+        dir = container_state_dir(container)
+        # Dir.unlink Will do but for moment
+        #Dir.mkdir
+        if File.exists?(dir + "/startup_complete")
+          File.unlink(dir + "/startup_complete")
+        end
+        return true
+
+      rescue Exception=>e
         log_error(e)
         return false
-      end   
-end
-
-    
-    def container_cid_file(container)
-     return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
+      end
     end
-    
+
+    protected
+
+    def load_self_hosted_domains
+      begin
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile)
+        self_hosted_domains = YAML::load( yaml )
+        return self_hosted_domains
+      rescue Exception=>e
+        self_hosted_domains = Hash.new
+        log_error(e)
+        return self_hosted_domains
+      end
+    end
+
+    def save_self_hosted_domains(domains)
+      begin
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+        self_hosted_domain_file.write(domains.to_yaml())
+        return true
+      rescue Exception=>e
+        log_error(e)
+        return false
+      end
+    end
+
+    def container_cid_file(container)
+      return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
+    end
+
     def container_state_dir(container)
       return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
     end
@@ -812,11 +851,11 @@ end
 
     def log_error(e)
       e_str = e.to_s()
-         e.backtrace.each do |bt |
-           e_str += bt
-         end
-       @last_error = e_str
-       SystemUtils.log_output(e_str,10)
+      e.backtrace.each do |bt |
+        e_str += bt
+      end
+      @last_error = e_str
+      SystemUtils.log_output(e_str,10)
     end
 
   end #END of SystemApi
@@ -834,7 +873,6 @@ end
       rescue Exception=>e
         container.last_error=("Failed To Create ")
         log_error(e)
-       
         return false
       end
     end
@@ -924,7 +962,7 @@ end
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-       
+
         return false
       end
     end
@@ -984,7 +1022,6 @@ end
           @last_error=error_mesg
           if error_mesg.include?("Error")
             container.last_error=(error_mesg)
-           
 
             return false
           else
@@ -1001,7 +1038,7 @@ end
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
         container.last_error=(error_mesgs+ e.to_s)
-       log_error(e)
+        log_error(e)
         return false
       end
 
@@ -1133,11 +1170,11 @@ end
 
     def log_error(e)
       e_str = e.to_s()
-         e.backtrace.each do |bt |
-           e_str += bt
-         end
-       @last_error = e_str
-       SystemUtils.log_output(e_str,10)
+      e.backtrace.each do |bt |
+        e_str += bt
+      end
+      @last_error = e_str
+      SystemUtils.log_output(e_str,10)
       SystemUtils.log_output(e_str,10)
     end
   end#END of DockerApi
@@ -1149,12 +1186,10 @@ end
 
   attr_reader :last_error
 
-
- 
- 
- 
- def start_container(container)
-    return @docker_api.start_container(container)
+  def start_container(container)
+    if @docker_api.start_container(container) == true
+      return @systens_api.register_dns_and_site(container)              
+    end
   end
 
   def inspect_container(container)
@@ -1162,7 +1197,10 @@ end
   end
 
   def stop_container(container)
-    return @docker_api.stop_container(container)
+   if @docker_api.stop_container(container) == true
+     return container.deregister_registered    
+   end
+   return false 
   end
 
   def pause_container(container)
@@ -1220,21 +1258,23 @@ end
   def create_backup(site_hash)
     return @system_api.create_backup(site_hash)
   end
-def remove_self_hosted_domain(params)
+
+  def remove_self_hosted_domain(params)
     return @system_api.remove_self_hosted_domain(params)
   end
-  
+
   def add_self_hosted_domain(params)
     return @system_api.add_self_hosted_domain(params)
   end
-def list_self_hosted_domains()
-   return @system_api.list_self_hosted_domains()
- end
- 
-def  update_self_hosted_domain( params)
-  @system_api.update_self_hosted_domain( params)
- end
- 
+
+  def list_self_hosted_domains()
+    return @system_api.list_self_hosted_domains()
+  end
+
+  def  update_self_hosted_domain( params)
+    @system_api.update_self_hosted_domain( params)
+  end
+
   def load_system_preferences
     return @system_api.load_system_preferences
   end
@@ -1303,7 +1343,6 @@ def  update_self_hosted_domain( params)
     return @system_api.list_managed_services
   end
 
-
   def destroy_container(container)
     clear_error
     begin
@@ -1315,29 +1354,29 @@ def  update_self_hosted_domain( params)
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       log_error(e)
-     
+
       return false
     end
   end
 
-def delete_image(container)
-  begin
-    clear_error
-  
-    if @docker_api.delete_image(container) == true
-      res = @system_api.delete_container_configs(container)
-      return res
-    else
-      return false
-    end
-  
-  rescue Exception=>e
-    container.last_error=( "Failed To Delete " + e.to_s)
-    log_error(e)
-    return false
+  def delete_image(container)
+    begin
+      clear_error
 
+      if @docker_api.delete_image(container) == true
+        res = @system_api.delete_container_configs(container)
+        return res
+      else
+        return false
+      end
+
+    rescue Exception=>e
+      container.last_error=( "Failed To Delete " + e.to_s)
+      log_error(e)
+      return false
+
+    end
   end
-end
 
   def run_system(cmd)
     clear_error
@@ -1350,7 +1389,9 @@ end
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
         return true
       else
-        return res
+        @last_error = res
+        SystemUtils.debug_output res
+        return false
       end
     rescue Exception=>e
       log_error(e)
@@ -1376,7 +1417,12 @@ end
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
-      run_system(command)
+      res = run_system(command)
+      if  res != true
+        log_error(res)
+        return false
+      end
+      return true
     rescue Exception=>e
       log_error(e)
       return false
@@ -1389,9 +1435,7 @@ end
       if @system_api.clear_cid(container) != false
         @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
-          cid = @system_api.read_container_id(container)
-          container.container_id=(cid)
-          return true
+          return @system_api.create_container(container)
         end
       else
         return false
@@ -1399,7 +1443,7 @@ end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
       log_error(e)
-     
+
       return false
     end
   end
@@ -1414,11 +1458,12 @@ end
       return false
     end
   end
-#FIXME Kludge
+
+  #FIXME Kludge
   def get_container_network_metrics(containerName)
     begin
-    ret_val = Hash.new
-    clear_error
+      ret_val = Hash.new
+      clear_error
       cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
       vals = res.split("bytes:")
@@ -1471,10 +1516,10 @@ end
   end
 
   def log_error(e)
-      e_str = e.to_s()
-      e.backtrace.each do |bt |
-        e_str += bt
-      end
+    e_str = e.to_s()
+    e.backtrace.each do |bt |
+      e_str += bt
+    end
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
   end

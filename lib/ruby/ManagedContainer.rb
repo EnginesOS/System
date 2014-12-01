@@ -397,11 +397,9 @@ end
     if @docker_api == nil
       @last_error="No connection to Engines OS System"      
       return false
-    end
-  
+    end  
       service =  EnginesOSapi.loadManagedService("monit",@docker_api)
-      return service.remove_consumer(self)
-   
+      return service.remove_consumer(self)   
   end
   
   def register_dns 

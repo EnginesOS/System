@@ -22,7 +22,15 @@ class SysConfig
   @@rmBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/rm_backup.sh "
   @@SystemLogRoot ="/var/log/engines/"
   @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
+  @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
+  @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
   
+  def SysConfig.HTTPNginxTemplate
+    return @@HTTPNginxTemplate
+  end
+  def SysConfig.HttpsNginxTemplate
+      return @@HttpsNginxTemplate
+    end
  def SysConfig.HostedDomainsFile
    return @@HostedDomainsFile
  end
