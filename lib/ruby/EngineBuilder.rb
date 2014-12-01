@@ -30,10 +30,12 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,hostname,domain_name,logfile,errfile)
+    def initialize(reader,hostname,domain_name,webport,logfile,errfile)
       @hostname = hostname
       @domain_name = domain_name
+      @webPort = webport
       @blueprint_reader = reader
+      
       @log_file = logfile
       @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
@@ -1190,8 +1192,6 @@ def log_exception(e)
           @webPort= i[1].strip
           p :web_port_line
           p line
-      
-          
         end
         p @webPort
         puts(@webPort)
@@ -1237,7 +1237,7 @@ def log_exception(e)
       read_web_port
       read_web_user
 
-      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@webPort,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
