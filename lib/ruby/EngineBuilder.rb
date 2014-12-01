@@ -94,10 +94,10 @@ class EngineBuilder
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          if path.include?("app/") == true
+#          if path.include?("app/") == true
             @docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
             @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
-          end
+#          end
           n=n+1
         end
         if src_paths.length >1
