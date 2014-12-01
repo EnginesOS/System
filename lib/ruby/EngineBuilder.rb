@@ -94,8 +94,8 @@ class EngineBuilder
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/app/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/app/" + path)
+          @docker_file.puts("mv /home/app/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app/" + path)
           n=n+1
         end
         if src_paths.length >1
@@ -125,16 +125,16 @@ class EngineBuilder
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/app/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
+          @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path))
 
         
           @docker_file.puts("")
-          @docker_file.puts("RUN mv /home/app/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/app/" + path)
+          @docker_file.puts("RUN mv /home/app/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
         end
 
         @docker_file.puts("")
-
+        @docker_file.puts("USER 0")
         @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
         @docker_file.puts("      chmod -R 770 /home/fs")
         @docker_file.puts("VOLUME /home/fs/")
