@@ -1303,7 +1303,7 @@ def log_exception(e)
     @domain_name,
     @container_name + "/deploy",
     @blueprint_reader.volumes,
-    @blueprint_reader.webPort,
+    @webPort,
     @blueprint_reader.workerPorts,
     @repoName,
     @blueprint_reader.databases,
