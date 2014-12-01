@@ -107,7 +107,7 @@ class EngineBuilder
 
       rescue Exception=>e
         log_exception(e)
-        return false
+        return false 
       end
     end
 
@@ -240,7 +240,7 @@ class EngineBuilder
         @docker_file.puts("  then \\")
         @docker_file.puts("    mkdir -p /home/app ;\\")
         @docker_file.puts("  fi;\\")
-        @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local \\")
+        @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\")
         @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
         @docker_file.puts("USER $ContUser")
 
