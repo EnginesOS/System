@@ -14,7 +14,7 @@ class Engines
     def create_container(container)
       clear_error
       begin
-        read_container_id(container)
+        cid = read_container_id(container)
         container.container_id=(cid)        
         if save_container == true
             return register_dns_and_site(container)          
