@@ -548,6 +548,7 @@ def is_running
   end
 end
      
+
 def is_startup_complete
     if @docker_api == nil
            @last_error="No connection to Engines OS System"      

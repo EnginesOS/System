@@ -695,7 +695,7 @@ class EnginesOSapi
     return db_service.consumers          
   end
   def get_backups
-    backup_service = EnginesOSapi.loadManagedService("backup",@dockerapi)
+    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
     if backup_service == nil
       return failed("backup service","No Such Service","get_backup list")
     end
@@ -752,6 +752,8 @@ class EnginesOSapi
     p mesg
     p cmd
     
+#    result = EnginesOSapiResult.failed(item_name,mesg ,cmd)
+#    return EnginesOSapi.APIException.new(result)
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
