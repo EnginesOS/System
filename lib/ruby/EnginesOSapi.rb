@@ -111,9 +111,9 @@ class EnginesOSapi
       if engine.is_a?(EnginesOSapiResult)
         return engine
       end
-    SystemUtils.debug_output("backing up " + volume_name + " to " +  dest_hash )
-      backup_hash = dest_hash
-      backup_hash.store(:name, backup_name)
+    SystemUtils.debug_output("backing up " + volume_name + " to " +  dest_hash.to_s )
+    backup_hash = dest_hash
+    backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
       engine.volumes.each do |volume|
@@ -728,11 +728,11 @@ class EnginesOSapi
       return failed(params[:domain_name],@docker_api.last_error, "Add self hosted domain")
   end
   
-  def remove_self_hosted_domain params
-    if @docker_api.remove_self_hosted_domain( params) ==true
-        return success(params[:domain_name], "Remove self hosted domain")
+  def remove_self_hosted_domain domain_name
+    if @docker_api.remove_self_hosted_domain( domain_name) ==true
+        return success(domain_name "Remove self hosted domain")
         end
-        return failed(params[:domain_name],@docker_api.last_error, "Remove self hosted domain")
+        return failed(domain_name,@docker_api.last_error, "Remove self hosted domain")
   end
   
   def list_self_hosted_domains 
