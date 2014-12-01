@@ -413,8 +413,7 @@ class Engines
         p params
         domains = load_self_hosted_domains()
         domains[params[:domain_name]] = params
-        save_self_hosted_domains(domains)
-        return true
+        return  save_self_hosted_domains(domains)       
       rescue  Exception=>e
         log_error(e)
         return false
@@ -425,6 +424,7 @@ class Engines
       clear_error
       begin
         domains = load_self_hosted_domains()
+        p domains
         return domains
       rescue  Exception=>e
         log_error(e)
@@ -793,8 +793,14 @@ class Engines
 
     def load_self_hosted_domains
       begin
-        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile)
-        self_hosted_domains = YAML::load( yaml )
+        if File.exists?(SysConfig.HostedDomainsFile) == false
+           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+          self_hosted_domain_file.close
+          return Hash.new
+        else
+          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
+        end
+        self_hosted_domains = YAML::load( self_hosted_domain_file )
         return self_hosted_domains
       rescue Exception=>e
         self_hosted_domains = Hash.new
@@ -807,6 +813,7 @@ class Engines
       begin
         self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
         self_hosted_domain_file.write(domains.to_yaml())
+        self_hosted_domain_file.close
         return true
       rescue Exception=>e
         log_error(e)
