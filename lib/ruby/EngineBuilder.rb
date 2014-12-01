@@ -1353,7 +1353,7 @@ end
 
   require 'open3'
 def run_system(cmd)
-    clear_error
+    
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
