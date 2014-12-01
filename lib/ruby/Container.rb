@@ -25,6 +25,7 @@ class Container
    def set_hostname_details(host_name,domain_name)
      @hostName = host_name
      @domainName = domain_name
+     return true
    end
    
    def get_container_memory_stats (docker_api)
