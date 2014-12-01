@@ -129,8 +129,8 @@ class EngineBuilder
 
         
           @docker_file.puts("")
-          @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+          @docker_file.puts("RUN mv /home/app/" + path + " $CONTFSVolHome ;\\")
+          @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/app/" + path)
         end
 
         @docker_file.puts("")
@@ -461,7 +461,7 @@ class EngineBuilder
     end
 
     def write_pear_list
-      if @blueprint_reader.pear_modules != nil
+      if @blueprint_reader.pear_modules.count >0
         @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
         @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
         @docker_file.puts("  php go-pear.phar")
