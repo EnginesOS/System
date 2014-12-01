@@ -437,7 +437,7 @@ class Engines
       clear_error
       begin
         domains = load_self_hosted_domains()        
-        domains[old_domain_name] =nil
+        domains.delete(old_domain_name)
         domains[params[:domain_name]] = params         
         save_self_hosted_domains(domains)
         return true
@@ -447,11 +447,11 @@ class Engines
       end
     end
 
-    def   remove_self_hosted_domain( params)
+    def   remove_self_hosted_domain( domain_name)
       clear_error
       begin
         domains = load_self_hosted_domains()
-        domains[params[:domain_name]] = nil
+        domains.delete(domain_name)
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
@@ -1268,8 +1268,8 @@ class Engines
     return @system_api.create_backup(site_hash)
   end
 
-  def remove_self_hosted_domain(params)
-    return @system_api.remove_self_hosted_domain(params)
+  def remove_self_hosted_domain(domain_name)
+    return @system_api.remove_self_hosted_domain(domain_name)
   end
 
   def add_self_hosted_domain(params)
