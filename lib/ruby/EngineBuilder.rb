@@ -1352,8 +1352,30 @@ end
   end
 
   require 'open3'
+def run_system(cmd)
+    clear_error
+    begin
+      cmd = cmd + " 2>&1"
+      res= %x<#{cmd}>
+      SystemUtils.debug_output res
+      #FIXME should be case insensitive The last one is a pure kludge
+      #really need to get stderr and stdout separately
+      if $? == 0 && res.downcase.include?("error") == false 
+        @log_file.puts(res)
+        return true
+      else
+        @last_error = res
+        @log_file.puts(res)
+        SystemUtils.debug_output res
+        return false
+      end
+    rescue Exception=>e
+      log_error(e)
+      return ret_val
+    end
+  end
 
-  def run_system(cmd)
+  def run_asystem(cmd)
     ret_val=false
     res = String.new
     error_mesg = String.new
