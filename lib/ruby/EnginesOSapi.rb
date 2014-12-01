@@ -717,18 +717,30 @@ class EnginesOSapi
       return @docker_api.set_engine_hostname_details(engine, params)
   end
   
+  def update_self_hosted_domain(params)
+    if @docker_api.update_self_hosted_domain( params) ==true
+      return sucess(params[:domain_name], "Update self hosted domain")
+      end
+      return failed(params[:domain_name],@docker_api.last_error, "Update self hosted domain")
+  end
+  
+  
   def add_self_hosted_domain params
-    return @docker_api.add_self_hosted_domain( params)
-    #  EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+    if @docker_api.add_self_hosted_domain( params) ==true
+      return sucess(params[:domain_name], "Add self hosted domain")
+      end
+      return failed(params[:domain_name],@docker_api.last_error, "Add self hosted domain")
   end
   
   def remove_self_hosted_domain params
-    return  EnginesOSapiResult.new(true,0,params[:domain_name], "Success","Remove self hosted domain")
+    if @docker_api.remove_self_hosted_domain( params) ==true
+        return sucess(params[:domain_name], "Remove self hosted domain")
+        end
+        return failed(params[:domain_name],@docker_api.last_error, "Remove self hosted domain")
   end
   
-  def list_self_hosted_domains params
-  domains = Hash.new
-  return domains
+  def list_self_hosted_domains 
+    return @docker_api.list_self_hosted_domains( )
   end
   
   def attach_ftp_service(params)

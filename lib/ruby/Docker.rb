@@ -7,7 +7,11 @@ class Engines
     def initialize(api)
       @engines_api = api
     end
-    
+ 
+    def  @docker_api.update_self_hosted_domain( params)
+     end
+     
+  
     def restart_nginx_process
       begin
         clear_error
@@ -59,7 +63,7 @@ class Engines
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -89,7 +93,7 @@ class Engines
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -362,17 +366,56 @@ class Engines
         return false
       end
     end
-
+  
     def add_self_hosted_domain params
       clear_error
       begin
-
-        return EnginesOSapiResult.new(true,0,params[:domain_name], "OK","Add self hosted domain")
+        domains = load_self_hosted_domains()
+        domains[params[:domain_name]] = params
+        save_self_hosted_domains(domains)
+        return true
       rescue  Exception=>e
         log_error(e)
         return false
       end
-    end
+  end
+    
+  
+  def list_self_hosted_domains()
+    clear_error
+         begin
+            domains = load_self_hosted_domains()
+           return domains
+         rescue  Exception=>e
+           log_error(e)
+           return false
+         end
+   end
+   
+  def  update_self_hosted_domain( params)
+    clear_error
+           begin
+              domains = load_self_hosted_domains()
+              domains[params[:domain_name]] = params
+              save_self_hosted_domains(domains)
+           return true
+         rescue  Exception=>e
+           log_error(e)
+           return false
+         end
+   end
+def   remove_self_hosted_domain( params)
+   clear_error
+          begin
+             domains = load_self_hosted_domains()
+             domains[params[:domain_name]] = params
+             save_self_hosted_domains(domains)
+          return true
+        rescue  Exception=>e
+          log_error(e)
+          return false
+        end
+  end
     #
     #
     #    site_hash[:name]
@@ -708,7 +751,30 @@ def clear_container_var_run(container)
 end
 
     protected
+    def load_self_hosted_domains
+      begin
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile)             
+        self_hosted_domains = YAML::load( yaml )
+        return self_hosted_domains        
+        rescue Exception=>e
+            self_hosted_domains = Hash.new
+            log_error(e)
+            return self_hosted_domains
+          end   
+    end
+    
+def save_self_hosted_domains(domains)
+  begin
+    self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")             
+    self_hosted_domain_file.write(domains.to_yaml())
+    return true        
+    rescue Exception=>e        
+        log_error(e)
+        return false
+      end   
+end
 
+    
     def container_cid_file(container)
      return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
     end
@@ -768,7 +834,7 @@ end
       rescue Exception=>e
         container.last_error=("Failed To Create ")
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -858,7 +924,7 @@ end
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
         log_error(e)
-        log_error(container.last_error)
+       
         return false
       end
     end
@@ -918,7 +984,7 @@ end
           @last_error=error_mesg
           if error_mesg.include?("Error")
             container.last_error=(error_mesg)
-            log_error(container.last_error)
+           
 
             return false
           else
@@ -935,7 +1001,7 @@ end
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
         container.last_error=(error_mesgs+ e.to_s)
-        log_error(container.last_error)
+       log_error(e)
         return false
       end
 
@@ -1083,7 +1149,11 @@ end
 
   attr_reader :last_error
 
-  def start_container(container)
+
+ 
+ 
+ 
+ def start_container(container)
     return @docker_api.start_container(container)
   end
 
@@ -1150,11 +1220,21 @@ end
   def create_backup(site_hash)
     return @system_api.create_backup(site_hash)
   end
-
+def remove_self_hosted_domain(params)
+    return @system_api.remove_self_hosted_domain(params)
+  end
+  
   def add_self_hosted_domain(params)
     return @system_api.add_self_hosted_domain(params)
   end
-
+def list_self_hosted_domains()
+   return @system_api.list_self_hosted_domains()
+ end
+ 
+def  update_self_hosted_domain( params)
+  @system_api.update_self_hosted_domain( params)
+ end
+ 
   def load_system_preferences
     return @system_api.load_system_preferences
   end
@@ -1235,7 +1315,7 @@ end
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       log_error(e)
-      log_error(container.last_error)
+     
       return false
     end
   end
@@ -1319,7 +1399,7 @@ end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
       log_error(e)
-      log_error(container.last_error)
+     
       return false
     end
   end
