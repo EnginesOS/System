@@ -458,17 +458,20 @@ class Engines
           saved_hostName = container.hostName
           saved_domainName =  container.domainName
           SystemUtils.debug_output("Changing Domainame to " + domain_name)
-          nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
-          nginx_service.remove_consumer(container)
+ 
 
-          dns_service = EnginesOSapi.loadManagedService("dns",self)
-          dns_service.remove_consumer(container)
-
-          container.set_hostname_details(hostname,domain_name)
-
-          dns_service.add_consumer(container)
-          nginx_service.add_consumer(container)
-
+          if container.set_hostname_details(hostname,domain_name) == true
+            nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
+             nginx_service.remove_consumer(container)
+   
+             dns_service = EnginesOSapi.loadManagedService("dns",self)
+             dns_service.remove_consumer(container)
+             
+             dns_service.add_consumer(container)
+             nginx_service.add_consumer(container)
+             save_container(container)
+          end
+          
           return true
         end
         return true
@@ -1071,7 +1074,6 @@ end
        SystemUtils.log_output(e_str,10)
       SystemUtils.log_output(e_str,10)
     end
-
   end#END of DockerApi
 
   def initialize
@@ -1396,8 +1398,6 @@ end
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
   end
-
-
 
   def create_database  site_hash
     clear_error
