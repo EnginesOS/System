@@ -1352,7 +1352,7 @@ end
   end
 
   require 'open3'
-def run_system(cmd)
+def arun_system(cmd)
     
     begin
       cmd = cmd + " 2>&1"
@@ -1375,7 +1375,7 @@ def run_system(cmd)
     end
   end
 
-  def run_asystem(cmd)
+  def run_system(cmd)
     ret_val=false
     res = String.new
     error_mesg = String.new
