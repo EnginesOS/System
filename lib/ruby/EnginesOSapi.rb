@@ -74,7 +74,7 @@ class EnginesOSapi
    
   
   def getManagedServices()
-    return @docker_api.getManagedEngines()        
+    return @docker_api.getManagedServices()        
   end
  
 
