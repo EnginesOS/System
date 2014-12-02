@@ -805,6 +805,9 @@ class Engines
           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
         end
         self_hosted_domains = YAML::load( self_hosted_domain_file )
+        if self_hosted_domains == false
+          return Hash.new
+        end
         return self_hosted_domains
       rescue Exception=>e
         self_hosted_domains = Hash.new
