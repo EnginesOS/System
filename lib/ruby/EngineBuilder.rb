@@ -1263,7 +1263,7 @@ def log_exception(e)
         @blueprint_reader.databases.each() do |db|
           create_database_service db
         end
-        @blueprint_reader.volumes.each() do |vol|
+        @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
         end
 
