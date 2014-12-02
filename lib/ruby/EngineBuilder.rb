@@ -154,7 +154,7 @@ class EngineBuilder
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
 
-        @blueprint_reader.volumes.each do |vol|
+        @blueprint_reader.volumes.each_value do |vol|
           @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
           @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
         end
