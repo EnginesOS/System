@@ -16,7 +16,7 @@ volumes:
 port: 
 eports:
 - !ruby/object:WorkPort
-  name: mysql
+  name: pgsql
   port: 3306
   publicFacing: false
   external: 0

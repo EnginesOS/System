@@ -13,8 +13,8 @@ environments:
  setatrun: false
 image: engines/dns
 volumes: 
- config: !ruby/object:Volume
-  name: config
+ configuration: !ruby/object:Volume
+  name: configuration
   remotepath: "/etc/bind/engines"
   localpath: "/opt/engines/etc/dns/config"
   mapping_permissions: "ro"

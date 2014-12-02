@@ -8,7 +8,7 @@ domainName:
 environments: []
 image: engines/ftp
 volumes:
- ssl_cnerts: !ruby/object:Volume
+ ssl_certs: !ruby/object:Volume
   name: ssl_certs
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/ssl/"

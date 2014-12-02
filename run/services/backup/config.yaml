@@ -23,8 +23,8 @@ volumes:
   remotepath: "/var/lib/engines/local_backup_dests/"
   localpath: "/var/lib/engines/backup_paths"
   mapping_permissions: "rw"
- Logging: !ruby/object:Volume
-  name: Logging
+ Logs: !ruby/object:Volume
+  name: Logs
   remotepath: "/var/log/"
   localpath: "/var/log/engines/services/backup/"
   mapping_permissions: "rw"

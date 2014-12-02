@@ -17,8 +17,8 @@ volumes:
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
   mapping_permissions: rw
- build_dir: !ruby/object:Volume
-  name: build_dir
+ build_dirs: !ruby/object:Volume
+  name: build_dirs
   remotepath: "/home/dockuser/deployment"
   localpath: "/home/dockuser/deployment"
   mapping_permissions: rw

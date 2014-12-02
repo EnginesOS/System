@@ -9,7 +9,7 @@ environments: []
 image: engines/nginx
 volumes:
  ssl_certs: !ruby/object:Volume
-  name: sslcerts
+  name: ssl_certs
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engines/etc/nginx/ssl/"
   mapping_permissions: "ro"

@@ -8,8 +8,8 @@ domainName:
 environments: []
 image: engines/mysql
 volumes:
- database: !ruby/object:Volume
-  name: database
+ my_database: !ruby/object:Volume
+  name: my_database
   remotepath: "/var/lib/mysql"
   localpath: "/var/lib/engines/mysql"
   mapping_permissions: "rw"
