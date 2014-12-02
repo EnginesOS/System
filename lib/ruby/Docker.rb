@@ -805,6 +805,7 @@ class Engines
           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
         end
         self_hosted_domains = YAML::load( self_hosted_domain_file )
+        self_hosted_domain_file.close
         if self_hosted_domains == false
           return Hash.new
         end
@@ -1366,7 +1367,19 @@ class Engines
       return false
     end
   end
+def create_database  site_hash
+   clear_error
+   begin
+     container_name =  site_hash[:flavor] + "_server"
+     cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
+     SystemUtils.debug_output(cmd)
 
+     return run_system(cmd)
+   rescue  Exception=>e
+     log_error(e)
+     return false
+   end
+ end
   def delete_image(container)
     begin
       clear_error
@@ -1532,19 +1545,7 @@ class Engines
     SystemUtils.log_output(e_str,10)
   end
 
-  def create_database  site_hash
-    clear_error
-    begin
-      container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
-      SystemUtils.debug_output(cmd)
-
-      return run_system(cmd)
-    rescue  Exception=>e
-      log_error(e)
-      return false
-    end
-  end
+ 
 
 end
 
