@@ -8,7 +8,7 @@ domainName:
 environments: []
 image: engines/pgsql
 volumes:
-- !ruby/object:Volume
+ database: !ruby/object:Volume
   name: pgsql
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"

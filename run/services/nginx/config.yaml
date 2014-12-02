@@ -8,17 +8,17 @@ domainName:
 environments: []
 image: engines/nginx
 volumes:
-- !ruby/object:Volume
+ ssl_certs: !ruby/object:Volume
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engines/etc/nginx/ssl/"
   mapping_permissions: "ro"
-- !ruby/object:Volume
+ sites_enabled: !ruby/object:Volume
   name: sites_enabled
   remotepath: "/etc/nginx/sites-enabled/"
   localpath: "/opt/engines/etc/nginx/sites-enabled/"
   mapping_permissions: "ro" 
-- !ruby/object:Volume
+ var_run: !ruby/object:Volume
   name: var_run
   remotepath: "/var/run/nginx"
   localpath: "/opt/engines/run/services/nginx/run/nginx"
