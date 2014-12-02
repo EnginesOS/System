@@ -88,15 +88,16 @@ class EngineBuilder
         dest_paths =  @blueprint_reader.persistant_dirs[:dest_paths]
         n=0
         src_paths.each do |link_src|
-          path = dest_paths[n]
+          path = dest_paths[n]  
+          path="/" + path
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
+          @docker_file.puts("if [ ! -d /home/app" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/app" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/app/" + path + " $VOLDIR ;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app/" + path)
+          @docker_file.puts("mv /home/app" + path + " $VOLDIR ;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app" + path)
           n=n+1
         end
         if src_paths.length >1
@@ -648,7 +649,7 @@ def log_exception(e)
     def read_services
 
       @databases=Array.new
-      @volumes=Array.new
+      @volumes=Hash.new
 
       @log_file.puts("Adding services")
       services=@blueprint["software"]["softwareservices"]
@@ -664,7 +665,11 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-          else
+       elsif servicetype=="filesystem"
+          name = clean_path(service["name"])
+          dest = clean_path(service["dest"])
+          add_ftp_service(name, dest)
+        else
             p "Unknown Service " + servicetype
           end
         end
@@ -676,7 +681,7 @@ def log_exception(e)
 
         permissions = PermissionRights.new(@container_name,"","")
         vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
-        @volumes.push(vol)
+        @volumes[name]=vol
 
       rescue Exception=>e
         log_exception(e)
@@ -1250,10 +1255,10 @@ def log_exception(e)
       else
         @log_file.puts("creating deploy image")
 
-        @blueprint_reader.databases do |db|
+        @blueprint_reader.databases.each() do |db|
           create_database_service db
         end
-        @blueprint_reader.volumes do |vol|
+        @blueprint_reader.volumes.each() do |vol|
           create_file_service vol
         end
 
@@ -1353,28 +1358,7 @@ end
   end
 
   require 'open3'
-def arun_system(cmd)
-    
-    begin
-      cmd = cmd + " 2>&1"
-      res= %x<#{cmd}>
-      SystemUtils.debug_output res
-      #FIXME should be case insensitive The last one is a pure kludge
-      #really need to get stderr and stdout separately
-      if $? == 0 && res.downcase.include?("error") == false 
-        @log_file.puts(res)
-        return true
-      else
-        @last_error = res
-        @log_file.puts(res)
-        SystemUtils.debug_output res
-        return false
-      end
-    rescue Exception=>e
-      log_error(e)
-      return ret_val
-    end
-  end
+
 
   def run_system(cmd)
     ret_val=false
