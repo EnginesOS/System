@@ -1086,7 +1086,7 @@ class Engines
               end
               eportoption = eportoption + eport.port.to_s
               if eport.proto_type == nil
-                eport.set_proto_type 'tcp'
+                eport.proto_type=('tcp')
               end
               eportoption = eportoption + "/"+ eport.proto_type + " "
             end
