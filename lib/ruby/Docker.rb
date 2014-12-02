@@ -1118,7 +1118,7 @@ class Engines
         #end
         #container specific
         if(container.volumes)
-          container.volumes.each do |volume|
+          container.volumes.each_value do |volume|
             if volume !=nil
               if volume.name == nil
                 volume_name = ""
@@ -1509,7 +1509,7 @@ class Engines
       volume_option = " -v " + state_dir + ":/client/state:rw "
       volume_option += " -v " + log_dir + ":/client/log:rw "
       if container.volumes != nil
-        container.volumes.each do |vol|
+        container.volumes.each_value do |vol|
           SystemUtils.debug_output vol
           volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
         end
