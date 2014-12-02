@@ -685,7 +685,7 @@ def log_exception(e)
           dest="/home/fs/" + dest          
         end
         permissions = PermissionRights.new(@container_name,"","")
-        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
+        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + dest,dest,"rw",permissions)
         @volumes[name]=vol
 
       rescue Exception=>e
