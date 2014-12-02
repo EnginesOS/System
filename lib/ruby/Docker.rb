@@ -734,7 +734,7 @@ class Engines
             yf.close
           end
         end
-        return managed_service
+        return ret_val
       rescue Exception=>e
         log_error(e)
         return false
