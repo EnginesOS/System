@@ -1119,13 +1119,7 @@ class Engines
         #container specific
         if(container.volumes)
           container.volumes.each_value do |volume|
-            if volume !=nil
-              if volume.name == nil
-                volume_name = ""
-              else
-                volume_name = volume.name
-              end
-
+            if volume !=nil              
               if volume.localpath !=nil
                 volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s +  ":" + volume.mapping_permissions.to_s
               end
