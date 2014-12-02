@@ -8,8 +8,8 @@ domainName:
 environments: []
 image: engines/pgsql
 volumes:
- database: !ruby/object:Volume
-  name: pgsql
+ pg_database: !ruby/object:Volume
+  name: pg_database
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
