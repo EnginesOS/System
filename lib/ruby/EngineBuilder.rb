@@ -678,7 +678,12 @@ def log_exception(e)
 
     def add_file_service(name,dest)
       begin
-
+        if dest == nil || dest == ""
+          dest=name
+        end
+        if(dest.start_with?("/home/app/") == false)
+          dest="/home/fs/" + dest          
+        end
         permissions = PermissionRights.new(@container_name,"","")
         vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
         @volumes[name]=vol
