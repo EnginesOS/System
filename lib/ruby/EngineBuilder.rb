@@ -771,12 +771,16 @@ def log_exception(e)
       @apache_modules = Array.new
       
       mods =  @blueprint["software"]["apache_modules"]
+        if mods == nil
+          return true
+        end
       mods.each do |ap_module|
         mod = ap_module["module"]
           if mod != nil
             @apache_modules.push(mod)
           end
       end
+      return true
       rescue Exception=>e
         log_exception(e)
         return false
