@@ -8,15 +8,15 @@ domainName:
 environments: []
 image: engines/pgsql
 volumes:
-- !ruby/object:Volume
-  name: pgsql
+ pg_database: !ruby/object:Volume
+  name: pg_database
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
 port: 
 eports:
 - !ruby/object:WorkPort
-  name: mysql
+  name: pgsql
   port: 3306
   publicFacing: false
   external: 0

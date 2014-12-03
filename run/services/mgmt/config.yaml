@@ -12,38 +12,37 @@ environments:
  setatrun: false
 image: engines/mgmt
 volumes:
-- !ruby/object:Volume
+ socket: !ruby/object:Volume
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
   mapping_permissions: rw
-- !ruby/object:Volume
-  name: build
+ build_dirs: !ruby/object:Volume
+  name: build_dirs
   remotepath: "/home/dockuser/deployment"
   localpath: "/home/dockuser/deployment"
   mapping_permissions: rw
-- !ruby/object:Volume
+ sqlite: !ruby/object:Volume
   name: sqlite
   remotepath: "/home/app/app/db/development.sqlite"
   localpath: "/home/dockuser/db/development.sqlite"
   mapping_permissions: rw
-
-- !ruby/object:Volume
-  name: docker
+ docker_bin: !ruby/object:Volume
+  name: docker_bin
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
   mapping_permissions: ro
-- !ruby/object:Volume
-  name: engines
+ engines_system: !ruby/object:Volume
+  name: engines_system
   remotepath: "/opt/engines"
   localpath: "/opt/engines"
   mapping_permissions: rw
-- !ruby/object:Volume
-  name: enginesfs
+ engines_fs: !ruby/object:Volume
+  name: engines_fs
   remotepath: "/var/lib/engines/fs"
   localpath: "/var/lib/engines/fs"
   mapping_permissions: rw
-- !ruby/object:Volume
+ engines_logs: !ruby/object:Volume
   name: engineslogs
   remotepath: "/var/log/engines"
   localpath: "/var/log/engines"

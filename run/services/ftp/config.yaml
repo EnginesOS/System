@@ -8,17 +8,17 @@ domainName:
 environments: []
 image: engines/ftp
 volumes:
-- !ruby/object:Volume
-  name: sslcerts
+ ssl_certs: !ruby/object:Volume
+  name: ssl_certs
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/ssl/"
   mapping_permissions: "ro"
-- !ruby/object:Volume
+ fs_rw: !ruby/object:Volume
   name: fs_rw
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
-- !ruby/object:Volume
+ fs_ro: !ruby/object:Volume
   name: fs_ro
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/fs/"

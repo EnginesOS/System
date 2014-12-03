@@ -288,12 +288,12 @@ class Engines
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
           Dir.mkdir(stateDir + "/run")
-
+         end
           log_dir = container_log_dir(container)
-          if File.directory?(log_dir) ==false
+         if File.directory?(log_dir) ==false
             Dir.mkdir(log_dir)
-          end
-        end
+         end
+
         statefile=stateDir + "/config.yaml"
         # BACKUP Current file with rename
         if File.exists?(statefile)
@@ -306,7 +306,7 @@ class Engines
         return true
       rescue Exception=>e
         container.last_error=( "load error")
-        log_error(e.message)
+        log_error(e)
         return false
       end
     end
@@ -734,7 +734,7 @@ class Engines
             yf.close
           end
         end
-        return managed_service
+        return ret_val
       rescue Exception=>e
         log_error(e)
         return false
@@ -805,6 +805,10 @@ class Engines
           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
         end
         self_hosted_domains = YAML::load( self_hosted_domain_file )
+        self_hosted_domain_file.close
+        if self_hosted_domains == false
+          return Hash.new
+        end
         return self_hosted_domains
       rescue Exception=>e
         self_hosted_domains = Hash.new
@@ -1082,7 +1086,7 @@ class Engines
               end
               eportoption = eportoption + eport.port.to_s
               if eport.proto_type == nil
-                eport.set_proto_type 'tcp'
+                eport.proto_type=('tcp')
               end
               eportoption = eportoption + "/"+ eport.proto_type + " "
             end
@@ -1118,14 +1122,8 @@ class Engines
         #end
         #container specific
         if(container.volumes)
-          container.volumes.each do |volume|
-            if volume !=nil
-              if volume.name == nil
-                volume_name = ""
-              else
-                volume_name = volume.name
-              end
-
+          container.volumes.each_value do |volume|
+            if volume !=nil              
               if volume.localpath !=nil
                 volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s +  ":" + volume.mapping_permissions.to_s
               end
@@ -1199,7 +1197,7 @@ class Engines
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return @systems_api.register_dns_and_site(container)              
+      return @system_api.register_dns_and_site(container)              
     end
   end
 
@@ -1369,7 +1367,19 @@ class Engines
       return false
     end
   end
+def create_database  site_hash
+   clear_error
+   begin
+     container_name =  site_hash[:flavor] + "_server"
+     cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
+     SystemUtils.debug_output(cmd)
 
+     return run_system(cmd)
+   rescue  Exception=>e
+     log_error(e)
+     return false
+   end
+ end
   def delete_image(container)
     begin
       clear_error
@@ -1509,7 +1519,7 @@ class Engines
       volume_option = " -v " + state_dir + ":/client/state:rw "
       volume_option += " -v " + log_dir + ":/client/log:rw "
       if container.volumes != nil
-        container.volumes.each do |vol|
+        container.volumes.each_value do |vol|
           SystemUtils.debug_output vol
           volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
         end
@@ -1535,19 +1545,7 @@ class Engines
     SystemUtils.log_output(e_str,10)
   end
 
-  def create_database  site_hash
-    clear_error
-    begin
-      container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
-      SystemUtils.debug_output(cmd)
-
-      return run_system(cmd)
-    rescue  Exception=>e
-      log_error(e)
-      return false
-    end
-  end
+ 
 
 end
 

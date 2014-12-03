@@ -63,7 +63,8 @@ class EngineBuilder
       write_write_permissions_single
       write_write_permissions_recursive
       insert_framework_frag_in_dockerfile("builder.end")
-
+      @docker_file.close
+      
     end
 
     def write_environment_variables
@@ -87,15 +88,16 @@ class EngineBuilder
         dest_paths =  @blueprint_reader.persistant_dirs[:dest_paths]
         n=0
         src_paths.each do |link_src|
-          path = dest_paths[n]
+          path = dest_paths[n]  
+          path="/" + path
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
+          @docker_file.puts("if [ ! -d /home/app" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/app" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+          @docker_file.puts("mv /home/app" + path + " $VOLDIR ;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app" + path)
           n=n+1
         end
         if src_paths.length >1
@@ -106,7 +108,7 @@ class EngineBuilder
 
       rescue Exception=>e
         log_exception(e)
-        return false
+        return false 
       end
     end
 
@@ -120,21 +122,21 @@ class EngineBuilder
         src_paths.each do |link_src|
           path = dest_paths[n]
           @docker_file.puts("")
-          @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
-          @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
+          @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
+          @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
           @docker_file.puts("    then \\")
-          @docker_file.puts("      touch  /home/" + path +";\\")
+          @docker_file.puts("      touch  /home/app/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $CONTFSVolHome/" + File.dirname(path))
+          @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path))
 
-          link_src = path.sub(/app/,"")
+        
           @docker_file.puts("")
-          @docker_file.puts("RUN mv /home/" + path + " $CONTFSVolHome ;\\")
-          @docker_file.puts("    ln -s $CONTFSVolHome/" + link_src + " /home/" + path)
+          @docker_file.puts("RUN mv /home/app/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
         end
 
         @docker_file.puts("")
-
+        @docker_file.puts("USER 0")
         @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
         @docker_file.puts("      chmod -R 770 /home/fs")
         @docker_file.puts("VOLUME /home/fs/")
@@ -152,7 +154,7 @@ class EngineBuilder
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
 
-        @blueprint_reader.volumes.each do |vol|
+        @blueprint_reader.volumes.each_value do |vol|
           @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
           @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
         end
@@ -239,8 +241,8 @@ class EngineBuilder
         @docker_file.puts("  then \\")
         @docker_file.puts("    mkdir -p /home/app ;\\")
         @docker_file.puts("  fi;\\")
-        @docker_file.puts(" mkdir -p /home/fs ;\\")
-        @docker_file.puts(" chown -R $ContUser /home/app /home/fs")
+        @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\")
+        @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
         @docker_file.puts("USER $ContUser")
 
       rescue Exception=>e
@@ -461,7 +463,7 @@ class EngineBuilder
     end
 
     def write_pear_list
-      if @blueprint_reader.pear_modules != nil
+      if @blueprint_reader.pear_modules.count >0
         @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
         @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
         @docker_file.puts("  php go-pear.phar")
@@ -647,7 +649,7 @@ def log_exception(e)
     def read_services
 
       @databases=Array.new
-      @volumes=Array.new
+      @volumes=Hash.new
 
       @log_file.puts("Adding services")
       services=@blueprint["software"]["softwareservices"]
@@ -663,7 +665,11 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-          else
+       elsif servicetype=="filesystem"
+          name = clean_path(service["name"])
+          dest = clean_path(service["dest"])
+          add_ftp_service(name, dest)
+        else
             p "Unknown Service " + servicetype
           end
         end
@@ -672,10 +678,15 @@ def log_exception(e)
 
     def add_file_service(name,dest)
       begin
-
+        if dest == nil || dest == ""
+          dest=name
+        end
+        if(dest.start_with?("/home/app/") == false)
+          dest="/home/fs/" + dest          
+        end
         permissions = PermissionRights.new(@container_name,"","")
-        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
-        @volumes.push(vol)
+        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + dest,dest,"rw",permissions)
+        @volumes[name]=vol
 
       rescue Exception=>e
         log_exception(e)
@@ -1249,10 +1260,10 @@ def log_exception(e)
       else
         @log_file.puts("creating deploy image")
 
-        @blueprint_reader.databases do |db|
+        @blueprint_reader.databases.each() do |db|
           create_database_service db
         end
-        @blueprint_reader.volumes do |vol|
+        @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
         end
 
@@ -1353,6 +1364,7 @@ end
 
   require 'open3'
 
+
   def run_system(cmd)
     ret_val=false
     res = String.new
@@ -1382,6 +1394,7 @@ end
             err  = stderr.read_nonblock(1000)
             error_mesg += err
             @err_file.puts(err)
+            retry
           end
         rescue  IO::WaitReadable
           retry

@@ -8,18 +8,18 @@ domainName: enginesos.jvodan.com
 environments: []
 image: google/cadvisor:latest
 volumes:
-- !ruby/object:Volume
-  name: var/run
+ var_run: !ruby/object:Volume
+  name: var_run
   remotepath: "/var/run"
   localpath: "/var/run"
   mapping_permissions: "rw"
-- !ruby/object:Volume
-  name: lib/docker
+ lib_docker: !ruby/object:Volume
+  name: lib_docker
   remotepath: "/var/lib/docker"
   localpath: "/var/lib/docker"
   vol_permissions: "rw"
-- !ruby/object:Volume
-  name: system
+ system_path: !ruby/object:Volume
+  name: system_path
   remotepath: "/sys/"
   localpath: "/sys/"
   mapping_permissions: "ro"

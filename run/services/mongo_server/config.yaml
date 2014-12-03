@@ -8,8 +8,8 @@ domainName:
 environments: []
 image: engines/mongo
 volumes:
-- !ruby/object:Volume
-  name: mongo
+ mg_database: !ruby/object:Volume
+  name: mg_database
   remotepath: "/data/db/"
   localpath: "/var/lib/engines/mongo"
   mapping_permissions: "rw"

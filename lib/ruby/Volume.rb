@@ -19,9 +19,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
              @remotepath=SysConfig.CONTFSVolHome
            end
            if localpath !=nil        
-             @localpath=localpath
+             @localpath=localpath  
+             #FIXME SHOULD NOT ACCEPT nil
            else
-             @localpath=SysConfig.LocalFSVolHome
+             @localpath=SysConfig.LocalFSVolHome + "/name"
            end
     @mapping_permissions= mapping_permissions
     @vol_permissions=vol_permissions

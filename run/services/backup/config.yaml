@@ -2,29 +2,29 @@
 containerName: backup
 ctype: service
 last_error: 
-memory: '48'
+memory: '50'
 hostName: backup
 domainName: 
 environments: []
 image: engines/backup
 volumes:
-- !ruby/object:Volume
-  name: volumes
+ Volumes: !ruby/object:Volume
+  name: Volumes
   remotepath: "/backup_src/volumes/"
   localpath: "/var/lib/engines/fs"
   mapping_permissions: "ro"
-- !ruby/object:Volume
+ Engines:  !ruby/object:Volume
   name: Engines
   remotepath: "/backup_src/engines/"
   localpath: "/opt/engines/"
   mapping_permissions: "ro"
-- !ruby/object:Volume
+ Destinations: !ruby/object:Volume
   name: Destinations
   remotepath: "/var/lib/engines/local_backup_dests/"
   localpath: "/var/lib/engines/backup_paths"
   mapping_permissions: "rw"
-- !ruby/object:Volume
-  name: Logging
+ Logs: !ruby/object:Volume
+  name: Logs
   remotepath: "/var/log/"
   localpath: "/var/log/engines/services/backup/"
   mapping_permissions: "rw"
