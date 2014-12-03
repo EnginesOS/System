@@ -30,8 +30,9 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,hostname,domain_name,webport,logfile,errfile)
+    def initialize(reader,containername,hostname,domain_name,webport,logfile,errfile)
       @hostname = hostname
+      @container_name = containername
       @domain_name = domain_name
       @webPort = webport
       @blueprint_reader = reader
@@ -1277,7 +1278,7 @@ def log_exception(e)
       read_web_port
       read_web_user
 
-      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@webPort,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
