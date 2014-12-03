@@ -409,7 +409,7 @@ class EngineBuilder
             @docker_file.puts("WORKDIR /tmp")
             @docker_file.puts("USER $ContUser")
             @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
-            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
+            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
             @docker_file.puts("USER $ContUser")
