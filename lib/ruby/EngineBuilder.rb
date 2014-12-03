@@ -50,6 +50,7 @@ class EngineBuilder
       write_db_service
       write_cron_jobs
       write_os_packages
+      write_apache_modules
       write_app_archives
       write_container_user
       chown_home_app
@@ -66,7 +67,16 @@ class EngineBuilder
       @docker_file.close
       
     end
-
+    def write_apache_modules
+      if @blueprint_reader.apache_modules.count <1
+        return 
+      end
+      ap_modules_str = String.new
+      @blueprint_reader.apache_modules.each do |ap_module|
+        ap_modules_str += ap_module + " "       
+    end
+      @docker_file.puts("RUN a2enmod " + ap_modules_str)
+    end
     def write_environment_variables
       begin
 
@@ -525,6 +535,7 @@ def log_exception(e)
     :sed_strings,\
     :volumes,\
     :databases,\
+    :apache_modules,\
     :data_uid,\
     :data_gid
 
@@ -555,6 +566,7 @@ def log_exception(e)
         read_lang_fw_values
         read_pear_list
         read_app_packages
+        read_apache_modules
         read_write_permissions_recursive
         read_write_permissions_single
         read_worker_commands
@@ -750,7 +762,22 @@ def log_exception(e)
         return false
       end
     end
-
+    
+    def read_apache_modules
+      @apache_modules = Array.new
+      
+      mods =  @blueprint["software"]["apache_modules"]
+      mods.each do |ap_module|
+        mod = ap_module["module"]
+          if mod != nil
+            @apache_modules.push(mod)
+          end
+      end
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+      
     def read_app_packages
       begin
         @archives_details = Hash.new
@@ -813,7 +840,6 @@ def log_exception(e)
           #FIXME need to strip any ../ and any preceeding ./
           return
         end
-
       rescue Exception=>e
         log_exception(e)
         return false
