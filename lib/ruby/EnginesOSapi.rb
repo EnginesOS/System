@@ -33,7 +33,7 @@ class EnginesOSapi
   end
 
   def build_engine(repository,params)
-    container_name = params[:container_name]
+    container_name = params[:engine_name]
     domain_name = params[:domain_name]
     host_name = params[:host_name]
     evirons = params[:env_variables]

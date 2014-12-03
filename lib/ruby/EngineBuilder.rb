@@ -30,8 +30,9 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,hostname,domain_name,webport,logfile,errfile)
+    def initialize(reader,containername,hostname,domain_name,webport,logfile,errfile)
       @hostname = hostname
+      @container_name = containername
       @domain_name = domain_name
       @webPort = webport
       @blueprint_reader = reader
@@ -50,6 +51,7 @@ class EngineBuilder
       write_db_service
       write_cron_jobs
       write_os_packages
+      write_apache_modules
       write_app_archives
       write_container_user
       chown_home_app
@@ -66,7 +68,16 @@ class EngineBuilder
       @docker_file.close
       
     end
-
+    def write_apache_modules
+      if @blueprint_reader.apache_modules.count <1
+        return 
+      end
+      ap_modules_str = String.new
+      @blueprint_reader.apache_modules.each do |ap_module|
+        ap_modules_str += ap_module + " "       
+    end
+      @docker_file.puts("RUN a2enmod " + ap_modules_str)
+    end
     def write_environment_variables
       begin
 
@@ -398,7 +409,7 @@ class EngineBuilder
             @docker_file.puts("WORKDIR /tmp")
             @docker_file.puts("USER $ContUser")
             @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
-            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"*")
+            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
             @docker_file.puts("USER $ContUser")
@@ -525,6 +536,7 @@ def log_exception(e)
     :sed_strings,\
     :volumes,\
     :databases,\
+    :apache_modules,\
     :data_uid,\
     :data_gid
 
@@ -555,6 +567,7 @@ def log_exception(e)
         read_lang_fw_values
         read_pear_list
         read_app_packages
+        read_apache_modules
         read_write_permissions_recursive
         read_write_permissions_single
         read_worker_commands
@@ -689,6 +702,9 @@ def log_exception(e)
         @volumes[name]=vol
 
       rescue Exception=>e
+        p name
+        p dest
+        p @container_name
         log_exception(e)
         return false
       end
@@ -750,7 +766,26 @@ def log_exception(e)
         return false
       end
     end
-
+    
+    def read_apache_modules
+      @apache_modules = Array.new
+      
+      mods =  @blueprint["software"]["apache_modules"]
+        if mods == nil
+          return true
+        end
+      mods.each do |ap_module|
+        mod = ap_module["module"]
+          if mod != nil
+            @apache_modules.push(mod)
+          end
+      end
+      return true
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+      
     def read_app_packages
       begin
         @archives_details = Hash.new
@@ -813,7 +848,6 @@ def log_exception(e)
           #FIXME need to strip any ../ and any preceeding ./
           return
         end
-
       rescue Exception=>e
         log_exception(e)
         return false
@@ -1249,7 +1283,7 @@ def log_exception(e)
       read_web_port
       read_web_user
 
-      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader, @hostname,@domain_name,@webPort,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,@log_file,@err_file)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
