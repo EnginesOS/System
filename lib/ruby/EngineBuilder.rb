@@ -701,6 +701,8 @@ def log_exception(e)
         @volumes[name]=vol
 
       rescue Exception=>e
+        p name
+        p dest
         log_exception(e)
         return false
       end
