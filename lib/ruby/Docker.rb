@@ -25,7 +25,7 @@ class Engines
 
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
-        log_error(e)
+        log_exception(e)
 
         return false
       end
@@ -67,7 +67,7 @@ class Engines
           return false
         end
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -86,7 +86,7 @@ class Engines
           return false
         end
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -101,7 +101,7 @@ class Engines
         return true
       rescue Exception=>e
         container.last_error=("Failed To Create " + e.to_s)
-        log_error(e)
+        log_exception(e)
 
         return false
       end
@@ -116,7 +116,7 @@ class Engines
           return cid
         end
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return "-1";
       end
     end
@@ -131,7 +131,7 @@ class Engines
         return true #File may or may not exist
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
-        log_error(e)
+        log_exception(e)
 
         return false
       end
@@ -155,7 +155,7 @@ class Engines
         File.delete(dns_cmd_file_name)
         return retval
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -168,7 +168,7 @@ class Engines
         return true
       rescue Exception=>e
         container.last_error=( "Failed To Delete " )
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -189,7 +189,7 @@ class Engines
         File.delete(dns_cmd_file_name)
         return retval
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -207,7 +207,7 @@ class Engines
         #run_system(ssh_cmd)
         return result
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -217,7 +217,7 @@ class Engines
       begin
         return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -233,7 +233,7 @@ class Engines
         result = restart_nginx_process()
         return result
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -243,7 +243,7 @@ class Engines
       begin
         SystemUtils.debug_output site_hash
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -253,7 +253,7 @@ class Engines
       begin
         SystemUtils.debug_output site_hash
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -264,7 +264,7 @@ class Engines
         ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
         return run_system(ssh_cmd)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -275,7 +275,7 @@ class Engines
         ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
         return run_system(ssh_cmd)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -306,7 +306,7 @@ class Engines
         return true
       rescue Exception=>e
         container.last_error=( "load error")
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -328,7 +328,7 @@ class Engines
         f.write(blueprint.to_json)
         f.close
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -346,7 +346,7 @@ class Engines
         f.close
         return blueprint
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -360,7 +360,7 @@ class Engines
         #currently the build scripts do this
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -371,7 +371,7 @@ class Engines
         puts "would remove " + site_hash[:localpath]
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -382,7 +382,7 @@ class Engines
         ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
         return run_system(ssh_cmd)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -404,7 +404,7 @@ class Engines
         #FIXME shoudl return about result and not just true 
           return true    
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -418,7 +418,7 @@ class Engines
         domains[params[:domain_name]] = params
         return  save_self_hosted_domains(domains)       
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -430,7 +430,7 @@ class Engines
         p domains
         return domains
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -444,7 +444,7 @@ class Engines
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -457,7 +457,7 @@ class Engines
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -487,7 +487,7 @@ class Engines
         SystemUtils.debug_output :pdsf
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -497,7 +497,7 @@ class Engines
       begin
         SystemUtils.debug_output :psdfsd
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -525,7 +525,7 @@ class Engines
 
         return ret_val
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         ret_val.store(:maximum ,  e.to_s)
         ret_val.store(:current , "NA")
         ret_val.store(:limit ,  "NA")
@@ -563,7 +563,7 @@ class Engines
         end
         return true
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -596,7 +596,7 @@ class Engines
         end
         return ret_val
       rescue   Exception=>e
-        log_error(e)
+        log_exception(e)
         ret_val[:total] = e.to_s
         ret_val[:free] = -1
         ret_val[:active] = -1
@@ -623,7 +623,7 @@ class Engines
         ret_val[:running] = run_idle[0]
         ret_val[:idle] = run_idle[1]
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         ret_val[:one] = -1
         ret_val[:five] = -1
         ret_val[:fithteen] = -1
@@ -632,7 +632,7 @@ class Engines
         return ret_val
 
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -653,7 +653,7 @@ class Engines
         end
         return ret_val
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -685,7 +685,7 @@ class Engines
         else
           log_error("nil Engine Name")
         end
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -715,7 +715,7 @@ class Engines
         else
           log_error("nil Service Name")
         end
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -736,7 +736,7 @@ class Engines
         end
         return ret_val
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -752,7 +752,7 @@ class Engines
           end
         end
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return ret_val
       end
       return ret_val
@@ -770,7 +770,7 @@ class Engines
           end
         end
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return ret_val
       end
       return ret_val
@@ -788,7 +788,7 @@ class Engines
         return true
 
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -812,7 +812,7 @@ class Engines
         return self_hosted_domains
       rescue Exception=>e
         self_hosted_domains = Hash.new
-        log_error(e)
+        log_exception(e)
         return self_hosted_domains
       end
     end
@@ -824,7 +824,7 @@ class Engines
         self_hosted_domain_file.close
         return true
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -855,7 +855,7 @@ class Engines
           return res
         end
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return ret_val
       end
     end
@@ -864,13 +864,16 @@ class Engines
       @last_error = ""
     end
 
-    def log_error(e)
+   def  log_error(e_str)
+     @last_error = e_str
+      SystemUtils.log_output(e_str,0)
+   end
+    def log_exception(e)
       e_str = e.to_s()
       e.backtrace.each do |bt |
         e_str += bt
       end
-      @last_error = e_str
-      SystemUtils.log_output(e_str,10)
+      log_error(e_str)
     end
 
   end #END of SystemApi
@@ -887,7 +890,7 @@ class Engines
         return retval
       rescue Exception=>e
         container.last_error=("Failed To Create ")
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -898,7 +901,7 @@ class Engines
         commandargs =" start " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -909,7 +912,7 @@ class Engines
         commandargs=" stop " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -920,7 +923,7 @@ class Engines
         commandargs = " pause " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -931,7 +934,7 @@ class Engines
         commandargs=" unpause " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -942,7 +945,7 @@ class Engines
         commandargs=" top " + container.containerName + " axl"
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -953,7 +956,7 @@ class Engines
         commandargs=" logs " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -964,7 +967,7 @@ class Engines
         commandargs=" inspect " + container.containerName
         return  run_docker(commandargs,container)
       rescue  Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -976,7 +979,7 @@ class Engines
         ret_val = run_docker(commandargs,container)
       rescue Exception=>e
         container.last_error=( "Failed To Destroy " + e.to_s)
-        log_error(e)
+        log_exception(e)
 
         return false
       end
@@ -990,7 +993,7 @@ class Engines
         return ret_val
       rescue Exception=>e
         container.last_error=( "Failed To Delete " + e.to_s)
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -1053,7 +1056,7 @@ class Engines
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
         container.last_error=(error_mesgs+ e.to_s)
-        log_error(e)
+        log_exception(e)
         return false
       end
 
@@ -1101,7 +1104,7 @@ class Engines
         commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + "  -t " + container.image + start_cmd
         return commandargs
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return nil
       end
     end
@@ -1132,7 +1135,7 @@ class Engines
         end
         return volume_option
       rescue Exception=>e
-        log_error(e)
+        log_exception(e)
         return false
       end
     end
@@ -1177,7 +1180,7 @@ class Engines
       @last_error = ""
     end
 
-    def log_error(e)
+    def log_exception(e)
       e_str = e.to_s()
       e.backtrace.each do |bt |
         e_str += bt
@@ -1362,7 +1365,7 @@ class Engines
       end
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
-      log_error(e)
+      log_exception(e)
 
       return false
     end
@@ -1376,7 +1379,7 @@ def create_database  site_hash
 
      return run_system(cmd)
    rescue  Exception=>e
-     log_error(e)
+     log_exception(e)
      return false
    end
  end
@@ -1393,7 +1396,7 @@ def create_database  site_hash
 
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
-      log_error(e)
+      log_exception(e)
       return false
 
     end
@@ -1415,7 +1418,7 @@ def create_database  site_hash
         return false
       end
     rescue Exception=>e
-      log_error(e)
+      log_exception(e)
       return ret_val
     end
   end
@@ -1445,7 +1448,7 @@ def create_database  site_hash
       end
       return true
     rescue Exception=>e
-      log_error(e)
+      log_exception(e)
       return false
     end
   end
@@ -1463,7 +1466,7 @@ def create_database  site_hash
       end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
-      log_error(e)
+      log_exception(e)
 
       return false
     end
@@ -1475,7 +1478,7 @@ def create_database  site_hash
       builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
-      log_error(e)
+      log_exception(e)
       return false
     end
   end
@@ -1492,7 +1495,7 @@ def create_database  site_hash
       ret_val[:out] = vals[2].chop
       return ret_val
     rescue Exception=>e
-      log_error(e)
+      log_exception(e)
       ret_val[:in] = -1
       ret_val[:out] = -1
       return ret_val
@@ -1504,7 +1507,7 @@ def create_database  site_hash
     begin
       return @system_api.is_startup_complete(container)
     rescue  Exception=>e
-      log_error(e)
+      log_exception(e)
       return false
     end
   end
@@ -1527,7 +1530,7 @@ def create_database  site_hash
       volume_option += " --volumes-from " + container.containerName
       return volume_option
     rescue Exception=>e
-      log_error(e)
+      log_exception(e)
       return false
     end
   end
@@ -1536,7 +1539,7 @@ def create_database  site_hash
     @last_error = ""
   end
 
-  def log_error(e)
+  def log_exception(e)
     e_str = e.to_s()
     e.backtrace.each do |bt |
       e_str += bt
