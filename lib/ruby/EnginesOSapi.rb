@@ -37,7 +37,6 @@ class EnginesOSapi
     domain_name = params[:domain_name]
     host_name = params[:host_name]
     evirons = params[:env_variables]
-    container_name = host_name
     p params
     engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @docker_api)
     engine = engine_builder.build_from_blue_print
@@ -819,8 +818,24 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("get_backup list",e)
   end
-
-  def set_engine_hostname_details(params)
+  
+  def set_engine_runtime_properties params
+    return success(params[:engine_name],"update engine runtime params")
+    rescue Exception=>e
+        return log_exception_and_fail("set_engine_runtime params ",e)
+  end
+  def set_service_runtime_properties params
+     return success(params[:engine_name],"update service runtime params")
+     rescue Exception=>e
+         return log_exception_and_fail("update service runtime params ",e)
+   end
+  def set_service_hostname_properties(params)
+    return success(params[:engine_name],"update service hostname params")
+       rescue Exception=>e
+           return log_exception_and_fail("set_engine_hostname_details ",e)
+  end
+  
+  def set_engine_hostname_properties(params)
     #    engine_name = params[:engine_name]
     #    hostname = params[:host_name]
     #    domain_name = params[:domain_name]
@@ -841,6 +856,7 @@ class EnginesOSapi
     return log_exception_and_fail("set_engine_hostname_details ",e)
   end
 
+  
   def update_self_hosted_domain(old_domain_name,params)
     if @docker_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
