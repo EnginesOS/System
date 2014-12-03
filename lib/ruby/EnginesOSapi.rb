@@ -1,6 +1,5 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
-
 require "/opt/engines/lib/ruby/EngineBuilder.rb"
 require "/opt/engines/lib/ruby/PermissionRights.rb"
 require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
@@ -17,7 +16,6 @@ class EnginesOSapi
     return @docker_api
   end
 
-  
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
@@ -29,70 +27,88 @@ class EnginesOSapi
       return engine
     end
     return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
+
+  rescue Exception=>e
+    return log_exception_and_fail("buildEngine",e)
   end
-  
-  def build_engine(repository,params)    
+
+  def build_engine(repository,params)
     container_name = params[:container_name]
     domain_name = params[:domain_name]
     host_name = params[:host_name]
-   evirons = params[:env_variables]
+    evirons = params[:env_variables]
     container_name = host_name
-     p params
-      engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @docker_api)
-      engine = engine_builder.build_from_blue_print
+    p params
+    engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @docker_api)
+    engine = engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host_name,engine_builder.last_error,"build_engine") 
+      return  failed(host_name,engine_builder.last_error,"build_engine")
     end
-      if engine != nil
-             if engine.is_active == false
-               return failed(host_name,"Failed to start  " + last_api_error ,"build_engine") 
-             end
-        return engine
+    if engine != nil
+      if engine.is_active == false
+        return failed(host_name,"Failed to start  " + last_api_error ,"build_engine")
       end
-      return failed(host_name,last_api_error,"build_engine") 
+      return engine
+    end
+    return failed(host_name,last_api_error,"build_engine")
+
+  rescue Exception=>e
+    return log_exception_and_fail("build_engine",e)
   end
+
   def last_api_error
     if @docker_api
       return @docker_api.last_error
     else
       return ""
     end
+  rescue Exception=>e
+    return log_exception_and_fail("last_api_error",e)
   end
-    
+
   def list_apps()
     return @docker_api.list_managed_engines
+  rescue Exception=>e
+    return log_exception_and_fail("list_apps",e)
   end
-  
-  def list_services()   
-     return @docker_api.list_managed_services
-   end
-   
-   def getManagedEngines()
-     return  @docker_api.getManagedEngines()
-   end
-   
-  
+
+  def list_services()
+    return @docker_api.list_managed_services
+  rescue Exception=>e
+    return log_exception_and_fail("list_services",e)
+  end
+
+  def getManagedEngines()
+    return  @docker_api.getManagedEngines()
+  rescue Exception=>e
+    return log_exception_and_fail("getManagedEngines",e)
+  end
+
   def getManagedServices()
-    return @docker_api.getManagedServices()        
+    return @docker_api.getManagedServices()
+  rescue Exception=>e
+    return log_exception_and_fail("getManagedServices",e)
   end
- 
 
   def EnginesOSapi.loadManagedService(service_name,docker_api)
     service = docker_api.loadManagedService(service_name)
     if service == false
-       return failed(service_name,last_api_error ,"Load Service")
-     end
+      return failed(service_name,last_api_error ,"Load Service")
+    end
     return service
+  rescue Exception=>e
+    return log_exception_and_fail("LoadMangedService",e)
   end
-  
+
   def loadManagedEngine(engine_name)
     engine = @docker_api.loadManagedEngine(engine_name)
     if engine == false
-       return failed(engine_name,last_api_error ,"Load Engine")
-     end
+      return failed(engine_name,last_api_error ,"Load Engine")
+    end
     return engine
+  rescue Exception=>e
+    return log_exception_and_fail("loadManagedEngine",e)
   end
-  
 
   def getManagedService(service_name)
 
@@ -101,99 +117,109 @@ class EnginesOSapi
     #   return failed(service_name,"Fail to Load configuration:","Load Service")
     #end
     return managed_service
+  rescue Exception=>e
+    return log_exception_and_fail("getManagedService",e)
   end
 
-  
-  
   def backup_volume(backup_name,engine_name,volume_name,dest_hash)
     engine = loadManagedEngine engine_name
-      if engine.is_a?(EnginesOSapiResult)
-        return engine
-      end
+    if engine.is_a?(EnginesOSapiResult)
+      return engine
+    end
     SystemUtils.debug_output("backing up " + volume_name + " to " +  dest_hash.to_s )
     backup_hash = dest_hash
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
-      engine.volumes.each do |volume|
-        if volume.name == volume_name
-          volume.add_backup_src_to_hash(backup_hash)   
-          SystemUtils.debug_output backup_hash          
-        end    
+    engine.volumes.each do |volume|
+      if volume.name == volume_name
+        volume.add_backup_src_to_hash(backup_hash)
+        SystemUtils.debug_output backup_hash
       end
+    end
 
-      backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
-    if backup_service.is_a?(EnginesOSapiResult)
-            return backup_service
-          end
-      if backup_service.read_state != "running"
-        return failed(engine_name,"Backup Service not running" ,"Backup Volume")
-      end
-   if backup_service.add_consumer(backup_hash)
-#    p backup_hash
-    return success(engine_name,"Add Volume Backup")
-   else
-     return failed(engine_name,last_api_error,"Backup Volume")
-   end
-  end
-  
-  def stop_backup backup_name
     backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
-  if backup_service.is_a?(EnginesOSapiResult)
-          return backup_service
-        end
+    if backup_service.is_a?(EnginesOSapiResult)
+      return backup_service
+    end
     if backup_service.read_state != "running"
       return failed(engine_name,"Backup Service not running" ,"Backup Volume")
+    end
+    if backup_service.add_consumer(backup_hash)
+      #    p backup_hash
+      return success(engine_name,"Add Volume Backup")
+    else
+      return failed(engine_name,last_api_error,"Backup Volume")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("Backup Volume",e)
+  end
+
+  def stop_backup backup_name
+    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    if backup_service.is_a?(EnginesOSapiResult)
+      return backup_service
+    end
+    if backup_service.read_state != "running"
+      return failed(engine_name,"Backup Service not running" ,"Stop Volume Backup")
     end
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
     if  backup_service.remove_consumer(backup_hash)
-        return success(backup_name,"Stop Backup")
+      return success(backup_name,"Stop Volume Backup")
     else
-      return failed(backup_name,last_api_error,"Stop Backup")
-  end
-  end
-  
-  def backup_database(backup_name,engine_name,database_name,dest_hash)
-    
-     engine = loadManagedEngine engine_name
-       if engine.is_a?(EnginesOSapiResult)
-         return engine
-       end
-    
-       backup_hash = dest_hash
-       backup_hash.store(:name, backup_name)
-       backup_hash.store(:engine_name, engine_name)
-       backup_hash.store(:backup_type, "db")
-       engine.databases.each do |database|
-         if database.name == database_name
-           database.add_backup_src_to_hash(backup_hash)                
-         end
-       end
-       
-       backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
-     if backup_service.is_a?(EnginesOSapiResult)
-             return backup_service
-           end
-    if backup_service.read_state != "running"
-      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
+      return failed(backup_name,last_api_error,"Stop Volume Backup")
     end
-    if backup_service.add_consumer(backup_hash) 
-     return success(engine_name,"Add Database Backup")
-    else
-     return  failed(backup_name,last_api_error,"Backup Volume")
-   end
+  rescue Exception=>e
+    return log_exception_and_fail("Stop Volume Backup",e)
   end
-  
-   def get_system_preferences 
-     return docker_api.load_system_preferences
-   end
-   
-   def save_system_preferences preferences
-     #preferences is a hash
-     return docker_api.save_system_preferences
-   end
-  
+
+  def backup_database(backup_name,engine_name,database_name,dest_hash)
+
+    engine = loadManagedEngine engine_name
+    if engine.is_a?(EnginesOSapiResult)
+      return engine
+    end
+
+    backup_hash = dest_hash
+    backup_hash.store(:name, backup_name)
+    backup_hash.store(:engine_name, engine_name)
+    backup_hash.store(:backup_type, "db")
+    engine.databases.each do |database|
+      if database.name == database_name
+        database.add_backup_src_to_hash(backup_hash)
+      end
+    end
+
+    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    if backup_service.is_a?(EnginesOSapiResult)
+      return backup_service
+    end
+    if backup_service.read_state != "running"
+      return failed(engine_name,"Backup Service not running" ,"Backup Database")
+    end
+    if backup_service.add_consumer(backup_hash)
+      return success(engine_name,"Add Database Backup")
+    else
+      return  failed(backup_name,last_api_error,"Backup Database")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("Backup Database",e)
+  end
+
+  def get_system_preferences
+    return docker_api.load_system_preferences
+  rescue Exception=>e
+    return log_exception_and_fail("get_system_preferences",e)
+  end
+
+  def save_system_preferences preferences
+    #preferences is a hash
+    return docker_api.save_system_preferences
+  rescue Exception=>e
+    return log_exception_and_fail("save_system_preferences",e)
+  end
+
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
     if engine.is_a?(EnginesOSapiResult)
@@ -205,6 +231,8 @@ class EnginesOSapi
     else
       return success(engine_name,"Stop")
     end
+  rescue Exception=>e
+    return log_exception_and_fail("recreateEngine",e)
   end
 
   def stopEngine engine_name
@@ -218,6 +246,8 @@ class EnginesOSapi
     else
       return success(engine_name,"Stop")
     end
+  rescue Exception=>e
+    return log_exception_and_fail("stopEngine",e)
   end
 
   def startEngine engine_name
@@ -231,9 +261,10 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Start")
     end
- 
-    return success(engine_name,"Start")
 
+    return success(engine_name,"Start")
+  rescue Exception=>e
+    return log_exception_and_fail("startEngine",e)
   end
 
   def pauseEngine engine_name
@@ -248,7 +279,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Pause")
     end
     return success(engine_name,"Pause")
-
+  rescue Exception=>e
+    return log_exception_and_fail("startEngine",e)
   end
 
   def enable_https_for_engine engine_name
@@ -261,7 +293,10 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"enable_https")
     end
     return success(engine_name,"enable_https")
+  rescue Exception=>e
+    return log_exception_and_fail("enable_https",e)
   end
+
   def enable_httpsonly_for_engine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -272,8 +307,10 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"enable_httpsonly")
     end
     return success(engine_name,"enable_httpsonly")
+  rescue Exception=>e
+    return log_exception_and_fail("enable_httpsonly",e)
   end
-  
+
   def disable_httpsonly_for_engine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -284,8 +321,10 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"disable_httpsonly")
     end
     return success(engine_name,"disable_httpsonly")
+  rescue Exception=>e
+    return log_exception_and_fail("disable_httpsonly",e)
   end
-  
+
   def disable_https_for_engine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -296,9 +335,10 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"disable_https")
     end
     return success(engine_name,"disable_https")
-   end
-   
-   
+  rescue Exception=>e
+    return log_exception_and_fail("disable_https",e)
+  end
+
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -309,7 +349,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Unpause")
     end
     return success(engine_name,"unpause")
-
+  rescue Exception=>e
+    return log_exception_and_fail("unpause",e)
   end
 
   def destroyEngine engine_name
@@ -322,6 +363,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Destroy")
     end
     return success(engine_name,"Destroy")
+  rescue Exception=>e
+    return log_exception_and_fail("Destroy",e)
   end
 
   def deleteEngineImage engine_name
@@ -334,6 +377,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Delete")
     end
     return success(engine_name,"Delete")
+  rescue Exception=>e
+    return log_exception_and_fail("Delete",e)
   end
 
   def createEngine engine_name
@@ -348,6 +393,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Create")
     end
     return success(engine_name,"Create")
+  rescue Exception=>e
+    return log_exception_and_fail("Create",e)
   end
 
   def restartEngine engine_name
@@ -360,6 +407,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Restart")
     end
     return success(engine_name,"Restart")
+  rescue Exception=>e
+    return log_exception_and_fail("Restart",e)
   end
 
   def registerEngineWebSite engine_name
@@ -384,6 +433,8 @@ class EnginesOSapi
       return failed(engine_name,retval,"DeRegister Engine Web Site")
     end
     return success(engine_name,"DeRegister Engine Web Site")
+  rescue Exception=>e
+    return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
   def registerEngineDNS engine_name
@@ -399,6 +450,8 @@ class EnginesOSapi
       return failed(engine_name,retval,"Register Engine DNS")
     end
     return success(engine_name,"Register Engine DNS")
+  rescue Exception=>e
+    return log_exception_and_fail("Register Engine DNS",e)
   end
 
   def deregisterEngineDNS engine_name
@@ -411,6 +464,8 @@ class EnginesOSapi
       return failed(engine_name,retval,"DeRegister Engine DNS")
     end
     return success(engine_name,"DeRegister Engine DNS")
+  rescue Exception=>e
+    return log_exception_and_fail("deRegister Engine DNS",e)
   end
 
   def monitorEngine engine_name
@@ -423,6 +478,8 @@ class EnginesOSapi
       return failed(engine_name,retval,"Monitor Engine")
     end
     return success(engine_name,"Monitor Engine")
+  rescue Exception=>e
+    return log_exception_and_fail("Monitor Engine",e)
   end
 
   def demonitorEngine engine_name
@@ -435,6 +492,8 @@ class EnginesOSapi
       return failed(engine_name,retval,"DeMonitor Engine")
     end
     return success(engine_name,"DeMonitor Engine")
+  rescue Exception=>e
+    return log_exception_and_fail("DeMonitor Engine",e)
   end
 
   def get_engine_blueprint engine_name
@@ -447,6 +506,8 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Load Engine Blueprint")
     end
     return retval
+  rescue Exception=>e
+    return log_exception_and_fail("Load Engine Blueprint",e)
   end
 
   def rebuild_engine_container engine_name
@@ -467,11 +528,13 @@ class EnginesOSapi
       return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
 
     end
+  rescue Exception=>e
+    return log_exception_and_fail("Rebuild Engine",e)
   end
 
   #not needed as inherited ???
   def read_state container
-    
+
     retval =   container.read_state()
     # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
@@ -481,83 +544,97 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("read_start",e)
   end
-  
+
   def log_exception_and_fail(cmd,e)
     e_str = log_exception(e)
-    return failed("Exception",e_str,cmd)      
+    return failed("Exception",e_str,cmd)
   end
-  
+
   def log_exception(e)
     @last_error =  e_str = e.to_s()
-       e.backtrace.each do |bt |
-         e_str += bt
-       end     
+    e.backtrace.each do |bt |
+      e_str += bt
+    end
     SystemUtils.log_output(e_str,0)
     return e_str
   end
 
   def get_system_memory_info
     return @docker_api.get_system_memory_info
+  rescue Exception=>e
+    return log_exception_and_fail("get_system_memory_info",e)
   end
-  
+
   def get_system_load_info
     return @docker_api.get_system_load_info
+  rescue Exception=>e
+    return log_exception_and_fail("get_system_load_info",e)
   end
+
   def get_engine_memory_statistics  engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Get Engine Memory Statistics")
     end
     retval = engine.get_container_memory_stats(@docker_api)
-    return retval    
+    return retval
+  rescue Exception=>e
+    return log_exception_and_fail("Get Engine Memory Statistics",e)
   end
-  
+
   def get_service_memory_statistics  service_name
     service = getManagedService(service_name)
-     if  service.is_a?(EnginesOSapiResult)
-       return failed(service_name,"no Engine","Get Service Memory Statistics")
-     end
-     retval = service.get_container_memory_stats(@docker_api)
-     return retval    
-   end
-  
- def get_container_network_metrics(containerName)
-   return @docker_api.get_container_network_metrics(containerName)
- end
-   
-   
+    if  service.is_a?(EnginesOSapiResult)
+      return failed(service_name,"no Engine","Get Service Memory Statistics")
+    end
+    retval = service.get_container_memory_stats(@docker_api)
+    return retval
+  rescue Exception=>e
+    return log_exception_and_fail("Get Service Memory Statistics",e)
+  end
+
+  def get_container_network_metrics(containerName)
+    return @docker_api.get_container_network_metrics(containerName)
+  rescue Exception=>e
+    return log_exception_and_fail("get_container_network_metrics",e)
+  end
+
   def stopService service_name
     service = getManagedService(service_name)
     if service == nil
       return failed(service_name,"No Such Service","Stop Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.stop_container()
     if retval == false
       return failed(service_name,service.last_error,"Stop Service")
     end
     return success(service_name,"Stop Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Stop Service",e)
   end
 
   def startService service_name
     service = getManagedService(service_name)
-    if service == nil  
+    if service == nil
       return failed(service_name,"No Such Service","Start Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval = service.start_container()
     if retval == false
       return failed(service_name,service.last_error,"Start Service")
     end
     return success(service_name,"Start Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Start Service",e)
   end
 
   def  pauseService service_name
@@ -565,16 +642,18 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Pause Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval = service.pause_container()
     if retval == false
       return failed(service_name,service.last_error,"Pause Service")
     end
     return success(service_name,"Pause Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Pause Service",e)
   end
 
   def  unpauseService service_name
@@ -582,16 +661,18 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Unpause Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval = service.unpause_container()
     if retval == false
       return failed(service_name,service.last_error,"Unpause Service")
     end
     return success(service_name,"Unpause Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Unpause Service",e)
   end
 
   def registerServiceWebSite service_name
@@ -599,16 +680,18 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Register Service Web")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.register_site()
     if retval != true
       return failed(service_name,service.last_error,"Register Service Web")
     end
     return success(service_name,"Register Service Web")
+  rescue Exception=>e
+    return log_exception_and_fail("Register Service Web",e)
   end
 
   def deregisterServiceWebSite service_name
@@ -616,16 +699,18 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,"No Such Service","Deregister Service Web")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.deregister_site()
     if retval != true
       return failed(service_name,service.last_error,"Deregister Service Web")
     end
     return success(service_name,"Deregister Service Web")
+  rescue Exception=>e
+    return log_exception_and_fail("DeRegister Service Web",e)
   end
 
   def registerServiceDNS service_name
@@ -633,17 +718,19 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Register Service DNS")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.register_dns()
 
     if retval != true
       return failed(service_name,retval,"Register Service DNS")
     end
     return success(service_name,"Register Service DNS")
+  rescue Exception=>e
+    return log_exception_and_fail("Register Service DNS",e)
   end
 
   def deregisterServiceDNS service_name
@@ -651,16 +738,18 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Deregister Service DNS")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.deregister_dns()
     if retval != true
       return failed(service_name,retval,"Deregister Service DNS")
     end
     return success(service_name,"Deregister Service DNS")
+  rescue Exception=>e
+    return log_exception_and_fail("DeRegister Service DNS",e)
   end
 
   def createService service_name
@@ -668,16 +757,18 @@ class EnginesOSapi
     if service == nil
       return  failed(service_name,service.last_error,"Create Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.create_service()
     if retval == false
       return failed(service_name,service.last_error,"Create Service")
     end
     return success(service_name,"Create Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Create Service",e)
   end
 
   def recreateService service_name
@@ -685,104 +776,126 @@ class EnginesOSapi
     if service == nil
       return failed(service_name,"No Such Service","Recreate Service")
     end
-    
+
     if service.is_a?(EnginesOSapiResult)
       return service
     end
-    
+
     retval =   service.recreate()
     if retval == false
       return failed(service_name,service.last_error,"Recreate Service")
     end
     return success(service_name,"Recreate Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Recreate Service",e)
   end
 
   def get_volumes
-     
+
     vol_service = EnginesOSapi.loadManagedService("volmanager",@docker_api)
     if vol_service == nil
-       return failed("volmanager","No Such Service","get_volumes")
-     end
-     
-    return vol_service.consumers
-      
+      return failed("volmanager","No Such Service","get_volumes")
     end
+
+    return vol_service.consumers
+  rescue Exception=>e
+    return log_exception_and_fail("get_volumes",e)
+  end
+
   def get_databases
     db_service = EnginesOSapi.loadManagedService("mysql_server",@docker_api)
     if db_service == nil
       return failed("mysql_server","No Such Service","get_databases")
-    end         
-    return db_service.consumers          
+    end
+    return db_service.consumers
   end
+
   def get_backups
     backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
     if backup_service == nil
       return failed("backup service","No Such Service","get_backup list")
     end
     return backup_service.consumers
+  rescue Exception=>e
+    return log_exception_and_fail("get_backup list",e)
   end
 
   def set_engine_hostname_details(params)
-#    engine_name = params[:engine_name]
-#    hostname = params[:host_name]
-#    domain_name = params[:domain_name]
+    #    engine_name = params[:engine_name]
+    #    hostname = params[:host_name]
+    #    domain_name = params[:domain_name]
     p :set_engine_hostname_details
     p params
     engine = loadManagedEngine(params[:engine_name])
-      if engine == nil || engine.instance_of?(EnginesOSapiResult)
-        p "p cant change name as cant load"
-        p engine
-        return engine        
-      end
-      if @docker_api.set_engine_hostname_details(engine, params)
-        return success(params[:engine_name], "Update hostname details")
-      else
-        return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details list")
-      end
+    if engine == nil || engine.instance_of?(EnginesOSapiResult)
+      p "p cant change name as cant load"
+      p engine
+      return engine
+    end
+    if @docker_api.set_engine_hostname_details(engine, params)
+      return success(params[:engine_name], "Update hostname details")
+    else
+      return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("set_engine_hostname_details ",e)
   end
-  
+
   def update_self_hosted_domain(old_domain_name,params)
     if @docker_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
-      end
-      return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+    end
+    return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+  rescue Exception=>e
+    return log_exception_and_fail("Update self hosted domain ",e)
   end
-  
-  
+
   def add_self_hosted_domain params
-  
+
     if @docker_api.add_self_hosted_domain( params) ==true
       return success(params[:domain_name], "Add self hosted domain")
-      end
-      return failed(params[:domain_name],last_api_error, "Add self hosted domain")
+    end
+    return failed(params[:domain_name],last_api_error, "Add self hosted domain")
+  rescue Exception=>e
+    return log_exception_and_fail("Add self hosted domain ",e)
   end
-  
+
   def remove_self_hosted_domain domain_name
     if @docker_api.remove_self_hosted_domain( domain_name) ==true
-        return success(domain_name, "Remove self hosted domain")
-        end
-        return failed(domain_name,last_api_error, "Remove self hosted domain")
+      return success(domain_name, "Remove self hosted domain")
+    end
+    return failed(domain_name,last_api_error, "Remove self hosted domain")
+  rescue Exception=>e
+    return log_exception_and_fail("Remove self hosted domain ",e)
   end
-  
-  def list_self_hosted_domains 
+
+  def list_self_hosted_domains
     return @docker_api.list_self_hosted_domains( )
-    
+  rescue Exception=>e
+    return log_exception_and_fail("list self hosted domain ",e)
   end
-  
+
   def attach_ftp_service(params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Attach ftp")
+  rescue Exception=>e
+    return log_exception_and_fail("Attach ftp ",e)
   end
-  
+
   def detach_ftp_service (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
+  rescue Exception=>e
+    return log_exception_and_fail("Detach ftp ",e)
   end
-      
+
   def  change_ftp_service  (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Change ftp")
+  rescue Exception=>e
+    return log_exception_and_fail("Change ftp",e)
   end
+
   #protected if protected static cant call
   def success(item_name ,cmd)
-   return EnginesOSapiResult.success(item_name ,cmd)
+    return EnginesOSapiResult.success(item_name ,cmd)
   end
 
   def failed(item_name,mesg ,cmd)
@@ -790,20 +903,19 @@ class EnginesOSapi
     p item_name
     p mesg
     p cmd
-    
-#    result = EnginesOSapiResult.failed(item_name,mesg ,cmd)
-#    return EnginesOSapi.APIException.new(result)
+
+    #    result = EnginesOSapiResult.failed(item_name,mesg ,cmd)
+    #    return EnginesOSapi.APIException.new(result)
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
-
   def  EnginesOSapi.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
-  p item_name
-  p mesg
-  p cmd
-  
-  return EnginesOSapiResult.failed(item_name,mesg ,cmd)
-end
+    p item_name
+    p mesg
+    p cmd
+
+    return EnginesOSapiResult.failed(item_name,mesg ,cmd)
+  end
 
 end
