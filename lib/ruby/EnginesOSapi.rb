@@ -709,7 +709,11 @@ class EnginesOSapi
         p engine
         return engine        
       end
-      return @docker_api.set_engine_hostname_details(engine, params)
+      if @docker_api.set_engine_hostname_details(engine, params)
+        return success(params[:engine_name], "Update hostname details")
+      else
+        return failed("set_engine_hostname_details",@docker_api.last_error,"set_engine_hostname_details list")
+      end
   end
   
   def update_self_hosted_domain(old_domain_name,params)
