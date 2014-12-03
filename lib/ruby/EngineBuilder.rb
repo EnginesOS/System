@@ -704,6 +704,7 @@ def log_exception(e)
       rescue Exception=>e
         p name
         p dest
+        p @container_name
         log_exception(e)
         return false
       end
