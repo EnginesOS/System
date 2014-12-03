@@ -22,15 +22,15 @@ class EnginesOSapi
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @docker_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host,@docker_api.last_error,"build_engine") #FIXME needs to return error object
+      return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
     end
     if engine != nil
       engine.save_state
       return engine
     end
-    return  failed(host,"Failed","build_engine") #FIXME needs to return error object
-
+    return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
   end
+  
   def build_engine(repository,params)    
     container_name = params[:container_name]
     domain_name = params[:domain_name]
@@ -45,12 +45,11 @@ class EnginesOSapi
     end
       if engine != nil
              if engine.is_active == false
-               return failed(host_name,"Failed to start","build_engine") 
+               return failed(host_name,"Failed to start  " + last_api_error ,"build_engine") 
              end
         return engine
       end
-      return failed(host_name,"Failed","build_engine") 
-  
+      return failed(host_name,last_api_error,"build_engine") 
   end
   def last_api_error
     if @docker_api
@@ -81,7 +80,7 @@ class EnginesOSapi
   def EnginesOSapi.loadManagedService(service_name,docker_api)
     service = docker_api.loadManagedService(service_name)
     if service == false
-       return failed(service_name,"Could not load service" ,"Load Service")
+       return failed(service_name,last_api_error ,"Load Service")
      end
     return service
   end
@@ -89,7 +88,7 @@ class EnginesOSapi
   def loadManagedEngine(engine_name)
     engine = @docker_api.loadManagedEngine(engine_name)
     if engine == false
-       return failed(engine_name,"Could not load engine" ,"Load Engine")
+       return failed(engine_name,last_api_error ,"Load Engine")
      end
     return engine
   end
@@ -130,9 +129,12 @@ class EnginesOSapi
       if backup_service.read_state != "running"
         return failed(engine_name,"Backup Service not running" ,"Backup Volume")
       end
-    backup_service.add_consumer(backup_hash)
+   if backup_service.add_consumer(backup_hash)
 #    p backup_hash
     return success(engine_name,"Add Volume Backup")
+   else
+     return failed(engine_name,last_api_error,"Backup Volume")
+   end
   end
   
   def stop_backup backup_name
@@ -145,8 +147,11 @@ class EnginesOSapi
     end
     backup_hash = Hash.new
     backup_hash[:name]=backup_name
-  backup_service.remove_consumer(backup_hash)
-  return success(backup_name,"Stop Backup")
+    if  backup_service.remove_consumer(backup_hash)
+        return success(backup_name,"Stop Backup")
+    else
+      return failed(backup_name,last_api_error,"Stop Backup")
+  end
   end
   
   def backup_database(backup_name,engine_name,database_name,dest_hash)
@@ -173,10 +178,13 @@ class EnginesOSapi
     if backup_service.read_state != "running"
       return failed(engine_name,"Backup Service not running" ,"Backup Volume")
     end
-     backup_service.add_consumer(backup_hash)
+    if backup_service.add_consumer(backup_hash) 
      return success(engine_name,"Add Database Backup")
+    else
+     return  failed(backup_name,last_api_error,"Backup Volume")
    end
-
+  end
+  
    def get_system_preferences 
      return docker_api.load_system_preferences
    end
@@ -463,12 +471,29 @@ class EnginesOSapi
 
   #not needed as inherited ???
   def read_state container
+    
     retval =   container.read_state()
     # if retval == false
     #  return failed(container.containerName,"Failed to ReadState","read state")
     #end
     #return success(container.containerName,"read state")
     retval
+  rescue Exception=>e
+    return log_exception_and_fail("read_start",e)
+  end
+  
+  def log_exception_and_fail(cmd,e)
+    e_str = log_exception(e)
+    return failed("Exception",e_str,cmd)      
+  end
+  
+  def log_exception(e)
+    @last_error =  e_str = e.to_s()
+       e.backtrace.each do |bt |
+         e_str += bt
+       end     
+    SystemUtils.log_output(e_str,0)
+    return e_str
   end
 
   def get_system_memory_info
@@ -712,7 +737,7 @@ class EnginesOSapi
       if @docker_api.set_engine_hostname_details(engine, params)
         return success(params[:engine_name], "Update hostname details")
       else
-        return failed("set_engine_hostname_details",@docker_api.last_error,"set_engine_hostname_details list")
+        return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details list")
       end
   end
   
@@ -720,7 +745,7 @@ class EnginesOSapi
     if @docker_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
       end
-      return failed(params[:domain_name],@docker_api.last_error, "Update self hosted domain")
+      return failed(params[:domain_name],last_api_error, "Update self hosted domain")
   end
   
   
@@ -729,18 +754,19 @@ class EnginesOSapi
     if @docker_api.add_self_hosted_domain( params) ==true
       return success(params[:domain_name], "Add self hosted domain")
       end
-      return failed(params[:domain_name],@docker_api.last_error, "Add self hosted domain")
+      return failed(params[:domain_name],last_api_error, "Add self hosted domain")
   end
   
   def remove_self_hosted_domain domain_name
     if @docker_api.remove_self_hosted_domain( domain_name) ==true
         return success(domain_name, "Remove self hosted domain")
         end
-        return failed(domain_name,@docker_api.last_error, "Remove self hosted domain")
+        return failed(domain_name,last_api_error, "Remove self hosted domain")
   end
   
   def list_self_hosted_domains 
     return @docker_api.list_self_hosted_domains( )
+    
   end
   
   def attach_ftp_service(params)
