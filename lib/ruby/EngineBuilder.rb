@@ -48,6 +48,7 @@ class EngineBuilder
      ++@layer_count
      if @layer_count >75
        raise EngineBuilder.BuildError.new()
+     end
    end
 
     def write_files_for_docker
