@@ -111,6 +111,8 @@ class EngineBuilder
         src_paths.each do |link_src|
           path = dest_paths[n]  
           path="/" + path
+          path = path.chomp('/')
+          link_src = link_src.chomp('/')
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
           @docker_file.puts("if [ ! -d /home/app" + path + " ];\\")
