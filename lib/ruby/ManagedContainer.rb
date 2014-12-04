@@ -71,7 +71,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :container_id,:core_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
+   attr_accessor :container_id,:core_api,:http_only,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
 
   def monitored
@@ -572,18 +572,20 @@ end
   def enable_https
     http_and_https=true
      https_only = false
-    register_site
+   # register_site
      save_state
   end
   
   def disable_https
+    deregister_site
     http_and_https=false
     https_only = false
-    register_site
+   register_site
     save_state
   end
   
   def enable_httpsonly
+    deregister_site
     https_only = true
     http_and_https=false
     register_site
@@ -591,6 +593,7 @@ end
   end
   
  def disable_httpsonly
+   deregister_site
    https_only = false
    http_and_https=true
    register_site
