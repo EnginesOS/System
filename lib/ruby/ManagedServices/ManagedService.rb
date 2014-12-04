@@ -143,11 +143,11 @@ class ManagedService < ManagedContainer
     #noop never do  this as need buildimage again or only for expert
   end
 
-  def self.from_yaml( yaml,docker_api )
+  def self.from_yaml( yaml,core_api )
     begin
       p yaml.path
       managedService = YAML::load( yaml )
-      managedService.docker_api=(docker_api)
+      managedService.core_api=(core_api)
       #      puts(" managed Service")
       #      p ObjectSpace.memsize_of(managedService)
       #      puts(" Hash total")

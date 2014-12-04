@@ -9,15 +9,15 @@ require 'objspace'
 
 class EnginesOSapi
   def initialize()
-    @docker_api = Engines.new
+    @core_api = EnginesCore.new
   end
 
-  def docker_api
-    return @docker_api
+  def core_api
+    return @core_api
   end
 
   def buildEngine(repository,host,domain_name,environment)
-    engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @docker_api)
+    engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
       return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
@@ -38,7 +38,7 @@ class EnginesOSapi
     host_name = params[:host_name]
     evirons = params[:env_variables]
     p params
-    engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @docker_api)
+    engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
       return  failed(host_name,engine_builder.last_error,"build_engine")
@@ -56,8 +56,8 @@ class EnginesOSapi
   end
 
   def last_api_error
-    if @docker_api
-      return @docker_api.last_error
+    if @core_api
+      return @core_api.last_error
     else
       return ""
     end
@@ -66,31 +66,31 @@ class EnginesOSapi
   end
 
   def list_apps()
-    return @docker_api.list_managed_engines
+    return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
   end
 
   def list_services()
-    return @docker_api.list_managed_services
+    return @core_api.list_managed_services
   rescue Exception=>e
     return log_exception_and_fail("list_services",e)
   end
 
   def getManagedEngines()
-    return  @docker_api.getManagedEngines()
+    return  @core_api.getManagedEngines()
   rescue Exception=>e
     return log_exception_and_fail("getManagedEngines",e)
   end
 
   def getManagedServices()
-    return @docker_api.getManagedServices()
+    return @core_api.getManagedServices()
   rescue Exception=>e
     return log_exception_and_fail("getManagedServices",e)
   end
 
-  def EnginesOSapi.loadManagedService(service_name,docker_api)
-    service = docker_api.loadManagedService(service_name)
+  def EnginesOSapi.loadManagedService(service_name,core_api)
+    service = core_api.loadManagedService(service_name)
     if service == false
       return failed(service_name,last_api_error ,"Load Service")
     end
@@ -100,7 +100,7 @@ class EnginesOSapi
   end
 
   def loadManagedEngine(engine_name)
-    engine = @docker_api.loadManagedEngine(engine_name)
+    engine = @core_api.loadManagedEngine(engine_name)
     if engine == false
       return failed(engine_name,last_api_error ,"Load Engine")
     end
@@ -111,7 +111,7 @@ class EnginesOSapi
 
   def getManagedService(service_name)
 
-    managed_service = EnginesOSapi.loadManagedService(service_name,@docker_api)
+    managed_service = EnginesOSapi.loadManagedService(service_name,@core_api)
     #  if managed_service == nil
     #   return failed(service_name,"Fail to Load configuration:","Load Service")
     #end
@@ -137,7 +137,7 @@ class EnginesOSapi
       end
     end
 
-    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
     if backup_service.is_a?(EnginesOSapiResult)
       return backup_service
     end
@@ -155,7 +155,7 @@ class EnginesOSapi
   end
 
   def stop_backup backup_name
-    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
     if backup_service.is_a?(EnginesOSapiResult)
       return backup_service
     end
@@ -190,7 +190,7 @@ class EnginesOSapi
       end
     end
 
-    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
     if backup_service.is_a?(EnginesOSapiResult)
       return backup_service
     end
@@ -207,14 +207,14 @@ class EnginesOSapi
   end
 
   def get_system_preferences
-    return docker_api.load_system_preferences
+    return core_api.load_system_preferences
   rescue Exception=>e
     return log_exception_and_fail("get_system_preferences",e)
   end
 
   def save_system_preferences preferences
     #preferences is a hash
-    return docker_api.save_system_preferences
+    return core_api.save_system_preferences
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
   end
@@ -254,13 +254,10 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Start")
     end
-
     retval =  engine.start_container()
-
     if retval == false
       return failed(engine_name,engine.last_error,"Start")
     end
-
     return success(engine_name,"Start")
   rescue Exception=>e
     return log_exception_and_fail("startEngine",e)
@@ -282,61 +279,61 @@ class EnginesOSapi
     return log_exception_and_fail("startEngine",e)
   end
 
-  def enable_https_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","enable_https")
-    end
-    retval =  engine.enable_https()
-    if retval == false
-      return failed(engine_name,engine.last_error,"enable_https")
-    end
-    return success(engine_name,"enable_https")
-  rescue Exception=>e
-    return log_exception_and_fail("enable_https",e)
-  end
-
-  def enable_httpsonly_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","enable_httpsonly")
-    end
-    retval =  engine.enable_httpsonly()
-    if retval == false
-      return failed(engine_name,engine.last_error,"enable_httpsonly")
-    end
-    return success(engine_name,"enable_httpsonly")
-  rescue Exception=>e
-    return log_exception_and_fail("enable_httpsonly",e)
-  end
-
-  def disable_httpsonly_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","disable_httpsonly")
-    end
-    retval =  engine.disable_httpsonly()
-    if retval == false
-      return failed(engine_name,engine.last_error,"disable_httpsonly")
-    end
-    return success(engine_name,"disable_httpsonly")
-  rescue Exception=>e
-    return log_exception_and_fail("disable_httpsonly",e)
-  end
-
-  def disable_https_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","disable_https")
-    end
-    retval =  engine.disable_https()
-    if retval == false
-      return failed(engine_name,engine.last_error,"disable_https")
-    end
-    return success(engine_name,"disable_https")
-  rescue Exception=>e
-    return log_exception_and_fail("disable_https",e)
-  end
+#  def enable_https_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","enable_https")
+#    end
+#    retval =  engine.enable_https()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"enable_https")
+#    end
+#    return success(engine_name,"enable_https")
+#  rescue Exception=>e
+#    return log_exception_and_fail("enable_https",e)
+#  end
+#
+#  def enable_httpsonly_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","enable_httpsonly")
+#    end
+#    retval =  engine.enable_httpsonly()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"enable_httpsonly")
+#    end
+#    return success(engine_name,"enable_httpsonly")
+#  rescue Exception=>e
+#    return log_exception_and_fail("enable_httpsonly",e)
+#  end
+#
+#  def disable_httpsonly_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","disable_httpsonly")
+#    end
+#    retval =  engine.disable_httpsonly()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"disable_httpsonly")
+#    end
+#    return success(engine_name,"disable_httpsonly")
+#  rescue Exception=>e
+#    return log_exception_and_fail("disable_httpsonly",e)
+#  end
+#
+#  def disable_https_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","disable_https")
+#    end
+#    retval =  engine.disable_https()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"disable_https")
+#    end
+#    return success(engine_name,"disable_https")
+#  rescue Exception=>e
+#    return log_exception_and_fail("disable_https",e)
+#  end
 
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
@@ -559,13 +556,13 @@ class EnginesOSapi
   end
 
   def get_system_memory_info
-    return @docker_api.get_system_memory_info
+    return @core_api.get_system_memory_info
   rescue Exception=>e
     return log_exception_and_fail("get_system_memory_info",e)
   end
 
   def get_system_load_info
-    return @docker_api.get_system_load_info
+    return @core_api.get_system_load_info
   rescue Exception=>e
     return log_exception_and_fail("get_system_load_info",e)
   end
@@ -575,7 +572,7 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Get Engine Memory Statistics")
     end
-    retval = engine.get_container_memory_stats(@docker_api)
+    retval = engine.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
     return log_exception_and_fail("Get Engine Memory Statistics",e)
@@ -586,14 +583,14 @@ class EnginesOSapi
     if  service.is_a?(EnginesOSapiResult)
       return failed(service_name,"no Engine","Get Service Memory Statistics")
     end
-    retval = service.get_container_memory_stats(@docker_api)
+    retval = service.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
     return log_exception_and_fail("Get Service Memory Statistics",e)
   end
 
   def get_container_network_metrics(containerName)
-    return @docker_api.get_container_network_metrics(containerName)
+    return @core_api.get_container_network_metrics(containerName)
   rescue Exception=>e
     return log_exception_and_fail("get_container_network_metrics",e)
   end
@@ -791,7 +788,7 @@ class EnginesOSapi
 
   def get_volumes
 
-    vol_service = EnginesOSapi.loadManagedService("volmanager",@docker_api)
+    vol_service = EnginesOSapi.loadManagedService("volmanager",@core_api)
     if vol_service == nil
       return failed("volmanager","No Such Service","get_volumes")
     end
@@ -802,7 +799,7 @@ class EnginesOSapi
   end
 
   def get_databases
-    db_service = EnginesOSapi.loadManagedService("mysql_server",@docker_api)
+    db_service = EnginesOSapi.loadManagedService("mysql_server",@core_api)
     if db_service == nil
       return failed("mysql_server","No Such Service","get_databases")
     end
@@ -810,7 +807,7 @@ class EnginesOSapi
   end
 
   def get_backups
-    backup_service = EnginesOSapi.loadManagedService("backup",@docker_api)
+    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
     if backup_service == nil
       return failed("backup service","No Such Service","get_backup list")
     end
@@ -834,12 +831,28 @@ class EnginesOSapi
        rescue Exception=>e
            return log_exception_and_fail("set_engine_hostname_details ",e)
   end
+  def set_engine_network_properties(params)
+    p :set_engine_network_properties
+       p params
+    engine = loadManagedEngine(params[:engine_name])
+       if engine == nil || engine.instance_of?(EnginesOSapiResult)
+         p "p cant change network as cant load"
+         p engine
+         return engine
+       end
+    if @core_api.set_engine_network_details(engine, params)
+      return success(params[:engine_name], "Update network details")
+       else
+         return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
+       end
+ end
+
   
   def set_engine_hostname_properties(params)
     #    engine_name = params[:engine_name]
     #    hostname = params[:host_name]
     #    domain_name = params[:domain_name]
-    p :set_engine_hostname_details
+    p :set_engine_hostname_properties
     p params
     engine = loadManagedEngine(params[:engine_name])
     if engine == nil || engine.instance_of?(EnginesOSapiResult)
@@ -847,7 +860,7 @@ class EnginesOSapi
       p engine
       return engine
     end
-    if @docker_api.set_engine_hostname_details(engine, params)
+    if @core_api.set_engine_hostname_details(engine, params)
       return success(params[:engine_name], "Update hostname details")
     else
       return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
@@ -858,7 +871,7 @@ class EnginesOSapi
 
   
   def update_self_hosted_domain(old_domain_name,params)
-    if @docker_api.update_self_hosted_domain(old_domain_name, params) ==true
+    if @core_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
@@ -868,7 +881,7 @@ class EnginesOSapi
 
   def add_self_hosted_domain params
 
-    if @docker_api.add_self_hosted_domain( params) ==true
+    if @core_api.add_self_hosted_domain( params) ==true
       return success(params[:domain_name], "Add self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Add self hosted domain")
@@ -877,7 +890,7 @@ class EnginesOSapi
   end
 
   def remove_self_hosted_domain domain_name
-    if @docker_api.remove_self_hosted_domain( domain_name) ==true
+    if @core_api.remove_self_hosted_domain( domain_name) ==true
       return success(domain_name, "Remove self hosted domain")
     end
     return failed(domain_name,last_api_error, "Remove self hosted domain")
@@ -886,7 +899,7 @@ class EnginesOSapi
   end
 
   def list_self_hosted_domains
-    return @docker_api.list_self_hosted_domains( )
+    return @core_api.list_self_hosted_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list self hosted domain ",e)
   end

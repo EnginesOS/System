@@ -1,4 +1,4 @@
-class Engines
+class EnginesCore
 
   require "/opt/engines/lib/ruby/SystemUtils.rb"
 
@@ -531,6 +531,29 @@ class Engines
         ret_val.store(:limit ,  "NA")
         return ret_val
       end
+    end
+    def set_engine_network_details(engine, params)
+      clear_error
+       begin
+         engine_name = params[:engine_name]
+         protocol = params[:host_name]
+
+         SystemUtils.debug_output("Changing protocol to " + protocol)
+         #if something
+         engine.enable_https
+         #elsif something
+         engine.disable_https
+         #elsif soemthing
+         engine.enable_httpsonly
+         #else  
+         engine.disable_httpsonly
+         #end         
+
+         return true
+       rescue  Exception=>e
+         log_exception(e)
+         return false
+       end
     end
 
     def set_engine_hostname_details(container,params)
@@ -1202,6 +1225,7 @@ class Engines
     if @docker_api.start_container(container) == true
       return @system_api.register_dns_and_site(container)              
     end
+    return false 
   end
 
   def inspect_container(container)
@@ -1374,7 +1398,7 @@ def create_database  site_hash
    clear_error
    begin
      container_name =  site_hash[:flavor] + "_server"
-     cmd = "docker exec " +  container_name + " /bin/sh -c \"/home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]+ "\""
+     cmd = "docker exec " +  container_name + "\" /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] +"\""
      SystemUtils.debug_output(cmd)
 
      return run_system(cmd)

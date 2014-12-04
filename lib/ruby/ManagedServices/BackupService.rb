@@ -4,11 +4,11 @@ class BackupService < ManagedService
   
   
   def add_consumer_to_service(site_hash)
-    return  @docker_api.create_backup(site_hash) 
+    return  @core_api.create_backup(site_hash) 
      end
      
   def rm_consumer_from_service (site_hash)
-       return   @docker_api.rm_backup(site_hash) 
+       return   @core_api.rm_backup(site_hash) 
     end 
     
   def get_site_hash(site_hash)

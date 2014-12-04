@@ -5,12 +5,12 @@ class NginxService < ManagedService
   def add_consumer_to_service(site_hash)
     puts "add"
     p  site_hash      
-      return  @docker_api.register_site(site_hash) 
+      return  @core_api.register_site(site_hash) 
      end
   def rm_consumer_from_service (site_hash)
     puts "rm"
     p  site_hash      
-       return  @docker_api.deregister_site(site_hash) 
+       return  @core_api.deregister_site(site_hash) 
     end 
      
   

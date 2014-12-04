@@ -28,8 +28,8 @@ class Container
      return true
    end
    
-   def get_container_memory_stats (docker_api)
-     return docker_api.get_container_memory_stats(self)
+   def get_container_memory_stats (core_api)
+     return core_api.get_container_memory_stats(self)
    end
    
 end
