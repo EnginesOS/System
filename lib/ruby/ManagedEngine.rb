@@ -3,7 +3,7 @@
 class ManagedEngine < ManagedContainer
 
   
-  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,docker_api,data_uid,data_gid)
+  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid)
                             
                  @last_error="None"                 
                  @containerName=name
@@ -23,7 +23,7 @@ class ManagedEngine < ManagedContainer
                  @registerSite=true
                  @framework=framework
                  @runtime=runtime
-                 @docker_api= docker_api
+                 @core_api= core_api
     
                  
     @ctype ="container"
@@ -41,12 +41,12 @@ class ManagedEngine < ManagedContainer
   attr_reader :ctype
 
   
-  def ManagedEngine.from_yaml( yaml ,docker_api )
+  def ManagedEngine.from_yaml( yaml ,core_api )
           managedEngine = YAML::load( yaml )
            if managedEngine == nil ||  managedEngine == false
              return false
            end
-          managedEngine.docker_api=(docker_api)
+          managedEngine.core_api=(core_api)
           return managedEngine
     end
 end

@@ -1,4 +1,4 @@
-class Engines
+class EnginesCore
 
   require "/opt/engines/lib/ruby/SystemUtils.rb"
 

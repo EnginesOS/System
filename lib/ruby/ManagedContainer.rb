@@ -7,7 +7,7 @@ require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ContainerStatistics.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/Container.rb"
-require "/opt/engines/lib/ruby/Docker.rb"
+require "/opt/engines/lib/ruby/EnginesCore.rb"
 
 require 'objspace'
 
@@ -71,7 +71,7 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState
               
-   attr_accessor :container_id,:docker_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
+   attr_accessor :container_id,:core_api,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
 
   def monitored
@@ -128,31 +128,31 @@ end
 end
 
   def logs_container    
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
-    return @docker_api.logs_container(self)
+    return @core_api.logs_container(self)
   end
 
   def ps_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
-    return @docker_api.ps_container(self)
+    return @core_api.ps_container(self)
 
   end
 
   def delete_image
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
     ret_val=false
     state = read_state()
     if state == "nocontainer"
-      ret_val=@docker_api.delete_image self
+      ret_val=@core_api.delete_image self
     else
       @last_error ="Cannot Delete the Image while container exists. Please stop/destroy first"
     end
@@ -161,7 +161,7 @@ end
   end
 
   def destroy_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -171,7 +171,7 @@ end
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
 
     if state == "stopped"
-      ret_val=@docker_api.destroy_container self
+      ret_val=@core_api.destroy_container self
     else if state == "nocontainer"
         @last_error ="No Active Container"
       else
@@ -185,7 +185,7 @@ end
   end
 
    def setup_container
-     if @docker_api == nil
+     if @core_api == nil
        @last_error="No connection to Engines OS System"      
        return false
      end
@@ -193,7 +193,7 @@ end
      state = read_state()
  
      if state == "nocontainer"
-       ret_val = @docker_api.setup_container self
+       ret_val = @core_api.setup_container self
        @setState="stopped"
      else
        @last_error ="Cannot create container if container by the same name exists"
@@ -207,7 +207,7 @@ end
    end
    
   def create_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -215,7 +215,7 @@ end
     state = read_state()
 
     if state == "nocontainer"
-      ret_val = @docker_api.create_container self
+      ret_val = @core_api.create_container self
       @setState="running"
     else
       @last_error ="Cannot create container if container by the same name exists"
@@ -249,7 +249,7 @@ end
   end
 
   def unpause_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -258,7 +258,7 @@ end
     ret_val = false
     if state == "paused"
       @setState="running"
-      ret_val= @docker_api.unpause_container self
+      ret_val= @core_api.unpause_container self
     else
       @last_error ="Can't unpause Container as " + state
     end
@@ -270,7 +270,7 @@ end
   end
 
   def pause_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -279,7 +279,7 @@ end
     ret_val = false
     if state == "running"
       @setState="paused"
-      ret_val = @docker_api.pause_container self
+      ret_val = @core_api.pause_container self
     else
       @last_error ="Can't pause Container as " + state
     end
@@ -290,7 +290,7 @@ end
   end
 
   def stop_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -299,7 +299,7 @@ end
     @set_container_id="-1"
     
     if state== "running"
-      ret_val = @docker_api.stop_container   self
+      ret_val = @core_api.stop_container   self
       deregister_registered
       
       @setState="stopped"
@@ -325,7 +325,7 @@ end
   end
 
   def start_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
@@ -333,7 +333,7 @@ end
     state = read_state()
 
     if state == "stopped"
-      ret_val = @docker_api.start_container self
+      ret_val = @core_api.start_container self
       @setState="running"
     else
       @last_error ="Can't Start Container as " + state
@@ -362,12 +362,12 @@ end
   end
 
   def register_site
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
     if is_active == true 
-      service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
+      service =  EnginesOSapi.loadManagedService("nginx",@core_api)
       return service.add_consumer(self)
      else
             @last_error="Cannot register when Engine is inactive"
@@ -376,40 +376,40 @@ end
   end
 
   def monitor_site
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi.loadManagedService("monit",@docker_api)
+    service =  EnginesOSapi.loadManagedService("monit",@core_api)
     return service.add_consumer(self)
   end
 
   def deregister_site
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi.loadManagedService("nginx",@docker_api)
+    service =  EnginesOSapi.loadManagedService("nginx",@core_api)
     return service.remove_consumer(self)
   end
 
   def demonitor_site
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end  
-      service =  EnginesOSapi.loadManagedService("monit",@docker_api)
+      service =  EnginesOSapi.loadManagedService("monit",@core_api)
       return service.remove_consumer(self)   
   end
   
   def register_dns 
-    if @docker_api == nil
+    if @core_api == nil
        @last_error="No connection to Engines OS System"      
        return false
      end
      
      if is_active == true        
-      service =  EnginesOSapi.loadManagedService("dns",@docker_api)
+      service =  EnginesOSapi.loadManagedService("dns",@core_api)
       return service.add_consumer(self)
      else
        @last_error="Cannot register when Engine is inactive"
@@ -418,11 +418,11 @@ end
   end
   
   def deregister_dns
-    if @docker_api == nil
+    if @core_api == nil
        @last_error="No connection to Engines OS System"      
        return false
      end
-     service =  EnginesOSapi.loadManagedService("dns",@docker_api)
+     service =  EnginesOSapi.loadManagedService("dns",@core_api)
     return service.remove_consumer(self)
 
   end
@@ -492,49 +492,49 @@ end
 
 
   def inspect_container
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
-    ret_val = @docker_api.inspect_container self
+    ret_val = @core_api.inspect_container self
     return ret_val
   end
 
   def save_state()
-    if @docker_api == nil
+    if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
     end
     trim_last_result
     trim_last_error
-    ret_val = @docker_api.save_container self
+    ret_val = @core_api.save_container self
     return ret_val
   end
   
   def save_blueprint blueprint
-    if @docker_api == nil
+    if @core_api == nil
          @last_error="No connection to Engines OS System"      
          return false
        end
-       ret_val = @docker_api.save_blueprint(blueprint, self)
+       ret_val = @core_api.save_blueprint(blueprint, self)
        return ret_val
   end
   
   def load_blueprint
-    if @docker_api == nil
+    if @core_api == nil
             @last_error="No connection to Engines OS System"      
             return false
           end
-          ret_val = @docker_api.load_blueprint(self)
+          ret_val = @core_api.load_blueprint(self)
           return ret_val
   end
   
   def rebuild_container
-    if @docker_api == nil
+    if @core_api == nil
           @last_error="No connection to Engines OS System"      
            return false
      end
-    ret_val = @docker_api.rebuild_image(self)
+    ret_val = @core_api.rebuild_image(self)
     return ret_val
   end
 def is_running
@@ -548,11 +548,11 @@ end
      
 
 def is_startup_complete
-    if @docker_api == nil
+    if @core_api == nil
            @last_error="No connection to Engines OS System"      
             return false
      end
-     ret_val = @docker_api.is_startup_complete(self)
+     ret_val = @core_api.is_startup_complete(self)
     return ret_val
 end
   

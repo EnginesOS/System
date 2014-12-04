@@ -1060,7 +1060,7 @@ def log_exception(e)
     end
   end
 
-  def initialize(repo,contname,host,domain,custom_env,docker_api)
+  def initialize(repo,contname,host,domain,custom_env,core_api)
     @hostname=host
     @container_name=contname
     @domain_name=domain
@@ -1078,7 +1078,7 @@ def log_exception(e)
     end
     @runtime=String.new
     @databases= Array.new
-    @docker_api = docker_api
+    @core_api = core_api
 
     begin
       FileUtils.mkdir_p(get_basedir)
@@ -1159,7 +1159,7 @@ def log_exception(e)
   def create_database_service db
     begin
       db_server_name=db.flavor + "_server"
-      db_service = EnginesOSapi.loadManagedService(db_server_name, @docker_api)
+      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
       if db_service.is_a?(DBManagedService)
 
         db_service.add_consumer(db)
@@ -1177,7 +1177,7 @@ def log_exception(e)
 
   def create_file_service vol
     begin
-      vol_service = EnginesOSapi.loadManagedService("volmanager", @docker_api)
+      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
       if vol_service.is_a?(EnginesOSapiResult) == false
         vol_service.add_consumer(vol)
         return true
@@ -1385,7 +1385,7 @@ def log_exception(e)
   def setup_rebuild
     begin
       Dir.mkdir(get_basedir)
-      blueprint = @docker_api.load_blueprint(@engine)
+      blueprint = @core_api.load_blueprint(@engine)
       statefile= get_basedir + "/blueprint.json"
       f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
       f.write(blueprint.to_json)
@@ -1411,7 +1411,7 @@ def log_exception(e)
     @blueprint_reader.environments,
     @blueprint_reader.framework,
     @blueprint_reader.runtime,
-    @docker_api,
+    @core_api,
     @blueprint_reader.data_uid,
     @blueprint_reader.data_gid
     )
@@ -1427,11 +1427,11 @@ def log_exception(e)
     p  bp
     @log_file.puts("Launching")
     #this will fail as no api at this stage
-    if mc.docker_api != nil
+    if mc.core_api != nil
       if launch_deploy(mc) == false
         @log_file.puts "Failed to Launch"
       end
-      @docker_api.run_volume_builder(mc ,@webUser)
+      @core_api.run_volume_builder(mc ,@webUser)
       #  mc.start_container
     end
     return mc
