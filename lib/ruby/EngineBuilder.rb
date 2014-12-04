@@ -1470,19 +1470,23 @@ end
             res += line.chop
             oline = line
             @log_file.puts(line)
+            @log_file.flush
             if stderr_is_open
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              @log_file.puts(err)
+              @err_file.puts(err)
+              @err_file.flush
             end
           }
         rescue Errno::EIO
           res += line.chop
           @log_file.puts(oline)
+          @log_file.flush
           if stderr_is_open
             err  = stderr.read_nonblock(1000)
             error_mesg += err
             @err_file.puts(err)
+            @err_file.flush
             retry
           end
         rescue  IO::WaitReadable
@@ -1497,6 +1501,7 @@ end
               err  = stderr.read_nonblock(1000)
               error_mesg += err
               @err_file.puts(err)
+            @err_file.flush
               return
             end
           end
