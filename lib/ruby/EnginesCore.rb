@@ -532,6 +532,29 @@ class EnginesCore
         return ret_val
       end
     end
+    def set_engine_network_details(engine, params)
+      clear_error
+       begin
+         engine_name = params[:engine_name]
+         protocol = params[:host_name]
+
+         SystemUtils.debug_output("Changing protocol to " + protocol)
+         #if something
+         engine.enable_https
+         #elsif something
+         engine.disable_https
+         #elsif soemthing
+         engine.enable_httpsonly
+         #else  
+         engine.disable_httpsonly
+         #end         
+
+         return true
+       rescue  Exception=>e
+         log_exception(e)
+         return false
+       end
+    end
 
     def set_engine_hostname_details(container,params)
       clear_error
