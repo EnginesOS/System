@@ -279,61 +279,61 @@ class EnginesOSapi
     return log_exception_and_fail("startEngine",e)
   end
 
-  def enable_https_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","enable_https")
-    end
-    retval =  engine.enable_https()
-    if retval == false
-      return failed(engine_name,engine.last_error,"enable_https")
-    end
-    return success(engine_name,"enable_https")
-  rescue Exception=>e
-    return log_exception_and_fail("enable_https",e)
-  end
-
-  def enable_httpsonly_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","enable_httpsonly")
-    end
-    retval =  engine.enable_httpsonly()
-    if retval == false
-      return failed(engine_name,engine.last_error,"enable_httpsonly")
-    end
-    return success(engine_name,"enable_httpsonly")
-  rescue Exception=>e
-    return log_exception_and_fail("enable_httpsonly",e)
-  end
-
-  def disable_httpsonly_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","disable_httpsonly")
-    end
-    retval =  engine.disable_httpsonly()
-    if retval == false
-      return failed(engine_name,engine.last_error,"disable_httpsonly")
-    end
-    return success(engine_name,"disable_httpsonly")
-  rescue Exception=>e
-    return log_exception_and_fail("disable_httpsonly",e)
-  end
-
-  def disable_https_for_engine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","disable_https")
-    end
-    retval =  engine.disable_https()
-    if retval == false
-      return failed(engine_name,engine.last_error,"disable_https")
-    end
-    return success(engine_name,"disable_https")
-  rescue Exception=>e
-    return log_exception_and_fail("disable_https",e)
-  end
+#  def enable_https_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","enable_https")
+#    end
+#    retval =  engine.enable_https()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"enable_https")
+#    end
+#    return success(engine_name,"enable_https")
+#  rescue Exception=>e
+#    return log_exception_and_fail("enable_https",e)
+#  end
+#
+#  def enable_httpsonly_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","enable_httpsonly")
+#    end
+#    retval =  engine.enable_httpsonly()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"enable_httpsonly")
+#    end
+#    return success(engine_name,"enable_httpsonly")
+#  rescue Exception=>e
+#    return log_exception_and_fail("enable_httpsonly",e)
+#  end
+#
+#  def disable_httpsonly_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","disable_httpsonly")
+#    end
+#    retval =  engine.disable_httpsonly()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"disable_httpsonly")
+#    end
+#    return success(engine_name,"disable_httpsonly")
+#  rescue Exception=>e
+#    return log_exception_and_fail("disable_httpsonly",e)
+#  end
+#
+#  def disable_https_for_engine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","disable_https")
+#    end
+#    retval =  engine.disable_https()
+#    if retval == false
+#      return failed(engine_name,engine.last_error,"disable_https")
+#    end
+#    return success(engine_name,"disable_https")
+#  rescue Exception=>e
+#    return log_exception_and_fail("disable_https",e)
+#  end
 
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
@@ -831,12 +831,28 @@ class EnginesOSapi
        rescue Exception=>e
            return log_exception_and_fail("set_engine_hostname_details ",e)
   end
+  def set_engine_network_properties(params)
+    p :set_engine_network_properties
+       p params
+    engine = loadManagedEngine(params[:engine_name])
+       if engine == nil || engine.instance_of?(EnginesOSapiResult)
+         p "p cant change network as cant load"
+         p engine
+         return engine
+       end
+    if @core_api.set_engine_network_details(engine, params)
+      return success(params[:engine_name], "Update network details")
+       else
+         return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
+       end
+ end
+
   
   def set_engine_hostname_properties(params)
     #    engine_name = params[:engine_name]
     #    hostname = params[:host_name]
     #    domain_name = params[:domain_name]
-    p :set_engine_hostname_details
+    p :set_engine_hostname_properties
     p params
     engine = loadManagedEngine(params[:engine_name])
     if engine == nil || engine.instance_of?(EnginesOSapiResult)
