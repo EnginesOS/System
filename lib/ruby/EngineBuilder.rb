@@ -40,9 +40,15 @@ class EngineBuilder
       @log_file = logfile
       @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
+      
+      @layer_count=0
     end
 
-   
+   def count_layer
+     ++@layer_count
+     if @layer_count >75
+       raise EngineBuilder.BuildError.new()
+   end
 
     def write_files_for_docker
 
@@ -74,9 +80,11 @@ class EngineBuilder
       end
       ap_modules_str = String.new
       @blueprint_reader.apache_modules.each do |ap_module|
+        
         ap_modules_str += ap_module + " "       
     end
       @docker_file.puts("RUN a2enmod " + ap_modules_str)
+      count_layer()
     end
     def write_environment_variables
       begin
@@ -84,6 +92,7 @@ class EngineBuilder
         @blueprint_reader.environments do |env|
           @docker_file.puts("#Custom ENV")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
+          count_layer
         end
 
       rescue Exception=>e
@@ -110,11 +119,13 @@ class EngineBuilder
           @docker_file.puts("mv /home/app" + path + " $VOLDIR ;\\")
           @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app" + path)
           n=n+1
+        count_layer
         end
         if src_paths.length >1
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
           @docker_file.puts("chmod -R 770 /home/fs")
+          count_layer
         end
 
       rescue Exception=>e
@@ -138,22 +149,23 @@ class EngineBuilder
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/app/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path))
-
-        
-          @docker_file.puts("")
-          @docker_file.puts("RUN mv /home/app/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path) +";\\")       
+          @docker_file.puts("\\")
+          @docker_file.puts("   mv /home/app/" + path + " $VOLDIR ;\\")
           @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
+        count_layer
         end
-
+    
         @docker_file.puts("")
         @docker_file.puts("USER 0")
+      count_layer
         @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
         @docker_file.puts("      chmod -R 770 /home/fs")
+      count_layer
         @docker_file.puts("VOLUME /home/fs/")
-
+      count_layer
         @docker_file.puts("USER $ContUser")
-
+      count_layer
       rescue Exception=>e
         log_exception(e)
         return false
@@ -164,10 +176,12 @@ class EngineBuilder
       begin
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
-
+        count_layer
         @blueprint_reader.volumes.each_value do |vol|
           @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
+          count_layer
           @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
+          count_layer
         end
       rescue Exception=>e
         log_exception(e)
@@ -186,6 +200,7 @@ class EngineBuilder
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
+count_layer
           n=n+1
         end
 
@@ -200,6 +215,7 @@ class EngineBuilder
         @blueprint_reader.rake_actions.each do |rake_cmd|
           if rake_cmd !=nil
             @docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_cmd )
+            count_layer
           end
         end
       rescue Exception=>e
@@ -217,11 +233,13 @@ class EngineBuilder
         end
         if packages.length >1
           @docker_file.puts("\nRUN apt-get install -y " + packages )
+          count_layer
         end
 
         #FIXME Wrong spot
         @blueprint_reader.workerPorts.each do |port|
           @docker_file.puts("EXPOSE " + port.port.to_s)
+          count_layer
         end
 
       rescue Exception=>e
@@ -237,7 +255,7 @@ class EngineBuilder
         frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
-
+        count_layer
       rescue Exception=>e
         log_exception(e)
         return false
@@ -248,13 +266,16 @@ class EngineBuilder
       begin
 
         @docker_file.puts("USER 0")
+        count_layer
         @docker_file.puts("RUN if [ ! -d /home/app ];\\")
         @docker_file.puts("  then \\")
         @docker_file.puts("    mkdir -p /home/app ;\\")
         @docker_file.puts("  fi;\\")
         @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\")
         @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
+        count_layer
         @docker_file.puts("USER $ContUser")
+        count_layer
 
       rescue Exception=>e
         log_exception(e)
@@ -304,7 +325,9 @@ class EngineBuilder
 
           if @blueprint_reader.cron_jobs.length >0
             @docker_file.puts("ENV CRONJOBS YES")
+            count_layer
             @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+            count_layer
           end
           cron_file.close
         end
@@ -323,10 +346,15 @@ class EngineBuilder
         @blueprint_reader.databases.each do |db|
           @docker_file.puts("#Database Env")
           @docker_file.puts("ENV dbname " + db.name)
+          count_layer
           @docker_file.puts("ENV dbhost " + db.dbHost)
+          count_layer
           @docker_file.puts("ENV dbuser " + db.dbUser)
+          count_layer
           @docker_file.puts("ENV dbpasswd " + db.dbPass)
+          count_layer
           @docker_file.puts("ENV dbflavor " + db.flavor)
+          count_layer
         end
 
       rescue Exception=>e
@@ -343,6 +371,7 @@ class EngineBuilder
         @blueprint_reader.single_chmods.each do |directory|
           if directory !=nil
             @docker_file.puts("RUN chmod -r /home/app/" + directory )
+            count_layer
           end
         end
 
@@ -360,6 +389,7 @@ class EngineBuilder
         @blueprint_reader.recursive_chmods.each do |recursive_chmod|
           if directory !=nil
             @docker_file.puts("RUN chmod -R /home/app/" + directory )
+            count_layer
           end
         end
       end
@@ -400,19 +430,30 @@ class EngineBuilder
 
           if arc_extract == "git"
             @docker_file.puts("WORKDIR /tmp")
+            count_layer
             @docker_file.puts("USER $ContUser")
+            count_layer
             @docker_file.puts("RUN git clone " + arc_src )
+            count_layer
             @docker_file.puts("USER 0  ")
+            count_layer
             @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+            count_layer
             @docker_file.puts("USER $ContUser")
+            count_layer
           else
             @docker_file.puts("WORKDIR /tmp")
+            count_layer            
             @docker_file.puts("USER $ContUser")
-            @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null" )
-            @docker_file.puts("RUN " + arc_extract + " \"" + arc_name + "\"* 2>&1 > /dev/null ")
+            count_layer
+            @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null ;\\" )
+            @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
+            count_layer
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+            count_layer
             @docker_file.puts("USER $ContUser")
+            count_layer
 
             n=n+1
           end
@@ -432,7 +473,9 @@ class EngineBuilder
         #FIXME needs to by dynamic
 
         @docker_file.puts("ENV data_gid " +  @blueprint_reader.data_uid)
+        count_layer
         @docker_file.puts("ENV data_uid " + @blueprint_reader.data_gid)
+        count_layer
 
       rescue Exception=>e
         log_exception(e)
@@ -448,12 +491,19 @@ class EngineBuilder
         @docker_file.puts("")
         @docker_file.puts("#Stack Env")
         @docker_file.puts("ENV Memory " + @blueprint_reader.memory.to_s)
+        count_layer
         @docker_file.puts("ENV Hostname " + @hostname)
+        count_layer
         @docker_file.puts("ENV Domainname " +  @domain_name )
+        count_layer
         @docker_file.puts("ENV fqdn " +  @hostname + "." + @domain_name )
+        count_layer
         @docker_file.puts("ENV FRAMEWORK " +   @blueprint_reader.framework  )
+        count_layer
         @docker_file.puts("ENV RUNTIME "  + @blueprint_reader.runtime  )
+        count_layer
         @docker_file.puts("ENV PORT " +  @webPort.to_s  )
+        count_layer
         wports = String.new
         n=0
         @blueprint_reader.workerPorts.each do |port|
@@ -461,11 +511,13 @@ class EngineBuilder
             wports =wports + " "
           end
           @docker_file.puts("EXPOSE " + port.port.to_s)
+          count_layer
           wports = wports + port.port.to_s
           n=n+1
         end
         if wports.length >0
           @docker_file.puts("ENV WorkerPorts " + "\"" + wports +"\"")
+          count_layer
         end
       rescue Exception=>e
         log_exception(e)
@@ -478,10 +530,12 @@ class EngineBuilder
         @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
         @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
         @docker_file.puts("  php go-pear.phar")
+        count_layer
 
         @blueprint_reader.pear_modules.each do |pear_mod|
           if pear_mod !=nil
             @docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+            count_layer
           end
         end
       end
