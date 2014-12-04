@@ -254,13 +254,10 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Start")
     end
-
     retval =  engine.start_container()
-
     if retval == false
       return failed(engine_name,engine.last_error,"Start")
     end
-
     return success(engine_name,"Start")
   rescue Exception=>e
     return log_exception_and_fail("startEngine",e)

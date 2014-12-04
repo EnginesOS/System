@@ -1202,6 +1202,7 @@ class EnginesCore
     if @docker_api.start_container(container) == true
       return @system_api.register_dns_and_site(container)              
     end
+    return false 
   end
 
   def inspect_container(container)
@@ -1374,7 +1375,7 @@ def create_database  site_hash
    clear_error
    begin
      container_name =  site_hash[:flavor] + "_server"
-     cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+     cmd = "docker exec " +  container_name + "\" /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] +"\""
      SystemUtils.debug_output(cmd)
 
      return run_system(cmd)

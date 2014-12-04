@@ -335,6 +335,7 @@ end
     if state == "stopped"
       ret_val = @core_api.start_container self
       @setState="running"
+      
     else
       @last_error ="Can't Start Container as " + state
     end
