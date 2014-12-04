@@ -69,10 +69,23 @@ class ManagedContainer < Container
               :data_uid,\
               :data_gid,\
               :cont_userid,\
-              :setState
+              :setState,\
+              :http_only,\
+              :http_and_https,\
+              :https_only
               
-   attr_accessor :container_id,:core_api,:http_only,:http_and_https, :https_only,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
+              
+   attr_accessor :container_id,:core_api,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
+def web_protocol
+  if http_only
+    return "HTTP only"
+  elsif http_and_https
+    return "HTTPS and HTTP"
+  elsif https_only
+    return "HTTPS only"
+  end
+end
 
   def monitored
     return conf_monitor_site
