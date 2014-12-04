@@ -9,7 +9,7 @@ require 'objspace'
 
 class EnginesOSapi
   def initialize()
-    @core_api = Engines.new
+    @core_api = EnginesCore.new
   end
 
   def core_api
