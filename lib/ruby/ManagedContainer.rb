@@ -584,9 +584,10 @@ end
   
   def enable_https
     p  :enable_https
+    deregister_site
     http_and_https=true
      https_only = false
-   # register_site
+    register_site
      save_state
   end
   
@@ -600,7 +601,7 @@ end
   end
   
   def enable_httpsonly
-    p :disable_httpsonly
+    p :enable_httpsonly
     deregister_site
     https_only = true
     http_and_https=false
