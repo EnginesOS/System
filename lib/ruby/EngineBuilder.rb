@@ -1491,8 +1491,13 @@ def log_exception(e)
   puts(e.to_s)
   
   @last_error=  e.to_s
+  n=0
   e.backtrace.each do |bt |
     p bt
+    if n>10
+      break
+    end
+    ++n
   end
   close_all
 end
