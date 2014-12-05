@@ -197,6 +197,8 @@ class EnginesCore
     else
       return SysConfig.NginxDefaultCert      
     end
+    end
+    
     def register_site(site_hash)
       clear_error
       begin
