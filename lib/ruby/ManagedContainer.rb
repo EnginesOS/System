@@ -69,7 +69,8 @@ class ManagedContainer < Container
               :data_uid,\
               :data_gid,\
               :cont_userid,\
-              :setState
+              :setState,\
+              :protocol
               
               
               
