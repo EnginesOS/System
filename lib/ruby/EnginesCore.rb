@@ -538,6 +538,7 @@ class EnginesCore
          engine_name = params[:engine_name]
          protocol = params[:web_protocol]
          if protocol.nil?
+           p params
            return false
          end
          
