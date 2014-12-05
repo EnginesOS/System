@@ -8,7 +8,7 @@ hostName: volmanager
 domainName: 
 environments: []
 image: engines/fs
-volumes: []
+volumes: 
 eports: []
 repo: na
 last_result: |

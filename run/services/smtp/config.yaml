@@ -7,7 +7,7 @@ hostName: smtp
 domainName: 
 environments: []
 image: engines/smtp
-volumes: []
+volumes: 
 port: 
 eports: []
 repo: na

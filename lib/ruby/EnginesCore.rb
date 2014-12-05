@@ -8,17 +8,17 @@ class EnginesCore
       @engines_api = api
     end
 
-#    def  
-#      @docker_api.update_self_hosted_domain( params)
-#    end
+    #    def
+    #      @docker_api.update_self_hosted_domain( params)
+    #    end
 
     def create_container(container)
       clear_error
       begin
         cid = read_container_id(container)
-        container.container_id=(cid)        
+        container.container_id=(cid)
         if save_container(container)  == true
-            return register_dns_and_site(container)          
+          return register_dns_and_site(container)
         else
           return false #save_container false
         end
@@ -47,9 +47,7 @@ class EnginesCore
       end #if reg dns
       return true
     end
-   
-   
-    
+
     def restart_nginx_process
       begin
         clear_error
@@ -177,8 +175,7 @@ class EnginesCore
       clear_error
       begin
         fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
-        #FIXME need unique name
-        dns_cmd_file_name="/tmp/.dns_cmd_file"
+        dns_cmd_file_name="/tmp/.top_level_hostname.dns_cmd_file"
         dns_cmd_file = File.new(dns_cmd_file_name,"w")
         dns_cmd_file.puts("server " + SysConfig.defaultDNS)
         dns_cmd_file.puts("update delete " + fqdn_str)
@@ -193,16 +190,47 @@ class EnginesCore
         return false
       end
     end
-
+    
+    def get_cert_name(fqdn)
+      if File.exists?(SysConfig.NginxCertDir + "/" + fqdn + ".crt")
+      return  fqdn 
+    else
+      return SysConfig.NginxDefaultCert      
+    end
+    end
+    
     def register_site(site_hash)
       clear_error
       begin
-        
-        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
-        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-        SystemUtils.debug_output ssh_cmd
-        result = run_system(ssh_cmd)
+        proto = site_hash[:proto]
+          protos=proto.split(" ")
+          protos.each do |protocol|
+            if protocol =="http"
+              template_file=SysConfig.HttpNginxTemplate
+            elsif protocol == "https"
+              template_file=SysConfig.HttpsNginxTemplate
+            else
+              template_file=SysConfig.HttpHttpsNginxTemplate
+            end
+            file_contents=File.read(template_file)
+            site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
+            site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
+            site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+            site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+            site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
 
+            site_filename = get_site_file_name(site_hash)
+            
+            site_file  =  File.open(site_filename,'w')
+            site_file.write(site_config_contents)
+            site_file.close
+            return true
+
+          end
+#        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        SystemUtils.debug_output ssh_cmd
+#        result = run_system(ssh_cmd)
         result = restart_nginx_process()
         #run_system(ssh_cmd)
         return result
@@ -222,14 +250,29 @@ class EnginesCore
       end
     end
 
+    def get_site_file_name(site_hash)
+      file_name = String.new
+      proto = site_hash[:proto]
+        p :proto
+        p proto
+      if proto == "http https"       
+        proto ="http_https"
+      end
+          file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:fqdn] + ".site"               
+      return file_name  
+      
+    end
+    
     def deregister_site(site_hash)
       clear_error
       begin
-        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-        SystemUtils.debug_output ssh_cmd
-        result = run_system(ssh_cmd)
+#        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+#        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
+#        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        SystemUtils.debug_output ssh_cmd
+#        result = run_system(ssh_cmd)
+        site_filename = get_site_file_name(site_hash)
+        File.delete(site_filename)
         result = restart_nginx_process()
         return result
       rescue  Exception=>e
@@ -288,11 +331,11 @@ class EnginesCore
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
           Dir.mkdir(stateDir + "/run")
-         end
-          log_dir = container_log_dir(container)
-         if File.directory?(log_dir) ==false
-            Dir.mkdir(log_dir)
-         end
+        end
+        log_dir = container_log_dir(container)
+        if File.directory?(log_dir) ==false
+          Dir.mkdir(log_dir)
+        end
 
         statefile=stateDir + "/config.yaml"
         # BACKUP Current file with rename
@@ -400,9 +443,9 @@ class EnginesCore
         #FIXME
         site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
         ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
-         run_system(ssh_cmd)   
-        #FIXME shoudl return about result and not just true 
-          return true    
+        run_system(ssh_cmd)
+        #FIXME shoudl return about result and not just true
+        return true
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -416,7 +459,7 @@ class EnginesCore
         p params
         domains = load_self_hosted_domains()
         domains[params[:domain_name]] = params
-        return  save_self_hosted_domains(domains)       
+        return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -438,9 +481,9 @@ class EnginesCore
     def  update_self_hosted_domain(old_domain_name, params)
       clear_error
       begin
-        domains = load_self_hosted_domains()        
+        domains = load_self_hosted_domains()
         domains.delete(old_domain_name)
-        domains[params[:domain_name]] = params         
+        domains[params[:domain_name]] = params
         save_self_hosted_domains(domains)
         return true
       rescue  Exception=>e
@@ -532,30 +575,31 @@ class EnginesCore
         return ret_val
       end
     end
+
     def set_engine_network_properties(engine, params)
       clear_error
-       begin
-         engine_name = params[:engine_name]
-         protocol = params[:http_protocol]
-         if protocol.nil?
-           p params
-           return false
-         end
-         
-         SystemUtils.debug_output("Changing protocol to _" + protocol + "_")
-         if protocol.include?("HTTPS only")            
-           engine.enable_httpsonly  
-         elsif protocol.include?("HTTP only")
-              engine.disable_https
-         elsif protocol.include?("HTTPS and HTTP")
-            engine.disable_httpsonly
-         end         
+      begin
+        engine_name = params[:engine_name]
+        protocol = params[:http_protocol]
+        if protocol.nil?
+          p params
+          return false
+        end
 
-         return true
-       rescue  Exception=>e
-         log_exception(e)
-         return false
-       end
+        SystemUtils.debug_output("Changing protocol to _" + protocol + "_")
+        if protocol.include?("HTTPS only")
+          engine.enable_https_only
+        elsif protocol.include?("HTTP only")
+          engine.enable_http_only
+        elsif protocol.include?("HTTPS and HTTP")
+          engine.enable_http_and_https
+        end
+
+        return true
+      rescue  Exception=>e
+        log_exception(e)
+        return false
+      end
     end
 
     def set_engine_hostname_details(container,params)
@@ -823,7 +867,7 @@ class EnginesCore
     def load_self_hosted_domains
       begin
         if File.exists?(SysConfig.HostedDomainsFile) == false
-           self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
           self_hosted_domain_file.close
           return Hash.new
         else
@@ -889,10 +933,11 @@ class EnginesCore
       @last_error = ""
     end
 
-   def  log_error(e_str)
-     @last_error = e_str
+    def  log_error(e_str)
+      @last_error = e_str
       SystemUtils.log_output(e_str,10)
-   end
+    end
+
     def log_exception(e)
       e_str = e.to_s()
       e.backtrace.each do |bt |
@@ -1088,53 +1133,73 @@ class EnginesCore
       return true
     end
 
-    def container_commandline_args container
+    def get_envionment_options(container)
+      e_option =String.new
+      if(container.environments)
+        container.environments.each do |environment|
+          if environment != nil
+            e_option = e_option + " -e " + environment.name + "=\"" + environment.value + "\""
+          end
+        end
+      end
+      return e_option
+      rescue Exception=>e
+        log_exception(e)
+        return e.to_s
+    end
+
+    def get_port_options(container)
+      eportoption = String.new
+      if(container.eports )
+        container.eports.each do |eport|
+          if eport != nil
+            eportoption = eportoption +  " -p "
+            if eport.external >0
+              eportoption = eportoption + eport.external.to_s + ":"
+            end
+            eportoption = eportoption + eport.port.to_s
+            if eport.proto_type == nil
+              eport.proto_type=('tcp')
+            end
+            eportoption = eportoption + "/"+ eport.proto_type + " "
+          end
+        end
+      end
+      return eportoption
+      rescue Exception=>e
+        log_exception(e)
+        return e.to_s    
+    end
+
+    def container_commandline_args(container)
       clear_error
       begin
-        e_option =String.new
-
-        eportoption = String.new
-        if(container.environments)
-          container.environments.each do |environment|
-            if environment != nil
-              e_option = e_option + " -e " + environment.name + "=\"" + environment.value + "\""
-            end
-          end
-        end
-
-        volume_option = get_volume_option container
-
-        if(container.eports )
-          container.eports.each do |eport|
-            if eport != nil
-
-              eportoption = eportoption +  " -p "
-              if eport.external >0
-                eportoption = eportoption + eport.external.to_s + ":"
-              end
-              eportoption = eportoption + eport.port.to_s
-              if eport.proto_type == nil
-                eport.proto_type=('tcp')
-              end
-              eportoption = eportoption + "/"+ eport.proto_type + " "
-            end
-          end
-        end
-
+        envionment_options = get_envionment_options( container)
+        port_options = get_port_options( container)
+        volume_option = get_volume_option( container)
         if container.conf_self_start == false
           start_cmd=" /bin/bash /home/init.sh"
         else
           start_cmd=" "
         end
-        commandargs =  "-h " + container.hostName + e_option + " --memory=" + container.memory.to_s + "m " + volume_option + eportoption + " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid --name " + container.containerName + "  -t " + container.image + start_cmd
+        commandargs =  "-h " + container.hostName + \
+                         envionment_options + \
+                        " --memory=" + container.memory.to_s + "m " +\
+                        volume_option + " " +\
+                        port_options +\
+                        " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid " +\
+                        "--name " + container.containerName + \
+                        "  -t " + container.image + " " +\
+                        start_cmd
+                        
         return commandargs
       rescue Exception=>e
         log_exception(e)
-        return nil
+        return e.to_s
       end
     end
 
-    def get_volume_option container
+    def get_volume_option(container)
       clear_error
       begin
         #System
@@ -1151,7 +1216,7 @@ class EnginesCore
         #container specific
         if(container.volumes)
           container.volumes.each_value do |volume|
-            if volume !=nil              
+            if volume !=nil
               if volume.localpath !=nil
                 volume_option = volume_option.to_s + " -v " + volume.localpath.to_s + ":/" + volume.remotepath.to_s +  ":" + volume.mapping_permissions.to_s
               end
@@ -1165,7 +1230,7 @@ class EnginesCore
       end
     end
 
-    def get_container_logdir container
+    def get_container_logdir(container)
       clear_error
       if container.framework == nil || container.framework.length ==0
         return "/var/log"
@@ -1189,6 +1254,10 @@ class EnginesCore
       end
 
       return container_logdetails
+ rescue Exception=>e
+          log_exception(e)
+          
+          return false
     end
 
     protected
@@ -1207,12 +1276,17 @@ class EnginesCore
 
     def log_exception(e)
       e_str = e.to_s()
+      n=0
       e.backtrace.each do |bt |
         e_str += bt
+        if n >10
+          break
+        end
+        ++n
       end
       @last_error = e_str
       SystemUtils.log_output(e_str,10)
-    
+
     end
   end#END of DockerApi
 
@@ -1225,9 +1299,9 @@ class EnginesCore
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return @system_api.register_dns_and_site(container)              
+      return @system_api.register_dns_and_site(container)
     end
-    return false 
+    return false
   end
 
   def inspect_container(container)
@@ -1235,10 +1309,10 @@ class EnginesCore
   end
 
   def stop_container(container)
-   if @docker_api.stop_container(container) == true
-     return container.deregister_registered    
-   end
-   return false 
+    if @docker_api.stop_container(container) == true
+      return container.deregister_registered
+    end
+    return false
   end
 
   def pause_container(container)
@@ -1323,7 +1397,7 @@ class EnginesCore
 
   def register_site(site_hash)
     return @system_api.register_site(site_hash)
-  end 
+  end
 
   def deregister_site(site_hash)
     return @system_api.deregister_site(site_hash)
@@ -1348,11 +1422,11 @@ class EnginesCore
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
   end
-  
-def set_engine_network_properties (engine, params)
-  return @system_api.set_engine_network_properties(engine,params)
-end
-   
+
+  def set_engine_network_properties (engine, params)
+    return @system_api.set_engine_network_properties(engine,params)
+  end
+
   def get_system_load_info
     return @system_api.get_system_load_info
   end
@@ -1400,19 +1474,21 @@ end
       return false
     end
   end
-def create_database  site_hash
-   clear_error
-   begin
-     container_name =  site_hash[:flavor] + "_server"
-     cmd = "docker exec " +  container_name + "\" /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] +"\""
-     SystemUtils.debug_output(cmd)
 
-     return run_system(cmd)
-   rescue  Exception=>e
-     log_exception(e)
-     return false
-   end
- end
+  def create_database  site_hash
+    clear_error
+    begin
+      container_name =  site_hash[:flavor] + "_server"
+      cmd = "docker exec " +  container_name + "\" /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] +"\""
+      SystemUtils.debug_output(cmd)
+
+      return run_system(cmd)
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+
   def delete_image(container)
     begin
       clear_error
@@ -1577,8 +1653,6 @@ def create_database  site_hash
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
   end
-
- 
 
 end
 

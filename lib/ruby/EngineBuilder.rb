@@ -1,4 +1,4 @@
-#!/usr/local/rvm/rubies/ruby-2.1.1/bin/ruby
+  
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
@@ -1491,8 +1491,13 @@ def log_exception(e)
   puts(e.to_s)
   
   @last_error=  e.to_s
+  n=0
   e.backtrace.each do |bt |
     p bt
+    if n>10
+      break
+    end
+    ++n
   end
   close_all
 end

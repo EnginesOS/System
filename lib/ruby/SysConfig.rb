@@ -24,13 +24,31 @@ class SysConfig
   @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
   @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
+  @@HttpHttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/http_to_https_site.tmpl"
+  @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
+  @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
+  @@NginxDefaultCert="engines"
   
-  def SysConfig.HTTPNginxTemplate
-    return @@HTTPNginxTemplate
+  def SysConfig.NginxDefaultCert
+    return @@NginxDefaultCert
+  end
+  
+  def SysConfig.NginxCertDir
+    return @@NginxCertDir
+  end
+  def SysConfig.NginxSiteDir
+    return @@NginxSiteDir
+  end
+  def SysConfig.HttpNginxTemplate
+    return @@HttpNginxTemplate
   end
   def SysConfig.HttpsNginxTemplate
       return @@HttpsNginxTemplate
     end
+  def SysConfig.HttpHttpsNginxTemplate
+       return @@HttpHttpsNginxTemplate
+     end
+       
  def SysConfig.HostedDomainsFile
    return @@HostedDomainsFile
  end
