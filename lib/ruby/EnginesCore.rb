@@ -542,12 +542,12 @@ class EnginesCore
            return false
          end
          
-         SystemUtils.debug_output("Changing protocol to " + protocol)
-         if protocol == "HTTPS only"            
+         SystemUtils.debug_output("Changing protocol to _" + protocol + "_")
+         if protocol.contains?("HTTPS only")            
            engine.enable_httpsonly  
-         elsif protocol == "HTTP only"
+         elsif protocol.contains?("HTTP only")
               engine.disable_https
-         elsif protocol =="HTTPS and HTTP"
+         elsif protocol.contains?("HTTPS and HTTP")
             engine.disable_httpsonly
          end         
 
