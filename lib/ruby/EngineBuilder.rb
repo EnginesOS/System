@@ -36,7 +36,7 @@ class EngineBuilder
       @domain_name = domain_name
       @webPort = webport
       @blueprint_reader = reader
-      
+     
       @log_file = logfile
       @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
@@ -580,7 +580,6 @@ def log_exception(e)
     :environments,\
     :recursive_chmods,\
     :single_chmods,\
-    :cron_jobs,\
     :framework,\
     :runtime,\
     :memory,\
@@ -752,7 +751,9 @@ def log_exception(e)
           dest=name
         end
         if(dest.start_with?("/home/app/") == false)
-          dest="/home/fs/" + dest          
+          if(dest.start_with?("/home/fs/") == false)
+            dest="/home/fs/" + dest  
+          end        
         end
         permissions = PermissionRights.new(@container_name,"","")
         vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + dest,dest,"rw",permissions)

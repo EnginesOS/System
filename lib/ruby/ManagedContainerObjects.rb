@@ -1,8 +1,8 @@
-require_relative 'WorkPort.rb'
-require_relative 'EnvironmentVariable.rb'
-require_relative 'Volume.rb'
-require_relative 'StaticService.rb'
-require_relative 'DatabaseService.rb'
+require_relative 'ContainerObjects/WorkPort.rb'
+require_relative 'ContainerObjects/EnvironmentVariable.rb'
+require_relative 'ContainerObjects/Volume.rb'
+require_relative 'ContainerObjects/StaticService.rb'
+require_relative 'ContainerObjects/DatabaseService.rb'
 
 
 

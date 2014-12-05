@@ -1,7 +1,7 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/EngineBuilder.rb"
-require "/opt/engines/lib/ruby/PermissionRights.rb"
+require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"
 require "/opt/engines/lib/ruby/prefs/SystemPreferences.rb"
@@ -845,6 +845,15 @@ class EnginesOSapi
        else
          return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
        end
+ end
+ 
+ def get_available_services_for(item)
+    res = @core_api.get_available_services_for(item)
+     if res.present?
+       return res
+          else
+            return failed("get avaiable services ",last_api_error,"get avaiable services")
+          end
  end
 
   
