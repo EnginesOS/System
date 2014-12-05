@@ -79,12 +79,17 @@ class ManagedContainer < Container
 
 def http_protocol
   if http_only
+    p "HTTP only"
     return "HTTP only"
   elsif http_and_https
+    p "HTTPS and HTTP"
     return "HTTPS and HTTP"
   elsif https_only
+    p  "HTTPS only"
     return "HTTPS only"
   end
+  p "web protocol err"
+  return "HTTP only"
 end
 
   def monitored
