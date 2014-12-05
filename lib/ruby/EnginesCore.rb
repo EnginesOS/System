@@ -48,7 +48,7 @@ class EnginesCore
       return true
     end
    
-    
+   
     
     def restart_nginx_process
       begin
@@ -532,7 +532,7 @@ class EnginesCore
         return ret_val
       end
     end
-    def set_engine_network_details(engine, params)
+    def set_engine_network_properties(engine, params)
       clear_error
        begin
          engine_name = params[:engine_name]
@@ -890,7 +890,7 @@ class EnginesCore
 
    def  log_error(e_str)
      @last_error = e_str
-      SystemUtils.log_output(e_str,0)
+      SystemUtils.log_output(e_str,10)
    end
     def log_exception(e)
       e_str = e.to_s()
@@ -1211,7 +1211,7 @@ class EnginesCore
       end
       @last_error = e_str
       SystemUtils.log_output(e_str,10)
-      SystemUtils.log_output(e_str,10)
+    
     end
   end#END of DockerApi
 
@@ -1347,7 +1347,11 @@ class EnginesCore
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
   end
-
+  
+def set_engine_network_properties (params)
+  return @system_api.set_engine_network_properties(params)
+end
+   
   def get_system_load_info
     return @system_api.get_system_load_info
   end

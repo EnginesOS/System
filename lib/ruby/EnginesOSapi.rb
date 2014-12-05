@@ -101,6 +101,7 @@ class EnginesOSapi
 
   def loadManagedEngine(engine_name)
     engine = @core_api.loadManagedEngine(engine_name)
+   
     if engine == false
       return failed(engine_name,last_api_error ,"Load Engine")
     end
@@ -551,7 +552,7 @@ class EnginesOSapi
     e.backtrace.each do |bt |
       e_str += bt
     end
-    SystemUtils.log_output(e_str,0)
+    SystemUtils.log_output(e_str,10)
     return e_str
   end
 
@@ -840,7 +841,7 @@ class EnginesOSapi
          p engine
          return engine
        end
-    if @core_api.set_engine_network_details(engine, params)
+    if @core_api.set_engine_network_properties(engine, params)
       return success(params[:engine_name], "Update network details")
        else
          return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
