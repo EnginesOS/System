@@ -175,8 +175,7 @@ class EnginesCore
       clear_error
       begin
         fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
-        #FIXME need unique name
-        dns_cmd_file_name="/tmp/.dns_cmd_file"
+        dns_cmd_file_name="/tmp/.top_level_hostname.dns_cmd_file"
         dns_cmd_file = File.new(dns_cmd_file_name,"w")
         dns_cmd_file.puts("server " + SysConfig.defaultDNS)
         dns_cmd_file.puts("update delete " + fqdn_str)
@@ -195,12 +194,29 @@ class EnginesCore
     def register_site(site_hash)
       clear_error
       begin
+        proto = site_hash[:proto]
+          protos=proto.split(" ")
+          protos.each do |protocol|
+            if protocol =="http"
+              template_file=SysConfig.HttpNginxTemplate
+            else
+              template_file=SysConfig.HttpsNginxTemplate
+            end
+            file_contents=File.read(template_file)
+            file_contents.sub("FQDN",site_hash[:fqdn])
+            file_contents.sub("PORT",site_hash[:port])
+            file_contents.sub("SERVER",site_hash[:name]) #Not HostName
+            site_filename = get_site_file_name(site_hash)
+            site_file  =  File.open(site_filename,'w')
+            site_file.write(file_contents)
+            site_file.close
+            return true
 
-        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
-        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-        SystemUtils.debug_output ssh_cmd
-        result = run_system(ssh_cmd)
-
+          end
+#        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        SystemUtils.debug_output ssh_cmd
+#        result = run_system(ssh_cmd)
         result = restart_nginx_process()
         #run_system(ssh_cmd)
         return result
@@ -220,14 +236,27 @@ class EnginesCore
       end
     end
 
+    def get_site_file_name(site_hash)
+      file_name = String.new
+      proto = site_hash[:proto]
+      if proto == "http https"       
+        proto ="http_https"
+      end
+          file_name=SysConfig.NginxSiteDir "/" + protocol + "_" +  site_hash[:fqdn] + ".site"               
+      return file_name  
+      
+    end
+    
     def deregister_site(site_hash)
       clear_error
       begin
-        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-        SystemUtils.debug_output ssh_cmd
-        result = run_system(ssh_cmd)
+#        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+#        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
+#        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+#        SystemUtils.debug_output ssh_cmd
+#        result = run_system(ssh_cmd)
+        site_filename = get_site_file_name(site_hash)
+        File.delete(filename)
         result = restart_nginx_process()
         return result
       rescue  Exception=>e
