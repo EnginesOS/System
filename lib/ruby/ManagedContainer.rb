@@ -79,12 +79,17 @@ class ManagedContainer < Container
 
 def http_protocol
   if http_only
+    p "HTTP only"
     return "HTTP only"
   elsif http_and_https
+    p "HTTPS and HTTP"
     return "HTTPS and HTTP"
   elsif https_only
+    p  "HTTPS only"
     return "HTTPS only"
   end
+  p "web protocol err"
+  return "HTTP only"
 end
 
   def monitored
@@ -584,9 +589,10 @@ end
   
   def enable_https
     p  :enable_https
+    deregister_site
     http_and_https=true
      https_only = false
-   # register_site
+    register_site
      save_state
   end
   
@@ -594,13 +600,14 @@ end
     deregister_site
     http_and_https=false
     https_only = false
+    http_only =true
      p :disable_https
    register_site
     save_state
   end
   
   def enable_httpsonly
-    p :disable_httpsonly
+    p :enable_httpsonly
     deregister_site
     https_only = true
     http_and_https=false
