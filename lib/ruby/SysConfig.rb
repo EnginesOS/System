@@ -24,7 +24,11 @@ class SysConfig
   @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
   @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
+  @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
   
+  def SysConfig.NginxSiteDir
+    return @@NginxSiteDir
+  end
   def SysConfig.HTTPNginxTemplate
     return @@HTTPNginxTemplate
   end
