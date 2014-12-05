@@ -49,8 +49,8 @@ class EngineBuilder
        @builder.log_build_output(line)
      end
      
-     def log_build_errs(line)
-       @builder.log_build_errs(line)
+     def log_build_errors(line)
+       @builder.log_build_errors(line)
      end
      
 
@@ -559,7 +559,7 @@ count_layer
 
     protected
 def log_exception(e)
-    log_build_error( e.to_s)
+    log_build_errors( e.to_s)
      puts(e.to_s)
      @last_error=  e.to_s
      e.backtrace.each do |bt |
@@ -608,8 +608,8 @@ def log_exception(e)
       @builder.log_build_output(line)
     end
     
-    def log_build_errs(line)
-      @builder.log_build_errs(line)
+    def log_build_errors(line)
+      @builder.log_build_errors(line)
     end
 
 
@@ -623,7 +623,7 @@ def log_exception(e)
     end
 
     def log_exception(e)
-      log_build_error(e.to_s)
+      log_build_errors(e.to_s)
       puts(e.to_s)
       #@last_error=  e.to_s
       e.backtrace.each do |bt |
@@ -1131,13 +1131,13 @@ end
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
-    @log_pipe_wr.push(line)
+    @log_pipe_wr.puts(line)
   end
   
-  def log_build_errs(line)
+  def log_build_errors(line)
         @err_file.puts(line)
         @err_file.flush
-        @err_pipe_wr.push(line)
+        @error_pipe_wr.puts(line)
   end
 
   def setup_framework_logging
@@ -1487,8 +1487,9 @@ end
 
   protected
 def log_exception(e)
-  log_build_error( e.to_s)
+  log_build_errors( e.to_s)
   puts(e.to_s)
+  
   @last_error=  e.to_s
   e.backtrace.each do |bt |
     p bt
@@ -1522,7 +1523,7 @@ end
             if stderr_is_open
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              log_build_error(err)
+              log_build_errors(err)
             end
           }
         rescue Errno::EIO
@@ -1531,7 +1532,7 @@ end
           if stderr_is_open
             err  = stderr.read_nonblock(1000)
             error_mesg += err
-            log_build_error(err)
+            log_build_errors(err)
             retry
           end
         rescue  IO::WaitReadable
@@ -1545,7 +1546,7 @@ end
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-            log_build_error(err)
+            log_build_errors(err)
               return
             end
           end
