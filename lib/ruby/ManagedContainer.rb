@@ -77,7 +77,7 @@ class ManagedContainer < Container
               
    attr_accessor :container_id,:core_api,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
-def web_protocol
+def http_protocol
   if http_only
     return "HTTP only"
   elsif http_and_https
