@@ -1,4 +1,4 @@
-#!/usr/local/rvm/rubies/ruby-2.1.1/bin/ruby
+  
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
