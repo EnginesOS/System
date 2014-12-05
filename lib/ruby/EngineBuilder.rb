@@ -1104,8 +1104,8 @@ def log_exception(e)
       FileUtils.mkdir_p(get_basedir)
       @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
       @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
-      @log_pipe_rd, @log_pipe_wr = IO.pipe
-      @error_pipe_rd, @error_pipe_wr = IO.pipe            
+#      @log_pipe_rd, @log_pipe_wr = IO.pipe
+#      @error_pipe_rd, @error_pipe_wr = IO.pipe            
     rescue
       log_exception(e)
     end
@@ -1114,10 +1114,10 @@ def log_exception(e)
 def close_all
   @log_file.close()
   @err_file.close()
-  @log_pipe_rd.close()
-  @log_pipe_wr.close()
-  @error_pipe_rd.close()
-  @error_pipe_wr.close()
+#  @log_pipe_rd.close()
+#  @log_pipe_wr.close()
+##  @error_pipe_rd.close()
+#  @error_pipe_wr.close()
 end
 
   def get_build_log_stream
@@ -1131,13 +1131,13 @@ end
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
-    @log_pipe_wr.push(line)
+   # @log_pipe_wr.push(line)
   end
   
   def log_build_errs(line)
         @err_file.puts(line)
         @err_file.flush
-        @err_pipe_wr.push(line)
+      #  @err_pipe_wr.push(line)
   end
 
   def setup_framework_logging
