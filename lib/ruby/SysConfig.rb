@@ -27,10 +27,12 @@ class SysConfig
   @@HttpHttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/http_to_https_site.tmpl"
   @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
   @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
+  @@NginxDefaultCert="engines"
   
   def SysConfig.NginxDefaultCert
-    return "engines"
+    return @@NginxDefaultCert
   end
+  
   def SysConfig.NginxCertDir
     return @@NginxCertDir
   end
