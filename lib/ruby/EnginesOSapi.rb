@@ -101,6 +101,7 @@ class EnginesOSapi
 
   def loadManagedEngine(engine_name)
     engine = @core_api.loadManagedEngine(engine_name)
+   
     if engine == false
       return failed(engine_name,last_api_error ,"Load Engine")
     end
@@ -551,7 +552,7 @@ class EnginesOSapi
     e.backtrace.each do |bt |
       e_str += bt
     end
-    SystemUtils.log_output(e_str,0)
+    SystemUtils.log_output(e_str,10)
     return e_str
   end
 

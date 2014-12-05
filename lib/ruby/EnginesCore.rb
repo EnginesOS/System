@@ -890,7 +890,7 @@ class EnginesCore
 
    def  log_error(e_str)
      @last_error = e_str
-      SystemUtils.log_output(e_str,0)
+      SystemUtils.log_output(e_str,10)
    end
     def log_exception(e)
       e_str = e.to_s()
@@ -1211,7 +1211,7 @@ class EnginesCore
       end
       @last_error = e_str
       SystemUtils.log_output(e_str,10)
-      SystemUtils.log_output(e_str,10)
+    
     end
   end#END of DockerApi
 
