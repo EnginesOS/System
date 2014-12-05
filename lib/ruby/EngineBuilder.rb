@@ -30,19 +30,29 @@ class EngineBuilder
   end
 
   class DockerFileBuilder
-    def initialize(reader,containername,hostname,domain_name,webport,logfile,errfile)
+    def initialize(reader,containername,hostname,domain_name,webport,builder)
       @hostname = hostname
       @container_name = containername
       @domain_name = domain_name
       @webPort = webport
       @blueprint_reader = reader
+      @builder=builder
      
-      @log_file = logfile
-      @err_file = errfile
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
       
       @layer_count=0
     end
+    
+  
+      
+    def  log_build_output(line)
+       @builder.log_build_output(line)
+     end
+     
+     def log_build_errs(line)
+       @builder.log_build_errs(line)
+     end
+     
 
    def count_layer
      ++@layer_count
@@ -104,7 +114,7 @@ class EngineBuilder
 
     def write_persistant_dirs
       begin
-        @log_file.puts("set setup_env")
+        log_build_output("set setup_env")
         src_paths = @blueprint_reader.persistant_dirs[:src_paths]
         dest_paths =  @blueprint_reader.persistant_dirs[:dest_paths]
         n=0
@@ -139,7 +149,7 @@ class EngineBuilder
 
     def write_persistant_files
       begin
-        @log_file.puts("set setup_env")
+        log_build_output("set setup_env")
         src_paths = @blueprint_reader.persistant_files[:src_paths]
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
         n=0
@@ -253,7 +263,7 @@ count_layer
 
     def insert_framework_frag_in_dockerfile(frag_name)
       begin
-        @log_file.puts(frag_name)
+        log_build_output(frag_name)
 
         frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
@@ -471,7 +481,7 @@ count_layer
 
     def write_container_user
       begin
-        @log_file.puts("set container user")
+        log_build_output("set container user")
 
         #FIXME needs to by dynamic
 
@@ -488,7 +498,7 @@ count_layer
 
     def write_stack_env
       begin
-        @log_file.puts("Saving stack Environment")
+        log_build_output("Saving stack Environment")
 
         # stef = File.open(get_basedir + "/home/stack.env","w")
         @docker_file.puts("")
@@ -549,7 +559,7 @@ count_layer
 
     protected
 def log_exception(e)
-     @err_file.puts( e.to_s)
+    log_build_error( e.to_s)
      puts(e.to_s)
      @last_error=  e.to_s
      e.backtrace.each do |bt |
@@ -561,15 +571,13 @@ def log_exception(e)
   end
 
   class BluePrintReader
-    def initialize(build_name,contname,blue_print,logfile,errfile)
+    def initialize(build_name,contname,blue_print,builder)
       @build_name = build_name
 
       @data_uid="11111"
       @data_gid="11111"
-
-      @container_name = contname
-      @log_file=logfile
-      @err_file=errfile
+      @builder=builder
+      @container_name = contname    
       @blueprint = blue_print
     end
 
@@ -595,6 +603,15 @@ def log_exception(e)
     :apache_modules,\
     :data_uid,\
     :data_gid
+    
+    def  log_build_output(line)
+      @builder.log_build_output(line)
+    end
+    
+    def log_build_errs(line)
+      @builder.log_build_errs(line)
+    end
+
 
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
@@ -606,7 +623,7 @@ def log_exception(e)
     end
 
     def log_exception(e)
-      @err_file.puts( e.to_s)
+      log_build_error(e.to_s)
       puts(e.to_s)
       #@last_error=  e.to_s
       e.backtrace.each do |bt |
@@ -644,7 +661,7 @@ def log_exception(e)
 
     def read_persistant_dirs
       begin
-        @log_file.puts("set setup_env")
+        log_build_output("set setup_env")
 
         @persistant_dirs = Hash.new
         src_paths = Array.new
@@ -668,7 +685,7 @@ def log_exception(e)
 
     def read_persistant_files
       begin
-        @log_file.puts("set setup_env")
+        log_build_output("set setup_env")
 
         @persistant_files = Hash.new
         src_paths = Array.new
@@ -695,7 +712,7 @@ def log_exception(e)
     def read_rake_list
       begin
         @rake_actions = Array.new
-        @log_file.puts("set rake list")
+        log_build_output("set rake list")
         rake_cmds = @blueprint["software"]["rake_tasks"]
         if rake_cmds == nil
           return
@@ -720,7 +737,7 @@ def log_exception(e)
       @databases=Array.new
       @volumes=Hash.new
 
-      @log_file.puts("Adding services")
+      log_build_output("Adding services")
       services=@blueprint["software"]["softwareservices"]
       services.each do |service|
         servicetype=service["servicetype_name"]
@@ -779,7 +796,7 @@ def log_exception(e)
       begin
         @os_packages = Array.new
 
-        @log_file.puts("Writing Dockerfile")
+        log_build_output("Writing Dockerfile")
         ospackages = @blueprint["software"]["ospackages"]
         ospackages.each do |package|
           @os_packages.push(package["name"])
@@ -791,7 +808,7 @@ def log_exception(e)
     end
 
     def read_lang_fw_values
-      @log_file.puts("Reading Settings")
+      log_build_output("Reading Settings")
       begin
         @framework = @blueprint["software"]["swframework_name"]
         p @framework
@@ -807,7 +824,7 @@ def log_exception(e)
       begin
         @pear_modules = Array.new
 
-        @log_file.puts("set pear list")
+        log_build_output("set pear list")
         pear_mods = @blueprint["software"]["pear_mod"]
         if pear_mods == nil || pear_mods.length == 0
           return
@@ -852,7 +869,7 @@ def log_exception(e)
         @archives_details[:arc_extract] = Array.new
         @archives_details[:arc_loc] = Array.new
         @archives_details[:arc_dir] = Array.new
-        @log_file.puts("Configuring install Environment")
+        log_build_output("Configuring install Environment")
         archives = @blueprint["software"]["installedpackages"]
         n=0
         srcs=String.new
@@ -896,7 +913,7 @@ def log_exception(e)
     def read_write_permissions_recursive
       begin
         @recursive_chmods = Array.new
-        @log_file.puts("set permissions recussive")
+        log_build_output("set permissions recussive")
         chmods = @blueprint["software"]["chmod_recursive"]
         if chmods != nil
           chmods.each do |chmod |
@@ -915,7 +932,7 @@ def log_exception(e)
     def read_write_permissions_single
       begin
         @single_chmods =Array.new
-        @log_file.puts("set permissions  single")
+        log_build_output("set permissions  single")
         chmods = @blueprint["software"]["chmod_single"]
         if chmods != nil
           chmods.each do | single_chmod |
@@ -933,7 +950,7 @@ def log_exception(e)
 
     def read_worker_commands
       begin
-        @log_file.puts("Creating Workers")
+        log_build_output("Creating Workers")
         @worker_commands = Array.new
         workers =@blueprint["software"]["worker_commands"]
 
@@ -972,7 +989,7 @@ def log_exception(e)
         @sed_strings[:sed_str] = Array.new
         @sed_strings[:tmp_file] = Array.new
 
-        @log_file.puts("set sed strings")
+        log_build_output("set sed strings")
         seds=@blueprint["software"]["replacementstrings"]
         if seds == nil || seds.empty? == true
           return
@@ -1015,7 +1032,7 @@ def log_exception(e)
     def read_work_ports
       begin
         @workerPorts = Array.new
-        @log_file.puts("Creating work Ports")
+        log_build_output("Creating work Ports")
         ports =  @blueprint["software"]["work_ports"]
         puts("Ports Json" + ports.to_s)
         if ports != nil
@@ -1087,12 +1104,41 @@ def log_exception(e)
       FileUtils.mkdir_p(get_basedir)
       @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
       @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
+      @log_pipe_rd, @log_pipe_wr = IO.pipe
+      @error_pipe_rd, @error_pipe_wr = IO.pipe            
     rescue
       log_exception(e)
     end
   end
+  
+def close_all
+  @log_file.close()
+  @err_file.close()
+  @log_pipe_rd.close()
+  @log_pipe_wr.close()
+  @error_pipe_rd.close()
+  @error_pipe_wr.close()
+end
 
-
+  def get_build_log_stream
+    return @log_pipe_rd
+  end
+  
+  def get_build_err_stream
+    @error_pipe_rd
+  end
+  
+  def  log_build_output(line)
+    @log_file.puts(line)
+    @log_file.flush
+    @log_pipe_wr.push(line)
+  end
+  
+  def log_build_errs(line)
+        @err_file.puts(line)
+        @err_file.flush
+        @err_pipe_wr.push(line)
+  end
 
   def setup_framework_logging
     begin
@@ -1331,7 +1377,7 @@ def log_exception(e)
         return false
       end
 
-      @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,@log_file,@err_file)
+      @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,self)
       @blueprint_reader.process_blueprint
 
       if  setup_default_files == false
@@ -1341,7 +1387,7 @@ def log_exception(e)
       read_web_port
       read_web_user
 
-      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,@log_file,@err_file)
+      dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
 
       setup_framework_logging
@@ -1362,14 +1408,13 @@ def log_exception(e)
         mc = create_managed_container()
       end
 
+      close_all
       return mc
-      
-    rescue Exception=>e
-      
 
-      log_exception(e)
     rescue Exception=>e
+     
       log_exception(e)
+      close_all
       return false
     end
   end
@@ -1442,12 +1487,13 @@ def log_exception(e)
 
   protected
 def log_exception(e)
-  @err_file.puts( e.to_s)
+  log_build_error( e.to_s)
   puts(e.to_s)
   @last_error=  e.to_s
   e.backtrace.each do |bt |
     p bt
   end
+  close_all
 end
   def debug(fld)
     puts "ERROR: "
@@ -1472,24 +1518,20 @@ end
             line = line.gsub(/\\\"/,"")
             res += line.chop
             oline = line
-            @log_file.puts(line)
-            @log_file.flush
+            log_build_output(line)                  
             if stderr_is_open
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              @err_file.puts(err)
-              @err_file.flush
+              log_build_error(err)
             end
           }
         rescue Errno::EIO
           res += line.chop
-          @log_file.puts(oline)
-          @log_file.flush
+          log_build_output(oline) 
           if stderr_is_open
             err  = stderr.read_nonblock(1000)
             error_mesg += err
-            @err_file.puts(err)
-            @err_file.flush
+            log_build_error(err)
             retry
           end
         rescue  IO::WaitReadable
@@ -1503,8 +1545,7 @@ end
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              @err_file.puts(err)
-            @err_file.flush
+            log_build_error(err)
               return
             end
           end

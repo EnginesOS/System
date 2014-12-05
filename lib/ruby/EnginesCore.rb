@@ -536,17 +536,18 @@ class EnginesCore
       clear_error
        begin
          engine_name = params[:engine_name]
-         protocol = params[:web_protocol]
+         protocol = params[:http_protocol]
          if protocol.nil?
+           p params
            return false
          end
          
-         SystemUtils.debug_output("Changing protocol to " + protocol)
-         if protocol == "HTTPS only"            
+         SystemUtils.debug_output("Changing protocol to _" + protocol + "_")
+         if protocol.include?("HTTPS only")            
            engine.enable_httpsonly  
-         elsif protocol == "HTTP only"
+         elsif protocol.include?("HTTP only")
               engine.disable_https
-         elsif protocol =="HTTPS and HTTP"
+         elsif protocol.include?("HTTPS and HTTP")
             engine.disable_httpsonly
          end         
 
@@ -1348,8 +1349,8 @@ class EnginesCore
     return @system_api.set_engine_hostname_details(container,params)
   end
   
-def set_engine_network_properties (params)
-  return @system_api.set_engine_network_properties(params)
+def set_engine_network_properties (engine, params)
+  return @system_api.set_engine_network_properties(engine,params)
 end
    
   def get_system_load_info
