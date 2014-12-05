@@ -536,7 +536,7 @@ class EnginesCore
       clear_error
        begin
          engine_name = params[:engine_name]
-         protocol = params[:web_protocol]
+         protocol = params[:http_protocol]
          if protocol.nil?
            p params
            return false
