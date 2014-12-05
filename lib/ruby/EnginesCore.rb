@@ -244,7 +244,7 @@ class EnginesCore
       if proto == "http https"       
         proto ="http_https"
       end
-          file_name=SysConfig.NginxSiteDir "/" + protocol + "_" +  site_hash[:fqdn] + ".site"               
+          file_name=SysConfig.NginxSiteDir "/" + proto + "_" +  site_hash[:fqdn] + ".site"               
       return file_name  
       
     end
