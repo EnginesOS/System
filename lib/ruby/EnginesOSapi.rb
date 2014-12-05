@@ -846,6 +846,15 @@ class EnginesOSapi
          return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
        end
  end
+ 
+ def get_available_services_for(item)
+    res = @core_api.get_available_services_for(item)
+     if res.present?
+       return res
+          else
+            return failed("get avaiable services ",last_api_error,"get avaiable services")
+          end
+ end
 
   
   def set_engine_hostname_properties(params)
