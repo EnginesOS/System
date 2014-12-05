@@ -190,7 +190,13 @@ class EnginesCore
         return false
       end
     end
-
+    
+    def get_cert_name(fqdn)
+      if File.exists?(SysConfig.NginxCertDir + "/" + fqdn + ".crt")
+      return  fqdn 
+    else
+      return SysConfig.NginxDefaultCert      
+    end
     def register_site(site_hash)
       clear_error
       begin
@@ -208,6 +214,7 @@ class EnginesCore
             site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
             site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
             site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+            site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(fqdn)) #Not HostName
             site_filename = get_site_file_name(site_hash)
             site_file  =  File.open(site_filename,'w')
             site_file.write(site_config_contents)
