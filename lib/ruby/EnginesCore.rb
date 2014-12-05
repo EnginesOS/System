@@ -48,7 +48,7 @@ class EnginesCore
       return true
     end
    
-    
+   
     
     def restart_nginx_process
       begin
@@ -532,7 +532,7 @@ class EnginesCore
         return ret_val
       end
     end
-    def set_engine_network_details(engine, params)
+    def set_engine_network_properties(engine, params)
       clear_error
        begin
          engine_name = params[:engine_name]
@@ -1347,7 +1347,11 @@ class EnginesCore
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
   end
-
+  
+def set_engine_network_properties (params)
+  return @system_api.set_engine_network_properties (params)
+end
+   
   def get_system_load_info
     return @system_api.get_system_load_info
   end

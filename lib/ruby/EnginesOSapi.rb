@@ -841,7 +841,7 @@ class EnginesOSapi
          p engine
          return engine
        end
-    if @core_api.set_engine_network_details(engine, params)
+    if @core_api.set_engine_network_properties(engine, params)
       return success(params[:engine_name], "Update network details")
        else
          return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
