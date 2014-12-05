@@ -39,7 +39,7 @@ class EnginesOSapi
     evirons = params[:env_variables]
     p params
     @engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
-    engine = engine_builder.build_from_blue_print
+    engine = @engine_builder.build_from_blue_print
     if engine == false
       return  failed(host_name,engine_builder.last_error,"build_engine")
     end
