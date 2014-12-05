@@ -1088,7 +1088,7 @@ class EnginesCore
       return true
     end
 
-    def get_envionment_options
+    def get_envionment_options(container)
       e_option =String.new
       if(container.environments)
         container.environments.each do |environment|
@@ -1103,7 +1103,7 @@ class EnginesCore
         return e.to_s
     end
 
-    def get_port_options
+    def get_port_options(container)
       eportoption = String.new
       if(container.eports )
         container.eports.each do |eport|
@@ -1126,12 +1126,12 @@ class EnginesCore
         return e.to_s    
     end
 
-    def container_commandline_args container
+    def container_commandline_args(container)
       clear_error
       begin
-        envionment_options = get_envionment_options
-        port_options = get_port_options
-        volume_option = get_volume_option container
+        envionment_options = get_envionment_options( container)
+        port_options = get_port_options( container)
+        volume_option = get_volume_option( container)
         if container.conf_self_start == false
           start_cmd=" /bin/bash /home/init.sh"
         else
@@ -1154,7 +1154,7 @@ class EnginesCore
       end
     end
 
-    def get_volume_option container
+    def get_volume_option(container)
       clear_error
       begin
         #System
@@ -1185,7 +1185,7 @@ class EnginesCore
       end
     end
 
-    def get_container_logdir container
+    def get_container_logdir(container)
       clear_error
       if container.framework == nil || container.framework.length ==0
         return "/var/log"
@@ -1209,6 +1209,10 @@ class EnginesCore
       end
 
       return container_logdetails
+ rescue Exception=>e
+          log_exception(e)
+          
+          return false
     end
 
     protected
