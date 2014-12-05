@@ -47,7 +47,7 @@ class ManagedContainer < Container
    @data_uid=data_uid
    @data_gid=data_gid
    @cont_userid=-1
-      
+   @protocol=:http_and_https
  end
  
  def container_id
@@ -69,26 +69,22 @@ class ManagedContainer < Container
               :data_uid,\
               :data_gid,\
               :cont_userid,\
-              :setState,\
-              :http_only,\
-              :http_and_https,\
-              :https_only
+              :setState
+              
               
               
    attr_accessor :container_id,:core_api,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
 
 def http_protocol
-  if http_only
-    p "HTTP only"
-    return "HTTP only"
-  elsif http_and_https
-    p "HTTPS and HTTP"
+  case @protocol
+  when :http_and_https
     return "HTTPS and HTTP"
-  elsif https_only
-    p  "HTTPS only"
+  when :http_only
+    return "HTTP only"
+  when :https_only
     return "HTTPS only"
   end
-  p "web protocol err"
+  p "no web protocol err"
   return "HTTP only"
 end
 
@@ -587,44 +583,30 @@ end
    end  
   end
   
-  def enable_https
-    p  :enable_https
+  def enable_https_only
     deregister_site
-    http_and_https=true
-     https_only = false
-    register_site
-     save_state
-  end
-  
-  def disable_https
-    deregister_site
-    http_and_https=false
-    https_only = false
-    http_only =true
-     p :disable_https
+    @protocol=:https_only
+     p :enable_https_only
    register_site
     save_state
   end
   
-  def enable_httpsonly
-    p :enable_httpsonly
+  def enable_http_only
+    p :enable_http_only
     deregister_site
-    https_only = true
-    http_and_https=false
+    @protocol=:http_only
     register_site
     save_state
   end
   
- def disable_httpsonly
+ def enable_http_and_https
    p :disable_httpsonly
    deregister_site
-   https_only = false
-   http_and_https=true
+   @protocol=:http_and_https
    register_site
    save_state
  end
   
-
   protected
   
 def trim_last_result

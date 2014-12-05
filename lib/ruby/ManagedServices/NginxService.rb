@@ -16,13 +16,15 @@ class NginxService < ManagedService
   
   def get_site_hash(engine)
 
-    if engine.https_only
-      proto="https"
-    elsif engine.http_and_https
-      proto="http https"
-    else
-      proto="http"
+    case engine.protocol
+    when :https_only
+        proto="https"
+    when :http_and_https
+         proto ="http https"
+    when :http_only
+          proto="http"
     end
+
     p :proto 
     p proto
      
