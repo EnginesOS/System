@@ -15,7 +15,7 @@ class NginxService < ManagedService
      
   
   def get_site_hash(engine)
- 
+
     if engine.https_only
       proto="https"
     elsif engine.http_and_https
@@ -23,6 +23,9 @@ class NginxService < ManagedService
     else
       proto="http"
     end
+    p :proto 
+    p proto
+     
     site_hash = Hash.new()
     site_hash[:name]=engine.containerName
     site_hash[:container_type]=engine.ctype
