@@ -1130,7 +1130,7 @@ class EnginesCore
         return commandargs
       rescue Exception=>e
         log_exception(e)
-        return e.to_str
+        return e.to_s
       end
     end
 
