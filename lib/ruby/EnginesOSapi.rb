@@ -38,7 +38,7 @@ class EnginesOSapi
     host_name = params[:host_name]
     evirons = params[:env_variables]
     p params
-    engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
+    @engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
       return  failed(host_name,engine_builder.last_error,"build_engine")
@@ -55,6 +55,13 @@ class EnginesOSapi
     return log_exception_and_fail("build_engine",e)
   end
 
+  def get_engine_builder_streams
+    if @engine_builder.present?
+      return  ([@engine_builder.get_build_log_stream,  @engine_builder.get_build_err_stream])
+    end 
+    return nil
+  end
+  
   def last_api_error
     if @core_api
       return @core_api.last_error
