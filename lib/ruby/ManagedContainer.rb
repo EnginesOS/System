@@ -595,6 +595,7 @@ end
     deregister_site
     http_and_https=false
     https_only = false
+    http_only =true
      p :disable_https
    register_site
     save_state
