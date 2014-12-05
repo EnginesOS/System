@@ -1130,7 +1130,7 @@ class EnginesCore
         return commandargs
       rescue Exception=>e
         log_exception(e)
-        return nil
+        return e.to_str
       end
     end
 
@@ -1207,8 +1207,13 @@ class EnginesCore
 
     def log_exception(e)
       e_str = e.to_s()
+      n=0
       e.backtrace.each do |bt |
         e_str += bt
+        if n >10
+          break
+        end
+        ++n
       end
       @last_error = e_str
       SystemUtils.log_output(e_str,10)
