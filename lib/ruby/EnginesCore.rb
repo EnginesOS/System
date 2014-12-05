@@ -199,8 +199,10 @@ class EnginesCore
           protos.each do |protocol|
             if protocol =="http"
               template_file=SysConfig.HttpNginxTemplate
-            else
+            elsif protocol == "https"
               template_file=SysConfig.HttpsNginxTemplate
+            else
+              template_file=SysConfig.HttpHttpsNginxTemplate
             end
             file_contents=File.read(template_file)
             file_contents.sub("FQDN",site_hash[:fqdn])
