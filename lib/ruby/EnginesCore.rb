@@ -258,7 +258,7 @@ class EnginesCore
 #        SystemUtils.debug_output ssh_cmd
 #        result = run_system(ssh_cmd)
         site_filename = get_site_file_name(site_hash)
-        File.delete(filename)
+        File.delete(site_filename)
         result = restart_nginx_process()
         return result
       rescue  Exception=>e
