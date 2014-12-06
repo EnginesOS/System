@@ -231,7 +231,7 @@ class EnginesCore
             site_file.close
             return true
 
-          end
+  
 #        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
 #        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
 #        SystemUtils.debug_output ssh_cmd
