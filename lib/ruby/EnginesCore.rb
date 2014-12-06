@@ -203,41 +203,35 @@ class EnginesCore
       clear_error
       begin
         proto = site_hash[:proto]
-            if proto =="http"
+            if proto =="http https"
+              template_file=SysConfig.HttpHttpsNginxTemplate
+            elsif proto =="http"
               template_file=SysConfig.HttpNginxTemplate
             elsif proto == "https"
-              template_file=SysConfig.HttpsNginxTemplate
-            else
-              template_file=SysConfig.HttpHttpsNginxTemplate
+              template_file=SysConfig.HttpsNginxTemplate                         
             end
+            
             file_contents=File.read(template_file)
             site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
             site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
             site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
-            if proto !="http"
+            if proto =="https" || proto =="http https"
               site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
               site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+            end
+            if proto =="http https"
                 #Repeat for second entry  
               site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
               site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
               site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
-                
-            end
+            end                           
 
             site_filename = get_site_file_name(site_hash)
             
             site_file  =  File.open(site_filename,'w')
             site_file.write(site_config_contents)
             site_file.close
-            return true
-
-  
-#        # ssh_cmd=SysConfig.addSiteCmd + " \"" + hash_to_site_str(site_hash)   +  "\""
-#        ssh_cmd = "/opt/engines/scripts/nginx/addsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-#        SystemUtils.debug_output ssh_cmd
-#        result = run_system(ssh_cmd)
-        result = restart_nginx_process()
-        #run_system(ssh_cmd)
+        result = restart_nginx_process()        
         return result
       rescue  Exception=>e
         log_exception(e)
