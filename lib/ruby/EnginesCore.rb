@@ -203,11 +203,9 @@ class EnginesCore
       clear_error
       begin
         proto = site_hash[:proto]
-          protos=proto.split(" ")
-          protos.each do |protocol|
-            if protocol =="http"
+            if proto =="http"
               template_file=SysConfig.HttpNginxTemplate
-            elsif protocol == "https"
+            elsif proto == "https"
               template_file=SysConfig.HttpsNginxTemplate
             else
               template_file=SysConfig.HttpHttpsNginxTemplate
