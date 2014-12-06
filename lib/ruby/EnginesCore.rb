@@ -214,7 +214,7 @@ class EnginesCore
             site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
             site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
             site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
-            if protocol !="http"
+            if proto !="http"
               site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
               site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
                 #Repeat for second entry  
