@@ -1493,7 +1493,7 @@ end
     )
     
     #:http_protocol=>"HTTPS and HTTP"
-    set_protocol(@protocol)
+   mc.set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
