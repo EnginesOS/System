@@ -1103,7 +1103,7 @@ def log_exception(e)
     @http_protocol = params[:http_protocol]
     @repoName= params[:repository] 
     
-    @build_name = File.basename(repo).sub(/\.git$/,"")
+    @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
