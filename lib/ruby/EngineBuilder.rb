@@ -1098,7 +1098,7 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
-    @custom_env= params[:env_variables]
+    custom_env= params[:env_variables]
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     @repoName= params[:repository] 
