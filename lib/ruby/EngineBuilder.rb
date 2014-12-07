@@ -1411,7 +1411,7 @@ end
 
       log_build_output("Reading Blueprint")
       @blueprint = load_blueprint
-      if @blueprint == false
+      if @blueprint ==  nil ||  @blueprint == false
         return false
       end
 
@@ -1446,7 +1446,7 @@ end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
-      close_all
+      #close_all
       return mc
 
     rescue Exception=>e
