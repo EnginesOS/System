@@ -1130,12 +1130,24 @@ def log_exception(e)
   end
   
 def close_all
-  @log_file.close()
-  @err_file.close()
-  @log_pipe_rd.close()
-  @log_pipe_wr.close()
-  @error_pipe_rd.close()
-  @error_pipe_wr.close()
+  if @log_file.closed? == false
+    @log_file.close()
+  end
+  if@err_file.closed? == false
+    @err_file.close()
+  end
+  if @log_pip_rd.closed? == false
+    @log_pipe_rd.close()
+  end
+  if @log_pipe_wr.closed? == false
+    @log_pipe_wr.close()
+   end
+   if @error_pipe_rd.closed? == false
+    @error_pipe_rd.close()
+   end
+   if @error_pipe_wr.closed? == false
+      @error_pipe_wr.close()
+   end
 end
 
   def get_build_log_stream
