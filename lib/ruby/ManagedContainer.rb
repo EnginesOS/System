@@ -392,8 +392,7 @@ end
       @last_error="No connection to Engines OS System"      
       return false
     end
-    if is_active == true 
-      @conf_register_site = true
+    if is_active == true    
       service =  EnginesOSapi.loadManagedService("nginx",@core_api)
       return service.add_consumer(self)
      else
@@ -417,7 +416,6 @@ end
       return false
     end
     service =  EnginesOSapi.loadManagedService("nginx",@core_api)
-    @conf_register_site =  false
     return service.remove_consumer(self)
   end
 
