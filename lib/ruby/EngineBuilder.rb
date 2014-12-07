@@ -1417,18 +1417,18 @@ end
         log_build_errors("Error Build Init failed")
         return false
       else
-        log_build_output("Creating Deploy Image")
-
+        
+        log_build_output("Creating Services")
         @blueprint_reader.databases.each() do |db|
           create_database_service db
         end
+       
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
         end
-
+        log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
-
       close_all
       return mc
 
