@@ -1543,7 +1543,7 @@ def log_exception(e)
     end
     ++n
   end
-  close_all
+  #close_all
 end
   def debug(fld)
     puts "ERROR: "
