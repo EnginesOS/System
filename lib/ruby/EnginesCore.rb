@@ -1474,7 +1474,8 @@ class EnginesCore
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        return @system_api.destroy_container(container)
+         container.deregister_registered
+         return true
       else
         return false
       end
