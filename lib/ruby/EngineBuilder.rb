@@ -1094,7 +1094,7 @@ def log_exception(e)
     end
   end
 
-  def initialize(repo,contname,host,domain,custom_env,core_api)
+  def initialize(params,core_api)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
@@ -1117,7 +1117,7 @@ def log_exception(e)
     @runtime=String.new
     @databases= Array.new
  
-
+    
     begin
       FileUtils.mkdir_p(get_basedir)
       @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
@@ -1493,7 +1493,7 @@ end
     )
     
     #:http_protocol=>"HTTPS and HTTP"
-    
+    set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
