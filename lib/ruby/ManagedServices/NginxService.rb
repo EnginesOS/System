@@ -15,7 +15,7 @@ class NginxService < ManagedService
      
   
   def get_site_hash(engine)
-
+    proto ="http https"
     case engine.protocol
     when :https_only
         proto="https"
