@@ -777,7 +777,9 @@ def log_exception(e)
         if(dest.start_with?("/home/app/") == false )
           if(dest.start_with?("/home/fs/") == false)
             if dest != "/home/app"
-            dest="/home/fs/" + dest
+              p :dest
+              p "_" + dest + "_"
+            dest="/home/fs/" + dest           
             end  
           end        
         end
