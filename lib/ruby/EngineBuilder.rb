@@ -774,9 +774,11 @@ def log_exception(e)
         if dest == nil || dest == ""
           dest=name
         end
-        if(dest.start_with?("/home/app/") == false && dest != "/home/app" )
+        if(dest.start_with?("/home/app/") == false )
           if(dest.start_with?("/home/fs/") == false)
-            dest="/home/fs/" + dest  
+            if dest != "/home/app"
+            dest="/home/fs/" + dest
+            end  
           end        
         end
         permissions = PermissionRights.new(@container_name,"","")
