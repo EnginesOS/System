@@ -388,9 +388,13 @@ class EnginesCore
           return false
         end
         statefile=stateDir + "/blueprint.json"
-        f = File.new(statefile,"r")
-        blueprint = JSON.parse( f.read())
-        f.close
+          if File.exists?(statefile)
+            f = File.new(statefile,"r")
+            blueprint = JSON.parse( f.read())
+            f.close
+          else
+            return false
+          end           
         return blueprint
       rescue  Exception=>e
         log_exception(e)
