@@ -208,7 +208,10 @@ class EnginesCore
             elsif proto =="http"
               template_file=SysConfig.HttpNginxTemplate
             elsif proto == "https"
-              template_file=SysConfig.HttpsNginxTemplate                         
+              template_file=SysConfig.HttpsNginxTemplate         
+            else
+              p "Proto" + proto + "  unknown"                
+              
             end
             
             file_contents=File.read(template_file)
