@@ -14,6 +14,7 @@ class EngineBuilder
   @hostname=nil
   @domain_name=nil
   @build_name=nil
+  @web_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,\
   :repoName,\
@@ -1094,10 +1095,14 @@ def log_exception(e)
   end
 
   def initialize(repo,contname,host,domain,custom_env,core_api)
-    @hostname=host
-    @container_name=contname
-    @domain_name=domain
-    @repoName=repo
+    @container_name = params[:engine_name]
+    @domain_name = params[:domain_name]
+    @hostname = params[:host_name]
+    @custom_env= params[:env_variables]
+    @core_api = core_api
+    @http_protocol = params[:http_protocol]
+    @repoName= params[:repository] 
+    
     @build_name = File.basename(repo).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=8000
@@ -1111,7 +1116,7 @@ def log_exception(e)
     end
     @runtime=String.new
     @databases= Array.new
-    @core_api = core_api
+ 
 
     begin
       FileUtils.mkdir_p(get_basedir)
@@ -1486,7 +1491,9 @@ end
     @blueprint_reader.data_uid,
     @blueprint_reader.data_gid
     )
-
+    
+    #:http_protocol=>"HTTPS and HTTP"
+    
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
