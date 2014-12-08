@@ -33,19 +33,21 @@ class EnginesOSapi
   end
 
   def build_engine(repository,params)
-    container_name = params[:engine_name]
-    domain_name = params[:domain_name]
-    host_name = params[:host_name]
-    evirons = params[:env_variables]
+#    container_name = params[:engine_name]
+#    domain_name = params[:domain_name]
+#    host_name = params[:host_name]
+#    evirons = params[:env_variables]
+    params[:repository] = repository
     p params
-    @engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
+    #@engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
+    @engine_builder = EngineBuilder.new(params, @core_api)
     engine = @engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host_name,engine_builder.last_error,"build_engine")
+      return  failed(params[:engine_name],engine_builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active == false
-        return failed(host_name,"Failed to start  " + last_api_error ,"build_engine")
+        return failed(params[:engine_name],"Failed to start  " + last_api_error ,"build_engine")
       end
       return engine
     end

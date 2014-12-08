@@ -40,8 +40,8 @@ class ManagedContainer < Container
    @conf_register_dns=true #do this even if self registers dns s it dd to the dns consumer (so record survives rebuild)
    @conf_register_site=false
    @conf_monitor_site=false
-   @http_and_https=true
-   @https_only=false
+#   @http_and_https=true
+#   @https_only=false
    @last_error=""
    @last_result=""
    @data_uid=data_uid
@@ -89,6 +89,16 @@ def http_protocol
   return "HTTP only"
 end
 
+def set_protocol(proto)
+  case proto
+  when "HTTPS and HTTP"
+    enable_http_and_https
+  when "HTTP only"
+    enable_http_only
+  when "HTTPS only"
+    enable_httpd_only
+  end
+end
   def monitored
     return conf_monitor_site
   end
@@ -382,7 +392,7 @@ end
       @last_error="No connection to Engines OS System"      
       return false
     end
-    if is_active == true 
+    if is_active == true    
       service =  EnginesOSapi.loadManagedService("nginx",@core_api)
       return service.add_consumer(self)
      else

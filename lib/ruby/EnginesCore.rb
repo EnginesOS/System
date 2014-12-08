@@ -208,7 +208,13 @@ class EnginesCore
             elsif proto =="http"
               template_file=SysConfig.HttpNginxTemplate
             elsif proto == "https"
-              template_file=SysConfig.HttpsNginxTemplate                         
+              template_file=SysConfig.HttpsNginxTemplate         
+            elsif proto == nil
+              p "Proto nil"
+              template_file=SysConfig.HttpHttpsNginxTemplate
+            else
+              p "Proto" + proto + "  unknown"                
+              template_file=SysConfig.HttpHttpsNginxTemplate
             end
             
             file_contents=File.read(template_file)
@@ -385,9 +391,13 @@ class EnginesCore
           return false
         end
         statefile=stateDir + "/blueprint.json"
-        f = File.new(statefile,"r")
-        blueprint = JSON.parse( f.read())
-        f.close
+          if File.exists?(statefile)
+            f = File.new(statefile,"r")
+            blueprint = JSON.parse( f.read())
+            f.close
+          else
+            return false
+          end           
         return blueprint
       rescue  Exception=>e
         log_exception(e)
@@ -1464,7 +1474,9 @@ class EnginesCore
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        return @system_api.destroy_container(container)
+         container.deregister_registered
+         @system_api.destroy_container(container)  #removes cid file
+         return true
       else
         return false
       end
