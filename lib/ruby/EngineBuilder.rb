@@ -1075,7 +1075,7 @@ def log_exception(e)
     def read_environment_variables
       log_build_output("Read Environment Variables")
       @environments = Array.new
-      p :environment_variables
+      p :set_environment_variables
       p @set_environments
       begin
         envs = @blueprint["software"]["environment_variables"]
@@ -1087,10 +1087,9 @@ def log_exception(e)
           ask=env["ask_at_runtime"]
           
           if @set_environments != nil
-            if ask == true  && @set_environments.key?(name) == true
-              p :looking_for_ 
-              p name
-              
+            p :looking_for_ 
+            p name
+            if ask == true  && @set_environments.key?(name) == true                          
               value=@set_environments[name]
             end
           end
@@ -1116,6 +1115,9 @@ def log_exception(e)
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
+    p :custom_env
+    p cutom_env
+    
     if custom_env.instance_of?(Array) == true
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       @set_environments = Hash.new
