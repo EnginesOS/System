@@ -1075,6 +1075,8 @@ def log_exception(e)
     def read_environment_variables
       log_build_output("Read Environment Variables")
       @environments = Array.new
+      p :environment_variables
+      p @set_environments
       begin
         envs = @blueprint["software"]["environment_variables"]
         envs.each do |env|
@@ -1086,6 +1088,9 @@ def log_exception(e)
           
           if @set_environments != nil
             if ask == true  && @set_environments.key?(name) == true
+              p :looking_for_ 
+              p name
+              
               value=@set_environments[name]
             end
           end
