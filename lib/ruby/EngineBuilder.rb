@@ -115,15 +115,11 @@ class EngineBuilder
 
     def write_persistant_dirs
       begin
-        log_build_output("set setup_env")
-        src_paths = @blueprint_reader.persistant_dirs[:src_paths]
-        dest_paths =  @blueprint_reader.persistant_dirs[:dest_paths]
+        log_build_output("setup persistant Dirs")
+       
         n=0
-        src_paths.each do |link_src|
-          path = dest_paths[n]  
-          path="/" + path
-          path = path.chomp('/')
-          link_src = link_src.chomp('/')
+        @blueprint_reader.persistant_dirs.each do |path|
+  
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
           @docker_file.puts("if [ ! -d /home/app" + path + " ];\\")
@@ -131,7 +127,7 @@ class EngineBuilder
           @docker_file.puts("    mkdir -p /home/app" + path +" ;\\")
           @docker_file.puts("  fi;\\")
           @docker_file.puts("mv /home/app" + path + " $VOLDIR ;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + link_src + " /home/app" + path)
+          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/app" + path)
           n=n+1
         count_layer
         end
@@ -192,9 +188,9 @@ class EngineBuilder
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
         count_layer
         @blueprint_reader.volumes.each_value do |vol|
-          @docker_file.puts("ENV VOLDIR /home/fs/" + vol.name)
+          @docker_file.puts("ENV VOLDIR /home/fs/" + vol.dest)
           count_layer
-          @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.name)
+          @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.dest)
           count_layer
         end
       rescue Exception=>e
@@ -669,20 +665,15 @@ def log_exception(e)
       begin
         log_build_output("Read Persistant Dirs")
 
-        @persistant_dirs = Hash.new
-        src_paths = Array.new
-        dest_paths = Array.new
-
+        @persistant_dirs = Array.new
+      
         pds =   @blueprint["software"]["persistantdirs"]
 
         pds.each do |dir|
-          path = clean_path(dir["path"])
-          link_src = path.sub(/app/,"")
-          src_paths.push(link_src)
-          dest_paths.push(path)
+          @persistant_dirs.push(dir)
+       
         end
-        @persistant_dirs[:src_paths]= src_paths
-        @persistant_dirs[:dest_paths]= dest_paths
+
       rescue Exception=>e
         log_exception(e)
         return false
