@@ -671,7 +671,7 @@ def log_exception(e)
         pds =   @blueprint["software"]["persistantdirs"]
 
         pds.each do |dir|
-          @persistant_dirs.push(dir)
+          @persistant_dirs.push(dir["path"])
        
         end
 
