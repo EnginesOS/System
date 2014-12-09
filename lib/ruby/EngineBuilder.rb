@@ -464,7 +464,7 @@ count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
             @docker_file.puts("RUN   wget  \""  + arc_src + "\" 2>&1 > /dev/null ;\\" )
-            @docker_file.puts(" " + arc_extract + " \"" + arc_name )# + "\"* 2>&1 > /dev/null ")
+            @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             count_layer
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
@@ -1086,7 +1086,7 @@ def log_exception(e)
           value=env["value"]
           ask=env["ask_at_build_time"]
            mandatory = env["mandatory"]
-             build_time_only =  env["build_time_only"]
+           build_time_only =  env["build_time_only"]
           
           if @set_environments != nil
             p :looking_for_ 
