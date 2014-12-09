@@ -20,13 +20,13 @@ class EnginesOSapi
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)
     engine = engine_builder.build_from_blue_print
     if engine == false
-      return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
+      return  failed(host,last_api_error,"build_engine") 
     end
     if engine != nil
       engine.save_state
       return engine
     end
-    return  failed(host,last_api_error,"build_engine") #FIXME needs to return error object
+    return  failed(host,last_api_error,"build_engine") 
 
   rescue Exception=>e
     return log_exception_and_fail("buildEngine",e)
