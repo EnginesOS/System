@@ -122,12 +122,12 @@ class EngineBuilder
   
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/app" + path + " ];\\")
+          @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/app" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/app" + path + " $VOLDIR ;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/app" + path)
+          @docker_file.puts("mv /home/app/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/app/" + path)
           n=n+1
         count_layer
         end
