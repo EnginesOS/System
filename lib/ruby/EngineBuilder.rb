@@ -1084,7 +1084,9 @@ def log_exception(e)
           name=env["name"]
           name = name.gsub(" ","_")
           value=env["value"]
-          ask=env["ask_at_runtime"]
+          ask=env["ask_at_build_time"]
+           mandatory = env["mandatory"]
+             build_time_only =  env["build_time_only"]
           
           if @set_environments != nil
             p :looking_for_ 
@@ -1093,7 +1095,7 @@ def log_exception(e)
               value=@set_environments[name]
             end
           end
-          @environments.push(EnvironmentVariable.new(name,value,ask))
+          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only))
         end
       rescue Exception=>e
         log_exception(e)
@@ -1115,12 +1117,16 @@ def log_exception(e)
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
-    p :custom_env
-    p cutom_env
-    
-    if custom_env.instance_of?(Array) == true
+   
+    if custom_env == nil
+      @set_environments = Hash.new
+      @environments = Array.new
+    elsif  custom_env.instance_of?(Array) == true
+      p :custom_env
+         p cutom_env
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       @set_environments = Hash.new
+     
     else
       @set_environments = custom_env
       @environments = Array.new
