@@ -188,9 +188,10 @@ class EngineBuilder
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
         count_layer
         @blueprint_reader.volumes.each_value do |vol|
-          @docker_file.puts("ENV VOLDIR /home/fs/" + vol.dest)
+          dest = File.basename(vol.remotepath)
+          @docker_file.puts("ENV VOLDIR /home/fs/" + dest)
           count_layer
-          @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + vol.dest)
+          @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + dest)
           count_layer
         end
       rescue Exception=>e
