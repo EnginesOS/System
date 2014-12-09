@@ -131,12 +131,12 @@ class EngineBuilder
           n=n+1
         count_layer
         end
-        if src_paths.length >1
+       
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
           @docker_file.puts("chmod -R 770 /home/fs")
           count_layer
-        end
+        
 
       rescue Exception=>e
         log_exception(e)
