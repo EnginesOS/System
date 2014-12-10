@@ -1146,15 +1146,11 @@ def close_all
   if@err_file.closed? == false
     @err_file.close()
   end
-  if @log_pip_rd.closed? == false
-    @log_pipe_rd.close()
-  end
+
   if @log_pipe_wr.closed? == false
     @log_pipe_wr.close()
    end
-   if @error_pipe_rd.closed? == false
-    @error_pipe_rd.close()
-   end
+   
    if @error_pipe_wr.closed? == false
       @error_pipe_wr.close()
    end
@@ -1457,7 +1453,8 @@ end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
-      #close_all
+      close_all
+        
       return mc
 
     rescue Exception=>e
@@ -1581,11 +1578,11 @@ end
             res += line.chop
             oline = line
             log_build_output(line)                  
-#            if stderr_is_open
-#              err  = stderr.read_nonblock(1000)
-#              error_mesg += err
-#              log_build_errors(err)
-#            end
+            if stderr_is_open
+              err  = stderr.read_nonblock(1000)
+              error_mesg += err
+              log_build_errors(err)
+            end
           }
         rescue Errno::EIO
           res += line.chop
