@@ -57,6 +57,7 @@ class EngineBuilder
 
    def count_layer
      ++@layer_count
+     
      if @layer_count >75
        raise EngineBuilder.BuildError.new()
      end
@@ -1592,13 +1593,16 @@ end
             err  = stderr.read_nonblock(1000)
             error_mesg += err
             log_build_errors(err)
+            p :EIO_retry
             retry
           end
         rescue  IO::WaitReadable
+          p :wait_readable_retrt
           retry
         rescue EOFError
           if stdout.closed? == false
             stderr_is_open = false
+            p :EOF_retry
             retry
           else if  stderr.closed? == true
               return
