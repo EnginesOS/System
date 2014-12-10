@@ -1171,13 +1171,14 @@ end
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
-    @log_pipe_wr.puts(line)
+   # @log_pipe_wr.puts(line)
+   
   end
   
   def log_build_errors(line)
         @err_file.puts(line)
         @err_file.flush
-        @error_pipe_wr.puts(line)
+    #    @error_pipe_wr.puts(line)
   end
 
   def setup_framework_logging
