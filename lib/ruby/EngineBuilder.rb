@@ -1580,11 +1580,11 @@ end
             res += line.chop
             oline = line
             log_build_output(line)                  
-            if stderr_is_open
-              err  = stderr.read_nonblock(1000)
-              error_mesg += err
-              log_build_errors(err)
-            end
+#            if stderr_is_open
+#              err  = stderr.read_nonblock(1000)
+#              error_mesg += err
+#              log_build_errors(err)
+#            end
           }
         rescue Errno::EIO
           res += line.chop
