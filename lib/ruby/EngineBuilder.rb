@@ -1167,7 +1167,7 @@ end
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
-   # @log_pipe_wr.puts(line)
+   @log_pipe_wr.puts(line)
    
   end
   
