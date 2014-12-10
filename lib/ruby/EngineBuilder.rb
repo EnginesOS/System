@@ -1168,6 +1168,8 @@ end
     @log_file.puts(line)
     @log_file.flush
    @log_pipe_wr.puts(line)
+  rescue
+    return
    
   end
   
