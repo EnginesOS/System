@@ -48,6 +48,13 @@ class EnginesCore
       end #if reg dns
       return true
     end
+    
+    def reload_dns    
+      dns_pid = File.read(SYSConfig.NamedPIDFile)
+      return @docker_api.signal_container_process(pid,'HUP','dns')
+    rescue 
+      return false
+    end
 
     def restart_nginx_process
       begin
@@ -1407,12 +1414,7 @@ class EnginesCore
     return @system_api.add_self_hosted_domain(params)
   end
 
-  def reload_dns    
-    dns_pid = File.read(SYSConfig.NamedPIDFile)
-    return @docker_api.signal_container_process(pid,'HUP','dns')
-  rescue 
-    return false
-  end
+
   
   def list_self_hosted_domains()
     return @system_api.list_self_hosted_domains()
