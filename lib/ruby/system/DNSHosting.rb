@@ -7,7 +7,7 @@ module DNSHosting
   def DNSHosting.add_hosted_domain(params,core_api)
     domain= params[:domain_name]
     if(params[:internal_only])
-      ip = IPSocket.getaddress(Socket.gethostname)
+      ip = DNSHosting.get_local_ip
     else
       ip =  open( 'http://jsonip.com/ ' ){ |s| JSON::parse( s.string())['ip'] };
     end
@@ -30,6 +30,16 @@ module DNSHosting
     return false
   end
 
+  def DNSHosting.get_local_ip
+    Socket.ip_address_list.each do |addr|
+      if addr.ipv4?
+        if addr.ipv4_loopback? == false
+          return addr.ip_address
+        end
+      end
+    end
+  end
+  
   def DNSHosting.write_zone_file(domain,ip)
     dns_template = File.read(SysConfig.SelfHostedDNStemplate)
 
