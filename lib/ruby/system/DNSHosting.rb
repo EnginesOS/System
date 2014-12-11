@@ -1,5 +1,5 @@
 require 'socket'
-require 'JSON';
+require 'json';
 
 require 'open-uri';
 
