@@ -36,7 +36,7 @@ module DNSHosting
     dns_template.gsub!("IP",ip)
     dns_template.gsub("DOMAIN",domain)
 
-    dns_file = File.open(SysConfig.DNSZoneDir + "/" + domain_name,"w")
+    dns_file = File.open(SysConfig.DNSZoneDir + "/" + domain,"w")
     dns_file.write(dns_template)
     dns_file.close
     return true
@@ -46,10 +46,10 @@ module DNSHosting
   end
 
   def DNSHosting.write_config(domain)
-    conf_file = File.open(SysConfig.DNSConfDir + "/" + domain_name,"w")
+    conf_file = File.open(SysConfig.DNSConfDir + "/" + domain,"w")
     conf_file.puts( "zone \"" + domain +"\" {")
     conf_file.puts("type master;")
-    conf_file.puts("file \"" + File.read(SysConfig.DNSZoneDir + "/" + domain_name) + "\";")
+    conf_file.puts("file \"" + File.read(SysConfig.DNSZoneDir + "/" + domain) + "\";")
     conf_file.puts("};")
     conf_file.close
     return true
