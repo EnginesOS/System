@@ -28,6 +28,29 @@ class SysConfig
   @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
   @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
   @@NginxDefaultCert="engines"
+  @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
+  @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
+  @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
+  @@NamedPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid"
+
+  def SysConfig.NginxPIDFile
+    return @@NamedPIDFile
+  end
+  def SysConfig.NamedPIDFile
+     return @@NamedPIDFile
+   end
+     
+  def SysConfig.DNSConfDir
+    return @@DNSConfDir
+  end
+    
+  def SysConfig.DNSZoneDir
+    return @@DNSZoneDir
+  end
+  
+  def SysConfig.SelfHostedDNStemplate
+    return @@SelfHostedDNStemplate
+  end
   
   def SysConfig.NginxDefaultCert
     return @@NginxDefaultCert
