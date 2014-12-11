@@ -25,7 +25,8 @@ module DNSHosting
     core_api.reload_dns
 
     return true
-  rescue
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
     return false
   end
 
@@ -39,7 +40,8 @@ module DNSHosting
     dns_file.write(dns_template)
     dns_file.close
     return true
-  rescue
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
     return false
   end
 
@@ -51,7 +53,8 @@ module DNSHosting
     conf_file.puts("};")
     conf_file.close
     return true
-  rescue
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
     return false
   end
 
@@ -73,7 +76,8 @@ module DNSHosting
     end
 
     return ret_val
-  rescue
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
     return false
   end
 

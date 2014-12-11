@@ -16,6 +16,15 @@ class SystemUtils
     p object
   end 
  end
+ 
+  def SystemUtils.log_exception(e)
+      e_str = e.to_s()
+      e.backtrace.each do |bt |
+        e_str += bt
+      end
+      @last_error = e_str
+      SystemUtils.log_output(e_str,10)
+    end
   
   def SystemUtils.level
       return @@level
