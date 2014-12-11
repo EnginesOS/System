@@ -1,6 +1,7 @@
 class EnginesCore
 
   require "/opt/engines/lib/ruby/SystemUtils.rb"
+  require "/opt/engines/lib/ruby/system/DNSHosting.rb"
 
   class SystemApi
     attr_reader :last_error
@@ -463,13 +464,20 @@ class EnginesCore
       end
     end
 
+    
     def add_self_hosted_domain params
       clear_error
       begin
         p :Lachlan_Sent_parrams
         p params
+       
+       if ( DNSHosting.add_hosted_domain(params,self) == false)
+         return false       
+       end
+       
         domains = load_self_hosted_domains()
         domains[params[:domain_name]] = params
+          
         return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
@@ -1030,6 +1038,15 @@ class EnginesCore
         return false
       end
     end
+    
+    def signal_container_process(pid,signal,containerName)
+      clear_error
+      commandargs=" exec " + containerName + " kill -" + signal + " " + pid.to_s          
+      return  run_docker(commandargs,container)
+      rescue  Exception=>e
+        log_exception(e)
+        return false
+    end
 
     def logs_container container
       clear_error
@@ -1390,6 +1407,13 @@ class EnginesCore
     return @system_api.add_self_hosted_domain(params)
   end
 
+  def reload_dns    
+    dns_pid = File.read(SYSConfig.NamedPIDFile)
+    return @docker_api.signal_container_process(pid,'HUP','dns')
+  rescue 
+    return false
+  end
+  
   def list_self_hosted_domains()
     return @system_api.list_self_hosted_domains()
   end

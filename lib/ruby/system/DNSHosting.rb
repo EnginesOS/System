@@ -4,7 +4,7 @@ require 'JSON';
 require 'open-uri';
 
 module DNSHosting
-  def add_hosted_domain(params,core_api)
+  def DNSHosting.add_hosted_domain(params,core_api)
     domain= params[:domain_name]
     if(params[:internal_only])
       ip = IPSocket.getaddress(Socket.gethostname)
@@ -77,7 +77,7 @@ module DNSHosting
     return false
   end
 
-  def rm_hosted_domain(params,core_api)
+  def DNSHosting.rm_hosted_domain(params,core_api)
     domain= params[:domain_name]
     rm_local_domain_files domain
     core_api.reload_dns
