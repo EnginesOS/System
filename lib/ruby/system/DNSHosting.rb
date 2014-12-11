@@ -34,7 +34,7 @@ module DNSHosting
     dns_template = File.read(SysConfig.SelfHostedDNStemplate)
 
     dns_template.gsub!("IP",ip)
-    dns_template.gsub("DOMAIN",domain)
+    dns_template.gsub!("DOMAIN",domain)
 
     dns_file = File.open(SysConfig.DNSZoneDir + "/" + domain,"w")
     dns_file.write(dns_template)
