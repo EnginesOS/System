@@ -21,7 +21,7 @@ module DNSHosting
       DNSHosting.rm_local_domain_files domain
       return false
     end
-
+    
     core_api.reload_dns
 
     return true
@@ -62,8 +62,8 @@ module DNSHosting
     ret_val=false
 
     dns_zone_filename = SysConfig.DNSZoneDir + "/" + domain_name
-    if File.exists?(dns_filename)
-      File.delete(dns_filename)
+    if File.exists?(dns_zone_filename)
+      File.delete(dns_zone_filename)
       ret_val=true
     end
 
