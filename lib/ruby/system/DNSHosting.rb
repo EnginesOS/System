@@ -12,7 +12,7 @@ module DNSHosting
       ip =  open( 'http://jsonip.com/ ' ){ |s| JSON::parse( s.string())['ip'] };
     end
 
-    if DNSHosting.write_zone_file == false
+    if DNSHosting.write_zone_file(domain,ip) == false
       DNSHosting.rm_local_domain_files domain
       return false
     end
