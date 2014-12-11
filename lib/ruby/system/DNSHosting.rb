@@ -12,13 +12,13 @@ module DNSHosting
       ip =  open( 'http://jsonip.com/ ' ){ |s| JSON::parse( s.string())['ip'] };
     end
 
-    if write_zone_file == false
-      rm_local_domain_files domain
+    if DNSHosting.write_zone_file == false
+      DNSHosting.rm_local_domain_files domain
       return false
     end
 
-    if write_config(domain) == false
-      rm_local_domain_files domain
+    if DNSHosting.write_config(domain) == false
+      DNSHosting.rm_local_domain_files domain
       return false
     end
 
@@ -30,7 +30,7 @@ module DNSHosting
     return false
   end
 
-  def write_zone_file(domain,ip)
+  def DNSHosting.write_zone_file(domain,ip)
     dns_template = File.read(SysConfig.SelfHostedDNStemplate)
 
     dns_template.gsub!("IP",ip)
@@ -45,7 +45,7 @@ module DNSHosting
     return false
   end
 
-  def write_config(domain)
+  def DNSHosting.write_config(domain)
     conf_file = File.open(SysConfig.DNSConfDir + "/" + domain_name,"w")
     conf_file.puts( "zone \"" + domain +"\" {")
     conf_file.puts("type master;")
@@ -58,7 +58,7 @@ module DNSHosting
     return false
   end
 
-  def rm_local_domain_files domain_name
+  def DNSHosting.rm_local_domain_files domain_name
     ret_val=false
 
     dns_zone_filename = SysConfig.DNSZoneDir + "/" + domain_name
@@ -83,7 +83,7 @@ module DNSHosting
 
   def DNSHosting.rm_hosted_domain(params,core_api)
     domain= params[:domain_name]
-    rm_local_domain_files domain
+    DNSHosting.rm_local_domain_files domain
     core_api.reload_dns
   end
 
