@@ -49,7 +49,7 @@ module DNSHosting
     conf_file = File.open(SysConfig.DNSConfDir + "/" + domain,"w")
     conf_file.puts( "zone \"" + domain +"\" {")
     conf_file.puts("type master;")
-    conf_file.puts("file \"" + File.read(SysConfig.DNSZoneDir + "/" + domain) + "\";")
+    conf_file.puts("file \"" + SysConfig.DNSZoneDir + "/" + domain + "\";")
     conf_file.puts("};")
     conf_file.close
     return true
