@@ -912,7 +912,10 @@ class EnginesOSapi
     p params
     return success(params[:domain_name], "Add self hosted ssl cert domain")        
   end
-  
+  def upload_ssl_certificate(params)
+      p params
+      return success(params[:domain_name], "upload self hosted ssl cert domain")        
+    end
   def remove_self_hosted_domain domain_name
     if @core_api.remove_self_hosted_domain( domain_name) ==true
       return success(domain_name, "Remove self hosted domain")
