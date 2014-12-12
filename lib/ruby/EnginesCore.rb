@@ -478,14 +478,15 @@ class EnginesCore
         p :Lachlan_Sent_parrams
         p params
        
-       if ( DNSHosting.add_hosted_domain(params,self) == false)
-         return false       
-       end
-       
-        domains = load_self_hosted_domains()
-        domains[params[:domain_name]] = params
-          
-        return  save_self_hosted_domains(domains)
+        return DNSHosting.add_hosted_domain(params,self)
+#       if ( DNSHosting.add_hosted_domain(params,self) == false)
+#         return false       
+#       end
+#       
+#        domains = load_self_hosted_domains()
+#        domains[params[:domain_name]] = params
+#          
+#        return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -495,9 +496,10 @@ class EnginesCore
     def list_self_hosted_domains()
       clear_error
       begin
-        domains = load_self_hosted_domains()
-        p domains
-        return domains
+        return DNSHosting.load_self_hosted_domains()
+#        domains = load_self_hosted_domains()
+#        p domains
+#        return domains
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -890,39 +892,9 @@ class EnginesCore
 
     protected
 
-    def load_self_hosted_domains
-      begin
-        if File.exists?(SysConfig.HostedDomainsFile) == false
-          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
-          self_hosted_domain_file.close
-          return Hash.new
-        else
-          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
-        end
-        self_hosted_domains = YAML::load( self_hosted_domain_file )
-        self_hosted_domain_file.close
-        if self_hosted_domains == false
-          return Hash.new
-        end
-        return self_hosted_domains
-      rescue Exception=>e
-        self_hosted_domains = Hash.new
-        log_exception(e)
-        return self_hosted_domains
-      end
-    end
 
-    def save_self_hosted_domains(domains)
-      begin
-        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
-        self_hosted_domain_file.write(domains.to_yaml())
-        self_hosted_domain_file.close
-        return true
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+
+  
 
     def container_cid_file(container)
       return  SysConfig.CidDir + "/"  + container.containerName + ".cid"

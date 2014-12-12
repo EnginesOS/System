@@ -4,7 +4,7 @@ require 'json';
 require 'open-uri';
 
 module DNSHosting
-  def DNSHosting.add_hosted_domain(params,core_api)
+  def DNSHosting.add_hosted_domain(params,system_api)
     domain= params[:domain_name]
     if(params[:internal_only])
       ip = DNSHosting.get_local_ip
@@ -16,20 +16,23 @@ module DNSHosting
       DNSHosting.rm_local_domain_files domain
       return false
     end
-
-    if DNSHosting.write_config(domain) == false
-      DNSHosting.rm_local_domain_files domain
-      return false
-    end
     
-    core_api.reload_dns
+    domains = load_self_hosted_domains()
+    domains[params[:domain_name]] = params 
+    if DNSHosting.save_self_hosted_domains(domains)
+      return system_api.reload_dns
+    end
 
-    return true
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
   end
 
+  def DNSHosting.write_domain_list
+        
+    system_api.reload_dns
+
+  end
   def DNSHosting.get_local_ip
     Socket.ip_address_list.each do |addr|
       if addr.ipv4?
@@ -55,13 +58,13 @@ module DNSHosting
     return false
   end
 
-  def DNSHosting.write_config(domain)
-    conf_file = File.open(SysConfig.DNSConfDir + "/" + domain,"w")
+  def DNSHosting.write_config(domain,conf_file)
+   
     conf_file.puts( "zone \"" + domain +"\" {")
     conf_file.puts("type master;")
     conf_file.puts("file \"" + SysConfig.DNSZoneDir + "/" + domain + "\";")
     conf_file.puts("};")
-    conf_file.close
+   
     return true
   rescue Exception=>e
     SystemUtils.log_exception(e)
@@ -77,24 +80,54 @@ module DNSHosting
       ret_val=true
     end
 
-    dns_conf_filename = SysConfig.DNSConfDir + "/" + domain_name
-    if File.exists?(dns_conf_filename)
-      File.delete(dns_conf_filename)
-      if ret_val == true # Need to carry first failure even if we delete this file
-        ret_val=true
-      end
-    end
-
     return ret_val
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
   end
 
-  def DNSHosting.rm_hosted_domain(params,core_api)
+  def DNSHosting.rm_hosted_domain(params,system_api)
     domain= params[:domain_name]
     DNSHosting.rm_local_domain_files domain
-    core_api.reload_dns
+    system_api.reload_dns
   end
-
+  
+  def DNSHosting.load_self_hosted_domains
+    begin
+      if File.exists?(SysConfig.HostedDomainsFile) == false
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+        self_hosted_domain_file.close
+        return Hash.new
+      else
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
+      end
+      self_hosted_domains = YAML::load( self_hosted_domain_file )
+      self_hosted_domain_file.close
+      if self_hosted_domains == false
+        return Hash.new
+      end
+      return self_hosted_domains
+    rescue Exception=>e
+      self_hosted_domains = Hash.new
+      log_exception(e)
+      return self_hosted_domains
+    end
+  end
+  
+  def DNSHosting.save_self_hosted_domains(domains)
+      begin
+        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
+        self_hosted_domain_file.write(domains.to_yaml())
+        self_hosted_domain_file.close
+        conf_file = File.open(SysConfig.DNSConfDir + "/" + domain,"w")
+        domains.each do |domain|          
+          DNSHosting.write_config(domain[:domain_name],conf_file)
+        end
+        conf_file.close
+        return true
+      rescue Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
 end
