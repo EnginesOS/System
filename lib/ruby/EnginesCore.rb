@@ -55,6 +55,7 @@ class EnginesCore
       p dns_pid.to_s
       return @docker_api.signal_container_process(dns_pid.to_s,'HUP','dns')
     rescue 
+      log_exception(e)
       return false
     end
 
