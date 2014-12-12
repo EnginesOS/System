@@ -70,7 +70,7 @@ module DNSHosting
    
     conf_file.puts( "zone \"" + domain +"\" {")
     conf_file.puts("type master;")
-    conf_file.puts("file \"" + SysConfig.DNSZoneDir + "/" + domain + "\";")
+    conf_file.puts("file \"/etc/bind/engines/zones/" + domain + "\";") #FIXME and put /etc... in config
     conf_file.puts("};")
    
     return true
