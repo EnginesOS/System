@@ -53,7 +53,7 @@ class EnginesCore
       dns_pid = File.read(SysConfig.NamedPIDFile)
       p :kill_HUP_TO_DNS
       p dns_pid.to_s
-      return @engines_api.signal_container_process(dns_pid.to_s,'HUP','dns')
+      return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
     rescue  Exception=>e
       log_exception(e)
       return false
@@ -1308,8 +1308,8 @@ class EnginesCore
 
   attr_reader :last_error
 
-def signal_container_process(pid,sig,name)
-  container = loadManagedEngine(name)
+def signal_service_process(pid,sig,name)
+  container = loadManagedService(name)
   return @docker_api.signal_container_process(pid,sig,container)
 end
 
