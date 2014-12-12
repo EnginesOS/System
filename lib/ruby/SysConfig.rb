@@ -34,7 +34,7 @@ class SysConfig
   @@NamedPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid"
   @@DNSHostedList="/etc/bind/engines/conf/domains.hosted"
   
-  def DNSHostedList
+  def SysConfig.DNSHostedList
     return @@DNSHostedList
   end
   def SysConfig.NginxPIDFile
