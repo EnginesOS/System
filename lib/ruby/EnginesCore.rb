@@ -1022,9 +1022,9 @@ class EnginesCore
       end
     end
     
-    def signal_container_process(pid,signal,containerName)
+    def signal_container_process(pid,signal,container)
       clear_error
-      commandargs=" exec " + containerName + " kill -" + signal + " " + pid.to_s          
+      commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s          
       return  run_docker(commandargs,container)
       rescue  Exception=>e
         log_exception(e)
@@ -1309,7 +1309,8 @@ class EnginesCore
   attr_reader :last_error
 
 def signal_container_process(pid,sig,name)
-  @docker_api.signal_container_process(pid,sig,name)
+  container = loadManagedEngines(name)
+  return @docker_api.signal_container_process(pid,sig,container)
 end
 
   def start_container(container)
