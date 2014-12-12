@@ -31,13 +31,13 @@ class SysConfig
   @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
   @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
   @@NginxDefaultCert="engines"
-  
+  @@NginxPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid" 
  #DNS
   @@ddnsKey = "/opt/engines/etc/keys/ddns.key"
    @@internalDomain = "engines.internal"
    @@defaultDNS ="172.17.42.1"
 #Named
-  @@NamedPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid" 
+  @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid" 
   @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
   @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
   @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
