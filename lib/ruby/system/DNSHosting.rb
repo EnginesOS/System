@@ -121,7 +121,11 @@ module DNSHosting
         self_hosted_domain_file.write(domains.to_yaml())
         self_hosted_domain_file.close
         conf_file = File.open(SysConfig.DNSHostedList,"w")
+        p domains
+        p :domains
         domains.each do |domain|          
+          p :domain
+          p domain
           DNSHosting.write_config(domain[:domain_name],conf_file)
         end
         conf_file.close
