@@ -51,7 +51,9 @@ class EnginesCore
     
     def reload_dns    
       dns_pid = File.read(SYSConfig.NamedPIDFile)
-      return @docker_api.signal_container_process(pid,'HUP','dns')
+      p :kill_HUP_TO_DNS
+      p dns_pid.to_s
+      return @docker_api.signal_container_process(dns_pid.to_s,'HUP','dns')
     rescue 
       return false
     end

@@ -21,6 +21,7 @@ module DNSHosting
     domains = load_self_hosted_domains()
     domains[params[:domain_name]] = params 
     if DNSHosting.save_self_hosted_domains(domains)
+      p :REloading_dns
       return system_api.reload_dns
     end
 
