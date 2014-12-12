@@ -908,6 +908,11 @@ class EnginesOSapi
     return log_exception_and_fail("Add self hosted domain ",e)
   end
 
+  def create_ssl_certificate(params)
+    p params
+    return success(params[:domain_name], "Add self hosted ssl cert domain")        
+  end
+  
   def remove_self_hosted_domain domain_name
     if @core_api.remove_self_hosted_domain( domain_name) ==true
       return success(domain_name, "Remove self hosted domain")
