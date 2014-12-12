@@ -1309,7 +1309,7 @@ class EnginesCore
   attr_reader :last_error
 
 def signal_container_process(pid,sig,name)
-  container = loadManagedEngines(name)
+  container = loadManagedEngine(name)
   return @docker_api.signal_container_process(pid,sig,container)
 end
 
