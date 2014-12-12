@@ -29,7 +29,7 @@ module DNSHosting
     return false
     
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+  SystemUtils.log_exception(e)
     return false
   end
 
