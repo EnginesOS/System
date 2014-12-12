@@ -24,6 +24,9 @@ module DNSHosting
       return system_api.reload_dns
     end
 
+    p :failed_save_hosted_domains
+    return false
+    
   rescue Exception=>e
     SystemUtils. SystemUtils.log_exception(e)
     return false
@@ -42,6 +45,9 @@ module DNSHosting
         end
       end
     end
+    rescue Exception=>e
+       SystemUtils. SystemUtils.log_exception(e)
+       return false
   end
   
   def DNSHosting.write_zone_file(domain,ip)
@@ -129,7 +135,9 @@ module DNSHosting
           DNSHosting.write_config(domain,conf_file)
         end
         conf_file.close
+      
         return true
+        
       rescue Exception=>e
          SystemUtils.log_exception(e)
         return false
