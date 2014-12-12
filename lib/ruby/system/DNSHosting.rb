@@ -123,10 +123,10 @@ module DNSHosting
         conf_file = File.open(SysConfig.DNSHostedList,"w")
         p domains
         p :domains
-        domains.each do |domain|          
+        domains.each_key do |domain|          
           p :domain
           p domain
-          DNSHosting.write_config(domain[:domain_name],conf_file)
+          DNSHosting.write_config(domain,conf_file)
         end
         conf_file.close
         return true
