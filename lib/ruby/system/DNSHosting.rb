@@ -97,7 +97,13 @@ module DNSHosting
   def DNSHosting.rm_hosted_domain(params,system_api)
     domain= params[:domain_name]
     DNSHosting.rm_local_domain_files domain
-    system_api.reload_dns
+    domains = DNSHosting.load_self_hosted_domains
+    if domains.has_key?(domain)
+      domains.delete(domain)  
+      DNSHosting.save_self_hosted_domains(domains) 
+      system_api.reload_dns
+    end
+    
   end
   
   def DNSHosting.load_self_hosted_domains

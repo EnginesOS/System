@@ -525,10 +525,11 @@ class EnginesCore
     def   remove_self_hosted_domain( domain_name)
       clear_error
       begin
-        domains = load_self_hosted_domains()
-        domains.delete(domain_name)
-        save_self_hosted_domains(domains)
-        return true
+        return DNSHosting.rm_hosted_domain(params,self)
+#        domains = load_self_hosted_domains()
+#        domains.delete(domain_name)
+#        save_self_hosted_domains(domains)
+#        return true
       rescue  Exception=>e
         log_exception(e)
         return false
