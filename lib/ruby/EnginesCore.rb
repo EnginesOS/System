@@ -1308,6 +1308,10 @@ class EnginesCore
 
   attr_reader :last_error
 
+def signal_container_process(pid,sig,name)
+  @docker_api.signal_container_process(pid,sig,name)
+end
+
   def start_container(container)
     if @docker_api.start_container(container) == true
       return @system_api.register_dns_and_site(container)
@@ -1656,9 +1660,7 @@ class EnginesCore
     end
   end
 
-  def signal_container_process(pid,sig,name)
-    @docker_api.signal_container_process(pid,sig,name)
-  end
+
   
   def clear_error
     @last_error = ""
