@@ -1,6 +1,7 @@
 class EnginesCore
 
   require "/opt/engines/lib/ruby/SystemUtils.rb"
+  require "/opt/engines/lib/ruby/system/DNSHosting.rb"
 
   class SystemApi
     attr_reader :last_error
@@ -46,6 +47,16 @@ class EnginesCore
         end
       end #if reg dns
       return true
+    end
+    
+    def reload_dns    
+      dns_pid = File.read(SysConfig.NamedPIDFile)
+      p :kill_HUP_TO_DNS
+      p dns_pid.to_s
+      return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
+    rescue  Exception=>e
+      log_exception(e)
+      return false
     end
 
     def restart_nginx_process
@@ -463,14 +474,22 @@ class EnginesCore
       end
     end
 
+    
     def add_self_hosted_domain params
       clear_error
       begin
         p :Lachlan_Sent_parrams
         p params
-        domains = load_self_hosted_domains()
-        domains[params[:domain_name]] = params
-        return  save_self_hosted_domains(domains)
+       
+        return DNSHosting.add_hosted_domain(params,self)
+#       if ( DNSHosting.add_hosted_domain(params,self) == false)
+#         return false       
+#       end
+#       
+#        domains = load_self_hosted_domains()
+#        domains[params[:domain_name]] = params
+#          
+#        return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -480,9 +499,10 @@ class EnginesCore
     def list_self_hosted_domains()
       clear_error
       begin
-        domains = load_self_hosted_domains()
-        p domains
-        return domains
+        return DNSHosting.load_self_hosted_domains()
+#        domains = load_self_hosted_domains()
+#        p domains
+#        return domains
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -506,10 +526,11 @@ class EnginesCore
     def   remove_self_hosted_domain( domain_name)
       clear_error
       begin
-        domains = load_self_hosted_domains()
-        domains.delete(domain_name)
-        save_self_hosted_domains(domains)
-        return true
+        return DNSHosting.rm_hosted_domain(domain_name,self)
+#        domains = load_self_hosted_domains()
+#        domains.delete(domain_name)
+#        save_self_hosted_domains(domains)
+#        return true
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -875,39 +896,9 @@ class EnginesCore
 
     protected
 
-    def load_self_hosted_domains
-      begin
-        if File.exists?(SysConfig.HostedDomainsFile) == false
-          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
-          self_hosted_domain_file.close
-          return Hash.new
-        else
-          self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"r")
-        end
-        self_hosted_domains = YAML::load( self_hosted_domain_file )
-        self_hosted_domain_file.close
-        if self_hosted_domains == false
-          return Hash.new
-        end
-        return self_hosted_domains
-      rescue Exception=>e
-        self_hosted_domains = Hash.new
-        log_exception(e)
-        return self_hosted_domains
-      end
-    end
 
-    def save_self_hosted_domains(domains)
-      begin
-        self_hosted_domain_file = File.open(SysConfig.HostedDomainsFile,"w")
-        self_hosted_domain_file.write(domains.to_yaml())
-        self_hosted_domain_file.close
-        return true
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+
+  
 
     def container_cid_file(container)
       return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
@@ -1029,6 +1020,15 @@ class EnginesCore
         log_exception(e)
         return false
       end
+    end
+    
+    def signal_container_process(pid,signal,container)
+      clear_error
+      commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s          
+      return  run_docker(commandargs,container)
+      rescue  Exception=>e
+        log_exception(e)
+        return false
     end
 
     def logs_container container
@@ -1308,6 +1308,11 @@ class EnginesCore
 
   attr_reader :last_error
 
+def signal_service_process(pid,sig,name)
+  container = loadManagedService(name)
+  return @docker_api.signal_container_process(pid,sig,container)
+end
+
   def start_container(container)
     if @docker_api.start_container(container) == true
       return @system_api.register_dns_and_site(container)
@@ -1390,6 +1395,8 @@ class EnginesCore
     return @system_api.add_self_hosted_domain(params)
   end
 
+
+  
   def list_self_hosted_domains()
     return @system_api.list_self_hosted_domains()
   end
@@ -1654,6 +1661,8 @@ class EnginesCore
     end
   end
 
+
+  
   def clear_error
     @last_error = ""
   end

@@ -6,6 +6,7 @@ chown -R bind /var/run/named
 mkdir -p /var/log/named
 chown -R bind /var/log/named
 
+rm /var/run/named/named.pid
 /usr/sbin/named -c /etc/bind/named.conf -u bind 
 
 mkdir -p /engines/var/run/
