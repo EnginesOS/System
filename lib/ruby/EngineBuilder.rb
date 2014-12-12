@@ -461,7 +461,7 @@ count_layer
             count_layer            
             @docker_file.puts("USER $ContUser")
             count_layer
-            @docker_file.puts("RUN   wget  \""  + arc_src + "\" ;\\" )
+            @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             count_layer
