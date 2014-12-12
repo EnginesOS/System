@@ -33,6 +33,10 @@ class SysConfig
   @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
   @@NamedPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid"
   @@DNSHostedList="/etc/bind/engines/conf/domains.hosted"
+  
+  def DNSHostedList
+    return @@DNSHostedList
+  end
   def SysConfig.NginxPIDFile
     return @@NamedPIDFile
   end
