@@ -94,8 +94,8 @@ module DNSHosting
     return false
   end
 
-  def DNSHosting.rm_hosted_domain(params,system_api)
-    domain= params[:domain_name]
+  def DNSHosting.rm_hosted_domain(domain,system_api)
+
     DNSHosting.rm_local_domain_files domain
     domains = DNSHosting.load_self_hosted_domains
     if domains.has_key?(domain)
