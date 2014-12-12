@@ -1,7 +1,8 @@
 require 'socket'
 require 'json';
-
 require 'open-uri';
+
+require '/opt/engines/lib/ruby/SystemUtils.rb'
 
 module DNSHosting
   def DNSHosting.add_hosted_domain(params,system_api)
@@ -24,7 +25,7 @@ module DNSHosting
     end
 
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    SystemUtils. SystemUtils.log_exception(e)
     return false
   end
 
@@ -54,7 +55,7 @@ module DNSHosting
     dns_file.close
     return true
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    SystemUtils. SystemUtils.log_exception(e)
     return false
   end
 
@@ -67,7 +68,7 @@ module DNSHosting
    
     return true
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    SystemUtils. SystemUtils.log_exception(e)
     return false
   end
 
@@ -82,7 +83,7 @@ module DNSHosting
 
     return ret_val
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    SystemUtils. SystemUtils.log_exception(e)
     return false
   end
 
@@ -109,7 +110,7 @@ module DNSHosting
       return self_hosted_domains
     rescue Exception=>e
       self_hosted_domains = Hash.new
-      log_exception(e)
+       SystemUtils.log_exception(e)
       return self_hosted_domains
     end
   end
@@ -126,7 +127,7 @@ module DNSHosting
         conf_file.close
         return true
       rescue Exception=>e
-        log_exception(e)
+         SystemUtils.log_exception(e)
         return false
       end
     end
