@@ -461,6 +461,8 @@ end
     ip_str=output[0]['NetworkSettings']['IPAddress']
   #    puts containerName + ":" + ip_str
       return ip_str
+      catch 
+        return nil
   end
   
   
