@@ -1601,6 +1601,7 @@ end
   def rebuild_image(container)
     clear_error
     begin
+      params=Hash.new
        params[:engine_name] = container.containerName
        params[:domain_name] = container.domainName
         params[:host_name] = container.hostName
