@@ -1116,7 +1116,7 @@ def log_exception(e)
       @environments = Array.new
     elsif  custom_env.instance_of?(Array) == true
       p :custom_env
-         p cutom_env
+         p custom_env
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       @set_environments = Hash.new
      
