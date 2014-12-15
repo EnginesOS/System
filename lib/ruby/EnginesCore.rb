@@ -1601,7 +1601,13 @@ end
   def rebuild_image(container)
     clear_error
     begin
-      builder = EngineBuilder.new(container.repo,container.hostName,container.domainName,container.environments, self)
+       params[:engine_name] = container.containerName
+       params[:domain_name] = container.domainName
+        params[:host_name] = container.hostName
+        params[:env_variables] = container.environments  
+       params[:http_protocol] = container.protocol
+       params[:repository]  = container.repo
+      builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
       log_exception(e)
