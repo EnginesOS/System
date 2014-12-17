@@ -5,7 +5,7 @@ last_error:
 memory: '54'
 hostName: nginx
 domainName: 
-environments: []
+environments: 
 image: engines/nginx
 volumes:
  sslcerts: !ruby/object:Volume

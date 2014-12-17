@@ -5,7 +5,7 @@ last_error:
 memory: '36'
 hostName: ftp
 domainName: 
-environments: []
+environments: 
 image: engines/ftp
 volumes:
  ssl_certs: !ruby/object:Volume
