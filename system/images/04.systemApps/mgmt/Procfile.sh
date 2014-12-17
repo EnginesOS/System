@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/usr/local/rbenv/bin:$PATH"
 
-cd /home/app
+cd /home/app/
 rm /home/app/app/config/newrelic.yml
 git pull
 cp /home/newrelic.yml /home/app/

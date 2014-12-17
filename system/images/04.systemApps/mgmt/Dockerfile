@@ -10,15 +10,16 @@ ADD profile /home/dockuser/.profile
 ENV ContUser dockuser
 ENV ContGrp ruby
 
+RUN mkdir /home/app
 WORKDIR /home/app/
 RUN	git init
 
-ADD gitconfig /home/app/.git/config
+ADD gitconfig /home/app/app/.git/config
 
-RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
-	chown -R dockuser /home/app/ /home/dockuser /var/log/apache2/;\
+RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\	
+	chown -R 21000 /home/app/ /home/dockuser /var/log/apache2/;\
 	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/;\
-	chown -R dockuser /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
+	chown -R 21000 /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
 	mkdir -p  /run/apache2;\
 	chown -R 21000 /run/apache2
 
