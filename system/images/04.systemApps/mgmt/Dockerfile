@@ -14,7 +14,7 @@ RUN mkdir /home/app
 WORKDIR /home/app/
 RUN	git init
 
-ADD gitconfig /home/app/app/.git/config
+ADD gitconfig /home/app/.git/config
 
 RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\	
 	chown -R 21000 /home/app/ /home/dockuser /var/log/apache2/;\
