@@ -10,7 +10,9 @@ ADD profile /home/dockuser/.profile
 ENV ContUser dockuser
 ENV ContGrp ruby
 
-RUN mkdir /home/app
+#need to create as linking sqllite
+RUN mkdir -p /home/app/app/db
+
 WORKDIR /home/app/
 RUN	git init
 
