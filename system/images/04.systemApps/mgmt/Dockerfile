@@ -28,6 +28,8 @@ RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
 
 #After after chmod so not rewritable
 
+ADD 000-default.conf /etc/apache2/sites-enabled/
+ADD SSL-default.conf /etc/apache2/sites-enabled/
 ADD Procfile.sh /home/app/
 
 CMD /home/app/Procfile.sh
