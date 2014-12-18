@@ -1499,7 +1499,7 @@ end
     clear_error
     begin
       container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + "\" /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] +"\""
+      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] 
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)

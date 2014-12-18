@@ -17,8 +17,8 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
 	chown -R www-data /var/log/apache2 ;\
 	a2enmod ssl;\
 	a2enmod rewrite; \
- 	mkdir -p /var/lock/apache2 ;\
- 	chown www-data /var/lock/apache2
+ 	mkdir -p /run/lock/apache2 ;\
+ 	chown www-data /run/lock/apache2
  	
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
