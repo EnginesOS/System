@@ -39,6 +39,12 @@ module DNSHosting
 
   end
   def DNSHosting.get_local_ip
+    #case of management app in container
+    if File.exists?("/opt/engines/.ip")
+      ip = File.read("/opt/engines/.ip")
+      return ip
+    end
+      #devel/lachlan case
     Socket.ip_address_list.each do |addr|
       if addr.ipv4?
         if addr.ipv4_loopback? == false
@@ -50,6 +56,7 @@ module DNSHosting
        SystemUtils. SystemUtils.log_exception(e)
        return false
   end
+   
   
   def DNSHosting.write_zone_file(domain,ip)
     dns_template = File.read(SysConfig.SelfHostedDNStemplate)
