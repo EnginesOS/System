@@ -25,6 +25,7 @@ RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
 	mkdir -p  /run/apache2;\
 	chown -R 21000 /run/apache2;\
  	mkdir -p /run/lock/apache2 ;\
+ 	a2enmod ssl;\
  	chown 21000 /run/lock/apache2
 
 #After after chmod so not rewritable

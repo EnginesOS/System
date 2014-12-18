@@ -15,9 +15,8 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
     /usr/local/rbenv/shims/passenger-install-apache2-module -a --languages ruby,nodejs,python;\
 	mkdir -p /var/log/apache2 ;\
 	chown -R www-data /var/log/apache2 ;\
-	a2enmod ssl;\
 	a2enmod rewrite; \
- 	mkdir -p /run/lock/apache2 ;\
+ 	mkdir -p /lock/apache2 ;\
  	chown www-data /run/lock/apache2
  	
 ADD 000-default.conf /etc/apache2/sites-enabled/
