@@ -1126,10 +1126,10 @@ class EnginesCore
           else
             container.last_error=("")
           end
-
-          if res.start_with?("[") == true
-            res = res +"]"
-          end
+#
+#          if res.start_with?("[") == true
+#            res = res +"]"
+#          end
           container.last_result=(res)
           return true
         end
