@@ -39,6 +39,7 @@ function configure_git {
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
+		
 		 chmod u+x  /etc/rc.local
 		 
 		
@@ -210,6 +211,8 @@ mkdir -p /var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/s
 mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
 mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 mkdir -p /opt/engines/run/services/dns/run/dns
+mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
+mkdir -p /opt/engines/run/services/nginx/run/nginx/
 mkdir -p /home/dockuser/db
 touch /home/dockuser/db/production.sqlite
 touch /home/dockuser/db/development.sqlite
@@ -227,6 +230,7 @@ echo "Setting directory and file permissions"
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	 chown -R 22010 /var/log/engines/services/ftp
+	chown 22005 /opt/engines/run/services/nginx/run/nginx/
 	}
 
 function set_os_flavor {
@@ -256,7 +260,7 @@ echo "Configuring OS Specific Dockerfiles"
 }
 
 function create_services {
-echo "Creating and startingg Engines OS Services"
+echo "Creating and starting Engines OS Services"
 	 /opt/engines/bin/engines.rb service create dns
 	sleep 30
 	 /opt/engines/bin/engines.rb service create mysql_server
@@ -286,6 +290,10 @@ openssl genrsa -des3 -out server.key 2048
   openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
   mv server.key /opt/engines/etc/ssl/keys/engines.key
   mv server.crt /opt/engines/etc/ssl/certs/engines.crt
+   
+   #Initial Certs for nginx are the mgmt certs
+   cp -rp /opt/engines/etc/ssl/certs  /opt/engines/etc/nginx/ssl/
+   cp -rp /opt/engines/etc/ssl/keys   /opt/engines/etc/nginx/ssl/
    
    rm server.csr  server.key.secure
   
