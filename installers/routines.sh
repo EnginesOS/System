@@ -211,8 +211,11 @@ mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/ngi
 mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /home/dockuser/db
-touch /home/dockuser/db/production.sqlite3
+touch /home/dockuser/db/production.sqlite
+touch /home/dockuser/db/development.sqlite
 mkdir -p /home/dockuser/deployment/deployed/
+mkdir -p  /var/log/engines/services/ftp/proftpd
+
 }
 
 function set_permissions {
@@ -223,6 +226,7 @@ echo "Setting directory and file permissions"
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
+	 chown -R 22010 /var/log/engines/services/ftp
 	}
 
 function set_os_flavor {
