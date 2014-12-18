@@ -760,6 +760,9 @@ class EnginesCore
     end
 
     def loadManagedEngine(engine_name)
+      if engine_name == nil
+          return false
+      end
       begin
         yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
 
