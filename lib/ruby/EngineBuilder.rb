@@ -120,7 +120,7 @@ class EngineBuilder
        
         n=0
         @blueprint_reader.persistant_dirs.each do |path|
-  
+          path.chomp!("/")
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
           @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
