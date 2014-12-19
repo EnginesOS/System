@@ -740,7 +740,7 @@ def log_exception(e)
       services=@blueprint["software"]["softwareservices"]
       services.each do |service|
         servicetype=service["servicetype_name"]
-        if servicetype == "mysql" || servicetype == "pqsql"
+        if servicetype == "mysql" || servicetype == "pgsql"
           dbname = service["name"]
           dest = service["dest"]
           if dest =="local" || dest == nil
