@@ -923,10 +923,13 @@ def log_exception(e)
         @recursive_chmods = Array.new
         log_build_output("set permissions recussive")
         chmods = @blueprint["software"]["file_write_permissions"]
+        p :Single_Chmods
         if chmods != nil
           chmods.each do |chmod |
+            p chmod
             if chmod["recursive"]==true
               directory = clean_path(chmod["path"])
+                p directory
               @recursive_chmods.push(directory)
             end
           end
@@ -945,9 +948,12 @@ def log_exception(e)
         @single_chmods =Array.new
         log_build_output("set permissions  single")
         chmods = @blueprint["software"]["file_write_permissions"]
+          p :Recursive_Chmods
         if chmods != nil
           chmods.each do | single_chmod |
+            p chmod
             if chmod["recursive"]==false
+              p path
               directory = clean_path(chmod["path"])
               @single_chmods.push(directory)
             end
