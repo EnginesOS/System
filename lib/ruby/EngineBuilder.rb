@@ -384,7 +384,7 @@ count_layer
         end
         @blueprint_reader.single_chmods.each do |directory|
           if directory !=nil
-            @docker_file.puts("RUN chmod -r /home/app/" + directory )
+            @docker_file.puts("RUN chmod  /home/app/" + directory )
             count_layer
           end
         end
@@ -922,11 +922,13 @@ def log_exception(e)
         log_build_output("Read Recursive Write Permissions")
         @recursive_chmods = Array.new
         log_build_output("set permissions recussive")
-        chmods = @blueprint["software"]["chmod_recursive"]
+        chmods = @blueprint["software"]["file_write_permissions"]
         if chmods != nil
           chmods.each do |chmod |
-            directory = clean_path(recursive_chmod)
-            @recursive_chmods.push(directory)
+            if chmod["recursive"]==true
+              directory = clean_path(chmod["path"])
+              @recursive_chmods.push(directory)
+            end
           end
           #FIXME need to strip any ../ and any preceeding ./
           return
@@ -942,11 +944,13 @@ def log_exception(e)
         log_build_output("Read Non-Recursive Write Permissions")
         @single_chmods =Array.new
         log_build_output("set permissions  single")
-        chmods = @blueprint["software"]["chmod_single"]
+        chmods = @blueprint["software"]["file_write_permissions"]
         if chmods != nil
           chmods.each do | single_chmod |
-            directory = clean_path(single_chmod["directory"])
-            @single_chmods.push(directory)
+            if chmod["recursive"]==false
+              directory = clean_path(chmod["path"])
+              @single_chmods.push(directory)
+            end
           end
         end
         return true
