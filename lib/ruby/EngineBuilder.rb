@@ -385,7 +385,7 @@ count_layer
         end
         @blueprint_reader.single_chmods.each do |directory|
           if directory !=nil
-            @docker_file.puts("RUN chmod  /home/app/" + directory )
+            @docker_file.puts("RUN chmod 770 /home/app/" + directory )
             count_layer
           end
         end
@@ -405,7 +405,7 @@ count_layer
         end
         @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
-            @docker_file.puts("RUN chmod -R /home/app/" + directory )
+            @docker_file.puts("RUN chmod -R 770 /home/app/" + directory )
             count_layer
           end
         end
