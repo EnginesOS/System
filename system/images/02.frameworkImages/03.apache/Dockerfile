@@ -7,7 +7,7 @@ RUN /usr/sbin/usermod -u 22671 www-data;\
 	mkdir -p /etc/apache2/ /var/run/apache2;\
 	chown www-data /var/run/apache2	
 
-ADD home home
+
 
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD ports.conf /etc/apache2/
