@@ -154,6 +154,10 @@ class EngineBuilder
 
         src_paths.each do |link_src|
           path = dest_paths[n]
+          p :path
+          p path
+          p :link_src
+          p link_src
           @docker_file.puts("")
           @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
           @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
@@ -704,7 +708,7 @@ def log_exception(e)
         pfs =   @blueprint["software"]["persistantfiles"]
         files= String.new
         pfs.each do |file|
-          path =  arc_dir=clean_path(file["path"])
+          path = clean_path(file["path"])
           link_src = path.sub(/app/,"")
           src_paths.push(link_src)
           dest_paths.push(path)
