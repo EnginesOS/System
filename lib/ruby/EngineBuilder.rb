@@ -401,7 +401,7 @@ count_layer
         if @blueprint_reader.recursive_chmods == nil
           return
         end
-        @blueprint_reader.recursive_chmods.each do |recursive_chmod|
+        @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
             @docker_file.puts("RUN chmod -R /home/app/" + directory )
             count_layer
@@ -950,7 +950,7 @@ def log_exception(e)
         chmods = @blueprint["software"]["file_write_permissions"]
           p :Recursive_Chmods
         if chmods != nil
-          chmods.each do | single_chmod |
+          chmods.each do |chmod |
             p chmod
             if chmod["recursive"]==false
               p path
