@@ -109,8 +109,7 @@ class EnginesOSapi
   end
 
   def loadManagedEngine(engine_name)
-    engine = @core_api.loadManagedEngine(engine_name)
-   
+    engine = @core_api.loadManagedEngine(engine_name)   
     if engine == false
       return failed(engine_name,last_api_error ,"Load Engine")
     end
@@ -224,6 +223,12 @@ class EnginesOSapi
 
   def save_system_preferences preferences
     #preferences is a hash
+    # :default_domain need to set on mail server
+    # :elsewhere ssl cert for mgmt?
+    
+    #default web_site
+    #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}} 
+    
     return core_api.save_system_preferences
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
