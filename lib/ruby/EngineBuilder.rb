@@ -378,13 +378,18 @@ count_layer
 
     def write_write_permissions_single
       begin
+        @docker_file.puts("")
         log_build_output("Dockerfile:Write Permissions Non Recursive")
         if @blueprint_reader.single_chmods == nil
           return
         end
-        @blueprint_reader.single_chmods.each do |directory|
-          if directory !=nil
-            @docker_file.puts("RUN chmod -r /home/app/" + directory )
+        @blueprint_reader.single_chmods.each do |path|
+          if path !=nil           
+            @docker_file.puts("RUN if [ ! -f /home/app/" + path + " ]\\" )
+            @docker_file.puts(" then ;\\")
+                  @docker_file.puts("touch  /home/app/" + path + ";\\")
+                  @docker_file.puts("fi;\\")
+                  @docker_file.puts( "chmod  770 /home/app/" + path )
             count_layer
           end
         end
@@ -397,13 +402,18 @@ count_layer
 
     def write_write_permissions_recursive
       begin
+        @docker_file.puts("")
         log_build_output("Dockerfile:Write Permissions Recursive")
         if @blueprint_reader.recursive_chmods == nil
           return
         end
-        @blueprint_reader.recursive_chmods.each do |recursive_chmod|
+        @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
-            @docker_file.puts("RUN chmod -R /home/app/" + directory )
+            @docker_file.puts("RUN if [ ! -f /home/app/" + directory + " ] \\" )
+            @docker_file.puts(" then ;\\")
+            @docker_file.puts("mkdir  /home/app/" + directory + ";\\")
+            @docker_file.puts("fi;\\")
+            @docker_file.puts( "chmod -R 770 /home/app/" + directory )
             count_layer
           end
         end
@@ -422,7 +432,7 @@ count_layer
         locations=String.new
         extracts=String.new
         dirs=String.new
-
+        @docker_file.puts("")
         @blueprint_reader.archives_details[:arc_src].each do |archive|
           arc_src=@blueprint_reader.archives_details[:arc_src][n]
           arc_name=@blueprint_reader.archives_details[:arc_name][n]
@@ -922,11 +932,16 @@ def log_exception(e)
         log_build_output("Read Recursive Write Permissions")
         @recursive_chmods = Array.new
         log_build_output("set permissions recussive")
-        chmods = @blueprint["software"]["chmod_recursive"]
+        chmods = @blueprint["software"]["file_write_permissions"]
+        p :Single_Chmods
         if chmods != nil
           chmods.each do |chmod |
-            directory = clean_path(recursive_chmod)
-            @recursive_chmods.push(directory)
+            p chmod
+            if chmod["recursive"]==true
+              directory = clean_path(chmod["path"])
+                p directory
+              @recursive_chmods.push(directory)
+            end
           end
           #FIXME need to strip any ../ and any preceeding ./
           return
@@ -942,11 +957,16 @@ def log_exception(e)
         log_build_output("Read Non-Recursive Write Permissions")
         @single_chmods =Array.new
         log_build_output("set permissions  single")
-        chmods = @blueprint["software"]["chmod_single"]
+        chmods = @blueprint["software"]["file_write_permissions"]
+          p :Recursive_Chmods
         if chmods != nil
-          chmods.each do | single_chmod |
-            directory = clean_path(single_chmod["directory"])
-            @single_chmods.push(directory)
+          chmods.each do |chmod |
+            p chmod
+            if chmod["recursive"]==false
+              p chmod["path"]
+              directory = clean_path(chmod["path"])
+              @single_chmods.push(directory)
+            end
           end
         end
         return true
