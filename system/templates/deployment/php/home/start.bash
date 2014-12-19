@@ -7,8 +7,9 @@ if test ! -f  /engines/var/run/subs_run
 		touch /engines/var/run/subs_run			
 	fi
 	
-	if test -f /engines/var/run/post_install
+	if test -f /engines/var/run/flags/post_install
 		then
+			touch /engines/var/run/post_install.done
 			if test -f /home/engines/scripts/post_install.bash
 				then
 				/bin/bash /home/engines/scripts/post_install.bash >/var/log/post_install.log
