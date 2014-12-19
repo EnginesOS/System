@@ -158,6 +158,8 @@ class EngineBuilder
           p path
           p :link_src
           p link_src
+          p :n
+          p n
           @docker_file.puts("")
           @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
           @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
@@ -713,7 +715,11 @@ def log_exception(e)
           src_paths.push(link_src)
           dest_paths.push(path)
         end
-
+        p :src_paths
+        p src_paths
+        p :dest_paths
+        p dest_paths
+        
         @persistant_files[:src_paths]= src_paths
         @persistant_files[:dest_paths]= dest_paths
 
