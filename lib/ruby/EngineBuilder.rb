@@ -791,7 +791,9 @@ def log_exception(e)
 
     def  add_db_service(dbname,servicetype)
       log_build_output("Add DB Service " + dbname)
-      db = DatabaseService.new(@container_name,dbname,SysConfig.DBHost,dbname,dbname,servicetype)
+      hostname = servicetype + "." + SysConfig.internalDomain      
+        db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)   
+        
       @databases.push(db)
 
     end
