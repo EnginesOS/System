@@ -385,7 +385,7 @@ count_layer
         end
         @blueprint_reader.single_chmods.each do |path|
           if path !=nil           
-            @docker_file.puts("RUN if [ ! -f /home/app/" + path + "]\\" )
+            @docker_file.puts("RUN if [ ! -f /home/app/" + path + " ]\\" )
             @docker_file.puts(" then ;\\")
                   @docker_file.puts("touch  /home/app/" + path + ";\\")
                   @docker_file.puts("fi;\\")
@@ -409,7 +409,7 @@ count_layer
         end
         @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
-            @docker_file.puts("RUN if [ ! -f /home/app/" + directory + "] \\" )
+            @docker_file.puts("RUN if [ ! -f /home/app/" + directory + " ] \\" )
             @docker_file.puts(" then ;\\")
             @docker_file.puts("mkdir  /home/app/" + directory + ";\\")
             @docker_file.puts("fi;\\")
