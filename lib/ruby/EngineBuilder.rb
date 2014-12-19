@@ -378,6 +378,7 @@ count_layer
 
     def write_write_permissions_single
       begin
+        @docker_file.puts("")
         log_build_output("Dockerfile:Write Permissions Non Recursive")
         if @blueprint_reader.single_chmods == nil
           return
@@ -397,6 +398,7 @@ count_layer
 
     def write_write_permissions_recursive
       begin
+        @docker_file.puts("")
         log_build_output("Dockerfile:Write Permissions Recursive")
         if @blueprint_reader.recursive_chmods == nil
           return
@@ -422,7 +424,7 @@ count_layer
         locations=String.new
         extracts=String.new
         dirs=String.new
-
+        @docker_file.puts("")
         @blueprint_reader.archives_details[:arc_src].each do |archive|
           arc_src=@blueprint_reader.archives_details[:arc_src][n]
           arc_name=@blueprint_reader.archives_details[:arc_name][n]
@@ -953,7 +955,7 @@ def log_exception(e)
           chmods.each do |chmod |
             p chmod
             if chmod["recursive"]==false
-              p path
+              p chmod["path"]
               directory = clean_path(chmod["path"])
               @single_chmods.push(directory)
             end
