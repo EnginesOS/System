@@ -171,7 +171,7 @@ class EngineBuilder
           @docker_file.puts("   mv /home/app/" + path + " $VOLDIR ;\\")
           @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
         count_layer
-         ++n
+         n=n+1
         end
     
         @docker_file.puts("")
