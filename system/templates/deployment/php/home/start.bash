@@ -3,9 +3,17 @@
 if test ! -f  /engines/var/run/subs_run
 	then
 		source /home/config_functions.sh
-		copy_substituted_templates
-		touch /engines/var/run/subs_run
-			
+		copy_substituted_templates >/var/log/subs.log
+		touch /engines/var/run/subs_run			
+	fi
+	
+	if test -f /engines/var/run/post_install
+		then
+			if test -f /home/engines/scripts/post_install.bash
+				then
+				/bin/bash /home/engines/scripts/post_install.bash >/var/log/post_install.log
+				mv /home/engines/scripts/post_install.bash /home/engines/scripts/post_install.bash.done
+			fi		
 	fi
 	
   if test  ! -f /engines/var/run/volume_setup_complete
