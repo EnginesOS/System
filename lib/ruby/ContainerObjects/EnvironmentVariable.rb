@@ -12,4 +12,15 @@ class EnvironmentVariable
   
   attr_reader :set_at_build_time,:name,:value,:build_time_only,:mandatory,:label,:setatrun
   
+  def attributes
+    retval = Hash.new()
+    retval[:name] =  @name
+    retval[:label]= @label
+    retval[:value]=@value
+    retval[:set_at_build_time] =   @set_at_build_time
+    retval[:build_time_only]=@build_time_only 
+    retval[:mandatory]=@mandatory 
+      
+      return retval
+  end
 end
