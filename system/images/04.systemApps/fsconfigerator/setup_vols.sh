@@ -23,7 +23,11 @@ if test -f /dest/fs/.persistant
   chown $fw_user /dest/fs/
 else
 dirs=`ls /home/fs_src/ | egrep -v "local"`
-	cp -rp  /home/fs_src/* /dest/fs/
+	for dir in $dirs
+		do
+			cp -rp  /home/fs_src/$dir/* /dest/fs/	
+		done
+	
 	touch /dest/fs/.persistant
 fi
 
