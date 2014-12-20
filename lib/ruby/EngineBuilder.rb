@@ -64,7 +64,6 @@ class EngineBuilder
    end
 
     def write_files_for_docker
-
       write_stack_env
       write_file_service
       write_db_service
@@ -83,6 +82,14 @@ class EngineBuilder
       write_pear_list
       write_write_permissions_single
       write_write_permissions_recursive
+      @docker_file.puts("")
+      @docker_file.puts("USER 0")
+      count_layer()
+      @docker_file.puts("run mv /home/fs /home/fs_src; mkdir -p /home/fs/local/")
+      count_layer()
+      @docker_file.puts("")
+      @docker_file.puts("USER $ContUser")
+      count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.close
       
@@ -132,12 +139,14 @@ class EngineBuilder
           n=n+1
         count_layer
         end
-       
+        @docker_file.puts("USER 0")
+         count_layer()
           @docker_file.puts("")
           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
           @docker_file.puts("chmod -R 770 /home/fs")
           count_layer
-        
+        @docker_file.puts("USER $ContUser")
+            count_layer
 
       rescue Exception=>e
         log_exception(e)
