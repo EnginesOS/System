@@ -88,7 +88,9 @@ class EngineBuilder
       @docker_file.puts("run mv /home/fs /home/fs_src; mkdir -p /home/fs/local/")
       count_layer()
       @docker_file.puts("")
-      @docker_file.puts("USER $ContUser")
+      @docker_file.puts("USER $ContUser")     
+      count_layer
+      @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.close
@@ -189,8 +191,7 @@ class EngineBuilder
         @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
         @docker_file.puts("      chmod -R 770 /home/fs")
       count_layer
-        @docker_file.puts("VOLUME /home/fs_src/")
-      count_layer
+  
         @docker_file.puts("USER $ContUser")
       count_layer
       rescue Exception=>e
