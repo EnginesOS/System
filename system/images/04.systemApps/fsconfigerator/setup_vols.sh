@@ -26,7 +26,10 @@ dirs=`ls /home/fs_src/ | egrep -v "local"`
 	for dir in $dirs
 		do
 			cp -rp  /home/fs_src/$dir/* /dest/fs/	
+			
 		done
+	#if no presistance dirs/files need to set permission here
+	chown $fw_user /dest/fs/
 	
 	touch /dest/fs/.persistant
 fi
