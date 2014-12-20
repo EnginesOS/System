@@ -189,7 +189,7 @@ class EngineBuilder
         @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
         @docker_file.puts("      chmod -R 770 /home/fs")
       count_layer
-        @docker_file.puts("VOLUME /home/fs/")
+        @docker_file.puts("VOLUME /home/fs_src/")
       count_layer
         @docker_file.puts("USER $ContUser")
       count_layer
