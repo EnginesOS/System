@@ -52,5 +52,5 @@ if test -f /home/engines/scripts/custom_start.sh
 	fi
 
 touch /var/run/startup_complete 	
-/usr/share/tomcat7/bin/catalina.sh  start
+/usr/share/tomcat7/bin/catalina.sh  run
 rm /engines/var/run/startup_complete
