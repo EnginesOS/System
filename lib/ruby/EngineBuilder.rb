@@ -92,7 +92,7 @@ class EngineBuilder
       count_layer
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
-      write data_permissions
+      write_data_permissions
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
@@ -151,7 +151,7 @@ class EngineBuilder
       end
     end
 
-    def write data_permissions
+    def write_data_permissions
         @docker_file.puts("USER 0")
           count_layer()
            @docker_file.puts("")
