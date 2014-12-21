@@ -72,7 +72,7 @@ class EngineBuilder
       write_apache_modules
       write_app_archives
       write_container_user
- 
+      chown_home_app
       write_worker_commands
       write_sed_strings
       write_persistant_dirs
@@ -92,10 +92,10 @@ class EngineBuilder
       count_layer
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
+      write data_permissions
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
-      chown_home_app
       @docker_file.close
       
     end
@@ -144,21 +144,25 @@ class EngineBuilder
           n=n+1
         count_layer
         end
-        @docker_file.puts("USER 0")
-         count_layer()
-          @docker_file.puts("")
-          @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
-          @docker_file.puts("chmod -R 770 /home/fs")
-          count_layer
-        @docker_file.puts("USER $ContUser")
-            count_layer
-
+   
       rescue Exception=>e
         log_exception(e)
         return false 
       end
     end
 
+    def write data_permissions
+        @docker_file.puts("USER 0")
+          count_layer()
+           @docker_file.puts("")
+           @docker_file.puts("RUN chown -R $data_uid.www-data /home/fs ;\\")
+           @docker_file.puts("chmod -R 770 /home/fs")
+           count_layer
+         @docker_file.puts("USER $ContUser")
+             count_layer
+
+      
+    end
     def write_persistant_files
       begin
         log_build_output("set setup_env")
@@ -188,15 +192,7 @@ class EngineBuilder
          n=n+1
         end
     
-        @docker_file.puts("")
-        @docker_file.puts("USER 0")
-      count_layer
-        @docker_file.puts("RUN   chown -R $data_uid.www-data /home/fs ;\\")
-        @docker_file.puts("      chmod -R 770 /home/fs")
-      count_layer
-  
-        @docker_file.puts("USER $ContUser")
-      count_layer
+
       rescue Exception=>e
         log_exception(e)
         return false
