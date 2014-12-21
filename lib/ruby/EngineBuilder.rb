@@ -64,6 +64,7 @@ class EngineBuilder
    end
 
     def write_files_for_docker
+      @docker_file.puts("")
       write_stack_env
       write_file_service
       write_db_service
@@ -78,6 +79,7 @@ class EngineBuilder
       write_persistant_dirs
       write_persistant_files
       insert_framework_frag_in_dockerfile("builder.mid")
+      @docker_file.puts("")
       write_rake_list
       write_pear_list
       write_write_permissions_single
@@ -94,6 +96,7 @@ class EngineBuilder
       count_layer()
       write_data_permissions
       insert_framework_frag_in_dockerfile("builder.end")
+      @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
       @docker_file.close
