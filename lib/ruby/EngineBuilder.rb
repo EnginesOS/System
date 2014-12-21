@@ -103,6 +103,7 @@ class EngineBuilder
       if @blueprint_reader.apache_modules.count <1
         return 
       end
+      @docker_file.puts("#Apache Modules")
       ap_modules_str = String.new
       @blueprint_reader.apache_modules.each do |ap_module|
         
@@ -113,7 +114,7 @@ class EngineBuilder
     end
     def write_environment_variables
       begin
-
+        @docker_file.puts("#Environment Variables")
         @blueprint_reader.environments do |env|
           @docker_file.puts("#Custom ENV")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
@@ -131,6 +132,7 @@ class EngineBuilder
         log_build_output("setup persistant Dirs")
        
         n=0
+        @docker_file.puts("#Persistant Dirs")
         @blueprint_reader.persistant_dirs.each do |path|
           path.chomp!("/")
           @docker_file.puts("")
@@ -152,6 +154,7 @@ class EngineBuilder
     end
 
     def write_data_permissions
+      @docker_file.puts("#Data Permissions")
         @docker_file.puts("USER 0")
           count_layer()
            @docker_file.puts("")
@@ -165,6 +168,7 @@ class EngineBuilder
     end
     def write_persistant_files
       begin
+        @docker_file.puts("#Persistant Files")
         log_build_output("set setup_env")
         src_paths = @blueprint_reader.persistant_files[:src_paths]
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
@@ -201,6 +205,7 @@ class EngineBuilder
 
     def  write_file_service
       begin
+        @docker_file.puts("#File Service")
         @docker_file.puts("#FS Env")
         @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
         count_layer
@@ -220,6 +225,7 @@ class EngineBuilder
     def write_sed_strings
       begin
         n=0
+        @docker_file.puts("#Sed Strings")
         @blueprint_reader.sed_strings[:src_file].each do |src_file|
           #src_file = @sed_strings[:src_file][n]
           dest_file = @blueprint_reader.sed_strings[:dest_file][n]
@@ -240,6 +246,7 @@ count_layer
 
     def write_rake_list
       begin
+        @docker_file.puts("#Rake Actions")
         @blueprint_reader.rake_actions.each do |rake_cmd|
           if rake_cmd !=nil
             @docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_cmd )
@@ -255,7 +262,7 @@ count_layer
     def write_os_packages
       begin
         packages=String.new
-
+        @docker_file.puts("#OS Packages")
         @blueprint_reader.os_packages.each do |package|
           packages = packages + package + " "
         end
@@ -279,7 +286,7 @@ count_layer
     def insert_framework_frag_in_dockerfile(frag_name)
       begin
         log_build_output(frag_name)
-
+        @docker_file.puts("#Framework Frag")
         frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
@@ -292,6 +299,7 @@ count_layer
 
     def chown_home_app
       begin
+        @docker_file.puts("#Chown App Dir")
         log_build_output("Dockerfile:Chown")
         @docker_file.puts("USER 0")
         count_layer
@@ -313,6 +321,7 @@ count_layer
 
     def write_worker_commands
       begin
+        @docker_file.puts("#Worker Commands")
         log_build_output("Dockerfile:Worker Commands")
         scripts_path = @blueprint_reader.get_basedir + "/home/engines/scripts/"
 
@@ -342,6 +351,7 @@ count_layer
 
     def write_cron_jobs
       begin
+        @docker_file.puts("#Cronjobs")
         log_build_output("Dockerfile:Cron Commands")
         if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length <0
 
@@ -371,6 +381,7 @@ count_layer
 
     def write_db_service
       begin
+        @docker_file.puts("#Database Service")
         log_build_output("Dockerfile:DB env")
         @blueprint_reader.databases.each do |db|
           @docker_file.puts("#Database Env")
@@ -395,6 +406,7 @@ count_layer
     def write_write_permissions_single
       begin
         @docker_file.puts("")
+        @docker_file.puts("#Write Permissions Non Recursive")
         log_build_output("Dockerfile:Write Permissions Non Recursive")
         if @blueprint_reader.single_chmods == nil
           return
@@ -418,6 +430,7 @@ count_layer
 
     def write_write_permissions_recursive
       begin
+        @docker_file.puts("#Write Permissions  Recursive")
         @docker_file.puts("")
         log_build_output("Dockerfile:Write Permissions Recursive")
         if @blueprint_reader.recursive_chmods == nil
@@ -441,6 +454,7 @@ count_layer
 
     def write_app_archives
       begin
+        @docker_file.puts("#App Archives")
         log_build_output("Dockerfile:App Archives")
         n=0
         srcs=String.new
@@ -509,7 +523,7 @@ count_layer
 
     def write_container_user
       begin
-        
+        @docker_file.puts("#Container Data User")
         log_build_output("Dockerfile:User")
 
         #FIXME needs to by dynamic
@@ -528,7 +542,7 @@ count_layer
     def write_stack_env
       begin
         log_build_output("Dockerfile:Stack Environment")
-
+        @docker_file.puts("#Stack Env")
         # stef = File.open(get_basedir + "/home/stack.env","w")
         @docker_file.puts("")
         @docker_file.puts("#Stack Env")
@@ -568,6 +582,7 @@ count_layer
     end
 
     def write_pear_list
+      @docker_file.puts("#OPear List")
       log_build_output("Dockerfile:Pear List")
       if @blueprint_reader.pear_modules.count >0
         @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
@@ -1639,7 +1654,7 @@ end
             retry
           end
         rescue  IO::WaitReadable
-          p :wait_readable_retrt
+         # p :wait_readable_retrt
           retry
         rescue EOFError
           if stdout.closed? == false
