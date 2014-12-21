@@ -1,5 +1,6 @@
 FROM  engines/tomcat
 ADD home home
+ENV ContUser www-data
 ADD engines home/engines
 #ADD home/app/webapps/ /usr/share/tomcat7/webapps
 RUN chown 622671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /home -user www-data`;\
