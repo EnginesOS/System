@@ -1495,7 +1495,7 @@ end
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
       
-      env_file = File.new(get_basedir + "/app.env","a")
+      env_file = File.new(get_basedir + "/home/app.env","a")
       env_file.puts("")
       @blueprint_reader.environments.each do |env|
         env_file.puts(env.name)
