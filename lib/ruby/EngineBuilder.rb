@@ -113,6 +113,7 @@ class EngineBuilder
       count_layer()
     end
     def write_environment_variables
+
       begin
         @docker_file.puts("#Environment Variables")
         @blueprint_reader.environments do |env|
@@ -1493,7 +1494,15 @@ end
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
-
+      
+      env_file = File.new(get_basedir + "/app.env","a")
+      env_file.puts("")
+      @blueprint_reader.environments.each do |env|
+        env_file.puts(env.name)
+      end
+      
+      env_file.close
+      
       setup_framework_logging
 
       if  build_init == false
