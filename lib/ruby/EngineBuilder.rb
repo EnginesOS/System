@@ -72,7 +72,7 @@ class EngineBuilder
       write_apache_modules
       write_app_archives
       write_container_user
-      chown_home_app
+ 
       write_worker_commands
       write_sed_strings
       write_persistant_dirs
@@ -93,6 +93,9 @@ class EngineBuilder
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
+      @docker_file.puts("VOLUME /home/fs/")
+      count_layer()
+      chown_home_app
       @docker_file.close
       
     end
