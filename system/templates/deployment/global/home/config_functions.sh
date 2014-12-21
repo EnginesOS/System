@@ -38,9 +38,11 @@ while read line
                                 then
                                         raw=1
                                 elif  grep -q $search_arg <<<$line
-                                then
-                                        eval replacement_str='$'${env_variable}
-                                        line=${line/$search_arg/${replacement_str}} 
+                               then
+                                        eval replacement_str='$'${env_variable}                                        
+                                        line=${line/$search_arg/${replacement_str}}
+                                        echo " PROCESSING MATCH ON ${env_variable} which matched  $search_arg"
+                                        echo " to give $line = search $search_arg replace with ${replacement_str} "                                         
                                         raw=0
                                 else
                                 		raw=1
