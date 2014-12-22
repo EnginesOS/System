@@ -473,6 +473,86 @@ class EnginesCore
         return false
       end
     end
+    
+   def  save_domains(domains)
+     clear_error
+          begin
+            domain_file = File.open(SysConfig.DomainsFile,"w")
+            domain_file.write(domains.to_yaml())
+            domain_file.close           
+            return true            
+          rescue Exception=>e
+             SystemUtils.log_exception(e)
+            return false
+          end
+        end
+        
+    def load_domains
+      clear_error
+      begin
+        if File.exists?(SysConfig.DomainsFile) == false
+          domain_file = File.open(SysConfig.DomainsFile,"w")
+          domain_file.close
+          return Hash.new
+        else
+          domain_file = File.open(SysConfig.DomainsFile,"r")
+        end
+        domains = YAML::load( self_hosted_domain_file )
+        domains.close
+        if domains == false
+          return Hash.new
+        end
+        return domains
+      rescue Exception=>e
+        domains = Hash.new
+         SystemUtils.log_exception(e)
+        return domains
+      end
+    end
+    
+    def add_hosted_domain(params,system_api)
+      clear_error
+       domain= params[:domain_name]
+
+       domains = load_domains()
+       domains[params[:domain_name]] = params 
+       if save_domains(domains)
+        
+         return true
+       end
+   
+       p :failed_add_hosted_domains
+       return false
+       
+     rescue Exception=>e
+     SystemUtils.log_exception(e)
+       return false
+     end
+ 
+        
+    def rm_domain(domain)
+      clear_error
+      domains = load_domains
+      if domains.has_key?(domain)
+        domains.delete(domain)  
+       load_domains(domains) 
+        system_api.reload_dns
+      end
+      
+    end
+  def  update_domain(old_domain_name, params)
+    clear_error
+    begin
+      domains = load_domains()
+      domains.delete(old_domain_name)
+      domains[params[:domain_name]] = params
+      save_domains(domains)
+      return true
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
 
     
     def add_self_hosted_domain params
@@ -486,10 +566,10 @@ class EnginesCore
 #         return false       
 #       end
 #       
-#        domains = load_self_hosted_domains()
-#        domains[params[:domain_name]] = params
+ #     domains = load_self_hosted_domains()
+ #       domains[params[:domain_name]] = params
 #          
-#        return  save_self_hosted_domains(domains)
+        return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -1316,6 +1396,20 @@ class EnginesCore
   end
 
   attr_reader :last_error
+
+  
+def add_domain(params)
+    return  @system_api.add_domain(params)
+end
+
+def remove_domain(params)
+  return @system_api.remove_domain(params)
+end
+def update_domain(old_domain,params)
+  return @system_api.update_domain(old_domain,params)
+end
+
+
 
 def signal_service_process(pid,sig,name)
   container = loadManagedService(name)

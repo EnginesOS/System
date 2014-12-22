@@ -15,6 +15,20 @@ class EnginesOSapi
   def core_api
     return @core_api
   end
+  
+ ##fix me and put in system api
+  def first_run_required?
+    if File.exists?(SysConfig.FirstRunRan) ==false
+      
+      #fix me this needs to run after success and first run 
+        f= File.new(SysConfig.FirstRunRan,"w")
+        date= DateTime.now
+        f.puts(date.to_s)
+        f.close
+        return true
+    end
+    return false
+  end
 
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)
@@ -913,7 +927,13 @@ class EnginesOSapi
   end
 
   
-  def update_self_hosted_domain(old_domain_name,params)
+  def update_domain(old_domain_name,params)
+    if @core_api.update_domain(old_domain_name,params) == false
+       return  failed(params[:domain_name],last_api_error, "update  domain")
+    end  
+  if params[:self_hosted] == false
+    return success(params[:domain_name], "Add self hosted domain")
+  end
     if @core_api.update_self_hosted_domain(old_domain_name, params) ==true
       return success(params[:domain_name], "Update self hosted domain")
     end
@@ -922,8 +942,13 @@ class EnginesOSapi
     return log_exception_and_fail("Update self hosted domain ",e)
   end
 
-  def add_self_hosted_domain params
-
+  def add_domain params
+    if @core_api.add_domain(params) == false
+       return  failed(params[:domain_name],last_api_error, "Add  domain")
+    end  
+  if params[:self_hosted] == false
+    return success(params[:domain_name], "Add domain")
+  end
     if @core_api.add_self_hosted_domain( params) ==true
       return success(params[:domain_name], "Add self hosted domain")
     end
@@ -940,7 +965,13 @@ class EnginesOSapi
       p params
       return success(params[:domain_name], "upload self hosted ssl cert domain")        
     end
-  def remove_self_hosted_domain domain_name
+  def remove_domain domain_name
+    if @core_api.remove_domain(params) == false
+       return  failed(params[:domain_name],last_api_error, "Remove domain")
+    end  
+  if params[:self_hosted] == false
+    return success(params[:domain_name], "Remove domain")
+  end
     if @core_api.remove_self_hosted_domain( domain_name) ==true
       return success(domain_name, "Remove self hosted domain")
     end
@@ -949,7 +980,7 @@ class EnginesOSapi
     return log_exception_and_fail("Remove self hosted domain ",e)
   end
 
-  def list_self_hosted_domains
+  def list_domains
     return @core_api.list_self_hosted_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list self hosted domain ",e)
