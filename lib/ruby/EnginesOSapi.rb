@@ -18,18 +18,46 @@ class EnginesOSapi
   
  ##fix me and put in system api
   def first_run_required?
-    if File.exists?(SysConfig.FirstRunRan) ==false
-      
-      #fix me this needs to run after success and first run 
-        f= File.new(SysConfig.FirstRunRan,"w")
-        date= DateTime.now
-        f.puts(date.to_s)
-        f.close
+    if File.exists?(SysConfig.FirstRunRan) ==false      
         return true
     end
     return false
   end
 
+  def set_first_run params
+    p params
+    #required
+   #:admin_password
+    #:ssh_password
+    #:mysql_password
+    #:psql_password
+    #default_domain
+    
+#optional and can be set latter
+    
+    
+#ssl details
+    #:ssl_country    
+    #:ssl_state
+    #:ssl_city
+    #:ssl_organisation
+    #:ssl_person_name
+
+#smarthost        
+      #smarthost_hostname    
+      #smarthost_port
+      #smarthost_username
+      #smarthost_password
+      #smarthost_authtype
+    
+    
+    
+    f= File.new(SysConfig.FirstRunRan,"w")
+           date= DateTime.now
+           f.puts(date.to_s)
+           f.close    
+  end
+  
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)
     engine = engine_builder.build_from_blue_print
