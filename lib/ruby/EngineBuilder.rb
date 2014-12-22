@@ -505,16 +505,23 @@ count_layer
             count_layer            
             @docker_file.puts("USER $ContUser")            
             count_layer
+            step_back=false
               if arc_dir.blank?
+                step_back=true
                 @docker_file.puts("RUN   mkdir app;cd app")
                 count_layer
                 arc_dir = "app"
               end
               
+              
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             count_layer
+            if step_back==true
+              @docker_file.puts("cd ..")
+               count_layer
+            end
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
