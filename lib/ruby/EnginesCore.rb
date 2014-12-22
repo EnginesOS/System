@@ -1398,6 +1398,17 @@ class EnginesCore
   attr_reader :last_error
 
   
+def add_domain(params)
+    return  @system_api.add_domain(params)
+end
+
+def remove_domain(params)
+  return @system_api.remove_domain(params)
+end
+def update_domain(old_domain,params)
+  return @system_api.update_domain(old_domain,params)
+end
+
 
 
 def signal_service_process(pid,sig,name)
