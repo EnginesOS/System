@@ -149,7 +149,8 @@ end
 
 
 rescue Exception=>e
-   @res
+   p :json_Str
+   p @res
   log_exception(e)
   return "nocontainer"
 end
