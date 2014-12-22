@@ -519,7 +519,7 @@ count_layer
             @docker_file.puts("USER 0  ")
             count_layer
             if step_back==true
-              @docker_file.puts("cd ..")
+              @docker_file.puts("run cd ..")
                count_layer
             end
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
