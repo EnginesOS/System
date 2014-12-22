@@ -145,8 +145,9 @@ class EnginesOSapi
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
+    
       if engine.volumes.present?     
-        volume =  engine.volumes[":engine_name"]
+        volume =  engine.volumes["volume_name"]
           if volume.present?
             volume.add_backup_src_to_hash(backup_hash)
             SystemUtils.debug_output backup_hash
@@ -195,13 +196,18 @@ class EnginesOSapi
     return log_exception_and_fail("Stop Volume Backup",e)
   end
 
-  def backup_database(backup_name,engine_name,database_name,dest_hash)
+  def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
 
+    backup_name = params[:backup_name]
+    engine_name = params[:engine_name]
+    database_name = params[:source_name]    
+    dest_hash = params[:destination_hash]
+      
     engine = loadManagedEngine engine_name
     if engine.is_a?(EnginesOSapiResult)
       return engine
     end
-
+    params 
     backup_hash = dest_hash
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
