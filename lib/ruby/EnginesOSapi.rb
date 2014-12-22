@@ -24,7 +24,7 @@ class EnginesOSapi
     return false
   end
 
-  def set_first_run params
+  def set_first_run_parameters params
     p params
     #required
    #:admin_password
