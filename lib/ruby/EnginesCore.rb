@@ -1135,6 +1135,9 @@ class EnginesCore
 #          if res.start_with?("[") == true
 #            res = res +"]"
 #          end
+          if res.end_with?(']') == false
+            res+=']'
+          end
           
           container.last_result=(res)
           return true
