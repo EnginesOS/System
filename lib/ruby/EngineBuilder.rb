@@ -82,8 +82,9 @@ class EngineBuilder
       @docker_file.puts("")
       write_rake_list
       write_pear_list
+      write_write_permissions_recursive #recursive firs (as can use to create blank dir)
       write_write_permissions_single
-      write_write_permissions_recursive
+
       @docker_file.puts("")
       @docker_file.puts("USER 0")
       count_layer()
