@@ -623,14 +623,16 @@ end
   protected
   
 def trim_last_result
-  if @last_result.is_a?(String) && @last_result.length >256
-    @last_result=@last_result.slice!(0,256)
-  end
+  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
+#  if @last_result.is_a?(String) && @last_result.length >256
+#    @last_result=@last_result.slice!(0,256)
+#  end
 end
 def trim_last_error
-  if  @last_error.is_a?(String) && @last_error.length >256
-    @last_error=@last_error.slice!(0,256)
-  end
+  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
+#  if  @last_error.is_a?(String) && @last_error.length >256
+#    @last_error=@last_error.slice!(0,256)
+#  end
 end
 
   def clear_error ret_val
