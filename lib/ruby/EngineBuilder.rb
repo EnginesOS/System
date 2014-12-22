@@ -502,16 +502,21 @@ count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
           else
-            @docker_file.puts("WORKDIR /tmp")
-            count_layer            
+           
+             
             @docker_file.puts("USER $ContUser")            
             count_layer
             step_back=false
               if arc_dir.blank?
                 step_back=true
-                @docker_file.puts("RUN   mkdir app;cd app")
+                @docker_file.puts("RUN   mkdir /tmp/app")
                 count_layer
                 arc_dir = "app"
+                @docker_file.puts("WORKDIR /tmp/app")
+                count_layer          
+              else
+                @docker_file.puts("WORKDIR /tmp")
+                count_layer          
               end
               
               
@@ -519,8 +524,9 @@ count_layer
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
             count_layer
-            if step_back==true
-              @docker_file.puts("run cd ..")
+            if step_back==true              
+              @docker_file.puts("WORKDIR /tmp")
+              count_layer
                count_layer
             end
             @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
