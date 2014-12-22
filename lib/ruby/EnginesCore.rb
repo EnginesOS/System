@@ -1098,6 +1098,8 @@ class EnginesCore
               line = line.gsub(/\\\"/,"")
               oline = line
               res += line.chop
+              p :lne_by_line
+              p line
               if stderr_is_open
                 error_mesg += stderr.read_nonblock(256)
               end
