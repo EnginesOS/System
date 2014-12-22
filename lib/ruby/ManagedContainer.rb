@@ -114,11 +114,13 @@ end
     "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
   end
 
+  @res
   def read_state()
     begin
     if (inspect_container == false)
       state="nocontainer"
     else
+      @res= last_result
       output = JSON.parse(last_result)
       if output[0]["State"]
         if output[0]["State"]["Running"] == true
@@ -147,6 +149,7 @@ end
 
 
 rescue Exception=>e
+   @res
   log_exception(e)
   return "nocontainer"
 end
