@@ -15,6 +15,20 @@ class EnginesOSapi
   def core_api
     return @core_api
   end
+  
+ ##fix me and put in system api
+  def first_run_required?
+    if File.exists?(SysConfig.FirstRunRan) ==false
+      
+      #fix me this needs to run after success and first run 
+        f= File.new(SysConfig.FirstRunRan,"w")
+        date= DateTime.now
+        f.puts(date.to_s)
+        f.close
+        return true
+    end
+    return false
+  end
 
   def buildEngine(repository,host,domain_name,environment)
     engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)

@@ -26,7 +26,7 @@ class SysConfig
   
   #System
   @@DomainsFile="/opt/engines/etc/domains"
- 
+  @@FirstRunRan="/opt/engines/etc/first_ran"
  #NGINX
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
   @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
@@ -46,6 +46,16 @@ class SysConfig
   @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
   @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
+  
+  def SysConfig.DomainsFile
+  return @@DomainsFile
+  end
+ 
+  def SysConfig.FirstRunRan
+    return @@FirstRunRan
+  end
+ 
+  
   
   def SysConfig.DNSHostedList
     return @@DNSHostedList
