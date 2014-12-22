@@ -37,6 +37,7 @@ while read line
                         search_arg=_ENGINES_${env_variable}
                          if   grep -q '*'<<<$line
                                 then
+                                #or if $ replace with _STAR_ and _Dollar_ and then replace back at end
                                         raw=1
                                 elif  grep -q $search_arg <<<$line
                                then
