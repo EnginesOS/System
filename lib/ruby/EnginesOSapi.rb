@@ -129,7 +129,13 @@ class EnginesOSapi
     return log_exception_and_fail("getManagedService",e)
   end
 
-  def backup_volume(backup_name,engine_name,volume_name,dest_hash)
+  def backup_volume(params)
+    
+    backup_name = params[:backup_name]
+    engine_name = params[:engine_name]
+    volume_name  = params[:source_name]
+    dest_hash  = params[:destination_hash]
+      
     engine = loadManagedEngine engine_name
     if engine.is_a?(EnginesOSapiResult)
       return engine
@@ -139,12 +145,19 @@ class EnginesOSapi
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
-    engine.volumes.each do |volume|
-      if volume.name == volume_name
-        volume.add_backup_src_to_hash(backup_hash)
-        SystemUtils.debug_output backup_hash
-      end
-    end
+      if engine.volumes.present?     
+        volume =  engine.volumes[":engine_name"]
+          if volume.present?
+            volume.add_backup_src_to_hash(backup_hash)
+            SystemUtils.debug_output backup_hash
+          end
+     end           
+#    engine.volumes.values do |volume|
+#      if volume.name == volume_name
+#        volume.add_backup_src_to_hash(backup_hash)
+#        SystemUtils.debug_output backup_hash
+#      end
+#    end
 
     backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
     if backup_service.is_a?(EnginesOSapiResult)
