@@ -2,6 +2,7 @@ FROM  engines/php
 ADD home home
 ADD engines home/engines
 
+ENV ContUser www-data
 
 RUN	if [ -f /home/engines/configs/php/71-custom.ini ] ;\
 		then		\

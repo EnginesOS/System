@@ -26,7 +26,8 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 function process_file {
 #cat /home/app.env |cut -f1 -d= >/home/app/app_env_variables
 #env_variables=`cat /home/system_env_variables /home/app/app_env_variables | grep -v "#"`
-env_variables=`set | awk '{print $1}'`
+#env_variables=`set | awk '{print $1}'`
+env_variables=`cat /home/app.env`
 echo "processing template $file"
 raw=0
 while read line
@@ -38,9 +39,11 @@ while read line
                                 then
                                         raw=1
                                 elif  grep -q $search_arg <<<$line
-                                then
-                                        eval replacement_str='$'${env_variable}
-                                        line=${line/$search_arg/${replacement_str}} 
+                               then
+                                        eval replacement_str='$'${env_variable}                                        
+                                        line=${line/$search_arg/${replacement_str}}
+                                        echo " PROCESSING MATCH ON ${env_variable} which matched  $search_arg"
+                                        echo " to give $line = search $search_arg replace with ${replacement_str} "                                         
                                         raw=0
                                 else
                                 		raw=1

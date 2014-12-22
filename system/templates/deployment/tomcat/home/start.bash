@@ -52,6 +52,5 @@ if test -f /home/engines/scripts/custom_start.sh
 	fi
 
 touch /var/run/startup_complete 	
-/usr/sbin/apache2ctl -D FOREGROUND 
- rm -f /run/apache2/apache2.pid 
- rm /engines/var/run/startup_complete
+/usr/share/tomcat7/bin/catalina.sh  run
+rm /engines/var/run/startup_complete
