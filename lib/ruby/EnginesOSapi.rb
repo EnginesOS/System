@@ -56,6 +56,8 @@ class EnginesOSapi
            date= DateTime.now
            f.puts(date.to_s)
            f.close    
+           
+    return success("Gui","First Run")
   end
   
   def buildEngine(repository,host,domain_name,environment)
