@@ -503,8 +503,14 @@ count_layer
           else
             @docker_file.puts("WORKDIR /tmp")
             count_layer            
-            @docker_file.puts("USER $ContUser")
+            @docker_file.puts("USER $ContUser")            
             count_layer
+              if arc_dir.blank?
+                @docker_file.puts("RUN   mkdir app;cd app")
+                count_layer
+                arc_dir = "app"
+              end
+              
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts("USER 0  ")
