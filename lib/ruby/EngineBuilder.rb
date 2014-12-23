@@ -523,6 +523,8 @@ count_layer
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             if arc_extract.present?
               @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+            else
+              @docker_file.puts("") #step past the next shell line implied by preceeding ;
             end
             @docker_file.puts("USER 0  ")
             count_layer
@@ -531,7 +533,8 @@ count_layer
               count_layer
                count_layer
             end
-            @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+            
+            @docker_file.puts("RUN mkdir -p /home/app" +  "`dirname " + arc_loc + "`;  mv " + arc_dir + " /home/app" +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
