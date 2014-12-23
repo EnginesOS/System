@@ -74,7 +74,7 @@ class EngineBuilder
       write_user_local = true
       
       if write_user_local == true
-        @docker_file.puts("RUN ln -s /usr/local/ /home/usr/local;\\")
+        @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
         @docker_file.puts("     chmod -R $CountUser /usr/local/")
       end
       
@@ -537,11 +537,14 @@ count_layer
             count_layer
             if step_back==true              
               @docker_file.puts("WORKDIR /tmp")
-              count_layer
                count_layer
             end
-            
-            @docker_file.puts("RUN mkdir -p /home/app" +  "`dirname " + arc_loc + "`;  mv " + arc_dir + " /home/app" +  arc_loc )
+            if  arc_loc.starts_with?("/home")
+              dest_prefix=""
+            else
+              dest_prefix="/home/app"
+            end
+            @docker_file.puts("RUN mkdir -p " + dest_prefix  +  "`dirname " + arc_loc + "`;  mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
