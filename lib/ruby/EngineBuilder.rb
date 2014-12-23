@@ -539,7 +539,7 @@ count_layer
               @docker_file.puts("WORKDIR /tmp")
                count_layer
             end
-            if  arc_loc.starts_with?("/home")
+            if  arc_loc.starts_with?("/home/app") || arc_loc.starts_with?("/home/local/")
               dest_prefix=""
             else
               dest_prefix="/home/app"
