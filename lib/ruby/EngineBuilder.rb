@@ -75,7 +75,7 @@ class EngineBuilder
       
       if write_user_local == true
         @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
-        @docker_file.puts("     chmod -R $CountUser /usr/local/")
+        @docker_file.puts("     chown -R $ContUser /usr/local/")
       end
       
       write_app_archives
