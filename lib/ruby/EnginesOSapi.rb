@@ -17,13 +17,18 @@ class EnginesOSapi
   end
   
  ##fix me and put in system api
-  def first_run_required?
+  def first_run_required?      
     if File.exists?(SysConfig.FirstRunRan) ==false      
         return true
     end
     return false
   end
 
+  def get_available_smtp_auth_types
+    retval = ["plain","md5","?"]
+      return retval
+  end
+  
   def set_first_run_parameters params
     p params
     #required

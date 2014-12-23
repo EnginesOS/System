@@ -71,6 +71,13 @@ class EngineBuilder
       write_cron_jobs
       write_os_packages
       write_apache_modules
+      write_user_local = true
+      
+      if write_user_local == true
+        @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
+        @docker_file.puts("     chmod -R $CountUser /usr/local/")
+      end
+      
       write_app_archives
       write_container_user
       chown_home_app
@@ -82,8 +89,9 @@ class EngineBuilder
       @docker_file.puts("")
       write_rake_list
       write_pear_list
+      write_write_permissions_recursive #recursive firs (as can use to create blank dir)
       write_write_permissions_single
-      write_write_permissions_recursive
+
       @docker_file.puts("")
       @docker_file.puts("USER 0")
       count_layer()
@@ -120,11 +128,15 @@ class EngineBuilder
       begin
         @docker_file.puts("#Environment Variables")
         @blueprint_reader.environments do |env|
-          @docker_file.puts("#Custom ENV")
+          @docker_file.puts("#Blueprint ENVs")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
-        end
-
+        end        
+        @blueprint_reader.set_environments do |env|
+                  @docker_file.puts("#User set ENV")
+                  @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
+                  count_layer
+                end
       rescue Exception=>e
         log_exception(e)
         return false
@@ -200,7 +212,6 @@ class EngineBuilder
          n=n+1
         end
     
-
       rescue Exception=>e
         log_exception(e)
         return false
@@ -500,16 +511,40 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-          else
-            @docker_file.puts("WORKDIR /tmp")
-            count_layer            
-            @docker_file.puts("USER $ContUser")
+          else                        
+            @docker_file.puts("USER $ContUser")            
             count_layer
+            step_back=false
+              if arc_dir.blank?
+                step_back=true
+                @docker_file.puts("RUN   mkdir /tmp/app")
+                count_layer
+                arc_dir = "app"
+                @docker_file.puts("WORKDIR /tmp/app")
+                count_layer          
+              else
+                @docker_file.puts("WORKDIR /tmp")
+                count_layer          
+              end
+                            
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
-            @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+            if arc_extract.present?
+              @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+            else
+              @docker_file.puts("echo") #step past the next shell line implied by preceeding ;
+            end
             @docker_file.puts("USER 0  ")
             count_layer
-            @docker_file.puts("RUN mv " + arc_dir + " /home/app" +  arc_loc )
+            if step_back==true              
+              @docker_file.puts("WORKDIR /tmp")
+               count_layer
+            end
+            if  arc_loc.starts_with?("/home/app") || arc_loc.starts_with?("/home/local/")
+              dest_prefix=""
+            else
+              dest_prefix="/home/app"
+            end
+            @docker_file.puts("RUN mkdir -p " + dest_prefix  +  "`dirname " + arc_loc + "`;  mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer

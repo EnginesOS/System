@@ -27,11 +27,11 @@ if test ! -f  /engines/var/run/subs_run
  	 done
   fi
  
-if test -f /home/engines/scripts/setup.bash 
+if test -f /home/engines/scripts/install.bash 
 	then
 		if ! test ! -f /engines/var/run/setup_complete
 			then
-				bash /home/engines/scripts/setup.bash > /var/log/setup.log
+				bash /home/engines/scripts/install.bash > /var/log/setup.log
 				touch  /engines/var/run/setup_complete
 		fi
 	fi
@@ -46,11 +46,12 @@ then
 	service cron start
 fi
 
-if test -f /home/engines/scripts/custom_start.sh
+if test -f /home/engines/scripts/start.sh
 	then
-		bash	/home/engines/scripts/custom_start.sh
+		bash	/home/engines/scripts/start.sh
 	fi
 
 touch /var/run/startup_complete 	
-/usr/share/tomcat7/bin/catalina.sh  run
-rm /engines/var/run/startup_complete
+/usr/sbin/apache2ctl -D FOREGROUND 
+ rm -f /run/apache2/apache2.pid 
+ rm /engines/var/run/startup_complete
