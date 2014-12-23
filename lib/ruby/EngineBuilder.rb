@@ -521,7 +521,9 @@ count_layer
               
               
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
-            @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+            if arc_extract.present?
+              @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+            end
             @docker_file.puts("USER 0  ")
             count_layer
             if step_back==true              
