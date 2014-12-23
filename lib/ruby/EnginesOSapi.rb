@@ -24,6 +24,11 @@ class EnginesOSapi
     return false
   end
 
+  def get_available_smtp_auth_types
+    retval = ["plain","md5","?"]
+      return retval
+  end
+  
   def set_first_run_parameters params
     p params
     #required
