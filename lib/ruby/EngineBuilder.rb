@@ -71,6 +71,13 @@ class EngineBuilder
       write_cron_jobs
       write_os_packages
       write_apache_modules
+      write_user_local = true
+      
+      if write_user_local == true
+        @docker_file.puts("RUN ln -s /usr/local/ /home/usr/local;\\")
+        @docker_file.puts("     chmod -R $CountUser /usr/local/")
+      end
+      
       write_app_archives
       write_container_user
       chown_home_app
@@ -121,11 +128,15 @@ class EngineBuilder
       begin
         @docker_file.puts("#Environment Variables")
         @blueprint_reader.environments do |env|
-          @docker_file.puts("#Custom ENV")
+          @docker_file.puts("#Blueprint ENVs")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
-        end
-
+        end        
+        @blueprint_reader.set_environments do |env|
+                  @docker_file.puts("#User set ENV")
+                  @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
+                  count_layer
+                end
       rescue Exception=>e
         log_exception(e)
         return false
@@ -201,7 +212,6 @@ class EngineBuilder
          n=n+1
         end
     
-
       rescue Exception=>e
         log_exception(e)
         return false
