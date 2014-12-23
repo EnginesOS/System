@@ -31,7 +31,7 @@ if test -f /home/engines/scripts/setup.bash
 	then
 		if ! test ! -f /engines/var/run/setup_complete
 			then
-				bash /home/engines/scripts/setup.bash > /var/log/setup.log
+				bash /home/engines/scripts/install.bash > /var/log/setup.log
 				touch  /engines/var/run/setup_complete
 		fi
 	fi
