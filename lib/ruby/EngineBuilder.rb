@@ -544,7 +544,9 @@ count_layer
             else
               dest_prefix="/home/app"
             end
-            @docker_file.puts("RUN mkdir -p " + dest_prefix  +  "`dirname " + arc_loc + "`;  cp -rp " + arc_dir + " `dirname " + dest_prefix +  arc_loc +"`" )
+            @docker_file.puts("RUN destdir=" + dest_prefix  + "`" +dirname  + arc_loc + "';\\")
+            @docker_file.puts("if [ ! destdir =\"/home/app\" ];then\\")
+            @docker_file.puts("mkdir -p $destdir ;\fi;\  cp -rp " + arc_dir + " `dirname " + dest_prefix +  arc_loc +"`" )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
