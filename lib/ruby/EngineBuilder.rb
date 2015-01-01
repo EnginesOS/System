@@ -545,7 +545,7 @@ count_layer
               dest_prefix="/home/app"
             end
       
-            @docker_file.puts("cp -rp " + arc_dir + " " + dest_prefix +  arc_loc )
+            @docker_file.puts("run mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
