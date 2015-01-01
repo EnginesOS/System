@@ -150,15 +150,17 @@ class EngineBuilder
         n=0
         @docker_file.puts("#Persistant Dirs")
         @blueprint_reader.persistant_dirs.each do |path|
+        
+                      
           path.chomp!("/")
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
+          @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/app/" + path + " $VOLDIR ;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/app/" + path)
+          @docker_file.puts("mv /home/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/" + path)
           n=n+1
         count_layer
         end
@@ -199,15 +201,15 @@ class EngineBuilder
           p :n
           p n
           @docker_file.puts("")
-          @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
-          @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
+          @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
+          @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
           @docker_file.puts("    then \\")
-          @docker_file.puts("      touch  /home/app/" + path +";\\")
+          @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
           @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path) +";\\")       
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/app/" + path + " $VOLDIR ;\\")
-          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
+          @docker_file.puts("   mv /home/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/" + path)
         count_layer
          n=n+1
         end
