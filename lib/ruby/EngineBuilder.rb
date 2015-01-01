@@ -203,7 +203,9 @@ class EngineBuilder
           p :n
           p n
           dir = File.dirname(path)
-          if dir.empty?
+          p :dir
+          p dir
+          if dir.present? == false || dir == nil || dir.length ==0
             dir = "app/"
           end
           
