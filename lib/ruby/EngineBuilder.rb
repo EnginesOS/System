@@ -202,8 +202,13 @@ class EngineBuilder
           p link_src
           p :n
           p n
+          dir = File.dirname(path)
+          if dir.empty?
+            dir = "app/"
+          end
+          
           @docker_file.puts("")
-          @docker_file.puts("RUN mkdir -p /home/" + File.dirname(path) + ";\\")
+          @docker_file.puts("RUN mkdir -p /home/" + dir + path  + ";\\")
           @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/" + path +";\\")
