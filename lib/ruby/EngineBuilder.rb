@@ -155,6 +155,8 @@ class EngineBuilder
           path.chomp!("/")
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
+          dirname = File.dirname(path)
+          @docker_file.puts("mkdir -p $VOLDIR/" + dirname + ";\\")
           @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
@@ -455,11 +457,18 @@ count_layer
         end
         @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
-            @docker_file.puts("RUN if [ ! -d /home/app/" + directory + " ] ;\\" )
+            @docker_file.puts("RUN if [ -h  /home/app/"  + directory + " ] ;\\")
+            @docker_file.puts("    then \\")
+            @docker_file.puts("    dest=`ls -la /home/app/" + directory +" |cut -f2 -d">"`;\\")
+            @docker_file.puts("    chmod -R 770 $dest;\\")
+            @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
             @docker_file.puts("    then \\")
             @docker_file.puts("     mkdir  /home/app/" + directory + ";\\")
-            @docker_file.puts("   fi;\\")
             @docker_file.puts("  chmod -R 770 /home/app/" + directory )
+            @docker_file.puts("  else\\")
+            @docker_file.puts("  chmod -R 770 /home/app/" + directory )
+            @docker_file.puts("   fi;\\")
+       
             count_layer
           end
         end
