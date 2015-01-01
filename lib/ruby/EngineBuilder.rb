@@ -464,10 +464,10 @@ count_layer
             @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
             @docker_file.puts("    then \\")
             @docker_file.puts("     mkdir  /home/app/" + directory + ";\\")
-            @docker_file.puts("  chmod -R 770 /home/app/" + directory )
+            @docker_file.puts("  chmod -R 770 /home/app/" + directory + ";\\" )
             @docker_file.puts("  else\\")
             @docker_file.puts("  chmod -R 770 /home/app/" + directory + ";\\")
-            @docker_file.puts("   fi;\\")
+            @docker_file.puts("   fi")
        
             count_layer
           end
