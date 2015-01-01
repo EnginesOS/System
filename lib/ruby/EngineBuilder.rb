@@ -459,7 +459,7 @@ count_layer
           if directory !=nil
             @docker_file.puts("RUN if [ -h  /home/app/"  + directory + " ] ;\\")
             @docker_file.puts("    then \\")
-            @docker_file.puts("    dest=`ls -la /home/app/" + directory +" |cut -f2 -d">"`;\\")
+            @docker_file.puts("    dest=`ls -la /home/app/" + directory +" |cut -f2 -d\">\"`;\\")
             @docker_file.puts("    chmod -R 770 $dest;\\")
             @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
             @docker_file.puts("    then \\")
