@@ -633,8 +633,6 @@ class EnginesOSapi
     return log_exception_and_fail("read_start",e)
   end
 
-
-
   def self.log_exception(e)
     @last_error =  e_str = e.to_s()
     e.backtrace.each do |bt |
