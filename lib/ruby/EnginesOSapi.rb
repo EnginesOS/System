@@ -17,7 +17,7 @@ class EnginesOSapi
   end
   
   def self.log_exception_and_fail(cmd,e)
-    e_str = log_exception(e)
+    e_str = self.log_exception(e)
     return self.failed("Exception",e_str,cmd)
   end
   def log_exception_and_fail(cmd,e)
@@ -635,7 +635,7 @@ class EnginesOSapi
 
 
 
-  def log_exception(e)
+  def self.log_exception(e)
     @last_error =  e_str = e.to_s()
     e.backtrace.each do |bt |
       e_str += bt
