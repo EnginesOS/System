@@ -1,10 +1,12 @@
 
 
+
 #state=`echo $TZ |cut -f2 -d/`
 #country=`echo $TZ |cut -f1 -d/`
 #TZ="$country\/$state"
 
 USER 0
+RUN	chmod -R g+r /home/app; chmod g+x `find /home/app -type d`
 RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
 	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf;\
 	echo  ServerName $fqdn > /tmp/apache2.conf;\
