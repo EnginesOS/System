@@ -37,7 +37,7 @@ if test ! -f  /engines/var/run/subs_run
 if test -f /home/engines/scripts/install.sh 
 	then
 	echo has custom install
-		if ! test ! -f /engines/var/run/setup_complete
+		if test ! -f /engines/var/run/setup_complete
 			then
 			echo running custom install
 				bash /home/engines/scripts/install.sh 
@@ -62,7 +62,7 @@ if test -f /home/engines/scripts/start.sh
 		bash	/home/engines/scripts/start.sh
 	fi
 
-touch /var/run/startup_complete 	
+touch /engines/var/run/startup_complete 	
 /usr/sbin/apache2ctl -D FOREGROUND 
  rm -f /run/apache2/apache2.pid 
  rm /engines/var/run/startup_complete
