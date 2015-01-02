@@ -3,6 +3,7 @@
 
 if test ! -f  /engines/var/run/subs_run
 	then
+	echo "Performing substitutions"
 	cd /home/
 		source /home/config_functions.sh
 		copy_substituted_templates
@@ -12,11 +13,14 @@ if test ! -f  /engines/var/run/subs_run
 	
 	if test -f /engines/var/run/flags/post_install
 		then
-			touch /engines/var/run/post_install.done
+			echo "Has Post install"
+			
 			if test -f /home/engines/scripts/post_install.sh
 				then
+				echo "Running Post Install"
 				/bin/bash /home/engines/scripts/post_install.sh 
 				mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
+				touch /engines/var/run/post_install.done
 			fi		
 	fi
 	
@@ -32,8 +36,10 @@ if test ! -f  /engines/var/run/subs_run
  
 if test -f /home/engines/scripts/install.sh 
 	then
+	echo has custom install
 		if ! test ! -f /engines/var/run/setup_complete
 			then
+			echo running custom install
 				bash /home/engines/scripts/install.sh 
 				touch  /engines/var/run/setup_complete
 		fi
@@ -41,6 +47,7 @@ if test -f /home/engines/scripts/install.sh
 	
 if test -f /home/engines/scripts/pre-running.sh
 	then
+	echo "launch pre running"
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
@@ -51,6 +58,7 @@ fi
 
 if test -f /home/engines/scripts/start.sh
 	then
+	    echo "Custom start"
 		bash	/home/engines/scripts/start.sh
 	fi
 
