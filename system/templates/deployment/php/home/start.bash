@@ -5,7 +5,7 @@ if test ! -f  /engines/var/run/subs_run
 	then
 	cd /home/
 		source /home/config_functions.sh
-		copy_substituted_templates >/var/log/subs.log
+		copy_substituted_templates
 		touch /engines/var/run/subs_run
 		cd /home/app			
 	fi
@@ -15,7 +15,7 @@ if test ! -f  /engines/var/run/subs_run
 			touch /engines/var/run/post_install.done
 			if test -f /home/engines/scripts/post_install.sh
 				then
-				/bin/bash /home/engines/scripts/post_install.sh >/var/log/post_install.log
+				/bin/bash /home/engines/scripts/post_install.sh 
 				mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
 			fi		
 	fi
@@ -34,7 +34,7 @@ if test -f /home/engines/scripts/install.sh
 	then
 		if ! test ! -f /engines/var/run/setup_complete
 			then
-				bash /home/engines/scripts/install.sh > /var/log/setup.log
+				bash /home/engines/scripts/install.sh 
 				touch  /engines/var/run/setup_complete
 		fi
 	fi
