@@ -208,7 +208,8 @@ class EngineBuilder
           if dir.present? == false || dir == nil || dir.length ==0 || dir =="."
             dir = "app/"
           end
-          
+        p :dir
+            p dir
           @docker_file.puts("")
           @docker_file.puts("RUN mkdir -p /home/" + dir + path  + ";\\")
           @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
