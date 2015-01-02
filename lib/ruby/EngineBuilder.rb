@@ -1238,20 +1238,22 @@ def log_exception(e)
       @environments = Array.new
     elsif  custom_env.instance_of?(Array) == true    
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
+      #FIXME need to vet all environment variables
       @set_environments = Hash.new     
     else
       env_array = custom_env.values
-      p :env_array
-      p env_array
-      custom_env_hash = Hash.new
+#      p :env_array
+#      p env_array
+     custom_env_hash = Hash.new
+     
       env_array.each do |env_hash|
         p :env_hash
         p env_hash
-        custom_env_hash.merge!(env_hash)
+        custom_env_hash.store(env_hash["name"],env_hash["value"])
       end
       p :Merged_custom_env
       p custom_env_hash
-      @set_environments = custom_env
+      @set_environments =  custom_env_hash
       @environments = Array.new
     end
     @runtime=String.new
