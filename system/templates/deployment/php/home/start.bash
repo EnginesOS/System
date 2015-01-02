@@ -1,11 +1,13 @@
 #!/bin/bash
-cd /home/
+
 
 if test ! -f  /engines/var/run/subs_run
 	then
+	cd /home/
 		source /home/config_functions.sh
 		copy_substituted_templates >/var/log/subs.log
-		touch /engines/var/run/subs_run			
+		touch /engines/var/run/subs_run
+		cd /home/app			
 	fi
 	
 	if test -f /engines/var/run/flags/post_install
