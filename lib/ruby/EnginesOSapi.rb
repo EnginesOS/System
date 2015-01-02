@@ -18,7 +18,7 @@ class EnginesOSapi
   
   def self.log_exception_and_fail(cmd,e)
     e_str = log_exception(e)
-    return failed("Exception",e_str,cmd)
+    return self.failed("Exception",e_str,cmd)
   end
   
 
@@ -1058,7 +1058,7 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
-  def  EnginesOSapi.failed(item_name,mesg ,cmd)
+  def  self.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
     p item_name
     p mesg
