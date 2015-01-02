@@ -12,5 +12,4 @@ class FTPService < SoftwareService
        return  @core_api.rm_ftp_service(site_hash)
     end 
  
-
 end 
