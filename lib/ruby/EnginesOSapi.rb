@@ -21,7 +21,7 @@ class EnginesOSapi
     return self.failed("Exception",e_str,cmd)
   end
   def log_exception_and_fail(cmd,e)
-      e_str = log_exception(e)
+      e_str = self.log_exception(e)
       return self.failed("Exception",e_str,cmd)
     end
 
