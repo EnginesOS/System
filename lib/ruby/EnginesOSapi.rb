@@ -16,7 +16,7 @@ class EnginesOSapi
     return @core_api
   end
   
-  def self.log_exception_and_fail(cmd,e)
+  def EnginesOSapi.log_exception_and_fail(cmd,e)
     e_str = log_exception(e)
     return self.failed("Exception",e_str,cmd)
   end
@@ -84,7 +84,7 @@ class EnginesOSapi
     return  failed(host,last_api_error,"build_engine") 
 
   rescue Exception=>e
-    return self.log_exception_and_fail("buildEngine",e)
+    return log_exception_and_fail("buildEngine",e)
   end
 
   def build_engine(repository,params)
@@ -109,7 +109,7 @@ class EnginesOSapi
     return failed(host_name,last_api_error,"build_engine")
 
   rescue Exception=>e
-    return self.log_exception_and_fail("build_engine",e)
+    return log_exception_and_fail("build_engine",e)
   end
 
   def get_engine_builder_streams
@@ -126,41 +126,41 @@ class EnginesOSapi
       return ""
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("last_api_error",e)
+    return log_exception_and_fail("last_api_error",e)
   end
 
   def list_apps()
     return @core_api.list_managed_engines
   rescue Exception=>e
-    return self.log_exception_and_fail("list_apps",e)
+    return log_exception_and_fail("list_apps",e)
   end
 
   def list_services()
     return @core_api.list_managed_services
   rescue Exception=>e
-    return self.log_exception_and_fail("list_services",e)
+    return log_exception_and_fail("list_services",e)
   end
 
   def getManagedEngines()
     return  @core_api.getManagedEngines()
   rescue Exception=>e
-    return self.log_exception_and_fail("getManagedEngines",e)
+    return log_exception_and_fail("getManagedEngines",e)
   end
 
   def getManagedServices()
     return @core_api.getManagedServices()
   rescue Exception=>e
-    return self.log_exception_and_fail("getManagedServices",e)
+    return log_exception_and_fail("getManagedServices",e)
   end
 
-  def self.loadManagedService(service_name,core_api)
+  def EnginesOSapi.loadManagedService(service_name,core_api)
     service = core_api.loadManagedService(service_name)
     if service == false
       return failed(service_name,last_api_error ,"Load Service")
     end
     return service
   rescue Exception=>e
-    return self.self.log_exception_and_fail("LoadMangedService",e)
+    return self.log_exception_and_fail("LoadMangedService",e)
   end
 
   def loadManagedEngine(engine_name)
@@ -170,7 +170,7 @@ class EnginesOSapi
     end
     return engine
   rescue Exception=>e
-    return self.log_exception_and_fail("loadManagedEngine",e)
+    return log_exception_and_fail("loadManagedEngine",e)
   end
 
   def getManagedService(service_name)
@@ -181,7 +181,7 @@ class EnginesOSapi
     #end
     return managed_service
   rescue Exception=>e
-    return self.log_exception_and_fail("getManagedService",e)
+    return log_exception_and_fail("getManagedService",e)
   end
 
   def backup_volume(params)
@@ -229,7 +229,7 @@ class EnginesOSapi
       return failed(engine_name,last_api_error,"Backup Volume")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("Backup Volume",e)
+    return log_exception_and_fail("Backup Volume",e)
   end
 
   def stop_backup backup_name
@@ -248,7 +248,7 @@ class EnginesOSapi
       return failed(backup_name,last_api_error,"Stop Volume Backup")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("Stop Volume Backup",e)
+    return log_exception_and_fail("Stop Volume Backup",e)
   end
 
   def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
@@ -286,13 +286,13 @@ class EnginesOSapi
       return  failed(backup_name,last_api_error,"Backup Database")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("Backup Database",e)
+    return log_exception_and_fail("Backup Database",e)
   end
 
   def get_system_preferences
     return core_api.load_system_preferences
   rescue Exception=>e
-    return self.log_exception_and_fail("get_system_preferences",e)
+    return log_exception_and_fail("get_system_preferences",e)
   end
 
   def save_system_preferences preferences
@@ -305,7 +305,7 @@ class EnginesOSapi
     
     return core_api.save_system_preferences
   rescue Exception=>e
-    return self.log_exception_and_fail("save_system_preferences",e)
+    return log_exception_and_fail("save_system_preferences",e)
   end
 
   def recreateEngine engine_name
@@ -320,7 +320,7 @@ class EnginesOSapi
       return success(engine_name,"Stop")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("recreateEngine",e)
+    return log_exception_and_fail("recreateEngine",e)
   end
 
   def stopEngine engine_name
@@ -335,7 +335,7 @@ class EnginesOSapi
       return success(engine_name,"Stop")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("stopEngine",e)
+    return log_exception_and_fail("stopEngine",e)
   end
 
   def startEngine engine_name
@@ -349,7 +349,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Start")
   rescue Exception=>e
-    return self.log_exception_and_fail("startEngine",e)
+    return log_exception_and_fail("startEngine",e)
   end
 
   def pauseEngine engine_name
@@ -365,7 +365,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Pause")
   rescue Exception=>e
-    return self.log_exception_and_fail("startEngine",e)
+    return log_exception_and_fail("startEngine",e)
   end
 
 #  def enable_https_for_engine engine_name
@@ -379,7 +379,7 @@ class EnginesOSapi
 #    end
 #    return success(engine_name,"enable_https")
 #  rescue Exception=>e
-#    return self.log_exception_and_fail("enable_https",e)
+#    return log_exception_and_fail("enable_https",e)
 #  end
 #
 #  def enable_httpsonly_for_engine engine_name
@@ -393,7 +393,7 @@ class EnginesOSapi
 #    end
 #    return success(engine_name,"enable_httpsonly")
 #  rescue Exception=>e
-#    return self.log_exception_and_fail("enable_httpsonly",e)
+#    return log_exception_and_fail("enable_httpsonly",e)
 #  end
 #
 #  def disable_httpsonly_for_engine engine_name
@@ -407,7 +407,7 @@ class EnginesOSapi
 #    end
 #    return success(engine_name,"disable_httpsonly")
 #  rescue Exception=>e
-#    return self.log_exception_and_fail("disable_httpsonly",e)
+#    return log_exception_and_fail("disable_httpsonly",e)
 #  end
 #
 #  def disable_https_for_engine engine_name
@@ -421,7 +421,7 @@ class EnginesOSapi
 #    end
 #    return success(engine_name,"disable_https")
 #  rescue Exception=>e
-#    return self.log_exception_and_fail("disable_https",e)
+#    return log_exception_and_fail("disable_https",e)
 #  end
 
   def unpauseEngine engine_name
@@ -435,7 +435,7 @@ class EnginesOSapi
     end
     return success(engine_name,"unpause")
   rescue Exception=>e
-    return self.log_exception_and_fail("unpause",e)
+    return log_exception_and_fail("unpause",e)
   end
 
   def destroyEngine engine_name
@@ -449,7 +449,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Destroy")
   rescue Exception=>e
-    return self.log_exception_and_fail("Destroy",e)
+    return log_exception_and_fail("Destroy",e)
   end
 
   def deleteEngineImage engine_name
@@ -463,7 +463,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Delete")
   rescue Exception=>e
-    return self.log_exception_and_fail("Delete",e)
+    return log_exception_and_fail("Delete",e)
   end
 
   def createEngine engine_name
@@ -479,7 +479,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Create")
   rescue Exception=>e
-    return self.log_exception_and_fail("Create",e)
+    return log_exception_and_fail("Create",e)
   end
 
   def restartEngine engine_name
@@ -493,7 +493,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Restart")
   rescue Exception=>e
-    return self.log_exception_and_fail("Restart",e)
+    return log_exception_and_fail("Restart",e)
   end
 
   def registerEngineWebSite engine_name
@@ -519,7 +519,7 @@ class EnginesOSapi
     end
     return success(engine_name,"DeRegister Engine Web Site")
   rescue Exception=>e
-    return self.log_exception_and_fail("DeRegister Engine Web Site",e)
+    return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
   def registerEngineDNS engine_name
@@ -536,7 +536,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Register Engine DNS")
   rescue Exception=>e
-    return self.log_exception_and_fail("Register Engine DNS",e)
+    return log_exception_and_fail("Register Engine DNS",e)
   end
 
   def deregisterEngineDNS engine_name
@@ -550,7 +550,7 @@ class EnginesOSapi
     end
     return success(engine_name,"DeRegister Engine DNS")
   rescue Exception=>e
-    return self.log_exception_and_fail("deRegister Engine DNS",e)
+    return log_exception_and_fail("deRegister Engine DNS",e)
   end
 
   def monitorEngine engine_name
@@ -564,7 +564,7 @@ class EnginesOSapi
     end
     return success(engine_name,"Monitor Engine")
   rescue Exception=>e
-    return self.log_exception_and_fail("Monitor Engine",e)
+    return log_exception_and_fail("Monitor Engine",e)
   end
 
   def demonitorEngine engine_name
@@ -578,7 +578,7 @@ class EnginesOSapi
     end
     return success(engine_name,"DeMonitor Engine")
   rescue Exception=>e
-    return self.log_exception_and_fail("DeMonitor Engine",e)
+    return log_exception_and_fail("DeMonitor Engine",e)
   end
 
   def get_engine_blueprint engine_name
@@ -592,7 +592,7 @@ class EnginesOSapi
     end
     return retval
   rescue Exception=>e
-    return self.log_exception_and_fail("Load Engine Blueprint",e)
+    return log_exception_and_fail("Load Engine Blueprint",e)
   end
 
   def rebuild_engine_container engine_name
@@ -614,7 +614,7 @@ class EnginesOSapi
 
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("Rebuild Engine",e)
+    return log_exception_and_fail("Rebuild Engine",e)
   end
 
   #not needed as inherited ???
@@ -627,7 +627,7 @@ class EnginesOSapi
     #return success(container.containerName,"read state")
     retval
   rescue Exception=>e
-    return self.log_exception_and_fail("read_start",e)
+    return log_exception_and_fail("read_start",e)
   end
 
 
@@ -644,13 +644,13 @@ class EnginesOSapi
   def get_system_memory_info
     return @core_api.get_system_memory_info
   rescue Exception=>e
-    return self.log_exception_and_fail("get_system_memory_info",e)
+    return log_exception_and_fail("get_system_memory_info",e)
   end
 
   def get_system_load_info
     return @core_api.get_system_load_info
   rescue Exception=>e
-    return self.log_exception_and_fail("get_system_load_info",e)
+    return log_exception_and_fail("get_system_load_info",e)
   end
 
   def get_engine_memory_statistics  engine_name
@@ -661,7 +661,7 @@ class EnginesOSapi
     retval = engine.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
-    return self.log_exception_and_fail("Get Engine Memory Statistics",e)
+    return log_exception_and_fail("Get Engine Memory Statistics",e)
   end
 
   def get_service_memory_statistics  service_name
@@ -672,13 +672,13 @@ class EnginesOSapi
     retval = service.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
-    return self.log_exception_and_fail("Get Service Memory Statistics",e)
+    return log_exception_and_fail("Get Service Memory Statistics",e)
   end
 
   def get_container_network_metrics(containerName)
     return @core_api.get_container_network_metrics(containerName)
   rescue Exception=>e
-    return self.log_exception_and_fail("get_container_network_metrics",e)
+    return log_exception_and_fail("get_container_network_metrics",e)
   end
 
   def stopService service_name
@@ -697,7 +697,7 @@ class EnginesOSapi
     end
     return success(service_name,"Stop Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Stop Service",e)
+    return log_exception_and_fail("Stop Service",e)
   end
 
   def startService service_name
@@ -716,7 +716,7 @@ class EnginesOSapi
     end
     return success(service_name,"Start Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Start Service",e)
+    return log_exception_and_fail("Start Service",e)
   end
 
   def  pauseService service_name
@@ -735,7 +735,7 @@ class EnginesOSapi
     end
     return success(service_name,"Pause Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Pause Service",e)
+    return log_exception_and_fail("Pause Service",e)
   end
 
   def  unpauseService service_name
@@ -754,7 +754,7 @@ class EnginesOSapi
     end
     return success(service_name,"Unpause Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Unpause Service",e)
+    return log_exception_and_fail("Unpause Service",e)
   end
 
   def registerServiceWebSite service_name
@@ -773,7 +773,7 @@ class EnginesOSapi
     end
     return success(service_name,"Register Service Web")
   rescue Exception=>e
-    return self.log_exception_and_fail("Register Service Web",e)
+    return log_exception_and_fail("Register Service Web",e)
   end
 
   def deregisterServiceWebSite service_name
@@ -792,7 +792,7 @@ class EnginesOSapi
     end
     return success(service_name,"Deregister Service Web")
   rescue Exception=>e
-    return self.log_exception_and_fail("DeRegister Service Web",e)
+    return log_exception_and_fail("DeRegister Service Web",e)
   end
 
   def registerServiceDNS service_name
@@ -812,7 +812,7 @@ class EnginesOSapi
     end
     return success(service_name,"Register Service DNS")
   rescue Exception=>e
-    return self.log_exception_and_fail("Register Service DNS",e)
+    return log_exception_and_fail("Register Service DNS",e)
   end
 
   def deregisterServiceDNS service_name
@@ -831,7 +831,7 @@ class EnginesOSapi
     end
     return success(service_name,"Deregister Service DNS")
   rescue Exception=>e
-    return self.log_exception_and_fail("DeRegister Service DNS",e)
+    return log_exception_and_fail("DeRegister Service DNS",e)
   end
 
   def createService service_name
@@ -850,7 +850,7 @@ class EnginesOSapi
     end
     return success(service_name,"Create Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Create Service",e)
+    return log_exception_and_fail("Create Service",e)
   end
 
   def recreateService service_name
@@ -869,7 +869,7 @@ class EnginesOSapi
     end
     return success(service_name,"Recreate Service")
   rescue Exception=>e
-    return self.log_exception_and_fail("Recreate Service",e)
+    return log_exception_and_fail("Recreate Service",e)
   end
 
   def get_volumes
@@ -881,7 +881,7 @@ class EnginesOSapi
 
     return vol_service.consumers
   rescue Exception=>e
-    return self.log_exception_and_fail("get_volumes",e)
+    return log_exception_and_fail("get_volumes",e)
   end
 
   def get_databases
@@ -899,23 +899,23 @@ class EnginesOSapi
     end
     return backup_service.consumers
   rescue Exception=>e
-    return self.log_exception_and_fail("get_backup list",e)
+    return log_exception_and_fail("get_backup list",e)
   end
   
   def set_engine_runtime_properties params
     return success(params[:engine_name],"update engine runtime params")
     rescue Exception=>e
-        return self.log_exception_and_fail("set_engine_runtime params ",e)
+        return log_exception_and_fail("set_engine_runtime params ",e)
   end
   def set_service_runtime_properties params
      return success(params[:engine_name],"update service runtime params")
      rescue Exception=>e
-         return self.log_exception_and_fail("update service runtime params ",e)
+         return log_exception_and_fail("update service runtime params ",e)
    end
   def set_service_hostname_properties(params)
     return success(params[:engine_name],"update service hostname params")
        rescue Exception=>e
-           return self.log_exception_and_fail("set_engine_hostname_details ",e)
+           return log_exception_and_fail("set_engine_hostname_details ",e)
   end
   def set_engine_network_properties(params)
     p :set_engine_network_properties
@@ -961,7 +961,7 @@ class EnginesOSapi
       return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
     end
   rescue Exception=>e
-    return self.log_exception_and_fail("set_engine_hostname_details ",e)
+    return log_exception_and_fail("set_engine_hostname_details ",e)
   end
 
   
@@ -977,7 +977,7 @@ class EnginesOSapi
     end
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
   rescue Exception=>e
-    return self.log_exception_and_fail("Update self hosted domain ",e)
+    return log_exception_and_fail("Update self hosted domain ",e)
   end
 
   def add_domain params
@@ -992,7 +992,7 @@ class EnginesOSapi
     end
     return failed(params[:domain_name],last_api_error, "Add self hosted domain")
   rescue Exception=>e
-    return self.log_exception_and_fail("Add self hosted domain ",e)
+    return log_exception_and_fail("Add self hosted domain ",e)
   end
 
   def create_ssl_certificate(params)
@@ -1015,31 +1015,31 @@ class EnginesOSapi
     end
     return failed(domain_name,last_api_error, "Remove self hosted domain")
   rescue Exception=>e
-    return self.log_exception_and_fail("Remove self hosted domain ",e)
+    return log_exception_and_fail("Remove self hosted domain ",e)
   end
 
   def list_domains
     return @core_api.list_self_hosted_domains( )
   rescue Exception=>e
-    return self.log_exception_and_fail("list self hosted domain ",e)
+    return log_exception_and_fail("list self hosted domain ",e)
   end
 
   def attach_ftp_service(params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Attach ftp")
   rescue Exception=>e
-    return self.log_exception_and_fail("Attach ftp ",e)
+    return log_exception_and_fail("Attach ftp ",e)
   end
 
   def detach_ftp_service (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
   rescue Exception=>e
-    return self.log_exception_and_fail("Detach ftp ",e)
+    return log_exception_and_fail("Detach ftp ",e)
   end
 
   def  change_ftp_service  (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Change ftp")
   rescue Exception=>e
-    return self.log_exception_and_fail("Change ftp",e)
+    return log_exception_and_fail("Change ftp",e)
   end
 
   #protected if protected static cant call
@@ -1058,7 +1058,7 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
-  def  self.failed(item_name,mesg ,cmd)
+  def  EnginesOSapi.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
     p item_name
     p mesg
