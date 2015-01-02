@@ -16,6 +16,11 @@ class EnginesOSapi
     return @core_api
   end
   
+  def log_exception_and_fail(cmd,e)
+    e_str = log_exception(e)
+    return failed("Exception",e_str,cmd)
+  end
+  
  ##fix me and put in system api
   def first_run_required?      
     if File.exists?(SysConfig.FirstRunRan) ==false      
@@ -624,10 +629,7 @@ class EnginesOSapi
     return log_exception_and_fail("read_start",e)
   end
 
-  def log_exception_and_fail(cmd,e)
-    e_str = log_exception(e)
-    return failed("Exception",e_str,cmd)
-  end
+
 
   def log_exception(e)
     @last_error =  e_str = e.to_s()
