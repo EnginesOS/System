@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /home/
 
 if test ! -f  /engines/var/run/subs_run
 	then
