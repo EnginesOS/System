@@ -20,7 +20,8 @@ class EngineBuilder
   :repoName,\
   :hostname,\
   :domain_name,\
-  :build_name
+  :build_name,\
+  :set_environments
   
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -1185,7 +1186,7 @@ def log_exception(e)
       log_build_output("Read Environment Variables")
       @environments = Array.new
       p :set_environment_variables
-      p @set_environments
+      p @builder.set_environments
       begin
         envs = @blueprint["software"]["environment_variables"]
         envs.each do |env|
@@ -1197,11 +1198,11 @@ def log_exception(e)
            mandatory = env["mandatory"]
            build_time_only =  env["build_time_only"]
           
-          if @set_environments != nil
+          if @builder.set_environments != nil
             p :looking_for_ 
             p name
-           if ask == true  && @set_environments.has_key?(name) == true                          
-              value=@set_environments[name]
+           if ask == true  && @builder.set_environments.has_key?(name) == true                          
+              value=@builder.set_environments[name]
           end
         end
           @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,name))
@@ -1239,8 +1240,6 @@ def log_exception(e)
       @set_environments = Hash.new     
     else
       env_array = custom_env.values
-#      p :env_array
-#      p env_array
      custom_env_hash = Hash.new
      
       env_array.each do |env_hash|
