@@ -1240,7 +1240,7 @@ def log_exception(e)
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       @set_environments = Hash.new     
     else
-      env_array = custom_env.flatten
+      env_array = custom_env.values
       p :env_array
       p env_array
       custom_env_hash = Hash.new
