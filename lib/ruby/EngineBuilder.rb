@@ -1200,8 +1200,11 @@ def log_exception(e)
           if @set_environments != nil
             p :looking_for_ 
             p name
-            if ask == true  && @set_environments.key?(name) == true                          
-              value=@set_environments[name]
+#            if ask == true  && @set_environments.assoc(name) == true                          
+#              value=@set_environments[name]
+#            end
+            if ask == true  && (values = @set_environments.assoc(name)).present?                      
+              value=values[1]
             end
           end
           @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,name))
@@ -1237,6 +1240,7 @@ def log_exception(e)
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       @set_environments = Hash.new     
     else
+      
       @set_environments = custom_env
       @environments = Array.new
     end
