@@ -10,10 +10,10 @@ if test ! -f  /engines/var/run/subs_run
 	if test -f /engines/var/run/flags/post_install
 		then
 			touch /engines/var/run/post_install.done
-			if test -f /home/engines/scripts/post_install.bash
+			if test -f /home/engines/scripts/post_install.sh
 				then
-				/bin/bash /home/engines/scripts/post_install.bash >/var/log/post_install.log
-				mv /home/engines/scripts/post_install.bash /home/engines/scripts/post_install.bash.done
+				/bin/bash /home/engines/scripts/post_install.sh >/var/log/post_install.log
+				mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
 			fi		
 	fi
 	
@@ -27,11 +27,11 @@ if test ! -f  /engines/var/run/subs_run
  	 done
   fi
  
-if test -f /home/engines/scripts/install.bash 
+if test -f /home/engines/scripts/install.sh 
 	then
 		if ! test ! -f /engines/var/run/setup_complete
 			then
-				bash /home/engines/scripts/install.bash > /var/log/setup.log
+				bash /home/engines/scripts/install.sh > /var/log/setup.log
 				touch  /engines/var/run/setup_complete
 		fi
 	fi
