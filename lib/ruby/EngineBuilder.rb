@@ -1200,13 +1200,10 @@ def log_exception(e)
           if @set_environments != nil
             p :looking_for_ 
             p name
-#            if ask == true  && @set_environments.assoc(name) == true                          
-#              value=@set_environments[name]
-#            end
-            if ask == true  && (values = @set_environments.assoc(name)).present?                      
-              value=values[1]
-            end
+           if ask == true  && @set_environments.has_key?(name) == true                          
+              value=@set_environments[name]
           end
+        end
           @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,name))
         end
       rescue Exception=>e
