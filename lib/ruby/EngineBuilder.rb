@@ -1217,7 +1217,7 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
-    custom_env= params[:env_variables]
+    custom_env= params[:software_environment_variables_attributes]
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     @repoName= params[:repository] 
@@ -1226,16 +1226,16 @@ def log_exception(e)
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
-   
+ 
+    p :custom_env
+    p custom_env
+             
     if custom_env == nil
       @set_environments = Hash.new
       @environments = Array.new
-    elsif  custom_env.instance_of?(Array) == true
-      p :custom_env
-         p custom_env
+    elsif  custom_env.instance_of?(Array) == true    
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
-      @set_environments = Hash.new
-     
+      @set_environments = Hash.new     
     else
       @set_environments = custom_env
       @environments = Array.new
