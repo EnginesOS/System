@@ -421,10 +421,11 @@ count_layer
           count_layer
           @docker_file.puts("ENV dbpasswd " + db.dbPass)
           count_layer
-           if db.flavor == "mysql"
-             db.flavor = "mysql2"
+          flavor = db.flavor
+           if flavor == "mysql"
+            flavor = "mysql2"
            end
-          @docker_file.puts("ENV dbflavor " + db.flavor)
+          @docker_file.puts("ENV dbflavor " + flavor)
           count_layer
         end
 
