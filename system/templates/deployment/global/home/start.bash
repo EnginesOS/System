@@ -59,10 +59,19 @@ fi
 if test -f /home/engines/scripts/start.sh
 	then
 	    echo "Custom start"
+	    touch /engines/var/run/startup_complete 
 		bash	/home/engines/scripts/start.sh
 	fi
+
+if test -f /home/app/Rack.sh
+	then
+	
+		/home/app/Rack.sh
+	end
 
 touch /engines/var/run/startup_complete 	
 /usr/sbin/apache2ctl -D FOREGROUND 
  rm -f /run/apache2/apache2.pid 
+ 
+ 
  rm /engines/var/run/startup_complete
