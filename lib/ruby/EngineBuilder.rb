@@ -482,6 +482,7 @@ count_layer
             @docker_file.puts("  chmod -R gu+rw /home/app/" + directory + ";\\" )
             @docker_file.puts("  else\\")
             @docker_file.puts("  chmod -R gu+rw /home/app/" + directory + ";\\")
+            @docker_file.puts("  chmod gu+x `find -t d /home/app/" + directory  + "`;\\")
             @docker_file.puts("   fi")
        
             count_layer
