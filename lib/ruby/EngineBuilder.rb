@@ -424,6 +424,8 @@ count_layer
           flavor = db.flavor
            if flavor == "mysql"
             flavor = "mysql2"
+           elsif flavor == "pgsql"
+             flavor = "postgresql"
            end
           @docker_file.puts("ENV dbflavor " + flavor)
           count_layer
