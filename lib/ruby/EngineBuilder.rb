@@ -451,7 +451,7 @@ count_layer
             @docker_file.puts("   then \\")
                   @docker_file.puts("   touch  /home/app/" + path + ";\\")
                   @docker_file.puts("     fi;\\")
-                  @docker_file.puts( "  chmod  770 /home/app/" + path )
+                  @docker_file.puts( "  chmod  775 /home/app/" + path )
             count_layer
           end
         end
