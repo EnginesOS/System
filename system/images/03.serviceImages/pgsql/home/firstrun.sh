@@ -22,7 +22,7 @@ pass="pass"
 	 echo "  /usr/bin/psql " > /tmp/t.sh
 	 chmod +x /tmp/t.sh
 	  su postgres -c  /tmp/t.sh </tmp/t.sql
-	  su postgres creatdb root
+	  su postgres createdb root
 	  
 	  rm /tmp/t.sh
 	  rm /tmp/t.sql
