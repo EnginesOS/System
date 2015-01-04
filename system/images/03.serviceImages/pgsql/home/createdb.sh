@@ -14,12 +14,15 @@ fi
 pass=`echo $2 | md5sum |cut -f1 -d" "`
 pass=md5$pass
 
-Q1="CREATE ROLE $2 PASSWORD ${BTICK}$pass${BTICK}  LOGIN;"
-createdb -e $1 --owner=$2
+echo  "CREATE ROLE $2 PASSWORD ${BTICK}$pass${BTICK}  LOGIN;" >/tmp/.c.sql
+echo "CREATE DATABASE $1 OWNER = $2 ;" >> /tmp/.c.sql
+
+
 
 
 
 #echo "$SQL"
 
-pgsql -e "$Q1"
+pgsql < /tmp/.c.sql
+rm /tmp/.c.sql
 
