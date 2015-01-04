@@ -1,5 +1,5 @@
 #!/bin/bash
-BTICK='`'
+BTICK='''
 EXPECTED_ARGS=3
 E_BADARGS=65
 MYSQL=`which mysql`
