@@ -23,6 +23,6 @@ echo "CREATE DATABASE $1 OWNER = $2 ;" >> /tmp/.c.sql
 
 #echo "$SQL"
 
-pgsql < /tmp/.c.sql
+psql < /tmp/.c.sql
 rm /tmp/.c.sql
 
