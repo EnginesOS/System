@@ -14,7 +14,7 @@ fi
 pass=`echo $2 | md5sum |cut -f1 -d" "`
 pass=md5$pass
 
-echo  "CREATE ROLE $2 PASSWORD ${BTICK}$pass${BTICK}  LOGIN;" >/tmp/.c.sql
+echo  "CREATE USER $2 PASSWORD ${BTICK}$pass${BTICK}  LOGIN;" >/tmp/.c.sql
 echo "CREATE DATABASE $1 OWNER = $2 ;" >> /tmp/.c.sql
 
 
