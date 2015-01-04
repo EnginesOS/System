@@ -6,7 +6,7 @@ RUN apt-get -y install postgresql
 ADD home home
 COPY pgpass /root/.pgpass
 RUN mv /var/lib/postgresql /var/lib/postgresql_firstrun
-
+RUN chmod 600 /root/.pgpass
 ENV ContUser postgres
 ENV ContGrp  postgres
 
