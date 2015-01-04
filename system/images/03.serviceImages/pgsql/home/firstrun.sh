@@ -16,13 +16,13 @@ pass="pass"
  
  	touch /var/lib/postgresql/conf 	
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
-	  echo "Add ROLE rma WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
-	  echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
-	   echo "Alter ROLE rma WITH login;" >> /tmp/t.sql
+	  echo "Add ROLE root WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
+	  echo "Alter ROLE root WITH superuser;" >> /tmp/t.sql
+	   echo "Alter ROLE root WITH login;" >> /tmp/t.sql
 	 echo "  /usr/bin/psql " > /tmp/t.sh
 	 chmod +x /tmp/t.sh
 	  su postgres -c  /tmp/t.sh </tmp/t.sql
-	  su postgres creatdb rma
+	  su postgres creatdb root
 	  
 	  rm /tmp/t.sh
 	  rm /tmp/t.sql
