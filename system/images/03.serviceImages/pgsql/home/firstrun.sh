@@ -14,7 +14,7 @@ pass="pass"
 	
  	postgres  service postgresql start
  
- 	touch /var/lib/postgresql/conf
+ 	touch /var/lib/postgresql/conf 	
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
 	  echo "Add ROLE rma WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
 	  echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
