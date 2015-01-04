@@ -15,6 +15,7 @@ pass="pass"
  	postgres  service postgresql start
  
  	touch /var/lib/postgresql/conf 	
+ 	psql template1 -c 'create extension hstore;'
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
 	#  echo "create ROLE root WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
 	 # echo "Alter ROLE root WITH superuser;" >> /tmp/t.sql
@@ -23,6 +24,7 @@ pass="pass"
 	 echo "  /usr/bin/psql " > /tmp/t.sh
 	 chmod +x /tmp/t.sh
 	  su postgres -c  /tmp/t.sh </tmp/t.sql
+	  
 	  #su postgres createdb root
 	  
 	  rm /tmp/t.sh
