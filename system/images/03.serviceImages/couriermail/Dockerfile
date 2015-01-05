@@ -10,7 +10,7 @@ RUN echo "Y" | adduser -q --disabled-password -uid 22011 courier ;\
 #
  #/usr/lib/courier/libexec/courier/webmail/webadmin nah use apache alias
  # apt-get -y sqwebmail;\	
-ADD  000-default.conf/etc/apache2/sites-enabled/	
+ADD  000-default.conf /etc/apache2/sites-enabled/	
  	
 
 ENV ContUser courier
