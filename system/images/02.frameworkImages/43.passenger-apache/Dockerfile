@@ -1,6 +1,6 @@
 FROM engines/rails4
 
-
+ENV RAILS_ENV production
 
 RUN /usr/sbin/usermod -u 22671 www-data ;\
  	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7 ;\

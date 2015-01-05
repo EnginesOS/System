@@ -18,11 +18,11 @@ pass="pass"
  	touch /var/lib/postgresql/conf 	
  #	psql template1 -c 'create extension hstore;'
 	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD '$pass'; " > /tmp/t.sql
-	  echo "create ROLE rma WITH ENCRYPTED PASSWORD '$pass'; " >> /tmp/t.sql
-	  echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
-	   echo "Alter ROLE rma WITH   login;" >> /tmp/t.sql
-	   echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
-	  su postgres -c  psql </tmp/t.sql
+	 echo "create ROLE rma WITH ENCRYPTED PASSWORD '$pass'; " >> /tmp/t.sql
+	 echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
+	 echo "Alter ROLE rma WITH   login;" >> /tmp/t.sql
+	 echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
+	 su postgres -c  psql </tmp/t.sql
 	  	 
 	 	 
  fi
