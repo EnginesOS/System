@@ -64,7 +64,7 @@ if test -f /home/engines/scripts/start.sh
 	fi
 
 if test -f /home/app/Rack.sh
-	then
+	then 
 	
 		/home/app/Rack.sh
 	fi
