@@ -21,5 +21,5 @@ echo "alter  ROLE $2 login; " >> /tmp/.c.sql
 
 #echo "$SQL"
 
-psql < /tmp/.c.sql
-rm /tmp/.c.sql
+su postgres -c psql < /tmp/.c.sql
+ /tmp/.c.sql
