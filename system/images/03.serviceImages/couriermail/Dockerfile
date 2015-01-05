@@ -13,7 +13,10 @@ RUN echo "Y" | adduser -q --disabled-password -uid 22011 courier ;\
 ADD  000-default.conf /etc/apache2/sites-enabled/	
  	 
 RUN 	 cp -rp /usr/lib/courier/courier/webmail/webadmin /usr/lib/cgi-bin;\
-		 ln -s /usr/share/courier/webadmin /var/www/html/
+		 ln -s /usr/share/courier/webadmin /var/www/html/;\
+		 mkdir /var/log/apache2/;\
+		 chown www-data /var/log/apache2/
+		 
 
 ENV ContUser courier
 ENV ContGrp courier
