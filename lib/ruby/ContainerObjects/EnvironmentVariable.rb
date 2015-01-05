@@ -1,5 +1,5 @@
 class EnvironmentVariable
-  def initialize(name,value,setatrun,mandatory,build_time_only,label)
+  def initialize(name,value,setatrun,mandatory,build_time_only,label,immutable)
     #name,value,ask,mandatory,build_time_only
     @name=name
     @value=value
@@ -7,9 +7,10 @@ class EnvironmentVariable
     @build_time_only = build_time_only
     @mandatory = mandatory
     @label = label
+    @immutable = immutable
   end
 
-  attr_reader :ask_at_build_time,:name,:value,:build_time_only,:mandatory,:label,:setatrun
+  attr_reader :ask_at_build_time,:name,:value,:build_time_only,:mandatory,:label,:immutable
 
   def attributes
     retval = Hash.new()
@@ -19,7 +20,8 @@ class EnvironmentVariable
     retval[:ask_at_build_time] = @ask_at_build_time
     retval[:build_time_only] = @build_time_only
     retval[:mandatory] = @mandatory
-
+    retval[:immutable] = @immutable
+      
     return retval
   end
 end
