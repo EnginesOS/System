@@ -6,7 +6,6 @@ class EnvironmentVariable
     @ask_at_build_time=setatrun
     @build_time_only = build_time_only
     @mandatory = mandatory
-    @setatrun = @ask_at_build_time #Kludge so as noto break Guo should be removed when gui fixed
     @label = label
   end
 
