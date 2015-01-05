@@ -6,8 +6,16 @@
 #TZ="$country\/$state"
 
 USER 0
-RUN	chmod -R g+r /home/app; chmod g+x `find /home/app -type d`
-RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
+RUN	chmod -R g+r /home/app;\
+ for dir in chmod g+x `find /home/app -type d | sed "/ /s/+_+//"` ;\
+	then\
+		if test `echo $dir |grep _+_ |wc -l ` -lt 1 ;\
+			then \
+				chmod g+x$dir ;\
+				fi;\
+				done;\
+\				
+cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
 	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf;\
 	echo  ServerName $fqdn > /tmp/apache2.conf;\
 	cat /etc/apache2/apache2.conf >> /tmp/apache2.conf;\

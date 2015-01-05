@@ -484,7 +484,7 @@ count_layer
             @docker_file.puts("  chmod -R gu+rw \"/home/app/" + directory + "\";\\")
             @docker_file.puts("  for dir in `find -t d /home/app/" + directory  + " | sed \"/ /s//_+_/\" `;\\")
             @docker_file.puts(" do\\")
-            @docker_file.puts(" if `echo $dir |grep _+_ |wc -l ` -lt 1 \\")
+            @docker_file.puts(" if test `echo $dir |grep _+_ |wc -l ` -lt 1 \\")
             @docker_file.puts(" then chmod gu+x $dir\\;")
             @docker_file.puts("   fi;\\")
             @docker_file.puts(" done;\\")
