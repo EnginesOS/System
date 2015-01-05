@@ -67,7 +67,7 @@ if test -f /home/app/Rack.sh
 	then
 	
 		/home/app/Rack.sh
-	end
+	fi
 
 touch /engines/var/run/startup_complete 	
 /usr/sbin/apache2ctl -D FOREGROUND 
