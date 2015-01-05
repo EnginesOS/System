@@ -16,6 +16,15 @@ class EnginesOSapi
     return @core_api
   end
   
+  def self.log_exception_and_fail(cmd,e)
+    e_str = self.log_exception(e)
+    return self.failed("Exception",e_str,cmd)
+  end
+  def log_exception_and_fail(cmd,e)
+      e_str = self.log_exception(e)
+      return self.failed("Exception",e_str,cmd)
+    end
+
  ##fix me and put in system api
   def first_run_required?      
     if File.exists?(SysConfig.FirstRunRan) ==false      
@@ -147,14 +156,14 @@ class EnginesOSapi
     return log_exception_and_fail("getManagedServices",e)
   end
 
-  def EnginesOSapi.loadManagedService(service_name,core_api)
+  def self.loadManagedService(service_name,core_api)
     service = core_api.loadManagedService(service_name)
     if service == false
-      return failed(service_name,last_api_error ,"Load Service")
+      return self.failed(service_name,core_api.last_error ,"Load Service")
     end
     return service
   rescue Exception=>e
-    return log_exception_and_fail("LoadMangedService",e)
+    return self.log_exception_and_fail("LoadMangedService",e)
   end
 
   def loadManagedEngine(engine_name)
@@ -624,12 +633,7 @@ class EnginesOSapi
     return log_exception_and_fail("read_start",e)
   end
 
-  def log_exception_and_fail(cmd,e)
-    e_str = log_exception(e)
-    return failed("Exception",e_str,cmd)
-  end
-
-  def log_exception(e)
+  def self.log_exception(e)
     @last_error =  e_str = e.to_s()
     e.backtrace.each do |bt |
       e_str += bt
@@ -1055,7 +1059,7 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
-  def  EnginesOSapi.failed(item_name,mesg ,cmd)
+  def  self.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
     p item_name
     p mesg

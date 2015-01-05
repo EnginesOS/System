@@ -20,7 +20,8 @@ class EngineBuilder
   :repoName,\
   :hostname,\
   :domain_name,\
-  :build_name
+  :build_name,\
+  :set_environments
   
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -75,7 +76,7 @@ class EngineBuilder
       
       if write_user_local == true
         @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
-        @docker_file.puts("     chmod -R $CountUser /usr/local/")
+        @docker_file.puts("     chown -R $ContUser /usr/local/")
       end
       
       write_app_archives
@@ -150,15 +151,19 @@ class EngineBuilder
         n=0
         @docker_file.puts("#Persistant Dirs")
         @blueprint_reader.persistant_dirs.each do |path|
+        
+                      
           path.chomp!("/")
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
-          @docker_file.puts("if [ ! -d /home/app/" + path + " ];\\")
+          dirname = File.dirname(path)
+          @docker_file.puts("mkdir -p $VOLDIR/" + dirname + ";\\")
+          @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
           @docker_file.puts("  then \\")
-          @docker_file.puts("    mkdir -p /home/app/" + path +" ;\\")
+          @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/app/" + path + " $VOLDIR ;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/app/" + path)
+          @docker_file.puts("mv /home/" + path + " $VOLDIR/" + dirname + "/;\\")
+          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/" + path)
           n=n+1
         count_layer
         end
@@ -198,16 +203,24 @@ class EngineBuilder
           p link_src
           p :n
           p n
+          dir = File.dirname(path)
+          p :dir
+          p dir
+          if dir.present? == false || dir == nil || dir.length ==0 || dir =="."
+            dir = "app/"
+          end
+        p :dir
+            p dir
           @docker_file.puts("")
-          @docker_file.puts("RUN mkdir -p /home/app/" + File.dirname(path) + ";\\")
-          @docker_file.puts("  if [ ! -f /home/app/" + path + " ];\\")
+          @docker_file.puts("RUN mkdir -p /home/" + dir + path  + ";\\")
+          @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
           @docker_file.puts("    then \\")
-          @docker_file.puts("      touch  /home/app/" + path +";\\")
+          @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
           @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path) +";\\")       
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/app/" + path + " $VOLDIR ;\\")
-          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/app/" + path)
+          @docker_file.puts("   mv /home/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/" + path)
         count_layer
          n=n+1
         end
@@ -408,7 +421,13 @@ count_layer
           count_layer
           @docker_file.puts("ENV dbpasswd " + db.dbPass)
           count_layer
-          @docker_file.puts("ENV dbflavor " + db.flavor)
+          flavor = db.flavor
+           if flavor == "mysql"
+            flavor = "mysql2"
+           elsif flavor == "pgsql"
+             flavor = "postgresql"
+           end
+          @docker_file.puts("ENV dbflavor " + flavor)
           count_layer
         end
 
@@ -430,9 +449,10 @@ count_layer
           if path !=nil           
             @docker_file.puts("RUN if [ ! -f /home/app/" + path + " ];\\" )
             @docker_file.puts("   then \\")
+            @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
                   @docker_file.puts("   touch  /home/app/" + path + ";\\")
                   @docker_file.puts("     fi;\\")
-                  @docker_file.puts( "  chmod  770 /home/app/" + path )
+                  @docker_file.puts( "  chmod  775 /home/app/" + path )
             count_layer
           end
         end
@@ -453,11 +473,24 @@ count_layer
         end
         @blueprint_reader.recursive_chmods.each do |directory|          
           if directory !=nil
-            @docker_file.puts("RUN if [ ! -d /home/app/" + directory + " ] ;\\" )
+            @docker_file.puts("RUN if [ -h  /home/app/"  + directory + " ] ;\\")
             @docker_file.puts("    then \\")
-            @docker_file.puts("     mkdir  /home/app/" + directory + ";\\")
+            @docker_file.puts("    dest=`ls -la /home/app/" + directory +" |cut -f2 -d\">\"`;\\")
+            @docker_file.puts("    chmod -R gu+rw $dest;\\")
+            @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
+            @docker_file.puts("    then \\")
+            @docker_file.puts("     mkdir  \"/home/app/" + directory + "\";\\")
+            @docker_file.puts("  chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
+            @docker_file.puts("  else\\")
+            @docker_file.puts("  chmod -R gu+rw \"/home/app/" + directory + "\";\\")
+            @docker_file.puts("  for dir in `find -t d /home/app/" + directory  + " | sed \"/ /s//_+_/\" `;\\")
+            @docker_file.puts(" do\\")
+            @docker_file.puts(" if test `echo $dir |grep _+_ |wc -l ` -lt 1 \\")
+            @docker_file.puts(" then chmod gu+x $dir\\;")
             @docker_file.puts("   fi;\\")
-            @docker_file.puts("  chmod -R 770 /home/app/" + directory )
+            @docker_file.puts(" done;\\")
+            @docker_file.puts("   fi")
+       
             count_layer
           end
         end
@@ -544,7 +577,12 @@ count_layer
             else
               dest_prefix="/home/app"
             end
-            @docker_file.puts("RUN mkdir -p " + dest_prefix  +  "`dirname " + arc_loc + "`;  mv " + arc_dir + " " + dest_prefix +  arc_loc )
+      
+            @docker_file.puts("run   if test -f " + arc_dir  +" ;\\")
+            @docker_file.puts("       then\\")
+            @docker_file.puts(" mkdir -p /home/app ;\\")
+            @docker_file.puts(" fi;\\")
+            @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
@@ -1165,7 +1203,7 @@ def log_exception(e)
       log_build_output("Read Environment Variables")
       @environments = Array.new
       p :set_environment_variables
-      p @set_environments
+      p @builder.set_environments
       begin
         envs = @blueprint["software"]["environment_variables"]
         envs.each do |env|
@@ -1174,17 +1212,19 @@ def log_exception(e)
           name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_build_time"]
-           mandatory = env["mandatory"]
-           build_time_only =  env["build_time_only"]
-          
-          if @set_environments != nil
+          mandatory = env["mandatory"]
+          build_time_only =  env["build_time_only"]
+          label =  env["label"]
+          immutable =  env["immutable"]
+                
+          if @builder.set_environments != nil
             p :looking_for_ 
             p name
-            if ask == true  && @set_environments.key?(name) == true                          
-              value=@set_environments[name]
-            end
+           if ask == true  && @builder.set_environments.has_key?(name) == true                          
+              value=@builder.set_environments[name]
           end
-          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,name))
+        end
+          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
         end
       rescue Exception=>e
         log_exception(e)
@@ -1197,7 +1237,7 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
-    custom_env= params[:env_variables]
+    custom_env= params[:software_environment_variables_attributes]
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     @repoName= params[:repository] 
@@ -1206,18 +1246,29 @@ def log_exception(e)
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
-   
+ 
+    p :custom_env
+    p custom_env
+             
     if custom_env == nil
       @set_environments = Hash.new
       @environments = Array.new
-    elsif  custom_env.instance_of?(Array) == true
-      p :custom_env
-         p custom_env
+    elsif  custom_env.instance_of?(Array) == true    
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
-      @set_environments = Hash.new
-     
+      #FIXME need to vet all environment variables
+      @set_environments = Hash.new     
     else
-      @set_environments = custom_env
+      env_array = custom_env.values
+     custom_env_hash = Hash.new
+     
+      env_array.each do |env_hash|
+        p :env_hash
+        p env_hash
+        custom_env_hash.store(env_hash["name"],env_hash["value"])
+      end
+      p :Merged_custom_env
+      p custom_env_hash
+      @set_environments =  custom_env_hash
       @environments = Array.new
     end
     @runtime=String.new

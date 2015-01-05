@@ -1397,6 +1397,11 @@ class EnginesCore
 
   attr_reader :last_error
 
+def add_share(site_hash)
+end 
+
+def rm_share(site_hash)
+end 
   
 def add_domain(params)
     return  @system_api.add_domain(params)

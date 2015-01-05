@@ -19,6 +19,10 @@ cd $MasterImagesDir
 							tag=`cat TAG`
 							echo "----------------------"
 							echo "Building $tag"
+								if test -f setup.sh
+									then 
+										./setup.sh
+									fi
 							docker build --rm=true -t $tag .
 								if test $? -eq 0
 									then

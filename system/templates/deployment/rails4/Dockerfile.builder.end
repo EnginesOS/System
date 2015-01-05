@@ -28,6 +28,7 @@ USER www-data
 	
 VOLUME /var/log/
 WORKDIR /home/app
-CMD /home/app/Rack.sh
+#CMD /home/app/Rack.sh
+CMD /home/start.bash
 
 

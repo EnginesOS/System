@@ -1,42 +1,6 @@
 #!/bin/bash
 PATH="/usr/local/rbenv/bin:$PATH"
 
-cd /home/app
-
-
-
-
-
-if test -f /home/engines/scripts/setup.bash
-	then
-		bash /home/engines/scripts/setup.bash
-		mv /home/engines/scripts/setup.bash /home/engines/scripts/setup.bash.ran
-	fi
-	
-if test -f /home/engines/scripts/pre-running.sh
-	then
-		bash	/home/engines/scripts/pre-running.sh
-fi	
-
-if test -n "$CRONJOBS"
-then
-	service cron start
-fi
-
-#in Dockerfile
-#RAILS_ENV=production
-#DATABASE_URL=mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
-#export  RAILS_ENV DATABASE_URL
-
-#/usr/local/rbenv/shims/bundle install
-
-#/usr/local/rbenv/shims/bundle exec rake db:migrate
-
-#/usr/local/rbenv/shims/bundle exec rake db:populate
-
-#/usr/local/rbenv/shims/bundle exec rake assets:precompile
-
-
 SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
 export SECRET_KEY_BASE 
 
