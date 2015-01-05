@@ -20,7 +20,7 @@ pass="pass"
 	  echo "create ROLE rma WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
 	  echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
 	   echo "Alter ROLE rma WITH login;" >> /tmp/t.sql
-	   echo "CREATE DATABASE rma ownwer = rma ;" >> /tmp/t.sql
+	   echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
 	 echo "  /usr/bin/psql " > /tmp/t.sh
 	 chmod +x /tmp/t.sh
 	  su postgres -c  /tmp/t.sh </tmp/t.sql

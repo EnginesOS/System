@@ -16,7 +16,7 @@ pass=md5$pass
 
 echo  "CREATE ROLE $2 WITH ENCRYPTED PASSWORD '$pass'  LOGIN;" >/tmp/.c.sql
 echo "CREATE DATABASE $1 OWNER = $2 ;" >> /tmp/.c.sql
-
+echo "alter  ROLE $2 login; " >> /tmp/.c.sql
 
 
 
