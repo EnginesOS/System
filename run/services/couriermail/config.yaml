@@ -10,7 +10,7 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/mgmt
+image: engines/couriermail
 port: 
 eports:
 - !ruby/object:WorkPort
