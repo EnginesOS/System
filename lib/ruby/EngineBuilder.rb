@@ -581,7 +581,7 @@ count_layer
             @docker_file.puts("run   if test -f " + arc_dir  +" ;\\")
             @docker_file.puts("       then\\")
             @docker_file.puts(" mkdir -p /home/app ;\\")
-            @docker_file.puts(" fi;//")
+            @docker_file.puts(" fi;\\")
             @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
