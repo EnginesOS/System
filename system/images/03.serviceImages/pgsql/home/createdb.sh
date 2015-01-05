@@ -11,18 +11,15 @@ echo "Usage: $0 dbname dbuser dbpass"
 exit $E_BADARGS
 fi
 
-pass=`echo $2 | md5sum |cut -f1 -d" "`
-pass=md5$pass
+pass=#`echo $2 | md5sum |cut -f1 -d" "`
+pass=$2
 
 echo  "CREATE ROLE $2 WITH ENCRYPTED PASSWORD '$pass'  LOGIN;" >/tmp/.c.sql
 echo "CREATE DATABASE $1 OWNER = $2 ;" >> /tmp/.c.sql
 echo "alter  ROLE $2 login; " >> /tmp/.c.sql
 
 
-
-
 #echo "$SQL"
 
 psql < /tmp/.c.sql
 rm /tmp/.c.sql
-
