@@ -11,10 +11,12 @@ RUN echo "Y" | adduser -q --disabled-password -uid 22011 courier ;\
  #/usr/lib/courier/libexec/courier/webmail/webadmin nah use apache alias
  # apt-get -y sqwebmail;\	
 ADD  000-default.conf /etc/apache2/sites-enabled/	
- 	
+ 	 
+RUN 	 cp -rp /usr/lib/courier/courier/webmail/webadmin /usr/lib/cgi-bin;\
+		 ln -s /usr/share/courier/webadmin /var/www/html/
 
 ENV ContUser courier
 ENV ContGrp courier
 
-
+ADD custom_start.sh /home/engines/scripts/
 CMD /home/init.sh
