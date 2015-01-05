@@ -578,7 +578,11 @@ count_layer
               dest_prefix="/home/app"
             end
       
-            @docker_file.puts("run mv " + arc_dir + " " + dest_prefix +  arc_loc )
+            @docker_file.puts("run   if test -f " + arc_dir  +" ;\\")
+            @docker_file.puts("       then\\")
+            @docker_file.puts(" mkdir -p /home/app ;\\")
+            @docker_file.puts(" fi;//")
+            @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
@@ -1208,9 +1212,11 @@ def log_exception(e)
           name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_build_time"]
-           mandatory = env["mandatory"]
-           build_time_only =  env["build_time_only"]
-          
+          mandatory = env["mandatory"]
+          build_time_only =  env["build_time_only"]
+          label =  env["label"]
+          immutable =  env["immutable"]
+                
           if @builder.set_environments != nil
             p :looking_for_ 
             p name
@@ -1218,7 +1224,7 @@ def log_exception(e)
               value=@builder.set_environments[name]
           end
         end
-          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,name))
+          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
         end
       rescue Exception=>e
         log_exception(e)
