@@ -13,11 +13,11 @@ pass="pass"
 	chown postgres -R /var/log/postgresql
 	
  	postgres  service postgresql start
- 
+   pass=md5`echo pass |md5sum | cut -f1 -d " "`
  	touch /var/lib/postgresql/conf 	
  	psql template1 -c 'create extension hstore;'
-	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD 'pass'; " > /tmp/t.sql
-	  echo "create ROLE rma WITH ENCRYPTED PASSWORD 'pass'; " >> /tmp/t.sql
+	 echo "ALTER ROLE postgres WITH ENCRYPTED PASSWORD '$pass'; " > /tmp/t.sql
+	  echo "create ROLE rma WITH ENCRYPTED PASSWORD '$pass'; " >> /tmp/t.sql
 	  echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
 	   echo "Alter ROLE rma WITH login;" >> /tmp/t.sql
 	   echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
