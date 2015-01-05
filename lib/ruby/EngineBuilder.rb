@@ -449,6 +449,7 @@ count_layer
           if path !=nil           
             @docker_file.puts("RUN if [ ! -f /home/app/" + path + " ];\\" )
             @docker_file.puts("   then \\")
+            @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
                   @docker_file.puts("   touch  /home/app/" + path + ";\\")
                   @docker_file.puts("     fi;\\")
                   @docker_file.puts( "  chmod  775 /home/app/" + path )
