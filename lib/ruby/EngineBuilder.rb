@@ -193,16 +193,12 @@ class EngineBuilder
         log_build_output("set setup_env")
         src_paths = @blueprint_reader.persistant_files[:src_paths]
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
-        n=0
 
         src_paths.each do |path|
 #          path = dest_paths[n]
           p :path
           p path
-          p :link_src
-          p link_src
-          p :n
-          p n
+        
           dir = File.dirname(path)
           p :dir
           p dir
@@ -222,7 +218,7 @@ class EngineBuilder
           @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + dir + ";\\")
           @docker_file.puts("    ln -s $VOLDIR/" + path + " /home/" + path)
         count_layer
-         n=n+1
+     
         end
     
       rescue Exception=>e
