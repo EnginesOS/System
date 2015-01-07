@@ -219,7 +219,7 @@ class EngineBuilder
           @docker_file.puts("    fi;\\")
           @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path) +";\\")       
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/" + path + " $VOLDIR ;\\")
+          @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + File.dirname(path) + ";\\")
           @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/" + path)
         count_layer
          n=n+1
