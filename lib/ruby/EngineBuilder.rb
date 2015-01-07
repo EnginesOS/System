@@ -195,8 +195,8 @@ class EngineBuilder
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
         n=0
 
-        src_paths.each do |link_src|
-          path = dest_paths[n]
+        src_paths.each do |path|
+#          path = dest_paths[n]
           p :path
           p path
           p :link_src
@@ -217,10 +217,10 @@ class EngineBuilder
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $VOLDIR/" + File.dirname(path) +";\\")       
+          @docker_file.puts("  mkdir -p $VOLDIR/" + dir +";\\")       
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + File.dirname(path) + ";\\")
-          @docker_file.puts("    ln -s $VOLDIR/" + link_src + " /home/" + path)
+          @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + dir + ";\\")
+          @docker_file.puts("    ln -s $VOLDIR/" + path + " /home/" + path)
         count_layer
          n=n+1
         end
@@ -814,7 +814,6 @@ def log_exception(e)
           path = clean_path(file["path"])
           link_src = path.sub(/app/,"")
           src_paths.push(link_src)
-          dest_paths.push(path)
         end
         p :src_paths
         p src_paths
@@ -822,7 +821,7 @@ def log_exception(e)
         p dest_paths
         
         @persistant_files[:src_paths]= src_paths
-        @persistant_files[:dest_paths]= dest_paths
+       
 
       rescue Exception=>e
         log_exception(e)
