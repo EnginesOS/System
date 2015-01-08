@@ -1238,7 +1238,7 @@ class EnginesCore
       rescue Exception=>e
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
-        container.last_error=(error_mesgs+ e.to_s)
+        container.last_error=(error_mesg + e.to_s)
         log_exception(e)
         return false
       end
