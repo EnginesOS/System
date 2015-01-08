@@ -641,7 +641,16 @@ class EnginesOSapi
     SystemUtils.log_output(e_str,10)
     return e_str
   end
-
+  
+  def log_exception(e)
+    @last_error =  e_str = e.to_s()
+    e.backtrace.each do |bt |
+      e_str += bt
+    end
+    SystemUtils.log_output(e_str,10)
+    return e_str
+  end
+  
   def get_system_memory_info
     return @core_api.get_system_memory_info
   rescue Exception=>e
@@ -942,7 +951,6 @@ class EnginesOSapi
             return failed("get avaiable services ",last_api_error,"get avaiable services")
           end
  end
-
   
   def set_engine_hostname_properties(params)
     #    engine_name = params[:engine_name]
