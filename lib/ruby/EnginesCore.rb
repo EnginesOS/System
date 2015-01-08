@@ -529,7 +529,7 @@ class EnginesCore
      end
  
         
-    def rm_domain(domain)
+    def rm_domain(domain,system_api)
       clear_error
       domains = load_domains
       if domains.has_key?(domain)
@@ -1407,7 +1407,7 @@ def add_domain(params)
 end
 
 def remove_domain(params)
-  return @system_api.rm_domain(params[:domain_name])
+  return @system_api.rm_domain(params[:domain_name],system_api)
 end
 def update_domain(old_domain,params)
   return @system_api.update_domain(old_domain,params)
