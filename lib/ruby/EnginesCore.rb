@@ -491,11 +491,11 @@ class EnginesCore
       clear_error
       begin
         if File.exists?(SysConfig.DomainsFile) == false
-          domain_file = File.open(SysConfig.DomainsFile,"w")
-          domain_file.close
+          self_hosted_domain_file = File.open(SysConfig.DomainsFile,"w")
+          self_hosted_domain_file.close
           return Hash.new
         else
-          domain_file = File.open(SysConfig.DomainsFile,"r")
+          self_hosted_domain_file = File.open(SysConfig.DomainsFile,"r")
         end
         domains = YAML::load( self_hosted_domain_file )
         domains.close
