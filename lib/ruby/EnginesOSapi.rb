@@ -64,8 +64,7 @@ class EnginesOSapi
       #smarthost_username
       #smarthost_password
       #smarthost_authtype
-    
-    
+
     
     f= File.new(SysConfig.FirstRunRan,"w")
            date= DateTime.now
