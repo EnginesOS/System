@@ -974,7 +974,8 @@ class EnginesOSapi
   end
 
   
-  def update_domain(old_domain_name,params)
+  def update_domain(params)
+    old_domain_name=update_domain[:original_domain_name]
     if @core_api.update_domain(old_domain_name,params) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
@@ -1012,7 +1013,8 @@ class EnginesOSapi
       p params
       return success(params[:domain_name], "upload self hosted ssl cert domain")        
     end
-  def remove_domain domain_name
+  def remove_domain params
+    
     if @core_api.remove_domain(params) == false
        return  failed(params[:domain_name],last_api_error, "Remove domain")
     end  
@@ -1020,11 +1022,11 @@ class EnginesOSapi
     return success(params[:domain_name], "Remove domain")
   end
     if @core_api.remove_self_hosted_domain( domain_name) ==true
-      return success(domain_name, "Remove self hosted domain")
+      return success(params[:domain_name], "Remove self hosted domain")
     end
-    return failed(domain_name,last_api_error, "Remove self hosted domain")
+    return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
   rescue Exception=>e
-    return log_exception_and_fail("Remove self hosted domain ",e)
+    return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
   end
 
   def list_domains
