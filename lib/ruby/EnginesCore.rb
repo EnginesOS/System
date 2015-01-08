@@ -516,7 +516,8 @@ class EnginesCore
          if params[:self_hosted]
            add_self_hosted_domain params
          end
-         
+         p :add_domain
+         p params
        domains = load_domains()
        domains[params[:domain_name]] = params 
        if save_domains(domains)        
