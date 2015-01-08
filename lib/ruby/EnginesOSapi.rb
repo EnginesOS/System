@@ -20,9 +20,10 @@ class EnginesOSapi
     e_str = self.log_exception(e)
     return self.failed("Exception",e_str,cmd)
   end
+  
   def log_exception_and_fail(cmd,e)
-      e_str = self.log_exception(e)
-      return self.failed("Exception",e_str,cmd)
+      e_str = log_exception(e)
+      return failed("Exception",e_str,cmd)
     end
 
  ##fix me and put in system api
