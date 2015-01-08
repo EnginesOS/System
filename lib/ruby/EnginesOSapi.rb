@@ -530,7 +530,6 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
-
     retval = engine.register_dns()
 
     if retval.is_a?(String)
