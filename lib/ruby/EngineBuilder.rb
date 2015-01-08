@@ -808,8 +808,8 @@ def log_exception(e)
         files= String.new
         pfs.each do |file|
           path = clean_path(file["path"])
-          link_src = path.sub(/app/,"")
-          src_paths.push(link_src)
+          #link_src = path.sub(/app/,"")
+          src_paths.push(path)
         end
         p :src_paths
         p src_paths
@@ -1235,7 +1235,7 @@ def log_exception(e)
     custom_env= params[:software_environment_variables_attributes]
     @core_api = core_api
     @http_protocol = params[:http_protocol]
-    @repoName= params[:repository] 
+    @repoName= params[:repository_url] 
     
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
