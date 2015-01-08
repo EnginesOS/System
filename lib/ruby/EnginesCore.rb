@@ -498,7 +498,7 @@ class EnginesCore
           self_hosted_domain_file = File.open(SysConfig.DomainsFile,"r")
         end
         domains = YAML::load( self_hosted_domain_file )
-        domains.close
+        self_hosted_domain_file.close
         if domains == false
           return Hash.new
         end
