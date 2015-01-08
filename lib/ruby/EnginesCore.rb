@@ -510,14 +510,13 @@ class EnginesCore
       end
     end
     
-    def add_hosted_domain(params,system_api)
+    def add_domain(params)
       clear_error
        domain= params[:domain_name]
-
+         
        domains = load_domains()
        domains[params[:domain_name]] = params 
-       if save_domains(domains)
-        
+       if save_domains(domains)        
          return true
        end
    
