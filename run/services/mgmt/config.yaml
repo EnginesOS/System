@@ -47,6 +47,11 @@ volumes:
   remotepath: "/var/log/engines"
   localpath: "/var/log/engines"
   mapping_permissions: rw
+ engines_sys: !ruby/object:Volume
+  name: engines_sys
+  remotepath: "/sys"
+  localpath: "/sys"
+  mapping_permissions: rw 
 port: 
 eports:
 - !ruby/object:WorkPort
