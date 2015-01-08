@@ -683,6 +683,8 @@ class EnginesCore
             ret_val.store(:current , File.read(path + "/memory.usage_in_bytes"))
             ret_val.store(:limit , File.read(path + "/memory.limit_in_bytes"))
           else
+            p :no_cgroup_file
+            p path
             ret_val.store(:maximum ,  "No Container")
             ret_val.store(:current , "No Container")
             ret_val.store(:limit ,  "No Container")
