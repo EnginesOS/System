@@ -134,6 +134,7 @@ class EnginesOSapi
   end
 
   def list_apps()
+    p :list_apps
     return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
