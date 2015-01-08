@@ -534,7 +534,7 @@ class EnginesCore
       domains = load_domains
       if domains.has_key?(domain)
         domains.delete(domain)  
-       load_domains(domains) 
+        save_domains(domains) 
         system_api.reload_dns
       end
       
