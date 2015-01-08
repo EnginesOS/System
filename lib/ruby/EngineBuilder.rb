@@ -1235,7 +1235,8 @@ def log_exception(e)
     custom_env= params[:software_environment_variables_attributes]
     @core_api = core_api
     @http_protocol = params[:http_protocol]
-    @repoName= params[:repository_url] 
+    p params
+      @repoName= params[:repository_url] 
     
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
