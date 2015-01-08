@@ -498,7 +498,7 @@ class EnginesCore
           self_hosted_domain_file = File.open(SysConfig.DomainsFile,"r")
         end
         domains = YAML::load( self_hosted_domain_file )
-        domains.close
+        self_hosted_domain_file.close
         if domains == false
           return Hash.new
         end
@@ -513,7 +513,11 @@ class EnginesCore
     def add_domain(params)
       clear_error
        domain= params[:domain_name]
-         
+         if params[:self_hosted]
+           add_self_hosted_domain params
+         end
+         p :add_domain
+         p params
        domains = load_domains()
        domains[params[:domain_name]] = params 
        if save_domains(domains)        
@@ -529,23 +533,31 @@ class EnginesCore
      end
  
         
-    def rm_domain(domain)
+    def rm_domain(domain,system_api)
       clear_error
       domains = load_domains
       if domains.has_key?(domain)
         domains.delete(domain)  
-       load_domains(domains) 
+        save_domains(domains) 
         system_api.reload_dns
       end
       
     end
-  def  update_domain(old_domain_name, params)
+  def  update_domain(old_domain_name, params,system_api)
     clear_error
     begin
       domains = load_domains()
       domains.delete(old_domain_name)
       domains[params[:domain_name]] = params
       save_domains(domains)
+      
+    if params[:self_hosted]
+        add_self_hosted_domain params
+        rm_self_hosted_domain(old_domain_name)
+      system_api.reload_dns
+   end
+          
+         
       return true
     rescue  Exception=>e
       log_exception(e)
@@ -665,12 +677,14 @@ class EnginesCore
           container.container_id=(container_id)
         end
         if container && container.container_id != nil && container.container_id != '-1'
-          path = "/sys/fs/cgroup/memory/docker/" + container.container_id
+          path = "/sys/fs/cgroup/memory/docker/" + container.container_id + "/"
           if Dir.exists?(path)
             ret_val.store(:maximum , File.read(path + "/memory.max_usage_in_bytes"))
             ret_val.store(:current , File.read(path + "/memory.usage_in_bytes"))
             ret_val.store(:limit , File.read(path + "/memory.limit_in_bytes"))
           else
+            p :no_cgroup_file
+            p path
             ret_val.store(:maximum ,  "No Container")
             ret_val.store(:current , "No Container")
             ret_val.store(:limit ,  "No Container")
@@ -1224,7 +1238,7 @@ class EnginesCore
       rescue Exception=>e
         @last_error=error_mesg + e.to_s
         container.last_result=(res)
-        container.last_error=(error_mesgs+ e.to_s)
+        container.last_error=(error_mesg + e.to_s)
         log_exception(e)
         return false
       end
@@ -1407,10 +1421,10 @@ def add_domain(params)
 end
 
 def remove_domain(params)
-  return @system_api.rm_domain(params[:domain_name])
+  return @system_api.rm_domain(params[:domain_name],@system_api)
 end
 def update_domain(old_domain,params)
-  return @system_api.update_domain(old_domain,params)
+  return @system_api.update_domain(old_domain,params,@system_api)
 end
 
 
