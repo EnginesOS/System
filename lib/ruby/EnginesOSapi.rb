@@ -134,6 +134,7 @@ class EnginesOSapi
   end
 
   def list_apps()
+    p :list_apps
     return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
@@ -1013,9 +1014,11 @@ class EnginesOSapi
       p params
       return success(params[:domain_name], "upload self hosted ssl cert domain")        
     end
-  def remove_domain params
     
+  def remove_domain params    
     if @core_api.remove_domain(params) == false
+      p :remove_domain_last_error
+      p last_api_error
        return  failed(params[:domain_name],last_api_error, "Remove domain")
     end  
   if params[:self_hosted] == false
