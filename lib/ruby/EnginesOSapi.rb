@@ -20,9 +20,10 @@ class EnginesOSapi
     e_str = self.log_exception(e)
     return self.failed("Exception",e_str,cmd)
   end
+  
   def log_exception_and_fail(cmd,e)
-      e_str = self.log_exception(e)
-      return self.failed("Exception",e_str,cmd)
+      e_str = log_exception(e)
+      return failed("Exception",e_str,cmd)
     end
 
  ##fix me and put in system api
@@ -530,7 +531,6 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Register Engine DNS")
     end
-
     retval = engine.register_dns()
 
     if retval.is_a?(String)
