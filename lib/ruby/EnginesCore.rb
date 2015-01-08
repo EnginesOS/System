@@ -513,6 +513,9 @@ class EnginesCore
     def add_domain(params)
       clear_error
        domain= params[:domain_name]
+         if params[:self_hosted]
+           add_self_hosted_domain params
+         end
          
        domains = load_domains()
        domains[params[:domain_name]] = params 
@@ -539,13 +542,21 @@ class EnginesCore
       end
       
     end
-  def  update_domain(old_domain_name, params)
+  def  update_domain(old_domain_name, params,system_api)
     clear_error
     begin
       domains = load_domains()
       domains.delete(old_domain_name)
       domains[params[:domain_name]] = params
       save_domains(domains)
+      
+    if params[:self_hosted]
+        add_self_hosted_domain params
+        rm_self_hosted_domain(old_domain_name)
+      system_api.reload_dns
+   end
+          
+         
       return true
     rescue  Exception=>e
       log_exception(e)
@@ -1410,7 +1421,7 @@ def remove_domain(params)
   return @system_api.rm_domain(params[:domain_name],@system_api)
 end
 def update_domain(old_domain,params)
-  return @system_api.update_domain(old_domain,params)
+  return @system_api.update_domain(old_domain,params,@system_api)
 end
 
 
