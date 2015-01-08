@@ -1407,7 +1407,7 @@ def add_domain(params)
 end
 
 def remove_domain(params)
-  return @system_api.rm_domain(params[:domain_name],system_api)
+  return @system_api.rm_domain(params[:domain_name],@system_api)
 end
 def update_domain(old_domain,params)
   return @system_api.update_domain(old_domain,params)
