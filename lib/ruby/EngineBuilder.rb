@@ -1420,7 +1420,7 @@ end
 
 def create_cron_file
      begin
-     @docker_file.puts("#Cronjobs")
+     
            log_build_output("Cron file")
            if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
              crondir=SysConfig.CronDir + "/" + @container_name
