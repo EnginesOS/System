@@ -977,8 +977,9 @@ class EnginesCore
       clear_error
       begin
         dir = container_state_dir(container)
-        # Dir.unlink Will do but for moment
-        #Dir.mkdir
+        #
+        #remove startup only
+        #latter have function to reset subs and other flags 
         if File.exists?(dir + "/startup_complete")
           File.unlink(dir + "/startup_complete")
         end
