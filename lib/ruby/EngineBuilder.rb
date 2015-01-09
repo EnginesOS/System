@@ -377,7 +377,7 @@ count_layer
       begin
         @docker_file.puts("#Cronjobs")
         log_build_output("Dockerfile:Cron Commands")
-        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length <0
+        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
 
           cron_file = File.open( get_basedir + "/home/crontab","w")
           crons.each do |cj|
