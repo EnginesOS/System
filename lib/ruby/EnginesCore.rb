@@ -979,7 +979,8 @@ class EnginesCore
         dir = container_state_dir(container)
         #
         #remove startup only
-        #latter have function to reset subs and other flags 
+        #latter have function to reset subs and other flags
+         
         if File.exists?(dir + "/startup_complete")
           File.unlink(dir + "/startup_complete")
         end

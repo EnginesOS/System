@@ -1,0 +1,29 @@
+--- !ruby/object:ManagedService
+containerName: cron
+ctype: service
+last_error: 
+memory: '16'
+hostName: cron
+domainName: 
+image: engines/cron
+volumes:
+ socket: !ruby/object:Volume
+  name: socket
+  remotepath: "/var/run/docker.sock"
+  localpath: "/var/run/docker.sock"
+  mapping_permissions: rw
+ docker_bin: !ruby/object:Volume
+  name: docker_bin
+  remotepath: "/usr/bin/docker"
+  localpath: "/usr/bin/docker"
+  mapping_permissions: ro
+port: 
+eports:
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
