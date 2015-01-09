@@ -380,11 +380,11 @@ count_layer
         if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
 
           cron_file = File.open(  @blueprint_reader.get_basedir + "/home/crontab","w")
-          crons.each do |cj|
+          @blueprint_reader.cron_jobs.each do |cj|
             cron_file.puts(cj)
             p :write_cron_job
                     p cj
-            n=n+1
+
           end
 
           if @blueprint_reader.cron_jobs.length >0
