@@ -1105,6 +1105,8 @@ def log_exception(e)
       begin
         log_build_output("Read Crontabs")
         cjs =  @blueprint["software"]["cron_jobs"]
+          p :cron_jobs
+          p cjs
         @cron_jobs = Array.new
         n=0
         cjs.each do |cj|
