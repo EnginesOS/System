@@ -69,7 +69,7 @@ class EngineBuilder
       write_stack_env
       write_file_service
       write_db_service
-      write_cron_jobs
+#      write_cron_jobs
       write_os_packages
       write_apache_modules
       write_user_local = true
@@ -373,36 +373,22 @@ count_layer
       end
     end
 
-    def write_cron_jobs
-      begin
-        @docker_file.puts("#Cronjobs")
-        log_build_output("Dockerfile:Cron Commands")
-        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-
-          cron_file = File.open(  @blueprint_reader.get_basedir + "/home/crontab","w")
-          @blueprint_reader.cron_jobs.each do |cj|
-            cron_file.puts(cj)
-            p :write_cron_job
-                    p cj
-
-          end
-
-          if @blueprint_reader.cron_jobs.length >0
-            @docker_file.puts("ENV CRONJOBS YES")
-            count_layer
-            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
-            count_layer
-          end
-          cron_file.close
-        end
-
-        return true
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+   
+    
+#    def write_cron_jobs
+#      begin   
+#          if @blueprint_reader.cron_jobs.length >0
+#            @docker_file.puts("ENV CRONJOBS YES")
+#            count_layer
+##            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+##            count_layer cron run from cron service
+#          end
+#        return true
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def write_db_service
       begin
@@ -1432,6 +1418,32 @@ end
 
   end
 
+def create_cron_file
+     begin
+     @docker_file.puts("#Cronjobs")
+           log_build_output("Cron file")
+           if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
+             crondir=SysConfig.CronDir + "/" + @container_name
+             if Dir.exsts?(crondir) == false
+               Dir.mkdir(crondir)
+             end
+             cron_file = File.open(  crondir + "/crontab","w")
+             @blueprint_reader.cron_jobs.each do |cj|
+               cron_file.puts(cj)
+               p :write_cron_job
+               p cj    
+             end
+             cron_file.close             
+   end
+
+     return true
+
+   rescue Exception=>e
+     log_exception(e)
+     return false
+   end
+ end
+  
   def setup_default_files
     log_build_output("Setup Default Files")
     if setup_global_defaults == false
@@ -1599,6 +1611,8 @@ end
         log_build_errors("Error Build Init failed")
         return false
       else
+        
+        create_cron_file
         
         log_build_output("Creating Services")
         @blueprint_reader.databases.each() do |db|
@@ -1771,7 +1785,7 @@ end
           end
         end
 
-        if error_mesg.include?("Error:")
+        if error_mesg.include?("Error:") || error_mesg.include?("FATA:")
           p "docker_cmd error " + error_mesg
           return false
         end

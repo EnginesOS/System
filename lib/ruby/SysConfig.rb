@@ -16,7 +16,7 @@ class SysConfig
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/lib/engines/fs"
   @@galleriesDir = "/opt/engines/etc/galleries"
- 
+
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
   
   @@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/add_backup.sh "
@@ -46,6 +46,13 @@ class SysConfig
   @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
   @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
+  
+  #Cron
+  @@CronFile = "/opt/engines/etc/cron/tabs"
+  
+  def SysConfig.CronFile
+    return @@CronFile
+  end
   
   def SysConfig.DomainsFile
   return @@DomainsFile
