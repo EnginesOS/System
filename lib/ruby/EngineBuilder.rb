@@ -382,7 +382,8 @@ count_layer
           cron_file = File.open( get_basedir + "/home/crontab","w")
           crons.each do |cj|
             cron_file.puts(cj)
-
+            p :write_cron_job
+                    p cj
             n=n+1
           end
 
@@ -1107,6 +1108,8 @@ def log_exception(e)
         @cron_jobs = Array.new
         n=0
         cjs.each do |cj|
+          p :read_cron_job
+          p cj
           @cron_jobs.push(cj["cronjob"])
         end
 
