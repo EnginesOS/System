@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:CronService
 containerName: cron
 ctype: service
 last_error: 
@@ -16,6 +16,11 @@ volumes:
   name: docker_bin
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
+  mapping_permissions: ro
+  contabs: !ruby/object:Volume
+  name: crontabs
+  remotepath: "/home/crontabs"
+  localpath: "/opt/engines/cron/tabs"
   mapping_permissions: ro
 port: 
 eports:

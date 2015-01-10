@@ -100,6 +100,31 @@ class EnginesCore
       end
     end
 
+    def add_cron(cron_hash)
+       begin
+       crondir=SysConfig.CronDir + "/" + cron_hash[:container_name]
+         
+                  if Dir.exsts?(crondir) == false
+                    Dir.mkdir(crondir)
+                  end
+                  cron_file = File.open(  crondir + "/crontab","a+")
+                  cron_file.puts(cron_hash[:cron_job])
+                  cron_file.close
+                  
+         docker_cmd = "docker exec cron crontab  /home/crontabs/ " + cron_hash[:container_name]+ "/"
+              SystemUtils.debug_output(docker_cmd)          
+                return run_system(docker_cmd)    
+                        
+         rescue Exception=>e
+           container.last_error=("Failed To Create ")
+           log_exception(e)
+           return false
+         end      
+     end
+     
+     def rm_cron(cron_hash)
+     end
+     
     def clear_cid_file container
       clear_error
       begin
@@ -1065,6 +1090,9 @@ class EnginesCore
       end
     end
 
+ 
+    
+    
     def start_container   container
       clear_error
       begin
@@ -1420,6 +1448,13 @@ end
   
 def add_domain(params)
     return  @system_api.add_domain(params)
+end
+def add_cron(cron_hash)
+  return  @system_api.add_cron(cron_hash)
+end
+
+def rm_cron(cron_hash)
+  return  @system_api.rm_cron(cron_hash)
 end
 
 def remove_domain(params)

@@ -1418,22 +1418,24 @@ end
 
   end
 
-def create_cron_file
+def create_cron_service
      begin
      
            log_build_output("Cron file")
+           
            if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-             crondir=SysConfig.CronDir + "/" + @container_name
-             if Dir.exsts?(crondir) == false
-               Dir.mkdir(crondir)
-             end
-             cron_file = File.open(  crondir + "/crontab","w")
+           cron_service =  EnginesOSapi.loadManagedService("cron", @core_api)
+                       
              @blueprint_reader.cron_jobs.each do |cj|
-               cron_file.puts(cj)
-               p :write_cron_job
-               p cj    
+               cj_hash = Hash.new
+               cj_hash[:container_name] = @container_name
+               cj_hash[:cron_job]=cj
+              cron_service.add_consumer(cj_hash)
+#               cron_file.puts(cj)
+#               p :write_cron_job
+#               p cj    
              end
-             cron_file.close             
+#             cron_file.close             
    end
 
      return true
@@ -1612,7 +1614,7 @@ def create_cron_file
         return false
       else
         
-        create_cron_file
+        create_cron_service
         
         log_build_output("Creating Services")
         @blueprint_reader.databases.each() do |db|
