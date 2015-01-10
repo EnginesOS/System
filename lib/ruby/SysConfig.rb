@@ -48,10 +48,10 @@ class SysConfig
   @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
   
   #Cron
-  @@CronFile = "/opt/engines/etc/cron/tabs"
+  @@CronDir = "/opt/engines/etc/cron/tabs"
   
   def SysConfig.CronFile
-    return @@CronFile
+    return @@CronDir
   end
   
   def SysConfig.DomainsFile
