@@ -104,7 +104,7 @@ class EnginesCore
        begin
        crondir=SysConfig.CronDir + "/" + cron_hash[:container_name]
          
-                  if Dir.exsts?(crondir) == false
+                  if Dir.exists?(crondir) == false
                     Dir.mkdir(crondir)
                   end
                   cron_file = File.open(  crondir + "/crontab","a+")
@@ -116,7 +116,7 @@ class EnginesCore
                 return run_system(docker_cmd)    
                         
          rescue Exception=>e
-           container.last_error=("Failed To Create ")
+        
            log_exception(e)
            return false
          end      

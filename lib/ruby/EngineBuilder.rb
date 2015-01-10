@@ -1424,8 +1424,7 @@ def create_cron_service
            log_build_output("Cron file")
            
            if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-           cron_service =  EnginesOSapi.loadManagedService("cron", @core_api)
-                       
+           cron_service =  EnginesOSapi.loadManagedService("cron", @core_api)                       
              @blueprint_reader.cron_jobs.each do |cj|
                cj_hash = Hash.new
                cj_hash[:container_name] = @container_name
