@@ -20,7 +20,7 @@ volumes:
   contabs: !ruby/object:Volume
   name: crontabs
   remotepath: "/home/crontabs"
-  localpath: "/opt/engines/cron/tabs"
+  localpath: "/opt/engines/etc/cron/tabs"
   mapping_permissions: ro
 port: 
 eports:
