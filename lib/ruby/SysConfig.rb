@@ -50,7 +50,7 @@ class SysConfig
   #Cron
   @@CronDir = "/opt/engines/etc/cron/tabs"
   
-  def SysConfig.CronFile
+  def SysConfig.CronDir
     return @@CronDir
   end
   
