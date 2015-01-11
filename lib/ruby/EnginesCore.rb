@@ -107,11 +107,24 @@ class EnginesCore
                   if Dir.exists?(crondir) == false
                     Dir.mkdir(crondir)
                   end
+                  cron_line_split = cron_hash[:cron_job].split(/[\s\t]/) 
+                    for n in 0..4
+                      cron_line += " " + cron_line_split[n]       
+                     end 
+                  cron_line +="docker exec " +  cron_hash[:container_name] + " "
+                    n=5
+                    cnt = cron_line_split.count
+                    
+                          while n < cnt
+                            cron_line += " " + cron_line_split[n]
+                            n+=1       
+                           end 
+                           
                   cron_file = File.open(  crondir + "/crontab","a+")
-                  cron_file.puts(cron_hash[:cron_job])
+                  cron_file.puts(cron_line)
                   cron_file.close
                   
-         docker_cmd = "docker exec cron crontab  /home/crontabs/ " + cron_hash[:container_name]+ "/"
+              docker_cmd = "docker exec cron crontab  /home/crontabs/" + cron_hash[:container_name]+ "/crontab"
               SystemUtils.debug_output(docker_cmd)          
                 return run_system(docker_cmd)    
                         
