@@ -103,7 +103,7 @@ class EnginesCore
     def add_cron(cron_hash)
        begin
        crondir=SysConfig.CronDir + "/" + cron_hash[:container_name]
-         
+         cron_line = String.new
                   if Dir.exists?(crondir) == false
                     Dir.mkdir(crondir)
                   end
