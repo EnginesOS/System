@@ -15,9 +15,9 @@ class EngineBuilder
   @domain_name=nil
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
-  
+
   def cron_job_list
-    if @cron_job_list.present? 
+    if @cron_job_list.present? ==false 
       @cron_job_list = new Array
     end
     return @cron_job_list
