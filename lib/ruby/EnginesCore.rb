@@ -102,7 +102,7 @@ class EnginesCore
 
     def format_cron_line(cron_hash)
       cron_line = String.new
-      cron_line_split = cron_hash[:cron_job].split(/[\s\t]/) 
+      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/) 
                          for n in 0..4
                            cron_line +=  cron_line_split[n] + " "       
                           end 
