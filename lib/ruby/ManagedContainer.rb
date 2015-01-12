@@ -85,9 +85,16 @@ class ManagedContainer < Container
                   :conf_monitor_site,\
                   :last_result,\
                   :last_error
-  
-   def add_cron_job_list(job_list)
-     @cron_job_list = job_list
+                  
+  def cron_job_list
+    if @cron_job_list.present? 
+      @cron_job_list = new Array
+    end
+    return @cron_job_list
+  end
+                  
+   def set_cron_job_list(job_list)
+     @cron_job_list = cron_job_list     
    end
   
 def http_protocol
