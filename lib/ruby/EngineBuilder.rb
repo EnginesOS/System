@@ -18,7 +18,7 @@ class EngineBuilder
 
   def cron_job_list
     if @cron_job_list.present? ==false 
-      @cron_job_list = new Array
+      @cron_job_list = Array.new
     end
     return @cron_job_list
   end
