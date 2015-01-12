@@ -87,7 +87,7 @@ class ManagedContainer < Container
                   :last_error
                   
   def cron_job_list
-    if @cron_job_list.present? 
+    if @cron_job_list == nil
       @cron_job_list = new Array
     end
     return @cron_job_list
