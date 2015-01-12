@@ -15,6 +15,13 @@ class EngineBuilder
   @domain_name=nil
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
+  
+  def cron_job_list
+    if @cron_job_list.present? 
+      @cron_job_list = new Array
+    end
+    return @cron_job_list
+  end
 
   attr_reader :last_error,\
   :repoName,\
@@ -30,6 +37,8 @@ class EngineBuilder
     end
 
   end
+  
+  
 
   class DockerFileBuilder
     def initialize(reader,containername,hostname,domain_name,webport,builder)
@@ -1433,6 +1442,7 @@ def create_cron_service
 #               cron_file.puts(cj)
 #               p :write_cron_job
 #               p cj    
+              cron_job_list.push(cj_hash)
              end
 #             cron_file.close             
    end
@@ -1684,6 +1694,7 @@ def create_cron_service
     @blueprint_reader.data_uid,
     @blueprint_reader.data_gid
     )
+    mc.add_cron_job_list(@cron_job_list)
     
     #:http_protocol=>"HTTPS and HTTP"
    mc.set_protocol(@protocol)

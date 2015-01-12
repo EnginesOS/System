@@ -50,6 +50,8 @@ class ManagedContainer < Container
    @protocol=:http_and_https
  end
  
+ 
+ 
  def container_id
    if @container_id == nil
      @container_id = set_container_id
@@ -70,12 +72,24 @@ class ManagedContainer < Container
               :data_gid,\
               :cont_userid,\
               :setState,\
-              :protocol
+              :protocol,
+              :cron_job_list
               
               
               
-   attr_accessor :container_id,:core_api,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
-
+   attr_accessor :container_id,\
+                  :core_api,\
+                  :conf_self_start,\
+                  :conf_register_site,\
+                  :conf_register_dns,\
+                  :conf_monitor_site,\
+                  :last_result,\
+                  :last_error
+  
+   def add_cron_job_list(job_list)
+     @cron_job_list = job_list
+   end
+  
 def http_protocol
   case @protocol
   when :http_and_https
