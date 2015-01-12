@@ -100,33 +100,37 @@ class EnginesCore
       end
     end
 
+    def format_cron_line(cron_hash)
+      cron_line = String.new
+      cron_line_split = cron_hash[:cron_job].split(/[\s\t]/) 
+                         for n in 0..4
+                           cron_line +=  cron_line_split[n] + " "       
+                          end 
+                       cron_line +=" docker exec " +  cron_hash[:container_name] + " "
+                         n=5
+                         cnt = cron_line_split.count
+                         
+                               while n < cnt
+                                 cron_line += " " + cron_line_split[n]
+                                 n+=1       
+                                end 
+           return     cron_line                 
+  rescue Exception=>e
+         
+          log_exception(e)
+  
+          return false                            
+    end
     def add_cron(cron_hash)
        begin
-       crondir=SysConfig.CronDir + "/" + cron_hash[:container_name]
-         cron_line = String.new
-                  if Dir.exists?(crondir) == false
-                    Dir.mkdir(crondir)
-                  end
-                  cron_line_split = cron_hash[:cron_job].split(/[\s\t]./) 
-                    for n in 0..4
-                      cron_line +=  cron_line_split[n] + " "       
-                     end 
-                  cron_line +=" docker exec " +  cron_hash[:container_name] + " "
-                    n=5
-                    cnt = cron_line_split.count
-                    
-                          while n < cnt
-                            cron_line += " " + cron_line_split[n]
-                            n+=1       
-                           end 
-                           
-                  cron_file = File.open(  crondir + "/crontab","a+")
+ 
+                  cron_line = format_cron_line(cron_hash)  
+                  cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
                   cron_file.puts(cron_line)
                   cron_file.close
                   
-              docker_cmd = "docker exec cron crontab  /home/crontabs/" + cron_hash[:container_name]+ "/crontab"
-              SystemUtils.debug_output(docker_cmd)          
-                return run_system(docker_cmd)    
+             return reload_crontab
+                  
                         
          rescue Exception=>e
         
@@ -135,7 +139,33 @@ class EnginesCore
          end      
      end
      
-     def rm_cron(cron_hash)
+     def reload_crontab
+       docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
+       return run_system(docker_cmd)
+       rescue Exception=>e
+              
+               log_exception(e)
+       
+               return false    
+     end
+
+     
+     def rebuild_crontab(cron_service)
+       cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
+
+       cron_service.each do |cron_entry|
+         cron_line = format_cron_line(cron_entry)
+         cron_file.puts(cron_line)
+       end
+       cron_file.close
+       return reload_crontab
+       
+       rescue Exception=>e
+        
+         log_exception(e)
+ 
+         return false    
+       
      end
      
     def clear_cid_file container
