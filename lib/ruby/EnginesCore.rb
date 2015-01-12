@@ -107,7 +107,7 @@ class EnginesCore
                   if Dir.exists?(crondir) == false
                     Dir.mkdir(crondir)
                   end
-                  cron_line_split = cron_hash[:cron_job].split(/[\s\t]/) 
+                  cron_line_split = cron_hash[:cron_job].split(/[\s\t]./) 
                     for n in 0..4
                       cron_line +=  cron_line_split[n] + " "       
                      end 
