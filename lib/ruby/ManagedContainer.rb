@@ -72,8 +72,8 @@ class ManagedContainer < Container
               :data_gid,\
               :cont_userid,\
               :setState,\
-              :protocol,
-              :cron_job_list
+              :protocol
+            
               
               
               
