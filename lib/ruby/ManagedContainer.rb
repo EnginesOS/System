@@ -370,9 +370,9 @@ end
     if @conf_register_site == true
            deregister_site
           end
-          if @conf_register_dns == true
+    if @conf_register_dns == true
             deregister_dns
-          end
+    end
     if cron_job_list.count >0
       @core_api.remove_containers_cron_list(@containerName)
     end 

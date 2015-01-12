@@ -1637,7 +1637,7 @@ def create_cron_service
         mc = create_managed_container()
       end
       
-      mc.set_cron_job_list(@cron_job_list)
+      mc.set_cron_job_list(cron_job_list)
    
       close_all
         

@@ -1539,7 +1539,7 @@ end
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return @system_api.register_dns_and_site(container)
+      return container.register
     end
     return false
   end
