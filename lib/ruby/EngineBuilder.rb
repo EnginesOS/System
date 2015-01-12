@@ -1442,7 +1442,7 @@ def create_cron_service
 #               cron_file.puts(cj)
 #               p :write_cron_job
 #               p cj    
-              cron_job_list.push(cj_hash)
+               @cron_job_list.push(cj_hash)
              end
 #             cron_file.close             
    end
