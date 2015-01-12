@@ -1496,8 +1496,9 @@ def add_cron(cron_hash)
   return  @system_api.add_cron(cron_hash)
 end
 
-def rm_cron(cron_hash)
-  return  @system_api.rm_cron(cron_hash)
+def rebuild_crontab(cron_service)
+  #acutally a rebuild (or resave) as hadh already removed from consumer list
+  return  @system_api.rebuild_crontab(cron_service)
 end
 
 def remove_domain(params)
