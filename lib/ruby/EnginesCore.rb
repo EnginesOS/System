@@ -167,7 +167,20 @@ class EnginesCore
          return false    
        
      end
-     
+     def remove_containers_cron_jobs(containerName)
+     cron_service = loadManagedService("cron")
+    
+       cron_service.consumers.each do |cron_job|
+         if cron_job[:container_name] ==  containerName
+           cron_service.remove_consumer(cron_job)
+         end
+     end
+       rescue Exception=>e
+               
+                log_exception(e)
+        
+                return false    
+     end
     def clear_cid_file container
       clear_error
       begin
@@ -1494,6 +1507,11 @@ def add_domain(params)
 end
 def add_cron(cron_hash)
   return  @system_api.add_cron(cron_hash)
+end
+
+def remove_containers_cron_list(containerName)
+  return  @system_api.remove_containers_cron_list(containerName)
+   
 end
 
 def rebuild_crontab(cron_service)

@@ -373,6 +373,10 @@ end
           if @conf_register_dns == true
             deregister_dns
           end
+    if @cron_job_list.count >0
+      @core_api.remove_containers_cron_list(@containerName)
+    end 
+        
   end
 
   def start_container
