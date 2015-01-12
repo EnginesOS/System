@@ -109,9 +109,9 @@ class EnginesCore
                   end
                   cron_line_split = cron_hash[:cron_job].split(/[\s\t]/) 
                     for n in 0..4
-                      cron_line += " " + cron_line_split[n]       
+                      cron_line +=  cron_line_split[n] + " "       
                      end 
-                  cron_line +="docker exec " +  cron_hash[:container_name] + " "
+                  cron_line +=" docker exec " +  cron_hash[:container_name] + " "
                     n=5
                     cnt = cron_line_split.count
                     
