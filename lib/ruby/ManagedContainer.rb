@@ -439,6 +439,7 @@ end
       return false
     end
     service =  EnginesOSapi.loadManagedService("monit",@core_api)
+      if service.is_a?(ManagedService)
     return service.add_consumer(self)
   end
 
