@@ -123,7 +123,6 @@ class EnginesCore
     end
     def add_cron(cron_hash)
        begin
- 
                   cron_line = format_cron_line(cron_hash)  
                   cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
                   cron_file.puts(cron_line)

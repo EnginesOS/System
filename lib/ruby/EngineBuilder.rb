@@ -1633,9 +1633,7 @@ def create_cron_service
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
-      p :set_cron_job_list
-      p @cron_job_list
-      mc.set_cron_job_list(@cron_job_list)
+    
    
       close_all
         
@@ -1696,7 +1694,9 @@ def create_cron_service
     @blueprint_reader.data_gid
     )
   
-    
+    p :set_cron_job_list
+        p @cron_job_list
+        mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
    mc.set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
