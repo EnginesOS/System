@@ -1432,6 +1432,7 @@ def create_cron_service
            cron_service =  EnginesOSapi.loadManagedService("cron", @core_api)                       
              @blueprint_reader.cron_jobs.each do |cj|
                cj_hash = Hash.new
+               cj_hash[:name] = @container_name
                cj_hash[:container_name] = @container_name
                cj_hash[:cron_job]=cj
               cron_service.add_consumer(cj_hash)
