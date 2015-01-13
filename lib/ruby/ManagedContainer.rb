@@ -440,7 +440,9 @@ end
     end
     service =  EnginesOSapi.loadManagedService("monit",@core_api)
       if service.is_a?(ManagedService)
-    return service.add_consumer(self)
+      return service.add_consumer(self)
+    end
+    return false
   end
 
   def deregister_site
@@ -449,7 +451,10 @@ end
       return false
     end
     service =  EnginesOSapi.loadManagedService("nginx",@core_api)
+    if service.is_a?(ManagedService)
     return service.remove_consumer(self)
+    end
+    return false
   end
 
   def demonitor_site
