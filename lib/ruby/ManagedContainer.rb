@@ -95,6 +95,8 @@ class ManagedContainer < Container
                   
    def set_cron_job_list(job_list)
      @cron_job_list = job_list 
+     p :set_cron_job_list
+     p @cron_job_list
      save_state    
    end
   
