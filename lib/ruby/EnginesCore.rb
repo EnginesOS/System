@@ -172,9 +172,9 @@ class EnginesCore
     p containerName
        cron_service.consumers.each do |cron_job|
         if cron_job != nil
+          p :looking_at
+          p cron_job[:container_name]
          if cron_job[:container_name] ==  containerName
-           p :looking_at
-           p cron_job[:container_name]
            cron_service.remove_consumer(cron_job)
          end
         end
