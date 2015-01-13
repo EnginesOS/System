@@ -16,12 +16,7 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
-  def cron_job_list
-    if @cron_job_list.present? ==false 
-      @cron_job_list = Array.new
-    end
-    return @cron_job_list
-  end
+
 
   attr_reader :last_error,\
   :repoName,\
@@ -48,7 +43,7 @@ class EngineBuilder
       @webPort = webport
       @blueprint_reader = reader
       @builder=builder
-     
+      @cron_job_list = Array.new
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
       
       @layer_count=0
@@ -1442,7 +1437,7 @@ def create_cron_service
 #               cron_file.puts(cj)
 #               p :write_cron_job
 #               p cj    
-               cron_job_list.push(cj_hash)
+               @cron_job_list.push(cj_hash)
              end
 #             cron_file.close             
    end
@@ -1637,7 +1632,7 @@ def create_cron_service
         mc = create_managed_container()
       end
       
-      mc.set_cron_job_list(cron_job_list)
+      mc.set_cron_job_list(@cron_job_list)
    
       close_all
         

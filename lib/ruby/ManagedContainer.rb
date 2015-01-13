@@ -94,7 +94,7 @@ class ManagedContainer < Container
   end
                   
    def set_cron_job_list(job_list)
-     @cron_job_list = cron_job_list 
+     @cron_job_list = job_list 
      save_state    
    end
   
