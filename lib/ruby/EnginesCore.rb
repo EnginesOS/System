@@ -151,7 +151,7 @@ class EnginesCore
 
      
      def rebuild_crontab(cron_service)
-       cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
+       cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
 
        cron_service.each do |cron_entry|
          cron_line = format_cron_line(cron_entry)
