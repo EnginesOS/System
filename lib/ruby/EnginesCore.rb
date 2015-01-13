@@ -172,12 +172,13 @@ class EnginesCore
     p :remove_cron_for
     p containerName
        cron_service.consumers.each do |cron_job|
-        
+        if cron_job != nil
          if cron_job[:container_name] ==  containerName
            p :looking_at
            p cron_job[:container_name]
            cron_service.remove_consumer(cron_job)
          end
+        end
      end
        rescue Exception=>e
                
