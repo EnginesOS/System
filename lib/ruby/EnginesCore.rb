@@ -167,7 +167,7 @@ class EnginesCore
          return false    
        
      end
-     def remove_containers_cron_jobs(containerName)
+     def remove_containers_cron_list(containerName)
      cron_service = loadManagedService("cron")
     p :remove_cron_for
     p containerName
