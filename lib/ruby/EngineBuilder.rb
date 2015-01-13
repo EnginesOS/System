@@ -43,7 +43,7 @@ class EngineBuilder
       @webPort = webport
       @blueprint_reader = reader
       @builder=builder
-      @cron_job_list = Array.new
+     
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
       
       @layer_count=0
@@ -682,7 +682,7 @@ def log_exception(e)
   class BluePrintReader
     def initialize(build_name,contname,blue_print,builder)
       @build_name = build_name
-
+      @cron_job_list = Array.new
       @data_uid="11111"
       @data_gid="11111"
       @builder=builder
@@ -1634,7 +1634,7 @@ def create_cron_service
       end
       p :set_cron_job_list
       p @cron_job_list
-      mc.set_cron_job_list(@cron_job_list)
+      mc.set_cron_job_list(@blueprint_reader.cron_job_list)
    
       close_all
         
