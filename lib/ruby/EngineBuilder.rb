@@ -711,7 +711,8 @@ def log_exception(e)
     :databases,\
     :apache_modules,\
     :data_uid,\
-    :data_gid
+    :data_gid,\
+    :cron_job_list
     
     def  log_build_output(line)
       @builder.log_build_output(line)
