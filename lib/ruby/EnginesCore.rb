@@ -170,6 +170,7 @@ class EnginesCore
      cron_service = loadManagedService("cron")
     p :remove_cron_for
     p containerName
+       p cron_job
        cron_service.consumers.each do |cron_job|
         if cron_job != nil
           p :looking_at
