@@ -1438,6 +1438,7 @@ def create_cron_service
 #               p :write_cron_job
 #               p cj    
                @cron_job_list.push(cj_hash)
+               p @cron_job_list
              end
 #             cron_file.close             
    end
@@ -1631,7 +1632,8 @@ def create_cron_service
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
-      
+      p :set_cron_job_list
+      p @cron_job_list
       mc.set_cron_job_list(@cron_job_list)
    
       close_all
