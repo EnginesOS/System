@@ -398,14 +398,7 @@ end
       @last_error ="Can't Start Container as " + state
     end
 
-    if ret_val == true
-       if @conf_register_dns ==true
-         register_dns
-      end
-        if @conf_register_site == true
-          register_site
-        end
-    end
+      register
 
     clear_error(ret_val)
     save_state()
@@ -506,8 +499,17 @@ end
   
   
   def register
-    register_site
-    monitor_site
+    if ret_val == true
+         if @conf_register_dns ==true
+           register_dns
+        end
+          if @conf_register_site == true
+            register_site
+          end
+      end
+        if @conf_monitor_site == true
+          monitor_site
+        end
     
     cron_job_list.each do |cj|
       p :register_cj
