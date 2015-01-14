@@ -1,4 +1,4 @@
-FROM engines/frameworkbase
+FROM engines/frameworkbuild
 
 ENV ContUser python
 ENV ContGrp python
