@@ -943,7 +943,8 @@ class EnginesCore
     end
 
     def loadManagedEngine(engine_name)
-      if engine_name == nil
+      if engine_name.present?
+        last_error="No Engine Name"
           return false
       end
       begin
@@ -979,6 +980,10 @@ class EnginesCore
 
     def loadManagedService(service_name)
       begin
+        if service_name.present?
+              last_error="No Service Name"
+                return false
+            end
         yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
 
         if File.exists?(yam_file_name) == false
