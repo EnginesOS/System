@@ -515,7 +515,7 @@ end
     cron_job_list.each do |cj|
       p :register_cj
       p cj        
-       cron_service.add_consumer(cron_hash)              
+       cron_service.add_consumer(cj)              
     end 
     #FIXME check results
   end
