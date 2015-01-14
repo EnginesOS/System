@@ -175,8 +175,8 @@ class EnginesCore
         if cron_job != nil
           p cron_job
           p :looking_at
-          p cron_job[:container_name]
-         if cron_job[:container_name] ==  containerName
+          p cron_job[1][:container_name]
+         if cron_job[1][:container_name] ==  containerName
            cron_service.remove_consumer(cron_job)
          end
         end
