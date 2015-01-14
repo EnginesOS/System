@@ -24,7 +24,7 @@ volumes:
   mapping_permissions: rw
  sqlite: !ruby/object:Volume
   name: sqlite
-  remotepath: "/home/app/app/db/production.sqlite3"
+  remotepath: "/home/app/db/production.sqlite3"
   localpath: "/home/dockuser/db/production.sqlite3"
   mapping_permissions: rw
  docker_bin: !ruby/object:Volume
