@@ -1042,7 +1042,7 @@ class EnginesOSapi
   def list_domains
     return @core_api.list_domains( )
   rescue Exception=>e
-    return log_exception_and_fail("list self hosted domain ",e)
+    return log_exception_and_fail("list domains ",e)
   end 
   
   def attach_ftp_service(params)
