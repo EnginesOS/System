@@ -155,7 +155,10 @@ class EnginesCore
        cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
 
        cron_service.consumers.each do |cron_entry|
+         
          cron_line = format_cron_line(cron_entry[1])
+         p :cron_line
+         p cron_line
          cron_file.puts(cron_line)
        end
        cron_file.close
