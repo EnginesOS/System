@@ -492,26 +492,27 @@ count_layer
         @docker_file.puts("#App Archives")
         log_build_output("Dockerfile:App Archives")
         n=0
-        srcs=String.new
-        names=String.new
-        locations=String.new
-        extracts=String.new
-        dirs=String.new
+#        srcs=String.new
+#        names=String.new
+#        locations=String.new
+#        extracts=String.new
+#        dirs=String.new
         @docker_file.puts("")
-        @blueprint_reader.archives_details[:arc_src].each do |archive|
-          arc_src=@blueprint_reader.archives_details[:arc_src][n]
-          arc_name=@blueprint_reader.archives_details[:arc_name][n]
-          arc_loc =@blueprint_reader.archives_details[:arc_loc][n]
-          arc_extract=@blueprint_reader.archives_details[:arc_extract][n]
-          arc_dir=@blueprint_reader.archives_details[:arc_dir][n]
-          if(n >0)
-            srcs = srcs + " "
-            names =names + " "
-            locations = locations + " "
-            extracts =extracts + " "
-            dirs =dirs + " "
-          end
-
+        
+        @blueprint_reader.archives_details.each do |archive_details|
+          arc_src = archive_details[:arc_src]
+          arc_name = archive_details[:arc_name]
+          arc_loc = archive_details[:arc_loc]
+          arc_extract = archive_details[:arc_extract]
+          arc_dir = archive_details[:arc_dir]
+#          if(n >0)
+#            srcs = srcs + " "
+#            names =names + " "
+#            locations = locations + " "
+#            extracts =extracts + " "
+#            dirs =dirs + " "
+#          end
+       
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
@@ -574,7 +575,7 @@ count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
 
-            n=n+1
+            
           end
         end
 
@@ -979,45 +980,47 @@ def log_exception(e)
     def read_app_packages
       begin
         log_build_output("Read App Packages ")
-        @archives_details = Hash.new
-        @archives_details[:arc_src] = Array.new
-        @archives_details[:arc_name] = Array.new
-        @archives_details[:arc_extract] = Array.new
-        @archives_details[:arc_loc] = Array.new
-        @archives_details[:arc_dir] = Array.new
+        @archives_details = Array.new
+#        archives_detail =
+#        @archives_details[:arc_src] = Array.new
+#        @archives_details[:arc_name] = Array.new
+#        @archives_details[:arc_extract] = Array.new
+#        @archives_details[:arc_loc] = Array.new
+#        @archives_details[:arc_dir] = Array.new
         log_build_output("Configuring install Environment")
         archives = @blueprint["software"]["installedpackages"]
         n=0
-        srcs=String.new
-        names=String.new
-        locations=String.new
-        extracts=String.new
-        dirs=String.new
+#        srcs=String.new
+#        names=String.new
+#        locations=String.new
+#        extracts=String.new
+#        dirs=String.new
 
         archives.each do |archive|
+          archive_details = Hash.new
           arc_src=clean_path(archive["src"])
           arc_name=clean_path(archive["name"])
           arc_loc =clean_path(archive["dest"])
           arc_extract=clean_path(archive[ "extractcmd"])
           arc_dir=clean_path(archive["extractdir"])
-          if(n >0)
-            srcs = srcs + " "
-            names =names + " "
-            locations = locations + " "
-            extracts =extracts + " "
-            dirs =dirs + " "
-          end
+#          if(n >0)
+#            srcs = srcs + " "
+#            names =names + " "
+#            locations = locations + " "
+#            extracts =extracts + " "
+#            dirs =dirs + " "
+#          end
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          @archives_details[:arc_src].push(arc_src)
-          @archives_details[:arc_name].push(arc_name)
-          @archives_details[:arc_extract].push(arc_extract)
-          @archives_details[:arc_loc].push(arc_loc)
-          @archives_details[:arc_dir].push(arc_dir)
-
+          archive_details[:arc_src]=arc_src
+          archive_details[:arc_name]=arc_name
+          archive_details[:arc_extract]=arc_extract
+          archive_details[:arc_loc]=arc_loc
+          archive_details[:arc_dir]=arc_dir
+          @archives_details.push(archive_details)
         end
 
       rescue Exception=>e
