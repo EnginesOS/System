@@ -393,7 +393,7 @@ end
     if state == "stopped"
       ret_val = @core_api.start_container self
       @setState="running"
-      
+       
     else
       @last_error ="Can't Start Container as " + state
     end
@@ -511,11 +511,11 @@ end
         if @conf_monitor_site == true
           monitor_site
         end
-    
+    cron_service = @core_api.loadManagedService("cron")       
     cron_job_list.each do |cj|
       p :register_cj
-      p cj
-      @core_api.add_cron(cj)
+      p cj        
+       cron_service.add_consumer(cron_hash)              
     end 
     #FIXME check results
   end
