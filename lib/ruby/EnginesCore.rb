@@ -1529,7 +1529,7 @@ end
 def remove_containers_cron_list(containerName)
   p :remove_containers_cron
   if @system_api.remove_containers_cron_list(containerName)
-    cron_service = LoadManagedService("cron")
+    cron_service = loadManagedService("cron")
     return @system_api.rebuild_crontab(cron_service)
   else
     return false
