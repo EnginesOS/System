@@ -2,7 +2,7 @@
 containerName: mgmt
 ctype: service
 last_error: 
-memory: '298'
+memory: '256'
 hostName: mgmt
 domainName: 
 environments:
@@ -24,8 +24,8 @@ volumes:
   mapping_permissions: rw
  sqlite: !ruby/object:Volume
   name: sqlite
-  remotepath: "/home/app/app/db/development.sqlite"
-  localpath: "/home/dockuser/db/development.sqlite"
+  remotepath: "/home/app/db/production.sqlite3"
+  localpath: "/home/dockuser/db/production.sqlite3"
   mapping_permissions: rw
  docker_bin: !ruby/object:Volume
   name: docker_bin
