@@ -1544,7 +1544,7 @@ end
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return container.register
+      return true
     end
     return false
   end
@@ -1555,7 +1555,7 @@ end
 
   def stop_container(container)
     if @docker_api.stop_container(container) == true
-      return container.deregister_registered
+      return  true
     end
     return false
   end
