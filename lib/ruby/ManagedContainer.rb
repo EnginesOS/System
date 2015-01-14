@@ -375,6 +375,7 @@ end
     if @conf_register_dns == true
             deregister_dns
     end
+    
     if cron_job_list.count >0
       @core_api.remove_containers_cron_list(@containerName)
     end 
@@ -507,6 +508,12 @@ end
   def register
     register_site
     monitor_site
+    
+    cron_job_list.each do |cj|
+      p :register_cj
+      p cj
+      @core_api.add_cron(cj)
+    end 
     #FIXME check results
   end
 
