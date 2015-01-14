@@ -182,7 +182,7 @@ class EnginesCore
           p :looking_at
           p cron_job[1][:container_name]
          if cron_job[1][:container_name] ==  containerName
-           cron_service.remove_consumer(cron_job[1])
+           cron_service.remove_consumer(cron_job[1])           
          end
         end
      end
@@ -1528,7 +1528,12 @@ end
 
 def remove_containers_cron_list(containerName)
   p :remove_containers_cron
-  return  @system_api.remove_containers_cron_list(containerName)   
+  if @system_api.remove_containers_cron_list(containerName)
+    cron_service = LoadManagedService("cron")
+    return @system_api.rebuild_crontab(cron_service)
+  else
+    return false
+  end   
 end
 
 def rebuild_crontab(cron_service)
