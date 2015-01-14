@@ -152,8 +152,8 @@ class EnginesCore
      def rebuild_crontab(cron_service)
        cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
 
-       cron_service.each do |cron_entry|
-         cron_line = format_cron_line(cron_entry)
+       cron_service.consumers.each do |cron_entry|
+         cron_line = format_cron_line(cron_entry[1])
          cron_file.puts(cron_line)
        end
        cron_file.close
@@ -177,7 +177,7 @@ class EnginesCore
           p :looking_at
           p cron_job[1][:container_name]
          if cron_job[1][:container_name] ==  containerName
-           cron_service.remove_consumer(cron_job)
+           cron_service.remove_consumer(cron_job[1])
          end
         end
      end
