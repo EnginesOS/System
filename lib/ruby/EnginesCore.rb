@@ -170,7 +170,7 @@ class EnginesCore
        
      end
      def remove_containers_cron_list(containerName)
-     cron_service = loadManagedService("cron")
+     cron_service =  @engines_api.loadManagedService("cron")
     p :remove_cron_for
     p containerName
        
