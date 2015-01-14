@@ -979,7 +979,7 @@ class EnginesCore
 
     def loadManagedService(service_name)
       begin
-        if if service_name == nil || service_name.length
+        if service_name == nil || service_name.length
               last_error="No Service Name"
                 return false
             end
