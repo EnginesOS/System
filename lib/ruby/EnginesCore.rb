@@ -100,6 +100,98 @@ class EnginesCore
       end
     end
 
+    def format_cron_line(cron_hash)
+      cron_line = String.new
+      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/) 
+                         for n in 0..4
+                           cron_line +=  cron_line_split[n] + " "       
+                          end 
+                       cron_line +=" docker exec " +  cron_hash[:container_name] + " "
+                         n=5
+                         cnt = cron_line_split.count
+                         
+                               while n < cnt
+                                 cron_line += " " + cron_line_split[n]
+                                 n+=1       
+                                end 
+           return     cron_line                 
+  rescue Exception=>e
+         
+          log_exception(e)
+  
+          return false                            
+    end
+    def add_cron(cron_hash)
+       begin
+ 
+             
+                  cron_line = format_cron_line(cron_hash)  
+                  cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
+                  cron_file.puts(cron_line)
+                  cron_file.close
+                  
+             return reload_crontab
+                  
+                        
+         rescue Exception=>e
+        
+           log_exception(e)
+           return false
+         end      
+     end
+     
+     def reload_crontab
+       docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
+       return run_system(docker_cmd)
+       rescue Exception=>e
+              
+               log_exception(e)
+       
+               return false    
+     end
+
+     
+     def rebuild_crontab(cron_service)
+       cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
+
+       cron_service.consumers.each do |cron_entry|
+         
+         cron_line = format_cron_line(cron_entry[1])
+         p :cron_line
+         p cron_line
+         cron_file.puts(cron_line)
+       end
+       cron_file.close
+       return reload_crontab
+       
+       rescue Exception=>e
+        
+         log_exception(e)
+ 
+         return false    
+       
+     end
+     def remove_containers_cron_list(containerName)
+     cron_service =  @engines_api.loadManagedService("cron")
+    p :remove_cron_for
+    p containerName
+       
+       cron_service.consumers.each do |cron_job|
+        if cron_job != nil
+          p cron_job
+          p :looking_at
+          p cron_job[1][:container_name]
+         if cron_job[1][:container_name] ==  containerName
+           cron_service.remove_consumer(cron_job[1])           
+         end
+        end
+     end
+       rescue Exception=>e
+               
+                log_exception(e)
+        
+                return false    
+     end
     def clear_cid_file container
       clear_error
       begin
@@ -510,6 +602,14 @@ class EnginesCore
       end
     end
     
+    def list_domains
+      domains = load_domains
+      return domains
+      rescue Exception=>e
+              domains = Hash.new
+               SystemUtils.log_exception(e)
+              return domains
+    end
     def add_domain(params)
       clear_error
        domain= params[:domain_name]
@@ -853,7 +953,8 @@ class EnginesCore
     end
 
     def loadManagedEngine(engine_name)
-      if engine_name == nil
+      if engine_name == nil || engine_name.length ==0 
+        last_error="No Engine Name"
           return false
       end
       begin
@@ -889,6 +990,10 @@ class EnginesCore
 
     def loadManagedService(service_name)
       begin
+        if service_name == nil || service_name.length ==0 
+              last_error="No Service Name"
+                return false
+            end
         yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
 
         if File.exists?(yam_file_name) == false
@@ -977,8 +1082,10 @@ class EnginesCore
       clear_error
       begin
         dir = container_state_dir(container)
-        # Dir.unlink Will do but for moment
-        #Dir.mkdir
+        #
+        #remove startup only
+        #latter have function to reset subs and other flags
+         
         if File.exists?(dir + "/startup_complete")
           File.unlink(dir + "/startup_complete")
         end
@@ -1063,6 +1170,9 @@ class EnginesCore
       end
     end
 
+ 
+    
+    
     def start_container   container
       clear_error
       begin
@@ -1419,6 +1529,26 @@ end
 def add_domain(params)
     return  @system_api.add_domain(params)
 end
+def add_cron(cron_hash)
+  p :add_cront
+  return  @system_api.add_cron(cron_hash)
+end
+
+def remove_containers_cron_list(containerName)
+  p :remove_containers_cron
+  if @system_api.remove_containers_cron_list(containerName)
+    cron_service = loadManagedService("cron")
+    return @system_api.rebuild_crontab(cron_service)
+  else
+    return false
+  end   
+end
+
+def rebuild_crontab(cron_service)
+  #acutally a rebuild (or resave) as hadh already removed from consumer list
+  p :rebuild_crontab
+  return  @system_api.rebuild_crontab(cron_service)
+end
 
 def remove_domain(params)
   return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -1436,7 +1566,7 @@ end
 
   def start_container(container)
     if @docker_api.start_container(container) == true
-      return @system_api.register_dns_and_site(container)
+      return true
     end
     return false
   end
@@ -1447,7 +1577,7 @@ end
 
   def stop_container(container)
     if @docker_api.stop_container(container) == true
-      return container.deregister_registered
+      return  true
     end
     return false
   end
@@ -1590,6 +1720,9 @@ end
     return @system_api.getManagedServices
   end
 
+  def list_domains
+    return @system_api.list_domains
+  end
   def list_managed_engines
     return @system_api.list_managed_engines
   end
@@ -1788,7 +1921,6 @@ end
       return false
     end
   end
-
 
   
   def clear_error

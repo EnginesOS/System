@@ -50,6 +50,8 @@ class ManagedContainer < Container
    @protocol=:http_and_https
  end
  
+ 
+ 
  def container_id
    if @container_id == nil
      @container_id = set_container_id
@@ -71,11 +73,33 @@ class ManagedContainer < Container
               :cont_userid,\
               :setState,\
               :protocol
+            
               
               
               
-   attr_accessor :container_id,:core_api,:conf_self_start, :conf_register_site,:conf_register_dns,:conf_monitor_site,:last_result,:last_error
-
+   attr_accessor :container_id,\
+                  :core_api,\
+                  :conf_self_start,\
+                  :conf_register_site,\
+                  :conf_register_dns,\
+                  :conf_monitor_site,\
+                  :last_result,\
+                  :last_error
+                  
+  def cron_job_list
+    if @cron_job_list == nil
+      @cron_job_list =  Array.new
+    end
+    return @cron_job_list
+  end
+                  
+   def set_cron_job_list(job_list)
+     @cron_job_list = job_list 
+     p :set_cron_job_list
+     p @cron_job_list
+         
+   end
+  
 def http_protocol
   case @protocol
   when :http_and_https
@@ -348,9 +372,14 @@ end
     if @conf_register_site == true
            deregister_site
           end
-          if @conf_register_dns == true
+    if @conf_register_dns == true
             deregister_dns
-          end
+    end
+    
+    if cron_job_list.count >0
+      @core_api.remove_containers_cron_list(@containerName)
+    end 
+        
   end
 
   def start_container
@@ -364,18 +393,12 @@ end
     if state == "stopped"
       ret_val = @core_api.start_container self
       @setState="running"
-      
+       
     else
       @last_error ="Can't Start Container as " + state
     end
-
     if ret_val == true
-       if @conf_register_dns ==true
-         register_dns
-      end
-        if @conf_register_site == true
-          register_site
-        end
+      register
     end
 
     clear_error(ret_val)
@@ -411,7 +434,10 @@ end
       return false
     end
     service =  EnginesOSapi.loadManagedService("monit",@core_api)
-    return service.add_consumer(self)
+      if service.is_a?(ManagedService)
+      return service.add_consumer(self)
+    end
+    return false
   end
 
   def deregister_site
@@ -420,7 +446,10 @@ end
       return false
     end
     service =  EnginesOSapi.loadManagedService("nginx",@core_api)
+    if service.is_a?(ManagedService)
     return service.remove_consumer(self)
+    end
+    return false
   end
 
   def demonitor_site
@@ -471,8 +500,23 @@ end
   
   
   def register
-    register_site
-    monitor_site
+   
+         if @conf_register_dns ==true
+           register_dns
+        end
+          if @conf_register_site == true
+            register_site
+          end
+      
+        if @conf_monitor_site == true
+          monitor_site
+        end
+    cron_service = @core_api.loadManagedService("cron")       
+    cron_job_list.each do |cj|
+      p :register_cj
+      p cj        
+       cron_service.add_consumer(cj)              
+    end 
     #FIXME check results
   end
 

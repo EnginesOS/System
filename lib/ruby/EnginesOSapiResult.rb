@@ -23,7 +23,7 @@ class  EnginesOSapiResult
    end
  
    def EnginesOSapiResult.failed(item_name,mesg ,cmd)
-     return  EnginesOSapiResult.new(false,-1,item_name, mesg,cmd)
+     return  EnginesOSapiResult.new(false,-1,item_name, mesg.to_s,cmd)
    end
  
   end

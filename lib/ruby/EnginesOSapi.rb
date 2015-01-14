@@ -1033,12 +1033,18 @@ class EnginesOSapi
     return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
   end
 
-  def list_domains
+  def list_self_hosted_domains
     return @core_api.list_self_hosted_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list self hosted domain ",e)
   end
 
+  def list_domains
+    return @core_api.list_domains( )
+  rescue Exception=>e
+    return log_exception_and_fail("list self hosted domain ",e)
+  end 
+  
   def attach_ftp_service(params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Attach ftp")
   rescue Exception=>e

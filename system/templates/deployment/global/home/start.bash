@@ -51,10 +51,10 @@ if test -f /home/engines/scripts/pre-running.sh
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
-if test -n "$CRONJOBS"
-then
-	service cron start
-fi
+#if test -n "$CRONJOBS"
+#then
+#	service cron start
+#fi
 
 if test -f /home/engines/scripts/start.sh
 	then

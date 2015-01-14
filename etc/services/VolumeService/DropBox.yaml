@@ -1,0 +1,22 @@
+name: DropBox
+description: DropBox
+image: engines/dropbox
+servicename: dropbox
+params:
+  name: dropbox_address
+  title: dropbox_address
+  regex: *
+  name: username
+  title: Account login
+  regex: *
+  name: password
+  title:  Account Password
+  regex: *
+  name: direction
+  title: Direction
+  regex: up|down|both
+  name: directory
+  title: Directory
+  regex: *
+  
+    

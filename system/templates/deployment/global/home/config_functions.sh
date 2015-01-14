@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/bas
 
 function copy_substituted_templates {
 
@@ -15,6 +14,10 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 dest_dir=`dirname $dest_file`
                 
                 mkdir -p $dest_dir
+                if test -h $dest_file
+                then
+                	dest_file=`ls -l $dest_file |cut -f2 -d">"`
+                fi
 				rm $dest_file
 				
 				echo doing $dest_file

@@ -16,6 +16,8 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
+
+
   attr_reader :last_error,\
   :repoName,\
   :hostname,\
@@ -30,6 +32,8 @@ class EngineBuilder
     end
 
   end
+  
+  
 
   class DockerFileBuilder
     def initialize(reader,containername,hostname,domain_name,webport,builder)
@@ -39,7 +43,7 @@ class EngineBuilder
       @webPort = webport
       @blueprint_reader = reader
       @builder=builder
-     
+    
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
       
       @layer_count=0
@@ -69,7 +73,7 @@ class EngineBuilder
       write_stack_env
       write_file_service
       write_db_service
-      write_cron_jobs
+#      write_cron_jobs
       write_os_packages
       write_apache_modules
       write_user_local = true
@@ -373,35 +377,22 @@ count_layer
       end
     end
 
-    def write_cron_jobs
-      begin
-        @docker_file.puts("#Cronjobs")
-        log_build_output("Dockerfile:Cron Commands")
-        if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length <0
-
-          cron_file = File.open( get_basedir + "/home/crontab","w")
-          crons.each do |cj|
-            cron_file.puts(cj)
-
-            n=n+1
-          end
-
-          if @blueprint_reader.cron_jobs.length >0
-            @docker_file.puts("ENV CRONJOBS YES")
-            count_layer
-            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
-            count_layer
-          end
-          cron_file.close
-        end
-
-        return true
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+   
+    
+#    def write_cron_jobs
+#      begin   
+#          if @blueprint_reader.cron_jobs.length >0
+#            @docker_file.puts("ENV CRONJOBS YES")
+#            count_layer
+##            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+##            count_layer cron run from cron service
+#          end
+#        return true
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def write_db_service
       begin
@@ -475,17 +466,17 @@ count_layer
             @docker_file.puts("    chmod -R gu+rw $dest;\\")
             @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
             @docker_file.puts("    then \\")
-            @docker_file.puts("     mkdir  \"/home/app/" + directory + "\";\\")
-            @docker_file.puts("  chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
+            @docker_file.puts("       mkdir  \"/home/app/" + directory + "\";\\")
+            @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
             @docker_file.puts("  else\\")
-            @docker_file.puts("  chmod -R gu+rw \"/home/app/" + directory + "\";\\")
-            @docker_file.puts("  for dir in `find -t d /home/app/" + directory  + " | sed \"/ /s//_+_/\" `;\\")
-            @docker_file.puts(" do\\")
-            @docker_file.puts(" if test `echo $dir |grep _+_ |wc -l ` -lt 1 \\")
-            @docker_file.puts(" then chmod gu+x $dir\\;")
-            @docker_file.puts("   fi;\\")
-            @docker_file.puts(" done;\\")
-            @docker_file.puts("   fi")
+            @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
+            @docker_file.puts("     for dir in `find  /home/app/" + directory  + " -type d | sed \"/ /s//_+_/\" `;\\")
+            @docker_file.puts("       do\\")
+            @docker_file.puts("           adir=`echo $dir |grep -v _+_` ;\\")
+            @docker_file.puts("          dirs=\"$dirs $dir\";\\");
+            @docker_file.puts("       done;\\")
+            @docker_file.puts("fi;\\")
+            @docker_file.puts("      chmod gu+x $dirs")
        
             count_layer
           end
@@ -691,7 +682,7 @@ def log_exception(e)
   class BluePrintReader
     def initialize(build_name,contname,blue_print,builder)
       @build_name = build_name
-
+     
       @data_uid="11111"
       @data_gid="11111"
       @builder=builder
@@ -720,7 +711,8 @@ def log_exception(e)
     :databases,\
     :apache_modules,\
     :data_uid,\
-    :data_gid
+    :data_gid,\
+    :cron_job_list
     
     def  log_build_output(line)
       @builder.log_build_output(line)
@@ -1104,9 +1096,13 @@ def log_exception(e)
       begin
         log_build_output("Read Crontabs")
         cjs =  @blueprint["software"]["cron_jobs"]
+          p :cron_jobs
+          p cjs
         @cron_jobs = Array.new
         n=0
         cjs.each do |cj|
+          p :read_cron_job
+          p cj
           @cron_jobs.push(cj["cronjob"])
         end
 
@@ -1237,7 +1233,7 @@ def log_exception(e)
     @http_protocol = params[:http_protocol]
     p params
       @repoName= params[:repository_url] 
-    
+    @cron_job_list = Array.new
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=8000
@@ -1427,6 +1423,36 @@ end
 
   end
 
+def create_cron_service
+     begin
+     
+           log_build_output("Cron file")
+           
+           if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
+    
+             @blueprint_reader.cron_jobs.each do |cj|
+               cj_hash = Hash.new
+               cj_hash[:name] =@container_name
+               cj_hash[:container_name] = @container_name
+               cj_hash[:cron_job]=cj
+              
+#               cron_file.puts(cj)
+#               p :write_cron_job
+#               p cj    
+               @cron_job_list.push(cj_hash)
+               p @cron_job_list
+             end
+#             cron_file.close             
+   end
+
+     return true
+
+   rescue Exception=>e
+     log_exception(e)
+     return false
+   end
+ end
+  
   def setup_default_files
     log_build_output("Setup Default Files")
     if setup_global_defaults == false
@@ -1595,6 +1621,8 @@ end
         return false
       else
         
+        create_cron_service
+        
         log_build_output("Creating Services")
         @blueprint_reader.databases.each() do |db|
           create_database_service db
@@ -1606,6 +1634,8 @@ end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
       end
+    
+   
       close_all
         
       return mc
@@ -1664,7 +1694,10 @@ end
     @blueprint_reader.data_uid,
     @blueprint_reader.data_gid
     )
-    
+  
+    p :set_cron_job_list
+        p @cron_job_list
+        mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
    mc.set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
@@ -1766,7 +1799,7 @@ end
           end
         end
 
-        if error_mesg.include?("Error:")
+        if error_mesg.include?("Error:") || error_mesg.include?("FATA:")
           p "docker_cmd error " + error_mesg
           return false
         end
