@@ -101,7 +101,7 @@ class EnginesOSapi
     @engine_builder = EngineBuilder.new(params, @core_api)
     engine = @engine_builder.build_from_blue_print
     if engine == false
-      return  failed(params[:engine_name],engine_builder.last_error,"build_engine")
+      return  failed(params[:engine_name],@engine_builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active == false
