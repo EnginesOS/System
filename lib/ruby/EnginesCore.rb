@@ -123,8 +123,7 @@ class EnginesCore
     end
     def add_cron(cron_hash)
        begin
-         cron_service = @engines_api.loadManagedService("cron")          
-         cron_service.add_consumer(cron_hash)           
+ 
              
                   cron_line = format_cron_line(cron_hash)  
                   cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
