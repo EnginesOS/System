@@ -1515,16 +1515,18 @@ def add_domain(params)
     return  @system_api.add_domain(params)
 end
 def add_cron(cron_hash)
+  p :add_cront
   return  @system_api.add_cron(cron_hash)
 end
 
 def remove_containers_cron_list(containerName)
-  return  @system_api.remove_containers_cron_list(containerName)
-   
+  p :remove_containers_cron
+  return  @system_api.remove_containers_cron_list(containerName)   
 end
 
 def rebuild_crontab(cron_service)
   #acutally a rebuild (or resave) as hadh already removed from consumer list
+  p :rebuild_crontab
   return  @system_api.rebuild_crontab(cron_service)
 end
 
