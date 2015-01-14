@@ -942,7 +942,7 @@ class EnginesCore
     end
 
     def loadManagedEngine(engine_name)
-      if engine_name.present?
+      if engine_name == nil || engine_name.length
         last_error="No Engine Name"
           return false
       end
@@ -979,7 +979,7 @@ class EnginesCore
 
     def loadManagedService(service_name)
       begin
-        if service_name.present?
+        if if service_name == nil || service_name.length
               last_error="No Service Name"
                 return false
             end
