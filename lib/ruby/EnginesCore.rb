@@ -602,6 +602,14 @@ class EnginesCore
       end
     end
     
+    def list_domains
+      domains = load_domains
+      return domains
+      rescue Exception=>e
+              domains = Hash.new
+               SystemUtils.log_exception(e)
+              return domains
+    end
     def add_domain(params)
       clear_error
        domain= params[:domain_name]
@@ -1712,6 +1720,9 @@ end
     return @system_api.getManagedServices
   end
 
+  def list_domains
+    return @system_api.list_domains
+  end
   def list_managed_engines
     return @system_api.list_managed_engines
   end
@@ -1910,7 +1921,6 @@ end
       return false
     end
   end
-
 
   
   def clear_error
