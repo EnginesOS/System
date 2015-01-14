@@ -12,6 +12,7 @@ ENV ContGrp ruby
 
 #need to create as linking sqllite
 RUN mkdir -p /home/app/app/db
+RUN chown dockuser /app/app/db
 
 WORKDIR /home/app/
 RUN	git init
