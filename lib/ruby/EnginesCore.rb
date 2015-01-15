@@ -1696,6 +1696,12 @@ class EnginesCore
   def load_service_definition(filename)
     yaml_file = File.open(filename)
    return  SoftwareServiceDefinition.from_yaml(yaml_file)
+    rescue Exception=>e
+         container.last_error=( "Failed To load service " + e.to_s)
+         log_exception(e)
+   
+         return false
+       end
   end
   
   def load_avail_services_for(objectname)
@@ -1720,8 +1726,7 @@ class EnginesCore
     if object.is_a?(ManagedEngine)
       if object.Volumes.count >0
         volumes = load_avail_services_for("Volume") #Array of hashes
-        retval[:volumes] = volumes            
-        
+        retval[:volumes] = volumes                    
       end
       if object.databases.count >0
         databases = load_avail_services_for("Database") #Array of hashes
