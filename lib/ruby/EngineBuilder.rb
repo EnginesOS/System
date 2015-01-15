@@ -479,7 +479,7 @@ count_layer
             @docker_file.puts("                fi;\\")     
             @docker_file.puts("       done;\\")
             @docker_file.puts("fi;\\")
-            @docker_file.puts(" if test `echo $dirs | wc -c` -gt 0 ;\\")
+            @docker_file.puts(" if test -n $dirs ;\\")
             @docker_file.puts("      then\\")
             @docker_file.puts("      chmod gu+x $dirs  ;\\")
             @docker_file.puts("fi;\\")
