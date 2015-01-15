@@ -914,8 +914,12 @@ class EnginesOSapi
     return log_exception_and_fail("get_backup list",e)
   end
   
-  def set_engine_runtime_properties params
-    return success(params[:engine_name],"update engine runtime params")
+  def set_engine_runtime_properties(params)
+    if @core_api.set_engine_runtime_properties(params) ==true
+        return success(params[:engine_name],"update engine runtime params")
+    end
+      
+   return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
     rescue Exception=>e
         return log_exception_and_fail("set_engine_runtime params ",e)
   end

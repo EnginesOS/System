@@ -100,6 +100,9 @@ class EnginesCore
       end
     end
 
+   
+    
+    
     def format_cron_line(cron_hash)
       cron_line = String.new
       cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/) 
@@ -1691,7 +1694,35 @@ end
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
   end
-
+def set_engine_runtime_properties(params)
+  #FIX ME also need to deal with Env Variables
+     engine_name = params[:engine_name]
+     memory = params[:memory]
+  engine = loadManagedEngine(engine_name)
+  if engine && engine.is_a?(EnginesOSapiResult == false)
+    
+      if stop_container(engine) == false
+        last_error= engine.last_error
+        return false
+      end
+      if destroy_container(engine)  == false
+        last_error= engine.last_error
+        return false
+      end
+      if engine.update_memory(memory) == false
+        last_error= engine.last_error
+        return false
+      end
+    if  create_container(engine) == false
+           last_error= engine.last_error
+           return false
+         end
+  return true
+  else
+    last_error = engine.result_mesg
+    return false
+   end
+   
   def set_engine_network_properties (engine, params)
     return @system_api.set_engine_network_properties(engine,params)
   end
