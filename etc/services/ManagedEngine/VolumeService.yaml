@@ -13,4 +13,4 @@ consumer_params:
 setup_params:
  name: dropbox_address
  title: dropbox_address
- regex: *
+ regex: 
