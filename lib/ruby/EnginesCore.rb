@@ -1199,8 +1199,8 @@ class EnginesCore
     end
 
      def   image_exists? (image_name)
-       args= "images -q " 
-       res = run_docker(args,image_name)
+       cmd= "docker images -q " + image_name
+       res = SystemUtils.run_system(cmd)
        
         if res.length >0
           return true
