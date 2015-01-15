@@ -24,4 +24,9 @@ class SoftwareServiceDefinition
        puts e.message + " with " + yaml.path
      end
   end
+  
+  def to_h
+    require 'json'
+    return JSON.parse(self.to_json)
+  end
 end
