@@ -1,7 +1,5 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts: 
-- !ruby/object:String
-  "Volume"
+accepts: "Volume"
 author: Engines
 title: "Drop Service"
 description: "Provides Drop Box backing to a Persistant File Storage"

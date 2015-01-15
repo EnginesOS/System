@@ -1,7 +1,5 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts: 
-- !ruby/object:String
-  "Volume"
+accepts: "Volume"
 author: Engines
 title: "Windows Network Share Service"
 description: "Windows Sharing of Persistant File Storage"
