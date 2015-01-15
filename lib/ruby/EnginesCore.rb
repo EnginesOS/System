@@ -1683,7 +1683,7 @@ class EnginesCore
   end
 
   def list_avail_services_for(object)
-    objectname = object.class.namesplit('::').last
+    objectname = object.class.name.split('::').last
     services = load_avail_services_for(objectname)
     subservices = load_avail_component_services_for(object)
 
@@ -1696,19 +1696,28 @@ class EnginesCore
   def load_service_definition(filename)
     yaml_file = File.open(filename)
    return  SoftwareServiceDefinition.from_yaml(yaml_file)
+   
   end
   
   def load_avail_services_for(objectname)
     retval = Array.new
 
     dir = SysConfig.ServiceTemplateDir + "/" + objectname
+    p :dir
+    p dir 
+    if Dir.exists?(dir)
     Dir.foreach(dir) do |service_dir_entry|
+      p :service_dir_entry
+      p service_dir_entry
       if service_dir_entry.endsWith(".yaml")
         service = load_service_definition(service_dir_entry)
         if service != nil
+          p :service
+          p service
           retval.push(service)
         end
       end
+     end
     end
     return retval
   end
@@ -1718,8 +1727,7 @@ class EnginesCore
     if object.is_a?(ManagedEngine)
       if object.Volumes.count >0
         volumes = load_avail_services_for("Volume") #Array of hashes
-        retval[:volumes] = volumes            
-        
+        retval[:volumes] = volumes                    
       end
       if object.databases.count >0
         databases = load_avail_services_for("Database") #Array of hashes
