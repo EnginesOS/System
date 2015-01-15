@@ -1709,7 +1709,7 @@ class EnginesCore
     Dir.foreach(dir) do |service_dir_entry|
       p :service_dir_entry
       p service_dir_entry
-      if service_dir_entry.endsWith(".yaml")
+      if service_dir_entry.end_with?(".yaml")
         service = load_service_definition(service_dir_entry)
         if service != nil
           p :service
