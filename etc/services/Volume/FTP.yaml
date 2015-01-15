@@ -1,6 +1,6 @@
 -- !ruby/object:SoftwareServiceDefinition
 accepts: 
--!ruby/object:String
+- !ruby/object:String
   "Volume"
 author: Engines
 title: "FTP Access Service"

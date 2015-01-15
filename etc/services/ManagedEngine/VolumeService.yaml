@@ -1,8 +1,8 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: 
--!ruby/object:String  
+- !ruby/object:String  
   "ManagedEngine"
--!ruby/object:String    
+- !ruby/object:String    
   "ManagedService"
 author: Engines
 title: "Volume Service"
