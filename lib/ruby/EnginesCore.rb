@@ -1722,6 +1722,7 @@ def set_engine_runtime_properties(params)
     last_error = engine.result_mesg
     return false
    end
+end
    
   def set_engine_network_properties (engine, params)
     return @system_api.set_engine_network_properties(engine,params)
