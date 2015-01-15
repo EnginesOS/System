@@ -1,9 +1,5 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts: 
-- !ruby/object:String  
-  "ManagedEngine"
-- !ruby/object:String    
-  "ManagedService"
+accepts: "Volume"
 author: Engines
 title: "Editor Service"
 description: "Provides Editor and file explorer access to Persistant File Storage"
