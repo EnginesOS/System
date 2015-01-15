@@ -1714,7 +1714,8 @@ class EnginesCore
         if service != nil
           p :service
           p service
-          retval.push(service)
+          p service.to_h
+          retval.push(service.to_h)
         end
       end
      end
@@ -1725,7 +1726,7 @@ class EnginesCore
   def load_avail_component_services_for(object)
   retval = Hash.new
     if object.is_a?(ManagedEngine)
-      if object.Volumes.count >0
+      if object.volumes.count >0
         volumes = load_avail_services_for("Volume") #Array of hashes
         retval[:volumes] = volumes                    
       end

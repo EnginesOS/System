@@ -72,11 +72,9 @@ class ManagedContainer < Container
               :data_gid,\
               :cont_userid,\
               :setState,\
-              :protocol
-            
-              
-              
-              
+              :protocol,\
+              :volumes
+
    attr_accessor :container_id,\
                   :core_api,\
                   :conf_self_start,\
