@@ -1685,11 +1685,11 @@ class EnginesCore
   def list_avail_services_for(object)
     objectname = object.class.namesplit('::').last
     services = load_avail_services_for(objectname)
-    subservices = load_avail_child_services_for(object)
+    subservices = load_avail_component_services_for(object)
 
     retval = Hash.new
-    retval[:avail_object_services] = services
-    retval[:avail_child_services] = subservices
+    retval[:services] = services
+    retval[:components] = subservices
     return retval
   end
 
@@ -1699,31 +1699,31 @@ class EnginesCore
   end
   
   def load_avail_services_for(objectname)
-    retval = Hash.new
+    retval = Array.new
 
     dir = SysConfig.ServiceTemplateDir + "/" + objectname
     Dir.foreach(dir) do |service_dir_entry|
       if service_dir_entry.endsWith(".yaml")
         service = load_service_definition(service_dir_entry)
         if service != nil
-          retval[service.name]=service
+          retval.push(service)
         end
       end
     end
     return retval
   end
 
-  def load_avail_child_services_for(object)
-
+  def load_avail_component_services_for(object)
+  retval = Hash.new
     if object.is_a?(ManagedEngine)
       if object.Volumes.count >0
-        volumes = load_avail_services_for("Volume")
-      
-        retval.merge(volumes)
+        volumes = load_avail_services_for("Volume") #Array of hashes
+        retval[:volumes] = volumes            
+        
       end
       if object.databases.count >0
-        databases = load_avail_services_for("Database")
-        retval.merge(databases)
+        databases = load_avail_services_for("Database") #Array of hashes
+        retval[:databases] = databases
       end
 
       return retval
