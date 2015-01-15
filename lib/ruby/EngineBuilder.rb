@@ -473,7 +473,7 @@ count_layer
             @docker_file.puts("     for dir in `find  /home/app/" + directory  + " -type d  `;\\")
             @docker_file.puts("       do\\")
             @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
-            @docker_file.puts("            if test -n $adir;//")
+            @docker_file.puts("            if test -n $adir;\\")
             @docker_file.puts("                then\\")          
             @docker_file.puts("                      dirs=\"$dirs $adir\";\\");
             @docker_file.puts("                fi;\\")     
