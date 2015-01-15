@@ -1683,7 +1683,7 @@ class EnginesCore
   end
 
   def list_avail_services_for(object)
-    objectname = object.class.namesplit('::').last
+    objectname = object.class.name.split('::').last
     services = load_avail_services_for(objectname)
     subservices = load_avail_component_services_for(object)
 
