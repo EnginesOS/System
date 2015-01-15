@@ -1714,8 +1714,8 @@ class EnginesCore
         if service != nil
           p :service
           p service
-          p service.attributes
-          retval.push(service.attributes)
+          p service.to_h
+          retval.push(service.to_h)
         end
       end
      end
