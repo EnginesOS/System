@@ -631,6 +631,14 @@ def is_startup_complete
      ret_val = @core_api.is_startup_complete(self)
     return ret_val
 end
+
+def has_container?
+  if read_state == "nocontainer"
+    return false
+  else
+    return true
+  end     
+end
   
   def is_active
     state = read_state
