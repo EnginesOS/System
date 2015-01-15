@@ -1697,30 +1697,36 @@ end
 def set_engine_runtime_properties(params)
   #FIX ME also need to deal with Env Variables
      engine_name = params[:engine_name]
-     memory = params[:memory]
-  engine = loadManagedEngine(engine_name)
-  if engine && engine.is_a?(EnginesOSapiResult) == false
     
-      if stop_container(engine) == false
-        last_error= engine.last_error
+       
+  engine = loadManagedEngine(engine_name)
+  if engine.is_a?(EnginesOSapiResult) == false
+    last_error = engine.result_mesg
+       return false
+  else
+    if params.has_key?(:memory)
+          if engine.update_memory(memory) == false
+                 last_error= engine.last_error
+                 return false
+               end
+        end
+    if engine.is_active == true
+        last_error="Container is active"
         return false
+     end
+      
+      if engine.has_container? == true
+        if destroy_container(engine)  == false
+          last_error= engine.last_error
+            return false
+        end
       end
-      if destroy_container(engine)  == false
-        last_error= engine.last_error
-        return false
-      end
-      if engine.update_memory(memory) == false
-        last_error= engine.last_error
-        return false
-      end
+     
     if  create_container(engine) == false
            last_error= engine.last_error
            return false
          end
-  return true
-  else
-    last_error = engine.result_mesg
-    return false
+  return true     
    end
 end
    
