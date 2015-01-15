@@ -1,4 +1,4 @@
--- !ruby/object:SoftwareServiceDefinition
+--- !ruby/object:SoftwareServiceDefinition
 accepts: "Volume"
 author: Engines
 title: "NFS Sharing of Volumes"

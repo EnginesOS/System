@@ -1,6 +1,6 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts:  
-- !ruby/object:String  
+accepts: 
+- !ruby/object:String
   "Volume"
 author: Engines
 title: "Editor Service"
