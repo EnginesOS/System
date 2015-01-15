@@ -1710,7 +1710,7 @@ class EnginesCore
       p :service_dir_entry
       p service_dir_entry
       if service_dir_entry.end_with?(".yaml")
-        service = load_service_definition(service_dir_entry)
+        service = load_service_definition(dir + "/" + service_dir_entry)
         if service != nil
           p :service
           p service
