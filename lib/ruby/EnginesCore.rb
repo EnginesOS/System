@@ -1699,7 +1699,7 @@ def set_engine_runtime_properties(params)
      engine_name = params[:engine_name]
      memory = params[:memory]
   engine = loadManagedEngine(engine_name)
-  if engine && engine.is_a?(EnginesOSapiResult == false)
+  if engine && engine.is_a?(EnginesOSapiResult) == false
     
       if stop_container(engine) == false
         last_error= engine.last_error
