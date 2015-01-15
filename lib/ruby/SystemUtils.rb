@@ -47,7 +47,7 @@ class SystemUtils
         return res        
       rescue Exception=>e
         SystemUtils.log_exception(e)
-        return e.to_s
+        return "Error: " +e.to_s
       end
     end   
      
