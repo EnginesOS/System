@@ -1703,6 +1703,8 @@ class EnginesCore
     retval = Array.new
 
     dir = SysConfig.ServiceTemplateDir + "/" + objectname
+    p :dir
+    p dir 
     if Dir.exists?(dir)
     Dir.foreach(dir) do |service_dir_entry|
       p :service_dir_entry
