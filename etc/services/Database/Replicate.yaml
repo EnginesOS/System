@@ -1,0 +1,9 @@
+-- !ruby/object:SoftwareServiceDefinition
+accepts: ["Volume"]
+author: Engines
+title: Replication of DB Service
+description: Provides replication of Database
+service_name: editor
+dedicated: true
+consumer_params:
+setup_params:

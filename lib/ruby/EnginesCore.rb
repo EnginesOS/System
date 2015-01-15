@@ -48,8 +48,8 @@ class EnginesCore
       end #if reg dns
       return true
     end
-    
-    def reload_dns    
+
+    def reload_dns
       dns_pid = File.read(SysConfig.NamedPIDFile)
       p :kill_HUP_TO_DNS
       p dns_pid.to_s
@@ -102,96 +102,96 @@ class EnginesCore
 
     def format_cron_line(cron_hash)
       cron_line = String.new
-      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/) 
-                         for n in 0..4
-                           cron_line +=  cron_line_split[n] + " "       
-                          end 
-                       cron_line +=" docker exec " +  cron_hash[:container_name] + " "
-                         n=5
-                         cnt = cron_line_split.count
-                         
-                               while n < cnt
-                                 cron_line += " " + cron_line_split[n]
-                                 n+=1       
-                                end 
-           return     cron_line                 
-  rescue Exception=>e
-         
-          log_exception(e)
-  
-          return false                            
+      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/)
+      for n in 0..4
+        cron_line +=  cron_line_split[n] + " "
+      end
+      cron_line +=" docker exec " +  cron_hash[:container_name] + " "
+      n=5
+      cnt = cron_line_split.count
+
+      while n < cnt
+        cron_line += " " + cron_line_split[n]
+        n+=1
+      end
+      return     cron_line
+    rescue Exception=>e
+
+      log_exception(e)
+
+      return false
     end
+
     def add_cron(cron_hash)
-       begin
- 
-             
-                  cron_line = format_cron_line(cron_hash)  
-                  cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
-                  cron_file.puts(cron_line)
-                  cron_file.close
-                  
-             return reload_crontab
-                  
-                        
-         rescue Exception=>e
-        
-           log_exception(e)
-           return false
-         end      
-     end
-     
-     def reload_crontab
-       docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
-       return run_system(docker_cmd)
-       rescue Exception=>e
-              
-               log_exception(e)
-       
-               return false    
-     end
+      begin
 
-     
-     def rebuild_crontab(cron_service)
-       cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
+        cron_line = format_cron_line(cron_hash)
+        cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
+        cron_file.puts(cron_line)
+        cron_file.close
 
-       cron_service.consumers.each do |cron_entry|
-         
-         cron_line = format_cron_line(cron_entry[1])
-         p :cron_line
-         p cron_line
-         cron_file.puts(cron_line)
-       end
-       cron_file.close
-       return reload_crontab
-       
-       rescue Exception=>e
-        
-         log_exception(e)
- 
-         return false    
-       
-     end
-     def remove_containers_cron_list(containerName)
-     cron_service =  @engines_api.loadManagedService("cron")
-    p :remove_cron_for
-    p containerName
-       
-       cron_service.consumers.each do |cron_job|
+        return reload_crontab
+
+      rescue Exception=>e
+
+        log_exception(e)
+        return false
+      end
+    end
+
+    def reload_crontab
+      docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
+      return run_system(docker_cmd)
+    rescue Exception=>e
+
+      log_exception(e)
+
+      return false
+    end
+
+    def rebuild_crontab(cron_service)
+      cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
+
+      cron_service.consumers.each do |cron_entry|
+
+        cron_line = format_cron_line(cron_entry[1])
+        p :cron_line
+        p cron_line
+        cron_file.puts(cron_line)
+      end
+      cron_file.close
+      return reload_crontab
+
+    rescue Exception=>e
+
+      log_exception(e)
+
+      return false
+
+    end
+
+    def remove_containers_cron_list(containerName)
+      cron_service =  @engines_api.loadManagedService("cron")
+      p :remove_cron_for
+      p containerName
+
+      cron_service.consumers.each do |cron_job|
         if cron_job != nil
           p cron_job
           p :looking_at
           p cron_job[1][:container_name]
-         if cron_job[1][:container_name] ==  containerName
-           cron_service.remove_consumer(cron_job[1])           
-         end
+          if cron_job[1][:container_name] ==  containerName
+            cron_service.remove_consumer(cron_job[1])
+          end
         end
-     end
-       rescue Exception=>e
-               
-                log_exception(e)
-        
-                return false    
-     end
+      end
+    rescue Exception=>e
+
+      log_exception(e)
+
+      return false
+    end
+
     def clear_cid_file container
       clear_error
       begin
@@ -293,54 +293,54 @@ class EnginesCore
         return false
       end
     end
-    
+
     def get_cert_name(fqdn)
       if File.exists?(SysConfig.NginxCertDir + "/" + fqdn + ".crt")
-      return  fqdn 
-    else
-      return SysConfig.NginxDefaultCert      
+        return  fqdn
+      else
+        return SysConfig.NginxDefaultCert
+      end
     end
-    end
-    
+
     def register_site(site_hash)
       clear_error
       begin
         proto = site_hash[:proto]
-            if proto =="http https"
-              template_file=SysConfig.HttpHttpsNginxTemplate
-            elsif proto =="http"
-              template_file=SysConfig.HttpNginxTemplate
-            elsif proto == "https"
-              template_file=SysConfig.HttpsNginxTemplate         
-            elsif proto == nil
-              p "Proto nil"
-              template_file=SysConfig.HttpHttpsNginxTemplate
-            else
-              p "Proto" + proto + "  unknown"                
-              template_file=SysConfig.HttpHttpsNginxTemplate
-            end
-            
-            file_contents=File.read(template_file)
-            site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
-            site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-            site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
-            if proto =="https" || proto =="http https"
-              site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
-              site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
-            end
-            if proto =="http https"
-                #Repeat for second entry  
-              site_config_contents =  site_config_contents.sub("FQDN",site_hash[:fqdn])
-              site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-              site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
-            end                           
+        if proto =="http https"
+          template_file=SysConfig.HttpHttpsNginxTemplate
+        elsif proto =="http"
+          template_file=SysConfig.HttpNginxTemplate
+        elsif proto == "https"
+          template_file=SysConfig.HttpsNginxTemplate
+        elsif proto == nil
+          p "Proto nil"
+          template_file=SysConfig.HttpHttpsNginxTemplate
+        else
+          p "Proto" + proto + "  unknown"
+          template_file=SysConfig.HttpHttpsNginxTemplate
+        end
 
-            site_filename = get_site_file_name(site_hash)
-            
-            site_file  =  File.open(site_filename,'w')
-            site_file.write(site_config_contents)
-            site_file.close
-        result = restart_nginx_process()        
+        file_contents=File.read(template_file)
+        site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
+        site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
+        site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+        if proto =="https" || proto =="http https"
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+        end
+        if proto =="http https"
+          #Repeat for second entry
+          site_config_contents =  site_config_contents.sub("FQDN",site_hash[:fqdn])
+          site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
+          site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+        end
+
+        site_filename = get_site_file_name(site_hash)
+
+        site_file  =  File.open(site_filename,'w')
+        site_file.write(site_config_contents)
+        site_file.close
+        result = restart_nginx_process()
         return result
       rescue  Exception=>e
         log_exception(e)
@@ -361,24 +361,24 @@ class EnginesCore
     def get_site_file_name(site_hash)
       file_name = String.new
       proto = site_hash[:proto]
-        p :proto
-        p proto
-      if proto == "http https"       
+      p :proto
+      p proto
+      if proto == "http https"
         proto ="http_https"
       end
-          file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:fqdn] + ".site"               
-      return file_name  
-      
+      file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:fqdn] + ".site"
+      return file_name
+
     end
-    
+
     def deregister_site(site_hash)
       clear_error
       begin
-#        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-#        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-#        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-#        SystemUtils.debug_output ssh_cmd
-#        result = run_system(ssh_cmd)
+        #        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+        #        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
+        #        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+        #        SystemUtils.debug_output ssh_cmd
+        #        result = run_system(ssh_cmd)
         site_filename = get_site_file_name(site_hash)
         if File.exists?(site_filename)
           File.delete(site_filename)
@@ -494,13 +494,13 @@ class EnginesCore
           return false
         end
         statefile=stateDir + "/blueprint.json"
-          if File.exists?(statefile)
-            f = File.new(statefile,"r")
-            blueprint = JSON.parse( f.read())
-            f.close
-          else
-            return false
-          end           
+        if File.exists?(statefile)
+          f = File.new(statefile,"r")
+          blueprint = JSON.parse( f.read())
+          f.close
+        else
+          return false
+        end
         return blueprint
       rescue  Exception=>e
         log_exception(e)
@@ -565,20 +565,20 @@ class EnginesCore
         return false
       end
     end
-    
-   def  save_domains(domains)
-     clear_error
-          begin
-            domain_file = File.open(SysConfig.DomainsFile,"w")
-            domain_file.write(domains.to_yaml())
-            domain_file.close           
-            return true            
-          rescue Exception=>e
-             SystemUtils.log_exception(e)
-            return false
-          end
-        end
-        
+
+    def  save_domains(domains)
+      clear_error
+      begin
+        domain_file = File.open(SysConfig.DomainsFile,"w")
+        domain_file.write(domains.to_yaml())
+        domain_file.close
+        return true
+      rescue Exception=>e
+        SystemUtils.log_exception(e)
+        return false
+      end
+    end
+
     def load_domains
       clear_error
       begin
@@ -597,89 +597,88 @@ class EnginesCore
         return domains
       rescue Exception=>e
         domains = Hash.new
-         SystemUtils.log_exception(e)
+        SystemUtils.log_exception(e)
         return domains
       end
     end
-    
+
     def list_domains
       domains = load_domains
       return domains
-      rescue Exception=>e
-              domains = Hash.new
-               SystemUtils.log_exception(e)
-              return domains
+    rescue Exception=>e
+      domains = Hash.new
+      SystemUtils.log_exception(e)
+      return domains
     end
+
     def add_domain(params)
       clear_error
-       domain= params[:domain_name]
-         if params[:self_hosted]
-           add_self_hosted_domain params
-         end
-         p :add_domain
-         p params
-       domains = load_domains()
-       domains[params[:domain_name]] = params 
-       if save_domains(domains)        
-         return true
-       end
-   
-       p :failed_add_hosted_domains
-       return false
-       
-     rescue Exception=>e
-     SystemUtils.log_exception(e)
-       return false
-     end
- 
-        
+      domain= params[:domain_name]
+      if params[:self_hosted]
+        add_self_hosted_domain params
+      end
+      p :add_domain
+      p params
+      domains = load_domains()
+      domains[params[:domain_name]] = params
+      if save_domains(domains)
+        return true
+      end
+
+      p :failed_add_hosted_domains
+      return false
+
+    rescue Exception=>e
+      SystemUtils.log_exception(e)
+      return false
+    end
+
     def rm_domain(domain,system_api)
       clear_error
       domains = load_domains
       if domains.has_key?(domain)
-        domains.delete(domain)  
-        save_domains(domains) 
+        domains.delete(domain)
+        save_domains(domains)
         system_api.reload_dns
       end
-      
-    end
-  def  update_domain(old_domain_name, params,system_api)
-    clear_error
-    begin
-      domains = load_domains()
-      domains.delete(old_domain_name)
-      domains[params[:domain_name]] = params
-      save_domains(domains)
-      
-    if params[:self_hosted]
-        add_self_hosted_domain params
-        rm_self_hosted_domain(old_domain_name)
-      system_api.reload_dns
-   end
-          
-         
-      return true
-    rescue  Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
 
-    
+    end
+
+    def  update_domain(old_domain_name, params,system_api)
+      clear_error
+      begin
+        domains = load_domains()
+        domains.delete(old_domain_name)
+        domains[params[:domain_name]] = params
+        save_domains(domains)
+
+        if params[:self_hosted]
+          add_self_hosted_domain params
+          rm_self_hosted_domain(old_domain_name)
+          system_api.reload_dns
+        end
+
+        return true
+      rescue  Exception=>e
+        log_exception(e)
+        return false
+      end
+    end
+
     def add_self_hosted_domain params
       clear_error
       begin
         p :Lachlan_Sent_parrams
         p params
-       
+
         return DNSHosting.add_hosted_domain(params,self)
-#       if ( DNSHosting.add_hosted_domain(params,self) == false)
-#         return false       
-#       end
-#       
- #     domains = load_self_hosted_domains()
- #       domains[params[:domain_name]] = params
-#          
+        #       if ( DNSHosting.add_hosted_domain(params,self) == false)
+        #         return false
+        #       end
+        #
+        #     domains = load_self_hosted_domains()
+        #       domains[params[:domain_name]] = params
+        #
         return  save_self_hosted_domains(domains)
       rescue  Exception=>e
         log_exception(e)
@@ -691,9 +690,9 @@ class EnginesCore
       clear_error
       begin
         return DNSHosting.load_self_hosted_domains()
-#        domains = load_self_hosted_domains()
-#        p domains
-#        return domains
+        #        domains = load_self_hosted_domains()
+        #        p domains
+        #        return domains
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -718,10 +717,10 @@ class EnginesCore
       clear_error
       begin
         return DNSHosting.rm_hosted_domain(domain_name,self)
-#        domains = load_self_hosted_domains()
-#        domains.delete(domain_name)
-#        save_self_hosted_domains(domains)
-#        return true
+        #        domains = load_self_hosted_domains()
+        #        domains.delete(domain_name)
+        #        save_self_hosted_domains(domains)
+        #        return true
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -953,9 +952,9 @@ class EnginesCore
     end
 
     def loadManagedEngine(engine_name)
-      if engine_name == nil || engine_name.length ==0 
+      if engine_name == nil || engine_name.length ==0
         last_error="No Engine Name"
-          return false
+        return false
       end
       begin
         yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
@@ -990,10 +989,10 @@ class EnginesCore
 
     def loadManagedService(service_name)
       begin
-        if service_name == nil || service_name.length ==0 
-              last_error="No Service Name"
-                return false
-            end
+        if service_name == nil || service_name.length ==0
+          last_error="No Service Name"
+          return false
+        end
         yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
 
         if File.exists?(yam_file_name) == false
@@ -1085,7 +1084,7 @@ class EnginesCore
         #
         #remove startup only
         #latter have function to reset subs and other flags
-         
+
         if File.exists?(dir + "/startup_complete")
           File.unlink(dir + "/startup_complete")
         end
@@ -1098,10 +1097,6 @@ class EnginesCore
     end
 
     protected
-
-
-
-  
 
     def container_cid_file(container)
       return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
@@ -1170,9 +1165,6 @@ class EnginesCore
       end
     end
 
- 
-    
-    
     def start_container   container
       clear_error
       begin
@@ -1227,14 +1219,14 @@ class EnginesCore
         return false
       end
     end
-    
+
     def signal_container_process(pid,signal,container)
       clear_error
-      commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s          
+      commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s
       return  run_docker(commandargs,container)
-      rescue  Exception=>e
-        log_exception(e)
-        return false
+    rescue  Exception=>e
+      log_exception(e)
+      return false
     end
 
     def logs_container container
@@ -1301,8 +1293,8 @@ class EnginesCore
               line = line.gsub(/\\\"/,"")
               oline = line
               res += line.chop
-#              p :lne_by_line
-#              p line
+              #              p :lne_by_line
+              #              p line
               if stderr_is_open
                 error_mesg += stderr.read_nonblock(256)
               end
@@ -1334,14 +1326,14 @@ class EnginesCore
           else
             container.last_error=("")
           end
-#
-#          if res.start_with?("[") == true
-#            res = res +"]"
-#          end
+          #
+          #          if res.start_with?("[") == true
+          #            res = res +"]"
+          #          end
           if res.end_with?(']') == false
             res+=']'
           end
-          
+
           container.last_result=(res)
           return true
         end
@@ -1366,9 +1358,9 @@ class EnginesCore
         end
       end
       return e_option
-      rescue Exception=>e
-        log_exception(e)
-        return e.to_s
+    rescue Exception=>e
+      log_exception(e)
+      return e.to_s
     end
 
     def get_port_options(container)
@@ -1389,9 +1381,9 @@ class EnginesCore
         end
       end
       return eportoption
-      rescue Exception=>e
-        log_exception(e)
-        return e.to_s    
+    rescue Exception=>e
+      log_exception(e)
+      return e.to_s
     end
 
     def container_commandline_args(container)
@@ -1406,15 +1398,15 @@ class EnginesCore
           start_cmd=" "
         end
         commandargs =  "-h " + container.hostName + \
-                         envionment_options + \
-                        " --memory=" + container.memory.to_s + "m " +\
-                        volume_option + " " +\
-                        port_options +\
-                        " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid " +\
-                        "--name " + container.containerName + \
-                        "  -t " + container.image + " " +\
-                        start_cmd
-                        
+        envionment_options + \
+        " --memory=" + container.memory.to_s + "m " +\
+        volume_option + " " +\
+        port_options +\
+        " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid " +\
+        "--name " + container.containerName + \
+        "  -t " + container.image + " " +\
+        start_cmd
+
         return commandargs
       rescue Exception=>e
         log_exception(e)
@@ -1477,10 +1469,10 @@ class EnginesCore
       end
 
       return container_logdetails
- rescue Exception=>e
-          log_exception(e)
-          
-          return false
+    rescue Exception=>e
+      log_exception(e)
+
+      return false
     end
 
     protected
@@ -1520,49 +1512,49 @@ class EnginesCore
 
   attr_reader :last_error
 
-def add_share(site_hash)
-end 
+  def add_share(site_hash)
+  end
 
-def rm_share(site_hash)
-end 
-  
-def add_domain(params)
+  def rm_share(site_hash)
+  end
+
+  def add_domain(params)
     return  @system_api.add_domain(params)
-end
-def add_cron(cron_hash)
-  p :add_cront
-  return  @system_api.add_cron(cron_hash)
-end
+  end
 
-def remove_containers_cron_list(containerName)
-  p :remove_containers_cron
-  if @system_api.remove_containers_cron_list(containerName)
-    cron_service = loadManagedService("cron")
-    return @system_api.rebuild_crontab(cron_service)
-  else
-    return false
-  end   
-end
+  def add_cron(cron_hash)
+    p :add_cront
+    return  @system_api.add_cron(cron_hash)
+  end
 
-def rebuild_crontab(cron_service)
-  #acutally a rebuild (or resave) as hadh already removed from consumer list
-  p :rebuild_crontab
-  return  @system_api.rebuild_crontab(cron_service)
-end
+  def remove_containers_cron_list(containerName)
+    p :remove_containers_cron
+    if @system_api.remove_containers_cron_list(containerName)
+      cron_service = loadManagedService("cron")
+      return @system_api.rebuild_crontab(cron_service)
+    else
+      return false
+    end
+  end
 
-def remove_domain(params)
-  return @system_api.rm_domain(params[:domain_name],@system_api)
-end
-def update_domain(old_domain,params)
-  return @system_api.update_domain(old_domain,params,@system_api)
-end
+  def rebuild_crontab(cron_service)
+    #acutally a rebuild (or resave) as hadh already removed from consumer list
+    p :rebuild_crontab
+    return  @system_api.rebuild_crontab(cron_service)
+  end
 
+  def remove_domain(params)
+    return @system_api.rm_domain(params[:domain_name],@system_api)
+  end
 
+  def update_domain(old_domain,params)
+    return @system_api.update_domain(old_domain,params,@system_api)
+  end
 
-def signal_service_process(pid,sig,name)
-  container = loadManagedService(name)
-  return @docker_api.signal_container_process(pid,sig,container)
-end
+  def signal_service_process(pid,sig,name)
+    container = loadManagedService(name)
+    return @docker_api.signal_container_process(pid,sig,container)
+  end
 
   def start_container(container)
     if @docker_api.start_container(container) == true
@@ -1646,8 +1638,6 @@ end
     return @system_api.add_self_hosted_domain(params)
   end
 
-
-  
   def list_self_hosted_domains()
     return @system_api.list_self_hosted_domains()
   end
@@ -1692,6 +1682,91 @@ end
     return @system_api.set_engine_hostname_details(container,params)
   end
 
+  def list_avail_services_for(object)
+    objectname = object.class.namesplit('::').last
+    services = load_avail_services_for(objectname)
+    subservices = load_avail_component_services_for(object)
+
+    retval = Hash.new
+    retval[:services] = services
+    retval[:components] = subservices
+    return retval
+  end
+
+  def load_service_definition(filename)
+    yaml_file = File.open(filename)
+   return  SoftwareServiceDefinition.from_yaml(yaml_file)
+  end
+  
+  def load_avail_services_for(objectname)
+    retval = Array.new
+
+    dir = SysConfig.ServiceTemplateDir + "/" + objectname
+    Dir.foreach(dir) do |service_dir_entry|
+      if service_dir_entry.endsWith(".yaml")
+        service = load_service_definition(service_dir_entry)
+        if service != nil
+          retval.push(service)
+        end
+      end
+    end
+    return retval
+  end
+
+  def load_avail_component_services_for(object)
+  retval = Hash.new
+    if object.is_a?(ManagedEngine)
+      if object.Volumes.count >0
+        volumes = load_avail_services_for("Volume") #Array of hashes
+        retval[:volumes] = volumes            
+        
+      end
+      if object.databases.count >0
+        databases = load_avail_services_for("Database") #Array of hashes
+        retval[:databases] = databases
+      end
+
+      return retval
+    else
+      return nil
+    end
+  end
+
+  def set_engine_runtime_properties(params)
+    #FIX ME also need to deal with Env Variables
+    engine_name = params[:engine_name]
+
+    engine = loadManagedEngine(engine_name)
+    if engine.is_a?(EnginesOSapiResult) == false
+      last_error = engine.result_mesg
+      return false
+    else
+      if params.has_key?(:memory)
+        if engine.update_memory(memory) == false
+          last_error= engine.last_error
+          return false
+        end
+      end
+      if engine.is_active == true
+        last_error="Container is active"
+        return false
+      end
+
+      if engine.has_container? == true
+        if destroy_container(engine)  == false
+          last_error= engine.last_error
+          return false
+        end
+      end
+
+      if  create_container(engine) == false
+        last_error= engine.last_error
+        return false
+      end
+      return true
+    end
+  end
+
   def set_engine_network_properties (engine, params)
     return @system_api.set_engine_network_properties(engine,params)
   end
@@ -1723,6 +1798,7 @@ end
   def list_domains
     return @system_api.list_domains
   end
+
   def list_managed_engines
     return @system_api.list_managed_engines
   end
@@ -1735,9 +1811,9 @@ end
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-         container.deregister_registered
-         @system_api.destroy_container(container)  #removes cid file
-         return true
+        container.deregister_registered
+        @system_api.destroy_container(container)  #removes cid file
+        return true
       else
         return false
       end
@@ -1753,7 +1829,7 @@ end
     clear_error
     begin
       container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass] 
+      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)
@@ -1856,12 +1932,12 @@ end
     clear_error
     begin
       params=Hash.new
-       params[:engine_name] = container.containerName
-       params[:domain_name] = container.domainName
-        params[:host_name] = container.hostName
-        params[:env_variables] = container.environments  
-       params[:http_protocol] = container.protocol
-       params[:repository]  = container.repo
+      params[:engine_name] = container.containerName
+      params[:domain_name] = container.domainName
+      params[:host_name] = container.hostName
+      params[:env_variables] = container.environments
+      params[:http_protocol] = container.protocol
+      params[:repository]  = container.repo
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
@@ -1922,7 +1998,6 @@ end
     end
   end
 
-  
   def clear_error
     @last_error = ""
   end

@@ -1,0 +1,9 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: ["ManagedEngine","ManagedService"]
+author: Engines
+title: Cron
+description: Scheduales tasks
+service_name: cron
+dedicated: false
+consumer_params:
+setup_params:

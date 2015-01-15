@@ -14,6 +14,9 @@ class Container
   
   attr_reader :container_id, :memory,:containerName ,:hostName,:domainName, :image, :eports,:volumes,:environments
    
+  def update_memory(new_memory)
+    @memory = new_memory
+  end
          
   def fqdn
     if @domainName == nil

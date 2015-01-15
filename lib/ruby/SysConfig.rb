@@ -27,6 +27,7 @@ class SysConfig
   #System
   @@DomainsFile="/opt/engines/etc/domains"
   @@FirstRunRan="/opt/engines/etc/first_ran"
+  @@ServiceTemplateDir="/opt/engines/etc/services/"
  #NGINX
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
   @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
@@ -50,6 +51,9 @@ class SysConfig
   #Cron
   @@CronDir = "/opt/engines/etc/cron/tabs"
   
+  def SysConfig.ServiceTemplateDir
+    return @@ServiceTemplateDir
+  end
   def SysConfig.CronDir
     return @@CronDir
   end
