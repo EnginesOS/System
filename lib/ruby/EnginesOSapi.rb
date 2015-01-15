@@ -131,7 +131,9 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("last_api_error",e)
   end
-
+  def list_avail_services_for(object)
+    return @core_api.list_avail_services_for(object)
+  end
   def list_apps()
     p :list_apps
     return @core_api.list_managed_engines
