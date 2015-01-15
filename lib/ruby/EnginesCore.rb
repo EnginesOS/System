@@ -1714,8 +1714,8 @@ class EnginesCore
         if service != nil
           p :service
           p service
-          p service.to_hash
-          retval.push(service.to_hash)
+          p service.attributes
+          retval.push(service.attributes)
         end
       end
      end
