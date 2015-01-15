@@ -1626,9 +1626,13 @@ def create_cron_service
       setup_framework_logging
 
       if  build_init == false
-        log_build_errors("Error Build Init failed")
+        log_build_errors("Error Build Image failed")
         return false
       else
+        
+        if @core_api.image_exists?(@container_name) == false
+          return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
+        end 
         
         create_cron_service
         
@@ -1808,7 +1812,7 @@ end
           end
         end
 
-        if error_mesg.include?("Error:") || error_mesg.include?("FATA:")
+        if error_mesg.include?("Error:") || error_mesg.include?("FATA")
           p "docker_cmd error " + error_mesg
           return false
         end
