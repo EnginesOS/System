@@ -4,7 +4,8 @@ ADD engines home/engines
 
 ENV ContUser www-data
 
-RUN	if [ -f /home/engines/configs/php/71-custom.ini ] ;\
+RUN	apt-get update -y;\
+	if [ -f /home/engines/configs/php/71-custom.ini ] ;\
 		then		\
 			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/conf.d/;\
 	fi;\
