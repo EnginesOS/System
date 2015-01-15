@@ -1702,6 +1702,7 @@ class EnginesCore
     retval = Array.new
 
     dir = SysConfig.ServiceTemplateDir + "/" + objectname
+    if Dir.exists?(dir)
     Dir.foreach(dir) do |service_dir_entry|
       if service_dir_entry.endsWith(".yaml")
         service = load_service_definition(service_dir_entry)
@@ -1709,6 +1710,7 @@ class EnginesCore
           retval.push(service)
         end
       end
+     end
     end
     return retval
   end
