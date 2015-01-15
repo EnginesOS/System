@@ -1,12 +1,16 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts: ["ManagedEngine","ManagedService"]
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
 author: Engines
-title: Volume Service
-description: Provides Persistant File Storage
+title: "Volume Service"
+description: "Provides Persistant File Storage"
 service_name: volmanager
 dedicated: false
 consumer_params:
 setup_params:
  name: dropbox_address
  title: dropbox_address
- regex: *
+ regex: 
