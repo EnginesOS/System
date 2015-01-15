@@ -27,6 +27,6 @@ class SoftwareServiceDefinition
   
   def to_h
     require 'json'
-    return JSON.parse(self.to_json)
+    return JSON.parse(self.to_json, {:symbolize_names => true})
   end
 end
