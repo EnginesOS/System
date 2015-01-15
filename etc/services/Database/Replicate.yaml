@@ -1,9 +1,10 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts: ["Volume"]
-author: Engines
-title: Replication of DB Service
-description: Provides replication of Database
-service_name: editor
+accepts: 
+- "Database"
+author: "Engines"
+title: "Replication of DB Service"
+description: "Provides replication of Database"
+service_name: db_replicate
 dedicated: true
 consumer_params:
 setup_params:

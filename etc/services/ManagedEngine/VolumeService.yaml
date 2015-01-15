@@ -1,8 +1,8 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: ["ManagedEngine","ManagedService"]
 author: Engines
-title: Volume Service
-description: Provides Persistant File Storage
+title: "Volume Service"
+description: "Provides Persistant File Storage"
 service_name: volmanager
 dedicated: false
 consumer_params:

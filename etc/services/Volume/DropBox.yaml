@@ -1,8 +1,9 @@
 -- !ruby/object:SoftwareServiceDefinition
-accepts: ["Volume"]
+accepts: 
+-"Volume"
 author: Engines
-title: Drop Service
-description: Provides Drop Box backing to a Persistant File Storage
+title: "Drop Service"
+description: "Provides Drop Box backing to a Persistant File Storage"
 service_name: dropbox
 dedicated: false
 consumer_params:

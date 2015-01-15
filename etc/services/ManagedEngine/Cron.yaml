@@ -2,7 +2,7 @@
 accepts: ["ManagedEngine","ManagedService"]
 author: Engines
 title: Cron
-description: Scheduales tasks
+description: "Scheduales tasks"
 service_name: cron
 dedicated: false
 consumer_params:
