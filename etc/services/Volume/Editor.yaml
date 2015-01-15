@@ -1,6 +1,7 @@
 -- !ruby/object:SoftwareServiceDefinition
 accepts: 
--"Volume"
+-!ruby/object:String
+  "Volume"
 author: Engines
 title: "Editor Service"
 description: "Provides Editor and file explorer access to Persistant File Storage"

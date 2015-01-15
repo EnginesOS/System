@@ -1,5 +1,9 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts: ["ManagedEngine","ManagedService"]
+accepts: 
+-!ruby/object:String  
+  "ManagedEngine"
+-!ruby/object:String    
+  "ManagedService"
 author: Engines
 title: Cron
 description: "Scheduales tasks"

@@ -1,6 +1,7 @@
 -- !ruby/object:SoftwareServiceDefinition
 accepts: 
--"Volume"
+-!ruby/object:String
+  "Volume"
 author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
