@@ -1,7 +1,6 @@
--- !ruby/object:SoftwareServiceDefinition
+--- !ruby/object:SoftwareServiceDefinition
 accepts: 
-- !ruby/object:String
-  "Volume"
+  "Database"
 author: "Engines"
 title: "Replication of DB Service"
 description: "Provides replication of Database"
