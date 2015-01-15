@@ -22,8 +22,8 @@ class SystemUtils
       e.backtrace.each do |bt |
         e_str += bt + " \n"
       end
-      @@last_error = e_stre_str
-      p 
+      @@last_error = e_str
+      p e_str
       SystemUtils.log_output(e_str,10)
     end
     
@@ -39,7 +39,7 @@ class SystemUtils
      end
      
   def SystemUtils.run_system(cmd)
-      clear_error
+    @@last_error=""
       begin
         cmd = cmd + " 2>&1"
         res= %x<#{cmd}>
