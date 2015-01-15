@@ -1696,12 +1696,7 @@ class EnginesCore
   def load_service_definition(filename)
     yaml_file = File.open(filename)
    return  SoftwareServiceDefinition.from_yaml(yaml_file)
-    rescue Exception=>e
-         container.last_error=( "Failed To load service " + e.to_s)
-         log_exception(e)
    
-         return false
-       end
   end
   
   def load_avail_services_for(objectname)
@@ -1710,9 +1705,13 @@ class EnginesCore
     dir = SysConfig.ServiceTemplateDir + "/" + objectname
     if Dir.exists?(dir)
     Dir.foreach(dir) do |service_dir_entry|
+      p :service_dir_entry
+      p service_dir_entry
       if service_dir_entry.endsWith(".yaml")
         service = load_service_definition(service_dir_entry)
         if service != nil
+          p :service
+          p service
           retval.push(service)
         end
       end
