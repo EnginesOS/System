@@ -1072,6 +1072,10 @@ class EnginesOSapi
     return EnginesOSapiResult.success(item_name ,cmd)
   end
 
+  def list_services_for(object)
+    return @core_api.list_services_for(object)
+  end
+  
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name

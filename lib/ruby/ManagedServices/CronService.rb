@@ -11,8 +11,7 @@ class CronService < ManagedService
     end 
      
   def get_site_hash(site_hash)
-
-          
+ 
         return site_hash          
    end
    

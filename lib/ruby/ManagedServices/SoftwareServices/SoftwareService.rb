@@ -1,6 +1,8 @@
 class SoftwareService < ManagedService
+  attr_reader :accepts,:author,:title,:description,:container,:consumer_params,:setup_params
   
   def get_service_descriptor
+   
     #Author
     #date
     #siganturie
@@ -42,6 +44,7 @@ class SoftwareService < ManagedService
  
  def get_runtime_params_descr
    params_descr Hash.new
+   params_descr["setup"] =  get_setup_form
    params_descr[:addfolder] = get_folder_form_description
    params_descr[:adddropuser] = get_dropboxuser_form_description
    params_descr[:configuredropbox] = get_configuredropbox_form_description
@@ -55,16 +58,18 @@ class SoftwareService < ManagedService
  
  protected
  
- def get_folder_form_description
+ def get_setup_form
   form_descr = Hash.new
-  form_descr[:title] ="My Form"
-   form_descr[:fields] = get_folder_fields_descr
+  form_descr[:title] ="Setup ftp user"
+   form_descr[:fields] = get_ftp_fields
      return form_descr
  end
  
- def get_folder_fields_descr
+ def get_folder_fields
    fields_descr = Hash.new
-   fields_descr["Folder Field"] =get_folder_fld
+   fields_descr["Folder"] =get_folder_fld
+   fields_descr["User"] =get_user_fld
+   fields_descr["Password"] = get_pass_fld
  end
  
  def get_folder_fld

@@ -1,0 +1,9 @@
+-- !ruby/object:SoftwareServiceDefinition
+accepts: ["Volume"]
+author: Engines
+title: Windows Network Share Service
+description: Windows Sharing of Persistant File Storage
+service_name: smbfs
+dedicated: false
+consumer_params:
+setup_params:
