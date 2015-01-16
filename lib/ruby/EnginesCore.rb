@@ -1430,7 +1430,7 @@ class EnginesCore
       begin
         #System
         volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
-        volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
+        volume_option += " -v " + container_state_dir(container) + "/run:/engines/var/run:rw "
         # if container.ctype == "service"
         #  volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
         incontainer_logdir = get_container_logdir(container)
