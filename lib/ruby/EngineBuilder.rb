@@ -1627,11 +1627,14 @@ def create_cron_service
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
+        last_error = tail_of_build_log
         return false
       else
         
         if @core_api.image_exists?(@container_name) == false
-          return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
+          last_error = tail_of_build_log
+          return false
+          #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end 
         
         create_cron_service
@@ -1659,6 +1662,17 @@ def create_cron_service
       close_all
       return false
     end
+  end
+  
+  def tail_of_build_log
+    retval = String.new
+    lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
+    lines_count = lines.count -1
+    start = lines_count - 10
+    for n in start..lines_count
+      retval+=lines[n]
+    end 
+     return retval
   end
 
   def rebuild_managed_container  engine
