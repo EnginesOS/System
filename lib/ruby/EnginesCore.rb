@@ -1765,7 +1765,7 @@ class EnginesCore
     engine_name = params[:engine_name]
 
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(EnginesOSapiResult) == false
+    if engine.is_a?(EnginesOSapiResult) == true
       last_error = engine.result_mesg
       return false
     else
