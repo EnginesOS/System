@@ -5,7 +5,7 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: "Volume Service"
+title: "Volume service"
 description: "Provides Persistant File Storage"
 service_name: volmanager
 dedicated: false

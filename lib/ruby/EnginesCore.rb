@@ -1198,6 +1198,17 @@ class EnginesCore
       end
     end
 
+     def   image_exists? (image_name)
+       cmd= "docker images -q " + image_name
+       res = SystemUtils.run_system(cmd)
+       
+        if res.length >0
+          return true
+        else
+          return false
+        end
+       
+     end
     def unpause_container container
       clear_error
       begin
@@ -1680,6 +1691,14 @@ class EnginesCore
 
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
+  end
+  
+  def image_exists?(containerName)
+    imageName = containerName +"/deploy"
+    return @docker_api.image_exists?(imageName)
+    catch Exception=>e
+      log_execption(e)
+      return false
   end
 
   def list_avail_services_for(object)
