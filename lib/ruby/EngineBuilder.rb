@@ -183,7 +183,8 @@ class EngineBuilder
         @docker_file.puts("USER 0")
           count_layer()
            @docker_file.puts("")
-           @docker_file.puts("RUN chown -R $data_uid.$data_gid /home/fs ;\\")
+           @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
+           @docker_file.puts("chown -R $data_uid.$data_gid /home/fs ;\\")
            @docker_file.puts("chmod -R 770 /home/fs")
            count_layer
          @docker_file.puts("USER $ContUser")
