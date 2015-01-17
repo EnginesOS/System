@@ -573,7 +573,7 @@ count_layer
               dest_prefix="/home/app"
             end
       
-            @docker_file.puts("run   if test -f " + arc_dir  +" ;\\")
+            @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
             @docker_file.puts("       then\\")
             @docker_file.puts(" mkdir -p /home/app ;\\")
             @docker_file.puts(" fi;\\")
