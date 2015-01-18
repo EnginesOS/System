@@ -7,4 +7,17 @@ description: "Provides FTP access to Persistant File Storage"
 service_name: ftp
 dedicated: false
 consumer_params:
+ - folder
+ - user
+ - password
 setup_params:
+  name: folder
+  title: folder
+  regex: *
+  name: username
+  title: User Name
+  regex: *
+  name: password
+  title: password
+  regex: *
+  
