@@ -18,11 +18,17 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 then
                 	dest_file=`ls -l $dest_file |cut -f2 -d">"`
                 fi
+                
+                /home/engines/scripts/grant_rw_access `dirname $dest_file`
+                /home/engines/scripts/grant_rw_access $dest_file
 				rm $dest_file
 				
 				echo doing $dest_file
 				
        			process_file 
+       			#FIXME only revoke if it was g+w before
+       			 /home/engines/scripts/revoke_rw_access `dirname $dest_file`
+                /home/engines/scripts/revoke_rw_access $dest_file
         done
 }
 
