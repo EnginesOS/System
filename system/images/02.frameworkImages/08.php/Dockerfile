@@ -7,7 +7,7 @@ RUN /usr/sbin/usermod -u 22671 www-data;\
 	mkdir -p /etc/apache2/ /var/run/apache2;\
 	chown www-data /var/run/apache2	;\
 	chown www-data /var/www/;\
-	echo "www-data ALL=(data-owner) NOPASSWD: /home/engines/scripts/_revoke_rw_access.sh" > /etc/sudoers.d/revoke_www_access
+	echo "www-data ALL=(data-owner) NOPASSWD: /home/engines/scripts/_revoke_rw_access.sh" > /etc/sudoers.d/revoke_www_access;\
 	echo "www-data ALL=(data-owner) NOPASSWD: /home/engines/scripts/_grant_rw_access.sh" > /etc/sudoers.d/grant_www_access
 	
 ADD home home
