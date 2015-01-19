@@ -1723,7 +1723,7 @@ class EnginesCore
   end
   
   def load_avail_services_for(objectname)
-    begin
+    
       retval = Array.new
 
       dir = SysConfig.ServiceTemplateDir + "/" + objectname
@@ -1731,6 +1731,7 @@ class EnginesCore
       p dir 
       if Dir.exists?(dir)
         Dir.foreach(dir) do |service_dir_entry|
+          begin
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
@@ -1742,12 +1743,14 @@ class EnginesCore
               retval.push(service.to_h)
             end
           end
+          rescue Exception=>e
+            puts e
+            next
+          end
         end
       end
       return retval
-    rescue 
-      next
-    end   
+   
   end
 
   def load_avail_component_services_for(object)
