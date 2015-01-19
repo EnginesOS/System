@@ -10,6 +10,7 @@ consumer_params:
   - folder
   - user
   - password
+  - access
 setup_params:
   folder:
     name: folder
@@ -44,3 +45,14 @@ setup_params:
     default_value: " "
     comment: " "
     regexverifer: ".*"
+  access:
+    name: rw_access
+    title: RW Access
+    regexverifer: ".*"
+    tooltip: "Allow fpt service to write files"
+    type: boolean
+    hint: "true|false"
+    placeholder: "true|false"
+    required: true
+    default_value: false
+    comment: "Write access includes the ability" 
