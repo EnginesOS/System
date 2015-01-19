@@ -10,7 +10,7 @@ consumer_params:
  - folder
  - user
  - password
-setup_params:
+setup_params: !ruby/object:Hash
   folder: !ruby/object:Hash
    name: folder
    title: folder
