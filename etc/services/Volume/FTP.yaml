@@ -48,11 +48,11 @@ setup_params:
   access:
     name: rw_access
     title: RW Access
-    regexverifer: ".*"
-    tooltip: "Allow fpt service to write files"
+    regexverifer: true|false
+    tooltip: "Allow ftp service to write files"
     type: boolean
     hint: "true|false"
     placeholder: "true|false"
     required: true
     default_value: false
-    comment: "Write access includes the ability" 
+    comment: "Write access includes the ability to delete" 
