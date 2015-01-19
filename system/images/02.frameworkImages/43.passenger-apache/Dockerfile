@@ -8,6 +8,7 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
 	echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main  >/etc/apt/sources.list.d/passenger.list;\ 
 	chmod 600 /etc/apt/sources.list.d/passenger.list;\
 	apt-get update -y ;\
+	rm /etc/apt/apt.conf.d/01proxy;\
 	apt-get install -y apache2 libapache2-mod-passenger passenger-dev ;\
 	a2enmod passenger;\
     rm etc/apache2/sites-enabled/*;\
