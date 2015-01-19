@@ -100,11 +100,15 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("USER 0")
       count_layer()
-      @docker_file.puts("run mv /home/fs /home/fs_src; mkdir -p /home/fs/local/")
+      @docker_file.puts("run mkdir -p /home/fs/local/")
       count_layer()
       @docker_file.puts("")
+      write_run_install_script
       @docker_file.puts("USER $ContUser")     
       count_layer
+      #Do this after configuration scripts run
+      @docker_file.puts("run mv /home/fs /home/fs_src")
+      count_layer()
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
       write_data_permissions
@@ -189,8 +193,15 @@ class EngineBuilder
            count_layer
          @docker_file.puts("USER $ContUser")
              count_layer
-
       
+    end
+    def write_run_install_script
+      @docker_file.puts("")
+      @docker_file.puts("#Setup templates and run installer")
+      @docker_file.puts("USER $data_uid")
+      count_layer
+      @docker_file.puts("RUN bash /home/setup.sh")
+      count_layer     
     end
     def write_persistant_files
       begin
