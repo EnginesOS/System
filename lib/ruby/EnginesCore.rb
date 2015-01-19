@@ -1723,29 +1723,31 @@ class EnginesCore
   end
   
   def load_avail_services_for(objectname)
-    retval = Array.new
+    begin
+      retval = Array.new
 
-    dir = SysConfig.ServiceTemplateDir + "/" + objectname
-    p :dir
-    p dir 
-    if Dir.exists?(dir)
-    Dir.foreach(dir) do |service_dir_entry|
-      p :service_dir_entry
-      p service_dir_entry
-      if service_dir_entry.end_with?(".yaml")
-        service = load_service_definition(dir + "/" + service_dir_entry)
-        if service != nil
-          p :service
-          p service
-          p service.to_h
-          retval.push(service.to_h)
+      dir = SysConfig.ServiceTemplateDir + "/" + objectname
+      p :dir
+      p dir 
+      if Dir.exists?(dir)
+        Dir.foreach(dir) do |service_dir_entry|
+          p :service_dir_entry
+          p service_dir_entry
+          if service_dir_entry.end_with?(".yaml")
+            service = load_service_definition(dir + "/" + service_dir_entry)
+            if service != nil
+              p :service
+              p service
+              p service.to_h
+              retval.push(service.to_h)
+            end
+          end
         end
       end
-     end
-    end
-    return retval
-  rescue 
-      next  
+      return retval
+    rescue 
+      next
+    end   
   end
 
   def load_avail_component_services_for(object)
