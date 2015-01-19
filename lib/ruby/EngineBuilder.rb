@@ -696,6 +696,7 @@ def log_exception(e)
       @builder=builder
       @container_name = contname    
       @blueprint = blue_print
+      @web_port=nil
     end
 
     attr_reader :persistant_files,\
@@ -720,7 +721,8 @@ def log_exception(e)
     :apache_modules,\
     :data_uid,\
     :data_gid,\
-    :cron_job_list
+    :cron_job_list,
+    :web_port
     
     def  log_build_output(line)
       @builder.log_build_output(line)
@@ -770,13 +772,19 @@ def log_exception(e)
         read_environment_variables
         read_persistant_files
         read_persistant_dirs
-
+        read_web_port_overide
       rescue Exception=>e
         log_exception(e)
       end
 
     end
 
+    def read_web_port_overide
+      if @blueprint["software"].has_key?("read_web_port_overide") == true
+        @web_port=@blueprint["software"]["read_web_port_overide"]
+      end
+    end
+    
     def read_persistant_dirs
       begin
         log_build_output("Read Persistant Dirs")
@@ -1610,7 +1618,12 @@ def create_cron_service
         return false
       end
 
-      read_web_port
+      
+      if @blueprint_reader.web_port != nil
+        @webPort = @blueprint_reader.web_port
+      else
+        read_web_port
+      end
       read_web_user
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
