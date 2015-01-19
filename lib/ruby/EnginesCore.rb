@@ -1723,7 +1723,8 @@ class EnginesCore
   end
   
   def load_avail_services_for(objectname)
-    
+     p :load_avail_services_for
+     p objectname
       retval = Array.new
 
       dir = SysConfig.ServiceTemplateDir + "/" + objectname
@@ -1757,6 +1758,7 @@ class EnginesCore
   retval = Hash.new
     if object.is_a?(ManagedEngine)
       if object.volumes.count >0
+        p :loading_vols
         volumes = load_avail_services_for("Volume") #Array of hashes
         retval[:volumes] = volumes                    
       end
