@@ -11,7 +11,7 @@ consumer_params:
  - user
  - password
 setup_params:
-  folder:
+  folder: !ruby/object:Hash
    name: folder
    title: folder
    regexverifer: *
@@ -22,7 +22,7 @@ setup_params:
    required:
    default_value:
    comment:
-  username:
+  username: !ruby/object:Hash
    name: username
    title: User Name
    regexverifer: *
@@ -33,7 +33,7 @@ setup_params:
    required:
    default_value:
    common:
-  password:
+  password: !ruby/object:Hash
    name: password
    title: password
    tooltip:
