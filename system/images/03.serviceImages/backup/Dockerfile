@@ -1,7 +1,8 @@
 FROM  engines/python
 
-RUN apt-get -y install sudo vim  openssh-server duply ncftp  python-paramiko python-gobject-2 cron
-
+RUN apt-get -y update;\
+	apt-get -y install sudo vim  openssh-server duply ncftp  python-paramiko python-gobject-2 cron;\
+	apt-get clean 
 ADD etc  etc
 ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
