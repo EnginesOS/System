@@ -10,37 +10,37 @@ consumer_params:
  - folder
  - user
  - password
-setup_params: !ruby/object:Hash
+setup_params:
   folder: !ruby/object:Hash
    name: folder
    title: folder
-   regexverifer: *
-   tooltip: ""
-   type: ""
-   hint: ""
-   placeholder: ""
-   required: ""
-   default_value: ""
-   comment: ""
+   regexverifer: ".*"
+   tooltip: " "
+   type: " "
+   hint: " "
+   placeholder: " "
+   required: true
+   default_value: " "
+   comment: " "
   username: !ruby/object:Hash
    name: username
    title: User Name
-   regexverifer: *
-   tooltip: ""
-   type: ""
-   hint: ""
-   placeholder: ""
-   required: ""
-   default_value: ""
-   comment: ""
+   regexverifer: ".*"
+   tooltip: " "
+   type: " "
+   hint: " "
+   placeholder: " "
+   required: true
+   default_value: " " 
+   comment: " "
   password: !ruby/object:Hash
    name: password
    title: password
-   tooltip: ""
-   type: ""
-   hint: ""
-   placeholder: ""
-   required: ""
-   default_value: ""
-   comment: ""
-   regexverifer: *  
+   tooltip: " "
+   type: " "
+   hint: " "
+   placeholder: " "
+   required: true
+   default_value: " "
+   comment: " "
+   regexverifer: ".*"
