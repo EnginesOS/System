@@ -27,8 +27,9 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 				
        			process_file 
        			#FIXME only revoke if it was g+w before
+       			/home/engines/scripts/revoke_rw_access.sh $dest_file
        			 /home/engines/scripts/revoke_rw_access.sh `dirname $dest_file`
-                /home/engines/scripts/revoke_rw_access.sh $dest_file
+
         done
 }
 
