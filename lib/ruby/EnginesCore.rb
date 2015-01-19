@@ -1713,6 +1713,7 @@ class EnginesCore
   end
 
   def load_service_definition(filename)
+    
     yaml_file = File.open(filename)
     p :open
     p filename
@@ -1743,6 +1744,8 @@ class EnginesCore
      end
     end
     return retval
+  rescue 
+      next  
   end
 
   def load_avail_component_services_for(object)
