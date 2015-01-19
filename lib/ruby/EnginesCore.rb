@@ -1714,8 +1714,11 @@ class EnginesCore
 
   def load_service_definition(filename)
     yaml_file = File.open(filename)
+    p :open
+    p filename
    return  SoftwareServiceDefinition.from_yaml(yaml_file)
-   
+  rescue
+      return nil
   end
   
   def load_avail_services_for(objectname)
