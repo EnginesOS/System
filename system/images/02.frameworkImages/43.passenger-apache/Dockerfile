@@ -5,10 +5,10 @@ ENV RAILS_ENV production
 RUN /usr/sbin/usermod -u 22671 www-data ;\
  	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7 ;\
 	apt-get install -y apt-transport-https ca-certificates   apache2-threaded-dev libapr1-dev libaprutil1-dev ;\
+	rm /etc/apt/apt.conf.d/01proxy;\
 	echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main  >/etc/apt/sources.list.d/passenger.list;\ 
 	chmod 600 /etc/apt/sources.list.d/passenger.list;\
 	apt-get update -y ;\
-	rm /etc/apt/apt.conf.d/01proxy;\
 	apt-get install -y apache2 libapache2-mod-passenger passenger-dev ;\
 	a2enmod passenger;\
     rm etc/apache2/sites-enabled/*;\
