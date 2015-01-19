@@ -11,13 +11,36 @@ consumer_params:
  - user
  - password
 setup_params:
-  name: folder
-  title: folder
-  regex: *
-  name: username
-  title: User Name
-  regex: *
-  name: password
-  title: password
-  regex: *
-  
+  folder:
+   name: folder
+   title: folder
+   regexverifer: *
+   tooltip:
+   type:
+   hint:
+   placeholder:
+   required:
+   default_value:
+   comment:
+  username:
+   name: username
+   title: User Name
+   regexverifer: *
+   tooltip:
+   type:
+   hint:
+   placeholder:
+   required:
+   default_value:
+   common:
+  password:
+   name: password
+   title: password
+   tooltip:
+   type:
+   hint:
+   placeholder:
+   required:
+   default_value:
+   common:
+   regexverifer: *  
