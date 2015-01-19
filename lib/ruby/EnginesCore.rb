@@ -515,6 +515,7 @@ class EnginesCore
           FileUtils.mkdir_p( site_hash[:localpath])
         end
         #currently the build scripts do this
+        #save details with some manager
         return true
       rescue  Exception=>e
         log_exception(e)
@@ -526,6 +527,7 @@ class EnginesCore
       clear_error
       begin
         puts "would remove " + site_hash[:localpath]
+        #update details with some manager
         return true
       rescue  Exception=>e
         log_exception(e)
@@ -1523,6 +1525,15 @@ class EnginesCore
 
   attr_reader :last_error
 
+  def list_attached_services_for(object)
+    #[:crons]=["a Hash"]
+    #[:volumes]=["a Hash"]
+    #[:databases]=["a Hash"]
+    #[nfs ,smbfs, ftp, sop,we     
+    
+    return Hash.new
+  end
+  
   def add_share(site_hash)
   end
 
@@ -1878,6 +1889,24 @@ class EnginesCore
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+        
+        #save details with some manager
+      SystemUtils.debug_output(cmd)
+
+      return run_system(cmd)
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+  
+  def drop_database  site_hash
+    clear_error
+    begin
+      container_name =  site_hash[:flavor] + "_server"
+      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+        
+        #save details with some manager
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)

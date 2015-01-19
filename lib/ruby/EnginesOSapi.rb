@@ -1078,6 +1078,15 @@ class EnginesOSapi
     return @core_api.list_services_for(object)
   end
   
+  def attach_service_to_component(params)
+    #service params and component objectname / and component name and parent name
+    
+  end
+  
+  def list_attached_services_for(object)
+     return @core_api.list_attached_services_for(object)
+   end
+  
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name
