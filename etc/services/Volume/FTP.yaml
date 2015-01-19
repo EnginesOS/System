@@ -1,10 +1,46 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: 
-  "Volume"
+  - "Volume"
 author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
 service_name: ftp
 dedicated: false
 consumer_params:
+  - folder
+  - user
+  - password
 setup_params:
+  folder:
+    name: folder
+    title: folder
+    regexverifer: ".*"
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+  username:
+    name: username
+    title: User Name
+    regexverifer: ".*"
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " " 
+    comment: " "
+  password:
+    name: password
+    title: password
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+    regexverifer: ".*"

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if  test ! -d /engines/var/run/flags/
+then
+	mkdir /engines/var/run/flags/
+	chmod oug+w /engines/var/run/flags/
+fi
 
 if test ! -f  /engines/var/run/subs_run
 	then
@@ -16,7 +21,7 @@ if test ! -f  /engines/var/run/subs_run
 			echo "Has Post install"
 			
 			if test -f /home/engines/scripts/post_install.sh
-				then
+				then 				
 				echo "Running Post Install"
 				/bin/bash /home/engines/scripts/post_install.sh 
 				mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done

@@ -1430,7 +1430,7 @@ class EnginesCore
       begin
         #System
         volume_option = SysConfig.timeZone_fileMapping #latter this will be customised
-        volume_option += " -v " + container_state_dir(container) + "/run/:/engines/var/run:rw "
+        volume_option += " -v " + container_state_dir(container) + "/run:/engines/var/run:rw "
         # if container.ctype == "service"
         #  volume_option += " -v " + container_log_dir(container) + ":/var/log:rw "
         incontainer_logdir = get_container_logdir(container)
@@ -1713,39 +1713,52 @@ class EnginesCore
   end
 
   def load_service_definition(filename)
+    
     yaml_file = File.open(filename)
+    p :open
+    p filename
    return  SoftwareServiceDefinition.from_yaml(yaml_file)
-   
+  rescue
+      return nil
   end
   
   def load_avail_services_for(objectname)
-    retval = Array.new
+     p :load_avail_services_for
+     p objectname
+      retval = Array.new
 
-    dir = SysConfig.ServiceTemplateDir + "/" + objectname
-    p :dir
-    p dir 
-    if Dir.exists?(dir)
-    Dir.foreach(dir) do |service_dir_entry|
-      p :service_dir_entry
-      p service_dir_entry
-      if service_dir_entry.end_with?(".yaml")
-        service = load_service_definition(dir + "/" + service_dir_entry)
-        if service != nil
-          p :service
-          p service
-          p service.to_h
-          retval.push(service.to_h)
+      dir = SysConfig.ServiceTemplateDir + "/" + objectname
+      p :dir
+      p dir 
+      if Dir.exists?(dir)
+        Dir.foreach(dir) do |service_dir_entry|
+          begin
+          p :service_dir_entry
+          p service_dir_entry
+          if service_dir_entry.end_with?(".yaml")
+            service = load_service_definition(dir + "/" + service_dir_entry)
+            if service != nil
+              p :service
+              p service
+              p service.to_h
+              retval.push(service.to_h)
+            end
+          end
+          rescue Exception=>e
+            puts e
+            next
+          end
         end
       end
-     end
-    end
-    return retval
+      return retval
+   
   end
 
   def load_avail_component_services_for(object)
   retval = Hash.new
     if object.is_a?(ManagedEngine)
       if object.volumes.count >0
+        p :loading_vols
         volumes = load_avail_services_for("Volume") #Array of hashes
         retval[:volumes] = volumes                    
       end

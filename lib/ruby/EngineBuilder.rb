@@ -183,7 +183,8 @@ class EngineBuilder
         @docker_file.puts("USER 0")
           count_layer()
            @docker_file.puts("")
-           @docker_file.puts("RUN chown -R $data_uid.$data_gid /home/fs ;\\")
+           @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
+           @docker_file.puts("chown -R $data_uid.$data_gid /home/fs ;\\")
            @docker_file.puts("chmod -R 770 /home/fs")
            count_layer
          @docker_file.puts("USER $ContUser")
@@ -572,7 +573,7 @@ count_layer
               dest_prefix="/home/app"
             end
       
-            @docker_file.puts("run   if test -f " + arc_dir  +" ;\\")
+            @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
             @docker_file.puts("       then\\")
             @docker_file.puts(" mkdir -p /home/app ;\\")
             @docker_file.puts(" fi;\\")
@@ -695,6 +696,7 @@ def log_exception(e)
       @builder=builder
       @container_name = contname    
       @blueprint = blue_print
+      @web_port=nil
     end
 
     attr_reader :persistant_files,\
@@ -719,7 +721,8 @@ def log_exception(e)
     :apache_modules,\
     :data_uid,\
     :data_gid,\
-    :cron_job_list
+    :cron_job_list,
+    :web_port
     
     def  log_build_output(line)
       @builder.log_build_output(line)
@@ -769,13 +772,19 @@ def log_exception(e)
         read_environment_variables
         read_persistant_files
         read_persistant_dirs
-
+        read_web_port_overide
       rescue Exception=>e
         log_exception(e)
       end
 
     end
 
+    def read_web_port_overide
+      if @blueprint["software"].has_key?("read_web_port_overide") == true
+        @web_port=@blueprint["software"]["read_web_port_overide"]
+      end
+    end
+    
     def read_persistant_dirs
       begin
         log_build_output("Read Persistant Dirs")
@@ -1609,7 +1618,12 @@ def create_cron_service
         return false
       end
 
-      read_web_port
+      
+      if @blueprint_reader.web_port != nil
+        @webPort = @blueprint_reader.web_port
+      else
+        read_web_port
+      end
       read_web_user
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
@@ -1627,11 +1641,14 @@ def create_cron_service
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
+        last_error = tail_of_build_log
         return false
       else
         
         if @core_api.image_exists?(@container_name) == false
-          return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
+          last_error = tail_of_build_log
+          return false
+          #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end 
         
         create_cron_service
@@ -1659,6 +1676,17 @@ def create_cron_service
       close_all
       return false
     end
+  end
+  
+  def tail_of_build_log
+    retval = String.new
+    lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
+    lines_count = lines.count -1
+    start = lines_count - 10
+    for n in start..lines_count
+      retval+=lines[n]
+    end 
+     return retval
   end
 
   def rebuild_managed_container  engine

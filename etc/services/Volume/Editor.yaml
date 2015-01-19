@@ -6,6 +6,7 @@ author: Engines
 title: Editor
 description: "Editor "
 service_name: editor
-dedicated: false
+dedicated: true
+image_name: engines/editor
 consumer_params:
 setup_params:
