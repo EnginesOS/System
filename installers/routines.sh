@@ -42,6 +42,10 @@ function configure_git {
 		
 		 chmod u+x  /etc/rc.local
 		 
+echo "Configure Apt-cache"
+		 echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf 
+		 
+		 
 		
 echo "Installing Docker"		
 		 apt-get install apt-transport-https
