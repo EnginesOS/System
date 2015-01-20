@@ -75,6 +75,7 @@ if test -f /home/app/Rack.sh
 	fi
 
 if test -f /home/startwebapp.sh
+	then
 	touch /engines/var/run/startup_complete
  	/home/startwebapp.sh
  	fi
