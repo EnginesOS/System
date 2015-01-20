@@ -1505,7 +1505,7 @@ def create_cron_service
   def create_db_service(name,flavor)
     begin
       log_build_output("Create DB Service")
-      db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
+      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
       databases.push(db)
       create_database_service db
     rescue Exception=>e
