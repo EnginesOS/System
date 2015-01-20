@@ -103,17 +103,21 @@ class EngineBuilder
       @docker_file.puts("run mkdir -p /home/fs/local/")
       count_layer()
       @docker_file.puts("")
-      write_run_install_script
+     
      
       #Do this after configuration scripts run
  
-      @docker_file.puts("USER $ContUser")     
-      count_layer()
+#      @docker_file.puts("USER $ContUser")     
+#      count_layer()
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
       write_data_permissions
+      
+      write_run_install_script
+      
       @docker_file.puts("USER 0")
             count_layer()
+       
       @docker_file.puts("run mv /home/fs /home/fs_src")
        count_layer()
       @docker_file.puts("USER $ContUser")     
@@ -194,7 +198,7 @@ class EngineBuilder
           count_layer()
            @docker_file.puts("")
            @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
-           @docker_file.puts("chown -R $data_uid.$data_gid /home/fs ;\\")
+           @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
            @docker_file.puts("chmod -R 770 /home/fs")
            count_layer
          @docker_file.puts("USER $ContUser")
