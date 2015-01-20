@@ -207,14 +207,11 @@ class EngineBuilder
       
     end
     def write_run_install_script
-      @docker_file.puts("")
+      @docker_file.puts("WorkDir /home/")
       @docker_file.puts("#Setup templates and run installer")
       @docker_file.puts("USER data-user")
       count_layer
-      @docker_file.puts("RUN if test -f /home/engines/scripts/install.sh ;\\")
-      @docker_file.puts("then \\")
-      @docker_file.puts(" bash /home/engines/scripts/install.sh ;\\")
-      @docker_file.puts("fi")
+      @docker_file.puts("RUN bash /home/setup.sh")
       count_layer     
     end
     def write_persistant_files
