@@ -109,8 +109,7 @@ class EngineBuilder
  
 #      @docker_file.puts("USER $ContUser")     
 #      count_layer()
-      @docker_file.puts("VOLUME /home/fs_src/")
-      count_layer()
+     
       write_data_permissions
       
       write_run_install_script
@@ -120,6 +119,8 @@ class EngineBuilder
        
       @docker_file.puts("run mv /home/fs /home/fs_src")
        count_layer()
+      @docker_file.puts("VOLUME /home/fs_src/")
+           count_layer()
       @docker_file.puts("USER $ContUser")     
       count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
