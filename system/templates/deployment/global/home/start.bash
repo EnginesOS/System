@@ -74,7 +74,13 @@ if test -f /home/app/Rack.sh
 		/home/app/Rack.sh
 	fi
 
-touch /engines/var/run/startup_complete 	
+if test -f /home/startwebapp.sh
+	touch /engines/var/run/startup_complete
+ 	/home/startwebapp.sh
+ 	fi
+
+touch /engines/var/run/startup_complete
+
 /usr/sbin/apache2ctl -D FOREGROUND 
  rm -f /run/apache2/apache2.pid 
  
