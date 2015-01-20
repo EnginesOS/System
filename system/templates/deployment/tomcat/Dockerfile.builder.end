@@ -3,8 +3,13 @@
 
 
 #after chmod so protected
-ADD home/start.bash /home/app/start.bash
+ADD home/start.bash /home/start.bash
 
+USER 0
+
+RUN rm /usr/share/tomcat7/webapps;\
+	ln -s /home/app/webapps/ /usr/share/tomcat7/webapps
+	
 USER www-data
 
 
