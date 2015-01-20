@@ -104,10 +104,12 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("")
       write_run_install_script
-      @docker_file.puts("USER $ContUser")     
+      @docker_file.puts("USER 0")     
       count_layer
       #Do this after configuration scripts run
       @docker_file.puts("run mv /home/fs /home/fs_src")
+      count_layer()
+      @docker_file.puts("USER $ContUser")     
       count_layer()
       @docker_file.puts("VOLUME /home/fs_src/")
       count_layer()
@@ -593,7 +595,6 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-
             
           end
         end
