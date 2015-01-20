@@ -211,9 +211,9 @@ class EngineBuilder
       @docker_file.puts("#Setup templates and run installer")
       @docker_file.puts("USER data-user")
       count_layer
-      @docker_file.puts("RUN if test -f /engines/scripts/install.sh ;\\")
+      @docker_file.puts("RUN if test -f /home/engines/scripts/install.sh ;\\")
       @docker_file.puts("then \\")
-      @docker_file.puts(" bash /engines/scripts/install.sh ;\\")
+      @docker_file.puts(" bash /home/engines/scripts/install.sh ;\\")
       @docker_file.puts("fi")
       count_layer     
     end
