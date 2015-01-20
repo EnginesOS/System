@@ -580,7 +580,7 @@ count_layer
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             if arc_extract.present?
               @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
-              @docker_file.puts(" rm " + arc_name)
+              @docker_file.puts(" rm \"" + arc_name + "\";\\")
             else
               @docker_file.puts("echo") #step past the next shell line implied by preceeding ;
             end
