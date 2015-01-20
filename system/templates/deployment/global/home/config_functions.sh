@@ -31,6 +31,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
        			#/home/engines/scripts/revoke_rw_access.sh `dirname $dest_file`
 
         done
+        echo run as `whoami` in `pwd`
 }
 
 function process_file {
