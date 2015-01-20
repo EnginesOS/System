@@ -1660,7 +1660,12 @@ def create_cron_service
       env_file.close
       
       setup_framework_logging
-
+      
+      log_build_output("Creating db Services")
+             @blueprint_reader.databases.each() do |db|
+               create_database_service db
+             end
+             
       if  build_init == false
         log_build_errors("Error Build Image failed")
         last_error = tail_of_build_log
@@ -1675,10 +1680,10 @@ def create_cron_service
         
         create_cron_service
         
-        log_build_output("Creating Services")
-        @blueprint_reader.databases.each() do |db|
-          create_database_service db
-        end
+        log_build_output("Creating vol Services")
+                 @blueprint_reader.databases.each() do |db|
+                   create_database_service db
+                 end
        
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
