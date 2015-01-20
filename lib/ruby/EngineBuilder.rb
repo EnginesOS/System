@@ -204,7 +204,7 @@ class EngineBuilder
     def write_run_install_script
       @docker_file.puts("")
       @docker_file.puts("#Setup templates and run installer")
-      @docker_file.puts("USER $data_uid")
+      @docker_file.puts("USER data-user")
       count_layer
       @docker_file.puts("RUN bash /home/setup.sh")
       count_layer     
