@@ -1318,6 +1318,7 @@ def log_exception(e)
       env_array.each do |env_hash|
         p :env_hash
         p env_hash
+        env_hash["name"] = env_hash["name"].sub(/ /,"_")
          if env_hash["name"] !=nil && env_hash["value"] != nil
             custom_env_hash.store(env_hash["name"],env_hash["value"])
          end
