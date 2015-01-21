@@ -137,8 +137,8 @@ class EngineBuilder
     end
     
     def write_clear_env_variables
-      
-      @blueprint_reader.environments  do |env|
+      @docker_file.puts("#Clear env")
+      @blueprint_reader.environments.each  do |env|
             if env.build_time_only == true
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
