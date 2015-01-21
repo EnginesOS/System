@@ -167,7 +167,7 @@ class EngineBuilder
 
       begin
         @docker_file.puts("#Environment Variables")
-        @blueprint_reader.environments do |env|
+        @blueprint_reader.environments.each do |env|
           @docker_file.puts("#Blueprint ENVs")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
