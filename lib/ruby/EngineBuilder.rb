@@ -70,6 +70,7 @@ class EngineBuilder
 
     def write_files_for_docker
       @docker_file.puts("")
+      write_environment_variables
       write_stack_env
       write_file_service
       write_db_service
@@ -138,7 +139,7 @@ class EngineBuilder
     def write_clear_env_variables
       
       @blueprint_reader.environments  do |env|
-            if enb.build_time_only == true
+            if env.build_time_only == true
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
             end            
