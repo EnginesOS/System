@@ -10,7 +10,7 @@ RUN chown 22671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /h
 	ln -s /home/app/webapps /usr/share/tomcat7/;\
 	chmod g+w /home/app/webapps/	;\
 	mkdir -p /usr/share/tomcat7/work/Catalina/localhost/ ;\
-	chmod g+w -R /usr/share/tomcat7/work/ ;\
-	 usermod -a -G tomcat7  www-data 
+	chown www-data -R /usr/share/tomcat7/work/ ;\
+	usermod -a -G tomcat7  www-data 
 #	chmod g+w /usr/share/tomcat7/conf/tomcat-users.xml
 	
