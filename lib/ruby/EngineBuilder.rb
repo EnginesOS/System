@@ -1271,8 +1271,9 @@ def log_exception(e)
                 
           if @builder.set_environments != nil
             p :looking_for_ 
-            p name
-           if ask == true  && @builder.set_environments.has_key?(name) == true                          
+            puts "Name is:"  + name + ":" 
+           if ask == true  && @builder.set_environments.has_key?(name) == true
+             p :set_value                          
               value=@builder.set_environments[name]
           end
         end
@@ -1320,7 +1321,7 @@ def log_exception(e)
         p env_hash
        
          if env_hash["name"] !=nil && env_hash["value"] != nil
-           env_hash["name"] = env_hash["name"].sub(/ /,"_")
+         
             custom_env_hash.store(env_hash["name"],env_hash["value"])
          end
       end
