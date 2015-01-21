@@ -104,7 +104,8 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("")
      
-     
+      
+      
       #Do this after configuration scripts run
  
 #      @docker_file.puts("USER $ContUser")     
@@ -127,9 +128,27 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
+      
+      write_clear_env_variables
+      
       @docker_file.close
       
     end
+    
+    def write_clear_env_variables
+      @builder.set_environments do |env|
+                @docker_file.puts("#clear User set ENV")
+                if env.build_time_only 
+                  @docker_file.puts("ENV " + env.name + " ")
+                  count_layer
+                end
+              end
+    rescue Exception=>e
+      log_exception(e)
+      return false
+    end
+    end
+    
     def write_apache_modules
       if @blueprint_reader.apache_modules.count <1
         return 
