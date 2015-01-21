@@ -138,11 +138,11 @@ class EngineBuilder
     def write_clear_env_variables
       @docker_file.puts("#clear User set ENV")
       @builder.set_environments do |env|
-               
-                if env.build_time_only 
+
+            
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
-                end
+            
       end
       
     rescue Exception=>e
