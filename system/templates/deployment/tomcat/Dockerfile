@@ -9,6 +9,6 @@ RUN chown 22671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /h
 	rm -r /usr/share/tomcat7/webapps;\
 	ln -s /home/app/webapps /usr/share/tomcat7/;\
 	chmod g+w /home/app/webapps/	;\
-	mkdir /usr/share/tomcat7/work/ ;\
-	chmod g+w /usr/share/tomcat7/work/ 
+	mkdir -p /usr/share/tomcat7/work/Catalina/localhost/ ;\
+	chmod g+w -R /usr/share/tomcat7/work/ 
 	
