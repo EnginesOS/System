@@ -142,11 +142,11 @@ class EngineBuilder
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
                 end
-              end
+      end
+      
     rescue Exception=>e
       log_exception(e)
-      return false
-    end
+      return false    
     end
     
     def write_apache_modules
