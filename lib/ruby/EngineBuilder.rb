@@ -1681,7 +1681,7 @@ def create_cron_service
         env_file.puts(env.name)
       end
       @set_environments.each do |env|
-      env_file.puts(env.name)
+      env_file.puts(env[0])
     end
       env_file.close
       
