@@ -5,11 +5,7 @@
 #after chmod so protected
 ADD home/start.bash /home/start.bash
 
-USER 0
 
-RUN rm -rf /usr/share/tomcat7/webapps;\
-	ln -s /home/app/webapps/ /usr/share/tomcat7/webapps;\
-	chmod g+w /home/app/webapps/
 	
 USER www-data
 
