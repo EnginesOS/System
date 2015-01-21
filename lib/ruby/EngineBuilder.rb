@@ -137,7 +137,7 @@ class EngineBuilder
     
     def write_clear_env_variables
       
-      @builder.environments do |env|
+      @blueprint_reader.environments  do |env|
             if enb.build_time_only == true
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
@@ -1255,7 +1255,6 @@ def log_exception(e)
         envs.each do |env|
           p env
           name=env["name"]
-          name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_build_time"]
           mandatory = env["mandatory"]
