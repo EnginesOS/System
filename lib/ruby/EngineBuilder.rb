@@ -136,8 +136,9 @@ class EngineBuilder
     end
     
     def write_clear_env_variables
+      @docker_file.puts("#clear User set ENV")
       @builder.set_environments do |env|
-                @docker_file.puts("#clear User set ENV")
+               
                 if env.build_time_only 
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
@@ -171,7 +172,7 @@ class EngineBuilder
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
         end        
-
+        @docker_file.puts("#User Set Environment Variables")
         @builder.set_environments do |env|
                   @docker_file.puts("#User set ENV")
                   @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
@@ -1288,7 +1289,8 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
-    custom_env= params[:software_environment_variables_attributes]
+ #   custom_env= params[:software_environment_variables_attributes]
+    custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     p params
