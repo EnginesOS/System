@@ -136,13 +136,12 @@ class EngineBuilder
     end
     
     def write_clear_env_variables
-      @docker_file.puts("#clear User set ENV")
-      @builder.set_environments do |env|
-
-            
+      
+      @builder.environments do |env|
+            if enb.build_time_only == true
                   @docker_file.puts("ENV " + env.name + " ")
                   count_layer
-            
+            end            
       end
       
     rescue Exception=>e
@@ -172,12 +171,7 @@ class EngineBuilder
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
         end        
-        @docker_file.puts("#User Set Environment Variables")
-        @builder.set_environments do |env|
-                  @docker_file.puts("#User set ENV")
-                  @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
-                  count_layer
-                end
+     
       rescue Exception=>e
         log_exception(e)
         return false
@@ -1271,12 +1265,12 @@ def log_exception(e)
                 
           if @builder.set_environments != nil
             p :looking_for_ 
-            puts "Name is:"  + name + ":" 
-           if ask == true  && @builder.set_environments.has_key?(name) == true
-             p :set_value                          
+            p name
+           if ask == true  && @builder.set_environments.has_key?(name) == true                          
               value=@builder.set_environments[name]
           end
         end
+        name.sub!(/ /,"_")
           @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
         end
       rescue Exception=>e
@@ -1321,7 +1315,7 @@ def log_exception(e)
         p env_hash
        
          if env_hash["name"] !=nil && env_hash["value"] != nil
-         
+           env_hash["name"] = env_hash["name"].sub(/_/,"")
             custom_env_hash.store(env_hash["name"],env_hash["value"])
          end
       end
