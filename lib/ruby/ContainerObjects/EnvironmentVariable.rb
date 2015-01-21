@@ -9,7 +9,9 @@ class EnvironmentVariable
     @label = label
     @immutable = immutable
   end
-
+  def setatrun
+    return setatrun
+  end
   attr_reader :ask_at_build_time,:name,:value,:build_time_only,:mandatory,:label,:immutable
 
   def attributes
