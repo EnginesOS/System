@@ -1270,6 +1270,9 @@ def log_exception(e)
           end
         end
         name.sub!(/ /,"_")
+        p :name_and_value
+        p name
+        p value
           @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
         end
       rescue Exception=>e
