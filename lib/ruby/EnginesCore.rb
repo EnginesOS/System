@@ -2031,12 +2031,17 @@ class EnginesCore
       cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
       vals = res.split("bytes:")
-      if vals.count < 1
-      ret_val[:in] = vals[1].chop
-      ret_val[:out] = vals[2].chop
+      if vals.count < 2
+        if vals[1] != nil && vals[2] != nil
+          ret_val[:in] = vals[1].chop        
+          ret_val[:out] = vals[2].chop
+        else
+          ret_val[:in] ="-1"
+          ret_val[:out] ="-1"
+        end
       else
-    ret_val[:in] ="na"
-    ret_val[:out] ="na"
+        ret_val[:in] ="-1"
+        ret_val[:out] ="-1"
       end
       return ret_val
     rescue Exception=>e
