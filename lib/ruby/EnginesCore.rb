@@ -266,6 +266,8 @@ class EnginesCore
       begin
         stateDir = container_state_dir(container) + "/config.yaml"
         File.delete(stateDir)
+        cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
+        File.delete(cidfile)
         return true
       rescue Exception=>e
         container.last_error=( "Failed To Delete " )
