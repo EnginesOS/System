@@ -1274,7 +1274,9 @@ def log_exception(e)
         p :name_and_value
         p name
         p value
-          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
+        ev = EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable)
+        p ev
+          @environments.push(ev)
         end
       rescue Exception=>e
         log_exception(e)
