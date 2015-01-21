@@ -152,7 +152,8 @@ class EngineBuilder
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
         end        
-        @blueprint_reader.set_environments do |env|
+
+        @builder.set_environments do |env|
                   @docker_file.puts("#User set ENV")
                   @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
                   count_layer
@@ -1656,7 +1657,9 @@ def create_cron_service
       @blueprint_reader.environments.each do |env|
         env_file.puts(env.name)
       end
-      
+      @set_environments.each do |env|
+      env_file.puts(env.name)
+    end
       env_file.close
       
       setup_framework_logging
