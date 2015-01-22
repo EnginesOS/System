@@ -70,6 +70,7 @@ class EngineBuilder
 
     def write_files_for_docker
       @docker_file.puts("")
+      write_environment_variables
       write_stack_env
       write_file_service
       write_db_service
@@ -100,21 +101,55 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("USER 0")
       count_layer()
-      @docker_file.puts("run mv /home/fs /home/fs_src; mkdir -p /home/fs/local/")
+      @docker_file.puts("run mkdir -p /home/fs/local/")
       count_layer()
       @docker_file.puts("")
-      @docker_file.puts("USER $ContUser")     
-      count_layer
-      @docker_file.puts("VOLUME /home/fs_src/")
-      count_layer()
+     
+      
+      
+      #Do this after configuration scripts run
+ 
+#      @docker_file.puts("USER $ContUser")     
+#      count_layer()
+     
       write_data_permissions
+      
+      write_run_install_script
+      
+      @docker_file.puts("USER 0")
+            count_layer()
+       
+      @docker_file.puts("run mv /home/fs /home/fs_src")
+       count_layer()
+      @docker_file.puts("VOLUME /home/fs_src/")
+           count_layer()
+      @docker_file.puts("USER $ContUser")     
+      count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
+      
+      write_clear_env_variables
+      
       @docker_file.close
       
     end
+    
+    def write_clear_env_variables
+      @docker_file.puts("#Clear env")
+      @blueprint_reader.environments.each  do |env|
+            if env.build_time_only == true
+                  @docker_file.puts("ENV " + env.name + "\" \"")
+                  count_layer
+            end            
+      end
+      
+    rescue Exception=>e
+      log_exception(e)
+      return false    
+    end
+    
     def write_apache_modules
       if @blueprint_reader.apache_modules.count <1
         return 
@@ -132,16 +167,12 @@ class EngineBuilder
 
       begin
         @docker_file.puts("#Environment Variables")
-        @blueprint_reader.environments do |env|
+        @blueprint_reader.environments.each do |env|
           @docker_file.puts("#Blueprint ENVs")
           @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
           count_layer
         end        
-        @blueprint_reader.set_environments do |env|
-                  @docker_file.puts("#User set ENV")
-                  @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
-                  count_layer
-                end
+     
       rescue Exception=>e
         log_exception(e)
         return false
@@ -184,13 +215,20 @@ class EngineBuilder
           count_layer()
            @docker_file.puts("")
            @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
-           @docker_file.puts("chown -R $data_uid.$data_gid /home/fs ;\\")
+           @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
            @docker_file.puts("chmod -R 770 /home/fs")
            count_layer
          @docker_file.puts("USER $ContUser")
              count_layer
-
       
+    end
+    def write_run_install_script
+      @docker_file.puts("WorkDir /home/")
+      @docker_file.puts("#Setup templates and run installer")
+      @docker_file.puts("USER data-user")
+      count_layer
+      @docker_file.puts("RUN bash /home/setup.sh")
+      count_layer     
     end
     def write_persistant_files
       begin
@@ -479,7 +517,7 @@ count_layer
             @docker_file.puts("                      dirs=\"$dirs $adir\";\\");
             @docker_file.puts("                fi;\\")     
             @docker_file.puts("       done;\\")
-            @docker_file.puts(" if test -n $dirs ;\\")
+            @docker_file.puts(" if test -n \"$dirs\" ;\\")
             @docker_file.puts("      then\\")
             @docker_file.puts("      chmod gu+x $dirs  ;\\")
             @docker_file.puts("fi;\\")
@@ -557,7 +595,8 @@ count_layer
                             
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             if arc_extract.present?
-              @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\"") # + "\"* 2>&1 > /dev/null ")
+              @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
+              @docker_file.puts(" rm \"" + arc_name + "\"")
             else
               @docker_file.puts("echo") #step past the next shell line implied by preceeding ;
             end
@@ -581,7 +620,6 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-
             
           end
         end
@@ -875,7 +913,7 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-       elsif servicetype=="filesystem"
+       elsif servicetype=="ftp"
           name = clean_path(service["name"])
           dest = clean_path(service["dest"])
           add_ftp_service(name, dest)
@@ -1218,7 +1256,6 @@ def log_exception(e)
         envs.each do |env|
           p env
           name=env["name"]
-          name = name.gsub(" ","_")
           value=env["value"]
           ask=env["ask_at_build_time"]
           mandatory = env["mandatory"]
@@ -1233,7 +1270,13 @@ def log_exception(e)
               value=@builder.set_environments[name]
           end
         end
-          @environments.push(EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable))
+        name.sub!(/ /,"_")
+        p :name_and_value
+        p name
+        p value
+        ev = EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable)
+        p ev
+          @environments.push(ev)
         end
       rescue Exception=>e
         log_exception(e)
@@ -1246,7 +1289,8 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
-    custom_env= params[:software_environment_variables_attributes]
+ #   custom_env= params[:software_environment_variables_attributes]
+    custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     p params
@@ -1274,7 +1318,11 @@ def log_exception(e)
       env_array.each do |env_hash|
         p :env_hash
         p env_hash
-        custom_env_hash.store(env_hash["name"],env_hash["value"])
+       
+         if env_hash["name"] !=nil && env_hash["value"] != nil
+           env_hash["name"] = env_hash["name"].sub(/_/,"")
+            custom_env_hash.store(env_hash["name"],env_hash["value"])
+         end
       end
       p :Merged_custom_env
       p custom_env_hash
@@ -1483,7 +1531,7 @@ def create_cron_service
   def create_db_service(name,flavor)
     begin
       log_build_output("Create DB Service")
-      db = DatabaseService.new(@hostname,dbname,SysConfig.DBHost,name,name,flavor)
+      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
       databases.push(db)
       create_database_service db
     rescue Exception=>e
@@ -1634,11 +1682,18 @@ def create_cron_service
       @blueprint_reader.environments.each do |env|
         env_file.puts(env.name)
       end
-      
+      @set_environments.each do |env|
+      env_file.puts(env[0])
+    end
       env_file.close
       
       setup_framework_logging
-
+      
+      log_build_output("Creating db Services")
+             @blueprint_reader.databases.each() do |db|
+               create_database_service db
+             end
+             
       if  build_init == false
         log_build_errors("Error Build Image failed")
         last_error = tail_of_build_log
@@ -1653,10 +1708,10 @@ def create_cron_service
         
         create_cron_service
         
-        log_build_output("Creating Services")
-        @blueprint_reader.databases.each() do |db|
-          create_database_service db
-        end
+        log_build_output("Creating vol Services")
+                 @blueprint_reader.databases.each() do |db|
+                   create_database_service db
+                 end
        
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol

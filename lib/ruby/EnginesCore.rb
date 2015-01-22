@@ -266,6 +266,10 @@ class EnginesCore
       begin
         stateDir = container_state_dir(container) + "/config.yaml"
         File.delete(stateDir)
+        cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
+          if File.exists?(cidfile)
+            File.delete(cidfile)
+          end
         return true
       rescue Exception=>e
         container.last_error=( "Failed To Delete " )
@@ -515,6 +519,7 @@ class EnginesCore
           FileUtils.mkdir_p( site_hash[:localpath])
         end
         #currently the build scripts do this
+        #save details with some manager
         return true
       rescue  Exception=>e
         log_exception(e)
@@ -526,6 +531,7 @@ class EnginesCore
       clear_error
       begin
         puts "would remove " + site_hash[:localpath]
+        #update details with some manager
         return true
       rescue  Exception=>e
         log_exception(e)
@@ -1523,6 +1529,15 @@ class EnginesCore
 
   attr_reader :last_error
 
+  def list_attached_services_for(object)
+    #[:crons]=["a Hash"]
+    #[:volumes]=["a Hash"]
+    #[:databases]=["a Hash"]
+    #[nfs ,smbfs, ftp, sop,we     
+    
+    return Hash.new
+  end
+  
   def add_share(site_hash)
   end
 
@@ -1699,6 +1714,26 @@ class EnginesCore
     catch Exception=>e
       log_execption(e)
       return false
+  end
+  
+  def attached_services(object)
+    object_name = object.class.name.split('::').last
+    
+    case object_name
+    when  "ManagedEngine"
+      retval = Hash.new
+      
+    retval[:databases] = object.databases
+    retval[:volumes] = object.volumes
+    retval[:crons] = object.crons
+      
+      return retval
+      #list services 
+      # which includes volumes databases cron
+      
+    end
+    p "missed objecy name"
+    p object_name
   end
 
   def list_avail_services_for(object)
@@ -1878,6 +1913,24 @@ class EnginesCore
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+        
+        #save details with some manager
+      SystemUtils.debug_output(cmd)
+
+      return run_system(cmd)
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+  
+  def drop_database  site_hash
+    clear_error
+    begin
+      container_name =  site_hash[:flavor] + "_server"
+      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+        
+        #save details with some manager
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)
@@ -2002,8 +2055,18 @@ class EnginesCore
       cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
       vals = res.split("bytes:")
-      ret_val[:in] = vals[1].chop
-      ret_val[:out] = vals[2].chop
+      if vals.count < 2
+        if vals[1] != nil && vals[2] != nil
+          ret_val[:in] = vals[1].chop        
+          ret_val[:out] = vals[2].chop
+        else
+          ret_val[:in] ="-1"
+          ret_val[:out] ="-1"
+        end
+      else
+        ret_val[:in] ="-1"
+        ret_val[:out] ="-1"
+      end
       return ret_val
     rescue Exception=>e
       log_exception(e)

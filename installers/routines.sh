@@ -42,6 +42,10 @@ function configure_git {
 		
 		 chmod u+x  /etc/rc.local
 		 
+echo "Configure Apt-cache"
+		 echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf 
+		 
+		 
 		
 echo "Installing Docker"		
 		 apt-get install apt-transport-https
@@ -62,7 +66,7 @@ echo "Installing required  packages"
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
-		 apt-get -y install imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git
+		 apt-get -y install imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git apt-cacher
 		 
 		 #Only Remove if not present
 		 if test $bind -eq 0

@@ -6,15 +6,15 @@ then
 	chmod oug+w /engines/var/run/flags/
 fi
 
-if test ! -f  /engines/var/run/subs_run
-	then
-	echo "Performing substitutions"
-	cd /home/
-		source /home/config_functions.sh
-		copy_substituted_templates
-		touch /engines/var/run/subs_run
-		cd /home/app			
-	fi
+#if test ! -f  /engines/var/run/subs_run
+#	then
+#	echo "Performing substitutions"
+#	cd /home/
+#		source /home/config_functions.sh
+#		copy_substituted_templates
+#		touch /engines/var/run/subs_run
+#		cd /home/app			
+#	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
@@ -38,17 +38,17 @@ if test ! -f  /engines/var/run/subs_run
  		sleep 10
  	 done
   fi
- 
-if test -f /home/engines/scripts/install.sh 
-	then
-	echo has custom install
-		if test ! -f /engines/var/run/setup_complete
-			then
-			echo running custom install
-				bash /home/engines/scripts/install.sh 
-				touch  /engines/var/run/setup_complete
-		fi
-	fi
+
+#if test -f /home/engines/scripts/install.sh 
+#	then
+#	echo has custom install
+#		if test ! -f /engines/var/run/setup_complete
+#			then
+#			echo running custom install
+#				bash /home/engines/scripts/install.sh 
+#				touch  /engines/var/run/setup_complete
+#		fi
+#	fi
 	
 if test -f /home/engines/scripts/pre-running.sh
 	then
@@ -74,7 +74,14 @@ if test -f /home/app/Rack.sh
 		/home/app/Rack.sh
 	fi
 
-touch /engines/var/run/startup_complete 	
+if test -f /home/startwebapp.sh
+	then
+	touch /engines/var/run/startup_complete
+ 	/home/startwebapp.sh
+ 	fi
+
+touch /engines/var/run/startup_complete
+
 /usr/sbin/apache2ctl -D FOREGROUND 
  rm -f /run/apache2/apache2.pid 
  

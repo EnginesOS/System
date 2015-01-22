@@ -10,5 +10,6 @@ RUN apt-get -y update;\
 	apt-get install gdebi-core;\
 	wget http://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.3.0.403-amd64.deb;\
 	gdebi shiny-server-1.3.0.403-amd64.deb ;\
+	apt-get clean ;\
 	groupadd rstudio;\
  	echo "Y" | adduser --uid 22675 -q --ingroup rstudio --home /home/rstudio --disabled-password rstudio

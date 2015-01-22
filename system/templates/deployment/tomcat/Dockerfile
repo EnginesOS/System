@@ -3,9 +3,15 @@ ADD home home
 ENV ContUser www-data
 ADD engines home/engines
 #ADD home/app/webapps/ /usr/share/tomcat7/webapps
-RUN chown 622671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /home -user www-data`;\
+RUN chown 22671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /home -user www-data`;\
 	/usr/sbin/usermod -u 22671 www-data;\
 	mkdir -p /home/app/webapps/ ;\
 	rm -r /usr/share/tomcat7/webapps;\
-	ln -s /home/app/webapps /usr/share/tomcat7/
+	ln -s /home/app/webapps /usr/share/tomcat7/;\
+	chmod g+w /home/app/webapps/	;\
+	mkdir -p /usr/share/tomcat7/work/Catalina/localhost/ ;\
+	chown www-data -R /usr/share/tomcat7/work/ ;\
+	usermod -a -G tomcat7  www-data ;\
+	usermod -a -G data-user www-data 
+#	chmod g+w /usr/share/tomcat7/conf/tomcat-users.xml
 	

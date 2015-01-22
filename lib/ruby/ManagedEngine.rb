@@ -40,6 +40,9 @@ class ManagedEngine < ManagedContainer
          
   attr_reader :ctype
 
+  def attached_services
+    @core_api.attached_services(self)
+  end
   
   def ManagedEngine.from_yaml( yaml ,core_api )
           managedEngine = YAML::load( yaml )

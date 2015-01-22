@@ -1,7 +1,10 @@
 FROM  engines/base
-RUN apt-get update
-RUN apt-get -y install nagios3
-RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
+
+RUN apt-get update;\
+   apt-get -y install nagios3;\
+    echo "Y" | adduser -q --home /home/rma --disabled-password rma;\
+	apt-get clean
+	
 ADD sudoers /etc/
 RUN chown 0 /etc/sudoers
 ADD apache2.nagios3.conf /etc/apache2/conf.d/nagios3.conf

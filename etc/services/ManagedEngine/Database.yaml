@@ -1,0 +1,44 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+author: Engines
+title: Database
+description: "Database "
+service_name: database
+dedicated: false
+image_name: engines/volmanager
+consumer_params:
+setup_params:
+    database_name:
+    name: database_name
+    title: folder
+    regexverifer: ".*"
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+  username:
+    name: dbusername
+    title: DB User Name
+    regexverifer: ".*"
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " " 
+    comment: " "
+  password:
+    name: dbpassword
+    title: DB Password
+    tooltip: " "
+    type: " "
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
