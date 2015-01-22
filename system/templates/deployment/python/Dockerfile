@@ -3,5 +3,6 @@ ADD home home
 ADD engines home/engines
 
 RUN apt-get update -y;\
-	chown 22671 `find /var /usr/share /usr/local /home -user www-data`;\
-	/usr/sbin/usermod -u 22671 www-data
+	chowns=`find /var /usr/share /usr/local /home -user www-data`;\
+	/usr/sbin/usermod -u 22671 www-data;\
+	chown www-data $chowns /home/app
