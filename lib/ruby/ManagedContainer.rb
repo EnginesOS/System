@@ -480,8 +480,11 @@ end
        return false
      end
      service =  EnginesOSapi.loadManagedService("dns",@core_api)
+     if service.is_a?(EnginesOSapiResult)
+       return false
+     else
     return service.remove_consumer(self)
-
+     end
   end
 
   def get_ip_str
@@ -492,7 +495,7 @@ end
     ip_str=output[0]['NetworkSettings']['IPAddress']
   #    puts containerName + ":" + ip_str
       return ip_str
-      catch 
+  rescue 
         return nil
   end
   
