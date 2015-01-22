@@ -53,11 +53,11 @@ class ManagedService < ManagedContainer
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
     if is_running ==true    
-      ret_val = add_consumer_to_service(site_hash)
+      result = add_consumer_to_service(site_hash)
       if result == true
         sm =  service_manager
           if sm != false          
-          return sm.add_service(site_hash)
+            return sm.add_service(site_hash)
           else 
             return false
           end
