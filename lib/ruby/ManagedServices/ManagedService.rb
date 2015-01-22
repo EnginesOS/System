@@ -55,7 +55,12 @@ class ManagedService < ManagedContainer
     if is_running ==true    
       ret_val = add_consumer_to_service(site_hash)
       if result == true
-        service_manager.add_service(site_hash)
+        sm =  service_manager
+          if sm != false          
+          return sm.add_service(site_hash)
+          else 
+            return false
+          end
       end
     end
     #note we add to service regardless of whether the consumer is already registered
@@ -82,7 +87,12 @@ class ManagedService < ManagedContainer
       if is_running ==true   
         result = rm_consumer_from_service(site_hash)
          if result == true
-           service_manager.remove_service(site_hash)
+          sm =  service_manager
+            if sm != false
+              return sm.remove_service(site_hash)
+            else
+              return false
+            end
          end
       end
 
