@@ -1696,12 +1696,12 @@ def create_cron_service
              
       if  build_init == false
         log_build_errors("Error Build Image failed")
-        last_error = tail_of_build_log
+        @last_error =  " " + tail_of_build_log
         return false
       else
         
         if @core_api.image_exists?(@container_name) == false
-          last_error = tail_of_build_log
+          @last_error = " " + tail_of_build_log
           return false
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end 
