@@ -57,7 +57,7 @@ class ManagedService < ManagedContainer
       if result == true
         sm =  service_manager
           if sm != false          
-            return sm.add_service(site_hash)
+            result = sm.add_service(site_hash)
           else 
             return false
           end
@@ -66,8 +66,8 @@ class ManagedService < ManagedContainer
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
 
-    if ret_val != true
-      return ret_val
+    if result != true
+      return result
     end
 
     if @consumers == nil
@@ -79,7 +79,7 @@ class ManagedService < ManagedContainer
 
     # end
     save_state
-    return ret_val
+    return result
   end
 
   def remove_consumer engine
@@ -89,14 +89,14 @@ class ManagedService < ManagedContainer
          if result == true
           sm =  service_manager
             if sm != false
-              return sm.remove_service(site_hash)
+              result sm.remove_service(site_hash)
             else
               return false
             end
          end
       end
 
-    if @consumers !=  nil
+    if @consumers !=  nil 
       @consumers.delete(site_hash[:name]) { |el| "#{el} not found" }
 
     end
