@@ -913,7 +913,7 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-       elsif servicetype=="filesystem"
+       elsif servicetype=="ftp"
           name = clean_path(service["name"])
           dest = clean_path(service["dest"])
           add_ftp_service(name, dest)
