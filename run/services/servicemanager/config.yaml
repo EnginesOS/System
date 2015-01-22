@@ -1,10 +1,10 @@
---- !ruby/object:ShareManager
+--- !ruby/object:ServiceManager
 containerName: servicemanager
 ctype: service
 conf_self_start: true
 last_error: 
 memory: '16'
-hostName: shareservice
+hostName: servicemanager
 domainName: 
 environments: 
 image: engines/fs
