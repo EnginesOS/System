@@ -54,6 +54,9 @@ class ManagedService < ManagedContainer
     site_hash = get_site_hash(engine)
     if is_running ==true    
       ret_val = add_consumer_to_service(site_hash)
+      if result == true
+        service_manager.add_service(site_hash)
+      end
     end
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
@@ -78,6 +81,9 @@ class ManagedService < ManagedContainer
     site_hash = get_site_hash(engine)
       if is_running ==true   
         result = rm_consumer_from_service(site_hash)
+         if result == true
+           service_manager.remove_service(site_hash)
+         end
       end
 
     if @consumers !=  nil
@@ -88,6 +94,10 @@ class ManagedService < ManagedContainer
     return result
   end
 
+  def service_manager
+    return @core_api.loadManageService("ServiceManager")
+  end
+  
   def create_service()
 
     if create_container() ==true
