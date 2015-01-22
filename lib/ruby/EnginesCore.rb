@@ -1715,6 +1715,26 @@ class EnginesCore
       log_execption(e)
       return false
   end
+  
+  def attached_services(object)
+    object_name = object.class.name.split('::').last
+    
+    case object_name
+    when  "ManagedEngine"
+      retval = Hash.new
+      
+    retval[:databases] = object.databases
+    retval[:volumes] = object.volumes
+    retval[:crons] = object.crons
+      
+      return retval
+      #list services 
+      # which includes volumes databases cron
+      
+    end
+    p "missed objecy name"
+    p object_name
+  end
 
   def list_avail_services_for(object)
     objectname = object.class.name.split('::').last
