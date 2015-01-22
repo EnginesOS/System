@@ -1,5 +1,5 @@
---- !ruby/object: ShareService
-containerName: shareservice
+--- !ruby/object: ShareManager
+containerName: servicemanager
 ctype: service
 conf_self_start: true
 last_error: 

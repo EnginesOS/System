@@ -1289,8 +1289,8 @@ def log_exception(e)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
- #   custom_env= params[:software_environment_variables_attributes]
-    custom_env=params
+    custom_env= params[:software_environment_variables]
+ #   custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     p params
@@ -1319,7 +1319,7 @@ def log_exception(e)
         p :env_hash
         p env_hash
        
-         if env_hash["name"] !=nil && env_hash["value"] != nil
+         if env_hash != nil && env_hash["name"] !=nil && env_hash["value"] != nil
            env_hash["name"] = env_hash["name"].sub(/_/,"")
             custom_env_hash.store(env_hash["name"],env_hash["value"])
          end
