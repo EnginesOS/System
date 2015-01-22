@@ -1725,7 +1725,7 @@ class EnginesCore
       
     retval[:databases] = object.databases
     retval[:volumes] = object.volumes
-    retval[:crons] = object.crons
+    retval[:crons] = object.cron_job_list
       
       return retval
       #list services 
