@@ -9,15 +9,19 @@ class ServiceManager
   end
   
   def register_available_service service_hash
+    
   end
   
   def register_available_service service_hash
+    
   end
   
   def add_service service_hash
+    
   end
   
   def remove_service service_hash
+    
   end
   
 end
