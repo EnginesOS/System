@@ -206,6 +206,7 @@ class EnginesOSapi
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
+    backup_hash.store(:parent_engine,engine_name)
     
       if engine.volumes.present?     
         volume =  engine.volumes["volume_name"]

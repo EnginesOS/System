@@ -8,14 +8,16 @@ class ServiceManager
   
   end
   
-  def register_available_service service_hash
+  def register_available_service service_info_hash
     
   end
   
-  def register_available_service service_hash
+  def register_available_service service_info_hash
     
   end
   
+  #hash has parent_engine
+  #hash parent
   def add_service service_hash
     
   end

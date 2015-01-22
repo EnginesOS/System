@@ -29,6 +29,7 @@ class NginxService < ManagedService
     p proto
      
     site_hash = Hash.new()
+    site_hash[:parent_engine]=engine.containerName
     site_hash[:name]=engine.containerName
     site_hash[:container_type]=engine.ctype
     site_hash[:fqdn]=engine.fqdn

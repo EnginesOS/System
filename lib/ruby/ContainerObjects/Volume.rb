@@ -34,6 +34,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
 #    @mapping_permissions
 #  end
 #  
+  def parent_engine
+    vol_permissions.owner
+  end
+  
   def add_backup_src_to_hash backup_hash
     backup_hash[:source_type] = "fs"
     backup_hash[:source_name] = @name  
