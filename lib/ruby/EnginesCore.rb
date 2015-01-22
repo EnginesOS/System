@@ -1538,11 +1538,7 @@ class EnginesCore
     return Hash.new
   end
   
-  def add_share(site_hash)
-  end
 
-  def rm_share(site_hash)
-  end
 
   def add_domain(params)
     return  @system_api.add_domain(params)
@@ -1728,12 +1724,22 @@ class EnginesCore
     retval[:crons] = object.cron_job_list
       
       return retval
+      
       #list services 
-      # which includes volumes databases cron
+      # which includes volumes databases cron      
+    end
+    p "missed object name"
+    p object_name
+    
+    service_manager = loadManagedSerice("servicemanager")
+    
+    if service_manager !=nil 
+      return service_manager.attached_services(object)
       
     end
-    p "missed objecy name"
-    p object_name
+    return false
+      
+  
   end
 
   def list_avail_services_for(object)
