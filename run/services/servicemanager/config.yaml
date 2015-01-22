@@ -1,4 +1,4 @@
---- !ruby/object: ShareManager
+--- !ruby/object:ShareManager
 containerName: servicemanager
 ctype: service
 conf_self_start: true
