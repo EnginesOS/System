@@ -111,10 +111,11 @@ class EngineBuilder
  
 #      @docker_file.puts("USER $ContUser")     
 #      count_layer()
-     
+      write_run_install_script
+      
       write_data_permissions
       
-      write_run_install_script
+      
       
       @docker_file.puts("USER 0")
             count_layer()
@@ -225,7 +226,7 @@ class EngineBuilder
     def write_run_install_script
       @docker_file.puts("WorkDir /home/")
       @docker_file.puts("#Setup templates and run installer")
-      @docker_file.puts("USER data-user")
+      @docker_file.puts("USER $ContUser")
       count_layer
       @docker_file.puts("RUN bash /home/setup.sh")
       count_layer     
@@ -735,6 +736,7 @@ def log_exception(e)
       @container_name = contname    
       @blueprint = blue_print
       @web_port=nil
+      @services = Array.new
     end
 
     attr_reader :persistant_files,\
@@ -913,17 +915,16 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-       elsif servicetype=="ftp"
-          name = clean_path(service["name"])
-          dest = clean_path(service["dest"])
-          add_ftp_service(name, dest)
-        else
-          log_build_output("Unknown Service " + servicetype)
+        else       
+          add_service(service)
           end
         end
       end
     end #FIXME
 
+    def add_service (service_hash)
+      @services.push(service_hash)
+    end
     def add_file_service(name,dest)
       begin
         log_build_output("Add File Service " + name)
