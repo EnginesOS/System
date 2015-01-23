@@ -570,7 +570,7 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-            @docker_file.puts("RUN git clone " + arc_src )
+            @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
             count_layer
             @docker_file.puts("USER 0  ")
             count_layer
