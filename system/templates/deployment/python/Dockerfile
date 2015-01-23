@@ -5,4 +5,4 @@ ADD engines home/engines
 RUN apt-get update -y;\
 	chowns=`find /var /usr/share /usr/local /home -user www-data`;\
 	/usr/sbin/usermod -u 22671 www-data;\
-	chown www-data $chowns /home/app
+	chown www-data $chowns 
