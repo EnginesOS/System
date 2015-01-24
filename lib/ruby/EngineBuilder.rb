@@ -171,7 +171,7 @@ class EngineBuilder
         @blueprint_reader.environments.each do |env|
           @docker_file.puts("#Blueprint ENVs")
           if env.value != nil
-            env.value.subs!(/ /,"\\ ")
+            env.value.sub!(/ /,"\\ ")
           end
           @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
           count_layer
