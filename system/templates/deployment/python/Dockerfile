@@ -9,3 +9,5 @@ RUN apt-get update -y;\
 	then\
 		chown www-data $chowns;\
 		fi 
+		
+CMD /home/start.bash
