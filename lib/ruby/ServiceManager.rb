@@ -66,10 +66,12 @@ class ServiceManager
   
   def attached_managed_engine_services(identifier)
     retval = Hash.new 
-    if(@service_tree == nil)
+    p :attached_managed_engine_services
+    if(@service_tree == nil || @service_tree["ManagedEngine"] ==nil )
          p :panic_loaded_nil_tree
          return retval
        end
+       
     engine_node = @service_tree["ManagedEngine"][identifier]
       if engine_node == nil
         p :cant_find
