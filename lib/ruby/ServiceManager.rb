@@ -59,6 +59,11 @@ class ServiceManager
     p :attached_managed_engine_services
     p @service_tree 
     retval = Hash.new 
+    
+    if identifier == nil
+      p :panic_passed_nil_identifier
+      return retval
+    end
    
     if @service_tree == nil 
          p :panic_loaded_nil_tree
