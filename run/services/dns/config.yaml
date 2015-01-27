@@ -7,10 +7,6 @@ memory: '42'
 hostName: dns
 domainName: 
 environments:
-- !ruby/object:EnvironmentVariable
- name: ContUser
- value: bind
- setatrun: false
 image: engines/dns
 volumes: 
  configuration: !ruby/object:Volume
