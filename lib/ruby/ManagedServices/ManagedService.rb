@@ -89,7 +89,7 @@ class ManagedService < ManagedContainer
          if result == true
           sm =  service_manager
             if sm != false
-              result sm.remove_service(site_hash)
+              result =  sm.remove_service(site_hash)
             else
               return false
             end
