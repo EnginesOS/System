@@ -146,7 +146,7 @@ provider = service_hash[:service_provider]
         servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
         services_node << servicetype_node
       end
-      provider_node = services_node[provider]
+      provider_node = servicetype_node[provider]
         if provider_node == nil
           provider_node = Tree::TreeNode.new(provider,provider)
           servicetype_node << provider_node
