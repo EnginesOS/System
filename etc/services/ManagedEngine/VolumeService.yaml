@@ -11,6 +11,37 @@ service_name: volmanager
 dedicated: false
 consumer_params:
 setup_params:
- name: dropbox_address
- title: dropbox_address
- regex: 
+   volume_src:
+    name: volume_src
+    title: volume local path
+    regexverifer: ".*"
+    tooltip: " "
+    type: string
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+   permissions:
+    name: permissions
+    title: permissions
+    regexverifer: ".*"
+    tooltip: " "
+    type: string
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+   local_path:
+    name: local_path
+    title: local_path
+    regexverifer: ".*"
+    tooltip: " "
+    type: string
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
+  

@@ -11,3 +11,14 @@ service_name: cron
 dedicated: false
 consumer_params:
 setup_params:
+   cronline:
+    name: Cron
+    title: Cron line
+    regexverifer: ".*"
+    tooltip: " "
+    type: string
+    hint: "* * * * * command"
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
