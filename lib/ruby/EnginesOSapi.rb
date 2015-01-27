@@ -1098,8 +1098,8 @@ class EnginesOSapi
     
   end
   
-  def list_attached_services_for(object)
-     return @core_api.list_attached_services_for(object)
+  def list_attached_services_for(object_name,identifier)
+     return @core_api.list_attached_services_for(object_name,identifier)
    end
   
   def failed(item_name,mesg ,cmd)

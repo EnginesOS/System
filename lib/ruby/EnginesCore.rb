@@ -1703,7 +1703,7 @@ class EnginesCore
       return false
   end
   
-  def attached_services(identifier,objectName)
+  def list_attached_services_for(identifier,objectName)
     sm = loadServiceManager()
     return sm.attached_services(identifier,objectName)
     
