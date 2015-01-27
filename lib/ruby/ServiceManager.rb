@@ -112,6 +112,7 @@ class ServiceManager
        
         return false
       end
+      
     if active_engines_node[service_hash[:parent_engine] ] != nil       
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
@@ -131,6 +132,12 @@ class ServiceManager
       services_node << service_node     
       end
   
+      
+      
+provider = service_hash[:service_provider]
+  if provider == nil || provider.count ==0
+    provider="Engines"
+  end 
  services_node = @service_tree["ManagedService"]
  
      
@@ -139,9 +146,9 @@ class ServiceManager
         servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
         services_node << servicetype_node
       end
-      provider_node = service_hash[:service_provider]
+      provider_node = services_node[provider]
         if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:service_provider],service_hash[:service_provider])
+          provider_node = Tree::TreeNode.new(provider,provider)
           servicetype_node << provider_node
         end
             
