@@ -8,9 +8,9 @@ class ServiceManager
     if File.exists?(SysConfig.ServiceTreeFile)    
        tree_from_yaml()
     else
-      @service_tree = Tree::TreeNode.new("Services", "Managed Services")
-      @service_tree << Tree::TreeNode.new("Active","Active Engines")
-      @service_tree << Tree::TreeNode.new("Deleted","Deleted Engines")
+      @service_tree = Tree::TreeNode.new(:services, "Managed Services")
+      @service_tree << Tree::TreeNode.new(:active,"Active Engines")
+      @service_tree << Tree::TreeNode.new(:deleted,"Deleted Engines")
     end
   end
   
@@ -47,11 +47,11 @@ class ServiceManager
   #hash parent
   def add_service service_hash
    
-    if @service_tree[ service_hash[:parent_engine] ] != nil && @service_tree[ service_hash[:parent_engine] ].present? == true      
-      engine_node = @service_tree[ service_hash[:parent_engine] ]
+    if @service_tree[:active][ service_hash[:parent_engine] ] != nil && @service_tree[:active][ service_hash[:parent_engine] ].present? == true      
+      engine_node = @service_tree[:active][ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Engine")
-      @service_tree["Active"]<<engine_node
+      @service_tree[:active]<<engine_node
     end
         services_node = engine_node[ service_hash[:service_type] ]
           if service_node == nil
@@ -78,7 +78,7 @@ class ServiceManager
        yaml = File.new(SysConfig.ServiceTreeFile,'r')
        p yaml.path
       
-       service_tree = YAML::load( yaml )
+       @service_tree = YAML::load( yaml )
        
        yaml.close
       
