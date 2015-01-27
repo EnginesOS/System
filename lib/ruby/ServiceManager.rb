@@ -211,7 +211,7 @@ provider = service_hash[:service_provider]
        yaml.close
        return service_tree
      rescue Exception=>e
-       puts e.message + " with " + yaml.path
+       puts e.message + " with " + yaml
      end
   end  
 end
