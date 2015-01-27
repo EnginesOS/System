@@ -8,8 +8,8 @@ class ServiceManager
        tree_from_yaml()
     else
       service_tree = Tree::TreeNode.new("Services", "Managed Services")
-      service_tree << Tree::TreeNode("Active","Active Engines")
-      service_tree << Tree::TreeNode("Deleted","Deleted Engines")
+      service_tree << Tree::TreeNode.new("Active","Active Engines")
+      service_tree << Tree::TreeNode.new("Deleted","Deleted Engines")
     end
   end
   
@@ -50,7 +50,7 @@ class ServiceManager
       engine_node = service_tree[ service_hash[:parent_engine] ]
         services_node = engine_node[ service_hash[:service_type] ]
           if service_node == nil
-            services_node = Tree::TreeNode(service_hash[:service_type],"Service Type")
+            services_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
             engine_node <<  service_node
           end
           
@@ -58,7 +58,7 @@ class ServiceManager
                 #FixME need to explain why
                 return false
       else
-        service_node = Tree::TreeNode(service_hash[:name],service_hash)
+        service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
       services_node << service_node     
       end
   end 
@@ -76,6 +76,7 @@ class ServiceManager
       
        service_tree = YAML::load( yaml )
        
+       yaml.close
       
      rescue Exception=>e
        puts e.message + " with " + yaml.path
