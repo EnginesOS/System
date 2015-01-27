@@ -74,14 +74,14 @@ class ServiceManager
          p :panic_loaded_nil_tree
          return retval
        end
-        
-    if @service_tree["ManagedEngine"] ==nil
+       engines_node =  @service_tree["ManagedEngine"]
+    if  engines_node ==nil
       p :panic_loaded_managedengine_tree
              return retval
     end
         
        
-    engine_node = @service_tree["ManagedEngine"][identifier]
+    engine_node =engines_node["ManagedEngine"][identifier]
       p :engine_node
       p engine_node
       if engine_node == nil
