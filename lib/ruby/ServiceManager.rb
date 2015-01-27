@@ -152,7 +152,7 @@ provider = service_hash[:service_provider]
           servicetype_node << provider_node
         end
             
-      servicetype_node  = Tree::TreeNode.new(service_hash[:service_name],service_hash)
+      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
       
     save_tree
   end
