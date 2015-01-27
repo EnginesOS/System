@@ -63,7 +63,7 @@ class ServiceManager
     retval = Hash.new 
     if(@service_tree == nil)
          p :panic_loaded_nil_tree
-         return false
+         return retval
        end
     engine_node = @service_tree["ManagedEngine"][identier]
       engine_node.each do |service|
@@ -73,6 +73,7 @@ class ServiceManager
         end        
         retval[st].push(service.content)                        
       end      
+      return retval
   end
   
   def attached_services(service_type,identifier)
@@ -130,8 +131,9 @@ class ServiceManager
       services_node << service_node     
       end
   
- services_node = @service_tree["ManagedServices"]
-   
+ services_node = @service_tree["ManagedService"]
+ 
+     
     servicetype_node =  services_node[service_hash[:service_type] ]
       if servicetype_node == nil
         servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
