@@ -1062,6 +1062,12 @@ class EnginesOSapi
     return  @core_api.attach_service(params)
   end
 
+  def get_service_definition(service_type,service_provider)
+    #Fixme ignoring service_provider
+    
+    return SoftwareServiceDefinition.find(service_type,service_provider)
+  end
+  
   def detach_service(params)
       return  @core_api.dettach_service(params)
     end
