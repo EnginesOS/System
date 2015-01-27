@@ -2,6 +2,7 @@ require 'tree'
 
 class ServiceManager 
  
+  attr_accessor :last_error 
   
   def initialize
     if File.exists?(SysConfig.ServiceTreeFile)    
@@ -20,7 +21,7 @@ class ServiceManager
             f.close
             return true
           rescue Exception=>e
-            container.last_error=( "load error")
+           @last_error=( "load error")
             log_exception(e)
             return false        
   end
