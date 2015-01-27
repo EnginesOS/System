@@ -1763,9 +1763,11 @@ class EnginesCore
      
      
     def loadServiceManager()
-      sm = ServiceMamager.new()
-      return sm
+      if @service_manager == nil
+        @service_manager = ServiceManager.new()
+      return @service_manager
     end
+    end    
     
   def load_service_definition(filename)
     
