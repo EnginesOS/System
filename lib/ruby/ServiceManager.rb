@@ -65,7 +65,7 @@ class ServiceManager
   end
   
   def attached_managed_engine_services(identifier)
-    @service_tree = tree_from_yaml()
+    #@service_tree = tree_from_yaml()
     p :attached_managed_engine_services
     p @service_tree 
     retval = Hash.new 
