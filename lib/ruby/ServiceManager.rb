@@ -46,7 +46,7 @@ class ServiceManager
   #hash has parent_engine
   #hash parent
   def add_service service_hash
-     @service_tree.print_tree
+     #@service_tree.print_tree
     
     active_engines_node = @service_tree["active"]
       if(active_engines_node == nil )
