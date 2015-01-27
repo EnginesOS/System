@@ -46,9 +46,9 @@ class ServiceManager
     
   end
   
-  def attached_services(identifier,object_type_name)
+  def attached_services(objectName,identifier)
 
-    case obect_type_name
+    case objectName
       when "ManagedEngine"
         return attached_managed_engine_services(identifier)
       when "Volume"
