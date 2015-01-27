@@ -111,10 +111,11 @@ class EngineBuilder
  
 #      @docker_file.puts("USER $ContUser")     
 #      count_layer()
-     
+      write_run_install_script
+      
       write_data_permissions
       
-      write_run_install_script
+      
       
       @docker_file.puts("USER 0")
             count_layer()
@@ -169,7 +170,10 @@ class EngineBuilder
         @docker_file.puts("#Environment Variables")
         @blueprint_reader.environments.each do |env|
           @docker_file.puts("#Blueprint ENVs")
-          @docker_file.puts("ENV " + env.name + " \"" + env.value + "\"")
+          if env.value != nil
+            env.value.sub!(/ /,"\\ ")
+          end
+          @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
           count_layer
         end        
      
@@ -225,7 +229,7 @@ class EngineBuilder
     def write_run_install_script
       @docker_file.puts("WorkDir /home/")
       @docker_file.puts("#Setup templates and run installer")
-      @docker_file.puts("USER data-user")
+      @docker_file.puts("USER $ContUser")
       count_layer
       @docker_file.puts("RUN bash /home/setup.sh")
       count_layer     
@@ -569,7 +573,7 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-            @docker_file.puts("RUN git clone " + arc_src )
+            @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
             count_layer
             @docker_file.puts("USER 0  ")
             count_layer
@@ -735,6 +739,7 @@ def log_exception(e)
       @container_name = contname    
       @blueprint = blue_print
       @web_port=nil
+      @services = Array.new
     end
 
     attr_reader :persistant_files,\
@@ -913,17 +918,16 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-       elsif servicetype=="ftp"
-          name = clean_path(service["name"])
-          dest = clean_path(service["dest"])
-          add_ftp_service(name, dest)
-        else
-          log_build_output("Unknown Service " + servicetype)
+        else       
+          add_service(service)
           end
         end
       end
     end #FIXME
 
+    def add_service (service_hash)
+      @services.push(service_hash)
+    end
     def add_file_service(name,dest)
       begin
         log_build_output("Add File Service " + name)
@@ -1501,7 +1505,7 @@ def create_cron_service
                cj_hash[:name] =@container_name
                cj_hash[:container_name] = @container_name
                cj_hash[:cron_job]=cj
-              
+               cj_hash[:parent_engine] = @containerName
 #               cron_file.puts(cj)
 #               p :write_cron_job
 #               p cj    

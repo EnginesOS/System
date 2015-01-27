@@ -3,7 +3,7 @@
 USER 0
 #protect source
 RUN groupadd -g $data_gid writegrp;\
-	usermod -G $data_gid www-data;\
+	usermod -a -G $data_gid www-data;\
 	chown -R  $data_uid.$data_gid  /home/app/;\
 	mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/ ;\
 	mkdir  -p /run/apache2/ ; chown www-data /run/apache2/

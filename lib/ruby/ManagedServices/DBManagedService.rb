@@ -24,6 +24,7 @@ class DBManagedService < ManagedService
     site_hash[:user]=database.dbUser
     site_hash[:pass]= database.dbPass
       #FixME can over write owner in addconsumer need to overide and protect ownership
+    site_hash[:parent_engine]  =  database.owner
     site_hash[:owner]= database.owner
        p site_hash
      return site_hash      

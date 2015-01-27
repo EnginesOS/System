@@ -206,6 +206,7 @@ class EnginesOSapi
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
     backup_hash.store(:backup_type, "fs")
+    backup_hash.store(:parent_engine,engine_name)
     
       if engine.volumes.present?     
         volume =  engine.volumes["volume_name"]
@@ -1056,7 +1057,15 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("Attach ftp ",e)
   end
+  
+  def attach_service(params)
+    return  @core_api.attach_service(params)
+  end
 
+  def detach_service(params)
+      return  @core_api.dettach_service(params)
+    end
+  
   def detach_ftp_service (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
   rescue Exception=>e

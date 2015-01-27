@@ -12,6 +12,17 @@ consumer_params:
   - password
   - access
 setup_params:
+  volume:
+    name: volume
+    title: volume
+    regexverifer: ".*"
+    tooltip: " "
+    type: hidden
+    hint: " "
+    placeholder: " "
+    required: true
+    default_value: " "
+    comment: " "
   folder:
     name: folder
     title: folder

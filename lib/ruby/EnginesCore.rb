@@ -1752,6 +1752,14 @@ class EnginesCore
     retval[:components] = subservices
     return retval
   end
+  
+    def attach_service(params)
+       return  false
+     end
+     
+    def detach_service(params)
+       return  false
+     end
 
   def load_service_definition(filename)
     

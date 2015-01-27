@@ -1,4 +1,10 @@
 class ServiceManager
+  require 'tree' 
+  
+  def initialise
+    root_node = Tree::TreeNode.new("Services", "Managed Services")
+    
+  end
   
   def attached_services(object)
     
@@ -8,14 +14,16 @@ class ServiceManager
   
   end
   
-  def register_available_service service_hash
+  def register_available_service service_info_hash
     
   end
   
-  def register_available_service service_hash
+  def register_available_service service_info_hash
     
   end
   
+  #hash has parent_engine
+  #hash parent
   def add_service service_hash
     
   end
