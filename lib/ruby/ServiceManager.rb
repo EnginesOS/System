@@ -17,17 +17,7 @@ class ServiceManager
     end
   end
   
-  def save_tree
-          serialized_object =@service_tree.marshal_dump         
-            f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
-            f.puts(serialized_object)
-            f.close
-            return true
-          rescue Exception=>e
-           @last_error=( "load error")
-            log_exception(e)
-            return false        
-  end
+
   
  
   def attached_services(object)
@@ -205,8 +195,9 @@ provider = service_hash[:service_provider]
        tree_data = File.read(SysConfig.ServiceTreeFile)
        p :tree_data
        p tree_data
-       service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
-       service_tree = service_tree.marshal_load(tree_data)
+       #service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
+       #service_tree = service_tree.marshal_load(tree_data)
+       service_tree = Marshal.load(tree_data)
        p :loaded_tree
        p service_tree
       
@@ -215,6 +206,19 @@ provider = service_hash[:service_provider]
        puts e.message + " with " + tree_data
      end
   end  
+  
+def save_tree
+        serialized_object = Marshal.dump(@service_tree)         
+          f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
+          f.puts(serialized_object)
+          f.close
+          return true
+        rescue Exception=>e
+         @last_error=( "load error")
+          log_exception(e)
+          return false        
+end
+
 def log_exception(e)
    e_str = e.to_s()
    e.backtrace.each do |bt |
