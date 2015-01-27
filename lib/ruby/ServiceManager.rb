@@ -73,12 +73,16 @@ class ServiceManager
        end
        
     engine_node = @service_tree["ManagedEngine"][identifier]
+      p :engine_node
+      p engine_node
       if engine_node == nil
         p :cant_find
         p identifier
         return retval
       end
+      
       engine_node.each do |service|
+        
         st = service.content[:service_type]
           p :service_type
           p st
@@ -90,7 +94,9 @@ class ServiceManager
           retval[st] = Array.new
         end        
         retval[st].push(service.content)                        
-      end      
+      end   
+      p :retval 
+      p retval
       return retval
   end
   
