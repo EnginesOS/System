@@ -18,7 +18,7 @@ class ServiceManager
   end
   
   def save_tree
-          serialized_object = YAML::dump(@service_tree)          
+          serialized_object =@service_tree.marshal_dump         
             f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
             f.puts(serialized_object)
             f.close
@@ -202,10 +202,11 @@ provider = service_hash[:service_provider]
   
   def tree_from_yaml()
      begin
-       yaml = File.new(SysConfig.ServiceTreeFile,'r')
-       p yaml.path
-      
-       service_tree = YAML::load( yaml )
+       yaml = File.read(SysConfig.ServiceTreeFile)
+       p yaml
+       service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
+       service_tree = service_tree.marshal_load(yaml)
+    
        p service_tree
        yaml.close
        return service_tree
