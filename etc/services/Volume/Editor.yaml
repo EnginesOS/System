@@ -8,6 +8,7 @@ description: "Editor "
 service_type: editor 
 service_provider: editor
 dedicated: true
+persistant: true
 image_name: engines/editor
 consumer_params:
 setup_params:

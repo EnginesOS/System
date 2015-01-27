@@ -9,6 +9,7 @@ title: "Volume service"
 description: "Provides Persistant File Storage"
 service_type: volume
 service_provider: volmanager
+persistant: true
 dedicated: false
 consumer_params:
 setup_params:

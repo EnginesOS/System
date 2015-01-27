@@ -6,11 +6,14 @@ class ServiceManager
   
   def initialize
     if File.exists?(SysConfig.ServiceTreeFile)    
-       tree_from_yaml()
+      @service_tree = tree_from_yaml()
     else
-      @service_tree = Tree::TreeNode.new("services", "Managed Services")
-      @service_tree << Tree::TreeNode.new("active","Active Engines")
-      @service_tree << Tree::TreeNode.new("deleted","Deleted Engines")
+      @service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
+      @service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
+      @service_tree << Tree::TreeNode.new("ManagedService","Managed Services")
+      
+      
+      
     end
   end
   
@@ -43,12 +46,62 @@ class ServiceManager
     
   end
   
+  def attached_services(identifier,object_type_name)
+
+    case obect_type_name
+      when "ManagedEngine"
+        return attached_managed_engine_services(identifier)
+      when "Volume"
+        return attached_volume_services(identifier)
+      when "Database"
+          return attached_database_services(identifier) 
+    end
+      
+  end
+  
+  def attached_managed_engine_services(identier)
+    retval = Hash.new 
+    if(@service_tree == nil)
+         p :panic_loaded_nil_tree
+         return false
+       end
+    engine_node = @service_tree["ManagedEngine"][identier]
+      engine_node.each do |service|
+        st = service.content[:service_type]
+        if retval.has_key?(st) == false
+          retval[st] = Array.new
+        end        
+        retval[st].push(service.content)                        
+      end      
+  end
+  
+  def attached_services(service_type,identifier)
+    retval = Array.new
+      services = @service_tree["ManagedServices"][service_type]
+        if services == nil
+          return retval
+        end
+        service = services[identifier]
+        if service == nil
+          return  retval
+        end
+        service.each do |node|
+          retval.push(node.content)
+          p node
+        end       
+  end
+
+
+  
   #hash has parent_engine
   #hash parent
   def add_service service_hash
-     @service_tree.print_tree
-    
-    active_engines_node = @service_tree["active"]
+     #@service_tree.print_tree
+    if(@service_tree == nil)
+      p :panic_loaded_nil_tree
+      return false
+    end
+    active_engines_node = @service_tree["ManagedEngine"]
       if(active_engines_node == nil )
         p :nil_active_node
        
@@ -73,6 +126,21 @@ class ServiceManager
       services_node << service_node     
       end
   
+ services_node = @service_tree["ManagedServices"]
+   
+    servicetype_node =  services_node[service_hash[:service_type] ]
+      if servicetype_node == nil
+        servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
+        services_node << servicetype_node
+      end
+      provider_node = service_hash[:service_provider]
+        if provider_node == nil
+          provider_node = Tree::TreeNode.new(service_hash[:service_provider],service_hash[:service_provider])
+          servicetype_node << provider_node
+        end
+            
+      servicetype_node  = Tree::TreeNode.new(service_hash[:service_name],service_hash)
+      
     save_tree
   end
   
@@ -85,10 +153,10 @@ class ServiceManager
        yaml = File.new(SysConfig.ServiceTreeFile,'r')
        p yaml.path
       
-       @service_tree = YAML::load( yaml )
-       p @service_tree
+       service_tree = YAML::load( yaml )
+       p service_tree
        yaml.close
-      
+       return @service_tree
      rescue Exception=>e
        puts e.message + " with " + yaml.path
      end

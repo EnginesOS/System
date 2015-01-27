@@ -6,5 +6,6 @@ description: "Provides NFS Access to Persistant File Storage"
 service_type: nfs
 service_provider: nfs
 dedicated: false
+persistant: true
 consumer_params:
 setup_params:

@@ -6,6 +6,7 @@ title: "Drop Service"
 description: "Provides Drop Box backing to a Persistant File Storage"
 service_type: dropbox
 service_provider: dropbox
+persistant: true
 dedicated: false
 consumer_params:
   name: dropbox_address

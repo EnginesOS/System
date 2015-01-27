@@ -6,6 +6,7 @@ title: "Replication of DB Service"
 description: "Provides replication of Database"
 service_provider: db_replicate
 service_type: db_replicate
+persistant: true
 dedicated: true
 consumer_params:
 setup_params:

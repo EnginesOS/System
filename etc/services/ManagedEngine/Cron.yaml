@@ -10,6 +10,7 @@ description: "Scheduales tasks"
 service_type: cron
 service_provider: cron
 dedicated: false
+persistant: false
 consumer_params:
 setup_params:
    cronline:
