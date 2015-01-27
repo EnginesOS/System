@@ -52,7 +52,7 @@ class SysConfig
   @@CronDir = "/opt/engines/etc/cron/tabs"
   
   #service Manager
-  @@ServiceTreeFile = "/opt/engines/run/service_manager/service.yaml"
+  @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
   
   def SysConfig.ServiceTreeFile 
     return @@ServiceTreeFile
