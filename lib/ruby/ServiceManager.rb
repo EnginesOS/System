@@ -98,6 +98,12 @@ class ServiceManager
       p :retval 
       p retval
       return retval
+rescue Exception=>e
+  p e
+e.backtrace.each do |bt |
+      e_str += bt
+    end
+  
   end
   
   def attached_services(service_type,identifier)
