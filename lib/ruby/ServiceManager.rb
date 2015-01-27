@@ -47,7 +47,10 @@ class ServiceManager
   end
   
   def list_attached_services_for(objectName,identifier)
-
+  p :services_on_objects_4
+  p objectName
+  p identifier
+  
     case objectName
       when "ManagedEngine"
         return attached_managed_engine_services(identifier)
@@ -75,7 +78,12 @@ class ServiceManager
       end
       engine_node.each do |service|
         st = service.content[:service_type]
-          
+          p :service_type
+          p st
+          if st == nil
+            p :no_service_type
+            return retval
+          end
         if retval.has_key?(st) == false
           retval[st] = Array.new
         end        
