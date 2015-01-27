@@ -61,9 +61,9 @@ class ServiceManager
       active_engines_node << engine_node
     end
         services_node = engine_node[ service_hash[:service_type] ]
-          if service_node == nil
+          if services_node == nil
             services_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
-            engine_node <<  service_node
+            engine_node <<  services_node
           end          
       if services_node[service_hash[:name]].present? == true
                 #FixME need to explain why
