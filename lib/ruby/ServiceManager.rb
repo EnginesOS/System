@@ -63,7 +63,7 @@ class ServiceManager
     retval = Hash.new 
     if(@service_tree == nil)
          p :panic_loaded_nil_tree
-         return false
+         return retval
        end
     engine_node = @service_tree["ManagedEngine"][identier]
       engine_node.each do |service|
@@ -73,11 +73,16 @@ class ServiceManager
         end        
         retval[st].push(service.content)                        
       end      
+      return retval
   end
   
   def attached_services(service_type,identifier)
     retval = Array.new
-      services = @service_tree["ManagedServices"][service_type]
+    if @service_tree["ManagedService"] ==nil
+      p panic_no_managed_service_node
+      return retval
+    end
+      services = @service_tree["ManagedService"][service_type]
         if services == nil
           return retval
         end
@@ -107,6 +112,7 @@ class ServiceManager
        
         return false
       end
+      
     if active_engines_node[service_hash[:parent_engine] ] != nil       
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
@@ -126,20 +132,27 @@ class ServiceManager
       services_node << service_node     
       end
   
- services_node = @service_tree["ManagedServices"]
-   
+      
+      
+provider = service_hash[:service_provider]
+  if provider == nil || provider.count ==0
+    provider="Engines"
+  end 
+ services_node = @service_tree["ManagedService"]
+ 
+     
     servicetype_node =  services_node[service_hash[:service_type] ]
       if servicetype_node == nil
         servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
         services_node << servicetype_node
       end
-      provider_node = service_hash[:service_provider]
+      provider_node = services_node[provider]
         if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:service_provider],service_hash[:service_provider])
+          provider_node = Tree::TreeNode.new(provider,provider)
           servicetype_node << provider_node
         end
             
-      servicetype_node  = Tree::TreeNode.new(service_hash[:service_name],service_hash)
+      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
       
     save_tree
   end
