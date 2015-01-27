@@ -65,7 +65,7 @@ class ServiceManager
             services_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
             engine_node <<  services_node
           end          
-      if services_node[service_hash[:name]].present? == true
+      if services_node[service_hash[:name]] != nil
                 #FixME need to explain why
                 return false
       else
