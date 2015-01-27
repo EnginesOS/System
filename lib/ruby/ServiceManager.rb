@@ -169,7 +169,7 @@ provider = service_hash[:service_provider]
        service_tree = YAML::load( yaml )
        p service_tree
        yaml.close
-       return @service_tree
+       return service_tree
      rescue Exception=>e
        puts e.message + " with " + yaml.path
      end
