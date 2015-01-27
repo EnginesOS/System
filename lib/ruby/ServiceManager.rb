@@ -56,16 +56,23 @@ class ServiceManager
       when "Database"
           return attached_database_services(identifier) 
     end
+      p :no_object_name_match
+      p objectName
       
   end
   
-  def attached_managed_engine_services(identier)
+  def attached_managed_engine_services(identifier)
     retval = Hash.new 
     if(@service_tree == nil)
          p :panic_loaded_nil_tree
          return retval
        end
-    engine_node = @service_tree["ManagedEngine"][identier]
+    engine_node = @service_tree["ManagedEngine"][identifier]
+      if engine_node == nil
+        p :cant_find
+        p identifier
+        return retval
+      end
       engine_node.each do |service|
         st = service.content[:service_type]
         if retval.has_key?(st) == false
