@@ -66,8 +66,10 @@ class ServiceManager
   
   def attached_managed_engine_services(identifier)
     @service_tree = tree_from_yaml()
-    retval = Hash.new 
     p :attached_managed_engine_services
+    p @service_tree 
+    retval = Hash.new 
+   
     if(@service_tree == nil || @service_tree["ManagedEngine"] ==nil )
          p :panic_loaded_nil_tree
          return retval
