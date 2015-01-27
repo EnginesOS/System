@@ -46,12 +46,14 @@ class ServiceManager
   #hash has parent_engine
   #hash parent
   def add_service service_hash
+    p @service_tree
     active_engines_node = @service_tree["active"]
       if(active_engines_node == nil )
         p :nil_active_node
+       
         return false
       end
-    if active_engines_node[service_hash[:parent_engine] ] != nil && active_engines_node[ service_hash[:parent_engine] ].present? == true      
+    if active_engines_node[service_hash[:parent_engine] ] != nil       
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Engine")
@@ -83,7 +85,7 @@ class ServiceManager
        p yaml.path
       
        @service_tree = YAML::load( yaml )
-       
+       p @service_tree
        yaml.close
       
      rescue Exception=>e
