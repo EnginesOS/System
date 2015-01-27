@@ -22,7 +22,7 @@ class ShareService < ManagedService
 #        site_hash[:mapping_permission]=volume.mapping_permissions #:ro or :rw
 #        site_hash[:permissions]=volume.vol_permissions.ro_group #:ro or :rw
         
-          
+    site_hash[:service_type]='share'
         return site_hash          
    end
    

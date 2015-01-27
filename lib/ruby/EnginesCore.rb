@@ -1731,7 +1731,7 @@ class EnginesCore
     p "missed object name"
     p object_name
     
-    service_manager = loadManagedSerice("servicemanager")
+    service_manager = loadServiceManager()
     
     if service_manager !=nil 
       return service_manager.attached_services(object)
@@ -1749,7 +1749,7 @@ class EnginesCore
 
     retval = Hash.new
     retval[:services] = services
-    retval[:components] = subservices
+    retval[:subservices] = subservices
     return retval
   end
   
@@ -1760,7 +1760,15 @@ class EnginesCore
     def detach_service(params)
        return  false
      end
-
+     
+     
+    def loadServiceManager()
+      if @service_manager == nil
+        @service_manager = ServiceManager.new()
+      return @service_manager
+    end
+    end    
+    
   def load_service_definition(filename)
     
     yaml_file = File.open(filename)
@@ -1809,11 +1817,11 @@ class EnginesCore
       if object.volumes.count >0
         p :loading_vols
         volumes = load_avail_services_for("Volume") #Array of hashes
-        retval[:volumes] = volumes                    
+        retval[:volume] = volumes                    
       end
       if object.databases.count >0
         databases = load_avail_services_for("Database") #Array of hashes
-        retval[:databases] = databases
+        retval[:database] = databases
       end
 
       return retval

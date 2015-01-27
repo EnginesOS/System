@@ -13,7 +13,7 @@ class VolumeService < ManagedService
   def get_site_hash(volume)
 
         site_hash = Hash.new()
-        site_has[:parent_engine] = volume.parent_engine
+        site_hash[:parent_engine] = volume.parent_engine
         site_hash[:name]=volume.name 
         site_hash[:localpath]=volume.localpath
         site_hash[:remotepath]=volume.remotepath 
@@ -21,6 +21,7 @@ class VolumeService < ManagedService
         site_hash[:permissions_owner]=volume.vol_permissions.owner
         site_hash[:permission_ro_grp]=volume.vol_permissions.ro_group
         site_hash[:permission_rw_grp]=volume.vol_permissions.rw_group
+    site_hash[:service_type]='volume' 
         return site_hash          
    end
    

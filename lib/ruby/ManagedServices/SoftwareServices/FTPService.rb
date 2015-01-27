@@ -13,6 +13,12 @@ class FTPService < SoftwareService
        return  @core_api.rm_ftp_service(site_hash)
     end 
   
+  def get_site_hash(site_hash)
+    site_hash[:service_type]='ftp'
+        return site_hash          
+   end
+   
+   
    def accepts
      return ["Volume"]      
    end

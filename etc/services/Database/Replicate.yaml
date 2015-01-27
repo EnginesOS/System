@@ -4,7 +4,8 @@ accepts:
 author: "Engines"
 title: "Replication of DB Service"
 description: "Provides replication of Database"
-service_name: db_replicate
+service_provider: db_replicate
+service_type: db_replicate
 dedicated: true
 consumer_params:
 setup_params:

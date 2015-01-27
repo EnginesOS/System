@@ -4,7 +4,8 @@ accepts:
 author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
-service_name: ftp
+service_type: ftp
+service_provider: ftp
 dedicated: false
 consumer_params:
   - folder
