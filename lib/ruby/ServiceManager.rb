@@ -163,25 +163,25 @@ e.backtrace.each do |bt |
   
       
       
-provider = service_hash[:service_provider]
-  if provider == nil || provider.count ==0
-    provider="Engines"
-  end 
- services_node = @service_tree["ManagedService"]
- 
-     
-    servicetype_node =  services_node[service_hash[:service_type] ]
-      if servicetype_node == nil
-        servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
-        services_node << servicetype_node
-      end
-      provider_node = servicetype_node[provider]
-        if provider_node == nil
-          provider_node = Tree::TreeNode.new(provider,provider)
-          servicetype_node << provider_node
-        end
-            
-      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
+#provider = service_hash[:service_provider]
+#  if provider == nil || provider.count ==0
+#    provider="Engines"
+#  end 
+# services_node = @service_tree["ManagedService"]
+# 
+#     
+#    servicetype_node =  services_node[service_hash[:service_type] ]
+#      if servicetype_node == nil
+#        servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
+#        services_node << servicetype_node
+#      end
+#      provider_node = servicetype_node[provider]
+#        if provider_node == nil
+#          provider_node = Tree::TreeNode.new(provider,provider)
+#          servicetype_node << provider_node
+#        end
+#            
+#      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
       
     save_tree
   end
