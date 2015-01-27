@@ -65,6 +65,7 @@ class ServiceManager
   end
   
   def attached_managed_engine_services(identifier)
+    @service_tree = tree_from_yaml()
     retval = Hash.new 
     p :attached_managed_engine_services
     if(@service_tree == nil || @service_tree["ManagedEngine"] ==nil )
@@ -101,7 +102,7 @@ class ServiceManager
 rescue Exception=>e
   p e
 e.backtrace.each do |bt |
-      e_str += bt
+      p bt
     end
   
   end
