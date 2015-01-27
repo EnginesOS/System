@@ -21,6 +21,7 @@ class VolumeService < ManagedService
         site_hash[:permissions_owner]=volume.vol_permissions.owner
         site_hash[:permission_ro_grp]=volume.vol_permissions.ro_group
         site_hash[:permission_rw_grp]=volume.vol_permissions.rw_group
+    site_hash[:service_type]='volume' 
         return site_hash          
    end
    

@@ -11,7 +11,7 @@ class CronService < ManagedService
     end 
      
   def get_site_hash(site_hash)
- 
+    site_hash[:service_type]='cron'
         return site_hash          
    end
    

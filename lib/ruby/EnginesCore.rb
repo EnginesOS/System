@@ -1731,7 +1731,7 @@ class EnginesCore
     p "missed object name"
     p object_name
     
-    service_manager = loadManagedSerice("servicemanager")
+    service_manager = loadServiceManager()
     
     if service_manager !=nil 
       return service_manager.attached_services(object)
