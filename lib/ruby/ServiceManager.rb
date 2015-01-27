@@ -8,9 +8,9 @@ class ServiceManager
     if File.exists?(SysConfig.ServiceTreeFile)    
        tree_from_yaml()
     else
-      @service_tree = Tree::TreeNode.new(:services, "Managed Services")
-      @service_tree << Tree::TreeNode.new(:active,"Active Engines")
-      @service_tree << Tree::TreeNode.new(:deleted,"Deleted Engines")
+      @service_tree = Tree::TreeNode.new("services", "Managed Services")
+      @service_tree << Tree::TreeNode.new("active","Active Engines")
+      @service_tree << Tree::TreeNode.new("deleted","Deleted Engines")
     end
   end
   
@@ -46,7 +46,7 @@ class ServiceManager
   #hash has parent_engine
   #hash parent
   def add_service service_hash
-    active_engines_node = @service_tree[:active]
+    active_engines_node = @service_tree["active"]
       if(active_engines_node == nil )
         p :nil_active_node
         return false
