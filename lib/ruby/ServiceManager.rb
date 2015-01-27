@@ -202,16 +202,17 @@ provider = service_hash[:service_provider]
   
   def tree_from_yaml()
      begin
-       yaml = File.read(SysConfig.ServiceTreeFile)
-       p yaml
+       tree_data = File.read(SysConfig.ServiceTreeFile)
+       p :tree_data
+       p tree_data
        service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
-       service_tree = service_tree.marshal_load(yaml)
+       service_tree = service_tree.marshal_load(tree_data)
        p :loaded_tree
        p service_tree
       
        return service_tree
      rescue Exception=>e
-       puts e.message + " with " + yaml
+       puts e.message + " with " + tree_data
      end
   end  
 def log_exception(e)
