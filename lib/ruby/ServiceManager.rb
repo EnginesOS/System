@@ -46,7 +46,7 @@ class ServiceManager
     
   end
   
-  def attached_services(objectName,identifier)
+  def list_attached_services_for(objectName,identifier)
 
     case objectName
       when "ManagedEngine"
@@ -75,6 +75,7 @@ class ServiceManager
       end
       engine_node.each do |service|
         st = service.content[:service_type]
+          
         if retval.has_key?(st) == false
           retval[st] = Array.new
         end        
