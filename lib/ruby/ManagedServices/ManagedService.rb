@@ -88,7 +88,7 @@ class ManagedService < ManagedContainer
         result = rm_consumer_from_service(site_hash)
          if result == true
           sm =  service_manager
-            if sm != false
+            if sm != false 
               result =  sm.remove_service(site_hash)
             else
               return false
