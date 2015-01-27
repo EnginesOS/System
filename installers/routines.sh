@@ -89,8 +89,8 @@ echo "Installing ruby"
 
 		#/usr/local/rvm/bin/rvm  --default use ruby-$RUBY_VER
 		 
-		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git 
- 		#/usr/local/rvm/bin/rvm gemset create git
+		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git  rubytree
+ 		#/usr/local/rvm/bin/rvm gemset create git rubytree
  		
  		#Following needed for rspec tests
 		/usr/local/rvm/wrappers/ruby-2.1.2/gem install multi_json rspec
