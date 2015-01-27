@@ -70,10 +70,16 @@ class ServiceManager
     p @service_tree 
     retval = Hash.new 
    
-    if(@service_tree == nil || @service_tree["ManagedEngine"] ==nil )
+    if @service_tree == nil 
          p :panic_loaded_nil_tree
          return retval
        end
+        
+    if @service_tree["ManagedEngine"] ==nil
+      p :panic_loaded_managedengine_tree
+             return retval
+    end
+        
        
     engine_node = @service_tree["ManagedEngine"][identifier]
       p :engine_node
