@@ -23,21 +23,29 @@ class SoftwareServiceDefinition
      end
   end
   
-  def find(service_type,provider)
+  def SoftwareServiceDefinition.find(service_type,provider)
     dir = SysConfig.ServiceTemplateDir + "/" 
           p :dir
           p dir 
-          if Dir.exists?(dir)
-            Dir.foreach(dir) do |service_dir_entry|
-                if service_dir_entry.directory? == true
-                  if service_type.exist?()
-                    p service_type
-                  end
-                  end
-                end
-                end
+          if Dir.exist?(dir)
+            return search_dir(dir,service_type)
+          end
   end
-  
+  def search_dir(dir,service_type)
+    root = dir
+    if Dir.exists?(dir)
+      Dir.foreach(dir) do |service_dir_entry|
+        if Dir.exist?(service_dir_entry) == true && service_dir_entry.directory.start_with?(".") ==false
+          search_dir(root + "/" + service_dir_entry,service_type)
+        else
+          if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
+            return load_service_type(dir,service_type)
+          end
+        end
+      end
+    end
+  end
+
   def to_h
     require 'json'
     return JSON.parse(self.to_json, {:symbolize_names => true})
