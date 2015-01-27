@@ -77,7 +77,7 @@ class ServiceManager
   
   def attached_services(service_type,identifier)
     retval = Array.new
-      services = @service_tree["ManagedServices"][service_type]
+      services = @service_tree["ManagedService"][service_type]
         if services == nil
           return retval
         end
