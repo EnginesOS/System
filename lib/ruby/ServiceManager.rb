@@ -1,4 +1,10 @@
 class ServiceManager
+  require 'tree' 
+  
+  def initialise
+    root_node = Tree::TreeNode.new("Services", "Managed Services")
+    
+  end
   
   def attached_services(object)
     

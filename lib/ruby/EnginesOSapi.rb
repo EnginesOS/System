@@ -1057,7 +1057,15 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("Attach ftp ",e)
   end
+  
+  def attach_service(params)
+    return  @core_api.attach_service(params)
+  end
 
+  def detach_service(params)
+      return  @core_api.dettach_service(params)
+    end
+  
   def detach_ftp_service (params)
     return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
   rescue Exception=>e
