@@ -206,12 +206,20 @@ provider = service_hash[:service_provider]
        p yaml
        service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
        service_tree = service_tree.marshal_load(yaml)
-    
+       p :loaded_tree
        p service_tree
-       yaml.close
+      
        return service_tree
      rescue Exception=>e
        puts e.message + " with " + yaml
      end
   end  
+def log_exception(e)
+   e_str = e.to_s()
+   e.backtrace.each do |bt |
+     e_str += bt
+   end
+   @last_error = e_str
+   SystemUtils.log_output(e_str,10)
+ end
 end
