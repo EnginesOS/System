@@ -1529,16 +1529,7 @@ class EnginesCore
 
   attr_reader :last_error
 
-  def list_attached_services_for(object)
-    #[:crons]=["a Hash"]
-    #[:volumes]=["a Hash"]
-    #[:databases]=["a Hash"]
-    #[nfs ,smbfs, ftp, sop,we     
-    
-    return Hash.new
-  end
-  
-
+ 
 
   def add_domain(params)
     return  @system_api.add_domain(params)
@@ -1712,32 +1703,35 @@ class EnginesCore
       return false
   end
   
-  def attached_services(object)
-    object_name = object.class.name.split('::').last
+  def attached_services(identifier,objectName)
+    sm = loadServiceManager()
+    return sm.attached_services(identifier,objectName)
     
-    case object_name
-    when  "ManagedEngine"
-      retval = Hash.new
-      
-    retval[:databases] = object.databases
-    retval[:volumes] = object.volumes
-    retval[:crons] = object.cron_job_list
-      
-      return retval
-      
-      #list services 
-      # which includes volumes databases cron      
-    end
-    p "missed object name"
-    p object_name
-    
-    service_manager = loadServiceManager()
-    
-    if service_manager !=nil 
-      return service_manager.attached_services(object)
-      
-    end
-    return false
+#    object_name = object.class.name.split('::').last
+#    
+#    case object_name
+#    when  "ManagedEngine"
+#      retval = Hash.new
+#      
+#    retval[:database] = object.databases
+#    retval[:volume] = object.volumes
+#    retval[:cron] = object.cron_job_list
+#      
+#      return retval
+#      
+#      #list services 
+#      # which includes volumes databases cron      
+#    end
+#    p "missed object name"
+#    p object_name
+#    
+#    service_manager = loadServiceManager()
+#    
+#    if service_manager !=nil 
+#      return service_manager.attached_services(object)
+#      
+#    end
+#    return false
       
   
   end
