@@ -46,12 +46,16 @@ class ServiceManager
   #hash has parent_engine
   #hash parent
   def add_service service_hash
-   
-    if @service_tree[:active][ service_hash[:parent_engine] ] != nil && @service_tree[:active][ service_hash[:parent_engine] ].present? == true      
-      engine_node = @service_tree[:active][ service_hash[:parent_engine] ]
+    active_engines_node = @service_tree[:active]
+      if(active_engines_node == nil )
+        p :nil_active_node
+        return false
+      end
+    if active_engines_node[service_hash[:parent_engine] ] != nil && active_engines_node[ service_hash[:parent_engine] ].present? == true      
+      engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Engine")
-      @service_tree[:active]<<engine_node
+      active_engines_node << engine_node
     end
         services_node = engine_node[ service_hash[:service_type] ]
           if service_node == nil
