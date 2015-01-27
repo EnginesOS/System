@@ -5,7 +5,8 @@ accepts:
 author: Engines
 title: Database
 description: "Database "
-service_name: database
+service_provider: database
+service_type: database
 dedicated: false
 image_name: engines/volmanager
 consumer_params:

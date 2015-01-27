@@ -3,7 +3,8 @@ accepts: "Volume"
 author: Engines
 title: "NFS Sharing of Volumes"
 description: "Provides NFS Access to Persistant File Storage"
-service_name: nfs
+service_type: nfs
+service_provider: nfs
 dedicated: false
 consumer_params:
 setup_params:

@@ -105,7 +105,7 @@ class ManagedService < ManagedContainer
   end
 
   def service_manager
-    return @core_api.loadManagedService("ServiceManager")
+    return @core_api.loadServiceManager()
   end
   
   def create_service()

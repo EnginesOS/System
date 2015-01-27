@@ -5,7 +5,8 @@ accepts:
 author: Engines
 title: Editor
 description: "Editor "
-service_name: editor
+service_type: editor 
+service_provider: editor
 dedicated: true
 image_name: engines/editor
 consumer_params:

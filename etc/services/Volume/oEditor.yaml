@@ -5,7 +5,8 @@ accepts:
 author: Engines
 title: "Editor Service"
 description: "Provides Editor and file explorer access to Persistant File Storage"
-service_name: editor
+service_type: editor
+service_provider: editor
 dedicated: true
 consumer_params:
 setup_params:

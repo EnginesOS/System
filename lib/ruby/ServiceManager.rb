@@ -9,7 +9,7 @@ class ServiceManager
     else
       service_tree = Tree::TreeNode.new("Services", "Managed Services")
       service_tree << Tree::TreeNode("Active","Active Engines")
-      service_tree << Tree::TreeNode("Deleted","Active Engines")
+      service_tree << Tree::TreeNode("Deleted","Deleted Engines")
     end
   end
   
