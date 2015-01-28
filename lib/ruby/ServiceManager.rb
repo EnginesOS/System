@@ -76,7 +76,7 @@ class ServiceManager
       return retval
     end
 
-    engine_node =engines_node["ManagedEngine"][identifier]
+    engine_node =engines_node[identifier]
     p :engine_node
     p engine_node
     if engine_node == nil
