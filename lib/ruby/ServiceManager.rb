@@ -87,7 +87,7 @@ class ServiceManager
 
     engine_node.each do |service|
 
-      st = service.content[:service_type]
+      st = service.content["service_type"]
       p :service_type
       p st
       if st == nil
