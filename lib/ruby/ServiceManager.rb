@@ -11,6 +11,10 @@ class ServiceManager
       @service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
       @service_tree << Tree::TreeNode.new("ManagedService","Managed Services")
     end
+    rescue Exception=>e
+        puts e.message + " with " + tree_data.to_s
+        log_exception(e)
+        
   end
 
   def attached_services(object)
@@ -44,6 +48,10 @@ class ServiceManager
     end
     p :no_object_name_match
     p objectName
+    rescue Exception=>e
+        puts e.message + " with " + tree_data.to_s
+        log_exception(e)
+        
   end
 
   def attached_managed_engine_services(identifier)
@@ -94,12 +102,11 @@ class ServiceManager
     p :retval
     p retval
     return retval
-  rescue Exception=>e
-    p e
-    e.backtrace.each do |bt |
-      p bt
-    end
-
+ 
+rescue Exception=>e
+    puts e.message + " with " + tree_data.to_s
+    log_exception(e)
+    
   end
 
   def attached_services(service_type,identifier)
@@ -120,6 +127,11 @@ class ServiceManager
       retval.push(node.content)
       p node
     end
+    
+rescue Exception=>e
+    puts e.message + " with " + tree_data.to_s
+    log_exception(e)
+    
   end
 
   #hash has parent_engine
@@ -180,6 +192,10 @@ class ServiceManager
     #      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
 
     save_tree
+rescue Exception=>e
+    puts e.message + " with " + tree_data.to_s
+    log_exception(e)
+    
   end
 
   def remove_service service_hash
@@ -200,6 +216,7 @@ class ServiceManager
       return service_tree
     rescue Exception=>e
       puts e.message + " with " + tree_data.to_s
+      log_exception(e)
     end
   end
 
