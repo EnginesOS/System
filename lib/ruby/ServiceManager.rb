@@ -199,7 +199,7 @@ class ServiceManager
 
       return service_tree
     rescue Exception=>e
-      puts e.message + " with " + tree_data
+      puts e.message + " with " + tree_data.to_s
     end
   end
 
