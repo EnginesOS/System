@@ -1705,7 +1705,7 @@ class EnginesCore
   
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
-    return sm.attached_services(objectName,identifier)
+    return sm.list_attached_services_for(objectName,identifier)
     
 #    object_name = object.class.name.split('::').last
 #    
