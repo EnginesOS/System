@@ -12,7 +12,7 @@ class ServiceManager
       @service_tree << Tree::TreeNode.new("ManagedService","Managed Services")
     end
     rescue Exception=>e
-        puts e.message + " with " + tree_data.to_s
+        puts e.message 
         log_exception(e)
         
   end
@@ -49,7 +49,7 @@ class ServiceManager
     p :no_object_name_match
     p objectName
     rescue Exception=>e
-        puts e.message + " with " + tree_data.to_s
+        puts e.message 
         log_exception(e)
         
   end
@@ -104,7 +104,7 @@ class ServiceManager
     return retval
  
 rescue Exception=>e
-    puts e.message + " with " + tree_data.to_s
+    puts e.message 
     log_exception(e)
     
   end
@@ -112,7 +112,7 @@ rescue Exception=>e
   def attached_services(service_type,identifier)
     retval = Array.new
     if @service_tree["ManagedService"] ==nil
-      p panic_no_managed_service_node
+      p :panic_no_managed_service_node
       return retval
     end
     services = @service_tree["ManagedService"][service_type]
@@ -129,7 +129,7 @@ rescue Exception=>e
     end
     
 rescue Exception=>e
-    puts e.message + " with " + tree_data.to_s
+    puts e.message 
     log_exception(e)
     
   end
@@ -171,29 +171,29 @@ rescue Exception=>e
       services_node << service_node
     end
 
-    #provider = service_hash[:service_provider]
-    #  if provider == nil || provider.count ==0
-    #    provider="Engines"
-    #  end
-    # services_node = @service_tree["ManagedService"]
-    #
-    #
-    #    servicetype_node =  services_node[service_hash[:service_type] ]
-    #      if servicetype_node == nil
-    #        servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
-    #        services_node << servicetype_node
-    #      end
-    #      provider_node = servicetype_node[provider]
-    #        if provider_node == nil
-    #          provider_node = Tree::TreeNode.new(provider,provider)
-    #          servicetype_node << provider_node
-    #        end
-    #
-    #      servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
+    provider = service_hash[:service_provider]
+      if provider == nil || provider.count ==0
+        provider="Engines"
+      end
+     services_node = @service_tree["ManagedService"]
+    
+    
+        servicetype_node =  services_node[service_hash[:service_type] ]
+          if servicetype_node == nil
+            servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
+            services_node << servicetype_node
+          end
+          provider_node = servicetype_node[provider]
+            if provider_node == nil
+              provider_node = Tree::TreeNode.new(provider,provider)
+              servicetype_node << provider_node
+            end
+    
+          servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
 
     save_tree
 rescue Exception=>e
-    puts e.message + " with " + tree_data.to_s
+    puts e.message 
     log_exception(e)
     
   end
@@ -205,13 +205,13 @@ rescue Exception=>e
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)
-      p :tree_data
-      p tree_data
+#      p :tree_data
+#      p tree_data
       #service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
       #service_tree = service_tree.marshal_load(tree_data)
       service_tree = Marshal.load(tree_data)
-      p :loaded_tree
-      p service_tree
+#      p :loaded_tree
+#      p service_tree
 
       return service_tree
     rescue Exception=>e
