@@ -85,8 +85,8 @@ class ServiceManager
       return retval
     end
 
-    services_node = engine_node["Services"]
-  services_node.each do |service_node|      
+   
+  engine_node.each do |service_node|      
       p :service_type
       p service_node.name
       if  service_node.name == nil
