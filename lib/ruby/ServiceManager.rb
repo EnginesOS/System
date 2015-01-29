@@ -223,7 +223,7 @@ rescue Exception=>e
 
   def remove_service service_hash
    
-      parent_engine_node = ["ManagedEngine"][service_hash[:parent_engine]]
+      parent_engine_node = @service_tree["ManagedEngine"][service_hash[:parent_engine]]
         if parent_engine_node == nil
           @last_error ="No service record found for "+ service_hash[:parent_engine] 
           return false
