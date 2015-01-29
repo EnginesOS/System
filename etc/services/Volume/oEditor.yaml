@@ -1,4 +1,4 @@
--- !ruby/object:SoftwareServiceDefinition
+--- !ruby/object:SoftwareServiceDefinition
 accepts: 
 - !ruby/object:String
   "Volume"
