@@ -1,5 +1,5 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts:
+accepts: 
 - !ruby/object:String  
   "ManagedEngine"
 author: Engines
@@ -55,3 +55,4 @@ setup_params:
     required: true
     default_value: " "
     comment: " "
+    regexverifer: ".*"
