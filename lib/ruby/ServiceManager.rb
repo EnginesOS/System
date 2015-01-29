@@ -85,19 +85,20 @@ class ServiceManager
       return retval
     end
 
-    engine_node.each do |service|
+    services_node = engine_node["Services"]
+  services_node.each do |service_node|
 
-      st = service.content["Services"]
+      
       p :service_type
-      p st
-      if st == nil
+      p service_node.name
+      if  service_node.name == nil
         p :no_service_type
         return retval
       end
-      if retval.has_key?(st) == false
-        retval[st] = Array.new
+      if retval.has_key?( service_node.name) == false
+        retval[ service_node.name] = Array.new
       end
-      retval[st].push(service.content)
+      retval[ service_node.name].push(get_service_content(service_node))
     end
     p :retval
     p retval
@@ -108,7 +109,18 @@ rescue Exception=>e
     log_exception(e)
     
   end
-
+  
+  def get_service_content(service_node)
+    retval = Hash.new
+    service_node.each do |provider_node|
+      retval[provider_node.name] = Array.new
+          provider_node.each do |service_node|
+            retval[provider_node.name].push(service_node.content)
+          end       
+    end
+    return retval
+  end
+  
   def attached_services(service_type,identifier)
     retval = Array.new
     if @service_tree["ManagedService"] ==nil
@@ -183,11 +195,11 @@ rescue Exception=>e
       service_type_node << service_provider_node
     end
     
-    if service_provider_node[service_hash[:service_type]] != nil
+    if service_provider_node[service_hash[:name]] != nil
       #FixME need to explain why
       return false
     else
-      service_node = Tree::TreeNode.new(service_hash[:service_type],service_hash)
+      service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
       service_provider_node << service_node
     end
 
