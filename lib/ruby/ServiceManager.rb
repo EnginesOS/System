@@ -234,15 +234,15 @@ rescue Exception=>e
           return false
         end
        service_provider_node =  service_type_node[service_hash[:service_provider]]
-       if service_type_node == nil
+       if service_provider_node == nil
           @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:service_provider] 
           return false
         end
-        service_node = service_type_node[service_hash[:name]]
+        service_node = service_provider_node[service_hash[:name]]
           p :really_removing
           p service_node
           p :from
-          p service_type_node
+          p service_provider_node
           if service_node != nil
             service_type_node.remove!(service_node)
             save_tree
