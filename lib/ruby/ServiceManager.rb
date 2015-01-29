@@ -87,7 +87,7 @@ class ServiceManager
 
     engine_node.each do |service|
 
-      st = service.content["ServiceType"]
+      st = service.content["Services"]
       p :service_type
       p st
       if st == nil
@@ -157,18 +157,25 @@ rescue Exception=>e
       active_engines_node << engine_node
     end
     
-    services_node = engine_node[ service_hash[:service_type] ]
+    services_node = engine_node[ "Services" ]
       
     if services_node == nil
-      services_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
+      services_node = Tree::TreeNode.new("Services","Services")
       engine_node <<  services_node
     end
-    if services_node[service_hash[:name]] != nil
+    
+    service_type_node = services_node[service_hash[:service_type]]
+      
+     if service_type_node == nil
+      service_type_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
+       services_node << service_type_node
+    end
+    if service_type_node[service_hash[:name]] != nil
       #FixME need to explain why
       return false
     else
       service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
-      services_node << service_node
+      service_type_node << service_node
     end
 
     provider = service_hash[:service_provider]
