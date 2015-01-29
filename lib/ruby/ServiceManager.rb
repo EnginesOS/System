@@ -243,6 +243,8 @@ rescue Exception=>e
           p service_node
           p :from
           p service_provider_node
+          #FIXME a method should do this in a loop
+          
           if service_node != nil
             service_provider_node.remove!(service_node)
             if service_provider_node.children.count ==0
@@ -254,7 +256,7 @@ rescue Exception=>e
                     end
                 end
             end
-          end
+          
             save_tree
             return true
           end
