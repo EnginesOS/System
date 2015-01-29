@@ -1748,6 +1748,12 @@ class EnginesCore
   end
   
     def attach_service(params)
+      #parent_engine
+      #service_type
+      #service_provider
+      #name
+      #service hash from fields in Software Service Definition for that service 
+      
        return  false
      end
      
