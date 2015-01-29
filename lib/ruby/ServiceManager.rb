@@ -78,7 +78,7 @@ class ServiceManager
 
     engine_node =engines_node[identifier]
     p :engine_node
-    p engine_node
+     engine_node.print_tree
     if engine_node == nil
       p :cant_find
       p identifier
@@ -143,6 +143,7 @@ rescue Exception=>e
       return false
     end
 
+    #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
     if (active_engines_node == nil )
@@ -178,6 +179,8 @@ rescue Exception=>e
       service_type_node << service_node
     end
 
+    
+ #write services tree
     provider = service_hash[:service_provider]
       if provider == nil || provider.count ==0
         provider="Engines"
