@@ -244,7 +244,7 @@ rescue Exception=>e
           p :from
           p service_provider_node
           if service_node != nil
-            @service_tree.remove!(service_node)
+            service_provider_node.remove!(service_node)
             save_tree
             return true
           end
