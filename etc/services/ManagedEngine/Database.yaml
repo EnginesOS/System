@@ -16,7 +16,7 @@ setup_params:
     name: database_host
     title: database_host
     regexverifer: ".*"
-    tooltip: " "
+    tooltip: "Local or the ip address/hostname of the database server"
     type: "string"
     hint: " "
     placeholder: " "
