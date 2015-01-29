@@ -62,14 +62,11 @@ setup_params:
     name: button
     label: button test
     tooltip: " "
-    type: password_with_confirmation
+    type: checkbox
     hint: " "
     placeholder: " "
     required: true
-    value: check_off
-    collection:
-      - check_on
-      - check_off
+    value: true
     comment: " "
     regex_validator: ".*"
   access:
