@@ -12,45 +12,45 @@ consumer_params:
 setup_params:
    database_host:
     name: database_host
-    title: database_host
-    regexverifer: ".*"
+    label: database_host
+    regex_validator: ".*"
     tooltip: "Local or the ip address/hostname of the database server"
-    type: "string"
+    type: "text_field"
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
    database_name:
     name: database_name
-    title: folder
-    regexverifer: ".*"
+    label: folder
+    regex_validator: ".*"
     tooltip: " "
-    type: "string"
+    type: "text_field"
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
   username:
     name: dbusername
-    title: DB User Name
-    regexverifer: ".*"
+    label: DB User Name
+    regex_validator: ".*"
     tooltip: " "
-    type: "string"
+    type: "text_field"
     hint: " "
     placeholder: " "
     required: true
-    default_value: " " 
+    value: " " 
     comment: " "
   password:
     name: dbpassword
-    title: DB Password
+    label: DB Password
     tooltip: " "
-    type: "password"
+    type: password_with_confirmation
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
-    regexverifer: ".*"
+    regex_validator: ".*"

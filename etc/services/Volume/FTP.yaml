@@ -2,7 +2,7 @@
 accepts: 
   - "Volume"
 author: Engines
-title: "FTP Access Service"
+label: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
 service_type: ftp
 service_provider: ftp
@@ -16,56 +16,73 @@ consumer_params:
 setup_params:
   volume:
     name: volume
-    title: volume
-    regexverifer: ".*"
+    label: volume
+    regex_validator: ".*"
     tooltip: " "
-    type: hidden
+    type: text_field
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
   folder:
     name: folder
-    title: folder
-    regexverifer: ".*"
+    label: folder
+    regex_validator: ".*"
     tooltip: " "
-    type: " "
+    type: text_field
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
   username:
     name: username
-    title: User Name
-    regexverifer: ".*"
+    label: User Name
+    regex_validator: ".*"
     tooltip: " "
-    type: " "
+    type: text_field
     hint: " "
     placeholder: " "
     required: true
-    default_value: " " 
+    value: " " 
     comment: " "
   password:
     name: password
-    title: password
+    label: password
     tooltip: " "
-    type: " "
+    type: password_with_confirmation
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
-    regexverifer: ".*"
+    regex_validator: ".*"
+  button_test:
+    name: button
+    label: button test
+    tooltip: " "
+    type: password_with_confirmation
+    hint: " "
+    placeholder: " "
+    required: true
+    value: check_off
+    collection:
+      - check_on
+      - check_off
+    comment: " "
+    regex_validator: ".*"
   access:
     name: rw_access
-    title: RW Access
-    regexverifer: true|false
+    label: RW Access
+    regex_validator: true|false
     tooltip: "Allow ftp service to write files"
-    type: boolean
+    type: select_single
     hint: "true|false"
+    collection:
+      - true
+      - false
     placeholder: "true|false"
     required: true
-    default_value: false
+    value: false
     comment: "Write access includes the ability to delete" 

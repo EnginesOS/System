@@ -9,20 +9,24 @@ service_provider: dropbox
 persistant: true
 dedicated: false
 consumer_params:
+  
   name: dropbox_address
-  title: dropbox_address
+  label: dropbox_address
   regex: ".*"
   name: username
-  title: Account login
+  label: Account login
   regex: ".*"
   name: password
-  title:  Account Password
+  label:  Account Password
   regex: ".*"
   name: direction
-  title: Direction
+  label: Direction
   regex: up|down|both
   name: directory
-  title: Directory
+  label: Directory
   regex: ".*"
+  name: button
+  label: button test
+  
   
     

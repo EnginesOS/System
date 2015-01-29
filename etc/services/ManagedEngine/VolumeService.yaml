@@ -15,35 +15,38 @@ consumer_params:
 setup_params:
    volume_src:
     name: volume_src
-    title: volume local path
-    regexverifer: ".*"
+    label: volume local path
+    regex_validator: ".*"
     tooltip: " "
-    type: string
+    type: text_field
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
    permissions:
     name: permissions
-    title: permissions
-    regexverifer: ".*"
+    label: permissions
+    regex_validator: ".*"
     tooltip: " "
-    type: string
+    type: select_single
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: "ro"
+    collection:
+      - "rw"
+      - "ro"
     comment: " "
    local_path:
     name: local_path
-    title: local_path
-    regexverifer: ".*"
+    label: local_path
+    regex_validator: ".*"
     tooltip: " "
-    type: string
+    type: text_field
     hint: " "
     placeholder: " "
     required: true
-    default_value: " "
+    value: " "
     comment: " "
   
