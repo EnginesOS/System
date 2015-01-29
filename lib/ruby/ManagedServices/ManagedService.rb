@@ -55,8 +55,10 @@ class ManagedService < ManagedContainer
     if is_running ==true    
       result = add_consumer_to_service(site_hash)
       if result == true
+        p :adding_consumer_to_Sm
+        p site_hash 
         sm =  service_manager
-          if sm != false          
+          if sm != false                      
             result = sm.add_service(site_hash)
           else 
             return false
