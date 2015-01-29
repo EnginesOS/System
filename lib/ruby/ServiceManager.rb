@@ -252,11 +252,16 @@ rescue Exception=>e
                 if service_type_node.children.count ==0
                   parent_engine_node.remove!(service_type_node)
                     if parent_engine_node.children.count == 0
-                      @service_tree["ManagedEngine"].remove!parent_engine_node
+                      @service_tree["ManagedEngine"].remove!(parent_engine_node)
                     end
                 end
             end
+
+            
+            sucess =  true
+          end         
           
+          if sucess == true
             save_tree
             return true
           end
