@@ -30,7 +30,8 @@ class DNSService < ManagedService
     end
     
   def rm_consumer_from_service (site_hash)
-
+p :deregister
+p site_hash[:name]
     return  @core_api.deregister_dns(site_hash[:name])
   end
   

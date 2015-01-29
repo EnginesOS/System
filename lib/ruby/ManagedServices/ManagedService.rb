@@ -88,10 +88,13 @@ class ManagedService < ManagedContainer
   def remove_consumer engine
     site_hash = get_site_hash(engine)
       if is_running ==true   && @persistant == false
+        p :removing_consumer
         result = rm_consumer_from_service(site_hash)
          if result == true
           sm =  service_manager
             if sm != false 
+              p :remove_consumer
+              p site_hash
               result =  sm.remove_service(site_hash)
             else
               return false
