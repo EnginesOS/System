@@ -3,15 +3,16 @@ require_relative  "ManagedService.rb"
 class VolumeService < ManagedService 
   
   def add_consumer_to_service(site_hash)
-    
+  
       return  @core_api.add_volume(site_hash) 
      end
   def rm_consumer_from_service (site_hash)
+    
        return  @core_api.rm_volume(site_hash)  
     end 
      
   def get_site_hash(volume)
-
+       
         site_hash = Hash.new()
         site_hash[:parent_engine] = volume.parent_engine
         site_hash[:service_provider] = "EnginesSystem"

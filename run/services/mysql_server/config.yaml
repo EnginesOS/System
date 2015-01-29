@@ -1,6 +1,7 @@
 --- !ruby/object:DBManagedService
 containerName: mysql_server
 ctype: service
+persistant: false
 last_error: 
 memory: '128'
 hostName: mysql

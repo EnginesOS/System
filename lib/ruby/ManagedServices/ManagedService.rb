@@ -26,7 +26,7 @@ class ManagedService < ManagedContainer
     @registerSite=false
     @framework=framework
     @runtime=runtime
-
+    @persistant=false  #Persistant means niether service or engine need to be up/running or even exist for this service to exist
   end
 
   def consumers
@@ -53,7 +53,7 @@ class ManagedService < ManagedContainer
 
   def add_consumer(engine)
     site_hash = get_site_hash(engine)
-    if is_running ==true    
+    if is_running ==true   || @persistant == true 
       result = add_consumer_to_service(site_hash)
       if result == true
         p :adding_consumer_to_Sm
@@ -87,7 +87,7 @@ class ManagedService < ManagedContainer
 
   def remove_consumer engine
     site_hash = get_site_hash(engine)
-      if is_running ==true   
+      if is_running ==true   && @persistant == false
         result = rm_consumer_from_service(site_hash)
          if result == true
           sm =  service_manager

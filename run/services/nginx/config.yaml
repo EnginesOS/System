@@ -1,6 +1,7 @@
 --- !ruby/object:NginxService
 containerName: nginx
 ctype: service
+persistant: false
 last_error: 
 memory: '54'
 hostName: nginx
