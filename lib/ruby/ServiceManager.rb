@@ -56,7 +56,7 @@ class ServiceManager
 
   def attached_managed_engine_services(identifier)
     #@service_tree = tree_from_yaml()
-    p :attached_managed_engine_services
+#    p :attached_managed_engine_services
     p @service_tree
     retval = Hash.new
 
@@ -77,7 +77,7 @@ class ServiceManager
     end
 
     engine_node =engines_node[identifier]
-    p :engine_node
+#    p :engine_node
    #  engine_node.print_tree
     if engine_node == nil
       p :cant_find
@@ -86,9 +86,7 @@ class ServiceManager
     end
 
     services_node = engine_node["Services"]
-  services_node.each do |service_node|
-
-      
+  services_node.each do |service_node|      
       p :service_type
       p service_node.name
       if  service_node.name == nil
@@ -113,8 +111,12 @@ rescue Exception=>e
   def get_service_content(service_node)
     retval = Hash.new
     service_node.each do |provider_node|
+      p :provider_node_name
+      p provider_node.name
       retval[provider_node.name] = Array.new
           provider_node.each do |service_node|
+            p :service_node_name
+            p service_node.name
             retval[provider_node.name].push(service_node.content)
           end       
     end
