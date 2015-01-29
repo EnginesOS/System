@@ -86,7 +86,7 @@ class ServiceManager
     end
 
    
-  engine_node.each do |service_node|      
+  engine_node.children.each do |service_node|      
       p :service_type
       p service_node.name
       if  service_node.name == nil
@@ -110,11 +110,11 @@ rescue Exception=>e
   
   def get_service_content(service_node)
     retval = Hash.new
-    service_node.each do |provider_node|
+    service_node.children.each do |provider_node|
       p :provider_node_name
       p provider_node.name
       retval[provider_node.name] = Array.new
-          provider_node.each do |service_node|
+          provider_node.children.each do |service_node|
             p :service_node_name
             p service_node.name
             retval[provider_node.name].push(service_node.content)
