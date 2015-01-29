@@ -55,21 +55,14 @@ class ServiceManager
   end
 
   def attached_managed_engine_services(identifier)
-    #@service_tree = tree_from_yaml()
-#    p :attached_managed_engine_services
-    p @service_tree
+
     retval = Hash.new
 
     if identifier == nil
       p :panic_passed_nil_identifier
       return retval
     end
-    @service_tree = tree_from_yaml()
-    if @service_tree == nil
-      p :panic_loaded_nil_tree
-      return retval
-    end
-
+   
     engines_node =  @service_tree["ManagedEngine"]
     if  engines_node ==nil
       p :panic_loaded_managedengine_tree
@@ -77,16 +70,13 @@ class ServiceManager
     end
 
     engine_node =engines_node[identifier]
-#    p :engine_node
-   #  engine_node.print_tree
+
     if engine_node == nil
       p :cant_find
       p identifier
       return retval
     end
-
-   
-  engine_node.children.each do |service_node|      
+   engine_node.children.each do |service_node|      
       p :service_type
       p service_node.name
       if  service_node.name == nil
@@ -232,7 +222,37 @@ rescue Exception=>e
   end
 
   def remove_service service_hash
-    save_tree
+   
+      parent_engine_node = ["ManagedEngine"][service_hash[:parent_engine]]
+        if parent_engine_node == nil
+          @last_error ="No service record found for "+ service_hash[:parent_engine] 
+          return false
+        end
+      service_type_node = parent_engine_node[service_hash[:service_type]]
+        if service_type_node == nil
+          @last_error ="No service record found for " + service_hash[:parent_engine] + ":" +  service_hash[:service_type]
+          return false
+        end
+       service_provider_node =  service_type_node[service_hash[:service_provider]]
+       if service_type_node == nil
+          @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:service_provider] 
+          return false
+        end
+        service_node = service_type_node[service_hash[:name]]
+          if service_node != nil
+            service_type_node.remove(service_node)
+            save_tree
+            return true
+          end
+          
+@last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:service_provider] + " Name " + service_hash[:name]
+        return false 
+          
+rescue Exception=>e
+  if service_hash != nil
+    p service_hash
+  end
+  log_exception(e)    
   end
 
   def tree_from_yaml()
