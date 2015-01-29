@@ -172,18 +172,18 @@ rescue Exception=>e
       active_engines_node << engine_node
     end
     
-    services_node = engine_node[ "Services" ]
-      
-    if services_node == nil
-      services_node = Tree::TreeNode.new("Services","Services for " + service_hash[:parent_engine] )
-      engine_node <<  services_node
-    end
+#    services_node = engine_node[ "Services" ]
+#      
+#    if services_node == nil
+#      services_node = Tree::TreeNode.new("Services","Services for " + service_hash[:parent_engine] )
+#      engine_node <<  services_node
+#    end
     
-    service_type_node = services_node[service_hash[:service_type]]
+    service_type_node = engine_node[service_hash[:service_type]]
       
      if service_type_node == nil
       service_type_node = Tree::TreeNode.new(service_hash[:service_type], service_hash[:service_type] + " Service")
-       services_node << service_type_node       
+       engine_node << service_type_node       
     end
     
     provider = service_hash[:service_provider]
