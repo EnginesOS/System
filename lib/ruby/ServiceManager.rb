@@ -187,7 +187,7 @@ rescue Exception=>e
     end
     
     provider = service_hash[:service_provider]
-     if provider == nil || provider.count ==0
+     if provider == nil || provider.length ==0
        provider="Engines"
      end
      
