@@ -154,21 +154,21 @@ rescue Exception=>e
     if active_engines_node[service_hash[:parent_engine] ] != nil
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
-      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Engine")
+      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
       active_engines_node << engine_node
     end
     
     services_node = engine_node[ "Services" ]
       
     if services_node == nil
-      services_node = Tree::TreeNode.new("Services","Services")
+      services_node = Tree::TreeNode.new("Services","Services for " + service_hash[:parent_engine] )
       engine_node <<  services_node
     end
     
     service_type_node = services_node[service_hash[:service_type]]
       
      if service_type_node == nil
-      service_type_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
+      service_type_node = Tree::TreeNode.new(service_hash[:service_type], service_hash[:service_type] + " Service")
        services_node << service_type_node       
     end
     
@@ -179,15 +179,15 @@ rescue Exception=>e
      
     service_provider_node = service_type_node[provider]
     if service_provider_node == nil
-      service_provider_node = Tree::TreeNode.new(provider,provider)
+      service_provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
       service_type_node << service_provider_node
     end
     
-    if service_provider_node[service_hash[:name]] != nil
+    if service_provider_node[service_hash[:service_type]] != nil
       #FixME need to explain why
       return false
     else
-      service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
+      service_node = Tree::TreeNode.new(service_hash[:service_type],service_hash)
       service_provider_node << service_node
     end
 
@@ -204,11 +204,11 @@ rescue Exception=>e
           end
           provider_node = servicetype_node[provider]
             if provider_node == nil
-              provider_node = Tree::TreeNode.new(provider,provider)
+              provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
               servicetype_node << provider_node
             end
     
-          servicetype_node  = Tree::TreeNode.new(service_hash[:name],service_hash)
+          servicetype_node  = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
 
     save_tree
 rescue Exception=>e
