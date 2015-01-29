@@ -245,6 +245,16 @@ rescue Exception=>e
           p service_provider_node
           if service_node != nil
             service_provider_node.remove!(service_node)
+            if service_provider_node.children.count ==0
+              service_type_node.remove!(service_provider_node)              
+                if service_type_node.children.count ==0
+                  parent_engine_node.remove!(service_type_node)
+                    if parent_engine_node.children.count == 0
+                      @service_tree["ManagedEngine"].remove!parent_engine_node
+                    end
+                end
+            end
+          end
             save_tree
             return true
           end
