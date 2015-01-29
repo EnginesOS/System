@@ -239,6 +239,8 @@ rescue Exception=>e
           return false
         end
         service_node = service_type_node[service_hash[:name]]
+          p :really_removing
+          p service_node
           if service_node != nil
             service_type_node.remove!(service_node)
             save_tree
