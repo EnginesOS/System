@@ -15,6 +15,7 @@ class FTPService < SoftwareService
   
   def get_site_hash(site_hash)
     site_hash[:service_type]='ftp'
+    site_hash[:service_provider] = "EnginesSystem"
         return site_hash          
    end
    

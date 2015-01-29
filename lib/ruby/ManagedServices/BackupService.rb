@@ -28,6 +28,7 @@ class BackupService < ManagedService
 #    site_hash[:dest_folder]
 #    site_hash[:dest_user]
 #    site_hash[:dest_pass]
+    site_hash[:service_provider] = "EnginesSystem"
              site_hash[:service_type]='backup'
     return site_hash       
    end

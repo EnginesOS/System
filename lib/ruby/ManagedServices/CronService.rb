@@ -12,6 +12,7 @@ class CronService < ManagedService
      
   def get_site_hash(site_hash)
     site_hash[:service_type]='cron'
+    site_hash[:service_provider] = "EnginesSystem"
         return site_hash          
    end
    

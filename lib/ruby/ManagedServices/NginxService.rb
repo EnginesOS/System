@@ -36,6 +36,7 @@ class NginxService < ManagedService
     site_hash[:port]=engine.port.to_s
     site_hash[:proto]= proto
     site_hash[:service_type]='nginx'
+    site_hash[:service_provider] = "EnginesSystem" 
      return site_hash       
     
   end

@@ -14,6 +14,7 @@ class VolumeService < ManagedService
 
         site_hash = Hash.new()
         site_hash[:parent_engine] = volume.parent_engine
+        site_hash[:service_provider] = "EnginesSystem"
         site_hash[:name]=volume.name 
         site_hash[:localpath]=volume.localpath
         site_hash[:remotepath]=volume.remotepath 
