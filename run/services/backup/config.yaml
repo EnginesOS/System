@@ -1,6 +1,7 @@
 --- !ruby/object:BackupService
 containerName: backup
 ctype: service
+persistant: false
 last_error: 
 memory: '50'
 hostName: backup

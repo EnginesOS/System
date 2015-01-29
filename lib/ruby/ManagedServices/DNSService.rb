@@ -11,6 +11,7 @@ class DNSService < ManagedService
     site_hash[:container_type]=engine.ctype
     site_hash[:hostname]=engine.hostName
     site_hash[:ip]=engine.get_ip_str.to_s
+    site_hash[:service_provider] = "EnginesSystem"
     return site_hash
       
   end
@@ -29,7 +30,8 @@ class DNSService < ManagedService
     end
     
   def rm_consumer_from_service (site_hash)
-
+p :deregister
+p site_hash[:name]
     return  @core_api.deregister_dns(site_hash[:name])
   end
   

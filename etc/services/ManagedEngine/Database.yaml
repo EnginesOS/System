@@ -1,7 +1,5 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts: 
-- !ruby/object:String  
-  "ManagedEngine"
+accepts: "ManagedEngine" 
 author: Engines
 title: Database
 description: "Database "
@@ -16,7 +14,7 @@ setup_params:
     name: database_host
     title: database_host
     regexverifer: ".*"
-    tooltip: " "
+    tooltip: "Local or the ip address/hostname of the database server"
     type: "string"
     hint: " "
     placeholder: " "
@@ -55,3 +53,4 @@ setup_params:
     required: true
     default_value: " "
     comment: " "
+    regexverifer: ".*"

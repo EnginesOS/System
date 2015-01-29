@@ -1,6 +1,7 @@
 --- !ruby/object:FTPService
 containerName: ftp
 ctype: service
+persistant: true
 last_error: 
 memory: '36'
 hostName: ftp

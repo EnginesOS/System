@@ -1,6 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: smtp
 ctype: service
+persistant: true
 last_error: 
 memory: '32'
 hostName: smtp

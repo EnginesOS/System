@@ -1,6 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: couriermail
 ctype: service
+persistant: true
 last_error: 
 memory: '90'
 hostName: inmail

@@ -1,6 +1,7 @@
 --- !ruby/object:CronService
 containerName: cron
 ctype: service
+persistant: false
 last_error: 
 memory: '16'
 hostName: cron
