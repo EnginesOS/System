@@ -1,5 +1,5 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts: 
+accepts:
 - !ruby/object:String  
   "ManagedEngine"
 author: Engines
