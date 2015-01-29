@@ -169,22 +169,31 @@ rescue Exception=>e
       
      if service_type_node == nil
       service_type_node = Tree::TreeNode.new(service_hash[:service_type],"Service Type")
-       services_node << service_type_node
+       services_node << service_type_node       
     end
-    if service_type_node[service_hash[:name]] != nil
+    
+    provider = service_hash[:service_provider]
+     if provider == nil || provider.count ==0
+       provider="Engines"
+     end
+     
+    service_provider_node = service_type_node[provider]
+    if service_provider_node == nil
+      service_provider_node = Tree::TreeNode.new(provider,provider)
+      service_type_node << service_provider_node
+    end
+    
+    if service_provider_node[service_hash[:name]] != nil
       #FixME need to explain why
       return false
     else
       service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
-      service_type_node << service_node
+      service_provider_node << service_node
     end
 
     
  #write services tree
-    provider = service_hash[:service_provider]
-      if provider == nil || provider.count ==0
-        provider="Engines"
-      end
+   
      services_node = @service_tree["ManagedService"]
     
     
