@@ -2,31 +2,73 @@
 accepts: 
  "Volume"
 author: Engines
-title: "Drop Service"
+title: "Drop Box Service"
 description: "Provides Drop Box backing to a Persistant File Storage"
 service_type: dropbox
 service_provider: dropbox
 persistant: true
 dedicated: false
 consumer_params:
-  
-  name: dropbox_address
-  label: dropbox_address
-  regex: ".*"
-  name: username
-  label: Account login
-  regex: ".*"
-  name: password
-  label:  Account Password
-  regex: ".*"
-  name: direction
-  label: Direction
-  regex: up|down|both
-  name: directory
-  label: Directory
-  regex: ".*"
-  name: button
-  label: button test
+  dropbox_address:
+   name: dropbox_address
+   label: dropbox_address
+   regex_validator: ".*"
+   tooltip: " "
+   type: text_field
+   placeholder: " "
+   hint: " "
+   required: true
+  username:
+   name: username
+   label: Drop Box Account login
+   regex_validator: ".*"
+   tooltip: " "
+   placeholder: " "
+   type: text_field
+   hint: " "
+   required: true
+  password:
+   name: password
+   label:  Drop Box Account Password
+   regex_validator: ".*"
+   placeholder: " "
+   hint: " "
+   type: password
+   required: true
+  direction:
+   name: direction
+   label: Direction
+   type: select_multi
+   regex_validator: up|down|both
+   tooltip: " "
+   required: true
+   placeholder: " "
+   hint: " "
+   collection:
+     - up
+     - down
+  directory:
+   name: directory
+   label: Directory
+   type: text_field
+   regex_validator: ".*"
+   name: button
+   label: button test
+   placeholder: " "
+   tooltip: " "
+   required: true
+   comment: " 
+  volume:
+   name: volume
+   label: volume
+   regex_validator: ".*"
+   tooltip: " "
+   type: text_field
+   hint: " "
+   placeholder: " "
+   required: true
+   value: " "
+   comment: " "
   
   
     
