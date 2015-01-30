@@ -8,7 +8,7 @@ service_type: dropbox
 service_provider: dropbox
 persistant: true
 dedicated: false
-consumer_params:
+setup_params:
   dropbox_address:
    name: dropbox_address
    label: dropbox_address
