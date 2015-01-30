@@ -47,9 +47,9 @@ setup_params:
   hint: " "
   collection:
   - !ruby/object:String
-   up
+   "up"
   - !ruby/object:String
-   down
+   "down"
  directory:
   name: directory
   label: Directory
