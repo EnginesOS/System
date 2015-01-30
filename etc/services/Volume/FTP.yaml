@@ -2,7 +2,7 @@
 accepts: 
   - "Volume"
 author: Engines
-label: "FTP Access Service"
+title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
 service_type: ftp
 service_provider: ftp
@@ -58,9 +58,9 @@ setup_params:
     value: " "
     comment: " "
     regex_validator: ".*"
-  button_test:
-    name: button
-    label: button test
+  checkbox_test:
+    name: checkbox
+    label: checkbox test
     tooltip: " "
     type: checkbox
     hint: " "
