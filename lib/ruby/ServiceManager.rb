@@ -266,11 +266,11 @@ rescue Exception=>e
           if servicetype_node != nil
             service_node = servicetype_node[service_hash[:parent_engine]]
             if service_node != nil
-              servicetype_node.remove(service_node)
+              servicetype_node.remove!(service_node)
               if servicetype_node.children.count == 0
-                provider_node.remove(service_node)
+                provider_node.remove!(service_node)
                 if provider_node.children.count == 0
-                  service_node.remove(provider_node)
+                  service_node.remove!(provider_node)
                 end
               end
             end                          
