@@ -258,6 +258,27 @@ rescue Exception=>e
             end
 
             
+      services_node = @service_tree["Services"]
+      if services_node !=nil
+        provider_node = services_node[service_hash[:service_provider] ]
+        if provider_node != nil
+          servicetype_node =  provider_node[service_hash[:service_type] ]
+          if servicetype_node != nil
+            service_node = servicetype_node[service_hash[:parent_engine]]
+            if service_node != nil
+              servicetype_node.remove(service_node)
+              if servicetype_node.children.count == 0
+                provider_node.remove(service_node)
+                if provider_node.children.count == 0
+                  service_node.remove(provider_node)
+                end
+              end
+            end                          
+          end
+        end
+      end
+            
+            
             sucess =  true
           end         
           
