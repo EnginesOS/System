@@ -1085,6 +1085,14 @@ class EnginesOSapi
     return log_exception_and_fail("Change ftp",e)
   end
 
+  def software_service_definition (params)
+    if @core_api.software_service_definition(params) == true
+      return success(params[:service_type] + ":" + params[:service_provider] ,"get software_service_definition")
+    else
+      return failed(params[:service_type] + ":" + params[:service_provider] ,@core_api.last_error,"get software_service_definition")
+    end
+  end
+  
   #protected if protected static cant call
   def success(item_name ,cmd)
     return EnginesOSapiResult.success(item_name ,cmd)

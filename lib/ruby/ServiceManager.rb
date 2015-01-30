@@ -307,6 +307,12 @@ rescue Exception=>e
   log_exception(e)    
   end
 
+def software_service_definition(params)
+ 
+ end
+  
+  
+  
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)

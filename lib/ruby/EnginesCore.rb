@@ -729,7 +729,8 @@ class EnginesCore
       end
     end
 
-
+ 
+    
     def save_system_preferences
       clear_error
       begin
@@ -1507,7 +1508,10 @@ class EnginesCore
 
   attr_reader :last_error
 
- 
+def software_service_definition(params)
+   sm = loadServiceManager
+   return sm.software_service_definition(params)
+ end
 
   def add_domain(params)
     return  @system_api.add_domain(params)
@@ -1763,7 +1767,7 @@ class EnginesCore
      p objectname
       retval = Array.new
 
-      dir = SysConfig.ServiceTemplateDir + "/" + objectname
+      dir = SysConfig.ServiceMapTemplateDir + "/" + objectname
       p :dir
       p dir 
       if Dir.exists?(dir)
