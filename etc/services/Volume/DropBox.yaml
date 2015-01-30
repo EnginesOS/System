@@ -36,20 +36,6 @@ setup_params:
   hint: " "
   type: password
   required: true
- direction:
-  name: direction
-  label: Direction
-  type: select_multi
-  regex_validator: up|down|both
-  tooltip: " "
-  required: true
-  placeholder: " "
-  hint: " "
-  collection:
-  - !ruby/object:String
-   "up"
-  - !ruby/object:String
-   "down"
  directory:
   name: directory
   label: Directory
@@ -72,4 +58,17 @@ setup_params:
   required: true
   value: " "
   comment: " "
- 
+ direction:
+  name: direction
+  label: Direction
+  type: select_multi
+  regex_validator: up|down|both
+  tooltip: " "
+  required: true
+  placeholder: " "
+  hint: " "
+  collection:
+  - !ruby/object:String
+   "up"
+  - !ruby/object:String
+   "down"
