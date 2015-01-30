@@ -723,34 +723,12 @@ class EnginesCore
       clear_error
       begin
         return DNSHosting.rm_hosted_domain(domain_name,self)
-        #        domains = load_self_hosted_domains()
-        #        domains.delete(domain_name)
-        #        save_self_hosted_domains(domains)
-        #        return true
       rescue  Exception=>e
         log_exception(e)
         return false
       end
     end
-    #
-    #
-    #    site_hash[:name]
-    #    site_hash[:source_type] #vol|mysql|pgsql|nosql|sys
-    #    site_hash[:source_name]
-    #    site_hash[:source_host]
-    #    site_hash[:source_user]
-    #    site_hash[:source_pass]
-    #
-    #    site_hash[:dest_proto]
-    #    site_hash[:dest_port]
-    #    site_hash[:dest_address]
-    #    site_hash[:dest_folder]
-    #    site_hash[:dest_user]
-    #    site_hash[:dest_pass]
-    #cmd= site_hash[:name] + " create "
-    #  mkdir
-    #  create conf
-    #  add pre and post if needed
+
 
     def save_system_preferences
       clear_error
