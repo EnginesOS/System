@@ -192,7 +192,8 @@ rescue Exception=>e
  #write services tree
    
      services_node = @service_tree["Services"]
-    
+   
+      
        provider_node = services_node[service_hash[:service_provider] ]
         if provider_node == nil
           provider_node = Tree::TreeNode.new(service_hash[:service_provider] ," Provider:" + service_hash[:service_provider] + ":" + service_hash[:service_type]  )
