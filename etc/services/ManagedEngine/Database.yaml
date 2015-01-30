@@ -1,7 +1,9 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts:
+accepts: 
 - !ruby/object:String  
- "ManagedEngine"
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
 author: Engines
 title: Database
 description: "Database "
