@@ -308,9 +308,16 @@ rescue Exception=>e
   end
 
 def software_service_definition(params)
- 
- end
-  
+  retval = Hash.new
+  retval[:title]="Faked Title"
+  retval[ :description]="Faked Description"
+  retval[ :author]=" Engines"
+  retval[ :service_type]="fake"
+  retval[ :service_provider]="EnginesSystem"
+     
+    return retval
+    
+end  
   
   
   def tree_from_yaml()
