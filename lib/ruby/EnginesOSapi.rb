@@ -1086,12 +1086,11 @@ class EnginesOSapi
   end
 
   def software_service_definition (params)
-    return @core_api.software_service_definition(params) 
-#    if @core_api.software_service_definition(params) == true
-#      return success(params[:service_type] + ":" + params[:service_provider] ,"get software_service_definition")
-#    else
-#      return failed(params[:service_type] + ":" + params[:service_provider] ,@core_api.last_error,"get software_service_definition")
-#    end
+    retval = @core_api.software_service_definition(params)
+    if retval != nil 
+      return retval
+    end 
+     return failed(params[:service_type] + ":" + params[:service_provider] ,@core_api.last_error,"get software_service_definition")
   end
   
   #protected if protected static cant call
@@ -1105,6 +1104,9 @@ class EnginesOSapi
   
   def attach_subservice(params)
     #service params and component objectname / and component name and parent name    
+  end
+  
+  def detach_subservice(params)
   end
   
   def list_attached_services_for(object_name,identifier)
