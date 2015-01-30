@@ -36,7 +36,7 @@ setup_params:
   hint: " "
   type: password
   required: true
- directory:
+ target_directory:
   name: directory
   label: Directory
   type: text_field

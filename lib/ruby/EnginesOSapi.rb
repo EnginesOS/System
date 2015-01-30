@@ -1032,6 +1032,7 @@ class EnginesOSapi
   if params[:self_hosted] == false
     return success(params[:domain_name], "Remove domain")
   end
+  
     if @core_api.remove_self_hosted_domain( params[:domain_name]) ==true
       return success(params[:domain_name], "Remove self hosted domain")
     end
