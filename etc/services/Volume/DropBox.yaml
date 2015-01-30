@@ -1,7 +1,7 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: 
 - !ruby/object:String  
- "ManagedEngine"
+  "ManagedEngine"
 author: Engines
 title: "Drop Box Service"
 description: "Provides Drop Box backing to a Persistant File Storage"
@@ -69,6 +69,6 @@ setup_params:
   hint: " "
   collection:
   - !ruby/object:String
-   "up"
+    "up"
   - !ruby/object:String
-   "down"
+    "down"
