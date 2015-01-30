@@ -4,7 +4,7 @@ author: Engines
 title: "NFS Sharing of Volumes"
 description: "Provides NFS Access to Persistant File Storage"
 service_type: nfs
-service_provider: nfs
+service_provider: EnginesSystem
 dedicated: false
 persistant: true
 consumer_params:

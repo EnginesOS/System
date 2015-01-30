@@ -7,7 +7,7 @@ accepts:
 author: Engines
 title: Database
 description: "Database "
-service_provider: database
+service_provider: EnginesSystem
 service_type: database
 dedicated: false
 persistant: true

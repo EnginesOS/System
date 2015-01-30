@@ -6,7 +6,7 @@ author: Engines
 title: Editor
 description: "Editor "
 service_type: editor 
-service_provider: editor
+service_provider: EnginesSystem
 dedicated: true
 persistant: true
 image_name: engines/editor

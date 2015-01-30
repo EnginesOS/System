@@ -5,7 +5,7 @@ author: Engines
 title: "Windows Network Share Service"
 description: "Windows Sharing of Persistant File Storage"
 service_type: smbfs
-service_provider: smbfs
+service_provider: EnginesSystem
 dedicated: false
 persistant: true
 consumer_params:
