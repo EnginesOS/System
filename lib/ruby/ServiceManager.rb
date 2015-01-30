@@ -308,16 +308,24 @@ rescue Exception=>e
   end
 
 def software_service_definition(params)
-  retval = Hash.new
-  retval[:title]="Faked Title"
-  retval[ :description]="Faked Description"
-  retval[ :author]=" Engines"
-  retval[ :service_type]="fake"
-  retval[ :service_provider]="EnginesSystem"
-     
-    return retval
+  require 'json'
+  
+  service_filename = SysConfig.ServiceTemplateDir + "/" + params[service_provider] + "/" + params[service_type]+ ".yaml"
+  if File.exists?(service_filename)
+    yaml = File.read(service_filename)
+    software_service_def  = SoftwareServiceDefinition.from_yaml(yaml)
+    return software_service_def.to_h
+  else
+    return nil
+  end
+
     
+rescue Exception=>e
+log_exception(e)
+  return nil
 end  
+
+
   
   
   def tree_from_yaml()
