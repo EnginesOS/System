@@ -56,7 +56,9 @@ class SysConfig
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   
-  
+  def SysConfig.ServiceMapTemplateDir
+    return @@ServiceMapTemplateDir
+  end
   def SysConfig.ServiceTreeFile 
     return @@ServiceTreeFile
   end
