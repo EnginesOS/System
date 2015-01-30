@@ -1,0 +1,37 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: DNS
+description: "Resilves names to to IP address"
+service_type: dns
+service_provider: EnginesSystem
+dedicated: false
+persistant: false
+consumer_params:
+setup_params:
+ hostname:
+  name: hostname
+  label: hostname
+  regex_validator: ".*"
+  tooltip: " "
+  type: text_field
+  hint: "hostname"
+  placeholder: " "
+  required: true
+  default_value: " "
+  comment: " "
+ domain_name:
+  name: domain_name
+  label: domain name
+  regex_validator: ".*"
+  tooltip: " "
+  type: text_field
+  hint: "domain name"
+  placeholder: " "
+  required: true
+  default_value: " "
+  comment: " "
