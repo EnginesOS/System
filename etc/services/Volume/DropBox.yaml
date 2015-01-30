@@ -45,8 +45,10 @@ setup_params:
    placeholder: " "
    hint: " "
    collection:
-     - up
-     - down
+   - !ruby/object:String
+    up
+   - !ruby/object:String
+    down
   directory:
    name: directory
    label: Directory

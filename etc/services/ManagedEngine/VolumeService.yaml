@@ -35,8 +35,10 @@ setup_params:
     required: true
     value: "ro"
     collection:
-      - "rw"
-      - "ro"
+    - !ruby/object:String
+      "rw"
+    - !ruby/object:String   
+      "ro"
     comment: " "
    local_path:
     name: local_path
