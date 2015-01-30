@@ -1484,7 +1484,7 @@ class EnginesCore
     def clear_error
       @last_error = ""
     end
-
+    
     def log_exception(e)
       e_str = e.to_s()
       n=0
