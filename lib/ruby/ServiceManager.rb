@@ -9,7 +9,7 @@ class ServiceManager
     else
       @service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
       @service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
-      @service_tree << Tree::TreeNode.new("ManagedService","Managed Services")
+      @service_tree << Tree::TreeNode.new("Services","Managed Services")
     end
     rescue Exception=>e
         puts e.message 
@@ -162,13 +162,6 @@ rescue Exception=>e
       active_engines_node << engine_node
     end
     
-#    services_node = engine_node[ "Services" ]
-#      
-#    if services_node == nil
-#      services_node = Tree::TreeNode.new("Services","Services for " + service_hash[:parent_engine] )
-#      engine_node <<  services_node
-#    end
-    
     service_type_node = engine_node[service_hash[:service_type]]
       
      if service_type_node == nil
@@ -198,21 +191,28 @@ rescue Exception=>e
     
  #write services tree
    
-     services_node = @service_tree["ManagedService"]
-    
-    
-        servicetype_node =  services_node[service_hash[:service_type] ]
+     services_node = @service_tree["Services"]
+   
+      
+       provider_node = services_node[service_hash[:service_provider] ]
+        if provider_node == nil
+          provider_node = Tree::TreeNode.new(service_hash[:service_provider] ," Provider:" + service_hash[:service_provider] + ":" + service_hash[:service_type]  )
+          services_node << provider_node
+        end
+        
+        servicetype_node =  provider_node[service_hash[:service_type] ]
           if servicetype_node == nil
             servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
-            services_node << servicetype_node
+            provider_node << servicetype_node
           end
-          provider_node = servicetype_node[provider]
-            if provider_node == nil
-              provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
-              servicetype_node << provider_node
+          
+          service_node = servicetype_node[service_hash[:parent_engine]]
+            if service_node == nil
+              service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+              servicetype_node << service_node
             end
-    
-          servicetype_node  = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+    #FIXME need to handle updating service 
+        
 
     save_tree
 rescue Exception=>e
@@ -252,11 +252,37 @@ rescue Exception=>e
                 if service_type_node.children.count ==0
                   parent_engine_node.remove!(service_type_node)
                     if parent_engine_node.children.count == 0
-                      @service_tree["ManagedEngine"].remove!parent_engine_node
+                      @service_tree["ManagedEngine"].remove!(parent_engine_node)
                     end
                 end
             end
+
+            
+      services_node = @service_tree["Services"]
+      if services_node !=nil
+        provider_node = services_node[service_hash[:service_provider] ]
+        if provider_node != nil
+          servicetype_node =  provider_node[service_hash[:service_type] ]
+          if servicetype_node != nil
+            service_node = servicetype_node[service_hash[:parent_engine]]
+            if service_node != nil
+              servicetype_node.remove!(service_node)
+              if servicetype_node.children.count == 0
+                provider_node.remove!(service_node)
+                if provider_node.children.count == 0
+                  service_node.remove!(provider_node)
+                end
+              end
+            end                          
+          end
+        end
+      end
+            
+            
+            sucess =  true
+          end         
           
+          if sucess == true
             save_tree
             return true
           end

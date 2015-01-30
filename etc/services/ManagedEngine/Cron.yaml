@@ -15,10 +15,10 @@ consumer_params:
 setup_params:
    cronline:
     name: Cron
-    title: Cron line
-    regexverifer: ".*"
+    label: Cron line
+    regex_validator: ".*"
     tooltip: " "
-    type: string
+    type: text_field
     hint: "* * * * * command"
     placeholder: " "
     required: true

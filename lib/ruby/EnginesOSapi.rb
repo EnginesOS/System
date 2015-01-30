@@ -1093,9 +1093,8 @@ class EnginesOSapi
     return @core_api.list_services_for(object)
   end
   
-  def attach_service_to_component(params)
-    #service params and component objectname / and component name and parent name
-    
+  def attach_subservice(params)
+    #service params and component objectname / and component name and parent name    
   end
   
   def list_attached_services_for(object_name,identifier)
