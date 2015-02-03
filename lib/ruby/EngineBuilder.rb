@@ -161,8 +161,10 @@ class EngineBuilder
           if env.value != nil
             env.value.sub!(/ /,"\\ ")
           end
-          @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
-          count_layer
+           if  env.value !=nil  #env statement must have two arguments
+            @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
+            count_layer
+           end
         end
 
       rescue Exception=>e
