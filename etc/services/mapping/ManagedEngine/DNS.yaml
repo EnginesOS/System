@@ -21,7 +21,7 @@ setup_params:
   type: text_field
   hint: "hostname"
   placeholder: " "
-  required: true
+  mandatory: true
   default_value: " "
   comment: " "
  domain_name:
@@ -32,6 +32,6 @@ setup_params:
   type: text_field
   hint: "domain name"
   placeholder: " "
-  required: true
+  mandatory: true
   default_value: " "
   comment: " "

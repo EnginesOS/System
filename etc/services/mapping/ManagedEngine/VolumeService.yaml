@@ -21,7 +21,7 @@ setup_params:
     type: text_field
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " "
     comment: " "
    permissions:
@@ -32,7 +32,7 @@ setup_params:
     type: select_single
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: "ro"
     collection:
     - !ruby/object:String
@@ -48,7 +48,7 @@ setup_params:
     type: text_field
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " "
     comment: " "
   

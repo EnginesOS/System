@@ -18,7 +18,8 @@ setup_params:
   type: text_field
   placeholder: " "
   hint: " "
-  required: true
+  mandatory: true
+  regex_invalid_message: "wrong go back and try again"
  username:
   name: username
   label: Drop Box Account login
@@ -27,7 +28,7 @@ setup_params:
   placeholder: " "
   type: text_field
   hint: " "
-  required: true
+  mandatory: true
  password:
   name: password
   label:  Drop Box Account Password
@@ -35,7 +36,7 @@ setup_params:
   placeholder: " "
   hint: " "
   type: password
-  required: true
+  mandatory: true
  target_directory:
   name: target_directory
   label: Directory
@@ -45,7 +46,7 @@ setup_params:
   label: button test
   placeholder: " "
   tooltip: " "
-  required: true
+  mandatory: true
   comment: " 
  volume:
   name: volume
@@ -55,16 +56,17 @@ setup_params:
   type: text_field
   hint: " "
   placeholder: " "
-  required: true
+  mandatory: true
   value: " "
   comment: " "
+  regex_invalid_message: "wrong go back and try again"
  direction:
   name: direction
   label: Direction
   type: select_multi
   regex_validator: up|down|both
   tooltip: " "
-  required: true
+  mandatory: true
   placeholder: " "
   hint: " "
   collection:

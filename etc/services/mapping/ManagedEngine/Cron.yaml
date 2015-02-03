@@ -14,6 +14,7 @@ persistant: false
 consumer_params:
 setup_params:
    cronline:
+    regex_invalid_message: "wrong go back and try again"
     name: Cron
     label: Cron line
     regex_validator: ".*"
@@ -21,6 +22,6 @@ setup_params:
     type: text_field
     hint: "* * * * * command"
     placeholder: " "
-    required: true
+    mandatory: true
     default_value: " "
     comment: " "
