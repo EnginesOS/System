@@ -23,7 +23,7 @@ setup_params:
     type: text_field
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " "
     comment: " "
   folder:
@@ -34,7 +34,7 @@ setup_params:
     type: text_field
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " "
     comment: " "
   username:
@@ -45,7 +45,7 @@ setup_params:
     type: text_field
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " " 
     comment: " "
   password:
@@ -55,7 +55,7 @@ setup_params:
     type: password_with_confirmation
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: " "
     comment: " "
     regex_validator: ".*"
@@ -66,7 +66,7 @@ setup_params:
     type: checkbox
     hint: " "
     placeholder: " "
-    required: true
+    mandatory: true
     value: true
     comment: " "
     regex_validator: ".*"
@@ -81,6 +81,6 @@ setup_params:
       - true
       - false
     placeholder: "true|false"
-    required: true
+    mandatory: true
     value: false
     comment: "Write access includes the ability to delete" 

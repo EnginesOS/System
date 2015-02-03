@@ -21,7 +21,7 @@ setup_params:
   type: text_field
   hint: "site_fqdn"
   placeholder: " "
-  required: true
+  mandatory: true
   default_value: " "
   comment: " "
  
