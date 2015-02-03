@@ -82,18 +82,37 @@ echo "Setting up engines system user"
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~dockuser/.profile 
 		
 echo "Installing ruby"
-		\curl -L https://get.rvm.io | bash -s stable 
-		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 		
-		echo "rvm  --default use ruby-$RUBY_VER" >> ~dockuser/.profile
-		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
+
+mkdir -p /usr/local/  
+cd /usr/local/  
+git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
+ruby_version=2.1.3
+
+	cd /usr/local/rbenv  
+	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
+	cd /usr/local/rbenv   
+	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc 
+	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL 
+	/usr/local/rbenv/bin/rbenv install $ruby_version 
+	/usr/local/rbenv/bin/rbenv global $ruby_version
+	echo "gem: --no-ri --no-rdoc" > ~/.gemrc
+	/usr/local/rbenv/bin/rbenv rehash
+	cp -rp  ~/.gemrc ~/.bashrc ~dockuser
+	
+
+
+#		\curl -L https://get.rvm.io | bash -s stable 
+#		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 		
+#		echo "rvm  --default use ruby-$RUBY_VER" >> ~dockuser/.profile
+#		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
 
 		#/usr/local/rvm/bin/rvm  --default use ruby-$RUBY_VER
 		 
-		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git  rubytree
+#		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git  rubytree
  		#/usr/local/rvm/bin/rvm gemset create git rubytree
  		
  		#Following needed for rspec tests
-		/usr/local/rvm/wrappers/ruby-2.1.2/gem install multi_json rspec
+#		/usr/local/rvm/wrappers/ruby-2.1.2/gem install multi_json rspec
 		#/usr/local/rvm/bin/rvm gemset create multi_json
 
 		#/usr/local/rvm/bin/rvm gemset create 	rspec
