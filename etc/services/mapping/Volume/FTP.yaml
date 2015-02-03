@@ -5,6 +5,7 @@ author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
 service_type: ftp
+service_container: ftp
 service_provider: EnginesSystem
 dedicated: false
 persistant: true

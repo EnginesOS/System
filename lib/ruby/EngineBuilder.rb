@@ -1,4 +1,3 @@
-  
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
@@ -16,24 +15,19 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
-
-
   attr_reader :last_error,\
   :repoName,\
   :hostname,\
   :domain_name,\
   :build_name,\
   :set_environments
-  
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
-      @parent_exception = parent      
+      @parent_exception = parent
     end
 
   end
-  
-  
 
   class DockerFileBuilder
     def initialize(reader,containername,hostname,domain_name,webport,builder)
@@ -43,30 +37,27 @@ class EngineBuilder
       @webPort = webport
       @blueprint_reader = reader
       @builder=builder
-    
+
       @docker_file = File.open( @blueprint_reader.get_basedir + "/Dockerfile","a")
-      
+
       @layer_count=0
     end
-    
-  
-      
-    def  log_build_output(line)
-       @builder.log_build_output(line)
-     end
-     
-     def log_build_errors(line)
-       @builder.log_build_errors(line)
-     end
-     
 
-   def count_layer
-     ++@layer_count
-     
-     if @layer_count >75
-       raise EngineBuilder.BuildError.new()
-     end
-   end
+    def  log_build_output(line)
+      @builder.log_build_output(line)
+    end
+
+    def log_build_errors(line)
+      @builder.log_build_errors(line)
+    end
+
+    def count_layer
+      ++@layer_count
+
+      if @layer_count >75
+        raise EngineBuilder.BuildError.new()
+      end
+    end
 
     def write_files_for_docker
       @docker_file.puts("")
@@ -74,16 +65,16 @@ class EngineBuilder
       write_stack_env
       write_file_service
       write_db_service
-#      write_cron_jobs
+      #      write_cron_jobs
       write_os_packages
       write_apache_modules
       write_user_local = true
-      
+
       if write_user_local == true
         @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
         @docker_file.puts("     chown -R $ContUser /usr/local/")
       end
-      
+
       write_app_archives
       write_container_user
       chown_home_app
@@ -104,66 +95,63 @@ class EngineBuilder
       @docker_file.puts("run mkdir -p /home/fs/local/")
       count_layer()
       @docker_file.puts("")
-     
-      
-      
+
       #Do this after configuration scripts run
- 
-#      @docker_file.puts("USER $ContUser")     
-#      count_layer()
+
+      #      @docker_file.puts("USER $ContUser")
+      #      count_layer()
       write_run_install_script
-      
+
       write_data_permissions
-      
-      
-      
+
       @docker_file.puts("USER 0")
-            count_layer()
-       
+      count_layer()
+
       @docker_file.puts("run mv /home/fs /home/fs_src")
-       count_layer()
+      count_layer()
       @docker_file.puts("VOLUME /home/fs_src/")
-           count_layer()
-      @docker_file.puts("USER $ContUser")     
+      count_layer()
+      @docker_file.puts("USER $ContUser")
       count_layer()
       insert_framework_frag_in_dockerfile("builder.end")
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
-      
+
       write_clear_env_variables
-      
+
       @docker_file.close
-      
+
     end
-    
+
     def write_clear_env_variables
       @docker_file.puts("#Clear env")
       @blueprint_reader.environments.each  do |env|
-            if env.build_time_only == true
-                  @docker_file.puts("ENV " + env.name + "\" \"")
-                  count_layer
-            end            
+        if env.build_time_only == true
+          @docker_file.puts("ENV " + env.name + "\" \"")
+          count_layer
+        end
       end
-      
+
     rescue Exception=>e
       log_exception(e)
-      return false    
+      return false
     end
-    
+
     def write_apache_modules
       if @blueprint_reader.apache_modules.count <1
-        return 
+        return
       end
       @docker_file.puts("#Apache Modules")
       ap_modules_str = String.new
       @blueprint_reader.apache_modules.each do |ap_module|
-        
-        ap_modules_str += ap_module + " "       
-    end
+
+        ap_modules_str += ap_module + " "
+      end
       @docker_file.puts("RUN a2enmod " + ap_modules_str)
       count_layer()
     end
+
     def write_environment_variables
 
       begin
@@ -175,8 +163,8 @@ class EngineBuilder
           end
           @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
           count_layer
-        end        
-     
+        end
+
       rescue Exception=>e
         log_exception(e)
         return false
@@ -186,12 +174,11 @@ class EngineBuilder
     def write_persistant_dirs
       begin
         log_build_output("setup persistant Dirs")
-       
+
         n=0
         @docker_file.puts("#Persistant Dirs")
         @blueprint_reader.persistant_dirs.each do |path|
-        
-                      
+
           path.chomp!("/")
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
@@ -204,36 +191,38 @@ class EngineBuilder
           @docker_file.puts("mv /home/" + path + " $VOLDIR/" + dirname + "/;\\")
           @docker_file.puts("ln -s $VOLDIR/" + path + " /home/" + path)
           n=n+1
-        count_layer
+          count_layer
         end
-   
+
       rescue Exception=>e
         log_exception(e)
-        return false 
+        return false
       end
     end
 
     def write_data_permissions
       @docker_file.puts("#Data Permissions")
-        @docker_file.puts("USER 0")
-          count_layer()
-           @docker_file.puts("")
-           @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
-           @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
-           @docker_file.puts("chmod -R 770 /home/fs")
-           count_layer
-         @docker_file.puts("USER $ContUser")
-             count_layer
-      
+      @docker_file.puts("USER 0")
+      count_layer()
+      @docker_file.puts("")
+      @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
+      @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
+      @docker_file.puts("chmod -R 770 /home/fs")
+      count_layer
+      @docker_file.puts("USER $ContUser")
+      count_layer
+
     end
+
     def write_run_install_script
       @docker_file.puts("WorkDir /home/")
       @docker_file.puts("#Setup templates and run installer")
       @docker_file.puts("USER $ContUser")
       count_layer
       @docker_file.puts("RUN bash /home/setup.sh")
-      count_layer     
+      count_layer
     end
+
     def write_persistant_files
       begin
         @docker_file.puts("#Persistant Files")
@@ -242,32 +231,32 @@ class EngineBuilder
         dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
 
         src_paths.each do |path|
-#          path = dest_paths[n]
+          #          path = dest_paths[n]
           p :path
           p path
-        
+
           dir = File.dirname(path)
           p :dir
           p dir
           if dir.present? == false || dir == nil || dir.length ==0 || dir =="."
             dir = "app/"
           end
-        p :dir
-            p dir
+          p :dir
+          p dir
           @docker_file.puts("")
           @docker_file.puts("RUN mkdir -p /home/" + dir + ";\\")
           @docker_file.puts("  if [ ! -f /home/" + path + " ];\\")
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $VOLDIR/" + dir +";\\")       
+          @docker_file.puts("  mkdir -p $VOLDIR/" + dir +";\\")
           @docker_file.puts("\\")
           @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + dir + ";\\")
           @docker_file.puts("    ln -s $VOLDIR/" + path + " /home/" + path)
-        count_layer
-     
+          count_layer
+
         end
-    
+
       rescue Exception=>e
         log_exception(e)
         return false
@@ -305,7 +294,7 @@ class EngineBuilder
           @docker_file.puts("")
           @docker_file.puts("RUN cat " + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + " ;\\")
           @docker_file.puts("     cp " + tmp_file  + " " + dest_file)
-count_layer
+          count_layer
           n=n+1
         end
 
@@ -420,22 +409,20 @@ count_layer
       end
     end
 
-   
-    
-#    def write_cron_jobs
-#      begin   
-#          if @blueprint_reader.cron_jobs.length >0
-#            @docker_file.puts("ENV CRONJOBS YES")
-#            count_layer
-##            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
-##            count_layer cron run from cron service
-#          end
-#        return true
-#      rescue Exception=>e
-#        log_exception(e)
-#        return false
-#      end
-#    end
+    #    def write_cron_jobs
+    #      begin
+    #          if @blueprint_reader.cron_jobs.length >0
+    #            @docker_file.puts("ENV CRONJOBS YES")
+    #            count_layer
+    ##            @docker_file.puts("RUN crontab  $data_uid /home/crontab ")
+    ##            count_layer cron run from cron service
+    #          end
+    #        return true
+    #      rescue Exception=>e
+    #        log_exception(e)
+    #        return false
+    #      end
+    #    end
 
     def write_db_service
       begin
@@ -452,11 +439,11 @@ count_layer
           @docker_file.puts("ENV dbpasswd " + db.dbPass)
           count_layer
           flavor = db.flavor
-           if flavor == "mysql"
+          if flavor == "mysql"
             flavor = "mysql2"
-           elsif flavor == "pgsql"
-             flavor = "postgresql"
-           end
+          elsif flavor == "pgsql"
+            flavor = "postgresql"
+          end
           @docker_file.puts("ENV dbflavor " + flavor)
           count_layer
         end
@@ -476,13 +463,13 @@ count_layer
           return
         end
         @blueprint_reader.single_chmods.each do |path|
-          if path !=nil           
+          if path !=nil
             @docker_file.puts("RUN if [ ! -f /home/app/" + path + " ];\\" )
             @docker_file.puts("   then \\")
             @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
-                  @docker_file.puts("   touch  /home/app/" + path + ";\\")
-                  @docker_file.puts("     fi;\\")
-                  @docker_file.puts( "  chmod  775 /home/app/" + path )
+            @docker_file.puts("   touch  /home/app/" + path + ";\\")
+            @docker_file.puts("     fi;\\")
+            @docker_file.puts( "  chmod  775 /home/app/" + path )
             count_layer
           end
         end
@@ -501,7 +488,7 @@ count_layer
         if @blueprint_reader.recursive_chmods == nil
           return
         end
-        @blueprint_reader.recursive_chmods.each do |directory|          
+        @blueprint_reader.recursive_chmods.each do |directory|
           if directory !=nil
             @docker_file.puts("RUN if [ -h  /home/app/"  + directory + " ] ;\\")
             @docker_file.puts("    then \\")
@@ -517,16 +504,16 @@ count_layer
             @docker_file.puts("       do\\")
             @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
             @docker_file.puts("            if test -n $adir;\\")
-            @docker_file.puts("                then\\")          
+            @docker_file.puts("                then\\")
             @docker_file.puts("                      dirs=\"$dirs $adir\";\\");
-            @docker_file.puts("                fi;\\")     
+            @docker_file.puts("                fi;\\")
             @docker_file.puts("       done;\\")
             @docker_file.puts(" if test -n \"$dirs\" ;\\")
             @docker_file.puts("      then\\")
             @docker_file.puts("      chmod gu+x $dirs  ;\\")
             @docker_file.puts("fi;\\")
-            @docker_file.puts("fi")      
-       
+            @docker_file.puts("fi")
+
             count_layer
           end
         end
@@ -541,27 +528,27 @@ count_layer
         @docker_file.puts("#App Archives")
         log_build_output("Dockerfile:App Archives")
         n=0
-#        srcs=String.new
-#        names=String.new
-#        locations=String.new
-#        extracts=String.new
-#        dirs=String.new
+        #        srcs=String.new
+        #        names=String.new
+        #        locations=String.new
+        #        extracts=String.new
+        #        dirs=String.new
         @docker_file.puts("")
-        
+
         @blueprint_reader.archives_details.each do |archive_details|
           arc_src = archive_details[:arc_src]
           arc_name = archive_details[:arc_name]
           arc_loc = archive_details[:arc_loc]
           arc_extract = archive_details[:arc_extract]
           arc_dir = archive_details[:arc_dir]
-#          if(n >0)
-#            srcs = srcs + " "
-#            names =names + " "
-#            locations = locations + " "
-#            extracts =extracts + " "
-#            dirs =dirs + " "
-#          end
-       
+          #          if(n >0)
+          #            srcs = srcs + " "
+          #            names =names + " "
+          #            locations = locations + " "
+          #            extracts =extracts + " "
+          #            dirs =dirs + " "
+          #          end
+
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
@@ -581,22 +568,22 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-          else                        
-            @docker_file.puts("USER $ContUser")            
+          else
+            @docker_file.puts("USER $ContUser")
             count_layer
             step_back=false
-              if arc_dir.blank?
-                step_back=true
-                @docker_file.puts("RUN   mkdir /tmp/app")
-                count_layer
-                arc_dir = "app"
-                @docker_file.puts("WORKDIR /tmp/app")
-                count_layer          
-              else
-                @docker_file.puts("WORKDIR /tmp")
-                count_layer          
-              end
-                            
+            if arc_dir.blank?
+              step_back=true
+              @docker_file.puts("RUN   mkdir /tmp/app")
+              count_layer
+              arc_dir = "app"
+              @docker_file.puts("WORKDIR /tmp/app")
+              count_layer
+            else
+              @docker_file.puts("WORKDIR /tmp")
+              count_layer
+            end
+
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
             if arc_extract.present?
               @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
@@ -606,16 +593,16 @@ count_layer
             end
             @docker_file.puts("USER 0  ")
             count_layer
-            if step_back==true              
+            if step_back==true
               @docker_file.puts("WORKDIR /tmp")
-               count_layer
+              count_layer
             end
             if  arc_loc.starts_with?("/home/app") || arc_loc.starts_with?("/home/local/")
               dest_prefix=""
             else
               dest_prefix="/home/app"
             end
-      
+
             @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
             @docker_file.puts("       then\\")
             @docker_file.puts(" mkdir -p /home/app ;\\")
@@ -624,7 +611,7 @@ count_layer
             count_layer
             @docker_file.puts("USER $ContUser")
             count_layer
-            
+
           end
         end
 
@@ -717,26 +704,27 @@ count_layer
     end
 
     protected
-def log_exception(e)
-    log_build_errors( e.to_s)
-     puts(e.to_s)
-     @last_error=  e.to_s
-     e.backtrace.each do |bt |
-       p bt
-     end
-     return false
-   end
+
+    def log_exception(e)
+      log_build_errors( e.to_s)
+      puts(e.to_s)
+      @last_error=  e.to_s
+      e.backtrace.each do |bt |
+        p bt
+      end
+      return false
+    end
     ##################### End of
   end
 
   class BluePrintReader
     def initialize(build_name,contname,blue_print,builder)
       @build_name = build_name
-     
+
       @data_uid="11111"
       @data_gid="11111"
       @builder=builder
-      @container_name = contname    
+      @container_name = contname
       @blueprint = blue_print
       @web_port=nil
       @services = Array.new
@@ -766,15 +754,14 @@ def log_exception(e)
     :data_gid,\
     :cron_job_list,
     :web_port
-    
+
     def  log_build_output(line)
       @builder.log_build_output(line)
     end
-    
+
     def log_build_errors(line)
       @builder.log_build_errors(line)
     end
-
 
     def clean_path(path)
       #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
@@ -827,18 +814,18 @@ def log_exception(e)
         @web_port=@blueprint["software"]["read_web_port_overide"]
       end
     end
-    
+
     def read_persistant_dirs
       begin
         log_build_output("Read Persistant Dirs")
 
         @persistant_dirs = Array.new
-      
+
         pds =   @blueprint["software"]["persistantdirs"]
 
         pds.each do |dir|
           @persistant_dirs.push(dir["path"])
-       
+
         end
 
       rescue Exception=>e
@@ -866,9 +853,8 @@ def log_exception(e)
         p src_paths
         p :dest_paths
         p dest_paths
-        
+
         @persistant_files[:src_paths]= src_paths
-       
 
       rescue Exception=>e
         log_exception(e)
@@ -918,8 +904,8 @@ def log_exception(e)
             fsname = clean_path(service["name"])
             dest = clean_path(service["dest"])
             add_file_service(fsname, dest)
-        else       
-          add_service(service)
+          else
+            add_service(service)
           end
         end
       end
@@ -928,6 +914,7 @@ def log_exception(e)
     def add_service (service_hash)
       @services.push(service_hash)
     end
+
     def add_file_service(name,dest)
       begin
         log_build_output("Add File Service " + name)
@@ -939,9 +926,9 @@ def log_exception(e)
             if dest != "/home/app"
               p :dest
               p "_" + dest + "_"
-            dest="/home/fs/" + dest           
-            end  
-          end        
+              dest="/home/fs/" + dest
+            end
+          end
         end
         permissions = PermissionRights.new(@container_name,"","")
         vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
@@ -958,9 +945,9 @@ def log_exception(e)
 
     def  add_db_service(dbname,servicetype)
       log_build_output("Add DB Service " + dbname)
-      hostname = servicetype + "." + SysConfig.internalDomain      
-        db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)   
-        
+      hostname = servicetype + "." + SysConfig.internalDomain
+      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
+
       @databases.push(db)
 
     end
@@ -1014,44 +1001,44 @@ def log_exception(e)
         return false
       end
     end
-    
+
     def read_apache_modules
       @apache_modules = Array.new
       log_build_output("Read Apache Modules List")
       mods =  @blueprint["software"]["apache_modules"]
-        if mods == nil
-          return true
-        end
+      if mods == nil
+        return true
+      end
       mods.each do |ap_module|
         mod = ap_module["module"]
-          if mod != nil
-            @apache_modules.push(mod)
-          end
+        if mod != nil
+          @apache_modules.push(mod)
+        end
       end
       return true
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-      
+    rescue Exception=>e
+      log_exception(e)
+      return false
+    end
+
     def read_app_packages
       begin
         log_build_output("Read App Packages ")
         @archives_details = Array.new
-#        archives_detail =
-#        @archives_details[:arc_src] = Array.new
-#        @archives_details[:arc_name] = Array.new
-#        @archives_details[:arc_extract] = Array.new
-#        @archives_details[:arc_loc] = Array.new
-#        @archives_details[:arc_dir] = Array.new
+        #        archives_detail =
+        #        @archives_details[:arc_src] = Array.new
+        #        @archives_details[:arc_name] = Array.new
+        #        @archives_details[:arc_extract] = Array.new
+        #        @archives_details[:arc_loc] = Array.new
+        #        @archives_details[:arc_dir] = Array.new
         log_build_output("Configuring install Environment")
         archives = @blueprint["software"]["installedpackages"]
         n=0
-#        srcs=String.new
-#        names=String.new
-#        locations=String.new
-#        extracts=String.new
-#        dirs=String.new
+        #        srcs=String.new
+        #        names=String.new
+        #        locations=String.new
+        #        extracts=String.new
+        #        dirs=String.new
 
         archives.each do |archive|
           archive_details = Hash.new
@@ -1060,13 +1047,13 @@ def log_exception(e)
           arc_loc =clean_path(archive["dest"])
           arc_extract=clean_path(archive[ "extractcmd"])
           arc_dir=clean_path(archive["extractdir"])
-#          if(n >0)
-#            srcs = srcs + " "
-#            names =names + " "
-#            locations = locations + " "
-#            extracts =extracts + " "
-#            dirs =dirs + " "
-#          end
+          #          if(n >0)
+          #            srcs = srcs + " "
+          #            names =names + " "
+          #            locations = locations + " "
+          #            extracts =extracts + " "
+          #            dirs =dirs + " "
+          #          end
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
@@ -1098,7 +1085,7 @@ def log_exception(e)
             p chmod
             if chmod["recursive"]==true
               directory = clean_path(chmod["path"])
-                p directory
+              p directory
               @recursive_chmods.push(directory)
             end
           end
@@ -1117,7 +1104,7 @@ def log_exception(e)
         @single_chmods =Array.new
         log_build_output("set permissions  single")
         chmods = @blueprint["software"]["file_write_permissions"]
-          p :Recursive_Chmods
+        p :Recursive_Chmods
         if chmods != nil
           chmods.each do |chmod |
             p chmod
@@ -1138,7 +1125,7 @@ def log_exception(e)
 
     def read_worker_commands
       begin
-       
+
         log_build_output("Read Workers")
         @worker_commands = Array.new
         workers =@blueprint["software"]["worker_commands"]
@@ -1156,8 +1143,8 @@ def log_exception(e)
       begin
         log_build_output("Read Crontabs")
         cjs =  @blueprint["software"]["cron_jobs"]
-          p :cron_jobs
-          p cjs
+        p :cron_jobs
+        p cjs
         @cron_jobs = Array.new
         n=0
         cjs.each do |cj|
@@ -1266,20 +1253,20 @@ def log_exception(e)
           build_time_only =  env["build_time_only"]
           label =  env["label"]
           immutable =  env["immutable"]
-                
+
           if @builder.set_environments != nil
-            p :looking_for_ 
+            p :looking_for_
             p name
-           if ask == true  && @builder.set_environments.has_key?(name) == true                          
+            if ask == true  && @builder.set_environments.has_key?(name) == true
               value=@builder.set_environments[name]
+            end
           end
-        end
-        name.sub!(/ /,"_")
-        p :name_and_value
-        p name
-        p value
-        ev = EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable)
-        p ev
+          name.sub!(/ /,"_")
+          p :name_and_value
+          p name
+          p value
+          ev = EnvironmentVariable.new(name,value,ask,mandatory,build_time_only,label,immutable)
+          p ev
           @environments.push(ev)
         end
       rescue Exception=>e
@@ -1294,39 +1281,39 @@ def log_exception(e)
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
     custom_env= params[:software_environment_variables]
- #   custom_env=params
+    #   custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     p params
-      @repoName= params[:repository_url] 
+    @repoName= params[:repository_url]
     @cron_job_list = Array.new
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
- 
+
     p :custom_env
     p custom_env
-             
+
     if custom_env == nil
       @set_environments = Hash.new
       @environments = Array.new
-    elsif  custom_env.instance_of?(Array) == true    
+    elsif  custom_env.instance_of?(Array) == true
       @environments = custom_env # happens on rebuild as custom env is saved in env on disk
       #FIXME need to vet all environment variables
-      @set_environments = Hash.new     
+      @set_environments = Hash.new
     else
       env_array = custom_env.values
-     custom_env_hash = Hash.new
-     
+      custom_env_hash = Hash.new
+
       env_array.each do |env_hash|
         p :env_hash
         p env_hash
-       
-         if env_hash != nil && env_hash["name"] !=nil && env_hash["value"] != nil
-           env_hash["name"] = env_hash["name"].sub(/_/,"")
-            custom_env_hash.store(env_hash["name"],env_hash["value"])
-         end
+
+        if env_hash != nil && env_hash["name"] !=nil && env_hash["value"] != nil
+          env_hash["name"] = env_hash["name"].sub(/_/,"")
+          custom_env_hash.store(env_hash["name"],env_hash["value"])
+        end
       end
       p :Merged_custom_env
       p custom_env_hash
@@ -1335,56 +1322,55 @@ def log_exception(e)
     end
     @runtime=String.new
     @databases= Array.new
- 
-    
+
     begin
       FileUtils.mkdir_p(get_basedir)
       @log_file=  File.new(SysConfig.DeploymentDir + "/build.out", File::CREAT|File::TRUNC|File::RDWR, 0644)
       @err_file=  File.new(SysConfig.DeploymentDir + "/build.err", File::CREAT|File::TRUNC|File::RDWR, 0644)
       @log_pipe_rd, @log_pipe_wr = IO.pipe
-      @error_pipe_rd, @error_pipe_wr = IO.pipe            
+      @error_pipe_rd, @error_pipe_wr = IO.pipe
     rescue
       log_exception(e)
     end
   end
-  
-def close_all
-  if @log_file.closed? == false
-    @log_file.close()
-  end
-  if@err_file.closed? == false
-    @err_file.close()
-  end
 
-  if @log_pipe_wr.closed? == false
-    @log_pipe_wr.close()
-   end
-   
-   if @error_pipe_wr.closed? == false
+  def close_all
+    if @log_file.closed? == false
+      @log_file.close()
+    end
+    if@err_file.closed? == false
+      @err_file.close()
+    end
+
+    if @log_pipe_wr.closed? == false
+      @log_pipe_wr.close()
+    end
+
+    if @error_pipe_wr.closed? == false
       @error_pipe_wr.close()
-   end
-end
+    end
+  end
 
   def get_build_log_stream
     return @log_pipe_rd
   end
-  
+
   def get_build_err_stream
     @error_pipe_rd
   end
-  
+
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
-  # @log_pipe_wr.puts(line)
+    # @log_pipe_wr.puts(line)
   rescue
     return
-   
+
   end
-  
+
   def log_build_errors(line)
-        @err_file.puts(line)
-        @err_file.flush
+    @err_file.puts(line)
+    @err_file.flush
     #    @error_pipe_wr.puts(line)
   end
 
@@ -1493,36 +1479,36 @@ end
 
   end
 
-def create_cron_service
-     begin
-     
-           log_build_output("Cron file")
-           
-           if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-    
-             @blueprint_reader.cron_jobs.each do |cj|
-               cj_hash = Hash.new
-               cj_hash[:name] =@container_name
-               cj_hash[:container_name] = @container_name
-               cj_hash[:cron_job]=cj
-               cj_hash[:parent_engine] = @containerName
-#               cron_file.puts(cj)
-#               p :write_cron_job
-#               p cj    
-               @cron_job_list.push(cj_hash)
-               p @cron_job_list
-             end
-#             cron_file.close             
-   end
+  def create_cron_service
+    begin
 
-     return true
+      log_build_output("Cron file")
 
-   rescue Exception=>e
-     log_exception(e)
-     return false
-   end
- end
-  
+      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
+
+        @blueprint_reader.cron_jobs.each do |cj|
+          cj_hash = Hash.new
+          cj_hash[:name] =@container_name
+          cj_hash[:container_name] = @container_name
+          cj_hash[:cron_job]=cj
+          cj_hash[:parent_engine] = @containerName
+          #               cron_file.puts(cj)
+          #               p :write_cron_job
+          #               p cj
+          @cron_job_list.push(cj_hash)
+          p @cron_job_list
+        end
+        #             cron_file.close
+      end
+
+      return true
+
+    rescue Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+
   def setup_default_files
     log_build_output("Setup Default Files")
     if setup_global_defaults == false
@@ -1670,7 +1656,6 @@ def create_cron_service
         return false
       end
 
-      
       if @blueprint_reader.web_port != nil
         @webPort = @blueprint_reader.web_port
       else
@@ -1680,63 +1665,81 @@ def create_cron_service
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
-      
+
       env_file = File.new(get_basedir + "/home/app.env","a")
       env_file.puts("")
       @blueprint_reader.environments.each do |env|
         env_file.puts(env.name)
       end
       @set_environments.each do |env|
-      env_file.puts(env[0])
-    end
+        env_file.puts(env[0])
+      end
       env_file.close
-      
+
       setup_framework_logging
-      
+
       log_build_output("Creating db Services")
-             @blueprint_reader.databases.each() do |db|
-               create_database_service db
-             end
-             
+      @blueprint_reader.databases.each() do |db|
+        create_database_service db
+      end
+
+
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
         return false
       else
-        
+
         if @core_api.image_exists?(@container_name) == false
           @last_error = " " + tail_of_build_log
           return false
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
-        end 
-        
+        end
+
         create_cron_service
-        
+
         log_build_output("Creating vol Services")
-                 @blueprint_reader.databases.each() do |db|
-                   create_database_service db
-                 end
-       
+        @blueprint_reader.databases.each() do |db|
+          create_database_service db
+        end
+
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
         end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
+        if mc != nil
+          @blueprint_reader.services.each() do |service|
+          #FIX ME Should call this but Keys dont match blueprint designer issue
+          #@core_api.add_service(service,mc)
+            p adding_service
+            p service_type
+            if service[:service_type] == "ftp"
+            service_hash = Hash.new()
+            
+#            volume
+#            name
+#            folder
+#            username
+#            password
+#            rw_access
+            end
+          end
+        end
       end
-    
-   
+
       close_all
-        
+
       return mc
 
     rescue Exception=>e
-     
+
       log_exception(e)
       close_all
       return false
     end
   end
-  
+
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
@@ -1744,8 +1747,8 @@ def create_cron_service
     start = lines_count - 10
     for n in start..lines_count
       retval+=lines[n]
-    end 
-     return retval
+    end
+    return retval
   end
 
   def rebuild_managed_container  engine
@@ -1794,17 +1797,17 @@ def create_cron_service
     @blueprint_reader.data_uid,
     @blueprint_reader.data_gid
     )
-  
+
     p :set_cron_job_list
-        p @cron_job_list
-        mc.set_cron_job_list(@cron_job_list)
+    p @cron_job_list
+    mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
-   mc.set_protocol(@protocol)
+    mc.set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false
-      log_build_errors( "Failed to save blueprint " + @blueprint.to_s)      
+      log_build_errors( "Failed to save blueprint " + @blueprint.to_s)
     end
 
     bp = mc.load_blueprint
@@ -1824,28 +1827,29 @@ def create_cron_service
   end
 
   protected
-def log_exception(e)
-  log_build_errors( e.to_s)
-  puts(e.to_s)
-  
-  @last_error=  e.to_s
-  n=0
-  e.backtrace.each do |bt |
-    p bt
-    if n>10
-      break
+
+  def log_exception(e)
+    log_build_errors( e.to_s)
+    puts(e.to_s)
+
+    @last_error=  e.to_s
+    n=0
+    e.backtrace.each do |bt |
+      p bt
+      if n>10
+        break
+      end
+      ++n
     end
-    ++n
+    #close_all
   end
-  #close_all
-end
+
   def debug(fld)
     puts "ERROR: "
     p fld
   end
 
   require 'open3'
-
 
   def run_system(cmd)
     log_build_output("Running " + cmd)
@@ -1863,7 +1867,7 @@ end
             line = line.gsub(/\\\"/,"")
             res += line.chop
             oline = line
-            log_build_output(line)                  
+            log_build_output(line)
             if stderr_is_open
               err  = stderr.read_nonblock(1000)
               error_mesg += err
@@ -1872,7 +1876,7 @@ end
           }
         rescue Errno::EIO
           res += line.chop
-          log_build_output(oline) 
+          log_build_output(oline)
           if stderr_is_open
             err  = stderr.read_nonblock(1000)
             error_mesg += err
@@ -1881,7 +1885,7 @@ end
             retry
           end
         rescue  IO::WaitReadable
-         # p :wait_readable_retrt
+          # p :wait_readable_retrt
           retry
         rescue EOFError
           if stdout.closed? == false
@@ -1893,7 +1897,7 @@ end
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-            log_build_errors(err)
+              log_build_errors(err)
               return
             end
           end
