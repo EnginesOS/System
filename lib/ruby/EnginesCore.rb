@@ -1736,7 +1736,11 @@ def software_service_definition(params)
       #service_provider
       #name
       #service hash from fields in Software Service Definition for that service 
-      
+      service = load_software_service(params)
+      if service !=nil
+        return service.add_consumer(params[:service_hash])
+      end
+      last_error = "Failed to attach Service: " + last_error      
        return  false
      end
      
