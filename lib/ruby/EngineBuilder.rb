@@ -1724,7 +1724,7 @@ class EngineBuilder
           #@core_api.add_service(service,mc)
             p :adding_service
             p service   
-            if service[:servicetype_name] == "ftp"
+            if service["servicetype_name"] == "ftp"
               service_def = Hash.new
               #parent_engine
               #service_type
@@ -1739,9 +1739,9 @@ class EngineBuilder
               service[:rw_access] =true
               service_def[:service_hash]=service
               service_def[:parent_engine]=mc.containerName
-              service_def[:service_type]=service[:service_typename]
+              service_def[:service_type]=service["servicetype_name"]
               service_def[:service_provider]="EnginesSystem"
-              service_def[:name]=service[:name]
+              service_def[:name]=service["name"]
                 p :service_def
                 p service_def
               @core_api.attach_service(service_def)
