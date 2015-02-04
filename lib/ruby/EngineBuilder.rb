@@ -1718,7 +1718,7 @@ class EngineBuilder
           @blueprint_reader.services.each() do |service|
           #FIX ME Should call this but Keys dont match blueprint designer issue
           #@core_api.add_service(service,mc)
-            p adding_service
+            p :adding_service
             p service_type
             if service[:service_type] == "ftp"
             service_hash = Hash.new()
