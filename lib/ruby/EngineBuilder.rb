@@ -161,7 +161,7 @@ class EngineBuilder
           if env.value != nil
             env.value.sub!(/ /,"\\ ")
           end
-           if  env.value !=nil  #env statement must have two arguments
+           if  env.value !=nil && env.value.to_s.length >0 #env statement must have two arguments
             @docker_file.puts("ENV " + env.name + " " + env.value.to_s )
             count_layer
            end
@@ -732,30 +732,31 @@ class EngineBuilder
       @services = Array.new
     end
 
-    attr_reader :persistant_files,\
-    :persistant_dirs,\
-    :last_error,\
-    :workerPorts,\
-    :environments,\
-    :recursive_chmods,\
-    :single_chmods,\
-    :framework,\
-    :runtime,\
-    :memory,\
-    :rake_actions,\
-    :os_packages,\
-    :pear_modules,\
-    :archives_details,
-    :worker_commands,
-    :cron_jobs,\
-    :sed_strings,\
-    :volumes,\
-    :databases,\
-    :apache_modules,\
-    :data_uid,\
-    :data_gid,\
-    :cron_job_list,
-    :web_port
+    attr_reader :persistant_files,
+                :persistant_dirs,
+                :last_error,
+                :workerPorts,
+                :environments,
+                :recursive_chmods,
+                :single_chmods,
+                :framework,
+                :runtime,
+                :memory,
+                :rake_actions,
+                :os_packages,
+                :pear_modules,
+                :archives_details,
+                :worker_commands,
+                :cron_jobs,
+                :sed_strings,
+                :volumes,
+                :databases,
+                :apache_modules,
+                :data_uid,
+                :data_gid,
+                :cron_job_list,
+                :web_port,
+                :services
 
     def  log_build_output(line)
       @builder.log_build_output(line)
@@ -1259,8 +1260,11 @@ class EngineBuilder
           if @builder.set_environments != nil
             p :looking_for_
             p name
-            if ask == true  && @builder.set_environments.has_key?(name) == true
-              value=@builder.set_environments[name]
+            if ask == true  && @builder.set_environments.has_key?(name) == true              
+              entered_value=@builder.set_environments[name]
+               if entered_value != nil && entered_value.count !=0#FIXme needs to be removed
+                 value = entered_value 
+               end
             end
           end
           name.sub!(/ /,"_")
@@ -1714,8 +1718,8 @@ class EngineBuilder
           @blueprint_reader.services.each() do |service|
           #FIX ME Should call this but Keys dont match blueprint designer issue
           #@core_api.add_service(service,mc)
-            p adding_service
-            p service_type
+            p :adding_service
+            p service
             if service[:service_type] == "ftp"
             service_hash = Hash.new()
             
