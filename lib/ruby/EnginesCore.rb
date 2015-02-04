@@ -1729,6 +1729,16 @@ def software_service_definition(params)
     return retval
   end
   
+  def load_software_service(params)
+    sm = loadServiceManager()
+      service_container =  sm.get_software_service_container_name(params)
+      service = loadManagedService(service)
+        if serivce == nil
+          return nil
+        end
+        
+      return service.add_consumer(params[:service_hash])
+  end
   
     def attach_service(params)
       #parent_engine

@@ -17,6 +17,15 @@ class ServiceManager
         
   end
 
+  def get_software_service_container_name(params)
+   server_service =  software_service_definition(params)
+   if server_service == nil
+     return nil
+   end
+    return server_service.service_container
+    
+  end
+  
   def attached_services(object)
 
   end

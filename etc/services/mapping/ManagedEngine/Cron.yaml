@@ -8,6 +8,7 @@ author: Engines
 title: Cron
 description: "Scheduales tasks"
 service_type: cron
+service_container: cron
 service_provider: EnginesSystem
 dedicated: false
 persistant: false

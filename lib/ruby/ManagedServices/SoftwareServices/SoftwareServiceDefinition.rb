@@ -8,7 +8,8 @@ class SoftwareServiceDefinition
               :setup_params,
               :dedicated,
               :service_type, 
-              :service_provider, 
+              :service_provider,
+              :service_container, 
               :persistant
 
   
