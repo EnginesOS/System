@@ -1723,8 +1723,8 @@ class EngineBuilder
           #FIX ME Should call this but Keys dont match blueprint designer issue
           #@core_api.add_service(service,mc)
             p :adding_service
-            p service
-            if service[:service_typename] == "ftp"
+            p service   
+            if service[:servicetype_name] == "ftp"
               service_def = Hash.new
               #parent_engine
               #service_type
