@@ -1732,7 +1732,7 @@ class EngineBuilder
               #name
               #service
                         
-              service[:volume] = primary_vol[:name]
+              service[:volume] = primary_vol.name
               service[:folder] =  service["dest"]
               service[:username] = @set_environments["ftpuser"]
               service[:password] = @set_environments["password"]
