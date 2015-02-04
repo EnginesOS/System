@@ -1709,8 +1709,12 @@ class EngineBuilder
           create_database_service db
         end
 
+        primary_vol=nil
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
+          if primary_vol == nil
+            primary_vol =vol
+          end
         end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
@@ -1720,15 +1724,20 @@ class EngineBuilder
           #@core_api.add_service(service,mc)
             p :adding_service
             p service
-            if service[:service_type] == "ftp"
-            service_hash = Hash.new()
-            
-#            volume
-#            name
-#            folder
-#            username
-#            password
-#            rw_access
+            if service[:service_type] == "ftp"            
+              service[:volume] = vol[:name]
+              service[:folder] =  service["dest"]
+              service[:username] = @set_environments["ftpuser"]
+              service[:password] = @set_environments["password"]
+              service[:rw_access] =true
+                p service
+              @core_api.add_service(mc,service)
+#            volume from vol
+#            name  from hash
+#            folder  from hash 
+#            username from env
+#            password from env
+#            rw_access from env
             end
           end
         end
