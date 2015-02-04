@@ -1719,7 +1719,7 @@ class EngineBuilder
           #FIX ME Should call this but Keys dont match blueprint designer issue
           #@core_api.add_service(service,mc)
             p :adding_service
-            p service_type
+            p service
             if service[:service_type] == "ftp"
             service_hash = Hash.new()
             
