@@ -732,30 +732,31 @@ class EngineBuilder
       @services = Array.new
     end
 
-    attr_reader :persistant_files,\
-    :persistant_dirs,\
-    :last_error,\
-    :workerPorts,\
-    :environments,\
-    :recursive_chmods,\
-    :single_chmods,\
-    :framework,\
-    :runtime,\
-    :memory,\
-    :rake_actions,\
-    :os_packages,\
-    :pear_modules,\
-    :archives_details,
-    :worker_commands,
-    :cron_jobs,\
-    :sed_strings,\
-    :volumes,\
-    :databases,\
-    :apache_modules,\
-    :data_uid,\
-    :data_gid,\
-    :cron_job_list,
-    :web_port
+    attr_reader :persistant_files,
+                :persistant_dirs,
+                :last_error,
+                :workerPorts,
+                :environments,
+                :recursive_chmods,
+                :single_chmods,
+                :framework,
+                :runtime,
+                :memory,
+                :rake_actions,
+                :os_packages,
+                :pear_modules,
+                :archives_details,
+                :worker_commands,
+                :cron_jobs,
+                :sed_strings,
+                :volumes,
+                :databases,
+                :apache_modules,
+                :data_uid,
+                :data_gid,
+                :cron_job_list,
+                :web_port,
+                :services
 
     def  log_build_output(line)
       @builder.log_build_output(line)
