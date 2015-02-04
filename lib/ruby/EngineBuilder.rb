@@ -1259,8 +1259,11 @@ class EngineBuilder
           if @builder.set_environments != nil
             p :looking_for_
             p name
-            if ask == true  && @builder.set_environments.has_key?(name) == true
-              value=@builder.set_environments[name]
+            if ask == true  && @builder.set_environments.has_key?(name) == true              
+              entered_value=@builder.set_environments[name]
+               if entered_value != nil && entered_value.count !=0#FIXme needs to be removed
+                 value = entered_value 
+               end
             end
           end
           name.sub!(/ /,"_")
