@@ -174,6 +174,10 @@ rescue Exception=>e
       return false
     end
 
+    if service_hash.has_key(:parent_engine) == false
+      p :no_parent_engine_key
+      return false
+    end
     if active_engines_node[service_hash[:parent_engine] ] != nil
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
