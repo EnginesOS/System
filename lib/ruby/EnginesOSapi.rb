@@ -1060,7 +1060,11 @@ class EnginesOSapi
   end
   
   def attach_service(params)
-    return  @core_api.attach_service(params)
+    if  @core_api.attach_service(params) == true
+      success(params[:parent_engine],"attach service")
+    else
+      return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
+    end
   end
 
   def get_service_definition(service_type,service_provider)
@@ -1070,7 +1074,11 @@ class EnginesOSapi
   end
   
   def detach_service(params)
-      return  @core_api.dettach_service(params)
+    if   @core_api.dettach_service(params)== true
+      success(params[:parent_engine],"detach service")
+    else
+      return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
+    end
     end
   
   def detach_ftp_service (params)
