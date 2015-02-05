@@ -6,10 +6,10 @@ accepts:
   "ManagedService"
 author: Engines
 title: Database
-description: "MYSQL Database "
+description: "Postgresql Database"
 service_provider: EnginesSystem
 service_type: database
-service_container: mysql_server
+service_container: pgsql_server
 dedicated: false
 persistant: true
 image_name: engines/volmanager
