@@ -22,6 +22,27 @@ class CronService < ManagedService
           #No Need they are static
     end
     
+  def format_cron_line(cron_hash)
+      cron_line = String.new
+      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/)
+      for n in 0..4
+        cron_line +=  cron_line_split[n] + " "
+      end
+      cron_line +=" docker exec " +  cron_hash[:container_name] + " "
+      n=5
+      cnt = cron_line_split.count
+
+      while n < cnt
+        cron_line += " " + cron_line_split[n]
+        n+=1
+      end
+      return     cron_line
+    rescue Exception=>e
+
+      log_exception(e)
+
+      return false
+    end
 
   def remove_containers_cron_list(containerName)
    
