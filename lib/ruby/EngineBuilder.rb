@@ -1740,6 +1740,7 @@ class EngineBuilder
               service[:service_type]=service["servicetype_name"]
               service[:service_provider]="EnginesSystem"  
               service[:parent_engine]=mc.containerName
+              service.inject({}){|h,(k,v)| h.merge({ k.to_sym => v}) }
                 
               service_def[:service_hash]=service
               service_def[:parent_engine]=mc.containerName
