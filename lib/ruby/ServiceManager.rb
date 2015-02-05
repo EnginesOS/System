@@ -165,7 +165,7 @@ rescue Exception=>e
       p :panic_loaded_nil_tree
       return false
     end
-
+ 
     #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
@@ -264,8 +264,8 @@ rescue Exception=>e
         service_node = service_provider_node[service_hash[:name]]
           p :really_removing
           p service_node
-          p :from
-          p service_provider_node
+         p :from
+         # p service_provider_node
           #FIXME a method should do this in a loop
           
           if service_node != nil
