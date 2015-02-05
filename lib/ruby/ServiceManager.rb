@@ -202,7 +202,7 @@ rescue Exception=>e
       service_provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
       service_type_node << service_provider_node
     end
-    p service_name
+    p :service_name
     p service_hash[:name]
       
       if service_hash[:name] == nil
