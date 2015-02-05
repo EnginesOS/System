@@ -12,6 +12,7 @@ service_type: database
 service_container: pgsql_server
 dedicated: false
 persistant: true
+exclusive: true
 image_name: engines/volmanager
 consumer_params:
 setup_params:

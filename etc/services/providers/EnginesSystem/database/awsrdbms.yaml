@@ -9,7 +9,7 @@ title: MySQL Database
 description: "MYSQL Database "
 service_provider: EnginesSystem
 service_type: database
-service_container: mysql_server
+service_container: awsdb
 dedicated: false
 persistant: true
 exclusive: true
