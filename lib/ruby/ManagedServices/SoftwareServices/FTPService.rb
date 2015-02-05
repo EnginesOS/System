@@ -12,6 +12,9 @@ class FTPService < SoftwareService
   def rm_consumer_from_service (site_hash)
     return  @core_api.rm_ftp_service(site_hash)
   end
+  
+  
+  
 
   def get_site_hash(site_hash)
     site_hash[:service_type]='ftp'

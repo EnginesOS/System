@@ -122,75 +122,7 @@ class EnginesCore
       return false
     end
 
-    def add_cron(cron_hash)
-      begin
-
-        cron_line = format_cron_line(cron_hash)
-        cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
-        cron_file.puts(cron_line)
-        cron_file.close
-
-        return reload_crontab
-
-      rescue Exception=>e
-
-        log_exception(e)
-        return false
-      end
-    end
-
-    def reload_crontab
-      docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
-      return run_system(docker_cmd)
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-    end
-
-    def rebuild_crontab(cron_service)
-      cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
-
-      cron_service.consumers.each do |cron_entry|
-
-        cron_line = format_cron_line(cron_entry[1])
-        p :cron_line
-        p cron_line
-        cron_file.puts(cron_line)
-      end
-      cron_file.close
-      return reload_crontab
-
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-
-    end
-
-    def remove_containers_cron_list(containerName)
-      cron_service =  @engines_api.loadManagedService("cron")
-      p :remove_cron_for
-      p containerName
-
-      cron_service.consumers.each do |cron_job|
-        if cron_job != nil
-          p cron_job
-          p :looking_at
-          p cron_job[1][:container_name]
-          if cron_job[1][:container_name] ==  containerName
-            cron_service.remove_consumer(cron_job[1])
-          end
-        end
-      end
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-    end
+  
 
     def clear_cid_file container
       clear_error
@@ -395,28 +327,6 @@ class EnginesCore
       end
     end
 
-    def add_ftp_service(site_hash)
-      clear_error
-      begin
-        SystemUtils.debug_output site_hash
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-
-    end
-
-    def rm_ftp_service(site_hash)
-      clear_error
-      begin
-        SystemUtils.debug_output site_hash
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def add_monitor(site_hash)
       clear_error
@@ -1519,26 +1429,22 @@ class EnginesCore
     return  @system_api.add_domain(params)
   end
 
-  def add_cron(cron_hash)
-    p :add_cront
-    return  @system_api.add_cron(cron_hash)
-  end
-
-  def remove_containers_cron_list(containerName)
-    p :remove_containers_cron
-    if @system_api.remove_containers_cron_list(containerName)
-      cron_service = loadManagedService("cron")
-      return @system_api.rebuild_crontab(cron_service)
-    else
-      return false
-    end
-  end
-
-  def rebuild_crontab(cron_service)
-    #acutally a rebuild (or resave) as hadh already removed from consumer list
-    p :rebuild_crontab
-    return  @system_api.rebuild_crontab(cron_service)
-  end
+#
+#  def remove_containers_cron_list(containerName)
+#    p :remove_containers_cron
+#    if @system_api.remove_containers_cron_list(containerName)
+#      cron_service = loadManagedService("cron")
+#      return @system_api.rebuild_crontab(cron_service)
+#    else
+#      return false
+#    end
+#  end
+#
+#  def rebuild_crontab(cron_service)
+#    #acutally a rebuild (or resave) as hadh already removed from consumer list
+#    p :rebuild_crontab
+#    return  @system_api.rebuild_crontab(cron_service)
+#  end
 
   def remove_domain(params)
     return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -1587,13 +1493,7 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  def add_ftp_service(site_hash)
-    return @system_api.add_ftp_service(site_hash)
-  end
-
-  def rm_ftp_service(site_hash)
-    return @system_api.rm_ftp_service(site_hash)
-  end
+  
 
   def add_monitor(site_hash)
     return @system_api.add_monitor(site_hash)
