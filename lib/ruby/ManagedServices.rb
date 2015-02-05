@@ -2,7 +2,7 @@
 require "/opt/engines/lib/ruby/ManagedServices/ManagedService.rb"
 require "/opt/engines/lib/ruby/ManagedServices/NginxService.rb"
 require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/NagiosService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/PGSQLService.rb"
+require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/PgSQLService.rb"
 require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/MySQLService.rb"
 require "/opt/engines/lib/ruby/ManagedServices/DBManagedService.rb"
 require "/opt/engines/lib/ruby/ManagedServices/DNSService.rb"
