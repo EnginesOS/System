@@ -1432,11 +1432,12 @@ class EngineBuilder
       # @blueprint = JSON.parse(blueprint_json_str)
       json_hash = JSON.parse(blueprint_json_str)
       p :symbolized_hash
-      test_hash = json_hash
-      test_hash.keys.each do |key|
-        test_hash[(key.to_sym rescue key) || key] = myhash.delete(key)
-      end
-      p test_hash
+#      test_hash = json_hash
+#      test_hash.keys.each do |key|
+#        test_hash[(key.to_sym rescue key) || key] = myhash.delete(key)
+#      end
+#      p test_hash
+  p    SystemUtils.symbolize_keys(json_hash)
       return json_hash
       
     rescue Exception=>e
