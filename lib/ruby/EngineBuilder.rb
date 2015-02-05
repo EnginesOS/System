@@ -1430,7 +1430,10 @@ class EngineBuilder
       blueprint_file.close
 
       # @blueprint = JSON.parse(blueprint_json_str)
-      return JSON.parse(blueprint_json_str)
+      json_hash = JSON.parse(blueprint_json_str)
+    p   Hash[json_hash.map{|(k,v)| [k.to_sym,v]}]
+      return json_hash
+      
     rescue Exception=>e
       log_exception(e)
       return false
