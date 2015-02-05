@@ -17,6 +17,15 @@ class ServiceManager
         
   end
 
+  def get_software_service_container_name(params)
+   server_service =  software_service_definition(params)
+   if server_service == nil
+     return nil
+   end
+    return server_service[:service_container]
+    
+  end
+  
   def attached_services(object)
 
   end
@@ -156,7 +165,7 @@ rescue Exception=>e
       p :panic_loaded_nil_tree
       return false
     end
-
+ 
     #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
@@ -165,6 +174,10 @@ rescue Exception=>e
       return false
     end
 
+    if service_hash.has_key?(:parent_engine) == false
+      p :no_parent_engine_key
+      return false
+    end
     if active_engines_node[service_hash[:parent_engine] ] != nil
       engine_node = active_engines_node[ service_hash[:parent_engine] ]
     else
@@ -189,7 +202,13 @@ rescue Exception=>e
       service_provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
       service_type_node << service_provider_node
     end
-    
+    p :service_name
+    p service_hash[:name]
+      
+      if service_hash[:name] == nil
+        p :error_service_hash_has_nil_name
+        return false
+      end
     if service_provider_node[service_hash[:name]] != nil
       #FixME need to explain why
       return false
@@ -251,8 +270,8 @@ rescue Exception=>e
         service_node = service_provider_node[service_hash[:name]]
           p :really_removing
           p service_node
-          p :from
-          p service_provider_node
+         p :from
+         # p service_provider_node
           #FIXME a method should do this in a loop
           
           if service_node != nil
@@ -310,7 +329,7 @@ rescue Exception=>e
 def software_service_definition(params)
   require 'json'
   
-  service_filename = SysConfig.ServiceTemplateDir + "/" + params[service_provider] + "/" + params[service_type]+ ".yaml"
+  service_filename = SysConfig.ServiceTemplateDir + "/" + params[:service_provider] + "/" + params[:service_type]+ ".yaml"
   if File.exists?(service_filename)
     yaml = File.read(service_filename)
     software_service_def  = SoftwareServiceDefinition.from_yaml(yaml)

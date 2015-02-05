@@ -8,18 +8,19 @@ class SoftwareServiceDefinition
               :setup_params,
               :dedicated,
               :service_type, 
-              :service_provider, 
+              :service_provider,
+              :service_container, 
               :persistant
 
   
   def self.from_yaml( yaml )
      begin
-       p yaml.path
+      # p yaml.path
        serviceDefinition = YAML::load( yaml )
    
        return serviceDefinition
      rescue Exception=>e
-       puts e.message + " with " + yaml.path
+       puts e.message + " with " + yaml
      end
   end
   

@@ -1709,8 +1709,12 @@ class EngineBuilder
           create_database_service db
         end
 
+        primary_vol=nil
         @blueprint_reader.volumes.each_value() do |vol|
           create_file_service vol
+          if primary_vol == nil
+            primary_vol =vol
+          end
         end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
@@ -1719,16 +1723,41 @@ class EngineBuilder
           #FIX ME Should call this but Keys dont match blueprint designer issue
           #@core_api.add_service(service,mc)
             p :adding_service
-            p service
-            if service[:service_type] == "ftp"
-            service_hash = Hash.new()
-            
-#            volume
-#            name
-#            folder
-#            username
-#            password
-#            rw_access
+            p service   
+            if service["servicetype_name"] == "ftp"
+              service_def = Hash.new
+              #parent_engine
+              #service_type
+              #service_provider
+              #name
+              #service
+                        
+              service[:volume] = primary_vol.name
+              service[:folder] =  service["dest"]
+              service[:username] = @set_environments["ftpuser"]
+              service[:password] = @set_environments["password"]
+              service[:rw_access] =true
+              service[:service_type]=service["servicetype_name"]
+              service[:service_provider]="EnginesSystem"  
+              service[:parent_engine]=mc.containerName
+              service[:name]=service["name"]
+              
+              service.inject({}){|h,(k,v)| h.merge({ k.to_sym => v}) }
+                
+              service_def[:service_hash]=service
+              service_def[:parent_engine]=mc.containerName
+              service_def[:service_type]=service["servicetype_name"]
+              service_def[:service_provider]="EnginesSystem"
+              service_def[:name]=service["name"]
+                p :service_def
+                p service_def
+              @core_api.attach_service(service_def)
+#            volume from vol
+#            name  from hash
+#            folder  from hash 
+#            username from env
+#            password from env
+#            rw_access from env
             end
           end
         end
