@@ -1737,7 +1737,10 @@ class EngineBuilder
               service[:username] = @set_environments["ftpuser"]
               service[:password] = @set_environments["password"]
               service[:rw_access] =true
+              service[:service_type]=service["servicetype_name"]
+              service[:service_provider]="EnginesSystem"  
               service[:parent_engine]=mc.containerName
+                
               service_def[:service_hash]=service
               service_def[:parent_engine]=mc.containerName
               service_def[:service_type]=service["servicetype_name"]
