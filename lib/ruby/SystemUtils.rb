@@ -26,6 +26,7 @@ class SystemUtils
       new_value = case value
                   when Hash then symbolize_keys(value)
                   when Array   then value.each do |array_val| array_val = SystemUtils.symbolize_keys(array_val)
+                    p array_val
                     end
                     value
       
