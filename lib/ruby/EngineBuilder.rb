@@ -897,7 +897,7 @@ class EngineBuilder
       services=@blueprint["software"]["softwareservices"]
       services.each do |service|
         servicetype=service["servicetype_name"]
-        if servicetype == "mysql" || servicetype == "pgsql"
+        if servicetype == "database/mysql" || servicetype == "database/pgsql"
           dbname = service["name"]
           dest = service["dest"]
           if dest =="local" || dest == nil
@@ -947,6 +947,7 @@ class EngineBuilder
     end
 
     def  add_db_service(dbname,servicetype)
+      servicetype.sub!(/database\//) 
       log_build_output("Add DB Service " + dbname)
       hostname = servicetype + "." + SysConfig.internalDomain
       db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
