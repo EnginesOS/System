@@ -1757,7 +1757,7 @@ def software_service_definition(params)
       service_hash = params[:service_hash]
         if service_hash == nil
           return false
-        end
+          end
           
       if service !=nil
         return service.add_consumer(service_hash)
