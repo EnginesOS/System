@@ -16,7 +16,7 @@ consumer_params:
 setup_params:
    cron_job:
     regex_invalid_message: "wrong go back and try again"
-    name: Cron
+    name: cron_job
     label: Cron line
     regex_validator: ".*"
     tooltip: " "
@@ -28,8 +28,8 @@ setup_params:
     comment: " "
    name:
     regex_invalid_message: "wrong go back and try again"
-    name: Cron
-    label: Cron line
+    name: name
+    label: Cron line title
     regex_validator: ".*"
     tooltip: " "
     type: text_field

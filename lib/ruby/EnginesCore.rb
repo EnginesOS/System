@@ -1746,18 +1746,21 @@ class EnginesCore
     return service
   end
 
-  def attach_service(params)
+  def attach_service(service_hash)
     #parent_engine
     #service_type
     #service_provider
     #name
     #service hash from fields in Software Service Definition for that service
-    service = load_software_service(params)
+    
 
-    service_hash = params  #[:service_hash]
+   
     if service_hash == nil
+      p :attached_Service_passed_nil
       return false
     end
+    
+    service = load_software_service(service_hash)
 
     if service !=nil
       return service.add_consumer(service_hash)
