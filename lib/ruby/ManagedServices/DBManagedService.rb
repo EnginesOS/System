@@ -8,7 +8,9 @@ class DBManagedService < ManagedService
 #overloaded for the moment
   def add_consumer_to_service(site_hash)
     p site_hash
-    site_hash[:name] = site_hash[:database_name]
+    if site_hash.has_key?(:name) == false || site_hash[:name] = nil    
+          site_hash[:name] = site_hash[:database_name]
+      end
     return  @core_api.create_database(site_hash) 
      end
      
