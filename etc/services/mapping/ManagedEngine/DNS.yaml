@@ -8,6 +8,7 @@ author: Engines
 title: DNS
 description: "Resilves names to to IP address"
 service_type: dns
+service_container: dns
 service_provider: EnginesSystem
 dedicated: false
 persistant: false
