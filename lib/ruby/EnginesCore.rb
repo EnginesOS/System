@@ -399,16 +399,19 @@ class EnginesCore
       clear_error
       begin
         SystemUtils.debug_output site_hash
+        return true
       rescue  Exception=>e
         log_exception(e)
         return false
       end
+
     end
 
     def rm_ftp_service(site_hash)
       clear_error
       begin
         SystemUtils.debug_output site_hash
+        return true
       rescue  Exception=>e
         log_exception(e)
         return false
