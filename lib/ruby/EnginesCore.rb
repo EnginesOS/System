@@ -1741,7 +1741,7 @@ def software_service_definition(params)
           return nil
         end
         
-      return service.add_consumer(params[:service_hash])
+      return service
   end
   
     def attach_service(params)
