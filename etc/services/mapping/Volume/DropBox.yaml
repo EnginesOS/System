@@ -7,6 +7,7 @@ title: "Drop Box Service"
 description: "Provides Drop Box backing to a Persistant File Storage"
 service_type: dropbox
 service_provider: EnginesSystem
+service_container: dropbox
 persistant: true
 dedicated: false
 setup_params:

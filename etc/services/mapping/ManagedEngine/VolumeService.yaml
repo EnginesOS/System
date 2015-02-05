@@ -8,6 +8,7 @@ author: Engines
 title: "Volume service"
 description: "Provides Persistant File Storage"
 service_type: volume
+service_container: volmanager
 service_provider: EnginesSystem
 persistant: true
 dedicated: false
