@@ -1760,7 +1760,7 @@ class EnginesCore
       return false
     end
     
-    service = load_software_service(params)
+    service = load_software_service(service_hash)
 
     if service !=nil
       return service.add_consumer(service_hash)
