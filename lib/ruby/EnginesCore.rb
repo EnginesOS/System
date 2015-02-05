@@ -1733,7 +1733,7 @@ def software_service_definition(params)
     sm = loadServiceManager()
       service_container =  sm.get_software_service_container_name(params)
       service = loadManagedService(service)
-        if serivce == nil
+        if service == nil
           return nil
         end
         
