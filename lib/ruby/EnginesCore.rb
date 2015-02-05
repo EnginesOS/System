@@ -1731,8 +1731,12 @@ def software_service_definition(params)
   
   def load_software_service(params)
     sm = loadServiceManager()
+    p :load_software_service
+    p params
       service_container =  sm.get_software_service_container_name(params)
-      service = loadManagedService(service)
+      p :container_name
+      p service_container
+      service = loadManagedService(service_container)
         if service == nil
           return nil
         end
