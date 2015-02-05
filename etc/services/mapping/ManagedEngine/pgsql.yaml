@@ -5,7 +5,7 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: Database
+title: "PgSQL Database"
 description: "Postgresql Database"
 service_provider: EnginesSystem
 service_type: database

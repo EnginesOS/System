@@ -5,7 +5,7 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: Database
+title: MySQL Database
 description: "MYSQL Database "
 service_provider: EnginesSystem
 service_type: database
