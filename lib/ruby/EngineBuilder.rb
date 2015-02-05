@@ -1746,7 +1746,7 @@ class EngineBuilder
                     
                 p :service_def
                 p service
-              @core_api.attach_service(service_def)
+              @core_api.attach_service(service)
 #            volume from vol
 #            name  from hash
 #            folder  from hash 
