@@ -28,8 +28,10 @@ class SystemUtils
                   when Array   then
                     newval=Array.new 
                     value.each do |array_val|
-                      array_val = SystemUtils.symbolize_keys(array_val)
-                      newval.push(array_val)
+                      if array_val_is_a?(Hash)
+                        array_val = SystemUtils.symbolize_keys(array_val)
+                      end
+                      newval.push(array_val)                                          
                     end
                       newval
       
