@@ -3,7 +3,7 @@ require_relative  "ManagedService.rb"
 class CronService < ManagedService 
   
   def add_consumer_to_service(site_hash)
-    
+    site_hash[:container_name] =site_hash[:parent_engine]  
       return  @core_api.add_cron(site_hash) 
      end
   def rm_consumer_from_service (site_hash)
