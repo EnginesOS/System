@@ -7,8 +7,9 @@ class DBManagedService < ManagedService
     
 #overloaded for the moment
   def add_consumer_to_service(site_hash)
+    p :add_consumer
     p site_hash
-    if site_hash.has_key?(:name) == false || site_hash[:name] = nil    
+    if site_hash.has_key?(:name) == false || site_hash[:name] == nil    
           site_hash[:name] = site_hash[:database_name]
       end
     return  create_database(site_hash) 
@@ -22,6 +23,7 @@ class DBManagedService < ManagedService
   def create_database  site_hash
     
     begin
+      p :create_db
       p site_hash
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
