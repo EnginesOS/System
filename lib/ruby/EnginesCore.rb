@@ -267,9 +267,9 @@ class EnginesCore
         stateDir = container_state_dir(container) + "/config.yaml"
         File.delete(stateDir)
         cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
-          if File.exists?(cidfile)
-            File.delete(cidfile)
-          end
+        if File.exists?(cidfile)
+          File.delete(cidfile)
+        end
         return true
       rescue Exception=>e
         container.last_error=( "Failed To Delete " )
@@ -732,8 +732,6 @@ class EnginesCore
       end
     end
 
- 
-    
     def save_system_preferences
       clear_error
       begin
@@ -1186,17 +1184,18 @@ class EnginesCore
       end
     end
 
-     def   image_exists? (image_name)
-       cmd= "docker images -q " + image_name
-       res = SystemUtils.run_system(cmd)
-       
-        if res.length >0
-          return true
-        else
-          return false
-        end
-       
-     end
+    def   image_exists? (image_name)
+      cmd= "docker images -q " + image_name
+      res = SystemUtils.run_system(cmd)
+
+      if res.length >0
+        return true
+      else
+        return false
+      end
+
+    end
+
     def unpause_container container
       clear_error
       begin
@@ -1487,7 +1486,7 @@ class EnginesCore
     def clear_error
       @last_error = ""
     end
-    
+
     def log_exception(e)
       e_str = e.to_s()
       n=0
@@ -1511,10 +1510,10 @@ class EnginesCore
 
   attr_reader :last_error
 
-def software_service_definition(params)
-   sm = loadServiceManager
-   return sm.software_service_definition(params)
- end
+  def software_service_definition(params)
+    sm = loadServiceManager
+    return sm.software_service_definition(params)
+  end
 
   def add_domain(params)
     return  @system_api.add_domain(params)
@@ -1679,46 +1678,45 @@ def software_service_definition(params)
   def set_engine_hostname_details(container,params)
     return @system_api.set_engine_hostname_details(container,params)
   end
-  
+
   def image_exists?(containerName)
     imageName = containerName +"/deploy"
     return @docker_api.image_exists?(imageName)
     catch Exception=>e
-      log_execption(e)
-      return false
+    log_execption(e)
+    return false
   end
-  
+
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
     return sm.list_attached_services_for(objectName,identifier)
-    
-#    object_name = object.class.name.split('::').last
-#    
-#    case object_name
-#    when  "ManagedEngine"
-#      retval = Hash.new
-#      
-#    retval[:database] = object.databases
-#    retval[:volume] = object.volumes
-#    retval[:cron] = object.cron_job_list
-#      
-#      return retval
-#      
-#      #list services 
-#      # which includes volumes databases cron      
-#    end
-#    p "missed object name"
-#    p object_name
-#    
-#    service_manager = loadServiceManager()
-#    
-#    if service_manager !=nil 
-#      return service_manager.attached_services(object)
-#      
-#    end
-#    return false
-      
-  
+
+    #    object_name = object.class.name.split('::').last
+    #
+    #    case object_name
+    #    when  "ManagedEngine"
+    #      retval = Hash.new
+    #
+    #    retval[:database] = object.databases
+    #    retval[:volume] = object.volumes
+    #    retval[:cron] = object.cron_job_list
+    #
+    #      return retval
+    #
+    #      #list services
+    #      # which includes volumes databases cron
+    #    end
+    #    p "missed object name"
+    #    p object_name
+    #
+    #    service_manager = loadServiceManager()
+    #
+    #    if service_manager !=nil
+    #      return service_manager.attached_services(object)
+    #
+    #    end
+    #    return false
+
   end
 
   def list_avail_services_for(object)
@@ -1731,76 +1729,76 @@ def software_service_definition(params)
     retval[:subservices] = subservices
     return retval
   end
-  
+
   def load_software_service(params)
+
     sm = loadServiceManager()
     p :load_software_service
     p params
-      service_container =  sm.get_software_service_container_name(params)
-      p :container_name
-      p service_container
-      service = loadManagedService(service_container)
-        if service == nil
-          return nil
-        end
-        
-      return service
+    service_container =  sm.get_software_service_container_name(params)
+    p :container_name
+    p service_container
+    service = loadManagedService(service_container)
+    if service == nil
+      return nil
+    end
+
+    return service
   end
-  
-    def attach_service(params)
-      #parent_engine
-      #service_type
-      #service_provider
-      #name
-      #service hash from fields in Software Service Definition for that service 
-      service = load_software_service(params)
-      
-      service_hash = params[:service_hash]
-        if service_hash == nil
-          return false
-          end
-          
-      if service !=nil
-        return service.add_consumer(service_hash)
-      end
-      last_error = "Failed to attach Service: " + last_error      
-       return  false
-     end
-     
-    def detach_service(params)
-       return  false
-     end
-     
-     
-    def loadServiceManager()
-      if @service_manager == nil
-        @service_manager = ServiceManager.new()
+
+  def attach_service(params)
+    #parent_engine
+    #service_type
+    #service_provider
+    #name
+    #service hash from fields in Software Service Definition for that service
+    service = load_software_service(params)
+
+    service_hash = params  #[:service_hash]
+    if service_hash == nil
+      return false
+    end
+
+    if service !=nil
+      return service.add_consumer(service_hash)
+    end
+    last_error = "Failed to attach Service: " + last_error
+    return  false
+  end
+
+  def detach_service(params)
+    return  false
+  end
+
+  def loadServiceManager()
+    if @service_manager == nil
+      @service_manager = ServiceManager.new()
       return @service_manager
     end
     return @service_manager
-    end    
-    
+  end
+
   def load_service_definition(filename)
-    
+
     yaml_file = File.open(filename)
     p :open
     p filename
-   return  SoftwareServiceDefinition.from_yaml(yaml_file)
+    return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
-      return nil
+    return nil
   end
-  
-  def load_avail_services_for(objectname)
-     p :load_avail_services_for
-     p objectname
-      retval = Array.new
 
-      dir = SysConfig.ServiceMapTemplateDir + "/" + objectname
-      p :dir
-      p dir 
-      if Dir.exists?(dir)
-        Dir.foreach(dir) do |service_dir_entry|
-          begin
+  def load_avail_services_for(objectname)
+    p :load_avail_services_for
+    p objectname
+    retval = Array.new
+
+    dir = SysConfig.ServiceMapTemplateDir + "/" + objectname
+    p :dir
+    p dir
+    if Dir.exists?(dir)
+      Dir.foreach(dir) do |service_dir_entry|
+        begin
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
@@ -1812,23 +1810,23 @@ def software_service_definition(params)
               retval.push(service.to_h)
             end
           end
-          rescue Exception=>e
-            puts e
-            next
-          end
+        rescue Exception=>e
+          puts e
+          next
         end
       end
-      return retval
-   
+    end
+    return retval
+
   end
 
   def load_avail_component_services_for(object)
-  retval = Hash.new
+    retval = Hash.new
     if object.is_a?(ManagedEngine)
       if object.volumes.count >0
         p :loading_vols
         volumes = load_avail_services_for("Volume") #Array of hashes
-        retval[:volume] = volumes                    
+        retval[:volume] = volumes
       end
       if object.databases.count >0
         databases = load_avail_services_for("Database") #Array of hashes
@@ -1850,37 +1848,37 @@ def software_service_definition(params)
       last_error = engine.result_mesg
       return false
     end
-    
+
     if engine.is_active == true
       last_error="Container is active"
       return false
     end
-    
-      if params.has_key?(:memory) 
-        if params[:memory] == engine.memory
-          last_error="No Change in Memory Value"
-          return false
-        end
-        
+
+    if params.has_key?(:memory)
+      if params[:memory] == engine.memory
+        last_error="No Change in Memory Value"
+        return false
+      end
+
       if engine.update_memory(params[:memory]) == false
-          last_error= engine.last_error
-          return false
-        end
-      end
-
-      if engine.has_container? == true
-        if destroy_container(engine)  == false
-          last_error= engine.last_error
-          return false
-        end
-      end
-
-      if  create_container(engine) == false
         last_error= engine.last_error
         return false
       end
+    end
+
+    if engine.has_container? == true
+      if destroy_container(engine)  == false
+        last_error= engine.last_error
+        return false
+      end
+    end
+
+    if  create_container(engine) == false
+      last_error= engine.last_error
+      return false
+    end
     return true
-    
+
   end
 
   def set_engine_network_properties (engine, params)
@@ -1946,8 +1944,8 @@ def software_service_definition(params)
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
-        
-        #save details with some manager
+
+      #save details with some manager
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)
@@ -1956,14 +1954,14 @@ def software_service_definition(params)
       return false
     end
   end
-  
+
   def drop_database  site_hash
     clear_error
     begin
       container_name =  site_hash[:flavor] + "_server"
       cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
-        
-        #save details with some manager
+
+      #save details with some manager
       SystemUtils.debug_output(cmd)
 
       return run_system(cmd)
@@ -2090,7 +2088,7 @@ def software_service_definition(params)
       vals = res.split("bytes:")
       if vals.count < 2
         if vals[1] != nil && vals[2] != nil
-          ret_val[:in] = vals[1].chop        
+          ret_val[:in] = vals[1].chop
           ret_val[:out] = vals[2].chop
         else
           ret_val[:in] ="-1"
