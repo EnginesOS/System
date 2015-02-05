@@ -1754,6 +1754,7 @@ def software_service_definition(params)
       #name
       #service hash from fields in Software Service Definition for that service 
       service = load_software_service(params)
+      
       service_hash = params[:service_hash]
         if service_hash == nil
           return false
