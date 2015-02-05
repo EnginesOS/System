@@ -1731,7 +1731,9 @@ class EngineBuilder
               #service_provider
               #name
               #service
-                        
+                #symbols from ftp service definition and values from blueprint and envionment
+                # still need to sort
+              #will follow the blueprint design studio's team leader on how to implement        
               service[:volume] = primary_vol.name
               service[:folder] =  service["dest"]
               service[:username] = @set_environments["ftpuser"]
@@ -1740,18 +1742,11 @@ class EngineBuilder
               service[:service_type]=service["servicetype_name"]
               service[:service_provider]="EnginesSystem"  
               service[:parent_engine]=mc.containerName
-              service[:name]=service["name"]
-              
-              service.inject({}){|h,(k,v)| h.merge({ k.to_sym => v}) }
-                
-              service_def[:service_hash]=service
-              service_def[:parent_engine]=mc.containerName
-              service_def[:service_type]=service["servicetype_name"]
-              service_def[:service_provider]="EnginesSystem"
-              service_def[:name]=service["name"]
+              service[:name]=service["name"]             
+                    
                 p :service_def
-                p service_def
-              @core_api.attach_service(service_def)
+                p service
+              @core_api.attach_service(service)
 #            volume from vol
 #            name  from hash
 #            folder  from hash 
