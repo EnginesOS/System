@@ -22,7 +22,7 @@ class ServiceManager
    if server_service == nil
      return nil
    end
-    return server_service.service_container
+    return server_service[:service_container]
     
   end
   
