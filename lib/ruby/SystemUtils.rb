@@ -33,8 +33,7 @@ class SystemUtils
                       end
                       newval.push(array_val)                                          
                     end
-                      newval
-      
+                      newval      
                   else value
                   end
       result[new_key] = new_value
