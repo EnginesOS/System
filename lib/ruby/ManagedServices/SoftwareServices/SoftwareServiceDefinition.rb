@@ -34,6 +34,7 @@ class SoftwareServiceDefinition
           
           #FIXME and support more than one dir
           if service_type.include?('/')
+            p :sub_service
             service_type =  service_type.sub(/.*\//,"")
             dir += service_type.sub(/\/.*/,"")
             p :sub_service
