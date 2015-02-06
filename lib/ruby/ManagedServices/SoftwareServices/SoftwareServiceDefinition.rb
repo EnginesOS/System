@@ -25,9 +25,7 @@ class SoftwareServiceDefinition
   end
   
   def SoftwareServiceDefinition.find(service_type,provider)
-    dir = SysConfig.ServiceTemplateDir + "/" 
-          p :dir
-          p dir 
+  
           p :looking_for
           p provider
           p service_type
@@ -43,7 +41,9 @@ class SoftwareServiceDefinition
             p service_type
             
           end
-    
+    dir = SysConfig.ServiceTemplateDir + "/" + provider
+            p :dir
+            p dir 
           if Dir.exist?(dir)
             return search_dir(dir,service_type)
           end
