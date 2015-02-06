@@ -431,38 +431,7 @@ class EnginesCore
       end
     end
 
-    def rm_backup(site_hash)
-      clear_error
-      begin
-        ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
-        return run_system(ssh_cmd)
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
-    def create_backup(site_hash)
-      clear_error
-      begin
-        containerName = site_hash[:engine_name]
-        SystemUtils.debug_output site_hash
-        if site_hash[:source_type] =="fs"
-          site_src=containerName + ":fs:" + site_hash[:source_name]
-        else
-          site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
-        end
-        #FIXME
-        site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
-        ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
-        run_system(ssh_cmd)
-        #FIXME shoudl return about result and not just true
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def  save_domains(domains)
       clear_error
@@ -1502,9 +1471,7 @@ class EnginesCore
     return @system_api.rm_volume(site_hash)
   end
 
-  def create_backup(site_hash)
-    return @system_api.create_backup(site_hash)
-  end
+
 
   def remove_self_hosted_domain(domain_name)
     return @system_api.remove_self_hosted_domain(domain_name)
