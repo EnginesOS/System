@@ -5,15 +5,15 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: MySQL Database
-description: "MYSQL Database "
+title: PgMySQL Database
+description: "PgMySQL Database "
 service_provider: EnginesSystem
 service_type: database
-service_container: mysql_server
+service_container: pssql_server
 dedicated: false
 persistant: true
 exclusive: true
-image_name: engines/volmanager
+image_name: engines/pssql_server
 consumer_params:
 setup_params:
  database_host:

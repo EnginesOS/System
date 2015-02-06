@@ -6,9 +6,9 @@ accepts:
   "ManagedService"
 author: Engines
 title: Cron
-description: "Scheduales tasks"
-service_type: cron
-service_container: cron
+description: "Backup tasks"
+service_type: backup
+service_container: backup
 service_provider: EnginesSystem
 dedicated: false
 persistant: false
@@ -16,8 +16,8 @@ consumer_params:
 setup_params:
    cron_job:
     regex_invalid_message: "wrong go back and try again"
-    name: cron_job
-    label: Cron line
+    name: backup_name
+    label: Backup Name
     regex_validator: ".*"
     tooltip: " "
     type: text_field
@@ -28,8 +28,8 @@ setup_params:
     comment: " "
    name:
     regex_invalid_message: "wrong go back and try again"
-    name: name
-    label: Cron line title
+    name: backup_type
+    label: Backup Type
     regex_validator: ".*"
     tooltip: " "
     type: text_field

@@ -5,15 +5,15 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: MySQL Database
-description: "MYSQL Database "
+title: Mongo NoSQL  Database
+description: "Mongo NoSQL Database "
 service_provider: EnginesSystem
-service_type: database
-service_container: mysql_server
+service_type: nosql_database
+service_container: mongo_server
 dedicated: false
 persistant: true
 exclusive: true
-image_name: engines/volmanager
+image_name: engines/mongo_server
 consumer_params:
 setup_params:
  database_host:

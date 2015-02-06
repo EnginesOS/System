@@ -5,15 +5,15 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: MySQL Database
-description: "MYSQL Database "
+title: AWS MySQL Database
+description: "AWS MYSQL Database "
 service_provider: EnginesSystem
 service_type: database
 service_container: awsdb
 dedicated: false
 persistant: true
 exclusive: true
-image_name: engines/volmanager
+image_name: engines/awsdb
 consumer_params:
 setup_params:
  database_host:
