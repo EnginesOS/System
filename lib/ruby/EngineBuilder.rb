@@ -845,7 +845,7 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint[software][:persistantfiles]
+        pfs =   @blueprint[:software][:persistantfiles]
         files= String.new
         pfs.each do |file|
           path = clean_path(file[:path])
