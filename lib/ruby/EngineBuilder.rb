@@ -813,8 +813,8 @@ class EngineBuilder
     end
 
     def read_web_port_overide
-      if @blueprint["software"].has_key?("read_web_port_overide") == true
-        @web_port=@blueprint["software"]["read_web_port_overide"]
+      if @blueprint[:software].has_key?(:read_web_port_overide) == true
+        @web_port=@blueprint[:software][:read_web_port_overide]
       end
     end
 
@@ -824,10 +824,10 @@ class EngineBuilder
 
         @persistant_dirs = Array.new
 
-        pds =   @blueprint["software"]["persistantdirs"]
+        pds =   @blueprint[:software][:persistantdirs]
 
         pds.each do |dir|
-          @persistant_dirs.push(dir["path"])
+          @persistant_dirs.push(dir[:path])
 
         end
 
@@ -845,10 +845,10 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint["software"]["persistantfiles"]
+        pfs =   @blueprint[software][:persistantfiles]
         files= String.new
         pfs.each do |file|
-          path = clean_path(file["path"])
+          path = clean_path(file[:path])
           #link_src = path.sub(/app/,"")
           src_paths.push(path)
         end
@@ -869,13 +869,13 @@ class EngineBuilder
       begin
         @rake_actions = Array.new
         log_build_output("Read Rake List")
-        rake_cmds = @blueprint["software"]["rake_tasks"]
+        rake_cmds = @blueprint[:software][:rake_tasks]
         if rake_cmds == nil
           return
         end
 
         rake_cmds.each do |rake_cmd|
-          rake_action = rake_cmd["action"]
+          rake_action = rake_cmd[:action]
           p rake_action
           if rake_action !=nil
             @rake_actions.push(rake_action)
@@ -894,18 +894,18 @@ class EngineBuilder
       @volumes=Hash.new
 
       log_build_output("Read Services")
-      services=@blueprint["software"]["softwareservices"]
+      services=@blueprint[:software][:softwareservices]
       services.each do |service|
-        servicetype=service["servicetype_name"]
+        servicetype=service[:servicetype_name]
         if servicetype == "database/mysql" || servicetype == "database/pgsql"
-          dbname = service["name"]
-          dest = service["dest"]
+          dbname = service[:name]
+          dest = service[:dest]
           if dest =="local" || dest == nil
             add_db_service(dbname,servicetype)
           end
         else if servicetype=="filesystem"
-            fsname = clean_path(service["name"])
-            dest = clean_path(service["dest"])
+            fsname = clean_path(service[:name])
+            dest = clean_path(service[:dest])
             add_file_service(fsname, dest)
           else
             add_service(service)
@@ -961,9 +961,9 @@ class EngineBuilder
         @os_packages = Array.new
 
         log_build_output("Read OS Packages")
-        ospackages = @blueprint["software"]["ospackages"]
+        ospackages = @blueprint[:software][:ospackages]
         ospackages.each do |package|
-          @os_packages.push(package["name"])
+          @os_packages.push(package[:name])
         end
       rescue
         log_exception(e)
@@ -974,10 +974,10 @@ class EngineBuilder
     def read_lang_fw_values
       log_build_output("Read Framework Settings")
       begin
-        @framework = @blueprint["software"]["swframework_name"]
+        @framework = @blueprint[:software][:swframework_name]
         p @framework
-        @runtime =  @blueprint["software"]["langauge_name"]
-        @memory =  @blueprint["software"]["requiredmemory"]
+        @runtime =  @blueprint[:software][:langauge_name]
+        @memory =  @blueprint[:software][:requiredmemory]
       rescue Exception=>e
         log_exception(e)
         return false
@@ -989,11 +989,11 @@ class EngineBuilder
         @pear_modules = Array.new
 
         log_build_output("Read Pear List")
-        pear_mods = @blueprint["software"]["pear_mod"]
+        pear_mods = @blueprint[:software][:pear_mod]
         if pear_mods == nil || pear_mods.length == 0
           return
           pear_mods.each do |pear_mod|
-            mod =             pear_mod["module"]
+            mod =             pear_mod[:module]
             if mod !=nil
               @pear_modules.push(mod)
             end
@@ -1009,12 +1009,12 @@ class EngineBuilder
     def read_apache_modules
       @apache_modules = Array.new
       log_build_output("Read Apache Modules List")
-      mods =  @blueprint["software"]["apache_modules"]
+      mods =  @blueprint[:software][:apache_modules]
       if mods == nil
         return true
       end
       mods.each do |ap_module|
-        mod = ap_module["module"]
+        mod = ap_module[:module]
         if mod != nil
           @apache_modules.push(mod)
         end
@@ -1036,7 +1036,7 @@ class EngineBuilder
         #        @archives_details[:arc_loc] = Array.new
         #        @archives_details[:arc_dir] = Array.new
         log_build_output("Configuring install Environment")
-        archives = @blueprint["software"]["installedpackages"]
+        archives = @blueprint[:software][:installedpackages]
         n=0
         #        srcs=String.new
         #        names=String.new
@@ -1046,11 +1046,11 @@ class EngineBuilder
 
         archives.each do |archive|
           archive_details = Hash.new
-          arc_src=clean_path(archive["src"])
-          arc_name=clean_path(archive["name"])
-          arc_loc =clean_path(archive["dest"])
-          arc_extract=clean_path(archive[ "extractcmd"])
-          arc_dir=clean_path(archive["extractdir"])
+          arc_src=clean_path(archive[:src])
+          arc_name=clean_path(archive[:name])
+          arc_loc =clean_path(archive[:dest])
+          arc_extract=clean_path(archive[:extractcmd])
+          arc_dir=clean_path(archive[:extractdir])
           #          if(n >0)
           #            srcs = srcs + " "
           #            names =names + " "
@@ -1082,13 +1082,13 @@ class EngineBuilder
         log_build_output("Read Recursive Write Permissions")
         @recursive_chmods = Array.new
         log_build_output("set permissions recussive")
-        chmods = @blueprint["software"]["file_write_permissions"]
+        chmods = @blueprint[:software][:file_write_permissions]
         p :Single_Chmods
         if chmods != nil
           chmods.each do |chmod |
             p chmod
-            if chmod["recursive"]==true
-              directory = clean_path(chmod["path"])
+            if chmod[:recursive]==true
+              directory = clean_path(chmod[:path])
               p directory
               @recursive_chmods.push(directory)
             end
@@ -1107,14 +1107,14 @@ class EngineBuilder
         log_build_output("Read Non-Recursive Write Permissions")
         @single_chmods =Array.new
         log_build_output("set permissions  single")
-        chmods = @blueprint["software"]["file_write_permissions"]
+        chmods = @blueprint[:software][:file_write_permissions]
         p :Recursive_Chmods
         if chmods != nil
           chmods.each do |chmod |
             p chmod
-            if chmod["recursive"]==false
-              p chmod["path"]
-              directory = clean_path(chmod["path"])
+            if chmod[:recursive]==false
+              p chmod[:path]
+              directory = clean_path(chmod[:path])
               @single_chmods.push(directory)
             end
           end
@@ -1132,10 +1132,10 @@ class EngineBuilder
 
         log_build_output("Read Workers")
         @worker_commands = Array.new
-        workers =@blueprint["software"]["worker_commands"]
+        workers =@blueprint[:software][:worker_commands]
 
         workers.each do |worker|
-          @worker_commands.push(worker["command"])
+          @worker_commands.push(worker[:command])
         end
       rescue Exception=>e
         log_exception(e)
@@ -1146,7 +1146,7 @@ class EngineBuilder
     def read_cron_jobs
       begin
         log_build_output("Read Crontabs")
-        cjs =  @blueprint["software"]["cron_jobs"]
+        cjs =  @blueprint[:software][:cron_jobs]
         p :cron_jobs
         p cjs
         @cron_jobs = Array.new
@@ -1154,7 +1154,7 @@ class EngineBuilder
         cjs.each do |cj|
           p :read_cron_job
           p cj
-          @cron_jobs.push(cj["cronjob"])
+          @cron_jobs.push(cj[:cronjob])
         end
 
         return true
@@ -1175,7 +1175,7 @@ class EngineBuilder
         @sed_strings[:tmp_file] = Array.new
 
         log_build_output("set sed strings")
-        seds=@blueprint["software"]["replacementstrings"]
+        seds=@blueprint[:software][:replacementstrings]
         if seds == nil || seds.empty? == true
           return
         end
@@ -1183,8 +1183,8 @@ class EngineBuilder
         n=0
         seds.each do |sed|
 
-          file = clean_path(sed["file"])
-          dest = clean_path(sed["dest"])
+          file = clean_path(sed[:file])
+          dest = clean_path(sed[:dest])
           tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
           if file.match(/^_TEMPLATES.*/) != nil
             template_file = file.gsub(/^_TEMPLATES/,"")
@@ -1199,7 +1199,7 @@ class EngineBuilder
             src_file = "/home/app/" +  file
           end
           dest_file = "/home/app/" +  dest
-          sedstr = sed["sedstr"]
+          sedstr = sed[:sedstr]
           @sed_strings[:src_file].push(src_file)
           @sed_strings[:dest_file].push(dest_file)
           @sed_strings[:tmp_file].push(tmp_file)
@@ -1218,12 +1218,12 @@ class EngineBuilder
       begin
         @workerPorts = Array.new
         log_build_output("Read Work Ports")
-        ports =  @blueprint["software"]["work_ports"]
+        ports =  @blueprint[:software][:work_ports]
         puts("Ports Json" + ports.to_s)
         if ports != nil
           ports.each do |port|
-            portnum = port["port"]
-            name = port["name"]
+            portnum = port[:port]
+            name = port[:name]
             external = port['external']
             type = port['protocol']
             if type == nil
@@ -1247,16 +1247,16 @@ class EngineBuilder
       p :set_environment_variables
       p @builder.set_environments
       begin
-        envs = @blueprint["software"]["environment_variables"]
+        envs = @blueprint[:software][:environment_variables]
         envs.each do |env|
           p env
-          name=env["name"]
-          value=env["value"]
-          ask=env["ask_at_build_time"]
-          mandatory = env["mandatory"]
-          build_time_only =  env["build_time_only"]
-          label =  env["label"]
-          immutable =  env["immutable"]
+          name=env[:name]
+          value=env[:value]
+          ask=env[:ask_at_build_time]
+          mandatory = env[:mandatory]
+          build_time_only =  env[:build_time_only]
+          label =  env[:label]
+          immutable =  env[:immutable]
 
           if @builder.set_environments != nil
             p :looking_for_
@@ -1317,9 +1317,9 @@ class EngineBuilder
         p :env_hash
         p env_hash
 
-        if env_hash != nil && env_hash["name"] !=nil && env_hash["value"] != nil
-          env_hash["name"] = env_hash["name"].sub(/_/,"")
-          custom_env_hash.store(env_hash["name"],env_hash["value"])
+        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
+          env_hash[:name] = env_hash[:name].sub(/_/,"")
+          custom_env_hash.store(env_hash[:name],env_hash[:value])
         end
       end
       p :Merged_custom_env
@@ -1734,7 +1734,7 @@ class EngineBuilder
           #@core_api.add_service(service,mc)
             p :adding_service
             p service   
-            if service["servicetype_name"] == "ftp"
+            if service[:servicetype_name] == "ftp"
               service_def = Hash.new
               #parent_engine
               #service_type
@@ -1745,14 +1745,14 @@ class EngineBuilder
                 # still need to sort
               #will follow the blueprint design studio's team leader on how to implement        
               service[:volume] = primary_vol.name
-              service[:folder] =  service["dest"]
-              service[:username] = @set_environments["ftpuser"]
-              service[:password] = @set_environments["password"]
+              service[:folder] =  service[:dest]
+              service[:username] = @set_environments[:ftpuser]
+              service[:password] = @set_environments[:password]
               service[:rw_access] =true
-              service[:service_type]=service["servicetype_name"]
+              service[:service_type]=service[:servicetype_name]
               service[:service_provider]="EnginesSystem"  
               service[:parent_engine]=mc.containerName
-              service[:name]=service["name"]             
+              service[:name]=service[:name]             
                     
                 p :service_def
                 p service
