@@ -893,9 +893,14 @@ class EngineBuilder
       @databases=Array.new
       @volumes=Hash.new
 
+      
       log_build_output("Read Services")
       services=@blueprint[:software][:softwareservices]
       services.each do |service|
+        
+        if service.has_key?(:service_provider) == false || service[:service_provider] == nil
+          service[:service_provider] = "EnginesSystem"  
+        end
 #        servicetype=service[:servicetype_name]
 #        if servicetype == "database/mysql" || servicetype == "database/pgsql"
 #          dbname = service[:name]
@@ -1755,9 +1760,7 @@ class EngineBuilder
     @blueprint_reader.services.each() do |service|
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
-        if service.has_key?(:service_provider) == false || service[:service_provider] == nil
-          service[:service_provider] = "EnginesSystem"  
-        end
+
        service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
       if service_def == nil
         p :failed_to_load_service_definition
@@ -1777,9 +1780,7 @@ class EngineBuilder
   
   def create_persistant_services
     @blueprint_reader.services.each() do |service|
-      if service.has_key?(:service_provider) == false || service[:service_provider] == nil
-        service[:service_provider] = "EnginesSystem"  
-      end
+
      service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
        p :service_def_for
        p service[:servicetype_name]
