@@ -947,7 +947,7 @@ class EngineBuilder
     end
 
     def  add_db_service(dbname,servicetype)
-      servicetype.sub!(/database\//,"") 
+      servicetype.sub!(/.*database\//,"") 
       log_build_output("Add DB Service " + dbname)
       hostname = servicetype + "." + SysConfig.internalDomain
       db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
