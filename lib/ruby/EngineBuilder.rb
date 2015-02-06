@@ -1437,8 +1437,8 @@ class EngineBuilder
 #        test_hash[(key.to_sym rescue key) || key] = myhash.delete(key)
 #      end
 #      p test_hash
-  p    SystemUtils.symbolize_keys(json_hash)
-      return json_hash
+  hash =  SystemUtils.symbolize_keys(json_hash)
+      return hash
       
     rescue Exception=>e
       log_exception(e)
