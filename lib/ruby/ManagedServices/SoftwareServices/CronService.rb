@@ -1,6 +1,7 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require_relative  "../ManagedService.rb"
-class CronService < ManagedService 
+
+require_relative "SoftwareService.rb"
+class CronService < SoftwareService 
   
   def add_consumer_to_service(site_hash)
     site_hash[:container_name] = site_hash[:parent_engine]  

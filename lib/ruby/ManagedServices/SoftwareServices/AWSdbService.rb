@@ -1,6 +1,6 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 
-require_relative  "../ManagedService.rb"
+
 require_relative "SoftwareService.rb"
 
 class AWSdb < SoftwareService

@@ -1,8 +1,8 @@
 
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require_relative  "../ManagedService.rb"
+require_relative "SoftwareService.rb"
 
-class NagiosService < ManagedService
+class NagiosService < SoftwareService
   
   def add_consumer_to_service(site_hash)
       return  add_monitor(site_hash)

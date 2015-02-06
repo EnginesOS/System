@@ -1,8 +1,9 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/ContainerObjects/DatabaseService.rb"
+require_relative "SoftwareService.rb"
 
 
-class DBManagedService < ManagedService
+class MongoDBService < SoftwareService
 
     
 #overloaded for the moment
