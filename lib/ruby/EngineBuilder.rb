@@ -896,21 +896,21 @@ class EngineBuilder
       log_build_output("Read Services")
       services=@blueprint[:software][:softwareservices]
       services.each do |service|
-        servicetype=service[:servicetype_name]
-        if servicetype == "database/mysql" || servicetype == "database/pgsql"
-          dbname = service[:name]
-          dest = service[:dest]
-          if dest =="local" || dest == nil
-            add_db_service(dbname,servicetype)
-          end
-        else if servicetype=="filesystem"
-            fsname = clean_path(service[:name])
-            dest = clean_path(service[:dest])
-            add_file_service(fsname, dest)
-          else
+#        servicetype=service[:servicetype_name]
+#        if servicetype == "database/mysql" || servicetype == "database/pgsql"
+#          dbname = service[:name]
+#          dest = service[:dest]
+#          if dest =="local" || dest == nil
+#            add_db_service(dbname,servicetype)
+#          end
+#        else if servicetype=="filesystem"
+#            fsname = clean_path(service[:name])
+#            dest = clean_path(service[:dest])
+#            add_file_service(fsname, dest)
+#          else
             add_service(service)
-          end
-        end
+#          end
+#        end
       end
     end #FIXME
 
@@ -948,6 +948,9 @@ class EngineBuilder
 
     def  add_db_service(dbname,servicetype)
       servicetype.sub!(/.*database\//,"") 
+      p :adding_db
+      p dbname
+      p servicetype
       log_build_output("Add DB Service " + dbname)
       hostname = servicetype + "." + SysConfig.internalDomain
       db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
@@ -1694,10 +1697,10 @@ class EngineBuilder
 
       setup_framework_logging
 
-      log_build_output("Creating db Services")
-      @blueprint_reader.databases.each() do |db|
-        create_database_service db
-      end
+#      log_build_output("Creating db Services")
+#      @blueprint_reader.databases.each() do |db|
+#        create_database_service db
+#      end
 
       create_persistant_services
 
@@ -1713,25 +1716,25 @@ class EngineBuilder
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end
 
+        #needs to be moved to services dependant on the new BPDS
         create_cron_service
 
-        log_build_output("Creating vol Services")
-        @blueprint_reader.databases.each() do |db|
-          create_database_service db
-        end
-
-        primary_vol=nil
-        @blueprint_reader.volumes.each_value() do |vol|
-          create_file_service vol
-          if primary_vol == nil
-            primary_vol =vol
-          end
-        end
+#        log_build_output("Creating vol Services")
+#        @blueprint_reader.databases.each() do |db|
+#          create_database_service db
+#        end
+#
+#        primary_vol=nil
+#        @blueprint_reader.volumes.each_value() do |vol|
+#          create_file_service vol
+#          if primary_vol == nil
+#            primary_vol =vol
+#          end
+#        end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
-          create_non_persistant_services
-   
+          create_non_persistant_services   
         end
       end
 
@@ -1785,7 +1788,10 @@ class EngineBuilder
        
        if service_def == nil
          p :failed_to_load_service_definition
+         p :servicetype_name
+         
          p service[:servicetype_name]
+           p :service_provider
         p service[:service_provider]
          return false
        end

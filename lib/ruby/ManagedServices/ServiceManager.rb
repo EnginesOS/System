@@ -107,8 +107,8 @@ class ServiceManager
       end
       retval[ service_node.name].push(get_service_content(service_node))
     end
-    p :retval
-    p retval
+#    p :retval
+#    p retval
     return retval
  
 rescue Exception=>e
@@ -120,12 +120,12 @@ rescue Exception=>e
   def get_service_content(service_node)
     retval = Hash.new
     service_node.children.each do |provider_node|
-      p :provider_node_name
-      p provider_node.name
+#      p :provider_node_name
+#      p provider_node.name
       retval[provider_node.name] = Array.new
           provider_node.children.each do |service_node|
-            p :service_node_name
-            p service_node.name
+#            p :service_node_name
+#            p service_node.name
             retval[provider_node.name].push(service_node.content)
           end       
     end
@@ -202,8 +202,8 @@ rescue Exception=>e
       service_provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
       service_type_node << service_provider_node
     end
-    p :service_name
-    p service_hash[:name]
+   # p :service_name
+#    p service_hash[:name]
       
       if service_hash[:name] == nil
         p :error_service_hash_has_nil_name
@@ -268,9 +268,9 @@ rescue Exception=>e
           return false
         end
         service_node = service_provider_node[service_hash[:name]]
-          p :really_removing
-          p service_node
-         p :from
+#          p :really_removing
+#          p service_node
+#         p :from
          # p service_provider_node
           #FIXME a method should do this in a loop
           
