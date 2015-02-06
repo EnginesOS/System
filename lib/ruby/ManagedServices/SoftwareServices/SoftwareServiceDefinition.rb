@@ -41,7 +41,7 @@ class SoftwareServiceDefinition
     root = dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
-        if Dir.exist?(service_dir_entry) == true && service_dir_entry.directory.start_with?(".") ==false
+        if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?(".") ==false
           search_dir(root + "/" + service_dir_entry,service_type)
         else
           if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
