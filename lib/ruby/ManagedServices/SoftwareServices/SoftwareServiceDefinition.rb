@@ -39,7 +39,7 @@ class SoftwareServiceDefinition
             service_type.sub!(/.*\//,"")
            
             p :sub_service
-            p dir 
+            p provider 
             p service_type
             
           end
