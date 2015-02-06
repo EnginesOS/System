@@ -901,6 +901,8 @@ class EngineBuilder
         if service.has_key?(:service_provider) == false || service[:service_provider] == nil
           service[:service_provider] = "EnginesSystem"  
         end
+        p :service_provider
+        p   service[:service_provider] 
 #        servicetype=service[:servicetype_name]
 #        if servicetype == "database/mysql" || servicetype == "database/pgsql"
 #          dbname = service[:name]

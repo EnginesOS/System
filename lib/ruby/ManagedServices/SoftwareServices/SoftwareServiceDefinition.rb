@@ -28,6 +28,10 @@ class SoftwareServiceDefinition
     dir = SysConfig.ServiceTemplateDir + "/" 
           p :dir
           p dir 
+          p :looking_for
+          p provider
+          p service_type
+          
           #FIXME and support more than one dir
           if service_type.include?("/")
             service_type =  service_type.sub(/.*\//,"")
