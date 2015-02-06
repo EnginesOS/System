@@ -32,7 +32,12 @@ class SoftwareServiceDefinition
             return search_dir(dir,service_type)
           end
   end
+  
   def search_dir(dir,service_type)
+    return SoftwareServiceDefinition.search_dir(dir,service_type)
+  end
+  
+  def SoftwareServiceDefinition.search_dir(dir,service_type)
     root = dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
