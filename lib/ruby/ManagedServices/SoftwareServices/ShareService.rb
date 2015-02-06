@@ -1,5 +1,5 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require_relative  "ManagedService.rb"
+require_relative  "../ManagedService.rb"
 class ShareService < ManagedService 
   
   def add_consumer_to_service(site_hash)
