@@ -45,7 +45,7 @@ class SoftwareServiceDefinition
           search_dir(root + "/" + service_dir_entry,service_type)
         else
           if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
-            return load_service_type(dir,service_type)
+            return find(dir,service_type)
           end
         end
       end
