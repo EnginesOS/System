@@ -1772,6 +1772,14 @@ class EngineBuilder
         service[:service_provider] = "EnginesSystem"  
       end
      service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+       p :service_def_for
+       p service[:servicetype_name]
+       p service[:service_provider]
+         p  service_def
+       
+       if service_def == nil
+         return false
+       end
       if service_def[:persistant] == false
         next                 
       end
