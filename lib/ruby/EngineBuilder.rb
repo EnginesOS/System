@@ -1756,6 +1756,12 @@ class EngineBuilder
           service[:service_provider] = "EnginesSystem"  
         end
        service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+      if service_def == nil
+        p :failed_to_load_service_definition
+        p service[:servicetype_name]
+              p service[:service_provider]
+        return false
+      end
         if service_def[:persistant] == true
           next                 
         end
@@ -1778,6 +1784,9 @@ class EngineBuilder
          p  service_def
        
        if service_def == nil
+         p :failed_to_load_service_definition
+         p service[:servicetype_name]
+        p service[:service_provider]
          return false
        end
       if service_def[:persistant] == false
