@@ -1,6 +1,6 @@
 
 require "/opt/engines/lib/ruby/ManagedServices/ManagedService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/ShareService.rb"
+
 require "/opt/engines/lib/ruby/ManagedServices/ServiceManager.rb"
 
 require "/opt/engines/lib/ruby/ManagedServices/SystemServices/DNSService.rb"
@@ -18,4 +18,4 @@ require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/CronService.rb"
 
 
 #require "/opt/engines/lib/ruby/ManagedServices/DBManagedService.rb"
-
+#require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/ShareService.rb"
