@@ -5,7 +5,7 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: Cron
+title: Backup
 description: "Backup tasks"
 service_type: backup
 service_container: backup
