@@ -1,1 +1,40 @@
-../../mapping/ManagedEngine/Cron.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Cron
+description: "Scheduales tasks"
+service_type: cron
+service_container: cron
+service_provider: EnginesSystem
+dedicated: false
+persistant: false
+consumer_params:
+setup_params:
+   cron_job:
+    regex_invalid_message: "wrong go back and try again"
+    name: cron_job
+    label: Cron line
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: "* * * * * command"
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   name:
+    regex_invalid_message: "wrong go back and try again"
+    name: name
+    label: Cron line title
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    default_value: " "
+    comment: " "

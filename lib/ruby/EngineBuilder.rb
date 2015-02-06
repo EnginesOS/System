@@ -1699,6 +1699,7 @@ class EngineBuilder
         create_database_service db
       end
 
+      create_persistant_services
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
@@ -1729,42 +1730,8 @@ class EngineBuilder
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
-          @blueprint_reader.services.each() do |service|
-          #FIX ME Should call this but Keys dont match blueprint designer issue
-          #@core_api.add_service(service,mc)
-            p :adding_service
-            p service   
-            if service[:servicetype_name] == "ftp"
-              service_def = Hash.new
-              #parent_engine
-              #service_type
-              #service_provider
-              #name
-              #service
-                #symbols from ftp service definition and values from blueprint and envionment
-                # still need to sort
-              #will follow the blueprint design studio's team leader on how to implement        
-              service[:volume] = primary_vol.name
-              service[:folder] =  service[:dest]
-              service[:username] = @set_environments[:ftpuser]
-              service[:password] = @set_environments[:password]
-              service[:rw_access] =true
-              service[:service_type]=service[:servicetype_name]
-              service[:service_provider]="EnginesSystem"  
-              service[:parent_engine]=mc.containerName
-              service[:name]=service[:name]             
-                    
-                p :service_def
-                p service
-              @core_api.attach_service(service)
-#            volume from vol
-#            name  from hash
-#            folder  from hash 
-#            username from env
-#            password from env
-#            rw_access from env
-            end
-          end
+          create_non_persistant_services
+   
         end
       end
 
@@ -1780,6 +1747,63 @@ class EngineBuilder
     end
   end
 
+  
+  def create_non_persistant_services
+    @blueprint_reader.services.each() do |service|
+       #FIX ME Should call this but Keys dont match blueprint designer issue
+       #@core_api.add_service(service,mc)     
+        if service.has_key(:service_provider) == false || service[:service_provider] == nil
+          service[:service_provider] = "EnginesSystem"  
+        end
+       service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+        if service_def[:persistant] == true
+          next                 
+        end
+        
+         p :adding_service
+         p service   
+
+       end
+  end
+  
+  def create_persistant_services
+    @blueprint_reader.services.each() do |service|
+      if service.has_key(:service_provider) == false || service[:service_provider] == nil
+        service[:service_provider] = "EnginesSystem"  
+      end
+     service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+      if service_def[:persistant] == false
+        next                 
+      end
+      p :adding_service
+      p service   
+              
+      if service[:servicetype_name] == "ftp"      
+          #symbols from ftp service definition and values from blueprint and envionment
+          # still need to sort
+        #will follow the blueprint design studio's team leader on how to implement        
+        service[:volume] = primary_vol.name
+        service[:folder] =  service[:dest]
+        service[:username] = @set_environments[:ftpuser]
+        service[:password] = @set_environments[:password]
+        service[:rw_access] =true
+        service[:service_type]=service[:servicetype_name]
+        service[:service_provider]="EnginesSystem"  
+        service[:parent_engine]=mc.containerName
+        service[:name]=service[:name]             
+              
+          p :service
+          p service
+        @core_api.attach_service(service)
+
+      end
+      
+      
+      
+      
+    end
+  end
+  
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
