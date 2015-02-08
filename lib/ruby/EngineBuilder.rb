@@ -910,7 +910,7 @@ class EngineBuilder
           if dest =="local" || dest == nil
             add_db_service(dbname,servicetype)
           end
-        else if servicetype=="filesystem"
+        elsif servicetype=="filesystem"
             fsname = clean_path(service[:name])
             dest = clean_path(service[:dest])
             add_file_service(fsname, dest)
