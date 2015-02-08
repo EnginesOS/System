@@ -18,11 +18,11 @@ set_permissions
 
 
 
-passwd dockuser  
+passwd engines  
 
 chmod +x /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
 
-su -l dockuser -c /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
+su -l engines -c /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
 
 
  

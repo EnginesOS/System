@@ -1,5 +1,5 @@
 #!/bin/bash
-RUBY_VER=2.1.2
+RUBY_VER=2.1.3
 
 
 
@@ -35,7 +35,7 @@ function configure_git {
   #apt-get -y  --force-yes upgrade
   
   echo "Adding startup script"
-		 cat /etc/rc.local | sed "/^exit.*$/s//su -l dockuser \/opt\/engines\/bin\/mgmt_startup.sh/" > /tmp/rc.local
+		 cat /etc/rc.local | sed "/^exit.*$/s//su -l engines \/opt\/engines\/bin\/mgmt_startup.sh/" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local
@@ -77,50 +77,39 @@ echo "Installing required  packages"
 		 
 echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
-		 adduser -q --uid 21000 --ingroup docker  -gecos "Engines OS User"  --home /home/dockuser --disabled-password dockuser
+		 adduser -q --uid 21000 --ingroup docker  -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 
-		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~dockuser/.profile 
+		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
 echo "Installing ruby"
 
 mkdir -p /usr/local/  
 cd /usr/local/  
 git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
-ruby_version=2.1.3
 
-	cd /usr/local/rbenv  
-	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
+	chgrp -R engines rbenv
+	chmod -R g+rwxXs rbenv
+	
 	cd /usr/local/rbenv   
+
+	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build.git
+	chgrp -R engines ruby-build
+	chmod -R g+rwxs ruby-build
+	
 	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc 
 	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL 
-	/usr/local/rbenv/bin/rbenv install $ruby_version 
-	/usr/local/rbenv/bin/rbenv global $ruby_version
+	/usr/local/rbenv/bin/rbenv install $RUBY_VER
+	/usr/local/rbenv/bin/rbenv global $RUBY_VER
 	echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 	/usr/local/rbenv/bin/rbenv rehash
-	cp -rp  ~/.gemrc ~/.bashrc ~dockuser
-	
+	cp -rp  ~/.gemrc ~/.bashrc ~engines
+	rbenv_gem install multi_json rspec rubytree git 
 
-
-#		\curl -L https://get.rvm.io | bash -s stable 
-#		echo ". /etc/profile.d/rvm.sh" >> ~dockuser/.login 		
-#		echo "rvm  --default use ruby-$RUBY_VER" >> ~dockuser/.profile
-#		/usr/local/rvm/bin/rvm install ruby-$RUBY_VER
-
-		#/usr/local/rvm/bin/rvm  --default use ruby-$RUBY_VER
-		 
-#		/usr/local/rvm/wrappers/ruby-2.1.2/gem install git  rubytree
- 		#/usr/local/rvm/bin/rvm gemset create git rubytree
- 		
- 		#Following needed for rspec tests
-#		/usr/local/rvm/wrappers/ruby-2.1.2/gem install multi_json rspec
-		#/usr/local/rvm/bin/rvm gemset create multi_json
-
-		#/usr/local/rvm/bin/rvm gemset create 	rspec
 		
 	
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
 */10 * * * * /opt/engines/bin/engines.sh  service  check_and_act all >>/opt/engines/logs/services/restarts.log" >/tmp/ct
-crontab -u dockuser /tmp/ct
+crontab -u engines /tmp/ct
 rm /tmp/ct
 
 #DHCP
@@ -215,7 +204,7 @@ keys=" nagios mgmt volmgr backup "
 
 function make_dirs {
 mkdir -p  /var/lib/engines/backup_paths
-mkdir -p  /var/lib/engines/fs
+mkdir -p  /var/lib/engines/fs/
 mkdir -p  /var/lib/engines/pgsql
 mkdir -p  /var/lib/engines/mysql
 mkdir -p  /var/lib/engines/mongo
@@ -236,10 +225,10 @@ mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
-mkdir -p /home/dockuser/db
-touch /home/dockuser/db/production.sqlite
-touch /home/dockuser/db/development.sqlite
-mkdir -p /home/dockuser/deployment/deployed/
+mkdir -p /home/engines/db
+touch /home/engines/db/production.sqlite
+touch /home/engines/db/development.sqlite
+mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
 mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
@@ -247,7 +236,7 @@ mkdir -p /var/log/engines/services/cron
 
 function set_permissions {
 echo "Setting directory and file permissions"
-	chown -R dockuser /opt/engines/ /var/lib/engines ~dockuser/  /var/log/engines
+	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines
 	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
 	chown -R 22002.22002	/var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
@@ -255,8 +244,8 @@ echo "Setting directory and file permissions"
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	 chown -R 22010 /var/log/engines/services/ftp
 	chown 22000 /opt/engines/run/services/nginx/run/nginx/
-	chown 21000  /home/dockuser/db/production.sqlite
-	chown 21000  /home/dockuser/db/development.sqlite
+	chown 21000  /home/engines/db/production.sqlite
+	chown 21000  /home/engines/db/development.sqlite
 	}
 
 function set_os_flavor {
@@ -291,7 +280,7 @@ echo "Creating and starting Engines OS Services"
 	sleep 30
 	 /opt/engines/bin/engines.rb service create mysql_server
 	 /opt/engines/bin/engines.rb service create nginx
-	#su -l dockuser /opt/engines/bin/engines.rb service create monit
+	#su -l engines /opt/engines/bin/engines.rb service create monit
 	 /opt/engines/bin/engines.rb service create cAdvisor
 	 /opt/engines/bin/engines.rb service create backup
 }
