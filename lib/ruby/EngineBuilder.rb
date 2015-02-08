@@ -903,19 +903,20 @@ class EngineBuilder
         end
         p :service_provider
         p   service[:service_provider] 
-#        servicetype=service[:servicetype_name]
-#        if servicetype == "database/mysql" || servicetype == "database/pgsql"
-#          dbname = service[:name]
-#          dest = service[:dest]
-#          if dest =="local" || dest == nil
-#            add_db_service(dbname,servicetype)
-#          end
-#        else if servicetype=="filesystem"
-#            fsname = clean_path(service[:name])
-#            dest = clean_path(service[:dest])
-#            add_file_service(fsname, dest)
-#          else
+        servicetype=service[:servicetype_name]
+       if servicetype == "database/mysql" || servicetype == "database/pgsql"
+          dbname = service[:name]
+          dest = service[:dest]
+          if dest =="local" || dest == nil
+            add_db_service(dbname,servicetype)
+          end
+        else if servicetype=="filesystem"
+            fsname = clean_path(service[:name])
+            dest = clean_path(service[:dest])
+            add_file_service(fsname, dest)
+       end
             add_service(service)
+           
 #          end
 #        end
       end
