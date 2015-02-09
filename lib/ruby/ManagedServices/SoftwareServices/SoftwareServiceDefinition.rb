@@ -51,9 +51,11 @@ class SoftwareServiceDefinition
   end
   
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
-    
-    if File.exist?(dir + "/" + service_type + ".yaml")
-      yaml = File.read(dir + "/" + service_type + ".yaml")
+    filename=dir + "/" + service_type + ".yaml"
+      p :loading_def_from
+      p filename
+    if File.exist?(filename)
+      yaml = File.read(filename)
       return self.from_yaml(yaml)     
     end
 
