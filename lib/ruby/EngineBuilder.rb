@@ -905,7 +905,7 @@ class EngineBuilder
         p :service_provider
         p   service[:service_provider] 
         servicetype=service[:servicetype_name]
-       if servicetype == "database/mysql" || servicetype == "database/pgsql"
+       if servicetype == "SQL_database/mysql" || servicetype == "SQL_database/pgsql"
           dbname = service[:name]
           dest = service[:dest]
           if dest =="local" || dest == nil
