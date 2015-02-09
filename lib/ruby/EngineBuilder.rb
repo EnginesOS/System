@@ -291,9 +291,14 @@ class EngineBuilder
         services.each do |service_hash|
           service_def = get_service_def(service_hash)
             if service_def != nil
+              p :processing
+              p service_def
+              
               service_environment_variables = service_def[:target_environment_variables]
                 if service_environment_variables != nil
                   service_environment_variables.values.each do |env_variable_pair|
+                    p :setting_values
+                    p env_variable_pair
                     env_name = env_variable_pair[:environment_name]
                     value_name = env_variable_pair[:variable_name]
                     value=service_hash[value_name.to_sym] 
