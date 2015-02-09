@@ -951,9 +951,9 @@ class EngineBuilder
             service[:type] = servicetype.sub(/.*database\//,"") 
            
           end
-        elsif servicetype=="filesystem"
-            fsname = clean_path(service[:name])
-            dest = clean_path(service[:dest])
+#        elsif servicetype=="filesystem"
+         service[:name] = clean_path(service[:name])
+         service[:dest] = clean_path(service[:dest])
             add_file_service(fsname, dest)
        end
             add_service(service)
@@ -967,7 +967,7 @@ class EngineBuilder
       @services.push(service_hash)
     end
 
-    def add_file_service(name,dest)
+    def add_file_service(name,dest) #FIXME and put me in coreapi
       begin
         log_build_output("Add File Service " + name)
         if dest == nil || dest == ""
