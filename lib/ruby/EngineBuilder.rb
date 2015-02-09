@@ -1528,25 +1528,25 @@ class EngineBuilder
 #      return false
 #    end
 #  end
-
-  def create_file_service vol
-    begin
-      log_build_output("Create Vol Service ")
-      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
-      if vol_service.is_a?(EnginesOSapiResult) == false
-        vol_service.add_consumer(vol)
-        return true
-      else
-        p vol_service
-        p vol_service.result_mesg
-        return false
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-
-  end
+#
+#  def create_file_service vol
+#    begin
+#      log_build_output("Create Vol Service ")
+#      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
+#      if vol_service.is_a?(EnginesOSapiResult) == false
+#        vol_service.add_consumer(vol)
+#        return true
+#      else
+#        p vol_service
+#        p vol_service.result_mesg
+#        return false
+#      end
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#
+#  end
 
   def create_cron_service
     begin

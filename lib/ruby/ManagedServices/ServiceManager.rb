@@ -329,6 +329,12 @@ rescue Exception=>e
 def software_service_definition(params)
   require 'json'
   
+  if params[:service_provider]   == nil ||  params[:service_type] == nil
+    p :nil_in_params
+    p params
+    return nil
+  end
+  
   service_filename = SysConfig.ServiceTemplateDir + "/" + params[:service_provider] + "/" + params[:service_type]+ ".yaml"
   if File.exists?(service_filename)
     yaml = File.read(service_filename)
