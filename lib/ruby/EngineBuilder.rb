@@ -1816,7 +1816,7 @@ class EngineBuilder
   
   
   def get_service_def(service_hash)
-    return     SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+    return     SoftwareServiceDefinition.find(service_hash[:servicetype_name], service_hash[:service_provider] )
   end
   
   def create_persistant_services
