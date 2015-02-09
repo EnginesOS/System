@@ -1820,10 +1820,10 @@ class EngineBuilder
   end
   
   def create_persistant_services
-    @blueprint_reader.services.each() do |service|
+    @blueprint_reader.services.each() do |service_hash|
       p :service_def_for
-             p service[:servicetype_name]
-             p service[:service_provider]
+             p service_hash[:servicetype_name]
+             p service_hash[:service_provider]
    
       service_def = get_service_def(service_hash)
          p  service_def
@@ -1832,9 +1832,9 @@ class EngineBuilder
          p :failed_to_load_service_definition
          p :servicetype_name
          
-         p service[:servicetype_name]
+         p service_hash[:servicetype_name]
            p :service_provider
-        p service[:service_provider]
+        p service_hash[:service_provider]
          return false
        end
       if service_def[:persistant] == false
@@ -1843,28 +1843,28 @@ class EngineBuilder
       p :adding_service
      
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-      p service   
+      p service_hash   
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
                     
-        if service[:servicetype_name] == "ftp"      
+        if service_hash[:servicetype_name] == "ftp"      
           #symbols from ftp service definition and values from blueprint and envionment
           # still need to sort
         #will follow the blueprint design studio's team leader on how to implement        
-        service[:volume] = primary_vol.name
-        service[:folder] =  service[:dest]
-        service[:username] = @set_environments[:ftpuser]
-        service[:password] = @set_environments[:password]
-        service[:rw_access] =true
-        service[:service_type]=service[:servicetype_name]
-        service[:service_provider]="EnginesSystem"  
-        service[:parent_engine]=mc.containerName
-        service[:name]=service[:name]             
+          service_hash[:volume] = primary_vol.name
+          service_hash[:folder] =  service_hash[:dest]
+          service_hash[:username] = @set_environments[:ftpuser]
+          service_hash[:password] = @set_environments[:password]
+          service_hash[:rw_access] =true
+          service_hash[:service_type]=service_hash[:servicetype_name]
+          service_hash[:service_provider]="EnginesSystem"  
+          service_hash[:parent_engine]=mc.containerName
+          service_hash[:name]=service_hash[:name]             
               
           p :service
-          p service
-        @core_api.attach_service(service)
+          p service_hash
+        @core_api.attach_service(service_hash)
 
       end
       
