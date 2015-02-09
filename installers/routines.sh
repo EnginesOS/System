@@ -94,7 +94,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
 	cd /usr/local/rbenv   
 
-	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build.git
+	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 	chgrp -R engines ruby-build
 	chmod -R g+rwxs ruby-build
 	
