@@ -46,7 +46,11 @@ class SoftwareServiceDefinition
             p :dir
             p dir 
           if Dir.exist?(dir)
-            return SoftwareServiceDefinition.load_service_def(dir,service_type)
+            service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
+              if service_def == nil
+                return nil                
+              end
+              return service_def.to_h
           end
   end
   
