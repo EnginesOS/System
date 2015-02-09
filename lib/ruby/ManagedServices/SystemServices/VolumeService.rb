@@ -4,13 +4,41 @@ class VolumeService < ManagedService
   
   def add_consumer_to_service(site_hash)
   
-      return  @core_api.add_volume(site_hash) 
+      return  add_volume(site_hash) 
      end
   def rm_consumer_from_service (site_hash)
     
-       return  @core_api.rm_volume(site_hash)  
+       return  rm_volume(site_hash)  
     end 
      
+    
+  def add_volume(site_hash)
+    clear_error
+    begin
+      if Dir.exists?(  site_hash[:localpath] ) == false
+        FileUtils.mkdir_p( site_hash[:localpath])
+      end
+      #currently the build scripts do this
+      #save details with some manager
+      return true
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+
+  def rm_volume(site_hash)
+    clear_error
+    begin
+      puts "would remove " + site_hash[:localpath]
+      #update details with some manager
+      return true
+    rescue  Exception=>e
+      log_exception(e)
+      return false
+    end
+  end
+
   def get_site_hash(site_hash)
 #       
 #        site_hash = Hash.new()

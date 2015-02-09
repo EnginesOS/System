@@ -404,32 +404,6 @@ class EnginesCore
       end
     end
 
-    def add_volume(site_hash)
-      clear_error
-      begin
-        if Dir.exists?(  site_hash[:localpath] ) == false
-          FileUtils.mkdir_p( site_hash[:localpath])
-        end
-        #currently the build scripts do this
-        #save details with some manager
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
-
-    def rm_volume(site_hash)
-      clear_error
-      begin
-        puts "would remove " + site_hash[:localpath]
-        #update details with some manager
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
 
 
