@@ -64,9 +64,10 @@ class EngineBuilder
       @docker_file.puts("")
       write_environment_variables
       write_stack_env
+      write_services
       write_file_service
-      write_db_service
-      #      write_cron_jobs
+      #write_db_service
+      #write_cron_jobs
       write_os_packages
       write_apache_modules
       write_user_local = true
@@ -118,7 +119,7 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
-      write_services
+   
       write_clear_env_variables
 
       @docker_file.close
@@ -287,7 +288,7 @@ class EngineBuilder
     
     def write_services
       services = @blueprint_reader.services
-        
+      @docker_file.puts("#Service Environment Variables")
         services.each do |service_hash|
           service_def =  @builder.get_service_def(service_hash)
             if service_def != nil
@@ -455,35 +456,35 @@ class EngineBuilder
     #      end
     #    end
 
-    def write_db_service
-      begin
-        @docker_file.puts("#Database Service")
-        log_build_output("Dockerfile:DB env")
-        @blueprint_reader.databases.each do |db|
-          @docker_file.puts("#Database Env")
-          @docker_file.puts("ENV dbname " + db.name)
-          count_layer
-          @docker_file.puts("ENV dbhost " + db.dbHost)
-          count_layer
-          @docker_file.puts("ENV dbuser " + db.dbUser)
-          count_layer
-          @docker_file.puts("ENV dbpasswd " + db.dbPass)
-          count_layer
-          flavor = db.flavor
-          if flavor == "mysql"
-            flavor = "mysql2"
-          elsif flavor == "pgsql"
-            flavor = "postgresql"
-          end
-          @docker_file.puts("ENV dbflavor " + flavor)
-          count_layer
-        end
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+#    def write_db_service
+#      begin
+#        @docker_file.puts("#Database Service")
+#        log_build_output("Dockerfile:DB env")
+#        @blueprint_reader.databases.each do |db|
+#          @docker_file.puts("#Database Env")
+#          @docker_file.puts("ENV dbname " + db.name)
+#          count_layer
+#          @docker_file.puts("ENV dbhost " + db.dbHost)
+#          count_layer
+#          @docker_file.puts("ENV dbuser " + db.dbUser)
+#          count_layer
+#          @docker_file.puts("ENV dbpasswd " + db.dbPass)
+#          count_layer
+#          flavor = db.flavor
+#          if flavor == "mysql"
+#            flavor = "mysql2"
+#          elsif flavor == "pgsql"
+#            flavor = "postgresql"
+#          end
+#          @docker_file.puts("ENV dbflavor " + flavor)
+#          count_layer
+#        end
+#
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def write_write_permissions_single
       begin
@@ -1793,15 +1794,15 @@ class EngineBuilder
 
   
   def create_non_persistant_services
-    @blueprint_reader.services.each() do |service|
+    @blueprint_reader.services.each() do |service_hash|
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
 
        service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
-        p service[:servicetype_name]
-              p service[:service_provider]
+        p service_hash[:servicetype_name]
+              p service_hash[:service_provider]
         return false
       end
         if service_def[:persistant] == true
@@ -1809,7 +1810,7 @@ class EngineBuilder
         end
         
          p :adding_service
-         p service   
+         p service_hash   
 
        end
   end
