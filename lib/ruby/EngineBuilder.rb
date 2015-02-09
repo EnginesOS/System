@@ -941,9 +941,11 @@ class EngineBuilder
           dbname = service[:name]
           dest = service[:dest]
           if dest =="local" || dest == nil
+            #FIXME
+            #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
-            
+            service[:service_type]="mysql"
           end
         elsif servicetype=="filesystem"
             fsname = clean_path(service[:name])
