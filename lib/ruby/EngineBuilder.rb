@@ -945,7 +945,7 @@ class EngineBuilder
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
-            service[:service_type]="mysql" #Fixme load from def
+            service[:service_type]=service[:servicetype_name] 
           end
         elsif servicetype=="filesystem"
             fsname = clean_path(service[:name])
