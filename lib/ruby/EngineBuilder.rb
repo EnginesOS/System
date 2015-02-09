@@ -1799,12 +1799,14 @@ class EngineBuilder
     @blueprint_reader.services.each() do |service_hash|
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
-
+      s
+      ervice_hash[:parent_engine]=@container_name
+        
        service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
         p service_hash[:servicetype_name]
-              p service_hash[:service_provider]
+        p service_hash[:service_provider]
         return false
       end
         if service_def[:persistant] == true
@@ -1813,7 +1815,7 @@ class EngineBuilder
         
          p :adding_service
          p service_hash   
-
+      @core_api.attach_service(service_hash)
        end
   end
   
@@ -1824,6 +1826,8 @@ class EngineBuilder
   
   def create_persistant_services
     @blueprint_reader.services.each() do |service_hash|
+      
+      service_hash[:parent_engine]=@container_name
       p :service_def_for
              p service_hash[:servicetype_name]
              p service_hash[:service_provider]
@@ -1862,16 +1866,16 @@ class EngineBuilder
           service_hash[:rw_access] =true
           service_hash[:service_type]=service_hash[:servicetype_name]
           service_hash[:service_provider]="EnginesSystem"  
-          service_hash[:parent_engine]=mc.containerName
+         
           service_hash[:name]=service_hash[:name]             
               
           p :service
           p service_hash
-        @core_api.attach_service(service_hash)
+      
 
       end
       
-      
+      @core_api.attach_service(service_hash)
       
       
     end
