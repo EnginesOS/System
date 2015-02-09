@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ifconfig eth0 |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" " > /opt/engines/.ip 
+/sbin/ifconfig eth0 |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" " > /opt/engines/.ip 
 
 /opt/engines/bin/containers_startup.sh &
 
