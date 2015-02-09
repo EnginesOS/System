@@ -1503,25 +1503,25 @@ class EngineBuilder
     end
   end
 
-  def create_database_service db
-    begin
-      log_build_output("Create DB Service ")
-      db_server_name=db.flavor + "_server"
-      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
-      if db_service.is_a?(DBManagedService)
-
-        db_service.add_consumer(db)
-        return true
-      else
-        p db_service
-        p db_service.result_mesg
-        return false
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
+#  def create_database_service db
+#    begin
+#      log_build_output("Create DB Service ")
+#      db_server_name=db.flavor + "_server"
+#      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
+#      if db_service.is_a?(DBManagedService)
+#
+#        db_service.add_consumer(db)
+#        return true
+#      else
+#        p db_service
+#        p db_service.result_mesg
+#        return false
+#      end
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#  end
 
   def create_file_service vol
     begin
@@ -1580,18 +1580,18 @@ class EngineBuilder
       return setup_framework_defaults
     end
   end
-
-  def create_db_service(name,flavor)
-    begin
-      log_build_output("Create DB Service")
-      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
-      databases.push(db)
-      create_database_service db
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
+#
+#  def create_db_service(name,flavor)
+#    begin
+#      log_build_output("Create DB Service")
+#      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
+#      databases.push(db)
+#      create_database_service db
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#  end
 
   def build_init
     begin
@@ -1799,8 +1799,7 @@ class EngineBuilder
     @blueprint_reader.services.each() do |service_hash|
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
-      s
-      ervice_hash[:parent_engine]=@container_name
+      service_hash[:parent_engine]=@container_name
         
        service_def =  get_service_def(service_hash)
       if service_def == nil
