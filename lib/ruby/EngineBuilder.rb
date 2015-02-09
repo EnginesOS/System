@@ -118,7 +118,7 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
-
+      write_services
       write_clear_env_variables
 
       @docker_file.close
@@ -283,6 +283,29 @@ class EngineBuilder
         log_exception(e)
         return false
       end
+    end
+    
+    def write_services
+      services = @blueprint_reader.services
+        
+        services.each do |service_hash|
+          service_def = get_service_def(service_hash)
+            if service_def != nil
+              service_environment_variables = service_def[:target_environment_variables]
+                if service_environment_variables != nil
+                  service_environment_variables.values.each do |env_variable_pair|
+                    env_name = env_variable_pair[:environment_name]
+                    value_name = env_variable_pair[:variable_name]
+                    value=service_hash[value_name.to_sym] 
+                    if value != nil && value.to_s.count >0
+                      @docker_file.puts("ENV " + env_name + " " + value )
+                      count_layer()
+                    end
+                  end
+                    
+                end
+            end
+        end
     end
 
     def write_sed_strings
@@ -1769,7 +1792,7 @@ class EngineBuilder
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
 
-       service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+       service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
         p service[:servicetype_name]
@@ -1786,13 +1809,18 @@ class EngineBuilder
        end
   end
   
+  
+  def get_service_def(service_hash)
+    return     SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
+  end
+  
   def create_persistant_services
     @blueprint_reader.services.each() do |service|
       p :service_def_for
              p service[:servicetype_name]
              p service[:service_provider]
-     service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
-       
+   
+      service_def = get_service_def(service_hash)
          p  service_def
        
        if service_def == nil
@@ -1808,13 +1836,14 @@ class EngineBuilder
         next                 
       end
       p :adding_service
+     
+      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p service   
-      puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-      puts "+++++++++++++++++++++++++++++++"
+      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
-              
-      if service[:servicetype_name] == "ftp"      
+                    
+        if service[:servicetype_name] == "ftp"      
           #symbols from ftp service definition and values from blueprint and envionment
           # still need to sort
         #will follow the blueprint design studio's team leader on how to implement        
