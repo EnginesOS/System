@@ -15,8 +15,8 @@ class VolumeService < ManagedService
   def add_volume(site_hash)
     
     begin
-      if Dir.exists?(  site_hash[:localpath] ) == false
-        FileUtils.mkdir_p( site_hash[:localpath])
+      if Dir.exists?(  site_hash[:dest] ) == false
+        FileUtils.mkdir_p(SysConfig.CONTFSVolHome() + "/" + site_hash[:parent_engine] + "/" + site_hash[:dest])
       end
       #currently the build scripts do this
       #save details with some manager
@@ -30,7 +30,7 @@ class VolumeService < ManagedService
   def rm_volume(site_hash)
     
     begin
-      puts "would remove " + site_hash[:localpath]
+      puts "would remove " + site_hash[:dest]
       #update details with some manager
       return true
     rescue  Exception=>e
