@@ -289,7 +289,7 @@ class EngineBuilder
       services = @blueprint_reader.services
         
         services.each do |service_hash|
-          service_def = get_service_def(service_hash)
+          service_def =  @builder.get_service_def(service_hash)
             if service_def != nil
               p :processing
               p service_def
