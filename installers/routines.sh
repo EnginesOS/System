@@ -110,7 +110,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
 	/usr/local/rbenv/bin/rbenv rehash
 	cp -rp  ~/.gemrc ~/.bashrc ~engines
-	rbenv_gem install multi_json rspec rubytree git 
+	gem install multi_json rspec rubytree git 
 
 		
 	
@@ -314,6 +314,7 @@ openssl genrsa -des3 -out server.key 2048
   mv server.crt /opt/engines/etc/ssl/certs/engines.crt
    
    #Initial Certs for nginx are the mgmt certs
+   mkdir -p /opt/engines/etc/nginx/ssl/ /opt/engines/etc/nginx/ssl/
    cp -rp /opt/engines/etc/ssl/certs  /opt/engines/etc/nginx/ssl/
    cp -rp /opt/engines/etc/ssl/keys   /opt/engines/etc/nginx/ssl/
    
