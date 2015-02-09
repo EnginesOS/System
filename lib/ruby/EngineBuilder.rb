@@ -904,6 +904,9 @@ class EngineBuilder
         end
         p :service_provider
         p   service[:service_provider] 
+          p :servicetype_name
+          p service[:servicetype_name]
+            
         servicetype=service[:servicetype_name]
        if servicetype == "SQL_database/mysql" || servicetype == "SQL_database/pgsql"
           dbname = service[:name]
@@ -956,13 +959,13 @@ class EngineBuilder
     end
 
     def  add_db_service(dbname,servicetype)
-      servicetype.sub!(/.*database\//,"") 
+      flavor = servicetype.sub(/.*database\//,"") 
       p :adding_db
       p dbname
       p servicetype
       log_build_output("Add DB Service " + dbname)
-      hostname = servicetype + "." + SysConfig.internalDomain
-      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
+      hostname = flavor + "." + SysConfig.internalDomain
+      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,flavor)
 
       @databases.push(db)
 
@@ -1784,11 +1787,11 @@ class EngineBuilder
   
   def create_persistant_services
     @blueprint_reader.services.each() do |service|
-
+      p :service_def_for
+             p service[:servicetype_name]
+             p service[:service_provider]
      service_def =  SoftwareServiceDefinition.find(service[:servicetype_name], service[:service_provider] )
-       p :service_def_for
-       p service[:servicetype_name]
-       p service[:service_provider]
+       
          p  service_def
        
        if service_def == nil
