@@ -46,7 +46,7 @@ class SoftwareServiceDefinition
             p :dir
             p dir 
           if Dir.exist?(dir)
-            return search_dir(dir,service_type)
+            return SoftwareServiceDefinition.search_dir(dir,service_type)
           end
   end
   
@@ -62,7 +62,9 @@ class SoftwareServiceDefinition
           search_dir(root + "/" + service_dir_entry,service_type)
         else
           if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
-            return find(dir,service_type)
+            yaml = file.read(root + "/" + service_dir_entry + "/" + service_type + ".yaml")
+            return self.from_yaml(yaml)
+            
           end
         end
       end
