@@ -954,7 +954,7 @@ class EngineBuilder
 #        elsif servicetype=="filesystem"
          service[:name] = clean_path(service[:name])
          service[:dest] = clean_path(service[:dest])
-            add_file_service(fsname, dest)
+            add_file_service(service[:name], service[:dest])
        end
             add_service(service)
            
