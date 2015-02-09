@@ -77,7 +77,7 @@ echo "Installing required  packages"
 		 
 echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
-		 adduser -q --uid 21000 --ingroup docker  -gecos "Engines OS User"  --home /home/engines --disabled-password engines
+		 adduser -q --uid 21000 --ingroup docker   --group engines -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
