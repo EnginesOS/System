@@ -35,7 +35,7 @@ class SoftwareServiceDefinition
           if service_type.include?('/')
             p :sub_service
            # provider += "/" + service_type.sub(/\/.*/,"")
-            service_type.sub(/.*\//,"")
+           #service_type.sub(/.*\//,"")
            
             p :sub_service
             p provider 
