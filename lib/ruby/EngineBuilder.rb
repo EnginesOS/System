@@ -989,19 +989,19 @@ class EngineBuilder
       end
     end
 
-    def  add_db_service(dbname,servicetype)
-      p servicetype
-      flavor = servicetype.sub(/.*database\//,"") 
-      p :adding_db
-      p dbname
-      p servicetype
-      log_build_output("Add DB Service " + dbname)
-      hostname = flavor + "." + SysConfig.internalDomain
-      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,flavor)
-
-      @databases.push(db)
-
-    end
+#    def  add_db_service(dbname,servicetype)
+#      p servicetype
+#      flavor = servicetype.sub(/.*database\//,"") 
+#      p :adding_db
+#      p dbname
+#      p servicetype
+#      log_build_output("Add DB Service " + dbname)
+#      hostname = flavor + "." + SysConfig.internalDomain
+#      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,flavor)
+#
+#      @databases.push(db)
+#
+#    end
 
     def read_os_packages
       begin
