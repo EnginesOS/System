@@ -41,7 +41,7 @@ setup_params:
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  username:
-  name: dbusername
+  name: db_username
   label: DB User Name
   regex_validator: ".*"
   tooltip: " "
@@ -53,7 +53,7 @@ setup_params:
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  password:
-  name: dbpassword
+  name: db_password
   label: DB Password
   tooltip: " "
   type: password_with_confirmation
@@ -64,4 +64,16 @@ setup_params:
   comment: " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
-   
+ target_environment_variables:
+  dbhost:
+   variable_name: database_host
+   environment_name: dbhost
+  dbname:
+   variable_name: database_name
+   environment_name: dbname
+  dbuser:
+   variable_name: database_name
+   environment_name: dbname  
+  dbpasswd:
+   variable_name: db_password
+   environment_name: dbpasswd

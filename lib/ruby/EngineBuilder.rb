@@ -15,12 +15,13 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
-  attr_reader :last_error,\
-  :repoName,\
-  :hostname,\
-  :domain_name,\
-  :build_name,\
-  :set_environments
+  attr_reader :last_error,
+              :repoName,
+              :hostname,
+              :domain_name,
+              :build_name,
+              :set_environments
+              
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -1804,6 +1805,10 @@ class EngineBuilder
       end
       p :adding_service
       p service   
+      puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      puts "+++++++++++++++++++++++++++++++"
+      p target_envs
+      p service_def[:target_environment_variables]
               
       if service[:servicetype_name] == "ftp"      
           #symbols from ftp service definition and values from blueprint and envionment

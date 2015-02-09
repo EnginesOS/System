@@ -10,7 +10,8 @@ class SoftwareServiceDefinition
               :service_type, 
               :service_provider,
               :service_container, 
-              :persistant
+              :persistant,
+              :target_environment_variables
 
   
   def self.from_yaml( yaml )
