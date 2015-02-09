@@ -941,7 +941,9 @@ class EngineBuilder
           dbname = service[:name]
           dest = service[:dest]
           if dest =="local" || dest == nil
-            add_db_service(dbname,servicetype)
+            service[:dest] = SysConfig.DBHost
+            service[:type] = servicetype.sub(/.*database\//,"") 
+            
           end
         elsif servicetype=="filesystem"
             fsname = clean_path(service[:name])
