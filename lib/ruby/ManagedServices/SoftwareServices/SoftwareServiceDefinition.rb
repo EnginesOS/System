@@ -50,13 +50,13 @@ class SoftwareServiceDefinition
           end
   end
   
-  def load_service_def(dir,service_type)
+  def SoftwareServiceDefinition.load_service_def(dir,service_type)
     
     if File.exist?(dir + "/" + service_type)
       yaml = File.read(dir + "/" + service_type)
       return self.from_yaml(yaml)     
     end
-  else
+
     return nil
   end
   
