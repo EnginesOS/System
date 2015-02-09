@@ -959,6 +959,7 @@ class EngineBuilder
     end
 
     def  add_db_service(dbname,servicetype)
+      p servicetype
       flavor = servicetype.sub(/.*database\//,"") 
       p :adding_db
       p dbname
@@ -1810,7 +1811,7 @@ class EngineBuilder
       p service   
       puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
       puts "+++++++++++++++++++++++++++++++"
-      p target_envs
+      p :target_envs
       p service_def[:target_environment_variables]
               
       if service[:servicetype_name] == "ftp"      
