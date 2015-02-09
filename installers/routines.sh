@@ -95,14 +95,19 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	cd /usr/local/rbenv   
 
 	git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
-	chgrp -R engines ruby-build
-	chmod -R g+rwxs ruby-build
+	chgrp -R engines plugins/ruby-build
+	chmod -R g+rwxs plugins/ruby-build
 	
 	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc 
-	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL 
+	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; exec $SHELL
+	 
+	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc 
+	echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+	 
 	/usr/local/rbenv/bin/rbenv install $RUBY_VER
 	/usr/local/rbenv/bin/rbenv global $RUBY_VER
 	echo "gem: --no-ri --no-rdoc" > ~/.gemrc
+	
 	/usr/local/rbenv/bin/rbenv rehash
 	cp -rp  ~/.gemrc ~/.bashrc ~engines
 	rbenv_gem install multi_json rspec rubytree git 
