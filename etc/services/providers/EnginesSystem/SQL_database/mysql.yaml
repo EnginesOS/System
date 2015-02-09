@@ -28,8 +28,8 @@ setup_params:
   value: " "
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- database_name:
-  name: database_name
+ name:
+  name: name
   label: "Database name"
   regex_validator: ".*"
   tooltip: " "
@@ -66,14 +66,14 @@ setup_params:
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
  dbhost:
-  variable_name: database_host
+  variable_name: dest
   environment_name: dbhost
  dbname:
-  variable_name: database_name
+  variable_name: name
   environment_name: dbname
  dbuser:
-  variable_name: database_name
-  environment_name: dbname  
+  variable_name: name
+  environment_name: dbuser  
  dbpasswd:
-  variable_name: db_password
+  variable_name: name
   environment_name: dbpasswd

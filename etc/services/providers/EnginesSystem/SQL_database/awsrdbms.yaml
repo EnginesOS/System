@@ -15,6 +15,7 @@ persistant: true
 exclusive: true
 image_name: engines/awsdb
 consumer_params:
+#BPDS uses
 setup_params:
  database_host:
   name: database_host
