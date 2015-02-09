@@ -928,9 +928,13 @@ class EngineBuilder
       services=@blueprint[:software][:softwareservices]
       services.each do |service|
         
+        
         if service.has_key?(:service_provider) == false || service[:service_provider] == nil
           service[:service_provider] = "EnginesSystem"  
         end
+        
+        service[:service_type]=service[:servicetype_name] 
+          
         p :service_provider
         p   service[:service_provider] 
           p :servicetype_name
@@ -945,7 +949,7 @@ class EngineBuilder
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
-            service[:service_type]=service[:servicetype_name] 
+           
           end
         elsif servicetype=="filesystem"
             fsname = clean_path(service[:name])
