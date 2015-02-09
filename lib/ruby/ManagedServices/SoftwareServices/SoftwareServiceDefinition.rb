@@ -46,8 +46,18 @@ class SoftwareServiceDefinition
             p :dir
             p dir 
           if Dir.exist?(dir)
-            return SoftwareServiceDefinition.search_dir(dir,service_type)
+            return SoftwareServiceDefinition.load_service_def(dir,service_type)
           end
+  end
+  
+  def load_service_def(dir,service_type)
+    
+    if File.exist?(dir + "/" + service_type)
+      yaml = File.read(dir + "/" + service_type)
+      return self.from_yaml(yaml)     
+    end
+  else
+    return nil
   end
   
   def search_dir(dir,service_type)
@@ -62,14 +72,14 @@ class SoftwareServiceDefinition
           search_dir(root + "/" + service_dir_entry,service_type)
         else
           if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
-            yaml = file.read(root + "/" + service_dir_entry + "/" + service_type + ".yaml")
-            return self.from_yaml(yaml)
-            
+            return load(dir,service_type)
           end
         end
       end
     end
   end
+  
+ 
 
   def to_h
     require 'json'
