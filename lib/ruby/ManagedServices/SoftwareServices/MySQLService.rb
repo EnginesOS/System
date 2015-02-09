@@ -26,7 +26,7 @@ class MySQLService < SoftwareService
     begin
       p :create_db
       p site_hash
-      container_name =  site_hash[:flavor] + "_server"
+      container_name =  site_hash[:type] + "_server"
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:name] + " " + site_hash[:name]
 
       #save details with some manager
