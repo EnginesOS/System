@@ -340,6 +340,9 @@ def software_service_definition(params)
 
     
 rescue Exception=>e
+  p :error
+  p params
+  p service_filename
 log_exception(e)
   return nil
 end  
