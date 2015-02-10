@@ -42,8 +42,8 @@ function configure_git {
 		
 		 chmod u+x  /etc/rc.local
 		 
-echo "Configure Apt-cache"
-		 echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf 
+
+	
 		 
 		 
 		
@@ -66,7 +66,14 @@ echo "Installing required  packages"
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
-		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git apt-cacher
+		  echo "Configure Apt-cache"
+		  apt-get -y install apt-cacher
+		  
+		  
+		echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf
+		
+		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git 
+		
 		 
 		 #Only Remove if not present
 		 if test $bind -eq 0
