@@ -66,7 +66,7 @@ echo "Installing required  packages"
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
-		 apt-get -y install imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git apt-cacher
+		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git apt-cacher
 		 
 		 #Only Remove if not present
 		 if test $bind -eq 0
@@ -100,6 +100,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
 	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~/.bashrc 
 	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; .  ~/.bashrc
+	source ~/.bashrc 
 	 
 	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc 
 	echo 'eval "$(rbenv init -)"' >> ~engines/.bashrc
@@ -325,6 +326,7 @@ openssl genrsa -des3 -out server.key 2048
 
 function setup_mgmt_git {
 echo "Seeding Mgmt Application source from repository"
+mkdir -p /opt/engines/system/images/04.systemApps/mgmt/home/app
 	 cd /opt/engines/system/images/04.systemApps/mgmt/home/app
 	  if test ! -f .git/config
 		then
