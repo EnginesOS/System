@@ -154,7 +154,11 @@ function make_dns_key {
 
 function generate_keys {
 echo "Generating system Keys"
-keys=" nagios mgmt volmgr backup "
+keys=""
+#keys=" nagios mgmt volmgr backup "
+
+
+
 
 	for key in $keys
 		do
@@ -166,8 +170,9 @@ keys=" nagios mgmt volmgr backup "
 	   done
 	   
 	   #FIXME add Intelligence to above loop ie use find
-	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
-	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
+
+#	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
+#	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
 	     
 #	ssh-keygen -q -N "" -f nagios
 #	ssh-keygen -q -N "" -f mysql
