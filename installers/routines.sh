@@ -109,8 +109,11 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; .  ~/.bashrc
 	source ~/.bashrc 
 	 
-	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc 
+	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.profile
+	 echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc
+	echo 'eval "$(rbenv init -)"' >> ~engines/.profile
 	echo 'eval "$(rbenv init -)"' >> ~engines/.bashrc
+	
 	/usr/local/rbenv/plugins/ruby-build/install.sh 
 	 
 	/usr/local/rbenv/bin/rbenv install $RUBY_VER
@@ -151,7 +154,11 @@ function make_dns_key {
 
 function generate_keys {
 echo "Generating system Keys"
-keys=" nagios mgmt volmgr backup "
+keys=""
+#keys=" nagios mgmt volmgr backup "
+
+
+
 
 	for key in $keys
 		do
@@ -163,8 +170,9 @@ keys=" nagios mgmt volmgr backup "
 	   done
 	   
 	   #FIXME add Intelligence to above loop ie use find
-	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
-	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
+
+#	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
+#	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
 	     
 #	ssh-keygen -q -N "" -f nagios
 #	ssh-keygen -q -N "" -f mysql
