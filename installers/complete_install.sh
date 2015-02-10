@@ -3,6 +3,8 @@ RUBY_VER=2.1.3
 export RUBY_VER
 . /tmp/203.14.203.141/EnginesInstaller/routines.sh
 
+rbenv install 2.1.3
+
 generate_ssl
 configure_git 
 generate_keys

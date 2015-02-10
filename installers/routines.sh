@@ -109,8 +109,11 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	echo 'eval "$(rbenv init -)"' >> ~/.bashrc ; .  ~/.bashrc
 	source ~/.bashrc 
 	 
-	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc 
+	echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.profile
+	 echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> ~engines/.bashrc
+	echo 'eval "$(rbenv init -)"' >> ~engines/.profile
 	echo 'eval "$(rbenv init -)"' >> ~engines/.bashrc
+	
 	/usr/local/rbenv/plugins/ruby-build/install.sh 
 	 
 	/usr/local/rbenv/bin/rbenv install $RUBY_VER
