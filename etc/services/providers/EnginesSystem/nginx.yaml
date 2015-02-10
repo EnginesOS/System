@@ -1,1 +1,28 @@
-../../mapping/ManagedEngine/Nginx.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Nginx
+description: "Presents engines to the outside world"
+service_type: nginx
+service_provider: EnginesSystem
+service_container: nginx
+dedicated: false
+persistant: false
+consumer_params:
+setup_params:
+ site_fqdn:
+  name: site_fqdn
+  label: site_fqdn
+  regex_validator: ".*"
+  tooltip: " "
+  type: text_field
+  hint: "site_fqdn"
+  placeholder: " "
+  mandatory: true
+  default_value: " "
+  comment: " "
+ 

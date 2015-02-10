@@ -1,1 +1,77 @@
-../../mapping/Volume/DropBox.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+author: Engines
+title: "Drop Box Service"
+description: "Provides Drop Box backing to a Persistant File Storage"
+service_type: dropbox
+service_provider: EnginesSystem
+service_container: dropbox
+persistant: true
+dedicated: false
+setup_params:
+ dropbox_address:
+  name: dropbox_address
+  label: dropbox_address
+  regex_validator: ".*"
+  tooltip: " "
+  type: text_field
+  placeholder: " "
+  hint: " "
+  mandatory: true
+  regex_invalid_message: "wrong go back and try again"
+ username:
+  name: username
+  label: Drop Box Account login
+  regex_validator: ".*"
+  tooltip: " "
+  placeholder: " "
+  type: text_field
+  hint: " "
+  mandatory: true
+ password:
+  name: password
+  label:  Drop Box Account Password
+  regex_validator: ".*"
+  placeholder: " "
+  hint: " "
+  type: password
+  mandatory: true
+ target_directory:
+  name: target_directory
+  label: Directory
+  type: text_field
+  regex_validator: ".*"
+  name: button
+  label: button test
+  placeholder: " "
+  tooltip: " "
+  mandatory: true
+  comment: " 
+ volume:
+  name: volume
+  label: volume
+  regex_validator: ".*"
+  tooltip: " "
+  type: text_field
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: " "
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ direction:
+  name: direction
+  label: Direction
+  type: select_multi
+  regex_validator: up|down|both
+  tooltip: " "
+  mandatory: true
+  placeholder: " "
+  hint: " "
+  collection:
+  - !ruby/object:String
+    "up"
+  - !ruby/object:String
+    "down"

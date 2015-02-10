@@ -1,4 +1,4 @@
---- !ruby/object:DBManagedService
+--- !ruby/object:MongoDBService
 containerName: mongo_server
 ctype: service
 persistant: true

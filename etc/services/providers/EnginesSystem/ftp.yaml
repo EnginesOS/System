@@ -1,1 +1,86 @@
-../../mapping/Volume/FTP.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+  - "Volume"
+author: Engines
+title: "FTP Access Service"
+description: "Provides FTP access to Persistant File Storage"
+service_type: ftp
+service_container: ftp
+service_provider: EnginesSystem
+dedicated: false
+persistant: true
+consumer_params:
+  - folder
+  - user
+  - password
+  - access
+setup_params:
+  volume:
+    name: volume
+    label: volume
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+  folder:
+    name: folder
+    label: folder
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+  username:
+    name: username
+    label: User Name
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " " 
+    comment: " "
+  password:
+    name: password
+    label: password
+    tooltip: " "
+    type: password_with_confirmation
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+    regex_validator: ".*"
+  checkbox_test:
+    name: checkbox
+    label: checkbox test
+    tooltip: " "
+    type: checkbox
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: true
+    comment: " "
+    regex_validator: ".*"
+  access:
+    name: rw_access
+    label: RW Access
+    regex_validator: true|false
+    tooltip: "Allow ftp service to write files"
+    type: select_single
+    hint: "true|false"
+    collection:
+      - true
+      - false
+    placeholder: "true|false"
+    mandatory: true
+    value: false
+    comment: "Write access includes the ability to delete" 

@@ -1053,11 +1053,7 @@ class EnginesOSapi
     return log_exception_and_fail("list domains ",e)
   end 
   
-  def attach_ftp_service(params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Attach ftp")
-  rescue Exception=>e
-    return log_exception_and_fail("Attach ftp ",e)
-  end
+
   
   def attach_service(params)
     if  @core_api.attach_service(params) == true
@@ -1081,17 +1077,7 @@ class EnginesOSapi
     end
     end
   
-  def detach_ftp_service (params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Detach ftp")
-  rescue Exception=>e
-    return log_exception_and_fail("Detach ftp ",e)
-  end
 
-  def  change_ftp_service  (params)
-    return  EnginesOSapiResult.new(true,0,params[:volume_name], "Success","Change ftp")
-  rescue Exception=>e
-    return log_exception_and_fail("Change ftp",e)
-  end
 
   def software_service_definition (params)
     retval = @core_api.software_service_definition(params)

@@ -1,0 +1,55 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: "Volume service"
+description: "Provides Persistant File Storage"
+service_type: volume
+service_container: volmanager
+service_provider: EnginesSystem
+persistant: true
+dedicated: false
+consumer_params:
+setup_params:
+   volume_src:
+    name: volume_src
+    label: volume local path
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   permissions:
+    name: permissions
+    label: permissions
+    regex_validator: ".*"
+    tooltip: " "
+    type: select_single
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "ro"
+    collection:
+    - !ruby/object:String
+      "rw"
+    - !ruby/object:String   
+      "ro"
+    comment: " "
+   local_path:
+    name: local_path
+    label: local_path
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+  

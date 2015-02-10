@@ -1,4 +1,4 @@
---- !ruby/object:DBManagedService
+--- !ruby/object:PgSQLService
 containerName: pgsql_server
 ctype: service
 persistant: true

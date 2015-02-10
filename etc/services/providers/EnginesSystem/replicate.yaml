@@ -1,1 +1,12 @@
-../../mapping/Database/Replicate.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+  "Database"
+author: "Engines"
+title: "Replication of DB Service"
+description: "Provides replication of Database"
+service_provider: EnginesSystem
+service_type: db_replicate
+persistant: true
+dedicated: true
+consumer_params:
+setup_params:

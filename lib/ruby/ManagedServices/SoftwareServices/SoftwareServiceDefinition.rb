@@ -10,7 +10,8 @@ class SoftwareServiceDefinition
               :service_type, 
               :service_provider,
               :service_container, 
-              :persistant
+              :persistant,
+              :target_environment_variables
 
   
   def self.from_yaml( yaml )
@@ -25,27 +26,66 @@ class SoftwareServiceDefinition
   end
   
   def SoftwareServiceDefinition.find(service_type,provider)
-    dir = SysConfig.ServiceTemplateDir + "/" 
-          p :dir
-          p dir 
+  
+          p :looking_for
+          p provider
+          p service_type
+
+          #FIXME and support more than one dir
+          if service_type.include?('/')
+            p :sub_service
+           # provider += "/" + service_type.sub(/\/.*/,"")
+           #service_type.sub(/.*\//,"")
+           
+            p :sub_service
+            p provider 
+            p service_type
+            
+          end
+    dir = SysConfig.ServiceTemplateDir + "/" + provider
+            p :dir
+            p dir 
           if Dir.exist?(dir)
-            return search_dir(dir,service_type)
+            service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
+              if service_def == nil
+                return nil                
+              end
+              return service_def.to_h
           end
   end
+  
+  def SoftwareServiceDefinition.load_service_def(dir,service_type)
+    filename=dir + "/" + service_type + ".yaml"
+      p :loading_def_from
+      p filename
+    if File.exist?(filename)
+      yaml = File.read(filename)
+      return self.from_yaml(yaml)     
+    end
+
+    return nil
+  end
+  
   def search_dir(dir,service_type)
+    return SoftwareServiceDefinition.search_dir(dir,service_type)
+  end
+  
+  def SoftwareServiceDefinition.search_dir(dir,service_type)
     root = dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
-        if Dir.exist?(service_dir_entry) == true && service_dir_entry.directory.start_with?(".") ==false
+        if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?(".") ==false
           search_dir(root + "/" + service_dir_entry,service_type)
         else
           if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
-            return load_service_type(dir,service_type)
+            return load(dir,service_type)
           end
         end
       end
     end
   end
+  
+ 
 
   def to_h
     require 'json'

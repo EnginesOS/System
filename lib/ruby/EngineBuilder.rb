@@ -15,12 +15,13 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
-  attr_reader :last_error,\
-  :repoName,\
-  :hostname,\
-  :domain_name,\
-  :build_name,\
-  :set_environments
+  attr_reader :last_error,
+              :repoName,
+              :hostname,
+              :domain_name,
+              :build_name,
+              :set_environments
+              
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -63,9 +64,10 @@ class EngineBuilder
       @docker_file.puts("")
       write_environment_variables
       write_stack_env
+      write_services
       write_file_service
-      write_db_service
-      #      write_cron_jobs
+      #write_db_service
+      #write_cron_jobs
       write_os_packages
       write_apache_modules
       write_user_local = true
@@ -117,7 +119,7 @@ class EngineBuilder
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
-
+   
       write_clear_env_variables
 
       @docker_file.close
@@ -283,6 +285,34 @@ class EngineBuilder
         return false
       end
     end
+    
+    def write_services
+      services = @blueprint_reader.services
+      @docker_file.puts("#Service Environment Variables")
+        services.each do |service_hash|
+          service_def =  @builder.get_service_def(service_hash)
+            if service_def != nil
+              p :processing
+              p service_def
+              
+              service_environment_variables = service_def[:target_environment_variables]
+                if service_environment_variables != nil
+                  service_environment_variables.values.each do |env_variable_pair|
+                    p :setting_values
+                    p env_variable_pair
+                    env_name = env_variable_pair[:environment_name]
+                    value_name = env_variable_pair[:variable_name]
+                    value=service_hash[value_name.to_sym] 
+                    if value != nil && value.to_s.length >0
+                      @docker_file.puts("ENV " + env_name + " " + value )
+                      count_layer()
+                    end
+                  end
+                    
+                end
+            end
+        end
+    end
 
     def write_sed_strings
       begin
@@ -426,35 +456,35 @@ class EngineBuilder
     #      end
     #    end
 
-    def write_db_service
-      begin
-        @docker_file.puts("#Database Service")
-        log_build_output("Dockerfile:DB env")
-        @blueprint_reader.databases.each do |db|
-          @docker_file.puts("#Database Env")
-          @docker_file.puts("ENV dbname " + db.name)
-          count_layer
-          @docker_file.puts("ENV dbhost " + db.dbHost)
-          count_layer
-          @docker_file.puts("ENV dbuser " + db.dbUser)
-          count_layer
-          @docker_file.puts("ENV dbpasswd " + db.dbPass)
-          count_layer
-          flavor = db.flavor
-          if flavor == "mysql"
-            flavor = "mysql2"
-          elsif flavor == "pgsql"
-            flavor = "postgresql"
-          end
-          @docker_file.puts("ENV dbflavor " + flavor)
-          count_layer
-        end
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+#    def write_db_service
+#      begin
+#        @docker_file.puts("#Database Service")
+#        log_build_output("Dockerfile:DB env")
+#        @blueprint_reader.databases.each do |db|
+#          @docker_file.puts("#Database Env")
+#          @docker_file.puts("ENV dbname " + db.name)
+#          count_layer
+#          @docker_file.puts("ENV dbhost " + db.dbHost)
+#          count_layer
+#          @docker_file.puts("ENV dbuser " + db.dbUser)
+#          count_layer
+#          @docker_file.puts("ENV dbpasswd " + db.dbPass)
+#          count_layer
+#          flavor = db.flavor
+#          if flavor == "mysql"
+#            flavor = "mysql2"
+#          elsif flavor == "pgsql"
+#            flavor = "postgresql"
+#          end
+#          @docker_file.puts("ENV dbflavor " + flavor)
+#          count_layer
+#        end
+#
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def write_write_permissions_single
       begin
@@ -813,8 +843,8 @@ class EngineBuilder
     end
 
     def read_web_port_overide
-      if @blueprint["software"].has_key?("read_web_port_overide") == true
-        @web_port=@blueprint["software"]["read_web_port_overide"]
+      if @blueprint[:software].has_key?(:read_web_port_overide) == true
+        @web_port=@blueprint[:software][:read_web_port_overide]
       end
     end
 
@@ -824,10 +854,10 @@ class EngineBuilder
 
         @persistant_dirs = Array.new
 
-        pds =   @blueprint["software"]["persistantdirs"]
+        pds =   @blueprint[:software][:persistantdirs]
 
         pds.each do |dir|
-          @persistant_dirs.push(dir["path"])
+          @persistant_dirs.push(dir[:path])
 
         end
 
@@ -845,10 +875,10 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint["software"]["persistantfiles"]
+        pfs =   @blueprint[:software][:persistantfiles]
         files= String.new
         pfs.each do |file|
-          path = clean_path(file["path"])
+          path = clean_path(file[:path])
           #link_src = path.sub(/app/,"")
           src_paths.push(path)
         end
@@ -869,13 +899,13 @@ class EngineBuilder
       begin
         @rake_actions = Array.new
         log_build_output("Read Rake List")
-        rake_cmds = @blueprint["software"]["rake_tasks"]
+        rake_cmds = @blueprint[:software][:rake_tasks]
         if rake_cmds == nil
           return
         end
 
         rake_cmds.each do |rake_cmd|
-          rake_action = rake_cmd["action"]
+          rake_action = rake_cmd[:action]
           p rake_action
           if rake_action !=nil
             @rake_actions.push(rake_action)
@@ -893,24 +923,43 @@ class EngineBuilder
       @databases=Array.new
       @volumes=Hash.new
 
+      
       log_build_output("Read Services")
-      services=@blueprint["software"]["softwareservices"]
+      services=@blueprint[:software][:softwareservices]
       services.each do |service|
-        servicetype=service["servicetype_name"]
-        if servicetype == "mysql" || servicetype == "pgsql"
-          dbname = service["name"]
-          dest = service["dest"]
-          if dest =="local" || dest == nil
-            add_db_service(dbname,servicetype)
-          end
-        else if servicetype=="filesystem"
-            fsname = clean_path(service["name"])
-            dest = clean_path(service["dest"])
-            add_file_service(fsname, dest)
-          else
-            add_service(service)
-          end
+        
+        
+        if service.has_key?(:service_provider) == false || service[:service_provider] == nil
+          service[:service_provider] = "EnginesSystem"  
         end
+        
+        service[:service_type]=service[:servicetype_name] 
+          
+        p :service_provider
+        p   service[:service_provider] 
+          p :servicetype_name
+          p service[:servicetype_name]
+            
+        servicetype=service[:servicetype_name]
+       if servicetype == "SQL_database/mysql" || servicetype == "SQL_database/pgsql"
+          dbname = service[:name]
+          dest = service[:dest]
+          if dest =="local" || dest == nil
+            #FIXME
+            #kludge until BPDS is complete
+            service[:dest] = SysConfig.DBHost
+            service[:type] = servicetype.sub(/.*database\//,"") 
+           
+          end
+#        elsif servicetype=="filesystem"
+         service[:name] = clean_path(service[:name])
+         service[:dest] = clean_path(service[:dest])
+            add_file_service(service[:name], service[:dest])
+       end
+            add_service(service)
+           
+#          end
+#        end
       end
     end #FIXME
 
@@ -918,7 +967,7 @@ class EngineBuilder
       @services.push(service_hash)
     end
 
-    def add_file_service(name,dest)
+    def add_file_service(name,dest) #FIXME and put me in coreapi
       begin
         log_build_output("Add File Service " + name)
         if dest == nil || dest == ""
@@ -946,23 +995,28 @@ class EngineBuilder
       end
     end
 
-    def  add_db_service(dbname,servicetype)
-      log_build_output("Add DB Service " + dbname)
-      hostname = servicetype + "." + SysConfig.internalDomain
-      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,servicetype)
-
-      @databases.push(db)
-
-    end
+#    def  add_db_service(dbname,servicetype)
+#      p servicetype
+#      flavor = servicetype.sub(/.*database\//,"") 
+#      p :adding_db
+#      p dbname
+#      p servicetype
+#      log_build_output("Add DB Service " + dbname)
+#      hostname = flavor + "." + SysConfig.internalDomain
+#      db = DatabaseService.new(@container_name,dbname,hostname,dbname,dbname,flavor)
+#
+#      @databases.push(db)
+#
+#    end
 
     def read_os_packages
       begin
         @os_packages = Array.new
 
         log_build_output("Read OS Packages")
-        ospackages = @blueprint["software"]["ospackages"]
+        ospackages = @blueprint[:software][:ospackages]
         ospackages.each do |package|
-          @os_packages.push(package["name"])
+          @os_packages.push(package[:name])
         end
       rescue
         log_exception(e)
@@ -973,10 +1027,10 @@ class EngineBuilder
     def read_lang_fw_values
       log_build_output("Read Framework Settings")
       begin
-        @framework = @blueprint["software"]["swframework_name"]
+        @framework = @blueprint[:software][:swframework_name]
         p @framework
-        @runtime =  @blueprint["software"]["langauge_name"]
-        @memory =  @blueprint["software"]["requiredmemory"]
+        @runtime =  @blueprint[:software][:langauge_name]
+        @memory =  @blueprint[:software][:requiredmemory]
       rescue Exception=>e
         log_exception(e)
         return false
@@ -988,11 +1042,11 @@ class EngineBuilder
         @pear_modules = Array.new
 
         log_build_output("Read Pear List")
-        pear_mods = @blueprint["software"]["pear_mod"]
+        pear_mods = @blueprint[:software][:pear_mod]
         if pear_mods == nil || pear_mods.length == 0
           return
           pear_mods.each do |pear_mod|
-            mod =             pear_mod["module"]
+            mod =             pear_mod[:module]
             if mod !=nil
               @pear_modules.push(mod)
             end
@@ -1008,12 +1062,12 @@ class EngineBuilder
     def read_apache_modules
       @apache_modules = Array.new
       log_build_output("Read Apache Modules List")
-      mods =  @blueprint["software"]["apache_modules"]
+      mods =  @blueprint[:software][:apache_modules]
       if mods == nil
         return true
       end
       mods.each do |ap_module|
-        mod = ap_module["module"]
+        mod = ap_module[:module]
         if mod != nil
           @apache_modules.push(mod)
         end
@@ -1035,7 +1089,7 @@ class EngineBuilder
         #        @archives_details[:arc_loc] = Array.new
         #        @archives_details[:arc_dir] = Array.new
         log_build_output("Configuring install Environment")
-        archives = @blueprint["software"]["installedpackages"]
+        archives = @blueprint[:software][:installedpackages]
         n=0
         #        srcs=String.new
         #        names=String.new
@@ -1045,11 +1099,11 @@ class EngineBuilder
 
         archives.each do |archive|
           archive_details = Hash.new
-          arc_src=clean_path(archive["src"])
-          arc_name=clean_path(archive["name"])
-          arc_loc =clean_path(archive["dest"])
-          arc_extract=clean_path(archive[ "extractcmd"])
-          arc_dir=clean_path(archive["extractdir"])
+          arc_src=clean_path(archive[:src])
+          arc_name=clean_path(archive[:name])
+          arc_loc =clean_path(archive[:dest])
+          arc_extract=clean_path(archive[:extractcmd])
+          arc_dir=clean_path(archive[:extractdir])
           #          if(n >0)
           #            srcs = srcs + " "
           #            names =names + " "
@@ -1081,13 +1135,13 @@ class EngineBuilder
         log_build_output("Read Recursive Write Permissions")
         @recursive_chmods = Array.new
         log_build_output("set permissions recussive")
-        chmods = @blueprint["software"]["file_write_permissions"]
+        chmods = @blueprint[:software][:file_write_permissions]
         p :Single_Chmods
         if chmods != nil
           chmods.each do |chmod |
             p chmod
-            if chmod["recursive"]==true
-              directory = clean_path(chmod["path"])
+            if chmod[:recursive]==true
+              directory = clean_path(chmod[:path])
               p directory
               @recursive_chmods.push(directory)
             end
@@ -1106,14 +1160,14 @@ class EngineBuilder
         log_build_output("Read Non-Recursive Write Permissions")
         @single_chmods =Array.new
         log_build_output("set permissions  single")
-        chmods = @blueprint["software"]["file_write_permissions"]
+        chmods = @blueprint[:software][:file_write_permissions]
         p :Recursive_Chmods
         if chmods != nil
           chmods.each do |chmod |
             p chmod
-            if chmod["recursive"]==false
-              p chmod["path"]
-              directory = clean_path(chmod["path"])
+            if chmod[:recursive]==false
+              p chmod[:path]
+              directory = clean_path(chmod[:path])
               @single_chmods.push(directory)
             end
           end
@@ -1131,10 +1185,10 @@ class EngineBuilder
 
         log_build_output("Read Workers")
         @worker_commands = Array.new
-        workers =@blueprint["software"]["worker_commands"]
+        workers =@blueprint[:software][:worker_commands]
 
         workers.each do |worker|
-          @worker_commands.push(worker["command"])
+          @worker_commands.push(worker[:command])
         end
       rescue Exception=>e
         log_exception(e)
@@ -1145,7 +1199,7 @@ class EngineBuilder
     def read_cron_jobs
       begin
         log_build_output("Read Crontabs")
-        cjs =  @blueprint["software"]["cron_jobs"]
+        cjs =  @blueprint[:software][:cron_jobs]
         p :cron_jobs
         p cjs
         @cron_jobs = Array.new
@@ -1153,7 +1207,7 @@ class EngineBuilder
         cjs.each do |cj|
           p :read_cron_job
           p cj
-          @cron_jobs.push(cj["cronjob"])
+          @cron_jobs.push(cj[:cronjob])
         end
 
         return true
@@ -1174,7 +1228,7 @@ class EngineBuilder
         @sed_strings[:tmp_file] = Array.new
 
         log_build_output("set sed strings")
-        seds=@blueprint["software"]["replacementstrings"]
+        seds=@blueprint[:software][:replacementstrings]
         if seds == nil || seds.empty? == true
           return
         end
@@ -1182,8 +1236,8 @@ class EngineBuilder
         n=0
         seds.each do |sed|
 
-          file = clean_path(sed["file"])
-          dest = clean_path(sed["dest"])
+          file = clean_path(sed[:file])
+          dest = clean_path(sed[:dest])
           tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
           if file.match(/^_TEMPLATES.*/) != nil
             template_file = file.gsub(/^_TEMPLATES/,"")
@@ -1198,7 +1252,7 @@ class EngineBuilder
             src_file = "/home/app/" +  file
           end
           dest_file = "/home/app/" +  dest
-          sedstr = sed["sedstr"]
+          sedstr = sed[:sedstr]
           @sed_strings[:src_file].push(src_file)
           @sed_strings[:dest_file].push(dest_file)
           @sed_strings[:tmp_file].push(tmp_file)
@@ -1217,12 +1271,12 @@ class EngineBuilder
       begin
         @workerPorts = Array.new
         log_build_output("Read Work Ports")
-        ports =  @blueprint["software"]["work_ports"]
+        ports =  @blueprint[:software][:work_ports]
         puts("Ports Json" + ports.to_s)
         if ports != nil
           ports.each do |port|
-            portnum = port["port"]
-            name = port["name"]
+            portnum = port[:port]
+            name = port[:name]
             external = port['external']
             type = port['protocol']
             if type == nil
@@ -1246,16 +1300,16 @@ class EngineBuilder
       p :set_environment_variables
       p @builder.set_environments
       begin
-        envs = @blueprint["software"]["environment_variables"]
+        envs = @blueprint[:software][:environment_variables]
         envs.each do |env|
           p env
-          name=env["name"]
-          value=env["value"]
-          ask=env["ask_at_build_time"]
-          mandatory = env["mandatory"]
-          build_time_only =  env["build_time_only"]
-          label =  env["label"]
-          immutable =  env["immutable"]
+          name=env[:name]
+          value=env[:value]
+          ask=env[:ask_at_build_time]
+          mandatory = env[:mandatory]
+          build_time_only =  env[:build_time_only]
+          label =  env[:label]
+          immutable =  env[:immutable]
 
           if @builder.set_environments != nil
             p :looking_for_
@@ -1316,9 +1370,9 @@ class EngineBuilder
         p :env_hash
         p env_hash
 
-        if env_hash != nil && env_hash["name"] !=nil && env_hash["value"] != nil
-          env_hash["name"] = env_hash["name"].sub(/_/,"")
-          custom_env_hash.store(env_hash["name"],env_hash["value"])
+        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
+          env_hash[:name] = env_hash[:name].sub(/_/,"")
+          custom_env_hash.store(env_hash[:name],env_hash[:value])
         end
       end
       p :Merged_custom_env
@@ -1429,7 +1483,16 @@ class EngineBuilder
       blueprint_file.close
 
       # @blueprint = JSON.parse(blueprint_json_str)
-      return JSON.parse(blueprint_json_str)
+      json_hash = JSON.parse(blueprint_json_str)
+      p :symbolized_hash
+#      test_hash = json_hash
+#      test_hash.keys.each do |key|
+#        test_hash[(key.to_sym rescue key) || key] = myhash.delete(key)
+#      end
+#      p test_hash
+  hash =  SystemUtils.symbolize_keys(json_hash)
+      return hash
+      
     rescue Exception=>e
       log_exception(e)
       return false
@@ -1446,44 +1509,44 @@ class EngineBuilder
     end
   end
 
-  def create_database_service db
-    begin
-      log_build_output("Create DB Service ")
-      db_server_name=db.flavor + "_server"
-      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
-      if db_service.is_a?(DBManagedService)
-
-        db_service.add_consumer(db)
-        return true
-      else
-        p db_service
-        p db_service.result_mesg
-        return false
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
-
-  def create_file_service vol
-    begin
-      log_build_output("Create Vol Service ")
-      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
-      if vol_service.is_a?(EnginesOSapiResult) == false
-        vol_service.add_consumer(vol)
-        return true
-      else
-        p vol_service
-        p vol_service.result_mesg
-        return false
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-
-  end
+#  def create_database_service db
+#    begin
+#      log_build_output("Create DB Service ")
+#      db_server_name=db.flavor + "_server"
+#      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
+#      if db_service.is_a?(DBManagedService)
+#
+#        db_service.add_consumer(db)
+#        return true
+#      else
+#        p db_service
+#        p db_service.result_mesg
+#        return false
+#      end
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#  end
+#
+#  def create_file_service vol
+#    begin
+#      log_build_output("Create Vol Service ")
+#      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
+#      if vol_service.is_a?(EnginesOSapiResult) == false
+#        vol_service.add_consumer(vol)
+#        return true
+#      else
+#        p vol_service
+#        p vol_service.result_mesg
+#        return false
+#      end
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#
+#  end
 
   def create_cron_service
     begin
@@ -1523,18 +1586,18 @@ class EngineBuilder
       return setup_framework_defaults
     end
   end
-
-  def create_db_service(name,flavor)
-    begin
-      log_build_output("Create DB Service")
-      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
-      databases.push(db)
-      create_database_service db
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
+#
+#  def create_db_service(name,flavor)
+#    begin
+#      log_build_output("Create DB Service")
+#      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
+#      databases.push(db)
+#      create_database_service db
+#    rescue Exception=>e
+#      log_exception(e)
+#      return false
+#    end
+#  end
 
   def build_init
     begin
@@ -1684,11 +1747,12 @@ class EngineBuilder
 
       setup_framework_logging
 
-      log_build_output("Creating db Services")
-      @blueprint_reader.databases.each() do |db|
-        create_database_service db
-      end
+#      log_build_output("Creating db Services")
+#      @blueprint_reader.databases.each() do |db|
+#        create_database_service db
+#      end
 
+      create_persistant_services
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
@@ -1702,59 +1766,25 @@ class EngineBuilder
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end
 
+        #needs to be moved to services dependant on the new BPDS
         create_cron_service
 
-        log_build_output("Creating vol Services")
-        @blueprint_reader.databases.each() do |db|
-          create_database_service db
-        end
-
-        primary_vol=nil
-        @blueprint_reader.volumes.each_value() do |vol|
-          create_file_service vol
-          if primary_vol == nil
-            primary_vol =vol
-          end
-        end
+#        log_build_output("Creating vol Services")
+#        @blueprint_reader.databases.each() do |db|
+#          create_database_service db
+#        end
+#
+#        primary_vol=nil
+#        @blueprint_reader.volumes.each_value() do |vol|
+#          create_file_service vol
+#          if primary_vol == nil
+#            primary_vol =vol
+#          end
+#        end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
-          @blueprint_reader.services.each() do |service|
-          #FIX ME Should call this but Keys dont match blueprint designer issue
-          #@core_api.add_service(service,mc)
-            p :adding_service
-            p service   
-            if service["servicetype_name"] == "ftp"
-              service_def = Hash.new
-              #parent_engine
-              #service_type
-              #service_provider
-              #name
-              #service
-                #symbols from ftp service definition and values from blueprint and envionment
-                # still need to sort
-              #will follow the blueprint design studio's team leader on how to implement        
-              service[:volume] = primary_vol.name
-              service[:folder] =  service["dest"]
-              service[:username] = @set_environments["ftpuser"]
-              service[:password] = @set_environments["password"]
-              service[:rw_access] =true
-              service[:service_type]=service["servicetype_name"]
-              service[:service_provider]="EnginesSystem"  
-              service[:parent_engine]=mc.containerName
-              service[:name]=service["name"]             
-                    
-                p :service_def
-                p service
-              @core_api.attach_service(service)
-#            volume from vol
-#            name  from hash
-#            folder  from hash 
-#            username from env
-#            password from env
-#            rw_access from env
-            end
-          end
+          create_non_persistant_services   
         end
       end
 
@@ -1770,6 +1800,92 @@ class EngineBuilder
     end
   end
 
+  
+  def create_non_persistant_services
+    @blueprint_reader.services.each() do |service_hash|
+       #FIX ME Should call this but Keys dont match blueprint designer issue
+       #@core_api.add_service(service,mc)     
+      service_hash[:parent_engine]=@container_name
+        
+       service_def =  get_service_def(service_hash)
+      if service_def == nil
+        p :failed_to_load_service_definition
+        p service_hash[:servicetype_name]
+        p service_hash[:service_provider]
+        return false
+      end
+        if service_def[:persistant] == true
+          next                 
+        end
+        
+         p :adding_service
+         p service_hash   
+      @core_api.attach_service(service_hash)
+       end
+  end
+  
+  
+  def get_service_def(service_hash)
+    return     SoftwareServiceDefinition.find(service_hash[:servicetype_name], service_hash[:service_provider] )
+  end
+  
+  def create_persistant_services
+    @blueprint_reader.services.each() do |service_hash|
+      
+      service_hash[:parent_engine]=@container_name
+      p :service_def_for
+             p service_hash[:servicetype_name]
+             p service_hash[:service_provider]
+   
+      service_def = get_service_def(service_hash)
+         p  service_def
+       
+       if service_def == nil
+         p :failed_to_load_service_definition
+         p :servicetype_name
+         
+         p service_hash[:servicetype_name]
+           p :service_provider
+        p service_hash[:service_provider]
+         return false
+       end
+      if service_def[:persistant] == false
+        next                 
+      end
+      p :adding_service
+     
+      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+      p service_hash   
+      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+      p :target_envs
+      p service_def[:target_environment_variables]
+                    
+        if service_hash[:servicetype_name] == "ftp"      
+          #symbols from ftp service definition and values from blueprint and envionment
+          # still need to sort
+        #will follow the blueprint design studio's team leader on how to implement        
+          service_hash[:volume] = primary_vol.name
+          service_hash[:folder] =  service_hash[:dest]
+          service_hash[:username] = @set_environments[:ftpuser]
+          service_hash[:password] = @set_environments[:password]
+          service_hash[:rw_access] =true
+          service_hash[:service_type]=service_hash[:servicetype_name]
+          service_hash[:service_provider]="EnginesSystem"  
+         
+          service_hash[:name]=service_hash[:name]             
+              
+          p :service
+          p service_hash
+      
+
+      end
+      
+      @core_api.attach_service(service_hash)
+      
+      
+    end
+  end
+  
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")

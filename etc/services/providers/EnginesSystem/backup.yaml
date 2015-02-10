@@ -1,0 +1,40 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Backup
+description: "Backup tasks"
+service_type: backup
+service_container: backup
+service_provider: EnginesSystem
+dedicated: false
+persistant: false
+consumer_params:
+setup_params:
+   cron_job:
+    regex_invalid_message: "wrong go back and try again"
+    name: backup_name
+    label: Backup Name
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: "* * * * * command"
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   name:
+    regex_invalid_message: "wrong go back and try again"
+    name: backup_type
+    label: Backup Type
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    default_value: " "
+    comment: " "

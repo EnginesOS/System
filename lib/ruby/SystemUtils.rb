@@ -17,6 +17,30 @@ class SystemUtils
   end 
  end
  
+  def SystemUtils.symbolize_keys(hash)
+    hash.inject({}){|result, (key, value)|
+      new_key = case key
+                when String then key.to_sym
+                else key
+                end
+      new_value = case value
+                  when Hash then symbolize_keys(value)
+                  when Array   then
+                    newval=Array.new 
+                    value.each do |array_val|
+                      if array_val.is_a?(Hash)
+                        array_val = SystemUtils.symbolize_keys(array_val)
+                      end
+                      newval.push(array_val)                                          
+                    end
+                      newval      
+                  else value
+                  end
+      result[new_key] = new_value
+      result
+    }
+  end
+  
   def SystemUtils.log_exception(e)
       e_str = e.to_s()
       e.backtrace.each do |bt |

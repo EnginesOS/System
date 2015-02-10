@@ -1,4 +1,4 @@
-#!/usr/local/rvm/bin/rvm-auto-ruby
+#!/home/engines/.rbenv/versions/2.1.3/bin/ruby
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"

@@ -100,97 +100,8 @@ class EnginesCore
       end
     end
 
-    def format_cron_line(cron_hash)
-      cron_line = String.new
-      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/)
-      for n in 0..4
-        cron_line +=  cron_line_split[n] + " "
-      end
-      cron_line +=" docker exec " +  cron_hash[:container_name] + " "
-      n=5
-      cnt = cron_line_split.count
-
-      while n < cnt
-        cron_line += " " + cron_line_split[n]
-        n+=1
-      end
-      return     cron_line
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-    end
-
-    def add_cron(cron_hash)
-      begin
-
-        cron_line = format_cron_line(cron_hash)
-        cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
-        cron_file.puts(cron_line)
-        cron_file.close
-
-        return reload_crontab
-
-      rescue Exception=>e
-
-        log_exception(e)
-        return false
-      end
-    end
-
-    def reload_crontab
-      docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
-      return run_system(docker_cmd)
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-    end
-
-    def rebuild_crontab(cron_service)
-      cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
-
-      cron_service.consumers.each do |cron_entry|
-
-        cron_line = format_cron_line(cron_entry[1])
-        p :cron_line
-        p cron_line
-        cron_file.puts(cron_line)
-      end
-      cron_file.close
-      return reload_crontab
-
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-
-    end
-
-    def remove_containers_cron_list(containerName)
-      cron_service =  @engines_api.loadManagedService("cron")
-      p :remove_cron_for
-      p containerName
-
-      cron_service.consumers.each do |cron_job|
-        if cron_job != nil
-          p cron_job
-          p :looking_at
-          p cron_job[1][:container_name]
-          if cron_job[1][:container_name] ==  containerName
-            cron_service.remove_consumer(cron_job[1])
-          end
-        end
-      end
-    rescue Exception=>e
-
-      log_exception(e)
-
-      return false
-    end
+  
+  
 
     def clear_cid_file container
       clear_error
@@ -395,28 +306,6 @@ class EnginesCore
       end
     end
 
-    def add_ftp_service(site_hash)
-      clear_error
-      begin
-        SystemUtils.debug_output site_hash
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-
-    end
-
-    def rm_ftp_service(site_hash)
-      clear_error
-      begin
-        SystemUtils.debug_output site_hash
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def add_monitor(site_hash)
       clear_error
@@ -515,65 +404,8 @@ class EnginesCore
       end
     end
 
-    def add_volume(site_hash)
-      clear_error
-      begin
-        if Dir.exists?(  site_hash[:localpath] ) == false
-          FileUtils.mkdir_p( site_hash[:localpath])
-        end
-        #currently the build scripts do this
-        #save details with some manager
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
-    def rm_volume(site_hash)
-      clear_error
-      begin
-        puts "would remove " + site_hash[:localpath]
-        #update details with some manager
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
-    def rm_backup(site_hash)
-      clear_error
-      begin
-        ssh_cmd=SysConfig.rmBackupCmd + " " + site_hash[:name]
-        return run_system(ssh_cmd)
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
-
-    def create_backup(site_hash)
-      clear_error
-      begin
-        containerName = site_hash[:engine_name]
-        SystemUtils.debug_output site_hash
-        if site_hash[:source_type] =="fs"
-          site_src=containerName + ":fs:" + site_hash[:source_name]
-        else
-          site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
-        end
-        #FIXME
-        site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
-        ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
-        run_system(ssh_cmd)
-        #FIXME shoudl return about result and not just true
-        return true
-      rescue  Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
 
     def  save_domains(domains)
       clear_error
@@ -1519,26 +1351,22 @@ class EnginesCore
     return  @system_api.add_domain(params)
   end
 
-  def add_cron(cron_hash)
-    p :add_cront
-    return  @system_api.add_cron(cron_hash)
-  end
-
-  def remove_containers_cron_list(containerName)
-    p :remove_containers_cron
-    if @system_api.remove_containers_cron_list(containerName)
-      cron_service = loadManagedService("cron")
-      return @system_api.rebuild_crontab(cron_service)
-    else
-      return false
-    end
-  end
-
-  def rebuild_crontab(cron_service)
-    #acutally a rebuild (or resave) as hadh already removed from consumer list
-    p :rebuild_crontab
-    return  @system_api.rebuild_crontab(cron_service)
-  end
+#
+#  def remove_containers_cron_list(containerName)
+#    p :remove_containers_cron
+#    if @system_api.remove_containers_cron_list(containerName)
+#      cron_service = loadManagedService("cron")
+#      return @system_api.rebuild_crontab(cron_service)
+#    else
+#      return false
+#    end
+#  end
+#
+#  def rebuild_crontab(cron_service)
+#    #acutally a rebuild (or resave) as hadh already removed from consumer list
+#    p :rebuild_crontab
+#    return  @system_api.rebuild_crontab(cron_service)
+#  end
 
   def remove_domain(params)
     return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -1587,13 +1415,7 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  def add_ftp_service(site_hash)
-    return @system_api.add_ftp_service(site_hash)
-  end
-
-  def rm_ftp_service(site_hash)
-    return @system_api.rm_ftp_service(site_hash)
-  end
+  
 
   def add_monitor(site_hash)
     return @system_api.add_monitor(site_hash)
@@ -1623,9 +1445,7 @@ class EnginesCore
     return @system_api.rm_volume(site_hash)
   end
 
-  def create_backup(site_hash)
-    return @system_api.create_backup(site_hash)
-  end
+
 
   def remove_self_hosted_domain(domain_name)
     return @system_api.remove_self_hosted_domain(domain_name)
@@ -1942,37 +1762,6 @@ class EnginesCore
     end
   end
 
-  def create_database  site_hash
-    clear_error
-    begin
-      container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
-
-      #save details with some manager
-      SystemUtils.debug_output(cmd)
-
-      return run_system(cmd)
-    rescue  Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
-
-  def drop_database  site_hash
-    clear_error
-    begin
-      container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
-
-      #save details with some manager
-      SystemUtils.debug_output(cmd)
-
-      return run_system(cmd)
-    rescue  Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
 
   def delete_image(container)
     begin
