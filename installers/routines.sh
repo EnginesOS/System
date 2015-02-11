@@ -270,6 +270,7 @@ echo "Setting directory and file permissions"
 	chown 22000 /opt/engines/run/services/nginx/run/nginx/
 	chown 21000  /home/engines/db/production.sqlite
 	chown 21000  /home/engines/db/development.sqlite
+	chown -R 21000 /opt/engines/etc/keys
 	}
 
 function set_os_flavor {
