@@ -19,8 +19,8 @@ volumes:
   mapping_permissions: rw
  build_dirs: !ruby/object:Volume
   name: build_dirs
-  remotepath: "/home/dockuser/deployment"
-  localpath: "/home/dockuser/deployment"
+  remotepath: "/home/engines/deployment"
+  localpath: "/home/engines/deployment"
   mapping_permissions: rw
  sqlite: !ruby/object:Volume
   name: sqlite
