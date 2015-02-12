@@ -2,7 +2,7 @@
 containerName: mgmt
 ctype: service
 last_error: 
-memory: '256'
+memory: '300'
 hostName: mgmt
 domainName: 
 environments:
