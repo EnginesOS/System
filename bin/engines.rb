@@ -7,7 +7,7 @@ require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
 
 def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")
-  puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
+  puts("Where command is one of list|system|network|memory|check_and_act|running|stopped|stop|start|pause|unpause|restart|rebuild|logs|ps|create|recreate|registersite|deregistersite|registerdns|deregisterdns|monitor|demonitor|stats|status|lasterror|databases|volumes|backups|backup_vol|backup_db|stop_backup|destroy|deleteimage|register_consumers")
 end
 
 def format_databases(volumes)
