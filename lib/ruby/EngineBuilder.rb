@@ -307,6 +307,10 @@ class EngineBuilder
                     p value_name
                     p :as_symbol
                      p value_name.to_sym
+                     p :in_service_hash
+                     p service_hash
+                     p :and_found
+                     p value
                      
                     if value != nil && value.to_s.length >0
                       @docker_file.puts("ENV " + env_name + " " + value )
