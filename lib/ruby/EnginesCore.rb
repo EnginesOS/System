@@ -424,6 +424,7 @@ class EnginesCore
       clear_error
       begin
         if File.exists?(SysConfig.DomainsFile) == false
+          p :creating_new_domain_list
           self_hosted_domain_file = File.open(SysConfig.DomainsFile,"w")
           self_hosted_domain_file.close
           return Hash.new
@@ -433,11 +434,13 @@ class EnginesCore
         domains = YAML::load( self_hosted_domain_file )
         self_hosted_domain_file.close
         if domains == false
+          p domains_error_in_load
           return Hash.new
         end
         return domains
       rescue Exception=>e
         domains = Hash.new
+        p "failed_to_load_domains"
         SystemUtils.log_exception(e)
         return domains
       end
@@ -448,6 +451,7 @@ class EnginesCore
       return domains
     rescue Exception=>e
       domains = Hash.new
+      p :error_listing_domains
       SystemUtils.log_exception(e)
       return domains
     end

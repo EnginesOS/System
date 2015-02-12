@@ -1,18 +1,18 @@
 FROM  engines/passenger
 
 RUN /usr/sbin/addgroup --gid 999 docker;\
-	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/dockuser --disabled-password dockuser
+	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/engines --disabled-password engines
 
 ADD home home
-ADD profile /home/dockuser/.profile
+ADD profile /home/engines/.profile
 
 
-ENV ContUser dockuser
+ENV ContUser engines
 ENV ContGrp ruby
 
 #need to create as linking sqllite
 RUN mkdir -p /home/app/db
-RUN chown dockuser /home/app/db
+RUN chown engines /home/app/db
 
 WORKDIR /home/app/
 RUN	git init
@@ -20,7 +20,7 @@ RUN	git init
 ADD gitconfig /home/app/.git/config
 
 RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\	
-	chown -R 21000 /home/app/ /home/dockuser /var/log/apache2/;\
+	chown -R 21000 /home/app/ /home/engines /var/log/apache2/;\
 	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/;\
 	chown -R 21000 /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
 	mkdir -p  /run/apache2;\
