@@ -13,6 +13,6 @@ RUN chown www-data /var/lib/nginx /var/run/nginx/
 
 ENV ContUser www-data
 ENV ContGrp www-data
-USER www-data
+USER 22005
 
 CMD nginx
