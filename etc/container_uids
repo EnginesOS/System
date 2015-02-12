@@ -1,6 +1,6 @@
 #User		Group		UID
 #services
-mgmt		dockuser	21000
+mgmt		engines	21000
 rma			rma			22001
 postgres	postgres	22002
 postfix		postfix		22003

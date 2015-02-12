@@ -8,7 +8,7 @@ domainName:
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
- value: dockuser
+ value: engines
  setatrun: false
 image: engines/mgmt
 volumes:
@@ -25,7 +25,7 @@ volumes:
  sqlite: !ruby/object:Volume
   name: sqlite
   remotepath: "/home/app/db/production.sqlite3"
-  localpath: "/home/dockuser/db/production.sqlite3"
+  localpath: "/home/engines/db/production.sqlite3"
   mapping_permissions: rw
  docker_bin: !ruby/object:Volume
   name: docker_bin
