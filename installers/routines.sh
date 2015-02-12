@@ -259,6 +259,8 @@ mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
 mkdir -p /home/dockuser/db/
 touch -p /home/dockuser/db/production.sqlite3
+mkdir -p /home/engines/deployment/deployed/
+
 }
 
 function set_permissions {
@@ -276,6 +278,8 @@ echo "Setting directory and file permissions"
 	chown -R 21000 /opt/engines/etc/keys
 	chown -R 21000 /home/dockuser/db/
 	chown -R 21000 /opt/engines/run/service_manager/
+	chown -R 21000 /home/engines/deployment/deployed/
+	
 	}
 
 function set_os_flavor {
