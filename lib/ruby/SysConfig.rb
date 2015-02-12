@@ -11,7 +11,7 @@ class SysConfig
   @@DBHost="mysql.engines.internal"
   @@CidDir="/opt/engines/run"
   @@ContainersDir="/opt/engines/run/containers/"
-  @@DeploymentDir="/home/dockuser/deployment/deployed"
+  @@DeploymentDir="/home/engines/deployment/deployed"
   @@DeploymentTemplates="/opt/engines/system/templates/deployment"
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/lib/engines/fs"
