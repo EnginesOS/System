@@ -949,7 +949,10 @@ class EngineBuilder
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
-           
+            service[:dbfavor] = "mysql2"
+           #          if flavor == "mysql"
+           #            flavor = "mysql2"
+           #          elsif flavor == "pgsql"
           end
 #        elsif servicetype=="filesystem"
          service[:name] = clean_path(service[:name])
