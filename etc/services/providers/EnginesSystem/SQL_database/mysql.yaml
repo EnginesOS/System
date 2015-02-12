@@ -78,5 +78,5 @@ target_environment_variables:
   variable_name: name
   environment_name: dbpasswd
  flavor:
-  variable_name: type
-  environment_name: flavor
+  variable_name: dbflavor
+  environment_name: dbflavor
