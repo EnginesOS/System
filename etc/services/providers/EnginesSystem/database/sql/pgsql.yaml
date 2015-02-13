@@ -5,15 +5,15 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: MySQL Database
-description: "MYSQL Database "
+title: PgMySQL Database
+description: "PgMySQL Database "
 service_provider: EnginesSystem
-service_type: mysql
-service_container: mysql_server
+service_type: database
+service_container: pssql_server
 dedicated: false
 persistant: true
 exclusive: true
-image_name: engines/volmanager
+image_name: engines/pssql_server
 consumer_params:
 setup_params:
  database_host:
@@ -25,11 +25,11 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " "
+  value: "mysql.engines.internal"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- name:
-  name: name
+ database_name:
+  name: database_name
   label: "Database name"
   regex_validator: ".*"
   tooltip: " "
@@ -37,11 +37,11 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " "
+  value: :parent_engine
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  username:
-  name: db_username
+  name: dbusername
   label: DB User Name
   regex_validator: ".*"
   tooltip: " "
@@ -53,7 +53,7 @@ setup_params:
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  password:
-  name: db_password
+  name: dbpassword
   label: DB Password
   tooltip: " "
   type: password_with_confirmation
@@ -66,17 +66,14 @@ setup_params:
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
  dbhost:
-  variable_name: dest
+  variable_name: database_host
   environment_name: dbhost
  dbname:
-  variable_name: name
+  variable_name: database_name
   environment_name: dbname
  dbuser:
-  variable_name: name
-  environment_name: dbuser  
+  variable_name: database_name
+  environment_name: dbname  
  dbpasswd:
-  variable_name: name
-  environment_name: dbpasswd
- flavor:
-  variable_name: dbfavor
-  environment_name: dbflavor
+  variable_name: db_password
+  environment_name: dbpasswd  
