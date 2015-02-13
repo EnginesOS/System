@@ -6,7 +6,3 @@ ENV ContUser volmgr
 ENV ContGrp volmgr
 
 ADD home /home
-ADD sudoers /etc/
-RUN chown 0 /etc/sudoers
-ADD volmgr.pub /home/volmgr/.ssh/authorized_keys
-RUN chown volmgr -R /home/volmgr/.ssh
