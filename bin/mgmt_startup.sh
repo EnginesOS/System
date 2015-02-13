@@ -7,7 +7,7 @@
 if test ` docker ps -a |grep mgmt |wc -c` -eq 0
 then
 
-`cat /opt/engines/system/images/04.systemApps/mgmt/docker_cmd` 
+eservice create mgmt
 
 else
  docker start mgmt

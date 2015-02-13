@@ -1631,9 +1631,13 @@ class EnginesCore
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-              p :service
+              p :service_as_serivce
               p service
+              P :as_hash
               p service.to_h
+              p :as_yaml
+              p service.to_yaml()
+              
               retval.push(service.to_h)
             end
           end
