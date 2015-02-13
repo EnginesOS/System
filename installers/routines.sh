@@ -250,8 +250,8 @@ mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
 mkdir -p /home/engines/db
-touch /home/engines/db/production.sqlite
-touch /home/engines/db/development.sqlite
+touch /home/engines/db/production.sqlite3
+touch /home/engines/db/development.sqlite3
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
 mkdir -p  /opt/engines/etc/cron/tabs
@@ -273,8 +273,8 @@ echo "Setting directory and file permissions"
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	 chown -R 22010 /var/log/engines/services/ftp
 	chown 22000 /opt/engines/run/services/nginx/run/nginx/
-	chown 21000  /home/engines/db/production.sqlite
-	chown 21000  /home/engines/db/development.sqlite
+	chown 21000  /home/engines/db/production.sqlite3
+	chown 21000  /home/engines/db/development.sqlite3
 	chown -R 21000 /opt/engines/etc/keys
 	chown -R 21000 /home/engines/db/
 	chown -R 21000 /opt/engines/run/service_manager/
