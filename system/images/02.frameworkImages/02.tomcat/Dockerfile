@@ -1,7 +1,9 @@
 FROM engines/frameworkbase
-RUN apt-get -y  --force-yes update;\
+
+RUN rm /etc/apt/apt.conf.d/01proxy;\
+	apt-get -y  --force-yes update;\
 	/usr/sbin/usermod -u 22671 www-data;\
-	apt-get install -y   tomcat7 ;\
+	apt-get install -y  --force-yes  tomcat7 ;\
 	apt-get clean ;\
 	ln -s /var/log/tomcat7 /usr/share/tomcat7/logs;\
  	ln -s  /etc/tomcat7  /usr/share/tomcat7/conf;\
