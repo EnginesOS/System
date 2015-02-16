@@ -122,8 +122,8 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
 	/usr/local/rbenv/bin/rbenv rehash
 	cp -rp  ~/.gemrc ~/.bashrc ~engines
-	gem install multi_json rspec rubytree git 
-
+	
+ 	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 		
 	
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
@@ -192,7 +192,7 @@ keys=""
 #	
 #	cat nagios.pub | awk '{ print $1 " " $2}' > nagios.p
 #	mv nagios.p  nagios.pub 
-#	
+#	f
 #	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
 #	mv mgmt.p  mgmt.pub 	
 #	
@@ -249,6 +249,8 @@ mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
+mkdir -p /var/log/engines/services/couriermail
+
 mkdir -p /home/engines/db
 touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
@@ -272,7 +274,9 @@ echo "Setting directory and file permissions"
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	 chown -R 22010 /var/log/engines/services/ftp
-	chown 22000 /opt/engines/run/services/nginx/run/nginx/
+	  chown  22011   /var/log/engines/services/couriermail
+	 
+	chown 22005 /opt/engines/run/services/nginx/run/nginx/
 	chown 21000  /home/engines/db/production.sqlite3
 	chown 21000  /home/engines/db/development.sqlite3
 	chown -R 21000 /opt/engines/etc/keys
