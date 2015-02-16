@@ -958,7 +958,11 @@ class EngineBuilder
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
+              p :kludge_set_type
+              p  service[:type] 
             service[:dbfavor] = "mysql2"
+            p :kludge_set_dbfavor
+             p  service[:dbfavor] 
               
            #          if flavor == "mysql"
            #            flavor = "mysql2"
