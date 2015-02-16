@@ -950,7 +950,7 @@ class EngineBuilder
           p service[:servicetype_name]
             
         servicetype=service[:servicetype_name]
-       if servicetype == "SQL_database/mysql" || servicetype == "SQL_database/pgsql"
+       if servicetype == "data/sql/database/mysql" || servicetype == "database/sql/pgsql"
           dbname = service[:name]
           dest = service[:dest]
           if dest =="local" || dest == nil
@@ -959,6 +959,7 @@ class EngineBuilder
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
             service[:dbfavor] = "mysql2"
+              
            #          if flavor == "mysql"
            #            flavor = "mysql2"
            #          elsif flavor == "pgsql"
