@@ -950,7 +950,8 @@ class EngineBuilder
           p service[:servicetype_name]
             
         servicetype=service[:servicetype_name]
-       if servicetype == "SQL_database/mysql" || servicetype == "SQL_database/pgsql"
+
+       if servicetype == "database/sql/mysql" || servicetype == "database/sql/pgsql"
           dbname = service[:name]
           dest = service[:dest]
           if dest =="local" || dest == nil
@@ -958,15 +959,20 @@ class EngineBuilder
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
             service[:type] = servicetype.sub(/.*database\//,"") 
+              p :kludge_set_type
+              p  service[:type] 
             service[:dbfavor] = "mysql2"
+            p :kludge_set_dbfavor
+             p  service[:dbfavor] 
+              
            #          if flavor == "mysql"
            #            flavor = "mysql2"
            #          elsif flavor == "pgsql"
           end
-#        elsif servicetype=="filesystem"
+        elsif servicetype=="filesystem"
          service[:name] = clean_path(service[:name])
          service[:dest] = clean_path(service[:dest])
-            add_file_service(service[:name], service[:dest])
+         add_file_service(service[:name], service[:dest])
        end
             add_service(service)
            
