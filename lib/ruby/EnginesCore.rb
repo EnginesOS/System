@@ -1633,7 +1633,7 @@ class EnginesCore
             if service != nil
               p :service_as_serivce
               p service
-              P :as_hash
+              p :as_hash
               p service.to_h
               p :as_yaml
               p service.to_yaml()
