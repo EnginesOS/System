@@ -1514,6 +1514,8 @@ class EnginesCore
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
     return sm.list_attached_services_for(objectName,identifier)
+    rescue Exception=>e
+               log_exception e
 
     #    object_name = object.class.name.split('::').last
     #
@@ -1552,6 +1554,8 @@ class EnginesCore
     retval[:services] = services
     retval[:subservices] = subservices
     return retval
+    rescue Exception=>e
+               log_exception e
   end
 
   def load_software_service(params)
@@ -1568,6 +1572,8 @@ class EnginesCore
     end
 
     return service
+    rescue Exception=>e
+               log_exception e
   end
 
   def attach_service(service_hash)
@@ -1612,7 +1618,8 @@ class EnginesCore
     p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
-    return nil
+    rescue Exception=>e
+               log_exception e
   end
 
   def load_avail_services_for(objectname)
@@ -1673,6 +1680,9 @@ class EnginesCore
     else
       return nil
     end
+    end
+         rescue Exception=>e
+           log_exception e
   end
 
   def set_engine_runtime_properties(params)
