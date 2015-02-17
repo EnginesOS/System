@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/usr/sbin/syslog-ng -F
+/usr/sbin/syslog-ng -F  --no-caps
