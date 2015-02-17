@@ -5,6 +5,6 @@ VOLUME /fs/
 ENV ContUser volmgr
 ENV ContGrp volmgr
 
-ADD home /home
+ADD home/init.sh /home/
 
 CMD /home/init.sh
