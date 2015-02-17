@@ -1642,7 +1642,7 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          puts e
+          lob_exception e
           next
         end
       end
