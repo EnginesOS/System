@@ -1597,6 +1597,8 @@ class EnginesCore
     end
     last_error = "Failed to attach Service: " + last_error
     return  false
+    rescue Exception=>e
+                  log_exception e
   end
 
   def detach_service(params)
@@ -1660,7 +1662,8 @@ class EnginesCore
     p objectname
     p retval
     return retval
-
+    rescue Exception=>e
+             log_exception e
   end
 
   def load_avail_component_services_for(object)
@@ -1679,7 +1682,7 @@ class EnginesCore
       return retval
     else
       return nil
-    end
+ 
     end
          rescue Exception=>e
            log_exception e
