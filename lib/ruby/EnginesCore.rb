@@ -1626,6 +1626,9 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
+           if service_dir_entry.start_with?(".")   == true
+             next
+           end
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
@@ -1642,7 +1645,7 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          lob_exception e
+          log_exception e
           next
         end
       end
