@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 while test 0 -ne 1
 do
