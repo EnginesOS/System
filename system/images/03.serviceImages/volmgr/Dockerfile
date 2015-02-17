@@ -1,5 +1,5 @@
 FROM busybox
-RUN echo "Y" | adduser -q --disabled-password --home=/home/volmgr -uid 22007 volmgr
+RUN echo "Y" | adduser --disabled-password --home=/home/volmgr -uid 22007 volmgr
 VOLUME /fs/
 
 ENV ContUser volmgr
