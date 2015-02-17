@@ -1647,6 +1647,8 @@ class EnginesCore
         end
       end
     end
+    p objectname
+    p retval
     return retval
 
   end
