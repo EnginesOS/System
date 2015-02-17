@@ -964,7 +964,7 @@ class EngineBuilder
             #FIXME
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
-            service[:type] = servicetype.sub(/.*database\//,"") 
+            service[:type] = servicetype.sub(/.*database\/.*\//,"") 
               p :kludge_set_type
               p  service[:type] 
             service[:dbfavor] = "mysql2"
