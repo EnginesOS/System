@@ -30,11 +30,10 @@ class BackupService < SoftwareService
       site_hash[:source_host]="testhostl"
       site_hash[:source_pass]="testpass"
         
-      if site_hash.has_key?(:source_type) == false
+      if site_hash.has_key?(:source_type) == false ||  site_hash[:source_type] == "engine"
         site_hash[:source_type] ="engine"
         site_hash[:source_name] = site_hash[:parent_engine]
-      end
-      if site_hash[:source_type] =="fs"
+      elsif  site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else
         site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
