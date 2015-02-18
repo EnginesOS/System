@@ -16,6 +16,8 @@ class DNSService < ManagedService
 
     else  #was passed a hash
       site_hash=engine
+     p :site_hash_pass_toadd_dns
+      p site_hash
       engine = @core_api.loadManagedEngine(site_hash[:parent_engine])
       site_hash[:container_type]=engine.ctype
       site_hash[:name]=engine.containerName
