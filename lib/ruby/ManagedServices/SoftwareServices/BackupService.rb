@@ -22,7 +22,8 @@ class BackupService < SoftwareService
         containerName = site_hash[:parent_engine]
         
       end
-      
+     # {:parent_engine=>"owncloud", :service_type=>"backup", :service_provider=>"EnginesSystem", :title=>"Backup", :name=>"owncloudapp", :dest_proto=>"ftp", :dest_folder=>"203.14.203.141", :dest_address=>"/tmp/", :include_logs=>"1", :dest_user=>"admin", :dest_pass=>"admin"}
+
       SystemUtils.debug_output site_hash
       #FIXME
       #kludge
@@ -39,7 +40,12 @@ class BackupService < SoftwareService
         site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
       end
       #FIXME
-      site_dest=site_hash[:dest_proto] +":" + site_hash[:dest_user] + ":" + site_hash[:dest_pass] + "@" +  site_hash[:dest_address] + "/" + site_hash[:dest_folder]
+      site_dest=site_hash[:dest_proto] 
+      site_dest += ":" + site_hash[:dest_user] 
+      site_dest += ":" + site_hash[:dest_pass] + "@" 
+      site_dest +=site_hash[:dest_address] + "/" 
+      site_dest +=site_hash[:dest_folder]
+        
       ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
       SystemUtils.run_system(ssh_cmd)
       #FIXME shoudl return about result and not just true
