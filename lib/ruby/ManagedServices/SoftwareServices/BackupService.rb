@@ -15,8 +15,22 @@ class BackupService < SoftwareService
   def create_backup(site_hash)
     
     begin
-      containerName = site_hash[:engine_name]
+      
+      if site_hash.has_key?(:engine_name)      
+        containerName = site_hash[:engine_name]
+      else
+        containerName = site_hash[:parent_engine]
+        site_hash[:source_type]="engine"
+      end
+      
       SystemUtils.debug_output site_hash
+      #FIXME
+      #kludge
+      site_hash[:source_user]="testuser"
+      site_hash[:source_host]="testhostl"
+      site_hash[:source_pass]="testpass"
+        
+      end
       if site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else
