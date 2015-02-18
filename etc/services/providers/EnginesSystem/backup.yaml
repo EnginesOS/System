@@ -44,7 +44,7 @@ setup_params:
       - "smbfs"
       - "nfs"
       - "s3"
-  dest_folder:
+   dest_folder:
     regex_invalid_message: "wrong go back and try again"
     name: dest_folder
     label: destination folder
