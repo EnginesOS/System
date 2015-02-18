@@ -5,6 +5,7 @@ persistant: true
 last_error: 
 memory: '90'
 hostName: inmail
+port: 8000
 domainName: engines.local.demo
 environments:
 - !ruby/object:EnvironmentVariable
