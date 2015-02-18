@@ -71,7 +71,8 @@ class CronService < SoftwareService
   
   def reload_crontab
     docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
-    return SystemUtils.run_system(docker_cmd)
+     SystemUtils.run_system(docker_cmd)
+     return true
   rescue Exception=>e
   
     SystemUtils.log_exception(e)
