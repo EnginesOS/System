@@ -74,7 +74,7 @@ setup_params:
     label: include_logs folder
     regex_validator: ".*"
     tooltip: " "
-    type: boolean
+    type: checkbox
     hint: ""
     placeholder: " "
     mandatory: false
