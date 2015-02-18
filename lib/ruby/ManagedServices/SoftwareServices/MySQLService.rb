@@ -26,8 +26,12 @@ class MySQLService < SoftwareService
     begin
       p :create_db
       p site_hash
+      if site_hash.has_key?(:service_container_name) == ture
+      container_name = site_hash[:service_container_name]
+    else
       container_name =  site_hash[:type] + "_server"
-      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:name] + " " + site_hash[:name] + " " + site_hash[:name]
+    end
+      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:database_name] + " " + site_hash[:db_username] + " " + site_hash[:db_password]
 
       #save details with some manager
       SystemUtils.debug_output(cmd)
