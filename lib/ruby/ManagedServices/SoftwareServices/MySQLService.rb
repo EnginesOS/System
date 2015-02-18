@@ -26,7 +26,7 @@ class MySQLService < SoftwareService
     begin
       p :create_db
       p site_hash
-      if site_hash.has_key?(:service_container_name) == ture
+      if site_hash.has_key?(:service_container_name) == true
       container_name = site_hash[:service_container_name]
     else
       container_name =  site_hash[:type] + "_server"
