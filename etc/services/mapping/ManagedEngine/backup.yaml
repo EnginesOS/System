@@ -59,7 +59,7 @@ setup_params:
    dest_address:
     regex_invalid_message: "wrong go back and try again"
     name: dest_address
-    label: destination
+    label: destination address
     regex_validator: ".*"
     tooltip: " "
     type: text_field
