@@ -4,21 +4,30 @@ class DNSService < ManagedService
   
 
   def get_site_hash(engine)
-    if engine.is_a?(ManagedEngine)
-    
-    site_hash = Hash.new()
-    site_hash[:service_type]='dns'
-    site_hash[:parent_engine]=engine.containerName
-    site_hash[:name]=engine.containerName
-    site_hash[:container_type]=engine.ctype
-    site_hash[:hostname]=engine.hostName
-    site_hash[:ip]=engine.get_ip_str.to_s
-    site_hash[:service_provider] = "EnginesSystem"
-    return site_hash
+    if engine.is_a?(ManagedEngine)         
+      site_hash = Hash.new()
+      site_hash[:service_type]='dns'
+      site_hash[:parent_engine]=engine.containerName
+      site_hash[:name]=engine.containerName
+      site_hash[:container_type]=engine.ctype
+      site_hash[:hostname]=engine.hostName
+      site_hash[:ip]=engine.get_ip_str.to_s
+      site_hash[:service_provider] = "EnginesSystem"
+
     else  #was passed a hash
-      return engine
+      site_hash=engine
+      engine = @core_api.loadManagedEngine(site_hash[:parent_engine])
+      site_hash[:container_type]=engine.ctype
+      site_hash[:name]=engine.containerName
+        if site_hash.has_key?(:ip) == false
+          site_hash[:ip]=engine.get_ip_str.to_s
+        end
+        if site_hash.has_key?(:hostname) == false
+          site_hash[:hostname]=engine.hostName
+        end      
     end
-      
+    
+    return site_hash
   end
   
   def add_consumer_to_service(site_hash)
