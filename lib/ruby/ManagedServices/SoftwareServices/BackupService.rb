@@ -37,7 +37,7 @@ class BackupService < SoftwareService
         site_src   =  site_hash[:parent_engine] + ":system:" + site_hash[:include_log]
       elsif  site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
-      else
+      else #database
         site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
       end
       #FIXME

@@ -1564,6 +1564,7 @@ class EnginesCore
     p :load_software_service
     p params
     service_container =  sm.get_software_service_container_name(params)
+    params[:service_container_name] = service_container
     p :container_name
     p service_container
     service = loadManagedService(service_container)
