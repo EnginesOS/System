@@ -20,7 +20,7 @@ class BackupService < SoftwareService
         containerName = site_hash[:engine_name]
       else
         containerName = site_hash[:parent_engine]
-        site_hash[:source_type]="engine"
+        
       end
       
       SystemUtils.debug_output site_hash
@@ -30,7 +30,10 @@ class BackupService < SoftwareService
       site_hash[:source_host]="testhostl"
       site_hash[:source_pass]="testpass"
         
-      
+      if site_hash.has_key(:source_type) == false
+        site_hash[:source_type] ="engine"
+        site_hash[:source_name] = site_hash[:parent_engine]
+      end
       if site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else

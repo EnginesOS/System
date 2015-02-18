@@ -14,9 +14,9 @@ dedicated: false
 persistant: false
 consumer_params:
 setup_params:
-   backup_name:
+   name:
     regex_invalid_message: "wrong go back and try again"
-    name: backup_name
+    name: name
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "
