@@ -1514,6 +1514,8 @@ class EnginesCore
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
     return sm.list_attached_services_for(objectName,identifier)
+    rescue Exception=>e
+               log_exception e
 
     #    object_name = object.class.name.split('::').last
     #
@@ -1552,6 +1554,8 @@ class EnginesCore
     retval[:services] = services
     retval[:subservices] = subservices
     return retval
+    rescue Exception=>e
+               log_exception e
   end
 
   def load_software_service(params)
@@ -1568,6 +1572,8 @@ class EnginesCore
     end
 
     return service
+    rescue Exception=>e
+               log_exception e
   end
 
   def attach_service(service_hash)
@@ -1591,6 +1597,8 @@ class EnginesCore
     end
     last_error = "Failed to attach Service: " + last_error
     return  false
+    rescue Exception=>e
+                  log_exception e
   end
 
   def detach_service(params)
@@ -1612,7 +1620,8 @@ class EnginesCore
     p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
-    return nil
+    rescue Exception=>e
+               log_exception e
   end
 
   def load_avail_services_for(objectname)
@@ -1626,6 +1635,9 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
+           if service_dir_entry.start_with?(".")   == true
+             next
+           end
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
@@ -1633,7 +1645,7 @@ class EnginesCore
             if service != nil
               p :service_as_serivce
               p service
-              P :as_hash
+              p :as_hash
               p service.to_h
               p :as_yaml
               p service.to_yaml()
@@ -1642,13 +1654,16 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          puts e
+          log_exception e
           next
         end
       end
     end
+    p objectname
+    p retval
     return retval
-
+    rescue Exception=>e
+             log_exception e
   end
 
   def load_avail_component_services_for(object)
@@ -1667,7 +1682,10 @@ class EnginesCore
       return retval
     else
       return nil
+ 
     end
+         rescue Exception=>e
+           log_exception e
   end
 
   def set_engine_runtime_properties(params)

@@ -260,8 +260,10 @@ mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
 mkdir -p /home/engines/db/
-touch -p /home/engines/db/production.sqlite3
+touch  /home/engines/db/production.sqlite3
 mkdir -p /home/engines/deployment/deployed/
+mkdir -p  /opt/engines/etc/keys
+
 
 }
 

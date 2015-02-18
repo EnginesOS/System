@@ -158,6 +158,12 @@ class EngineBuilder
 
       begin
         @docker_file.puts("#Environment Variables")
+        #Fixme
+        #kludge
+        @docker_file.puts("#System Envs")
+        @docker_file.puts("ENV TZ Sydney/Australia")
+        count_layer
+        
         @blueprint_reader.environments.each do |env|
           @docker_file.puts("#Blueprint ENVs")
           if env.value != nil
@@ -958,7 +964,7 @@ class EngineBuilder
             #FIXME
             #kludge until BPDS is complete
             service[:dest] = SysConfig.DBHost
-            service[:type] = servicetype.sub(/.*database\//,"") 
+            service[:type] = servicetype.sub(/.*database\/.*\//,"") 
               p :kludge_set_type
               p  service[:type] 
             service[:dbfavor] = "mysql2"

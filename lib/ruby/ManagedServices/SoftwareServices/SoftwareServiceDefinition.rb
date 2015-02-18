@@ -22,6 +22,8 @@ class SoftwareServiceDefinition
        return serviceDefinition
      rescue Exception=>e
        puts e.message + " with " + yaml
+       SystemUtils.log_exception(e)
+    
      end
   end
   
@@ -52,6 +54,10 @@ class SoftwareServiceDefinition
               end
               return service_def.to_h
           end
+    rescue Exception=>e
+     
+        SystemUtils.log_exception(e)
+     
   end
   
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
@@ -64,6 +70,8 @@ class SoftwareServiceDefinition
     end
 
     return nil
+    rescue Exception=>e        
+           SystemUtils.log_exception(e)
   end
   
   def search_dir(dir,service_type)
@@ -83,6 +91,9 @@ class SoftwareServiceDefinition
         end
       end
     end
+    rescue Exception=>e
+        
+           SystemUtils.log_exception(e)
   end
   
  
@@ -90,5 +101,8 @@ class SoftwareServiceDefinition
   def to_h
     require 'json'
     return JSON.parse(self.to_json, {:symbolize_names => true})
+    rescue Exception=>e
+        
+           SystemUtils.log_exception(e)
   end
 end
