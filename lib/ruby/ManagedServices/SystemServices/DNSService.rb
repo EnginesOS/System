@@ -24,6 +24,8 @@ class DNSService < ManagedService
         end
         if site_hash.has_key?(:hostname) == false
           site_hash[:hostname]=engine.hostName
+        elsif site_hash.has_key?(:domain_name)
+          site_hash[:hostname] = site_hash[:hostname] + "." + site_hash[:domain_name]
         end      
     end
     
