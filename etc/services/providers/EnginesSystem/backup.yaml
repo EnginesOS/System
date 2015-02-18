@@ -14,27 +14,69 @@ dedicated: false
 persistant: false
 consumer_params:
 setup_params:
-   cron_job:
+   backup_name:
     regex_invalid_message: "wrong go back and try again"
     name: backup_name
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "
     type: text_field
-    hint: "* * * * * command"
+    hint: ""
     placeholder: " "
     mandatory: true
     default_value: " "
     comment: " "
-   name:
+   backup_type:
     regex_invalid_message: "wrong go back and try again"
     name: backup_type
     label: Backup Type
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    type: select
     hint: ""
     placeholder: "a label "
+    mandatory: true
+    default_value: " "
+    comment: " "
+    collection:     
+      - "ftp"
+      - "local"
+      - "smbfs"
+      - "nfs"
+      - "s3"
+   destination:
+    regex_invalid_message: "wrong go back and try again"
+    name: destination
+    label: destination
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   user_name:
+    regex_invalid_message: "wrong go back and try again"
+    name: user_name
+    label: user_name
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   password:
+    regex_invalid_message: "wrong go back and try again"
+    name: password
+    label: password
+    regex_validator: ".*"
+    tooltip: " "
+    type: password
+    hint: ""
+    placeholder: " "
     mandatory: true
     default_value: " "
     comment: " "
