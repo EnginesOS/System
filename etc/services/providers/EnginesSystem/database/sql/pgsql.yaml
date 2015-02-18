@@ -8,7 +8,7 @@ author: Engines
 title: PgMySQL Database
 description: "PgMySQL Database "
 service_provider: EnginesSystem
-service_type: sql/pgsql
+service_type: database/sql/pgsql
 service_container: pssql_server
 dedicated: false
 persistant: true
