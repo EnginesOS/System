@@ -30,7 +30,7 @@ class BackupService < SoftwareService
       site_hash[:source_host]="testhostl"
       site_hash[:source_pass]="testpass"
         
-      end
+      
       if site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else
@@ -42,6 +42,7 @@ class BackupService < SoftwareService
       SystemUtils.run_system(ssh_cmd)
       #FIXME shoudl return about result and not just true
       return true
+      
     rescue  Exception=>e
       SystemUtils.log_exception(e)
       return false
