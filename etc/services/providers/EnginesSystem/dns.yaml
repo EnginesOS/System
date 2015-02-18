@@ -6,7 +6,7 @@ accepts:
   "ManagedService"
 author: Engines
 title: DNS
-description: "Resilves names to to IP address"
+description: "Resolves names to to IP address"
 service_type: dns
 service_container: dns
 service_provider: EnginesSystem
