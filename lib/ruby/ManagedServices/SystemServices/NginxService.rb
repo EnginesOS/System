@@ -15,6 +15,12 @@ class NginxService < ManagedService
      
   
   def get_site_hash(engine)
+    
+    if engine.is_a?(Hash)
+      #fixME fill in has with engine details
+      return engine
+    end
+    
     proto ="http https"
     case engine.protocol
     when :https_only
