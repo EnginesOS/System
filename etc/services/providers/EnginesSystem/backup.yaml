@@ -26,10 +26,10 @@ setup_params:
     mandatory: true
     default_value: " "
     comment: " "
-   backup_type:
+   dest_proto:
     regex_invalid_message: "wrong go back and try again"
-    name: backup_type
-    label: Backup Type
+    name: dest_proto
+    label: Backup Destination Type
     regex_validator: ".*"
     tooltip: " "
     type: select
@@ -44,9 +44,21 @@ setup_params:
       - "smbfs"
       - "nfs"
       - "s3"
-   destination:
+  dest_folder:
     regex_invalid_message: "wrong go back and try again"
-    name: destination
+    name: dest_folder
+    label: destination folder
+    regex_validator: ".*"
+    tooltip: " "
+    type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "    
+   dest_address:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_address
     label: destination
     regex_validator: ".*"
     tooltip: " "
@@ -56,9 +68,9 @@ setup_params:
     mandatory: true
     default_value: " "
     comment: " "
-   user_name:
+   dest_user:
     regex_invalid_message: "wrong go back and try again"
-    name: user_name
+    name: dest_user
     label: user_name
     regex_validator: ".*"
     tooltip: " "
@@ -68,9 +80,9 @@ setup_params:
     mandatory: true
     default_value: " "
     comment: " "
-   password:
+   dest_pass:
     regex_invalid_message: "wrong go back and try again"
-    name: password
+    name: dest_pass
     label: password
     regex_validator: ".*"
     tooltip: " "
