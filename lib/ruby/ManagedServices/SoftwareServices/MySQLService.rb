@@ -36,7 +36,10 @@ class MySQLService < SoftwareService
       #save details with some manager
       SystemUtils.debug_output(cmd)
 
-      return SystemUtils.run_system(cmd)
+      SystemUtils.run_system(cmd)
+      
+      #FIXME need to checc result from script
+      return true
     rescue  Exception=>e
       SystemUtils.log_exception(e)
       return false
