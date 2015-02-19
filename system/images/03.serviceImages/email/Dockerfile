@@ -9,6 +9,7 @@ ADD syslog.conf /etc/
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
 ADD postfix/mailname /etc/mailname
+ADD postfix/mysql /etc/postfix/mysql
 
 RUN cd /tmp/;\
 	 wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz;\
