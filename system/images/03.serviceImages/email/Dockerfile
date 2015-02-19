@@ -15,7 +15,7 @@ RUN cd /tmp/;\
 	 tar -xzpf postfixadmin-2.92.tar.gz;\
 	 mv  postfixadmin-2.92 /home/app 
 	 
-ADD config.inc.php  /home/app
+ADD config.inc.php  /home/app/
 	 
 	
 	
