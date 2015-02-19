@@ -2,7 +2,7 @@ FROM engines/php
 
 RUN echo "Y" | adduser -q --disabled-password --home /var/spool/postfix -uid 22003 postfix
 RUN apt-get -y update;\
-	apt-get -y install postfix syslogd  php5-imap;\
+	apt-get -y install postfix syslogd  php5-imap postfix-mysql;\
 	apt-get clean
 ADD home home
 ADD syslog.conf /etc/
