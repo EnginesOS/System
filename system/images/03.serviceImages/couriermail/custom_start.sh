@@ -7,5 +7,9 @@ rm -f /run/apache2/apache2.pid
 /usr/sbin/imapd start
 /usr/sbin/pop3d start
 /usr/sbin/pop3d-ssl start
+cp /usr/lib/courier/etc/webadmin/password  /etc/courier/webadmin/
+ touch  /usr/lib/courier/etc/webadmin/unsecureok /etc/courier/webadmin/unsecureok
+cp /usr/lib/courier/courier/webmail/webadmin /usr/lib/cgi-bin/
+
 /usr/sbin/apache2ctl -D FOREGROUND 
 rm -f /run/apache2/apache2.pid 
