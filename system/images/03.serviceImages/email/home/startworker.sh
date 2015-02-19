@@ -9,7 +9,7 @@ touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete
  /usr/sbin/apache2ctl start
 sleep 30
- syslogd -O /tmp/log
+syslogd -R syslog.engines.internal
 
 while test -f /var/lib/postfix/master.lock 
 do
