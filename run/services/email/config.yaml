@@ -1,10 +1,10 @@
 --- !ruby/object:ManagedService
-containerName: couriermail
+containerName: email
 ctype: service
 persistant: true
 last_error: 
 memory: '90'
-hostName: inmail
+hostName: email
 port: 8000
 domainName: engines.local.demo
 environments:
@@ -12,7 +12,7 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/couriermail
+image: engines/email
 port: 
 eports:
 - !ruby/object:WorkPort
