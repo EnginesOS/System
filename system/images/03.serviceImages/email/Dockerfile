@@ -13,7 +13,7 @@ ADD postfix/mailname /etc/mailname
 RUN cd /tmp/;\
 	 wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz;\
 	 tar -xzpf postfixadmin-2.92.tar.gz;\
-	 mv  postfixadmin-2.92 /home/app ;\
+	 mv  postfixadmin-2.92 /home/app 
 	 
 ADD config.inc.php  /home/app
 	 
