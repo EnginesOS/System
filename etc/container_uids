@@ -13,7 +13,7 @@ bind		bind		22009
 proftpd			proftpd	22010
 courier courier			22011
 syslog					22012
-cyrus					22013
+dovecot					22013
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672
