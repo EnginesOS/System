@@ -7,9 +7,10 @@ class CronService < SoftwareService
     site_hash[:container_name] = site_hash[:parent_engine]  
       return  add_cron(site_hash) 
      end
+     
   def rm_consumer_from_service (site_hash)
        return  rebuild_crontab()  
-    end 
+  end 
      
   def get_site_hash(site_hash)
     site_hash[:service_type]='cron'
@@ -70,7 +71,8 @@ class CronService < SoftwareService
   
   def reload_crontab
     docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
-    return SystemUtils.run_system(docker_cmd)
+     SystemUtils.run_system(docker_cmd)
+     return true
   rescue Exception=>e
   
     SystemUtils.log_exception(e)
