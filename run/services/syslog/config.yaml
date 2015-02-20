@@ -10,7 +10,7 @@ image: engines/syslog
 volumes:
  log: !ruby/object:Volume
   name: log_output_dir
-  remotepath: "/var/log/rmt/"
+  remotepath: "/var/rlog/"
   localpath: "/var/log/engines/syslog"
   mapping_permissions: rw
  log: !ruby/object:Volume
