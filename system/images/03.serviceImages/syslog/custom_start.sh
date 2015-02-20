@@ -2,6 +2,6 @@
 syslog-ng -F -f /etc/syslog-ng/syslog-ng.conf --no-caps -u syslog -v -e 
 
 while test 0 -ne 1
-then
+do
  sleep 300
-fi
+done
