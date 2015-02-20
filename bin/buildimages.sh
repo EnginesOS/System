@@ -27,9 +27,12 @@ cd $MasterImagesDir
 								if test $? -eq 0
 									then
 										echo "Built $tag"
-										if test $1 = "-p"
+										if test $# -gt 0
 										then
-											docker push $tag
+											if test $1 = "-p"
+											then
+												docker push $tag
+											fi
 										fi
 										
 										touch last_built
