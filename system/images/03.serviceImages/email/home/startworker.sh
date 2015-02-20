@@ -2,7 +2,7 @@
 
 touch   /var/log/mail.err
 touch  /var/log/maillog
-service busybox-syslogd start
+
 service postfix start 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
