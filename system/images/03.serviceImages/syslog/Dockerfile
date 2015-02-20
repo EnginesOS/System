@@ -18,3 +18,4 @@ ENV ContGrp syslog
 ADD syslog-ng.conf /etc/syslog-ng/
 ADD custom_start.sh /home/engines/scripts/
 CMD /home/init.sh
+USER syslog
