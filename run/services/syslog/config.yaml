@@ -10,7 +10,7 @@ image: engines/syslog
 volumes:
  log: !ruby/object:Volume
   name: docker_bin
-  remotepath: "/var/log/"
+  remotepath: "/var/log/rmt/"
   localpath: "/var/log/engines/syslog"
   mapping_permissions: rw
 port: 
