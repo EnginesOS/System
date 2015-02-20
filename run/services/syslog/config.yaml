@@ -9,8 +9,8 @@ domainName:
 image: engines/syslog
 volumes:
  config: !ruby/object:Volume
-  name: consumer_confs
-  remotepath: "/tc/syslog-ng/conf.d/"
+  name: config
+  remotepath: "/etc/syslog-ng/conf.d/"
   localpath: "/opt/engines/etc/syslog/conf/"
   mapping_permissions: rw
 port: 
