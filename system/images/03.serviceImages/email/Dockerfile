@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	apt-get -y install postfix syslogd  php5-imap postfix-mysql;\
 	apt-get clean
 ADD home home
-ADD syslog.conf /etc/
+
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
 ADD postfix/mailname /etc/mailname
