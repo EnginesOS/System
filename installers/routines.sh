@@ -236,6 +236,8 @@ mkdir -p  /var/log/engines/services/nginx/nginx
 mkdir -p  /var/log/engines/services/backup
 mkdir -p  /var/log/engines/services/mgmt
 mkdir -p  /var/log/engines/services/pgsql/
+mkdir -p  /var/log/engines/services/syslog
+mkdir -p  /var/log/engines/syslog
 mkdir -p  /var/log/engines/services/mysql/
 mkdir -p  /var/log/engines/services/dns/
 mkdir -p /var/log/engines/services/smtp/
@@ -249,8 +251,8 @@ mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
-mkdir -p /var/log/engines/services/couriermail
 
+mkdir -p /opt/engines/etc/syslog/conf/
 mkdir -p /home/engines/db
 touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
@@ -276,8 +278,11 @@ echo "Setting directory and file permissions"
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	 chown -R 22010 /var/log/engines/services/ftp
-	  chown  22011   /var/log/engines/services/couriermail
 	 
+	chown  engines   /opt/engines/etc/syslog/conf/
+	chown  22012 /var/log/engines/services/syslog
+	chown  22012 /var/log/engines/syslog
+
 	chown 22005 /opt/engines/run/services/nginx/run/nginx/
 	chown 21000  /home/engines/db/production.sqlite3
 	chown 21000  /home/engines/db/development.sqlite3

@@ -2,6 +2,7 @@
 
 #chown -R www-data /var/log/nginx/ 
 echo "chowned"
+rm /etc/nginx/sites-enables/http*
 /usr/sbin/nginx
 echo "started Nginx"
 mkdir -p /engines/var/run/

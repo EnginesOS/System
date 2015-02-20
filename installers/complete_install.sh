@@ -16,8 +16,8 @@ set_os_flavor
 
 setup_mgmt_git
 
-echo "Building Images"
- /opt/engines/bin/buildimages.sh
+#echo "Building Images"
+# /opt/engines/bin/buildimages.sh
 
 create_services
 
