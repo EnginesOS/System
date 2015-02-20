@@ -1,25 +1,34 @@
 --- !ruby/object:ManagedService
-containerName: email
+containerName: imap
 ctype: service
 persistant: true
 last_error: 
 memory: '90'
 hostName: email
-port: 8000
-domainName: engines.local.demo
+domainName: 
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
  value: root
  setatrun: false
-image: engines/email
+image: engines/imap
 port: 
 eports:
 - !ruby/object:WorkPort
-  name: smtp
-  port: 25
+  name: imap
+  port: 143
   publicFacing: true
-  external: 25
+  external: 143
+- !ruby/object:WorkPort
+  name: pop3s
+  port: 995
+  publicFacing: true
+  external: 995
+- !ruby/object:WorkPort
+  name: imaps
+  port: 993
+  publicFacing: true
+  external: 993
 
 repo: na
 last_result: |
