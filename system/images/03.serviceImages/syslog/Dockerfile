@@ -6,7 +6,8 @@ RUN echo "Y" | adduser -q --disabled-password -uid 22012 syslog ;\
 	echo "deb       http://packages.madhouse-project.org/ubuntu   trusty   syslog-ng-3.5 syslog-ng-incubator-3.5" > /etc/apt/sources.list.d/syslog-ng.list;\
  	apt-get -y update;\
  	apt-get -y install syslog-ng-core syslog-ng ;\
- 	apt-get clean 
+ 	apt-get clean ;\
+ 	chown syslog /var/lib/syslog-ng/
 #
 
 
