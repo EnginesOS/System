@@ -2,7 +2,7 @@
 
 touch   /var/log/mail.err
 touch  /var/log/maillog
-syslogd -R syslog.engines.internal
+syslogd -R syslog.engines.internal:5140
 service postfix start 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
