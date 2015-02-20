@@ -8,12 +8,12 @@ hostName: syslog
 domainName: 
 image: engines/syslog
 volumes:
- log: !ruby/object:Volume
+ rlog: !ruby/object:Volume
   name: log_output_dir
   remotepath: "/var/rlog/"
   localpath: "/var/log/engines/syslog"
   mapping_permissions: rw
- log: !ruby/object:Volume
+ config: !ruby/object:Volume
   name: consumer_confs
   remotepath: "/tc/syslog-ng/conf.d/"
   localpath: "/opt/engines/etc/syslog/conf/"
