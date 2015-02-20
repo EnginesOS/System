@@ -9,10 +9,16 @@ domainName:
 image: engines/syslog
 volumes:
  log: !ruby/object:Volume
-  name: docker_bin
+  name: log_output_dir
   remotepath: "/var/log/rmt/"
   localpath: "/var/log/engines/syslog"
   mapping_permissions: rw
+ log: !ruby/object:Volume
+  name: consumer_confs
+  remotepath: "/tc/syslog-ng/conf.d/"
+  localpath: "/opt/engines/etc/syslog/conf/"
+  mapping_permissions: rw
+  e
 port: 
 eports:
 repo: na
