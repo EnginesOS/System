@@ -27,6 +27,11 @@ cd $MasterImagesDir
 								if test $? -eq 0
 									then
 										echo "Built $tag"
+										if test $1 = "-p"
+										then
+											docker push $tag
+										fi
+										
 										touch last_built
 									else
 										echo "Failed to build $tag in $class/$dir"
