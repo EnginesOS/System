@@ -1201,9 +1201,9 @@ class EnginesCore
       eportoption = String.new
       if(container.eports )
         container.eports.each do |eport|
-          if eport != nil
+          if eport != nil 
             eportoption = eportoption +  " -p "
-            if eport.external >0
+            if eport.external != nil ||eport.external  >0
               eportoption = eportoption + eport.external.to_s + ":"
             end
             eportoption = eportoption + eport.port.to_s
