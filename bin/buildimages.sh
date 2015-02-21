@@ -8,6 +8,7 @@ cd $MasterImagesDir
 
 
 
+
 	for class in `ls $MasterImagesDir`
 		do 
 			cd $class
@@ -31,7 +32,7 @@ cd $MasterImagesDir
 										then
 											if test $1 = "-p"
 											then
-												docker push ${tag}:alpha
+												docker push ${tag}
 											fi
 										fi
 										
