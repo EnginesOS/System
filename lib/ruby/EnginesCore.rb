@@ -332,7 +332,10 @@ class EnginesCore
     def save_container(container)
       clear_error
       begin
+        #FIXME 
+        container.core_api = nil
         serialized_object = YAML::dump(container)
+        container.core_api = self
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
@@ -1420,7 +1423,6 @@ class EnginesCore
   end
 
   
-
   def add_monitor(site_hash)
     return @system_api.add_monitor(site_hash)
   end
