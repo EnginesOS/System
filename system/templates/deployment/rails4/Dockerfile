@@ -1,4 +1,4 @@
-FROM  engines/passenger
+FROM  engines/passenger:alpha
 
 ADD home home
 ADD engines home/engines

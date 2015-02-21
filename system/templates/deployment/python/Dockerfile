@@ -1,4 +1,4 @@
-FROM  engines/python
+FROM  engines/python:alpha
 ADD home home
 ADD engines home/engines
 

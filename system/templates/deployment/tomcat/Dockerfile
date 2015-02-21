@@ -1,4 +1,4 @@
-FROM  engines/tomcat
+FROM  engines/tomcat:alpha
 ADD home home
 ENV ContUser www-data
 ADD engines home/engines

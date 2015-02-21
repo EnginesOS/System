@@ -1,4 +1,4 @@
-FROM  engines/rails3
+FROM  engines/rails3:alpha
 
 ADD home home
 ADD engines home/engines
