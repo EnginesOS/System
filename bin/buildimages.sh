@@ -31,7 +31,7 @@ cd $MasterImagesDir
 										then
 											if test $1 = "-p"
 											then
-												docker push $tag
+												docker push ${tag}:alpha
 											fi
 										fi
 										
