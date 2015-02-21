@@ -125,8 +125,9 @@ end
     return conf_monitor_site
   end
  
-  def ManagedContainer.from_yaml( yaml )
+  def ManagedContainer.from_yaml( yaml, core_api )
     managedContainer = YAML::load( yaml )
+    managedContainer.core_api = core_api
     managedContainer
   end
 
