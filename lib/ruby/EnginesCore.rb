@@ -333,9 +333,10 @@ class EnginesCore
       clear_error
       begin
         #FIXME 
+        api = container.core_api
         container.core_api = nil
         serialized_object = YAML::dump(container)
-        container.core_api = self
+        container.core_api = api
         stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
         if File.directory?(stateDir) ==false
           Dir.mkdir(stateDir)
