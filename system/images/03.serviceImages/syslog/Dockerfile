@@ -1,4 +1,4 @@
-FROM  engines/apache
+FROM  engines/base
 
 
 RUN echo "Y" |/usr/sbin/usermod -u  22012 syslog ;\
