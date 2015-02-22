@@ -4,11 +4,12 @@
 
 if test -f /opt/engines/release
 then
-	RELEASE=`cat /opt/engines/release`
+	release=`cat /opt/engines/release`
 else
-	RELEASE=latest
+	release=latest
 fi
 
+export release
 
 cd $MasterImagesDir
 
@@ -24,7 +25,7 @@ cd $MasterImagesDir
 					if test -f TAG
 						then 
 							tag_r=`cat TAG`
-							tag=`env release=$RELEASE eval $tag_r`
+							tag=$(eval "echo $tag_r")
 							echo "----------------------"
 							echo "Building $tag"
 								if test -f setup.sh
