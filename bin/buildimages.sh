@@ -3,6 +3,7 @@
 . /opt/engines/etc/scripts.env
 
 if test -f /opt/engines/release
+then
 	RELEASE=`cat /opt/engines/release`
 else
 	RELEASE=latest
