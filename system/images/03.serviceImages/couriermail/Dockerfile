@@ -1,4 +1,4 @@
-FROM  engines/apache
+FROM  engines/apache:$release
 
 
 RUN echo "Y" | adduser -q --disabled-password -uid 22011 courier ;\

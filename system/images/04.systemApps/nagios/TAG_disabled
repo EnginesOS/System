@@ -1,1 +1,1 @@
-engines/nagios
+engines/nagios:$release

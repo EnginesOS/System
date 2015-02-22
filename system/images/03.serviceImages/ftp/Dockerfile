@@ -1,4 +1,4 @@
-FROM engines/base
+FROM engines/base:$release
 RUN echo "Y"| adduser --uid 22010 -q --home /home/ftpd --disabled-password proftpd;\
  	apt-get -y update;\
   	apt-get -y install proftpd proftpd-mod-mysql syslogd;\

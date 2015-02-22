@@ -1,4 +1,4 @@
-FROM  engines/servicebase
+FROM  engines/servicebase:$release
 RUN echo "Y" | adduser -q --disabled-password --home /var/cache/bind -uid 22009 bind
 
 RUN apt-get -y update;\

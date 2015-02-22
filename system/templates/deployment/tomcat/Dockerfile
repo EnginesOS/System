@@ -1,4 +1,4 @@
-FROM  engines/tomcat
+FROM  engines/tomcat:$release
 ADD home home
 ENV ContUser www-data
 ADD engines home/engines

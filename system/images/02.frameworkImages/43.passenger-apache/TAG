@@ -1,1 +1,1 @@
-engines/passenger
+engines/passenger:$release

@@ -1,4 +1,4 @@
-FROM  engines/servicebase
+FROM  engines/servicebase:$release
 
 RUN echo "Y" | adduser -q --disabled-password -uid 22006 mysql
 

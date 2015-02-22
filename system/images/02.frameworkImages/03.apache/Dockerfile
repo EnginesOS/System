@@ -1,4 +1,4 @@
-FROM engines/frameworkbase
+FROM engines/frameworkbase:$release
 
 RUN /usr/sbin/usermod -u 22671 www-data;\
 	apt-get update -y;\

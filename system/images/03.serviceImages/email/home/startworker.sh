@@ -8,7 +8,7 @@ mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete
  /usr/sbin/apache2ctl start
-sleep 30
+
 syslogd -n -R syslog.engines.internal:5140
 
 

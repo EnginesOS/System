@@ -1,4 +1,4 @@
-FROM  engines/python
+FROM  engines/python:$release
 
 RUN apt-get -y update;\
 	apt-get -y install sudo vim  openssh-server duply ncftp  python-paramiko python-gobject-2 cron;\

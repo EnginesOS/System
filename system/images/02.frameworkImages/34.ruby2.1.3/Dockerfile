@@ -1,4 +1,4 @@
-FROM engines/frameworkbuild
+FROM engines/frameworkbuild:$release
 ENV ruby_version 2.1.3
 ENV ContUser ruby
 ENV ContGrp ruby

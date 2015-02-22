@@ -1,4 +1,4 @@
-FROM  engines/passenger
+FROM  engines/passenger:$release
 
 RUN /usr/sbin/addgroup --gid 999 docker;\
 	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/engines --disabled-password engines

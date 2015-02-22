@@ -1,4 +1,4 @@
-FROM  engines/servicebase
+FROM  engines/servicebase:$release
 RUN apt-get -y update;\
 	echo "Y" | adduser -q --disabled-password --home /var/cache/bind -uid 21000 engines;\
 	apt-get -y install rsyslog;\

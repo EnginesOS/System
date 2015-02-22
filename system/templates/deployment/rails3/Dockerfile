@@ -1,4 +1,4 @@
-FROM  engines/rails3
+FROM  engines/rails3:$release
 
 ADD home home
 ADD engines home/engines
