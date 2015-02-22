@@ -30,7 +30,8 @@ cd $MasterImagesDir
 									then 
 										./setup.sh
 									fi
-							env release=$RELEASE docker build --rm=true -t $tag .
+							 cat Dockerfile |  sed "/\$release/s//$release/" > Dockerfile.$release
+							 docker build --rm=true -t $tag -f Dockerfile.$release .
 								if test $? -eq 0
 									then
 										echo "Built $tag"
