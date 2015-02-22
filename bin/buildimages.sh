@@ -22,14 +22,15 @@ cd $MasterImagesDir
 				cd $MasterImagesDir/$class/$dir
 					if test -f TAG
 						then 
-							tag=`env release=$RELEASE cat TAG`
+							tag_r=`cat TAG`
+							tag=`env release=$RELEASE eval $tag_r`
 							echo "----------------------"
 							echo "Building $tag"
 								if test -f setup.sh
 									then 
 										./setup.sh
 									fi
-							docker build --rm=true -t $tag .
+							env release=$RELEASE docker build --rm=true -t $tag .
 								if test $? -eq 0
 									then
 										echo "Built $tag"
