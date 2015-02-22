@@ -1892,7 +1892,7 @@ class EnginesCore
       params[:host_name] = container.hostName
       params[:env_variables] = container.environments
       params[:http_protocol] = container.protocol
-      params[:repository]  = container.repo
+      params[:repository_url]  = container.repo
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
@@ -1900,6 +1900,20 @@ class EnginesCore
       return false
     end
   end
+#  @container_name = params[:engine_name]
+#    @domain_name = params[:domain_name]
+#    @hostname = params[:host_name]
+#    custom_env= params[:software_environment_variables]
+#    #   custom_env=params
+#    @core_api = core_api
+#    @http_protocol = params[:http_protocol]
+#    p params
+#    @repoName= params[:repository_url]
+#    @cron_job_list = Array.new
+#    @build_name = File.basename(@repoName).sub(/\.git$/,"")
+#    @workerPorts=Array.new
+#    @webPort=8000
+#    @vols=Array.new
 
   #FIXME Kludge
   def get_container_network_metrics(containerName)
