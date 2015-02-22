@@ -1,1 +1,1 @@
-engines/mongo:alpha
+engines/mongo:$release

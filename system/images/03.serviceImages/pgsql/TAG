@@ -1,1 +1,1 @@
-engines/pgsql:alpha
+engines/pgsql:$release

@@ -1,4 +1,4 @@
-FROM  engines/base
+FROM  engines/base:$release
 
 RUN apt-get update;\
    apt-get -y install nagios3;\

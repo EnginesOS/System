@@ -1,1 +1,1 @@
-engines/nginx:alpha
+engines/nginx:$release

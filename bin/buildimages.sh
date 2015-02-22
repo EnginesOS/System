@@ -2,6 +2,11 @@
 
 . /opt/engines/etc/scripts.env
 
+if test -f /opt/engines/release
+	RELEASE=`cat /opt/engines/release`
+else
+	RELEASE=latest
+fi
 
 
 cd $MasterImagesDir
@@ -17,7 +22,7 @@ cd $MasterImagesDir
 				cd $MasterImagesDir/$class/$dir
 					if test -f TAG
 						then 
-							tag=`cat TAG`
+							tag=`env release=$RELEASE cat TAG`
 							echo "----------------------"
 							echo "Building $tag"
 								if test -f setup.sh

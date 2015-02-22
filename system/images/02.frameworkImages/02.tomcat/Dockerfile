@@ -1,4 +1,4 @@
-FROM engines/frameworkbase
+FROM engines/frameworkbase:$release
 
 RUN rm /etc/apt/apt.conf.d/01proxy;\
 	apt-get -y  --force-yes update;\

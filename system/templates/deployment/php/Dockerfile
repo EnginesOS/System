@@ -1,4 +1,4 @@
-FROM  engines/php:alpha
+FROM  engines/php:$release
 ADD home home
 ADD engines home/engines
 

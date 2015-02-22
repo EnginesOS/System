@@ -1,4 +1,4 @@
-FROM engines/php
+FROM engines/php:$release
 
 RUN echo "Y" | adduser -q --disabled-password --home /var/spool/postfix -uid 22003 postfix
 RUN apt-get -y update;\

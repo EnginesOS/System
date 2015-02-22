@@ -1,4 +1,4 @@
-FROM  engines/node:alpha
+FROM  engines/node:$release
 ADD home home
 ADD engines home/engines
 ENV ContUser node

@@ -1,4 +1,4 @@
-FROM  engines/base
+FROM  engines/base:$release
 
 RUN echo "Y" | adduser -q --disabled-password -uid 22002 postgres
 
