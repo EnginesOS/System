@@ -14,7 +14,7 @@ class SoftwareServiceDefinition
               :target_environment_variables
 
   
-  def self.from_yaml( yaml )
+  def SoftwareServiceDefinition.from_yaml( yaml )
      begin
       # p yaml.path
        serviceDefinition = YAML::load( yaml )
@@ -71,7 +71,7 @@ class SoftwareServiceDefinition
     if File.exist?(filename)
       yaml = File.read(filename)
       p yaml
-      return self.from_yaml(yaml)     
+      return SoftwareServiceDefinition.from_yaml(yaml)     
     end
     p :no_such_service_definitition_file
     return nil
