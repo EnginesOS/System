@@ -100,7 +100,10 @@ class SoftwareServiceDefinition
 
   def to_h
     require 'json'
-    return JSON.parse(self.to_json) #, {:symbolize_names => true})
+    jason = self.to_json
+    p :jason
+    p jason.to_s
+    return JSON.parse(jason, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)
