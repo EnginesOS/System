@@ -56,6 +56,9 @@ class SoftwareServiceDefinition
                 p dir
                 return nil                
               end
+              p :service_def
+              p service_def.title
+              p service_def
               return service_def.to_h
           end
     rescue Exception=>e
