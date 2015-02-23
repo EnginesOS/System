@@ -1842,16 +1842,33 @@ class EngineBuilder
     template = apply_system_variables(template)
     template = apply_build_variables(template)
     template = apply_build_env(template)
+  
+    output_filename = filename.sub(/.tmpl/,"")
     
-    
-    #find _System(x)
-    #substitute for system.x 
-    #find _Build(x)
-    #substiture for buildparams.x
-    #find _Build_env(x)
-    #substiture for buildparams.x        
-    #find _env(x)
-    #substiture for Env
+    out_file = File.new(output_filename,"w")
+    out_file.write(template)
+    out_file.close()
+            
+  end
+  
+  
+  def apply_system_variables(template)
+    template!.gsub(/_System\([a-z].*\)/) { | match |
+      resolve_system_variable(match)
+    } 
+    return template
+  end
+  
+  def resolve_system_variable(match)
+    name = match.sub!(/_System/,"")
+  end
+  
+  def apply_build_variables(template)
+    return template
+  end
+  
+  def apply_build_env(template)
+    return template
   end
   
   def create_non_persistant_services
