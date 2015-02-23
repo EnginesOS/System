@@ -106,12 +106,14 @@ class SoftwareServiceDefinition
            SystemUtils.log_exception(e)
   end
   
- 
+  
 
-  def to_h
-   
+  def to_h   
        hash = {}
-       instance_variables.each {|var| hash[var.to_s.delete("@").to_sym] = instance_variable_get(var) }
+       instance_variables.each {|var| 
+         symbol = var.to_s.delete("@").to_sym
+         p symbol
+         hash[symbol] = instance_variable_get(var) }
        hash
 #     end
 #    p self.to_s
