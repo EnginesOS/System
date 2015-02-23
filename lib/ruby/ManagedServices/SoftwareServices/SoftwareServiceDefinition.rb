@@ -109,12 +109,16 @@ class SoftwareServiceDefinition
  
 
   def to_h
-    
-    p self.to_s
-    jason = self.to_json
-    p :jason
-    p jason.to_s
-    return JSON.parse(jason, {:symbolize_names => true})
+   
+       hash = {}
+       instance_variables.each {|var| hash[var.to_s.delete("@").to_sym] = instance_variable_get(var) }
+       hash
+#     end
+#    p self.to_s
+#    jason = self.to_json
+#    p :jason
+#    p jason.to_s
+#    return JSON.parse(jason, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)
