@@ -1,3 +1,5 @@
+require 'json'
+
 class SoftwareServiceDefinition
   attr_reader :accepts,
               :author,
@@ -107,12 +109,12 @@ class SoftwareServiceDefinition
  
 
   def to_h
-   # require 'json'
+    
     p self.to_s
     jason = self.to_json
     p :jason
     p jason.to_s
-    return JSON.parse(jason, {:symbolize_names => true})
+    return JSON.parse(self, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)
