@@ -107,7 +107,7 @@ class SoftwareServiceDefinition
  
 
   def to_h
-    require 'json'
+   # require 'json'
     p self.to_s
     jason = self.to_json
     p :jason
