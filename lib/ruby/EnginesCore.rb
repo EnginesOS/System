@@ -1893,6 +1893,9 @@ class EnginesCore
       params[:env_variables] = container.environments
       params[:http_protocol] = container.protocol
       params[:repository_url]  = container.repo
+      params[:software_environment_variables] = container.environments
+   #   custom_env=params    
+   #  @http_protocol = params[:http_protocol] = container.
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
