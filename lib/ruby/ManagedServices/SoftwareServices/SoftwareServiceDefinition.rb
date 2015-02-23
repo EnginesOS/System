@@ -72,7 +72,7 @@ class SoftwareServiceDefinition
       yaml = File.read(filename)
       return self.from_yaml(yaml)     
     end
-    
+    p :no_such_service_definitition_file
     return nil
     rescue Exception=>e        
            SystemUtils.log_exception(e)
@@ -104,6 +104,7 @@ class SoftwareServiceDefinition
 
   def to_h
     require 'json'
+    p self.to_s
     jason = self.to_json
     p :jason
     p jason.to_s
