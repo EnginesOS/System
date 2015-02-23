@@ -70,6 +70,7 @@ class SoftwareServiceDefinition
       p filename
     if File.exist?(filename)
       yaml = File.read(filename)
+      p yaml
       return self.from_yaml(yaml)     
     end
     p :no_such_service_definitition_file
