@@ -114,7 +114,7 @@ class SoftwareServiceDefinition
     jason = self.to_json
     p :jason
     p jason.to_s
-    return JSON.parse(self, {:symbolize_names => true})
+    return JSON.parse(self.to_s, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)
