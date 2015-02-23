@@ -1748,6 +1748,8 @@ class EngineBuilder
       if  setup_default_files == false
         return false
       end
+  
+      compile_base_docker_files
 
       if @blueprint_reader.web_port != nil
         @webPort = @blueprint_reader.web_port
@@ -1824,6 +1826,19 @@ class EngineBuilder
     end
   end
 
+  def  compile_base_docker_files
+    
+    file_list = Dir.glob(@blueprint_reader.get_basedir + "/Dockerfile*.tmpl")
+      file_list.each do |file|
+        process_Dockerfile_tmpl(file)
+      end 
+              
+  end
+  
+  def process_dockerfile_tmpl(filename)
+    p :dockerfile_template_processing
+    p filename
+  end
   
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
