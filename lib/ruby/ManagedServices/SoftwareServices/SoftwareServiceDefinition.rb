@@ -50,6 +50,10 @@ class SoftwareServiceDefinition
           if Dir.exist?(dir)
             service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
               if service_def == nil
+                p :error_got_nil_service_type
+                p service_type
+                p :from
+                p dir
                 return nil                
               end
               return service_def.to_h
@@ -68,7 +72,7 @@ class SoftwareServiceDefinition
       yaml = File.read(filename)
       return self.from_yaml(yaml)     
     end
-
+    
     return nil
     rescue Exception=>e        
            SystemUtils.log_exception(e)
