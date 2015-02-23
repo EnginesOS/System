@@ -1854,7 +1854,7 @@ class EngineBuilder
   
   
   def apply_system_variables(template)
-    template!.gsub(/_System\([a-z].*\)/) { | match |
+    template.gsub!(/_System\([a-z].*\)/) { | match |
       resolve_system_variable(match)
     } 
     return template
