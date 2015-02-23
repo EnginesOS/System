@@ -1831,7 +1831,7 @@ class EngineBuilder
     
     file_list = Dir.glob(@blueprint_reader.get_basedir + "/Dockerfile*.tmpl")
       file_list.each do |file|
-        process_Dockerfile_tmpl(file)
+        process_dockerfile_tmpl(file)
       end 
               
   end
