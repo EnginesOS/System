@@ -7,6 +7,7 @@ require "rubygems"
 require "git"
 require 'fileutils'
 require 'json'
+require '/opt/engines/lib/ruby/System.rb'
 
 class EngineBuilder
   @repoName=nil
