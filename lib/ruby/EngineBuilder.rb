@@ -1838,6 +1838,20 @@ class EngineBuilder
   def process_dockerfile_tmpl(filename)
     p :dockerfile_template_processing
     p filename
+    template = File.read(filename)
+    template = apply_system_variables(template)
+    template = apply_build_variables(template)
+    template = apply_build_env(template)
+    
+    
+    #find _System(x)
+    #substitute for system.x 
+    #find _Build(x)
+    #substiture for buildparams.x
+    #find _Build_env(x)
+    #substiture for buildparams.x        
+    #find _env(x)
+    #substiture for Env
   end
   
   def create_non_persistant_services
