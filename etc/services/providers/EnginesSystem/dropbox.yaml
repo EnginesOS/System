@@ -16,7 +16,7 @@ setup_params:
   label: dropbox_address
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   placeholder: " "
   hint: " "
   mandatory: true
@@ -27,7 +27,7 @@ setup_params:
   regex_validator: ".*"
   tooltip: " "
   placeholder: " "
-  type: text_field
+  field_type: text_field
   hint: " "
   mandatory: true
  password:
@@ -36,12 +36,12 @@ setup_params:
   regex_validator: ".*"
   placeholder: " "
   hint: " "
-  type: password
+  field_type: password
   mandatory: true
  target_directory:
   name: target_directory
   label: Directory
-  type: text_field
+  field_type: text_field
   regex_validator: ".*"
   name: button
   label: button test
@@ -54,7 +54,7 @@ setup_params:
   label: volume
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: " "
   placeholder: " "
   mandatory: true
@@ -64,7 +64,7 @@ setup_params:
  direction:
   name: direction
   label: Direction
-  type: select_multi
+  field_type: select_multi
   regex_validator: up|down|both
   tooltip: " "
   mandatory: true

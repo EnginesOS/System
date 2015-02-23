@@ -20,7 +20,7 @@ setup_params:
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: ""
     placeholder: " "
     mandatory: true
@@ -32,7 +32,7 @@ setup_params:
     label: Backup Destination Type
     regex_validator: ".*"
     tooltip: " "
-    type: select
+    field_type: select
     hint: ""
     placeholder: "a label "
     mandatory: true
@@ -50,7 +50,7 @@ setup_params:
     label: destination folder
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: ""
     placeholder: " "
     mandatory: true
@@ -62,7 +62,7 @@ setup_params:
     label: destination
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: ""
     placeholder: " "
     mandatory: true
@@ -74,7 +74,7 @@ setup_params:
     label: user_name
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: ""
     placeholder: " "
     mandatory: true
@@ -86,7 +86,7 @@ setup_params:
     label: password
     regex_validator: ".*"
     tooltip: " "
-    type: password
+    field_type: password
     hint: ""
     placeholder: " "
     mandatory: true
