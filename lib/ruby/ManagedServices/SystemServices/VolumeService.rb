@@ -15,7 +15,7 @@ class VolumeService < ManagedService
   def add_volume(site_hash)
     
     begin
-      dest = SysConfig.CONTFSVolHome() + "/" + site_hash[:parent_engine] + "/" + site_hash[:dest]
+      dest = SysConfig.LocalFSVolHome() + "/" + site_hash[:parent_engine] + "/" + site_hash[:dest]
       if Dir.exists?( dest) == false
         p dest
         FileUtils.mkdir_p(dest)
