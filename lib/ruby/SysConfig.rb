@@ -37,7 +37,7 @@ class SysConfig
   @@NginxDefaultCert="engines"
   @@NginxPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid" 
  #DNS
-  @@ddnsKey = "/opt/engines/etc/keys/ddns.key"
+  @@ddnsKey = "/opt/engines/etc/dns/keys/ddns.key"
    @@internalDomain = "engines.internal"
    @@defaultDNS ="172.17.42.1"
 #Named

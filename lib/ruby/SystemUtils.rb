@@ -13,7 +13,7 @@ class SystemUtils
  def SystemUtils.log_output(object,level)
   if SystemUtils.level < level
     p :Error  
-    p object
+    p object.to_s
   end 
  end
  
