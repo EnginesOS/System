@@ -114,7 +114,8 @@ class SoftwareServiceDefinition
          symbol = var.to_s.delete("@").to_sym
          p symbol
          hash[symbol] = instance_variable_get(var) }
-       hash
+       
+         return SystemUtils.symbolize_keys(hash)
 #     end
 #    p self.to_s
 #    jason = self.to_json
