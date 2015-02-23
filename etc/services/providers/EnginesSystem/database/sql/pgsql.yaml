@@ -21,7 +21,7 @@ setup_params:
   label: database_host
   regex_validator: ".*"
   tooltip: "Local or the ip address/hostname of the database server"
-  type: "text_field"
+  field_type: "text_field"
   hint: " "
   placeholder: " "
   mandatory: true
@@ -33,7 +33,7 @@ setup_params:
   label: "Database name"
   regex_validator: ".*"
   tooltip: " "
-  type: "text_field"
+  field_type: "text_field"
   hint: " "
   placeholder: " "
   mandatory: true
@@ -45,7 +45,7 @@ setup_params:
   label: DB User Name
   regex_validator: ".*"
   tooltip: " "
-  type: "text_field"
+  field_type: "text_field"
   hint: " "
   placeholder: " "
   mandatory: true
@@ -56,7 +56,7 @@ setup_params:
   name: dbpassword
   label: DB Password
   tooltip: " "
-  type: password_with_confirmation
+  field_type: password_with_confirmation
   hint: " "
   placeholder: " "
   mandatory: true

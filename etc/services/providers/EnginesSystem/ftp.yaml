@@ -20,7 +20,7 @@ setup_params:
     label: volume
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: " "
     placeholder: " "
     mandatory: true
@@ -31,7 +31,7 @@ setup_params:
     label: folder
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: " "
     placeholder: " "
     mandatory: true
@@ -42,7 +42,7 @@ setup_params:
     label: User Name
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: " "
     placeholder: " "
     mandatory: true
@@ -52,7 +52,7 @@ setup_params:
     name: password
     label: password
     tooltip: " "
-    type: password_with_confirmation
+    field_type: password_with_confirmation
     hint: " "
     placeholder: " "
     mandatory: true
@@ -63,7 +63,7 @@ setup_params:
     name: checkbox
     label: checkbox test
     tooltip: " "
-    type: checkbox
+    field_type: checkbox
     hint: " "
     placeholder: " "
     mandatory: true
@@ -75,7 +75,7 @@ setup_params:
     label: RW Access
     regex_validator: true|false
     tooltip: "Allow ftp service to write files"
-    type: select_single
+    field_type: select_single
     hint: "true|false"
     collection:
       - true

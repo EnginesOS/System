@@ -19,7 +19,7 @@ setup_params:
   label: hostname
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: "hostname"
   placeholder: " "
   mandatory: true
@@ -30,7 +30,7 @@ setup_params:
   label: domain name
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: "domain name"
   placeholder: " "
   mandatory: true

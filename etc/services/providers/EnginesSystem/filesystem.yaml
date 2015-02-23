@@ -19,7 +19,7 @@ setup_params:
     label: volume local path
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: " "
     placeholder: " "
     mandatory: true
@@ -30,7 +30,7 @@ setup_params:
     label: permissions
     regex_validator: ".*"
     tooltip: " "
-    type: select_single
+    field_type: select_single
     hint: " "
     placeholder: " "
     mandatory: true
@@ -46,7 +46,7 @@ setup_params:
     label: local_path
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: " "
     placeholder: " "
     mandatory: true

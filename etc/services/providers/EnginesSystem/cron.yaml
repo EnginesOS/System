@@ -20,7 +20,7 @@ setup_params:
     label: Cron line
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: "* * * * * command"
     placeholder: " "
     mandatory: true
@@ -32,7 +32,7 @@ setup_params:
     label: Cron line title
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: text_field
     hint: ""
     placeholder: "a label "
     mandatory: true
