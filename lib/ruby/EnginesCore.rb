@@ -1168,7 +1168,7 @@ class EnginesCore
           #          if res.start_with?("[") == true
           #            res = res +"]"
           #          end
-          if res.end_with?(']') == false
+          if res != nil && res.end_with?(']') == false
             res+=']'
           end
 
