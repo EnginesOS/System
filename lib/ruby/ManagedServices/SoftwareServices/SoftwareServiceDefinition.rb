@@ -60,7 +60,7 @@ class SoftwareServiceDefinition
               end
               p :service_def
               p service_def.title
-              p service_def
+              p service_def.to_s
               return service_def.to_h
           end
     rescue Exception=>e
@@ -114,7 +114,7 @@ class SoftwareServiceDefinition
     jason = self.to_json
     p :jason
     p jason.to_s
-    return JSON.parse(self.to_s, {:symbolize_names => true})
+    return JSON.parse(jason, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)
