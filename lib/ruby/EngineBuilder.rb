@@ -1923,7 +1923,7 @@ class EngineBuilder
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name
-    val = @builder_public.instance_variable_get("@"+name)
+    val = @builder_public.instance_variable_get(name)
     p :got_val
     p val
     return val
