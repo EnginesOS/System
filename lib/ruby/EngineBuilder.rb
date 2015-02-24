@@ -1940,7 +1940,7 @@ class EngineBuilder
 
 def apply_blueprint_variables(template)
   template.gsub!(/_Blueprint\([a-z,].*\)/) { | match |
-        resolve_build_variable(match)
+    resolve_blueprint_variable(match)
       } 
       return template
 end
