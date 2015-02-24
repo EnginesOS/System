@@ -395,7 +395,7 @@ class EngineBuilder
       begin
         log_build_output(frag_name)
         @docker_file.puts("#Framework Frag")
-        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
+        frame_build_docker_frag = File.open(@blueprint_reader.get_basedir + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
         count_layer
