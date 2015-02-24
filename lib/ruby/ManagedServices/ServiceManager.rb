@@ -148,7 +148,7 @@ rescue Exception=>e
     end
     service.each do |node|
       retval.push(node.content)
-      p node
+#      p node
     end
     
 rescue Exception=>e
