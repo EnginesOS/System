@@ -1596,7 +1596,7 @@ class EnginesCore
     
     service = load_software_service(service_hash)
     p :attaching_to_service
-    p service
+    #p service
     if service !=nil && service != false
       return service.add_consumer(service_hash)
     end
