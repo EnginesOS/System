@@ -21,7 +21,12 @@ class EngineBuilder
               :hostname,
               :domain_name,
               :build_name,
-              :set_environments
+              :set_environments,
+              :container_name,
+              :environments,
+              :runtime,
+              :webport,
+              :http_protocol
               
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -1922,7 +1927,7 @@ class EngineBuilder
     name = match.sub!(/_Builder\(/,"")
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
-    p name
+    p name.to_sym
     var_method = @builder_public.method(name.to_sym)
     
     val var_method.call
