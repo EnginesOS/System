@@ -1935,10 +1935,11 @@ class EngineBuilder
   rescue 
     return ""
   end
-  
+#_Blueprint(software,license_name)
+#_Blueprint(software,rake_tasks,name)
 
 def apply_blueprint_variables(template)
-  template.gsub!(/_Blueprint\([a-z].*\)/) { | match |
+  template.gsub!(/_Blueprint\([a-z,].*\)/) { | match |
         resolve_build_variable(match)
       } 
       return template
