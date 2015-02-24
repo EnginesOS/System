@@ -1950,9 +1950,14 @@ def resolve_blueprint_variable(match)
   name.sub!(/[\)]/,"")
   p :getting_system_value_for
   p name
+  val =""
+  
    keys = name.split(',')
    hash = @builder_public.blueprint
    keys.each do |key|
+     if key == nil || key.length < 1
+       break
+     end
      p :key
      p key
      val = hash[key.to_sym]
