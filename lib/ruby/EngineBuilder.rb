@@ -25,7 +25,7 @@ class EngineBuilder
               :container_name,
               :environments,
               :runtime,
-              :webport,
+              :webPort,
               :http_protocol
               
   class BuildError < StandardError
@@ -1917,12 +1917,17 @@ class EngineBuilder
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name
+    
     var_method = System.method(name.to_sym)
     val = var_method.call
     
     p :got_val
     p val
+    
     return val
+    
+  rescue 
+    return ""
   end
   
   def resolve_build_variable(match)
@@ -1936,6 +1941,8 @@ class EngineBuilder
     p :got_val
     p val
     return val
+    rescue 
+       return ""
   end
   
   def apply_build_env(template)
