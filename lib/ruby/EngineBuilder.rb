@@ -1953,7 +1953,11 @@ def resolve_blueprint_variable(match)
    keys = name.split_libs(',')
    hash = @builder_public.blueprint
    keys.each do |key|
-     val = hash[key.to_sym]     
+     p :key
+     p key
+     val = hash[key.to_sym]
+     p :val
+     p val     
      if val != nil
        hash=val
      end
