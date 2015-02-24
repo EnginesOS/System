@@ -4,7 +4,7 @@ class System
   #release etc
   
   def System.release
-    if File(SysConfig.ReleaseFile).exists? == false
+    if File.exists?(SysConfig.ReleaseFile) == false
       return "current"
     end
     return File.read(SysConfig.ReleaseFile)        
