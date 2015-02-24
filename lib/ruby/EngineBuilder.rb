@@ -1923,7 +1923,9 @@ class EngineBuilder
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name
-    val = @builder_public.instance_variable_get(name)
+    var_method = @builder_public.method(name.to_sym)
+    
+    val var_method.call
     p :got_val
     p val
     return val
