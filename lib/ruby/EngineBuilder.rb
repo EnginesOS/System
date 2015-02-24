@@ -1861,7 +1861,14 @@ class EngineBuilder
   end
   
   def resolve_system_variable(match)
-    name = match.sub!(/_System/,"")
+    name = match.sub!(/_System\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name
+    val = System.instance_variable_get(name)
+    p :got_val
+    p val
+    return val
   end
   
   def apply_build_variables(template)
