@@ -1892,6 +1892,7 @@ class EngineBuilder
     template = File.read(filename)
     template = apply_system_variables(template)
     template = apply_build_variables(template)
+    template = apply_blueprint_variables(template)
     template = apply_build_env(template)
   
     output_filename = filename.sub(/.tmpl/,"")
