@@ -1360,6 +1360,44 @@ class EngineBuilder
       end
     end
   end
+  #This class is to isolate the builder from the docker template output
+  
+  class BuilderPublic
+    def initialize(builder)
+     @builder = builder
+    end
+     def container_name
+       @builder.container_name
+     end
+     def domain_name
+       @builder.domain_name
+     end
+     def hostname 
+       @builder.hostname
+     end
+     def http_protocol
+       @builder.http_protocol
+     end
+     def repoName
+       @builder.repoName
+     end
+     def webPort
+       @builder.webPort
+     end
+     def build_name
+       @builder.build_name
+     end
+     def runtime
+       @builder.runtime
+     end     
+     def set_environments 
+       @builder.set_environments
+     end     
+     def environments
+       @builder.environments
+     end
+    
+  end
 
   def initialize(params,core_api)
     @container_name = params[:engine_name]
@@ -1376,7 +1414,9 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
-
+    
+    @builder_public = BuilderPublic.new(self)
+    
     p :custom_env
     p custom_env
 
@@ -1860,6 +1900,13 @@ class EngineBuilder
     return template
   end
   
+  def apply_build_variables(template)
+    template.gsub!(/_Builder\([a-z].*\)/) { | match |
+          resolve_system_variable(match)
+        } 
+        return template
+  end
+  
   def resolve_system_variable(match)
     name = match.sub!(/_System\(/,"")
     name.sub!(/[\)]/,"")
@@ -1871,8 +1918,15 @@ class EngineBuilder
     return val
   end
   
-  def apply_build_variables(template)
-    return template
+  def resolve_build_variables(match)
+    name = match.sub!(/_Builder\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name
+    val = @builder_public.instance_variable_get("@"+name)
+    p :got_val
+    p val
+    return val
   end
   
   def apply_build_env(template)
