@@ -1902,7 +1902,7 @@ class EngineBuilder
   
   def apply_build_variables(template)
     template.gsub!(/_Builder\([a-z].*\)/) { | match |
-          resolve_system_variable(match)
+          resolve_build_variable(match)
         } 
         return template
   end
