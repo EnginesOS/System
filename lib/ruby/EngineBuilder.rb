@@ -1918,7 +1918,7 @@ class EngineBuilder
     return val
   end
   
-  def resolve_build_variables(match)
+  def resolve_build_variable(match)
     name = match.sub!(/_Builder\(/,"")
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
