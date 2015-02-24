@@ -85,7 +85,7 @@ class EngineBuilder
       write_sed_strings
       write_persistant_dirs
       write_persistant_files
-      insert_framework_frag_in_dockerfile("builder.mid")
+      insert_framework_frag_in_dockerfile("builder.mid.tmpl")
       @docker_file.puts("")
       write_rake_list
       write_pear_list
@@ -116,7 +116,7 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("USER $ContUser")
       count_layer()
-      insert_framework_frag_in_dockerfile("builder.end")
+      insert_framework_frag_in_dockerfile("builder.end.tmpl")
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
@@ -395,7 +395,7 @@ class EngineBuilder
       begin
         log_build_output(frag_name)
         @docker_file.puts("#Framework Frag")
-        frame_build_docker_frag = File.open(@blueprint_reader.get_basedir + "/Dockerfile." + frag_name)
+        frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
         builder_frag = frame_build_docker_frag.read
         @docker_file.write(builder_frag)
         count_layer
