@@ -26,7 +26,8 @@ class EngineBuilder
               :environments,
               :runtime,
               :webPort,
-              :http_protocol
+              :http_protocol,
+              :blueprint
               
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -1401,6 +1402,10 @@ class EngineBuilder
      def environments
        @builder.environments
      end
+     
+     def blueprint
+       return @builder.blueprint
+     end
     
   end
 
@@ -1930,6 +1935,36 @@ class EngineBuilder
     return ""
   end
   
+
+def apply_blueprint_variables(template)
+  template.gsub!(/_Blueprint\([a-z].*\)/) { | match |
+        resolve_build_variable(match)
+      } 
+      return template
+end
+
+def resolve_blueprint_variable(match)
+  name = match.sub!(/_Blueprint\(/,"")
+  name.sub!(/[\)]/,"")
+  p :getting_system_value_for
+  p name
+   keys = name.split_libs(',')
+   hash = @builder_public.blueprint
+   keys.each do |key|
+     val = hash[key.to_sym]     
+     if val != nil
+       hash=val
+     end
+   end     
+  
+  p :got_val
+  p val
+  
+  return val
+  
+rescue 
+  return ""
+end
   def resolve_build_variable(match)
     name = match.sub!(/_Builder\(/,"")
     name.sub!(/[\)]/,"")
