@@ -31,19 +31,19 @@ class SoftwareServiceDefinition
   
   def SoftwareServiceDefinition.find(service_type,provider)
   
-          p :looking_for
-          p provider
-          p service_type
+#          p :looking_for
+#          p provider
+#          p service_type
 
           #FIXME and support more than one dir
           if service_type.include?('/')
-            p :sub_service
-           # provider += "/" + service_type.sub(/\/.*/,"")
-           #service_type.sub(/.*\//,"")
-           
-            p :sub_service
-            p provider 
-            p service_type
+#            p :sub_service
+#           # provider += "/" + service_type.sub(/\/.*/,"")
+#           #service_type.sub(/.*\//,"")
+#           
+#            p :sub_service
+#            p provider 
+#            p service_type
             
           end
     dir = SysConfig.ServiceTemplateDir + "/" + provider
@@ -58,9 +58,9 @@ class SoftwareServiceDefinition
                 p dir
                 return nil                
               end
-              p :service_def
-              p service_def.title
-              p service_def.to_s
+#              p :service_def
+#              p service_def.title
+#              p service_def.to_s
               return service_def.to_h
           end
     rescue Exception=>e
@@ -75,7 +75,7 @@ class SoftwareServiceDefinition
       p filename
     if File.exist?(filename)
       yaml = File.read(filename)
-      p yaml
+  
       return SoftwareServiceDefinition.from_yaml(yaml)     
     end
     p :no_such_service_definitition_file
