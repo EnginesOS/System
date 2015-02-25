@@ -29,7 +29,7 @@ fcnt=`expr $fcnt + 1`
 	 #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
 	if test -n $smarthost_hostname
 	then 
-		echo "*	$smarthost_hostname:$smarthost_port" > > /etc/postfix/transport
+		echo "*	$smarthost_hostname:$smarthost_port"  > /etc/postfix/transport
 		chown root.root /etc/postfix/transport
 		chmod 600 /etc/postfix/transport
 fi
