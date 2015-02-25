@@ -9,7 +9,10 @@ ADD home home
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
 ADD postfix/mailname /etc/mailname
-
+ADD postfix/transport /etc/postfix/
+ADD postfix/transport /etc/postfix/transport.no_smarthost
+ADD postmap /etc/postfix/transport
+   
 ENV ContUser postfix
 ENV ContGrp postfix
 
