@@ -13,17 +13,17 @@ volumes:
   name: transport
   remotepath: "/etc/postfix/transport"
   localpath: "/opt/engines/etc/smtp/transport"
-  mapping_permissions: "ro"
+  mapping_permissions: "rw"
  mailname: !ruby/object:Volume
   name: mailname
   remotepath: "/etc/postfix/mailname"
   localpath: "/opt/engines/etc/smtp/mailname"
-  mapping_permissions: "ro"
+  mapping_permissions: "rw"
  smart_host_passwd: !ruby/object:Volume
   name: smarthost_passwd
   remotepath: "/etc/postfix/smarthost_passwd"
   localpath: "/opt/engines/etc/smtp/smarthost_passwd"
-  mapping_permissions: "ro" 
+  mapping_permissions: "rw" 
 port: 
 eports: []
 repo: na
