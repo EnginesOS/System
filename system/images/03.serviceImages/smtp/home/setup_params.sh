@@ -40,6 +40,12 @@ if test -z $smarthost_username
  	exit
  fi
  
+ if test -n $mail_name
+ then
+ 	echo $mail_name > /etc/postfix/mailname
+ 
+ fi
+ 
  
  if test -z $smarthost_password
  then 
