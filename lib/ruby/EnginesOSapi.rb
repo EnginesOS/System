@@ -39,39 +39,30 @@ class EnginesOSapi
       return retval
   end
   
+  def set_smarthost(params)
+    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
+  end
   def set_first_run_parameters params
     p params
-    #required
-   #:admin_password
-    #:ssh_password
-    #:mysql_password
-    #:psql_password
-    #default_domain
+  #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
+   
+    set_database_password("mysql",params[:mysql_password])      
+    set_database_password("pgsql",params[:pgsql_password])      
+    set_smarthost(params)    
+    set_default_domain(params)    
+    params[:default_cert]=true      
+    create_ssl_certificate(params)
+ 
     
-#optional and can be set latter
-    
-    
-#ssl details
-    #:ssl_country    
-    #:ssl_state
-    #:ssl_city
-    #:ssl_organisation
-    #:ssl_person_name
-
-#smarthost        
-      #smarthost_hostname    
-      #smarthost_port
-      #smarthost_username
-      #smarthost_password
-      #smarthost_authtype
-
-    
-    f= File.new(SysConfig.FirstRunRan,"w")
-           date= DateTime.now
+    f = File.new(SysConfig.FirstRunRan,"w")
+           date = DateTime.now
            f.puts(date.to_s)
            f.close    
            
     return success("Gui","First Run")
+    catch
+      return failed("Gui","First Run","")
+    
   end
   
   def buildEngine(repository,host,domain_name,environment)
@@ -1016,6 +1007,8 @@ class EnginesOSapi
 
   def create_ssl_certificate(params)
     p params
+    #params[:default_cert]
+    #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
     return success(params[:domain_name], "Add self hosted ssl cert domain")        
   end
   def upload_ssl_certificate(params)
