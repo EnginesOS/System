@@ -2,7 +2,8 @@
 
 touch   /var/log/mail.err
 touch  /var/log/maillog
-
+postmap /etc/postfix/transport
+postmap /etc/postfix/smarthost_passwd
 service postfix start 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
