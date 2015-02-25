@@ -44,4 +44,5 @@ virtual_gid_maps = static:8
 local_transport = virtual
 local_recipient_maps = $virtual_mailbox_maps
 # this is only needed if you want vacation support -
-transport_maps = hash:/etc/postfix/transport
+
+relayhost = smtp.engines.internal
