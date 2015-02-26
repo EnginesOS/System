@@ -1119,7 +1119,7 @@ class EnginesCore
 
     def docker_exec(container,command,args)
       run_args = "exec " + command + " " + args
-      container
+      
       return run_docker(run_args,container)
     end
     
@@ -1595,7 +1595,7 @@ class EnginesCore
          + ":smarthost_password=" + params[:smarthost_password]\
          + ":mail_name=smtp."  + params[:default_domain] 
      container=loadManagedService("smtp")
-    return @docker_api.docker_exec(container,"/bin/bash",arg)
+    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
     rescue   Exception=>e
       log_exception(e)
   end
@@ -1606,7 +1606,7 @@ class EnginesCore
         +  "psql_password=" + params[:psql_password] #Need two args
           if container_name 
               server_container = loadManagedService(container_name)
-              return @docker_api.docker_exec(server_container,"/bin/bash",arg)
+              return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
           end
           
           return true

@@ -57,7 +57,11 @@ class SysConfig
   @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
+  @@SetupParamsScript="/bin/bash /home/setup_params.sh"
   
+  def SysConfig.SetupParamsScript
+    return @@SetupParamsScript
+  end
   def  SysConfig.ReleaseFile
     return @@ReleaseFile
   end
