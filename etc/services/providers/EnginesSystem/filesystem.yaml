@@ -16,13 +16,13 @@ consumer_params:
 setup_params:
    volume_src:
     name: volume_src
-    label: volume local path
+    label: volume src path
     regex_validator: ".*"
     tooltip: " "
     field_type: text_field
     hint: " "
     placeholder: " "
-    mandatory: true
+    mandatory: false
     value: " "
     comment: " "
    permissions:
@@ -42,8 +42,8 @@ setup_params:
       "ro"
     comment: " "
    local_path:
-    name: local_path
-    label: local_path
+    name: engine_path
+    label: engine_path
     regex_validator: ".*"
     tooltip: " "
     field_type: text_field
