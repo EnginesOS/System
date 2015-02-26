@@ -53,8 +53,7 @@ class EnginesOSapi
     
     params[:mail_name] = "smtp." + params[:default_domain]
     @core_api.setup_email_params(params)
-          
-    set_default_domain(params)  # + ":mail_name=" + params[:mail_name]     
+         
         
     @core_api.set_database_password("mysql_server",params)              
     @core_api.set_database_password("pgsql_server",params)    
