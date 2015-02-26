@@ -1117,9 +1117,10 @@ class EnginesCore
       end
     end
 
-    def docker_exec(containername,command,args)
+    def docker_exec(container,command,args)
       run_args = "exec " + command + " " + args
-      return run_docker(run_args,containername)
+      container
+      return run_docker(run_args,container)
     end
     
     def run_docker (args,container)
@@ -1593,20 +1594,26 @@ class EnginesCore
          + ":smarthost_username=" + params[:smarthost_username]\
          + ":smarthost_password=" + params[:smarthost_password]\
          + ":mail_name=smtp."  + params[:default_domain] 
-     
-    return @docker_api.docker_exec("smtp","/bin/bash",arg)
+     container=LoadManagedEngine("smtp")
+    return @docker_api.docker_exec(container,"/bin/bash",arg)
     rescue   Exception=>e
       log_exception(e)
   end
   
-   def set_database_password(server_container,params)
+   def set_database_password(container_name,params)
      arg = "mysql_password=" + params[:mysql_password] +":" \
-          + "server=" + server_container + ":" \
+          + "server=" + container_name + ":" \
         +  "psql_password=" + params[:psql_password] #Need two args
-        
-          return @docker_api.docker_exec(server_container,"/bin/bash",arg)
+          if server_container && server_container.count >5
+              server_container = LoadManagedEngine(container_name)
+              return @docker_api.docker_exec(server_container,"/bin/bash",arg)
+          end
+          
+          return true
+          
    rescue Exception=>e
        log_exception(e)
+       return false
    end
   
   def attach_service(service_hash)
