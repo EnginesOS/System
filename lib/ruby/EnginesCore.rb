@@ -1604,7 +1604,7 @@ class EnginesCore
      arg = "mysql_password=" + params[:mysql_password] +":" \
           + "server=" + container_name + ":" \
         +  "psql_password=" + params[:psql_password] #Need two args
-          if server_container && server_container.count >5
+          if container_name && container_name.count >5
               server_container = LoadManagedEngine(container_name)
               return @docker_api.docker_exec(server_container,"/bin/bash",arg)
           end
