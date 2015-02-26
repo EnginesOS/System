@@ -40,7 +40,8 @@ class EnginesOSapi
   end
   
   def set_smarthost(params)
-    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
+    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
+    @core_api.set_smarthost(params) 
   end
   def set_first_run_parameters params
     p params
@@ -62,8 +63,8 @@ class EnginesOSapi
            f.close    
            
     return success("Gui","First Run")
-    catch Exception=>e
-      SystemUtils.log_exception(e)
+    rescue Exception=>e
+      log_exception(e)
     
       return failed("Gui","First Run","failed")
     

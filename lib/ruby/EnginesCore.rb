@@ -1516,7 +1516,7 @@ class EnginesCore
   def image_exists?(containerName)
     imageName = containerName +"/deploy"
     return @docker_api.image_exists?(imageName)
-    catch Exception=>e
+    rescue Exception=>e
     log_execption(e)
     return false
   end
@@ -1595,7 +1595,7 @@ class EnginesCore
          + ":mail_name=" + params[:mail_name]                      
      
     return @docker_api.exec("smtp","/bin/bash",arg)
-    catch Exception=>e
+    rescue   Exception=>e
       log_exception(e)
   end
   
@@ -1605,7 +1605,7 @@ class EnginesCore
         +  "pgsql_password=" + params[:pgsql_password] #Need two args
         
           return @docker_api.exec(server_container,"/bin/bash",arg)
-     catch Exception=>e
+   rescue Exception=>e
        log_exception(e)
    end
   
