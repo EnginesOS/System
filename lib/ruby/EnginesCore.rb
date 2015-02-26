@@ -164,7 +164,7 @@ class EnginesCore
         dns_cmd_file.close
         cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name
         retval = run_system(cmd_str)
-        File.delete(dns_cmd_file_name)
+        #File.delete(dns_cmd_file_name)
         return retval
       rescue  Exception=>e
         log_exception(e)
@@ -438,7 +438,7 @@ class EnginesCore
         domains = YAML::load( self_hosted_domain_file )
         self_hosted_domain_file.close
         if domains == false
-          p domains_error_in_load
+          p :domains_error_in_load
           return Hash.new
         end
         return domains

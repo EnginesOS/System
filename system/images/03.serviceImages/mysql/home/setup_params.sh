@@ -22,4 +22,4 @@ fcnt=`expr $fcnt + 1`
         done
         
         
-mysql -urma -e "set password for 'root'@'%' = PASSWORD(\'$mysql_password\'); "
+mysql -urma -e "set password for 'root'@'%' = PASSWORD('$mysql_password'); "

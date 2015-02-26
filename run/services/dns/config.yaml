@@ -12,7 +12,7 @@ image: engines/dns
 volumes: 
  keys: !ruby/object:Volume
   name: configuration
-  remotepath: "/etc/dns_keys/"
+  remotepath: "/opt/engines/etc/dns/keys/"
   localpath: "/opt/engines/etc/dns/keys/"
   mapping_permissions: "ro"
  configuration: !ruby/object:Volume
