@@ -1595,7 +1595,8 @@ class EnginesCore
          + ":mail_name=" + params[:mail_name]                      
      
     return @docker_api.exec("smtp","/bin/bash",arg)
-    
+    catch Exception=>e
+         SystemUtils.log_exception(e)     
   end
   
    def set_database_password(server_container,params)
@@ -1604,6 +1605,8 @@ class EnginesCore
         +  "pgsql_password=" + params[:pgsql_password] #Need two args
         
           return @docker_api.exec(server_container,"/bin/bash",arg)
+     catch Exception=>e
+          SystemUtils.log_exception(e)  
    end
   
   def attach_service(service_hash)
