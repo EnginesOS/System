@@ -38,11 +38,11 @@ fi
 
 
  
- #if test -n $mail_name
- #then
- #	echo $mail_name > /etc/postfix/mailname
- #
- #fi
+ if test -n $mail_name
+ then
+ 	echo $mail_name > /etc/postfix/mailname
+ 
+ fi
  
  if test -z $smarthost_username -a -z $smarthost_password
  then 
