@@ -34,7 +34,7 @@ setup_params:
     hint: " "
     placeholder: " "
     mandatory: true
-    value: "ro"
+    value: "rw"
     select_collection:
     - !ruby/object:String
       "rw"
