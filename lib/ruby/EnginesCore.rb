@@ -1600,8 +1600,8 @@ class EnginesCore
   
    def set_database_password(server_container,params)
      arg = "mysql_password=" + params[:mysql_password] +":" \
-          + "server=" + server_container + ":"\
-          "pgsql_password=" + params[:pgsql_password] #Need two args
+          + "server=" + server_container + ":" \
+        +  "pgsql_password=" + params[:pgsql_password] #Need two args
         
           return @docker_api.exec(server_container,"/bin/bash",arg)
    end
