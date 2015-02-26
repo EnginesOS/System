@@ -77,7 +77,7 @@ setup_params:
     tooltip: "Allow ftp service to write files"
     field_type: select_single
     hint: "true|false"
-    collection:
+    select_collection:
       - true
       - false
     placeholder: "true|false"

@@ -38,7 +38,7 @@ setup_params:
     mandatory: true
     default_value: " "
     comment: " "
-    collection:     
+    select_collection:     
       - "ftp"
       - "local"
       - "smbfs"
