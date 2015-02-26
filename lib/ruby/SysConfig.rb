@@ -24,7 +24,9 @@ class SysConfig
   
   @@SystemLogRoot ="/var/log/engines/"
   
-  #System
+  #System_public
+  @@ReleaseFile="/opt/engines/release"
+  #System_private
   @@DomainsFile="/opt/engines/etc/domains"
   @@FirstRunRan="/opt/engines/etc/first_ran"
   
@@ -56,6 +58,9 @@ class SysConfig
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   
+  def  SysConfig.ReleaseFile
+    return @@ReleaseFile
+  end
   def SysConfig.ServiceMapTemplateDir
     return @@ServiceMapTemplateDir
   end

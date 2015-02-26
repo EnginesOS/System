@@ -8,8 +8,9 @@ ADD home home
 
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
-ADD postfix/mailname /etc/mailname
 
+
+   
 ENV ContUser postfix
 ENV ContGrp postfix
 

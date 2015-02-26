@@ -1,3 +1,5 @@
+require 'json'
+
 class SoftwareServiceDefinition
   attr_reader :accepts,
               :author,
@@ -14,7 +16,7 @@ class SoftwareServiceDefinition
               :target_environment_variables
 
   
-  def self.from_yaml( yaml )
+  def SoftwareServiceDefinition.from_yaml( yaml )
      begin
       # p yaml.path
        serviceDefinition = YAML::load( yaml )
@@ -29,19 +31,19 @@ class SoftwareServiceDefinition
   
   def SoftwareServiceDefinition.find(service_type,provider)
   
-          p :looking_for
-          p provider
-          p service_type
+#          p :looking_for
+#          p provider
+#          p service_type
 
           #FIXME and support more than one dir
           if service_type.include?('/')
-            p :sub_service
-           # provider += "/" + service_type.sub(/\/.*/,"")
-           #service_type.sub(/.*\//,"")
-           
-            p :sub_service
-            p provider 
-            p service_type
+#            p :sub_service
+#           # provider += "/" + service_type.sub(/\/.*/,"")
+#           #service_type.sub(/.*\//,"")
+#           
+#            p :sub_service
+#            p provider 
+#            p service_type
             
           end
     dir = SysConfig.ServiceTemplateDir + "/" + provider
@@ -50,8 +52,15 @@ class SoftwareServiceDefinition
           if Dir.exist?(dir)
             service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
               if service_def == nil
+                p :error_got_nil_service_type
+                p service_type
+                p :from
+                p dir
                 return nil                
               end
+#              p :service_def
+#              p service_def.title
+#              p service_def.to_s
               return service_def.to_h
           end
     rescue Exception=>e
@@ -66,9 +75,10 @@ class SoftwareServiceDefinition
       p filename
     if File.exist?(filename)
       yaml = File.read(filename)
-      return self.from_yaml(yaml)     
+  
+      return SoftwareServiceDefinition.from_yaml(yaml)     
     end
-
+    p :no_such_service_definitition_file
     return nil
     rescue Exception=>e        
            SystemUtils.log_exception(e)
@@ -96,11 +106,22 @@ class SoftwareServiceDefinition
            SystemUtils.log_exception(e)
   end
   
- 
+  
 
-  def to_h
-    require 'json'
-    return JSON.parse(self.to_json, {:symbolize_names => true})
+  def to_h   
+       hash = {}
+       instance_variables.each {|var| 
+         symbol = var.to_s.delete("@").to_sym
+         p symbol
+         hash[symbol] = instance_variable_get(var) }
+       
+         return SystemUtils.symbolize_keys(hash)
+#     end
+#    p self.to_s
+#    jason = self.to_json
+#    p :jason
+#    p jason.to_s
+#    return JSON.parse(jason, {:symbolize_names => true})
     rescue Exception=>e
         
            SystemUtils.log_exception(e)

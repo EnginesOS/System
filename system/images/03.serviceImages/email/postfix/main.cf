@@ -23,7 +23,7 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 myhostname = mail
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
-myorigin = /etc/mailname
+myorigin = /etc/postfix/mailname
 mydestination = smtp.engines.internal, smtp, localhost.localdomain, localhost
 mynetworks = 172.17.0.0/16 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
@@ -44,4 +44,5 @@ virtual_gid_maps = static:8
 local_transport = virtual
 local_recipient_maps = $virtual_mailbox_maps
 # this is only needed if you want vacation support -
-transport_maps = hash:/etc/postfix/transport
+
+relayhost = smtp.engines.internal

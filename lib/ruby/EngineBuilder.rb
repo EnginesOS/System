@@ -21,7 +21,13 @@ class EngineBuilder
               :hostname,
               :domain_name,
               :build_name,
-              :set_environments
+              :set_environments,
+              :container_name,
+              :environments,
+              :runtime,
+              :webPort,
+              :http_protocol,
+              :blueprint
               
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -85,7 +91,7 @@ class EngineBuilder
       write_sed_strings
       write_persistant_dirs
       write_persistant_files
-      insert_framework_frag_in_dockerfile("builder.mid")
+      insert_framework_frag_in_dockerfile("builder.mid.tmpl")
       @docker_file.puts("")
       write_rake_list
       write_pear_list
@@ -116,7 +122,7 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("USER $ContUser")
       count_layer()
-      insert_framework_frag_in_dockerfile("builder.end")
+      insert_framework_frag_in_dockerfile("builder.end.tmpl")
       @docker_file.puts("")
       @docker_file.puts("VOLUME /home/fs/")
       count_layer()
@@ -1360,6 +1366,48 @@ class EngineBuilder
       end
     end
   end
+  #This class is to isolate the builder from the docker template output
+  
+  class BuilderPublic
+    def initialize(builder)
+     @builder = builder
+    end
+     def container_name
+       @builder.container_name
+     end
+     def domain_name
+       @builder.domain_name
+     end
+     def hostname 
+       @builder.hostname
+     end
+     def http_protocol
+       @builder.http_protocol
+     end
+     def repoName
+       @builder.repoName
+     end
+     def webPort
+       @builder.webPort
+     end
+     def build_name
+       @builder.build_name
+     end
+     def runtime
+       @builder.runtime
+     end     
+     def set_environments 
+       @builder.set_environments
+     end     
+     def environments
+       @builder.environments
+     end
+     
+     def blueprint
+       return @builder.blueprint
+     end
+    
+  end
 
   def initialize(params,core_api)
     @container_name = params[:engine_name]
@@ -1376,7 +1424,9 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
-
+    
+    @builder_public = BuilderPublic.new(self)
+    
     p :custom_env
     p custom_env
 
@@ -1842,6 +1892,7 @@ class EngineBuilder
     template = File.read(filename)
     template = apply_system_variables(template)
     template = apply_build_variables(template)
+    template = apply_blueprint_variables(template)
     template = apply_build_env(template)
   
     output_filename = filename.sub(/.tmpl/,"")
@@ -1860,12 +1911,84 @@ class EngineBuilder
     return template
   end
   
-  def resolve_system_variable(match)
-    name = match.sub!(/_System/,"")
+  def apply_build_variables(template)
+    template.gsub!(/_Builder\([a-z].*\)/) { | match |
+          resolve_build_variable(match)
+        } 
+        return template
   end
   
-  def apply_build_variables(template)
-    return template
+  def resolve_system_variable(match)
+    name = match.sub!(/_System\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name
+    
+    var_method = System.method(name.to_sym)
+    val = var_method.call
+    
+    p :got_val
+    p val
+    
+    return val
+    
+  rescue 
+    return ""
+  end
+#_Blueprint(software,license_name)
+#_Blueprint(software,rake_tasks,name)
+
+def apply_blueprint_variables(template)
+  template.gsub!(/_Blueprint\([a-z,].*\)/) { | match |
+    resolve_blueprint_variable(match)
+      } 
+      return template
+end
+
+def resolve_blueprint_variable(match)
+  name = match.sub!(/_Blueprint\(/,"")
+  name.sub!(/[\)]/,"")
+  p :getting_system_value_for
+  p name
+  val =""
+  
+   keys = name.split(',')
+   hash = @builder_public.blueprint
+   keys.each do |key|
+     if key == nil || key.length < 1
+       break
+     end
+     p :key
+     p key
+     val = hash[key.to_sym]
+     p :val
+     p val     
+     if val != nil
+       hash=val
+     end
+   end     
+  
+  p :got_val
+  p val
+  
+  return val
+  
+rescue 
+  return ""
+end
+  def resolve_build_variable(match)
+    name = match.sub!(/_Builder\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name.to_sym
+    var_method = @builder_public.method(name.to_sym)
+    
+    val = var_method.call
+    p :got_val
+    p val
+    return val
+    rescue 
+       return ""
   end
   
   def apply_build_env(template)

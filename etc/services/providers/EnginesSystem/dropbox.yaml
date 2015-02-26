@@ -70,7 +70,7 @@ setup_params:
   mandatory: true
   placeholder: " "
   hint: " "
-  collection:
+  select_collection:
   - !ruby/object:String
     "up"
   - !ruby/object:String
