@@ -1588,7 +1588,7 @@ class EnginesCore
   end
 
   def set_smarthost(params)
-     set_smarthost(params)
+
        arg="smarthost_hostname=" + params[:smarthost_hostname] 
          + ":smarthost_username=" + params[:smarthost_username]
          + ":smarthost_password=" + params[:smarthost_password]
@@ -1597,7 +1597,13 @@ class EnginesCore
     return @docker_api.exec("smtp","/bin/bash",arg)
     
   end
-  
+   def set_database_password(server_container,params)
+     arg= "mysql_password="+params[:mysql_password] +":" 
+          + "server="+ server_container +":"
+          "pgsql_password="+params[:pgsql_password] #Need two args
+            
+     return @docker_api.exec(server_container,"/bin/bash",arg)
+   end
   
   def attach_service(service_hash)
     #parent_engine
