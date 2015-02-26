@@ -46,10 +46,16 @@ class EnginesOSapi
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
    
-    set_database_password("mysql",params[:mysql_password])      
-    set_database_password("pgsql",params[:pgsql_password])      
-    set_smarthost(params)    
+    @core_api.set_database_password("mysql_server",params[:mysql_password])      
+    
+    @core_api.set_database_password("pgsql_server",params[:pgsql_password])    
+    
+    @core_api.set_smarthost(params)
+    
+    
+    
     set_default_domain(params)    
+    
     params[:default_cert]=true      
     create_ssl_certificate(params)
  

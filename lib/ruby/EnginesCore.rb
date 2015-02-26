@@ -460,6 +460,8 @@ class EnginesCore
       return domains
     end
 
+ 
+    
     def add_domain(params)
       clear_error
       domain= params[:domain_name]
@@ -1115,6 +1117,11 @@ class EnginesCore
       end
     end
 
+    def docker_exec(containername,command,args)
+      run_args = "exec " + command + " " + args
+      return run_docker(run_args,containername)
+    end
+    
     def run_docker (args,container)
       clear_error
       require 'open3'
@@ -1580,6 +1587,18 @@ class EnginesCore
                log_exception e
   end
 
+  def set_smarthost(params)
+     set_smarthost(params)
+       arg="smarthost_hostname=" + params[:smarthost_hostname] 
+         + ":smarthost_username=" + params[:smarthost_username]
+         + ":smarthost_password=" + params[:smarthost_password]
+         + ":mail_name=" + params[:mail_name]                      
+     
+    return @docker_api.exec("smtp","/bin/bash",arg)
+    
+  end
+  
+  
   def attach_service(service_hash)
     #parent_engine
     #service_type
