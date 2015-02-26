@@ -1,7 +1,6 @@
 #!/bin/sh
 
 
-syslogd -R syslog.engines.internal:5140
 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
