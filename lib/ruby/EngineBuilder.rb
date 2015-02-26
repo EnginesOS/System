@@ -1046,10 +1046,16 @@ class EngineBuilder
 
         log_build_output("Read OS Packages")
         ospackages = @blueprint[:software][:ospackages]
+          
+          if ospackages == nil
+            return
+          end
+          
         ospackages.each do |package|
           @os_packages.push(package[:name])
         end
-      rescue
+        
+      rescue Exception=>e
         log_exception(e)
         return false
       end
