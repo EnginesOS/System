@@ -66,8 +66,10 @@ class EnginesOSapi
            f.close    
            
     return success("Gui","First Run")
-    catch
-      return failed("Gui","First Run","")
+    catch Exception=>e
+      SystemUtils.log_exception(e)
+    
+      return failed("Gui","First Run","failed")
     
   end
   
