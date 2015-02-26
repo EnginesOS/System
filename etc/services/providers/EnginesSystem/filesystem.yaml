@@ -41,7 +41,7 @@ setup_params:
     - !ruby/object:String   
       "ro"
     comment: " "
-   local_path:
+   engine_path:
     name: engine_path
     label: engine_path
     regex_validator: ".*"
