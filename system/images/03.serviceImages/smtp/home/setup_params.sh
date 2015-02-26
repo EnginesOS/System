@@ -29,23 +29,26 @@ fcnt=`expr $fcnt + 1`
 	 #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
 	if test -n $smarthost_hostname
 	then 
-		echo "*	$smarthost_hostname:$smarthost_port"  > /etc/postfix/transport
+		echo "*	smtp:$smarthost_hostname:$smarthost_port"  > /etc/postfix/transport
 		chown root.root /etc/postfix/transport
 		chmod 600 /etc/postfix/transport
+		postmap /etc/postfix/transport
 fi
 
 
-if test -z $smarthost_username
+
+ 
+ #if test -n $mail_name
+ #then
+ #	echo $mail_name > /etc/postfix/mailname
+ #
+ #fi
+ 
+ if test -z $smarthost_username -a -z $smarthost_password
  then 
+   rm    smarthost_passwd.db smarthost_passwd
  	exit
  fi
- 
- if test -n $mail_name
- then
- 	echo $mail_name > /etc/postfix/mailname
- 
- fi
- 
  
  if test -z $smarthost_password
  then 
