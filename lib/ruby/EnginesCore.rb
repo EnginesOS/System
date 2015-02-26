@@ -1594,7 +1594,7 @@ class EnginesCore
          + ":smarthost_username=" + params[:smarthost_username]\
          + ":smarthost_password=" + params[:smarthost_password]\
          + ":mail_name=smtp."  + params[:default_domain] 
-     container=LoadManagedEngine("smtp")
+     container=loadManagedEngine("smtp")
     return @docker_api.docker_exec(container,"/bin/bash",arg)
     rescue   Exception=>e
       log_exception(e)
@@ -1605,7 +1605,7 @@ class EnginesCore
           + "server=" + container_name + ":" \
         +  "psql_password=" + params[:psql_password] #Need two args
           if container_name 
-              server_container = LoadManagedEngine(container_name)
+              server_container = loadManagedEngine(container_name)
               return @docker_api.docker_exec(server_container,"/bin/bash",arg)
           end
           
