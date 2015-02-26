@@ -2,6 +2,7 @@
 
 n=1
 
+
 echo $1 |grep = >/dev/null
         if test $? -ne 0
         then

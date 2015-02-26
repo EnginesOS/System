@@ -1118,7 +1118,7 @@ class EnginesCore
     end
 
     def docker_exec(container,command,args)
-      run_args = "exec " + command + " " + args
+      run_args = "exec " + container.containerName + " " + command + " " + args
       
       return run_docker(run_args,container)
     end
