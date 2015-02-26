@@ -876,7 +876,7 @@ class EngineBuilder
 
         @persistant_dirs = Array.new
 
-        pds =   @blueprint[:software][:persistantdirs]
+        pds =   @blueprint[:software][:persistant_directories]
 
         pds.each do |dir|
           @persistant_dirs.push(dir[:path])
@@ -897,7 +897,7 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint[:software][:persistantfiles]
+        pfs =   @blueprint[:software][:persistant_files]
         files= String.new
         pfs.each do |file|
           path = clean_path(file[:path])
@@ -1045,7 +1045,7 @@ class EngineBuilder
         @os_packages = Array.new
 
         log_build_output("Read OS Packages")
-        ospackages = @blueprint[:software][:ospackages]
+        ospackages = @blueprint[:software][:system_packages]
           
           if ospackages == nil
             return
@@ -1064,10 +1064,11 @@ class EngineBuilder
     def read_lang_fw_values
       log_build_output("Read Framework Settings")
       begin
-        @framework = @blueprint[:software][:swframework_name]
+        @framework = @blueprint[:software][:framework]
         p @framework
-        @runtime =  @blueprint[:software][:langauge_name]
-        @memory =  @blueprint[:software][:requiredmemory]
+        @runtime =  @blueprint[:software][:langauge]
+        @memory =  @blueprint[:software][:required_memory]
+
       rescue Exception=>e
         log_exception(e)
         return false
@@ -1083,7 +1084,7 @@ class EngineBuilder
         if pear_mods == nil || pear_mods.length == 0
           return
           pear_mods.each do |pear_mod|
-            mod =             pear_mod[:module]
+            mod =  pear_mod[:module]
             if mod !=nil
               @pear_modules.push(mod)
             end
@@ -1105,6 +1106,8 @@ class EngineBuilder
       end
       mods.each do |ap_module|
         mod = ap_module[:module]
+        os_package = ap_module[:os_package]
+          
         if mod != nil
           @apache_modules.push(mod)
         end
@@ -1126,7 +1129,7 @@ class EngineBuilder
         #        @archives_details[:arc_loc] = Array.new
         #        @archives_details[:arc_dir] = Array.new
         log_build_output("Configuring install Environment")
-        archives = @blueprint[:software][:installedpackages]
+        archives = @blueprint[:software][:installed_packages]
         n=0
         #        srcs=String.new
         #        names=String.new
@@ -1136,11 +1139,11 @@ class EngineBuilder
 
         archives.each do |archive|
           archive_details = Hash.new
-          arc_src=clean_path(archive[:src])
-          arc_name=clean_path(archive[:name])
-          arc_loc =clean_path(archive[:dest])
-          arc_extract=clean_path(archive[:extractcmd])
-          arc_dir=clean_path(archive[:extractdir])
+          arc_src=clean_path(archive[:source_url])
+          arc_name=clean_path(archive[:package_name])
+          arc_loc =clean_path(archive[:destination])
+          arc_extract=clean_path(archive[:extraction_cmd])
+          arc_dir=clean_path(archive[:path_to_extracted])
           #          if(n >0)
           #            srcs = srcs + " "
           #            names =names + " "
@@ -1153,11 +1156,11 @@ class EngineBuilder
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          archive_details[:arc_src]=arc_src
-          archive_details[:arc_name]=arc_name
-          archive_details[:arc_extract]=arc_extract
-          archive_details[:arc_loc]=arc_loc
-          archive_details[:arc_dir]=arc_dir
+          archive_details[:source_url]=arc_src
+          archive_details[:package_name]=arc_name
+          archive_details[:extraction_cmd]=arc_extract
+          archive_details[:destination]=arc_loc
+          archive_details[:path_to_extracted]=arc_dir
           @archives_details.push(archive_details)
         end
 
@@ -1222,7 +1225,7 @@ class EngineBuilder
 
         log_build_output("Read Workers")
         @worker_commands = Array.new
-        workers =@blueprint[:software][:worker_commands]
+        workers =@blueprint[:software][:workers]
 
         workers.each do |worker|
           @worker_commands.push(worker[:command])
@@ -1265,7 +1268,7 @@ class EngineBuilder
         @sed_strings[:tmp_file] = Array.new
 
         log_build_output("set sed strings")
-        seds=@blueprint[:software][:replacementstrings]
+        seds=@blueprint[:software][:replacement_strings]
         if seds == nil || seds.empty? == true
           return
         end
@@ -1274,7 +1277,7 @@ class EngineBuilder
         seds.each do |sed|
 
           file = clean_path(sed[:file])
-          dest = clean_path(sed[:dest])
+          dest = clean_path(sed[:destination])
           tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
           if file.match(/^_TEMPLATES.*/) != nil
             template_file = file.gsub(/^_TEMPLATES/,"")
@@ -1289,7 +1292,7 @@ class EngineBuilder
             src_file = "/home/app/" +  file
           end
           dest_file = "/home/app/" +  dest
-          sedstr = sed[:sedstr]
+          sedstr = sed[:replacement_string]
           @sed_strings[:src_file].push(src_file)
           @sed_strings[:dest_file].push(dest_file)
           @sed_strings[:tmp_file].push(tmp_file)
@@ -1308,7 +1311,7 @@ class EngineBuilder
       begin
         @workerPorts = Array.new
         log_build_output("Read Work Ports")
-        ports =  @blueprint[:software][:work_ports]
+        ports =  @blueprint[:software][:worker_ports]
         puts("Ports Json" + ports.to_s)
         if ports != nil
           ports.each do |port|
@@ -1337,7 +1340,7 @@ class EngineBuilder
       p :set_environment_variables
       p @builder.set_environments
       begin
-        envs = @blueprint[:software][:environment_variables]
+        envs = @blueprint[:software][:variables]
         envs.each do |env|
           p env
           name=env[:name]
@@ -1347,7 +1350,8 @@ class EngineBuilder
           build_time_only =  env[:build_time_only]
           label =  env[:label]
           immutable =  env[:immutable]
-
+          lookup_system_values = env[:lookup_system_values]
+            
           if @builder.set_environments != nil
             p :looking_for_
             p name
