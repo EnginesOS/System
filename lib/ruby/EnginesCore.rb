@@ -1587,12 +1587,12 @@ class EnginesCore
                log_exception e
   end
 
-  def set_smarthost(params)
-
+  def setup_email_params(params)
+      
        arg="smarthost_hostname=" + params[:smarthost_hostname] \
          + ":smarthost_username=" + params[:smarthost_username]\
          + ":smarthost_password=" + params[:smarthost_password]\
-         + ":mail_name=" + params[:mail_name]                      
+         + ":mail_name=smtp."  + params[:default_domain] 
      
     return @docker_api.exec("smtp","/bin/bash",arg)
     rescue   Exception=>e
