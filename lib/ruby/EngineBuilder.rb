@@ -947,46 +947,46 @@ class EngineBuilder
 
       
       log_build_output("Read Services")
-      services=@blueprint[:software][:softwareservices]
+      services=@blueprint[:software][:service_configurations]
       services.each do |service|
         
         
-        if service.has_key?(:service_provider) == false || service[:service_provider] == nil
-          service[:service_provider] = "EnginesSystem"  
+        if service.has_key?(:publisher_namespace) == false || service[:publisher_namespace] == nil
+          service[:publisher_namespace] = "EnginesSystem"  
         end
         
-        service[:service_type]=service[:servicetype_name] 
+        service[:service_type]=service[:type_path] 
           
         p :service_provider
-        p   service[:service_provider] 
+        p   service[:publisher_namespace] 
           p :servicetype_name
-          p service[:servicetype_name]
+          p service[:type_path]
             
-        servicetype=service[:servicetype_name]
-
-       if servicetype == "database/sql/mysql" || servicetype == "database/sql/pgsql"
-          dbname = service[:name]
-          dest = service[:dest]
-          if dest =="local" || dest == nil
-            #FIXME
-            #kludge until BPDS is complete
-            service[:dest] = SysConfig.DBHost
-            service[:type] = servicetype.sub(/.*database\/.*\//,"") 
-              p :kludge_set_type
-              p  service[:type] 
-            service[:dbfavor] = "mysql2"
-            p :kludge_set_dbfavor
-             p  service[:dbfavor] 
-              
-           #          if flavor == "mysql"
-           #            flavor = "mysql2"
-           #          elsif flavor == "pgsql"
-          end
-        elsif servicetype=="filesystem"
-         service[:name] = clean_path(service[:name])
-         service[:dest] = clean_path(service[:dest])
-         add_file_service(service[:name], service[:dest])
-       end
+#        servicetype=service[:type_path]
+#
+#       if servicetype == "database/sql/mysql" || servicetype == "database/sql/pgsql"
+#          dbname = service[:name]
+#          dest = service[:dest]
+#          if dest =="local" || dest == nil
+#            #FIXME
+#            #kludge until BPDS is complete
+#            service[:dest] = SysConfig.DBHost
+#            service[:type] = servicetype.sub(/.*database\/.*\//,"") 
+#              p :kludge_set_type
+#              p  service[:type] 
+#            service[:dbfavor] = "mysql2"
+#            p :kludge_set_dbfavor
+#             p  service[:dbfavor] 
+#              
+#           #          if flavor == "mysql"
+#           #            flavor = "mysql2"
+#           #          elsif flavor == "pgsql"
+#          end
+#        elsif servicetype=="filesystem"
+#         service[:name] = clean_path(service[:name])
+#         service[:dest] = clean_path(service[:dest])
+#         add_file_service(service[:name], service[:dest])
+#       end
             add_service(service)
            
 #          end
@@ -2004,8 +2004,8 @@ end
        service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
-        p service_hash[:servicetype_name]
-        p service_hash[:service_provider]
+        p service_hash[:type_path]
+        p service_hash[:publisher_namespace]
         return false
       end
         if service_def[:persistant] == true
@@ -2020,7 +2020,7 @@ end
   
   
   def get_service_def(service_hash)
-    return     SoftwareServiceDefinition.find(service_hash[:servicetype_name], service_hash[:service_provider] )
+    return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:service_provider] )
   end
   
   def create_persistant_services
@@ -2028,8 +2028,8 @@ end
       
       service_hash[:parent_engine]=@container_name
       p :service_def_for
-             p service_hash[:servicetype_name]
-             p service_hash[:service_provider]
+             p service_hash[:type_path]
+             p service_hash[:publisher_namespace]
    
       service_def = get_service_def(service_hash)
          p  service_def
@@ -2038,9 +2038,9 @@ end
          p :failed_to_load_service_definition
          p :servicetype_name
          
-         p service_hash[:servicetype_name]
+         p service_hash[:type_path]
            p :service_provider
-        p service_hash[:service_provider]
+        p service_hash[:publisher_namespace]
          return false
        end
       if service_def[:persistant] == false
@@ -2063,8 +2063,8 @@ end
           service_hash[:username] = @set_environments[:ftpuser]
           service_hash[:password] = @set_environments[:password]
           service_hash[:rw_access] =true
-          service_hash[:service_type]=service_hash[:servicetype_name]
-          service_hash[:service_provider]="EnginesSystem"  
+          service_hash[:type_path]=service_hash[:type_path]
+          service_hash[:publisher_namespace]="EnginesSystem"  
          
           service_hash[:name]=service_hash[:name]             
               
