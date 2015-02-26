@@ -22,6 +22,4 @@ fcnt=`expr $fcnt + 1`
                 export $name=`echo $nvp |cut -f2 -d=`
         done
         
-        
-#psql  -c "alter user rma with PASSWORD '$pgsql_password'; "
 su postgres -c psql  "alter user rma with PASSWORD '$pgsql_password';"

@@ -4,7 +4,7 @@ ctype: service
 persistant: true
 last_error: 
 memory: '90'
-hostName: email
+hostName: imap
 domainName: 
 environments:
 - !ruby/object:EnvironmentVariable

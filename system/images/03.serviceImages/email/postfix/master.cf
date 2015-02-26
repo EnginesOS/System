@@ -8,7 +8,7 @@
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
-smtp      inet  n       -       n       -       -       smtpd -v -v
+smtp      inet  n       -       n       -       -       smtpd -v 
 #smtp      inet  n       -       -       -       1       postscreen
 #smtpd     pass  -       -       -       -       -       smtpd
 #dnsblog   unix  -       -       -       -       0       dnsblog
@@ -48,7 +48,7 @@ retry     unix  -       -       -       -       -       error
 discard   unix  -       -       -       -       -       discard
 local     unix  -       n       n       -       -       local
 virtual   unix  -       n       n       -       -       virtual
-lmtp      unix  -       -       -       -       -       lmtp
+lmtp      inet  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache    unix  -       -       -       -       1       scache
 #
