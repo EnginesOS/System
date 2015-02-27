@@ -1140,7 +1140,7 @@ class EngineBuilder
         archives.each do |archive|
           archive_details = Hash.new
           arc_src=clean_path(archive[:source_url])
-          arc_name=clean_path(archive[:package_name])
+          arc_name=clean_path(archive[:name])
           arc_loc =clean_path(archive[:destination])
           arc_extract=clean_path(archive[:extraction_cmd])
           arc_dir=clean_path(archive[:path_to_extracted])

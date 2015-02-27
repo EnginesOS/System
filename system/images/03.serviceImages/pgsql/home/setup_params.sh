@@ -22,5 +22,4 @@ fcnt=`expr $fcnt + 1`
                 export $name=`echo $nvp |cut -f2 -d=`
         done
         
-        
-mysql -urma -e "set password for 'root'@'%' = PASSWORD('$mysql_password'); "
+su postgres -c psql  "alter user rma with PASSWORD '$pgsql_password';"

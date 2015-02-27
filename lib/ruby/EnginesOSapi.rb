@@ -40,34 +40,35 @@ class EnginesOSapi
   end
   
   def set_smarthost(params)
-    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
+    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
+    @core_api.set_smarthost(params) 
+  end
+  def  set_default_domain(params) 
+   
+    @core_api.set_default_domain(params) 
   end
   def set_first_run_parameters params
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
     
-    @core_api.set_database_password("mysql_server",params)      
-    
+    params[:mail_name] = "smtp." + params[:default_domain]
+    @core_api.setup_email_params(params)
+         
+        
+    @core_api.set_database_password("mysql_server",params)              
     @core_api.set_database_password("pgsql_server",params)    
-    
-    @core_api.set_smarthost(params)
-    
-    
-    
-    set_default_domain(params)    
-    
+        
     params[:default_cert]=true      
   #  create_ssl_certificate(params)
- 
-    
+     
     f = File.new(SysConfig.FirstRunRan,"w")
            date = DateTime.now
            f.puts(date.to_s)
            f.close    
            
     return success("Gui","First Run")
-    catch Exception=>e
-      SystemUtils.log_exception(e)
+    rescue Exception=>e
+      log_exception(e)
     
       return failed("Gui","First Run","failed")
     

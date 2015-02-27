@@ -1117,9 +1117,10 @@ class EnginesCore
       end
     end
 
-    def docker_exec(containername,command,args)
-      run_args = "exec " + command + " " + args
-      return run_docker(run_args,containername)
+    def docker_exec(container,command,args)
+      run_args = "exec " + container.containerName + " " + command + " " + args
+      
+      return run_docker(run_args,container)
     end
     
     def run_docker (args,container)
@@ -1516,7 +1517,7 @@ class EnginesCore
   def image_exists?(containerName)
     imageName = containerName +"/deploy"
     return @docker_api.image_exists?(imageName)
-    catch Exception=>e
+    rescue Exception=>e
     log_execption(e)
     return false
   end
@@ -1587,23 +1588,32 @@ class EnginesCore
                log_exception e
   end
 
-  def set_smarthost(params)
-
+  def setup_email_params(params)
+      
        arg="smarthost_hostname=" + params[:smarthost_hostname] \
          + ":smarthost_username=" + params[:smarthost_username]\
          + ":smarthost_password=" + params[:smarthost_password]\
-         + ":mail_name=" + params[:mail_name]                      
-     
-    return @docker_api.exec("smtp","/bin/bash",arg)
-    
+         + ":mail_name=smtp."  + params[:default_domain] 
+     container=loadManagedService("smtp")
+    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
+    rescue   Exception=>e
+      log_exception(e)
   end
   
-   def set_database_password(server_container,params)
+   def set_database_password(container_name,params)
      arg = "mysql_password=" + params[:mysql_password] +":" \
-          + "server=" + server_container + ":" \
-        +  "pgsql_password=" + params[:pgsql_password] #Need two args
-        
-          return @docker_api.exec(server_container,"/bin/bash",arg)
+          + "server=" + container_name + ":" \
+        +  "psql_password=" + params[:psql_password] #Need two args
+          if container_name 
+              server_container = loadManagedService(container_name)
+              return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
+          end
+          
+          return true
+          
+   rescue Exception=>e
+       log_exception(e)
+       return false
    end
   
   def attach_service(service_hash)

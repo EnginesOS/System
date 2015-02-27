@@ -1,0 +1,26 @@
+FROM  engines/php:alpha
+ADD home home
+ADD engines home/engines
+
+ENV ContUser www-data
+
+RUN	apt-get update -y;\
+	if [ -f /home/engines/configs/php/71-custom.ini ] ;\
+		then		\
+			cp /home/engines/configs/php/71-custom.ini /etc/php5/apache2/conf.d/;\
+	fi;\
+	if [ -f /home/engines/configs/apache2/extra.conf ] ;\
+		then \
+			cp /home/engines/configs/apache2/extra.conf /etc/apache2/conf.d/;\
+	fi	;\
+	if [ -f /home/engines/configs/apache2/site.conf ] ;\
+		then\
+			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf;\
+	fi
+
+	
+
+CMD /home/start.bash
+
+
+

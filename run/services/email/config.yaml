@@ -7,6 +7,12 @@ memory: '90'
 hostName: email
 port: 8000
 domainName: engines.local.demo
+volumes:
+ mailname: !ruby/object:Volume
+  name: mailname
+  remotepath: "/etc/postfix/mailname"
+  localpath: "/opt/engines/etc/smtp/mailname"
+  mapping_permissions: "rw"
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
