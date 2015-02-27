@@ -123,7 +123,7 @@ password_query = \
 #   user_query = SELECT home, 501 AS uid, 501 AS gid FROM users WHERE userid = '%u'
 #
 user_query = \
-  SELECT maildir As home, local_part as uid, domains as gid \
+  SELECT maildir As home, local_part as uid, domain as gid \
   FROM mailbox WHERE username = '%u' AND domain = '%d'
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use
