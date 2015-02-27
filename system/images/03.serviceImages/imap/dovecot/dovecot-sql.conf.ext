@@ -122,9 +122,9 @@ password_query = \
 #   user_query = SELECT dir AS home, user AS uid, group AS gid FROM users where userid = '%u'
 #   user_query = SELECT home, 501 AS uid, 501 AS gid FROM users WHERE userid = '%u'
 #
-#user_query = \
-#  SELECT home, uid, gid \
-#  FROM users WHERE username = '%n' AND domain = '%d'
+user_query = \
+  SELECT maildir As home, local_part as uid, domains as gid \
+  FROM mailbox WHERE username = '%u' AND domain = '%d'
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use
 # userdb prefetch instead of userdb sql in dovecot.conf. In that case you'll
