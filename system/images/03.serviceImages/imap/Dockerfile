@@ -9,4 +9,3 @@ ADD dovecot/20-lmtp.conf /etc/dovecot/conf.d/
 ADD dovecot/dovecot-sql.conf.ext /etc/dovecot/
 
 ADD home home
-/var/vmail/
