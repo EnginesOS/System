@@ -4,7 +4,7 @@ RUN echo "Y" | adduser -q --disabled-password  -uid 22013 dovecot;\
 RUN apt-get -y update;\
 	apt-get -y install  syslogd dovecot-core dovecot-imapd  dovecot-pop3d  dovecot-sieve dovecot-lmtpd dovecot-mysql ;\
 	apt-get clean ;\
-	chown vmail /var/mail;\
+	chown vmail /var/mail
 	
 ADD dovecot/conf.d /etc/dovecot/conf.d
 
