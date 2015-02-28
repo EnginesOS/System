@@ -1,3 +1,4 @@
+#!/home/engines/.rbenv/versions/2.1.3/bin/ruby
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
@@ -14,11 +15,11 @@ require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
   end
 
 params=Hash.new
- params[:engine_name] = ARGV[1]
- params[:domain_name] = ARGV[4]
- params[:host_name] = ARGV[3]
- params[:http_protocol] = ARGV[2]
- params[:repository_url] =ARGV[5]
+ params[:engine_name] = ARGV[0]
+ params[:domain_name] = ARGV[3]
+ params[:host_name] = ARGV[2]
+ params[:http_protocol] = ARGV[1]
+ params[:repository_url] =ARGV[4]
    
 build_engine params
    
