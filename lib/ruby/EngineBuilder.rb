@@ -2096,7 +2096,8 @@ end
       
 
       end
-      
+      p :attach_service
+      p service_hash
       @core_api.attach_service(service_hash)
       
       
