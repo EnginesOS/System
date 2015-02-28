@@ -592,12 +592,13 @@ class EngineBuilder
         @docker_file.puts("")
 
         @blueprint_reader.archives_details.each do |archive_details|
-          arc_src = archive_details[:arc_src]
-          arc_name = archive_details[:arc_name]
-          arc_loc = archive_details[:arc_loc]
+          arc_src = archive_details[:source_url]
+          arc_name = archive_details[:package_name]
+          arc_loc = archive_details[:destination]
           arc_extract = archive_details[:arc_extract]
-          arc_dir = archive_details[:arc_dir]
+          arc_dir = archive_details[:path_to_extracted]
           #          if(n >0)
+
           #            srcs = srcs + " "
           #            names =names + " "
           #            locations = locations + " "
@@ -1147,7 +1148,7 @@ class EngineBuilder
           arc_src=clean_path(archive[:source_url])
           arc_name=clean_path(archive[:name])
           arc_loc =clean_path(archive[:destination])
-          arc_extract=clean_path(archive[:extraction_command])
+          arc_extract=clean_path(archive[:extraction_cmd])
           arc_dir=clean_path(archive[:path_to_extracted])
           #          if(n >0)
           #            srcs = srcs + " "
