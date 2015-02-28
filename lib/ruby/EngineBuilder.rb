@@ -303,6 +303,8 @@ class EngineBuilder
       services = @blueprint_reader.services
       @docker_file.puts("#Service Environment Variables")
         services.each do |service_hash|
+          p :service_hash
+          p service_hash
           service_def =  @builder.get_service_def(service_hash)
             if service_def != nil
               p :processing
