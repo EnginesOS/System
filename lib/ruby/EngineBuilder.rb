@@ -2032,7 +2032,7 @@ end
   
   
   def get_service_def(service_hash)
-    return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:service_provider] )
+    return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace] )
   end
   
   def create_persistant_services
