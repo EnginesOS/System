@@ -24,7 +24,6 @@ setup_params:
     hint: "* * * * * command"
     placeholder: " "
     mandatory: true
-    default_value: " "
     comment: " "
    name:
     regex_invalid_message: "wrong go back and try again"
@@ -36,5 +35,4 @@ setup_params:
     hint: ""
     placeholder: "a label "
     mandatory: true
-    default_value: " "
     comment: " "
