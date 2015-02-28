@@ -598,7 +598,11 @@ class EngineBuilder
           arc_extract = archive_details[:extraction_command]
           arc_dir = archive_details[:path_to_extracted]
           #          if(n >0)
-
+          #            archive_details[:source_url]=arc_src
+          #            archive_details[:package_name]=arc_name
+          #            archive_details[:extraction_cmd]=arc_extract
+          #            archive_details[:destination]=arc_loc
+          #            archive_details[:path_to_extracted]=arc_dir
           #            srcs = srcs + " "
           #            names =names + " "
           #            locations = locations + " "
@@ -629,6 +633,7 @@ class EngineBuilder
             @docker_file.puts("USER $ContUser")
             count_layer
             step_back=false
+
             if arc_dir.blank?
               step_back=true
               @docker_file.puts("RUN   mkdir /tmp/app")
@@ -1148,7 +1153,7 @@ class EngineBuilder
           arc_src=clean_path(archive[:source_url])
           arc_name=clean_path(archive[:name])
           arc_loc =clean_path(archive[:destination])
-          arc_extract=clean_path(archive[:extraction_cmd])
+          arc_extract=clean_path(archive[:extraction_command])
           arc_dir=clean_path(archive[:path_to_extracted])
           #          if(n >0)
           #            srcs = srcs + " "
