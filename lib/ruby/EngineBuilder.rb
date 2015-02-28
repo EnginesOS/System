@@ -878,8 +878,8 @@ class EngineBuilder
 
         @persistant_dirs = Array.new
 
-        pds =   @blueprint[:software][:persistant_directories]
-
+        pds =   @blueprint[:software][:persistent_directories]
+                                       
         pds.each do |dir|
           @persistant_dirs.push(dir[:path])
 
@@ -899,7 +899,10 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint[:software][:persistant_files]
+        pfs =   @blueprint[:software][:persistent_files]
+          if pfs == nil
+            return
+          end
         files= String.new
         pfs.each do |file|
           path = clean_path(file[:path])
@@ -1144,7 +1147,7 @@ class EngineBuilder
           arc_src=clean_path(archive[:source_url])
           arc_name=clean_path(archive[:name])
           arc_loc =clean_path(archive[:destination])
-          arc_extract=clean_path(archive[:extraction_cmd])
+          arc_extract=clean_path(archive[:extraction_command])
           arc_dir=clean_path(archive[:path_to_extracted])
           #          if(n >0)
           #            srcs = srcs + " "
