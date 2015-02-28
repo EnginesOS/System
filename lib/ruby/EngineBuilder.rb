@@ -595,7 +595,7 @@ class EngineBuilder
           arc_src = archive_details[:source_url]
           arc_name = archive_details[:package_name]
           arc_loc = archive_details[:destination]
-          arc_extract = archive_details[:arc_extract]
+          arc_extract = archive_details[:extraction_command]
           arc_dir = archive_details[:path_to_extracted]
           #          if(n >0)
 
