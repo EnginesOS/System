@@ -2032,6 +2032,8 @@ end
   
   
   def get_service_def(service_hash)
+    p service_hash[:type_path]
+      p service_hash[:publisher_namespace]
     return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace] )
   end
   
