@@ -634,7 +634,7 @@ class EngineBuilder
             count_layer
             step_back=false
 
-            if arc_dir.blank?
+            if arc_dir == nil 
               step_back=true
               @docker_file.puts("RUN   mkdir /tmp/app")
               count_layer
