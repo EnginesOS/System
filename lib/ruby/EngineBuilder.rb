@@ -1066,7 +1066,7 @@ class EngineBuilder
       begin
         @framework = @blueprint[:software][:framework]
         p @framework
-        @runtime =  @blueprint[:software][:langauge]
+        @runtime =  @blueprint[:software][:language]
         @memory =  @blueprint[:software][:required_memory]
 
       rescue Exception=>e
