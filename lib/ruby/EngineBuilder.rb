@@ -849,7 +849,7 @@ class EngineBuilder
         read_write_permissions_recursive
         read_write_permissions_single
         read_worker_commands
-        read_cron_jobs
+#        read_cron_jobs
         read_sed_strings
         read_work_ports
         read_os_packages
@@ -1236,27 +1236,27 @@ class EngineBuilder
       end
     end
 
-    def read_cron_jobs
-      begin
-        log_build_output("Read Crontabs")
-        cjs =  @blueprint[:software][:cron_jobs]
-        p :cron_jobs
-        p cjs
-        @cron_jobs = Array.new
-        n=0
-        cjs.each do |cj|
-          p :read_cron_job
-          p cj
-          @cron_jobs.push(cj[:cronjob])
-        end
-
-        return true
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+#    def read_cron_jobs
+#      begin
+#        log_build_output("Read Crontabs")
+#        cjs =  @blueprint[:software][:cron_jobs]
+#        p :cron_jobs
+#        p cjs
+#        @cron_jobs = Array.new
+#        n=0
+#        cjs.each do |cj|
+#          p :read_cron_job
+#          p cj
+#          @cron_jobs.push(cj[:cronjob])
+#        end
+#
+#        return true
+#
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def read_sed_strings
       begin
