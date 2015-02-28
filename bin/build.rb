@@ -20,6 +20,6 @@ params=Hash.new
  params[:host_name] = ARGV[2]
  params[:http_protocol] = ARGV[1]
  params[:repository_url] =ARGV[4]
-   
+params[:software_environment_variables]=nil
 build_engine params
    
