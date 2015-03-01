@@ -11,7 +11,7 @@ class SystemAccess
   end
   
   def mysql_host
-    return "mysql.engines.internal"
+    return SysConfig.DBHost
   end
   
 end
