@@ -10,7 +10,7 @@ class SoftwareServiceDefinition
               :setup_params,
               :dedicated,
               :service_type, 
-              :service_provider,
+              :publisher_namespace,
               :service_container, 
               :persistant,
               :target_environment_variables

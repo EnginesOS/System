@@ -22,7 +22,7 @@ class BackupService < SoftwareService
         containerName = site_hash[:parent_engine]
         
       end
-     # {:parent_engine=>"owncloud", :service_type=>"backup", :service_provider=>"EnginesSystem", :title=>"Backup", :name=>"owncloudapp", :dest_proto=>"ftp", :dest_folder=>"203.14.203.141", :dest_address=>"/tmp/", :include_logs=>"1", :dest_user=>"admin", :dest_pass=>"admin"}
+     # {:parent_engine=>"owncloud", :service_type=>"backup", :publisher_namespace=>"EnginesSystem", :title=>"Backup", :name=>"owncloudapp", :dest_proto=>"ftp", :dest_folder=>"203.14.203.141", :dest_address=>"/tmp/", :include_logs=>"1", :dest_user=>"admin", :dest_pass=>"admin"}
 
       SystemUtils.debug_output site_hash
       #FIXME
@@ -74,8 +74,8 @@ class BackupService < SoftwareService
   
   def get_site_hash(site_hash)
          
-
-    site_hash[:service_provider] = "EnginesSystem"
+    
+    site_hash[:publisher_namespace] = "EnginesSystem"
              site_hash[:service_type]='backup'
     return site_hash       
    end

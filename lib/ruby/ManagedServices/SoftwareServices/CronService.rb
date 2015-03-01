@@ -14,7 +14,7 @@ class CronService < SoftwareService
      
   def get_site_hash(site_hash)
     site_hash[:service_type]='cron'
-    site_hash[:service_provider] = "EnginesSystem"
+    site_hash[:publisher_namespace] = "EnginesSystem"
         return site_hash          
    end
    
