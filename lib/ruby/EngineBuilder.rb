@@ -1965,7 +1965,7 @@ class EngineBuilder
     p :getting_system_value_for
     p name
     
-    var_method = SystemAccess.method(name.to_sym)
+    var_method = const_get(SystemAccess).send(name.to_sym)
     val = var_method.call
     
     p :got_val
