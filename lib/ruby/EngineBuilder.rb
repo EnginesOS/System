@@ -1014,7 +1014,7 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
-      builder.fill_in_dynamic_vars(service_hash)
+      @builder.fill_in_dynamic_vars(service_hash)
       @services.push(service_hash)
     end
 
