@@ -854,8 +854,9 @@ class EngineBuilder
     def process_blueprint
       begin
         log_build_output("Process BluePrint")
-        read_rake_list
         read_services
+        read_environment_variables
+       
         read_os_packages
         read_lang_fw_values
         read_pear_list
@@ -869,7 +870,7 @@ class EngineBuilder
         read_work_ports
         read_os_packages
         read_app_packages
-        read_environment_variables
+        read_rake_list
         read_persistant_files
         read_persistant_dirs
         read_web_port_overide
@@ -1013,6 +1014,7 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
+      fill_in_dynamic_vars(service_hash)
       @services.push(service_hash)
     end
 
@@ -1830,6 +1832,8 @@ class EngineBuilder
         return false
       end
       
+      
+      
       compile_base_docker_files
 
       if @blueprint_reader.web_port != nil
@@ -2041,7 +2045,7 @@ end
         if service_def[:persistant] == true
           next                 
         end
-        
+     
          p :adding_service
          p service_hash   
       @core_api.attach_service(service_hash)
@@ -2108,7 +2112,7 @@ end
       p :attach_service
       p service_hash
       
-      fill_in_dynamic_vars(service_hash)
+     
       @core_api.attach_service(service_hash)
       
       
@@ -2117,6 +2121,9 @@ end
   
   def fill_in_dynamic_vars(service_hash)
     p "FILLING_+@+#+@+@+@+@+@+"
+    if service_hash.has_key?(:variables) == false
+      return
+    end
     service_hash[:variables].each do |variable|
       p variable
       if variable[1].start_with?("$_")
