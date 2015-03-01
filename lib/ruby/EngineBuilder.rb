@@ -610,6 +610,7 @@ class EngineBuilder
           #            dirs =dirs + " "
           #          end
           p "_+_+_+_+_+_+_+_+_+_+_"
+          p archive_details
           p arc_src + "_" 
           p arc_name + "_" 
           p arc_loc + "_" 
@@ -1175,7 +1176,7 @@ class EngineBuilder
           end
           archive_details[:source_url]=arc_src
           archive_details[:package_name]=arc_name
-          archive_details[:extraction_cmd]=arc_extract
+          archive_details[:extraction_command]=arc_extract
           archive_details[:destination]=arc_loc
           archive_details[:path_to_extracted]=arc_dir
             p :read_in_arc_details
