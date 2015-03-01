@@ -13,6 +13,7 @@ def build_engine params
 
   @core_api = core_api
   builder = EngineBuilder.new(params, @core_api)
+  builder.get_blueprint_from_repo 
   engine = builder.build_container
 
 end
