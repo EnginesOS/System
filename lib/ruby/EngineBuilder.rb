@@ -1013,7 +1013,7 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
-      @services.push(service_hash)
+      @services.push(service_hash[:variables])
     end
 
     def add_file_service(name,dest) #FIXME and put me in coreapi
@@ -1829,7 +1829,7 @@ class EngineBuilder
       if  setup_default_files == false
         return false
       end
-  
+      
       compile_base_docker_files
 
       if @blueprint_reader.web_port != nil
