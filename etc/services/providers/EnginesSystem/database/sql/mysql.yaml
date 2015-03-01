@@ -102,5 +102,5 @@ target_environment_variables:
   variable_name: db_password
   environment_name: dbpasswd
  flavor:
-  variable_name: dbfavor
+  variable_name: db_flavor
   environment_name: dbflavor
