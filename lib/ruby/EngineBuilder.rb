@@ -1013,7 +1013,7 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
-      @services.push(service_hash[:variables])
+      @services.push(service_hash)
     end
 
     def add_file_service(name,dest) #FIXME and put me in coreapi
