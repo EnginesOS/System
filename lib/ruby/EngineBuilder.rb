@@ -1172,6 +1172,8 @@ class EngineBuilder
           archive_details[:extraction_cmd]=arc_extract
           archive_details[:destination]=arc_loc
           archive_details[:path_to_extracted]=arc_dir
+            p :read_in_arc_details
+            p archive_details
           @archives_details.push(archive_details)
         end
 
