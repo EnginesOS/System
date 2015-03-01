@@ -609,13 +609,19 @@ class EngineBuilder
           #            extracts =extracts + " "
           #            dirs =dirs + " "
           #          end
-
+          p "_+_+_+_+_+_+_+_+_+_+_"
+          p arc_src + "_" 
+          p arc_name + "_" 
+          p arc_loc + "_" 
+          p arc_extract + "_" 
+          p arc_dir +"|"
+            
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          p arc_src + "_" + arc_name + "_" + arc_loc + "_" + arc_extract + "_" + arc_dir +"|"
+          
           if arc_extract == "git"
             @docker_file.puts("WORKDIR /tmp")
             count_layer
