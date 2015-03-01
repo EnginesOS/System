@@ -2135,7 +2135,7 @@ end
       if variable[1] != nil && variable[1].start_with?("$_")
       variable[1].sub!(/\$/,"")
         result = evaluate_function(variable[1])
-        service_hash[variable[0]] = result
+        service_hash[:variables][variable[0]] = result
     end
   end
 end
