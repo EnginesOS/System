@@ -19,7 +19,7 @@ class ServiceManager
 
   def get_software_service_container_name(params)
    server_service =  software_service_definition(params)
-   if server_service == nil
+   if server_service == nil || server_service == false
      p :no_luck_getint_service_container_for
      p params
      return nil
