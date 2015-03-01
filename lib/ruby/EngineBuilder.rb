@@ -1016,6 +1016,9 @@ class EngineBuilder
 
     def add_service (service_hash)
       @builder.fill_in_dynamic_vars(service_hash)
+      if service_hash[:service_type] == "filesystem"
+        add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
+      end
       @services.push(service_hash)
     end
 
