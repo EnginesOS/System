@@ -194,7 +194,7 @@ rescue Exception=>e
        engine_node << service_type_node       
     end
     
-    provider = service_hash[:service_provider]
+    provider = service_hash[:publisher_namespace]
      if provider == nil || provider.length ==0
        provider="Engines"
      end
@@ -225,9 +225,9 @@ rescue Exception=>e
      services_node = @service_tree["Services"]
    
       
-       provider_node = services_node[service_hash[:service_provider] ]
+       provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:service_provider] ," Provider:" + service_hash[:service_provider] + ":" + service_hash[:service_type]  )
+          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:service_type]  )
           services_node << provider_node
         end
         
@@ -264,9 +264,9 @@ rescue Exception=>e
           @last_error ="No service record found for " + service_hash[:parent_engine] + ":" +  service_hash[:service_type]
           return false
         end
-       service_provider_node =  service_type_node[service_hash[:service_provider]]
+       service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
        if service_provider_node == nil
-          @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:service_provider] 
+          @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:publisher_namespace] 
           return false
         end
         service_node = service_provider_node[service_hash[:name]]
@@ -291,7 +291,7 @@ rescue Exception=>e
             
       services_node = @service_tree["Services"]
       if services_node !=nil
-        provider_node = services_node[service_hash[:service_provider] ]
+        provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node != nil
           servicetype_node =  provider_node[service_hash[:service_type] ]
           if servicetype_node != nil
@@ -318,7 +318,7 @@ rescue Exception=>e
             return true
           end
           
-@last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:service_provider] + " Name " + service_hash[:name]
+@last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:publisher_namespace] + " Name " + service_hash[:name]
         return false 
           
 rescue Exception=>e
@@ -331,13 +331,13 @@ rescue Exception=>e
 def software_service_definition(params)
   require 'json'
   
-  if params[:service_provider]   == nil ||  params[:service_type] == nil
+  if params[:publisher_namespace]   == nil ||  params[:service_type] == nil
     p :nil_in_params
     p params
     return nil
   end
   
-  service_filename = SysConfig.ServiceTemplateDir + "/" + params[:service_provider] + "/" + params[:service_type]+ ".yaml"
+  service_filename = SysConfig.ServiceTemplateDir + "/" + params[:publisher_namespace] + "/" + params[:service_type]+ ".yaml"
   if File.exists?(service_filename)
     yaml = File.read(service_filename)
     software_service_def  = SoftwareServiceDefinition.from_yaml(yaml)
