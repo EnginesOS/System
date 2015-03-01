@@ -1973,7 +1973,9 @@ class EngineBuilder
     
     return val
     
-  rescue 
+  rescue Exception=>e
+    SystemUtils.log_exception(e) 
+    
     return ""
   end
 #_Blueprint(software,license_name)
@@ -2014,7 +2016,8 @@ def resolve_blueprint_variable(match)
   
   return val
   
-rescue 
+rescue Exception=>e
+    SystemUtils.log_exception(e) 
   return ""
 end
   def resolve_build_variable(match)
@@ -2028,7 +2031,8 @@ end
     p :got_val
     p val
     return val
-    rescue 
+    rescue Exception=>e
+        SystemUtils.log_exception(e) 
        return ""
   end
   
