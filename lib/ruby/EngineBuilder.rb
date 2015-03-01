@@ -968,6 +968,9 @@ class EngineBuilder
       
       log_build_output("Read Services")
       services=@blueprint[:software][:service_configurations]
+        if services == nil
+          return 
+        end
       services.each do |service|
         
         
