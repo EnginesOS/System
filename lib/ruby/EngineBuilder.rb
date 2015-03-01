@@ -2127,11 +2127,11 @@ end
   end
 end
 def evaluate_function(function)
-     if function.begin_with("_System")
+     if function.start_with?("_System")
        return resolve_system_variable(function)
-     elsif function.begin_with("_Builder")
+     elsif function.start_with?("_Builder")
        return resolve_build_variable(function)
-     elsif function.begin_with("_Blueprint")
+     elsif function.start_with?("_Blueprint")
        return resolve_blueprint_variable(function)
      end
      
