@@ -1354,6 +1354,7 @@ class EnginesCore
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @last_error = String.new
   end
 
   attr_reader :last_error
