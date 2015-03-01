@@ -2119,7 +2119,7 @@ end
     p "FILLING_+@+#+@+@+@+@+@+"
     service_hash[:variables].each do |variable|
       p variable
-      if variable[1].begin_with("$_")
+      if variable[1].start_with?("$_")
       variable[1].sub!(/\$/,"")
         result = evaluate_function(variable[1])
         service_hash[variable[0]] = result
