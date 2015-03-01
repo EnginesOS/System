@@ -11,7 +11,7 @@ require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
   
   @core_api = core_api
   builder = EngineBuilder.new(params, @core_api)
-    engine = builder.build_from_blue_print
+    engine = builder.build_container
    
   end
 
