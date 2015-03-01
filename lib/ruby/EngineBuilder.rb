@@ -2107,9 +2107,18 @@ end
       end
       p :attach_service
       p service_hash
+      
+      fill_in_dynamic_vars(service_hash)
       @core_api.attach_service(service_hash)
       
       
+    end
+  end
+  
+  def fill_in_dynamic_vars(service_hash)
+    p "FILLING_+@+#+@+@+@+@+@+"
+    service_hash[:variables].each do |variable|
+      p variable
     end
   end
   
