@@ -1402,7 +1402,7 @@ class EngineBuilder
     def initialize(builder)
      @builder = builder
     end
-     def container_name
+     def engine_name
        @builder.container_name
      end
      def domain_name
@@ -1874,7 +1874,7 @@ class EngineBuilder
         end
 
         #needs to be moved to services dependant on the new BPDS
-        create_cron_service
+        #create_cron_service
 
 #        log_build_output("Creating vol Services")
 #        @blueprint_reader.databases.each() do |db|
@@ -2119,9 +2119,26 @@ end
     p "FILLING_+@+#+@+@+@+@+@+"
     service_hash[:variables].each do |variable|
       p variable
+      if variable[1].begin_with("$_")
+      variable[1].sub!(/\$/,"")
+        result = evaluate_function(variable[1])
+        service_hash[variable[0]] = result
     end
   end
+end
+def evaluate_function(function)
+     if function.begin_with("_System")
+       return resolve_system_variable(function)
+     elsif function.begin_with("_Builder")
+       return resolve_build_variable(function)
+     elsif function.begin_with("_Blueprint")
+       return resolve_blueprint_variable(function)
+     end
+     
+rescue Exception=> e
+  return ""
   
+end
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
