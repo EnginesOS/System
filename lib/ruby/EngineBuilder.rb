@@ -285,12 +285,12 @@ class EngineBuilder
       begin
         @docker_file.puts("#File Service")
         @docker_file.puts("#FS Env")
-        @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
-        count_layer
+#        @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
+#        count_layer
         @blueprint_reader.volumes.each_value do |vol|
           dest = File.basename(vol.remotepath)
-          @docker_file.puts("ENV VOLDIR /home/fs/" + dest)
-          count_layer
+#          @docker_file.puts("ENV VOLDIR /home/fs/" + dest)
+#          count_layer
           @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + dest)
           count_layer
         end
