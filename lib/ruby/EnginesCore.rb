@@ -1632,11 +1632,11 @@ class EnginesCore
     
     service = load_software_service(service_hash)
     p :attaching_to_service
-    p service
+    p service_hash
     if service !=nil && service != false
       return service.add_consumer(service_hash)
     end
-    last_error = "Failed to attach Service: " + last_error
+    @last_error = "Failed to attach Service: " + @last_error 
     return  false
     rescue Exception=>e
                   log_exception e
