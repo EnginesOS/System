@@ -1465,7 +1465,7 @@ class EngineBuilder
     @vols=Array.new
     
     @builder_public = BuilderPublic.new(self)
-    
+    @system_access = SystemAccess.new()
     p :custom_env
     p custom_env
 
@@ -1965,7 +1965,7 @@ class EngineBuilder
     p :getting_system_value_for
     p name
     
-    var_method = const_get(SystemAccess).send(name.to_sym)
+    var_method = @system_access.method(name.to_sym)
     val = var_method.call
     
     p :got_val
