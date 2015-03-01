@@ -23,7 +23,6 @@ setup_params:
   hint: "site_fqdn"
   placeholder: " "
   mandatory: true
-  default_value: " "
   comment: " "
  internal_dir:
   name: internal_dir
@@ -34,5 +33,4 @@ setup_params:
   hint: "internal_dir as in map /www.domain.com/ to /www.domain.com/internal_dir"
   placeholder: " "
   mandatory: true
-  default_value: " "
   comment: " "

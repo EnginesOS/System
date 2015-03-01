@@ -1,8 +1,8 @@
 #!/bin/bash
 PATH="/usr/local/rbenv/bin:$PATH"
 
-SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
-export SECRET_KEY_BASE 
+#SECRET_KEY_BASE=`/usr/local/rbenv/shims/bundle exec rake secret`
+#export SECRET_KEY_BASE 
 
 touch  /engines/var/run/startup_complete
 mkdir /var/log/apache2/

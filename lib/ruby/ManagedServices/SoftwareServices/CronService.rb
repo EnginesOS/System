@@ -14,7 +14,7 @@ class CronService < SoftwareService
      
   def get_site_hash(site_hash)
     site_hash[:service_type]='cron'
-    site_hash[:service_provider] = "EnginesSystem"
+    site_hash[:publisher_namespace] = "EnginesSystem"
         return site_hash          
    end
    
@@ -26,7 +26,7 @@ class CronService < SoftwareService
     
   def format_cron_line(cron_hash)
       cron_line = String.new
-      cron_line_split = cron_hash[:cron_job].split(/[\s\t]{1,10}/)
+      cron_line_split = cron_hash[:variables][:cron_job].split(/[\s\t]{1,10}/)
       for n in 0..4
         cron_line +=  cron_line_split[n] + " "
       end

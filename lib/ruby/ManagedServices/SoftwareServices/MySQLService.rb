@@ -10,8 +10,8 @@ class MySQLService < SoftwareService
   def add_consumer_to_service(site_hash)
     p :add_consumer
     p site_hash
-    if site_hash.has_key?(:name) == false || site_hash[:name] == nil    
-          site_hash[:name] = site_hash[:database_name]
+    if site_hash[:variables].has_key?(:name) == false || site_hash[:variables][:name] == nil    
+          site_hash[:variables][:name] = site_hash[:variables][:database_name]
       end
     return  create_database(site_hash) 
      end
@@ -29,9 +29,9 @@ class MySQLService < SoftwareService
       if site_hash.has_key?(:service_container_name) == true
       container_name = site_hash[:service_container_name]
     else
-      container_name =  site_hash[:type] + "_server"
+      container_name =  site_hash[:variables][:type] + "_server"
     end
-      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:database_name] + " " + site_hash[:db_username] + " " + site_hash[:db_password]
+      cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:variables][:database_name] + " " + site_hash[:variables][:db_username] + " " + site_hash[:variables][:db_password]
 
       #save details with some manager
       SystemUtils.debug_output(cmd)
@@ -50,7 +50,7 @@ class MySQLService < SoftwareService
     
     begin
       container_name =  site_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:name] + " " + site_hash[:user] + " " + site_hash[:pass]
+      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:variables][:database_name] + " " + site_hash[:variables][:db_username] + " " + site_hash[:variables][:db_password]
 
       #save details with some manager
       SystemUtils.debug_output(cmd)
@@ -73,7 +73,7 @@ class MySQLService < SoftwareService
 #      #FixME can over write owner in addconsumer need to overide and protect ownership
 #    site_hash[:parent_engine]  =  database.owner
 #    site_hash[:owner]= database.owner
-#    site_hash[:service_provider] = "EnginesSystem"
+#    site_hash[:publisher_namespace] = "EnginesSystem"
 #       p site_hash
      return site_hash      
     

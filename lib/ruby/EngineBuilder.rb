@@ -7,7 +7,7 @@ require "rubygems"
 require "git"
 require 'fileutils'
 require 'json'
-require '/opt/engines/lib/ruby/System.rb'
+require '/opt/engines/lib/ruby/SystemAccess.rb'
 
 class EngineBuilder
   @repoName=nil
@@ -73,6 +73,7 @@ class EngineBuilder
       write_stack_env
       write_services
       write_file_service
+      
       #write_db_service
       #write_cron_jobs
       write_os_packages
@@ -200,13 +201,13 @@ class EngineBuilder
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
           dirname = File.dirname(path)
-          @docker_file.puts("mkdir -p $VOLDIR/" + dirname + ";\\")
+          @docker_file.puts("mkdir -p $CONTFSVolHome/$VOLDIR/" + dirname + ";\\")
           @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/" + path + " $VOLDIR/" + dirname + "/;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/" + path)
+          @docker_file.puts("mv /home/" + path + " $CONTFSVolHome/$VOLDIR/" + dirname + "/;\\")
+          @docker_file.puts("ln -s $CONTFSVolHome/$VOLDIR/" + path + " /home/" + path)
           n=n+1
           count_layer
         end
@@ -266,10 +267,10 @@ class EngineBuilder
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $VOLDIR/" + dir +";\\")
+          @docker_file.puts("  mkdir -p $CONTFSVolHome/$VOLDIR/" + dir +";\\")
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + dir + ";\\")
-          @docker_file.puts("    ln -s $VOLDIR/" + path + " /home/" + path)
+          @docker_file.puts("   mv /home/" + path + " $CONTFSVolHome/$VOLDIR" + "/" + dir + ";\\")
+          @docker_file.puts("    ln -s $CONTFSVolHome/$VOLDIR/" + path + " /home/" + path)
           count_layer
 
         end
@@ -284,12 +285,12 @@ class EngineBuilder
       begin
         @docker_file.puts("#File Service")
         @docker_file.puts("#FS Env")
-        @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
-        count_layer
+#        @docker_file.puts("ENV CONTFSVolHome /home/fs/" )
+#        count_layer
         @blueprint_reader.volumes.each_value do |vol|
           dest = File.basename(vol.remotepath)
-          @docker_file.puts("ENV VOLDIR /home/fs/" + dest)
-          count_layer
+#          @docker_file.puts("ENV VOLDIR /home/fs/" + dest)
+#          count_layer
           @docker_file.puts("RUN mkdir -p $CONTFSVolHome/" + dest)
           count_layer
         end
@@ -303,6 +304,8 @@ class EngineBuilder
       services = @blueprint_reader.services
       @docker_file.puts("#Service Environment Variables")
         services.each do |service_hash|
+          p :service_hash
+          p service_hash
           service_def =  @builder.get_service_def(service_hash)
             if service_def != nil
               p :processing
@@ -315,7 +318,7 @@ class EngineBuilder
                     p env_variable_pair
                     env_name = env_variable_pair[:environment_name]
                     value_name = env_variable_pair[:variable_name]
-                    value=service_hash[value_name.to_sym] 
+                    value=service_hash[:variables][value_name.to_sym] 
                     p :looking_for_
                     p value_name
                     p :as_symbol
@@ -590,25 +593,37 @@ class EngineBuilder
         @docker_file.puts("")
 
         @blueprint_reader.archives_details.each do |archive_details|
-          arc_src = archive_details[:arc_src]
-          arc_name = archive_details[:arc_name]
-          arc_loc = archive_details[:arc_loc]
-          arc_extract = archive_details[:arc_extract]
-          arc_dir = archive_details[:arc_dir]
+          arc_src = archive_details[:source_url]
+          arc_name = archive_details[:package_name]
+          arc_loc = archive_details[:destination]
+          arc_extract = archive_details[:extraction_command]
+          arc_dir = archive_details[:path_to_extracted]
           #          if(n >0)
+          #            archive_details[:source_url]=arc_src
+          #            archive_details[:package_name]=arc_name
+          #            archive_details[:extraction_cmd]=arc_extract
+          #            archive_details[:destination]=arc_loc
+          #            archive_details[:path_to_extracted]=arc_dir
           #            srcs = srcs + " "
           #            names =names + " "
           #            locations = locations + " "
           #            extracts =extracts + " "
           #            dirs =dirs + " "
           #          end
-
+          p "_+_+_+_+_+_+_+_+_+_+_"
+          p archive_details
+          p arc_src + "_" 
+          p arc_name + "_" 
+          p arc_loc + "_" 
+          p arc_extract + "_" 
+          p arc_dir +"|"
+            
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-
+          
           if arc_extract == "git"
             @docker_file.puts("WORKDIR /tmp")
             count_layer
@@ -626,7 +641,8 @@ class EngineBuilder
             @docker_file.puts("USER $ContUser")
             count_layer
             step_back=false
-            if arc_dir.blank?
+
+            if arc_dir == nil 
               step_back=true
               @docker_file.puts("RUN   mkdir /tmp/app")
               count_layer
@@ -639,7 +655,7 @@ class EngineBuilder
             end
 
             @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
-            if arc_extract.present?
+            if arc_extract!= nil
               @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
               @docker_file.puts(" rm \"" + arc_name + "\"")
             else
@@ -651,7 +667,7 @@ class EngineBuilder
               @docker_file.puts("WORKDIR /tmp")
               count_layer
             end
-            if  arc_loc.starts_with?("/home/app") || arc_loc.starts_with?("/home/local/")
+            if  arc_loc.start_with?("/home/app") || arc_loc.start_with?("/home/local/")
               dest_prefix=""
             else
               dest_prefix="/home/app"
@@ -839,8 +855,9 @@ class EngineBuilder
     def process_blueprint
       begin
         log_build_output("Process BluePrint")
-        read_rake_list
         read_services
+        read_environment_variables
+       
         read_os_packages
         read_lang_fw_values
         read_pear_list
@@ -849,12 +866,12 @@ class EngineBuilder
         read_write_permissions_recursive
         read_write_permissions_single
         read_worker_commands
-        read_cron_jobs
+#        read_cron_jobs
         read_sed_strings
         read_work_ports
         read_os_packages
         read_app_packages
-        read_environment_variables
+        read_rake_list
         read_persistant_files
         read_persistant_dirs
         read_web_port_overide
@@ -876,8 +893,8 @@ class EngineBuilder
 
         @persistant_dirs = Array.new
 
-        pds =   @blueprint[:software][:persistant_directories]
-
+        pds =   @blueprint[:software][:persistent_directories]
+                                       
         pds.each do |dir|
           @persistant_dirs.push(dir[:path])
 
@@ -897,7 +914,10 @@ class EngineBuilder
         src_paths = Array.new
         dest_paths = Array.new
 
-        pfs =   @blueprint[:software][:persistant_files]
+        pfs =   @blueprint[:software][:persistent_files]
+          if pfs == nil
+            return
+          end
         files= String.new
         pfs.each do |file|
           path = clean_path(file[:path])
@@ -948,6 +968,9 @@ class EngineBuilder
       
       log_build_output("Read Services")
       services=@blueprint[:software][:service_configurations]
+        if services == nil
+          return 
+        end
       services.each do |service|
         
         
@@ -995,6 +1018,10 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
+      @builder.fill_in_dynamic_vars(service_hash)
+      if service_hash[:service_type] == "filesystem"
+        add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
+      end
       @services.push(service_hash)
     end
 
@@ -1066,7 +1093,7 @@ class EngineBuilder
       begin
         @framework = @blueprint[:software][:framework]
         p @framework
-        @runtime =  @blueprint[:software][:langauge]
+        @runtime =  @blueprint[:software][:language]
         @memory =  @blueprint[:software][:required_memory]
 
       rescue Exception=>e
@@ -1142,7 +1169,7 @@ class EngineBuilder
           arc_src=clean_path(archive[:source_url])
           arc_name=clean_path(archive[:name])
           arc_loc =clean_path(archive[:destination])
-          arc_extract=clean_path(archive[:extraction_cmd])
+          arc_extract=clean_path(archive[:extraction_command])
           arc_dir=clean_path(archive[:path_to_extracted])
           #          if(n >0)
           #            srcs = srcs + " "
@@ -1158,9 +1185,11 @@ class EngineBuilder
           end
           archive_details[:source_url]=arc_src
           archive_details[:package_name]=arc_name
-          archive_details[:extraction_cmd]=arc_extract
+          archive_details[:extraction_command]=arc_extract
           archive_details[:destination]=arc_loc
           archive_details[:path_to_extracted]=arc_dir
+            p :read_in_arc_details
+            p archive_details
           @archives_details.push(archive_details)
         end
 
@@ -1236,27 +1265,27 @@ class EngineBuilder
       end
     end
 
-    def read_cron_jobs
-      begin
-        log_build_output("Read Crontabs")
-        cjs =  @blueprint[:software][:cron_jobs]
-        p :cron_jobs
-        p cjs
-        @cron_jobs = Array.new
-        n=0
-        cjs.each do |cj|
-          p :read_cron_job
-          p cj
-          @cron_jobs.push(cj[:cronjob])
-        end
-
-        return true
-
-      rescue Exception=>e
-        log_exception(e)
-        return false
-      end
-    end
+#    def read_cron_jobs
+#      begin
+#        log_build_output("Read Crontabs")
+#        cjs =  @blueprint[:software][:cron_jobs]
+#        p :cron_jobs
+#        p cjs
+#        @cron_jobs = Array.new
+#        n=0
+#        cjs.each do |cj|
+#          p :read_cron_job
+#          p cj
+#          @cron_jobs.push(cj[:cronjob])
+#        end
+#
+#        return true
+#
+#      rescue Exception=>e
+#        log_exception(e)
+#        return false
+#      end
+#    end
 
     def read_sed_strings
       begin
@@ -1382,7 +1411,7 @@ class EngineBuilder
     def initialize(builder)
      @builder = builder
     end
-     def container_name
+     def engine_name
        @builder.container_name
      end
      def domain_name
@@ -1413,6 +1442,10 @@ class EngineBuilder
        @builder.environments
      end
      
+     def mysql_host
+       return "mysql.engines.internal"
+     end
+     
      def blueprint
        return @builder.blueprint
      end
@@ -1436,7 +1469,7 @@ class EngineBuilder
     @vols=Array.new
     
     @builder_public = BuilderPublic.new(self)
-    
+    @system_access = SystemAccess.new()
     p :custom_env
     p custom_env
 
@@ -1809,7 +1842,9 @@ class EngineBuilder
       if  setup_default_files == false
         return false
       end
-  
+      
+      
+      
       compile_base_docker_files
 
       if @blueprint_reader.web_port != nil
@@ -1854,7 +1889,7 @@ class EngineBuilder
         end
 
         #needs to be moved to services dependant on the new BPDS
-        create_cron_service
+        #create_cron_service
 
 #        log_build_output("Creating vol Services")
 #        @blueprint_reader.databases.each() do |db|
@@ -1934,7 +1969,7 @@ class EngineBuilder
     p :getting_system_value_for
     p name
     
-    var_method = System.method(name.to_sym)
+    var_method = @system_access.method(name.to_sym)
     val = var_method.call
     
     p :got_val
@@ -1942,7 +1977,9 @@ class EngineBuilder
     
     return val
     
-  rescue 
+  rescue Exception=>e
+    SystemUtils.log_exception(e) 
+    
     return ""
   end
 #_Blueprint(software,license_name)
@@ -1983,7 +2020,8 @@ def resolve_blueprint_variable(match)
   
   return val
   
-rescue 
+rescue Exception=>e
+    SystemUtils.log_exception(e) 
   return ""
 end
   def resolve_build_variable(match)
@@ -1997,7 +2035,8 @@ end
     p :got_val
     p val
     return val
-    rescue 
+    rescue Exception=>e
+        SystemUtils.log_exception(e) 
        return ""
   end
   
@@ -2021,7 +2060,7 @@ end
         if service_def[:persistant] == true
           next                 
         end
-        
+     
          p :adding_service
          p service_hash   
       @core_api.attach_service(service_hash)
@@ -2030,7 +2069,9 @@ end
   
   
   def get_service_def(service_hash)
-    return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:service_provider] )
+    p service_hash[:type_path]
+      p service_hash[:publisher_namespace]
+    return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace] )
   end
   
   def create_persistant_services
@@ -2063,7 +2104,9 @@ end
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
-                    
+      if service_hash[:servicetype_name] == "filesystem"
+         add_file_service(service[:name], service[:engine_path])
+      end
         if service_hash[:servicetype_name] == "ftp"      
           #symbols from ftp service definition and values from blueprint and envionment
           # still need to sort
@@ -2083,13 +2126,43 @@ end
       
 
       end
+      p :attach_service
+      p service_hash
       
+     
       @core_api.attach_service(service_hash)
       
       
     end
   end
   
+  def fill_in_dynamic_vars(service_hash)
+    p "FILLING_+@+#+@+@+@+@+@+"
+    if service_hash.has_key?(:variables) == false
+      return
+    end
+    service_hash[:variables].each do |variable|
+      p variable
+      if variable[1] != nil && variable[1].start_with?("$_")
+      variable[1].sub!(/\$/,"")
+        result = evaluate_function(variable[1])
+        service_hash[:variables][variable[0]] = result
+    end
+  end
+end
+def evaluate_function(function)
+     if function.start_with?("_System")
+       return resolve_system_variable(function)
+     elsif function.start_with?("_Builder")
+       return resolve_build_variable(function)
+     elsif function.start_with?("_Blueprint")
+       return resolve_blueprint_variable(function)
+     end
+     
+rescue Exception=> e
+  return ""
+  
+end
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")

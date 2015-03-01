@@ -1354,6 +1354,7 @@ class EnginesCore
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @last_error = String.new
   end
 
   attr_reader :last_error
@@ -1576,7 +1577,7 @@ class EnginesCore
     p params
     service_container =  sm.get_software_service_container_name(params)
     params[:service_container_name] = service_container
-    p :container_name
+    p :service_container_name
     p service_container
     service = loadManagedService(service_container)
     if service == nil
@@ -1632,11 +1633,11 @@ class EnginesCore
     
     service = load_software_service(service_hash)
     p :attaching_to_service
-    #p service
+    p service_hash
     if service !=nil && service != false
       return service.add_consumer(service_hash)
     end
-    last_error = "Failed to attach Service: " + last_error
+    @last_error = "Failed to attach Service: " + @last_error 
     return  false
     rescue Exception=>e
                   log_exception e

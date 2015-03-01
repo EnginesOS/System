@@ -14,41 +14,57 @@ persistant: true
 dedicated: false
 consumer_params:
 setup_params:
-   volume_src:
-    name: volume_src
-    label: volume src path
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: " "
-    placeholder: " "
-    mandatory: false
-    value: " "
-    comment: " "
-   permissions:
-    name: permissions
-    label: permissions
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: select_single
-    hint: " "
-    placeholder: " "
-    mandatory: true
-    value: "rw"
-    select_collection:
-    - !ruby/object:String
-      "rw"
-    - !ruby/object:String   
-      "ro"
-    comment: " "
-   engine_path:
-    name: engine_path
-    label: engine_path
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: " "
-    placeholder: " "
-    mandatory: true
-    value: " "
-    comment: " "
+ name:
+  name: name
+  label: service tag name
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "$_Builder(engine_name)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ volume_src:
+  name: volume_src
+  label: volume src path
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: " "
+  placeholder: " "
+  mandatory: false
+  value: " "
+  comment: " "
+ permissions:
+  name: permissions
+  label: permissions
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: select_single
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "rw"
+  select_collection:
+  - !ruby/object:String
+    "rw"
+  - !ruby/object:String   
+    "ro"
+  comment: " "
+ engine_path:
+  name: engine_path
+  label: engine_path
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: " "
+  comment: " "
+target_environment_variables:
+ VOLDIR:
+  variable_name: engine_path
+  environment_name: VOLDIR

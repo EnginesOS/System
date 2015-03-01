@@ -12,7 +12,7 @@ class DNSService < ManagedService
       site_hash[:container_type]=engine.ctype
       site_hash[:hostname]=engine.hostName
       site_hash[:ip]=engine.get_ip_str.to_s
-      site_hash[:service_provider] = "EnginesSystem"
+      site_hash[:publisher_namespace] = "EnginesSystem"
 
     else  #was passed a hash
       site_hash=engine

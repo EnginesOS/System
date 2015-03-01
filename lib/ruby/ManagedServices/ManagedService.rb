@@ -42,7 +42,7 @@ class ManagedService < ManagedContainer
     site_hash[:container_type]=engine.ctype
     site_hash[:fqdn]=engine.fqdn
     site_hash[:port]=engine.port.to_s
-    site_hash[:service_provider] = "EnginesSystem"
+    site_hash[:publisher_namespace] = "EnginesSystem"
     return site_hash
 
   end
