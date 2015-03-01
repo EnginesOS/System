@@ -1635,7 +1635,7 @@ class EnginesCore
     p :attaching_to_service
     p service_hash
     if service !=nil && service != false
-      return service.add_consumer(service_hash[:variables])
+      return service.add_consumer(service_hash)
     end
     @last_error = "Failed to attach Service: " + @last_error 
     return  false
