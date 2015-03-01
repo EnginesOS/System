@@ -10,5 +10,8 @@ class System
     return File.read(SysConfig.ReleaseFile)        
   end
   
+  def System.mysql_host
+    return "mysql.engines.internal"
+  end
   
 end
