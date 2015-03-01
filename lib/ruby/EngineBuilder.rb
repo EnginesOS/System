@@ -615,7 +615,7 @@ class EngineBuilder
           elsif arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-
+          p arc_src + "_" + arc_name + "_" + arc_loc + "_" + arc_extract + "_" + arc_dir +"|"
           if arc_extract == "git"
             @docker_file.puts("WORKDIR /tmp")
             count_layer
