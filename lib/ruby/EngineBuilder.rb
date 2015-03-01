@@ -318,7 +318,7 @@ class EngineBuilder
                     p env_variable_pair
                     env_name = env_variable_pair[:environment_name]
                     value_name = env_variable_pair[:variable_name]
-                    value=service_hash[value_name.to_sym] 
+                    value=service_hash[:variables][value_name.to_sym] 
                     p :looking_for_
                     p value_name
                     p :as_symbol
