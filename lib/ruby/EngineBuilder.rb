@@ -1442,6 +1442,10 @@ class EngineBuilder
        @builder.environments
      end
      
+     def mysql_host
+       return "mysql.engines.internal"
+     end
+     
      def blueprint
        return @builder.blueprint
      end
