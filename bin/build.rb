@@ -5,22 +5,23 @@ require "/opt/engines/lib/ruby/ManagedEngine.rb"
 require "/opt/engines/lib/ruby/EnginesOSapi.rb"
 require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
 
-  def build_engine params
-    engines_api = EnginesOSapi.new()
-    core_api = engines_api.core_api
-  
+def build_engine params
+  engines_api = EnginesOSapi.new()
+  core_api = engines_api.core_api
+
   @core_api = core_api
   builder = EngineBuilder.new(params, @core_api)
-    engine = builder.build_container
-   
-  end
+  engine = builder.build_container
+
+end
 
 params=Hash.new
- params[:engine_name] = ARGV[0]
- params[:domain_name] = ARGV[3]
- params[:host_name] = ARGV[2]
- params[:http_protocol] = ARGV[1]
- params[:repository_url] =ARGV[4]
+
+params[:engine_name] = ARGV[0]
+params[:domain_name] = ARGV[3]
+params[:host_name] = ARGV[2]
+params[:http_protocol] = ARGV[1]
+params[:repository_url] =ARGV[4]
 params[:software_environment_variables]=nil
+
 build_engine params
-   
