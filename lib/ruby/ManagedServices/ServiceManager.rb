@@ -343,6 +343,8 @@ def software_service_definition(params)
     software_service_def  = SoftwareServiceDefinition.from_yaml(yaml)
     return software_service_def.to_h
   else
+    p :no_file_named
+    p  service_filename 
     return nil
   end
 
