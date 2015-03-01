@@ -73,6 +73,7 @@ class EngineBuilder
       write_stack_env
       write_services
       write_file_service
+      
       #write_db_service
       #write_cron_jobs
       write_os_packages
@@ -200,13 +201,13 @@ class EngineBuilder
           @docker_file.puts("")
           @docker_file.puts("RUN  \\")
           dirname = File.dirname(path)
-          @docker_file.puts("mkdir -p $VOLDIR/" + dirname + ";\\")
+          @docker_file.puts("mkdir -p $CONTFSVolHome/$VOLDIR/" + dirname + ";\\")
           @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
           @docker_file.puts("  then \\")
           @docker_file.puts("    mkdir -p /home/" + path +" ;\\")
           @docker_file.puts("  fi;\\")
-          @docker_file.puts("mv /home/" + path + " $VOLDIR/" + dirname + "/;\\")
-          @docker_file.puts("ln -s $VOLDIR/" + path + " /home/" + path)
+          @docker_file.puts("mv /home/" + path + " $CONTFSVolHome/$VOLDIR/" + dirname + "/;\\")
+          @docker_file.puts("ln -s $CONTFSVolHome/$VOLDIR/" + path + " /home/" + path)
           n=n+1
           count_layer
         end
@@ -266,10 +267,10 @@ class EngineBuilder
           @docker_file.puts("    then \\")
           @docker_file.puts("      touch  /home/" + path +";\\")
           @docker_file.puts("    fi;\\")
-          @docker_file.puts("  mkdir -p $VOLDIR/" + dir +";\\")
+          @docker_file.puts("  mkdir -p $CONTFSVolHome/$VOLDIR/" + dir +";\\")
           @docker_file.puts("\\")
-          @docker_file.puts("   mv /home/" + path + " $VOLDIR" + "/" + dir + ";\\")
-          @docker_file.puts("    ln -s $VOLDIR/" + path + " /home/" + path)
+          @docker_file.puts("   mv /home/" + path + " $CONTFSVolHome/$VOLDIR" + "/" + dir + ";\\")
+          @docker_file.puts("    ln -s $CONTFSVolHome/$VOLDIR/" + path + " /home/" + path)
           count_layer
 
         end
@@ -2089,7 +2090,9 @@ end
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
-                    
+      if service_hash[:servicetype_name] == "filesystem"
+         add_file_service(service[:name], service[:engine_path])
+      end
         if service_hash[:servicetype_name] == "ftp"      
           #symbols from ftp service definition and values from blueprint and envionment
           # still need to sort

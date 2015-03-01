@@ -64,3 +64,7 @@ setup_params:
   mandatory: true
   value: " "
   comment: " "
+target_environment_variables:
+ VOLDIR:
+  variable_name: engine_path
+  environment_name: VOLDIR
