@@ -208,6 +208,7 @@ rescue Exception=>e
 #    p service_hash[:name]
       
       if service_hash[:name] == nil
+        p service_hash
         p :error_service_hash_has_nil_name
         return false
       end
@@ -224,7 +225,7 @@ rescue Exception=>e
    
      services_node = @service_tree["Services"]
    
-      
+
        provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node == nil
           provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:service_type]  )
