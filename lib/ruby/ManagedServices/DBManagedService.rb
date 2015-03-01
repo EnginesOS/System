@@ -65,7 +65,7 @@ class DBManagedService < ManagedService
       #FixME can over write owner in addconsumer need to overide and protect ownership
     site_hash[:parent_engine]  =  database.owner
     site_hash[:owner]= database.owner
-    site_hash[:service_provider] = "EnginesSystem"
+    site_hash[:publisher_namespace] = "EnginesSystem"
        p site_hash
      return site_hash      
     

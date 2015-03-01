@@ -1086,7 +1086,7 @@ class EnginesOSapi
     if retval != nil 
       return retval
     end 
-     return failed(params[:service_type] + ":" + params[:service_provider] ,@core_api.last_error,"get software_service_definition")
+     return failed(params[:service_type] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
   end
   
   #protected if protected static cant call
