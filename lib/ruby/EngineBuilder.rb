@@ -1916,7 +1916,7 @@ class EngineBuilder
        start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
        start_script_file.puts(@blueprint[:software][:custom_start_script])
        start_script_file.close
-       File.chmod(755,get_basedir() + SysConfig.StartScript)
+       File.chmod(0755,get_basedir() + SysConfig.StartScript)
      end
    end
    def create_install_script
@@ -1924,7 +1924,7 @@ class EngineBuilder
        install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
        install_script_file.puts(@blueprint[:software][:custom_install_script])
        install_script_file.close
-       File.chmod(755,get_basedir() + SysConfig.InstallScript)
+       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
        end     
    end
    def create_post_install_script
@@ -1932,7 +1932,7 @@ class EngineBuilder
        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
        post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
        post_install_script_file.close
-       File.chmod(755,get_basedir() + SysConfig.PostInstallScript)
+       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
        end    
    end
   def create_php_ini
