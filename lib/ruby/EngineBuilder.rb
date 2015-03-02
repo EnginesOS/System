@@ -1151,21 +1151,11 @@ class EngineBuilder
       begin
         log_build_output("Read App Packages ")
         @archives_details = Array.new
-        #        archives_detail =
-        #        @archives_details[:arc_src] = Array.new
-        #        @archives_details[:arc_name] = Array.new
-        #        @archives_details[:arc_extract] = Array.new
-        #        @archives_details[:arc_loc] = Array.new
-        #        @archives_details[:arc_dir] = Array.new
+
         log_build_output("Configuring install Environment")
         archives = @blueprint[:software][:installed_packages]
         n=0
-        #        srcs=String.new
-        #        names=String.new
-        #        locations=String.new
-        #        extracts=String.new
-        #        dirs=String.new
-
+  
         archives.each do |archive|
           archive_details = Hash.new
           arc_src=clean_path(archive[:source_url])
@@ -1173,13 +1163,7 @@ class EngineBuilder
           arc_loc =clean_path(archive[:destination])
           arc_extract=clean_path(archive[:extraction_command])
           arc_dir=clean_path(archive[:path_to_extracted])
-          #          if(n >0)
-          #            srcs = srcs + " "
-          #            names =names + " "
-          #            locations = locations + " "
-          #            extracts =extracts + " "
-          #            dirs =dirs + " "
-          #          end
+
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
@@ -1267,27 +1251,7 @@ class EngineBuilder
       end
     end
 
-#    def read_cron_jobs
-#      begin
-#        log_build_output("Read Crontabs")
-#        cjs =  @blueprint[:software][:cron_jobs]
-#        p :cron_jobs
-#        p cjs
-#        @cron_jobs = Array.new
-#        n=0
-#        cjs.each do |cj|
-#          p :read_cron_job
-#          p cj
-#          @cron_jobs.push(cj[:cronjob])
-#        end
-#
-#        return true
-#
-#      rescue Exception=>e
-#        log_exception(e)
-#        return false
-#      end
-#    end
+
 
     def read_sed_strings
       begin
@@ -1875,7 +1839,7 @@ class EngineBuilder
 #      @blueprint_reader.databases.each() do |db|
 #        create_database_service db
 #      end
-
+      
       create_persistant_services
       create_template_files
       create_scritps
@@ -1942,6 +1906,7 @@ class EngineBuilder
     end
   end
   def   create_scritps
+      Dir.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
       create_start_script
       create_install_script
       create_post_install_script
@@ -1985,6 +1950,10 @@ class EngineBuilder
   end
  
   def write_software_file(container_filename_path,content)
+    dir = File.basename(get_basedir() + container_filename_path)
+    if File.exists?(dir) == false
+      Dir.mkdir_p(dir)
+    end
    out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
    content = process_templated_string(content)
    out_file.puts(content)

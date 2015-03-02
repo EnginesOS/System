@@ -57,7 +57,7 @@ class SysConfig
   @@InstallScript="/home/engines/scripts/custom_install.sh"
   @@StartScript="/home/engines/scripts/custom_start.sh"
   @@PostInstallScript="/home/engines/scripts/post_install.sh"
- 
+  @@ScriptsDir="/home/engines/scripts/"
   
   #service Manager
   @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
@@ -65,6 +65,9 @@ class SysConfig
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
   
+  def SysConfig.ScriptsDir
+    return @@ScriptsDir
+  end
   def SysConfig.PreStartScript
      return @@PreStartScript
   end
