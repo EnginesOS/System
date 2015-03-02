@@ -443,7 +443,7 @@ class EngineBuilder
         log_build_output("Dockerfile:Worker Commands")
         scripts_path = @blueprint_reader.get_basedir + "/home/engines/scripts/"
 
-        if Dir.exists?(scripts_path) == false
+        if Dir.exist?(scripts_path) == false
           FileUtils.mkdir_p(scripts_path)
         end
 
@@ -1521,14 +1521,14 @@ class EngineBuilder
   def setup_framework_logging
     begin
       rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
-      if File.exists?(rmt_log_dir_var_fname)
+      if File.exist?(rmt_log_dir_var_fname)
         rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
         rmt_log_dir = rmt_log_dir_varfile.read
       else
         rmt_log_dir="/var/log"
       end
       local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
-      if Dir.exists?(local_log_dir) == false
+      if Dir.exist?(local_log_dir) == false
         Dir.mkdir( local_log_dir)
       end
 
@@ -1544,9 +1544,9 @@ class EngineBuilder
     begin
       dir=get_basedir
 
-      if Dir.exists?(dir)
+      if Dir.exist?(dir)
         backup=dir + ".backup"
-        if Dir.exists?(backup)
+        if Dir.exist?(backup)
           FileUtils.rm_rf backup
         end
         FileUtils.mv(dir,backup)
@@ -1951,7 +1951,7 @@ class EngineBuilder
  
   def write_software_file(container_filename_path,content)
     dir = File.basename(get_basedir() + container_filename_path)
-    if File.exists?(dir) == false
+    if Dir.exist?(dir) == false
       FileUtils.mkdir_p(dir)
     end
    out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
