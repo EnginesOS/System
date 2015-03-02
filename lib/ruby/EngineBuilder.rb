@@ -459,6 +459,8 @@ class EngineBuilder
             cmdf.puts(command)
           end
           cmdf.close
+          @docker_file.puts("chmod ug+x " + scripts_path + "pre-running.sh")
+          count_layer()
         end
       rescue Exception=>e
         log_exception(e)
