@@ -88,7 +88,7 @@ class EngineBuilder
       write_app_archives
       write_container_user
       chown_home_app
-      write_worker_commands
+      write_worker_commands            
       write_sed_strings
       write_persistant_dirs
       write_persistant_files
@@ -129,6 +129,7 @@ class EngineBuilder
       count_layer()
    
       write_clear_env_variables
+      
 
       @docker_file.close
 
@@ -459,8 +460,7 @@ class EngineBuilder
             cmdf.puts(command)
           end
           cmdf.close
-          @docker_file.puts("chmod ug+x " + scripts_path + "pre-running.sh")
-          count_layer()
+          File.chmod(0755,scripts_path + "pre-running.sh")
         end
       rescue Exception=>e
         log_exception(e)
@@ -1877,6 +1877,8 @@ class EngineBuilder
 #      end
 
       create_persistant_services
+      create_template_files
+      create_scritps
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
@@ -1924,6 +1926,70 @@ class EngineBuilder
     end
   end
 
+  def create_template_files
+    if @blueprint[:software][:template_files] != nil
+      @blueprint[:software][:template_files].each do |template_hash|
+        write_software_file( "/home/" + template_hash[:path],template_hash[:content])
+    end
+  end
+  end
+  
+  def create_httaccess
+    if @blueprint[:software][:apache_htaccess_files]  != nil
+      @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
+        write_software_file("/home/engines/htaccess_files" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
+      end
+    end
+  end
+  def   create_scritps
+      create_start_script
+      create_install_script
+      create_post_install_script
+  end
+   def create_start_script
+     if @blueprint[:software][:custom_start_script] != nil
+       start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
+       start_script_file.puts(@blueprint[:software][:custom_start_script])
+       start_script_file.close
+       File.chmod(755,get_basedir() + SysConfig.StartScript)
+     end
+   end
+   def create_install_script
+     if @blueprint[:software][:custom_install_script] != nil
+       install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
+       install_script_file.puts(@blueprint[:software][:custom_install_script])
+       install_script_file.close
+       File.chmod(755,get_basedir() + SysConfig.InstallScript)
+       end     
+   end
+   def create_post_install_script
+     if @blueprint[:software][:custom_post_install_script] != nil
+       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
+       post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
+       post_install_script_file.close
+       File.chmod(755,get_basedir() + SysConfig.PostInstallScript)
+       end    
+   end
+  def create_php_ini
+    if @blueprint[:software][:custom_php_inis]  != nil
+      php_ini_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
+     
+          
+      @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+        php_ini_file.puts(php_ini_hash[:content])
+      end
+      php_ini_file.close
+       
+    end
+    
+  end
+ 
+  def write_software_file(container_filename_path,content)
+   out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
+   content = process_templated_string(content)
+   out_file.puts(content)
+ end
+ 
   def  compile_base_docker_files
     
     file_list = Dir.glob(@blueprint_reader.get_basedir + "/Dockerfile*.tmpl")
@@ -1933,10 +1999,20 @@ class EngineBuilder
               
   end
   
+  def process_templated_string(template)
+       template = apply_system_variables(template)
+       template = apply_build_variables(template)
+       template = apply_blueprint_variables(template)
+       template = apply_build_env(template)
+    return template
+  end
   def process_dockerfile_tmpl(filename)
     p :dockerfile_template_processing
     p filename
     template = File.read(filename)
+    
+    template = process_templated_string(template)
+    
     template = apply_system_variables(template)
     template = apply_build_variables(template)
     template = apply_blueprint_variables(template)
