@@ -1906,7 +1906,7 @@ class EngineBuilder
     end
   end
   def   create_scritps
-      Dir.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
+      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
       create_start_script
       create_install_script
       create_post_install_script
