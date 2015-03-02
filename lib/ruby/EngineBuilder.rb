@@ -1950,7 +1950,7 @@ class EngineBuilder
   end
  
   def write_software_file(container_filename_path,content)
-    dir = File.basename(get_basedir() + container_filename_path)
+    dir = File.dirname(get_basedir() + container_filename_path)
     p :dir_for_write_software_file
     p dir
     
