@@ -1952,7 +1952,7 @@ class EngineBuilder
   def write_software_file(container_filename_path,content)
     dir = File.basename(get_basedir() + container_filename_path)
     if File.exists?(dir) == false
-      Dir.mkdir_p(dir)
+      FileUtils.mkdir_p(dir)
     end
    out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
    content = process_templated_string(content)
@@ -2250,7 +2250,7 @@ end
   def setup_rebuild
     begin
       log_build_output("Setting up rebuild")
-      Dir.mkdir(get_basedir)
+      FileUtils.mkdir_p(get_basedir)
       blueprint = @core_api.load_blueprint(@engine)
       statefile= get_basedir + "/blueprint.json"
       f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
