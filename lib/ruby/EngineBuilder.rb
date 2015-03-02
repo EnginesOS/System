@@ -2003,29 +2003,23 @@ class EngineBuilder
        template = apply_system_variables(template)
        template = apply_build_variables(template)
        template = apply_blueprint_variables(template)
-       template = apply_build_env(template)
+       template = apply_engines_variables(template)
     return template
   end
+  
   def process_dockerfile_tmpl(filename)
     p :dockerfile_template_processing
     p filename
     template = File.read(filename)
     
     template = process_templated_string(template)
-    
-    template = apply_system_variables(template)
-    template = apply_build_variables(template)
-    template = apply_blueprint_variables(template)
-    template = apply_build_env(template)
-  
     output_filename = filename.sub(/.tmpl/,"")
     
     out_file = File.new(output_filename,"w")
     out_file.write(template)
-    out_file.close()
-            
+    out_file.close()            
   end
-  
+
   
   def apply_system_variables(template)
     template.gsub!(/_System\([a-z].*\)/) { | match |
@@ -2102,6 +2096,7 @@ rescue Exception=>e
     SystemUtils.log_exception(e) 
   return ""
 end
+
   def resolve_build_variable(match)
     name = match.sub!(/_Builder\(/,"")
     name.sub!(/[\)]/,"")
@@ -2118,9 +2113,28 @@ end
        return ""
   end
   
-  def apply_build_env(template)
-    return template
+  def resolve_engines_variable
+    name = match.sub!(/_Engines\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name.to_sym
+    
+    return @blueprint_reader.environments[name.to_sym]
+    
+    rescue Exception=>e
+      p @blueprint_reader.environments
+         SystemUtils.log_exception(e) 
+        return ""
   end
+  
+  def apply_engines_variables(template)
+
+    template.gsub!(/_Engines\([a-z].*\)/) { | match |
+          resolve_engines_variable(match)
+        } 
+        return template
+  end
+
   
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
