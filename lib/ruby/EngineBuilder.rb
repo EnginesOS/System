@@ -1937,7 +1937,7 @@ class EngineBuilder
    end
   def create_php_ini
     if @blueprint[:software][:custom_php_inis]  != nil
-      php_ini_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
+      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniDir,"w", :crlf_newline => false)
      
           
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
