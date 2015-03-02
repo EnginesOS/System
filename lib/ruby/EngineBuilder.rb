@@ -88,7 +88,7 @@ class EngineBuilder
       write_app_archives
       write_container_user
       chown_home_app
-      write_worker_commands
+      write_worker_commands            
       write_sed_strings
       write_persistant_dirs
       write_persistant_files
@@ -129,6 +129,7 @@ class EngineBuilder
       count_layer()
    
       write_clear_env_variables
+      
 
       @docker_file.close
 
@@ -442,7 +443,7 @@ class EngineBuilder
         log_build_output("Dockerfile:Worker Commands")
         scripts_path = @blueprint_reader.get_basedir + "/home/engines/scripts/"
 
-        if Dir.exists?(scripts_path) == false
+        if Dir.exist?(scripts_path) == false
           FileUtils.mkdir_p(scripts_path)
         end
 
@@ -459,6 +460,7 @@ class EngineBuilder
             cmdf.puts(command)
           end
           cmdf.close
+          File.chmod(0755,scripts_path + "pre-running.sh")
         end
       rescue Exception=>e
         log_exception(e)
@@ -1149,21 +1151,11 @@ class EngineBuilder
       begin
         log_build_output("Read App Packages ")
         @archives_details = Array.new
-        #        archives_detail =
-        #        @archives_details[:arc_src] = Array.new
-        #        @archives_details[:arc_name] = Array.new
-        #        @archives_details[:arc_extract] = Array.new
-        #        @archives_details[:arc_loc] = Array.new
-        #        @archives_details[:arc_dir] = Array.new
+
         log_build_output("Configuring install Environment")
         archives = @blueprint[:software][:installed_packages]
         n=0
-        #        srcs=String.new
-        #        names=String.new
-        #        locations=String.new
-        #        extracts=String.new
-        #        dirs=String.new
-
+  
         archives.each do |archive|
           archive_details = Hash.new
           arc_src=clean_path(archive[:source_url])
@@ -1171,13 +1163,7 @@ class EngineBuilder
           arc_loc =clean_path(archive[:destination])
           arc_extract=clean_path(archive[:extraction_command])
           arc_dir=clean_path(archive[:path_to_extracted])
-          #          if(n >0)
-          #            srcs = srcs + " "
-          #            names =names + " "
-          #            locations = locations + " "
-          #            extracts =extracts + " "
-          #            dirs =dirs + " "
-          #          end
+
           if arc_loc == "./"
             arc_loc=""
           elsif arc_loc.end_with?("/")
@@ -1265,27 +1251,7 @@ class EngineBuilder
       end
     end
 
-#    def read_cron_jobs
-#      begin
-#        log_build_output("Read Crontabs")
-#        cjs =  @blueprint[:software][:cron_jobs]
-#        p :cron_jobs
-#        p cjs
-#        @cron_jobs = Array.new
-#        n=0
-#        cjs.each do |cj|
-#          p :read_cron_job
-#          p cj
-#          @cron_jobs.push(cj[:cronjob])
-#        end
-#
-#        return true
-#
-#      rescue Exception=>e
-#        log_exception(e)
-#        return false
-#      end
-#    end
+
 
     def read_sed_strings
       begin
@@ -1555,14 +1521,14 @@ class EngineBuilder
   def setup_framework_logging
     begin
       rmt_log_dir_var_fname=get_basedir + "/home/LOG_DIR"
-      if File.exists?(rmt_log_dir_var_fname)
+      if File.exist?(rmt_log_dir_var_fname)
         rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
         rmt_log_dir = rmt_log_dir_varfile.read
       else
         rmt_log_dir="/var/log"
       end
       local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
-      if Dir.exists?(local_log_dir) == false
+      if Dir.exist?(local_log_dir) == false
         Dir.mkdir( local_log_dir)
       end
 
@@ -1578,9 +1544,9 @@ class EngineBuilder
     begin
       dir=get_basedir
 
-      if Dir.exists?(dir)
+      if Dir.exist?(dir)
         backup=dir + ".backup"
-        if Dir.exists?(backup)
+        if Dir.exist?(backup)
           FileUtils.rm_rf backup
         end
         FileUtils.mv(dir,backup)
@@ -1873,8 +1839,10 @@ class EngineBuilder
 #      @blueprint_reader.databases.each() do |db|
 #        create_database_service db
 #      end
-
+      
       create_persistant_services
+      create_template_files
+      create_scritps
 
       if  build_init == false
         log_build_errors("Error Build Image failed")
@@ -1922,6 +1890,78 @@ class EngineBuilder
     end
   end
 
+  def create_template_files
+    if @blueprint[:software][:template_files] != nil
+      @blueprint[:software][:template_files].each do |template_hash|
+        write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
+    end
+  end
+  end
+  
+  def create_httaccess
+    if @blueprint[:software][:apache_htaccess_files]  != nil
+      @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
+        write_software_file("/home/engines/htaccess_files" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
+      end
+    end
+  end
+  def   create_scritps
+      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
+      create_start_script
+      create_install_script
+      create_post_install_script
+  end
+   def create_start_script
+     if @blueprint[:software][:custom_start_script] != nil
+       start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
+       start_script_file.puts(@blueprint[:software][:custom_start_script])
+       start_script_file.close
+       File.chmod(0755,get_basedir() + SysConfig.StartScript)
+     end
+   end
+   def create_install_script
+     if @blueprint[:software][:custom_install_script] != nil
+       install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
+       install_script_file.puts(@blueprint[:software][:custom_install_script])
+       install_script_file.close
+       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
+       end     
+   end
+   def create_post_install_script
+     if @blueprint[:software][:custom_post_install_script] != nil
+       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
+       post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
+       post_install_script_file.close
+       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
+       end    
+   end
+  def create_php_ini
+    if @blueprint[:software][:custom_php_inis]  != nil
+      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniDir,"w", :crlf_newline => false)
+     
+          
+      @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+        php_ini_file.puts(php_ini_hash[:content])
+      end
+      php_ini_file.close
+       
+    end
+    
+  end
+ 
+  def write_software_file(container_filename_path,content)
+    dir = File.dirname(get_basedir() + container_filename_path)
+    p :dir_for_write_software_file
+    p dir
+    
+    if Dir.exist?(dir) == false
+      FileUtils.mkdir_p(dir)
+    end
+   out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
+   content = process_templated_string(content)
+   out_file.puts(content)
+ end
+ 
   def  compile_base_docker_files
     
     file_list = Dir.glob(@blueprint_reader.get_basedir + "/Dockerfile*.tmpl")
@@ -1931,23 +1971,27 @@ class EngineBuilder
               
   end
   
+  def process_templated_string(template)
+       template = apply_system_variables(template)
+       template = apply_build_variables(template)
+       template = apply_blueprint_variables(template)
+       template = apply_engines_variables(template)
+    return template
+  end
+  
   def process_dockerfile_tmpl(filename)
     p :dockerfile_template_processing
     p filename
     template = File.read(filename)
-    template = apply_system_variables(template)
-    template = apply_build_variables(template)
-    template = apply_blueprint_variables(template)
-    template = apply_build_env(template)
-  
+    
+    template = process_templated_string(template)
     output_filename = filename.sub(/.tmpl/,"")
     
     out_file = File.new(output_filename,"w")
     out_file.write(template)
-    out_file.close()
-            
+    out_file.close()            
   end
-  
+
   
   def apply_system_variables(template)
     template.gsub!(/_System\([a-z].*\)/) { | match |
@@ -2024,6 +2068,7 @@ rescue Exception=>e
     SystemUtils.log_exception(e) 
   return ""
 end
+
   def resolve_build_variable(match)
     name = match.sub!(/_Builder\(/,"")
     name.sub!(/[\)]/,"")
@@ -2040,9 +2085,28 @@ end
        return ""
   end
   
-  def apply_build_env(template)
-    return template
+  def resolve_engines_variable
+    name = match.sub!(/_Engines\(/,"")
+    name.sub!(/[\)]/,"")
+    p :getting_system_value_for
+    p name.to_sym
+    
+    return @blueprint_reader.environments[name.to_sym]
+    
+    rescue Exception=>e
+      p @blueprint_reader.environments
+         SystemUtils.log_exception(e) 
+        return ""
   end
+  
+  def apply_engines_variables(template)
+
+    template.gsub!(/_Engines\([a-z].*\)/) { | match |
+          resolve_engines_variable(match)
+        } 
+        return template
+  end
+
   
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
@@ -2189,7 +2253,7 @@ end
   def setup_rebuild
     begin
       log_build_output("Setting up rebuild")
-      Dir.mkdir(get_basedir)
+      FileUtils.mkdir_p(get_basedir)
       blueprint = @core_api.load_blueprint(@engine)
       statefile= get_basedir + "/blueprint.json"
       f = File.new(statefile,File::CREAT|File::TRUNC|File::RDWR, 0644)
