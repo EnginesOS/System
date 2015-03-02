@@ -1893,7 +1893,7 @@ class EngineBuilder
   def create_template_files
     if @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
-        write_software_file( "/home/" + template_hash[:path],template_hash[:content])
+        write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
     end
   end
   end
