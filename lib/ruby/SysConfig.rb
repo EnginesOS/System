@@ -58,6 +58,9 @@ class SysConfig
   @@StartScript="/home/engines/scripts/custom_start.sh"
   @@PostInstallScript="/home/engines/scripts/post_install.sh"
   @@ScriptsDir="/home/engines/scripts/"
+  @@CustomPHPiniFile="/home/engines/configs/php/71-custom.ini"
+  @@CustomApacheConfFile=""
+  
   
   #service Manager
   @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
@@ -65,6 +68,13 @@ class SysConfig
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
   
+  
+  def SysConfig.CustomApacheConfFile
+    @@CustomApacheConfFile
+  end 
+  def SysConfig.CustomPHPiniFile
+    @@CustomPHPiniFile
+  end
   def SysConfig.ScriptsDir
     return @@ScriptsDir
   end
