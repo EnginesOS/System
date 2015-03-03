@@ -65,7 +65,7 @@ Installed engines can be web applications or server applications such as a git d
 <p>
 <strong>Management Applications </strong>
 Rails based web application that provides engine and service control and monitoring.
-Command line utilities than mirror most of the functionality of the GUI, as well as providing  an additional command setr suited for use in scripts.
+Command line utilities than mirror most of the functionality of the GUI, as well as providing  an additional command set suited for use in scripts.
 The management suite and backend are independent of all other engines and their services. The end result is a robust managed system  that can bootstrap all other services and engines. 
 <p>
 <strong>Engine builder</strong>
