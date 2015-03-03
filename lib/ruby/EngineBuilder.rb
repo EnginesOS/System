@@ -1841,7 +1841,10 @@ class EngineBuilder
 #      end
       
       create_persistant_services
-      create_template_files
+      create_template_file
+      create_php_inis
+      create_apache_config      
+      
       create_scritps
 
       if  build_init == false
@@ -1891,7 +1894,7 @@ class EngineBuilder
   end
 
   def create_template_files
-    if @blueprint[:software][:template_files] != nil
+    if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
         write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
     end
@@ -1899,28 +1902,32 @@ class EngineBuilder
   end
   
   def create_httaccess
-    if @blueprint[:software][:apache_htaccess_files]  != nil
+    if @blueprint[:software].has_key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files]  != nil
       @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
         write_software_file("/home/engines/htaccess_files" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
       end
     end
   end
+  
   def   create_scritps
-      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
+    
+      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)      
       create_start_script
       create_install_script
       create_post_install_script
   end
+  
    def create_start_script
-     if @blueprint[:software][:custom_start_script] != nil
+     if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
        start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
        start_script_file.puts(@blueprint[:software][:custom_start_script])
        start_script_file.close
        File.chmod(0755,get_basedir() + SysConfig.StartScript)
      end
    end
+   
    def create_install_script
-     if @blueprint[:software][:custom_install_script] != nil
+     if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
        install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
        install_script_file.puts(@blueprint[:software][:custom_install_script])
        install_script_file.close
@@ -1928,7 +1935,7 @@ class EngineBuilder
        end     
    end
    def create_post_install_script
-     if @blueprint[:software][:custom_post_install_script] != nil
+     if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
        post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
        post_install_script_file.close
@@ -1936,17 +1943,24 @@ class EngineBuilder
        end    
    end
   def create_php_ini
-    if @blueprint[:software][:custom_php_inis]  != nil
-      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniDir,"w", :crlf_newline => false)
-     
-          
+    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
+    if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
+      
+      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"w", :crlf_newline => false)              
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
         php_ini_file.puts(php_ini_hash[:content])
       end
       php_ini_file.close
        
     end
+  end
     
+    def create_apache_conf
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFiles))
+      if @blueprint[:software].has_key?(:custom_apache_conf) && @blueprint[:software][:custom_apache_conf]  != nil            
+        write_software_file(SysConfig.CustomApacheConfFile,@blueprint[:software][:custom_apache_conf])               
+         
+      end  
   end
  
   def write_software_file(container_filename_path,content)
