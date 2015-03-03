@@ -34,12 +34,12 @@ See https://github.com/EnginesOS-Blueprints for available blueprints
 Engines is a managed system of containerised applications and services utilizing Docker, the system is managed through a fully featured Rails based web front end. Application images are built locally from public and or private blueprints, this is done to ensure security and compatibility with the local environment and local system services. The aim of Engines is to provide non technical end users the ability to launch a machine (VM or BM) and install a collection of business and/or personal servers on it with the same ease that a tablet user adds applications, but with a finer grain of control on data access and sharing.  
 <p>
 The use of blueprints and the associated image build process provide the capacity to describe the installation and configuration of a wide range of software, while maintaining both system and data security. This coupled with the ease at which an end user can install software from galleries, we envisage that the engines system will suit:
-<ul>
+<li>
 Personal users who wish to maintain an online presence with complete data sovereignty deploying packages like Mahara (eportfolio), MediaGoblin, Ownstagram, publify ....
-</ul>
-<ul>
+</li>
+<li>
 Small Businesses  that wish to use a collection of packages, so they can have ERP Software, blogging software, and additional packages on a single bill (or physical host) with complete data sovereignty. There are several packages such as Owncloud and Odoo that provide a rich feature set for work groups. 
-</ul>
+</li>
 <p>
 Currently the only options available to end users to make use of such packages are limited to SAS offerings or hiring a Linux consultant to perform installations of an unknown quality and security. 
 <p>
