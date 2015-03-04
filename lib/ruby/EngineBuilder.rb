@@ -1824,8 +1824,11 @@ class EngineBuilder
       else
         read_web_port
       end
+      
       read_web_user
-      create_persistant_services
+      
+      create_persistant_services #need to de-register these if build fails But not deregister those that existed prior
+      
       create_template_files
       create_php_ini
       create_apache_config                 
@@ -2217,7 +2220,11 @@ end
       
      
 service_hash[:service_handle] = service_hash[:variables][:name]
-     if  @core_api.find_service(service_hash) == false
+     if  @core_api.find_service(service_hash) == false              
+       @first_build = true
+       service_hash[:fresh]=true
+     else
+       service_hash[:fresh]=false
        @first_build = false
      end
       
