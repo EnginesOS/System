@@ -28,6 +28,39 @@ class ServiceManager
     
   end
   
+  def managed_service_tree 
+    return @service_tree["ManagedService"]["Services"]
+  end
+  
+  def find_service(service_hash)
+    provider = service_hash[:provider]   
+    path = service_hash[:service_path]
+    name = service_hash[:service_handle]
+              
+      if managed_service_tree.has_key?(provider) == false
+        return false
+      end
+      
+      provider_tree = managed_service_tree[provider]
+      
+      if path == nil
+        return provider_tree
+      end
+      
+      if provider_tree == nil || provider_tree.has_key?(path) == false
+        return false
+      end
+      
+      service_path_tree = provider_tree[path]
+      
+      if service_path_tree == nil ||  service_path_tree.has_key?(name) == false
+        return false
+      end
+      
+     return  service_path_tree[name]
+      
+  end
+    
   def attached_services(object)
 
   end
