@@ -1847,7 +1847,7 @@ class EngineBuilder
 #      end
       
       create_persistant_services
-      create_template_file
+      create_template_files
       create_php_inis
       create_apache_config      
       
