@@ -1848,7 +1848,7 @@ class EngineBuilder
       
       create_persistant_services
       create_template_files
-      create_php_inis
+      create_php_ini
       create_apache_config      
       
       create_scritps
@@ -1948,7 +1948,7 @@ class EngineBuilder
        File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
        end    
    end
-  def create_php_inis
+  def create_php_ini
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
     if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
       
