@@ -1643,8 +1643,16 @@ class EnginesCore
                   log_exception e
   end
 
-  def detach_service(params)
-    return  false
+  def dettach_service(params)
+    service = load_software_service(service_hash)
+    if service !=nil && service != false
+          return service.rm_consumer(service_hash,destroy_service)
+        end
+        @last_error = "Failed to dettach Service: " + @last_error 
+        return  false
+        rescue Exception=>e
+                      log_exception e
+ 
   end
 
   def loadServiceManager()
