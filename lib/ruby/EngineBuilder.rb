@@ -15,7 +15,8 @@ class EngineBuilder
   @domain_name=nil
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
-
+x
+  
   attr_reader :last_error,
               :repoName,
               :hostname,
@@ -27,7 +28,8 @@ class EngineBuilder
               :runtime,
               :webPort,
               :http_protocol,
-              :blueprint
+              :blueprint,
+              :first_build
               
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -365,7 +367,12 @@ class EngineBuilder
     def write_rake_list
       begin
         @docker_file.puts("#Rake Actions")
-        @blueprint_reader.rake_actions.each do |rake_cmd|
+        @blueprint_reader.rake_actions.each do |rake_action|
+          rake_cmd = rake_action[:cmd]
+           if @first_build == false &&  rake_action[:run_once] == true
+             continue
+          end
+          
           if rake_cmd !=nil
             @docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_cmd )
             count_layer
@@ -949,11 +956,7 @@ class EngineBuilder
         end
 
         rake_cmds.each do |rake_cmd|
-          rake_action = rake_cmd[:action]
-          p rake_action
-          if rake_action !=nil
-            @rake_actions.push(rake_action)
-          end
+            @rake_actions.push(rake_cmd)         
         end
 
       rescue Exception=>e
@@ -1433,6 +1436,9 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
+    @first_build = true
+    #FIXme will be false but for now
+    @overwrite_existing_services = true 
     
     @builder_public = BuilderPublic.new(self)
     @system_access = SystemAccess.new()
@@ -2182,35 +2188,44 @@ end
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
+        
+        
       if service_hash[:servicetype_name] == "filesystem"
          add_file_service(service[:name], service[:engine_path])
       end
-        if service_hash[:servicetype_name] == "ftp"      
-          #symbols from ftp service definition and values from blueprint and envionment
-          # still need to sort
-        #will follow the blueprint design studio's team leader on how to implement        
-          service_hash[:volume] = primary_vol.name
-          service_hash[:folder] =  service_hash[:dest]
-          service_hash[:username] = @set_environments[:ftpuser]
-          service_hash[:password] = @set_environments[:password]
-          service_hash[:rw_access] =true
-          service_hash[:type_path]=service_hash[:type_path]
-          service_hash[:publisher_namespace]="EnginesSystem"  
-         
-          service_hash[:name]=service_hash[:name]             
-              
-          p :service
-          p service_hash
       
-
-      end
+#        if service_hash[:servicetype_name] == "ftp"      
+#          #symbols from ftp service definition and values from blueprint and envionment
+#          # still need to sort
+#        #will follow the blueprint design studio's team leader on how to implement        
+#          service_hash[:volume] = primary_vol.name
+#          service_hash[:folder] =  service_hash[:dest]
+#          service_hash[:username] = @set_environments[:ftpuser]
+#          service_hash[:password] = @set_environments[:password]
+#          service_hash[:rw_access] =true
+#          service_hash[:type_path]=service_hash[:type_path]
+#          service_hash[:publisher_namespace]="EnginesSystem"  
+#         
+#          service_hash[:name]=service_hash[:name]             
+#              
+#          p :service
+#          p service_hash
+#      
+#
+#      end
       p :attach_service
       p service_hash
       
-     
+      provider = service_hash[:provider]   
+      path = service_hash[:service_path]
+      name = service_hash[:service_handle]
+        
+     if  @core_api.find_service(service_hash) == false
+       @first_build = false
+     end
+      
       @core_api.attach_service(service_hash)
-      
-      
+            
     end
   end
   
