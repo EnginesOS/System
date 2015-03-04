@@ -49,7 +49,7 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: :parent_engine
+  value: "$_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  db_username:
@@ -61,7 +61,7 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " " 
+  value: "$_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  db_password:
@@ -72,7 +72,7 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " "
+  value: "$_Builder(engine_name)"
   comment: " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
