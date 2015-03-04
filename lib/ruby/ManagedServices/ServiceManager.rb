@@ -64,7 +64,13 @@ class ServiceManager
        return false
       end
        
-      return service_path_tree[name] 
+      if service_path_tree[name] == nil
+        return  false
+      end
+      
+      p :found_service
+      p service_path_tree[name]
+      return service_path_tree[name]
       
   end
     
