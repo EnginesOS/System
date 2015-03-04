@@ -55,7 +55,7 @@ class ServiceManager
         return false
       end
             
-      if path == nil
+      if name == nil
         return  service_path_tree
       end
       

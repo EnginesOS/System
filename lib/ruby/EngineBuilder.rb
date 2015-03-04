@@ -2144,7 +2144,7 @@ end
         if service_def[:persistant] == true
           next                 
         end
-     
+      service_hash[:service_handle] = service_hash[:variables][:name]
          p :adding_service
          p service_hash   
       @core_api.attach_service(service_hash)
@@ -2217,7 +2217,7 @@ end
       p service_hash
       
      
-
+service_hash[:service_handle] = service_hash[:variables][:name]
      if  @core_api.find_service(service_hash) == false
        @first_build = false
      end
