@@ -43,25 +43,30 @@ class ServiceManager
       
       provider_tree = managed_service_tree[provider]
       
-      if path == nil
-        return provider_tree
-      end
-      
-      if provider_tree == nil || provider_tree.has_key?(path) == false
+      if provider_tree == nil
         return false
       end
       
+      if path == nil
+        return provider_tree
+      end
+            
       service_path_tree = provider_tree[path]
-      
+
+      if service_path_tree == nil
+        return false
+      end
+            
       if path == nil
         return  service_path_tree
       end
       
-      if service_path_tree == nil ||  service_path_tree.has_key?(name) == false
-        return false
-      end
       
-     return  service_path_tree[name]
+     if  service_path_tree[name] == nil
+       return false
+      end
+       
+      return service_path_tree[name] 
       
   end
     
