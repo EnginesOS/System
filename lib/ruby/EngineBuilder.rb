@@ -108,10 +108,7 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("")
 
-      #Do this after configuration scripts run
 
-      #      @docker_file.puts("USER $ContUser")
-      #      count_layer()
       write_run_install_script
 
       write_data_permissions
@@ -1599,74 +1596,37 @@ class EngineBuilder
     end
   end
 
-#  def create_database_service db
+
+
+#  def create_cron_service
 #    begin
-#      log_build_output("Create DB Service ")
-#      db_server_name=db.flavor + "_server"
-#      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
-#      if db_service.is_a?(DBManagedService)
 #
-#        db_service.add_consumer(db)
-#        return true
-#      else
-#        p db_service
-#        p db_service.result_mesg
-#        return false
+#      log_build_output("Cron file")
+#
+#      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
+#
+#        @blueprint_reader.cron_jobs.each do |cj|
+#          cj_hash = Hash.new
+#          cj_hash[:name] =@container_name
+#          cj_hash[:container_name] = @container_name
+#          cj_hash[:cron_job]=cj
+#          cj_hash[:parent_engine] = @containerName
+#          #               cron_file.puts(cj)
+#          #               p :write_cron_job
+#          #               p cj
+#          @cron_job_list.push(cj_hash)
+#          p @cron_job_list
+#        end
+#        #             cron_file.close
 #      end
+#
+#      return true
+#
 #    rescue Exception=>e
 #      log_exception(e)
 #      return false
 #    end
 #  end
-#
-#  def create_file_service vol
-#    begin
-#      log_build_output("Create Vol Service ")
-#      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
-#      if vol_service.is_a?(EnginesOSapiResult) == false
-#        vol_service.add_consumer(vol)
-#        return true
-#      else
-#        p vol_service
-#        p vol_service.result_mesg
-#        return false
-#      end
-#    rescue Exception=>e
-#      log_exception(e)
-#      return false
-#    end
-#
-#  end
-
-  def create_cron_service
-    begin
-
-      log_build_output("Cron file")
-
-      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-
-        @blueprint_reader.cron_jobs.each do |cj|
-          cj_hash = Hash.new
-          cj_hash[:name] =@container_name
-          cj_hash[:container_name] = @container_name
-          cj_hash[:cron_job]=cj
-          cj_hash[:parent_engine] = @containerName
-          #               cron_file.puts(cj)
-          #               p :write_cron_job
-          #               p cj
-          @cron_job_list.push(cj_hash)
-          p @cron_job_list
-        end
-        #             cron_file.close
-      end
-
-      return true
-
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
 
   def setup_default_files
     log_build_output("Setup Default Files")
@@ -1858,11 +1818,13 @@ class EngineBuilder
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
+        post_failed_build_clean_up
         return false
       else
 
         if @core_api.image_exists?(@container_name) == false
           @last_error = " " + tail_of_build_log
+          post_failed_build_clean_up
           return false
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end
@@ -1896,11 +1858,24 @@ class EngineBuilder
     rescue Exception=>e
 
       log_exception(e)
+    post_failed_build_clean_up
       close_all
       return false
     end
   end
 
+  def post_failed_build_clean_up
+    #remove containers
+    #remove persistant services (if created/new)
+    #deregister non persistant services (if created)
+    @blueprint_reader.services.each() do |service_hash|
+      if service_hash[:fresh] == true
+        service_hash[:delete_persistant]=true
+        @core_api.dettach_service(service_hash) #true is delete persistant
+      end
+    end
+  end
+  
   def create_template_files
     if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
@@ -2164,20 +2139,19 @@ end
     @blueprint_reader.services.each() do |service_hash|
       
       service_hash[:parent_engine]=@container_name
-      p :service_def_for
-             p service_hash[:type_path]
-             p service_hash[:publisher_namespace]
+#      p :service_def_for
+#      p service_hash[:type_path]
+#      p service_hash[:publisher_namespace]
    
       service_def = get_service_def(service_hash)
-         p  service_def
+#      p  service_def
        
        if service_def == nil
          p :failed_to_load_service_definition
          p :servicetype_name
-         
          p service_hash[:service_type]
-           p :service_provider
-        p service_hash[:publisher_namespace]
+         p :service_provider
+         p service_hash[:publisher_namespace]
          return false
        end
       if service_def[:persistant] == false
@@ -2190,40 +2164,17 @@ end
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
-        
-        
+     
       if service_hash[:servicetype_name] == "filesystem"
          add_file_service(service[:name], service[:engine_path])
       end
-      
-#        if service_hash[:servicetype_name] == "ftp"      
-#          #symbols from ftp service definition and values from blueprint and envionment
-#          # still need to sort
-#        #will follow the blueprint design studio's team leader on how to implement        
-#          service_hash[:volume] = primary_vol.name
-#          service_hash[:folder] =  service_hash[:dest]
-#          service_hash[:username] = @set_environments[:ftpuser]
-#          service_hash[:password] = @set_environments[:password]
-#          service_hash[:rw_access] =true
-#          service_hash[:type_path]=service_hash[:type_path]
-#          service_hash[:publisher_namespace]="EnginesSystem"  
-#         
-#          service_hash[:name]=service_hash[:name]             
-#              
-#          p :service
-#          p service_hash
-#      
-#
-#      end
- 
-      
-     
-service_hash[:service_handle] = service_hash[:variables][:name]
+
+      service_hash[:service_handle] = service_hash[:variables][:name]
+        
      if  @core_api.find_service(service_hash) == false              
        @first_build = true
        service_hash[:fresh]=true
-     else
-       
+     else       
        service_hash[:fresh]=false
        @first_build = false
      end
