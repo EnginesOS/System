@@ -29,7 +29,7 @@ class ServiceManager
   end
   
   def managed_service_tree 
-    return @service_tree["Services"]["Managed Services"]
+    return @service_tree["Services"]
   end
   
   def find_service(service_hash)
