@@ -368,9 +368,9 @@ class EngineBuilder
       begin
         @docker_file.puts("#Rake Actions")
         @blueprint_reader.rake_actions.each do |rake_action|
-          rake_cmd = rake_action[:cmd]
-           if @first_build == false &&  rake_action[:run_once] == true
-             continue
+          rake_cmd = rake_action[:action]
+           if @first_build == false &&  rake_action[:always_run] == false
+             next
           end
           
           if rake_cmd !=nil
