@@ -1655,6 +1655,10 @@ class EnginesCore
     return @service_manager
   end
 
+  def find_service(service_hash)
+    return @service_manager.find_service(service_hash)
+  end
+  
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
