@@ -1656,7 +1656,8 @@ class EnginesCore
   end
 
   def find_service(service_hash)
-    return @service_manager.find_service(service_hash)
+    sm = loadServiceManager()
+    return sm.find_service(service_hash)
   end
   
   def load_service_definition(filename)
