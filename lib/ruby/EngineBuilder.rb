@@ -1825,6 +1825,11 @@ class EngineBuilder
         read_web_port
       end
       read_web_user
+      create_persistant_services
+      create_template_files
+      create_php_ini
+      create_apache_config                 
+      create_scritps
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
@@ -1846,13 +1851,7 @@ class EngineBuilder
 #        create_database_service db
 #      end
       
-      create_persistant_services
-      create_template_files
-      create_php_ini
-      create_apache_config      
-      
-      create_scritps
-
+     
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
