@@ -1962,7 +1962,7 @@ class EngineBuilder
   end
     
     def create_apache_config
-      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFiles))
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
       if @blueprint[:software].has_key?(:custom_apache_conf) && @blueprint[:software][:custom_apache_conf]  != nil            
         write_software_file(SysConfig.CustomApacheConfFile,@blueprint[:software][:custom_apache_conf])               
          
