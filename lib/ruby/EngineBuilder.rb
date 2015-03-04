@@ -15,7 +15,7 @@ class EngineBuilder
   @domain_name=nil
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
-x
+
   
   attr_reader :last_error,
               :repoName,
