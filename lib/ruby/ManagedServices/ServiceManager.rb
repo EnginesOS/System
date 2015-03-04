@@ -33,9 +33,9 @@ class ServiceManager
   end
   
   def find_service(service_hash)
-    provider = service_hash[:provider]   
-    path = service_hash[:service_path]
-    name = service_hash[:service_handle]
+    provider = service_hash[:publisher_namespace]   
+    path = service_hash[:service_type]
+    name = service_hash[:name]
               
       if managed_service_tree.has_key?(provider) == false
         return false

@@ -2173,7 +2173,7 @@ end
          p :failed_to_load_service_definition
          p :servicetype_name
          
-         p service_hash[:type_path]
+         p service_hash[:service_type]
            p :service_provider
         p service_hash[:publisher_namespace]
          return false
@@ -2216,10 +2216,8 @@ end
       p :attach_service
       p service_hash
       
-      provider = service_hash[:provider]   
-      path = service_hash[:service_path]
-      name = service_hash[:service_handle]
-        
+     
+
      if  @core_api.find_service(service_hash) == false
        @first_build = false
      end
