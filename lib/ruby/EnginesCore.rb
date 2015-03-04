@@ -1624,7 +1624,7 @@ class EnginesCore
     #name
     #service hash from fields in Software Service Definition for that service
     
-
+    
    
     if service_hash == nil
       p :attached_Service_passed_nil

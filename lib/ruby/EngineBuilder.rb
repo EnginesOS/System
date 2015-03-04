@@ -369,7 +369,7 @@ class EngineBuilder
         @docker_file.puts("#Rake Actions")
         @blueprint_reader.rake_actions.each do |rake_action|
           rake_cmd = rake_action[:action]
-           if @first_build == false &&  rake_action[:always_run] == false
+           if @builder.first_build == false &&  rake_action[:always_run] == false
              next
           end
           
@@ -2215,8 +2215,7 @@ end
 #      
 #
 #      end
-      p :attach_service
-      p service_hash
+ 
       
      
 service_hash[:service_handle] = service_hash[:variables][:name]
@@ -2224,10 +2223,12 @@ service_hash[:service_handle] = service_hash[:variables][:name]
        @first_build = true
        service_hash[:fresh]=true
      else
+       
        service_hash[:fresh]=false
        @first_build = false
      end
-      
+      p :attach_service
+       p service_hash
       @core_api.attach_service(service_hash)
             
     end
