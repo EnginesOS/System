@@ -37,9 +37,7 @@ class ServiceManager
     path = service_hash[:service_type]
     name = service_hash[:name]
               
-      if managed_service_tree.has_key?(provider) == false
-        return false
-      end
+
       
       provider_tree = managed_service_tree[provider]
       
