@@ -29,7 +29,7 @@ class ServiceManager
   end
   
   def managed_service_tree 
-    return @service_tree["ManagedService"]["Services"]
+    return @service_tree["Services"]["Managed Services"]
   end
   
   def find_service(service_hash)
@@ -52,6 +52,10 @@ class ServiceManager
       end
       
       service_path_tree = provider_tree[path]
+      
+      if path == nil
+        return  service_path_tree
+      end
       
       if service_path_tree == nil ||  service_path_tree.has_key?(name) == false
         return false

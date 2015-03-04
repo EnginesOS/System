@@ -104,7 +104,6 @@ class ManagedService < ManagedContainer
 
     if @consumers !=  nil 
       @consumers.delete(site_hash[:name]) { |el| "#{el} not found" }
-
     end
     save_state
     return result
