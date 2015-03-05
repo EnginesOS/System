@@ -16,7 +16,7 @@ class MySQLService < SoftwareService
     return  create_database(site_hash) 
      end
      
-  def rm_consumer (site_hash) #was ..._from_service
+  def rm_consumer_from_service (site_hash)
        return  true
     end 
  
