@@ -222,6 +222,11 @@ rescue Exception=>e
  
       add_to_managed_services_tree(service_hash)
       add_to_services_tree(service_hash) 
+      save_tree
+  rescue Exception=>e
+      puts e.message 
+      log_exception(e)
+      
   end
   
   def add_to_managed_services_tree
@@ -305,7 +310,7 @@ end
     #FIXME need to handle updating service 
         
 
-    save_tree
+    
 rescue Exception=>e
     puts e.message 
     log_exception(e)
@@ -313,6 +318,8 @@ rescue Exception=>e
   end
 
   def find_engine_services(params)
+    
+    
   end
 
   
