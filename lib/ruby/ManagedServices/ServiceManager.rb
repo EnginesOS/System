@@ -27,19 +27,34 @@ class ServiceManager
     return server_service[:service_container]
     
   end
+  def list_providers_in_use
+     providers =  managed_service_tree.children
+     if providers == nil
+       return false
+      end
+     retval=Array.new
+     providers.each do |provider|
+       retval.push(provider.name)
+     end 
+     return retval
+  end
   
   def managed_service_tree 
     return @service_tree["Services"]
   end
   
-  def find_service(service_hash)
+  def get_service_provider_tree()
+    managed_service_tree[service_hash[:publisher_namespace]]
+  end
+  
+  def find_service_consumers(service_hash)
       
       if service_hash.has_key?(:publisher_namespace) == false || service_hash[:publisher_namespace]  == nil
        p :no_publisher_namespace
         return false
       end
       
-    provider_tree = managed_service_tree[service_hash[:publisher_namespace]]
+    provider_tree = get_service_provider_tree
      
       if service_hash.has_key?(:service_type) == false  || service_hash[:service_type] == nil
         return provider_tree
@@ -287,7 +302,10 @@ rescue Exception=>e
     log_exception(e)
     
   end
+  
 
+  
+  
   def remove_service service_hash
    
       parent_engine_node = @service_tree["ManagedEngine"][service_hash[:parent_engine]]

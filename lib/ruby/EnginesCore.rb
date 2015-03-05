@@ -1655,6 +1655,11 @@ class EnginesCore
  
   end
 
+  def list_providers_in_use
+    sm = loadServiceManager()
+       return sm.list_providers_in_use
+  end
+  
   def loadServiceManager()
     if @service_manager == nil
       @service_manager = ServiceManager.new()
@@ -1663,9 +1668,9 @@ class EnginesCore
     return @service_manager
   end
 
-  def find_service(service_hash)
+  def find_service_consumers(service_hash)
     sm = loadServiceManager()
-    return sm.find_service(service_hash)
+    return sm.find_managed_services(service_hash)
   end
   
   def load_service_definition(filename)

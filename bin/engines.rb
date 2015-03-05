@@ -70,6 +70,11 @@ def do_cmd(c_type,containerName,command)
           p service.content
         end
         
+when "providers"
+  engines_api = EnginesOSapi.new()
+  core_api = engines_api.core_api
+  
+  
   when "list_services"
     hash_values =  containerName.split(".")
     if hash_values.count < 1
@@ -87,7 +92,7 @@ end
     end
     p "looking_for"
     p params
-    services = core_api.find_service(params)
+    services = core_api.find_service_consumers(params)
     if services == false
       p "Service " + containerName + " not found"
       exit
