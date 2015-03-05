@@ -381,10 +381,10 @@ else
             return true
           end
           
-@last_error ="No service record found for " + service_hash[:variables][:parent_engine] 
-@last_error += " service_type:" +  service_hash[:type_path] 
-@last_error  += " Provider " + service_hash[:publisher_namespace] 
-@last_error += " Name " + service_hash[:variables][:name]
+@last_error ="No service record found for " + service_hash[:variables][:parent_engine].to_s
+@last_error += " service_type:" +  service_hash[:type_path].to_s 
+@last_error  += " Provider " + service_hash[:publisher_namespace].to_s 
+@last_error += " Name " + service_hash[:variables][:name].to_s
         return false 
 
 rescue Exception=>e
