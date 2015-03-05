@@ -42,6 +42,25 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
+  when "services"
+    hash_values =  containerName.split(".")
+    if hash_values.count < 2
+      p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
+      exit
+    end 
+    params = Hash.new()
+    
+    params[:publisher_namespace] = hash_values[0]
+    params[:service_type] = hash_values[1]
+    if hash_values.count == 3
+      params[:name]= hash_values[2]
+    end
+  
+    services = core_api.find_service(params)
+    services.each do |service|
+      p service
+    end
+      
   when "list"
     engines = engines_api.list_managed_engines
     engines.each do |engine_name|
