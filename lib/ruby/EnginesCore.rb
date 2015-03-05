@@ -1670,7 +1670,7 @@ class EnginesCore
 
   def find_service_consumers(service_hash)
     sm = loadServiceManager()
-    return sm.find_managed_services(service_hash)
+    return sm.find_service_consumers(service_hash)
   end
   
   def load_service_definition(filename)
