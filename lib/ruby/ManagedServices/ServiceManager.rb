@@ -328,7 +328,7 @@ rescue Exception=>e
         if service_hash.has_key?(:name) == true  && service_hash[:name] != nil
           service_node = service_provider_node[service_hash[:name]]
         elsif service_hash.has_key?(:variables) == true  && service_hash[:variables][:name] != nil
-          service_node = service_provider_node[:variables][:name]
+          service_node = service_provider_node[service_hash[:variables][:name]]
         end 
 #          p :really_removing
 #          p service_node
@@ -355,7 +355,7 @@ rescue Exception=>e
         if provider_node != nil
           servicetype_node =  provider_node[service_hash[:service_type] ]
           if servicetype_node != nil
-            service_node = servicetype_node[service_hash[:parent_engine]]
+            service_node = servicetype_node[service_hash[:variables][:name]]
             if service_node != nil
               servicetype_node.remove!(service_node)
               if servicetype_node.children.count == 0
