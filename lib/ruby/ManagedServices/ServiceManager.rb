@@ -80,21 +80,21 @@ class ServiceManager
       
   end
     
-  def attached_services(object)
-
-  end
-
-  def load_system_services
-
-  end
-
-  def deregister_available_service service_info_hash
-
-  end
-
-  def register_available_service service_info_hash
-
-  end
+#  def attached_services(object)
+#
+#  end
+#
+#  def load_system_services
+#
+#  end
+#
+#  def deregister_available_service service_info_hash
+#
+#  end
+#
+#  def register_available_service service_info_hash
+#
+#  end
 
   def list_attached_services_for(objectName,identifier)
     p :services_on_objects_4
