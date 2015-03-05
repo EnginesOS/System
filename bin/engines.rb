@@ -44,14 +44,16 @@ def do_cmd(c_type,containerName,command)
   case command
   when "services"
     hash_values =  containerName.split(".")
-    if hash_values.count < 2
+    if hash_values.count < 1
       p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
       exit
     end 
     params = Hash.new()
     
     params[:publisher_namespace] = hash_values[0]
+  if hash_values.count == 2
     params[:service_type] = hash_values[1]
+end
     if hash_values.count == 3
       params[:name]= hash_values[2]
     end
