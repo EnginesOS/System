@@ -318,8 +318,8 @@ rescue Exception=>e
   end
 
   def find_engine_services(params)
-    
-    
+    engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
+    return engine_node
   end
 
   
