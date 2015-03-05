@@ -57,7 +57,7 @@ def do_cmd(c_type,containerName,command)
     end
   
     services = core_api.find_service(params)
-    if service == false
+    if services == false
       p "Service " + containerName + " not found"
       exit
     end
