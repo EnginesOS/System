@@ -33,10 +33,9 @@ class ServiceManager
   end
   
   def find_service(service_hash)
-                      
-    
       
-      if service_hash.has_key?(:publisher_namespace) || service_hash[:publisher_namespace]  == nil
+      if service_hash.has_key?(:publisher_namespace) == false || service_hash[:publisher_namespace]  == nil
+       p :no_publisher_namespace
         return false
       end
       
