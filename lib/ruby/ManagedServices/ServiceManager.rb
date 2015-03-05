@@ -33,12 +33,7 @@ class ServiceManager
   end
   
   def find_service(service_hash)
-    provider = s  
-    path = 
-    name = 
-              
-
-      
+                      
       provider_tree = managed_service_tree[provider]
       
       if managed_service_tree.has_key?(:publisher_namespace) || ervice_hash[:publisher_namespace]  == nil
