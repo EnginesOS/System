@@ -18,6 +18,7 @@ class NginxService < ManagedService
     
     if engine.is_a?(Hash)
       #fixME fill in has with engine details
+      site_hash[:type_path] =  site_hash[:service_type]
       return engine
     end
     
