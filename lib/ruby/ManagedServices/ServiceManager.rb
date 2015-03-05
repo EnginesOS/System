@@ -355,7 +355,7 @@ rescue Exception=>e
         if provider_node != nil
           servicetype_node =  provider_node[service_hash[:service_type] ]
           if servicetype_node != nil
-            service_node = servicetype_node[service_hash[:variables][:name]]
+            service_node = servicetype_node[service_hash[:parent_engine]]
             if service_node != nil
               servicetype_node.remove!(service_node)
               if servicetype_node.children.count == 0
