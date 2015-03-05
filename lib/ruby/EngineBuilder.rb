@@ -1653,7 +1653,7 @@ class EngineBuilder
     begin
       log_build_output("Building Image")
       # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
-      cmd="/usr/bin/docker build  -t " + @hostname + "/deploy " +  get_basedir
+      cmd="/usr/bin/docker build  -t " + @container_name + "/deploy " +  get_basedir
       puts cmd
       res = run_system(cmd)
       if res != true
