@@ -65,7 +65,8 @@ end
       exit
     end
     services.each do |service|
-      p service
+      p service.name
+      p service.content
     end
       
   when "list"
