@@ -36,7 +36,7 @@ class ServiceManager
                       
     
       
-      if managed_service_tree.has_key?(:publisher_namespace) || service_hash[:publisher_namespace]  == nil
+      if service_hash.has_key?(:publisher_namespace) || service_hash[:publisher_namespace]  == nil
         return false
       end
       
