@@ -47,6 +47,8 @@ class ServiceManager
     managed_service_tree[publisher]
   end
   
+  
+  
   def find_service_consumers(service_hash)
       
       if service_hash.has_key?(:publisher_namespace) == false || service_hash[:publisher_namespace]  == nil
@@ -218,6 +220,11 @@ rescue Exception=>e
       return false
     end
  
+      add_to_managed_services_tree(service_hash)
+      add_to_services_tree(service_hash) 
+  end
+  
+  def add_to_managed_services_tree
     #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
@@ -270,8 +277,10 @@ rescue Exception=>e
       service_provider_node << service_node
     end
 
+end
     
  #write services tree
+   def add_to_services_tree(service_hash)
    
      services_node = @service_tree["Services"]
    
@@ -302,7 +311,9 @@ rescue Exception=>e
     log_exception(e)
     
   end
-  
+
+  def find_engine_services(params)
+  end
 
   
   
