@@ -46,8 +46,7 @@ class ServiceManager
       end
             
       service_path_tree = provider_tree[service_hash[:service_type]]
-      p :service_path_tree
-      p service_path_tree
+     
       if service_path_tree == nil
         return false
       end
@@ -56,14 +55,10 @@ class ServiceManager
         return  service_path_tree
       end
       
-      
      if  service_path_tree[service_hash[:name]] == nil
        return false
       end
 
-      
-      p :found_service
-      p service_path_tree[service_hash[:name]]
       return service_path_tree[service_hash[:name]]
       
   end
@@ -404,15 +399,7 @@ end
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)
-#      p :tree_data
-#      p tree_data
-      #service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
-      #service_tree = service_tree.marshal_load(tree_data)
-   #   service_tree = Marshal.load(tree_data)
       service_tree =   YAML::load(tree_data)
-#      p :loaded_tree
-#      p service_tree
-
       return service_tree
     rescue Exception=>e
       puts e.message + " with " + tree_data.to_s
