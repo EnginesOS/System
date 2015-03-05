@@ -313,14 +313,14 @@ rescue Exception=>e
           @last_error ="No service record found for "+ service_hash[:parent_engine] 
           return false
         end
-      service_type_node = parent_engine_node[service_hash[:service_type]]
+      service_type_node = parent_engine_node[service_hash[:type_path]]
         if service_type_node == nil
           @last_error ="No service record found for " + service_hash[:parent_engine] + ":" +  service_hash[:service_type]
           return false
         end
        service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
        if service_provider_node == nil
-          @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:publisher_namespace] 
+          @last_error ="No service record found for " + service_hash[:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] 
           return false
         end
         
@@ -353,7 +353,7 @@ rescue Exception=>e
       if services_node !=nil
         provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node != nil
-          servicetype_node =  provider_node[service_hash[:service_type] ]
+          servicetype_node =  provider_node[service_hash[:type_path] ]
           if servicetype_node != nil
             service_node = servicetype_node[service_hash[:parent_engine]]
             if service_node != nil
@@ -378,9 +378,9 @@ rescue Exception=>e
             return true
           end
           
-@last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:publisher_namespace] + " Name " + service_hash[:name]
+@last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " service_type:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] + " Name " + service_hash[:variables][:name]
         return false 
-          
+
 rescue Exception=>e
   if service_hash != nil
     p service_hash
