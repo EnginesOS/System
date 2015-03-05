@@ -51,10 +51,10 @@ def do_cmd(c_type,containerName,command)
     params = Hash.new()
     
     params[:publisher_namespace] = hash_values[0]
-  if hash_values.count == 2
+  if hash_values.count >1 
     params[:service_type] = hash_values[1]
 end
-    if hash_values.count == 3
+    if hash_values.count > 2
       params[:name]= hash_values[2]
     end
     p "looking_for"
