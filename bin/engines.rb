@@ -57,7 +57,8 @@ end
     if hash_values.count == 3
       params[:name]= hash_values[2]
     end
-  
+    p "looking_for"
+    p params
     services = core_api.find_service(params)
     if services == false
       p "Service " + containerName + " not found"
