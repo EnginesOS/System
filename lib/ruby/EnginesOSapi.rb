@@ -1055,7 +1055,13 @@ class EnginesOSapi
     return log_exception_and_fail("list domains ",e)
   end 
   
-
+  def list_service_providers_in_use
+     return @core_api.list_providers_in_use
+  end
+  
+  def find_service_consumers(params)
+    return @core_api.find_managed_services(params)
+  end
   
   def attach_service(params)
     if  @core_api.attach_service(params) == true

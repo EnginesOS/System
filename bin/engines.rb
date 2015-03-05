@@ -42,6 +42,66 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
+  when "service"
+    hash_values =  containerName.split(".")
+        if hash_values.count < 1
+          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
+          exit
+        end 
+        params = Hash.new()
+    if hash_values.count >1
+        params[:publisher_namespace] = hash_values[1]
+  end
+      if hash_values.count >2 
+        params[:service_type] = hash_values[2]
+    end
+        if hash_values.count > 3
+          params[:name]= hash_values[3]
+        end
+        p "looking_for"
+        p params
+        services = core_api.find_engine_services(params)
+        if services == false
+          p "Service " + containerName + " not found"
+          exit
+        end
+        services.each do |service|
+          p service.name
+          p service.content
+        end
+        
+when "providers"
+  engines_api = EnginesOSapi.new()
+  core_api = engines_api.core_api
+  
+  
+  when "list_services"
+    hash_values =  containerName.split(".")
+    if hash_values.count < 1
+      p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
+      exit
+    end 
+    params = Hash.new()
+    
+    params[:publisher_namespace] = hash_values[0]
+  if hash_values.count >1 
+    params[:service_type] = hash_values[1]
+end
+    if hash_values.count > 2
+      params[:name]= hash_values[2]
+    end
+    p "looking_for"
+    p params
+    services = core_api.find_service_consumers(params)
+    if services == false
+      p "Service " + containerName + " not found"
+      exit
+    end
+    services.each do |service|
+      p service.name
+      p service.content
+    end
+      
   when "list"
     engines = engines_api.list_managed_engines
     engines.each do |engine_name|

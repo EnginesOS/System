@@ -16,6 +16,7 @@ class EngineBuilder
   @build_name=nil
   @web_protocol="HTTPS and HTTP"
 
+  
   attr_reader :last_error,
               :repoName,
               :hostname,
@@ -27,7 +28,8 @@ class EngineBuilder
               :runtime,
               :webPort,
               :http_protocol,
-              :blueprint
+              :blueprint,
+              :first_build
               
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
@@ -106,10 +108,7 @@ class EngineBuilder
       count_layer()
       @docker_file.puts("")
 
-      #Do this after configuration scripts run
 
-      #      @docker_file.puts("USER $ContUser")
-      #      count_layer()
       write_run_install_script
 
       write_data_permissions
@@ -365,7 +364,12 @@ class EngineBuilder
     def write_rake_list
       begin
         @docker_file.puts("#Rake Actions")
-        @blueprint_reader.rake_actions.each do |rake_cmd|
+        @blueprint_reader.rake_actions.each do |rake_action|
+          rake_cmd = rake_action[:action]
+           if @builder.first_build == false &&  rake_action[:always_run] == false
+             next
+          end
+          
           if rake_cmd !=nil
             @docker_file.puts("RUN  /usr/local/rbenv/shims/bundle exec rake " + rake_cmd )
             count_layer
@@ -949,11 +953,7 @@ class EngineBuilder
         end
 
         rake_cmds.each do |rake_cmd|
-          rake_action = rake_cmd[:action]
-          p rake_action
-          if rake_action !=nil
-            @rake_actions.push(rake_action)
-          end
+            @rake_actions.push(rake_cmd)         
         end
 
       rescue Exception=>e
@@ -1433,6 +1433,9 @@ class EngineBuilder
     @workerPorts=Array.new
     @webPort=8000
     @vols=Array.new
+    @first_build = true
+    #FIXme will be false but for now
+    @overwrite_existing_services = true 
     
     @builder_public = BuilderPublic.new(self)
     @system_access = SystemAccess.new()
@@ -1593,74 +1596,37 @@ class EngineBuilder
     end
   end
 
-#  def create_database_service db
+
+
+#  def create_cron_service
 #    begin
-#      log_build_output("Create DB Service ")
-#      db_server_name=db.flavor + "_server"
-#      db_service = EnginesOSapi.loadManagedService(db_server_name, @core_api)
-#      if db_service.is_a?(DBManagedService)
 #
-#        db_service.add_consumer(db)
-#        return true
-#      else
-#        p db_service
-#        p db_service.result_mesg
-#        return false
+#      log_build_output("Cron file")
+#
+#      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
+#
+#        @blueprint_reader.cron_jobs.each do |cj|
+#          cj_hash = Hash.new
+#          cj_hash[:name] =@container_name
+#          cj_hash[:container_name] = @container_name
+#          cj_hash[:cron_job]=cj
+#          cj_hash[:parent_engine] = @containerName
+#          #               cron_file.puts(cj)
+#          #               p :write_cron_job
+#          #               p cj
+#          @cron_job_list.push(cj_hash)
+#          p @cron_job_list
+#        end
+#        #             cron_file.close
 #      end
+#
+#      return true
+#
 #    rescue Exception=>e
 #      log_exception(e)
 #      return false
 #    end
 #  end
-#
-#  def create_file_service vol
-#    begin
-#      log_build_output("Create Vol Service ")
-#      vol_service = EnginesOSapi.loadManagedService("volmanager", @core_api)
-#      if vol_service.is_a?(EnginesOSapiResult) == false
-#        vol_service.add_consumer(vol)
-#        return true
-#      else
-#        p vol_service
-#        p vol_service.result_mesg
-#        return false
-#      end
-#    rescue Exception=>e
-#      log_exception(e)
-#      return false
-#    end
-#
-#  end
-
-  def create_cron_service
-    begin
-
-      log_build_output("Cron file")
-
-      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-
-        @blueprint_reader.cron_jobs.each do |cj|
-          cj_hash = Hash.new
-          cj_hash[:name] =@container_name
-          cj_hash[:container_name] = @container_name
-          cj_hash[:cron_job]=cj
-          cj_hash[:parent_engine] = @containerName
-          #               cron_file.puts(cj)
-          #               p :write_cron_job
-          #               p cj
-          @cron_job_list.push(cj_hash)
-          p @cron_job_list
-        end
-        #             cron_file.close
-      end
-
-      return true
-
-    rescue Exception=>e
-      log_exception(e)
-      return false
-    end
-  end
 
   def setup_default_files
     log_build_output("Setup Default Files")
@@ -1687,7 +1653,7 @@ class EngineBuilder
     begin
       log_build_output("Building Image")
       # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
-      cmd="/usr/bin/docker build  -t " + @hostname + "/deploy " +  get_basedir
+      cmd="/usr/bin/docker build  -t " + @container_name + "/deploy " +  get_basedir
       puts cmd
       res = run_system(cmd)
       if res != true
@@ -1818,7 +1784,15 @@ class EngineBuilder
       else
         read_web_port
       end
+      
       read_web_user
+      
+      create_persistant_services #need to de-register these if build fails But not deregister those that existed prior
+      
+      create_template_files
+      create_php_ini
+      create_apache_config                 
+      create_scritps
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
@@ -1840,18 +1814,17 @@ class EngineBuilder
 #        create_database_service db
 #      end
       
-      create_persistant_services
-      create_template_files
-      create_scritps
-
+     
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
+        post_failed_build_clean_up
         return false
       else
 
         if @core_api.image_exists?(@container_name) == false
           @last_error = " " + tail_of_build_log
+          post_failed_build_clean_up
           return false
           #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
         end
@@ -1885,13 +1858,26 @@ class EngineBuilder
     rescue Exception=>e
 
       log_exception(e)
+    post_failed_build_clean_up
       close_all
       return false
     end
   end
 
+  def post_failed_build_clean_up
+    #remove containers
+    #remove persistant services (if created/new)
+    #deregister non persistant services (if created)
+    @blueprint_reader.services.each do |service_hash|
+      if service_hash[:fresh] == true 
+        service_hash[:delete_persistant]=true
+        @core_api.dettach_service(service_hash) #true is delete persistant
+      end
+    end
+  end
+  
   def create_template_files
-    if @blueprint[:software][:template_files] != nil
+    if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
         write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
     end
@@ -1899,28 +1885,32 @@ class EngineBuilder
   end
   
   def create_httaccess
-    if @blueprint[:software][:apache_htaccess_files]  != nil
+    if @blueprint[:software].has_key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files]  != nil
       @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
         write_software_file("/home/engines/htaccess_files" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
       end
     end
   end
+  
   def   create_scritps
-      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
+    
+      FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)      
       create_start_script
       create_install_script
       create_post_install_script
   end
+  
    def create_start_script
-     if @blueprint[:software][:custom_start_script] != nil
+     if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
        start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
        start_script_file.puts(@blueprint[:software][:custom_start_script])
        start_script_file.close
        File.chmod(0755,get_basedir() + SysConfig.StartScript)
      end
    end
+   
    def create_install_script
-     if @blueprint[:software][:custom_install_script] != nil
+     if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
        install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
        install_script_file.puts(@blueprint[:software][:custom_install_script])
        install_script_file.close
@@ -1928,7 +1918,7 @@ class EngineBuilder
        end     
    end
    def create_post_install_script
-     if @blueprint[:software][:custom_post_install_script] != nil
+     if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
        post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
        post_install_script_file.close
@@ -1936,17 +1926,24 @@ class EngineBuilder
        end    
    end
   def create_php_ini
-    if @blueprint[:software][:custom_php_inis]  != nil
-      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniDir,"w", :crlf_newline => false)
-     
-          
+    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
+    if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
+      
+      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"w", :crlf_newline => false)              
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
         php_ini_file.puts(php_ini_hash[:content])
       end
       php_ini_file.close
        
     end
+  end
     
+    def create_apache_config
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
+      if @blueprint[:software].has_key?(:custom_apache_conf) && @blueprint[:software][:custom_apache_conf]  != nil            
+        write_software_file(SysConfig.CustomApacheConfFile,@blueprint[:software][:custom_apache_conf])               
+         
+      end  
   end
  
   def write_software_file(container_filename_path,content)
@@ -2124,7 +2121,7 @@ end
         if service_def[:persistant] == true
           next                 
         end
-     
+      service_hash[:service_handle] = service_hash[:variables][:name]
          p :adding_service
          p service_hash   
       @core_api.attach_service(service_hash)
@@ -2142,20 +2139,19 @@ end
     @blueprint_reader.services.each() do |service_hash|
       
       service_hash[:parent_engine]=@container_name
-      p :service_def_for
-             p service_hash[:type_path]
-             p service_hash[:publisher_namespace]
+#      p :service_def_for
+#      p service_hash[:type_path]
+#      p service_hash[:publisher_namespace]
    
       service_def = get_service_def(service_hash)
-         p  service_def
+#      p  service_def
        
        if service_def == nil
          p :failed_to_load_service_definition
          p :servicetype_name
-         
-         p service_hash[:type_path]
-           p :service_provider
-        p service_hash[:publisher_namespace]
+         p service_hash[:service_type]
+         p :service_provider
+         p service_hash[:publisher_namespace]
          return false
        end
       if service_def[:persistant] == false
@@ -2168,35 +2164,25 @@ end
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
       p :target_envs
       p service_def[:target_environment_variables]
+     
       if service_hash[:servicetype_name] == "filesystem"
          add_file_service(service[:name], service[:engine_path])
       end
-        if service_hash[:servicetype_name] == "ftp"      
-          #symbols from ftp service definition and values from blueprint and envionment
-          # still need to sort
-        #will follow the blueprint design studio's team leader on how to implement        
-          service_hash[:volume] = primary_vol.name
-          service_hash[:folder] =  service_hash[:dest]
-          service_hash[:username] = @set_environments[:ftpuser]
-          service_hash[:password] = @set_environments[:password]
-          service_hash[:rw_access] =true
-          service_hash[:type_path]=service_hash[:type_path]
-          service_hash[:publisher_namespace]="EnginesSystem"  
-         
-          service_hash[:name]=service_hash[:name]             
-              
-          p :service
-          p service_hash
-      
 
-      end
+      service_hash[:service_handle] = service_hash[:variables][:name]
+        p :LOOKING_FOR_
+        p service_hash
+     if  @core_api.find_service_consumers(service_hash) == false              
+       @first_build = true
+       service_hash[:fresh]=true
+     else       
+       service_hash[:fresh]=false
+       @first_build = false
+     end
       p :attach_service
-      p service_hash
-      
-     
+       p service_hash
       @core_api.attach_service(service_hash)
-      
-      
+            
     end
   end
   

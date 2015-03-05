@@ -18,6 +18,7 @@ class NginxService < ManagedService
     
     if engine.is_a?(Hash)
       #fixME fill in has with engine details
+      site_hash[:type_path] =  site_hash[:service_type]
       return engine
     end
     
@@ -41,7 +42,7 @@ class NginxService < ManagedService
     site_hash[:fqdn]=engine.fqdn
     site_hash[:port]=engine.port.to_s
     site_hash[:proto]= proto
-    site_hash[:service_type]='nginx'
+    site_hash[:type_path] = site_hash[:service_type]='nginx'
     site_hash[:publisher_namespace] = "EnginesSystem" 
      return site_hash       
     

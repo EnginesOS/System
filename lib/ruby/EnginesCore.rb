@@ -1624,7 +1624,7 @@ class EnginesCore
     #name
     #service hash from fields in Software Service Definition for that service
     
-
+    
    
     if service_hash == nil
       p :attached_Service_passed_nil
@@ -1643,10 +1643,23 @@ class EnginesCore
                   log_exception e
   end
 
-  def detach_service(params)
-    return  false
+  def dettach_service(params)
+    service = load_software_service(params)
+    if service !=nil && service != false
+          return service.remove_consumer(params)
+        end
+        @last_error = "Failed to dettach Service: " + @last_error 
+        return  false
+        rescue Exception=>e
+                      log_exception e
+ 
   end
 
+  def list_providers_in_use
+    sm = loadServiceManager()
+       return sm.list_providers_in_use
+  end
+  
   def loadServiceManager()
     if @service_manager == nil
       @service_manager = ServiceManager.new()
@@ -1655,6 +1668,11 @@ class EnginesCore
     return @service_manager
   end
 
+  def find_service_consumers(service_hash)
+    sm = loadServiceManager()
+    return sm.find_service_consumers(service_hash)
+  end
+  
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)

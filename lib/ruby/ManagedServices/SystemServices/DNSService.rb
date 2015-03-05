@@ -6,7 +6,7 @@ class DNSService < ManagedService
   def get_site_hash(engine)
     if engine.is_a?(ManagedEngine)   ||    engine.is_a?(ManagedService   )
       site_hash = Hash.new()
-      site_hash[:service_type]='dns'
+      site_hash[:type_path] =  site_hash[:service_type]='dns'
       site_hash[:parent_engine]=engine.containerName
       site_hash[:name]=engine.containerName
       site_hash[:container_type]=engine.ctype
@@ -16,6 +16,7 @@ class DNSService < ManagedService
 
     else  #was passed a hash
       site_hash=engine
+      site_hash[:type_path] =  site_hash[:service_type]
      p :site_hash_pass_toadd_dns
       p site_hash
       engine = @core_api.loadManagedEngine(site_hash[:parent_engine])

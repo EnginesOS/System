@@ -85,17 +85,20 @@ class ManagedService < ManagedContainer
     return result
   end
 
-  def remove_consumer engine
-    site_hash = get_site_hash(engine)
-      if is_running ==true   && @persistant == false
+  def remove_consumer service_hash
+    
+    service_hash = get_site_hash(service_hash)
+    
+      if is_running ==true   && ( @persistant == false \
+        || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))
         p :removing_consumer
-        result = rm_consumer_from_service(site_hash)
+        result = rm_consumer_from_service(service_hash)
          if result == true
           sm =  service_manager
             if sm != false 
               p :remove_consumer
-              p site_hash
-              result =  sm.remove_service(site_hash)
+              p service_hash
+              result =  sm.remove_service(service_hash)
             else
               return false
             end
@@ -103,8 +106,7 @@ class ManagedService < ManagedContainer
       end
 
     if @consumers !=  nil 
-      @consumers.delete(site_hash[:name]) { |el| "#{el} not found" }
-
+      @consumers.delete(service_hash[:name]) { |el| "#{el} not found" }
     end
     save_state
     return result
