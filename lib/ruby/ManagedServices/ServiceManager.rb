@@ -329,6 +329,9 @@ rescue Exception=>e
           service_node = service_provider_node[service_hash[:name]]
         elsif service_hash.has_key?(:variables) == true  && service_hash[:variables][:name] != nil
           service_node = service_provider_node[service_hash[:variables][:name]]
+else  
+  p service_hash
+  P :notfound
         end 
 #          p :really_removing
 #          p service_node
