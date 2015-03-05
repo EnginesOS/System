@@ -323,7 +323,13 @@ rescue Exception=>e
           @last_error ="No service record found for " + service_hash[:parent_engine] + " service_type:" +  service_hash[:service_type] + " Provider " + service_hash[:publisher_namespace] 
           return false
         end
-        service_node = service_provider_node[service_hash[:name]]
+        
+        #deal with new way variables are pass 
+        if service_hash.has_key?(:name) == true  && service_hash[:name] != nil
+          service_node = service_provider_node[service_hash[:name]]
+        elsif service_hash.has_key?(:variables) == true  && service_hash[:variables][:name] != nil
+          service_node = service_provider_node[:variables][:name]
+        end 
 #          p :really_removing
 #          p service_node
 #         p :from
