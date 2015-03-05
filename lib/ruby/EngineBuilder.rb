@@ -2170,7 +2170,8 @@ end
       end
 
       service_hash[:service_handle] = service_hash[:variables][:name]
-        
+        p :LOOKING_FOR_
+        p service_hash
      if  @core_api.find_service(service_hash) == false              
        @first_build = true
        service_hash[:fresh]=true
