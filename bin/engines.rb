@@ -42,7 +42,35 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
-  when "services"
+  when "service"
+    hash_values =  containerName.split(".")
+        if hash_values.count < 1
+          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
+          exit
+        end 
+        params = Hash.new()
+    if hash_values.count >1
+        params[:publisher_namespace] = hash_values[1]
+  end
+      if hash_values.count >2 
+        params[:service_type] = hash_values[2]
+    end
+        if hash_values.count > 3
+          params[:name]= hash_values[3]
+        end
+        p "looking_for"
+        p params
+        services = core_api.find_engine_services(params)
+        if services == false
+          p "Service " + containerName + " not found"
+          exit
+        end
+        services.each do |service|
+          p service.name
+          p service.content
+        end
+        
+  when "list_services"
     hash_values =  containerName.split(".")
     if hash_values.count < 1
       p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
