@@ -43,8 +43,8 @@ class ServiceManager
     return @service_tree["Services"]
   end
   
-  def get_service_provider_tree()
-    managed_service_tree[service_hash[:publisher_namespace]]
+  def get_service_provider_tree(publisher)
+    managed_service_tree[publisher]
   end
   
   def find_service_consumers(service_hash)
@@ -54,7 +54,7 @@ class ServiceManager
         return false
       end
       
-    provider_tree = get_service_provider_tree
+    provider_tree = get_service_provider_tree(service_hash[:publisher_namespace])
      
       if service_hash.has_key?(:service_type) == false  || service_hash[:service_type] == nil
         return provider_tree
