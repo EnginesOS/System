@@ -1646,7 +1646,7 @@ class EnginesCore
   def dettach_service(params)
     service = load_software_service(params)
     if service !=nil && service != false
-          return service.rm_consumer(params,destroy_service)
+          return service.rm_consumer(params)
         end
         @last_error = "Failed to dettach Service: " + @last_error 
         return  false
