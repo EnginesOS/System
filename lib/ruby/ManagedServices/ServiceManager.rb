@@ -269,16 +269,16 @@ rescue Exception=>e
    # p :service_name
 #    p service_hash[:name]
       
-      if service_hash[:name] == nil
+      if service_hash[:variables][:name] == nil
         p service_hash
         p :error_service_hash_has_nil_name
         return false
       end
-    if service_provider_node[service_hash[:name]] != nil
+    if service_provider_node[service_hash[:variables][:name]] != nil
       #FixME need to explain why
       return false
     else
-      service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
+      service_node = Tree::TreeNode.new(service_hash[:variables][:name],service_hash)
       service_provider_node << service_node
     end
 
@@ -292,13 +292,13 @@ end
 
        provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:service_type]  )
+          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
           services_node << provider_node
         end
         
-        servicetype_node =  provider_node[service_hash[:service_type] ]
+        servicetype_node =  provider_node[service_hash[:type_path] ]
           if servicetype_node == nil
-            servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
+            servicetype_node =  Tree::TreeNode.new(service_hash[:type_path],service_hash[:type_path])
             provider_node << servicetype_node
           end
           
@@ -308,9 +308,7 @@ end
               servicetype_node << service_node
             end
     #FIXME need to handle updating service 
-        
-
-    
+            
 rescue Exception=>e
     puts e.message 
     log_exception(e)
