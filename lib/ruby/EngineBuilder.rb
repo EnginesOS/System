@@ -1868,8 +1868,8 @@ class EngineBuilder
     #remove containers
     #remove persistant services (if created/new)
     #deregister non persistant services (if created)
-    @blueprint_reader.services.each() do |service_hash|
-      if service_hash[:fresh] == true
+    @blueprint_reader.services.each do |service_hash|
+      if service_hash[:fresh] == true 
         service_hash[:delete_persistant]=true
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
