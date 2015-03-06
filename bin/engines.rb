@@ -42,7 +42,7 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
-  when "service"
+  when "services"
     ## latter this will allow addressing engine.service_path.provider.name
 #    hash_values =  containerName.split(".")
 #        if hash_values.count < 1
@@ -89,7 +89,7 @@ when "providers"
     
     params[:publisher_namespace] = hash_values[0]
   if hash_values.count >1 
-    params[:service_type] = hash_values[1]
+    params[:type_path] = hash_values[1]
 end
     if hash_values.count > 2
       params[:name]= hash_values[2]
