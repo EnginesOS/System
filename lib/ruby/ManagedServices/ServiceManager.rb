@@ -258,14 +258,22 @@ rescue Exception=>e
     
     
     service_label = get_service_label(service_hash)
+    
 if service_label == nil
   p service_hash
   p :error_service_hash_has_nil_name
   return false
 end
 
-    service_node = Tree::TreeNode.new(service_label,service_hash)
-     service_type_node << service_node
+    service_node = service_type_node[service_label]
+    if  service_node == nil
+      service_node = Tree::TreeNode.new(service_label,service_hash)
+      service_type_node << service_node
+    else
+      p :Node_existed
+      p service_label
+    end
+    
     
 #    provider = service_hash[:publisher_namespace]
 #     if provider == nil || provider.length ==0
