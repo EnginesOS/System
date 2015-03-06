@@ -62,7 +62,7 @@ def do_cmd(c_type,containerName,command)
 #        p "looking_for"
 #        p params
     params = Hash.new()
-    params[:engine_name]=containerName
+    params[:engine_name]=hash_values[0]
       
         services = core_api.find_engine_services(params)
         if services == false
