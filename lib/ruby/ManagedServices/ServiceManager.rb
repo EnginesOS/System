@@ -81,34 +81,32 @@ class ServiceManager
       
   end
     
-  def create_type_path_node(parent_node,service_hash)
-    if service_hash.has_key?(:type_path) == false || service_hash[:type_path] == nil
-         return false
+  def create_type_path_node(parent_node,type_path)
+    if type_path == nil
+         return nil
        end
        
-       if service_hash[:type_path].include?("/") == false
-         engine_node = Tree::TreeNode.new(service_hash[:type_path],service_hash)
+       if type_path.include?("/") == false
+         engine_node = Tree::TreeNode.new(type_path,type_path)
          parent_node << engine_node
-         return true
+         return engine_node
        else
          
-         sub_paths= service_hash[:type_path].split("/")
+         sub_paths= type_path.split("/")
             prior_node = parent_node
             count=0
             
-              sub_paths.each do |sub_path|                
-                if count == sub_paths.length - 1
-                  content = service_hash
-                else
-                  content = sub_path
-                end
-                sub_node = Tree::TreeNode.new(sub_path,content)
+              sub_paths.each do |sub_path|                                
+                sub_node = Tree::TreeNode.new(sub_path,sub_path)
                 prior_node << sub_node
                 prior_node = sub_node
                 count+=1
-              end
-              return true
+                if count == sub_paths.count
+                  return sub_node
+                end
+              end            
        end
+       return nil
   end
   
   def get_type_path_node(parent_node,type_path) 
@@ -301,13 +299,8 @@ rescue Exception=>e
       active_engines_node << engine_node
     end
 
-    service_type_node = engine_node[service_hash[:type_path]]
+    service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
       
-     if service_type_node == nil
-      service_type_node = Tree::TreeNode.new(service_hash[:type_path], service_hash[:service_type] + " Service")
-       engine_node << service_type_node       
-    end
-    
     
     service_label = get_service_label(service_hash)
     
@@ -380,16 +373,12 @@ end
           services_node << provider_node
         end
         
-        servicetype_node =  provider_node[service_hash[:type_path] ]
-          if servicetype_node == nil
-            servicetype_node =  Tree::TreeNode.new(service_hash[:type_path],service_hash[:type_path])
-            provider_node << servicetype_node
-          end
-          
-          service_node = servicetype_node[service_hash[:parent_engine]]
+        service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
+   
+          service_node = service_type_node[service_hash[:parent_engine]]
             if service_node == nil
               service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
-              servicetype_node << service_node
+              service_type_node << service_node
             end
     #FIXME need to handle updating service 
             
