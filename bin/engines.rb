@@ -70,7 +70,7 @@ def do_cmd(c_type,containerName,command)
           exit
         end
         if services == nil
-          p "No Match"
+          p "No Match from params " + params.to_s
         else
         
           services.each do |service|
