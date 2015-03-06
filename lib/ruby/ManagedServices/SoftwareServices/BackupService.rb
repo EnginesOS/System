@@ -37,7 +37,7 @@ class BackupService < SoftwareService
           if site_hash.has_key?(:include_log) == false ||  site_hash[:include_log] ==nil
             site_hash[:include_log]=false
           end
-        site_src   =  site_hash[:parent_engine] + ":system:" + site_hash[:include_log]
+        site_src   =  site_hash[:parent_engine] + ":system:" + site_hash[:include_log].to_s
       elsif  site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else #database
