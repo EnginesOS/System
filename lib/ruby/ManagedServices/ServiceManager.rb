@@ -123,7 +123,7 @@ class ServiceManager
     sub_paths= type_path.split("/")
     sub_node = parent_node
       sub_paths.each do |sub_path|
-        sub_node = sub_node[path]
+        sub_node = sub_node[sub_path]
         if sub_node == nil
           return nil
         end 
