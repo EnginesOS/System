@@ -69,6 +69,10 @@ def do_cmd(c_type,containerName,command)
           p "Service " + containerName + " not found"
           exit
         end
+        if service == nil
+          p "No Match"
+        end
+        
         services.each do |service|
           p "Name:" + service.name
           p "Content:" + service.content
