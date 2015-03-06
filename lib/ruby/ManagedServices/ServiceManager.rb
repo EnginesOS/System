@@ -47,6 +47,8 @@ class ServiceManager
     managed_service_tree[publisher]
   end
   
+  
+  
   def find_service_consumers(service_hash)
       
       if service_hash.has_key?(:publisher_namespace) == false || service_hash[:publisher_namespace]  == nil
@@ -78,21 +80,21 @@ class ServiceManager
       
   end
     
-  def attached_services(object)
-
-  end
-
-  def load_system_services
-
-  end
-
-  def deregister_available_service service_info_hash
-
-  end
-
-  def register_available_service service_info_hash
-
-  end
+#  def attached_services(object)
+#
+#  end
+#
+#  def load_system_services
+#
+#  end
+#
+#  def deregister_available_service service_info_hash
+#
+#  end
+#
+#  def register_available_service service_info_hash
+#
+#  end
 
   def list_attached_services_for(objectName,identifier)
     p :services_on_objects_4
@@ -218,6 +220,16 @@ rescue Exception=>e
       return false
     end
  
+      add_to_managed_services_tree(service_hash)
+      add_to_services_tree(service_hash) 
+      save_tree
+  rescue Exception=>e
+      puts e.message 
+      log_exception(e)
+      
+  end
+  
+  def add_to_managed_services_tree(service_hash)
     #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
@@ -236,11 +248,11 @@ rescue Exception=>e
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
       active_engines_node << engine_node
     end
-    
-    service_type_node = engine_node[service_hash[:service_type]]
+
+    service_type_node = engine_node[service_hash[:type_path]]
       
      if service_type_node == nil
-      service_type_node = Tree::TreeNode.new(service_hash[:service_type], service_hash[:service_type] + " Service")
+      service_type_node = Tree::TreeNode.new(service_hash[:type_path], service_hash[:service_type] + " Service")
        engine_node << service_type_node       
     end
     
@@ -251,40 +263,55 @@ rescue Exception=>e
      
     service_provider_node = service_type_node[provider]
     if service_provider_node == nil
-      service_provider_node = Tree::TreeNode.new(provider,service_hash[:service_type] + " Provider:"+ provider)
+      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
       service_type_node << service_provider_node
     end
    # p :service_name
 #    p service_hash[:name]
+    
+    service_label = get_service_label(service_hash)
+   
       
-      if service_hash[:name] == nil
+      if service_label == nil
         p service_hash
         p :error_service_hash_has_nil_name
         return false
       end
-    if service_provider_node[service_hash[:name]] != nil
+    if service_provider_node[service_label] != nil
       #FixME need to explain why
       return false
     else
-      service_node = Tree::TreeNode.new(service_hash[:name],service_hash)
+      service_node = Tree::TreeNode.new(service_label,service_hash)
       service_provider_node << service_node
     end
 
+end
     
+def get_service_label(params)
+  if params.has_key?(:name) && params[:name] != nil
+       service_label = params[:name]
+     elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
+       service_label = params[:variables][:name]
+     else
+       return nil
+     end
+end
+
  #write services tree
+   def add_to_services_tree(service_hash)
    
      services_node = @service_tree["Services"]
    
 
        provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:service_type]  )
+          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
           services_node << provider_node
         end
         
-        servicetype_node =  provider_node[service_hash[:service_type] ]
+        servicetype_node =  provider_node[service_hash[:type_path] ]
           if servicetype_node == nil
-            servicetype_node =  Tree::TreeNode.new(service_hash[:service_type],service_hash[:service_type])
+            servicetype_node =  Tree::TreeNode.new(service_hash[:type_path],service_hash[:type_path])
             provider_node << servicetype_node
           end
           
@@ -294,15 +321,17 @@ rescue Exception=>e
               servicetype_node << service_node
             end
     #FIXME need to handle updating service 
-        
-
-    save_tree
+            
 rescue Exception=>e
     puts e.message 
     log_exception(e)
     
   end
-  
+
+  def find_engine_services(params)
+    engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
+    return engine_node
+  end
 
   
   
@@ -323,16 +352,15 @@ rescue Exception=>e
           @last_error ="No service record found for " + service_hash[:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] 
           return false
         end
-        
-        #deal with new way variables are pass 
-        if service_hash.has_key?(:name) == true  && service_hash[:name] != nil
-          service_node = service_provider_node[service_hash[:name]]
-        elsif service_hash.has_key?(:variables) == true  && service_hash[:variables][:name] != nil
-          service_node = service_provider_node[service_hash[:variables][:name]]
-else  
-  p service_hash
-  P :notfound
+        service_name = get_service_label(service_hash)
+        if service_name  
+          p service_hash
+          P :notfound
         end 
+        service_node = service_provider_node[service_name]
+        #deal with new way variables are pass 
+      
+
 #          p :really_removing
 #          p service_node
 #         p :from

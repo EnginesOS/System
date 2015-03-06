@@ -1618,14 +1618,7 @@ class EnginesCore
    end
   
   def attach_service(service_hash)
-    #parent_engine
-    #service_type
-    #service_provider
-    #name
-    #service hash from fields in Software Service Definition for that service
-    
-    
-   
+ 
     if service_hash == nil
       p :attached_Service_passed_nil
       return false
@@ -1668,11 +1661,16 @@ class EnginesCore
     return @service_manager
   end
 
-  def find_service_consumers(service_hash)
+  def find_service_consumers(params)
     sm = loadServiceManager()
-    return sm.find_service_consumers(service_hash)
+    return sm.find_service_consumers(params)
   end
-  
+
+  def find_engine_services(params)
+    sm = loadServiceManager()
+        return sm.find_engine_services(params)
+      end
+
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
