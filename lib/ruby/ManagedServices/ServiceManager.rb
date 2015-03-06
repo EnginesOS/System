@@ -62,7 +62,8 @@ class ServiceManager
         return provider_tree
       end
             
-      service_path_tree = provider_tree[service_hash[:type_path]]
+      service_path_tree = get_type_path_node(provider_tree,service_hash)
+      #provider_tree[service_hash[:type_path]]
      
       if service_path_tree == nil
         return false
@@ -110,16 +111,16 @@ class ServiceManager
        end
   end
   
-  def get_type_path_node(parent_node,service_hash) 
-   if service_hash.has_key?(:type_path) == false || service_hash[:type_path] == nil
+  def get_type_path_node(parent_node,type_path) 
+   if type_path == nil
      return nil
    end
    
-   if service_hash[:type_path].include?("/") == false
-     return parent_node[service_hash[:type_path]]
+   if type_path.include?("/") == false
+     return parent_node[type_path]
    
   else
-    sub_paths= service_hash[:type_path].split("/")
+    sub_paths= type_path.split("/")
     sub_node = parent_node
       sub_paths.each do |sub_path|
         sub_node = sub_node[path]
