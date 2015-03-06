@@ -38,10 +38,10 @@ class DNSService < ManagedService
   def add_consumer_to_service(site_hash)
   
       ip_str = site_hash[:ip]
-      hostName = site_hash[:name]
+      hostName = site_hash[:hostname]
         puts hostName + " " + ip_str 
       if ip_str.length > 7 #fixme need to check valid ip and that host is valid
-       return  @core_api.register_dns(site_hash[:name],ip_str)
+       return  @core_api.register_dns(site_hash[:hostname],ip_str)
       else
         return false
       end
@@ -51,7 +51,7 @@ class DNSService < ManagedService
   def rm_consumer_from_service (site_hash)
 p :deregister
 p site_hash[:name]
-    return  @core_api.deregister_dns(site_hash[:name])
+    return  @core_api.deregister_dns(site_hash[:hostname])
   end
   
 end
