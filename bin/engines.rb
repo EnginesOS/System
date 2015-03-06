@@ -45,9 +45,11 @@ def do_cmd(c_type,containerName,command)
     
   when "providers"
      providers = core_api.list_providers_in_use
+   
      providers.each do |provider|
-                 "Name:" +  providers 
+                 "Name:" +  provider
               end
+       
     
   when "services"
     ## latter this will allow addressing engine.type_path
