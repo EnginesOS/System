@@ -45,6 +45,7 @@ def do_cmd(c_type,containerName,command)
     
   when "providers"
     providers = core_api.list_providers_in_use
+    p providers
     provider.each do |provider|
                 p "Name:" +  providers 
               end
