@@ -43,16 +43,16 @@ def do_cmd(c_type,containerName,command)
   #  puts "Command" + command + " on " + containerName
   case command
   when "services"
-    ## latter this will allow addressing engine.service_path.provider.name
-#    hash_values =  containerName.split(".")
-#        if hash_values.count < 1
-#          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
-#          exit
-#        end 
-#        params = Hash.new()
-#    if hash_values.count >1
-#        params[:publisher_namespace] = hash_values[1]
-#  end
+    ## latter this will allow addressing engine.type_path
+    hash_values =  containerName.split(".")
+        if hash_values.count < 1
+          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
+          exit
+        end 
+        params = Hash.new()
+    if hash_values.count >1
+        params[:type_path] = hash_values[1]
+  end
 #      if hash_values.count >2 
 #        params[:service_type] = hash_values[2]
 #    end
