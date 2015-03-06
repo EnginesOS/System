@@ -53,15 +53,15 @@ def do_cmd(c_type,containerName,command)
     if hash_values.count >1
         params[:type_path] = hash_values[1]
   end
-#      if hash_values.count >2 
-#        params[:service_type] = hash_values[2]
-#    end
+      if hash_values.count >2 
+        params[:name] = hash_values[2]
+    end
 #        if hash_values.count > 3
 #          params[:name]= hash_values[3]
 #        end
 #        p "looking_for"
 #        p params
-    params = Hash.new()
+    
     params[:engine_name]=hash_values[0]
       
         services = core_api.find_engine_services(params)
