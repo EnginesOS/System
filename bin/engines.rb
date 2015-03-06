@@ -69,7 +69,7 @@ def do_cmd(c_type,containerName,command)
           p "Service " + containerName + " not found"
           exit
         end
-        if service == nil
+        if services == nil
           p "No Match"
         end
         
