@@ -74,8 +74,8 @@ def do_cmd(c_type,containerName,command)
         end
         
         services.each do |service|
-          p "Name:" + service.name
-          p "Content:" + service.content
+          p "Name:" + service.name.to_s
+          p "Content:" + service.content.to_s
         end
         
 when "providers"
