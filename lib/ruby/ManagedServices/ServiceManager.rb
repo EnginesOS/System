@@ -353,9 +353,9 @@ rescue Exception=>e
           return false
         end
         service_name = get_service_label(service_hash)
-        if service_name  
+        if service_name  == nil
           p service_hash
-          P :notfound
+          p :notfound
         end 
         service_node = service_provider_node[service_name]
         #deal with new way variables are pass 
