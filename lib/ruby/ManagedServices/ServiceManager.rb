@@ -88,7 +88,7 @@ class ServiceManager
        
        if type_path.include?("/") == false
          service_node = parent_node[type_path]
-           if service_node != nil
+           if service_node == nil
              service_node = Tree::TreeNode.new(type_path,type_path)
              parent_node << service_node
            end
@@ -116,7 +116,8 @@ class ServiceManager
   end
   
   def get_type_path_node(parent_node,type_path) 
-   if type_path == nil
+   if type_path == nil || parent_node == nil
+     p :get_type_path_node_passed_a_nil
      return nil
    end
    
@@ -310,13 +311,19 @@ rescue Exception=>e
     
     service_label = get_service_label(service_hash)
     
-if service_label == nil
+if service_type_node == nil 
+  p service_hash
+  p :error_service_type_node
+  return false
+end   
+if service_label == nil 
   p service_hash
   p :error_service_hash_has_nil_name
   return false
 end
 
     service_node = service_type_node[service_label]
+    
     if  service_node == nil
       service_node = Tree::TreeNode.new(service_label,service_hash)
       service_type_node << service_node
