@@ -353,7 +353,7 @@ rescue Exception=>e
       if params.has_key?(:type_path) && params[:type_path] != nil
         services = engine_node[params[:type_path]]                   
               if params.has_key?(:name) && params[:name] != nil
-                 service = providers[params[:name]]
+                 service = services[params[:name]]
                 return service
               else
             return services
