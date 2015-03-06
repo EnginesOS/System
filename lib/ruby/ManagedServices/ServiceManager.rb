@@ -229,7 +229,7 @@ rescue Exception=>e
       
   end
   
-  def add_to_managed_services_tree
+  def add_to_managed_services_tree(service_hash)
     #write managed engine tree
     active_engines_node = @service_tree["ManagedEngine"]
 
