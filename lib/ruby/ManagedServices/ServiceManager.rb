@@ -256,34 +256,45 @@ rescue Exception=>e
        engine_node << service_type_node       
     end
     
-    provider = service_hash[:publisher_namespace]
-     if provider == nil || provider.length ==0
-       provider="Engines"
-     end
-     
-    service_provider_node = service_type_node[provider]
-    if service_provider_node == nil
-      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
-      service_type_node << service_provider_node
-    end
-   # p :service_name
-#    p service_hash[:name]
     
     service_label = get_service_label(service_hash)
-   
-      
-      if service_label == nil
-        p service_hash
-        p :error_service_hash_has_nil_name
-        return false
-      end
-    if service_provider_node[service_label] != nil
-      #FixME need to explain why
-      return false
-    else
-      service_node = Tree::TreeNode.new(service_label,service_hash)
-      service_provider_node << service_node
-    end
+if service_label == nil
+  p service_hash
+  p :error_service_hash_has_nil_name
+  return false
+end
+
+    service_node = Tree::TreeNode.new(service_label,service_hash)
+     service_type_node << service_node
+    
+#    provider = service_hash[:publisher_namespace]
+#     if provider == nil || provider.length ==0
+#       provider="Engines"
+#     end
+#     
+#    service_provider_node = service_type_node[provider]
+#    if service_provider_node == nil
+#      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
+#      service_type_node << service_provider_node
+#    end
+#   # p :service_name
+##    p service_hash[:name]
+    
+#    service_label = get_service_label(service_hash)
+#   
+#      
+#      if service_label == nil
+#        p service_hash
+#        p :error_service_hash_has_nil_name
+#        return false
+#      end
+#    if service_provider_node[service_label] != nil
+#      #FixME need to explain why
+#      return false
+#    else
+#      service_node = Tree::TreeNode.new(service_label,service_hash)
+#      service_type_node << service_node
+#    end
 
 end
     
