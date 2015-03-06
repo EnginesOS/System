@@ -44,6 +44,7 @@ def do_cmd(c_type,containerName,command)
   case command
     
   when "providers"
+    p "providers"
     providers = core_api.list_providers_in_use
     p providers
     provider.each do |provider|
