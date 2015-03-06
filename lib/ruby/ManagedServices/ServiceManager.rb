@@ -87,18 +87,24 @@ class ServiceManager
        end
        
        if type_path.include?("/") == false
-         engine_node = Tree::TreeNode.new(type_path,type_path)
-         parent_node << engine_node
-         return engine_node
+         service_node = parent_node[type_path]
+           if service_node != nil
+             service_node = Tree::TreeNode.new(type_path,type_path)
+             parent_node << service_node
+           end
+         return service_node
        else
          
          sub_paths= type_path.split("/")
             prior_node = parent_node
             count=0
             
-              sub_paths.each do |sub_path|                                
-                sub_node = Tree::TreeNode.new(sub_path,sub_path)
-                prior_node << sub_node
+              sub_paths.each do |sub_path|
+                sub_node = prior_node[sub_path]
+                if sub_node == nil                           
+                  sub_node = Tree::TreeNode.new(sub_path,sub_path)
+                  prior_node << sub_node
+                end
                 prior_node = sub_node
                 count+=1
                 if count == sub_paths.count
