@@ -332,12 +332,15 @@ rescue Exception=>e
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
       if params.has_key?(:type_path) && params[:type_path] != nil
         services = engine_node[params[:type_path]]
-          if params.has_key?(:name) && params[:name] != nil
-            service = services[params[:name]]
-              return service
-          else
-            return services
+          if params.has_key?(:publisher_namespace) && params[:publisher_namespace] != nil
+            providers = engine_node[params[:publisher_namespace]]              
+              if params.has_key?(:name) && params[:name] != nil
+                 services = providers[params[:name]]
+                return services
+              else
+            return providers
           end
+       end
       else
         return engine_node
       end
