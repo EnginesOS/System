@@ -386,7 +386,9 @@ class EngineBuilder
         packages=String.new
         @docker_file.puts("#OS Packages")
         @blueprint_reader.os_packages.each do |package|
-          packages = packages + package + " "
+          if package != nil
+            packages = packages + package + " "
+          end
         end
         if packages.length >1
           @docker_file.puts("\nRUN apt-get install -y " + packages )
