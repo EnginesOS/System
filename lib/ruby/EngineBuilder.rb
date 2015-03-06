@@ -1022,6 +1022,8 @@ class EngineBuilder
     end #FIXME
 
     def add_service (service_hash)
+      p :add_service
+      p service_hash
       @builder.fill_in_dynamic_vars(service_hash)
       if service_hash[:service_type] == "filesystem"
         add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
@@ -2191,7 +2193,7 @@ end
   
   def fill_in_dynamic_vars(service_hash)
     p "FILLING_+@+#+@+@+@+@+@+"
-    if service_hash.has_key?(:variables) == false
+    if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
       return
     end
     service_hash[:variables].each do |variable|
