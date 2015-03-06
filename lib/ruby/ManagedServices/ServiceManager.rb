@@ -425,7 +425,7 @@ rescue Exception=>e
 def software_service_definition(params)
   require 'json'
   
-  if params[:publisher_namespace]   == nil ||  params[:service_type] == nil
+  if params[:publisher_namespace]   == nil ||  params[:type_path] == nil
     p :nil_in_params
     p params
     return nil
