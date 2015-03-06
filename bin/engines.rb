@@ -42,6 +42,13 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
+    
+  when "providers"
+    providers = core_ap.list_providers_in_use
+    provider.each do |provider|
+                p "Name:" +  providers 
+              end
+    
   when "services"
     ## latter this will allow addressing engine.type_path
     hash_values =  containerName.split(".")
