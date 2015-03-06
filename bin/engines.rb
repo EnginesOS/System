@@ -47,7 +47,7 @@ def do_cmd(c_type,containerName,command)
      providers = core_api.list_providers_in_use
 
      providers.each do |provider|
-              p  "Name:" +  provider
+              p   provider
               end
        
     
