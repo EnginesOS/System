@@ -58,11 +58,11 @@ class ServiceManager
       
     provider_tree = get_service_provider_tree(service_hash[:publisher_namespace])
      
-      if service_hash.has_key?(:service_type) == false  || service_hash[:service_type] == nil
+      if service_hash.has_key?(:type_path) == false  || service_hash[:type_path] == nil
         return provider_tree
       end
             
-      service_path_tree = provider_tree[service_hash[:service_type]]
+      service_path_tree = provider_tree[service_hash[:type_path]]
      
       if service_path_tree == nil
         return false
@@ -256,34 +256,53 @@ rescue Exception=>e
        engine_node << service_type_node       
     end
     
-    provider = service_hash[:publisher_namespace]
-     if provider == nil || provider.length ==0
-       provider="Engines"
-     end
-     
-    service_provider_node = service_type_node[provider]
-    if service_provider_node == nil
-      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
-      service_type_node << service_provider_node
-    end
-   # p :service_name
-#    p service_hash[:name]
     
     service_label = get_service_label(service_hash)
-   
-      
-      if service_label == nil
-        p service_hash
-        p :error_service_hash_has_nil_name
-        return false
-      end
-    if service_provider_node[service_label] != nil
-      #FixME need to explain why
-      return false
-    else
+    
+if service_label == nil
+  p service_hash
+  p :error_service_hash_has_nil_name
+  return false
+end
+
+    service_node = service_type_node[service_label]
+    if  service_node == nil
       service_node = Tree::TreeNode.new(service_label,service_hash)
-      service_provider_node << service_node
+      service_type_node << service_node
+    else
+      p :Node_existed
+      p service_label
     end
+    
+    
+#    provider = service_hash[:publisher_namespace]
+#     if provider == nil || provider.length ==0
+#       provider="Engines"
+#     end
+#     
+#    service_provider_node = service_type_node[provider]
+#    if service_provider_node == nil
+#      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
+#      service_type_node << service_provider_node
+#    end
+#   # p :service_name
+##    p service_hash[:name]
+    
+#    service_label = get_service_label(service_hash)
+#   
+#      
+#      if service_label == nil
+#        p service_hash
+#        p :error_service_hash_has_nil_name
+#        return false
+#      end
+#    if service_provider_node[service_label] != nil
+#      #FixME need to explain why
+#      return false
+#    else
+#      service_node = Tree::TreeNode.new(service_label,service_hash)
+#      service_type_node << service_node
+#    end
 
 end
     
@@ -330,7 +349,18 @@ rescue Exception=>e
 
   def find_engine_services(params)
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
-    return engine_node
+      
+      if params.has_key?(:type_path) && params[:type_path] != nil
+        services = engine_node[params[:type_path]]                   
+              if params.has_key?(:name) && params[:name] != nil
+                 service = services[params[:name]]
+                return service
+              else
+            return services
+          end      
+      else
+        return engine_node
+    end
   end
 
   
@@ -353,9 +383,9 @@ rescue Exception=>e
           return false
         end
         service_name = get_service_label(service_hash)
-        if service_name  
+        if service_name  == nil
           p service_hash
-          P :notfound
+          p :notfound
         end 
         service_node = service_provider_node[service_name]
         #deal with new way variables are pass 
@@ -425,7 +455,7 @@ rescue Exception=>e
 def software_service_definition(params)
   require 'json'
   
-  if params[:publisher_namespace]   == nil ||  params[:service_type] == nil
+  if params[:publisher_namespace]   == nil ||  params[:type_path] == nil
     p :nil_in_params
     p params
     return nil

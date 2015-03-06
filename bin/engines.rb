@@ -42,36 +42,47 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
-  when "service"
-    ## latter this will allow addressing engine.service_path.provider.name
-#    hash_values =  containerName.split(".")
-#        if hash_values.count < 1
-#          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
-#          exit
-#        end 
-#        params = Hash.new()
-#    if hash_values.count >1
-#        params[:publisher_namespace] = hash_values[1]
-#  end
-#      if hash_values.count >2 
-#        params[:service_type] = hash_values[2]
-#    end
-#        if hash_values.count > 3
-#          params[:name]= hash_values[3]
-#        end
+    
+  when "providers"
+     providers = core_api.list_providers_in_use
+
+     providers.each do |provider|
+              p  "Name:" +  provider
+              end
+       
+    
+  when "services"
+    ## latter this will allow addressing engine.type_path
+    hash_values =  containerName.split(".")
+        if hash_values.count < 1
+          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
+          exit
+        end 
+        params = Hash.new()
+    if hash_values.count >1
+        params[:type_path] = hash_values[1]
+  end     
+ 
 #        p "looking_for"
 #        p params
-    params = Hash.new()
-    params[:engine_name]=containerName
+  if hash_values.count >2
+         params[:name] = hash_values[2]
+     end 
+    params[:engine_name]=hash_values[0]
       
         services = core_api.find_engine_services(params)
         if services == false
           p "Service " + containerName + " not found"
           exit
         end
-        services.each do |service|
-          p service.name
-          p service.content
+        if services == nil
+          p "No Match from params " + params.to_s
+        else
+        
+          services.each do |service|
+            p "Name:" + service.name.to_s
+            p "Content:" + service.content.to_s
+          end
         end
         
 when "providers"
@@ -89,7 +100,7 @@ when "providers"
     
     params[:publisher_namespace] = hash_values[0]
   if hash_values.count >1 
-    params[:service_type] = hash_values[1]
+    params[:type_path] = hash_values[1]
 end
     if hash_values.count > 2
       params[:name]= hash_values[2]
