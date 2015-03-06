@@ -330,7 +330,17 @@ rescue Exception=>e
 
   def find_engine_services(params)
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
-    return engine_node
+      if params.has_key(:type_path) && params[:type_path] != nil
+        services = engine_node[params[:type_path]]
+          if params.has_key(:name) && params[:name] != nil
+            service = services[params[:name]]
+              return service
+          else
+            return services
+          end
+      else
+        return engine_node
+      end
   end
 
   
