@@ -58,7 +58,7 @@ class ServiceManager
       
     provider_tree = get_service_provider_tree(service_hash[:publisher_namespace])
      
-      if service_hash.has_key?(:type_path) == false  || service_hash[:service_type] == nil
+      if service_hash.has_key?(:type_path) == false  || service_hash[:type_path] == nil
         return provider_tree
       end
             
