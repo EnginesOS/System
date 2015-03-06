@@ -62,7 +62,7 @@ class ServiceManager
         return provider_tree
       end
             
-      service_path_tree = get_type_path_node(provider_tree,service_hash)
+      service_path_tree = get_type_path_node(provider_tree,service_hash[:type_path])
       #provider_tree[service_hash[:type_path]]
      
       if service_path_tree == nil
@@ -403,7 +403,7 @@ rescue Exception=>e
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
       
       if params.has_key?(:type_path) && params[:type_path] != nil
-        services = get_type_path_node(engine_node,params) #engine_node[params[:type_path]]                   
+        services = get_type_path_node(engine_node,params[:type_path]) #engine_node[params[:type_path]]                   
               if services != nil  && params.has_key?(:name) && params[:name] != nil
                  service = services[params[:name]]
                 return service
