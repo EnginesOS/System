@@ -1810,9 +1810,9 @@ class EngineBuilder
                  end
                  index=0
                  #FIXME There has to be a ruby way
-                 @blueprint_reader.sed_strings.each do |sed_string|                   
-                   sed_string = process_templated_string(sed_string[:sed_str])
-                   sed_strings[index][:sed_str] = sed_string
+                 @blueprint_reader.sed_strings[:sed_str].each do |sed_string|                   
+                   sed_string = process_templated_string(sed_string)
+                   sed_strings[:sed_str][index] = sed_string
                    index+=1
                   end       
                  
