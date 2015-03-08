@@ -1421,9 +1421,11 @@ class EngineBuilder
      end
      
      def random cnt
+       len = cnt.to_i
+       rnd = SecureRandom.hex(len)
        p :RANDOM__________
-       p cnt
-       return "random_" + cnt
+       p rnd.byteslice(0,len) 
+       return rnd.byteslice(0,len) 
      end
      
      
