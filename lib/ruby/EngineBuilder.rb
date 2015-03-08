@@ -1419,6 +1419,14 @@ class EngineBuilder
      def blueprint
        return @builder.blueprint
      end
+     
+     def random cnt
+       p :RANDOM__________
+       p cnt
+       return "random" + cnt
+     end
+     
+     
     
   end
 
@@ -1797,10 +1805,20 @@ class EngineBuilder
       create_php_ini
       create_apache_config                 
       create_scritps
-
+        @blueprint_reader.environments.each do |env|
+              env.value = process_templated_string(env.value)
+                 end
+                 index=0
+                 #FIXME There has to be a ruby way
+                 @blueprint_reader.sed_strings.each do |sed_string|                   
+                   sed_string = process_templated_string(sed_string)
+                   sed_strings[index] = sed_string
+                   index+=1
+                  end       
+                 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
-
+      
       env_file = File.new(get_basedir + "/home/app.env","a")
       env_file.puts("")
       @blueprint_reader.environments.each do |env|
@@ -2076,9 +2094,22 @@ end
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name.to_sym
+    if name.include?('(')  == true
+      cmd = name.split('(')
+      name = cmd[0]
+      if cmd.count >1
+        args = cmd[1]     
+        args_array = args.split
+      end
+    end
+      
     var_method = @builder_public.method(name.to_sym)
-    
-    val = var_method.call
+    if args
+      p :got_args
+      val = var_method.call args
+    else
+      val = var_method.call 
+    end
     p :got_val
     p val
     return val
