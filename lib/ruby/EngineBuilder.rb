@@ -2099,7 +2099,7 @@ end
       name = cmd[0]
       if cmd.count >1
         args = cmd[1]     
-        args.sub!(/)/,"")
+        args.sub!(/\)/,"")
         args_array = args.split
       end
     end
