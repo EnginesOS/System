@@ -1423,7 +1423,7 @@ class EngineBuilder
      def random cnt
        p :RANDOM__________
        p cnt
-       return "random" + cnt
+       return "random_" + cnt
      end
      
      
@@ -2099,6 +2099,7 @@ end
       name = cmd[0]
       if cmd.count >1
         args = cmd[1]     
+        args.sub!(/)/,"")
         args_array = args.split
       end
     end
