@@ -1806,8 +1806,12 @@ class EngineBuilder
       create_apache_config                 
       create_scritps
         @blueprint_reader.environments.each do |env|
+          p :env_before
+          p env.value
               env.value = process_templated_string(env.value)
-                 end
+              p :env_after
+              p env.value
+          end
                  index=0
                  #FIXME There has to be a ruby way
                  @blueprint_reader.sed_strings[:sed_str].each do |sed_string|                   
