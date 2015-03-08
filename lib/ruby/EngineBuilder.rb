@@ -2234,8 +2234,8 @@ end
     end
     service_hash[:variables].each do |variable|
       p variable
-      if variable[1] != nil && variable[1].start_with?("$_")
-      variable[1].sub!(/\$/,"")
+      if variable[1] != nil && variable[1].start_with?("_")
+      #variable[1].sub!(/\$/,"")
         result = evaluate_function(variable[1])
         service_hash[:variables][variable[0]] = result
     end
@@ -2249,7 +2249,8 @@ def evaluate_function(function)
      elsif function.start_with?("_Blueprint")
        return resolve_blueprint_variable(function)
      end
-     
+     #if no match return orginial
+     return function
 rescue Exception=> e
   return ""
   
