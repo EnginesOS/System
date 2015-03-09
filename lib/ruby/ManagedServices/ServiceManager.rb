@@ -433,8 +433,10 @@ rescue Exception=>e
           p   @last_error
           return false
         end
+        
        service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
        if service_provider_node == nil
+         p service_type_node.children 
           @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace]
             p   @last_error
           return false
