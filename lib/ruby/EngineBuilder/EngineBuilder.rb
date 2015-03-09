@@ -878,7 +878,7 @@ end
       p service_def[:target_environment_variables]
      
       if service_hash[:servicetype_name] == "filesystem"
-         add_file_service(service[:name], service[:engine_path])
+         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
 
       service_hash[:service_handle] = service_hash[:variables][:name]

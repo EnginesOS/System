@@ -36,12 +36,13 @@ class NginxService < ManagedService
     p proto
      
     site_hash = Hash.new()
-    site_hash[:parent_engine]=engine.containerName
-    site_hash[:name]=engine.containerName
-    site_hash[:container_type]=engine.ctype
-    site_hash[:fqdn]=engine.fqdn
-    site_hash[:port]=engine.port.to_s
-    site_hash[:proto]= proto
+    site_hash[:variables] = Hash.new
+    site_hash[:variables][:parent_engine]=engine.containerName
+    site_hash[:variables][:name]=engine.containerName
+    site_hash[:variables][:container_type]=engine.ctype
+    site_hash[:variables][:fqdn]=engine.fqdn
+    site_hash[:variables][:port]=engine.port.to_s
+    site_hash[:variables][:proto]= proto
     site_hash[:type_path] = site_hash[:service_type]='nginx'
     site_hash[:publisher_namespace] = "EnginesSystem" 
      return site_hash       

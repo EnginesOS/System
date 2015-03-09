@@ -463,6 +463,7 @@ rescue Exception=>e
                 end
             end
 
+      sucess =  true
             
       services_node = @service_tree["Services"]
       if services_node !=nil
@@ -479,18 +480,29 @@ rescue Exception=>e
                   service_node.remove!(provider_node)
                 end
               end
-            end                          
+            else
+              sucess =  false
+            end  
+            else
+                          sucess =  false                       
           end
+          else
+              sucess =  false
         end
+        else
+              sucess =  false
       end
             
             
-            sucess =  true
+           
           end         
           
           if sucess == true
             save_tree
             return true
+          else
+            p :FAILED_TO_REMOVE_SERVICE
+            p service_hash
           end
           
 @last_error ="No service record found for " + service_hash[:variables][:parent_engine].to_s
@@ -503,7 +515,8 @@ rescue Exception=>e
   if service_hash != nil
     p service_hash
   end
-  log_exception(e)    
+  log_exception(e)
+  return false    
   end
 
 def software_service_definition(params)

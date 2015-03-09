@@ -70,7 +70,7 @@ class SysConfig
   
   @@SMTPHost="smtp.engines.internal"
   def SysConfig.SMTPHost
-    return @@SysConfig.SMTPHost
+    return @@SMTPHost
   end
   def SysConfig.CustomApacheConfFile
     return @@CustomApacheConfFile
