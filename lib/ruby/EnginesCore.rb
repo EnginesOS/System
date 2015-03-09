@@ -221,7 +221,7 @@ class EnginesCore
       clear_error
       begin
         
-        if  site_hash[:variables][:fqdn] == nill || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
+        if  site_hash[:variables][:fqdn] == nil || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
           return true 
         end
         
