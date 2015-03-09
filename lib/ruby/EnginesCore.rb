@@ -220,7 +220,12 @@ class EnginesCore
     def register_site(site_hash)
       clear_error
       begin
-        proto = site_hash[:proto]
+        
+        if  site_hash[:variables][:fqdn] == nill || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
+          return true 
+        end
+        
+        proto = site_hash[:variables][:proto]
         if proto =="http https"
           template_file=SysConfig.HttpHttpsNginxTemplate
         elsif proto =="http"
@@ -283,7 +288,7 @@ class EnginesCore
       end
       file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:variables][:fqdn] + ".site"
       return file_name
-
+      
     end
 
     def deregister_site(site_hash)
