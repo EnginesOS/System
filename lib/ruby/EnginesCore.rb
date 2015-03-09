@@ -266,7 +266,7 @@ class EnginesCore
     def hash_to_site_str(site_hash)
       clear_error
       begin
-        return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s
+        return site_hash[:name].to_s + ":" +  site_hash[:variables][:fqdn].to_s + ":" + site_hash[:variables][:port].to_s  + ":" + site_hash[:variables][:proto].to_s
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -281,7 +281,7 @@ class EnginesCore
       if proto == "http https"
         proto ="http_https"
       end
-      file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:fqdn] + ".site"
+      file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:variables][:fqdn] + ".site"
       return file_name
 
     end
