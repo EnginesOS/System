@@ -49,35 +49,35 @@ class ServiceManager
   
   
   
-  def find_service_consumers(service_hash)
+  def find_service_consumers(service_query_hash)
       
-      if service_hash.has_key?(:publisher_namespace) == false || service_hash[:publisher_namespace]  == nil
+      if service_query_hash.has_key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace]  == nil
        p :no_publisher_namespace
         return false
       end
       
-    provider_tree = get_service_provider_tree(service_hash[:publisher_namespace])
+    provider_tree = get_service_provider_tree(service_query_hash[:publisher_namespace])
      
-      if service_hash.has_key?(:type_path) == false  || service_hash[:type_path] == nil
+      if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
         return provider_tree
       end
             
-      service_path_tree = get_type_path_node(provider_tree,service_hash[:type_path])
+      service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
       #provider_tree[service_hash[:type_path]]
      
       if service_path_tree == nil
         return false
       end
             
-      if service_hashhas_key?(:name) == false || service_hash[:name]  == nil
+      if service_query_hash.has_key?(:name) == false || service_query_hash[:name]  == nil
         return  service_path_tree
       end
       
-     if  service_path_tree[service_hash[:name]] == nil
+     if  service_path_tree[service_query_hash[:name]] == nil
        return false
       end
 
-      return service_path_tree[service_hash[:name]]
+      return service_path_tree[service_query_hash[:name]]
       
   end
     
