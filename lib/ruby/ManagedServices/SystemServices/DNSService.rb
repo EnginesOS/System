@@ -38,7 +38,7 @@ class DNSService < ManagedService
   
   def add_consumer_to_service(site_hash)
   
-      ip_str = site_hash[:ip]
+      ip_str = site_hash[:variables][:ip]
       hostName = site_hash[:variables][:hostname]
         puts hostName + " " + ip_str 
       if ip_str.length > 7 #fixme need to check valid ip and that host is valid
