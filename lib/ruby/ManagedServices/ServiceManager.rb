@@ -424,16 +424,19 @@ rescue Exception=>e
       parent_engine_node = @service_tree["ManagedEngine"][service_hash[:variables][:parent_engine]]
         if parent_engine_node == nil
           @last_error ="No service record found for "+ service_hash[:variables][:parent_engine] 
+          p   @last_error
           return false
         end
       service_type_node = parent_engine_node[service_hash[:type_path]]
         if service_type_node == nil
           @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
+          p   @last_error
           return false
         end
        service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
        if service_provider_node == nil
-          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] 
+          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace]
+            p   @last_error
           return false
         end
         service_name = get_service_label(service_hash)
@@ -493,7 +496,8 @@ rescue Exception=>e
               sucess =  false
       end
             
-            
+else
+    p "failed to load service tree!"
            
           end         
           
