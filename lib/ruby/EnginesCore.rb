@@ -275,7 +275,7 @@ class EnginesCore
 
     def get_site_file_name(site_hash)
       file_name = String.new
-      proto = site_hash[:proto]
+      proto = site_hash[:variables][:proto]
       p :proto
       p proto
       if proto == "http https"
