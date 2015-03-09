@@ -8,8 +8,8 @@ require "git"
 require 'fileutils'
 require 'json'
 require '/opt/engines/lib/ruby/SystemAccess.rb'
-require 'BluePrintReader.rb'
-require 'DockerFileBuilder.rb'
+require_relative 'BluePrintReader.rb'
+require_relative 'DockerFileBuilder.rb'
 
 class EngineBuilder
   @repoName=nil
