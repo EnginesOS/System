@@ -799,8 +799,12 @@ end
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name.to_sym
-    
-    return @blueprint_reader.environments[name.to_sym]
+    @blueprint_reader.environments.each do |env_hash|
+      if env_hash[:name] == name
+        return env_hash[:value]
+      end
+    end
+    return ""
     
     rescue Exception=>e
       p @blueprint_reader.environments
