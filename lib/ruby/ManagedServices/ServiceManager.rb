@@ -434,13 +434,13 @@ rescue Exception=>e
           return false
         end
         
-       service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
-       if service_provider_node == nil
-         p service_type_node.children 
-          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace]
-            p   @last_error
-          return false
-        end
+#       service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
+#       if service_provider_node == nil
+#         p service_type_node.children 
+#          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace]
+#            p   @last_error
+#          return false
+#        end
         service_name = get_service_label(service_hash)
         if service_name  == nil
           p service_hash
@@ -457,7 +457,7 @@ rescue Exception=>e
           #FIXME a method should do this in a loop
           
           if service_node != nil          
-              service_type_node.remove!(service_provider_node)              
+              service_type_node.remove!(service_node)              
                 if service_type_node.children.count ==0
                   parent_engine_node.remove!(service_type_node)
                     if parent_engine_node.children.count == 0
