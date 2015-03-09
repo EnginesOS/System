@@ -861,6 +861,7 @@ end
       if service_hash.has_key?(:variables) == false
           service_hash[:variables] = Hash.new
         end
+      service_hash[:variables][:parent_engine]=@container_name
 #      p :service_def_for
 #      p service_hash[:type_path]
 #      p service_hash[:publisher_namespace]
