@@ -44,6 +44,10 @@ def do_cmd(c_type,containerName,command)
   case command
     
   when "providers"
+
+      engines_api = EnginesOSapi.new()
+      core_api = engines_api.core_api
+      
      providers = core_api.list_providers_in_use
 
      providers.each do |provider|
@@ -85,11 +89,7 @@ def do_cmd(c_type,containerName,command)
           end
         end
         
-when "providers"
-  engines_api = EnginesOSapi.new()
-  core_api = engines_api.core_api
-  
-  
+
   when "list_services"
     hash_values =  containerName.split(".")
     if hash_values.count < 1
