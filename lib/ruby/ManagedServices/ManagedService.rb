@@ -38,10 +38,11 @@ class ManagedService < ManagedContainer
 
   def get_site_hash(engine)
     site_hash = Hash.new()
-    site_hash[:name]=engine.containerName
-    site_hash[:container_type]=engine.ctype
-    site_hash[:fqdn]=engine.fqdn
-    site_hash[:port]=engine.port.to_s
+    site_hash[:variables]= Hash.new
+    site_hash[:variables][:name]=engine.containerName
+    site_hash[:variables][:container_type]=engine.ctype
+    site_hash[:variables][:fqdn]=engine.fqdn
+    site_hash[:variables][:port]=engine.port.to_s
     site_hash[:publisher_namespace] = "EnginesSystem"
     return site_hash
 
@@ -78,7 +79,7 @@ class ManagedService < ManagedContainer
     end
 
     #      if @consumers.has_key?(site_hash[:name]) == true     # only add if doesnt exists but allow register above
-    @consumers.store(site_hash[:name], site_hash)
+    @consumers.store(site_hash[:variables][:name], site_hash)
 
     # end
     save_state
@@ -106,7 +107,7 @@ class ManagedService < ManagedContainer
       end
 
     if @consumers !=  nil 
-      @consumers.delete(service_hash[:name]) { |el| "#{el} not found" }
+      @consumers.delete(service_hash[:variables][:name]) { |el| "#{el} not found" }
     end
     save_state
     return result

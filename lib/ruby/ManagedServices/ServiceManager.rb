@@ -69,11 +69,11 @@ class ServiceManager
         return false
       end
             
-      if service_hash.has_key?(:name) == false || service_hash[:name]  == nil
+      if service_hash[:variables].has_key?(:name) == false || service_hash[:variables][:name]  == nil
         return  service_path_tree
       end
       
-     if  service_path_tree[service_hash[:name]] == nil
+     if  service_path_tree[service_hash[:variables][:name]] == nil
        return false
       end
 
