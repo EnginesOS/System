@@ -490,7 +490,7 @@ class EngineBuilder
                    @blueprint_reader.sed_strings[:sed_str][index] = sed_string
                    index+=1
                   end       
-                 
+    
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
       dockerfile_builder.write_files_for_docker
       
@@ -799,8 +799,12 @@ end
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
     p name.to_sym
-    
-    return @blueprint_reader.environments[name.to_sym]
+    @blueprint_reader.environments.each do |env_hash|
+      if env_hash[:name] == name
+        return env_hash[:value]
+      end
+    end
+    return ""
     
     rescue Exception=>e
       p @blueprint_reader.environments
@@ -822,7 +826,10 @@ end
        #FIX ME Should call this but Keys dont match blueprint designer issue
        #@core_api.add_service(service,mc)     
       service_hash[:parent_engine]=@container_name
-        
+    if service_hash.has_key?(:variables) == false
+      service_hash[:variables] = Hash.new
+    end
+      service_hash[:variables][:parent_engine]=@container_name
        service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
@@ -851,6 +858,10 @@ end
     @blueprint_reader.services.each() do |service_hash|
       
       service_hash[:parent_engine]=@container_name
+      if service_hash.has_key?(:variables) == false
+          service_hash[:variables] = Hash.new
+        end
+      service_hash[:variables][:parent_engine]=@container_name
 #      p :service_def_for
 #      p service_hash[:type_path]
 #      p service_hash[:publisher_namespace]

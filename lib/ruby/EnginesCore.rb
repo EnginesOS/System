@@ -220,7 +220,12 @@ class EnginesCore
     def register_site(site_hash)
       clear_error
       begin
-        proto = site_hash[:proto]
+        
+        if  site_hash[:variables][:fqdn] == nil || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
+          return true 
+        end
+        
+        proto = site_hash[:variables][:proto]
         if proto =="http https"
           template_file=SysConfig.HttpHttpsNginxTemplate
         elsif proto =="http"
@@ -236,18 +241,18 @@ class EnginesCore
         end
 
         file_contents=File.read(template_file)
-        site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
-        site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-        site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+        site_config_contents =  file_contents.sub("FQDN",site_hash[:variables][:fqdn])
+        site_config_contents = site_config_contents.sub("PORT",site_hash[:variables][:port])
+        site_config_contents = site_config_contents.sub("SERVER",site_hash[:variables][:name]) #Not HostName
         if proto =="https" || proto =="http https"
-          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
-          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:variables][:fqdn])) #Not HostName
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:variables][:fqdn])) #Not HostName
         end
         if proto =="http https"
           #Repeat for second entry
-          site_config_contents =  site_config_contents.sub("FQDN",site_hash[:fqdn])
-          site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-          site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+          site_config_contents =  site_config_contents.sub("FQDN",site_hash[:variables][:fqdn])
+          site_config_contents = site_config_contents.sub("PORT",site_hash[:variables][:port])
+          site_config_contents = site_config_contents.sub("SERVER",site_hash[:variables][:name]) #Not HostName
         end
 
         site_filename = get_site_file_name(site_hash)
@@ -266,7 +271,7 @@ class EnginesCore
     def hash_to_site_str(site_hash)
       clear_error
       begin
-        return site_hash[:name].to_s + ":" +  site_hash[:fqdn].to_s + ":" + site_hash[:port].to_s  + ":" + site_hash[:proto].to_s
+        return site_hash[:name].to_s + ":" +  site_hash[:variables][:fqdn].to_s + ":" + site_hash[:variables][:port].to_s  + ":" + site_hash[:variables][:proto].to_s
       rescue  Exception=>e
         log_exception(e)
         return false
@@ -275,15 +280,15 @@ class EnginesCore
 
     def get_site_file_name(site_hash)
       file_name = String.new
-      proto = site_hash[:proto]
+      proto = site_hash[:variables][:proto]
       p :proto
       p proto
       if proto == "http https"
         proto ="http_https"
       end
-      file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:fqdn] + ".site"
+      file_name=SysConfig.NginxSiteDir + "/" + proto + "_" +  site_hash[:variables][:fqdn] + ".site"
       return file_name
-
+      
     end
 
     def deregister_site(site_hash)
