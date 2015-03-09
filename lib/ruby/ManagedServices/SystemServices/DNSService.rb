@@ -40,7 +40,8 @@ class DNSService < ManagedService
   
       ip_str = site_hash[:variables][:ip]
       hostName = site_hash[:variables][:hostname]
-        puts hostName + " " + ip_str 
+        puts hostName 
+          p ip_str 
       if ip_str.length > 7 #fixme need to check valid ip and that host is valid
        return  @core_api.register_dns(site_hash[:variables][:hostname],ip_str)
       else
