@@ -71,6 +71,9 @@ class EngineBuilder
      def runtime
        @builder.runtime
      end     
+     def fqdn
+       return @builder.hostname + "." + @builder.domain_name
+     end
      def set_environments 
        @builder.set_environments
      end     
