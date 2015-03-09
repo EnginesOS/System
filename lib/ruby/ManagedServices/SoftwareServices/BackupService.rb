@@ -50,8 +50,8 @@ class BackupService < SoftwareService
       site_dest +=site_hash[:dest_address] + "/" 
       site_dest +=site_hash[:dest_folder]
         
-      ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
-      SystemUtils.run_system(ssh_cmd)
+  #    ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
+  #    SystemUtils.run_system(ssh_cmd)
       #FIXME shoudl return about result and not just true
       return true
       
