@@ -196,7 +196,7 @@ class BluePrintReader
      p :add_service
      p service_hash
      @builder.fill_in_dynamic_vars(service_hash)
-     if service_hash[:service_type] == "filesystem"
+     if service_hash[:type_path] == "filesystem/local/filesystem"
        add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
      end
      @services.push(service_hash)
