@@ -68,12 +68,15 @@ class SysConfig
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
   
-  
+  @@SMTPHost="smtp.engines.internal"
+  def SysConfig.SMTPHost
+    return @@SysConfig.SMTPHost
+  end
   def SysConfig.CustomApacheConfFile
-    @@CustomApacheConfFile
+    return @@CustomApacheConfFile
   end 
   def SysConfig.CustomPHPiniFile
-    @@CustomPHPiniFile
+    return @@CustomPHPiniFile
   end
   def SysConfig.ScriptsDir
     return @@ScriptsDir

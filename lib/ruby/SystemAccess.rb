@@ -13,5 +13,7 @@ class SystemAccess
   def mysql_host
     return SysConfig.DBHost
   end
-  
+  def smtp_host
+    return SysConfig.SMTPHost
+  end
 end
