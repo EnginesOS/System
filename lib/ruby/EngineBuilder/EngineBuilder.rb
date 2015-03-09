@@ -71,6 +71,9 @@ class EngineBuilder
      def runtime
        @builder.runtime
      end     
+     def fqdn
+       return @builder.hostname + "." + @builder.domain_name
+     end
      def set_environments 
        @builder.set_environments
      end     
@@ -791,7 +794,7 @@ end
        return ""
   end
   
-  def resolve_engines_variable
+  def resolve_engines_variable(match)
     name = match.sub!(/_Engines\(/,"")
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
@@ -875,7 +878,7 @@ end
       p service_def[:target_environment_variables]
      
       if service_hash[:servicetype_name] == "filesystem"
-         add_file_service(service[:name], service[:engine_path])
+         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
 
       service_hash[:service_handle] = service_hash[:variables][:name]
