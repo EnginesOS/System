@@ -794,7 +794,7 @@ end
        return ""
   end
   
-  def resolve_engines_variable
+  def resolve_engines_variable(match)
     name = match.sub!(/_Engines\(/,"")
     name.sub!(/[\)]/,"")
     p :getting_system_value_for
