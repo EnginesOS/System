@@ -236,18 +236,18 @@ class EnginesCore
         end
 
         file_contents=File.read(template_file)
-        site_config_contents =  file_contents.sub("FQDN",site_hash[:fqdn])
-        site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-        site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+        site_config_contents =  file_contents.sub("FQDN",site_hash[:variables][:fqdn])
+        site_config_contents = site_config_contents.sub("PORT",site_hash[:variables][:port])
+        site_config_contents = site_config_contents.sub("SERVER",site_hash[:variables][:name]) #Not HostName
         if proto =="https" || proto =="http https"
-          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
-          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:fqdn])) #Not HostName
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:variables][:fqdn])) #Not HostName
+          site_config_contents = site_config_contents.sub("CERTNAME",get_cert_name(site_hash[:variables][:fqdn])) #Not HostName
         end
         if proto =="http https"
           #Repeat for second entry
-          site_config_contents =  site_config_contents.sub("FQDN",site_hash[:fqdn])
-          site_config_contents = site_config_contents.sub("PORT",site_hash[:port])
-          site_config_contents = site_config_contents.sub("SERVER",site_hash[:name]) #Not HostName
+          site_config_contents =  site_config_contents.sub("FQDN",site_hash[:variables][:fqdn])
+          site_config_contents = site_config_contents.sub("PORT",site_hash[:variables][:port])
+          site_config_contents = site_config_contents.sub("SERVER",site_hash[:variables][:name]) #Not HostName
         end
 
         site_filename = get_site_file_name(site_hash)
