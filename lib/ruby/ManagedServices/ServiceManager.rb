@@ -295,14 +295,14 @@ rescue Exception=>e
       return false
     end
 
-    if service_hash.has_key?(:parent_engine) == false && service_hash[:parent_engine] != nil
+    if service_hash[:variables].has_key?(:parent_engine) == false && service_hash[:variables][:parent_engine] != nil
       p :no_parent_engine_key
       return false
     end
-    if active_engines_node[service_hash[:parent_engine] ] != nil
-      engine_node = active_engines_node[ service_hash[:parent_engine] ]
+    if active_engines_node[service_hash[:variables][:parent_engine] ] != nil
+      engine_node = active_engines_node[ service_hash[:variables][:parent_engine] ]
     else
-      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
+      engine_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash[:variables][:parent_engine] + " Engine Service Tree")
       active_engines_node << engine_node
     end
 
@@ -388,9 +388,9 @@ end
         
         service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
    
-          service_node = service_type_node[service_hash[:parent_engine]]
+          service_node = service_type_node[service_hash[:variables][:parent_engine]]
             if service_node == nil
-              service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+              service_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash)
               service_type_node << service_node
             end
     #FIXME need to handle updating service 
@@ -421,19 +421,19 @@ rescue Exception=>e
   
   def remove_service service_hash
    
-      parent_engine_node = @service_tree["ManagedEngine"][service_hash[:parent_engine]]
+      parent_engine_node = @service_tree["ManagedEngine"][service_hash[:variables][:parent_engine]]
         if parent_engine_node == nil
-          @last_error ="No service record found for "+ service_hash[:parent_engine] 
+          @last_error ="No service record found for "+ service_hash[:variables][:parent_engine] 
           return false
         end
       service_type_node = parent_engine_node[service_hash[:type_path]]
         if service_type_node == nil
-          @last_error ="No service record found for " + service_hash[:parent_engine] + ":" +  service_hash[:service_type]
+          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
           return false
         end
        service_provider_node =  service_type_node[service_hash[:publisher_namespace]]
        if service_provider_node == nil
-          @last_error ="No service record found for " + service_hash[:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] 
+          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + " type_path:" +  service_hash[:type_path] + " Provider " + service_hash[:publisher_namespace] 
           return false
         end
         service_name = get_service_label(service_hash)
@@ -471,7 +471,7 @@ rescue Exception=>e
         if provider_node != nil
           servicetype_node =  provider_node[service_hash[:type_path] ]
           if servicetype_node != nil
-            service_node = servicetype_node[service_hash[:parent_engine]]
+            service_node = servicetype_node[service_hash[:variables][:parent_engine]]
             if service_node != nil
               servicetype_node.remove!(service_node)
               if servicetype_node.children.count == 0
