@@ -4,7 +4,7 @@ require_relative "SoftwareService.rb"
 class CronService < SoftwareService 
   
   def add_consumer_to_service(site_hash)
-    site_hash[:container_name] = site_hash[:parent_engine]  
+    site_hash[:variables][:parent_engine] = site_hash[:parent_engine]  
       return  add_cron(site_hash) 
      end
      
@@ -30,7 +30,7 @@ class CronService < SoftwareService
       for n in 0..4
         cron_line +=  cron_line_split[n] + " "
       end
-      cron_line +=" docker exec " +  cron_hash[:container_name] + " "
+      cron_line +=" docker exec " +  cron_hash[:variables][:parent_engine] + " "
       n=5
       cnt = cron_line_split.count
 
@@ -55,8 +55,8 @@ class CronService < SoftwareService
       if cron_job != nil
         p cron_job
         p :looking_at
-        p cron_job[1][:container_name]
-        if cron_job[1][:container_name] ==  containerName
+        p cron_job[1][:variables][:parent_engine]
+        if cron_job[1][:variables][:parent_engine] ==  containerName
           remove_consumer(cron_job[1])
         end
       end
