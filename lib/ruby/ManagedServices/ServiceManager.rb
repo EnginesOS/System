@@ -454,9 +454,7 @@ rescue Exception=>e
          # p service_provider_node
           #FIXME a method should do this in a loop
           
-          if service_node != nil
-            service_provider_node.remove!(service_node)
-            if service_provider_node.children.count ==0
+          if service_node != nil          
               service_type_node.remove!(service_provider_node)              
                 if service_type_node.children.count ==0
                   parent_engine_node.remove!(service_type_node)
@@ -494,9 +492,7 @@ rescue Exception=>e
         end
         else
               sucess =  false
-      end
-            
-else
+
     p "failed to load service tree!"
            
           end         
