@@ -3,11 +3,11 @@ require 'fileutils'
 require 'yaml'
 require "rubygems"
 require "json"
-require "/opt/engines/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "/opt/engines/lib/ruby/ContainerStatistics.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/Container.rb"
-require "/opt/engines/lib/ruby/api/EnginesCore.rb"
+require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 
 require 'objspace'
 
@@ -478,7 +478,8 @@ end
        return false
      end
      service =  EnginesOSapi.loadManagedService("dns",@core_api)
-     if service.is_a?(EnginesOSapiResult)
+     if service.is_a?(ManagedService) == false
+       p failed_to_load_dns_service
        return false
      else
     return service.remove_consumer(self)

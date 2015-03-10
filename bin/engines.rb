@@ -2,7 +2,7 @@
 require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
-require "/opt/engines/lib/ruby/EnginesOSapi.rb"
+require "/opt/engines/lib/ruby/api/public/EnginesOSapi.rb"
 require "/opt/engines/lib/ruby/api/EnginesOSapiResult.rb"
 
 def print_usage

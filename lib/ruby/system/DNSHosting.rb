@@ -2,7 +2,7 @@ require 'socket'
 require 'json';
 require 'open-uri';
 
-require '/opt/engines/lib/ruby/SystemUtils.rb'
+require '/opt/engines/lib/ruby/system/SystemUtils.rb'
 
 module DNSHosting
   def DNSHosting.add_hosted_domain(params,system_api)

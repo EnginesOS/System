@@ -1,6 +1,6 @@
 class EnginesCore
 
-  require "/opt/engines/lib/ruby/SystemUtils.rb"
+  require "/opt/engines/lib/ruby/system/SystemUtils.rb"
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'

@@ -2,14 +2,15 @@ require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"
-require "/opt/engines/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "rubygems"
 require "git"
 require 'fileutils'
 require 'json'
-require '/opt/engines/lib/ruby/SystemAccess.rb'
+
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
+require_relative 'SystemAccess.rb'
 
 class EngineBuilder
   @repoName=nil
