@@ -16,6 +16,10 @@ class SystemUtils
     p object.to_s
   end 
  end
+  def SystemUtils.log_error(object)
+    SystemUtils.log_output(object,-1)
+   end
+ 
  
   def SystemUtils.symbolize_keys(hash)
     hash.inject({}){|result, (key, value)|

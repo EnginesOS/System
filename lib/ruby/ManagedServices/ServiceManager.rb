@@ -174,16 +174,7 @@ class ServiceManager
         
   end
 
-#  def attached_volume_services (identifier)
-#    retval=Hash.new
-#    return retval
-#  end
-#  
-#  def attached_database_services (identifier)
-#    retval=Hash.new
-#    return retval
-#  end
-  
+
   def attached_managed_engine_services(identifier)
 
     retval = Hash.new
@@ -231,12 +222,9 @@ rescue Exception=>e
   def get_service_content(service_node)
     retval = Hash.new
     service_node.children.each do |provider_node|
-#      p :provider_node_name
-#      p provider_node.name
+
       retval[provider_node.name] = Array.new
           provider_node.children.each do |service_node|
-#            p :service_node_name
-#            p service_node.name
             retval[provider_node.name].push(service_node.content)
           end       
     end
@@ -332,36 +320,7 @@ end
       p service_label
     end
     
-    
-#    provider = service_hash[:publisher_namespace]
-#     if provider == nil || provider.length ==0
-#       provider="Engines"
-#     end
-#     
-#    service_provider_node = service_type_node[provider]
-#    if service_provider_node == nil
-#      service_provider_node = Tree::TreeNode.new(provider,service_hash[:type_path] + " Provider:"+ provider)
-#      service_type_node << service_provider_node
-#    end
-#   # p :service_name
-##    p service_hash[:name]
-    
-#    service_label = get_service_label(service_hash)
-#   
-#      
-#      if service_label == nil
-#        p service_hash
-#        p :error_service_hash_has_nil_name
-#        return false
-#      end
-#    if service_provider_node[service_label] != nil
-#      #FixME need to explain why
-#      return false
-#    else
-#      service_node = Tree::TreeNode.new(service_label,service_hash)
-#      service_type_node << service_node
-#    end
-
+ 
 end
     
 def get_service_label(params)
@@ -530,7 +489,7 @@ def software_service_definition(params)
     return nil
   end
   
-  service_filename = SysConfig.ServiceTemplateDir + "/" + params[:publisher_namespace] + "/" + params[:service_type]+ ".yaml"
+  service_filename = SysConfig.ServiceTemplateDir + "/" + params[:publisher_namespace] + "/" + params[:type_path]+ ".yaml"
   if File.exists?(service_filename)
     yaml = File.read(service_filename)
     software_service_def  = SoftwareServiceDefinition.from_yaml(yaml)

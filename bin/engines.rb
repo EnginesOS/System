@@ -3,7 +3,7 @@ require "/opt/engines/lib/ruby/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ManagedEngine.rb"
 require "/opt/engines/lib/ruby/EnginesOSapi.rb"
-require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
+require "/opt/engines/lib/ruby/api/EnginesOSapiResult.rb"
 
 def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")

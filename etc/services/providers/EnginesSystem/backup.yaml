@@ -4,6 +4,10 @@ accepts:
   "ManagedEngine"
 - !ruby/object:String    
   "ManagedService"
+- !ruby/object:String    
+  "Volume"
+- !ruby/object:String    
+  "database"
 author: Engines
 title: Backup
 description: "Backup tasks"
