@@ -1,5 +1,5 @@
 
-require "/opt/engines/lib/ruby/ContainerObjects/DatabaseService.rb"
+require "/opt/engines/lib/ruby/containers/ContainerObjects/DatabaseService.rb"
 require_relative  "ManagedService.rb"
 
 class DBManagedService < ManagedService
