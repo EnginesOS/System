@@ -294,6 +294,7 @@ echo "Setting directory and file permissions"
 	chown -R 21000 /opt/engines/run/service_manager/
 	chown -R 21000 /home/engines/deployment/deployed/
 	chown -R 22013 /var/lib/engines/imap
+	chown -R 22014  /var/lib/engines/imap/mail
 	}
 
 function set_os_flavor {
