@@ -251,7 +251,8 @@ mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
-mkdir -p /var/lib/engines/dovecot
+mkdir -p /var/lib/engines/imap/lib
+mkdir -p /var/lib/engines/imap/mail
 mkdir -p /opt/engines/etc/syslog/conf/
 mkdir -p /home/engines/db
 touch /home/engines/db/production.sqlite3
@@ -292,7 +293,7 @@ echo "Setting directory and file permissions"
 	chown -R 21000 /home/engines/db/
 	chown -R 21000 /opt/engines/run/service_manager/
 	chown -R 21000 /home/engines/deployment/deployed/
-	chown -R 22013 /var/lib/engines/dovecot
+	chown -R 22013 /var/lib/engines/imap
 	}
 
 function set_os_flavor {
