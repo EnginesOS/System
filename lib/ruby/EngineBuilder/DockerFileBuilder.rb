@@ -104,7 +104,7 @@ class DockerFileBuilder
     end
 
   rescue Exception=>e
-    log_exception(e)
+    SystemUtils.log_exception(e)
     return false
   end
 
@@ -144,7 +144,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -173,7 +173,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -236,7 +236,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -255,7 +255,7 @@ class DockerFileBuilder
         count_layer
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -316,7 +316,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+SystemUtils.log_exception(e)
       return false
     end
   end
@@ -336,7 +336,7 @@ class DockerFileBuilder
         end
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -362,7 +362,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -376,7 +376,7 @@ class DockerFileBuilder
       @docker_file.write(builder_frag)
       count_layer
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -398,7 +398,7 @@ class DockerFileBuilder
       count_layer
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -429,7 +429,7 @@ class DockerFileBuilder
         File.chmod(0755,scripts_path + "pre-running.sh")
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -500,7 +500,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -544,7 +544,7 @@ class DockerFileBuilder
       end
     end
   rescue Exception=>e
-    log_exception(e)
+    SystemUtils.log_exception(e)
     return false
   end
 
@@ -654,7 +654,7 @@ class DockerFileBuilder
       end
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
 
@@ -673,7 +673,7 @@ class DockerFileBuilder
       count_layer
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -715,7 +715,7 @@ class DockerFileBuilder
         count_layer
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -737,21 +737,12 @@ class DockerFileBuilder
       end
     end
   rescue Exception=>e
-    log_exception(e)
+    SystemUtils.log_exception(e)
     return false
   end
 
   protected
 
-  def log_exception(e)
-    log_build_errors( e.to_s)
-    puts(e.to_s)
-    @last_error=  e.to_s
-    e.backtrace.each do |bt |
-      p bt
-    end
-    return false
-  end
   ##################### End of
 end
 

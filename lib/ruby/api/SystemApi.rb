@@ -17,7 +17,7 @@ class SystemApi
 
      rescue Exception=>e
        container.last_error=("Failed To Create " + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
 
        return false
      end
@@ -46,7 +46,7 @@ class SystemApi
      p dns_pid.to_s
      return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
    rescue  Exception=>e
-     log_exception(e)
+     SystemUtils.log_exception(e)
      return false
    end
 
@@ -67,7 +67,7 @@ class SystemApi
          return false
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -86,7 +86,7 @@ class SystemApi
          return false
        end
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -104,7 +104,7 @@ class SystemApi
        return true
      rescue Exception=>e
        container.last_error=("Failed To Create " + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
 
        return false
      end
@@ -119,7 +119,7 @@ class SystemApi
          return cid
        end
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return "-1";
      end
    end
@@ -134,7 +134,7 @@ class SystemApi
        return true #File may or may not exist
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
 
        return false
      end
@@ -158,7 +158,7 @@ class SystemApi
        #File.delete(dns_cmd_file_name)
        return retval
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -175,7 +175,7 @@ class SystemApi
        return true
      rescue Exception=>e
        container.last_error=( "Failed To Delete " )
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -195,7 +195,7 @@ class SystemApi
        File.delete(dns_cmd_file_name)
        return retval
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -254,7 +254,7 @@ class SystemApi
        result = restart_nginx_process()
        return result
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -264,7 +264,7 @@ class SystemApi
      begin
        return site_hash[:name].to_s + ":" +  site_hash[:variables][:fqdn].to_s + ":" + site_hash[:variables][:port].to_s  + ":" + site_hash[:variables][:proto].to_s
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -297,7 +297,7 @@ class SystemApi
        result = restart_nginx_process()
        return result
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -309,7 +309,7 @@ class SystemApi
        ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
        return run_system(ssh_cmd)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -320,7 +320,7 @@ class SystemApi
        ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
        return run_system(ssh_cmd)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -355,7 +355,7 @@ class SystemApi
        return true
      rescue Exception=>e
        container.last_error=( "load error")
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -377,7 +377,7 @@ class SystemApi
        f.write(blueprint.to_json)
        f.close
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -399,7 +399,7 @@ class SystemApi
        end
        return blueprint
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -962,12 +962,5 @@ class SystemApi
      SystemUtils.log_output(e_str,10)
    end
 
-   def log_exception(e)
-     e_str = e.to_s()
-     e.backtrace.each do |bt |
-       e_str += bt
-     end
-     log_error(e_str)
-   end
 
  end #END of SystemApi

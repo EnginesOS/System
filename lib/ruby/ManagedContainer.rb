@@ -174,7 +174,7 @@ end
 rescue Exception=>e
    p :json_Str
    p @res
-  log_exception(e)
+SystemUtils.log_exception(e)
   return "nocontainer"
 end
 end
@@ -700,13 +700,6 @@ end
    return "-1"  
 
     end
-def log_exception(e)
-    
-    puts(e.to_s)
-    #@last_error=  e.to_s
-    e.backtrace.each do |bt |
-      p bt
-    end
-  end   
+
 end
 

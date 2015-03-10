@@ -13,7 +13,7 @@ class ServiceManager
     end
     rescue Exception=>e
         puts e.message 
-        log_exception(e)
+    SystemUtils.log_exception(e)
         
   end
 
@@ -170,7 +170,7 @@ class ServiceManager
     p objectName
     rescue Exception=>e
         puts e.message 
-        log_exception(e)
+    SystemUtils.log_exception(e)
         
   end
 
@@ -215,7 +215,7 @@ class ServiceManager
  
 rescue Exception=>e
     puts e.message 
-    log_exception(e)
+SystemUtils.log_exception(e)
     
   end
   
@@ -252,7 +252,7 @@ rescue Exception=>e
     
 rescue Exception=>e
     puts e.message 
-    log_exception(e)
+SystemUtils.log_exception(e)
     
   end
 
@@ -270,7 +270,7 @@ rescue Exception=>e
       save_tree
   rescue Exception=>e
       puts e.message 
-      log_exception(e)
+    SystemUtils.log_exception(e)
       
   end
   
@@ -356,7 +356,7 @@ end
             
 rescue Exception=>e
     puts e.message 
-    log_exception(e)
+SystemUtils.log_exception(e)
     
   end
 
@@ -476,7 +476,7 @@ rescue Exception=>e
   if service_hash != nil
     p service_hash
   end
-  log_exception(e)
+SystemUtils.log_exception(e)
   return false    
   end
 
@@ -505,7 +505,7 @@ rescue Exception=>e
   p :error
   p params
   p service_filename
-log_exception(e)
+  SystemUtils.log_exception(e)
   return nil
 end  
 
@@ -519,7 +519,7 @@ end
       return service_tree
     rescue Exception=>e
       puts e.message + " with " + tree_data.to_s
-      log_exception(e)
+      SystemUtils.log_exception(e)
     end
   end
 
@@ -532,16 +532,9 @@ end
     return true
   rescue Exception=>e
     @last_error=( "load error")
-    log_exception(e)
+    SystemUtils.log_exception(e)
     return false
   end
 
-  def log_exception(e)
-    e_str = e.to_s()
-    e.backtrace.each do |bt |
-      e_str += bt
-    end
-    @last_error = e_str
-    SystemUtils.log_output(e_str,10)
-  end
+  
 end
