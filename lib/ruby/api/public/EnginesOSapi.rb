@@ -1,7 +1,7 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
-require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
 
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"

@@ -1,5 +1,5 @@
 
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
+
 require_relative "SoftwareService.rb"
 
 class NagiosService < SoftwareService

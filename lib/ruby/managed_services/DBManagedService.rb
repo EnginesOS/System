@@ -1,4 +1,4 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
+
 require "/opt/engines/lib/ruby/ContainerObjects/DatabaseService.rb"
 require_relative  "ManagedService.rb"
 
