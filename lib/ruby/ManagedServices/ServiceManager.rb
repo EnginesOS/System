@@ -174,16 +174,7 @@ class ServiceManager
         
   end
 
-#  def attached_volume_services (identifier)
-#    retval=Hash.new
-#    return retval
-#  end
-#  
-#  def attached_database_services (identifier)
-#    retval=Hash.new
-#    return retval
-#  end
-  
+
   def attached_managed_engine_services(identifier)
 
     retval = Hash.new

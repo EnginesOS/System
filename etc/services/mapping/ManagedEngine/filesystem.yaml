@@ -7,7 +7,7 @@ accepts:
 author: Engines
 title: "Volume service"
 description: "Provides Persistant File Storage"
-type_path: filesystem/local/filesystem
+service_type: volume
 service_container: volmanager
 service_provider: EnginesSystem
 persistant: true
@@ -23,7 +23,7 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "$_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  volume_src:
