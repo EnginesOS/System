@@ -559,14 +559,16 @@ class EnginesCore
       command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output command
       run_system(command)
+      #Kludge need to watch for flag (volume_setup complete) 
+      sleep(30)
       command = "docker stop volbuilder;  docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       res = run_system(command)
       if  res != true
-        log_error(res)
-        return false
+        SystemUtils.log_error(res)
+        #return false # don't return false as failure to stop with show error Though should fail to stop
       end
       return true
     rescue Exception=>e
