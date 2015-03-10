@@ -10,7 +10,7 @@ class DockerApi
        return retval
      rescue Exception=>e
        container.last_error=("Failed To Create ")
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -21,7 +21,7 @@ class DockerApi
        commandargs =" start " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -32,7 +32,7 @@ class DockerApi
        commandargs=" stop " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -43,7 +43,7 @@ class DockerApi
        commandargs = " pause " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -66,7 +66,7 @@ class DockerApi
        commandargs=" unpause " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -77,7 +77,7 @@ class DockerApi
        commandargs=" top " + container.containerName + " axl"
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -87,7 +87,7 @@ class DockerApi
      commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s
      return  run_docker(commandargs,container)
    rescue  Exception=>e
-     log_exception(e)
+     SystemUtils.log_exception(e)
      return false
    end
 
@@ -97,7 +97,7 @@ class DockerApi
        commandargs=" logs " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -108,7 +108,7 @@ class DockerApi
        commandargs=" inspect " + container.containerName
        return  run_docker(commandargs,container)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -120,7 +120,7 @@ class DockerApi
        ret_val = run_docker(commandargs,container)
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
 
        return false
      end
@@ -134,7 +134,7 @@ class DockerApi
        return ret_val
      rescue Exception=>e
        container.last_error=( "Failed To Delete " + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -209,7 +209,7 @@ class DockerApi
        @last_error=error_mesg + e.to_s
        container.last_result=(res)
        container.last_error=(error_mesg + e.to_s)
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
 
@@ -227,7 +227,7 @@ class DockerApi
      end
      return e_option
    rescue Exception=>e
-     log_exception(e)
+     SystemUtils.log_exception(e)
      return e.to_s
    end
 
@@ -250,7 +250,7 @@ class DockerApi
      end
      return eportoption
    rescue Exception=>e
-     log_exception(e)
+     SystemUtils.log_exception(e)
      return e.to_s
    end
 
@@ -277,7 +277,7 @@ class DockerApi
 
        return commandargs
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return e.to_s
      end
    end
@@ -308,7 +308,7 @@ class DockerApi
        end
        return volume_option
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -338,7 +338,7 @@ class DockerApi
 
      return container_logdetails
    rescue Exception=>e
-     log_exception(e)
+     SystemUtils.log_exception(e)
 
      return false
    end
@@ -357,18 +357,5 @@ class DockerApi
      @last_error = ""
    end
 
-   def log_exception(e)
-     e_str = e.to_s()
-     n=0
-     e.backtrace.each do |bt |
-       e_str += bt
-       if n >10
-         break
-       end
-       ++n
-     end
-     @last_error = e_str
-     SystemUtils.log_output(e_str,10)
-
-   end
+   
  end#END of DockerApi

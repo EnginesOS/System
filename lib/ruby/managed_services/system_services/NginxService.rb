@@ -1,4 +1,4 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
+
 require_relative  "../ManagedService.rb"
 class NginxService < ManagedService 
   

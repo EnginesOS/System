@@ -1,15 +1,16 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
-require "/opt/engines/lib/ruby/ManagedEngine.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
+require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"
-require "/opt/engines/lib/ruby/SysConfig.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "rubygems"
 require "git"
 require 'fileutils'
 require 'json'
-require '/opt/engines/lib/ruby/SystemAccess.rb'
+
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
+require_relative 'SystemAccess.rb'
 
 class EngineBuilder
   @repoName=nil
@@ -160,7 +161,7 @@ class EngineBuilder
       @log_pipe_rd, @log_pipe_wr = IO.pipe
       @error_pipe_rd, @error_pipe_wr = IO.pipe
     rescue
-      log_exception(e)
+      SystemUtils.log_exception(e)
     end
   end
 
@@ -221,7 +222,7 @@ class EngineBuilder
       return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
 
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -238,7 +239,7 @@ class EngineBuilder
         FileUtils.mv(dir,backup)
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
       #throw BuildException.new(e,"backup_lastbuild")
     end
@@ -264,7 +265,7 @@ class EngineBuilder
       return hash
       
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -274,7 +275,7 @@ class EngineBuilder
       log_build_output("Clone Blueprint Repository")
       g = Git.clone(@repoName, @build_name, :path => SysConfig.DeploymentDir)
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -345,7 +346,7 @@ class EngineBuilder
       end
       return res
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -362,7 +363,7 @@ class EngineBuilder
       return retval
     rescue Exception=>e
 
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -373,7 +374,7 @@ class EngineBuilder
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  + get_basedir
       system  cmd
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -384,7 +385,7 @@ class EngineBuilder
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" +  @blueprint_reader.framework + "/* "  + get_basedir
       system  cmd
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -420,7 +421,7 @@ class EngineBuilder
         puts(@webPort)
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       #      throw BuildException.new(e,"setting web port")
       return false
     end
@@ -437,7 +438,7 @@ class EngineBuilder
         end
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -554,7 +555,7 @@ class EngineBuilder
 
     rescue Exception=>e
 
-      log_exception(e)
+  SystemUtils.log_exception(e)
     post_failed_build_clean_up
       close_all
       return false
@@ -970,7 +971,7 @@ end
       f.write(blueprint.to_json)
       f.close
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -1025,21 +1026,7 @@ end
 
   protected
 
-  def log_exception(e)
-    log_build_errors( e.to_s)
-    puts(e.to_s)
-
-    @last_error=  e.to_s
-    n=0
-    e.backtrace.each do |bt |
-      p bt
-      if n>10
-        break
-      end
-      ++n
-    end
-    #close_all
-  end
+  
 
   def debug(fld)
     puts "ERROR: "

@@ -1,8 +1,9 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/ContainerObjects/DatabaseService.rb"
-require_relative  "ManagedService.rb"
 
-class DBManagedService < ManagedService
+require "/opt/engines/lib/ruby/containers/objects/DatabaseService.rb"
+require_relative "SoftwareService.rb"
+
+
+class PgSQLService < SoftwareService
 
     
 #overloaded for the moment
@@ -56,7 +57,7 @@ class DBManagedService < ManagedService
 
   def get_site_hash(database)
     site_hash = Hash.new()
-    service_type = site_hash[:service_type]='database'
+    site_hash[:service_type]='database'
     site_hash[:name]=database.name
     site_hash[:flavor]=database.flavor
     site_hash[:host]=database.dbHost 

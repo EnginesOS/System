@@ -1,21 +1,21 @@
 
-require "/opt/engines/lib/ruby/ManagedServices/ManagedService.rb"
+require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
 
-require "/opt/engines/lib/ruby/ManagedServices/ServiceManager.rb"
+require "/opt/engines/lib/ruby/managed_services/ServiceManager.rb"
 
-require "/opt/engines/lib/ruby/ManagedServices/SystemServices/DNSService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SystemServices/VolumeService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SystemServices/NginxService.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/DNSService.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/NginxService.rb"
 
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/NagiosService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/PgSQLService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/MySQLService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/MongoDBService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/BackupService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/FTPService.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/SoftwareServiceDefinition.rb"
-require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/CronService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/NagiosService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/PgSQLService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/MySQLService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/MongoDBService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/BackupService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/FTPService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/CronService.rb"
 
 
-#require "/opt/engines/lib/ruby/ManagedServices/DBManagedService.rb"
-#require "/opt/engines/lib/ruby/ManagedServices/SoftwareServices/ShareService.rb"
+#require "/opt/engines/lib/ruby/managed_services/DBManagedService.rb"
+#require "/opt/engines/lib/ruby/managed_services/software_services/ShareService.rb"

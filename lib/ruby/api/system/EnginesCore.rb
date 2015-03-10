@@ -1,6 +1,6 @@
 class EnginesCore
 
-  require "/opt/engines/lib/ruby/SystemUtils.rb"
+  require "/opt/engines/lib/ruby/system/SystemUtils.rb"
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'
@@ -185,7 +185,7 @@ class EnginesCore
     sm = loadServiceManager()
     return sm.list_attached_services_for(objectName,identifier)
     rescue Exception=>e
-               log_exception e
+    SystemUtils.log_exception e
 
     #    object_name = object.class.name.split('::').last
     #
@@ -225,7 +225,7 @@ class EnginesCore
     retval[:subservices] = subservices
     return retval
     rescue Exception=>e
-               log_exception e
+    SystemUtils.log_exception e
   end
 
   def load_software_service(params)
@@ -244,7 +244,7 @@ class EnginesCore
 
     return service
     rescue Exception=>e
-               log_exception e
+    SystemUtils.log_exception e
   end
 
   def setup_email_params(params)
@@ -256,7 +256,7 @@ class EnginesCore
      container=loadManagedService("smtp")
     return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
     rescue   Exception=>e
-      log_exception(e)
+    SystemUtils.log_exception(e)
   end
   
    def set_database_password(container_name,params)
@@ -271,7 +271,7 @@ class EnginesCore
           return true
           
    rescue Exception=>e
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
    end
   
@@ -291,7 +291,7 @@ class EnginesCore
     @last_error = "Failed to attach Service: " + @last_error 
     return  false
     rescue Exception=>e
-                  log_exception e
+    SystemUtils.log_exception e
   end
 
   def dettach_service(params)
@@ -302,7 +302,7 @@ class EnginesCore
         @last_error = "Failed to dettach Service: " + @last_error 
         return  false
         rescue Exception=>e
-                      log_exception e
+    SystemUtils.log_exception e
  
   end
 
@@ -337,7 +337,7 @@ class EnginesCore
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
     rescue Exception=>e
-               log_exception e
+    SystemUtils.log_exception e
   end
 
   def load_avail_services_for(objectname)
@@ -370,7 +370,7 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          log_exception e
+          SystemUtils.log_exception e
           next
         end
       end
@@ -379,7 +379,7 @@ class EnginesCore
     p retval
     return retval
     rescue Exception=>e
-             log_exception e
+    SystemUtils.log_exception e
   end
 
   def load_avail_component_services_for(object)
@@ -401,7 +401,7 @@ class EnginesCore
  
     end
          rescue Exception=>e
-           log_exception e
+    SystemUtils.log_exception e
   end
 
   def set_engine_runtime_properties(params)
@@ -498,7 +498,7 @@ class EnginesCore
       end
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
-      log_exception(e)
+      SystemUtils.log_exception(e)
 
       return false
     end
@@ -518,7 +518,7 @@ class EnginesCore
 
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
 
     end
@@ -540,7 +540,7 @@ class EnginesCore
         return false
       end
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return ret_val
     end
   end
@@ -559,20 +559,22 @@ class EnginesCore
       command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output command
       run_system(command)
-      #Kludge need to watch for flag (volume_setup complete) 
-      sleep(30)
-      command = "docker stop volbuilder;  docker rm volbuilder"
+      
+     #Note no -d so process will not return until setup.sh completes
+           
+           
+      command = "docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       res = run_system(command)
       if  res != true
         SystemUtils.log_error(res)
-        #return false # don't return false as failure to stop with show error Though should fail to stop
+       #don't return false as 
       end
       return true
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -590,7 +592,7 @@ class EnginesCore
       end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
-      log_exception(e)
+      SystemUtils.log_exception(e)
 
       return false
     end
@@ -612,7 +614,7 @@ class EnginesCore
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -653,7 +655,7 @@ class EnginesCore
       end
       return ret_val
     rescue Exception=>e
-      log_exception(e)
+SystemUtils.log_exception(e)
       ret_val[:in] = -1
       ret_val[:out] = -1
       return ret_val
@@ -665,7 +667,7 @@ class EnginesCore
     begin
       return @system_api.is_startup_complete(container)
     rescue  Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -688,7 +690,7 @@ class EnginesCore
       volume_option += " --volumes-from " + container.containerName
       return volume_option
     rescue Exception=>e
-      log_exception(e)
+      SystemUtils.log_exception(e)
       return false
     end
   end
@@ -697,14 +699,6 @@ class EnginesCore
     @last_error = ""
   end
 
-  def log_exception(e)
-    e_str = e.to_s()
-    e.backtrace.each do |bt |
-      e_str += bt
-    end
-    @last_error = e_str
-    SystemUtils.log_output(e_str,10)
-  end
 
 end
 

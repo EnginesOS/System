@@ -1,4 +1,4 @@
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
+
 
 require_relative "SoftwareService.rb"
 class CronService < SoftwareService 
@@ -41,7 +41,7 @@ class CronService < SoftwareService
       return     cron_line
     rescue Exception=>e
 
-      log_exception(e)
+SystemUtils.log_exception(e)
 
       return false
     end
@@ -63,7 +63,7 @@ class CronService < SoftwareService
     end
   rescue Exception=>e
 
-    log_exception(e)
+SystemUtils.log_exception(e)
 
     return false
   end

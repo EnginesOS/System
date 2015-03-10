@@ -17,7 +17,7 @@ class SystemUtils
   end 
  end
   def SystemUtils.log_error(object)
-    SystemUtils.log_output(object,-1)
+    SystemUtils.log_output(object,10)
    end
  
  

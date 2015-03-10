@@ -54,15 +54,7 @@ class BluePrintReader
      return SysConfig.DeploymentDir + "/" + @build_name
    end
 
-   def log_exception(e)
-     log_build_errors(e.to_s)
-     puts(e.to_s)
-     #@last_error=  e.to_s
-     e.backtrace.each do |bt |
-       p bt
-     end
-   end
-
+ 
    def process_blueprint
      begin
        log_build_output("Process BluePrint")
@@ -87,7 +79,7 @@ class BluePrintReader
        read_persistant_dirs
        read_web_port_overide
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
      end
 
    end
@@ -112,7 +104,7 @@ class BluePrintReader
        end
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -143,7 +135,7 @@ class BluePrintReader
        @persistant_files[:src_paths]= src_paths
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -162,7 +154,7 @@ class BluePrintReader
        end
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -225,7 +217,7 @@ class BluePrintReader
        p name
        p dest
        p @container_name
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
      end
    end
@@ -247,7 +239,7 @@ class BluePrintReader
        end
        
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -261,7 +253,7 @@ class BluePrintReader
        @memory =  @blueprint[:software][:required_memory]
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -283,7 +275,7 @@ class BluePrintReader
          end
        end
      rescue Exception=>e
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
      end
    end
@@ -305,7 +297,7 @@ class BluePrintReader
      end
      return true
    rescue Exception=>e
-     log_exception(e)
+SystemUtils.log_exception(e)
      return false
    end
 
@@ -342,7 +334,7 @@ class BluePrintReader
        end
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -367,7 +359,7 @@ class BluePrintReader
          return
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -392,7 +384,7 @@ class BluePrintReader
        return true
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -408,7 +400,7 @@ class BluePrintReader
          @worker_commands.push(worker[:command])
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -459,7 +451,7 @@ class BluePrintReader
        end
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -486,7 +478,7 @@ class BluePrintReader
 
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -528,7 +520,7 @@ class BluePrintReader
          @environments.push(ev)
        end
      rescue Exception=>e
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
      end
    end
