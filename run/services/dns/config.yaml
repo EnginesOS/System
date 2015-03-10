@@ -8,7 +8,7 @@ memory: '42'
 hostName: dns
 domainName: 
 environments:
-image: engines/dns
+image: engines/dns:alpha
 volumes: 
  keys: !ruby/object:Volume
   name: configuration

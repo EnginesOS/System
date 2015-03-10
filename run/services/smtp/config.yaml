@@ -7,7 +7,7 @@ memory: '32'
 hostName: smtp
 domainName: 
 environments: 
-image: engines/smtp
+image: engines/smtp:alpha
 volumes: 
  transport: !ruby/object:Volume
   name: transport
