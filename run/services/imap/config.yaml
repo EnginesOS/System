@@ -24,6 +24,11 @@ volumes:
   remotepath: "/var/mail"
   localpath: "/var/lib/engines/imap/mail"
   mapping_permissions: "rw"
+ ssl_dir: !ruby/object:Volume
+  name: ssl_dir
+  remotepath: "/etc/ssl"
+  localpath: "/opt/engines/etc/ssl/imap"
+  mapping_permissions: "ro"
 eports:
 - !ruby/object:WorkPort
   name: imap

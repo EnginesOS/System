@@ -13,6 +13,11 @@ volumes:
   remotepath: "/etc/postfix/mailname"
   localpath: "/opt/engines/etc/smtp/mailname"
   mapping_permissions: "rw"
+ ssl_dir: !ruby/object:Volume
+  name: ssl_dir
+  remotepath: "/etc/ssl"
+  localpath: "/opt/engines/etc/ssl/smtp"
+  mapping_permissions: "ro"
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
