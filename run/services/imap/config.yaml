@@ -13,6 +13,12 @@ environments:
  setatrun: false
 image: engines/imap
 port: 
+volumes:
+ imap_data: !ruby/object:Volume
+  name: imap_data
+  remotepath: "/var/lib/dovecot"
+  localpath: "/var/lib/engines/dovecot"
+  mapping_permissions: "rw"
 eports:
 - !ruby/object:WorkPort
   name: imap
