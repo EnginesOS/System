@@ -17,7 +17,12 @@ volumes:
  imap_data: !ruby/object:Volume
   name: imap_data
   remotepath: "/var/lib/dovecot"
-  localpath: "/var/lib/engines/dovecot"
+  localpath: "/var/lib/engines/imap/lib"
+  mapping_permissions: "rw"
+ mail_dir: !ruby/object:Volume
+  name: mail_dir
+  remotepath: "/var/mail"
+  localpath: "/var/lib/engines/imap/mail"
   mapping_permissions: "rw"
 eports:
 - !ruby/object:WorkPort
