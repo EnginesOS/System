@@ -4,9 +4,9 @@ require 'yaml'
 require "rubygems"
 require "json"
 require "/opt/engines/lib/ruby/system/SysConfig.rb"
-require "/opt/engines/lib/ruby/ContainerStatistics.rb"
-require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
-require "/opt/engines/lib/ruby/Container.rb"
+require_relative "ContainerStatistics.rb"
+require_relative "ManagedContainerObjects.rb"
+require_relative "Container.rb"
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 
 require 'objspace'
