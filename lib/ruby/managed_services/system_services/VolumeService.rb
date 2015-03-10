@@ -4,8 +4,9 @@ class VolumeService < ManagedService
   
   def add_consumer_to_service(site_hash)
   
-      return  add_volume(site_hash) 
+      return add_volume(site_hash) 
      end
+     
   def rm_consumer_from_service (site_hash)
     
        return  rm_volume(site_hash)  
