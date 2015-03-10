@@ -7,7 +7,7 @@ memory: '16'
 hostName: servicemanager
 domainName: 
 environments: 
-image: engines/fs
+image: engines/fs:alpha
 volumes: 
 eports: []
 repo: na

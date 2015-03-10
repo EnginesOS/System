@@ -7,7 +7,7 @@ memory: '36'
 hostName: ftp
 domainName: 
 environments: 
-image: engines/ftp
+image: engines/ftp:alpha
 volumes:
  ssl_certs: !ruby/object:Volume
   name: ssl_certs
