@@ -7,7 +7,7 @@ require "/opt/engines/lib/ruby/SysConfig.rb"
 require "/opt/engines/lib/ruby/ContainerStatistics.rb"
 require "/opt/engines/lib/ruby/ManagedContainerObjects.rb"
 require "/opt/engines/lib/ruby/Container.rb"
-require "/opt/engines/lib/ruby/EnginesCore.rb"
+require "/opt/engines/lib/ruby/api/EnginesCore.rb"
 
 require 'objspace'
 
