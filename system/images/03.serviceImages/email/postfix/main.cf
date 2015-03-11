@@ -56,11 +56,6 @@ broken_sasl_auth_clients = yes
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 
-smtpd_recipient_restrictions =
-permit_mynetworks
-permit_sasl_authenticated
-reject_unauth_destination
-permit
 
 smtpd_recipient_restrictions = permit_mynetworks, permit_tls_all_clientcerts,permit_sasl_authenticated,reject_non_fqdn_hostname,reject_non_fqdn_sender,reject_non_fqdn_recipient,reject_unauth_destination,reject_unauth_pipelining,reject_invalid_hostname,reject_unknown_sender_domain,reject_unknown_hostname,reject_rbl_client zen.spamhaus.org,reject_rbl_client bl.spamcop.net,reject_rbl_client cbl.abuseat.org,reject_rbl_client dnsbl.njabl.org,reject_rbl_client dnsbl.sorbs.net,reject_rhsbl_sender dsn.rfc-ignorant.org,check_policy_service inet:127.0.0.1:60000,permit
 
