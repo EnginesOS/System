@@ -18,7 +18,8 @@ smtpd_tls_key_file=/etc/ssl/keys/engines.key
 smtpd_use_tls=yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
-
+smtpd_tls_auth_only = yes
+smtpd_tls_security_level = encrypt
 
 myhostname = email.engines.internal
 alias_maps = hash:/etc/aliases
@@ -47,3 +48,21 @@ local_recipient_maps = $virtual_mailbox_maps
 # this is only needed if you want vacation support -
 
 relayhost = smtp.engines.internal
+
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_exceptions_networks = $mynetworks
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+
+smtpd_recipient_restrictions =
+permit_mynetworks
+permit_sasl_authenticated
+reject_unauth_destination
+permit
+
+smtpd_recipient_restrictions = permit_mynetworks, permit_tls_all_clientcerts,permit_sasl_authenticated,reject_non_fqdn_hostname,reject_non_fqdn_sender,reject_non_fqdn_recipient,reject_unauth_destination,reject_unauth_pipelining,reject_invalid_hostname,reject_unknown_sender_domain,reject_unknown_hostname,reject_rbl_client zen.spamhaus.org,reject_rbl_client bl.spamcop.net,reject_rbl_client cbl.abuseat.org,reject_rbl_client dnsbl.njabl.org,reject_rbl_client dnsbl.sorbs.net,reject_rhsbl_sender dsn.rfc-ignorant.org,check_policy_service inet:127.0.0.1:60000,permit
+
+
+smtpd_data_restrictions = reject_unauth_pipelining,reject_multi_recipient_bounce,permit
