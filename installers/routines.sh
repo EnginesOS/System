@@ -269,7 +269,12 @@ mkdir -p  /opt/engines/etc/keys
 mkdir -p /var/log/engines/services/syslog
 
 mkdir -p /var/log/engines/syslog
-
+mkdir -p /opt/engines/etc/ssl/imap
+mkdir -p /opt/engines/etc/ssl/smtp
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
 }
 
 function set_permissions {
@@ -295,6 +300,8 @@ echo "Setting directory and file permissions"
 	chown -R 21000 /home/engines/deployment/deployed/
 	chown -R 22013 /var/lib/engines/imap
 	chown -R 22014  /var/lib/engines/imap/mail
+	chown -R 22013 /opt/engines/etc/ssl/imap
+	chmod og-rw -R /opt/engines/etc/ssl/imap
 	}
 
 function set_os_flavor {
