@@ -51,13 +51,14 @@ cd $MasterImagesDir
 										fi
 										
 										touch last_built
-							fi
+							
 										
 									else
 										echo "Failed to build $tag in $class/$dir"
 										exit
 								fi
-							echo "======================"
+						fi
+							echo "===========$tag==========="
 					fi
 			done
 		cd $MasterImagesDir
