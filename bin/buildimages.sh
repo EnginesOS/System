@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/bash
 
 . /opt/engines/etc/scripts.env
 
@@ -24,6 +24,12 @@ cd $MasterImagesDir
 				cd $MasterImagesDir/$class/$dir
 					if test -f TAG
 						then 
+						new=`find . --newer ./last_built`
+							if test 1 -lt `echo $new |wc -c`
+							then
+								continue
+							fi
+						
 							tag_r=`cat TAG`
 							tag=$(eval "echo $tag_r")
 							echo "----------------------"
