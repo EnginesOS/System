@@ -30,6 +30,11 @@ eports:
   port: 25
   publicFacing: true
   external: 25
+- !ruby/object:WorkPort
+  name: submission
+  port: 587
+  publicFacing: true
+  external: 587
 repo: na
 last_result: |
   b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
