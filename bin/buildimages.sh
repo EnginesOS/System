@@ -27,8 +27,7 @@ cd $MasterImagesDir
 						new=`find . --newer ./last_built`
 							if test 1 -lt `echo $new |wc -c`
 							then
-								continue
-							fi
+															
 						
 							tag_r=`cat TAG`
 							tag=$(eval "echo $tag_r")
@@ -52,6 +51,8 @@ cd $MasterImagesDir
 										fi
 										
 										touch last_built
+							fi
+										
 									else
 										echo "Failed to build $tag in $class/$dir"
 										exit
