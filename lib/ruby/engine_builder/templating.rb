@@ -5,7 +5,9 @@ module Templating
   
   def resolve_system_variable(match)
       name = match.sub!(/_System\(/,"")
-      name.sub!(/[\)]/,"")
+      p :matching
+      p match
+      name.sub!(/[\)]/,"")      
       p :getting_system_value_for
       p name
       
