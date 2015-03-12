@@ -1070,7 +1070,9 @@ class EnginesOSapi
     end
     end
   
-
+  def managed_service_tree
+    return @core_api.managed_service_tree
+  end
 
   def software_service_definition (params)
     retval = @core_api.software_service_definition(params)
