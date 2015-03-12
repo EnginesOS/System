@@ -393,7 +393,7 @@ SystemUtils.log_exception(e)
     
   end
   
-  def get_matched_leafs(service,label,value)
+  def get_matched_leafs(branch,label,value)
     ret_val = Array.new
     branch.children.each do |sub_branch|
            if sub_branch.children.count == 0
