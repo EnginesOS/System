@@ -13,12 +13,23 @@ readme_directory = no
 
 #FIXME SHOULD GENERATE THESES
 # TLS parameters
-smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_cert_file=/etc/ssl/certs/engines.crt
+smtpd_tls_key_file=/etc/ssl/keys/engines.key
 smtpd_use_tls=yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtpd_tls_security_level = may
+smtpd_tls_received_header = yes
+smtpd_tls_loglevel = 3
+tls_random_source = dev:/dev/urandom
+smtpd_tls_auth_only = yes
 
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_exceptions_networks = $mynetworks
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = inet:imap.engines.internal:26561
 
 myhostname = smtp.engines.internal
 alias_maps = hash:/etc/aliases
