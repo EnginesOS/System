@@ -397,6 +397,8 @@ SystemUtils.log_exception(e)
     ret_val = Array.new
     branch.children.each do |sub_branch|
            if sub_branch.children.count == 0
+             p sub_branch.content
+             p sub_branch.content[label]
               if  sub_branch.content[label] == value 
                   ret_val.push(sub_branch.content)  
               end
