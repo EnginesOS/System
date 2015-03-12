@@ -1048,6 +1048,10 @@ class EnginesOSapi
     return @core_api.find_service_consumers(params)
   end
   
+  def get_engine_persistant_services(params)
+    return @core_api.get_engine_persistant_services(params)
+  end
+  
   def attach_service(params)
     if  @core_api.attach_service(params) == true
       success(params[:parent_engine],"attach service")
