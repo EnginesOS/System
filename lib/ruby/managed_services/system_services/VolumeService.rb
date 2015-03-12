@@ -58,7 +58,7 @@ class VolumeService < ManagedService
 #        site_hash[:permission_rw_grp]=volume.vol_permissions.rw_group
 #        site_hash[:service_type]='volume' 
     site_hash[:type_path] =  site_hash[:service_type]
-    site_hash[:variables][:persistant]=true
+  
         return site_hash          
    end
    
