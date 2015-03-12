@@ -402,6 +402,8 @@ SystemUtils.log_exception(e)
               if  sub_branch.content[label] == value 
                   ret_val.push(sub_branch.content)  
               end
+           else
+          get_matched_leafs(sub_branch,label,value) 
        end
     end
        return ret_val
