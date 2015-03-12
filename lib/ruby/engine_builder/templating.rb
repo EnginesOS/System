@@ -7,9 +7,10 @@ module Templating
       name = match.sub!(/_System\(/,"")
       p :matching
       p match
-      name.sub!(/[\)]/,"")      
+      nme = name.sub!(/[\)]/,"")      
       p :getting_system_value_for
       p name
+      p nme
       
       var_method = @system_access.method(name.to_sym)
       val = var_method.call
