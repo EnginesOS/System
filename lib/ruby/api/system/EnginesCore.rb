@@ -311,6 +311,8 @@ class EnginesCore
        return sm.list_providers_in_use
   end
   
+  
+  
   def loadServiceManager()
     if @service_manager == nil
       @service_manager = ServiceManager.new()

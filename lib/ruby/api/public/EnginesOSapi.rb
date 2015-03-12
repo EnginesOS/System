@@ -1044,7 +1044,7 @@ class EnginesOSapi
   end
   
   def find_service_consumers(params)
-    return @core_api.find_managed_services(params)
+    return @core_api.find_engine_services(params)
   end
   
   def attach_service(params)
