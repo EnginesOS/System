@@ -10,6 +10,7 @@ class PgSQLService < SoftwareService
   def add_consumer_to_service(site_hash)
     p :add_consumer
     p site_hash
+    site_hash[:variables][:persistant]=true
     if site_hash.has_key?(:name) == false || site_hash[:name] == nil    
           site_hash[:name] = site_hash[:database_name]
       end
