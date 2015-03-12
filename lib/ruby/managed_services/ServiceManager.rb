@@ -386,7 +386,7 @@ SystemUtils.log_exception(e)
     leafs = Array.new
     
      services.children.each do |service|
-        leafs.concat(get_matched_leafs(service,:persistant,true))
+       leafs =  leafs.concat(get_matched_leafs(service,:persistant,true))
     end
     
     return leafs
