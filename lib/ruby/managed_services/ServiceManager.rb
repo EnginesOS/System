@@ -380,7 +380,30 @@ SystemUtils.log_exception(e)
     end
   end
 
+  def get_engine_persistant_services(params) #params is :engine_name
+    services = find_engine_services(params)
+    
+    leafs = Array.new
+    
+     services.children.each do |service|
+        leafs.concat(get_matched_leafs(service,:persistant,true))
+    end
+    
+    return leafs
+    
+  end
   
+  def get_matched_leafs(service,label,value)
+    ret_val = Array.new
+    branch.children.each do |sub_branch|
+           if sub_branch.children.count == 0
+              if  sub_branch.content[label] == value 
+                  ret_val.push(sub_branch.content)  
+              end
+       end
+    end
+       return ret_val
+  end
   
   def remove_service service_hash
    

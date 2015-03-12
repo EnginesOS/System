@@ -656,6 +656,17 @@ class EngineBuilder
    out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
    content = process_templated_string(content)
    out_file.puts(content)
+   
+   out_file.close
+   
+  rescue Exception=>e
+    if out_file
+      if contents != nil
+        out_file.puts(content)
+      end      
+      out_file.close
+    end
+    SystemUtils.log_exception(e)
  end
  
   def  compile_base_docker_files
@@ -672,6 +683,9 @@ class EngineBuilder
        template = apply_build_variables(template)
        template = apply_blueprint_variables(template)
        template = apply_engines_variables(template)
+    return template
+  rescue Eception=>e
+    SystemUtils.log_exception(e)
     return template
   end
   
