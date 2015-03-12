@@ -4,13 +4,16 @@ module Templating
   
   
   def resolve_system_variable(match)
+    #$config['db_dsnw'] = 'mysql://_Engines(dbuser):_Engines(dbpasswd)@_System(mysql_host)'/_Engines(dbname)';
       name = match.sub!(/_System\(/,"")
-      p :matching
+      p :matching 
+      #"mysql_host)'/_Engines(dbname)"
       p match
-      nme = name.sub!(/[\)]/,"")      
+       name.sub!(/[\)]/,"")      
       p :getting_system_value_for
       p name
-      p nme
+      # mysql_host'/_Engines(dbname)
+      
       
       var_method = @system_access.method(name.to_sym)
       val = var_method.call
@@ -119,7 +122,7 @@ module Templating
     
     def apply_engines_variables(template)
   
-      template.gsub!(/_Engines\([a-z].*\)/) { | match |
+      template.gsub!(/_Engines\([a-z].*\)?/) { | match |
             resolve_engines_variable(match)
           } 
           return template
@@ -139,14 +142,14 @@ def process_templated_string(template)
 
  
  def apply_system_variables(template)
-   template.gsub!(/_System\([a-z].*\)/) { | match |
+   template.gsub!(/_System\([a-z].*\)?/) { | match |
      resolve_system_variable(match)
    } 
    return template
  end
  
  def apply_build_variables(template)
-   template.gsub!(/_Builder\([a-z].*\)/) { | match |
+   template.gsub!(/_Builder\([a-z].*\)?/) { | match |
          resolve_build_variable(match)
        } 
        return template
