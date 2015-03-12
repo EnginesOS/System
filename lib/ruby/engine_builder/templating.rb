@@ -36,7 +36,7 @@ module Templating
   def resolve_blueprint_variable(match)
     name = match.sub!(/_Blueprint\(/,"")
     name.sub!(/[\)]/,"")
-    p :getting_system_value_for
+    p :getting_blueprint_value_for
     p name
     val =""
     
@@ -69,7 +69,7 @@ module Templating
     def resolve_build_variable(match)
       name = match.sub!(/_Builder\(/,"")
       name.sub!(/[\)]/,"")
-      p :getting_system_value_for
+      p :getting_builder_value_for
       p name.to_sym
       if name.include?('(')  == true
         cmd = name.split('(')
@@ -99,7 +99,7 @@ module Templating
     def resolve_engines_variable(match)
       name = match.sub!(/_Engines\(/,"")
       name.sub!(/[\)]/,"")
-      p :getting_system_value_for
+      p :getting_engines_value_for
       p name.to_sym
       @blueprint_reader.environments.each do |env_hash|
         if env_hash[:name] == name
