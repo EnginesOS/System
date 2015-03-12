@@ -5,7 +5,7 @@ require_relative "SoftwareService.rb"
 
 class FTPService < SoftwareService
   def add_consumer_to_service(site_hash)
-    site_hash[:variables][:persistant]=true
+   
     return  add_ftp_service(site_hash)
   end
 
@@ -23,6 +23,7 @@ class FTPService < SoftwareService
 
   def get_site_hash(site_hash)
     site_hash[:service_type]='ftp'
+    site_hash[:variables][:persistant]=true
     site_hash[:publisher_namespace] = "EnginesSystem"
     return site_hash
   end
