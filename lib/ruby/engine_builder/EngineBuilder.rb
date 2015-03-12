@@ -895,6 +895,7 @@ end
       if service_def[:persistant] == false
         next                 
       end
+      service_hash[:variables][:persistant] =true
       p :adding_service
      
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
