@@ -25,7 +25,12 @@ volumes:
   localpath: "/opt/engines/etc/smtp/smarthost_passwd"
   mapping_permissions: "rw" 
 port: 
-eports: []
+eports: 
+- !ruby/object:WorkPort
+  name: smtp
+  port: 465
+  publicFacing: true
+  external: 465
 repo: na
 last_result: |
   nginx
