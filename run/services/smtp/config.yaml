@@ -24,6 +24,11 @@ volumes:
   remotepath: "/etc/postfix/smarthost_passwd"
   localpath: "/opt/engines/etc/smtp/smarthost_passwd"
   mapping_permissions: "rw" 
+ ssl_dir: !ruby/object:Volume
+  name: ssl_dir
+  remotepath: "/etc/ssl"
+  localpath: "/opt/engines/etc/ssl/smtp"
+  mapping_permissions: "ro"
 port: 
 eports: 
 - !ruby/object:WorkPort
