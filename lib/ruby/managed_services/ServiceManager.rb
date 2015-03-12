@@ -359,6 +359,10 @@ rescue Exception=>e
 SystemUtils.log_exception(e)
     
   end
+  
+  def get_managed_engine_tree
+      return @service_tree["ManagedEngine"]
+  end
 
   def find_engine_services(params)
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
@@ -523,6 +527,8 @@ end
     end
   end
 
+  protected
+  
   def save_tree
   #  serialized_object = Marshal.dump(@service_tree)
     serialized_object = YAML::dump(@service_tree)

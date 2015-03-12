@@ -1069,6 +1069,10 @@ class EnginesOSapi
       return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
     end
     end
+    
+  def get_managed_engine_tree
+    return @core_api.get_managed_engine_tree  
+  end
   
   def managed_service_tree
     return @core_api.managed_service_tree
