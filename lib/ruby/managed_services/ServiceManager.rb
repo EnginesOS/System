@@ -386,7 +386,7 @@ SystemUtils.log_exception(e)
     leafs = Array.new
     
      services.children.each do |service|
-        leafs.concat(get_matched_leafs(service,:persistant,true))
+        leafs.concat!(get_matched_leafs(service,:persistant,true))
     end
     
     return leafs
@@ -400,6 +400,8 @@ SystemUtils.log_exception(e)
              p sub_branch.content
              p sub_branch.content[label]
               if  sub_branch.content[label] == value 
+                p :found
+                p  sub_branch.content
                   ret_val.push(sub_branch.content)  
               end
            else
