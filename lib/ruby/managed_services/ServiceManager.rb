@@ -1,4 +1,4 @@
-require 'tree'
+require 'rubytree'
 
 class ServiceManager
 
