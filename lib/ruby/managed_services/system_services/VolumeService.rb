@@ -16,6 +16,7 @@ class VolumeService < ManagedService
   def add_volume(site_hash)
     p :adding_Volume
     p site_hash
+    site_hash[:variables][:persistant]=true
     begin
       dest = SysConfig.LocalFSVolHome() + "/" + site_hash[:variables][:parent_engine] + "/" + site_hash[:variables][:name]
       if Dir.exists?( dest) == false

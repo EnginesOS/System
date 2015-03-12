@@ -326,6 +326,11 @@ class EnginesCore
     return sm.find_service_consumers(params)
   end
   
+  def get_engine_persistant_services(params)
+    sm = loadServiceManager()
+            return sm.get_engine_persistant_services
+      end
+  
   def managed_service_tree
     sm = loadServiceManager()
         return sm.managed_service_tree
