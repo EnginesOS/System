@@ -963,6 +963,7 @@ end
             retry
           end
         rescue  IO::WaitReadable
+          sleep(1)
           # p :wait_readable_retrt
           retry
         rescue EOFError
@@ -971,7 +972,8 @@ end
             p :EOF_retry
             retry
           elsif  stderr.closed? == true
-              return
+            log_build_errors(error_mesg)
+              return true
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
