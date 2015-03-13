@@ -975,8 +975,7 @@ end
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              log_build_errors(err)
-              return
+              log_build_errors(err)           
             end
           end
         end
