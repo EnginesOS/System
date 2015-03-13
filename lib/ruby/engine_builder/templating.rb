@@ -107,14 +107,14 @@ module Templating
       name.sub!(/[\)]/,"")
       p :getting_engines_value_for
       p name.to_sym
-      @blueprint_reader.environments.each do |env_hash|
+      @blueprint_reader.environments.each do |environment|
         p :checking_env
         p :looking_at
-        p env_hash[:name]
+        p environment.name
           p :to_match
           p name
-        if env_hash[:name] == name
-          return env_hash[:value]
+        if environment.name == name
+          return environment.value
         end
       end
       return ""
