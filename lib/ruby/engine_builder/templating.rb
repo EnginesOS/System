@@ -108,6 +108,11 @@ module Templating
       p :getting_engines_value_for
       p name.to_sym
       @blueprint_reader.environments.each do |env_hash|
+        p :checking_env
+        p :looking_at
+        p env_hash[:name]
+          p :to_match
+          p name
         if env_hash[:name] == name
           return env_hash[:value]
         end
