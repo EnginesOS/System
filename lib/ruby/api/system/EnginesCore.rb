@@ -174,7 +174,7 @@ class EnginesCore
   end
 
   def image_exists?(containerName)
-    imageName = containerName +"/deploy"
+    imageName = containerName +":deploy"
     return @docker_api.image_exists?(imageName)
     rescue Exception=>e
     log_execption(e)
