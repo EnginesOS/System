@@ -265,6 +265,7 @@ class BluePrintReader
        log_build_output("Read Pear List")
        pear_mods = @blueprint[:software][:pear_modules]
        if pear_mods == nil || pear_mods.length == 0
+         p :no_pear
          return
          pear_mods.each do |pear_mod|
            mod =  pear_mod[:module]
@@ -291,6 +292,7 @@ class BluePrintReader
      log_build_output("Read Apache Modules List")
      mods =  @blueprint[:software][:apache_modules]
      if mods == nil
+       p :no_apache_modules
        return true
      end
      mods.each do |ap_module|
