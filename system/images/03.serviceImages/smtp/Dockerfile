@@ -1,5 +1,5 @@
 FROM engines/base:$release
-
+Maintainer image.maintainer@engines.onl
 RUN echo "Y" | adduser -q --disabled-password --home /var/spool/postfix -uid 22003 postfix
 RUN apt-get -y update;\
 	apt-get -y install postfix syslogd;\
