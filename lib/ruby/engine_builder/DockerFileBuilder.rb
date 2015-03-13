@@ -260,6 +260,7 @@ class DockerFileBuilder
     end
   end
   
+
   def write_services
     services = @blueprint_reader.services
     @docker_file.puts("#Service Environment Variables")

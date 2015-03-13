@@ -483,7 +483,7 @@ class EngineBuilder
               p :env_after
               p env.value
           end
-          
+          fill_service_environment_varibles
           create_template_files
           create_php_ini
           create_apache_config                 
@@ -903,7 +903,24 @@ end
 
   protected
 
+def fill_service_environment_varibles
   
+  services = @blueprint_reader.services
+    services.each do |service_hash|
+      service_def =  @builder.get_service_def(service_hash)
+               if service_def != nil
+                 service_environment_variables = service_def[:target_environment_variables]
+                 if service_environment_variables != nil
+                      service_environment_variables.values.each do |env_variable_pair|
+                        env_name = env_variable_pair[:environment_name]
+                        value_name = env_variable_pair[:variable_name]
+                        value=service_hash[:variables][value_name.to_sym] 
+                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,ask,true,true,env_name,true)) # env_name , value
+                      end
+                 end   
+               end
+    end
+end
 
   def debug(fld)
     puts "ERROR: "
