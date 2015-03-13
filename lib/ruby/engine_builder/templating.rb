@@ -119,14 +119,7 @@ module Templating
            SystemUtils.log_exception(e) 
           return ""
     end
-    
-    def apply_engines_variables(template)
-  
-      template.gsub!(/_Engines\([a-z].*\)?/) { | match |
-            resolve_engines_variable(match)
-          } 
-          return template
-    end
+
   
 def process_templated_string(template)
       template = apply_system_variables(template)
@@ -140,16 +133,24 @@ def process_templated_string(template)
  end
  
 
+def apply_engines_variables(template)
+
+  template.gsub!(/_Engines\([a-z].*[^)]/) { | match |
+        resolve_engines_variable(match)
+      } 
+      return template
+end
+
  
  def apply_system_variables(template)
-   template.gsub!(/_System\([a-z].*\)?/) { | match |
+   template.gsub!(/_System\([a-z_A-Z^)]*/) { | match |
      resolve_system_variable(match)
    } 
    return template
  end
  
  def apply_build_variables(template)
-   template.gsub!(/_Builder\([a-z].*\)?/) { | match |
+   template.gsub!(/_Builder\([a-z_A-Z^)]*/) { | match |
          resolve_build_variable(match)
        } 
        return template
