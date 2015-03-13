@@ -23,7 +23,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                echo $write
                if test $write -eq 0
                 then
-                   $_dest_file=`echo $dest_file | sed "/home/s///"`
+                   _dest_file=`echo $dest_file | sed "/home/s///"`
                    echo "echo $dest_file | sed "/home/s///""
                    
                   /home/engines/scripts/grant_rw_access.sh `dirname $_dest_file`
