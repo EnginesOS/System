@@ -23,8 +23,10 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                echo $write
                if test $write -eq 0
                 then
-                  /home/engines/scripts/grant_rw_access.sh `dirname $dest_file`
-                  /home/engines/scripts/grant_rw_access.sh $dest_file
+                   $_dest_file=`echo $dest_file | sed "/home/s///"`
+                   
+                  /home/engines/scripts/grant_rw_access.sh `dirname $_dest_file`
+                  /home/engines/scripts/grant_rw_access.sh $_dest_file
                 fi
                
 				rm $dest_file
@@ -33,10 +35,11 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 				
        			process_file 
        			#FIXME only revoke if it was g+w before
-       			if test write -eq 0
+       			if test $write -eq 0
        			then
-       				/home/engines/scripts/revoke_rw_access.sh $dest_file
-       				/home/engines/scripts/revoke_rw_access.sh `dirname $dest_file`
+       				 $_dest_file=`echo $dest_file | sed  "/home/s///"`
+       				/home/engines/scripts/revoke_rw_access.sh $_dest_file
+       				/home/engines/scripts/revoke_rw_access.sh `dirname $_dest_file`
 				fi
         done
         echo run as `whoami` in `pwd`
