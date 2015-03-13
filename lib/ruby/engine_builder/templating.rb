@@ -135,7 +135,7 @@ def process_templated_string(template)
 
 def apply_engines_variables(template)
 
-  template.gsub!(/_Engines\([a-z].*[^)]/) { | match |
+  template.gsub!(/_Engines\([(1-9a-z_A-Z]*\)/) { | match |
         resolve_engines_variable(match)
       } 
       return template
@@ -143,14 +143,14 @@ end
 
  
  def apply_system_variables(template)
-   template.gsub!(/_System\([a-z_A-Z^)]*/) { | match |
+   template.gsub!(/_System\([(1-9a-z_A-Z]*\)/) { | match |
      resolve_system_variable(match)
    } 
    return template
  end
  
  def apply_build_variables(template)
-   template.gsub!(/_Builder\([a-z_A-Z^)]*/) { | match |
+   template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
          resolve_build_variable(match)
        } 
        return template
