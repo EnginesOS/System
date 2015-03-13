@@ -155,7 +155,7 @@ end
  end
  
  def apply_build_variables(template)
-   template.gsub!(/_Builder\([(1-9a-z_A-Z]*\))/) { | match |
+   template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)\)/) { | match |
            resolve_build_variable(match)
          } 
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
