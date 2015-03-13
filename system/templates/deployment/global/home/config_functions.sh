@@ -19,11 +19,12 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 	dest_file=`ls -l $dest_file |cut -f2 -d">"`
                 fi
                  
-               write=`stat -c  %A LICENSE | awk -F\-  '{ print $3}' |grep w |wc -c`
+               write=`stat -c  %A $dest_file | awk -F\-  '{ print $3}' |grep w |wc -c`
                echo $write
                if test $write -eq 0
                 then
                    $_dest_file=`echo $dest_file | sed "/home/s///"`
+                   echo "echo $dest_file | sed "/home/s///"
                    
                   /home/engines/scripts/grant_rw_access.sh `dirname $_dest_file`
                   /home/engines/scripts/grant_rw_access.sh $_dest_file
