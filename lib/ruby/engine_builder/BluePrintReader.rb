@@ -268,6 +268,8 @@ class BluePrintReader
          p :no_pear
          return
          pear_mods.each do |pear_mod|
+           p :Pear_mod
+           p pear_mod
            mod =  pear_mod[:module]
          os_package = ap_module[:os_package]
                 if os_package != nil && os_package != ""
@@ -303,7 +305,7 @@ class BluePrintReader
          end
        if mod != nil
          @apache_modules.push(mod)
-         p :Add_pear
+         p :Add_apache
          p mod
        end
      end
