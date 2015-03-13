@@ -269,7 +269,7 @@ class BluePrintReader
            log_build_output("no pear")
          return
          end
-           log_build_output(pear_mods.length + "Pears")
+           log_build_output(pear_mods.length.to_s + "Pears")
          pear_mods.each do |pear_mod|
            p :Pear_mod
            p pear_mod
