@@ -275,7 +275,7 @@ class BluePrintReader
            p pear_mod
            log_build_output(pear_mod.to_s)
            mod =  pear_mod[:module]
-         os_package = ap_module[:os_package]
+         os_package = pear_mod[:os_package]
                 if os_package != nil && os_package != ""
                 @os_packages.push(os_package)
                 end
@@ -284,12 +284,11 @@ class BluePrintReader
              p :added_pear
              p mod
            end
-         
        end
+   end
      rescue Exception=>e
      SystemUtils.log_exception(e)
        return false
-     end
    end
 
    def read_apache_modules
