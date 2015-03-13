@@ -50,6 +50,7 @@ class DockerApi
 
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
+     p cmd
      res = SystemUtils.run_system(cmd)
 
      if res.length >0

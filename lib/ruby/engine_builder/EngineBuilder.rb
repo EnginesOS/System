@@ -336,21 +336,25 @@ class EngineBuilder
 #  end
 
   def build_init
-    begin
+ 
       log_build_output("Building Image")
       # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
       cmd="/usr/bin/docker build  -t " + @container_name + "/deploy " +  get_basedir
+    
       puts cmd
+      
       res = run_system(cmd)
+      
       if res  == false
         puts "build init failed " + res.to_s
         return res
       end
+      
       return true
+      
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      return false
-    end
+      return false 
   end
 
   def launch_deploy managed_container
@@ -526,6 +530,7 @@ class EngineBuilder
       else
 
         if @core_api.image_exists?(@container_name) == false
+          p :image_not_found
           @last_error = " " + tail_of_build_log
           post_failed_build_clean_up
           return false
@@ -988,7 +993,7 @@ end
           p "docker_cmd error " + error_mesg
           return false
         end
-        p :build_suceed
+        p :build_suceeded
         return true
       end
 
