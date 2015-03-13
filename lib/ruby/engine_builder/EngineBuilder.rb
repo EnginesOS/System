@@ -342,11 +342,11 @@ class EngineBuilder
       cmd="/usr/bin/docker build  -t " + @container_name + "/deploy " +  get_basedir
       puts cmd
       res = run_system(cmd)
-      if res != true
+      if res  == false
         puts "build init failed " + res.to_s
         return res
       end
-      return res
+      return true
     rescue Exception=>e
       SystemUtils.log_exception(e)
       return false
