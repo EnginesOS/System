@@ -9,7 +9,6 @@ ADD home home
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
 RUN chown postfix /etc/postfix/
-RUN chown postfix /etc/postfix/transport
 
 
    
