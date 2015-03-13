@@ -475,10 +475,7 @@ class EngineBuilder
       
       create_persistant_services #need to de-register these if build fails But not deregister those that existed prior
       
-      create_template_files
-      create_php_ini
-      create_apache_config                 
-      create_scritps
+    
         @blueprint_reader.environments.each do |env|
           p :env_before
           p env.value
@@ -486,6 +483,12 @@ class EngineBuilder
               p :env_after
               p env.value
           end
+          
+          create_template_files
+          create_php_ini
+          create_apache_config                 
+          create_scritps
+          
                  index=0
                  #FIXME There has to be a ruby way
                  @blueprint_reader.sed_strings[:sed_str].each do |sed_string|                   
