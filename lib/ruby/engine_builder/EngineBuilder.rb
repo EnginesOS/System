@@ -915,7 +915,7 @@ def fill_service_environment_varibles
                         env_name = env_variable_pair[:environment_name]
                         value_name = env_variable_pair[:variable_name]
                         value=service_hash[:variables][value_name.to_sym] 
-                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,ask,true,true,env_name,true)) # env_name , value
+                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,true,service_hash[:type_path] + env_name,true)) # env_name , value
                       end
                  end   
                end
