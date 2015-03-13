@@ -970,24 +970,26 @@ end
             stderr_is_open = false
             p :EOF_retry
             retry
-          else if  stderr.closed? == true
+          elsif  stderr.closed? == true
               return
             else
               err  = stderr.read_nonblock(1000)
               error_mesg += err
-              log_build_errors(err)
-              return
+              log_build_errors(err)           
             end
           end
         end
-
+   
+      
+      log_build_errors(err)
         if error_mesg.include?("Error:") || error_mesg.include?("FATA")
           p "docker_cmd error " + error_mesg
           return false
         end
+        p :build_suceed
         return true
       end
-    end
+
   end
 
   def get_basedir
