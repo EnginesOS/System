@@ -907,7 +907,7 @@ def fill_service_environment_varibles
   
   services = @blueprint_reader.services
     services.each do |service_hash|
-      service_def =  @builder.get_service_def(service_hash)
+      service_def =  get_service_def(service_hash)
                if service_def != nil
                  service_environment_variables = service_def[:target_environment_variables]
                  if service_environment_variables != nil
