@@ -20,8 +20,8 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 fi
                  
                write=`stat -c  %A LICENSE | awk -F\-  '{ print $3}' |grep w |wc -c`
-               
-               if test write -eq 0
+               echo $write
+               if test $write -eq 0
                 then
                   /home/engines/scripts/grant_rw_access.sh `dirname $dest_file`
                   /home/engines/scripts/grant_rw_access.sh $dest_file
