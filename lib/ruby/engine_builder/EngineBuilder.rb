@@ -11,6 +11,8 @@ require 'json'
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
 require_relative 'SystemAccess.rb'
+require_relative 'templating.rb'
+include Templating
 
 class EngineBuilder
   @repoName=nil
@@ -473,10 +475,7 @@ class EngineBuilder
       
       create_persistant_services #need to de-register these if build fails But not deregister those that existed prior
       
-      create_template_files
-      create_php_ini
-      create_apache_config                 
-      create_scritps
+    
         @blueprint_reader.environments.each do |env|
           p :env_before
           p env.value
@@ -484,6 +483,12 @@ class EngineBuilder
               p :env_after
               p env.value
           end
+          fill_service_environment_varibles
+          create_template_files
+          create_php_ini
+          create_apache_config                 
+          create_scritps
+          
                  index=0
                  #FIXME There has to be a ruby way
                  @blueprint_reader.sed_strings[:sed_str].each do |sed_string|                   
@@ -669,6 +674,19 @@ class EngineBuilder
     SystemUtils.log_exception(e)
  end
  
+def process_dockerfile_tmpl(filename)
+  p :dockerfile_template_processing
+  p filename
+  template = File.read(filename)
+  
+  template = process_templated_string(template)
+  output_filename = filename.sub(/.tmpl/,"")
+  
+  out_file = File.new(output_filename,"w")
+  out_file.write(template)
+  out_file.close()            
+end
+
   def  compile_base_docker_files
     
     file_list = Dir.glob(@blueprint_reader.get_basedir + "/Dockerfile*.tmpl")
@@ -678,163 +696,7 @@ class EngineBuilder
               
   end
   
-  def process_templated_string(template)
-       template = apply_system_variables(template)
-       template = apply_build_variables(template)
-       template = apply_blueprint_variables(template)
-       template = apply_engines_variables(template)
-    return template
-  rescue Eception=>e
-    SystemUtils.log_exception(e)
-    return template
-  end
-  
-  def process_dockerfile_tmpl(filename)
-    p :dockerfile_template_processing
-    p filename
-    template = File.read(filename)
-    
-    template = process_templated_string(template)
-    output_filename = filename.sub(/.tmpl/,"")
-    
-    out_file = File.new(output_filename,"w")
-    out_file.write(template)
-    out_file.close()            
-  end
-
-  
-  def apply_system_variables(template)
-    template.gsub!(/_System\([a-z].*\)/) { | match |
-      resolve_system_variable(match)
-    } 
-    return template
-  end
-  
-  def apply_build_variables(template)
-    template.gsub!(/_Builder\([a-z].*\)/) { | match |
-          resolve_build_variable(match)
-        } 
-        return template
-  end
-  
-  def resolve_system_variable(match)
-    name = match.sub!(/_System\(/,"")
-    name.sub!(/[\)]/,"")
-    p :getting_system_value_for
-    p name
-    
-    var_method = @system_access.method(name.to_sym)
-    val = var_method.call
-    
-    p :got_val
-    p val
-    
-    return val
-    
-  rescue Exception=>e
-    SystemUtils.log_exception(e) 
-    
-    return ""
-  end
-#_Blueprint(software,license_name)
-#_Blueprint(software,rake_tasks,name)
-
-def apply_blueprint_variables(template)
-  template.gsub!(/_Blueprint\([a-z,].*\)/) { | match |
-    resolve_blueprint_variable(match)
-      } 
-      return template
-end
-
-def resolve_blueprint_variable(match)
-  name = match.sub!(/_Blueprint\(/,"")
-  name.sub!(/[\)]/,"")
-  p :getting_system_value_for
-  p name
-  val =""
-  
-   keys = name.split(',')
-   hash = @builder_public.blueprint
-   keys.each do |key|
-     if key == nil || key.length < 1
-       break
-     end
-     p :key
-     p key
-     val = hash[key.to_sym]
-     p :val
-     p val     
-     if val != nil
-       hash=val
-     end
-   end     
-  
-  p :got_val
-  p val
-  
-  return val
-  
-rescue Exception=>e
-    SystemUtils.log_exception(e) 
-  return ""
-end
-
-  def resolve_build_variable(match)
-    name = match.sub!(/_Builder\(/,"")
-    name.sub!(/[\)]/,"")
-    p :getting_system_value_for
-    p name.to_sym
-    if name.include?('(')  == true
-      cmd = name.split('(')
-      name = cmd[0]
-      if cmd.count >1
-        args = cmd[1]     
-        args.sub!(/\)/,"")
-        args_array = args.split
-      end
-    end
-      
-    var_method = @builder_public.method(name.to_sym)
-    if args
-      p :got_args
-      val = var_method.call args
-    else
-      val = var_method.call 
-    end
-    p :got_val
-    p val
-    return val
-    rescue Exception=>e
-        SystemUtils.log_exception(e) 
-       return ""
-  end
-  
-  def resolve_engines_variable(match)
-    name = match.sub!(/_Engines\(/,"")
-    name.sub!(/[\)]/,"")
-    p :getting_system_value_for
-    p name.to_sym
-    @blueprint_reader.environments.each do |env_hash|
-      if env_hash[:name] == name
-        return env_hash[:value]
-      end
-    end
-    return ""
-    
-    rescue Exception=>e
-      p @blueprint_reader.environments
-         SystemUtils.log_exception(e) 
-        return ""
-  end
-  
-  def apply_engines_variables(template)
-
-    template.gsub!(/_Engines\([a-z].*\)/) { | match |
-          resolve_engines_variable(match)
-        } 
-        return template
-  end
-
+ 
   
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
@@ -895,6 +757,7 @@ end
       if service_def[:persistant] == false
         next                 
       end
+      service_hash[:persistant] =true
       p :adding_service
      
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
@@ -1040,7 +903,24 @@ end
 
   protected
 
+def fill_service_environment_varibles
   
+  services = @blueprint_reader.services
+    services.each do |service_hash|
+      service_def =  get_service_def(service_hash)
+               if service_def != nil
+                 service_environment_variables = service_def[:target_environment_variables]
+                 if service_environment_variables != nil
+                      service_environment_variables.values.each do |env_variable_pair|
+                        env_name = env_variable_pair[:environment_name]
+                        value_name = env_variable_pair[:variable_name]
+                        value=service_hash[:variables][value_name.to_sym] 
+                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,true,service_hash[:type_path] + env_name,true)) # env_name , value
+                      end
+                 end   
+               end
+    end
+end
 
   def debug(fld)
     puts "ERROR: "

@@ -18,18 +18,30 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 then
                 	dest_file=`ls -l $dest_file |cut -f2 -d">"`
                 fi
-                
-              #  /home/engines/scripts/grant_rw_access.sh `dirname $dest_file`
-               # /home/engines/scripts/grant_rw_access.sh $dest_file
+                 
+               write=`stat -c  %A $dest_file | awk -F\-  '{ print $3}' |grep w |wc -c`
+               echo $write
+               if test $write -eq 0
+                then
+                   _dest_file=`echo $dest_file | sed "/home/s///"`
+                   echo "echo $dest_file | sed "/home/s///""
+                   
+                  /home/engines/scripts/grant_rw_access.sh `dirname $_dest_file`
+                  /home/engines/scripts/grant_rw_access.sh $_dest_file
+                fi
+               
 				rm $dest_file
 				
 				echo doing $dest_file
 				
        			process_file 
        			#FIXME only revoke if it was g+w before
-       			#/home/engines/scripts/revoke_rw_access.sh $dest_file
-       			#/home/engines/scripts/revoke_rw_access.sh `dirname $dest_file`
-
+       			if test $write -eq 0
+       			then
+       				 $_dest_file=`echo $dest_file | sed  "/home/s///"`
+       				/home/engines/scripts/revoke_rw_access.sh $_dest_file
+       				/home/engines/scripts/revoke_rw_access.sh `dirname $_dest_file`
+				fi
         done
         echo run as `whoami` in `pwd`
 }

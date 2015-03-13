@@ -88,7 +88,12 @@ def do_cmd(c_type,containerName,command)
             p "Content:" + service.content.to_s
           end
         end
-        
+
+when "persistant_services"
+  params = Hash.new()
+  params[:engine_name] =   containerName
+    result = engines_api.get_engine_persistant_services(params)
+    p result.to_s
 
   when "list_services"
     hash_values =  containerName.split(".")

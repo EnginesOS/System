@@ -386,20 +386,28 @@ SystemUtils.log_exception(e)
     leafs = Array.new
     
      services.children.each do |service|
-        leafs.concat(get_matched_leafs(service,:persistant,true))
+       matches = get_matched_leafs(service,:persistant,true)
+       p matches
+       leafs =  leafs.concat(matches)
     end
     
     return leafs
     
   end
   
-  def get_matched_leafs(service,label,value)
+  def get_matched_leafs(branch,label,value)
     ret_val = Array.new
     branch.children.each do |sub_branch|
            if sub_branch.children.count == 0
+#             p sub_branch.content
+#             p sub_branch.content[label]
               if  sub_branch.content[label] == value 
+#                p :found
+#                p  sub_branch.content
                   ret_val.push(sub_branch.content)  
               end
+           else
+          ret_val += get_matched_leafs(sub_branch,label,value) 
        end
     end
        return ret_val

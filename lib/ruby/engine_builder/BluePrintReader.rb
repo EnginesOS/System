@@ -263,21 +263,32 @@ class BluePrintReader
        @pear_modules = Array.new
 
        log_build_output("Read Pear List")
-       pear_mods = @blueprint[:software][:pear_mod]
-       if pear_mods == nil || pear_mods.length == 0
+       pear_mods = @blueprint[:software][:pear_modules]
+       
+         if pear_mods == nil || pear_mods.length == 0
+           log_build_output("no pear")
          return
+         end
+           log_build_output(pear_mods.length.to_s + "Pears")
          pear_mods.each do |pear_mod|
+           p :Pear_mod
+           p pear_mod
+           log_build_output(pear_mod.to_s)
            mod =  pear_mod[:module]
+         os_package = pear_mod[:os_package]
+                if os_package != nil && os_package != ""
+                @os_packages.push(os_package)
+                end
            if mod !=nil
              @pear_modules.push(mod)
+             p :added_pear
+             p mod
            end
-
-         end
        end
+   end
      rescue Exception=>e
      SystemUtils.log_exception(e)
        return false
-     end
    end
 
    def read_apache_modules
@@ -285,14 +296,19 @@ class BluePrintReader
      log_build_output("Read Apache Modules List")
      mods =  @blueprint[:software][:apache_modules]
      if mods == nil
+       p :no_apache_modules
        return true
      end
      mods.each do |ap_module|
        mod = ap_module[:module]
        os_package = ap_module[:os_package]
-         
+         if os_package != nil && os_package != ""
+         @os_packages.push(os_package)
+         end
        if mod != nil
          @apache_modules.push(mod)
+         p :Add_apache
+         p mod
        end
      end
      return true

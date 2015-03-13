@@ -33,7 +33,7 @@ class DockerFileBuilder
     @docker_file.puts("")
     write_environment_variables
     write_stack_env
-    write_services
+   # write_services
     write_file_service
     
     #write_db_service
@@ -58,6 +58,7 @@ class DockerFileBuilder
     @docker_file.puts("")
     write_rake_list
     write_pear_list
+    write_apache_modules    
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
     write_write_permissions_single
 
@@ -260,44 +261,45 @@ class DockerFileBuilder
     end
   end
   
-  def write_services
-    services = @blueprint_reader.services
-    @docker_file.puts("#Service Environment Variables")
-      services.each do |service_hash|
-        p :service_hash
-        p service_hash
-        service_def =  @builder.get_service_def(service_hash)
-          if service_def != nil
-            p :processing
-            p service_def
-            
-            service_environment_variables = service_def[:target_environment_variables]
-              if service_environment_variables != nil
-                service_environment_variables.values.each do |env_variable_pair|
-                  p :setting_values
-                  p env_variable_pair
-                  env_name = env_variable_pair[:environment_name]
-                  value_name = env_variable_pair[:variable_name]
-                  value=service_hash[:variables][value_name.to_sym] 
-                  p :looking_for_
-                  p value_name
-                  p :as_symbol
-                   p value_name.to_sym
-                   p :in_service_hash
-                   p service_hash
-                   p :and_found
-                   p value
-                   
-                  if value != nil && value.to_s.length >0
-                    @docker_file.puts("ENV " + env_name + " " + value )
-                    count_layer()
-                  end
-                end
-                  
-              end
-          end
-      end
-  end
+
+#  def write_services
+#    services = @blueprint_reader.services
+#    @docker_file.puts("#Service Environment Variables")
+#      services.each do |service_hash|
+#        p :service_hash
+#        p service_hash
+#        service_def =  @builder.get_service_def(service_hash)
+#          if service_def != nil
+#            p :processing
+#            p service_def
+#            
+#            service_environment_variables = service_def[:target_environment_variables]
+#              if service_environment_variables != nil
+#                service_environment_variables.values.each do |env_variable_pair|
+#                  p :setting_values
+#                  p env_variable_pair
+#                  env_name = env_variable_pair[:environment_name]
+#                  value_name = env_variable_pair[:variable_name]
+#                  value=service_hash[:variables][value_name.to_sym] 
+#                  p :looking_for_
+#                  p value_name
+#                  p :as_symbol
+#                   p value_name.to_sym
+#                   p :in_service_hash
+#                   p service_hash
+#                   p :and_found
+#                   p value
+#                   
+#                  if value != nil && value.to_s.length >0
+#                    @docker_file.puts("ENV " + env_name + " " + value )
+#                    count_layer()
+#                  end
+#                end
+#                  
+#              end
+#          end
+#      end
+#  end
 
   def write_sed_strings
     begin

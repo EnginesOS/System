@@ -10,7 +10,7 @@ class MySQLService < SoftwareService
   def add_consumer_to_service(site_hash)
     p :add_consumer
     p site_hash
-    site_hash[:variables][:persistant]=true
+  
     if site_hash[:variables].has_key?(:name) == false || site_hash[:variables][:name] == nil    
           site_hash[:variables][:name] = site_hash[:variables][:database_name]
       end
@@ -65,6 +65,7 @@ class MySQLService < SoftwareService
 
   def get_site_hash(site_hash)
     site_hash[:type_path] =  site_hash[:service_type]
+   
 #    site_hash = Hash.new()
 #    site_hash[:service_type]='database'
 #    site_hash[:name]=database.name
