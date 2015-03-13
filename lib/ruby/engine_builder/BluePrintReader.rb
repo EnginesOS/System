@@ -274,6 +274,8 @@ class BluePrintReader
                 end
            if mod !=nil
              @pear_modules.push(mod)
+             p :added_pear
+             p mod
            end
 
          end
@@ -299,6 +301,8 @@ class BluePrintReader
          end
        if mod != nil
          @apache_modules.push(mod)
+         p :Add_pear
+         p mod
        end
      end
      return true
