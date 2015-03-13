@@ -981,7 +981,7 @@ end
         end
    
       
-      log_build_errors(err)
+      log_build_errors(error_mesg)
         if error_mesg.include?("Error:") || error_mesg.include?("FATA")
           p "docker_cmd error " + error_mesg
           return false
