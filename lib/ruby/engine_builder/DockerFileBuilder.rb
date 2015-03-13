@@ -58,6 +58,7 @@ class DockerFileBuilder
     @docker_file.puts("")
     write_rake_list
     write_pear_list
+    write_apache_modules    
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
     write_write_permissions_single
 

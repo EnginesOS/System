@@ -263,11 +263,15 @@ class BluePrintReader
        @pear_modules = Array.new
 
        log_build_output("Read Pear List")
-       pear_mods = @blueprint[:software][:pear_mod]
+       pear_mods = @blueprint[:software][:pear_modules]
        if pear_mods == nil || pear_mods.length == 0
          return
          pear_mods.each do |pear_mod|
            mod =  pear_mod[:module]
+         os_package = ap_module[:os_package]
+                if os_package != nil && os_package != ""
+                @os_packages.push(os_package)
+                end
            if mod !=nil
              @pear_modules.push(mod)
            end
@@ -290,7 +294,9 @@ class BluePrintReader
      mods.each do |ap_module|
        mod = ap_module[:module]
        os_package = ap_module[:os_package]
-         
+         if os_package != nil && os_package != ""
+         @os_packages.push(os_package)
+         end
        if mod != nil
          @apache_modules.push(mod)
        end
