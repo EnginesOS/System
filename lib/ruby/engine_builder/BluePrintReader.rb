@@ -268,6 +268,7 @@ class BluePrintReader
          if pear_mods == nil || pear_mods.length == 0
            log_build_output("no pear")
          return
+         end
            log_build_output(pear_mods.length + "Pears")
          pear_mods.each do |pear_mod|
            p :Pear_mod
@@ -283,8 +284,7 @@ class BluePrintReader
              p :added_pear
              p mod
            end
-
-         end
+         
        end
      rescue Exception=>e
      SystemUtils.log_exception(e)
