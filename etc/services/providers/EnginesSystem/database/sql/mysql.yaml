@@ -88,23 +88,6 @@ setup_params:
   comment:  " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
- collation:
-  name: collation
-  label: DB collation
-  tooltip: " "
-  field_type: single_select
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: "utf8"
-  select_collection:
-  - !ruby/object:String  
-       "utf8"
-  - !ruby/object:String  
-       "ascii"
-  comment:  " "
-  regex_validator: ".*"
-  regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
  dbhost:
   variable_name: database_host
