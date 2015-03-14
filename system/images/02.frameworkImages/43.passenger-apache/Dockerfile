@@ -20,7 +20,9 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
 	a2enmod rewrite; \
  	mkdir -p /lock/apache2 ;\
  	chown www-data /run/lock/apache2;\
- 	mv /tmp/01proxy /etc/apt/apt.conf.d/01proxy 
+ 	mv /tmp/01proxy /etc/apt/apt.conf.d/01proxy;\
+ 	mkdir   -p /var/www/.passenger ;\
+ 	chown www-data /var/www/.passenger 
  	
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
