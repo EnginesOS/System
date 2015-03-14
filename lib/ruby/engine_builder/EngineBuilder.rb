@@ -968,7 +968,7 @@ end
             retry
           end
         rescue  IO::WaitReadable
-          sleep(1)
+         
           # p :wait_readable_retrt
           retry
         rescue EOFError
