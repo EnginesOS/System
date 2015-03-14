@@ -220,8 +220,9 @@ keys=""
 		done
 			
 	echo DNS key $key
-	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
+	#cat /opt/engines/etc/dns/named.conf.default-zones.ad.tmpl| sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
+	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zone
+	#cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
 	mv ddns.* /opt/engines/etc/dns/keys/
 	
 }

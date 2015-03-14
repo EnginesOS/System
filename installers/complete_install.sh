@@ -19,6 +19,7 @@ setup_mgmt_git
 #echo "Building Images"
 # /opt/engines/bin/buildimages.sh
 
+
 create_services
 
 /opt/engines/bin/containers_startup.sh 
