@@ -10,6 +10,11 @@ domainName:
 environments:
 image: engines/dns:alpha
 volumes: 
+ default_zones:
+  name: configuration
+  remotepath: "/etc/bind/named.conf.default-zones"
+  localpath: "/opt/engines/etc/dns/named.conf.default-zones"
+  mapping_permissions: "ro"  
  keys: !ruby/object:Volume
   name: configuration
   remotepath: "/opt/engines/etc/dns/keys/"
