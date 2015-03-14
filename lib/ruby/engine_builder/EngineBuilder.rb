@@ -339,7 +339,7 @@ class EngineBuilder
  
       log_build_output("Building Image")
       # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
-      cmd="/usr/bin/docker build  -t " + @container_name + ":deploy " +  get_basedir
+      cmd="/usr/bin/docker build  -t " + @container_name + " " +  get_basedir
     
       puts cmd
       
@@ -864,7 +864,7 @@ end
     @blueprint_reader.memory.to_s ,
     @hostname,
     @domain_name,
-    @container_name + ":deploy",
+    @container_name ,
     @blueprint_reader.volumes,
     @webPort,
     @blueprint_reader.workerPorts,
