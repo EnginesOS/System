@@ -24,7 +24,14 @@ cd $MasterImagesDir
 				cd $MasterImagesDir/$class/$dir
 					if test -f TAG
 						then 
-						new=`find . -newer ./last_built`
+						
+						if ! test -f ./last_built
+							then
+								new="yesy yesy yesy"
+								else
+							new=`find . -newer ./last_built`
+					    fi
+							
 							if test 1 -lt `echo $new |wc -c`
 							then
 															
