@@ -66,11 +66,11 @@ echo "Installing required  packages"
 		 #kludge to deal with the fact we install bind just to get dnssec-keygen
 		 bind=`service bind9 status  |grep unrecognized | wc -l`
 		 
-		  echo "Configure Apt-cache"
-		  apt-get -y install apt-cacher
+		 #echo "Configure Apt-cache"
+		 # apt-get -y install apt-cacher
 		  
 		  
-		echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf
+		#echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf
 		
 		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git 
 		
