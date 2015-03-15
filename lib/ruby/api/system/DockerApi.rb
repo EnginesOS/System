@@ -344,6 +344,12 @@ class DockerApi
      return false
    end
 
+   def clean_up_dangling_images
+   
+  cmd = "docker rmi $(sudo docker images -f \"dangling=true\" -q)"
+     SystemUtils.run_system(cmd)
+   end
+   
    protected
 
    def container_state_dir(container)
@@ -358,5 +364,7 @@ class DockerApi
      @last_error = ""
    end
 
+   
+   
    
  end#END of DockerApi
