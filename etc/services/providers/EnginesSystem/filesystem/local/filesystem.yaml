@@ -37,22 +37,6 @@ setup_params:
   mandatory: false
   value: " "
   comment: " "
- permissions:
-  name: permissions
-  label: permissions
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: select_single
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: "rw"
-  select_collection:
-  - !ruby/object:String
-    "rw"
-  - !ruby/object:String   
-    "ro"
-  comment: " "
  engine_path:
   name: engine_path
   label: engine_path
