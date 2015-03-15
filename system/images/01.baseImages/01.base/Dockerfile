@@ -10,9 +10,9 @@ RUN apt-get -y  --force-yes update;\
 #	echo "Acquire::http::Proxy \"http://172.17.42.1:3142\";" >/etc/apt/apt.conf.d/01proxy
 	
 
-ADD ddns.key /etc/
-ADD ddns.private /etc/
-ADD dns-init.sh /home/
+#ADD ddns.key /etc/
+#ADD ddns.private /etc/
+#ADD dns-init.sh /home/
 ADD init.sh /home/
 
 
