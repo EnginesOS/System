@@ -459,11 +459,13 @@ class EnginesOSapi
     return log_exception_and_fail("Destroy",e)
   end
 
-  def deleteEngineImage engine_name
+  def deleteEngineImage(engine_name,params) 
     engine = loadManagedEngine engine_name
     if   engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Delete")
     end
+    p :delete_params
+     p params
     retval =   engine.delete_image()
     if retval == false
       return failed(engine_name,engine.last_error,"Delete")
