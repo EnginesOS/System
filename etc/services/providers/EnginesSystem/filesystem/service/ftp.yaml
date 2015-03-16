@@ -69,3 +69,18 @@ setup_params:
     mandatory: true
     value: true
     comment: " "
+    regex_validator: ".*"
+  access:
+    name: rw_access
+    label: RW Access
+    regex_validator: true|false
+    tooltip: "Allow ftp service to write files"
+    field_type: select_single
+    hint: "true|false"
+    select_collection:
+      - true
+      - false
+    placeholder: "true|false"
+    mandatory: true
+    value: false
+    comment: "Write access includes the ability to delete" 

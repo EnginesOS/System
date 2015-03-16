@@ -11,7 +11,8 @@ RUN chown -R root /usr/local/rbenv/versions/$ruby_version/;\
 	chown -R  $data_uid.$data_gid  ./;\
 \
 	mkdir -p app/tmp/ public/cache/ public/assets /run/apache2;\
-	chown www-data.$data_gid app/tmp/ public/assets public/cache/ /run/apache2;\
+	chown www-data.$data_gid -R public;\
+	chown www-data.$data_gid app/tmp/ /run/apache2;\
 \
 	chmod -R g+w log  app/assets;\
 	chmod g+w db
