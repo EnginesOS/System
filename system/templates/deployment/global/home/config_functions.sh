@@ -30,11 +30,11 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                  # /home/engines/scripts/grant_rw_access.sh $_dest_file
                 #fi
                
-				#rm $dest_file
+				rm $dest_file
 				
 				#echo doing $dest_file
 				
-#       			process_file 
+      			process_file 
 #       			#FIXME only revoke if it was g+w before
 #       			if test $write -eq 0
 #       			then
