@@ -272,7 +272,8 @@ end
     end
   when "deleteimage"
     if c_type == "container"
-      res = engines_api.deleteEngineImage(containerName)
+      params = Hash.new
+      res = engines_api.deleteEngineImage(containerName,params)
     else
       puts("Error cannot delete a Service Image")
     end
