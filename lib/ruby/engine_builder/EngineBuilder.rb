@@ -339,7 +339,7 @@ class EngineBuilder
  
       log_build_output("Building Image")
       # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
-      cmd="/usr/bin/docker build  -t " + @container_name + " " +  get_basedir
+      cmd="/usr/bin/docker build  --tag=" + @container_name + " " +  get_basedir
     
       puts cmd
       
@@ -483,7 +483,7 @@ class EngineBuilder
         @blueprint_reader.environments.each do |env|
           p :env_before
           p env.value
-              env.value = process_templated_string(env.value)
+              env.value= process_templated_string(env.value)
               p :env_after
               p env.value
           end
