@@ -507,7 +507,7 @@ class SystemApi
 
        return true
      rescue  Exception=>e
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
      end
    end
@@ -528,7 +528,7 @@ class SystemApi
        #
        return  save_self_hosted_domains(domains)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -541,7 +541,7 @@ class SystemApi
        #        p domains
        #        return domains
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -555,7 +555,7 @@ class SystemApi
        save_self_hosted_domains(domains)
        return true
      rescue  Exception=>e
-       log_exception(e)
+     SystemUtils.log_exception(e)
        return false
      end
    end
@@ -565,7 +565,7 @@ class SystemApi
      begin
        return DNSHosting.rm_hosted_domain(domain_name,self)
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -576,7 +576,7 @@ class SystemApi
        SystemUtils.debug_output :pdsf
        return true
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -586,7 +586,7 @@ class SystemApi
      begin
        SystemUtils.debug_output :psdfsd
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -616,7 +616,7 @@ class SystemApi
 
        return ret_val
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        ret_val.store(:maximum ,  e.to_s)
        ret_val.store(:current , "NA")
        ret_val.store(:limit ,  "NA")
@@ -645,7 +645,7 @@ class SystemApi
 
        return true
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -680,7 +680,7 @@ class SystemApi
        end
        return true
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -713,7 +713,7 @@ class SystemApi
        end
        return ret_val
      rescue   Exception=>e
-       log_exception(e)
+SystemUtils.log_exception(e)
        ret_val[:total] = e.to_s
        ret_val[:free] = -1
        ret_val[:active] = -1
@@ -740,7 +740,7 @@ class SystemApi
        ret_val[:running] = run_idle[0]
        ret_val[:idle] = run_idle[1]
      rescue Exception=>e
-       log_exception(e)
+SystemUtils.log_exception(e)
        ret_val[:one] = -1
        ret_val[:five] = -1
        ret_val[:fithteen] = -1
@@ -749,7 +749,7 @@ class SystemApi
        return ret_val
 
      rescue Exception=>e
-       log_exception(e)
+SystemUtils.log_exception(e)
        return false
      end
    end
@@ -770,7 +770,7 @@ class SystemApi
        end
        return ret_val
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
