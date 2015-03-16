@@ -346,7 +346,7 @@ class DockerApi
 
    def clean_up_dangling_images
    
-  cmd = "docker rmi $(sudo docker images -f \"dangling=true\" -q)"
+  cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
      SystemUtils.run_system(cmd)
    end
    

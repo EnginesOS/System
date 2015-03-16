@@ -806,7 +806,7 @@ class SystemApi
        else
          log_error("nil Engine Name")
        end
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -840,7 +840,7 @@ class SystemApi
        else
          log_error("nil Service Name")
        end
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -861,7 +861,7 @@ class SystemApi
        end
        return ret_val
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -877,7 +877,7 @@ class SystemApi
          end
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return ret_val
      end
      return ret_val
@@ -895,7 +895,7 @@ class SystemApi
          end
        end
      rescue  Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return ret_val
      end
      return ret_val
@@ -915,7 +915,7 @@ class SystemApi
        return true
 
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return false
      end
    end
@@ -948,7 +948,7 @@ class SystemApi
          return res
        end
      rescue Exception=>e
-       log_exception(e)
+       SystemUtils.log_exception(e)
        return ret_val
      end
    end

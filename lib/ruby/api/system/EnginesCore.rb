@@ -177,7 +177,7 @@ class EnginesCore
     imageName = containerName 
     return @docker_api.image_exists?(imageName)
     rescue Exception=>e
-    log_execption(e)
+    SystemUtils.log_exception(e)
     return false
   end
 
