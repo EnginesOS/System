@@ -51,6 +51,7 @@ echo "Installing Docker"
 		 apt-get install apt-transport-https
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
+#IF AWS		 
 		  apt-get install -y linux-image-extra-$(uname -r) -qq
 		 wget -qO- https://get.docker.io/gpg | apt-key add -
 		 apt-get -y  --force-yes install lxc-docker
@@ -222,7 +223,7 @@ keys=""
 			
 	echo DNS key $key
 	#cat /opt/engines/etc/dns/named.conf.default-zones.ad.tmpl| sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zone
+	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zones
 	#cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
 	mv ddns.* /opt/engines/etc/dns/keys/
 	
