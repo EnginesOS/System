@@ -239,8 +239,8 @@ mkdir -p  /var/log/engines/services/nginx/nginx
 mkdir -p  /var/log/engines/services/backup
 mkdir -p  /var/log/engines/services/mgmt
 mkdir -p  /var/log/engines/services/pgsql/
-mkdir -p  /var/log/engines/services/syslog
-mkdir -p  /var/log/engines/syslog
+
+
 mkdir -p  /var/log/engines/services/mysql/
 mkdir -p  /var/log/engines/services/dns/
 mkdir -p /var/log/engines/services/smtp/
@@ -271,7 +271,7 @@ mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /opt/engines/etc/keys
 mkdir -p /var/log/engines/services/syslog/rmt
 
-mkdir -p /var/log/engines/syslog
+
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
@@ -292,7 +292,7 @@ echo "Setting directory and file permissions"
 	 
 	chown  engines   /opt/engines/etc/syslog/conf/
 	chown  22012 -R  /var/log/engines/services/syslog
-	chown  22012 /var/log/engines/syslog
+	chown  22012 /var/log/engines/services/syslog
 
 	chown 22005 /opt/engines/run/services/nginx/run/nginx/
 	chown 21000  /home/engines/db/production.sqlite3
