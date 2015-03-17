@@ -10,9 +10,9 @@ RUN chown -R root /usr/local/rbenv/versions/$ruby_version/;\
 	usermod -G $data_gid www-data;\
 	chown -R  $data_uid.$data_gid  ./;\
 \
-	mkdir -p app/tmp/ public/cache/ public/assets /run/apache2;\
+	mkdir -p /home/app/tmp/ /home/app/public/cache/ home/app/public/assets /run/apache2;\
 	chown www-data.$data_gid -R public;\
-	chown www-data.$data_gid app/tmp/ /run/apache2;\
+	chown www-data.$data_gid -R /home/app/tmp/ /run/apache2;\
 \
 	chmod -R g+w log  app/assets;\
 	chmod g+w db
