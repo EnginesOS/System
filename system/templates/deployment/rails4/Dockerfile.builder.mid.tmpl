@@ -29,6 +29,8 @@ RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ Ser
 	echo "  <<: *login" >> config/database.yml
 
 ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
+
+
 USER $ContUser
 
 RUN  /usr/local/rbenv/shims/bundle config build.nokogiri --use-system-libraries;\
