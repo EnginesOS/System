@@ -135,7 +135,7 @@ class DockerFileBuilder
       
       @blueprint_reader.environments.each do |env|
         @docker_file.puts("#Blueprint ENVs")
-        if env.value != nil
+        if env.value && env.value != nil && env.value.to_s.length >0
           env.value.sub!(/ /,"\\ ")
         end
          if  env.value !=nil && env.value.to_s.length >0 #env statement must have two arguments
