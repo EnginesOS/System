@@ -6,6 +6,7 @@ require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
 require "/opt/engines/lib/ruby/api/public/EnginesOSapi.rb"
 require "/opt/engines/lib/ruby/api/public/EnginesOSapiResult.rb"
+require "securerandom"
 
 def build_engine params
   engines_api = EnginesOSapi.new()
