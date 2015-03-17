@@ -1,11 +1,11 @@
 #!/home/engines/.rbenv/versions/2.1.3/bin/ruby
 
 
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/SysConfig.rb"
-require "/opt/engines/lib/ruby/ManagedEngine.rb"
-require "/opt/engines/lib/ruby/EnginesOSapi.rb"
-require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
+require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
+require "/opt/engines/lib/ruby/api/public/EnginesOSapi.rb"
+require "/opt/engines/lib/ruby/api/public/EnginesOSapiResult.rb"
 
 def build_engine params
   engines_api = EnginesOSapi.new()
