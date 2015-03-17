@@ -270,7 +270,7 @@ touch  /home/engines/db/production.sqlite3
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /opt/engines/etc/keys
 mkdir -p /var/log/engines/services/syslog/rmt
-
+mkdir -p /var/log/engines/services/email/apache2
 
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
@@ -305,6 +305,11 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
+	 chown 22003 -R /opt/engines/etc/smtp
+	
+	 chown 22003 -R /var/log/engines/services/email/
+	
+	
 	}
 
 function set_os_flavor {
