@@ -421,6 +421,38 @@ SystemUtils.log_exception(e)
        return ret_val
   end
   
+  def rm_remove_engine(params)
+    managed_engine_tree =  get_managed_engine_tree
+
+       engine_node = managed_engine_tree[params[:engine_name]]
+       
+
+         managed_engine_tree.remove!(engine_node)
+          if params[:remove_all_application_data] == true
+            save_tree
+            return true
+          end
+         
+         
+         # keeping persistant
+         
+         #remove non persistant
+         
+         
+         
+         uninstalled = @service_tree["Uninstalled"]
+           if uninstalled == nil
+             @service_tree << Tree::TreeNode.new("Uninstalled","Managed Services left after Engine Deinstall")
+             uninstalled = @service_tree["Uninstalled"]
+           end
+           uninstalled << engine_node
+           
+           
+           
+           save_tree
+           return true
+  end
+  
   def remove_service service_hash
    
       parent_engine_node = @service_tree["ManagedEngine"][service_hash[:variables][:parent_engine]]

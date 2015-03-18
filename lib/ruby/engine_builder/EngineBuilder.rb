@@ -113,6 +113,7 @@ class EngineBuilder
     @core_api = core_api
     @http_protocol = params[:http_protocol]
     p params
+    @memory = params[:memory]
     @repoName= params[:repository_url]
     @cron_job_list = Array.new
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
@@ -861,7 +862,7 @@ end
   def create_managed_container
     log_build_output("Creating ManagedEngine")
     mc = ManagedEngine.new(@hostname,
-    @blueprint_reader.memory.to_s ,
+    @memory ,
     @hostname,
     @domain_name,
     @container_name ,

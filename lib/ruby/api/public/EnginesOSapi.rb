@@ -460,6 +460,8 @@ class EnginesOSapi
   end
 
   def deleteEngineImage(engine_name,params) 
+    
+    #
     engine = loadManagedEngine engine_name
     if   engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Delete")
@@ -470,9 +472,19 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name,engine.last_error,"Delete")
     end
+    params[:engine_name] = engine_name
+    delete_image_dependancies(params)
+    
+    
     return success(engine_name,"Delete")
   rescue Exception=>e
     return log_exception_and_fail("Delete",e)
+  end
+  
+  def delete_image_dependancies(params)
+    if @core_api.delete_image_dependancies(params) == false
+             return  failed(params[:engine_name],last_api_error, "Delete Image")
+          end  
   end
 
   def createEngine engine_name
