@@ -920,8 +920,8 @@ def fill_service_environment_varibles
                         env_name = env_variable_pair[:environment_name]
                         value_name = env_variable_pair[:variable_name]
                         value=service_hash[:variables][value_name.to_sym] 
-                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,true,service_hash[:type_path] + env_name,true)) # env_name , value
-                      end
+                   @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+                      end                                                       #(name,value,setatrun,mandatory,build_time_only,label,immutable)
                  end   
                end
     end
