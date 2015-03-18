@@ -78,5 +78,11 @@ class SystemUtils
         return "Error: " +e.to_s
       end
     end   
-     
+def DNSHosting.get_default_domain
+    if File.exists?(SysConfig.DefaultDomainnameFile)
+        return File.read(SysConfig.DefaultDomainnameFile)
+    else
+       return "engines"
+    end
+end
 end

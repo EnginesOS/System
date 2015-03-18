@@ -16,4 +16,8 @@ class SystemAccess
   def smtp_host
     return SysConfig.SMTPHost
   end
+  
+  def default_domain
+    return SystemUtils.get_default_domain
+  end
 end

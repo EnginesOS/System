@@ -42,6 +42,9 @@ class SysConfig
   @@ddnsKey = "/opt/engines/etc/dns/keys/ddns.key"
    @@internalDomain = "engines.internal"
    @@defaultDNS ="172.17.42.1"
+   
+  @@DefaultDomainnameFile="/opt/engines/etc/defaul_domain_name"
+  
 #Named
   @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid" 
   @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
@@ -69,6 +72,11 @@ class SysConfig
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
   
   @@SMTPHost="smtp.engines.internal"
+  
+  
+  def SysConfig.DefaultDomainnameFile
+    return @@DefaultDomainnameFile
+  end
   def SysConfig.SMTPHost
     return @@SMTPHost
   end
