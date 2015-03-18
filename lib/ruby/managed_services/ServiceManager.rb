@@ -59,6 +59,8 @@ class ServiceManager
     provider_tree = get_service_provider_tree(service_query_hash[:publisher_namespace])
      
       if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
+        p :find_service_consumers
+        p provider_tree
         return provider_tree
       end
             
@@ -70,6 +72,8 @@ class ServiceManager
       end
             
       if service_query_hash.has_key?(:variables) == false || service_query_hash[:variables]  == nil
+        p :find_service_consumers
+                p  service_path_tree
         return  service_path_tree
       end
       
@@ -77,6 +81,9 @@ class ServiceManager
      if  service_path_tree[service_query_hash[:variables][:name]] == nil
        return false
       end
+      
+p :find_service_consumers
+                p service_path_tree[service_query_hash[:variables][:name]]
       
       return service_path_tree[service_query_hash[:variables][:name]]
       
