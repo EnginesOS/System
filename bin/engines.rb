@@ -276,7 +276,7 @@ end
       res = engines_api.deleteEngineImage(containerName,params)
     else
       puts("Error cannot delete a Service Image")
-
+    end
     when "delete_services"
     if c_type != "container"
       puts "Error cannot delete services from " +  c_type
@@ -291,7 +291,7 @@ end
       params[:engine_name] = containerName
       params[:remove_all_application_data] = true
       engines_api.delete_image_dependancies(params)    
-    end
+    
   when  "create"
     if c_type == "container"
       res = engines_api.createEngine(containerName)
