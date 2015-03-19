@@ -535,7 +535,6 @@ class EngineBuilder
      
       if  build_init == false
         log_build_errors("Error Build Image failed")
-        log_build_output("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
         post_failed_build_clean_up
         return false
