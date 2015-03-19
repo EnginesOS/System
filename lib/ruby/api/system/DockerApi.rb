@@ -158,7 +158,7 @@ class DockerApi
          oline = String.new
          stderr_is_open=true
          begin
-           stdout.each { |line|
+           stdout.each do |line|
              line = line.gsub(/\\\"/,"")
              oline = line
              res += line.chop
@@ -167,7 +167,7 @@ class DockerApi
              if stderr_is_open
                error_mesg += stderr.read_nonblock(256)
              end
-           }
+           done
          rescue Errno::EIO
            res += oline.chop
            SystemUtils.debug_output(oline)
