@@ -442,8 +442,6 @@ SystemUtils.log_exception(e)
           return false
         end
 
-
-       
           if params[:remove_all_application_data] == true
             p :removed_all
            services = get_engine_persistant_services(params)
@@ -473,11 +471,14 @@ SystemUtils.log_exception(e)
    
       parent_engine_node = @service_tree["ManagedEngine"][service_hash[:variables][:parent_engine]]
         if parent_engine_node == nil
-          @last_error ="No service record found for "+ service_hash[:variables][:parent_engine] 
+          @last_error ="No services record found for "+ service_hash[:variables][:parent_engine] 
           p   @last_error
           return false
-        end
-      service_type_node = parent_engine_node[service_hash[:type_path]]
+        end 
+        
+service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_path]) 
+        
+    #  parent_engine_node[]
         if service_type_node == nil
           @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
           p   @last_error
@@ -522,7 +523,7 @@ SystemUtils.log_exception(e)
       if services_node !=nil
         provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node != nil
-          servicetype_node =  provider_node[service_hash[:type_path] ]
+          servicetype_node =  get_type_path_node(provider_node,service_hash[:type_path] )
           if servicetype_node != nil
             service_node = servicetype_node[service_hash[:variables][:parent_engine]]
             if service_node != nil
