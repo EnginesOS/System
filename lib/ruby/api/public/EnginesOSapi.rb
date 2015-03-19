@@ -1096,6 +1096,10 @@ class EnginesOSapi
     return @core_api.managed_service_tree
   end
 
+  def get_orphaned_services_tree
+  return @core_api.get_orphaned_services_tree
+  end
+  
   def software_service_definition (params)
     retval = @core_api.software_service_definition(params)
     if retval != nil 
