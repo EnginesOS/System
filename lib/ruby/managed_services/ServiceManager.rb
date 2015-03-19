@@ -425,10 +425,12 @@ SystemUtils.log_exception(e)
     managed_engine_tree =  get_managed_engine_tree
 
        engine_node = managed_engine_tree[params[:engine_name]]
-       
+        p :rm_remove_engine
+         p params
 
          managed_engine_tree.remove!(engine_node)
           if params[:remove_all_application_data] == true
+            p removed_all
             save_tree
             return true
           end
