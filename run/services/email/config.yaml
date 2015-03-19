@@ -7,7 +7,7 @@ memory: '90'
 hostName: email
 port: 8000
 domainName: engines.local.demo
-environments: 
+environments: []
 volumes:
  mailname: !ruby/object:Volume
   name: mailname
