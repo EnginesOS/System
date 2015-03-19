@@ -167,7 +167,8 @@ class DockerApi
              if stderr_is_open
                error_mesg += stderr.read_nonblock(256)
              end
-           done
+           end
+           
          rescue Errno::EIO
            res += oline.chop
            SystemUtils.debug_output(oline)
