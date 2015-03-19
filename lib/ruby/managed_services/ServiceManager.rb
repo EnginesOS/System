@@ -430,7 +430,7 @@ SystemUtils.log_exception(e)
 
          managed_engine_tree.remove!(engine_node)
           if params[:remove_all_application_data] == true
-            p removed_all
+            p :removed_all
             save_tree
             return true
           end
