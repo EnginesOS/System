@@ -526,7 +526,7 @@ class EnginesCore
 
       if @docker_api.delete_image(container) == true
          #only delete if del all otherwise backup
-        res = @system_api.delete_container_configs(container,params)
+        res = @system_api.delete_container_configs(container)
         return res
       else
         return false
