@@ -170,6 +170,7 @@ class EngineBuilder
 
   def close_all
     if @log_file.closed? == false
+      log_build_output("Build Finished")
       @log_file.close()
     end
     if@err_file.closed? == false
@@ -203,8 +204,11 @@ class EngineBuilder
   end
 
   def log_build_errors(line)
+    
     @err_file.puts(line)
     @err_file.flush
+    log_build_output("ERROR:" + line)
+    
     #    @error_pipe_wr.puts(line)
   end
 
@@ -348,6 +352,7 @@ class EngineBuilder
       
       if res  == false
         puts "build init failed " + res.to_s
+        log_build_errors("build init failed " + res)
         return res
       end
       
@@ -360,11 +365,13 @@ class EngineBuilder
 
   def launch_deploy managed_container
     begin
-      log_build_output("Lauching Engine")
+      log_build_output("Launching Engine")
       retval =  managed_container.create_container
       if retval == false
         puts "Failed to Start Container " +  managed_container.last_error
-        log_build_errors("Failed to Launch")
+        log_build_errors("Failed to Launch") 
+      
+        
       end
 
       return retval
@@ -377,7 +384,7 @@ class EngineBuilder
 
   def setup_global_defaults
     begin
-      log_build_output("Setup globel defaults")
+      log_build_output("Setup global defaults")
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  + get_basedir
       system  cmd
     rescue Exception=>e
@@ -456,13 +463,16 @@ class EngineBuilder
       log_build_output("Reading Blueprint")
       @blueprint = load_blueprint
       if @blueprint ==  nil ||  @blueprint == false
+       close_all
         return false
       end
 
       @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,self)
       @blueprint_reader.process_blueprint
 
+      
       if  setup_default_files == false
+        close_all
         return false
       end
       
@@ -525,6 +535,7 @@ class EngineBuilder
      
       if  build_init == false
         log_build_errors("Error Build Image failed")
+        log_build_output("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
         post_failed_build_clean_up
         return false
@@ -559,7 +570,7 @@ class EngineBuilder
           create_non_persistant_services   
         end
       end
-
+  log_build_output("Build Successful")
       close_all
 
       return mc
@@ -584,6 +595,7 @@ class EngineBuilder
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
     end
+    close_all
   end
   
   def create_template_files
@@ -897,7 +909,7 @@ end
     #this will fail as no api at this stage
     if mc.core_api != nil
       if launch_deploy(mc) == false
-        log_build_errors("Failed to Launch")
+        log_build_errors("Error Failed to Launch")
       end
       log_build_output("Applying Volume settings and Log Permissions")
       #FIXME need to check results from following
