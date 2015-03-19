@@ -441,21 +441,24 @@ SystemUtils.log_exception(e)
         if engine_node == nil
           return false
         end
-      
-         
-       
 
-         managed_engine_tree.remove!(engine_node)
           if params[:remove_all_application_data] == true
             p :removed_all
+           services = get_engine_persistant_services(params)
+           services.each do | service |
+             p :removing_Service
+             remove_service(service)
+           end
             # managed_engine_tree.print_tree
+            managed_engine_tree.remove!(engine_node)
             save_tree
             return true
           end
                   
-         # keeping persistant         
-         #remove non persistant       
-         
+         # keeping persistant   
+         #remove non persistant 
+                
+         managed_engine_tree.remove!(engine_node)
          uninstalled = get_orphaned_services_tree
     
            uninstalled << engine_node                     
@@ -468,11 +471,14 @@ SystemUtils.log_exception(e)
    
       parent_engine_node = @service_tree["ManagedEngine"][service_hash[:variables][:parent_engine]]
         if parent_engine_node == nil
-          @last_error ="No service record found for "+ service_hash[:variables][:parent_engine] 
+          @last_error ="No services record found for "+ service_hash[:variables][:parent_engine] 
           p   @last_error
           return false
-        end
-      service_type_node = parent_engine_node[service_hash[:type_path]]
+        end 
+        
+service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_path]) 
+        
+    #  parent_engine_node[]
         if service_type_node == nil
           @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
           p   @last_error
@@ -517,7 +523,7 @@ SystemUtils.log_exception(e)
       if services_node !=nil
         provider_node = services_node[service_hash[:publisher_namespace] ]
         if provider_node != nil
-          servicetype_node =  provider_node[service_hash[:type_path] ]
+          servicetype_node =  get_type_path_node(provider_node,service_hash[:type_path] )
           if servicetype_node != nil
             service_node = servicetype_node[service_hash[:variables][:parent_engine]]
             if service_node != nil

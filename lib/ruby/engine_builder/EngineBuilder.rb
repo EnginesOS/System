@@ -164,12 +164,13 @@ class EngineBuilder
       @log_pipe_rd, @log_pipe_wr = IO.pipe
       @error_pipe_rd, @error_pipe_wr = IO.pipe
     rescue
-      SystemUtils.log_exception(e)
+      log_exception(e)
     end
   end
 
   def close_all
     if @log_file.closed? == false
+      log_build_output("Build Finished")
       @log_file.close()
     end
     if@err_file.closed? == false
@@ -203,8 +204,11 @@ class EngineBuilder
   end
 
   def log_build_errors(line)
+    
     @err_file.puts(line)
     @err_file.flush
+    log_build_output("ERROR:" + line)
+    
     #    @error_pipe_wr.puts(line)
   end
 
@@ -225,7 +229,7 @@ class EngineBuilder
       return " -v " + local_log_dir + ":" + rmt_log_dir + ":rw "
 
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -242,7 +246,7 @@ class EngineBuilder
         FileUtils.mv(dir,backup)
       end
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
       #throw BuildException.new(e,"backup_lastbuild")
     end
@@ -268,7 +272,7 @@ class EngineBuilder
       return hash
       
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -278,7 +282,7 @@ class EngineBuilder
       log_build_output("Clone Blueprint Repository")
       g = Git.clone(@repoName, @build_name, :path => SysConfig.DeploymentDir)
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -348,40 +352,43 @@ class EngineBuilder
       
       if res  == false
         puts "build init failed " + res.to_s
+        log_build_errors("build init failed " + res)
         return res
       end
       
       return true
       
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+    log_exception(e)
       return false 
   end
 
   def launch_deploy managed_container
     begin
-      log_build_output("Lauching Engine")
+      log_build_output("Launching Engine")
       retval =  managed_container.create_container
       if retval == false
         puts "Failed to Start Container " +  managed_container.last_error
-        log_build_errors("Failed to Launch")
+        log_build_errors("Failed to Launch") 
+      
+        
       end
 
       return retval
     rescue Exception=>e
 
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
 
   def setup_global_defaults
     begin
-      log_build_output("Setup globel defaults")
+      log_build_output("Setup global defaults")
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/global/* "  + get_basedir
       system  cmd
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -392,7 +399,7 @@ class EngineBuilder
       cmd=  "cp -r " +  SysConfig.DeploymentTemplates + "/" +  @blueprint_reader.framework + "/* "  + get_basedir
       system  cmd
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -428,7 +435,7 @@ class EngineBuilder
         puts(@webPort)
       end
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       #      throw BuildException.new(e,"setting web port")
       return false
     end
@@ -445,7 +452,7 @@ class EngineBuilder
         end
       end
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -456,13 +463,16 @@ class EngineBuilder
       log_build_output("Reading Blueprint")
       @blueprint = load_blueprint
       if @blueprint ==  nil ||  @blueprint == false
+       close_all
         return false
       end
 
       @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,self)
       @blueprint_reader.process_blueprint
 
+      
       if  setup_default_files == false
+        close_all
         return false
       end
       
@@ -559,14 +569,14 @@ class EngineBuilder
           create_non_persistant_services   
         end
       end
-
+  log_build_output("Build Successful")
       close_all
 
       return mc
 
     rescue Exception=>e
 
-  SystemUtils.log_exception(e)
+  log_exception(e)
     post_failed_build_clean_up
       close_all
       return false
@@ -584,6 +594,7 @@ class EngineBuilder
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
     end
+    close_all
   end
   
   def create_template_files
@@ -677,7 +688,7 @@ class EngineBuilder
       end      
       out_file.close
     end
-    SystemUtils.log_exception(e)
+    log_exception(e)
  end
  
 def process_dockerfile_tmpl(filename)
@@ -854,7 +865,7 @@ end
       f.write(blueprint.to_json)
       f.close
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -897,7 +908,7 @@ end
     #this will fail as no api at this stage
     if mc.core_api != nil
       if launch_deploy(mc) == false
-        log_build_errors("Failed to Launch")
+        log_build_errors("Error Failed to Launch")
       end
       log_build_output("Applying Volume settings and Log Permissions")
       #FIXME need to check results from following
@@ -1004,4 +1015,9 @@ end
     return SysConfig.DeploymentDir + "/" + @build_name
   end
 end
-
+ def log_exception(e)
+   log_build_errors(e.to_s)
+ ensure
+   SystemUtils.log_exception(e)
+     return false 
+ end
