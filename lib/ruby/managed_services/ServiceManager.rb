@@ -448,7 +448,8 @@ SystemUtils.log_exception(e)
             p :removed_all
            services = get_engine_persistant_services(params)
            services.each do | service |
-             remove_service(service.content)
+             p :removing_Service
+             remove_service(service)
            end
             # managed_engine_tree.print_tree
             managed_engine_tree.remove!(engine_node)
