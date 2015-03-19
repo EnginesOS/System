@@ -486,6 +486,10 @@ class EnginesOSapi
              return  failed(params[:engine_name],last_api_error, "Delete Image")
           end  
   end
+  
+  def reinstall_engine(engine_name)
+    
+  end
 
   def createEngine engine_name
     engine = loadManagedEngine engine_name
