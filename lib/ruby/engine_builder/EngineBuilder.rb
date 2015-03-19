@@ -217,7 +217,7 @@ class EngineBuilder
       else
         rmt_log_dir="/var/log"
       end
-      local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @hostname
+      local_log_dir = SysConfig.SystemLogRoot + "/containers/" + @container_name 
       if Dir.exist?(local_log_dir) == false
         Dir.mkdir( local_log_dir)
       end
@@ -861,7 +861,7 @@ end
 
   def create_managed_container
     log_build_output("Creating ManagedEngine")
-    mc = ManagedEngine.new(@hostname,
+    mc = ManagedEngine.new(@container_name ,
     @memory ,
     @hostname,
     @domain_name,
