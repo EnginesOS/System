@@ -196,7 +196,7 @@ end
 
   end
 
-  def delete_image
+  def delete_image()
     if @core_api == nil
       @last_error="No connection to Engines OS System"      
       return false
@@ -204,7 +204,7 @@ end
     ret_val=false
     state = read_state()
     if state == "nocontainer"
-      ret_val=@core_api.delete_image self
+      ret_val=@core_api.delete_image(self)
     else
       @last_error ="Cannot Delete the Image while container exists. Please stop/destroy first"
     end

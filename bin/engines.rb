@@ -277,6 +277,21 @@ end
     else
       puts("Error cannot delete a Service Image")
     end
+    when "delete_services"
+    if c_type != "container"
+      puts "Error cannot delete services from " +  c_type
+      exit
+    end
+      eng = engines_api.loadManagedEngine(containerName)
+      if eng.is_a?(EnginesOSapiResult) == false
+        p "Error cannot delete Services from an active Image"
+        exit
+      end
+      params = Hash.new
+      params[:engine_name] = containerName
+      params[:remove_all_application_data] = true
+      engines_api.delete_image_dependancies(params)    
+    
   when  "create"
     if c_type == "container"
       res = engines_api.createEngine(containerName)

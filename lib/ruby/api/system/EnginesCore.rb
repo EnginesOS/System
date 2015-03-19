@@ -525,7 +525,8 @@ class EnginesCore
       clear_error
 
       if @docker_api.delete_image(container) == true
-        res = @system_api.delete_container_configs(container)
+         #only delete if del all otherwise backup
+        res = @system_api.delete_container_configs(container,params)
         return res
       else
         return false
@@ -539,6 +540,18 @@ class EnginesCore
     end
   end
 
+  def delete_image_dependancies(params)
+    sm = loadServiceManager()
+    
+    #do with Container
+    #remove logs
+    #remove status    
+    #remove flags
+    
+    #remove services
+    return sm.rm_remove_engine(params)
+  end
+  
   def run_system(cmd)
     clear_error
     begin
