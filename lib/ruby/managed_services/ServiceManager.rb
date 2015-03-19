@@ -372,6 +372,16 @@ SystemUtils.log_exception(e)
       return @service_tree["ManagedEngine"]
   end
 
+  def get_orphaned_services_tree
+    orphans = @service_tree["OphanedServices"]
+              if orphans == nil
+                @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
+                orphans = @service_tree["OphanedServices"]
+              end
+              
+              return orphans
+  end
+  
   def find_engine_services(params)
     engine_node = @service_tree["ManagedEngine"][params[:engine_name]]
       
@@ -431,33 +441,24 @@ SystemUtils.log_exception(e)
         if engine_node == nil
           return false
         end
-        engine_node.print_tree
+      
          
-       managed_engine_tree
+       
 
          managed_engine_tree.remove!(engine_node)
           if params[:remove_all_application_data] == true
             p :removed_all
-             managed_engine_tree.print_tree
+            # managed_engine_tree.print_tree
             save_tree
             return true
           end
+                  
+         # keeping persistant         
+         #remove non persistant       
          
-         
-         # keeping persistant
-         
-         #remove non persistant
-         
-         
-         
-         uninstalled = @service_tree["Uninstalled"]
-           if uninstalled == nil
-             @service_tree << Tree::TreeNode.new("Uninstalled","Managed Services left after Engine Deinstall")
-             uninstalled = @service_tree["Uninstalled"]
-           end
-           uninstalled << engine_node
-           
-           
+         uninstalled = get_orphaned_services_tree
+    
+           uninstalled << engine_node                     
            
            save_tree
            return true

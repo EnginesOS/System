@@ -481,6 +481,10 @@ class EnginesCore
     return @system_api.loadManagedEngine(engine_name)
   end
 
+  def get_orphaned_services_tree
+    return loadServiceManager.get_orphaned_services_tree
+  end  
+  
   def loadManagedService(service_name)
     return @system_api.loadManagedService(service_name)
   end
