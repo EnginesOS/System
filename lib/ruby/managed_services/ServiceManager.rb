@@ -428,6 +428,9 @@ SystemUtils.log_exception(e)
         p :rm_remove_engine
         p params
         
+        if engine_node == nil
+          return false
+        end
         engine_node.print_tree
          
        managed_engine_tree
