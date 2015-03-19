@@ -441,21 +441,25 @@ SystemUtils.log_exception(e)
         if engine_node == nil
           return false
         end
-      
-         
-       
 
-         managed_engine_tree.remove!(engine_node)
+
+       
           if params[:remove_all_application_data] == true
             p :removed_all
+           services = get_engine_persistant_services(params)
+           services.each do | service |
+             remove_service(service.content)
+           end
             # managed_engine_tree.print_tree
+            managed_engine_tree.remove!(engine_node)
             save_tree
             return true
           end
                   
-         # keeping persistant         
-         #remove non persistant       
-         
+         # keeping persistant   
+         #remove non persistant 
+                
+         managed_engine_tree.remove!(engine_node)
          uninstalled = get_orphaned_services_tree
     
            uninstalled << engine_node                     
