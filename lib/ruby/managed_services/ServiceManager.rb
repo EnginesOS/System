@@ -431,9 +431,9 @@ SystemUtils.log_exception(e)
         if engine_node == nil
           return false
         end
-        engine_node.print_tree
+      
          
-       managed_engine_tree
+       
 
          managed_engine_tree.remove!(engine_node)
           if params[:remove_all_application_data] == true
