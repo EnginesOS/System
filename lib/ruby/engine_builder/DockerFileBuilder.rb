@@ -219,7 +219,7 @@ class DockerFileBuilder
         dir = File.dirname(path)
         p :dir
         p dir
-        if dir.present? == false || dir == nil || dir.length ==0 || dir =="."
+        if  dir == nil || dir.length ==0 || dir =="."
           dir = "app/"
         end
         p :dir
