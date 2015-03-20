@@ -186,6 +186,12 @@ end
       end
     end
 
+when "reinstall"
+if c_type != "container"
+  res = "Error: Reinstall not applicable to " +  c_type
+else
+  EnginesOSapi.reinstall_engine(containerName)
+end
   when "check_and_act"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
