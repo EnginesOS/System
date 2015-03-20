@@ -1,5 +1,5 @@
 class BluePrintReader
-  require 'engine_public.rb' 
+
   def initialize(build_name,contname,blue_print,builder)
      @build_name = build_name
 
