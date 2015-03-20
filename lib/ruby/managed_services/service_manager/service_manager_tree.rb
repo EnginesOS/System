@@ -12,7 +12,7 @@ module ServiceManagerTree
     end
   end
 
-  def initailize_tree
+  def initialize_tree
     if File.exists?(SysConfig.ServiceTreeFile)
           service_tree = tree_from_yaml()
         else
