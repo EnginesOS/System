@@ -362,7 +362,14 @@ SystemUtils.log_exception(e)
       if types == nil
         return nil
       end
-      
+      if types.is_a?(Array)
+        types.each do |type|
+          if type[params[:name]] != nil
+            return type[params[:name]]
+          end
+        end
+        return nil
+      end
      return types[params[:name]]
     
   end
@@ -376,6 +383,8 @@ SystemUtils.log_exception(e)
     
     if retval.count == 1
       return retval[0]
+  elsif retval.count == 0
+    return nil
   else
     return retval
   end
