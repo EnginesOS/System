@@ -1,6 +1,38 @@
 module ServiceManagerTree
   
- 
+  def managed_engine_tree
+        return @service_tree["ManagedEngine"]
+    end
+  
+    def orphaned_services_tree
+      orphans = @service_tree["OphanedServices"]
+                if orphans == nil
+                  @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
+                  orphans = @service_tree["OphanedServices"]
+                end
+                
+                return orphans
+    end
+    
+  def managed_service_tree 
+    return @service_tree["Services"]
+  end
+    
+  def get_matched_leafs(branch,label,value)
+    ret_val = Array.new
+    branch.children.each do |sub_branch|
+           if sub_branch.children.count == 0
+              if  sub_branch.content[label] == value 
+                  ret_val.push(sub_branch.content)  
+              end
+           else
+          ret_val += get_matched_leafs(sub_branch,label,value) 
+       end
+    end
+       return ret_val
+  end
+  
+  
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)
@@ -27,6 +59,11 @@ module ServiceManagerTree
         SystemUtils.log_exception(e)
             
   end
+  
+def get_service_provider_tree(publisher)
+    managed_service_tree[publisher]
+  end
+  
   protected
   
   def save_tree
