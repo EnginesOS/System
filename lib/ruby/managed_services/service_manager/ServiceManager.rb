@@ -506,7 +506,7 @@ SystemUtils.log_exception(e)
             p :FAILED_TO_REMOVE_SERVICE
             p service_hash
           
-       
+        
           
 @last_error ="No service record found for " + service_hash[:variables][:parent_engine].to_s
 @last_error += " service_type:" +  service_hash[:type_path].to_s 
