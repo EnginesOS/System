@@ -40,7 +40,7 @@ module ServiceManagerTree
     
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
-      if parent_node.has_children == false
+      if parent_node.has_children? == false
         remove_tree_entry(parent_node)
       end
       
