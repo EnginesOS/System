@@ -18,6 +18,10 @@ module ServiceManagerTree
                 return orphans
     end
     
+    def get_orphaned_services_tree
+      return orphaned_services_tree
+    end
+    
   def managed_service_tree 
     return @service_tree["Services"]
   end
