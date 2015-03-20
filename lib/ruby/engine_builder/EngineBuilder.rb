@@ -694,7 +694,7 @@ end
     
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      
+      free_orphan = false
       service_hash[:parent_engine]=@container_name
       if service_hash.has_key?(:variables) == false
           service_hash[:variables] = Hash.new
@@ -723,6 +723,8 @@ end
       p :target_envs
       p service_def[:target_environment_variables]
      
+        
+        #FIXME need to unify filesystem creation with attach_service
       if service_hash[:servicetype_name] == "filesystem"
          add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
@@ -736,13 +738,19 @@ end
      else       
        service_hash[:fresh]=false
        @first_build = false
-       service_hash  = reattach_service(service_hash)
-       services[service_cnt]=service_hash
+       new_service_hash  = reattach_service(service_hash)
+        if new_service_hash != nil       
+          services[service_cnt]=service_hash
+          service_hash = new_service_hash
+          free_orphan = true
+       end
      end
       p :attach_service
        p service_hash
-      @core_api.attach_service(service_hash)
       
+      if @core_api.attach_service(service_hash) ==true && free_orphan == true 
+        release_orphan(service_hash)
+      end
       ++service_cnt
     end
   end
@@ -752,6 +760,11 @@ end
     sm = @core_api.loadServiceManager()
     resuse_service_hash = sm.reparent_orphan(service_hash)
     return resuse_service_hash
+  end
+  
+  def release_orphan
+    sm = @core_api.loadServiceManager()
+    sm.release_orphan(service_hash)
   end
     
   def fill_in_dynamic_vars(service_hash)
