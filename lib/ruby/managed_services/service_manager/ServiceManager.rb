@@ -261,7 +261,7 @@ SystemUtils.log_exception(e)
       return false
     end
     if managed_engine_tree[service_hash[:variables][:parent_engine] ] != nil
-      engine_node = active_engines_node[ service_hash[:variables][:parent_engine] ]
+      engine_node = managed_engine_tree[ service_hash[:variables][:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash[:variables][:parent_engine] + " Engine Service Tree")
     managed_engine_tree << engine_node
