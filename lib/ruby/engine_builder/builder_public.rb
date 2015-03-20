@@ -1,4 +1,4 @@
-require 'random' 
+require 'securerandom' 
  
 class BuilderPublic
 def initialize(builder)
