@@ -366,7 +366,7 @@ SystemUtils.log_exception(e)
       end
       if types.is_a?(Array)
         types.each do |type|
-          p type
+          p type.content
           
           if type[params[:service_handle]] != nil
             return type[params[:service_handle]]
