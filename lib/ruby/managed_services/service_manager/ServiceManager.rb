@@ -1,10 +1,12 @@
 require 'rubytree'
 require_relative 'service_manager_tree.rb'
+ include 'service_manager_tree.rb'
 class ServiceManager
 
   attr_accessor :last_error
   def initialize
     @service_tree = initialize_tree
+                    
 #    if File.exists?(SysConfig.ServiceTreeFile)
 #      @service_tree = tree_from_yaml()
 #    else
