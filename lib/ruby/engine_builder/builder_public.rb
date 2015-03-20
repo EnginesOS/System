@@ -1,4 +1,6 @@
- class BuilderPublic
+require 'random' 
+ 
+class BuilderPublic
 def initialize(builder)
  @builder = builder
 end
