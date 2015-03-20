@@ -8,6 +8,7 @@ require "git"
 require 'fileutils'
 require 'json'
 
+require_relative 'builder_public.rb' 
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
 require_relative 'SystemAccess.rb'
