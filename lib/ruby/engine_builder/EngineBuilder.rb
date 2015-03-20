@@ -751,7 +751,7 @@ end
   
   def reattach_service(service_hash)
     sm = @core_api.loadServiceManager()
-    sm.reparent_orphan(params)
+    sm.reparent_orphan(service_hash)
   end
     
   def fill_in_dynamic_vars(service_hash)
