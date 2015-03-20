@@ -299,6 +299,8 @@ end
 def get_service_label(params)
   if params.has_key?(:name) && params[:name] != nil
        service_label = params[:name]
+    elsif  params.has_key?(:service_label) && params[:service_label] != nil
+    service_label = params[:service_label]  
      elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
        service_label = params[:variables][:name]
      else
@@ -364,8 +366,10 @@ SystemUtils.log_exception(e)
       end
       if types.is_a?(Array)
         types.each do |type|
-          if type[params[:name]] != nil
-            return type[params[:name]]
+          p type
+          
+          if type[params[:service_handle]] != nil
+            return type[params[:service_handle]]
           end
         end
         return nil
