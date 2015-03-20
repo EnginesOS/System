@@ -357,7 +357,8 @@ SystemUtils.log_exception(e)
       remove_tree_entry(service)
     end
     
-    save_tree
+    save_tree  
+    return true
   end
   
   def retrieve_orphan(params)
