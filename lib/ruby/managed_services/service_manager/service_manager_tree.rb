@@ -26,6 +26,28 @@ module ServiceManagerTree
     return @service_tree["Services"]
   end
     
+  
+  def remove_tree_entry(tree_node)
+    if tree_node == nil || tree_node.is_a?(TreeNode) == false
+      P :err_remove_tree_entry
+      p tree_node.to_s
+      return false
+    end
+  
+    if tree_node.parent == nil
+      return false
+    end
+    
+    parent_node = tree_node.parent
+    parent_node.remove!(tree_node)
+      if parent_node.has_children == false
+        remove_tree_entry(parent_node)
+      end
+      
+      return true
+  end
+  
+  
   def get_matched_leafs(branch,label,value)
     ret_val = Array.new
     branch.children.each do |sub_branch|

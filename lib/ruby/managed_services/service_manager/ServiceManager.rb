@@ -329,7 +329,56 @@ SystemUtils.log_exception(e)
     
   end
   
+  def reparent_orphan()
+    orphan = retrieve_orphan(params)
+      if orphan !=nil
+        content =  orphan.content[:variables][:parent_engine]=params[:parent_engine]
+       
+          return content
+      else 
+        return nil
+      end   
+  end
   
+  def release_orphan(params)
+    orphan = retrieve_orphan(params)
+    if orphan == nil
+      return false
+    end
+    
+    remove_tree_entry(orphan)
+    
+    service = find_service_consumers(orphan.content)
+    if service != nil
+      remove_tree_entry(service)
+    end
+    
+    save_tree
+  end
+  
+  def retrieve_orphan(params)
+    types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
+      if types == nil
+        return nil
+      end
+      
+     return types[params[:name]]
+    
+  end
+  
+  def get_all_engines_type_path_node(tree_node,type_path)
+    retval = Array.new
+    
+    tree_node.children.each do | engine_node |
+     retval.push(get_type_path_node(engine_node,type_path))
+    end
+    
+    if retval.count == 1
+      return retval[0]
+  else
+    return retval
+  end
+  end
   
   def find_engine_services(params)
     engine_node = managed_engine_tree[params[:engine_name]]
@@ -393,79 +442,50 @@ SystemUtils.log_exception(e)
   
   def remove_service service_hash
    
-      parent_engine_node = managed_engine_tree[service_hash[:variables][:parent_engine]]
-        if parent_engine_node == nil
-          @last_error ="No services record found for "+ service_hash[:variables][:parent_engine] 
-          p   @last_error
-          return false
-        end 
-        
-service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_path]) 
-        
-    #  parent_engine_node[]
-        if service_type_node == nil
-          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
-          p   @last_error
-          return false
-        end
-
-        service_name = get_service_label(service_hash)
-        if service_name  == nil
-          p service_hash
-          p :notfound
-        end 
-        service_node = service_type_node[service_name]
-        #deal with new way variables are pass 
- 
-          if service_node != nil          
-              service_type_node.remove!(service_node)              
-                if service_type_node.children.count ==0
-                  parent_engine_node.remove!(service_type_node)
-                    if parent_engine_node.children.count == 0
-                      managed_engine_tree.remove!(parent_engine_node)
-                    end
-                end
+#      parent_engine_node = managed_engine_tree[service_hash[:variables][:parent_engine]]
+#        if parent_engine_node == nil
+#          @last_error ="No services record found for "+ service_hash[:variables][:parent_engine] 
+#          p   @last_error
+#          return false
+#        end 
+#        
+#service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_path]) 
+#        
+#    #  parent_engine_node[]
+#        if service_type_node == nil
+#          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
+#          p   @last_error
+#          return false
+#        end
+#
+#        service_name = get_service_label(service_hash)
+#        if service_name  == nil
+#          p service_hash
+#          p :notfound
+#        end 
+#        service_node = service_type_node[service_name]
+#        #deal with new way variables are pass 
+        service_node = find_engine_services(service_hash)
+          if service_node != nil  
+            sucess = remove_tree_entry(service_node)                
             end
 
-      sucess =  true
+    
 
       if managed_service_tree !=nil
-        provider_node = managed_service_tree[service_hash[:publisher_namespace] ]
-        if provider_node != nil
-          servicetype_node =  get_type_path_node(provider_node,service_hash[:type_path] )
-          if servicetype_node != nil
-            service_node = servicetype_node[service_hash[:variables][:parent_engine]]
-            if service_node != nil
-              servicetype_node.remove!(service_node)
-              if servicetype_node.children.count == 0
-                provider_node.remove!(service_node)
-                if provider_node.children.count == 0
-                  service_node.remove!(provider_node)
-                end
-              end
-            else
-              sucess =  false
-            end  
-            else
-                          sucess =  false                       
-          end
-          else
-              sucess =  false
-        end
-        else
-              sucess =  false
+        service_node = find_service_consumers(service_hash)
 
-    p "failed to load service tree!"
-           
-          end         
-          
-          if sucess == true
-            save_tree
-            return true
-          else
+            if service_node != nil
+              return remove_tree_entry(service_node)
+
+            end  
+                      
+          end
+   
             p :FAILED_TO_REMOVE_SERVICE
             p service_hash
-          end
+          
+       
           
 @last_error ="No service record found for " + service_hash[:variables][:parent_engine].to_s
 @last_error += " service_type:" +  service_hash[:type_path].to_s 
