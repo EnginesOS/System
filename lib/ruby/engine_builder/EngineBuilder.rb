@@ -679,6 +679,7 @@ end
       service_hash[:service_handle] = service_hash[:variables][:name]
          p :adding_service
          p service_hash   
+      log_build_output("Creating Service " + service_hash[:service_label].to_s)   
       @core_api.attach_service(service_hash)
        end
   end
@@ -741,7 +742,7 @@ end
        @first_build = false
        new_service_hash  = reattach_service(service_hash)
         if new_service_hash != nil       
-          services[service_cnt]=service_hash
+          @blueprint_reader.services[service_cnt]=service_hash
           service_hash = new_service_hash
           free_orphan = true
        log_build_output("Reattached Service " + service_hash[:service_label].to_s)
