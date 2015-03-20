@@ -335,7 +335,8 @@ SystemUtils.log_exception(e)
   def reparent_orphan(params)
     orphan = retrieve_orphan(params)
       if orphan !=nil
-        content =  orphan.content[:variables][:parent_engine]=params[:parent_engine]
+        content =  orphan.content
+        content[:variables][:parent_engine]=params[:parent_engine]
        
           return content
       else 
