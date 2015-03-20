@@ -73,7 +73,7 @@ function process_file {
 #                                else
 #                                		raw=1
 #                                fi
-                done
+ #               done
 
 #         if test $raw -eq 0
 #         then
