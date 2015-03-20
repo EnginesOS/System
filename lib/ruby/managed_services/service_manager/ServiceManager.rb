@@ -1,5 +1,5 @@
 require 'rubytree'
-
+require_relative 'service_manager_tree.rb'
 class ServiceManager
 
   attr_accessor :last_error
