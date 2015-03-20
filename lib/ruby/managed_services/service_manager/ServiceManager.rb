@@ -465,7 +465,12 @@ SystemUtils.log_exception(e)
 #        end 
 #        service_node = service_type_node[service_name]
 #        #deal with new way variables are pass 
-        service_node = find_engine_services(service_hash)
+    query_hash=Hash.new()
+    query_hash[:engine_name] = service_hash[:variables][:engine_name]
+    query_hash[:type_path] = service_hash[:type_path]
+
+      
+        service_node = find_engine_services(service_node)
           if service_node != nil  
             sucess = remove_tree_entry(service_node)                
             end
