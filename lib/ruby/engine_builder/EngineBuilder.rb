@@ -739,6 +739,7 @@ end
      else       
        service_hash[:fresh]=false
        @first_build = false
+       service_hash  = reattach_service(service_hash)
      end
       p :attach_service
        p service_hash
@@ -747,6 +748,12 @@ end
     end
   end
   
+  
+  def reattach_service(service_hash)
+    sm = @core_api.loadServiceManager()
+    sm.reparent_orphan(params)
+  end
+    
   def fill_in_dynamic_vars(service_hash)
     p "FILLING_+@+#+@+@+@+@+@+"
     if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
