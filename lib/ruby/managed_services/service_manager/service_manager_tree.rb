@@ -29,7 +29,7 @@ module ServiceManagerTree
   
   def remove_tree_entry(tree_node)
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      P :err_remove_tree_entry
+      p :err_remove_tree_entry
       p tree_node.to_s
       return false
     end
