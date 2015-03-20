@@ -441,7 +441,7 @@ class EngineBuilder
               p :env_after
               p env.value
           end
-          fill_service_environment_varibles
+          fill_service_environment_variables
           create_template_files
           create_php_ini
           create_apache_config                 
@@ -660,8 +660,7 @@ end
   
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
-       #FIX ME Should call this but Keys dont match blueprint designer issue
-       #@core_api.add_service(service,mc)     
+   
       service_hash[:parent_engine]=@container_name
     if service_hash.has_key?(:variables) == false
       service_hash[:variables] = Hash.new
@@ -692,6 +691,8 @@ end
   end
   
   def create_persistant_services
+    
+    service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
       
       service_hash[:parent_engine]=@container_name
@@ -699,13 +700,9 @@ end
           service_hash[:variables] = Hash.new
         end
       service_hash[:variables][:parent_engine]=@container_name
-#      p :service_def_for
-#      p service_hash[:type_path]
-#      p service_hash[:publisher_namespace]
-   
+
       service_def = get_service_def(service_hash)
-#      p  service_def
-       
+
        if service_def == nil
          p :failed_to_load_service_definition
          p :servicetype_name
@@ -740,11 +737,13 @@ end
        service_hash[:fresh]=false
        @first_build = false
        service_hash  = reattach_service(service_hash)
+       services[service_cnt]=service_hash
      end
       p :attach_service
        p service_hash
       @core_api.attach_service(service_hash)
-            
+      
+      ++service_cnt
     end
   end
   
@@ -901,7 +900,7 @@ end
 
   protected
 
-def fill_service_environment_varibles
+def fill_service_environment_variables
   
   services = @blueprint_reader.services
     services.each do |service_hash|
