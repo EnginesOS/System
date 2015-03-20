@@ -4,6 +4,10 @@ module ServiceManagerTree
         return @service_tree["ManagedEngine"]
     end
   
+    def get_managed_engine_tree
+      return managed_engine_tree
+  end
+
     def orphaned_services_tree
       orphans = @service_tree["OphanedServices"]
                 if orphans == nil
