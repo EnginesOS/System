@@ -116,7 +116,7 @@ class EnginesOSapi
   end
 
   def get_engine_builder_streams
-    if @engine_builder.present?
+    if @engine_builder != nil 
       return  ([@engine_builder.get_build_log_stream,  @engine_builder.get_build_err_stream])
     end 
     return nil
@@ -208,9 +208,9 @@ class EnginesOSapi
     backup_hash.store(:backup_type, "fs")
     backup_hash.store(:parent_engine,engine_name)
     
-      if engine.volumes.present?     
+      if engine.volumes != nil     
         volume =  engine.volumes["volume_name"]
-          if volume.present?
+          if volume != nil
             volume.add_backup_src_to_hash(backup_hash)
             SystemUtils.debug_output backup_hash
           end
@@ -965,7 +965,7 @@ class EnginesOSapi
  
  def get_available_services_for(item)
     res = @core_api.get_available_services_for(item)
-     if res.present?
+     if res != nil
        return res
           else
             return failed("get avaiable services ",last_api_error,"get avaiable services")
