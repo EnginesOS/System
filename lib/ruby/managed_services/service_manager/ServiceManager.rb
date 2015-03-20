@@ -470,7 +470,7 @@ SystemUtils.log_exception(e)
     query_hash[:type_path] = service_hash[:type_path]
 
       
-        service_node = find_engine_services(service_node)
+        service_node = find_engine_services(query_hash)
           if service_node != nil  
             sucess = remove_tree_entry(service_node)                
             end
