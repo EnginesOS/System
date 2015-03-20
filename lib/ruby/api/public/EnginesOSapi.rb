@@ -94,13 +94,9 @@ class EnginesOSapi
   end
 
   def build_engine(params)
-#    container_name = params[:engine_name]
-#    domain_name = params[:domain_name]
-#    host_name = params[:host_name]
-#    evirons = params[:env_variables]
-  #  params[:repository] = repository
+
     p params
-    #@engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
+   
     @engine_builder = EngineBuilder.new(params, @core_api)
     engine = @engine_builder.build_from_blue_print
     if engine == false
