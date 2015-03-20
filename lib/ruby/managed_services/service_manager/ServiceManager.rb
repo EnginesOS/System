@@ -429,7 +429,7 @@ service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_pa
 
       sucess =  true
 
-      if services_node !=nil
+      if managed_service_tree !=nil
         provider_node = managed_service_tree[service_hash[:publisher_namespace] ]
         if provider_node != nil
           servicetype_node =  get_type_path_node(provider_node,service_hash[:type_path] )
