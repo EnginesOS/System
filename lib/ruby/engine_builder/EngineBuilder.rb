@@ -765,7 +765,7 @@ end
     return resuse_service_hash
   end
   
-  def release_orphan
+  def release_orphan(service_hash)
     sm = @core_api.loadServiceManager()
     sm.release_orphan(service_hash)
   end
