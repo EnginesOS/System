@@ -735,7 +735,8 @@ end
      if  @core_api.find_service_consumers(service_hash) == false              
        @first_build = true
        service_hash[:fresh]=true
-     else       
+       log_build_output("Creating Service " + service_hash[:service_label].to_s)   
+     else              
        service_hash[:fresh]=false
        @first_build = false
        new_service_hash  = reattach_service(service_hash)
@@ -743,6 +744,7 @@ end
           services[service_cnt]=service_hash
           service_hash = new_service_hash
           free_orphan = true
+       log_build_output("Reattached Service " + service_hash[:service_label].to_s)
        end
      end
       p :attach_service
