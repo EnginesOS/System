@@ -51,14 +51,14 @@ echo "Installing Docker"
 		 apt-get install apt-transport-https
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
-#IF AWS		 
-		  apt-get install -y linux-image-extra-$(uname -r) -qq
+#IF AWS	 and not devmapper	 
+		#  apt-get install -y linux-image-extra-$(uname -r) -qq
 		 wget -qO- https://get.docker.io/gpg | apt-key add -
 		 apt-get -y  --force-yes install lxc-docker
 	
 echo "Configuring Docker DNS settings"	 
-		 echo "DOCKER_OPTS=\"--dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker 
-		 
+		 echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker 
+	
 		 #need to restart to get dns set
 		 service docker stop
 		 sleep 20
@@ -93,6 +93,16 @@ echo "Setting up engines system user"
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
 echo "Installing ruby"
+
+#10 gems installed
+#cp: cannot stat â: No such file or directory
+#cp: cannot stat â: No such file or directory
+#cp: cannot stat â: No such file or directory
+#cp: cannot stat â: No such file or directory
+#Setting directory and file permissions
+#chown: cannot access â: No such file or directory
+#Enter new UNIX password: 
+
 
 mkdir -p /usr/local/  
 cd /usr/local/  

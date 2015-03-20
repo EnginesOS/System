@@ -2,10 +2,6 @@
 
 function copy_substituted_templates {
 
-#run with /home/app
-
-export dbname dbport dbuser dbpass dbhost FRAMEWORK cont_user cont_grp FSCONTFSVolHome SAR TZ
-echo  $dbname $dbport $dbuser $dbpass $dbhost $FRAMEWORK $cont_user $cont_grp $FSCONTFSVolHome $SAR $TZ
 
 templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         for file in $templates
@@ -47,7 +43,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         echo run as `whoami` in `pwd`
 }
 
-function process_file {
+#function process_file {
 #cat /home/app.env |cut -f1 -d= >/home/app/app_env_variables
 #env_variables=`cat /home/system_env_variables /home/app/app_env_variables | grep -v "#"`
 #env_variables=`set | awk '{print $1}'`
@@ -73,8 +69,8 @@ function process_file {
 #                                else
 #                                		raw=1
 #                                fi
-                done
-
+ #               done
+#
 #         if test $raw -eq 0
 #         then
 #                echo $line >> $dest_file
@@ -83,5 +79,5 @@ function process_file {
 #         fi                                                  
 # 
 #done < $file
-
-}
+#
+#}

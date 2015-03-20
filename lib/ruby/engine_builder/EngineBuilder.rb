@@ -8,6 +8,7 @@ require "git"
 require 'fileutils'
 require 'json'
 
+require_relative 'builder_public.rb' 
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
 require_relative 'SystemAccess.rb'
@@ -44,66 +45,8 @@ class EngineBuilder
 
   end
 
-  #This class is to isolate the builder from the docker template output
   
-  class BuilderPublic
-    def initialize(builder)
-     @builder = builder
-    end
-     def engine_name
-       @builder.container_name
-     end
-     def domain_name
-       @builder.domain_name
-     end
-     def hostname 
-       @builder.hostname
-     end
-     def http_protocol
-       @builder.http_protocol
-     end
-     def repoName
-       @builder.repoName
-     end
-     def webPort
-       @builder.webPort
-     end
-     def build_name
-       @builder.build_name
-     end
-     def runtime
-       @builder.runtime
-     end     
-     def fqdn
-       return @builder.hostname + "." + @builder.domain_name
-     end
-     def set_environments 
-       @builder.set_environments
-     end     
-     def environments
-       @builder.environments
-     end
-     
-     def mysql_host
-       return "mysql.engines.internal"
-     end
-     
-     def blueprint
-       return @builder.blueprint
-     end
-     
-     def random cnt
-       len = cnt.to_i
-       rnd = SecureRandom.hex(len)
-#       p :RANDOM__________
-#       p rnd.byteslice(0,len) 
-       return rnd.byteslice(0,len) 
-     end
-     
-     
-    
-  end
-
+   
   def initialize(params,core_api)
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
@@ -796,6 +739,7 @@ end
      else       
        service_hash[:fresh]=false
        @first_build = false
+       service_hash  = reattach_service(service_hash)
      end
       p :attach_service
        p service_hash
@@ -804,6 +748,13 @@ end
     end
   end
   
+  
+  def reattach_service(service_hash)
+    sm = @core_api.loadServiceManager()
+    resuse_service_hash = sm.reparent_orphan(service_hash)
+    return resuse_service_hash
+  end
+    
   def fill_in_dynamic_vars(service_hash)
     p "FILLING_+@+#+@+@+@+@+@+"
     if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
@@ -843,6 +794,34 @@ end
     return retval
   end
 
+  
+  def EngineBuilder.re_install_engine(engine,core)
+    params = Hash.new
+             
+     params[:engine_name] = engine.containerName
+     params[:domain_name] = engine.domainName
+     params[:host_name] = engine.hostName
+     params[:software_environment_variables] = engine.environments
+     params[:http_protocol] = engine.protocol
+     params[:memory] = engine.memory
+     params[:repository_url]  = engine.repo
+       
+       builder = EngineBuilder.new(params,core)
+    engine = builder.build_from_blue_print
+       if engine == false
+         return  failed(params[:engine_name],builder.last_error,"build_engine")
+       end
+       if engine != nil
+         if engine.is_active == false
+           return failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
+         end
+         return engine
+       end
+       return failed(host_name,last_api_error,"build_engine")
+   
+     rescue Exception=>e
+       return log_exception_and_fail("build_engine",e)
+  end
   def rebuild_managed_container  engine
     @engine  = engine
     log_build_output("Starting Rebuild")
@@ -854,6 +833,8 @@ end
       return build_container
     end
   end
+  
+  
 
   def setup_rebuild
     begin

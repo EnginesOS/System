@@ -629,7 +629,15 @@ class EnginesCore
       return false
     end
   end
-
+  #install from fresh copy of blueprint in repositor    
+  def reinstall_engine(engine)
+    clear_error
+    EngineBuilder.re_install_engine(engine,self)
+    rescue  Exception=>e
+        SystemUtils.log_exception(e)
+        return false
+  end
+  #rebuilds image from current blueprint 
   def rebuild_image(container)
     clear_error
     begin
