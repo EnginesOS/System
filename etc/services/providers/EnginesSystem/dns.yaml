@@ -6,7 +6,7 @@ accepts:
   "ManagedService"
 author: Engines
 title: DNS
-description: "Resilves names to to IP address"
+description: "Resolves names to to IP address"
 service_type: dns
 service_container: dns
 service_provider: EnginesSystem
@@ -19,7 +19,7 @@ setup_params:
   label: hostname
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: "hostname"
   placeholder: " "
   mandatory: true
@@ -30,7 +30,7 @@ setup_params:
   label: domain name
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: "domain name"
   placeholder: " "
   mandatory: true

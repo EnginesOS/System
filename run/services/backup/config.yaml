@@ -7,7 +7,7 @@ memory: '50'
 hostName: backup
 domainName: 
 environments: 
-image: engines/backup
+image: engines/backup:alpha
 volumes:
  Volumes: !ruby/object:Volume
   name: Volumes

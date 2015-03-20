@@ -2,7 +2,8 @@
 
 touch   /var/log/mail.err
 touch  /var/log/maillog
-service busybox-syslogd start
+syslogd -R syslog.engines.internal:5140
+postmap /etc/postfix/transport
 service postfix start 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete

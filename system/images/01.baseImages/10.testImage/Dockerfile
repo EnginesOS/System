@@ -1,4 +1,4 @@
-FROM engines/base
+FROM engines/base:$release
 ADD home home
 RUN mkdir -p  /var/run/sshd
 CMD /usr/sbin/sshd -D

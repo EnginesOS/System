@@ -1,12 +1,10 @@
-FROM engines/servicebase
-RUN echo "Y" | adduser -q --disabled-password --home=/home/volmgr -uid 22007 volmgr
+FROM busybox
+RUN echo "Y" | adduser  -D -h /home/volmgr -u 22007 volmgr
 VOLUME /fs/
 
 ENV ContUser volmgr
 ENV ContGrp volmgr
 
-ADD home /home
-ADD sudoers /etc/
-RUN chown 0 /etc/sudoers
-ADD volmgr.pub /home/volmgr/.ssh/authorized_keys
-RUN chown volmgr -R /home/volmgr/.ssh
+ADD home/init.sh /home/init.sh
+
+CMD /home/init.sh

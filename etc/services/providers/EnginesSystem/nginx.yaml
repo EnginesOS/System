@@ -19,10 +19,18 @@ setup_params:
   label: site_fqdn
   regex_validator: ".*"
   tooltip: " "
-  type: text_field
+  field_type: text_field
   hint: "site_fqdn"
   placeholder: " "
   mandatory: true
-  default_value: " "
   comment: " "
- 
+ internal_dir:
+  name: internal_dir
+  label: internal_dir
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "internal_dir as in map /www.domain.com/ to /www.domain.com/internal_dir"
+  placeholder: " "
+  mandatory: true
+  comment: " "

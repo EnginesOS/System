@@ -1,15 +1,17 @@
-FROM engines/base
-
+FROM engines/base:$release
+Maintainer image.maintainer@engines.onl
 RUN echo "Y" | adduser -q --disabled-password --home /var/spool/postfix -uid 22003 postfix
 RUN apt-get -y update;\
 	apt-get -y install postfix syslogd;\
 	apt-get clean
 ADD home home
-ADD syslog.conf /etc/
+
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
-ADD postfix/mailname /etc/mailname
+RUN chown postfix /etc/postfix/
 
+
+   
 ENV ContUser postfix
 ENV ContGrp postfix
 

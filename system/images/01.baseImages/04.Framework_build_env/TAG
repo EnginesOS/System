@@ -1,1 +1,1 @@
-engines/frameworkbuild
+engines/frameworkbuild:$release

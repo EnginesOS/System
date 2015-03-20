@@ -1,4 +1,4 @@
-FROM engines/frameworkbuild
+FROM engines/frameworkbuild:$release
 
 ENV ContUser node
 ENV ContGrp node

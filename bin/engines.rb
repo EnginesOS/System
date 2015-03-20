@@ -1,13 +1,13 @@
 #!/home/engines/.rbenv/versions/2.1.3/bin/ruby
-require "/opt/engines/lib/ruby/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/SysConfig.rb"
-require "/opt/engines/lib/ruby/ManagedEngine.rb"
-require "/opt/engines/lib/ruby/EnginesOSapi.rb"
-require "/opt/engines/lib/ruby/EnginesOSapiResult.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
+require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
+require "/opt/engines/lib/ruby/api/public/EnginesOSapi.rb"
+require "/opt/engines/lib/ruby/api/public/EnginesOSapiResult.rb"
 
 def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")
-  puts("Where command is one of status|lasterror|stats|demonitor|monitor|registerdns|deregisterdns|registersite|deregistersite|create|recreate|deleteimage|destroy|ps|logs|restart|start|stop|pause|unpause")
+  puts("Where command is one of list|system|network|memory|check_and_act|running|stopped|stop|start|pause|unpause|restart|rebuild|logs|ps|create|recreate|registersite|deregistersite|registerdns|deregisterdns|monitor|demonitor|stats|status|lasterror|databases|volumes|backups|backup_vol|backup_db|stop_backup|destroy|deleteimage|register_consumers")
 end
 
 def format_databases(volumes)
@@ -17,6 +17,8 @@ def format_databases(volumes)
   end
   return res
 end
+
+
 
 def format_backups(volumes)
   res = String.new
@@ -40,6 +42,86 @@ def do_cmd(c_type,containerName,command)
 
   #  puts "Command" + command + " on " + containerName
   case command
+    
+  when "providers"
+
+      engines_api = EnginesOSapi.new()
+      core_api = engines_api.core_api
+      
+     providers = core_api.list_providers_in_use
+
+     providers.each do |provider|
+              p   provider
+              end
+       
+    
+  when "services"
+    ## latter this will allow addressing engine.type_path
+    hash_values =  containerName.split(".")
+        if hash_values.count < 1
+          p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
+          exit
+        end 
+        params = Hash.new()
+    if hash_values.count >1
+        params[:type_path] = hash_values[1]
+  end     
+ 
+#        p "looking_for"
+#        p params
+  if hash_values.count >2
+         params[:name] = hash_values[2]
+     end 
+    params[:engine_name]=hash_values[0]
+      
+        services = core_api.find_engine_services(params)
+        if services == false
+          p "Service " + containerName + " not found"
+          exit
+        end
+        if services == nil
+          p "No Match from params " + params.to_s
+        else
+        
+          services.each do |service|
+            p "Name:" + service.name.to_s
+            p "Content:" + service.content.to_s
+          end
+        end
+
+when "persistant_services"
+  params = Hash.new()
+  params[:engine_name] =   containerName
+    result = engines_api.get_engine_persistant_services(params)
+    p result.to_s
+
+  when "list_services"
+    hash_values =  containerName.split(".")
+    if hash_values.count < 1
+      p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
+      exit
+    end 
+    params = Hash.new()
+    
+    params[:publisher_namespace] = hash_values[0]
+  if hash_values.count >1 
+    params[:type_path] = hash_values[1]
+end
+    if hash_values.count > 2
+      params[:name]= hash_values[2]
+    end
+    p "looking_for"
+    p params
+    services = core_api.find_service_consumers(params)
+    if services == false
+      p "Service " + containerName + " not found"
+      exit
+    end
+    services.each do |service|
+      p service.name
+      p service.content
+    end
+      
   when "list"
     engines = engines_api.list_managed_engines
     engines.each do |engine_name|
@@ -104,6 +186,12 @@ def do_cmd(c_type,containerName,command)
       end
     end
 
+when "reinstall"
+if c_type != "container"
+  res = "Error: Reinstall not applicable to " +  c_type
+else
+  engines_api.reinstall_engine(containerName)
+end
   when "check_and_act"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
@@ -190,10 +278,26 @@ def do_cmd(c_type,containerName,command)
     end
   when "deleteimage"
     if c_type == "container"
-      res = engines_api.deleteEngineImage(containerName)
+      params = Hash.new
+      res = engines_api.deleteEngineImage(containerName,params)
     else
       puts("Error cannot delete a Service Image")
     end
+    when "delete_services"
+    if c_type != "container"
+      puts "Error cannot delete services from " +  c_type
+      exit
+    end
+      eng = engines_api.loadManagedEngine(containerName)
+      if eng.is_a?(EnginesOSapiResult) == false
+        p "Error cannot delete Services from an active Image"
+        exit
+      end
+      params = Hash.new
+      params[:engine_name] = containerName
+      params[:remove_all_application_data] = true
+      engines_api.delete_image_dependancies(params)    
+    
   when  "create"
     if c_type == "container"
       res = engines_api.createEngine(containerName)

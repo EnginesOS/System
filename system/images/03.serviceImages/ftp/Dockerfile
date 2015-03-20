@@ -1,7 +1,7 @@
-FROM engines/base
+FROM engines/base:$release
 RUN echo "Y"| adduser --uid 22010 -q --home /home/ftpd --disabled-password proftpd;\
  	apt-get -y update;\
-  	apt-get -y install proftpd proftpd-mod-mysql;\
+  	apt-get -y install proftpd proftpd-mod-mysql syslogd;\
 	apt-get clean
 	
 ADD proftpd.conf /etc/proftpd/
@@ -9,4 +9,6 @@ ADD tls.conf /etc/proftpd/
 ADD sql.conf /etc/proftpd/
 ADD modules.conf /etc/proftpd/
 RUN mkdir /ftp/
-CMD proftpd -n
+ADD home home
+#CMD proftpd -n
+CMD /home/init.sh

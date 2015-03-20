@@ -1,4 +1,4 @@
-FROM  engines/python
+FROM  engines/python:$release
 
 RUN apt-get -y update;\
 	apt-get -y install sudo vim  openssh-server duply ncftp  python-paramiko python-gobject-2 cron;\
@@ -8,10 +8,10 @@ ADD home home
 RUN echo "Y" | adduser -q --home /home/rma --disabled-password rma
 
 
-ADD backup.pub /home/rma/.ssh/authorized_keys
+
 ADD crontab  /var/spool/cron/crontabs/root
 RUN chown -R rma ~rma 
-RUN chmod 700 ~rma/.ssh 
+#RUN chmod 700 ~rma/.ssh 
 
 
 VOLUME /backup_src/volumes

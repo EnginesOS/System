@@ -1,4 +1,4 @@
-FROM  engines/base
+FROM  engines/base:$release
 
 #RUN echo "Y" | adduser -q  --uid 22005 --disabled-password www-data
 RUN usermod www-data -u 22005;\

@@ -6,13 +6,13 @@ RUN apt-get -y  --force-yes update;\
 	apt-get clean;\
 	mkdir -p /var/run;\
 	mkdir -p /etc/apt/apt.conf.d/;\
-	apt-get clean;\
-	echo "Acquire::http::Proxy \"http://172.17.42.1:3142\";" >/etc/apt/apt.conf.d/01proxy
+	apt-get clean
+#	echo "Acquire::http::Proxy \"http://172.17.42.1:3142\";" >/etc/apt/apt.conf.d/01proxy
 	
 
-ADD ddns.key /etc/
-ADD ddns.private /etc/
-ADD dns-init.sh /home/
+#ADD ddns.key /etc/
+#ADD ddns.private /etc/
+#ADD dns-init.sh /home/
 ADD init.sh /home/
 
 

@@ -1,4 +1,4 @@
-FROM  engines/base
+FROM  engines/base:$release
 ADD engines /home/engines
 RUN apt-get -y update;\
 	apt-get install -y  mysql-client postgresql-client git-core imagemagick gawk sqlite3 bison  git-core sudo;\

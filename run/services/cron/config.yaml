@@ -6,7 +6,7 @@ last_error:
 memory: '16'
 hostName: cron
 domainName: 
-image: engines/cron
+image: engines/cron:alpha
 volumes:
  socket: !ruby/object:Volume
   name: socket

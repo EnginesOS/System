@@ -4,6 +4,10 @@ accepts:
   "ManagedEngine"
 - !ruby/object:String    
   "ManagedService"
+- !ruby/object:String    
+  "Volume"
+- !ruby/object:String    
+  "database"
 author: Engines
 title: Backup
 description: "Backup tasks"
@@ -14,27 +18,81 @@ dedicated: false
 persistant: false
 consumer_params:
 setup_params:
-   cron_job:
+   name:
     regex_invalid_message: "wrong go back and try again"
-    name: backup_name
+    name: name
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
-    hint: "* * * * * command"
+    field_type: text_field
+    hint: ""
     placeholder: " "
     mandatory: true
     default_value: " "
     comment: " "
-   name:
+   dest_proto:
     regex_invalid_message: "wrong go back and try again"
-    name: backup_type
-    label: Backup Type
+    name: dest_proto
+    label: Backup Destination Type
     regex_validator: ".*"
     tooltip: " "
-    type: text_field
+    field_type: select
     hint: ""
     placeholder: "a label "
+    mandatory: true
+    default_value: " "
+    comment: " "
+    select_collection:     
+      - "ftp"
+      - "local"
+      - "smbfs"
+      - "nfs"
+      - "s3"
+   dest_folder:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_folder
+    label: destination folder
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "    
+   dest_address:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_address
+    label: destination
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   dest_user:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_user
+    label: user_name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    default_value: " "
+    comment: " "
+   dest_pass:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_pass
+    label: password
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: password
+    hint: ""
+    placeholder: " "
     mandatory: true
     default_value: " "
     comment: " "

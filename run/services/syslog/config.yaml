@@ -1,0 +1,25 @@
+--- !ruby/object:SoftwareService
+containerName: syslog
+ctype: service
+persistant: false
+last_error: 
+memory: '16'
+hostName: syslog
+domainName: 
+image: engines/syslog:alpha
+volumes:
+ config: !ruby/object:Volume
+  name: config
+  remotepath: "/etc/syslog-ng/conf.d/"
+  localpath: "/opt/engines/etc/syslog/conf/"
+  mapping_permissions: rw
+port: 
+eports:
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true

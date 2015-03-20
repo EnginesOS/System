@@ -1,0 +1,32 @@
+FROM  engines/passenger:_System(release)
+
+ADD home home
+ADD engines home/engines
+ENV CONTFSVolHome /home/fs/
+
+RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
+ /usr/sbin/usermod -u 2666 ruby
+
+ENV ContUser ruby
+ENV RAILS_ENV production
+EXPOSE 3000
+
+ENV SECRET_KEY_BASE	_Builder(random(128))
+#Built as
+#_Builder(engine_name)
+#_Builder(domain_name)
+#_Builder(hostname)
+#_Builder(http_protocol)
+#_Builder(repoName)
+#_Builder(webPort)
+#_Builder(build_name)
+#_Builder(runtime)
+#_Builder(set_environments) 
+#_Builder(environments)
+#Licence
+#_Blueprint(software,license_name)
+#_Blueprint(software,rake_tasks)
+#_Blueprint(software,softwareservices)
+
+
+     

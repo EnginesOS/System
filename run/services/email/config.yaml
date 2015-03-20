@@ -1,0 +1,41 @@
+--- !ruby/object:ManagedService
+containerName: email
+ctype: service
+persistant: true
+last_error: 
+memory: '90'
+hostName: email
+port: 8000
+domainName: engines.local.demo
+environments: []
+volumes:
+ mailname: !ruby/object:Volume
+  name: mailname
+  remotepath: "/etc/postfix/mailname"
+  localpath: "/opt/engines/etc/smtp/mailname"
+  mapping_permissions: "rw"
+ ssl_dir: !ruby/object:Volume
+  name: ssl_dir
+  remotepath: "/etc/ssl"
+  localpath: "/opt/engines/etc/ssl/smtp"
+  mapping_permissions: "ro"
+environments:
+- !ruby/object:EnvironmentVariable
+ name: ContUser
+ value: root
+ setatrun: false
+image: engines/email:alpha
+eports:
+- !ruby/object:WorkPort
+  name: smtp
+  port: 25
+  publicFacing: true
+  external: 25
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: true
+conf_register_dns: true

@@ -1,0 +1,123 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: MySQL Database
+description: "MYSQL Database "
+service_provider: EnginesSystem
+type_path: database/sql/mysql
+service_container: mysql_server
+dedicated: false
+persistant: true
+exclusive: true
+image_name: engines/volmanager
+consumer_params:
+setup_params:
+ name:
+  name: name
+  label: service tag name
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(engine_name)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ database_host:
+  name: database_host
+  label: database_host
+  regex_validator: ".*"
+  tooltip: "Local or the ip address/hostname of the database server"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(mysql_host)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ database_name:
+  name: database_name
+  label: "Database name"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(engine_name)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ db_username:
+  name: db_username
+  label: DB User Name
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(engine_name)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ db_password:
+  name: db_password
+  label: DB Password
+  tooltip: " "
+  field_type: password_with_confirmation
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(random(10))"
+  comment: " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ db_flavor:
+  name: db_flavor
+  label: DB db_flavor
+  tooltip: " "
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "mysql2"
+  comment:  " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ collation:
+  name: collation
+  label: DB collation
+  tooltip: " "
+  field_type: single_select
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "utf8"
+  select_collection:
+  - !ruby/object:String  
+       "utf8"
+  - !ruby/object:String  
+       "ascii"
+  comment:  " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+target_environment_variables:
+ dbhost:
+  variable_name: database_host
+  environment_name: dbhost
+ dbname:
+  variable_name: database_name
+  environment_name: dbname
+ dbuser:
+  variable_name: db_username
+  environment_name: dbuser  
+ dbpasswd:
+  variable_name: db_password
+  environment_name: dbpasswd
+ flavor:
+  variable_name: db_flavor
+  environment_name: dbflavor
