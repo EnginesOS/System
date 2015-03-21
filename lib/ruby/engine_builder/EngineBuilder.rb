@@ -430,6 +430,7 @@ class EngineBuilder
         p :env_after
         p env.value
       end
+      
       fill_service_environment_variables
       create_template_files
       create_php_ini
@@ -928,6 +929,9 @@ class EngineBuilder
             @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
           end                                                       #(name,value,setatrun,mandatory,build_time_only,label,immutable)
         end
+    else
+      p :Failed_to_load_service_def
+      p service_hash
       end
     end
   end
