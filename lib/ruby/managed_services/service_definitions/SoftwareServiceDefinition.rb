@@ -46,8 +46,12 @@ class SoftwareServiceDefinition
               return service_def.to_h
           end
     rescue Exception=>e
-     
+     p :service_type
+     p service_type.to_s
+     p :provider
+     p provider.to_s
         SystemUtils.log_exception(e)
+       
         return nil
   end
   
