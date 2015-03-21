@@ -740,6 +740,7 @@ class EngineBuilder
         new_service_hash  = reattach_service(service_hash)
         if new_service_hash != nil
           service_hash = new_service_hash
+          service_hash[:fresh]=false
           @blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
           free_orphan = true
           log_build_output("Reattached Service " + service_hash[:service_label].to_s)
@@ -749,7 +750,7 @@ class EngineBuilder
       end
       p :attach_service
       p service_hash
-
+#FIXME release orphan should happen latter
       if @core_api.attach_service(service_hash) ==true && free_orphan == true
         release_orphan(service_hash)
       end
@@ -915,7 +916,7 @@ class EngineBuilder
   protected
 
   def fill_service_environment_variables
-
+p :fill_service_environment_variables
     services = @blueprint_reader.services
     services.each do |service_hash|
       service_def =  get_service_def(service_hash)
@@ -926,15 +927,19 @@ class EngineBuilder
             env_name = env_variable_pair[:environment_name]
             value_name = env_variable_pair[:variable_name]
             value=service_hash[:variables][value_name.to_sym]
-              p service_hash
+             p service_hash
+             p env_variable_pair
             @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
-          end                                                       #(name,value,setatrun,mandatory,build_time_only,label,immutable)
-        end
+          end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+         p :no_target_envs
+         p service_hash                    
+        end        
     else
       p :Failed_to_load_service_def
       p service_hash
-      end
+     end      
     end
+    
   end
 
   def debug(fld)
