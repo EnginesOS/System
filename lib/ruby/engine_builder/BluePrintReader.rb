@@ -86,7 +86,7 @@ class BluePrintReader
    end
    
   def re_set_service(service_cnt,service_hash)
-    services[service_cnt] = service_hash
+    @services[service_cnt] = service_hash
     #services[service_cnt]=service_hash
   end
 
