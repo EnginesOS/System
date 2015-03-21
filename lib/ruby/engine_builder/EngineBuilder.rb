@@ -60,9 +60,9 @@ class EngineBuilder
     @webPort=8000
     @vols=Array.new
     @first_build = true
-    #FIXme will be false but for now
-    @overwrite_existing_services = true
 
+    @attached_services = Array.new
+    
     @builder_public = BuilderPublic.new(self)
     @system_access = SystemAccess.new()
     p :custom_env
@@ -667,7 +667,9 @@ class EngineBuilder
       p :adding_service
       p service_hash
       
-      @core_api.attach_service(service_hash)
+      if @core_api.attach_service(service_hash) == true
+        @attached_services.push(service_hash)
+      end
     end
   end
 
@@ -727,14 +729,14 @@ class EngineBuilder
       if service_hash[:servicetype_name] == "filesystem"
         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
-      log_build_output("Attaching Persistant Service " + service_hash[:service_label].to_s)
+      log_build_output("Attaching Persistant Service " + service_hash[:service_handle].to_s)
      
       p :LOOKING_FOR_
       p service_hash
       if  @core_api.find_service_consumers(service_hash) == false
         @first_build = true
         service_hash[:fresh]=true
-        log_build_output("Creating New Service " + service_hash[:service_label].to_s)
+        log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
       else
         service_hash[:fresh]=false
         @first_build = false
@@ -742,18 +744,21 @@ class EngineBuilder
         if new_service_hash != nil
           service_hash = new_service_hash
           service_hash[:fresh]=false
-          @blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
+          #@blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
           free_orphan = true
-          log_build_output("Reattached Service " + service_hash[:service_label].to_s)
+          log_build_output("Reattached Service " + service_hash[:service_handle].to_s)
         else
-          log_build_output("Failed to reattach " + service_hash[:service_label].to_s + " No Service Found")
+          log_build_output("Failed to reattach " + service_hash[:service_handle].to_s + " No Service Found")
         end
       end
       p :attach_service
       p service_hash
 #FIXME release orphan should happen latter unless use reoprhan on rebuild failure
-      if @core_api.attach_service(service_hash) ==true && free_orphan == true
-        release_orphan(service_hash)
+      if @core_api.attach_service(service_hash) ==true
+        @attached_services.push(service_hash)
+        if free_orphan == true
+          release_orphan(service_hash)
+        end
       end
       ++service_cnt
     end
@@ -918,7 +923,7 @@ class EngineBuilder
 
   def fill_service_environment_variables
 p :fill_service_environment_variables
-    services = @blueprint_reader.services
+    services =@attached_services #@blueprint_reader.services
     services.each do |service_hash|
       service_def =  get_service_def(service_hash)
       if service_def != nil
