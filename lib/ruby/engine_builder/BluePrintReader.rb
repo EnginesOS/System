@@ -84,6 +84,11 @@ class BluePrintReader
      end
 
    end
+   
+  def re_set_service(service_cnt,service_hash)
+    services[service_cnt] = service_hash
+    #services[service_cnt]=service_hash
+  end
 
    def read_web_port_overide
      if @blueprint[:software].has_key?(:read_web_port_overide) == true
