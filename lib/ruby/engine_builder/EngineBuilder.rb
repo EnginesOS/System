@@ -649,11 +649,7 @@ class EngineBuilder
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
 
-      service_hash[:parent_engine]=@container_name
-      if service_hash.has_key?(:variables) == false
-        service_hash[:variables] = Hash.new
-      end
-      service_hash[:variables][:parent_engine]=@container_name
+     
       service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
@@ -664,10 +660,12 @@ class EngineBuilder
       if service_def[:persistant] == true
         next
       end
-      service_hash[:service_handle] = service_hash[:variables][:name]
+      set_top_level_service_params(service_hash)
+      log_build_output("Attaching Non Persistant Service " + service_hash[:service_label].to_s)
+
       p :adding_service
       p service_hash
-      log_build_output("Creating Service " + service_hash[:service_label].to_s)
+      
       @core_api.attach_service(service_hash)
     end
   end
@@ -678,31 +676,43 @@ class EngineBuilder
     return     SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace] )
   end
 
+  def set_top_level_service_params(service_hash)
+    service_hash[:parent_engine]=@container_name
+         if service_hash.has_key?(:variables) == false
+           service_hash[:variables] = Hash.new
+         end
+         service_hash[:variables][:parent_engine]=@container_name
+    if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
+      service_hash[:service_handle] = service_hash[:variables][:name]
+    else
+      service_hash[:service_handle] = @container_name
+    end
+          
+  end
+  
   def create_persistant_services
 
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      free_orphan = false
-      service_hash[:parent_engine]=@container_name
-      if service_hash.has_key?(:variables) == false
-        service_hash[:variables] = Hash.new
-      end
-      service_hash[:variables][:parent_engine]=@container_name
-
+      
       service_def = get_service_def(service_hash)
-
       if service_def == nil
-        p :failed_to_load_service_definition
-        p :servicetype_name
-        p service_hash[:service_type]
-        p :service_provider
-        p service_hash[:publisher_namespace]
-        return false
-      end
-      if service_def[:persistant] == false
-        next
-      end
-      service_hash[:persistant] =true
+             p :failed_to_load_service_definition
+             p :servicetype_name
+             p service_hash[:service_type]
+             p :service_provider
+             p service_hash[:publisher_namespace]
+             return false
+           end
+       if service_def[:persistant] == false
+               next
+          else 
+            service_hash[:persistant] =true
+          end
+          
+       set_top_level_service_params(service_hash)
+      free_orphan = false
+ 
       p :adding_service
 
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
@@ -715,14 +725,14 @@ class EngineBuilder
       if service_hash[:servicetype_name] == "filesystem"
         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
-
-      service_hash[:service_handle] = service_hash[:variables][:name]
+      log_build_output("Attaching Persistant Service " + service_hash[:service_label].to_s)
+     
       p :LOOKING_FOR_
       p service_hash
       if  @core_api.find_service_consumers(service_hash) == false
         @first_build = true
         service_hash[:fresh]=true
-        log_build_output("Creating Service " + service_hash[:service_label].to_s)
+        log_build_output("Creating New Service " + service_hash[:service_label].to_s)
       else
         service_hash[:fresh]=false
         @first_build = false
