@@ -48,7 +48,7 @@ class SoftwareServiceDefinition
     rescue Exception=>e
      
         SystemUtils.log_exception(e)
-     
+        return nil
   end
   
   def SoftwareServiceDefinition.load_service_def(dir,service_type)

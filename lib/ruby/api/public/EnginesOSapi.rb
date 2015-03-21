@@ -1114,9 +1114,11 @@ class EnginesOSapi
   
   def software_service_definition (params)
     retval = @core_api.software_service_definition(params)
-    if retval != nil 
+    if retval != nil
       return retval
     end 
+    p :error_software_service_definition 
+    p params
      return failed(params[:service_type] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
   end
   

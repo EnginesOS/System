@@ -524,7 +524,7 @@ SystemUtils.log_exception(e)
   end
 
 def software_service_definition(params)
-  
+ 
  return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
 
 
