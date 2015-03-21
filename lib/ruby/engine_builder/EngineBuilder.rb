@@ -742,11 +742,14 @@ end
        @first_build = false
        new_service_hash  = reattach_service(service_hash)
         if new_service_hash != nil       
-          @blueprint_reader.services[service_cnt]=service_hash
           service_hash = new_service_hash
+          @blueprint_reader.services[service_cnt]=service_hash          
           free_orphan = true
        log_build_output("Reattached Service " + service_hash[:service_label].to_s)
-       end
+     else
+       log_build_output("Failed to reattach " + service_hash[:service_label].to_s + " No Service Found")
+     end
+       
      end
       p :attach_service
        p service_hash
