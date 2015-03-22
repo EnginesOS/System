@@ -438,7 +438,9 @@ def find_engine_services_hashes(params)
   end
    
   engine_node.children.each do |service_node|
-    
+    if service_node.content == nil || service_node.content.is_a?(Hash) == false
+      next
+    end
   res =  get_service_content(service_node)
   if res != nil
     retval.merge!(res)
