@@ -12,6 +12,11 @@ require_relative 'builder_public.rb'
 require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
 require_relative 'SystemAccess.rb'
+
+
+require_relative 'build_report.rb'
+include BuildReport
+
 require_relative 'templating.rb'
 include Templating
 
