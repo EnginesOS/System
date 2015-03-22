@@ -62,19 +62,20 @@ module ServiceManagerTree
        return ret_val
   end
   
-def get_all_leafs_service_hashes(branch)
-  ret_val = Array.new
-  branch.children.each do |sub_branch|
-         if sub_branch.children.count == 0     
-           if sub_branch.content.is_a?(Hash)
-                ret_val.push(sub_branch.content)  
-         else
-        ret_val += get_matched_leafs(sub_branch,label,value) 
-     end
+  def get_all_leafs_service_hashes(branch)
+    ret_val = Array.new
+    branch.children.each do |sub_branch|
+      if sub_branch.children.count == 0
+        if sub_branch.content.is_a?(Hash)
+          ret_val.push(sub_branch.content)
+        end
+      else
+        ret_val += get_matched_leafs(sub_branch,label,value)
+      end
+    end
+    return ret_val
   end
-     return ret_val
-end
-  
+
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)
