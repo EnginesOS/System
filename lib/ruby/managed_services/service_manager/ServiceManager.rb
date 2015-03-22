@@ -432,6 +432,7 @@ def find_engine_services_hashes(params)
   p :find_engine_services_hashes
   p params
   engine_node = managed_engine_tree[params[:engine_name]]
+    p get_all_leafs_service_hashes(engine_node)
   return get_all_leafs_service_hashes(engine_node)
   
 end
