@@ -1168,6 +1168,7 @@ class EnginesOSapi
   end
   
   def list_attached_services_for(object_name,identifier)
+    SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
      return @core_api.list_attached_services_for(object_name,identifier)
    end
   

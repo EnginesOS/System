@@ -68,9 +68,12 @@ module ServiceManagerTree
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content)
+        else
+          p :skipping
+          p sub_branch.content
         end
       else
-        ret_val += get_all_leafs_service_hashes(sub_branch)
+        ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
     end
     return ret_val
