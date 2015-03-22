@@ -431,9 +431,10 @@ def find_engine_services_hashes(params)
   retval = Hash.new
   
   engine_node = managed_engine_tree[params[:engine_name]]
-  if engine_node.content != nil 
+    content =engine_node.content
+  if content != nil 
     retval[content.type_path] = Array.new
-    retval[content.type_path].push(engine_node.content)
+    retval[content.type_path].push(content)
   end
    
   engine_node.children.each do |service_node|
