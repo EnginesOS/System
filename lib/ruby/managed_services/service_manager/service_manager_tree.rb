@@ -70,7 +70,7 @@ module ServiceManagerTree
           ret_val.push(sub_branch.content)
         end
       else
-        ret_val += get_matched_leafs(sub_branch,label,value)
+        ret_val += get_all_leafs_service_hashes(sub_branch)
       end
     end
     return ret_val
