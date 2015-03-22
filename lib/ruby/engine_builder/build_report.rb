@@ -18,7 +18,8 @@ module BuildReport
   
   def get_default_build_report_template
     return File.read(SysConfig.DefaultBuildReportTemplateFile)
-    rescue
+    rescue Exception=>e
+      p e
     return " No Default Template"
   end
   

@@ -16,7 +16,7 @@ class SysConfig
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/lib/engines/fs"
   @@galleriesDir = "/opt/engines/etc/galleries"
-  @@DefaultBuildReportTemplateFile="/opt/engines/system/templates/deployment/default_built_report_template"
+  @@DefaultBuildReportTemplateFile="/opt/engines/system/templates/deployment/global/default_built_report_template"
   
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
   
