@@ -213,13 +213,14 @@ class ServiceManager
 #  end
   
   def get_service_content(service_node)
-    retval = Array.new
+    retval = Hash.new
     service_node.children.each do |provider_node|
-
-      retval[provider_node.name] = Array.new
-          provider_node.children.each do |service_node|
-            
+       if retval[provider_node.name] == nil
+            retval[provider_node.name] = Array.new
+       end
+          provider_node.children.each do |service_node|         
             retval[provider_node.name].push(service_node.content)
+            retval.push(service_node.content)
           end       
     end
     return retval
