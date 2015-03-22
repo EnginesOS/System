@@ -17,11 +17,12 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	--with-fifodir=/home/backup/fcron --with-spooldir=/home/backup/fcron/spool\
 	--with-docdir=/home/backup/fcron/doc --prefix=/home/backup/fcron;\
 	make install;\
-	mkdir -p /home/backup/fcron/{doc,man,spool};\
+	mkdir -p /home/backup/fcron/doc/home/backup/fcron/man,/home/backup/fcron/spool};\
 	cd /home/backup;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz;\
-	chown -R backup /etc/duply/
+	mkdir -p /var/log/backup/
+	chown -R backup /etc/duply/ /var/log/backup/
 
 
 
