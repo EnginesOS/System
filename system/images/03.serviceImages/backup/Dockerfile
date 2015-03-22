@@ -31,4 +31,4 @@ VOLUME /local_backup_dests
 
 USER backup
 ENV ContUser backup
-ENV ContGrp wheel
+ENV ContGrp backup
