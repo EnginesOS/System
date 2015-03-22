@@ -67,6 +67,8 @@ module ServiceManagerTree
     branch.children.each do |sub_branch|
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
+          p :pushed_content
+          p sub_branch.content
           ret_val.push(sub_branch.content)
         else
           p :skipping
