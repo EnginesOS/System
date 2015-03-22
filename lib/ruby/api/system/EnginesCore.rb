@@ -100,8 +100,8 @@ class EnginesCore
   end
   
   
-  def save_build_report(build_report)
-    return @system_api.save_build_report(build_report)
+  def save_build_report(container,build_report)
+    return @system_api.save_build_report(container,build_report)
   end
 
   def save_container(container)
