@@ -940,7 +940,7 @@ SystemUtils.log_exception(e)
      begin
        cmd = cmd + " 2>&1"
        res= %x<#{cmd}>
-       SystemUtils.debug_output  ("run System", res)
+       SystemUtils.debug_output("run System", res)
        #FIXME should be case insensitive The last one is a pure kludge
        #really need to get stderr and stdout separately
        if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
