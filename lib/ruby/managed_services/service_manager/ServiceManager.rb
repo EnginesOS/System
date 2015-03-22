@@ -142,7 +142,8 @@ class ServiceManager
     case objectName
     when "ManagedEngine"
       params[:engine_name] = identifier
-      return find_engine_services(params)
+        p find_engine_services(params)
+      return find_engine_services_hashes(params)
    #    attached_managed_engine_services(identifier)
     when "Volume"
       p :looking_for_volume
@@ -167,56 +168,57 @@ class ServiceManager
   end
 
 
-  def attached_managed_engine_services(identifier)
-
-    retval = Hash.new
-
-    if identifier == nil
-      p :panic_passed_nil_identifier
-      return retval
-    end
-   
-
-    if  managed_engine_tree ==nil
-      p :panic_loaded_managedengine_tree
-      return retval
-    end
-
-    engine_node = managed_engine_tree[identifier]
-
-    if engine_node == nil
-      p :cant_find
-      p identifier
-      return retval
-    end
-   engine_node.children.each do |service_node|      
-      p :service_type
-      p service_node.name
-      if  service_node.name == nil
-        p :no_service_type
-        return retval
-      end
-      if retval.has_key?( service_node.name) == false
-        retval[ service_node.name] = Array.new
-      end
-      p get_service_content(service_node)
-      retval[ service_node.name].push(get_service_content(service_node))
-    end
-
-    return retval
- 
-rescue Exception=>e
-    puts e.message 
-SystemUtils.log_exception(e)
-    
-  end
+#  def attached_managed_engine_services(identifier)
+#
+#    retval = Hash.new
+#
+#    if identifier == nil
+#      p :panic_passed_nil_identifier
+#      return retval
+#    end
+#   
+#
+#    if  managed_engine_tree ==nil
+#      p :panic_loaded_managedengine_tree
+#      return retval
+#    end
+#
+#    engine_node = managed_engine_tree[identifier]
+#
+#    if engine_node == nil
+#      p :cant_find
+#      p identifier
+#      return retval
+#    end
+#   engine_node.children.each do |service_node|      
+#      p :service_type
+#      p service_node.name
+#      if  service_node.name == nil
+#        p :no_service_type
+#        return retval
+#      end
+#      if retval.has_key?( service_node.name) == false
+#        retval[ service_node.name] = Array.new
+#      end
+#      p get_service_content(service_node)
+#      retval[ service_node.name].push(get_service_content(service_node))
+#    end
+#
+#    return retval
+# 
+#rescue Exception=>e
+#    puts e.message 
+#SystemUtils.log_exception(e)
+#    
+#  end
   
   def get_service_content(service_node)
-    retval = Hash.new
+    retval = Array.new
     service_node.children.each do |provider_node|
 
       retval[provider_node.name] = Array.new
           provider_node.children.each do |service_node|
+            
             retval[provider_node.name].push(service_node.content)
           end       
     end
@@ -424,6 +426,28 @@ SystemUtils.log_exception(e)
         return engine_node
     end
   end
+def find_engine_services_hashes(params)
+  retval = Array.new()
+  
+  engine_node = managed_engine_tree[params[:engine_name]]
+  if engine_node.content != nil 
+    retval.push(engine_node.content)
+  end
+   
+  engine_node.children.each do |service_node|
+    
+    get_service_content(service_node)
+      if service_node.has_children? == true
+        service_node.children.each do |child|
+          get_service_content(service_node)
+        end
+      end
+      
+    retval.push(service_node.content)
+  end
+  
+end
+  
 
   def get_engine_persistant_services(params) #params is :engine_name
     services = find_engine_services(params)
