@@ -324,7 +324,16 @@ class SystemApi
        return false
      end
    end
-
+   
+  def get_build_report(engine_name)
+    clear_error
+         stateDir=SysConfig.CidDir + "/containers/" + engine_name
+         return File.read(stateDir  + "/buildreport.txt")                       
+      rescue Exception=>e
+        SystemUtils.log_exception(e)
+        return false
+  end
+  
    def save_build_report(container,build_report)
       clear_error
       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
