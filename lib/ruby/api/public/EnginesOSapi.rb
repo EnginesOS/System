@@ -240,7 +240,7 @@ class EnginesOSapi
         volume =  engine.volumes["volume_name"]
           if volume != nil
             volume.add_backup_src_to_hash(backup_hash)
-            SystemUtils.debug_output ("Backup hash",backup_hash)
+            SystemUtils.debug_output("Backup hash",backup_hash)
           end
      end           
 #    engine.volumes.values do |volume|

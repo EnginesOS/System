@@ -4,7 +4,7 @@ class SystemUtils
   
   attr_reader :debug,:level,:last_error
   
- def SystemUtils.debug_output (label,object)
+ def SystemUtils.debug_output(label,object)
   if SystemUtils.debug == true  
     p object
   end  

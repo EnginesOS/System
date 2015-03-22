@@ -537,14 +537,14 @@ class EnginesCore
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
-      SystemUtils.debug_output ("run system",res)
+      SystemUtils.debug_output("run system",res)
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
         return true
       else
         @last_error = res
-        SystemUtils.debug_output ("run system result",res)
+        SystemUtils.debug_output("run system result",res)
         return false
       end
     rescue Exception=>e
@@ -699,7 +699,7 @@ SystemUtils.log_exception(e)
       volume_option += " -v " + log_dir + ":/client/log:rw "
       if container.volumes != nil
         container.volumes.each_value do |vol|
-          SystemUtils.debug_output ("build vol maps",vol)
+          SystemUtils.debug_output("build vol maps",vol)
           volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
         end
       end

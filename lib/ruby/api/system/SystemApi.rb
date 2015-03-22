@@ -573,7 +573,7 @@ class SystemApi
    def save_system_preferences
      clear_error
      begin
-       SystemUtils.debug_output ("save prefs",:pdsf)
+       SystemUtils.debug_output("save prefs",:pdsf)
        return true
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -584,7 +584,7 @@ class SystemApi
    def load_system_preferences
      clear_error
      begin
-       SystemUtils.debug_output ("load pres",:psdfsd)
+       SystemUtils.debug_output("load pres",:psdfsd)
         
      rescue  Exception=>e
        SystemUtils.log_exception(e)
