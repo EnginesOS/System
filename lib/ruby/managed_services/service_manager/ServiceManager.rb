@@ -142,7 +142,10 @@ class ServiceManager
     case objectName
     when "ManagedEngine"
       params[:engine_name] = identifier
-       p find_engine_services(params)
+        p :get_engine_service_hashes
+     hashes = find_engine_services_hashes(params)
+     p :hashes
+     p hashes
       return find_engine_services_hashes(params)
    #    attached_managed_engine_services(identifier)
     when "Volume"
