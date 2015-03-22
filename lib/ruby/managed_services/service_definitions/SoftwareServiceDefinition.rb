@@ -34,7 +34,7 @@ class SoftwareServiceDefinition
     if service_type == nil  || provider == nil
   return nil
 end
-
+    
     dir = SysConfig.ServiceTemplateDir + "/" + provider
 
           if Dir.exist?(dir)
