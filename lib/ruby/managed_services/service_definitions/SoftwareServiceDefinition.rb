@@ -32,6 +32,7 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.find(service_type,provider)
 
     if service_type == nil  || provider == nil
+      
   return nil
 end
     

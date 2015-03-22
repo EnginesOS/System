@@ -137,20 +137,32 @@ class ServiceManager
     p :services_on_objects_4
     p objectName
     p identifier
-
+    params = Hash.new
+    
     case objectName
     when "ManagedEngine"
-      return attached_managed_engine_services(identifier)
+      params[:engine_name] = identifier
+      return core_api.find_engine_services(params)
+   #    attached_managed_engine_services(identifier)
     when "Volume"
+      p :looking_for_volume
+      p identifier
       return attached_volume_services(identifier)
     when "Database"
+      p :looking_for_database
+      p identifier
       return attached_database_services(identifier)
     end
     p :no_object_name_match
     p objectName
+    
+    return nil 
+    
     rescue Exception=>e
         puts e.message 
     SystemUtils.log_exception(e)
+    
+    return nil
         
   end
 
@@ -170,7 +182,7 @@ class ServiceManager
       return retval
     end
 
-    engine_node =managed_engine_tree[identifier]
+    engine_node = managed_engine_tree[identifier]
 
     if engine_node == nil
       p :cant_find
@@ -187,6 +199,7 @@ class ServiceManager
       if retval.has_key?( service_node.name) == false
         retval[ service_node.name] = Array.new
       end
+      p get_service_content(service_node)
       retval[ service_node.name].push(get_service_content(service_node))
     end
 
