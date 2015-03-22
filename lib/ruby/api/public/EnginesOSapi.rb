@@ -229,7 +229,7 @@ class EnginesOSapi
     if engine.is_a?(EnginesOSapiResult)
       return engine
     end
-    SystemUtils.debug_output("backing up " + volume_name + " to " +  dest_hash.to_s )
+    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
     backup_hash = dest_hash
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
@@ -240,7 +240,7 @@ class EnginesOSapi
         volume =  engine.volumes["volume_name"]
           if volume != nil
             volume.add_backup_src_to_hash(backup_hash)
-            SystemUtils.debug_output backup_hash
+            SystemUtils.debug_output ("Backup hash",backup_hash)
           end
      end           
 #    engine.volumes.values do |volume|
