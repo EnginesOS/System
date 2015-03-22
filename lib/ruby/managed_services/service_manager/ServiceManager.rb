@@ -142,7 +142,7 @@ class ServiceManager
     case objectName
     when "ManagedEngine"
       params[:engine_name] = identifier
-      return core_api.find_engine_services(params)
+      return find_engine_services(params)
    #    attached_managed_engine_services(identifier)
     when "Volume"
       p :looking_for_volume
