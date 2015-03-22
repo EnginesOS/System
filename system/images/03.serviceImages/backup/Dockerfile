@@ -11,6 +11,7 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
   	tar -xzpf fcron-3.2.0.src.tar.gz;\
   	cd fcron-3.2.0;\
   	./configure --with-run-non-privileged --with-rootname=backup\
+  	 --without-sendmail\
 	--with-rootgroup=backup --with-username=backup --with-groupname=backup\
 	--with-etcdir=/home/backup/fcron --with-piddir=/home/backup/fcron\
 	--with-fifodir=/home/backup/fcron --with-spooldir=/home/backup/fcron/spool\
