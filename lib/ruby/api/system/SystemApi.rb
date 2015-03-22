@@ -328,7 +328,7 @@ class SystemApi
    def save_build_report(container,build_report)
       clear_error
       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-      f = File.new(stateDir/buildreport.txt,File::CREAT|File::TRUNC|File::RDWR, 0644)
+      f = File.new(stateDir  + "/buildreport.txt",File::CREAT|File::TRUNC|File::RDWR, 0644)
       f.puts(build_report)
       f.close           
        return true
