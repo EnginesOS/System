@@ -98,6 +98,11 @@ class EnginesCore
   def rm_monitor(site_hash)
     return @system_api.rm_monitor(site_hash)
   end
+  
+  
+  def save_build_report(build_report)
+    return @system_api.save_build_report(build_report)
+  end
 
   def save_container(container)
     return @system_api.save_container(container)

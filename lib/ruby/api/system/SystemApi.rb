@@ -325,6 +325,18 @@ class SystemApi
      end
    end
 
+   def save_build_report(container,build_report)
+      clear_error
+      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+      f = File.new(stateDir/buildreport.txt,File::CREAT|File::TRUNC|File::RDWR, 0644)
+      f.puts(build_report)
+      f.close           
+       return true
+   rescue Exception=>e
+     SystemUtils.log_exception(e)
+     return false
+   end
+   
    def save_container(container)
      clear_error
      begin
@@ -354,7 +366,8 @@ class SystemApi
        f.close
        return true
      rescue Exception=>e
-       container.last_error=( "load error")
+       container.last_error=( "save error")
+       #FIXME Need to rename back if failure
        SystemUtils.log_exception(e)
        return false
      end
