@@ -20,8 +20,7 @@ class EnginesOSapi
   end
   
  def get_engine_build_report engine_name
-   return "Not Yet"
-   
+   return   @core_api.get_build_report(engine_name)
  end
   
   def log_exception_and_fail(cmd,e)

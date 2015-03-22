@@ -99,6 +99,9 @@ class EnginesCore
     return @system_api.rm_monitor(site_hash)
   end
   
+  def get_build_report(engine_name)
+    return @system_api.get_build_report(engine_name)
+  end
   
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
