@@ -1,7 +1,7 @@
 FROM  engines/python:$release
 
 RUN apt-get -y update;\
-	apt-get -y install vim  openssh-server duply ncftp  python-paramiko python-gobject-2  ;\
+	apt-get -y install vim  duply ncftp  python-paramiko python-gobject-2  ;\
 	apt-get clean 
 ADD etc  etc
 ADD home home
@@ -20,7 +20,8 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	mkdir -p /home/backup/fcron/{doc,man,spool};\
 	cd /home/backup;\
 	rm -r /tmp/fcron-3.2.0 ;\
-	rm /tmp/fcron-3.2.0.src.tar.gz
+	rm /tmp/fcron-3.2.0.src.tar.gz;\
+	chown -R backup /etc/duply/
 
 
 
