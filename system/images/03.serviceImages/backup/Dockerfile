@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	apt-get clean 
 ADD etc  etc
 ADD home home
-RUN echo "Y" | adduser -q --uid 22015 --home /home/backup --disabled-password backup
+RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup
 	cd /tmp; \
   	wget ftp://ftp.seul.org/pub/fcron/fcron-3.2.0.src.tar.gz;\
   	tar -xzpf fcron-3.2.0.src.tar.gz;\
@@ -16,7 +16,10 @@ RUN echo "Y" | adduser -q --uid 22015 --home /home/backup --disabled-password ba
 	--with-fifodir=/home/backup/fcron --with-spooldir=/home/backup/fcron/spool\
 	--with-docdir=/home/backup/fcron/doc --prefix=/home/backup/fcron;\
 	make install;\
-	mkdir -p /home/backup/fcron/{doc,man,spool}
+	mkdir -p /home/backup/fcron/{doc,man,spool};\
+	cd /home/backup;\
+	rm -r /tmp/fcron-3.2.0 ;\
+	rm /tmp/fcron-3.2.0.src.tar.gz
 
 
 
