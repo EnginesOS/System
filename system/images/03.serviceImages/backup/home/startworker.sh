@@ -1,12 +1,12 @@
 #!/bin/sh
 
+/home/backup/fcron/sbin/fcron 
 
-fcron
 touch /var/run/startup_complete
 chown 21000 /var/run/startup_complete
-sleep 2500
+sleep 100
 
-while test -f /home/backup/fcron/fcrond.pid
+while test -f /home/backup/fcron/fcron.pid
 do
 	  sleep 120
 done
