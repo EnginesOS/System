@@ -428,25 +428,30 @@ SystemUtils.log_exception(e)
     end
   end
 def find_engine_services_hashes(params)
-  retval = Array.new()
+  retval = Hash.new
   
   engine_node = managed_engine_tree[params[:engine_name]]
   if engine_node.content != nil 
-    retval.push(engine_node.content)
+    retval[content.type_path] = Array.new
+    retval[content.type_path].push(engine_node.content)
   end
    
   engine_node.children.each do |service_node|
     
-    get_service_content(service_node)
+  res =  get_service_content(service_node)
+  if res != nil
+    retval.merge!(res)
+  end
       if service_node.has_children? == true
         service_node.children.each do |child|
-          get_service_content(service_node)
+         res = get_service_content(service_node)
+          if res != nil
+             retval.merge!(res)
+           end
         end
-      end
-      
-    retval.push(service_node.content)
+      end    
   end
-  
+  return retval
 end
   
 
