@@ -187,36 +187,12 @@ class EnginesCore
     rescue Exception=>e
     SystemUtils.log_exception e
 
-    #    object_name = object.class.name.split('::').last
-    #
-    #    case object_name
-    #    when  "ManagedEngine"
-    #      retval = Hash.new
-    #
-    #    retval[:database] = object.databases
-    #    retval[:volume] = object.volumes
-    #    retval[:cron] = object.cron_job_list
-    #
-    #      return retval
-    #
-    #      #list services
-    #      # which includes volumes databases cron
-    #    end
-    #    p "missed object name"
-    #    p object_name
-    #
-    #    service_manager = loadServiceManager()
-    #
-    #    if service_manager !=nil
-    #      return service_manager.attached_services(object)
-    #
-    #    end
-    #    return false
-
   end
 
   def list_avail_services_for(object)
     objectname = object.class.name.split('::').last
+    p :load_vail_services_for
+    p objectname
     services = load_avail_services_for(objectname)
     subservices = load_avail_component_services_for(object)
 
