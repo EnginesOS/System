@@ -508,7 +508,7 @@ class EngineBuilder
       end
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
-       @core_api.save_build_report(build_report)
+       @core_api.save_build_report(mc,build_report)
        p :build_report
        p build_report
       close_all
