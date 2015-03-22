@@ -1169,6 +1169,9 @@ class EnginesOSapi
   
   def list_attached_services_for(object_name,identifier)
     SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
+    attached = @core_api.list_attached_services_for(object_name,identifier)
+    p :found_attached
+    p attached
      return @core_api.list_attached_services_for(object_name,identifier)
    end
   
