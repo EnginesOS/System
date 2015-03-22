@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	apt-get clean 
 ADD etc  etc
 ADD home home
-RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup
+RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	cd /tmp; \
   	wget ftp://ftp.seul.org/pub/fcron/fcron-3.2.0.src.tar.gz;\
   	tar -xzpf fcron-3.2.0.src.tar.gz;\
