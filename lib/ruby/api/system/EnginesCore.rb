@@ -98,6 +98,11 @@ class EnginesCore
   def rm_monitor(site_hash)
     return @system_api.rm_monitor(site_hash)
   end
+  
+  
+  def save_build_report(container,build_report)
+    return @system_api.save_build_report(container,build_report)
+  end
 
   def save_container(container)
     return @system_api.save_container(container)
@@ -187,36 +192,12 @@ class EnginesCore
     rescue Exception=>e
     SystemUtils.log_exception e
 
-    #    object_name = object.class.name.split('::').last
-    #
-    #    case object_name
-    #    when  "ManagedEngine"
-    #      retval = Hash.new
-    #
-    #    retval[:database] = object.databases
-    #    retval[:volume] = object.volumes
-    #    retval[:cron] = object.cron_job_list
-    #
-    #      return retval
-    #
-    #      #list services
-    #      # which includes volumes databases cron
-    #    end
-    #    p "missed object name"
-    #    p object_name
-    #
-    #    service_manager = loadServiceManager()
-    #
-    #    if service_manager !=nil
-    #      return service_manager.attached_services(object)
-    #
-    #    end
-    #    return false
-
   end
 
   def list_avail_services_for(object)
     objectname = object.class.name.split('::').last
+    p :load_vail_services_for
+    p objectname
     services = load_avail_services_for(objectname)
     subservices = load_avail_component_services_for(object)
 
@@ -561,14 +542,14 @@ class EnginesCore
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
-      SystemUtils.debug_output res
+      SystemUtils.debug_output("run system",res)
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
         return true
       else
         @last_error = res
-        SystemUtils.debug_output res
+        SystemUtils.debug_output("run system result",res)
         return false
       end
     rescue Exception=>e
@@ -589,7 +570,7 @@ class EnginesCore
       end
       mapped_vols = get_volbuild_volmaps container
       command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
-      SystemUtils.debug_output command
+      SystemUtils.debug_output("Run volumen builder",command)
       run_system(command)
       
      #Note no -d so process will not return until setup.sh completes
@@ -723,7 +704,7 @@ SystemUtils.log_exception(e)
       volume_option += " -v " + log_dir + ":/client/log:rw "
       if container.volumes != nil
         container.volumes.each_value do |vol|
-          SystemUtils.debug_output vol
+          SystemUtils.debug_output("build vol maps",vol)
           volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
         end
       end

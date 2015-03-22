@@ -5,7 +5,7 @@ class DockerApi
      begin
        commandargs = container_commandline_args(container)
        commandargs = " run  -d " + commandargs
-       SystemUtils.debug_output commandargs
+       SystemUtils.debug_output("create cont",commandargs)
        retval = run_docker(commandargs,container)
        return retval
      rescue Exception=>e
@@ -149,7 +149,7 @@ class DockerApi
    def run_docker (args,container)
      clear_error
      require 'open3'
-     SystemUtils.debug_output(args)
+     SystemUtils.debug_output("Run docker",args)
      res = String.new
      error_mesg = String.new
      begin
@@ -171,7 +171,7 @@ class DockerApi
            
          rescue Errno::EIO
            res += oline.chop
-           SystemUtils.debug_output(oline)
+           SystemUtils.debug_output("read stderr",oline)
            error_mesg += stderr.read_nonblock(256)
          rescue  IO::WaitReadable
            retry
@@ -324,14 +324,14 @@ class DockerApi
      container_logdetails_file_name = false
 
      framework_logdetails_file_name =  SysConfig.DeploymentTemplates + "/" + container.framework + "/home/LOG_DIR"
-     SystemUtils.debug_output(framework_logdetails_file_name)
+     SystemUtils.debug_output("Frame logs details",framework_logdetails_file_name)
 
      if File.exists?(framework_logdetails_file_name )
        container_logdetails_file_name = framework_logdetails_file_name
      else
        container_logdetails_file_name = SysConfig.DeploymentTemplates + "/global/home/LOG_DIR"
      end
-     SystemUtils.debug_output(container_logdetails_file_name)
+     SystemUtils.debug_output("Container log details",container_logdetails_file_name)
      begin
        container_logdetails = File.read(container_logdetails_file_name)
      rescue

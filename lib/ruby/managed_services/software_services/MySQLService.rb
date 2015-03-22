@@ -35,7 +35,7 @@ class MySQLService < SoftwareService
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + site_hash[:variables][:database_name] + " " + site_hash[:variables][:db_username] + " " + site_hash[:variables][:db_password]
 
       #save details with some manager
-      SystemUtils.debug_output(cmd)
+      SystemUtils.debug_output("Create DB Command",cmd)
 
       SystemUtils.run_system(cmd)
       
@@ -54,7 +54,7 @@ class MySQLService < SoftwareService
       cmd = "docker exec " +  container_name + " /home/dropdb.sh " + site_hash[:variables][:database_name] + " " + site_hash[:variables][:db_username] + " " + site_hash[:variables][:db_password]
 
       #save details with some manager
-      SystemUtils.debug_output(cmd)
+      SystemUtils.debug_output("Drop DB Command",cmd)
 
       return run_system(cmd)
     rescue  Exception=>e

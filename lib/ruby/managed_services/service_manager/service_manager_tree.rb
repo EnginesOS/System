@@ -30,7 +30,7 @@ module ServiceManagerTree
   def remove_tree_entry(tree_node)
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
       p :err_remove_tree_entry
-      p tree_node.to_s
+
       return false
     end
   
@@ -62,7 +62,25 @@ module ServiceManagerTree
        return ret_val
   end
   
-  
+  def get_all_leafs_service_hashes(branch)
+    ret_val = Array.new
+    branch.children.each do |sub_branch|
+      if sub_branch.children.count == 0
+        if sub_branch.content.is_a?(Hash)
+          p :pushed_content
+          p sub_branch.content
+          ret_val.push(sub_branch.content)
+        else
+          p :skipping
+          p sub_branch.content
+        end
+      else
+        ret_val.concat(get_all_leafs_service_hashes(sub_branch))
+      end
+    end
+    return ret_val
+  end
+
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)

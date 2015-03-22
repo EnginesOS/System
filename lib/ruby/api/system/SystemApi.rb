@@ -55,12 +55,12 @@ class SystemApi
        clear_error
        cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
 
-       SystemUtils.debug_output(cmd)
+       SystemUtils.debug_output("Restart Nginx",cmd)
        nginxpid= %x<#{cmd}>
-       SystemUtils.debug_output(nginxpid)
+       SystemUtils.debug_output("Nginx pid",nginxpid)
        #FIXME read from pid file this is just silly
        docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
-       SystemUtils.debug_output(docker_cmd)
+       SystemUtils.debug_output("Nginx restart ",docker_cmd)
        if nginxpid.to_s != "-"
          return run_system(docker_cmd)
        else
@@ -325,6 +325,18 @@ class SystemApi
      end
    end
 
+   def save_build_report(container,build_report)
+      clear_error
+      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+      f = File.new(stateDir  + "/buildreport.txt",File::CREAT|File::TRUNC|File::RDWR, 0644)
+      f.puts(build_report)
+      f.close           
+       return true
+   rescue Exception=>e
+     SystemUtils.log_exception(e)
+     return false
+   end
+   
    def save_container(container)
      clear_error
      begin
@@ -354,7 +366,8 @@ class SystemApi
        f.close
        return true
      rescue Exception=>e
-       container.last_error=( "load error")
+       container.last_error=( "save error")
+       #FIXME Need to rename back if failure
        SystemUtils.log_exception(e)
        return false
      end
@@ -573,7 +586,7 @@ class SystemApi
    def save_system_preferences
      clear_error
      begin
-       SystemUtils.debug_output :pdsf
+       SystemUtils.debug_output("save prefs",:pdsf)
        return true
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -584,7 +597,8 @@ class SystemApi
    def load_system_preferences
      clear_error
      begin
-       SystemUtils.debug_output :psdfsd
+       SystemUtils.debug_output("load pres",:psdfsd)
+        
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -634,7 +648,7 @@ class SystemApi
          return false
        end
 
-       SystemUtils.debug_output("Changing protocol to _" + protocol + "_")
+       SystemUtils.debug_output("Changing protocol to _",  protocol )
        if protocol.include?("HTTPS only")
          engine.enable_https_only
        elsif protocol.include?("HTTP only")
@@ -657,12 +671,12 @@ class SystemApi
        hostname = params[:host_name]
        domain_name = params[:domain_name]
 
-       SystemUtils.debug_output("Changing Domainame to " + domain_name)
+       SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
        if container.hostName != hostname || container.domainName != domain_name
          saved_hostName = container.hostName
          saved_domainName =  container.domainName
-         SystemUtils.debug_output("Changing Domainame to " + domain_name)
+         SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
          if container.set_hostname_details(hostname,domain_name) == true
            nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
@@ -939,7 +953,7 @@ SystemUtils.log_exception(e)
      begin
        cmd = cmd + " 2>&1"
        res= %x<#{cmd}>
-       SystemUtils.debug_output res
+       SystemUtils.debug_output("run System", res)
        #FIXME should be case insensitive The last one is a pure kludge
        #really need to get stderr and stdout separately
        if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false

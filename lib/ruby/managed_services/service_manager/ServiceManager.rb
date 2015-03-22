@@ -137,74 +137,93 @@ class ServiceManager
     p :services_on_objects_4
     p objectName
     p identifier
-
+    params = Hash.new
+    
     case objectName
     when "ManagedEngine"
-      return attached_managed_engine_services(identifier)
+      params[:engine_name] = identifier
+        p :get_engine_service_hashes
+     hashes = find_engine_services_hashes(params)
+     p :hashes
+     p hashes
+      return find_engine_services_hashes(params)
+   #    attached_managed_engine_services(identifier)
     when "Volume"
+      p :looking_for_volume
+      p identifier
       return attached_volume_services(identifier)
     when "Database"
+      p :looking_for_database
+      p identifier
       return attached_database_services(identifier)
     end
     p :no_object_name_match
     p objectName
+    
+    return nil 
+    
     rescue Exception=>e
         puts e.message 
     SystemUtils.log_exception(e)
+    
+    return nil
         
   end
 
 
-  def attached_managed_engine_services(identifier)
-
-    retval = Hash.new
-
-    if identifier == nil
-      p :panic_passed_nil_identifier
-      return retval
-    end
-   
-
-    if  managed_engine_tree ==nil
-      p :panic_loaded_managedengine_tree
-      return retval
-    end
-
-    engine_node =managed_engine_tree[identifier]
-
-    if engine_node == nil
-      p :cant_find
-      p identifier
-      return retval
-    end
-   engine_node.children.each do |service_node|      
-      p :service_type
-      p service_node.name
-      if  service_node.name == nil
-        p :no_service_type
-        return retval
-      end
-      if retval.has_key?( service_node.name) == false
-        retval[ service_node.name] = Array.new
-      end
-      retval[ service_node.name].push(get_service_content(service_node))
-    end
-
-    return retval
- 
-rescue Exception=>e
-    puts e.message 
-SystemUtils.log_exception(e)
-    
-  end
+#  def attached_managed_engine_services(identifier)
+#
+#    retval = Hash.new
+#
+#    if identifier == nil
+#      p :panic_passed_nil_identifier
+#      return retval
+#    end
+#   
+#
+#    if  managed_engine_tree ==nil
+#      p :panic_loaded_managedengine_tree
+#      return retval
+#    end
+#
+#    engine_node = managed_engine_tree[identifier]
+#
+#    if engine_node == nil
+#      p :cant_find
+#      p identifier
+#      return retval
+#    end
+#   engine_node.children.each do |service_node|      
+#      p :service_type
+#      p service_node.name
+#      if  service_node.name == nil
+#        p :no_service_type
+#        return retval
+#      end
+#      if retval.has_key?( service_node.name) == false
+#        retval[ service_node.name] = Array.new
+#      end
+#      p get_service_content(service_node)
+#      retval[ service_node.name].push(get_service_content(service_node))
+#    end
+#
+#    return retval
+# 
+#rescue Exception=>e
+#    puts e.message 
+#SystemUtils.log_exception(e)
+#    
+#  end
   
   def get_service_content(service_node)
     retval = Hash.new
     service_node.children.each do |provider_node|
-
-      retval[provider_node.name] = Array.new
-          provider_node.children.each do |service_node|
+       if retval[provider_node.name] == nil
+            retval[provider_node.name] = Array.new
+       end
+          provider_node.children.each do |service_node|         
             retval[provider_node.name].push(service_node.content)
+            retval.push(service_node.content)
           end       
     end
     return retval
@@ -357,7 +376,8 @@ SystemUtils.log_exception(e)
       remove_tree_entry(service)
     end
     
-    save_tree
+    save_tree  
+    return true
   end
   
   def retrieve_orphan(params)
@@ -410,6 +430,16 @@ SystemUtils.log_exception(e)
         return engine_node
     end
   end
+def find_engine_services_hashes(params)
+  
+  p :find_engine_services_hashes
+  p params
+  engine_node = managed_engine_tree[params[:engine_name]]
+    p get_all_leafs_service_hashes(engine_node)
+  return get_all_leafs_service_hashes(engine_node)
+  
+end
+  
 
   def get_engine_persistant_services(params) #params is :engine_name
     services = find_engine_services(params)
@@ -523,7 +553,7 @@ SystemUtils.log_exception(e)
   end
 
 def software_service_definition(params)
-  
+ 
  return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
 
 

@@ -19,7 +19,10 @@ class EnginesOSapi
     return @core_api
   end
   
- 
+ def get_engine_build_report engine_name
+   return "Not Yet"
+   
+ end
   
   def log_exception_and_fail(cmd,e)
       e_str = SystemUtils.log_exception(e)
@@ -90,14 +93,39 @@ class EnginesOSapi
     return log_exception_and_fail("buildEngine",e)
   end
 
+    def reinstall_engine engine_name
+      
+      engine = loadManaged(engine_name)
+      
+      if engine.is_a?(EnginesOSapiResult)
+        return engine
+      end
+      if engine.is_active == true
+        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
+      end
+      if engine.has_container? == true
+       if engine.destroy == false
+         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
+       end
+      end
+      params = Hash.new
+      
+      params[:engine_name] = engine.containerName  
+      params[:domain_name] = engine.domainName
+      params[:host_name] = engine.hostname
+      params[:software_environment_variables] = engine.environments 
+      params[:http_protocol] = engine.http_protocol
+      params[:memory] = engine.memory
+      params[:repository_url] = engine.repo
+        
+      build_engine(params)
+      #   custom_env=params
+     
+    end
   def build_engine(params)
-#    container_name = params[:engine_name]
-#    domain_name = params[:domain_name]
-#    host_name = params[:host_name]
-#    evirons = params[:env_variables]
-  #  params[:repository] = repository
+
     p params
-    #@engine_builder = EngineBuilder.new(repository,container_name,host_name,domain_name,evirons, @core_api)
+   
     @engine_builder = EngineBuilder.new(params, @core_api)
     engine = @engine_builder.build_from_blue_print
     if engine == false
@@ -201,7 +229,7 @@ class EnginesOSapi
     if engine.is_a?(EnginesOSapiResult)
       return engine
     end
-    SystemUtils.debug_output("backing up " + volume_name + " to " +  dest_hash.to_s )
+    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
     backup_hash = dest_hash
     backup_hash.store(:name, backup_name)
     backup_hash.store(:engine_name, engine_name)
@@ -212,7 +240,7 @@ class EnginesOSapi
         volume =  engine.volumes["volume_name"]
           if volume != nil
             volume.add_backup_src_to_hash(backup_hash)
-            SystemUtils.debug_output backup_hash
+            SystemUtils.debug_output("Backup hash",backup_hash)
           end
      end           
 #    engine.volumes.values do |volume|
@@ -1115,9 +1143,11 @@ class EnginesOSapi
   
   def software_service_definition (params)
     retval = @core_api.software_service_definition(params)
-    if retval != nil 
+    if retval != nil
       return retval
     end 
+    p :error_software_service_definition 
+    p params
      return failed(params[:service_type] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
   end
   
@@ -1138,6 +1168,10 @@ class EnginesOSapi
   end
   
   def list_attached_services_for(object_name,identifier)
+    SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
+    attached = @core_api.list_attached_services_for(object_name,identifier)
+    p :found_attached
+    p attached
      return @core_api.list_attached_services_for(object_name,identifier)
    end
   

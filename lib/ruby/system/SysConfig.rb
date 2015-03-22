@@ -16,7 +16,8 @@ class SysConfig
   @@CONTFSVolHome = "/home/app/fs"
   @@LocalFSVolHome = "/var/lib/engines/fs"
   @@galleriesDir = "/opt/engines/etc/galleries"
-
+  @@DefaultBuildReportTemplateFile="/opt/engines/system/templates/deployment/global/default_built_report_template"
+  
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
   
   @@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/add_backup.sh "
@@ -64,6 +65,7 @@ class SysConfig
   @@CustomPHPiniFile="/home/engines/configs/php/71-custom.ini"
   @@CustomApacheConfFile="/home/engines/configs/apache2/extra.conf"
   
+ 
   
   #service Manager
   @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
@@ -73,6 +75,9 @@ class SysConfig
   
   @@SMTPHost="smtp.engines.internal"
   
+  def SysConfig.DefaultBuildReportTemplateFile
+    return @@DefaultBuildReportTemplateFile
+  end
   
   def SysConfig.DefaultDomainnameFile
     return @@DefaultDomainnameFile
