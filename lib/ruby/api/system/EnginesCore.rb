@@ -343,12 +343,12 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  def load_avail_services_for(objectname)
+  def load_avail_services_for_type(typename)
     p :load_avail_services_for
-    p objectname
+    p typename
     retval = Array.new
 
-    dir = SysConfig.ServiceMapTemplateDir + "/" + objectname
+    dir = SysConfig.ServiceMapTemplateDir + "/" + typename
     p :dir
     p dir
     if Dir.exists?(dir)
@@ -378,7 +378,7 @@ class EnginesCore
         end
       end
     end
-    p objectname
+    p typename
     p retval
     return retval
     rescue Exception=>e
