@@ -5,9 +5,9 @@
 #dest_url proto:user:pass@host/dir
 #file:::/backups/
 #ftp:back:backup@somehost.domain.com/dir
- echo "$*" >>/var/log/addbackup.log
+ echo "$*" >>/var/log/backup/addbackup.log
 
-
+Backup_ConfigDir=/home/backup/.duply/
 #
 # makebackconf.sh  publifydb  publify:mysql:publifydb:publifydb@mysql.engines.internal/publifydb ftp:engback:back_eng@203.14.203.141/publifydb
 #bash makebackconf.sh publify publify:fs:publifyfs ftp:engback:back_eng@203.14.203.141/publify
@@ -17,7 +17,7 @@ src_engine=`echo $2 |cut -f 1 -d:`
 src_type=`echo $2 |cut -f 2 -d:`
 src_vol=`echo $2 |cut -f 3 -d:`
 
-mkdir -p /etc/duply/$1
+mkdir -p $Backup_ConfigDir/$1
 
         if test $src_type = "fs"
           then
@@ -33,17 +33,17 @@ echo "src type $src_type"
                 dbhost=`echo $end |cut -f 1 -d/`
                 dbname=`echo $end |cut -f 2 -d/`
 
-                echo "#!/bin/sh " > /etc/duply/$1/pre
-                echo "dbflavor=$flavor" >> /etc/duply/$1/pre
-                echo "dbhost=$dbhost" >> /etc/duply/$1/pre
-                echo "dbname=$dbname" >> /etc/duply/$1/pre
-                echo "dbuser=$dbuser" >> /etc/duply/$1/pre
-                echo "dbpass=$dbpass" >> /etc/duply/$1/pre
-                cat /home/tmpl/duply_sql_pre >>  /etc/duply/$1/pre
+                echo "#!/bin/sh " > $Backup_ConfigDir/$1/pre
+                echo "dbflavor=$flavor" >> $Backup_ConfigDir/$1/pre
+                echo "dbhost=$dbhost" >> $Backup_ConfigDir/$1/pre
+                echo "dbname=$dbname" >> $Backup_ConfigDir/$1/pre
+                echo "dbuser=$dbuser" >> $Backup_ConfigDir/$1/pre
+                echo "dbpass=$dbpass" >> $Backup_ConfigDir/$1/pre
+                cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/$1/pre
 
-                cp /home/tmpl/duply_sql_post  /etc/duply/$1/post
-                chmod u+x /etc/duply/$1/pre
-                 chmod u+x /etc/duply/$1/post
+                cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/$1/post
+                chmod u+x $Backup_ConfigDir/$1/pre
+                 chmod u+x $Backup_ConfigDir/$1/post
                 src=/home/sql_dumps
         fi
 
@@ -65,10 +65,10 @@ dest_proto=`echo $3 |cut -f1 -d:`
 
 
 
-cp /home/tmpl/duply_conf /etc/duply/$1/conf
+cp /home/tmpl/duply_conf $Backup_ConfigDir/$1/conf
 
-echo "SOURCE='$src'" >>/etc/duply/$1/conf
-echo "TARGET='$dest'" >>/etc/duply/$1/conf
-echo "TARGET_USER='$user'"  >>/etc/duply/$1/conf
-echo "TARGET_PASS='$pass'"  >>/etc/duply/$1/conf
+echo "SOURCE='$src'" >>$Backup_ConfigDir/$1/conf
+echo "TARGET='$dest'" >>$Backup_ConfigDir/$1/conf
+echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/$1/conf
+echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/$1/conf
                  
