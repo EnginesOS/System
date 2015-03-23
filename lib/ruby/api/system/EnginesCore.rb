@@ -343,12 +343,12 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  def load_avail_services_for(objectname)
-    p :load_avail_services_for
-    p objectname
+  def load_avail_services_for_type(typename)
+    p :load_avail_services_for_by_type
+    p typename
     retval = Array.new
 
-    dir = SysConfig.ServiceMapTemplateDir + "/" + objectname
+    dir = SysConfig.ServiceMapTemplateDir + "/" + typename
     p :dir
     p dir
     if Dir.exists?(dir)
@@ -378,13 +378,57 @@ class EnginesCore
         end
       end
     end
-    p objectname
+    p typename
     p retval
     return retval
     rescue Exception=>e
     SystemUtils.log_exception e
   end
 
+
+  def load_avail_services_for(typename)
+    p :load_avail_services_for
+    p typename
+    retval = Array.new
+
+    dir = SysConfig.ServiceMapTemplateDir + "/" + typename
+    p :dir
+    p dir
+    if Dir.exists?(dir)
+      Dir.foreach(dir) do |service_dir_entry|
+        begin
+           if service_dir_entry.start_with?(".")   == true
+             next
+           end
+          p :service_dir_entry
+          p service_dir_entry
+          if service_dir_entry.end_with?(".yaml")
+            service = load_service_definition(dir + "/" + service_dir_entry)
+            if service != nil
+              p :service_as_serivce
+              p service
+              p :as_hash
+              p service.to_h
+              p :as_yaml
+              p service.to_yaml()
+              
+              retval.push(service.to_h)
+            end
+          end
+        rescue Exception=>e
+          SystemUtils.log_exception e
+          next
+        end
+      end
+    end
+    p typename
+    p retval
+    return retval
+    rescue Exception=>e
+    SystemUtils.log_exception e
+  end
+    
+  
   def load_avail_component_services_for(engine)
     retval = Hash.new
     if engine.is_a?(ManagedEngine)
@@ -396,8 +440,17 @@ class EnginesCore
       type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
           p retval[type_path]
-      end
-      
+     end
+  else
+    p :load_avail_component_services_for_engine_got_a 
+    p engine.to_s
+  return nil
+   end
+return retval
+rescue Exception=>e
+SystemUtils.log_exception e
+end
+
   
       
 #      if object.volumes.count >0
@@ -412,16 +465,14 @@ class EnginesCore
 #        retval[:database] = databases
 #      end
 #      
-#      ret_val[:type_path] = load_avail_services_for(object[:type_path])
-
-      return retval
-    else
-      return nil
- 
-    end
-         rescue Exception=>e
-    SystemUtils.log_exception e
-  end
+##      ret_val[:type_path] = load_avail_services_for(object[:type_path])
+#
+#      return retval
+#    else
+#      return nil
+# 
+#    end
+# 
 
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
