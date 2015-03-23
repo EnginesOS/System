@@ -20,21 +20,23 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	mkdir -p /home/backup/fcron/doc/home/backup/fcron/man,/home/backup/fcron/spool};\
 	cd /home/backup;\
 	rm -r /tmp/fcron-3.2.0 ;\
-	rm /tmp/fcron-3.2.0.src.tar.gz;\
-	mkdir -p /var/log/backup/;\
-	chown -R backup /etc/duply/ /var/log/backup/
+	rm /tmp/fcron-3.2.0.src.tar.gz;\	
+	mkdir -p /var/log/backup/  /home/sql_dumps;\
+	chown -R backup  /home/sql_dumps /var/log/backup/ 
 
 
 
-ADD crontab  /var/spool/cron/crontabs/backup
+ADD crontab  /home/backup/fcron/spool/backup.orig
 RUN chown -R backup ~backup 
-#RUN chmod 700 ~rma/.ssh 
-
+	
 
 VOLUME /backup_src/volumes
 VOLUME /backup_src/engines
 VOLUME /local_backup_dests
 
 USER backup
+
+RUN		/home/backup/fcron/bin/crontab -u backup -z
+
 ENV ContUser backup
 ENV ContGrp backup
