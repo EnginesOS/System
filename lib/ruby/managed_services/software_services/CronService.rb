@@ -70,7 +70,7 @@ SystemUtils.log_exception(e)
 
   
   def reload_crontab
-    docker_cmd="docker exec cron crontab " + "/home/crontabs/crontab"
+    docker_cmd="docker exec cron /home/cron/bin/fcrontab -z " #+ "/home/crontabs/crontab"
      SystemUtils.run_system(docker_cmd)
      return true
   rescue Exception=>e
@@ -81,7 +81,7 @@ SystemUtils.log_exception(e)
   end
   
       def rebuild_crontab()
-        cron_file = File.open(  SysConfig.CronDir + "/crontab","w")
+        cron_file = File.open(  SysConfig.CronDir + "/backup.orig","w")
   
         consumers.each do |cron_entry|
   
@@ -105,7 +105,7 @@ SystemUtils.log_exception(e)
       begin
 
         cron_line = format_cron_line(cron_hash)
-        cron_file = File.open(  SysConfig.CronDir + "/crontab","a+")
+        cron_file = File.open(  SysConfig.CronDir + "/backup.orig","a+")
         cron_file.puts(cron_line)
         cron_file.close
 
