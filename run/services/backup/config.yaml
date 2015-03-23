@@ -9,7 +9,7 @@ domainName:
 environments: 
 image: engines/backup:alpha
 volumes:
-  Configs: !ruby/object:Volume
+ Configs: !ruby/object:Volume
   name: Configs
   remotepath: "/home/backup/.duply/"
   localpath: "/opt/engines/etc/backup/configs"
