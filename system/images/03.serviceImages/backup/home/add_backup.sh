@@ -5,7 +5,8 @@
 #dest_url proto:user:pass@host/dir
 #file:::/backups/
 #ftp:back:backup@somehost.domain.com/dir
- echo "$*" >>/var/log/backup/addbackup.log
+
+ echo "$*" >>/var/log/addbackup.log
 
 Backup_ConfigDir=/home/backup/.duply/
 #
