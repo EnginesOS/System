@@ -444,8 +444,12 @@ class EnginesCore
   else
     p :load_avail_component_services_for_engine_got_a 
     p engine.to_s
+  return nil
    end
-      
+return retval
+rescue Exception=>e
+SystemUtils.log_exception e
+end
 end
   
       
@@ -461,16 +465,14 @@ end
 #        retval[:database] = databases
 #      end
 #      
-#      ret_val[:type_path] = load_avail_services_for(object[:type_path])
-
-      return retval
-    else
-      return nil
- 
-    end
-         rescue Exception=>e
-    SystemUtils.log_exception e
-  end
+##      ret_val[:type_path] = load_avail_services_for(object[:type_path])
+#
+#      return retval
+#    else
+#      return nil
+# 
+#    end
+# 
 
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
