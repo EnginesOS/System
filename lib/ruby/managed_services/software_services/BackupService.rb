@@ -23,12 +23,13 @@ class BackupService < SoftwareService
       end
      # {:parent_engine=>"owncloud", :service_type=>"backup", :publisher_namespace=>"EnginesSystem", :title=>"Backup", :name=>"owncloudapp", :dest_proto=>"ftp", :dest_folder=>"203.14.203.141", :dest_address=>"/tmp/", :include_logs=>"1", :dest_user=>"admin", :dest_pass=>"admin"}
 
-      SystemUtils.debug_output site_hash
+      SystemUtils.debug_output("create backup",site_hash)
       #FIXME
       #kludge
-      site_hash[:source_user]="testuser"
-      site_hash[:source_host]="testhostl"
-      site_hash[:source_pass]="testpass"
+#
+#      site_hash[:source_user]="testuser"
+#      site_hash[:source_host]="testhostl"
+#      site_hash[:source_pass]="testpass"
         
       if site_hash.has_key?(:source_type) == false ||  site_hash[:source_type] == "engine"
         site_hash[:source_type] ="engine"
@@ -40,7 +41,7 @@ class BackupService < SoftwareService
       elsif  site_hash[:source_type] =="fs"
         site_src=containerName + ":fs:" + site_hash[:source_name]
       else #database
-        site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:source_user] +":" +  site_hash[:source_pass] + "@" +  site_hash[:source_host] + "/" + site_hash[:source_name]
+        site_src=containerName + ":" + site_hash[:source_type] + ":" +  site_hash[:db_username] +":" +  site_hash[:db_password] + "@" +  site_hash[:database_host] + "/" + site_hash[:database_name]
       end
       #FIXME
       site_dest=site_hash[:dest_proto] 
@@ -48,7 +49,8 @@ class BackupService < SoftwareService
       site_dest += ":" + site_hash[:dest_pass] + "@" 
       site_dest +=site_hash[:dest_address] + "/" 
       site_dest +=site_hash[:dest_folder]
-        
+       
+      SystemUtils.run_system( "docker exec backup /home/add_backup.sh " + site_hash[:name] + " " + site_src + " " + site_dest)
   #    ssh_cmd=SysConfig.addBackupCmd + " " + site_hash[:name] + " " + site_src + " " + site_dest
   #    SystemUtils.run_system(ssh_cmd)
       #FIXME shoudl return about result and not just true
