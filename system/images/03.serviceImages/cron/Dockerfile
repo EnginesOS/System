@@ -18,10 +18,11 @@ RUN apt-get -y update;\
 	mkdir -p /home/cron/doc /home/cron/man /home/cron/spool;\
 	cd /home/cron;\
 	rm -r /tmp/fcron-3.2.0 ;\
-	rm /tmp/fcron-3.2.0.src.tar.gz
+	rm /tmp/fcron-3.2.0.src.tar.gz ;\
+	apt-get -y remove  build-essential gcc make
 
 
 COPY home home
-
+USER cron
 
 CMD /home/init.sh
