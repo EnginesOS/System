@@ -319,7 +319,8 @@ echo "Setting directory and file permissions"
 	 chown 22003 -R /opt/engines/etc/smtp
 	
 	 chown 22003 -R /var/log/engines/services/email/
-	 chown 22015 -R /opt/engines/etc/backup/
+	 chown  -R /opt/engines/etc/backup/
+	chown 22015 /var/lib/engines/backup_paths/
 	
 	}
 
