@@ -344,7 +344,7 @@ class EnginesCore
   end
 
   def load_avail_services_for_type(typename)
-    p :load_avail_services_for
+    p :load_avail_services_for_by_type
     p typename
     retval = Array.new
 
