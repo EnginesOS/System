@@ -17,7 +17,7 @@ volumes:
  Volumes: !ruby/object:Volume
   name: Volumes
   remotepath: "/backup_src/volumes/"
-  localpath: "/var/lib/engines/fs"
+  localpath: "/var/lib/engines/"
   mapping_permissions: "ro"
  Engines:  !ruby/object:Volume
   name: Engines
