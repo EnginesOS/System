@@ -440,8 +440,13 @@ class EnginesCore
       type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
           p retval[type_path]
-      end
+     end
+  else
+    p :load_avail_component_services_for_engine_got_a 
+    p engine.to_s
+   end
       
+end
   
       
 #      if object.volumes.count >0
