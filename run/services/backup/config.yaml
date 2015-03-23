@@ -31,7 +31,7 @@ volumes:
   mapping_permissions: "rw"
  Logs: !ruby/object:Volume
   name: Logs
-  remotepath: "/var/log/"
+  remotepath: "/var/log/backup"
   localpath: "/var/log/engines/services/backup/"
   mapping_permissions: "rw"
 port: 
