@@ -387,7 +387,7 @@ class EnginesCore
 
   def load_avail_component_services_for(engine)
     retval = Hash.new
-    if object.is_a?(ManagedEngine)
+    if engine.is_a?(ManagedEngine)
      params = Hash.new
      params[:engine_name]=engine.containerName
        
