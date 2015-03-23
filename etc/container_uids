@@ -15,7 +15,7 @@ courier courier			22011
 syslog					22012
 dovecot					22013
 vmail					22014
-backup					22015
+backup		backup		22015
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672
