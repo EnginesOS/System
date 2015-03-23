@@ -2,7 +2,7 @@
 mkdir /home/backup/tmp
 mysqldump  --all-databases > /home/backup/tmp/db.sql
 
-cp -rp /backup_src/engines/opt/engines/etc /home/backup/tmp/
-cp -rp /backup_src/engines/opt/engines/run /home/backup/tmp/
-cp -rp /backup_src/engines/home/engines/db //home/backup/tmp/
+cp -rp /backup_src/engines/etc /home/backup/tmp/
+cp -rp /backup_src/engines/run /home/backup/tmp/
+
 
