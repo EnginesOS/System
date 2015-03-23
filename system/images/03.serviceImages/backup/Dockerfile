@@ -1,7 +1,7 @@
 FROM  engines/python:$release
 
 RUN apt-get -y update;\
-	apt-get -y install vim  duply ncftp  python-paramiko python-gobject-2  ;\
+	apt-get -y install vim  duply ncftp  python-paramiko python-gobject-2 syslogd ;\
 	apt-get clean 
 ADD etc  etc
 ADD home home
@@ -17,7 +17,7 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	--with-fifodir=/home/backup/fcron --with-spooldir=/home/backup/fcron/spool\
 	--with-docdir=/home/backup/fcron/doc --prefix=/home/backup/fcron;\
 	make install;\
-	mkdir -p /home/backup/fcron/doc/home/backup/fcron/man,/home/backup/fcron/spool};\
+	mkdir -p /home/backup/fcron/doc /home/backup/fcron/man /home/backup/fcron/spool;\
 	cd /home/backup;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz;\	
