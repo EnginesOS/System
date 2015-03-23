@@ -89,7 +89,8 @@ echo "Setting up engines system user"
 		 adduser -q --uid 21000 --ingroup docker   -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 addgroup engines
 		 usermod  -G engines engines
-		  
+		  usermod -u 22015 backup
+		  usermod  -a -G engines  backup
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
 echo "Installing ruby"

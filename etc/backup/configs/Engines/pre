@@ -1,0 +1,7 @@
+#!/bin/sh 
+
+mysqldump  --all-databases > /opt/engines/backup/db.sql
+cp -rp /opt/engines/etc /opt/engines/backup/
+cp -rp /opt/engines/run /opt/engines/backup/
+cp -rp /home/engines/db /opt/engines/backup/
+
