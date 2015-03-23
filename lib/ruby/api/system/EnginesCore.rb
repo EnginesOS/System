@@ -385,6 +385,50 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
+
+  def load_avail_services_for(typename)
+    p :load_avail_services_for
+    p typename
+    retval = Array.new
+
+    dir = SysConfig.ServiceMapTemplateDir + "/" + typename
+    p :dir
+    p dir
+    if Dir.exists?(dir)
+      Dir.foreach(dir) do |service_dir_entry|
+        begin
+           if service_dir_entry.start_with?(".")   == true
+             next
+           end
+          p :service_dir_entry
+          p service_dir_entry
+          if service_dir_entry.end_with?(".yaml")
+            service = load_service_definition(dir + "/" + service_dir_entry)
+            if service != nil
+              p :service_as_serivce
+              p service
+              p :as_hash
+              p service.to_h
+              p :as_yaml
+              p service.to_yaml()
+              
+              retval.push(service.to_h)
+            end
+          end
+        rescue Exception=>e
+          SystemUtils.log_exception e
+          next
+        end
+      end
+    end
+    p typename
+    p retval
+    return retval
+    rescue Exception=>e
+    SystemUtils.log_exception e
+  end
+    
+  
   def load_avail_component_services_for(engine)
     retval = Hash.new
     if engine.is_a?(ManagedEngine)
