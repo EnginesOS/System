@@ -1,4 +1,4 @@
-Source='/local_backup_dests/tmp/'
+SOURCE='/home/backup/tmp/'
 TARGET='file://local_backup_dests/system/'
 TARGET_USER=''
 TARGET_PASS=''
