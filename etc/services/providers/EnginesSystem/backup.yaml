@@ -5,9 +5,10 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 - !ruby/object:String    
-  "Volume"
+  "filesystem/local/filesystem"
 - !ruby/object:String    
-  "database"
+  "database/sql/mysql"
+  
 author: Engines
 title: Backup
 description: "Backup tasks"

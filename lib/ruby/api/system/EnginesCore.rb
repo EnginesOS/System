@@ -201,7 +201,11 @@ class EnginesCore
     objectname = object.class.name.split('::').last
     p :load_vail_services_for
     p objectname
+    
     services = load_avail_services_for(objectname)
+    
+    
+    
     subservices = load_avail_component_services_for(object)
 
     retval = Hash.new
@@ -381,18 +385,34 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  def load_avail_component_services_for(object)
+  def load_avail_component_services_for(engine)
     retval = Hash.new
     if object.is_a?(ManagedEngine)
-      if object.volumes.count >0
-        p :loading_vols
-        volumes = load_avail_services_for("Volume") #Array of hashes
-        retval[:volume] = volumes
+     params = Hash.new
+     params[:engine_name]=engine.containerName
+       
+      persistant_services =  get_engine_persistant_services(params)
+      persistant_services.each do |service|
+      type_path = service[:type_path]
+        retval[type_path] = load_avail_services_for_type(type_path)
+          p retval[type_path]
       end
-      if object.databases.count >0
-        databases = load_avail_services_for("Database") #Array of hashes
-        retval[:database] = databases
-      end
+      
+  
+      
+#      if object.volumes.count >0
+#        
+#        
+#        p :loading_vols
+#        volumes = load_avail_services_for("Volume") #Array of hashes
+#        retval[:volume] = volumes
+#      end
+#      if object.databases.count >0
+#        databases = load_avail_services_for("Database") #Array of hashes
+#        retval[:database] = databases
+#      end
+#      
+#      ret_val[:type_path] = load_avail_services_for(object[:type_path])
 
       return retval
     else
