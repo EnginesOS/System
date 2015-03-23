@@ -89,7 +89,8 @@ echo "Setting up engines system user"
 		 adduser -q --uid 21000 --ingroup docker   -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 addgroup engines
 		 usermod  -G engines engines
-		  
+		  usermod -u 22015 backup
+		  usermod  -a -G engines  backup
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
 echo "Installing ruby"
@@ -318,7 +319,8 @@ echo "Setting directory and file permissions"
 	 chown 22003 -R /opt/engines/etc/smtp
 	
 	 chown 22003 -R /var/log/engines/services/email/
-	 chown 22015 -R /opt/engines/etc/backup/
+	 chown  -R /opt/engines/etc/backup/
+	chown 22015 /var/lib/engines/backup_paths/
 	
 	}
 

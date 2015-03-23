@@ -6,7 +6,7 @@
 #file:::/backups/
 #ftp:back:backup@somehost.domain.com/dir
 
- echo "$*" >>/var/log/addbackup.log
+ echo "$*" >>/var/log/backup/addbackup.log
 
 Backup_ConfigDir=/home/backup/.duply/
 #
