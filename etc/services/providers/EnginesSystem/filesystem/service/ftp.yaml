@@ -4,9 +4,9 @@ accepts:
 author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
-service_type: ftp
+type_path: filesystem/service/ftp
 service_container: ftp
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 consumer_params:

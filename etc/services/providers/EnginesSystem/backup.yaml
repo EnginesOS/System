@@ -12,9 +12,9 @@ accepts:
 author: Engines
 title: Backup
 description: "Backup tasks"
-service_type: backup
+type_path: backup
 service_container: backup
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 consumer_params:

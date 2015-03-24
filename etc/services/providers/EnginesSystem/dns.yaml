@@ -7,9 +7,9 @@ accepts:
 author: Engines
 title: DNS
 description: "Resolves names to to IP address"
-service_type: dns
+type_path: dns
 service_container: dns
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 consumer_params:

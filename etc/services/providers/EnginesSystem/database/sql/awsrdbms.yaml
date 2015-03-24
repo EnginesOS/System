@@ -7,7 +7,7 @@ accepts:
 author: Engines
 title: AWS MySQL Database
 description: "AWS MYSQL Database "
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 service_type: database/sql/aws
 service_container: awsdb
 dedicated: false
