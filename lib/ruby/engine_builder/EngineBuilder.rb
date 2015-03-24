@@ -544,7 +544,7 @@ class EngineBuilder
   def create_template_files
     if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
-        write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
+        write_software_file("/home/" + template_hash[:path],template_hash[:content])
       end
     end
   end
@@ -552,7 +552,7 @@ class EngineBuilder
   def create_httaccess
     if @blueprint[:software].has_key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files]  != nil
       @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
-        write_software_file("/home/engines/htaccess_files" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
+        write_software_file("/home/app/" + template_hash[:directory]+"/.htaccess",template_hash[:htaccess_content])
       end
     end
   end
