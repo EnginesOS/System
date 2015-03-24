@@ -81,7 +81,7 @@ SystemUtils.log_exception(e)
   end
   
       def rebuild_crontab()
-        cron_file = File.open(  SysConfig.CronDir + "/backup.orig","w")
+        cron_file = File.open(  SysConfig.CronDir + "/cron.orig","w")
   
         consumers.each do |cron_entry|
   
@@ -105,7 +105,7 @@ SystemUtils.log_exception(e)
       begin
 
         cron_line = format_cron_line(cron_hash)
-        cron_file = File.open(  SysConfig.CronDir + "/backup.orig","a+")
+        cron_file = File.open(  SysConfig.CronDir + "/cron.orig","a+")
         cron_file.puts(cron_line)
         cron_file.close
 
