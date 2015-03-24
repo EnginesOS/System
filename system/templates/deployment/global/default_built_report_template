@@ -17,9 +17,10 @@ _Blueprint(software,softwareservices)
 
 
 
-Need to got to http://_Builder(hostname)/config
-and enter in 
-_Engines(dbhost)
-_Engines(dbname)
-_Engines(dbuser)
-_Engines(dbpasswd)
+_Builder(engine_name) Now installed at http://_Builder(hostname)/
+
+Database host _Engines(dbhost)
+Database Name _Engines(dbname)
+Database User _Engines(dbuser)
+Database Password _Engines(dbpasswd)
+

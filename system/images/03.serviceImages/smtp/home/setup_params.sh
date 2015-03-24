@@ -27,13 +27,21 @@ fcnt=`expr $fcnt + 1`
 	fi
 	
 	 #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", 
-	if test -n $smarthost_hostname
+	if test  ${#smarthost_hostname} -gt 5
 	then 
+		if test 1 -lt ${#smarthost_port}
+			then
+				smarthost_port=25
+		    fi
+
 		echo "*	smtp:$smarthost_hostname:$smarthost_port"  > /etc/postfix/transport
+		else
+			echo "*	smtp:"  > /etc/postfix/transport
+		fi 
 		chown root.root /etc/postfix/transport
 		chmod 600 /etc/postfix/transport
 		postmap /etc/postfix/transport
-fi
+
 
 
 

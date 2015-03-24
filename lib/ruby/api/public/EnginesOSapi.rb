@@ -60,6 +60,8 @@ class EnginesOSapi
     @core_api.set_database_password("mysql_server",params)              
     @core_api.set_database_password("pgsql_server",params)    
         
+    @core_api.set_engines_ssl_pw(params)
+    
     params[:default_cert]=true      
   #  create_ssl_certificate(params)
      
@@ -92,35 +94,35 @@ class EnginesOSapi
     return log_exception_and_fail("buildEngine",e)
   end
 
-    def reinstall_engine engine_name
-      
-      engine = loadManaged(engine_name)
-      
-      if engine.is_a?(EnginesOSapiResult)
-        return engine
-      end
-      if engine.is_active == true
-        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
-      end
-      if engine.has_container? == true
-       if engine.destroy == false
-         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
-       end
-      end
-      params = Hash.new
-      
-      params[:engine_name] = engine.containerName  
-      params[:domain_name] = engine.domainName
-      params[:host_name] = engine.hostname
-      params[:software_environment_variables] = engine.environments 
-      params[:http_protocol] = engine.http_protocol
-      params[:memory] = engine.memory
-      params[:repository_url] = engine.repo
-        
-      build_engine(params)
-      #   custom_env=params
-     
-    end
+#    def reinstall_engine engine_name
+#      
+#      engine = loadManaged(engine_name)
+#      
+#      if engine.is_a?(EnginesOSapiResult)
+#        return engine
+#      end
+#      if engine.is_active == true
+#        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
+#      end
+#      if engine.has_container? == true
+#       if engine.destroy == false
+#         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
+#       end
+#      end
+#      params = Hash.new
+#      
+#      params[:engine_name] = engine.containerName  
+#      params[:domain_name] = engine.domainName
+#      params[:host_name] = engine.hostname
+#      params[:software_environment_variables] = engine.environments 
+#      params[:http_protocol] = engine.http_protocol
+#      params[:memory] = engine.memory
+#      params[:repository_url] = engine.repo
+#        
+#      build_engine(params)
+#      #   custom_env=params
+#     
+#    end
   def build_engine(params)
 
     p params
@@ -132,11 +134,11 @@ class EnginesOSapi
     end
     if engine != nil
       if engine.is_active == false
-        return failed(params[:engine_name],"Failed to start  " + last_api_error ,"build_engine")
+        return failed(params[:engine_name],"Failed to start  " + @engine_builder.last_error ,"build_engine")
       end
       return engine
     end
-    return failed(host_name,last_api_error,"build_engine")
+    return failed(host_name,@engine_builder.last_error,"build_engine")
 
   rescue Exception=>e
     return log_exception_and_fail("build_engine",e)
@@ -518,6 +520,9 @@ class EnginesOSapi
     engine = loadManagedEngine engine_name
       if engine.is_a?(EnginesOSapiResult)
         return  engine #acutally EnginesOSapiResult
+      end
+      if engine.has_container? == true
+        engine.destroy_container
       end
       p "reinstalling " + engine_name
     if @core_api.reinstall_engine(engine) == false
@@ -1147,7 +1152,7 @@ class EnginesOSapi
     end 
     p :error_software_service_definition 
     p params
-     return failed(params[:service_type] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
+     return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
   end
   
   #protected if protected static cant call

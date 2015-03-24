@@ -1036,8 +1036,17 @@ p :fill_service_environment_variables
   end
 end
 
+def log_exception_and_fail(cmd,e)
+    e_str = SystemUtils.log_exception(e)
+    last_error =  e_str
+    return  false
+  end
+
 def log_exception(e)
   log_build_errors(e.to_s)
+  if last_error == nil
+    last_error = e.to_s
+  end
 ensure
   SystemUtils.log_exception(e)
   return false

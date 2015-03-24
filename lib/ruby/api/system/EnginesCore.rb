@@ -247,6 +247,14 @@ class EnginesCore
     SystemUtils.log_exception(e)
   end
   
+  def set_engines_ssl_pw(params)
+    pass = params[:ssh_password]
+   cmd = "echo -e " + pass + "\n" + pass + " | passwd engines"
+     p cmd
+    SystemUtils.run_system(cmd)
+    
+  end
+  
    def set_database_password(container_name,params)
      arg = "mysql_password=" + params[:mysql_password] +":" \
           + "server=" + container_name + ":" \
