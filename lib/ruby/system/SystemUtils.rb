@@ -1,14 +1,14 @@
 class SystemUtils
-  @@debug=true
+  @@debug=false
   @@level=5
   
   attr_reader :debug,:level,:last_error
   
  def SystemUtils.debug_output(label,object)
-#  if SystemUtils.debug == true
+  if SystemUtils.debug == true
     p label.to_sym  
     p object
-#  end  
+  end  
  end
   
  def SystemUtils.log_output(object,level)
