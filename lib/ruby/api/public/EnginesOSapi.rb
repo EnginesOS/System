@@ -134,11 +134,11 @@ class EnginesOSapi
     end
     if engine != nil
       if engine.is_active == false
-        return failed(params[:engine_name],"Failed to start  " + last_api_error ,"build_engine")
+        return failed(params[:engine_name],"Failed to start  " + @engine_builder.last_error ,"build_engine")
       end
       return engine
     end
-    return failed(host_name,last_api_error,"build_engine")
+    return failed(host_name,@engine_builder.last_error,"build_engine")
 
   rescue Exception=>e
     return log_exception_and_fail("build_engine",e)
