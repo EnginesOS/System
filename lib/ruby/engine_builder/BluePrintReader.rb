@@ -241,7 +241,7 @@ class BluePrintReader
          end
          
        ospackages.each do |package|
-         @os_packages.push(package[:name])
+         @os_packages.push(package[:package])
        end
        
      rescue Exception=>e
