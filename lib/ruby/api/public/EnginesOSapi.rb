@@ -60,6 +60,8 @@ class EnginesOSapi
     @core_api.set_database_password("mysql_server",params)              
     @core_api.set_database_password("pgsql_server",params)    
         
+    @core_api.set_engines_ssl_pw(params)
+    
     params[:default_cert]=true      
   #  create_ssl_certificate(params)
      
