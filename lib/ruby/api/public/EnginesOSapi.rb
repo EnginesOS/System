@@ -94,35 +94,35 @@ class EnginesOSapi
     return log_exception_and_fail("buildEngine",e)
   end
 
-    def reinstall_engine engine_name
-      
-      engine = loadManaged(engine_name)
-      
-      if engine.is_a?(EnginesOSapiResult)
-        return engine
-      end
-      if engine.is_active == true
-        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
-      end
-      if engine.has_container? == true
-       if engine.destroy == false
-         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
-       end
-      end
-      params = Hash.new
-      
-      params[:engine_name] = engine.containerName  
-      params[:domain_name] = engine.domainName
-      params[:host_name] = engine.hostname
-      params[:software_environment_variables] = engine.environments 
-      params[:http_protocol] = engine.http_protocol
-      params[:memory] = engine.memory
-      params[:repository_url] = engine.repo
-        
-      build_engine(params)
-      #   custom_env=params
-     
-    end
+#    def reinstall_engine engine_name
+#      
+#      engine = loadManaged(engine_name)
+#      
+#      if engine.is_a?(EnginesOSapiResult)
+#        return engine
+#      end
+#      if engine.is_active == true
+#        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
+#      end
+#      if engine.has_container? == true
+#       if engine.destroy == false
+#         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
+#       end
+#      end
+#      params = Hash.new
+#      
+#      params[:engine_name] = engine.containerName  
+#      params[:domain_name] = engine.domainName
+#      params[:host_name] = engine.hostname
+#      params[:software_environment_variables] = engine.environments 
+#      params[:http_protocol] = engine.http_protocol
+#      params[:memory] = engine.memory
+#      params[:repository_url] = engine.repo
+#        
+#      build_engine(params)
+#      #   custom_env=params
+#     
+#    end
   def build_engine(params)
 
     p params
@@ -516,18 +516,21 @@ class EnginesOSapi
           end  
   end
   
-#  def reinstall_engine(engine_name)
-#    engine = loadManagedEngine engine_name
-#      if engine.is_a?(EnginesOSapiResult)
-#        return  engine #acutally EnginesOSapiResult
-#      end
-#      p "reinstalling " + engine_name
-#    if @core_api.reinstall_engine(engine) == false
-#                return  failed(engine_name,last_api_error, "Delete Image")
-#             end  
-#    return success(engine_name,"Reinstall")
-#     
-#  end
+  def reinstall_engine(engine_name)
+    engine = loadManagedEngine engine_name
+      if engine.is_a?(EnginesOSapiResult)
+        return  engine #acutally EnginesOSapiResult
+      end
+      if engine.has_container? == true
+        engine.destroy_container
+      end
+      p "reinstalling " + engine_name
+    if @core_api.reinstall_engine(engine) == false
+                return  failed(engine_name,last_api_error, "Delete Image")
+             end  
+    return success(engine_name,"Reinstall")
+     
+  end
 
   def createEngine engine_name
     engine = loadManagedEngine engine_name
