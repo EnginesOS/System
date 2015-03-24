@@ -516,18 +516,18 @@ class EnginesOSapi
           end  
   end
   
-  def reinstall_engine(engine_name)
-    engine = loadManagedEngine engine_name
-      if engine.is_a?(EnginesOSapiResult)
-        return  engine #acutally EnginesOSapiResult
-      end
-      p "reinstalling " + engine_name
-    if @core_api.reinstall_engine(engine) == false
-                return  failed(engine_name,last_api_error, "Delete Image")
-             end  
-    return success(engine_name,"Reinstall")
-     
-  end
+#  def reinstall_engine(engine_name)
+#    engine = loadManagedEngine engine_name
+#      if engine.is_a?(EnginesOSapiResult)
+#        return  engine #acutally EnginesOSapiResult
+#      end
+#      p "reinstalling " + engine_name
+#    if @core_api.reinstall_engine(engine) == false
+#                return  failed(engine_name,last_api_error, "Delete Image")
+#             end  
+#    return success(engine_name,"Reinstall")
+#     
+#  end
 
   def createEngine engine_name
     engine = loadManagedEngine engine_name
