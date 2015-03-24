@@ -8,7 +8,6 @@ accepts:
   "filesystem/local/filesystem"
 - !ruby/object:String    
   "database/sql/mysql"
-  
 author: Engines
 title: Backup
 description: "Backup tasks"
