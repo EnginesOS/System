@@ -6,7 +6,7 @@ last_error:
 memory: '128'
 hostName: pgsql
 domainName: 
-environments: 
+environments: []
 image: engines/pgsql:alpha
 volumes:
  pg_database: !ruby/object:Volume

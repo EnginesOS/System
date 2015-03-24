@@ -6,7 +6,7 @@ last_error:
 memory: '128'
 hostName: mysql
 domainName: 
-environments: 
+environments: []
 image: engines/mysql:alpha
 volumes:
  my_database: !ruby/object:Volume

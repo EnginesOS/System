@@ -7,7 +7,7 @@ last_error:
 memory: '42'
 hostName: dns
 domainName: 
-environments:
+environments: []
 image: engines/dns:alpha
 volumes: 
  default_zones: !ruby/object:Volume

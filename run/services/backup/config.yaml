@@ -6,7 +6,7 @@ last_error:
 memory: '50'
 hostName: backup
 domainName: 
-environments: 
+environments: []
 image: engines/backup:alpha
 volumes:
  Configs: !ruby/object:Volume

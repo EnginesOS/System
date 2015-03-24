@@ -6,6 +6,7 @@ last_error:
 memory: '16'
 hostName: syslog
 domainName: 
+environments: []
 image: engines/syslog:alpha
 volumes:
  config: !ruby/object:Volume

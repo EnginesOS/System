@@ -7,7 +7,7 @@ last_error:
 memory: '16'
 hostName: volmanager
 domainName: 
-environments: 
+environments: []
 image: engines/fs:alpha
 volumes: 
 eports: []
