@@ -220,7 +220,7 @@ class DockerApi
 
    def get_envionment_options(container)
      e_option =String.new
-     if(container.environments)
+     if(container.environments && container.environments != nil)
        container.environments.each do |environment|
          if environment != nil
            e_option = e_option + " -e " + environment.name + "=" + '"' + environment.value + '"'
