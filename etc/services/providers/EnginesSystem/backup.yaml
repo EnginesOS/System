@@ -28,7 +28,7 @@ setup_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "
    dest_proto:
     regex_invalid_message: "wrong go back and try again"
@@ -40,7 +40,7 @@ setup_params:
     hint: ""
     placeholder: "a label "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "
     select_collection:     
       - "ftp"
@@ -58,7 +58,7 @@ setup_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "    
    dest_address:
     regex_invalid_message: "wrong go back and try again"
@@ -70,7 +70,7 @@ setup_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "
    dest_user:
     regex_invalid_message: "wrong go back and try again"
@@ -82,7 +82,7 @@ setup_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "
    dest_pass:
     regex_invalid_message: "wrong go back and try again"
@@ -94,5 +94,5 @@ setup_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    default_value: " "
+    value: " "
     comment: " "
