@@ -10,8 +10,10 @@ COPY pgpass /home/postgres/.pgpass
 
 RUN mv /var/lib/postgresql /var/lib/postgresql_firstrun;\
  	chmod 600 /home/postgres/.pgpass ;\
- 	 sed "/ssl-cert-snakeoil/s//engines/"  /etc/postgresql/9.3/main/postgresql.conf > /etc/postgresql/9.3/main/postgresql.conf.new ;\
+ 	 sed "/ssl-cert-snakeoil\.pem/s//engines\.crt/"  /etc/postgresql/9.3/main/postgresql.conf > /etc/postgresql/9.3/main/postgresql.conf.new ;\ 	 
  	 cp /etc/postgresql/9.3/main/postgresql.conf.new /etc/postgresql/9.3/main/postgresql.conf
+ 	 sed "/ssl-cert-snakeoil\.key/s//engines\.key/"  /etc/postgresql/9.3/main/postgresql.conf > /etc/postgresql/9.3/main/postgresql.conf.new ;\
+ 	 cp /etc/postgresql/9.3/main/postgresql.conf.new /etc/postgresql/9.3/main/postgresql.conf	 
 ENV ContUser postgres
 ENV ContGrp  postgres
 
