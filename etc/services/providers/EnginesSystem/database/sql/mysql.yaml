@@ -7,7 +7,7 @@ accepts:
 author: Engines
 title: MySQL Database
 description: "MYSQL Database "
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 type_path: database/sql/mysql
 service_container: mysql_server
 dedicated: false

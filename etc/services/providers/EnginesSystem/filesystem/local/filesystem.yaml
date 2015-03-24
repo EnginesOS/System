@@ -9,7 +9,7 @@ title: "Volume service"
 description: "Provides Persistant File Storage"
 type_path: filesystem/local/filesystem
 service_container: volmanager
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 persistant: true
 dedicated: false
 consumer_params:
