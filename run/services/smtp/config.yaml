@@ -6,7 +6,7 @@ last_error:
 memory: '32'
 hostName: smtp
 domainName: 
-environments: 
+environments: []
 image: engines/smtp:alpha
 volumes: 
  transport: !ruby/object:Volume
