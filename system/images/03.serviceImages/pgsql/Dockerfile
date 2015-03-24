@@ -9,8 +9,9 @@ ADD home home
 COPY pgpass /home/postgres/.pgpass
 
 RUN mv /var/lib/postgresql /var/lib/postgresql_firstrun;\
- 	chmod 600 /home/postgres/.pgpass
- 	
+ 	chmod 600 /home/postgres/.pgpass ;\
+ 	 sed "/ssl-cert-snakeoil/s//engines/"  /etc/postgresql/9.3/main/postgresql.conf > /etc/postgresql/9.3/main/postgresql.conf.new ;\
+ 	 cp /etc/postgresql/9.3/main/postgresql.conf.new /etc/postgresql/9.3/main/postgresql.conf
 ENV ContUser postgres
 ENV ContGrp  postgres
 
