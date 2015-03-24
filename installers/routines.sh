@@ -285,21 +285,17 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
-mkdir -p /opt/engines/etc/ssl/psql/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/private
-
 }
 
 function set_permissions {
 echo "Setting directory and file permissions"
 	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines
 	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
-	chown -R 22002.22002	/var/lib/engines/psql /var/log/engines/services/psql /opt/engines/etc/ssl/psql/	/opt/engines/run/services/pgsql_server/run/postgres
+	chown -R 22002.22002	/var/lib/engines/psql /var/log/engines/services/psql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
     chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
@@ -308,7 +304,7 @@ echo "Setting directory and file permissions"
 	chown  engines   /opt/engines/etc/syslog/conf/
 	chown  22012 -R  /var/log/engines/services/syslog
 	chown  22012 /var/log/engines/services/syslog
-	chown -R 22002 /opt/engines/etc/ssl/psql
+
 	chown 22005 /opt/engines/run/services/nginx/run/nginx/
 	chown 21000  /home/engines/db/production.sqlite3
 	chown 21000  /home/engines/db/development.sqlite3
@@ -320,7 +316,6 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
-		chmod og-rw -R /opt/engines/etc/ssl/psql
 	 chown 22003 -R /opt/engines/etc/smtp
 	
 	 chown 22003 -R /var/log/engines/services/email/
