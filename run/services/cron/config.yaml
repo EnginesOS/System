@@ -18,11 +18,11 @@ volumes:
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
   mapping_permissions: ro
-  contabs: !ruby/object:Volume
+ contabs: !ruby/object:Volume
   name: crontabs
   remotepath: "/home/cron/spool/"
   localpath: "/opt/engines/etc/cron/tabs/"
-  mapping_permissions: ro
+  mapping_permissions: rw
 port: 
 eports:
 repo: na
