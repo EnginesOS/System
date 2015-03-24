@@ -135,9 +135,8 @@ class ServiceManager
 
   def list_attached_services_for(objectName,identifier)
     p :services_on_objects_4
-    SystemUtils.debug_output("services_on_objects_",objectName)
-    SystemUtils.debug_output("services_on_objects_",identifier)
-  
+    p objectName
+    p identifier
     params = Hash.new
     
     case objectName
@@ -145,8 +144,8 @@ class ServiceManager
       params[:engine_name] = identifier
         p :get_engine_service_hashes
      hashes = find_engine_services_hashes(params)
-      SystemUtils.debug_output("hashes",hashes)
-      
+     p :hashes
+     p hashes
       return find_engine_services_hashes(params)
    #    attached_managed_engine_services(identifier)
     when "Volume"
@@ -432,9 +431,9 @@ SystemUtils.log_exception(e)
     end
   end
 def find_engine_services_hashes(params)
-
-  SystemUtils.debug_output("find_engine_services_hashes", params)
   
+  p :find_engine_services_hashes
+  p params
   engine_node = managed_engine_tree[params[:engine_name]]
     p get_all_leafs_service_hashes(engine_node)
   return get_all_leafs_service_hashes(engine_node)
@@ -533,8 +532,9 @@ end
             end  
                       
           end
-  
-    SystemUtils.debug_output("FAILED_TO_REMOVE_SERVICE",service_hash)
+   
+            p :FAILED_TO_REMOVE_SERVICE
+            p service_hash
           
         
           
