@@ -1023,6 +1023,7 @@ p :fill_service_environment_variables
       log_build_errors(error_mesg)
       if error_mesg.include?("Error:") || error_mesg.include?("FATA")
         p "docker_cmd error " + error_mesg
+        last_error = error_mesg
         return false
       end
       p :build_suceeded
