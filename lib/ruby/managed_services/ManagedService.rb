@@ -39,8 +39,7 @@ class ManagedService < ManagedContainer
   def get_site_hash(site_hash)
     if site_hash.has_key?(:service_label) == false
          site_hash[:service_label] = site_hash[:variables][:name]
-#       
-#       end
+       end
 #    site_hash = Hash.new()
 #    site_hash[:variables]= Hash.new
 #    site_hash[:variables][:name]=engine.containerName
