@@ -1004,6 +1004,10 @@ class EnginesOSapi
           end
  end
   
+ def default_backup_service_definition
+   return SoftwareServiceDefinition.find("backup","EnginesSystem")   
+ end
+ 
   def set_engine_hostname_properties(params)
     #    engine_name = params[:engine_name]
     #    hostname = params[:host_name]
