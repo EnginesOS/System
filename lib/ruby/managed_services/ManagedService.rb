@@ -45,7 +45,7 @@ class ManagedService < ManagedContainer
     if site_hash.has_key?(:service_handle) == false
          site_hash[:service_handle] = site_hash[:variables][:name]
      end
-     if site_hash[:variables].has_key(:parent_name) == false
+     if site_hash[:variables].has_key?(:parent_name) == false
        site_hash[:variables][:parent_name] = site_hash[:parent_name]
        
      end          
