@@ -29,13 +29,21 @@ class DNSService < ManagedService
       return site_hash
   end
   
+  def get_site_hash site_hash
+    site_hash = super 
+     if site_hash[:variables].has_key?(:ip) == false 
+       site_hash[:variables][:ip] = SystemUtils.get_system_ip
+     end
+  end
+  
+  
   def add_consumer_to_service(site_hash)
   
       ip_str = site_hash[:variables][:ip]
       hostName = site_hash[:variables][:hostname]
         puts hostName 
           p ip_str 
-      if ip_str.length > 7 #fixme need to check valid ip and that host is valid
+      if ip_str != nil && ip_str.length > 7 #fixme need to check valid ip and that host is valid
        return  @core_api.register_dns(site_hash[:variables][:hostname],ip_str)
       else
         return false
