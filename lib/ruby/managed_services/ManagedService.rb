@@ -36,16 +36,20 @@ class ManagedService < ManagedContainer
     return @consumers
   end
 
-  def get_site_hash(engine)
-    site_hash = Hash.new()
-    site_hash[:variables]= Hash.new
-    site_hash[:variables][:name]=engine.containerName
-    site_hash[:variables][:container_type]=engine.ctype
-    site_hash[:variables][:fqdn]=engine.fqdn
-    site_hash[:variables][:port]=engine.port.to_s
-    site_hash[:publisher_namespace] = "EnginesSystem"
-    return site_hash
+  def get_site_hash(site_hash)
+    
+    if site_hash.is_a?(Hash) == false     
+      site_hash = create_site_hash(site_hash)
+    end
 
+    if site_hash.has_key?(:service_handle) == false
+         site_hash[:service_handle] = site_hash[:variables][:name]
+     end
+     if site_hash[:variables].has_key?(:parent_name) == false
+       site_hash[:variables][:parent_name] = site_hash[:parent_name]
+       
+     end          
+      return site_hash
   end
 
   def fetch_consumer name
@@ -89,6 +93,9 @@ class ManagedService < ManagedContainer
   def remove_consumer service_hash
     
     service_hash = get_site_hash(service_hash)
+    if service_hash == nil
+      return false
+    end
     
       if is_running ==true   && ( @persistant == false \
         || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))

@@ -21,8 +21,17 @@ class NginxService < ManagedService
       if engine.has_key?(:type_path) == false          
         engine[:type_path] =  engine[:service_type]
       end
-      return engine
+      if site_hash.has_key?(:service_label) == false
+           site_hash[:service_label] = site_hash[:variables][:name]
+        return engine
+      end
+    else
+      return create_hash(engine)
     end
+    
+  end
+    
+    def create_hash(engine)
     
     proto ="http https"
     case engine.protocol
@@ -33,14 +42,15 @@ class NginxService < ManagedService
     when :http_only
           proto="http"
     end
-
-    p :proto 
-    p proto
+#
+#    p :proto 
+#    p proto
      
     site_hash = Hash.new()
     site_hash[:variables] = Hash.new
     site_hash[:variables][:parent_engine]=engine.containerName
-    site_hash[:variables][:name]=engine.containerName
+    site_hash[:variables][:name]=proto + ":" + engine.fqdn
+    site_hash[:service_label] = site_hash[:variables][:name]
     site_hash[:variables][:container_type]=engine.ctype
     site_hash[:variables][:fqdn]=engine.fqdn
     site_hash[:variables][:port]=engine.port.to_s
