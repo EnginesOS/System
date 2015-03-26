@@ -34,7 +34,7 @@ class DNSService < ManagedService
   def get_site_hash site_hash
     site_hash = super 
      if site_hash[:variables].has_key?(:ip) == false 
-       site_hash[:variables][:ip] = SystemUtils.get_system_ip
+       site_hash[:variables][:ip] = DNSHosting.get_local_ip
      end
   end
   
