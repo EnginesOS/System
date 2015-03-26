@@ -95,8 +95,8 @@ class DockerApi
    def logs_container container
      clear_error
      begin
-       commandargs=" logs " + container.containerName
-       return  run_docker(commandargs,container)
+       commandargs="docker logs " + container.containerName
+       return  SystemUtils.run_system(commandargs)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
