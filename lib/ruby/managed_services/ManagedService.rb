@@ -42,8 +42,12 @@ class ManagedService < ManagedContainer
       site_hash = create_site_hash(site_hash)
     end
 
-    if site_hash.has_key?(:service_label) == false
-         site_hash[:service_label] = site_hash[:variables][:name]
+    if site_hash.has_key?(:service_handle) == false
+         site_hash[:service_handle] = site_hash[:variables][:name]
+     end
+     if site_hash[:variables].has_key(:parent_name) == false
+       site_hash[:variables][:parent_name] = site_hash[:parent_name]
+       
      end          
       return site_hash
   end
