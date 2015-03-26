@@ -57,6 +57,7 @@ class NginxService < ManagedService
     site_hash[:variables][:proto]= proto
     site_hash[:type_path] = site_hash[:service_type]='nginx'
     site_hash[:publisher_namespace] = "EnginesSystem" 
+      SystemUtils.debug_output("create nginx Hash",site_hash)
      return site_hash       
     
   end

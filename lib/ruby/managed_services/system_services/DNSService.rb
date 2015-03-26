@@ -27,7 +27,8 @@ class DNSService < ManagedService
     site_hash[:variables][:ip]=engine.get_ip_str.to_s
     site_hash[:publisher_namespace] = "EnginesSystem"
     site_hash[:service_handle]=engine.hostName
-      
+    SystemUtils.debug_output("create dns Hash",site_hash)
+     
       return site_hash
   end
   
