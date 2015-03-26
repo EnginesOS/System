@@ -73,13 +73,13 @@ class BackupService < SoftwareService
     end
   end
   
-  def get_site_hash(site_hash)
-         
-    
-    site_hash[:publisher_namespace] = "EnginesSystem"
-             site_hash[:service_type]='backup'
-    return site_hash       
-   end
+#  def get_site_hash(site_hash)
+#         
+#    
+#    site_hash[:publisher_namespace] = "EnginesSystem"
+#             site_hash[:service_type]='backup'
+#    return site_hash       
+#   end
    
  
 end

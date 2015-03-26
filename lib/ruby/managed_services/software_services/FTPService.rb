@@ -20,13 +20,13 @@ class FTPService < SoftwareService
   def rm_ftp_service(site_hash)
     
   end
-
-  def get_site_hash(site_hash)
-    site_hash[:service_type]='ftp'
-    
-    site_hash[:publisher_namespace] = "EnginesSystem"
-    return site_hash
-  end
+#
+#  def get_site_hash(site_hash)
+#    site_hash[:service_type]='ftp'
+#    
+#    site_hash[:publisher_namespace] = "EnginesSystem"
+#    return site_hash
+#  end
 
   
 
