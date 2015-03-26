@@ -2,16 +2,16 @@
 require_relative  "../ManagedService.rb"
 class DNSService < ManagedService 
   
-
-  def get_site_hash(site_hash)
-    if site_hash.is_a?(Hash)          
-      return site_hash
-    else
-      site_hash = create_site_hash(hash)
-    end
-    
-    return site_hash
-  end
+#
+#  def get_site_hash(site_hash)
+#    if site_hash.is_a?(Hash)          
+#      return site_hash
+#    else
+#      site_hash = create_site_hash(site_hash)
+#    end
+#    
+#    return site_hash
+#  end
   
   def create_site_hash engine
     site_hash = Hash.new()
