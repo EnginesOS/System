@@ -93,7 +93,7 @@ class ManagedService < ManagedContainer
   def remove_consumer service_hash
     
     service_hash = get_site_hash(service_hash)
-    if site_hite == nil
+    if service_hash == nil
       return false
     end
     
