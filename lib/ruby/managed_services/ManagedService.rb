@@ -57,7 +57,12 @@ class ManagedService < ManagedContainer
   end
 
   def add_consumer(engine)
+    
     site_hash = get_site_hash(engine)
+    if site_hash == nil
+      p "nil site hash"
+      return false
+    end
     if is_running ==true   || @persistant == true 
       result = add_consumer_to_service(site_hash)
       if result == true
