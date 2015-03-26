@@ -36,6 +36,7 @@ class DNSService < ManagedService
      if site_hash[:variables].has_key?(:ip) == false 
        site_hash[:variables][:ip] = DNSHosting.get_local_ip
      end
+     return site_hash
   end
   
   
