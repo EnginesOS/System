@@ -279,10 +279,19 @@ end
   when "deleteimage"
     if c_type == "container"
       params = Hash.new
+      
       res = engines_api.deleteEngineImage(containerName,params)
     else
       puts("Error cannot delete a Service Image")
     end
+    when "DeleteImage"
+if c_type == "container"
+     params = Hash.new
+    params[:remove_all_application_data] == true
+     res = engines_api.deleteEngineImage(containerName,params)
+   else
+     puts("Error cannot delete a Service Image")
+   end
     when "delete_services"
     if c_type != "container"
       puts "Error cannot delete services from " +  c_type
