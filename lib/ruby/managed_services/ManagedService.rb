@@ -37,18 +37,15 @@ class ManagedService < ManagedContainer
   end
 
   def get_site_hash(site_hash)
+    
+    if site_hash.is_a?(Hash) == false     
+      site_hash = create_site_hash(site_hash)
+    end
+
     if site_hash.has_key?(:service_label) == false
          site_hash[:service_label] = site_hash[:variables][:name]
-       end
-#    site_hash = Hash.new()
-#    site_hash[:variables]= Hash.new
-#    site_hash[:variables][:name]=engine.containerName
-#    site_hash[:variables][:container_type]=engine.ctype
-#    site_hash[:variables][:fqdn]=engine.fqdn
-#    site_hash[:variables][:port]=engine.port.to_s
-#    site_hash[:publisher_namespace] = "EnginesSystem"
-    return site_hash
-
+     end          
+      return site_hash
   end
 
   def fetch_consumer name
