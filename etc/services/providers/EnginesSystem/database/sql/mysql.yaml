@@ -92,7 +92,7 @@ setup_params:
   name: collation
   label: DB collation
   tooltip: " "
-  field_type: single_select
+  field_type: select_single
   hint: " "
   placeholder: " "
   mandatory: true

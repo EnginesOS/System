@@ -64,7 +64,7 @@ class MySQLService < SoftwareService
   end
 
   def get_site_hash(site_hash)
-    site_hash[:type_path] =  site_hash[:service_type]
+#    site_hash[:type_path] =  site_hash[:service_type]
    
 #    site_hash = Hash.new()
 #    site_hash[:service_type]='database'

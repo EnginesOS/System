@@ -370,12 +370,12 @@ class EnginesCore
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-              p :service_as_serivce
-              p service
-              p :as_hash
-              p service.to_h
-              p :as_yaml
-              p service.to_yaml()
+#              p :service_as_serivce
+#              p service
+#              p :as_hash
+#              p service.to_h
+#              p :as_yaml
+#              p service.to_yaml()
               
               retval.push(service.to_h)
             end
@@ -413,12 +413,12 @@ class EnginesCore
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-              p :service_as_serivce
-              p service
-              p :as_hash
-              p service.to_h
-              p :as_yaml
-              p service.to_yaml()
+#              p :service_as_serivce
+#              p service
+#              p :as_hash
+#              p service.to_h
+#              p :as_yaml
+#              p service.to_yaml()
               
               retval.push(service.to_h)
             end
@@ -429,8 +429,8 @@ class EnginesCore
         end
       end
     end
-    p typename
-    p retval
+#    p typename
+#    p retval
     return retval
     rescue Exception=>e
     SystemUtils.log_exception e
@@ -447,7 +447,7 @@ class EnginesCore
       persistant_services.each do |service|
       type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
-          p retval[type_path]
+#          p retval[type_path]
      end
   else
     p :load_avail_component_services_for_engine_got_a 

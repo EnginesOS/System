@@ -643,6 +643,15 @@ def has_container?
     return true
   end     
 end
+
+  def is_error
+    state = read_state
+    if setStat != state
+      return false
+    else
+      return true
+    end   
+  end
   
   def is_active
     state = read_state
