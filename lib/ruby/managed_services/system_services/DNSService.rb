@@ -14,6 +14,8 @@ class DNSService < ManagedService
 #  end
   
   def create_site_hash engine
+    p :new_Site_has_for 
+    p engine
     site_hash = Hash.new()
     site_hash[:type_path] =  site_hash[:service_type]='dns'
     site_hash[:variables] = Hash.new
