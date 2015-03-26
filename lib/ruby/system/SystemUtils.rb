@@ -74,7 +74,8 @@ class SystemUtils
       begin
         cmd = cmd + " 2>&1"
         res= %x<#{cmd}>
-        SystemUtils.debug_output res
+        SystemUtils.debug_output("Run " + cmd + " Result:", res)
+          
         return res        
       rescue Exception=>e
         SystemUtils.log_exception(e)
