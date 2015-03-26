@@ -25,6 +25,8 @@ class DNSService < ManagedService
     site_hash[:variables][:ip]=engine.get_ip_str.to_s
     site_hash[:publisher_namespace] = "EnginesSystem"
     site_hash[:service_handle]=engine.hostName
+      
+      return site_hash
   end
   
   def add_consumer_to_service(site_hash)
