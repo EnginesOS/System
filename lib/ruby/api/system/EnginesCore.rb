@@ -429,8 +429,8 @@ class EnginesCore
         end
       end
     end
-    p typename
-    p retval
+#    p typename
+#    p retval
     return retval
     rescue Exception=>e
     SystemUtils.log_exception e
@@ -447,7 +447,7 @@ class EnginesCore
       persistant_services.each do |service|
       type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
-          p retval[type_path]
+#          p retval[type_path]
      end
   else
     p :load_avail_component_services_for_engine_got_a 
