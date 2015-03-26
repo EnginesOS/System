@@ -54,23 +54,40 @@ class DBManagedService < ManagedService
     end
   end
 
-  def get_site_hash(database)
-    site_hash = Hash.new()
-    service_type = site_hash[:service_type]='database'
-    site_hash[:name]=database.name
-    site_hash[:flavor]=database.flavor
-    site_hash[:host]=database.dbHost 
-    site_hash[:user]=database.dbUser
-    site_hash[:pass]= database.dbPass
-      #FixME can over write owner in addconsumer need to overide and protect ownership
-    site_hash[:parent_engine]  =  database.owner
-    site_hash[:owner]= database.owner
-    site_hash[:publisher_namespace] = "EnginesSystem"
-       p site_hash
-     return site_hash      
+#  def get_site_hash(database)
+#    site_hash = Hash.new()
+#    service_type = site_hash[:service_type]='database'
+#    site_hash[:name]=database.name
+#    site_hash[:flavor]=database.flavor
+#    site_hash[:host]=database.dbHost 
+#    site_hash[:user]=database.dbUser
+#    site_hash[:pass]= database.dbPass
+#      #FixME can over write owner in addconsumer need to overide and protect ownership
+#    site_hash[:parent_engine]  =  database.owner
+#    site_hash[:owner]= database.owner
+#    site_hash[:publisher_namespace] = "EnginesSystem"
+#      
+#       p site_hash
+#     return site_hash      
+#    
+#  end
     
-  end
-    
+#  def create_site_hash(database)
+#    site_hash = Hash.new()
+#       service_type = site_hash[:service_type]='database'
+#       site_hash[:name]=database.name
+#       site_hash[:flavor]=database.flavor
+#       site_hash[:host]=database.dbHost 
+#       site_hash[:user]=database.dbUser
+#       site_hash[:pass]= database.dbPass
+#         #FixME can over write owner in addconsumer need to overide and protect ownership
+#       site_hash[:parent_engine]  =  database.owner
+#       site_hash[:owner]= database.owner
+#       site_hash[:publisher_namespace] = "EnginesSystem"
+#         
+#          p site_hash
+#        return site_hash      
+#  end
 #noop overloads 
  
   def reregister_consumers
