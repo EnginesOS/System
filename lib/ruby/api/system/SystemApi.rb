@@ -211,6 +211,7 @@ class SystemApi
    def register_site(site_hash)
      clear_error
      begin
+       SystemUtils.debug_output("register_site",site_hash)
        
        if  site_hash[:variables][:fqdn] == nil || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
          return true 
@@ -245,7 +246,7 @@ class SystemApi
          site_config_contents = site_config_contents.sub("PORT",site_hash[:variables][:port])
          site_config_contents = site_config_contents.sub("SERVER",site_hash[:variables][:name]) #Not HostName
        end
-       p site_config_contents
+
        site_filename = get_site_file_name(site_hash)
 
        site_file  =  File.open(site_filename,'w')
