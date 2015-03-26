@@ -93,6 +93,9 @@ class ManagedService < ManagedContainer
   def remove_consumer service_hash
     
     service_hash = get_site_hash(service_hash)
+    if site_hite == nil
+      return false
+    end
     
       if is_running ==true   && ( @persistant == false \
         || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))
