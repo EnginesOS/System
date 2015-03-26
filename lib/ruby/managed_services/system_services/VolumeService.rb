@@ -18,7 +18,7 @@ class VolumeService < ManagedService
     p site_hash
   
     begin
-      dest = SysConfig.LocalFSVolHome() + "/" + site_hash[:variables][:parent_engine] + "/" + site_hash[:variables][:name]
+      dest = SysConfig.LocalFSVolHome() + "/" + site_hash[:variables][:parent_engine] + "/" + site_hash[:service_label]
       if Dir.exists?( dest) == false
         p dest
         FileUtils.mkdir_p(dest)
