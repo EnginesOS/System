@@ -15,7 +15,7 @@ class NginxService < ManagedService
      
 
     
-    def create_hash(engine)
+    def create_site_hash(engine)
     
     proto ="http https"
     case engine.protocol
