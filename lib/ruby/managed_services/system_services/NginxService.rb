@@ -13,23 +13,7 @@ class NginxService < ManagedService
        return  @core_api.deregister_site(site_hash) 
     end 
      
-  
-  def get_site_hash(engine)
-    
-    if engine.is_a?(Hash)
-      #fixME fill in has with engine details
-      if engine.has_key?(:type_path) == false          
-        engine[:type_path] =  engine[:service_type]
-      end
-      if site_hash.has_key?(:service_label) == false
-           site_hash[:service_label] = site_hash[:variables][:name]
-        return engine
-      end
-    else
-      return create_hash(engine)
-    end
-    
-  end
+
     
     def create_hash(engine)
     
