@@ -212,6 +212,7 @@ class ServiceManager
       save_tree
       return true
     end
+end
 
   def software_service_definition(params)
 
