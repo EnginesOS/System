@@ -3,10 +3,6 @@ module ServiceManagerTree
   def managed_engine_tree
         return @service_tree["ManagedEngine"]
     end
-  
-    def get_managed_engine_tree
-      return managed_engine_tree
-  end
 
     def orphaned_services_tree
       orphans = @service_tree["OphanedServices"]
@@ -18,10 +14,7 @@ module ServiceManagerTree
                 return orphans
     end
     
-    def get_orphaned_services_tree
-      return orphaned_services_tree
-    end
-    
+
   def managed_service_tree 
     return @service_tree["Services"]
   end
@@ -107,7 +100,7 @@ module ServiceManagerTree
             
   end
   
-def get_service_provider_tree(publisher)
+def service_provider_tree(publisher)
     managed_service_tree[publisher]
   end
   
