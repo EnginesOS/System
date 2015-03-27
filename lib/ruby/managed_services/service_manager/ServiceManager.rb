@@ -1,10 +1,14 @@
 require 'rubytree'
 require_relative 'service_manager_tree.rb'
  include ServiceManagerTree
+ require_relative 'orphaned_services.rb'
+ include OrphanedServices
 class ServiceManager
 
   attr_accessor :last_error
+  #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits 
   def initialize
+    #@service_tree root of the Service Registry Tree
     @service_tree = initialize_tree
   end
 
@@ -216,16 +220,19 @@ SystemUtils.log_exception(e)
     
   end
 
-
+#@ Add Service to the Service Registry Tree
+#@ Separatly to the ManagesEngine/Service Tree and the Services tree
+  #@ return true if successful or false if failed 
   def add_service service_hash
 
       add_to_managed_engines_tree(service_hash)
       add_to_services_tree(service_hash) 
-      save_tree
+     return save_tree
+      
   rescue Exception=>e
       puts e.message 
     SystemUtils.log_exception(e)
-      
+    return false
   end
   
   def add_to_managed_engines_tree(service_hash)
@@ -312,54 +319,54 @@ SystemUtils.log_exception(e)
     
   end
   
-  def reparent_orphan(params)
-    orphan = retrieve_orphan(params)
-      if orphan !=nil
-        content =  orphan.content
-        content[:variables][:parent_engine]=params[:parent_engine]
-       
-          return content
-      else 
-        return nil
-      end   
-  end
+#  def reparent_orphan(params)
+#    orphan = retrieve_orphan(params)
+#      if orphan !=nil
+#        content =  orphan.content
+#        content[:variables][:parent_engine]=params[:parent_engine]
+#       
+#          return content
+#      else 
+#        return nil
+#      end   
+#  end
   
-  def release_orphan(params)
-    orphan = retrieve_orphan(params)
-    if orphan == nil
-      return false
-    end
-    
-    remove_tree_entry(orphan)
-    
-    service = find_service_consumers(orphan.content)
-    if service != nil
-      remove_tree_entry(service)
-    end
-    
-    save_tree  
-    return true
-  end
-  
-  def retrieve_orphan(params)
-    types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
-      if types == nil
-        return nil
-      end
-      if types.is_a?(Array)
-        types.each do |type|
-         # p type.content
-          
-          if type[params[:service_handle]] != nil
-            return type[params[:service_handle]]
-          end
-        end
-        return nil
-      end
-     return types[params[:name]]
-    
-  end
-  
+#  def release_orphan(params)
+#    orphan = retrieve_orphan(params)
+#    if orphan == nil
+#      return false
+#    end
+#    
+#    remove_tree_entry(orphan)
+#    
+#    service = find_service_consumers(orphan.content)
+#    if service != nil
+#      remove_tree_entry(service)
+#    end
+#    
+#    save_tree  
+#    return true
+#  end
+#  
+#  def retrieve_orphan(params)
+#    types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
+#      if types == nil
+#        return nil
+#      end
+#      if types.is_a?(Array)
+#        types.each do |type|
+#         # p type.content
+#          
+#          if type[params[:service_handle]] != nil
+#            return type[params[:service_handle]]
+#          end
+#        end
+#        return nil
+#      end
+#     return types[params[:name]]
+#    
+#  end
+#  
   def get_all_engines_type_path_node(tree_node,type_path)
     retval = Array.new
     
@@ -405,9 +412,9 @@ def get_managed_engine_tree
   return managed_engine_tree
 end
 
-def get_orphaned_services_tree
-  return  orphaned_services_tree
-end
+#def get_orphaned_services_tree
+#  return  orphaned_services_tree
+#end
   def get_engine_persistant_services(params) #params is :engine_name
     services = find_engine_services(params)
     
