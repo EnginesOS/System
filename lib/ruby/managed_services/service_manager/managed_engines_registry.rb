@@ -1,4 +1,4 @@
-module ManagedEngineRegistry
+module ManagedEnginesRegistry
   
   def find_engine_services(params)
       engine_node = managed_engine_tree[params[:engine_name]]
