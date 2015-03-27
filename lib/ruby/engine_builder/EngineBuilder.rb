@@ -81,17 +81,16 @@ class EngineBuilder
       #FIXME need to vet all environment variables
       @set_environments = Hash.new
     else
-      env_array = custom_env.values
-      custom_env_hash = Hash.new
-
-      env_array.each do |env_hash|
-        p :env_hash
-        p env_hash
-
-        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
-          env_hash[:name] = env_hash[:name].sub(/_/,"")
-          custom_env_hash.store(env_hash[:name],env_hash[:value])
-        end
+#      env_array = custom_env.fall
+      custom_env_hash = custom_env
+#      env_array.each do |env_hash|
+#        p :env_hash
+#        p env_hash
+#
+#        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
+#          env_hash[:name] = env_hash[:name].sub(/_/,"")
+#          custom_env_hash.store(env_hash[:name],env_hash[:value])
+#        end
       end
       p :Merged_custom_env
       p custom_env_hash
