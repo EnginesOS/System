@@ -17,10 +17,10 @@ class DNSService < ManagedService
     p :new_Site_has_for 
     p engine
     site_hash = Hash.new()
-    site_hash[:type_path] =  site_hash[:service_type]='dns'
+    site_hash[:type_path] = 'dns'
     site_hash[:variables] = Hash.new
     site_hash[:variables][:parent_engine]=engine.containerName
-      
+    site_hash[:parent_engine]=engine.containerName
     site_hash[:variables][:name]=engine.containerName
     site_hash[:variables][:container_type]=engine.ctype
     site_hash[:variables][:hostname]=engine.hostName

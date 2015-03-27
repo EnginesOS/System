@@ -32,14 +32,15 @@ class NginxService < ManagedService
      
     site_hash = Hash.new()
     site_hash[:variables] = Hash.new
+    site_hash[:parent_engine]=engine.containerName
     site_hash[:variables][:parent_engine]=engine.containerName
     site_hash[:variables][:name]=engine.containerName
-    site_hash[:service_label] = proto + ":" + engine.fqdn
+    site_hash[:service_label] =  engine.fqdn
     site_hash[:variables][:container_type]=engine.ctype
     site_hash[:variables][:fqdn]=engine.fqdn
     site_hash[:variables][:port]=engine.port.to_s
     site_hash[:variables][:proto]= proto
-    site_hash[:type_path] = site_hash[:service_type]='nginx'
+    site_hash[:type_path] = 'nginx'
     site_hash[:publisher_namespace] = "EnginesSystem" 
       SystemUtils.debug_output("create nginx Hash",site_hash)
      return site_hash       

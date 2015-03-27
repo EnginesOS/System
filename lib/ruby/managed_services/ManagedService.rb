@@ -41,13 +41,15 @@ class ManagedService < ManagedContainer
     if site_hash.is_a?(Hash) == false     
       site_hash = create_site_hash(site_hash)
     end
-
+#Kludge suring service_hash cut over
     if site_hash.has_key?(:service_handle) == false
          site_hash[:service_handle] = site_hash[:variables][:name]
      end
      if site_hash[:variables].has_key?(:parent_engine) == false
        site_hash[:variables][:parent_engine] = site_hash[:parent_engine]
- 
+     elsif site_hash.has_key?(:parent_engine) == false
+       site_hash[:parent_engine] = site_hash[:variables][:parent_engine] 
+
      end          
       return site_hash
   end
