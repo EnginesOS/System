@@ -450,7 +450,7 @@ end
     
      services.children.each do |service|
        matches = get_matched_leafs(service,:persistant,true)
-       p matches
+       SystemUtils.debug_output(" matches",matches)
        leafs =  leafs.concat(matches)
     end
     
