@@ -341,11 +341,7 @@ class ServiceManager
 
   end
 
-  
 
-  #def get_orphaned_services_tree
-  #  return  orphaned_services_tree
-  #end
   def get_engine_persistant_services(params) #params is :engine_name
     services = find_engine_services(params)
 
