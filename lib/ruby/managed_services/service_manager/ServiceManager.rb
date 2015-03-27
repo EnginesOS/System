@@ -31,13 +31,13 @@ class ServiceManager
 
   end
 
+  #@list the Provider namespaces as an Array of Strings
   def list_providers_in_use
     providers =  managed_service_tree.children
     retval=Array.new
     if providers == nil
       return retval
     end
-
     providers.each do |provider|
       retval.push(provider.name)
     end
@@ -158,51 +158,7 @@ class ServiceManager
     return false
   end
 
-  def add_to_managed_engines_tree(service_hash)
-    #write managed engine tree
-
-    if (managed_engine_tree == nil )
-      p :nil_active_node
-      return false
-    end
-
-    if service_hash[:variables].has_key?(:parent_engine) == false || service_hash[:variables][:parent_engine] != nil
-      p :no_parent_engine_key
-      return false
-    end
-    if managed_engine_tree[service_hash[:variables][:parent_engine] ] != nil
-      engine_node = managed_engine_tree[ service_hash[:variables][:parent_engine] ]
-    else
-      engine_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash[:variables][:parent_engine] + " Engine Service Tree")
-      managed_engine_tree << engine_node
-    end
-
-    service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
-
-    service_label = get_service_label(service_hash)
-
-    if service_type_node == nil
-      p service_hash
-      p :error_service_type_node
-      return false
-    end
-    if service_label == nil
-      p service_hash
-      p :error_service_hash_has_nil_name
-      return false
-    end
-
-    service_node = service_type_node[service_label]
-
-    if  service_node == nil
-      service_node = Tree::TreeNode.new(service_label,service_hash)
-      service_type_node << service_node
-    else
-      p :Node_existed
-      p service_label
-    end
-
-  end
+ 
 
   def get_service_label(params)
     if params.has_key?(:name) && params[:name] != nil
