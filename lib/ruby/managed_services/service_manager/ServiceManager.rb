@@ -442,7 +442,9 @@ def find_engine_services_hashes(params)
   
 end
   
-
+def get_managed_engine_tree
+  return managed_engine_tree
+end
   def get_engine_persistant_services(params) #params is :engine_name
     services = find_engine_services(params)
     
