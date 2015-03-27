@@ -173,8 +173,6 @@ class ServiceManager
   end
 
   
- 
-
   
   def get_all_engines_type_path_node(tree_node,type_path)
     retval = Array.new
@@ -210,20 +208,10 @@ class ServiceManager
         p :removing_Service
         remove_service(service)
       end
-
       managed_engine_tree.remove!(engine_node)
       save_tree
       return true
     end
-
-    managed_engine_tree.remove!(engine_node)
-    orphaned_services_tree << engine_node
-
-    save_tree
-    return true
-  end
-
-  
 
   def software_service_definition(params)
 

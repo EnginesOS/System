@@ -1176,7 +1176,10 @@ class EnginesOSapi
   
   def detach_subservice(params)
   end
-  
+  def load_avail_services_for_type(typename)
+    return  @core_api.load_avail_services_for_type(typename)
+    
+  end
   def list_attached_services_for(object_name,identifier)
     SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
     attached = @core_api.list_attached_services_for(object_name,identifier)

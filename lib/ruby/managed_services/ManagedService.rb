@@ -36,20 +36,22 @@ class ManagedService < ManagedContainer
     return @consumers
   end
 
-  def get_site_hash(site_hash)
-    
-    if site_hash.is_a?(Hash) == false     
-      site_hash = create_site_hash(site_hash)
-    end
+  def get_service_hash(service_hash)
 
-    if site_hash.has_key?(:service_handle) == false
-         site_hash[:service_handle] = site_hash[:variables][:name]
-     end
-     if site_hash[:variables].has_key?(:parent_name) == false
-       site_hash[:variables][:parent_name] = site_hash[:parent_name]
-       
-     end          
-      return site_hash
+    if service_hash.is_a?(Hash) == false
+      service_hash = create_service_hash(service_hash)
+    end
+    #Kludge suring service_hash cut over
+    if service_hash.has_key?(:service_handle) == false
+      service_hash[:service_handle] = service_hash[:variables][:name]
+    end
+    if service_hash[:variables].has_key?(:parent_engine) == false
+      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
+    elsif service_hash.has_key?(:parent_engine) == false
+      service_hash[:parent_engine] = service_hash[:variables][:parent_engine]
+
+    end
+    return service_hash
   end
 
   def fetch_consumer name
@@ -57,18 +59,23 @@ class ManagedService < ManagedContainer
   end
 
   def add_consumer(engine)
-    site_hash = get_site_hash(engine)
-    if is_running ==true   || @persistant == true 
-      result = add_consumer_to_service(site_hash)
+
+    service_hash = get_service_hash(engine)
+    if service_hash == nil
+      p "nil site hash"
+      return false
+    end
+    if is_running ==true   || @persistant == true
+      result = add_consumer_to_service(service_hash)
       if result == true
         p :adding_consumer_to_Sm
-        p site_hash 
+        p service_hash
         sm =  service_manager
-          if sm != false                      
-            result = sm.add_service(site_hash)
-          else 
-            return false
-          end
+        if sm != false
+          result = sm.add_service(service_hash)
+        else
+          return false
+        end
       end
     end
     #note we add to service regardless of whether the consumer is already registered
@@ -82,8 +89,8 @@ class ManagedService < ManagedContainer
       @consumers = Hash.new
     end
 
-    #      if @consumers.has_key?(site_hash[:name]) == true     # only add if doesnt exists but allow register above
-    @consumers.store(site_hash[:variables][:name], site_hash)
+    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
+    @consumers.store(service_hash[:variables][:name], service_hash)
 
     # end
     save_state
@@ -91,29 +98,29 @@ class ManagedService < ManagedContainer
   end
 
   def remove_consumer service_hash
-    
-    service_hash = get_site_hash(service_hash)
+
+    service_hash = get_service_hash(service_hash)
     if service_hash == nil
       return false
     end
-    
-      if is_running ==true   && ( @persistant == false \
-        || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))
-        p :removing_consumer
-        result = rm_consumer_from_service(service_hash)
-         if result == true
-          sm =  service_manager
-            if sm != false 
-              p :remove_consumer
-              p service_hash
-              result =  sm.remove_service(service_hash)
-            else
-              return false
-            end
-         end
-      end
 
-    if @consumers !=  nil 
+    if is_running ==true   && ( @persistant == false \
+    || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))
+      p :removing_consumer
+      result = rm_consumer_from_service(service_hash)
+      if result == true
+        sm =  service_manager
+        if sm != false
+          p :remove_consumer
+          p service_hash
+          result =  sm.remove_service(service_hash)
+        else
+          return false
+        end
+      end
+    end
+
+    if @consumers !=  nil
       @consumers.delete(service_hash[:variables][:name]) { |el| "#{el} not found" }
     end
     save_state
@@ -123,7 +130,7 @@ class ManagedService < ManagedContainer
   def service_manager
     return @core_api.loadServiceManager()
   end
-  
+
   def create_service()
 
     if create_container() ==true
@@ -155,17 +162,17 @@ class ManagedService < ManagedContainer
     if is_running == false
       return
     end
-    
+
     loop_cnt=0
-    
+
     while is_startup_complete() == false && loop_cnt <10
       loop_cnt = loop_cnt + 1
-      sleep 1    
+      sleep 1
       #really need to sched it not block for some random time
     end
-    
-    @consumers.each_value do |site_hash|
-      add_consumer_to_service(site_hash)
+
+    @consumers.each_value do |service_hash|
+      add_consumer_to_service(service_hash)
     end
 
   end
@@ -195,11 +202,11 @@ class ManagedService < ManagedContainer
       puts e.message + " with " + yaml.path
     end
   end
-  
+
   def set_container_pid
-  
-     pid ="-1"
-  
+
+    pid ="-1"
+
   end
-   
+
 end

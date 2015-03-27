@@ -211,6 +211,7 @@ class SystemApi
    def register_site(site_hash)
      clear_error
      begin
+       SystemUtils.debug_output("register_site",site_hash)
        
        if  site_hash[:variables][:fqdn] == nil || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
          return true 
@@ -250,6 +251,7 @@ class SystemApi
 
        site_file  =  File.open(site_filename,'w')
        site_file.write(site_config_contents)
+       
        site_file.close
        result = restart_nginx_process()
        return result
@@ -963,6 +965,7 @@ SystemUtils.log_exception(e)
        cmd = cmd + " 2>&1"
        res= %x<#{cmd}>
        SystemUtils.debug_output("run System", res)
+    
        #FIXME should be case insensitive The last one is a pure kludge
        #really need to get stderr and stdout separately
        if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false
