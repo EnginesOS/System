@@ -11,28 +11,28 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 #              :consumer_params,
 #              :setup_params,
 #              :dedicated,
-#              :service_type, 
+#              :service_type,
 #              :publisher_namespace,
-#              :service_container, 
+#              :service_container,
 #              :persistant,
 #              :target_environment_variables
 #
-#  
+#
 #  def SoftwareServiceDefinition.from_yaml( yaml )
 #     begin
 #      # p yaml.path
 #       serviceDefinition = YAML::load( yaml )
-#   
+#
 #       return serviceDefinition
 #     rescue Exception=>e
 #       puts e.message + " with " + yaml
 #       SystemUtils.log_exception(e)
-#    
+#
 #     end
 #  end
-#  
+#
 #  def SoftwareServiceDefinition.find(service_type,provider)
-#  
+#
 ##          p :looking_for
 ##          p provider
 ##          p service_type
@@ -42,15 +42,15 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 ##            p :sub_service
 ##           # provider += "/" + service_type.sub(/\/.*/,"")
 ##           #service_type.sub(/.*\//,"")
-##           
+##
 ##            p :sub_service
-##            p provider 
+##            p provider
 ##            p service_type
-#            
+#
 #          end
 #    dir = SysConfig.ServiceTemplateDir + "/" + provider
 #            p :dir
-#            p dir 
+#            p dir
 #          if Dir.exist?(dir)
 #            service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
 #              if service_def == nil
@@ -58,7 +58,7 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 #                p service_type
 #                p :from
 #                p dir
-#                return nil                
+#                return nil
 #              end
 ##              p :service_def
 ##              p service_def.title
@@ -66,30 +66,30 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 #              return service_def.to_h
 #          end
 #    rescue Exception=>e
-#     
+#
 #        SystemUtils.log_exception(e)
-#     
+#
 #  end
-#  
+#
 #  def SoftwareServiceDefinition.load_service_def(dir,service_type)
 #    filename=dir + "/" + service_type + ".yaml"
 #      p :loading_def_from
 #      p filename
 #    if File.exist?(filename)
 #      yaml = File.read(filename)
-#  
-#      return SoftwareServiceDefinition.from_yaml(yaml)     
+#
+#      return SoftwareServiceDefinition.from_yaml(yaml)
 #    end
 #    p :no_such_service_definitition_file
 #    return nil
-#    rescue Exception=>e        
+#    rescue Exception=>e
 #           SystemUtils.log_exception(e)
 #  end
-#  
+#
 #  def search_dir(dir,service_type)
 #    return SoftwareServiceDefinition.search_dir(dir,service_type)
 #  end
-#  
+#
 #  def SoftwareServiceDefinition.search_dir(dir,service_type)
 #    root = dir
 #    if Dir.exists?(dir)
@@ -104,19 +104,19 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 #      end
 #    end
 #    rescue Exception=>e
-#        
+#
 #           SystemUtils.log_exception(e)
 #  end
-#  
-#  
 #
-#  def to_h   
+#
+#
+#  def to_h
 #       hash = {}
-#       instance_variables.each {|var| 
+#       instance_variables.each {|var|
 #         symbol = var.to_s.delete("@").to_sym
 #         p symbol
 #         hash[symbol] = instance_variable_get(var) }
-#       
+#
 #         return SystemUtils.symbolize_keys(hash)
 ##     end
 ##    p self.to_s
@@ -125,7 +125,7 @@ require_relative '../service_definitions/SoftwareServiceDefinition.rb'
 ##    p jason.to_s
 ##    return JSON.parse(jason, {:symbolize_names => true})
 #    rescue Exception=>e
-#        
+#
 #           SystemUtils.log_exception(e)
 #  end
 #end
