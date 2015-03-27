@@ -112,6 +112,8 @@ class ServiceManager
   def get_type_path_node(parent_node,type_path) 
    if type_path == nil || parent_node == nil
      p :get_type_path_node_passed_a_nil
+     p type_path
+     p parent_node
      return nil
    end
    
@@ -574,7 +576,5 @@ rescue Exception=>e
 end  
 
 
- 
 
-  
 end
