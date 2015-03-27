@@ -41,7 +41,7 @@ class ServiceManager
         return false
       end
       
-    provider_tree = get_service_provider_tree(service_query_hash[:publisher_namespace])
+    provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
      
       if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
         p :find_service_consumers_no_type_path
@@ -332,7 +332,7 @@ end
  #write services tree
    def add_to_services_tree(service_hash)
 
-       provider_node = get_service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
+       provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
         if provider_node == nil
           provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
           managed_service_tree << provider_node
