@@ -1,5 +1,6 @@
+#@ Module of Methods to handle tree structure for ServiceManager
 module ServiceManagerTree
-  # Module of Methods to handle tree structure for ServiceManager
+  
   
   # @return the ManagedEngine Tree Branch
   # @creates if does not exist
@@ -122,11 +123,46 @@ module ServiceManagerTree
 
   end
 
+  
+#@ returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+ #@ return nil on error
+ #@param parent_node the branch to search under
+ #@param type_path the dir path format as in dns or database/sql/mysql
+ def get_type_path_node(parent_node,type_path)
+   if type_path == nil || parent_node == nil
+     p :get_type_path_node_passed_a_nil
+     p type_path
+     p parent_node
+     return nil
+   end
+
+   if type_path.include?("/") == false
+     return parent_node[type_path]
+
+   else
+     sub_paths= type_path.split("/")
+     sub_node = parent_node
+     sub_paths.each do |sub_path|
+       sub_node = sub_node[sub_path]
+       if sub_node == nil
+         return nil
+       end
+     end
+     return sub_node
+   end
+ end
+  
   #@Wrapper for Gui to be removed
   def service_provider_tree(publisher)
     managed_service_tree[publisher]
   end
-
+  
+#@Wrapper for Gui to be removed
+def get_managed_engine_tree
+    return managed_engine_tree
+  end
+  
+  
   protected
 #@saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
 #@ calls [SystemUtils.log_exception] on error and returns false 
