@@ -13,7 +13,6 @@ require_relative 'BluePrintReader.rb'
 require_relative 'DockerFileBuilder.rb'
 require_relative 'SystemAccess.rb'
 
-
 require_relative 'build_report.rb'
 include BuildReport
 
@@ -67,7 +66,7 @@ class EngineBuilder
     @first_build = true
 
     @attached_services = Array.new
-    
+
     @builder_public = BuilderPublic.new(self)
     @system_access = SystemAccess.new()
     p :custom_env
@@ -81,17 +80,17 @@ class EngineBuilder
       #FIXME need to vet all environment variables
       @set_environments = Hash.new
     else
-#      env_array = custom_env.fall
+      #      env_array = custom_env.fall
       custom_env_hash = custom_env
-#      env_array.each do |env_hash|
-#        p :env_hash
-#        p env_hash
-#
-#        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
-#          env_hash[:name] = env_hash[:name].sub(/_/,"")
-#          custom_env_hash.store(env_hash[:name],env_hash[:value])
-#        end
-      end
+      #      env_array.each do |env_hash|
+      #        p :env_hash
+      #        p env_hash
+      #
+      #        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
+      #          env_hash[:name] = env_hash[:name].sub(/_/,"")
+      #          custom_env_hash.store(env_hash[:name],env_hash[:value])
+      #        end
+      #      end
       p :Merged_custom_env
       p custom_env_hash
       @set_environments =  custom_env_hash
@@ -425,7 +424,7 @@ class EngineBuilder
 
       read_web_user
 
-      create_persistant_services 
+      create_persistant_services
 
       @blueprint_reader.environments.each do |env|
         p :env_before
@@ -434,7 +433,7 @@ class EngineBuilder
         p :env_after
         p env.value
       end
-      
+
       fill_service_environment_variables
       create_template_files
       create_php_ini
@@ -507,9 +506,9 @@ class EngineBuilder
       end
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
-       @core_api.save_build_report(mc,build_report)
-       p :build_report
-       p build_report
+      @core_api.save_build_report(mc,build_report)
+      p :build_report
+      p build_report
       close_all
 
       return mc
@@ -661,7 +660,6 @@ class EngineBuilder
   def create_non_persistant_services
     @blueprint_reader.services.each() do |service_hash|
 
-     
       service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
@@ -677,7 +675,7 @@ class EngineBuilder
 
       p :adding_service
       p service_hash
-      
+
       if @core_api.attach_service(service_hash) == true
         @attached_services.push(service_hash)
       end
@@ -692,42 +690,42 @@ class EngineBuilder
 
   def set_top_level_service_params(service_hash)
     service_hash[:parent_engine]=@container_name
-         if service_hash.has_key?(:variables) == false
-           service_hash[:variables] = Hash.new
-         end
-         service_hash[:variables][:parent_engine]=@container_name
+    if service_hash.has_key?(:variables) == false
+      service_hash[:variables] = Hash.new
+    end
+    service_hash[:variables][:parent_engine]=@container_name
     if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
       service_hash[:service_handle] = service_hash[:variables][:name]
     else
       service_hash[:service_handle] = @container_name
     end
-          
+
   end
-  
+
   def create_persistant_services
 
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      
+
       service_def = get_service_def(service_hash)
       if service_def == nil
-             p :failed_to_load_service_definition
-             p :servicetype_name
-             p service_hash[:service_type]
-             p :service_provider
-             p service_hash[:publisher_namespace]
-             return false
-           end
-       if service_def[:persistant] == false
-              ++service_cnt
-               next               
-          else 
-            service_hash[:persistant] =true
-          end
-          
-       set_top_level_service_params(service_hash)
+        p :failed_to_load_service_definition
+        p :servicetype_name
+        p service_hash[:service_type]
+        p :service_provider
+        p service_hash[:publisher_namespace]
+        return false
+      end
+      if service_def[:persistant] == false
+        ++service_cnt
+        next
+      else
+        service_hash[:persistant] =true
+      end
+
+      set_top_level_service_params(service_hash)
       free_orphan = false
- 
+
       p :adding_service
 
       puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
@@ -741,7 +739,7 @@ class EngineBuilder
         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
       end
       log_build_output("Attaching Persistant Service " + service_hash[:service_handle].to_s)
-     
+
       p :LOOKING_FOR_
       p service_hash
       if  @core_api.find_service_consumers(service_hash) == false
@@ -764,7 +762,7 @@ class EngineBuilder
       end
       p :attach_service
       p service_hash
-#FIXME release orphan should happen latter unless use reoprhan on rebuild failure
+      #FIXME release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) ==true
         @attached_services.push(service_hash)
         if free_orphan == true
@@ -933,7 +931,7 @@ class EngineBuilder
   protected
 
   def fill_service_environment_variables
-p :fill_service_environment_variables
+    p :fill_service_environment_variables
     services =@attached_services #@blueprint_reader.services
     services.each do |service_hash|
       service_def =  get_service_def(service_hash)
@@ -944,19 +942,19 @@ p :fill_service_environment_variables
             env_name = env_variable_pair[:environment_name]
             value_name = env_variable_pair[:variable_name]
             value=service_hash[:variables][value_name.to_sym]
-             p service_hash
-             p env_variable_pair
+            p service_hash
+            p env_variable_pair
             @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
           end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
-         p :no_target_envs
-         p service_hash                    
-        end        
-    else
-      p :Failed_to_load_service_def
-      p service_hash
-     end      
+          p :no_target_envs
+          p service_hash
+        end
+      else
+        p :Failed_to_load_service_def
+        p service_hash
+      end
     end
-    
+
   end
 
   def debug(fld)
@@ -1037,10 +1035,10 @@ p :fill_service_environment_variables
 end
 
 def log_exception_and_fail(cmd,e)
-    e_str = SystemUtils.log_exception(e)
-    last_error =  e_str
-    return  false
-  end
+  e_str = SystemUtils.log_exception(e)
+  last_error =  e_str
+  return  false
+end
 
 def log_exception(e)
   log_build_errors(e.to_s)
