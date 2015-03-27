@@ -389,7 +389,7 @@ SystemUtils.log_exception(e)
       end
       if types.is_a?(Array)
         types.each do |type|
-          p type.content
+         # p type.content
           
           if type[params[:service_handle]] != nil
             return type[params[:service_handle]]
@@ -519,7 +519,7 @@ end
 #        service_node = service_type_node[service_name]
 #        #deal with new way variables are pass 
     query_hash=Hash.new()
-                         p service_hash
+#     p service_hash
     query_hash[:engine_name] = service_hash[:variables][:parent_engine]
     query_hash[:type_path] = service_hash[:type_path]
 
