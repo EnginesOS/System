@@ -14,11 +14,6 @@ volumes:
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
- ssl_dir: !ruby/object:Volume
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/ssl/psql"
-  mapping_permissions: "ro"  
 port: 
 eports:
 - !ruby/object:WorkPort
