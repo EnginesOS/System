@@ -49,7 +49,7 @@ def find_engine_services_hashes(params)
   
 def add_to_managed_engines_tree(service_hash)
 
-   if service_hash[:variables].has_key?(:parent_engine) == false || service_hash[:variables][:parent_engine] != nil
+   if service_hash[:variables].has_key?(:parent_engine) == false || service_hash[:variables][:parent_engine] == nil
      p :no_parent_engine_key
      return false
    end
