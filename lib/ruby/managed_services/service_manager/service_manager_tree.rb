@@ -11,7 +11,7 @@ module ServiceManagerTree
     return @service_tree["ManagedEngine"]
   end
 
-   #@return The OrphanedServices Tree branch
+    #@return The OrphanedServices Tree branch
    # create new branch if none exists
   def orphaned_services_tree
     orphans = @service_tree["OphanedServices"]
