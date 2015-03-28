@@ -32,7 +32,7 @@ def find_engine_services_hashes(params)
 
 #returns all service_hashs marked persistant for :engine_name
   def get_engine_persistant_services(params) #params is :engine_name
-    if params.has_key(:parent_engine) == false
+    if params.has_key?(:parent_engine) == false
       params[:parent_engine] =  params[:engine_name]
     end
     services = find_engine_services(params)
