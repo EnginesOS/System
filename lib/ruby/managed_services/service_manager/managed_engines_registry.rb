@@ -88,7 +88,7 @@ service_handle = service_hash[:service_handle]
      service_type_node << service_node
    else
      SystemUtils.log_error_msg("Node existed",service_handle)
-     SystemUtils.log_error_msg("with content",service_node.content)
+     SystemUtils.log_error_msg("With content",service_node.content)
      return false
    end
 
