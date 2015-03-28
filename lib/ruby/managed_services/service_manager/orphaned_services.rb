@@ -35,20 +35,20 @@ module OrphanedServices
 
     types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
     if types == nil
-      SystemUtils.log_error_msg("No Orphan Match",params)
+      log_error_msg("No Orphan Match",params)
       return nil
     end
     if  types.is_a?(Array)
       types.each do |type|
         # p type.content
         if type == nil
-          SystemUtils.log_error_msg(" nil type in ",params[:type_path])
+          log_error_msg(" nil type in ",params[:type_path])
             next
         end
          if type[params[:service_handle]] != nil
           return type[params[:service_handle]]
         else
-          SystemUtils.log_error_msg("params nil service_handle",params)
+          log_error_msg("params nil service_handle",params)
         end
       end
       return nil

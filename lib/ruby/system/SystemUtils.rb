@@ -22,7 +22,9 @@ class SystemUtils
  #Logs are written to apache/error.log
  # returns nothing
   def SystemUtils.log_error_msg(msg,object)
-    SystemUtils.log_output(msg + ":->:" + object.to_s ,10)
+    obj_str = object.to_s
+    obj_str.slice!(0,256)
+    SystemUtils.log_output(msg + ":->:" + obj_str ,10)
   end
  
  

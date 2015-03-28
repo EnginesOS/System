@@ -13,7 +13,7 @@ class ServiceManager
 
   #@service_tree root of the Service Registry Tree
   attr_accessor   :service_tree
-  :last_error
+                  :last_error
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
     #@service_tree root of the Service Registry Tree
@@ -90,12 +90,12 @@ class ServiceManager
 def remove_service service_hash
 
   if remove_from_engine_registery(service_hash) == false
-    SystemUtils.log_error_msg("failed to remove from engine regsitry",service_hash)
+    log_error_msg("failed to remove from engine regsitry",service_hash)
     return false
   end
 
   if remove_from_services_registry(service_hash) == false
-     SystemUtils.log_error_msg("failed to remove from service regsitry",service_hash)
+     log_error_msg("failed to remove from service regsitry",service_hash)
      return false
    end
  return true
@@ -262,5 +262,13 @@ end
     SystemUtils.log_exception(e)
     return nil
   end
-
+  
+  def log_error(msg,object)
+    obj_str = object.to_s
+    obj_str.slice!(0,128)
+    @last_error = msg +":" + obj_str
+    SystemUtils.log_error_msg(msg,object)
+    
+  end
+  
 end

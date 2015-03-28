@@ -38,7 +38,7 @@ module ServiceManagerTree
   def remove_tree_entry(tree_node)
    
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      SystemUtils.log_error_msg("err_remove_tree_entry",tree_node.name)
+      log_error_msg("err_remove_tree_entry",tree_node.name)
       
       return false
     end
@@ -135,7 +135,7 @@ module ServiceManagerTree
  #param type_path the dir path format as in dns or database/sql/mysql
  def get_type_path_node(parent_node,type_path)
    if type_path == nil || parent_node == nil
-     SystemUtils.log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
+     log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
 

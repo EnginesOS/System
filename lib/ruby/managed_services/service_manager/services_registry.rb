@@ -35,7 +35,7 @@ module ServicesRegistry
   def attached_services(type_path,identifier)
     retval = Array.new
     if managed_service_tree ==nil
-      SystemUtils.log_error_msg("panic_no_managed_service_node", type_path.to_s + " " + identifier.to_s)
+      log_error_msg("panic_no_managed_service_node", type_path.to_s + " " + identifier.to_s)
       return retval
     end
     services = get_type_path_node(managed_service_tree,type_path)
@@ -64,14 +64,14 @@ module ServicesRegistry
   def find_service_consumers(service_query_hash)
 
     if service_query_hash.has_key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace]  == nil
-      SystemUtils.log_error_msg("no_publisher_namespace",service_query_hash)
+      log_error_msg("no_publisher_namespace",service_query_hash)
       return false
     end
 
     provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
 
     if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
-      SystemUtils.log_error_msg("find_service_consumers_no_type_path", service_query_hash)
+      log_error_msg("find_service_consumers_no_type_path", service_query_hash)
       
       return provider_tree
     end
@@ -80,11 +80,12 @@ module ServicesRegistry
     #provider_tree[service_hash[:type_path]]
 
     if service_path_tree == nil
+      
       return false
     end
 
     if service_query_hash.has_key?(:service_handle) == false || service_query_hash[:service_handle]  == nil
-      SystemUtils.log_error_msg("find_service_consumers_no_service_handle", service_query_hash)
+      log_error_msg("find_service_consumers_no_service_handle", service_query_hash)
       return  service_path_tree
     end
 
@@ -105,8 +106,11 @@ if managed_service_tree !=nil
 
    if service_node != nil
      return remove_tree_entry(service_node)
+   else
+     log_error_msg("Fail to find service for removal",service_hash)
    end
 end
+    log_error_msg("Fail to remove service" ,service_hash)
    return false
 end
 

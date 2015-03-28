@@ -37,7 +37,7 @@ def find_engine_services_hashes(params)
     end
     services = find_engine_services(params)
     if services == nil
-      SystemUtils.log_error_msg("Failed to find engine in persistant service",params)
+      log_error_msg("Failed to find engine in persistant service",params)
       return nil
     end
     leafs = Array.new
@@ -58,7 +58,7 @@ def find_engine_services_hashes(params)
 def add_to_managed_engines_tree(service_hash)
 
    if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
-     SystemUtils.log_error_msg("no_parent_engine_key",service_hash)
+     log_error_msg("no_parent_engine_key",service_hash)
      return false
    end
    
@@ -73,11 +73,11 @@ def add_to_managed_engines_tree(service_hash)
    service_handle = get_service_handle(service_hash)
 service_handle = service_hash[:service_handle]
    if service_type_node == nil
-     SystemUtils.log_error_msg("nil service type node",service_hash)
+     log_error_msg("nil service type node",service_hash)
      return false
    end
    if service_handle == nil
-     SystemUtils.log_error_msg("Service hash has nil handle",service_hash)   
+     log_error_msg("Service hash has nil handle",service_hash)   
      return false
    end
 
@@ -87,8 +87,8 @@ service_handle = service_hash[:service_handle]
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node
    else
-     SystemUtils.log_error_msg("Node existed",service_handle)
-     SystemUtils.log_error_msg("With content",service_node.content)
+     log_error_msg("Node existed",service_handle)
+     log_error_msg("With content",service_node.content)
      return false
    end
 
