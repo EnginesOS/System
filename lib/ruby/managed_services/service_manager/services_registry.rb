@@ -49,7 +49,6 @@ module ServicesRegistry
     end
     service.each do |node|
       retval.push(node.content)
-      #      p node
     end
 
   rescue Exception=>e
@@ -84,8 +83,8 @@ module ServicesRegistry
       return false
     end
 
-    if service_query_hash.has_key?(:variables) == false || service_query_hash[:variables]  == nil
-      SystemUtils.log_error_msg("find_service_consumers_no_variables", service_query_hash)
+    if service_query_hash.has_key?(:service_handle) == false || service_query_hash[:service_handle]  == nil
+      SystemUtils.log_error_msg("find_service_consumers_no_service_handle", service_query_hash)
       return  service_path_tree
     end
 
