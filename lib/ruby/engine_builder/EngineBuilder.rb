@@ -202,14 +202,9 @@ class EngineBuilder
       blueprint_json_str = blueprint_file.read
       blueprint_file.close
 
-      # @blueprint = JSON.parse(blueprint_json_str)
       json_hash = JSON.parse(blueprint_json_str)
       p :symbolized_hash
-      #      test_hash = json_hash
-      #      test_hash.keys.each do |key|
-      #        test_hash[(key.to_sym rescue key) || key] = myhash.delete(key)
-      #      end
-      #      p test_hash
+
       hash =  SystemUtils.symbolize_keys(json_hash)
       return hash
 
@@ -229,36 +224,7 @@ class EngineBuilder
     end
   end
 
-  #  def create_cron_service
-  #    begin
-  #
-  #      log_build_output("Cron file")
-  #
-  #      if @blueprint_reader.cron_jobs != nil && @blueprint_reader.cron_jobs.length >0
-  #
-  #        @blueprint_reader.cron_jobs.each do |cj|
-  #          cj_hash = Hash.new
-  #          cj_hash[:name] =@container_name
-  #          cj_hash[:container_name] = @container_name
-  #          cj_hash[:cron_job]=cj
-  #          cj_hash[:parent_engine] = @containerName
-  #          #               cron_file.puts(cj)
-  #          #               p :write_cron_job
-  #          #               p cj
-  #          @cron_job_list.push(cj_hash)
-  #          p @cron_job_list
-  #        end
-  #        #             cron_file.close
-  #      end
-  #
-  #      return true
-  #
-  #    rescue Exception=>e
-  #      log_exception(e)
-  #      return false
-  #    end
-  #  end
-
+  
   def setup_default_files
     log_build_output("Setup Default Files")
     if setup_global_defaults == false
@@ -267,19 +233,7 @@ class EngineBuilder
       return setup_framework_defaults
     end
   end
-  #
-  #  def create_db_service(name,flavor)
-  #    begin
-  #      log_build_output("Create DB Service")
-  #      db = DatabaseService.new(@hostname,name,SysConfig.DBHost,name,name,flavor)
-  #      databases.push(db)
-  #      create_database_service db
-  #    rescue Exception=>e
-  #      log_exception(e)
-  #      return false
-  #    end
-  #  end
-
+  
   def build_init
 
     log_build_output("Building Image")
@@ -407,14 +361,20 @@ class EngineBuilder
       end
 
       @blueprint_reader = BluePrintReader.new(@build_name,@container_name,@blueprint,self)
-      @blueprint_reader.process_blueprint
-
+     if  @blueprint_reader.process_blueprint == false
+       close_all
+        return false
+       end
+       
       if  setup_default_files == false
         close_all
         return false
       end
 
-      compile_base_docker_files
+      if   compile_base_docker_files == false
+        close_all
+         return false
+        end
 
       if @blueprint_reader.web_port != nil
         @webPort = @blueprint_reader.web_port
@@ -424,7 +384,10 @@ class EngineBuilder
 
       read_web_user
 
-      create_persistant_services
+     if create_persistant_services  == false
+       post_failed_build_clean_up
+        return false
+       end
 
       @blueprint_reader.environments.each do |env|
         p :env_before
@@ -449,7 +412,10 @@ class EngineBuilder
       end
 
       dockerfile_builder = DockerFileBuilder.new( @blueprint_reader,@container_name, @hostname,@domain_name,@webPort,self)
-      dockerfile_builder.write_files_for_docker
+     if dockerfile_builder.write_files_for_docker == false
+       post_failed_build_clean_up
+       return false
+       end
 
       env_file = File.new(get_basedir + "/home/app.env","a")
       env_file.puts("")
@@ -480,28 +446,16 @@ class EngineBuilder
           @last_error = " " + tail_of_build_log
           post_failed_build_clean_up
           return false
-          #return EnginesOSapiResult.failed(@container_name,"Build Image failed","build Image")
+          
         end
 
-        #needs to be moved to services dependant on the new BPDS
-        #create_cron_service
-
-        #        log_build_output("Creating vol Services")
-        #        @blueprint_reader.databases.each() do |db|
-        #          create_database_service db
-        #        end
-        #
-        #        primary_vol=nil
-        #        @blueprint_reader.volumes.each_value() do |vol|
-        #          create_file_service vol
-        #          if primary_vol == nil
-        #            primary_vol =vol
-        #          end
-        #        end
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
           create_non_persistant_services
+        else
+          post_failed_build_clean_up
+           return false
         end
       end
       log_build_output("Build Successful")
@@ -839,17 +793,21 @@ class EngineBuilder
     builder = EngineBuilder.new(params,core)
     engine = builder.build_from_blue_print
     if engine == false
+      post_failed_build_clean_up
       return  failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active == false
+        close_all
         return failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
       end
       return engine
     end
+    post_failed_build_clean_up
     return failed(host_name,last_api_error,"build_engine")
 
   rescue Exception=>e
+    post_failed_build_clean_up
     return log_exception_and_fail("build_engine",e)
   end
 
@@ -876,6 +834,7 @@ class EngineBuilder
       f.close
     rescue Exception=>e
       log_exception(e)
+      close_all
       return false
     end
   end
