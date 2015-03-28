@@ -17,6 +17,10 @@ class SystemUtils
     p object.to_s
   end 
  end
+ 
+ #@Logs to passeenger std out the @msg followed by @object.to_s
+ #Logs are written to apache/error.log
+ # returns nothing
   def SystemUtils.log_error_msg(msg,object)
     SystemUtils.log_output(msg + ":->:" + object.to_s ,10)
   end

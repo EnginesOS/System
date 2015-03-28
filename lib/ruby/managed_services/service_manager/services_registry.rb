@@ -2,7 +2,8 @@
 module ServicesRegistry
   
   #Add The service_hash to the services registry branch
-  #creates the branch path as required :publisher_namespace . :type_path . :parent_engine
+  #creates the branch path as required
+  #@service_hash :publisher_namespace . :type_path . :parent_engine
   #Will not over write
   
   def add_to_services_tree(service_hash)
@@ -92,12 +93,12 @@ module ServicesRegistry
       return false
     end
 
-    #p :find_service_consumers
-    #                p service_path_tree[service_query_hash[:variables][:name]]
-    #
     return service_path_tree[service_query_hash[:service_handle]]
 
   end
+  
+#remove the service matching the service_hash from the tree
+#@service_hash :publisher_namespace :type_path :service_handle 
   def remove_from_services_registry(service_hash)
   
 if managed_service_tree !=nil
