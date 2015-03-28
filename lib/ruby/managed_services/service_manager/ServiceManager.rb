@@ -20,6 +20,7 @@ class ServiceManager
     @service_tree = initialize_tree
   end
 
+  #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
 
     server_service =  software_service_definition(params)
@@ -31,7 +32,7 @@ class ServiceManager
 
   end
 
-  #@list the Provider namespaces as an Array of Strings
+  #list the Provider namespaces as an Array of Strings
   def list_providers_in_use
     providers =  managed_service_tree.children
     retval=Array.new
@@ -46,11 +47,11 @@ class ServiceManager
 
 
 
-  #@ returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
-  #@ Creates new attached [TreeNode] with required parent path if none exists
-  #@ return nil on error
-  #@param parent_node the branch to create the node under
-  #@param type_path the dir path format as in dns or database/sql/mysql
+  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+  # Creates new attached [TreeNode] with required parent path if none exists
+  # return nil on error
+  #param parent_node the branch to create the node under
+  #param type_path the dir path format as in dns or database/sql/mysql
   def create_type_path_node(parent_node,type_path)
     if type_path == nil
       return nil
@@ -85,6 +86,28 @@ class ServiceManager
     return nil
   end
 
+#remove service matching the service_hash from both the managed_engine registry and the service registry
+def remove_service service_hash
+
+  if remove_from_engine_registery(service_hash) == false
+    SystemUtils.log_error_msg("failed to remove from engine regsitry",service_hash)
+    return false
+  end
+
+  if remove_from_engine_registery(service_hash) == false
+     SystemUtils.log_error_msg("failed to remove from service regsitry",service_hash)
+     return false
+   end
+ return true
+
+
+rescue Exception=>e
+  if service_hash != nil
+    p service_hash
+  end
+  SystemUtils.log_exception(e)
+  return false
+end
  
 
   def list_attached_services_for(objectName,identifier)
@@ -159,12 +182,14 @@ class ServiceManager
   end
 
  
+  #return the service_handle from the service_hash
+  # for backward compat (to be changed)
+  def get_service_handle(params)
 
-  def get_service_label(params)
-    if params.has_key?(:name) && params[:name] != nil
-      service_label = params[:name]
-    elsif  params.has_key?(:service_label) && params[:service_label] != nil
+    if  params.has_key?(:service_handle) && params[:service_handle] != nil
       service_label = params[:service_label]
+    elsif params.has_key?(:name) && params[:name] != nil
+      service_label = params[:name]
     elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
       service_label = params[:variables][:name]
     else
@@ -190,10 +215,10 @@ class ServiceManager
     end
   end
 
-  
-
-  
-
+ #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
+ #@ if :remove_all_application_data is true all data is deleted and all persistant services removed
+ #@ if :remove_all_application_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
+#@return true on success and false on fail  
   def rm_remove_engine(params)
 
     engine_node = managed_engine_tree[params[:engine_name]]
@@ -214,6 +239,7 @@ class ServiceManager
     end
 end
 
+#@return [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
   def software_service_definition(params)
 
     return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )

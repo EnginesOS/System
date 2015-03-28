@@ -8,8 +8,8 @@ class MySQLService < SoftwareService
     p :add_consumer
     p service_hash
 
-    if service_hash[:variables].has_key?(:name) == false || service_hash[:variables][:name] == nil
-      service_hash[:variables][:name] = service_hash[:variables][:database_name]
+    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+      service_hash[:service_handle] = service_hash[:variables][:database_name]
     end
     return  create_database(service_hash)
   end
@@ -25,8 +25,6 @@ class MySQLService < SoftwareService
       p service_hash
       if service_hash.has_key?(:service_container_name) == true
         container_name = service_hash[:service_container_name]
-      else
-        container_name =  service_hash[:variables][:type] + "_server"
       end
       cmd = "docker exec " +  container_name + " /home/createdb.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
 

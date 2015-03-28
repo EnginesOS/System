@@ -41,18 +41,20 @@ class ManagedService < ManagedContainer
     if service_hash.is_a?(Hash) == false
       service_hash = create_service_hash(service_hash)
     end
-    #Kludge suring service_hash cut over
-    if service_hash.has_key?(:service_handle) == false
-      service_hash[:service_handle] = service_hash[:variables][:name]
-    end
-    if service_hash[:variables].has_key?(:parent_engine) == false
-      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
-    elsif service_hash.has_key?(:parent_engine) == false
-      service_hash[:parent_engine] = service_hash[:variables][:parent_engine]
-
-    end
     return service_hash
-  end
+ end
+     
+#    #Kludge suring service_hash cut over
+#    if service_hash.has_key?(:service_handle) == false
+#      service_hash[:service_handle] = service_hash[:variables][:name]
+#    end
+#    if service_hash[:variables].has_key?(:parent_engine) == false
+#      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
+#    elsif service_hash.has_key?(:parent_engine) == false
+#      service_hash[:parent_engine] = service_hash[:variables][:parent_engine]
+#
+#    end
+   
 
   def fetch_consumer name
     return @consumers.fetch(name)
@@ -90,7 +92,7 @@ class ManagedService < ManagedContainer
     end
 
     #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
-    @consumers.store(service_hash[:variables][:name], service_hash)
+    @consumers.store(service_hash[:service_handle], service_hash)
 
     # end
     save_state
@@ -121,7 +123,7 @@ class ManagedService < ManagedContainer
     end
 
     if @consumers !=  nil
-      @consumers.delete(service_hash[:variables][:name]) { |el| "#{el} not found" }
+      @consumers.delete(service_hash[:service_handle]) { |el| "#{el} not found" }
     end
     save_state
     return result

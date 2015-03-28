@@ -8,8 +8,8 @@ class PgSQLService < SoftwareService
     p :add_consumer
     p service_hash
 
-    if service_hash.has_key?(:name) == false || service_hash[:name] == nil
-      service_hash[:name] = service_hash[:database_name]
+    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+      service_hash[:service_handle] = service_hash[:database_name]
     end
     return  create_database(service_hash)
   end
@@ -21,9 +21,11 @@ class PgSQLService < SoftwareService
   def create_database  service_hash
 
     begin
-
-      container_name =  service_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/createdb.sh " + service_hash[:name] + " " + service_hash[:user] + " " + service_hash[:pass]
+      if service_hash.has_key?(:service_container_name) == true
+        container_name = service_hash[:service_container_name]
+      end
+     
+      cmd = "docker exec " +  container_name + " /home/createdb.sh " + service_hash[:database_name] + " " + service_hash[:dbusername] + " " + service_hash[:dbpassword]
 
       #save details with some manager
       SystemUtils.debug_output("Create DB Command",cmd)
@@ -39,7 +41,7 @@ class PgSQLService < SoftwareService
 
     begin
       container_name =  service_hash[:flavor] + "_server"
-      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + service_hash[:name] + " " + service_hash[:user] + " " + service_hash[:pass]
+      cmd = "docker exec " +  container_name + " /home/dropdb.sh " + service_hash[:database_name] + " " + service_hash[:dbusername] + " " + service_hash[:dbpassword]
 
       #save details with some manager
       SystemUtils.debug_output("Drop DB Command",cmd)

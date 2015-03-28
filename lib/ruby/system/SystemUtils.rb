@@ -17,6 +17,9 @@ class SystemUtils
     p object.to_s
   end 
  end
+  def SystemUtils.log_error_msg(msg,object)
+    SystemUtils.log_output(msg + ":->:" + object.to_s ,10)
+  end
  
  
   def SystemUtils.log_error(object)

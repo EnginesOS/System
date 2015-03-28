@@ -1,9 +1,9 @@
-#@ Module of Methods to handle tree structure for ServiceManager
+# Module of Methods to handle tree structure for ServiceManager
 module ServiceManagerTree
   
   
-  # @return the ManagedEngine Tree Branch
-  # @creates if does not exist
+  # return the ManagedEngine Tree Branch
+  # creates if does not exist
   def managed_engine_tree
     if (@service_tree["ManagedEngine"] == nil )
       @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
@@ -11,7 +11,7 @@ module ServiceManagerTree
     return @service_tree["ManagedEngine"]
   end
 
-    #@return The OrphanedServices Tree branch
+    #return The OrphanedServices Tree branch
    # create new branch if none exists
   def orphaned_services_tree
     orphans = @service_tree["OphanedServices"]
@@ -23,7 +23,7 @@ module ServiceManagerTree
     return orphans
   end
   
-  # @return the ManagedServices Tree Branch
+  # return the ManagedServices Tree Branch
    #  creates if does not exist
   def managed_service_tree
     if (@service_tree["Services"] == nil )
@@ -33,12 +33,13 @@ module ServiceManagerTree
     
   end
 
+  # param remove [TreeNode] from the @servicetree
+  # If the tree_node is the last child then the parent is removed this is continued up.  
   def remove_tree_entry(tree_node)
-    # @param remove [TreeNode] from the @servicetree
-    # If the tree_node is the last child then the parent is removed this is continued up.  
+   
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      p :err_remove_tree_entry
-
+      SystemUtils.log_error_msg("err_remove_tree_entry",tree_node.name)
+      
       return false
     end
 
@@ -55,8 +56,8 @@ module ServiceManagerTree
     return true
   end
 
-  #@return [Array] all service_hash(s) which contain the hash pair label=value    
-  #@returns empty array if none
+  #return [Array] all service_hash(s) which contain the hash pair label=value    
+  #returns empty array if none
   def get_matched_leafs(branch,label,value)
     ret_val = Array.new
     branch.children.each do |sub_branch|
@@ -71,7 +72,7 @@ module ServiceManagerTree
     return ret_val
   end
   
-# @return [Array] all service_hash(s) below this branch
+# return [Array] all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     ret_val = Array.new
     branch.children.each do |sub_branch|
@@ -90,8 +91,8 @@ module ServiceManagerTree
     return ret_val
   end
 
-  #@loads the Service tree off disk from [SysConfig.ServiceTreeFile]
-  #@ calls [SystemUtils.log_exception] on error and returns nil 
+  #loads the Service tree off disk from [SysConfig.ServiceTreeFile]
+  #calls [SystemUtils.log_exception] on error and returns nil 
   def tree_from_yaml()
     begin
       tree_data = File.read(SysConfig.ServiceTreeFile)
@@ -104,8 +105,8 @@ module ServiceManagerTree
     end
   end
 
-  #@ Load tree from file or create initial service tree
-  #@returns ServiceTree as a [TreeNode]
+  # Load tree from file or create initial service tree
+  #returns ServiceTree as a [TreeNode]
   def initialize_tree
     
     if File.exists?(SysConfig.ServiceTreeFile)
@@ -124,15 +125,13 @@ module ServiceManagerTree
   end
 
   
-#@ returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
- #@ return nil on error
- #@param parent_node the branch to search under
- #@param type_path the dir path format as in dns or database/sql/mysql
+# returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+ # return nil on error
+ #param parent_node the branch to search under
+ #param type_path the dir path format as in dns or database/sql/mysql
  def get_type_path_node(parent_node,type_path)
    if type_path == nil || parent_node == nil
-     p :get_type_path_node_passed_a_nil
-     p type_path
-     p parent_node
+     SystemUtils.log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.name)
      return nil
    end
 
@@ -152,20 +151,20 @@ module ServiceManagerTree
    end
  end
   
-  #@Wrapper for Gui to be removed
+  #Wrapper for Gui to be removed
   def service_provider_tree(publisher)
     managed_service_tree[publisher]
   end
   
-#@Wrapper for Gui to be removed
+#Wrapper for Gui to be removed
 def get_managed_engine_tree
     return managed_engine_tree
   end
   
   
   protected
-#@saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
-#@ calls [SystemUtils.log_exception] on error and returns false 
+#saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
+# calls [SystemUtils.log_exception] on error and returns false 
   def save_tree
     
     serialized_object = YAML::dump(@service_tree)
