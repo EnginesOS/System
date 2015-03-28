@@ -33,7 +33,7 @@ class NginxService < ManagedService
     service_hash[:parent_engine]=engine.containerName
     service_hash[:variables][:parent_engine]=engine.containerName
     service_hash[:variables][:name]=engine.containerName
-    service_hash[:service_label] =  engine.fqdn
+    service_hash[:service_handle] =  engine.fqdn
     service_hash[:variables][:container_type]=engine.ctype
     service_hash[:variables][:fqdn]=engine.fqdn
     service_hash[:variables][:port]=engine.port.to_s
