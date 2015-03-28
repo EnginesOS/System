@@ -131,7 +131,7 @@ module ServiceManagerTree
  #param type_path the dir path format as in dns or database/sql/mysql
  def get_type_path_node(parent_node,type_path)
    if type_path == nil || parent_node == nil
-     SystemUtils.log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.name)
+     SystemUtils.log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
 
