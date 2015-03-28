@@ -187,11 +187,11 @@ end
   def get_service_handle(params)
 
     if  params.has_key?(:service_handle) && params[:service_handle] != nil
-      service_label = params[:service_label]
-    elsif params.has_key?(:name) && params[:name] != nil
-      service_label = params[:name]
-    elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
-      service_label = params[:variables][:name]
+      return  params[:service_handle]
+#       elsif params.has_key?(:name) && params[:name] != nil
+#      service_label = params[:name]
+#    elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
+#      service_label = params[:variables][:name]
     else
       return nil
     end
