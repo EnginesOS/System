@@ -22,7 +22,7 @@ class DNSService < ManagedService
     service_hash[:parent_engine]=engine.containerName
     service_hash[:variables][:name]=engine.containerName
     service_hash[:variables][:container_type]=engine.ctype
-    service_hash[:variables][:hostname]=engine.hostName
+    service_hash[:variables][:hostname]=engine.containerName
     service_hash[:variables][:ip]=engine.get_ip_str.to_s
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:service_handle]=engine.hostName
