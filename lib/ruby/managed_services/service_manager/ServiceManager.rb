@@ -242,9 +242,9 @@ end
       return false             
 end
 
-def orphan_service(service_node)
-  if save_as_orphan(service_node.content) 
-    return  remove_service(service_node)
+def orphan_service(service_hash)
+  if save_as_orphan(service_hash) 
+    return  remove_service(service_hash)
   end
   return false
   
