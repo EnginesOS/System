@@ -94,12 +94,11 @@ def remove_service service_hash
     return false
   end
 
-  if remove_from_engine_registery(service_hash) == false
+  if remove_from_services_registry(service_hash) == false
      SystemUtils.log_error_msg("failed to remove from service regsitry",service_hash)
      return false
    end
  return true
-
 
 rescue Exception=>e
   if service_hash != nil
@@ -226,17 +225,29 @@ end
     if engine_node == nil
       return false
     end
-
-    if params[:remove_all_application_data] == true
+       
       services = get_engine_persistant_services(params)
       services.each do | service |
-        p :removing_Service
+        if params[:remove_all_application_data] == true
         remove_service(service)
+        else
+          orphan_service(service)         
+        end
       end
-      managed_engine_tree.remove!(engine_node)
-      save_tree
-      return true
-    end
+            
+      if managed_engine_tree.remove!(engine_node)
+        return  save_tree
+      end
+      
+      return false             
+end
+
+def orphan_service(service_node)
+  if save_as_orphan(service_node.content) 
+    return  remove_service(service_node)
+  end
+  return false
+  
 end
 
 #@return [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
