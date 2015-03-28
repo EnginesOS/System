@@ -38,11 +38,14 @@ module OrphanedServices
       SystemUtils.log_error_msg("No Orphan Match",params)
       return nil
     end
-    if types.is_a?(Array)
+    if  types.is_a?(Array)
       types.each do |type|
         # p type.content
-
-        if type[params[:service_handle]] != nil
+        if type == nil
+          SystemUtils.log_error_msg(" nil type in ",params[:type_path])
+            next
+        end
+         if type[params[:service_handle]] != nil
           return type[params[:service_handle]]
         else
           SystemUtils.log_error_msg("params nil service_handle",params)
