@@ -75,7 +75,7 @@ def add_to_managed_engines_tree(service_hash)
 
    service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
    service_handle = get_service_handle(service_hash)
-service_handle = service_hash[:service_handle]
+   service_handle = service_hash[:service_handle]
    if service_type_node == nil
      log_error_msg("nil service type node",service_hash)
      return false
