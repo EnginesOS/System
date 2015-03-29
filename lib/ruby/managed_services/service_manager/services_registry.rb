@@ -74,7 +74,7 @@ module ServicesRegistry
       log_error_msg("no_publisher_namespace",service_query_hash)
       return false
     end
-    ps- a
+    
     provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
 
     if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
