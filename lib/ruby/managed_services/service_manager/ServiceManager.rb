@@ -298,7 +298,7 @@ log_error_msg("Failed remove engine",params)
 
   end
 
-  #@return [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
+  #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
   def software_service_definition(params)
 
     return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
