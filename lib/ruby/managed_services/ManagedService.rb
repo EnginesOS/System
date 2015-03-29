@@ -207,7 +207,7 @@ class ManagedService < ManagedContainer
   end
 
   def self.from_yaml( yaml,core_api )
-    clear_error(true)
+    clear_error(true) 
     begin
       p yaml.path
       managedService = YAML::load( yaml )
