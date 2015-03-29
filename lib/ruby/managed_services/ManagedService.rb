@@ -231,5 +231,11 @@ class ManagedService < ManagedContainer
     pid ="-1"
 
   end
-
+  def log_error_msg(msg,object)
+     obj_str = object.to_s.slice(0,256)
+     
+     @last_error = msg +":" + obj_str
+     SystemUtils.log_error_msg(msg,object)
+  
+   end
 end
