@@ -59,6 +59,7 @@ def find_engine_services_hashes(params)
   #Needs overwrite flag
   #requires :parent_engine :type_path
   #@return boolean 
+  #overwrites
 def add_to_managed_engines_tree(service_hash)
 
    if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil

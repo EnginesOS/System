@@ -4,7 +4,7 @@ module ServicesRegistry
   #Add The service_hash to the services registry branch
   #creates the branch path as required
   #@service_hash :publisher_namespace . :type_path . :parent_engine
-  #Will not over write
+  #Wover writes
   
   def add_to_services_tree(service_hash)
 
