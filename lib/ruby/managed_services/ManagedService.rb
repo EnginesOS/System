@@ -29,6 +29,8 @@ class ManagedService < ManagedContainer
     @persistant=false  #Persistant means niether service or engine need to be up/running or even exist for this service to exist
   end
 
+  #@return Hash of consumers 
+  #creates fresh hash in instance @consumers is nil
   def consumers
     if @consumers == nil
       @consumers = Hash.new
@@ -36,8 +38,8 @@ class ManagedService < ManagedContainer
     return @consumers
   end
 
+  
   def get_service_hash(service_hash)
-
     if service_hash.is_a?(Hash) == false
       SystemUtils.log_error_msg("Get service hash on ",service_hash)
       service_hash = create_service_hash(service_hash)
@@ -61,13 +63,15 @@ class ManagedService < ManagedContainer
     return @consumers.fetch(name)
   end
 
-  def add_consumer(engine)
-
-    service_hash = get_service_hash(engine)
+  def add_consumer(object)
+  clear_error
+    service_hash = get_service_hash(object)
     if service_hash == nil
+      log_error_mesg("add consumer passed nil service_hash ","")
       p "nil site hash"
       return false
     end
+    
     if is_running ==true   || @persistant == true
       result = add_consumer_to_service(service_hash)
       if result == true
@@ -77,6 +81,7 @@ class ManagedService < ManagedContainer
         if sm != false
           result = sm.add_service(service_hash)
         else
+          log_error_mesg("add consumer no ServiceManager ","")
           return false
         end
       end
@@ -101,9 +106,10 @@ class ManagedService < ManagedContainer
   end
 
   def remove_consumer service_hash
-
+    clear_error
     service_hash = get_service_hash(service_hash)
     if service_hash == nil
+      log_error_mesg("remove consumer nil service hash ","")
       return false
     end
 
@@ -118,13 +124,14 @@ class ManagedService < ManagedContainer
           p service_hash
           result =  sm.remove_service(service_hash)
         else
+          log_error_mesg("add consumer no ServiceManager ","")
           return false
         end
       end
     end
 
     if @consumers !=  nil
-      @consumers.delete(service_hash[:service_handle]) { |el| "#{el} not found" }
+      @consumers.delete(service_hash[:service_handle]) { |el|  log_error_mesg("Failed to find " + el.to_s + "to del ",service_hash)  }
     end
     save_state
     return result
@@ -141,28 +148,35 @@ class ManagedService < ManagedContainer
       save_state()
       return true
     else
+      log_error_mesg("Failed to create service",self)
       return false
     end
   end
 
   def recreate
+    clear_error
     if  destroy_container() ==true
       if   create_service()==true
         reregister_consumers()
         return true
       else
+        log_error_mesg("Failed to create service in recreate",self)
+              
         return false
       end
     else
+      log_error_mesg("Failed to destroy service in recreate",self)
       return false
     end
   end
 
   def reregister_consumers
+    clear_error
     if @consumers == nil
       return
     end
     if is_running == false
+      log_error_mesg("Cant register consumers as not running ",self)
       return
     end
 
@@ -181,15 +195,18 @@ class ManagedService < ManagedContainer
   end
 
   def destroy
+    log_error_mesg("Cannot call destroy on a service",self)
     return false
   end
 
   def deleteimage
+    log_error_mesg("Cannot call deleteimage on a service",self)
     return false
     #noop never do  this as need buildimage again or only for expert
   end
 
   def self.from_yaml( yaml,core_api )
+    clear_error
     begin
       p yaml.path
       managedService = YAML::load( yaml )
@@ -202,7 +219,9 @@ class ManagedService < ManagedContainer
       #      p ObjectSpace.memsize_of_all(ManagedService)
       return managedService
     rescue Exception=>e
+      log_error_mesg("Cannot load",self)
       puts e.message + " with " + yaml.path
+      
     end
   end
 
