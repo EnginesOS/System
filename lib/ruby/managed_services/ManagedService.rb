@@ -40,6 +40,7 @@ class ManagedService < ManagedContainer
 
   
   def get_service_hash(service_hash)
+    clear_error(true)
     if service_hash.is_a?(Hash) == false
       SystemUtils.log_error_msg("Get service hash on ",service_hash)
       service_hash = create_service_hash(service_hash)
@@ -64,7 +65,7 @@ class ManagedService < ManagedContainer
   end
 
   def add_consumer(object)
-  clear_error
+  clear_error(true)
     service_hash = get_service_hash(object)
     if service_hash == nil
       log_error_mesg("add consumer passed nil service_hash ","")
@@ -106,7 +107,7 @@ class ManagedService < ManagedContainer
   end
 
   def remove_consumer service_hash
-    clear_error
+    clear_error(true)
     service_hash = get_service_hash(service_hash)
     if service_hash == nil
       log_error_mesg("remove consumer nil service hash ","")
@@ -142,7 +143,7 @@ class ManagedService < ManagedContainer
   end
 
   def create_service()
-
+    clear_error(true)
     if create_container() ==true
       reregister_consumers()
       save_state()
@@ -154,7 +155,7 @@ class ManagedService < ManagedContainer
   end
 
   def recreate
-    clear_error
+    clear_error(true)
     if  destroy_container() ==true
       if   create_service()==true
         reregister_consumers()
@@ -171,7 +172,7 @@ class ManagedService < ManagedContainer
   end
 
   def reregister_consumers
-    clear_error
+    clear_error(true)
     if @consumers == nil
       return
     end
@@ -206,7 +207,7 @@ class ManagedService < ManagedContainer
   end
 
   def self.from_yaml( yaml,core_api )
-    clear_error
+    clear_error(true)
     begin
       p yaml.path
       managedService = YAML::load( yaml )
