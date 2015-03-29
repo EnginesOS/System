@@ -40,13 +40,13 @@ module ServiceManagerTree
 
    
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      log_error_msg("Nil treenode ?",tree_node)
+      log_error_mesg("Nil treenode ?",tree_node)
       
       return false
     end
 
     if tree_node.parent == nil
-      log_error_msg("No Parent Node ! on remove tree entry",tree_node)
+      log_error_mesg("No Parent Node ! on remove tree entry",tree_node)
       return false
     end
 
@@ -139,7 +139,7 @@ module ServiceManagerTree
  #@param type_path the dir path format as in dns or database/sql/mysql
  def get_type_path_node(parent_node,type_path)
    if type_path == nil || parent_node == nil
-     log_error_msg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
+     log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
 
@@ -152,7 +152,7 @@ module ServiceManagerTree
      sub_paths.each do |sub_path|
        sub_node = sub_node[sub_path]
        if sub_node == nil
-         log_error_msg("Subnode not found for " + type_path + "under node ", parent_node)
+         log_error_mesg("Subnode not found for " + type_path + "under node ", parent_node)
          return nil
        end
      end

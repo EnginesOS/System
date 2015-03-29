@@ -715,11 +715,11 @@ end
 
     end
     
-def log_error_msg(msg,object)
+def log_error_mesg(msg,object)
    obj_str = object.to_s.slice(0,256)
    
    @last_error = msg +":" + obj_str
-   SystemUtils.log_error_msg(msg,object)
+   SystemUtils.log_error_mesg(msg,object)
 
  end
     

@@ -42,7 +42,7 @@ class ManagedService < ManagedContainer
   def get_service_hash(service_hash)
     
     if service_hash.is_a?(Hash) == false
-      SystemUtils.log_error_msg("Get service hash on ",service_hash)
+      log_error_msg("Get service hash on ",service_hash)
       service_hash = create_service_hash(service_hash)
     end
     return service_hash
@@ -231,11 +231,11 @@ class ManagedService < ManagedContainer
     pid ="-1"
 
   end
-  def log_error_msg(msg,object)
-     obj_str = object.to_s.slice(0,256)
-     
-     @last_error = msg +":" + obj_str
-     SystemUtils.log_error_msg(msg,object)
-  
-   end
+#  def log_error_msg(msg,object)
+#     obj_str = object.to_s.slice(0,256)
+#     
+#     @last_error = msg +":" + obj_str
+#     SystemUtils.log_error_msg(msg,object)
+#  
+#   end
 end

@@ -26,7 +26,7 @@ class ServiceManager
     server_service =  software_service_definition(params)
 
     if server_service == nil || server_service == false
-      log_error_msg("Failed to load service definitions",params)
+      log_error_mesg("Failed to load service definitions",params)
       return nil
     end
     return server_service[:service_container]
@@ -39,7 +39,7 @@ class ServiceManager
     providers =  managed_service_tree.children
     retval=Array.new
     if providers == nil
-      log_error_msg("No providers","")           
+      log_error_mesg("No providers","")           
       return retval
     end
     providers.each do |provider|
@@ -55,7 +55,7 @@ class ServiceManager
   #param type_path the dir path format as in dns or database/sql/mysql
   def create_type_path_node(parent_node,type_path)
     if type_path == nil
-      log_error_msg("create_type_path passed a nil type_path when adding to ",parent_node)
+      log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
       return nil
     end
 
@@ -94,12 +94,12 @@ log_error_msg("create_type_path failed",type_path)
   def remove_service service_hash
 
     if remove_from_engine_registery(service_hash) == false
-      log_error_msg("failed to remove from engine registry",service_hash)
+      log_error_mesg("failed to remove from engine registry",service_hash)
       return false
     end
 
     if remove_from_services_registry(service_hash) == false
-      log_error_msg("failed to remove from service registry",service_hash)
+      log_error_mesg("failed to remove from service registry",service_hash)
       return false
     end
     return true
@@ -188,19 +188,19 @@ log_error_msg("create_type_path failed",type_path)
     if service_hash.has_key?(:persistant) == false
        persist = software_service_persistance(service_hash)
        if persist == nil 
-         log_error_msg("Failed to get persistance status for ",service_hash)
+         log_error_mesg("Failed to get persistance status for ",service_hash)
          return false
        end
       service_hash[:persistant] = persist
     end 
     
     if add_to_managed_engines_tree(service_hash) == false
-      log_error_msg("Failed to add service to managed engine registry",service_hash)
+      log_error_mesg("Failed to add service to managed engine registry",service_hash)
       return false
     end
 
     if add_to_services_tree(service_hash) == false
-    log_error_msg("Failed to add service to managed service registry",service_hash)
+    log_error_mesg("Failed to add service to managed service registry",service_hash)
     return false
   end
 
@@ -219,7 +219,7 @@ log_error_msg("create_type_path failed",type_path)
     if  params.has_key?(:service_handle) && params[:service_handle] != nil
      
     else
-      log_error_msg("no :service_handle",params)
+      log_error_mesg("no :service_handle",params)
       
       return nil
     end
@@ -239,7 +239,7 @@ log_error_msg("create_type_path failed",type_path)
     if retval.count == 1
       return retval[0]
     elsif retval.count == 0
-      log_error_msg("no match " + type_path.to_s + " under:" ,service)
+      log_error_mesg("no match " + type_path.to_s + " under:" ,service)
       return nil
     else
       return retval
@@ -257,7 +257,7 @@ log_error_msg("create_type_path failed",type_path)
     engine_node = managed_engine_tree[params[:parent_engine]]
 
     if engine_node == nil
-      log_error_msg("Failed to find engine to remove",params)
+      log_error_mesg("Failed to find engine to remove",params)
       return false
     end
 
@@ -265,12 +265,12 @@ log_error_msg("create_type_path failed",type_path)
     services.each do | service |
       if params[:remove_all_application_data] == true
         if remove_service(service) == false
-          log_error_msg("Failed to remove service ",service)
+          log_error_mesg("Failed to remove service ",service)
           return false
         end
       else
         if orphan_service(service) == false
-          log_error_msg("Failed to orphan service ",service)
+          log_error_mesg("Failed to orphan service ",service)
           return false
         end
       end
@@ -279,7 +279,7 @@ log_error_msg("create_type_path failed",type_path)
     if managed_engine_tree.remove!(engine_node)
       return  save_tree
     else
-      log_error_msg("Failed to remove engine node ",engine_node)
+      log_error_mesg("Failed to remove engine node ",engine_node)
       return false
     end
 log_error_msg("Failed remove engine",params)
@@ -292,7 +292,7 @@ log_error_msg("Failed remove engine",params)
     if save_as_orphan(service_hash)
       return  remove_service(service_hash)
    end
-      log_error_msg("Failed to save orphan",service_hash)
+      log_error_mesg("Failed to save orphan",service_hash)
     
     return false
 
@@ -314,11 +314,11 @@ log_error_msg("Failed remove engine",params)
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
-  def log_error_msg(msg,object)
+  def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
     
     @last_error = msg +":" + obj_str
-    SystemUtils.log_error_msg(msg,object)
+    SystemUtils.log_error_mesg(msg,object)
 
   end
 
