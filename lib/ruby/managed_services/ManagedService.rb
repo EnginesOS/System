@@ -39,6 +39,7 @@ class ManagedService < ManagedContainer
   def get_service_hash(service_hash)
 
     if service_hash.is_a?(Hash) == false
+      SystemUtils.log_error_msg("Get service hash on ",service_hash)
       service_hash = create_service_hash(service_hash)
     end
     return service_hash
