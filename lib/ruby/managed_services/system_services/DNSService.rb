@@ -27,7 +27,6 @@ class DNSService < ManagedService
       end
     service_hash[:variables][:name]=service_hash[:variables][:hostname]
     service_hash[:variables][:container_type]=engine.ctype
-    service_hash[:variables][:hostname]=engine.containerName
     service_hash[:variables][:ip]=engine.get_ip_str.to_s
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:service_handle]=service_hash[:variables][:name]
