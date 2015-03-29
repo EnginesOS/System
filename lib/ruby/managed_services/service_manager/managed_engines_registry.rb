@@ -99,8 +99,8 @@ def add_to_managed_engines_tree(service_hash)
      log_error_mesg("Cannot over write persistant service" + service_node.content + " with ",service_hash)
 #     service_node = Tree::TreeNode.new(service_handle,service_hash)
 #     service_type_node << service_node
-     service_node.content = service_hash
-     return true
+  #   service_node.content = service_hash
+     return false
    end
 
  end

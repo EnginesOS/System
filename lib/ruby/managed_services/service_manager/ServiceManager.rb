@@ -102,7 +102,7 @@ log_error_mesg("create_type_path failed",type_path)
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
     end
-    return true
+    return save_tree
 
   rescue Exception=>e
     if service_hash != nil
