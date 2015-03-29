@@ -61,7 +61,7 @@ def find_engine_services_hashes(params)
   #@return boolean 
   #overwrites
 def add_to_managed_engines_tree(service_hash)
-
+  
    if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
      log_error_msg("no_parent_engine_key",service_hash)
      return false
@@ -108,7 +108,7 @@ def add_to_managed_engines_tree(service_hash)
    
      service_node = find_engine_services(service_hash)
      if service_node != nil
-       sucess = remove_tree_entry(service_node)
+       return remove_tree_entry(service_node)
      end
      log_error_msg("Failed to find service node to remove service from engine registry ",service_hash)
      return false
