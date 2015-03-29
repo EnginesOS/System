@@ -5,6 +5,7 @@ module OrphanedServices
   def release_orphan(params)
     orphan = retrieve_orphan(params)
     if orphan == nil
+      log_error_msg("No Orphan found to release",params)
       return false
     end
 
@@ -35,7 +36,7 @@ module OrphanedServices
 
     types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
     if types == nil
-      log_error_msg("No Orphan Match",params)
+      log_error_msg("No Orphan Matching type_path",params)
       return nil
     end
     if  types.is_a?(Array)
@@ -51,6 +52,7 @@ module OrphanedServices
           log_error_msg("params nil service_handle",params)
         end
       end
+      log_error_msg("No Matching Orphan",params)
       return nil
     end
     return types[params[:service_handle]]
@@ -73,6 +75,7 @@ module OrphanedServices
       content[:parent_engine]=params[:parent_engine]
       return content
     else
+      log_error_msg("No oprhan found to reparent",params)
       return nil
     end
   end

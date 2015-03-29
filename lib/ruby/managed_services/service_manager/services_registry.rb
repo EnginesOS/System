@@ -77,10 +77,10 @@ module ServicesRegistry
     end
 
     service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
-    #provider_tree[service_hash[:type_path]]
+  
 
     if service_path_tree == nil
-      
+      log_error_msg("Failed to find matching service path",service_query_hash)
       return false
     end
 
@@ -90,6 +90,7 @@ module ServicesRegistry
     end
 
     if  service_path_tree[service_query_hash[:service_handle]] == nil
+    log_error_msg("Failed to find matching service_handle",service_query_hash)
       return false
     end
 

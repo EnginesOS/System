@@ -19,18 +19,21 @@ module ManagedEnginesRegistry
       end
     end
     
-    #returns all service_hashs for :engine_name
+    #@return all service_hashs for :engine_name
 def find_engine_services_hashes(params)
 
     SystemUtils.debug_output("find_engine_services_hashes", params)
 
     engine_node = managed_engine_tree[params[:parent_engine]]
     #p get_all_leafs_service_hashes(engine_node)
+     if engine_node == nil
+       log_error_msg("Failed to find in managed service tree",params)
+     end
     return get_all_leafs_service_hashes(engine_node)
 
   end
 
-#returns all service_hashs marked persistant for :engine_name
+#@return all service_hashs marked persistant for :engine_name
   def get_engine_persistant_services(params) #params is :engine_name
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] =  params[:engine_name]
@@ -55,6 +58,7 @@ def find_engine_services_hashes(params)
   #returns false on error or duplicate
   #Needs overwrite flag
   #requires :parent_engine :type_path
+  #@return boolean 
 def add_to_managed_engines_tree(service_hash)
 
    if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
@@ -95,13 +99,14 @@ service_handle = service_hash[:service_handle]
  end
  
  #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
-
+#@return boolean
  def remove_from_engine_registery service_hash
    
      service_node = find_engine_services(service_hash)
      if service_node != nil
        sucess = remove_tree_entry(service_node)
      end
+     log_error_msg("Failed to find service node to remove service from engine registry ",service_hash)
      return false
  end
  

@@ -20,6 +20,7 @@ class SystemUtils
  
  #@Logs to passeenger std out the @msg followed by @object.to_s
  #Logs are written to apache/error.log
+ # error mesg is truncated to 512 bytes
  # returns nothing
   def SystemUtils.log_error_msg(msg,object)
     obj_str = object.to_s
