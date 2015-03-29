@@ -92,8 +92,9 @@ service_handle = service_hash[:service_handle]
      service_type_node << service_node
    else
      log_error_msg("Node existed",service_handle)
-     log_error_msg("With content",service_node.content)
-     return false
+     log_error_msg("over witing content",service_node.content)
+     service_node = Tree::TreeNode.new(service_handle,service_hash)
+     service_type_node << service_node
    end
 
  end
