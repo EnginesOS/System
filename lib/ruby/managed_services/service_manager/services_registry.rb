@@ -27,7 +27,7 @@ module ServicesRegistry
     
   rescue Exception=>e
     puts e.message
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
@@ -53,7 +53,7 @@ module ServicesRegistry
 
   rescue Exception=>e
     puts e.message
-    SystemUtils.log_exception(e)
+    log_exception(e)
 
   end
 

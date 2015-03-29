@@ -108,7 +108,7 @@ log_error_msg("create_type_path failed",type_path)
     if service_hash != nil
       p service_hash
     end
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
@@ -148,7 +148,7 @@ log_error_msg("create_type_path failed",type_path)
 
   rescue Exception=>e
     puts e.message
-    SystemUtils.log_exception(e)
+    log_exception(e)
 
     return nil
 
@@ -188,7 +188,7 @@ log_error_msg("create_type_path failed",type_path)
 
   rescue Exception=>e
     puts e.message
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
@@ -284,7 +284,7 @@ log_error_msg("Failed remove engine",params)
     p :error
     p params
 
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return nil
   end
 
@@ -299,4 +299,8 @@ log_error_msg("Failed remove engine",params)
 
   end
 
+  def log_exception(e)
+    @last_error = e.to_s.slice(0,256)
+    SystemUtils.log_exception(e)
+  end
 end

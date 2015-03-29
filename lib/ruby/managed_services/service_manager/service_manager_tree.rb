@@ -108,7 +108,7 @@ module ServiceManagerTree
       return service_tree
     rescue Exception=>e
       puts e.message + " with " + tree_data.to_s
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return nil
     end
   end
@@ -128,7 +128,7 @@ module ServiceManagerTree
     return service_tree
   rescue Exception=>e
     puts e.message
-    SystemUtils.log_exception(e)
+    log_exception(e)
 
   end
 
@@ -186,7 +186,7 @@ def get_managed_engine_tree
     return true
   rescue Exception=>e
     @last_error=( "load error")
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
