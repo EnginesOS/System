@@ -20,12 +20,14 @@ module ServicesRegistry
     if service_node == nil
       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
       service_type_node << service_node
+    elsif service_hash[:persistant] == false
+      service_node.content = service_hash
     else
       log_error_msg("Service Node existed",service_hash[:parent_engine])
-       log_error_msg("over witing content",service_node.content)
+      log_error_msg("Cannot over write persistant service" + service_node.content + " with ",service_hash)
 #       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
 #       service_type_node << service_node
-      service_node.content = service_hash
+     
     end
     
     #FIXME need to handle updating service

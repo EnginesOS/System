@@ -10,7 +10,7 @@ require_relative 'services_registry.rb'
 include ServicesRegistry
 
 class ServiceManager
-
+  
   #@service_tree root of the Service Registry Tree
   attr_accessor   :service_tree
   :last_error
@@ -169,11 +169,31 @@ log_error_msg("create_type_path failed",type_path)
 #    return retval
 #  end
 
+  #load softwwareservicedefinition for serivce in service_hash and
+  #@return boolean indicating the persistance 
+  #@return nil if no software definition found
+  def software_service_persistance(service_hash)
+    service_definition = software_service_definition(service_hash)
+    if service_definition != nil && service_definition != nil
+      return service_definition.persistant
+    end
+    return nil
+  end
+  
   #@ Add Service to the Service Registry Tree
   #@ Separatly to the ManagesEngine/Service Tree and the Services tree
   #@ return true if successful or false if failed
   def add_service service_hash
 
+    if service_hash.has_key?(:persistant) == false
+       persist = software_service_persistance(service_hash)
+       if persist == nil 
+         log_error_msg("Failed to get persistance status for ",service_hash)
+         return false
+       end
+      service_hash[:persistant] = persist
+    end 
+    
     if add_to_managed_engines_tree(service_hash) == false
       log_error_msg("Failed to add service to managed engine registry",service_hash)
       return false
@@ -200,6 +220,7 @@ log_error_msg("create_type_path failed",type_path)
      
     else
       log_error_msg("no :service_handle",params)
+      
       return nil
     end
   end

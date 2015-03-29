@@ -91,9 +91,12 @@ def add_to_managed_engines_tree(service_hash)
    if  service_node == nil
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node
+   elsif service_hash[:persistant] == false
+     service_node.content = service_hash
+     return true
    else
      log_error_msg("Engine Node existed",service_handle)
-     log_error_msg("over witing content",service_node.content)
+     log_error_msg("Cannot over write persistant service" + service_node.content + " with ",service_hash)
 #     service_node = Tree::TreeNode.new(service_handle,service_hash)
 #     service_type_node << service_node
      service_node.content = service_hash
