@@ -230,7 +230,9 @@ log_error_msg("create_type_path failed",type_path)
   #@ if :remove_all_application_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
-
+  if params.has_key?(:parent_engine) == false
+    params[:parent_engine] = params[:engine_name] 
+  end
     engine_node = managed_engine_tree[params[:parent_engine]]
 
     if engine_node == nil

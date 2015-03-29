@@ -264,7 +264,6 @@ class EngineBuilder
       if retval == false
         puts "Failed to Start Container " +  managed_container.last_error
         log_build_errors("Failed to Launch")
-
       end
 
       return retval
@@ -804,7 +803,7 @@ class EngineBuilder
       return engine
     end
     post_failed_build_clean_up
-    return failed(host_name,last_api_error,"build_engine")
+    return failed(@hostname,@last_api_error,"build_engine")
 
   rescue Exception=>e
     post_failed_build_clean_up
@@ -859,9 +858,9 @@ class EngineBuilder
     @blueprint_reader.data_gid
     )
 
-    p :set_cron_job_list
-    p @cron_job_list
-    mc.set_cron_job_list(@cron_job_list)
+#    p :set_cron_job_list
+#    p @cron_job_list
+#    mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
     mc.set_protocol(@protocol)
     mc.conf_register_site=( true) # needs some intelligence here for worker only
