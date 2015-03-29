@@ -85,7 +85,7 @@ class ServiceManager
         end
       end
     end
-log_error_msg("create_type_path failed",type_path)
+log_error_mesg("create_type_path failed",type_path)
     return nil
   end
 
@@ -282,7 +282,7 @@ log_error_msg("create_type_path failed",type_path)
       log_error_mesg("Failed to remove engine node ",engine_node)
       return false
     end
-log_error_msg("Failed remove engine",params)
+log_error_mesg("Failed remove engine",params)
     return false
   end
 
