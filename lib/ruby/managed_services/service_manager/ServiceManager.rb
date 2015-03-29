@@ -175,7 +175,7 @@ log_error_msg("create_type_path failed",type_path)
   def software_service_persistance(service_hash)
     service_definition = software_service_definition(service_hash)
     if service_definition != nil && service_definition != nil
-      return service_definition.persistant
+      return service_definition[:persistant]
     end
     return nil
   end
