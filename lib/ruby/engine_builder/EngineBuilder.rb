@@ -965,7 +965,7 @@ class EngineBuilder
             p :EOF_retry
             retry
           elsif  stderr.closed? == true
-            log_build_errors(error_mesg)
+            #log_build_errors(error_mesg)
             return true
           else
             err  = stderr.read_nonblock(1000)
