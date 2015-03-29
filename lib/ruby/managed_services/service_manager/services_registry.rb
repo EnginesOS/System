@@ -1,11 +1,10 @@
 #Module of methods to handle the Services Registry branch
 module ServicesRegistry
-  
+
   #Add The service_hash to the services registry branch
   #creates the branch path as required
   #@service_hash :publisher_namespace . :type_path . :parent_engine
   #Wover writes
-  
   def add_to_services_tree(service_hash)
 
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
@@ -16,31 +15,37 @@ module ServicesRegistry
 
     service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
 
-    service_node = service_type_node[service_hash[:parent_engine]]
+    engine_node  = service_type_node[service_hash[:parent_engine]]
+    if engine_node == nil
+      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine])
+      service_type_node << engine_node
+    end
+
+    service_node = engine_node[service_hash[:service_handle]]
     if service_node == nil
-      service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
-      service_type_node << service_node
+      service_node = Tree::TreeNode.new(service_hash[:service_handle],service_hash)
+      engine_node << service_node
     elsif service_hash[:persistant] == false
       service_node.content = service_hash
     else
-      log_error_mesg("Service Node existed",service_hash[:parent_engine])
+      log_error_mesg("Service Node existed",service_hash[:service_handle])
       log_error_mesg("Cannot over write persistant service" + service_node.content + " with ",service_hash)
-#       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
-#       service_type_node << service_node
-     
+      #       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+      #       service_type_node << service_node
+
     end
-    
+
     #FIXME need to handle updating service
-    
+
     return true
-    
+
   rescue Exception=>e
     puts e.message
     log_exception(e)
     return false
   end
 
-  # @return an array of service_hashes in the Service registry that match the @type_path and @indentifier  
+  # @return an array of service_hashes in the Service registry that match the @type_path and @indentifier
   def attached_services(type_path,identifier)
     retval = Array.new
     if managed_service_tree ==nil
@@ -68,60 +73,70 @@ module ServicesRegistry
 
   #@returns a [TreeNode] to the depth of the search
   #@service_query_hash :publisher_namespace
-#@service_query_hash :publisher_namespace , :type_path
-#@service_query_hash :publisher_namespace , :type_path , :service_handle
+  #@service_query_hash :publisher_namespace , :type_path
+  #@service_query_hash :publisher_namespace , :type_path , :service_handle
   def find_service_consumers(service_query_hash)
 
     if service_query_hash.has_key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace]  == nil
       log_error_mesg("no_publisher_namespace",service_query_hash)
       return false
     end
-    
+
     provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
 
     if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
       log_error_mesg("find_service_consumers_no_type_path", service_query_hash)
-      
+
       return provider_tree
     end
 
     service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
-  
 
     if service_path_tree == nil
       log_error_mesg("Failed to find matching service path",service_query_hash)
       return false
     end
 
-    if service_query_hash.has_key?(:service_handle) == false || service_query_hash[:service_handle]  == nil
-      log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
+    if service_query_hash.has_key?(:parent_engine) == false || service_query_hash[:parent_engine]  == nil
+      log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
       return  service_path_tree
     end
 
-    if  service_path_tree[service_query_hash[:service_handle]] == nil
-    log_error_mesg("Failed to find matching service_handle",service_query_hash)
+    services = service_path_tree[service_query_hash[:parent_engine]] == nil
+    if  services == nil
+      log_error_mesg("Failed to find matching parent_engine",service_query_hash)
       return false
     end
 
-    return service_path_tree[service_query_hash[:service_handle]]
+    if service_query_hash.has_key?(:service_handle) == false || service_query_hash[:service_handle]  == nil
+      log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
+      return  services
+    end
+
+    service = services[service_query_hash[:service_handle]]
+    if service == nil
+      log_error_mesg("failed to find match in services tree", service_query_hash)
+      return false
+    end
+    return service
 
   end
-  
-#remove the service matching the service_hash from the tree
-#@service_hash :publisher_namespace :type_path :service_handle 
-  def remove_from_services_registry(service_hash)
-  
-if managed_service_tree !=nil
-   service_node = find_service_consumers(service_hash)
 
-   if service_node != nil
-     return remove_tree_entry(service_node)
-   else
-     log_error_mesg("Fail to find service for removal",service_hash)
-   end
-end
+  #remove the service matching the service_hash from the tree
+  #@service_hash :publisher_namespace :type_path :service_handle
+  def remove_from_services_registry(service_hash)
+
+    if managed_service_tree !=nil
+      service_node = find_service_consumers(service_hash)
+
+      if service_node != nil
+        return remove_tree_entry(service_node)
+      else
+        log_error_mesg("Fail to find service for removal",service_hash)
+      end
+    end
     log_error_mesg("Fail to remove service" ,service_hash)
-   return false
-end
+    return false
+  end
 
 end
