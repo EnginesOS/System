@@ -113,7 +113,7 @@ module ServicesRegistry
       log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
       return  services
     end
-    p services
+    p :find_service_consumers_
     p service_query_hash[:service_handle]
  
     service = services[service_query_hash[:service_handle]]
