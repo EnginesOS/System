@@ -72,7 +72,8 @@ class ManagedService < ManagedContainer
       p "nil site hash"
       return false
     end
-    
+    service_hash[:persistant] =@persistant
+
     if is_running ==true   || @persistant == true
       result = add_consumer_to_service(service_hash)
       if result == true
