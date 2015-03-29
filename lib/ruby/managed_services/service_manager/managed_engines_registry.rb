@@ -95,6 +95,7 @@ service_handle = service_hash[:service_handle]
      log_error_msg("over witing content",service_node.content)
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node
+     return true
    end
 
  end
