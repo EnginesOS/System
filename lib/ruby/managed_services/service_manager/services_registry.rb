@@ -103,6 +103,7 @@ module ServicesRegistry
     end
 
     services = service_path_tree[service_query_hash[:parent_engine]] 
+      
     if  services == nil || services == false
       log_error_mesg("Failed to find matching parent_engine",service_query_hash)
       return false
@@ -112,6 +113,8 @@ module ServicesRegistry
       log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
       return  services
     end
+    p services
+    p service_query_hash[:service_handle]
  
     service = services[service_query_hash[:service_handle]]
     if service == nil
