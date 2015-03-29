@@ -91,7 +91,7 @@ def add_to_managed_engines_tree(service_hash)
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node
    else
-     log_error_msg("Node existed",service_handle)
+     log_error_msg("Engine Node existed",service_handle)
      log_error_msg("over witing content",service_node.content)
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node

@@ -20,7 +20,13 @@ module ServicesRegistry
     if service_node == nil
       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
       service_type_node << service_node
+    else
+      log_error_msg("Service Node existed",service_hash[:parent_engine])
+       log_error_msg("over witing content",service_node.content)
+       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+       service_type_node << service_node
     end
+    
     #FIXME need to handle updating service
     
     return true
