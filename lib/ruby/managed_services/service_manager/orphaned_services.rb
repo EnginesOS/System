@@ -36,7 +36,7 @@ module OrphanedServices
     p :orpahns_retr_start
     p params[:type_path]
       type_path = params[:type_path]
-    types = get_all_engines_type_path_node(orphaned_services_tree,type_path)
+    types = get_type_path_node(orphaned_services_tree,type_path)
     if types == nil
       log_error_mesg("No Orphan Matching type_path",params)
       return false
@@ -45,7 +45,7 @@ module OrphanedServices
       types.each do |type|
         # p type.content
         if type == nil
-          log_error_mesg(" nil type in ",params)
+          log_error_mesg(" nil type in ",types)
             next
         end
          if type[params[:service_handle]] != nil
