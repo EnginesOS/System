@@ -195,12 +195,16 @@ log_error_mesg("create_type_path failed",type_path)
        end
       service_hash[:persistant] = persist
     end 
-    
+  
+    p :adding_to_engine_tree
+      p service_hash  
     if add_to_managed_engines_tree(service_hash) == false
       log_error_mesg("Failed to add service to managed engine registry",service_hash)
       return false
     end
 
+    p :adding_to_service_tree
+    p service_hash
     if add_to_services_tree(service_hash) == false
     log_error_mesg("Failed to add service to managed service registry",service_hash)
     return false
