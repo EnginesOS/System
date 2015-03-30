@@ -5,7 +5,8 @@ module ManagedEnginesRegistry
   #Returns service node when supplied with params  :engine_name :type_path and :service_handle
   def find_engine_services(params)
       engine_node = managed_engine_tree[params[:parent_engine]]
-  
+  p :find_engine_services_with_params
+  p params
       if params.has_key?(:type_path) && params[:type_path] != nil
         services = get_type_path_node(engine_node,params[:type_path]) #engine_node[params[:type_path]]
         if services != nil  && params.has_key?(:service_handle) && params[:service_handle] != nil
@@ -49,6 +50,8 @@ def find_engine_services_hashes(params)
     
 
     services.children.each do |service|
+      p :finding_match_for
+      p service
       matches = get_matched_leafs(service,:persistant,true)
       SystemUtils.debug_output("matches",matches)
       leafs =  leafs.concat(matches)

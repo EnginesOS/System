@@ -69,11 +69,11 @@ module ServiceManagerTree
         if sub_branch.content.is_a?(Hash) 
           if  sub_branch.content[label] == value
             ret_val.push(sub_branch.content)
-            p :push_match_leaf
-            p   sub_branch.content
+#            p :push_match_leaf
+#            p   sub_branch.content
         else
-          p :did_not_match
-          p    sub_branch.content
+#          p :did_not_match
+#          p    sub_branch.content
           end
         else
          SystemUtils.debug_output("Leaf Content not a hash ",sub_branch.content)
