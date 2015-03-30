@@ -52,13 +52,19 @@ module OrphanedServices
         else
           log_error_mesg("params nil service_handle",params)
         end
-      end
+  end
       log_error_mesg("No Matching Orphan",params)
       return false
-    end
-    return types[params[:service_handle]]
-
+else
+    orphan =  types[params[:service_handle]]
+      if orphan == nil
+        log_error_mesg("No Matching Orphan",params)
+        return false
+      else
+        return orphan
+      end
   end
+end
 
   #@return  orphaned_services_tree
   #@wrapper for the gui
