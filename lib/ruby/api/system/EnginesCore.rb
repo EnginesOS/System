@@ -319,7 +319,9 @@ class EnginesCore
   
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
-         if sm.retrieve_orphan(service_hash) == false
+    search_hash = Hash.new
+    search_hash.merge(service_hash)
+    if sm.retrieve_orphan(search_hash) == false      
            return false
          end
          return true
