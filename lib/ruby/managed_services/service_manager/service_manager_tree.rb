@@ -68,15 +68,17 @@ module ServiceManagerTree
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash) 
           if  sub_branch.content[label] == value
-            ret_val.push(sub_branch.content)                   
+            ret_val.push(sub_branch.content)
+            p :push_match_leaf
+            p   sub_branch.content  
           end
         else
          SystemUtils.debug_output("Leaf Content not a hash ",sub_branch.content)
            end
-      else
+      else #children.count > 0
         ret_val.concat(get_matched_leafs(sub_branch,label,value))
-      end
-    end
+      end #if children.count == 0
+    end #do
     return ret_val
   end
   
