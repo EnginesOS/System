@@ -72,8 +72,7 @@ module ServiceManagerTree
 #            p :push_match_leaf
 #            p   sub_branch.content
         else
-#          p :did_not_match
-#          p    sub_branch.content
+          p " did not match" + sub_branch.content + " with  "  + label + ":" + value                     
           end
         else
          SystemUtils.debug_output("Leaf Content not a hash ",sub_branch.content)
