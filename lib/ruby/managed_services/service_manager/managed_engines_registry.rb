@@ -51,7 +51,7 @@ def find_engine_services_hashes(params)
 
     services.children.each do |service|
       p :finding_match_for
-      p service
+      p service.content
       matches = get_matched_leafs(service,:persistant,true)
       SystemUtils.debug_output("matches",matches)
       leafs =  leafs.concat(matches)
