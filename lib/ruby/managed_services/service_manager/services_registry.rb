@@ -29,7 +29,7 @@ module ServicesRegistry
       service_node.content = service_hash
     else
       log_error_mesg("Service Node existed",service_hash[:service_handle])
-      log_error_mesg("Cannot over write persistant service" + service_node.content + " with ",service_hash)
+      log_error_mesg("Cannot over write persistant service" + service_node.content.so_s + " with ",service_hash)
       #       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
       #       service_type_node << service_node
 
