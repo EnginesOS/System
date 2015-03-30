@@ -75,8 +75,14 @@ class ManagedService < ManagedContainer
     service_hash[:persistant] =@persistant
 
     if is_running ==true   || @persistant == true
+        if service_hash[:fresh] == false
+          result = true
+        else
       result = add_consumer_to_service(service_hash)
+        end
+        
       if result == true
+        service_hash[:fresh] = false
         p :adding_consumer_to_Sm
         p service_hash
         sm =  service_manager
