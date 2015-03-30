@@ -231,22 +231,22 @@ log_error_mesg("create_type_path failed",type_path)
   #@type_path [String]
   #@return [Array] of [TreeNode] s matching type_path under the [TreeNode] tree_node
   # 
-  def get_all_engines_type_path_node(tree_node,type_path)
-    retval = Array.new
-
-    tree_node.children.each do | engine_node |
-      retval.push(get_type_path_node(engine_node,type_path))
-    end
-
-    if retval.count == 1
-      return retval[0]
-    elsif retval.count == 0
-      log_error_mesg("no match " + type_path.to_s + " under:" ,engine_node.content)
-      return retval
-    else
-      return retval
-    end
-  end
+#  def get_all_engines_type_path_node(tree_node,type_path)
+#    retval = Array.new
+#
+#    tree_node.children.each do | engine_node |
+#      retval.push(get_type_path_node(engine_node,type_path))
+#    end
+#
+#    if retval.count == 1
+#      return retval[0]
+#    elsif retval.count == 0
+#      log_error_mesg("no match " + type_path.to_s + " under:" ,engine_node.content)
+#      return retval
+#    else
+#      return retval
+#    end
+#  end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_application_data is true all data is deleted and all persistant services removed
