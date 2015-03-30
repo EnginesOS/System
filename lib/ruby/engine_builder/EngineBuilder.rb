@@ -695,21 +695,22 @@ class EngineBuilder
 
       p :LOOKING_FOR_
       p service_hash
-      if  @core_api.find_service_consumers(service_hash) == false
+      if  @core_api.match_orphan_service(service_hash) == true
+              service_hash[:fresh]=false
+              @first_build = false
+              new_service_hash  = reattach_service(service_hash)
+              if new_service_hash != nil
+                service_hash = new_service_hash
+                service_hash[:fresh]=false
+                #@blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
+                free_orphan = true
+                log_build_output("Reattached Service " + service_hash[:service_handle].to_s)
+      elsif  @core_api.find_service_consumers(service_hash) == false
         @first_build = true
         service_hash[:fresh]=true
         log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
-      elsif  @core_api.match_orphan_service(service_hash) == true
-        service_hash[:fresh]=false
-        @first_build = false
-        new_service_hash  = reattach_service(service_hash)
-        if new_service_hash != nil
-          service_hash = new_service_hash
-          service_hash[:fresh]=false
-          #@blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
-          free_orphan = true
-          log_build_output("Reattached Service " + service_hash[:service_handle].to_s)
-        else
+      
+        else #elseif over attach to existing true attached to existing
           log_build_output("Failed ro build cannot over write " + service_hash[:service_handle].to_s + " No Service Found")
         end
       end
