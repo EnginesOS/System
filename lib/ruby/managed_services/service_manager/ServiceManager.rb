@@ -102,6 +102,8 @@ log_error_mesg("create_type_path failed",type_path)
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
     end
+    p :remove_service 
+    p service_hash
     return save_tree
 
   rescue Exception=>e
@@ -251,6 +253,7 @@ log_error_mesg("create_type_path failed",type_path)
   #@ if :remove_all_application_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
+    
   if params.has_key?(:parent_engine) == false
     params[:parent_engine] = params[:engine_name] 
   end
@@ -266,7 +269,7 @@ log_error_mesg("create_type_path failed",type_path)
       if params[:remove_all_application_data] == true
         if remove_service(service) == false
           log_error_mesg("Failed to remove service ",service)
-          return false
+          return false                 
         end
       else
         if orphan_service(service) == false
