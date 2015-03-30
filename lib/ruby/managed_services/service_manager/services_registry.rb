@@ -45,7 +45,7 @@ module ServicesRegistry
     return false
   end
 
-  # @return an array of service_hashes in the Service registry that match the @type_path and @indentifier
+  # @return an array of service_hashes in the Service registry that match the @type_path and @identifier
   def attached_services(type_path,identifier)
     retval = Array.new
     if managed_service_tree ==nil

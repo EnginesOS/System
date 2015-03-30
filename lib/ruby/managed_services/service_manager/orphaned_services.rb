@@ -21,8 +21,8 @@ module OrphanedServices
   #Saves the service_hash in the orphaned service registry 
   #@return result 
   def save_as_orphan(service_hash)
-    if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)
-    type_node = create_type_path_node(orphaned_services_tree,service_hash[:type_path])
+    if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)    
+    type_node = create_type_path_node(orphaned_services_tree,service_hash[:type_path])     
     type_node << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
       return true
     end
@@ -33,10 +33,11 @@ module OrphanedServices
   #@return nil on no match
   def retrieve_orphan(params)
 
+    
     types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
     if types == nil
       log_error_mesg("No Orphan Matching type_path",params)
-      return nil
+      return false
     end
     if  types.is_a?(Array)
       types.each do |type|
@@ -52,7 +53,7 @@ module OrphanedServices
         end
       end
       log_error_mesg("No Matching Orphan",params)
-      return nil
+      return false
     end
     return types[params[:service_handle]]
 
@@ -69,7 +70,7 @@ module OrphanedServices
   def reparent_orphan(params)
     orphan = retrieve_orphan(params)
     if orphan !=nil
-      content =  orphan.content
+      content = orphan.content
       content[:variables][:parent_engine]=params[:parent_engine]
       content[:parent_engine]=params[:parent_engine]
       return content
