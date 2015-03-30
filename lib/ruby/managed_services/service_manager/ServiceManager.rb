@@ -241,8 +241,8 @@ log_error_mesg("create_type_path failed",type_path)
     if retval.count == 1
       return retval[0]
     elsif retval.count == 0
-      log_error_mesg("no match " + type_path.to_s + " under:" ,service)
-      return nil
+      log_error_mesg("no match " + type_path.to_s + " under:" ,engine_node.content)
+      return retval
     else
       return retval
     end
