@@ -58,7 +58,8 @@ module ServiceManagerTree
 
     return true
   end
-
+  #@branch the [TreeNode] under which to search
+  #@param label the hash key for the value to match value against
   #@return [Array] all service_hash(s) which contain the hash pair label=value    
   #@return empty array if none
   def get_matched_leafs(branch,label,value)
