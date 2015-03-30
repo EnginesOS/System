@@ -33,17 +33,20 @@ def find_engine_services_hashes(params)
 
   end
 
-#@return all service_hashs marked persistant for :engine_name
+#@return [Array] of all service_hashs marked persistant for :engine_name
   def get_engine_persistant_services(params) #params is :engine_name
+    
+    leafs = Array.new
+    
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] =  params[:engine_name]
     end
     services = find_engine_services(params)
     if services == nil
       log_error_mesg("Failed to find engine in persistant service",params)
-      return nil
+      return leafs
     end
-    leafs = Array.new
+    
 
     services.children.each do |service|
       matches = get_matched_leafs(service,:persistant,true)
