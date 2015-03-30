@@ -147,7 +147,8 @@ module ServiceManagerTree
      log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
-
+   p :get_type_path_node
+   p type_path.to_s
    if type_path.include?("/") == false
      return parent_node[type_path]
 

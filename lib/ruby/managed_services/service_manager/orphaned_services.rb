@@ -33,7 +33,8 @@ module OrphanedServices
   #@return nil on no match
   def retrieve_orphan(params)
 
-    
+    p :orpahns_retr_start
+    p params[:type_path]
     types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
     if types == nil
       log_error_mesg("No Orphan Matching type_path",params)
