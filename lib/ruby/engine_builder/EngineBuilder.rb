@@ -699,7 +699,7 @@ class EngineBuilder
         @first_build = true
         service_hash[:fresh]=true
         log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
-      else
+      elsif  @core_api.match_orphan_service(service_hash) == true
         service_hash[:fresh]=false
         @first_build = false
         new_service_hash  = reattach_service(service_hash)
@@ -710,7 +710,7 @@ class EngineBuilder
           free_orphan = true
           log_build_output("Reattached Service " + service_hash[:service_handle].to_s)
         else
-          log_build_output("Failed to reattach " + service_hash[:service_handle].to_s + " No Service Found")
+          log_build_output("Failed ro build cannot over write " + service_hash[:service_handle].to_s + " No Service Found")
         end
       end
       p :attach_service

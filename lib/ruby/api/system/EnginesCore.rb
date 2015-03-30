@@ -310,11 +310,19 @@ class EnginesCore
   
   
   def loadServiceManager()
-#    if @service_manager == nil
+    if @service_manager == nil
       @service_manager = ServiceManager.new()
-#      return @service_manager
-#    end
+      return @service_manager
+    end
     return @service_manager
+  end
+  
+  def match_orphan_service(service_hash)
+    sm = loadServiceManager()
+         if sm.retrieve_orphan(params) == false
+           return false
+         end
+         return true
   end
 
   def find_service_consumers(params)
