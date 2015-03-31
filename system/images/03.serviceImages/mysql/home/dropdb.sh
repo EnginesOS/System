@@ -1,6 +1,6 @@
 #!/bin/bash
 BTICK='`'
-EXPECTED_ARGS=3
+EXPECTED_ARGS=2
 E_BADARGS=65
 MYSQL=`which mysql`
 
