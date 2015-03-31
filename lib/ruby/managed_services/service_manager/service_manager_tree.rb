@@ -26,6 +26,8 @@ module ServiceManagerTree
   #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
   def managed_service_tree
+    p :service_manager_
+    p :managed_service_tree
     if (@service_tree["Services"] == nil )
        @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
      end
