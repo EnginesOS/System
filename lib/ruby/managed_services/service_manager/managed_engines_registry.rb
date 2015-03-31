@@ -98,8 +98,7 @@ def add_to_managed_engines_tree(service_hash)
      service_node = Tree::TreeNode.new(service_handle,service_hash)
      service_type_node << service_node
    elsif service_hash[:persistant] == false
-     service_node.content = service_hash
-     return true
+     service_node.content = service_hash  
    else
      log_error_mesg("Engine Node existed",service_handle)
      log_error_mesg("Cannot over write persistant service" + service_node.content.to_s + " with ",service_hash)
@@ -109,6 +108,7 @@ def add_to_managed_engines_tree(service_hash)
      return false
    end
 
+   return true
  end
  
  #Remove Service from engine service registry matching :parent_engine :type_path :service_handle

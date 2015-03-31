@@ -11,10 +11,10 @@ module OrphanedServices
 
     remove_tree_entry(orphan)
 
-    service = find_service_consumers(orphan.content)
-    if service != nil
-      remove_tree_entry(service)
-    end
+#    service = find_service_consumers(orphan.content)
+#    if service != nil
+#      remove_tree_entry(service)
+#    end
  
     return true
   end
@@ -23,7 +23,8 @@ module OrphanedServices
   def save_as_orphan(service_hash)
     if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)    
     type_node = create_type_path_node(orphaned_services_tree,service_hash[:type_path])     
-    type_node << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
+    #INSERT Enginename here
+      type_node << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
       return true
     end
     return false
