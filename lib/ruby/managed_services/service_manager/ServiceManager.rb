@@ -127,7 +127,7 @@ log_error_mesg("create_type_path failed",type_path)
 
     case objectName
     when "ManagedEngine"
-      params[:engine_name] = identifier
+      params[:parent_engine] = identifier
       p :get_engine_service_hashes
       hashes = find_engine_services_hashes(params)
       SystemUtils.debug_output("hashes",hashes)
