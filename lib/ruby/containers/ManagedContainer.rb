@@ -481,7 +481,7 @@ end
        @last_error="No connection to Engines OS System"      
        return false
      end
-     service =  EnginesOSapi.loadManagedService("dns",@core_api)
+     service =  EnginesOSapi:ServicesApi.loadManagedService("dns",@core_api)
      if service.is_a?(ManagedService) == false
        p failed_to_load_dns_service
        return false
