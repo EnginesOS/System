@@ -17,6 +17,9 @@ class SystemAccess
     return SysConfig.SMTPHost
   end
   
+  def hrs_frm_gmt
+    return "+10"
+  end
   def default_domain
     return SystemUtils.get_default_domain
   end
