@@ -9,8 +9,15 @@ require "/opt/engines/lib/ruby/prefs/SystemPreferences.rb"
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
+
 require_relative "services_api.rb"
 include ServicesApi
+
+require_relative "engines_api.rb"
+include EnginesApi
+
+require_relative "build_api.rb"
+include BuildApi
 
 class EnginesOSapi
   def initialize()
@@ -21,9 +28,6 @@ class EnginesOSapi
     return @core_api
   end
   
- def get_engine_build_report(engine_name)
-   return   @core_api.get_build_report(engine_name)
- end
   
   def log_exception_and_fail(cmd,e)
       e_str = SystemUtils.log_exception(e)
@@ -80,21 +84,7 @@ class EnginesOSapi
     
   end
   
-  def buildEngine(repository,host,domain_name,environment)
-    engine_builder = EngineBuilder.new(repository,host,host,domain_name,environment, @core_api)
-    engine = engine_builder.build_from_blue_print
-    if engine == false
-      return  failed(host,last_api_error,"build_engine") 
-    end
-    if engine != nil
-      engine.save_state
-      return engine
-    end
-    return  failed(host,last_api_error,"build_engine") 
-
-  rescue Exception=>e
-    return log_exception_and_fail("buildEngine",e)
-  end
+  
 
 #    def reinstall_engine engine_name
 #      
@@ -125,33 +115,7 @@ class EnginesOSapi
 #      #   custom_env=params
 #     
 #    end
-  def build_engine(params)
-
-    p params
-   
-    @engine_builder = EngineBuilder.new(params, @core_api)
-    engine = @engine_builder.build_from_blue_print
-    if engine == false
-      return  failed(params[:engine_name],@engine_builder.last_error,"build_engine")
-    end
-    if engine != nil
-      if engine.is_active == false
-        return failed(params[:engine_name],"Failed to start  " + @engine_builder.last_error.to_s ,"build_engine")
-      end
-      return engine
-    end
-    return failed(host_name,@engine_builder.last_error,"build_engine")
-
-  rescue Exception=>e
-    return log_exception_and_fail("build_engine",e)
-  end
-
-  def get_engine_builder_streams
-    if @engine_builder != nil 
-      return  ([@engine_builder.get_build_log_stream,  @engine_builder.get_build_err_stream])
-    end 
-    return nil
-  end
+  
   
   def last_api_error
     if @core_api
@@ -581,28 +545,6 @@ class EnginesOSapi
     return log_exception_and_fail("Load Engine Blueprint",e)
   end
 
-  def rebuild_engine_container engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","Load Engine Blueprint")
-    end
-    state = engine.read_state
-    if state == "running" || state == "paused"
-      return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
-    end
-    retval = engine.rebuild_container
-    if retval.is_a?(ManagedEngine)
-      success(engine_name,"Rebuild Engine Image")
-    else
-      puts "rebuild error"
-      p engine.last_error
-      return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
-
-    end
-  rescue Exception=>e
-    return log_exception_and_fail("Rebuild Engine",e)
-  end
-
   #not needed as inherited ???
   def read_state container
 
@@ -658,120 +600,9 @@ class EnginesOSapi
     return log_exception_and_fail("get_container_network_metrics",e)
   end
 
-  def stopService service_name
-    service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","Stop Service")
-    end
+  
 
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval =   service.stop_container()
-    if retval == false
-      return failed(service_name,service.last_error,"Stop Service")
-    end
-    return success(service_name,"Stop Service")
-  rescue Exception=>e
-    return log_exception_and_fail("Stop Service",e)
-  end
-
-  def startService service_name
-    service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","Start Service")
-    end
-
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval = service.start_container()
-    if retval == false
-      return failed(service_name,service.last_error,"Start Service")
-    end
-    return success(service_name,"Start Service")
-  rescue Exception=>e
-    return log_exception_and_fail("Start Service",e)
-  end
-
-  def  pauseService service_name
-    service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","Pause Service")
-    end
-
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval = service.pause_container()
-    if retval == false
-      return failed(service_name,service.last_error,"Pause Service")
-    end
-    return success(service_name,"Pause Service")
-  rescue Exception=>e
-    return log_exception_and_fail("Pause Service",e)
-  end
-
-  def  unpauseService service_name
-    service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","Unpause Service")
-    end
-
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval = service.unpause_container()
-    if retval == false
-      return failed(service_name,service.last_error,"Unpause Service")
-    end
-    return success(service_name,"Unpause Service")
-  rescue Exception=>e
-    return log_exception_and_fail("Unpause Service",e)
-  end
-
-  def registerServiceWebSite service_name
-    service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","Register Service Web")
-    end
-
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval =   service.register_site()
-    if retval != true
-      return failed(service_name,service.last_error,"Register Service Web")
-    end
-    return success(service_name,"Register Service Web")
-  rescue Exception=>e
-    return log_exception_and_fail("Register Service Web",e)
-  end
-
-  def deregisterServiceWebSite service_name
-    service =getManagedService(service_name)
-    if service == nil
-      return  failed(service_name,"No Such Service","Deregister Service Web")
-    end
-
-    if service.is_a?(EnginesOSapiResult)
-      return service
-    end
-
-    retval =   service.deregister_site()
-    if retval != true
-      return failed(service_name,service.last_error,"Deregister Service Web")
-    end
-    return success(service_name,"Deregister Service Web")
-  rescue Exception=>e
-    return log_exception_and_fail("DeRegister Service Web",e)
-  end
-
+ 
  
 
   def get_volumes
@@ -818,11 +649,7 @@ class EnginesOSapi
      rescue Exception=>e
          return log_exception_and_fail("update service runtime params ",e)
    end
-  def set_service_hostname_properties(params)
-    return success(params[:engine_name],"update service hostname params")
-       rescue Exception=>e
-           return log_exception_and_fail("set_engine_hostname_details ",e)
-  end
+  
   def set_engine_network_properties(params)
     p :set_engine_network_properties
        p params
@@ -839,14 +666,7 @@ class EnginesOSapi
        end
  end
  
- def get_available_services_for(item)
-    res = @core_api.get_available_services_for(item)
-     if res != nil
-       return res
-          else
-            return failed("get avaiable services ",last_api_error,"get avaiable services")
-          end
- end
+
   
  def default_backup_service_definition(params)
    #FixMe read backup from mappings

@@ -195,6 +195,132 @@ module ServicesApi
      return log_exception_and_fail("DeRegister Service DNS",e)
    end
  
+  def startService service_name
+     service = getManagedService(service_name)
+     if service == nil
+       return failed(service_name,"No Such Service","Start Service")
+     end
+ 
+     if service.is_a?(EnginesOSapiResult)
+       return service
+     end
+ 
+     retval = service.start_container()
+     if retval == false
+       return failed(service_name,service.last_error,"Start Service")
+     end
+     return success(service_name,"Start Service")
+   rescue Exception=>e
+     return log_exception_and_fail("Start Service",e)
+   end
+ 
+   def  pauseService service_name
+     service = getManagedService(service_name)
+     if service == nil
+       return failed(service_name,"No Such Service","Pause Service")
+     end
+ 
+     if service.is_a?(EnginesOSapiResult)
+       return service
+     end
+ 
+     retval = service.pause_container()
+     if retval == false
+       return failed(service_name,service.last_error,"Pause Service")
+     end
+     return success(service_name,"Pause Service")
+   rescue Exception=>e
+     return log_exception_and_fail("Pause Service",e)
+   end
+ 
+   def  unpauseService service_name
+     service = getManagedService(service_name)
+     if service == nil
+       return failed(service_name,"No Such Service","Unpause Service")
+     end
+ 
+     if service.is_a?(EnginesOSapiResult)
+       return service
+     end
+ 
+     retval = service.unpause_container()
+     if retval == false
+       return failed(service_name,service.last_error,"Unpause Service")
+     end
+     return success(service_name,"Unpause Service")
+   rescue Exception=>e
+     return log_exception_and_fail("Unpause Service",e)
+   end
+ 
+   def registerServiceWebSite service_name
+     service = getManagedService(service_name)
+     if service == nil
+       return failed(service_name,"No Such Service","Register Service Web")
+     end
+ 
+     if service.is_a?(EnginesOSapiResult)
+       return service
+     end
+ 
+     retval =   service.register_site()
+     if retval != true
+       return failed(service_name,service.last_error,"Register Service Web")
+     end
+     return success(service_name,"Register Service Web")
+   rescue Exception=>e
+     return log_exception_and_fail("Register Service Web",e)
+   end
+ 
+   def deregisterServiceWebSite service_name
+     service =getManagedService(service_name)
+     if service == nil
+       return  failed(service_name,"No Such Service","Deregister Service Web")
+     end
+ 
+     if service.is_a?(EnginesOSapiResult)
+       return service
+     end
+ 
+     retval =   service.deregister_site()
+     if retval != true
+       return failed(service_name,service.last_error,"Deregister Service Web")
+     end
+     return success(service_name,"Deregister Service Web")
+   rescue Exception=>e
+     return log_exception_and_fail("DeRegister Service Web",e)
+   end
+
+  def get_available_services_for(item)
+     res = @core_api.get_available_services_for(item)
+      if res != nil
+        return res
+           else
+             return failed("get avaiable services ",last_api_error,"get avaiable services")
+           end
+  end
    
+  def stopService service_name
+      service = getManagedService(service_name)
+      if service == nil
+        return failed(service_name,"No Such Service","Stop Service")
+      end
   
+      if service.is_a?(EnginesOSapiResult)
+        return service
+      end
+  
+      retval =   service.stop_container()
+      if retval == false
+        return failed(service_name,service.last_error,"Stop Service")
+      end
+      return success(service_name,"Stop Service")
+    rescue Exception=>e
+      return log_exception_and_fail("Stop Service",e)
+    end
+    
+  def set_service_hostname_properties(params)
+      return success(params[:engine_name],"update service hostname params")
+         rescue Exception=>e
+             return log_exception_and_fail("set_engine_hostname_details ",e)
+    end
 end
