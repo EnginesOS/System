@@ -29,7 +29,7 @@ module ServiceManagerTree
     p :service_manager_
     p :managed_service_tree
     if (@service_tree["Services"] == nil )
-       @service_tree << Tree::TreeNode.new("Services","ManagedEngine Service register")       
+       @service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
      return @service_tree["Services"]
     
