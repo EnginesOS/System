@@ -528,7 +528,7 @@ SystemUtils.log_exception(e)
            p name
            if ask == true  && @builder.set_environments.has_key?(name) == true              
              entered_value=@builder.set_environments[name]
-              if entered_value != nil && entered_value.count !=0#FIXme needs to be removed
+              if entered_value != nil && entered_value.length !=0#FIXme needs to be removed
                 value = entered_value 
               end
            end
