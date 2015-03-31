@@ -49,17 +49,18 @@ module ServicesApi
   rescue Exception=>e
     return log_exception_and_fail("getManagedServices",e)
   end
-
-  def self.loadManagedService(service_name,core_api)
-    service = core_api.loadManagedService(service_name)
-    if service == false
-      return self.failed(service_name,core_api.last_error ,"Load Service")
-    end
-    return service
-  rescue Exception=>e
-    return self.log_exception_and_fail("LoadMangedService",e)
-  end
   
+  def self.loadManagedService(service_name,core_api)
+     service = core_api.loadManagedService(service_name)
+     if service == false
+       return self.failed(service_name,core_api.last_error ,"Load Service")
+     end
+     return service
+   rescue Exception=>e
+     return self.log_exception_and_fail("LoadMangedService",e)
+   end
+   
+ 
   def getManagedService(service_name)
  
      managed_service = EnginesOSapi.loadManagedService(service_name,@core_api)
