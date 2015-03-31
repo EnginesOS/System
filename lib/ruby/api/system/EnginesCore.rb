@@ -340,6 +340,7 @@ class EnginesCore
     sm = loadServiceManager()
         return sm.managed_service_tree
   end
+  
   def get_managed_engine_tree
     sm = loadServiceManager()
            return sm.get_managed_engine_tree
