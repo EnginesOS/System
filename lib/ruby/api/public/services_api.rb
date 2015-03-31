@@ -325,4 +325,9 @@ module ServicesApi
          rescue Exception=>e
              return log_exception_and_fail("set_engine_hostname_details ",e)
     end
+  def log_exception_and_fail(cmd,e)
+      e_str = SystemUtils.log_exception(e)
+      return failed("Exception",e_str,cmd)
+    end
+    
 end
