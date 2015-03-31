@@ -63,7 +63,7 @@ module ServicesApi
  
   def getManagedService(service_name)
  
-     managed_service = EnginesOSapi::ServicesApi.loadManagedService(service_name,@core_api)
+     managed_service = ServicesApi.loadManagedService(service_name,@core_api)
      #  if managed_service == nil
      #   return failed(service_name,"Fail to Load configuration:","Load Service")
      #end
