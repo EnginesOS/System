@@ -51,7 +51,7 @@ module ServicesApi
   end
   
   def self.loadManagedService(service_name,core_api)
-     service = core_api.loadManagedService(service_name)
+     service = @core_api.loadManagedService(service_name)
      if service == false
        return self.failed(service_name,core_api.last_error ,"Load Service")
      end
