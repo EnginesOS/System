@@ -22,7 +22,9 @@ module ManagedEnginesRegistry
     
     #@return all service_hashs for :engine_name
 def find_engine_services_hashes(params)
-
+    if params.has_key?(:engine_name)
+      params[:parent_engine] = params[:engine_name]
+    end
     SystemUtils.debug_output("find_engine_services_hashes", params)
 
     engine_node = managed_engine_tree[params[:parent_engine]]
