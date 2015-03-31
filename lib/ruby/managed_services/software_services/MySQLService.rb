@@ -15,7 +15,26 @@ class MySQLService < SoftwareService
   end
 
   def rm_consumer_from_service (service_hash)
-    return  true
+    begin
+         p :drop_db
+         p service_hash
+         if service_hash.has_key?(:service_container_name) == true
+           container_name = service_hash[:service_container_name]
+         end
+         cmd = "docker exec " +  container_name + " /home/dropdb.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
+   
+         #save details with some manager
+         SystemUtils.debug_output("Drop DB Command",cmd)
+   
+         SystemUtils.run_system(cmd)
+   
+         #FIXME need to checc result from script
+         return true
+       rescue  Exception=>e
+         SystemUtils.log_exception(e)
+         return false
+       end
+
   end
 
   def create_database  service_hash
