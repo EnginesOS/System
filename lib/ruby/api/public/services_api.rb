@@ -51,13 +51,13 @@ module ServicesApi
   end
   
   def self.loadManagedService(service_name,core_api)
-     service = @core_api.loadManagedService(service_name)
+     service = core_api.loadManagedService(service_name)
      if service == false
-       return self.failed(service_name,core_api.last_error ,"Load Service")
+       return ServiceApi.failed(service_name,core_api.last_error ,"Load Service")
      end
      return service
    rescue Exception=>e
-     return self.log_exception_and_fail("LoadMangedService",e)
+     return ServiceApi.log_exception_and_fail("LoadMangedService",e)
    end
    
  
@@ -325,7 +325,7 @@ module ServicesApi
          rescue Exception=>e
              return log_exception_and_fail("set_engine_hostname_details ",e)
     end
-  def log_exception_and_fail(cmd,e)
+  def ServiceApi.log_exception_and_fail(cmd,e)
       e_str = SystemUtils.log_exception(e)
       return failed("Exception",e_str,cmd)
     end
