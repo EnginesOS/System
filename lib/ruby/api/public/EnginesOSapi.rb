@@ -11,13 +11,13 @@ require 'objspace'
 require_relative "EnginesOSapiResult.rb"
 
 require_relative "services_api.rb"
-include ServicesApi
+#include ServicesApi
 
 require_relative "engines_api.rb"
-include EnginesApi
+#include EnginesApi
 
 require_relative "build_api.rb"
-include BuildApi
+#include BuildApi
 
 class EnginesOSapi
   def initialize()
