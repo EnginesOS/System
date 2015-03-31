@@ -17,7 +17,7 @@ class SystemAccess
     return SysConfig.SMTPHost
   end
   
-  def hrs_frm_gmt
+  def hrs_from_gmt
     return "+10"
   end
   def default_domain
