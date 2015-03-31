@@ -9,17 +9,24 @@ require "/opt/engines/lib/ruby/prefs/SystemPreferences.rb"
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
-
-require_relative "services_api.rb"
+#
+#require_relative "services_api.rb"
 #include ServicesApi
-
-require_relative "engines_api.rb"
+#
+#require_relative "engines_api.rb"
 #include EnginesApi
-
-require_relative "build_api.rb"
+#
+#require_relative "build_api.rb"
 #include BuildApi
 
 class EnginesOSapi
+  require_relative "services_api.rb"
+  include BuildApi
+  require_relative "engines_api.rb"
+  include EnginesApi
+  require_relative "services_api.rb"
+  include ServicesApi
+  
   def initialize()
     @core_api = EnginesCore.new
   end
