@@ -13,8 +13,8 @@ class BackupService < SoftwareService
 
     begin
 
-      if service_hash.has_key?(:engine_name)
-        containerName = service_hash[:engine_name]
+      if service_hash.has_key?(:parent_engine)
+        containerName = service_hash[:parent_engine]
       else
         containerName = service_hash[:parent_engine]
 

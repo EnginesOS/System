@@ -18,6 +18,15 @@ class SystemUtils
   end 
  end
  
+ #@Logs to passeenger std out the @msg followed by @object.to_s
+ #Logs are written to apache/error.log
+ # error mesg is truncated to 512 bytes
+ # returns nothing
+  def SystemUtils.log_error_mesg(msg,object)
+    obj_str = object.to_s.slice!(0,512)
+    SystemUtils.log_output(msg + ":->:" + obj_str ,10)
+  end
+ 
  
   def SystemUtils.log_error(object)
     SystemUtils.log_output(object,10)

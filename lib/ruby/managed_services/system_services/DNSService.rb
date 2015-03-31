@@ -15,17 +15,22 @@ class DNSService < ManagedService
   def create_service_hash engine
     p :new_Site_has_for
     p engine.containerName
+
     service_hash = Hash.new()
     service_hash[:type_path] = 'dns'
     service_hash[:variables] = Hash.new
     service_hash[:variables][:parent_engine]=engine.containerName
     service_hash[:parent_engine]=engine.containerName
-    service_hash[:variables][:name]=engine.containerName
+      if engine.ctype == "service"
+        service_hash[:variables][:hostname]=engine.hostName
+      else
+        service_hash[:variables][:hostname]=engine.containerName
+      end
+    service_hash[:variables][:name]=service_hash[:variables][:hostname]
     service_hash[:variables][:container_type]=engine.ctype
-    service_hash[:variables][:hostname]=engine.hostName
     service_hash[:variables][:ip]=engine.get_ip_str.to_s
     service_hash[:publisher_namespace] = "EnginesSystem"
-    service_hash[:service_handle]=engine.hostName
+    service_hash[:service_handle]=service_hash[:variables][:name]
     SystemUtils.debug_output("create dns Hash",service_hash)
 
     return service_hash

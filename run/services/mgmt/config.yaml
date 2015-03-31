@@ -3,7 +3,7 @@ containerName: mgmt
 ctype: service
 last_error: 
 memory: '384'
-hostName: mgmt
+hostName: 'mgmt'
 domainName: 
 environments:
 - !ruby/object:EnvironmentVariable

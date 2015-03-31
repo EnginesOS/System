@@ -8,21 +8,24 @@ function configure_git {
 	mkdir -p /opt/engines/
 	cd /opt/engines/
 	git init 
+
+	git remote add -t alpha origin 	https://github.com/EnginesOS/System.git
+	git fetch
 	
-	echo '[core]
-	        repositoryformatversion = 0
-	        filemode = true
-	        bare = false
-	        logallrefupdates = true
-	[branch "master"]
-	[remote "origin"]
-	        url = https://github.com/EnginesOS/System
-	        fetch = +refs/heads/*:refs/remotes/origin/*
-	[branch "master"]
-	        remote = origin
-	        merge = refs/heads/master
-	' > .git/config
-	git pull
+#	echo '[core]
+#	        repositoryformatversion = 0
+#	        filemode = true
+#	        bare = false
+#	        logallrefupdates = true
+#	[branch "master"]
+#	[remote "origin"]
+#	        url = https://github.com/EnginesOS/System
+#	        fetch = +refs/heads/*:refs/remotes/origin/*
+#	[branch "master"]
+#	        remote = origin
+#	        merge = refs/heads/master
+#	' > .git/config
+#	git pull
 }
   
   function install_docker_and_components {
@@ -398,19 +401,23 @@ mkdir -p /opt/engines/system/images/04.systemApps/mgmt/home/app
 	  if test ! -f .git/config
 		then
 			git init
-			echo '[core]
-				        repositoryformatversion = 0
-				        filemode = true
-				        bare = false
-				        logallrefupdates = true
-				[branch "master"]
-				[remote "origin"]
-				        url = https://github.com/EnginesOS/SystemGui.git
-				        fetch = +refs/heads/*:refs/remotes/origin/*
-				[branch "master"]
-				        remote = origin
-				        merge = refs/heads/master
-				' > .git/config		
-		fi
-		git pull
+			
+			git remote add -t alpha origin 	https://github.com/EnginesOS/SystemGui.git
+			git fetch
+				
+#			echo '[core]
+#				        repositoryformatversion = 0
+#				        filemode = true
+#				        bare = false
+#				        logallrefupdates = true
+#				[branch "master"]
+#				[remote "origin"]
+#				        url = https://github.com/EnginesOS/SystemGui.git
+#				        fetch = +refs/heads/*:refs/remotes/origin/*
+#				[branch "master"]
+#				        remote = origin
+#				        merge = refs/heads/master
+#				' > .git/config		
+#		fi
+#		git pull
 }

@@ -316,6 +316,15 @@ class EnginesCore
     end
     return @service_manager
   end
+  
+  def match_orphan_service(service_hash)
+    sm = loadServiceManager()
+
+    if sm.retrieve_orphan(service_hash) == false      
+           return false
+         end
+         return true
+  end
 
   def find_service_consumers(params)
     sm = loadServiceManager()
@@ -331,6 +340,7 @@ class EnginesCore
     sm = loadServiceManager()
         return sm.managed_service_tree
   end
+  
   def get_managed_engine_tree
     sm = loadServiceManager()
            return sm.get_managed_engine_tree
