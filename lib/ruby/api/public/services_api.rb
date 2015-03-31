@@ -112,7 +112,7 @@ module ServicesApi
       return @core_api.get_managed_engine_tree  
     end
     
-    def managed_service_tree
+    def fetch_managed_service_tree
       p :managed_service_tree
       return @core_api.managed_service_tree
     end
