@@ -113,6 +113,7 @@ module ServicesApi
     end
     
     def managed_service_tree
+      p :managed_service_tree
       return @core_api.managed_service_tree
     end
   
