@@ -601,35 +601,58 @@ class EnginesCore
     end
   end
 
+#@return boolean indicating sucess
+#@params [Hash] :engine_name
+#Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)  
+# They are removed from the tree if delete is sucessful
+  def delete_engine_persistant_services(params)
+    sm = loadServiceManager()
+    services = sm.get_engine_persistant_services(params)
+
+    service.each do service_hash
+      if service_hash.has_key?(:service_container_name) == false
+        log_error_mesg("Missing :service_container_name in service_hash",service_hash)
+        return false
+      end
+      service = loadManagedService(service_hash[:service_container_name])
+      if service == nil
+        log_error_mesg("Failed to load container name keyed by :service_container_name ",service_hash)
+        return false
+      end
+      if service.is_running == false
+        log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
+        return false
+      end
+      if service.remove_consumer(params) == false
+        @last_error = service.last_error
+        log_error_mesg("Failed to remoove service ",service_hash)
+        return false
+      end
+    end
+    return true
+  end
+
   def delete_image_dependancies(params)
 
-    service = loadManagedService(params[:service_container_name])
-    if service == nil
-      log_error_mesg("Failed to Load Service",params)
+    if delete_engine_persistant_services(params) == false
+      @last_error = sm.last_error
+      log_error_mesg("Failed to delete Service",service_hash)
       return false
     end
 
-    if service.is_running? == false
-      log_error_mesg("Cannot remove as Service is not running",params)
+    #do with Container
+    #remove logs
+    #remove status
+    #remove flags
+
+    #remove services
+    sm = loadServiceManager()
+    if sm.rm_remove_engine(params) == false
+      log_error_mesg("Failed to remove deleted Service",service_hash)
+      @last_error = sm.last_error
       return false
     end
-    if service.remove_consumer(params) == true
-      sm = loadServiceManager()
 
-      #do with Container
-      #remove logs
-      #remove status
-      #remove flags
-
-      #remove services
-      result = sm.rm_remove_engine(params)
-      if result == false
-        @last_error = sm.last_error
-      end
-      return result
-    end
-
-    return false
   end
 
   def run_system(cmd)
