@@ -14,6 +14,7 @@ module ServiceManagerTree
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
   def orphaned_services_tree
+    p :orphan_tree
     orphans = @service_tree["OphanedServices"]
     if orphans == nil
       @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
