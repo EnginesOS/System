@@ -595,7 +595,7 @@ class EnginesCore
       return false
 
     rescue Exception=>e
-      container.last_error=( "Failed To Delete " + e.to_s)
+     @last_error=( "Failed To Delete " + e.to_s)
       SystemUtils.log_exception(e)
       return false
 
@@ -633,7 +633,7 @@ class EnginesCore
     return true
 
     rescue Exception=>e
-      container.last_error=( "Failed To Delete " + e.to_s)
+      @last_error=( "Failed To Delete " + e.to_s)
       SystemUtils.log_exception(e)
       return false
 
@@ -643,7 +643,7 @@ class EnginesCore
 
     if delete_engine_persistant_services(params) == false
       @last_error = sm.last_error
-      log_error_mesg("Failed to delete Service",service_hash)
+      log_error_mesg("Failed to delete Service",params)
       return false
     end
 
@@ -655,7 +655,7 @@ class EnginesCore
     #remove services
     sm = loadServiceManager()
     if sm.rm_remove_engine(params) == false
-      log_error_mesg("Failed to remove deleted Service",service_hash)
+      log_error_mesg("Failed to remove deleted Service",params)
       @last_error = sm.last_error
       return false
     end
