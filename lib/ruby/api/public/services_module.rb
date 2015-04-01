@@ -1,4 +1,4 @@
-module ServicesController
+module ServicesModule
   
   def createService service_name
       service =getManagedService(service_name)
@@ -63,7 +63,7 @@ module ServicesController
  
   def getManagedService(service_name)
  
-     managed_service = ServicesController.loadManagedService(service_name,@core_api)
+     managed_service = ServicesModule.loadManagedService(service_name,@core_api)
      #  if managed_service == nil
      #   return failed(service_name,"Fail to Load configuration:","Load Service")
      #end

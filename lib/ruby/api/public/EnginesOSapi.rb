@@ -24,8 +24,8 @@ class EnginesOSapi
   include BuildController
   require_relative "engines_controller.rb"
   include EnginesController
-  require_relative "services_controller.rb"
-  include ServicesController
+  require_relative "services_module.rb"
+  include ServicesModule
   
   def initialize()
     @core_api = EnginesCore.new
