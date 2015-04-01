@@ -87,6 +87,49 @@ end
       log_error_mesg("No orphan found to reparent",params)
       return nil
     end
-  end
 
+  end
+  
+#@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+   #:path_type :publisher_namespace      
+   def get_orphaned_services(params)
+     leafs = Array.new
+     orphans = find_orphan_consumers(params)
+     if orphans != nil && orphans != false
+       leafs = get_matched_leafs(orphans,:persistant,true)
+     end   
+     return leafs
+   end
+#@returns a [TreeNode] to the depth of the search
+ #@service_query_hash :publisher_namespace
+ #@service_query_hash :publisher_namespace , :type_path
+ #@service_query_hash :publisher_namespace , :type_path , :service_handle
+ def find_orphan_consumers(service_query_hash)
+
+   if service_query_hash.has_key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace]  == nil
+     log_error_mesg("no_publisher_namespace",service_query_hash)
+     return false
+   end
+
+   provider_tree = orphaned_services_tree[service_query_hash[:publisher_namespace]]
+
+   if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
+     log_error_mesg("find_service_consumers_no_type_path", service_query_hash)
+
+     return provider_tree
+   end
+
+   service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
+
+   if service_path_tree == nil
+     log_error_mesg("Failed to find matching service path",service_query_hash)
+     return false
+   end
+
+     return  service_path_tree
+
+ end
+
+   
+   
 end

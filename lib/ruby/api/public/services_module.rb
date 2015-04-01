@@ -123,9 +123,23 @@ module ServicesModule
       p :managed_service_tree
       return @core_api.managed_service_tree
     end
+    
+  def get_orphaned_services_tree
+  return @core_api.get_orphaned_services_tree
+  end
+     
   
-    def get_orphaned_services_tree
-    return @core_api.get_orphaned_services_tree
+
+    #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
+    #:path_type :publisher_namespace    
+    def get_active_persistant_services(params)
+      return @core_api.get_active_persistant_services(params)
+    end
+    
+  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  #:path_type :publisher_namespace      
+    def get_orphaned_services(params)
+      return @core_api.get_orphaned_services(params)
     end
     
     def software_service_definition (params)

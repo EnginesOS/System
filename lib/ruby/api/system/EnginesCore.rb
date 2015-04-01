@@ -812,6 +812,18 @@ SystemUtils.log_exception(e)
     @last_error = ""
   end
 
+#@return an [Array] of service_hashs of Active persistant services match @params [Hash]
+#:path_type :publisher_namespace    
+def get_active_persistant_services(params)
+  return loadServiceManager.get_active_persistant_services(params)
+end
+
+#@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+#:path_type :publisher_namespace      
+def get_orphaned_services(params)
+  return loadServiceManager.get_orphaned_services(params)
+end
+
 
 end
 
