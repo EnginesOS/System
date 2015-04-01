@@ -12,6 +12,9 @@ module ServiceManagerTree
       @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
     return @service_tree["ManagedEngine"]
+    rescue Exception=>e
+         SystemUtils.log_exception(e)
+         return nil
   end
 
     #@return The OrphanedServices Tree [TreeNode] branch
@@ -28,6 +31,9 @@ module ServiceManagerTree
     end
 
     return orphans
+    rescue Exception=>e
+         SystemUtils.log_exception(e)
+         return nil
   end
   
   #@return the ManagedServices Tree [TreeNode] Branch
@@ -43,7 +49,10 @@ module ServiceManagerTree
      end
       p @service_tree["Services"]
      return @service_tree["Services"]
-    
+       
+    rescue Exception=>e
+         SystemUtils.log_exception(e)
+         return nil
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -69,6 +78,9 @@ module ServiceManagerTree
     end
 
     return true
+    rescue Exception=>e
+         SystemUtils.log_exception(e)
+         return false
   end
   
   #@return boolean true if not nil
@@ -103,6 +115,9 @@ module ServiceManagerTree
       end #if children.count == 0
     end #do
     return ret_val
+  rescue Exception=>e
+       SystemUtils.log_exception(e)
+       return nil
   end
   
 # @return [Array] of all service_hash(s) below this branch
@@ -122,6 +137,9 @@ module ServiceManagerTree
       end
     end
     return ret_val
+    rescue Exception=>e
+         SystemUtils.log_exception(e)
+         return nil
   end
 
   #loads the Service tree off disk from [SysConfig.ServiceTreeFile]
@@ -137,6 +155,7 @@ module ServiceManagerTree
       log_exception(e)
       return nil
     end
+    
   end
 
   # Load tree from file or create initial service tree
@@ -185,6 +204,10 @@ module ServiceManagerTree
      end
      return sub_node
    end
+rescue Exception=>e
+     SystemUtils.log_exception(e)
+     return nil
+   
  end
   
   #Wrapper for Gui to 
