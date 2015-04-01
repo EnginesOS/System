@@ -5,6 +5,9 @@ module ServiceManagerTree
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
   def managed_engine_tree
+    if check_service_tree == false
+          return false
+        end
     if (@service_tree["ManagedEngine"] == nil )
       @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
@@ -15,6 +18,9 @@ module ServiceManagerTree
    # create new branch if none exists
   def orphaned_services_tree
     p :orphan_tree
+    if check_service_tree == false
+          return false
+        end
     orphans = @service_tree["OphanedServices"]
     if orphans == nil
       @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
@@ -29,6 +35,9 @@ module ServiceManagerTree
   def managed_service_tree
     p :service_manager_
     p :managed_service_tree
+    if check_service_tree == false
+      return false
+    end
     if (@service_tree["Services"] == nil )
        @service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
@@ -44,8 +53,7 @@ module ServiceManagerTree
 
    
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      log_error_mesg("Nil treenode ?",tree_node)
-      
+      log_error_mesg("Nil treenode ?",tree_node)      
       return false
     end
 
@@ -60,6 +68,15 @@ module ServiceManagerTree
       remove_tree_entry(parent_node)
     end
 
+    return true
+  end
+  
+  #@return boolean true if not nil
+  def    check_service_tree
+    if @service_tree == nil
+      log_error_mesg("Nil servicetree ?","")
+      return false
+    end
     return true
   end
   #@branch the [TreeNode] under which to search
@@ -177,7 +194,8 @@ module ServiceManagerTree
   end
   
 #Wrapper for Gui to be removed
-  #Should use managed_engine_tree
+#Should use managed_engine_tree
+#@return [TreeNode] 
 def get_managed_engine_tree
     return managed_engine_tree
   end
