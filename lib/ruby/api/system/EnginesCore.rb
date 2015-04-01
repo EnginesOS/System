@@ -609,7 +609,7 @@ class EnginesCore
     sm = loadServiceManager()
     services = sm.get_engine_persistant_services(params)
 
-    service.each do service_hash
+    services.each do service_hash
       if service_hash.has_key?(:service_container_name) == false
         log_error_mesg("Missing :service_container_name in service_hash",service_hash)
         return false
