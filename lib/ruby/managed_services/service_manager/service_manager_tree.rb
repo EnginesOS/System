@@ -13,7 +13,7 @@ module ServiceManagerTree
     end
     return @service_tree["ManagedEngine"]
     rescue Exception=>e
-         SystemUtils.log_exception(e)
+         log_exception(e)
          return nil
   end
 
@@ -32,7 +32,7 @@ module ServiceManagerTree
 
     return orphans
     rescue Exception=>e
-         SystemUtils.log_exception(e)
+         log_exception(e)
          return nil
   end
   
@@ -51,7 +51,7 @@ module ServiceManagerTree
      return @service_tree["Services"]
        
     rescue Exception=>e
-         SystemUtils.log_exception(e)
+         log_exception(e)
          return nil
   end
 
@@ -79,7 +79,7 @@ module ServiceManagerTree
 
     return true
     rescue Exception=>e
-         SystemUtils.log_exception(e)
+         log_exception(e)
          return false
   end
   
@@ -116,7 +116,7 @@ module ServiceManagerTree
     end #do
     return ret_val
   rescue Exception=>e
-       SystemUtils.log_exception(e)
+       log_exception(e)
        return nil
   end
   
@@ -138,12 +138,12 @@ module ServiceManagerTree
     end
     return ret_val
     rescue Exception=>e
-         SystemUtils.log_exception(e)
+         log_exception(e)
          return nil
   end
 
   #loads the Service tree off disk from [SysConfig.ServiceTreeFile]
-  #calls [SystemUtils.log_exception] on error and returns nil 
+  #calls [log_exception] on error and returns nil 
   #@return service_tree [TreeNode]
   def tree_from_yaml()
     begin
@@ -205,7 +205,7 @@ module ServiceManagerTree
      return sub_node
    end
 rescue Exception=>e
-     SystemUtils.log_exception(e)
+     log_exception(e)
      return nil
    
  end
@@ -223,10 +223,14 @@ def get_managed_engine_tree
     return managed_engine_tree
   end
   
+def log_exception(e)
+   @last_error = e.to_s
+   SystemUtils.log_exception(e)
+ end
   
   protected
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
-# calls [SystemUtils.log_exception] on error and returns false
+# calls [log_exception] on error and returns false
   #@return boolean 
   def save_tree
     
@@ -240,5 +244,6 @@ def get_managed_engine_tree
     log_exception(e)
     return false
   end
-
+  
+ 
 end
