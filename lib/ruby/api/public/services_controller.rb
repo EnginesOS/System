@@ -1,4 +1,4 @@
-module ServicesApi
+module ServicesController
   
   def createService service_name
       service =getManagedService(service_name)
