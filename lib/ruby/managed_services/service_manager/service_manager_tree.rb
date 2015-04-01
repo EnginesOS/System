@@ -47,7 +47,7 @@ module ServiceManagerTree
     if (@service_tree["Services"] == nil )
        @service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
-      p @service_tree["Services"]
+   
      return @service_tree["Services"]
        
     rescue Exception=>e
