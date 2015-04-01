@@ -5,15 +5,25 @@ module ServiceManagerTree
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
   def managed_engine_tree
+    if check_service_tree == false
+          return false
+        end
     if (@service_tree["ManagedEngine"] == nil )
       @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
     return @service_tree["ManagedEngine"]
+    rescue Exception=>e
+         log_exception(e)
+         return nil
   end
 
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
   def orphaned_services_tree
+    p :orphan_tree
+    if check_service_tree == false
+          return false
+        end
     orphans = @service_tree["OphanedServices"]
     if orphans == nil
       @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
@@ -21,6 +31,9 @@ module ServiceManagerTree
     end
 
     return orphans
+    rescue Exception=>e
+         log_exception(e)
+         return nil
   end
   
   #@return the ManagedServices Tree [TreeNode] Branch
@@ -28,11 +41,18 @@ module ServiceManagerTree
   def managed_service_tree
     p :service_manager_
     p :managed_service_tree
+    if check_service_tree == false
+      return false
+    end
     if (@service_tree["Services"] == nil )
        @service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
+   
      return @service_tree["Services"]
-    
+       
+    rescue Exception=>e
+         log_exception(e)
+         return nil
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -42,8 +62,7 @@ module ServiceManagerTree
 
    
     if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
-      log_error_mesg("Nil treenode ?",tree_node)
-      
+      log_error_mesg("Nil treenode ?",tree_node)      
       return false
     end
 
@@ -58,6 +77,18 @@ module ServiceManagerTree
       remove_tree_entry(parent_node)
     end
 
+    return true
+    rescue Exception=>e
+         log_exception(e)
+         return false
+  end
+  
+  #@return boolean true if not nil
+  def    check_service_tree
+    if @service_tree == nil || @service_tree == false
+      SystemUtils.log_error_mesg("Nil servicetree ?","")
+      return false
+    end
     return true
   end
   #@branch the [TreeNode] under which to search
@@ -84,6 +115,9 @@ module ServiceManagerTree
       end #if children.count == 0
     end #do
     return ret_val
+  rescue Exception=>e
+       log_exception(e)
+       return nil
   end
   
 # @return [Array] of all service_hash(s) below this branch
@@ -103,10 +137,13 @@ module ServiceManagerTree
       end
     end
     return ret_val
+    rescue Exception=>e
+         log_exception(e)
+         return nil
   end
 
   #loads the Service tree off disk from [SysConfig.ServiceTreeFile]
-  #calls [SystemUtils.log_exception] on error and returns nil 
+  #calls [log_exception] on error and returns nil 
   #@return service_tree [TreeNode]
   def tree_from_yaml()
     begin
@@ -118,6 +155,7 @@ module ServiceManagerTree
       log_exception(e)
       return nil
     end
+    
   end
 
   # Load tree from file or create initial service tree
@@ -166,6 +204,10 @@ module ServiceManagerTree
      end
      return sub_node
    end
+rescue Exception=>e
+     log_exception(e)
+     return nil
+   
  end
   
   #Wrapper for Gui to 
@@ -175,15 +217,20 @@ module ServiceManagerTree
   end
   
 #Wrapper for Gui to be removed
-  #Should use managed_engine_tree
+#Should use managed_engine_tree
+#@return [TreeNode] 
 def get_managed_engine_tree
     return managed_engine_tree
   end
   
+def log_exception(e)
+   @last_error = e.to_s
+   SystemUtils.log_exception(e)
+ end
   
   protected
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
-# calls [SystemUtils.log_exception] on error and returns false
+# calls [log_exception] on error and returns false
   #@return boolean 
   def save_tree
     
@@ -197,5 +244,6 @@ def get_managed_engine_tree
     log_exception(e)
     return false
   end
-
+  
+ 
 end

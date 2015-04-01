@@ -1,4 +1,4 @@
-module ServicesApi
+module ServicesModule
   
   def createService service_name
       service =getManagedService(service_name)
@@ -63,7 +63,7 @@ module ServicesApi
  
   def getManagedService(service_name)
  
-     managed_service = ServicesApi.loadManagedService(service_name,@core_api)
+     managed_service = ServicesModule.loadManagedService(service_name,@core_api)
      #  if managed_service == nil
      #   return failed(service_name,"Fail to Load configuration:","Load Service")
      #end
@@ -110,11 +110,15 @@ module ServicesApi
         return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
       end
       end
+  
       
     def get_managed_engine_tree
       return @core_api.get_managed_engine_tree  
     end
-    
+  
+    def managed_service_tree
+      return fetch_managed_service_tree
+    end  
     def fetch_managed_service_tree
       p :managed_service_tree
       return @core_api.managed_service_tree

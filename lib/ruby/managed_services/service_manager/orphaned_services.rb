@@ -84,7 +84,7 @@ end
       content[:parent_engine]=params[:parent_engine]
       return content
     else
-      log_error_mesg("No oprhan found to reparent",params)
+      log_error_mesg("No orphan found to reparent",params)
       return nil
     end
   end

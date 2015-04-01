@@ -20,12 +20,12 @@ require_relative "EnginesOSapiResult.rb"
 #include BuildApi
 
 class EnginesOSapi
-  require_relative "build_api.rb"
-  include BuildApi
+  require_relative "build_controller.rb"
+  include BuildController
   require_relative "engines_controller.rb"
   include EnginesController
-  require_relative "services_api.rb"
-  include ServicesApi
+  require_relative "services_module.rb"
+  include ServicesModule
   
   def initialize()
     @core_api = EnginesCore.new
