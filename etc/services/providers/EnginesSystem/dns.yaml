@@ -14,6 +14,17 @@ dedicated: false
 persistant: false
 consumer_params:
 setup_params:
+ name:
+  name: name
+  label: "service tag"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "hostname"
+  placeholder: " "
+  mandatory: true
+  value: 
+  comment: " "
  hostname:
   name: hostname
   label: hostname

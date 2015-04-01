@@ -87,6 +87,9 @@ module ServicesApi
   end
   
   def attach_service(params)
+    if params.has_key?(:service_handle) == false
+      params[:service_handle] = params[:variables][:name]
+    end
     if  @core_api.attach_service(params) == true
       success(params[:parent_engine],"attach service")
     else

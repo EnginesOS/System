@@ -122,7 +122,7 @@ class ManagedService < ManagedContainer
     end
 
     if is_running ==true   && ( @persistant == false \
-    || ( service_hash.has_key?(:delete_persistant)  && service_hash[:delete_persistant] == true ))
+    || ( service_hash.has_key?(:remove_all_application_data)  && service_hash[:remove_all_application_data] == true ))
       p :removing_consumer
       result = rm_consumer_from_service(service_hash)
       if result == true
