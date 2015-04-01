@@ -4,10 +4,6 @@ class EnginesCore
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'
-  
-
- 
- 
 
   def initialize
     @docker_api = DockerApi.new
@@ -26,22 +22,22 @@ class EnginesCore
     return  @system_api.add_domain(params)
   end
 
-#
-#  def remove_containers_cron_list(containerName)
-#    p :remove_containers_cron
-#    if @system_api.remove_containers_cron_list(containerName)
-#      cron_service = loadManagedService("cron")
-#      return @system_api.rebuild_crontab(cron_service)
-#    else
-#      return false
-#    end
-#  end
-#
-#  def rebuild_crontab(cron_service)
-#    #acutally a rebuild (or resave) as hadh already removed from consumer list
-#    p :rebuild_crontab
-#    return  @system_api.rebuild_crontab(cron_service)
-#  end
+  #
+  #  def remove_containers_cron_list(containerName)
+  #    p :remove_containers_cron
+  #    if @system_api.remove_containers_cron_list(containerName)
+  #      cron_service = loadManagedService("cron")
+  #      return @system_api.rebuild_crontab(cron_service)
+  #    else
+  #      return false
+  #    end
+  #  end
+  #
+  #  def rebuild_crontab(cron_service)
+  #    #acutally a rebuild (or resave) as hadh already removed from consumer list
+  #    p :rebuild_crontab
+  #    return  @system_api.rebuild_crontab(cron_service)
+  #  end
 
   def remove_domain(params)
     return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -90,7 +86,6 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  
   def add_monitor(site_hash)
     return @system_api.add_monitor(site_hash)
   end
@@ -98,11 +93,11 @@ class EnginesCore
   def rm_monitor(site_hash)
     return @system_api.rm_monitor(site_hash)
   end
-  
+
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
   end
-  
+
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
   end
@@ -126,8 +121,6 @@ class EnginesCore
   def rm_volume(site_hash)
     return @system_api.rm_volume(site_hash)
   end
-
-
 
   def remove_self_hosted_domain(domain_name)
     return @system_api.remove_self_hosted_domain(domain_name)
@@ -182,9 +175,9 @@ class EnginesCore
   end
 
   def image_exists?(containerName)
-    imageName = containerName 
+    imageName = containerName
     return @docker_api.image_exists?(imageName)
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
   end
@@ -192,7 +185,7 @@ class EnginesCore
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
     return sm.list_attached_services_for(objectName,identifier)
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
 
   end
@@ -201,18 +194,16 @@ class EnginesCore
     objectname = object.class.name.split('::').last
     p :load_vail_services_for
     p objectname
-    
+
     services = load_avail_services_for(objectname)
-    
-    
-    
+
     subservices = load_avail_component_services_for(object)
 
     retval = Hash.new
     retval[:services] = services
     retval[:subservices] = subservices
     return retval
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
 
@@ -231,84 +222,82 @@ class EnginesCore
     end
 
     return service
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def setup_email_params(params)
-      
-       arg="smarthost_hostname=" + params[:smarthost_hostname] \
-         + ":smarthost_username=" + params[:smarthost_username]\
-         + ":smarthost_password=" + params[:smarthost_password]\
-         + ":mail_name=smtp."  + params[:default_domain] 
-     container=loadManagedService("smtp")
+
+    arg="smarthost_hostname=" + params[:smarthost_hostname] \
+    + ":smarthost_username=" + params[:smarthost_username]\
+    + ":smarthost_password=" + params[:smarthost_password]\
+    + ":mail_name=smtp."  + params[:default_domain]
+    container=loadManagedService("smtp")
     return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
-    rescue   Exception=>e
+  rescue   Exception=>e
     SystemUtils.log_exception(e)
   end
-  
+
   def set_engines_ssl_pw(params)
     pass = params[:ssh_password]
-   cmd = "echo -e " + pass + "\n" + pass + " | passwd engines"
-     p cmd
+    cmd = "echo -e " + pass + "\n" + pass + " | passwd engines"
+    p cmd
     SystemUtils.run_system(cmd)
-    
+
   end
-  
-   def set_database_password(container_name,params)
-     arg = "mysql_password=" + params[:mysql_password] +":" \
-          + "server=" + container_name + ":" \
-        +  "psql_password=" + params[:psql_password] #Need two args
-          if container_name 
-              server_container = loadManagedService(container_name)
-              return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
-          end
-          
-          return true
-          
-   rescue Exception=>e
-     SystemUtils.log_exception(e)
-       return false
-   end
-  
+
+  def set_database_password(container_name,params)
+    arg = "mysql_password=" + params[:mysql_password] +":" \
+    + "server=" + container_name + ":" \
+    +  "psql_password=" + params[:psql_password] #Need two args
+    if container_name
+      server_container = loadManagedService(container_name)
+      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
+    end
+
+    return true
+
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
+    return false
+  end
+
   def attach_service(service_hash)
- 
+
     if service_hash == nil
       p :attached_Service_passed_nil
       return false
     end
-    
+
     service = load_software_service(service_hash)
     p :attaching_to_service
     p service_hash
     if service !=nil && service != false
       return service.add_consumer(service_hash)
     end
-    @last_error = "Failed to attach Service: " + @last_error 
+    @last_error = "Failed to attach Service: " + @last_error
     return  false
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def dettach_service(params)
     service = load_software_service(params)
     if service !=nil && service != false
-          return service.remove_consumer(params)
-        end
-        @last_error = "Failed to dettach Service: " + @last_error 
-        return  false
-        rescue Exception=>e
+      return service.remove_consumer(params)
+    end
+    @last_error = "Failed to dettach Service: " + @last_error
+    return  false
+  rescue Exception=>e
     SystemUtils.log_exception e
- 
+
   end
 
   def list_providers_in_use
     sm = loadServiceManager()
-       return sm.list_providers_in_use
+    return sm.list_providers_in_use
   end
-  
-  
-  
+
   def loadServiceManager()
     if @service_manager == nil
       @service_manager = ServiceManager.new()
@@ -316,39 +305,40 @@ class EnginesCore
     end
     return @service_manager
   end
-  
+
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
 
-    if sm.retrieve_orphan(service_hash) == false      
-           return false
-         end
-         return true
+    if sm.retrieve_orphan(service_hash) == false
+      return false
+    end
+    return true
   end
 
   def find_service_consumers(params)
     sm = loadServiceManager()
     return sm.find_service_consumers(params)
   end
-  
+
   def get_engine_persistant_services(params)
     sm = loadServiceManager()
-            return sm.get_engine_persistant_services(params)
-      end
-  
+    return sm.get_engine_persistant_services(params)
+  end
+
   def managed_service_tree
     sm = loadServiceManager()
-        return sm.managed_service_tree
+    return sm.managed_service_tree
   end
-  
+
   def get_managed_engine_tree
     sm = loadServiceManager()
-           return sm.get_managed_engine_tree
+    return sm.get_managed_engine_tree
   end
+
   def find_engine_services(params)
     sm = loadServiceManager()
-        return sm.find_engine_services(params)
-      end
+    return sm.find_engine_services(params)
+  end
 
   def load_service_definition(filename)
 
@@ -357,7 +347,7 @@ class EnginesCore
     p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
 
@@ -372,21 +362,21 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-           if service_dir_entry.start_with?(".")   == true
-             next
-           end
+          if service_dir_entry.start_with?(".")   == true
+            next
+          end
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-#              p :service_as_serivce
-#              p service
-#              p :as_hash
-#              p service.to_h
-#              p :as_yaml
-#              p service.to_yaml()
-              
+              #              p :service_as_serivce
+              #              p service
+              #              p :as_hash
+              #              p service.to_h
+              #              p :as_yaml
+              #              p service.to_yaml()
+
               retval.push(service.to_h)
             end
           end
@@ -399,10 +389,9 @@ class EnginesCore
     p typename
     p retval
     return retval
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
-
 
   def load_avail_services_for(typename)
     p :load_avail_services_for
@@ -415,21 +404,21 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-           if service_dir_entry.start_with?(".")   == true
-             next
-           end
+          if service_dir_entry.start_with?(".")   == true
+            next
+          end
           p :service_dir_entry
           p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-#              p :service_as_serivce
-#              p service
-#              p :as_hash
-#              p service.to_h
-#              p :as_yaml
-#              p service.to_yaml()
-              
+              #              p :service_as_serivce
+              #              p service
+              #              p :as_hash
+              #              p service.to_h
+              #              p :as_yaml
+              #              p service.to_yaml()
+
               retval.push(service.to_h)
             end
           end
@@ -439,58 +428,55 @@ class EnginesCore
         end
       end
     end
-#    p typename
-#    p retval
+    #    p typename
+    #    p retval
     return retval
-    rescue Exception=>e
+  rescue Exception=>e
     SystemUtils.log_exception e
   end
-    
-  
+
   def load_avail_component_services_for(engine)
     retval = Hash.new
     if engine.is_a?(ManagedEngine)
-     params = Hash.new
-     params[:engine_name]=engine.containerName
-       
+      params = Hash.new
+      params[:engine_name]=engine.containerName
+
       persistant_services =  get_engine_persistant_services(params)
       persistant_services.each do |service|
-      type_path = service[:type_path]
+        type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
-#          p retval[type_path]
-     end
-  else
-    p :load_avail_component_services_for_engine_got_a 
-    p engine.to_s
-  return nil
-   end
-return retval
-rescue Exception=>e
-SystemUtils.log_exception e
-end
+        #          p retval[type_path]
+      end
+    else
+      p :load_avail_component_services_for_engine_got_a
+      p engine.to_s
+      return nil
+    end
+    return retval
+  rescue Exception=>e
+    SystemUtils.log_exception e
+  end
 
-  
-      
-#      if object.volumes.count >0
-#        
-#        
-#        p :loading_vols
-#        volumes = load_avail_services_for("Volume") #Array of hashes
-#        retval[:volume] = volumes
-#      end
-#      if object.databases.count >0
-#        databases = load_avail_services_for("Database") #Array of hashes
-#        retval[:database] = databases
-#      end
-#      
-##      ret_val[:type_path] = load_avail_services_for(object[:type_path])
-#
-#      return retval
-#    else
-#      return nil
-# 
-#    end
-# 
+  #      if object.volumes.count >0
+  #
+  #
+  #        p :loading_vols
+  #        volumes = load_avail_services_for("Volume") #Array of hashes
+  #        retval[:volume] = volumes
+  #      end
+  #      if object.databases.count >0
+  #        databases = load_avail_services_for("Database") #Array of hashes
+  #        retval[:database] = databases
+  #      end
+  #
+  ##      ret_val[:type_path] = load_avail_services_for(object[:type_path])
+  #
+  #      return retval
+  #    else
+  #      return nil
+  #
+  #    end
+  #
 
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
@@ -556,8 +542,8 @@ end
 
   def get_orphaned_services_tree
     return loadServiceManager.get_orphaned_services_tree
-  end  
-  
+  end
+
   def loadManagedService(service_name)
     return @system_api.loadManagedService(service_name)
   end
@@ -596,18 +582,16 @@ end
     end
   end
 
-
   def delete_image(container)
     begin
       clear_error
 
       if @docker_api.delete_image(container) == true
-         #only delete if del all otherwise backup
-        res = @system_api.delete_container_configs(container)
-        return res
-      else
-        return false
+        #only delete if del all otherwise backup
+        return  @system_api.delete_container_configs(container)
       end
+
+      return false
 
     rescue Exception=>e
       container.last_error=( "Failed To Delete " + e.to_s)
@@ -618,21 +602,36 @@ end
   end
 
   def delete_image_dependancies(params)
-    sm = loadServiceManager()
-    
-    #do with Container
-    #remove logs
-    #remove status    
-    #remove flags
-    
-    #remove services
-    result = sm.rm_remove_engine(params)
-    if result == false
-      @last_error = sm.last_error
+
+    service = loadManagedService(params[:service_container_name])
+    if service == nil
+      log_error_mesg("Failed to Load Service",params)
+      return false
     end
-    return result
+
+    if service.is_running? == false
+      log_error_mesg("Cannot remove as Service is not running",params)
+      return false
+    end
+    if service.remove_consumer(params) == true
+      sm = loadServiceManager()
+
+      #do with Container
+      #remove logs
+      #remove status
+      #remove flags
+
+      #remove services
+      result = sm.rm_remove_engine(params)
+      if result == false
+        @last_error = sm.last_error
+      end
+      return result
+    end
+
+    return false
   end
-  
+
   def run_system(cmd)
     clear_error
     begin
@@ -668,10 +667,9 @@ end
       command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output("Run volumen builder",command)
       run_system(command)
-      
-     #Note no -d so process will not return until setup.sh completes
-           
-           
+
+      #Note no -d so process will not return until setup.sh completes
+
       command = "docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
@@ -679,7 +677,7 @@ end
       res = run_system(command)
       if  res != true
         SystemUtils.log_error(res)
-       #don't return false as 
+        #don't return false as
       end
       return true
     rescue Exception=>e
@@ -706,15 +704,17 @@ end
       return false
     end
   end
-  #install from fresh copy of blueprint in repositor    
+
+  #install from fresh copy of blueprint in repositor
   def reinstall_engine(engine)
     clear_error
     EngineBuilder.re_install_engine(engine,self)
-    rescue  Exception=>e
-        SystemUtils.log_exception(e)
-        return false
+  rescue  Exception=>e
+    SystemUtils.log_exception(e)
+    return false
   end
-  #rebuilds image from current blueprint 
+
+  #rebuilds image from current blueprint
   def rebuild_image(container)
     clear_error
     begin
@@ -726,8 +726,8 @@ end
       params[:http_protocol] = container.protocol
       params[:repository_url]  = container.repo
       params[:software_environment_variables] = container.environments
-   #   custom_env=params    
-   #  @http_protocol = params[:http_protocol] = container.
+      #   custom_env=params
+      #  @http_protocol = params[:http_protocol] = container.
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
@@ -735,20 +735,20 @@ end
       return false
     end
   end
-#  @container_name = params[:engine_name]
-#    @domain_name = params[:domain_name]
-#    @hostname = params[:host_name]
-#    custom_env= params[:software_environment_variables]
-#    #   custom_env=params
-#    @core_api = core_api
-#    @http_protocol = params[:http_protocol]
-#    p params
-#    @repoName= params[:repository_url]
-#    @cron_job_list = Array.new
-#    @build_name = File.basename(@repoName).sub(/\.git$/,"")
-#    @workerPorts=Array.new
-#    @webPort=8000
-#    @vols=Array.new
+  #  @container_name = params[:engine_name]
+  #    @domain_name = params[:domain_name]
+  #    @hostname = params[:host_name]
+  #    custom_env= params[:software_environment_variables]
+  #    #   custom_env=params
+  #    @core_api = core_api
+  #    @http_protocol = params[:http_protocol]
+  #    p params
+  #    @repoName= params[:repository_url]
+  #    @cron_job_list = Array.new
+  #    @build_name = File.basename(@repoName).sub(/\.git$/,"")
+  #    @workerPorts=Array.new
+  #    @webPort=8000
+  #    @vols=Array.new
 
   #FIXME Kludge
   def get_container_network_metrics(containerName)
@@ -772,7 +772,7 @@ end
       end
       return ret_val
     rescue Exception=>e
-SystemUtils.log_exception(e)
+      SystemUtils.log_exception(e)
       ret_val[:in] = -1
       ret_val[:out] = -1
       return ret_val
@@ -816,18 +816,17 @@ SystemUtils.log_exception(e)
     @last_error = ""
   end
 
-#@return an [Array] of service_hashs of Active persistant services match @params [Hash]
-#:path_type :publisher_namespace    
-def get_active_persistant_services(params)
-  return loadServiceManager.get_active_persistant_services(params)
-end
+  #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  #:path_type :publisher_namespace
+  def get_active_persistant_services(params)
+    return loadServiceManager.get_active_persistant_services(params)
+  end
 
-#@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
-#:path_type :publisher_namespace      
-def get_orphaned_services(params)
-  return loadServiceManager.get_orphaned_services(params)
-end
-
+  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  #:path_type :publisher_namespace
+  def get_orphaned_services(params)
+    return loadServiceManager.get_orphaned_services(params)
+  end
 
 end
 
