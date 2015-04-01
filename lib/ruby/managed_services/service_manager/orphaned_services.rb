@@ -100,6 +100,7 @@ end
      end   
      return leafs
    end
+   
 #@returns a [TreeNode] to the depth of the search
  #@service_query_hash :publisher_namespace
  #@service_query_hash :publisher_namespace , :type_path
@@ -125,11 +126,8 @@ end
      log_error_mesg("Failed to find matching service path",service_query_hash)
      return false
    end
-
-     return  service_path_tree
-
+   
+   return  service_path_tree
  end
-
-   
-   
+      
 end

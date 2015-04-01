@@ -93,6 +93,11 @@ log_error_mesg("create_type_path failed",type_path)
   #@return false
   def remove_service service_hash
 
+    if remove_consumer_from_service(service_hash) == false
+      log_error_mesg("failed to remove from engine from service",service_hash)
+      return false
+    end
+       
     if remove_from_engine_registery(service_hash) == false
       log_error_mesg("failed to remove from engine registry",service_hash)
       return false
@@ -156,7 +161,26 @@ log_error_mesg("create_type_path failed",type_path)
 
   end
 
-  
+  def remove_consumer_from_service(service_hash)
+    
+    if service_hash.has_key?(:service_container_name) == false
+      log_error_mesg(":no service_container_name is hash",service_hash)
+               return false
+             end
+             
+    service = EnginesOSApi.loadManagedService(service_hash[:service_container_name])
+      if service == nil
+        log_error_mesg("Failed to Load Service",service_hash)
+                 return false
+       end
+       
+       if service.is_running? == false
+         log_error_mesg("Cannot remove as Service is not running",service_hash)
+            return false
+        end
+            
+       return service.remove_consumer(service_hash)
+  end 
 
   #load softwwareservicedefinition for serivce in service_hash and
   #@return boolean indicating the persistance 
