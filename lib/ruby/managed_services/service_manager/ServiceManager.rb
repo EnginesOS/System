@@ -196,6 +196,7 @@ log_error_mesg("create_type_path failed",type_path)
       service_hash[:persistant] = persist
     end 
   
+    
     p :adding_to_engine_tree
       p service_hash  
     if add_to_managed_engines_tree(service_hash) == false

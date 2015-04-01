@@ -120,9 +120,13 @@ class ManagedService < ManagedContainer
       log_error_mesg("remove consumer nil service hash ","")
       return false
     end
-
-    if is_running ==true   && ( @persistant == false \
-    || ( service_hash.has_key?(:remove_all_application_data)  && service_hash[:remove_all_application_data] == true ))
+    if is_running != true
+      log_error_mesg("Cannot remove consumer if Service is not running ",service_hash)
+      return false
+    end
+    
+    if @persistant == true    
+     if  service_hash.has_key?(:remove_all_application_data)  && service_hash[:remove_all_application_data] == true 
       p :removing_consumer
       result = rm_consumer_from_service(service_hash)
       if result == true
@@ -132,12 +136,14 @@ class ManagedService < ManagedContainer
           p service_hash
           result =  sm.remove_service(service_hash)
         else
-          log_error_mesg("add consumer no ServiceManager ","")
+          log_error_mesg("rm consumer no ServiceManager ","")
           return false
         end
-      end
+      end      
+     end
+      
     end
-
+    
     if @consumers !=  nil
       @consumers.delete(service_hash[:service_handle]) { |el|  log_error_mesg("Failed to find " + el.to_s + "to del ",service_hash)  }
     end
