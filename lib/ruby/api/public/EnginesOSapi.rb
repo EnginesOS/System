@@ -22,8 +22,8 @@ require_relative "EnginesOSapiResult.rb"
 class EnginesOSapi
   require_relative "build_api.rb"
   include BuildApi
-  require_relative "engines_api.rb"
-  include EnginesApi
+  require_relative "engines_controller.rb"
+  include EnginesController
   require_relative "services_api.rb"
   include ServicesApi
   
