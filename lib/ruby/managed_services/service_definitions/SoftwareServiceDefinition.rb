@@ -96,7 +96,7 @@ end
            SystemUtils.log_exception(e)
   end
   
-  def SoftwareServceDefinition.is_persistant?(params)
+  def SoftwareServiceDefinition.is_persistant?(params)
    service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
      if service == nil
       return nil
