@@ -626,7 +626,11 @@ end
     #remove flags
     
     #remove services
-    return sm.rm_remove_engine(params)
+    result = sm.rm_remove_engine(params)
+    if result == false
+      @last_error = sm.last_error
+    end
+    return result
   end
   
   def run_system(cmd)

@@ -392,18 +392,18 @@ class EnginesOSapi
       return failed(engine_name,engine.last_error,"Delete")
     end
     params[:engine_name] = engine_name
-    delete_image_dependancies(params)
-    
-    
+   if delete_image_dependancies(params) == false        
+      return failed(params[:engine_name],last_api_error, "Delete Image Dependancies")
+   else         
     return success(engine_name,"Delete")
+   end
+   
   rescue Exception=>e
     return log_exception_and_fail("Delete",e)
   end
   
   def delete_image_dependancies(params)
-    if @core_api.delete_image_dependancies(params) == false
-             return  failed(params[:engine_name],last_api_error, "Delete Image")
-          end  
+    return @core_api.delete_image_dependancies(params)
   end
   
   def reinstall_engine(engine_name)
