@@ -12,8 +12,8 @@ include ServicesRegistry
 class ServiceManager
   
   #@service_tree root of the Service Registry Tree
-  attr_accessor   :service_tree
-  :last_error
+  attr_accessor     :last_error
+  
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
     #@service_tree root of the Service Registry Tree
