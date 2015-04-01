@@ -1,4 +1,4 @@
-module BuildApi
+module BuildController
   
   def build_engine(params)
   
