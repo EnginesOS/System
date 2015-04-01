@@ -624,9 +624,9 @@ class EnginesCore
         log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
         return false
       end
-      if service.remove_consumer(params) == false
+      if service.remove_consumer(service_hash) == false
         @last_error = service.last_error
-        log_error_mesg("Failed to remoove service ",service_hash)
+        log_error_mesg("Failed to remove service ",service_hash)
         return false
       end
     end
@@ -640,7 +640,7 @@ class EnginesCore
   end
 
   def delete_image_dependancies(params)
-
+    sm = loadServiceManager()
     if delete_engine_persistant_services(params) == false
       @last_error = sm.last_error
       log_error_mesg("Failed to delete Service",params)
@@ -653,7 +653,7 @@ class EnginesCore
     #remove flags
 
     #remove services
-    sm = loadServiceManager()
+
     if sm.rm_remove_engine(params) == false
       log_error_mesg("Failed to remove deleted Service",params)
       @last_error = sm.last_error
