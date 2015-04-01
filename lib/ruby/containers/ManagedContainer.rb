@@ -420,7 +420,7 @@ end
     end
     
     if is_active == true  
-      service =  EnginesOSapi::ServicesApi.loadManagedService("nginx",@core_api)
+      service =  EnginesOSapi::ServicesController.loadManagedService("nginx",@core_api)
       return service.add_consumer(self)
      else
             @last_error="Cannot register when Engine is inactive"
@@ -433,7 +433,7 @@ end
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi::ServicesApi.loadManagedService("monit",@core_api)
+    service =  EnginesOSapi::ServicesController.loadManagedService("monit",@core_api)
       if service.is_a?(ManagedService)
       return service.add_consumer(self)
     end
@@ -445,7 +445,7 @@ end
       @last_error="No connection to Engines OS System"      
       return false
     end
-    service =  EnginesOSapi::ServicesApi.loadManagedService("nginx",@core_api)
+    service =  EnginesOSapi::ServicesController.loadManagedService("nginx",@core_api)
     if service.is_a?(ManagedService)
     return service.remove_consumer(self)
     end
@@ -457,7 +457,7 @@ end
       @last_error="No connection to Engines OS System"      
       return false
     end  
-      service =  EnginesOSapi::ServicesApi.loadManagedService("monit",@core_api)
+      service =  EnginesOSapi::ServicesController.loadManagedService("monit",@core_api)
       return service.remove_consumer(self)   
   end
   
@@ -468,7 +468,7 @@ end
      end
      
      if is_active == true        
-      service =  EnginesOSapi::ServicesApi.loadManagedService("dns",@core_api)
+      service =  EnginesOSapi::ServicesController.loadManagedService("dns",@core_api)
       return service.add_consumer(self)
      else
        @last_error="Cannot register when Engine is inactive"
@@ -481,7 +481,7 @@ end
        @last_error="No connection to Engines OS System"      
        return false
      end
-     service =  EnginesOSapi::ServicesApi.loadManagedService("dns",@core_api)
+     service =  EnginesOSapi::ServicesController.loadManagedService("dns",@core_api)
      if service.is_a?(ManagedService) == false
        p failed_to_load_dns_service
        return false
