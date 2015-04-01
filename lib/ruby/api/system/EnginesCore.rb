@@ -579,6 +579,7 @@ class EnginesCore
       SystemUtils.log_exception(e)
 
       return false
+      
     end
   end
 
@@ -630,6 +631,12 @@ class EnginesCore
       end
     end
     return true
+
+    rescue Exception=>e
+      container.last_error=( "Failed To Delete " + e.to_s)
+      SystemUtils.log_exception(e)
+      return false
+
   end
 
   def delete_image_dependancies(params)
@@ -652,8 +659,11 @@ class EnginesCore
       @last_error = sm.last_error
       return false
     end
-
-  end
+    rescue Exception=>e
+       SystemUtils.log_exception(e)
+       return false
+end
+ 
 
   def run_system(cmd)
     clear_error
