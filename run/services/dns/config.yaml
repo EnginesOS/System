@@ -1,4 +1,4 @@
---- !ruby/object:DNSService
+--- !ruby/object:ManagedService
 containerName: dns
 ctype: service
 persistant: false
