@@ -60,9 +60,9 @@ class ManagedService < ManagedContainer
 #    end
    
 
-  def fetch_consumer name
-    return @consumers.fetch(name)
-  end
+#  def fetch_consumer name
+#    return @consumers.fetch(name)
+#  end
 
   def add_consumer(object)
   
@@ -100,19 +100,29 @@ class ManagedService < ManagedContainer
     if result != true
       return result
     end
-
-    if @consumers == nil
-      @consumers = Hash.new
-    end
-
-    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
-    @consumers.store(service_hash[:service_handle], service_hash)
+#
+#    if @consumers == nil
+#      @consumers = Hash.new
+#    end
+#
+#    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
+#    @consumers.store(service_hash[:service_handle], service_hash)
 
     # end
     save_state
     return result
   end
-
+  
+  def   add_consumer_to_service(service_hash)   
+  cmd = "docker exec " +  containerName + " /home/create_service.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
+    SystemUtils.run_system(cmd)
+  end
+  
+  def   rm_consumer_to_service(service_hash) 
+   cmd = "docker exec " +  containerName + " /home/rm_service.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
+     SystemUtils.run_system(cmd)
+  end 
+  
   def remove_consumer service_hash
    
     service_hash = get_service_hash(service_hash)

@@ -22,55 +22,55 @@ class SystemApi
        return false
      end
    end
+#
+#   def register_dns_and_site(container)
+#     if container.conf_register_dns == true
+#       if container.register_dns() == true
+#         if container.conf_register_site() == true
+#           if container.register_site == true
+#             return true
+#           else
+#             return false  #failed to register
+#           end
+#         end # if reg site
+#       else
+#         return false #reg dns failed
+#       end
+#     end #if reg dns
+#     return true
+#   end
 
-   def register_dns_and_site(container)
-     if container.conf_register_dns == true
-       if container.register_dns() == true
-         if container.conf_register_site() == true
-           if container.register_site == true
-             return true
-           else
-             return false  #failed to register
-           end
-         end # if reg site
-       else
-         return false #reg dns failed
-       end
-     end #if reg dns
-     return true
-   end
-
-   def reload_dns
-     dns_pid = File.read(SysConfig.NamedPIDFile)
-     p :kill_HUP_TO_DNS
-     p dns_pid.to_s
-     return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
-   rescue  Exception=>e
-     SystemUtils.log_exception(e)
-     return false
-   end
-
-   def restart_nginx_process
-     begin
-       clear_error
-       cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
-
-       SystemUtils.debug_output("Restart Nginx",cmd)
-       nginxpid= %x<#{cmd}>
-       SystemUtils.debug_output("Nginx pid",nginxpid)
-       #FIXME read from pid file this is just silly
-       docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
-       SystemUtils.debug_output("Nginx restart ",docker_cmd)
-       if nginxpid.to_s != "-"
-         return run_system(docker_cmd)
-       else
-         return false
-       end
-     rescue Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#   def reload_dns
+#     dns_pid = File.read(SysConfig.NamedPIDFile)
+#     p :kill_HUP_TO_DNS
+#     p dns_pid.to_s
+#     return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
+#   rescue  Exception=>e
+#     SystemUtils.log_exception(e)
+#     return false
+#   end
+#
+#   def restart_nginx_process
+#     begin
+#       clear_error
+#       cmd= "docker exec nginx ps ax |grep \"nginx: master\" |grep -v grep |awk '{ print $1}'"
+#
+#       SystemUtils.debug_output("Restart Nginx",cmd)
+#       nginxpid= %x<#{cmd}>
+#       SystemUtils.debug_output("Nginx pid",nginxpid)
+#       #FIXME read from pid file this is just silly
+#       docker_cmd = "docker exec nginx kill -HUP " + nginxpid.to_s
+#       SystemUtils.debug_output("Nginx restart ",docker_cmd)
+#       if nginxpid.to_s != "-"
+#         return run_system(docker_cmd)
+#       else
+#         return false
+#       end
+#     rescue Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def clear_cid(container)
      container.container_id=(-1)
@@ -139,29 +139,29 @@ class SystemApi
        return false
      end
    end
-
-   def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
-     clear_error
-     begin
-       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
-       #FIXME need unique name for temp file
-       dns_cmd_file_name="/tmp/.dns_cmd_file"
-       dns_cmd_file = File.new(dns_cmd_file_name,"w+")
-       dns_cmd_file.puts("server " + SysConfig.defaultDNS)
-       dns_cmd_file.puts("update delete " + fqdn_str)
-       dns_cmd_file.puts("send")
-       dns_cmd_file.puts("update add " + fqdn_str + " 30 A " + ip_addr_str)
-       dns_cmd_file.puts("send")
-       dns_cmd_file.close
-       cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name
-       retval = run_system(cmd_str)
-       #File.delete(dns_cmd_file_name)
-       return retval
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#
+#   def register_dns(top_level_hostname,ip_addr_str)  # no Gem made this simple (need to set tiny TTL) and and all used nsupdate anyhow
+#     clear_error
+#     begin
+#       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
+#       #FIXME need unique name for temp file
+#       dns_cmd_file_name="/tmp/.dns_cmd_file"
+#       dns_cmd_file = File.new(dns_cmd_file_name,"w+")
+#       dns_cmd_file.puts("server " + SysConfig.defaultDNS)
+#       dns_cmd_file.puts("update delete " + fqdn_str)
+#       dns_cmd_file.puts("send")
+#       dns_cmd_file.puts("update add " + fqdn_str + " 30 A " + ip_addr_str)
+#       dns_cmd_file.puts("send")
+#       dns_cmd_file.close
+#       cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name
+#       retval = run_system(cmd_str)
+#       #File.delete(dns_cmd_file_name)
+#       return retval
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def delete_container_configs(container)
      clear_error
@@ -180,25 +180,25 @@ class SystemApi
      end
    end
 
-   def deregister_dns(top_level_hostname)
-     clear_error
-     begin
-       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
-       dns_cmd_file_name="/tmp/.top_level_hostname.dns_cmd_file"
-       dns_cmd_file = File.new(dns_cmd_file_name,"w")
-       dns_cmd_file.puts("server " + SysConfig.defaultDNS)
-       dns_cmd_file.puts("update delete " + fqdn_str)
-       dns_cmd_file.puts("send")
-       dns_cmd_file.close
-       cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name
-       retval =  run_system(cmd_str)
-       File.delete(dns_cmd_file_name)
-       return retval
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#   def deregister_dns(top_level_hostname)
+#     clear_error
+#     begin
+#       fqdn_str = top_level_hostname + "." + SysConfig.internalDomain
+#       dns_cmd_file_name="/tmp/.top_level_hostname.dns_cmd_file"
+#       dns_cmd_file = File.new(dns_cmd_file_name,"w")
+#       dns_cmd_file.puts("server " + SysConfig.defaultDNS)
+#       dns_cmd_file.puts("update delete " + fqdn_str)
+#       dns_cmd_file.puts("send")
+#       dns_cmd_file.close
+#       cmd_str = "nsupdate -k " + SysConfig.ddnsKey + " " + dns_cmd_file_name
+#       retval =  run_system(cmd_str)
+#       File.delete(dns_cmd_file_name)
+#       return retval
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def get_cert_name(fqdn)
      if File.exists?(SysConfig.NginxCertDir + "/" + fqdn + ".crt")
@@ -261,15 +261,15 @@ class SystemApi
      end
    end
 
-   def hash_to_site_str(site_hash)
-     clear_error
-     begin
-       return site_hash[:name].to_s + ":" +  site_hash[:variables][:fqdn].to_s + ":" + site_hash[:variables][:port].to_s  + ":" + site_hash[:variables][:proto].to_s
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#   def hash_to_site_str(site_hash)
+#     clear_error
+#     begin
+#       return site_hash[:name].to_s + ":" +  site_hash[:variables][:fqdn].to_s + ":" + site_hash[:variables][:port].to_s  + ":" + site_hash[:variables][:proto].to_s
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def get_site_file_name(site_hash)
      file_name = String.new
@@ -283,50 +283,50 @@ class SystemApi
      return file_name
      
    end
-
-   def deregister_site(site_hash)
-     clear_error
-     begin
-       #        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-       #        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-       #        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-       #        SystemUtils.debug_output ssh_cmd
-       #        result = run_system(ssh_cmd)
-       site_filename = get_site_file_name(site_hash)
-       if File.exists?(site_filename)
-         File.delete(site_filename)
-       end
-       result = restart_nginx_process()
-       return result
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-
-   def add_monitor(site_hash)
-     clear_error
-     begin
-       ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
-       return run_system(ssh_cmd)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def rm_monitor(site_hash)
-     clear_error
-     begin
-       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
-       return run_system(ssh_cmd)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-   
+#
+#   def deregister_site(site_hash)
+#     clear_error
+#     begin
+#       #        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
+#       #        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
+#       #        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
+#       #        SystemUtils.debug_output ssh_cmd
+#       #        result = run_system(ssh_cmd)
+#       site_filename = get_site_file_name(site_hash)
+#       if File.exists?(site_filename)
+#         File.delete(site_filename)
+#       end
+#       result = restart_nginx_process()
+#       return result
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
+#
+#
+#   def add_monitor(site_hash)
+#     clear_error
+#     begin
+#       ssh_cmd=SysConfig.addSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
+#       return run_system(ssh_cmd)
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
+#
+#   def rm_monitor(site_hash)
+#     clear_error
+#     begin
+#       ssh_cmd=SysConfig.rmSiteMonitorCmd + " \"" + hash_to_site_str(site_hash) + " \""
+#       return run_system(ssh_cmd)
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
+#   
   def get_build_report(engine_name)
     clear_error
          stateDir=SysConfig.CidDir + "/containers/" + engine_name

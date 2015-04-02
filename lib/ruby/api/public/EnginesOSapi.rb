@@ -506,34 +506,34 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("deRegister Engine DNS",e)
   end
-
-  def monitorEngine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","Monitor Engine")
-    end
-    retval = engine.monitor_site()
-    if  retval.is_a?(String)
-      return failed(engine_name,retval,"Monitor Engine")
-    end
-    return success(engine_name,"Monitor Engine")
-  rescue Exception=>e
-    return log_exception_and_fail("Monitor Engine",e)
-  end
-
-  def demonitorEngine engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","DeMonitor Engine")
-    end
-    retval = engine.demonitor_site()
-    if  retval.is_a?(String)
-      return failed(engine_name,retval,"DeMonitor Engine")
-    end
-    return success(engine_name,"DeMonitor Engine")
-  rescue Exception=>e
-    return log_exception_and_fail("DeMonitor Engine",e)
-  end
+#
+#  def monitorEngine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","Monitor Engine")
+#    end
+#    retval = engine.monitor_site()
+#    if  retval.is_a?(String)
+#      return failed(engine_name,retval,"Monitor Engine")
+#    end
+#    return success(engine_name,"Monitor Engine")
+#  rescue Exception=>e
+#    return log_exception_and_fail("Monitor Engine",e)
+#  end
+#
+#  def demonitorEngine engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","DeMonitor Engine")
+#    end
+#    retval = engine.demonitor_site()
+#    if  retval.is_a?(String)
+#      return failed(engine_name,retval,"DeMonitor Engine")
+#    end
+#    return success(engine_name,"DeMonitor Engine")
+#  rescue Exception=>e
+#    return log_exception_and_fail("DeMonitor Engine",e)
+#  end
 
   def get_engine_blueprint engine_name
     p :get_blueprint_for

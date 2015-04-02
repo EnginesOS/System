@@ -53,21 +53,30 @@ class EnginesCore
   end
 
   def start_container(container)
-    if @docker_api.start_container(container) == true
-      return true
-    end
-    return false
+    return  @docker_api.start_container(container)
   end
 
+  def register_non_persistant_services(engine_name)
+    #service manager get non persistant services for engine_name
+       #for each servie_hash load_service_container and add hash
+       #add to service registry even if container is down
+    return true
+    end
+  def deregister_non_persistant_services(engine_name)
+    #service manager get non persistant services for engine_name
+    #for each servie_hash load_service_container and remove hash
+    #remove from service registry even if container is down
+    
+     return true
+     
+     end
+   
   def inspect_container(container)
     return  @docker_api.inspect_container(container)
   end
 
   def stop_container(container)
-    if @docker_api.stop_container(container) == true
-      return  true
-    end
-    return false
+    return @docker_api.stop_container(container) 
   end
 
   def pause_container(container)
@@ -75,7 +84,7 @@ class EnginesCore
   end
 
   def  unpause_container(container)
-    return  @docker_api.unpause_container(container)
+   return   @docker_api.unpause_container(container)
   end
 
   def  ps_container(container)
@@ -86,13 +95,13 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  def add_monitor(site_hash)
-    return @system_api.add_monitor(site_hash)
-  end
-
-  def rm_monitor(site_hash)
-    return @system_api.rm_monitor(site_hash)
-  end
+#  def add_monitor(site_hash)
+#    return @system_api.add_monitor(site_hash)
+#  end
+#
+#  def rm_monitor(site_hash)
+#    return @system_api.rm_monitor(site_hash)
+#  end
 
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
@@ -145,26 +154,26 @@ class EnginesCore
   def save_system_preferences
     return @system_api.save_system_preferences
   end
-
-  def register_site(site_hash)
-    return @system_api.register_site(site_hash)
-  end
-
-  def deregister_site(site_hash)
-    return @system_api.deregister_site(site_hash)
-  end
-
-  def hash_to_site_str(site_hash)
-    return @system_api.hash_to_site_str(site_hash)
-  end
-
-  def  deregister_dns(top_level_hostname)
-    return @system_api.deregister_dns(top_level_hostname)
-  end
-
-  def register_dns(top_level_hostname,ip_addr_str)
-    return @system_api.register_dns(top_level_hostname,ip_addr_str)
-  end
+#
+#  def register_site(site_hash)
+#    return @system_api.register_site(site_hash)
+#  end
+#
+#  def deregister_site(site_hash)
+#    return @system_api.deregister_site(site_hash)
+#  end
+#
+#  def hash_to_site_str(site_hash)
+#    return @system_api.hash_to_site_str(site_hash)
+#  end
+#
+#  def  deregister_dns(top_level_hostname)
+#    return @system_api.deregister_dns(top_level_hostname)
+#  end
+#
+#  def register_dns(top_level_hostname,ip_addr_str)
+#    return @system_api.register_dns(top_level_hostname,ip_addr_str)
+#  end
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
