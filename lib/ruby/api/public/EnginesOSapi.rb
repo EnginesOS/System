@@ -477,36 +477,36 @@ class EnginesOSapi
     return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
-  def registerEngineDNS engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","Register Engine DNS")
-    end
-    retval = engine.register_dns()
-
-    if retval.is_a?(String)
-      p retval
-      return failed(engine_name,retval,"Register Engine DNS")
-    end
-    return success(engine_name,"Register Engine DNS")
-  rescue Exception=>e
-    return log_exception_and_fail("Register Engine DNS",e)
-  end
-
-  def deregisterEngineDNS engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","DeRegister Engine DNS")
-    end
-    retval = engine.deregister_dns()
-    if  retval.is_a?(String)
-      return failed(engine_name,retval,"DeRegister Engine DNS")
-    end
-    return success(engine_name,"DeRegister Engine DNS")
-  rescue Exception=>e
-    return log_exception_and_fail("deRegister Engine DNS",e)
-  end
+#  def registerEngineDNS engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","Register Engine DNS")
+#    end
+#    retval = engine.register_dns()
 #
+#    if retval.is_a?(String)
+#      p retval
+#      return failed(engine_name,retval,"Register Engine DNS")
+#    end
+#    return success(engine_name,"Register Engine DNS")
+#  rescue Exception=>e
+#    return log_exception_and_fail("Register Engine DNS",e)
+#  end
+#
+#  def deregisterEngineDNS engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","DeRegister Engine DNS")
+#    end
+#    retval = engine.deregister_dns()
+#    if  retval.is_a?(String)
+#      return failed(engine_name,retval,"DeRegister Engine DNS")
+#    end
+#    return success(engine_name,"DeRegister Engine DNS")
+#  rescue Exception=>e
+#    return log_exception_and_fail("deRegister Engine DNS",e)
+#  end
+##
 #  def monitorEngine engine_name
 #    engine = loadManagedEngine engine_name
 #    if  engine.is_a?(EnginesOSapiResult)
