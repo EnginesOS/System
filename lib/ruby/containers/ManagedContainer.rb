@@ -68,19 +68,7 @@ class ManagedContainer < Container
   :last_result,\
   :last_error
 
-  #  def cron_job_list
-  #    if @cron_job_list == nil
-  #      @cron_job_list =  Array.new
-  #    end
-  #    return @cron_job_list
-  #  end
-  #
-  #   def set_cron_job_list(job_list)
-  #     @cron_job_list = job_list
-  #     p :set_cron_job_list
-  #     p @cron_job_list
-  #
-  #   end
+
 
   def http_protocol
     case @protocol

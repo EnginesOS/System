@@ -1,26 +1,11 @@
 #!/bin/bash
 
-n=1
+service_hash=$1
 
-echo $1 |grep = >/dev/null
-        if test $? -ne 0
-        then
-        		echo Error:No Arguments
-                exit -1
-        fi
+. /home/engines/scripts/functions.sh
 
-res="${1//[^:]}"
-echo $res
-fcnt=${#res}
-fcnt=`expr $fcnt + 1`
+load_service_hash_to_environment
 
-        while test $fcnt -ge $n
-        do
-                nvp="`echo $1 |cut -f$n -d:`"
-                n=`expr $n + 1`
-                name=`echo $nvp |cut -f1 -d=`
-                export $name=`echo $nvp |cut -f2 -d=`
-        done
 #FIXME make engines.internal settable
 
 	if test -z ${hostname}

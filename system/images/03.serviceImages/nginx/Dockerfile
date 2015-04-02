@@ -1,18 +1,20 @@
 FROM  engines/base:$release
 
-#RUN echo "Y" | adduser -q  --uid 22005 --disabled-password www-data
+
 RUN usermod www-data -u 22005;\
 	apt-get -y update;\
 	apt-get -y install nginx;\
-	apt-get clean
+	apt-get clean;\
+	mkdir -p /var/lib/nginx /var/run/nginx/ ;\ 
+	chown www-data /var/lib/nginx /var/run/nginx/
+
 ADD nginx.conf /etc/nginx/
 ADD home home
-
-RUN mkdir -p /var/lib/nginx /var/run/nginx/ 
-RUN chown www-data /var/lib/nginx /var/run/nginx/
+ADD templates /etc/nginx
 
 ENV ContUser www-data
 ENV ContGrp www-data
+
 USER 22005
 
 CMD nginx

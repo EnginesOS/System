@@ -1,4 +1,4 @@
---- !ruby/object:NginxService
+--- !ruby/object:ManagedService
 containerName: nginx
 ctype: service
 persistant: false
@@ -14,11 +14,6 @@ volumes:
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engines/etc/nginx/ssl/"
   mapping_permissions: "ro"
- sites_enabled: !ruby/object:Volume
-  name: sites_enabled
-  remotepath: "/etc/nginx/sites-enabled/"
-  localpath: "/opt/engines/etc/nginx/sites-enabled/"
-  mapping_permissions: "ro" 
  var_run: !ruby/object:Volume
   name: var_run
   remotepath: "/var/run/nginx"
