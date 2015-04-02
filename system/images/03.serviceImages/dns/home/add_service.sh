@@ -1,7 +1,5 @@
 #!/bin/bash
-. /home/engines/scripts/functions.sh
 
-load_service_hash_to_environment
 n=1
 
 echo $1 |grep = >/dev/null
