@@ -9,11 +9,7 @@ class SystemApi
      begin
        cid = read_container_id(container)
        container.container_id=(cid)
-       if save_container(container)  == true
-         return register_dns_and_site(container)
-       else
-         return false #save_container false
-       end
+       return save_container(container)  
 
      rescue Exception=>e
        container.last_error=("Failed To Create " + e.to_s)
