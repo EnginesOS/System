@@ -8,18 +8,20 @@ require "git"
 require 'fileutils'
 require 'json'
 
-require_relative 'builder_public.rb'
-require_relative 'BluePrintReader.rb'
-require_relative 'DockerFileBuilder.rb'
-require_relative 'SystemAccess.rb'
 
-require_relative 'build_report.rb'
-include BuildReport
-
-require_relative 'templating.rb'
-include Templating
 
 class EngineBuilder
+  require_relative 'builder_public.rb'
+  require_relative 'BluePrintReader.rb'
+  require_relative 'DockerFileBuilder.rb'
+  require_relative 'SystemAccess.rb'
+  
+  require_relative 'build_report.rb'
+  include BuildReport
+  
+  require_relative 'templating.rb'
+  include Templating
+  
   @repoName=nil
   @hostname=nil
   @domain_name=nil
@@ -400,7 +402,7 @@ class EngineBuilder
       create_template_files
       create_php_ini
       create_apache_config
-      create_scritps
+      create_scripts
 
       index=0
       #FIXME There has to be a ruby way
@@ -508,7 +510,7 @@ class EngineBuilder
     end
   end
 
-  def   create_scritps
+  def   create_scripts
 
     FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
     create_start_script
