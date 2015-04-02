@@ -181,6 +181,7 @@ class ManagedService < ManagedContainer
   def create_service()
    
     if create_container() ==true
+      register_dns()
       reregister_consumers()
       save_state()
       return true
@@ -190,11 +191,34 @@ class ManagedService < ManagedContainer
     end
   end
 
+  
+  #Register the dns
+  #bootsrap service dns into registry
+  #would be better if it check a pre exisiting record will throw error on recreate
+  # so dot check for result just yet
+   def register_dns
+     service_hash = Hash.new
+     service_hash[:type_path] = 'dns'
+       service_hash[:variables] = Hash.new
+       service_hash[:variables][:parent_engine]= containerName
+       service_hash[:parent_engine]=containerName
+         if engine.ctype == "service"
+           service_hash[:variables][:hostname]=hostName
+         else
+           service_hash[:variables][:hostname]=containerName
+         end
+       service_hash[:variables][:name]=service_hash[:variables][:hostname]
+       service_hash[:variables][:container_type]=ctype
+       service_hash[:variables][:ip]=get_ip_str.to_s
+       service_hash[:publisher_namespace] = "EnginesSystem"
+       service_hash[:service_handle]=service_hash[:variables][:name]
+       @core_api.attach_service(service_hash)
+   end
+  
   def recreate
     
     if  destroy_container() ==true
-      if   create_service()==true
-        reregister_consumers()
+      if   create_service()==true       
         return true
       else
         log_error_mesg("Failed to create service in recreate",self)
