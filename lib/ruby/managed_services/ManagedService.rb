@@ -112,14 +112,27 @@ class ManagedService < ManagedContainer
     save_state
     return result
   end
+  def service_hash_variables_as_str(service_hash)
+    argument = String.new
+      
+    service_variables =  service_hash[:variables]
+      if service_variables == nil
+        return argument
+      end
+    service_variables.each_pair do |key,value|
+      argument+= key + "=" + value + ":"      
+    end
+    
+    return argument
+  end
   
   def   add_consumer_to_service(service_hash)   
-  cmd = "docker exec " +  containerName + " /home/create_service.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
+  cmd = "docker exec " +  containerName + " /home/create_service.sh " + service_hash_variables_as_str(site_hash)
     SystemUtils.run_system(cmd)
   end
   
   def   rm_consumer_to_service(service_hash) 
-   cmd = "docker exec " +  containerName + " /home/rm_service.sh " + service_hash[:variables][:database_name] + " " + service_hash[:variables][:db_username] + " " + service_hash[:variables][:db_password]
+   cmd = "docker exec " +  containerName + " /home/rm_service.sh " + service_hash_variables_as_str(site_hash)
      SystemUtils.run_system(cmd)
   end 
   

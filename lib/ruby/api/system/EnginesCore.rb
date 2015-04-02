@@ -56,20 +56,7 @@ class EnginesCore
     return  @docker_api.start_container(container)
   end
 
-  def register_non_persistant_services(engine_name)
-    #service manager get non persistant services for engine_name
-       #for each servie_hash load_service_container and add hash
-       #add to service registry even if container is down
-    return true
-    end
-  def deregister_non_persistant_services(engine_name)
-    #service manager get non persistant services for engine_name
-    #for each servie_hash load_service_container and remove hash
-    #remove from service registry even if container is down
-    
-     return true
-     
-     end
+ 
    
   def inspect_container(container)
     return  @docker_api.inspect_container(container)
@@ -838,6 +825,15 @@ def log_error_mesg(msg,object)
 
  end
   
+def register_non_persistant_services(engine_name)
+   sm = loadServiceManager()
+   return sm.register_non_persistant_services(engine_name)
+   end
+ def deregister_non_persistant_services(engine_name)
+   sm = loadServiceManager()
+  return sm.deregister_non_persistant_services(engine_name)
+ end
+ 
   protected
 
   def get_volbuild_volmaps container

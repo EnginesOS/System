@@ -98,11 +98,16 @@ log_error_mesg("create_type_path failed",type_path)
 #      return false
 #    end
 #       
-    if remove_from_engine_registery(service_hash) == false
-      log_error_mesg("failed to remove from engine registry",service_hash)
+#    if remove_from_engine_registery(service_hash) == false
+#      log_error_mesg("failed to remove from engine registry",service_hash)
+#      return false
+#    end
+
+    if remove_from_managed_service(service_hash)
+      log_error_mesg("failed to remove managed service",service_hash)
       return false
     end
-
+    
     if remove_from_services_registry(service_hash) == false
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
@@ -206,22 +211,22 @@ log_error_mesg("create_type_path failed",type_path)
        end
       service_hash[:persistant] = persist
     end 
-  
     
-    p :adding_to_engine_tree
-      p service_hash  
+      if add_to_managed_service(service_hash) == false
+        log_error_mesg("Failed to create persistant service ",service_hash)
+        return false
+      end
+        
+      if add_to_services_tree(service_hash) == false
+        log_error_mesg("Failed to add service to managed service registry",service_hash)
+        return false
+      end
+    
+
     if add_to_managed_engines_tree(service_hash) == false
       log_error_mesg("Failed to add service to managed engine registry",service_hash)
       return false
     end
-
-    p :adding_to_service_tree
-    p service_hash
-    if add_to_services_tree(service_hash) == false
-    log_error_mesg("Failed to add service to managed service registry",service_hash)
-    return false
-  end
-
     return save_tree
 
   rescue Exception=>e
@@ -309,6 +314,33 @@ log_error_mesg("Failed remove engine",params)
     log_exception(e)
     return nil
   end
+  
+
+  
+def register_non_persistant_services(engine_name)
+   sm = loadServiceManager()
+   services = get_engine_nonpersistant_services(params)
+   services.each do |service|
+     add_to_managed_service(service_hash)
+   end
+   
+   #service manager get non persistant services for engine_name
+      #for each servie_hash load_service_container and add hash
+      #add to service registry even if container is down
+   return true
+   end
+ def deregister_non_persistant_services(engine_name)
+   #service manager get non persistant services for engine_name
+   #for each servie_hash load_service_container and remove hash
+   #remove from service registry even if container is down
+   
+   services = get_engine_nonpersistant_services(params)
+   services.each do |service|
+     remove_from_managed_service(service_hash)
+   end
+    return true
+    
+    end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
