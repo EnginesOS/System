@@ -21,8 +21,10 @@ RUN chown bind /var/run/named;\
 	key=`cat ddns.private |grep Key | cut -f2 -d" "`;\
 	cp /etc/bind/templates/named.conf.default-zones.start /etc/bind/named.conf.default-zones;\
 	echo "secret \"$key\";" >> /etc/bind/named.conf.default-zones;\
-	cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones
-
+	cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones;\
+	mkdir -p /etc/bind/keys/;\
+	mv ddns* /etc/bind/keys/
+	
 COPY home home
 
 #CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g
