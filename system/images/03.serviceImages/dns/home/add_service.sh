@@ -39,7 +39,7 @@ fcnt=`expr $fcnt + 1`
 
 	fqdn_str=${hostname}.engines.internal
 	echo server 127.0.0.1 > /tmp/.dns_cmd
-	echo update delete $fqdn >> /tmp/.dns_cmd
+	echo update delete $fqdn_str >> /tmp/.dns_cmd
 	echo send >> /tmp/.dns_cmd
 	echo update add $fqdn_str 30 A $ip >> /tmp/.dns_cmd
 	echo send >> /tmp/.dns_cmd

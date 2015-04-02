@@ -16,14 +16,14 @@ ADD engines.internal.domain /var/lib/bind/engines/engines.dnsrecords
 RUN chown bind /var/run/named;\
 	chown bind /var/lib/bind/engines;\
 	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE;\
-	mv *private ddns.private;\
-	mv *key ddns.key;\
-	key=`cat ddns.private |grep Key | cut -f2 -d" "`;\
+	mkdir -p /etc/bind/keys/;\
+	mv *private /etc/bind/keys/ddns.private;\
+	mv *key /etc/bind/keys/ddns.key;\
+	key=`cat /etc/bind/keys/ddns.private |grep Key | cut -f2 -d" "`;\
 	cp /etc/bind/templates/named.conf.default-zones.start /etc/bind/named.conf.default-zones;\
 	echo "secret \"$key\";" >> /etc/bind/named.conf.default-zones;\
-	cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones;\
-	mkdir -p /etc/bind/keys/;\
-	mv ddns* /etc/bind/keys/
+	cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones
+	
 	
 COPY home home
 
