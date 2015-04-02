@@ -1,6 +1,4 @@
-key DDNS_UPDATE { 
-algorithm HMAC-MD5.SIG-ALG.REG.INT;
-secret "KEY_VALUE";
+
 };
 
 zone "engines.internal" {
