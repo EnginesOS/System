@@ -343,7 +343,7 @@ class ServiceManager
   end
 
   def register_non_persistant_services(engine_name)
-    sm = loadServiceManager()
+  
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
