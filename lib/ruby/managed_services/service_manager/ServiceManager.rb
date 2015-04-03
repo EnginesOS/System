@@ -347,6 +347,8 @@ class ServiceManager
 
   def register_non_persistant_services(engine_name)
     sm = loadServiceManager()
+    params = Hash.new()
+    params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
     services.each do |service|
       register_non_persistant_service(service_hash)
@@ -362,7 +364,8 @@ class ServiceManager
     #service manager get non persistant services for engine_name
     #for each servie_hash load_service_container and remove hash
     #remove from service registry even if container is down
-
+    params = Hash.new()
+    params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
     services.each do |service|
       deregister_non_persistant_service(service_hash)
