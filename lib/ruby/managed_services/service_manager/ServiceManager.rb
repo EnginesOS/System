@@ -372,6 +372,9 @@ class ServiceManager
 
   end
   
+  #Calls remove service on the service_container to remove the service associated by the hash
+  #@return result boolean
+  #@param service_hash [Hash]
   def remove_from_managed_service(service_hash)
     service =  @core_api.load_software_service(service_hash)
      if service == nil
@@ -385,8 +388,25 @@ class ServiceManager
       end
     
       return service.rm_consumer_from_service(service_hash) 
-      
   end
+  
+#Calls on service on the service_container to add the service associated by the hash
+#@return result boolean
+#@param service_hash [Hash]
+def add_to_managed_service(service_hash)
+  service =  @core_api.load_software_service(service_hash)
+   if service == nil
+     log_error_mesg("Failed to load service to remove ",service_hash)
+          return false
+        end
+   
+    if service.is_running == false
+      log_error_mesg("Cant remove from service if service is stopped ",service_hash)
+      return false
+    end
+  
+    return service.add_consumer_to_service(service_hash) 
+end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
