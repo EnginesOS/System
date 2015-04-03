@@ -377,7 +377,7 @@ class ServiceManager
   end
   
   def remove_from_managed_service(service_hash)
-    service =  load_software_service(params)
+    service =  load_software_service(service_hash)
      if service == nil
        log_error_mesg("Failed to load service to remove ",service_hash)
             return false
