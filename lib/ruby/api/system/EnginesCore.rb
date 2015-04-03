@@ -259,7 +259,9 @@ class EnginesCore
   end
 
   def attach_service(service_hash)
-
+ p :attach_Service
+ p service_hash
+    
     if service_hash == nil
       log_error_mesg("Attach Service passed a nil","")
       return false
