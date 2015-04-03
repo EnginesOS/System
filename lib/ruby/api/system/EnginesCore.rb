@@ -296,7 +296,7 @@ class EnginesCore
 
   def loadServiceManager()
     if @service_manager == nil
-      @service_manager = ServiceManager.new()
+      @service_manager = ServiceManager.new(self)
       return @service_manager
     end
     return @service_manager

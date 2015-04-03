@@ -14,7 +14,8 @@ class ServiceManager
   #@service_tree root of the Service Registry Tree
   attr_accessor     :last_error
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
-  def initialize
+  def initialize(core_api)
+    @core_api = core_api
     #@service_tree root of the Service Registry Tree
     @service_tree = initialize_tree
   end
@@ -367,11 +368,28 @@ class ServiceManager
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
+    
     services.each do |service_hash|
       deregister_non_persistant_service(service_hash)
     end
     return true
 
+  end
+  
+  def remove_from_managed_service(service_hash)
+    service =  load_software_service(params)
+     if service == nil
+       log_error_mesg("Failed to load service to remove ",service_hash)
+            return false
+          end
+     
+      if service.is_running == false
+        log_error_mesg("Cant remove from service if service is stopped ",service_hash)
+        return false
+      end
+    
+      return service.rm_consumer_from_service(service_hash) 
+      
   end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
