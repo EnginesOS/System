@@ -11,7 +11,7 @@ RUN usermod www-data -u 22005;\
 ADD nginx.conf /etc/nginx/
 ADD home home
 ADD templates /etc/nginx
-
+ADD sites-enabled /etc/nginx/
 ENV ContUser www-data
 ENV ContGrp www-data
 
