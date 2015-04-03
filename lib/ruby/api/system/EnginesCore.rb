@@ -263,7 +263,7 @@ class EnginesCore
     if service_hash == nil
       log_error_mesg("Attach Service passed a nil","")
       return false
-    elsif service_hash.is_a(Hash) == false
+    elsif service_hash.is_a?(Hash) == false
      log_error_mesg("Attached Service passed a non Hash",service_hash)
       return false
     end
