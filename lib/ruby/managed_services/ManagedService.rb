@@ -132,7 +132,7 @@ class ManagedService < ManagedContainer
     SystemUtils.run_system(cmd)
   end
   
-  def   rm_consumer_to_service(service_hash) 
+  def   rm_consumer_from_service(service_hash) 
    cmd = "docker exec " +  containerName + " /home/rm_service.sh " + service_hash_variables_as_str(site_hash)
      SystemUtils.run_system(cmd)
   end 
