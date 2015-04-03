@@ -375,6 +375,7 @@ class ServiceManager
   #Calls remove service on the service_container to remove the service associated by the hash
   #@return result boolean
   #@param service_hash [Hash]
+  #remove persistant services only if service is up
   def remove_from_managed_service(service_hash)
     service =  @core_api.load_software_service(service_hash)
      if service == nil
@@ -382,12 +383,15 @@ class ServiceManager
             return false
           end
      
-      if service.is_running == false
-        log_error_mesg("Cant remove from service if service is stopped ",service_hash)
+      if service.is_running == true
+        return service.rm_consumer_from_service(service_hash)
+      elsif service.persistant == true 
+        log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
         return false
+      else
+        return true                  
       end
     
-      return service.rm_consumer_from_service(service_hash) 
   end
   
 #Calls on service on the service_container to add the service associated by the hash
