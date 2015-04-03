@@ -240,7 +240,7 @@ class ServiceManager
   def get_service_handle(params)
 
     if  params.has_key?(:service_handle) && params[:service_handle] != nil
-
+        return params[:service_handle]
     else
       log_error_mesg("no :service_handle",params)
 
@@ -298,7 +298,6 @@ class ServiceManager
     log_error_mesg("Failed to save orphan",service_hash)
 
     return false
-
   end
 
   #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
@@ -324,7 +323,6 @@ class ServiceManager
     if add_to_services_tree(service_hash) == false
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
-
     end
 
     return true
@@ -340,9 +338,7 @@ class ServiceManager
     if remove_from_services_tree(service_hash) == false
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
-
     end
-
     return true
   end
 
