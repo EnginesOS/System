@@ -350,7 +350,7 @@ class ServiceManager
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
-    services.each do |service|
+    services.each do |service_hash|
       register_non_persistant_service(service_hash)
     end
 
@@ -367,7 +367,7 @@ class ServiceManager
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
-    services.each do |service|
+    services.each do |service_hash|
       deregister_non_persistant_service(service_hash)
     end
     return true
