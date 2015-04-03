@@ -121,7 +121,7 @@ class ManagedService < ManagedContainer
         return argument
       end
     service_variables.each_pair do |key,value|
-      argument+= key + "=" + value + ":"      
+      argument+= key.to_s + "=" + value + ":"      
     end
     
     return argument
