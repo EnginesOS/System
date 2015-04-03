@@ -28,6 +28,13 @@ if test -z $fqdn
  	Error:no name in nginx service hash
  	exit -1
  fi
+ 
+ nslookup ${name}.engines.internal
+ if test $? -lt 0
+  then
+  	echo Error:failed to find internal dns entry for site
+  	exit -1
+ fi  
 
 template="/etc/nginx/templates/${proto}_site.tmpl"
 
