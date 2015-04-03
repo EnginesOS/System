@@ -325,7 +325,7 @@ class ServiceManager
       return false
     end
 
-    return true
+    return save_tree
   end
 
   def deregister_non_persistant_service(service_hash)
@@ -339,7 +339,7 @@ class ServiceManager
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
     end
-    return true
+    return save_tree
   end
 
   def register_non_persistant_services(engine_name)
