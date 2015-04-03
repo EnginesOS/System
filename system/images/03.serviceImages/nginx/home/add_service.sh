@@ -6,13 +6,53 @@ service_hash=$1
 
 load_service_hash_to_environment
 
+if test -z $fqdn
+ then
+ 	Error:no FQDN in nginx service hash
+ 	exit -1
+ fi
+ 
+ if test -z $port
+ then
+ 	Error:no port in nginx service hash
+ 	exit -1
+ fi
+  if test -z $proto
+ then
+ 	Error:no proto in nginx service hash
+ 	exit -1
+ fi
+ 
+   if test -z $name
+ then
+ 	Error:no name in nginx service hash
+ 	exit -1
+ fi
 
+template="/etc/nginx/templates/${proto}_site.tmpl"
 
+cat $template | sed "/FQDN/s//$fqdn/" > /tmp/site.fqdn
+cat /tmp/site.fqdn  | sed "/PORT/s//$port/" > /tmp/site.port
+cat /tmp/site.port  | sed "/SERVER/s//$name/" > /tmp/site.name
 
-
- if  site_hash[:variables][:fqdn] == nil || site_hash[:variables][:fqdn].length ==0 || site_hash[:variables][:fqdn] == "N/A"  
-#         return true 
-#       end
+	if !test $proto http
+	 then
+	 	if test -f /etc/nginx/ssl/certs/$fqdn.crt
+	 		then
+	 			cert_name=$fqdn
+	        else
+	        	 c=engines
+	        fi
+	    cat /tmp/site.port  | sed "/CERTNAME/s//$CERTNAME/" > /etc/nginx/sites_enabled/${proto}_${fqdn}.site
+	 else
+	 	cp /tmp/site.name /etc/nginx/sites_enabled/${proto}_${fqdn}.site
+	 fi
+	 
+	 rm /tmp/site.*
+	 
+	 kill -HUP `cat /var/run/nginx.pid`
+	 
+	 echo Success
 #       
 #       proto = site_hash[:variables][:proto]
 #       if proto =="http https"

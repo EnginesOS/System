@@ -6,17 +6,37 @@ service_hash=$1
 
 load_service_hash_to_environment
 
+if test -z $fqdn
+ then
+ 	Error:no FQDN in nginx service hash
+ 	exit -1
+ fi
+ 
+ if test -z $port
+ then
+ 	Error:no port in nginx service hash
+ 	exit -1
+ fi
+  if test -z $proto
+ then
+ 	Error:no proto in nginx service hash
+ 	exit -1
+ fi
+ 
+   if test -z $name
+ then
+ 	Error:no name in nginx service hash
+ 	exit -1
+ fi
 
-
-
-#     begin
-#       #        #  ssh_cmd=SysConfig.rmSiteCmd +  " \"" + hash_to_site_str(site_hash) +  "\""
-#       #        #FIXME Should write site conf file via template (either standard or supplied with blueprint)
-#       #        ssh_cmd = "/opt/engines/scripts/nginx/rmsite.sh " + " \"" + hash_to_site_str(site_hash)   +  "\""
-#       #        SystemUtils.debug_output ssh_cmd
-#       #        result = run_system(ssh_cmd)
-#       site_filename = get_site_file_name(site_hash)
-#       if File.exists?(site_filename)
-#         File.delete(site_filename)
-#       end
-#       result = restart_nginx_process()
+	if test -f /etc/nginx/sites_enabled/${proto}_${fqdn}.site
+	 then
+	 	rm /etc/nginx/sites_enabled/${proto}_${fqdn}.site	 
+	 	kill -HUP `cat /var/run/nginx.pid`
+	else
+		echo Error:config not found
+		exit -1
+	fi
+	 
+	 echo Success
+	 

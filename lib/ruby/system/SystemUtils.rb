@@ -128,7 +128,7 @@ def SystemUtils.create_nginx_service_hash(engine)
   when :https_only
     proto="https"
   when :http_and_https
-    proto ="http https"
+    proto ="http_https"
   when :http_only
     proto="http"
   end
