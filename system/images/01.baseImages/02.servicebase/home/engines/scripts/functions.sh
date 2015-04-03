@@ -27,5 +27,4 @@ fcnt=`expr $fcnt + 1`
                 		export $name=`echo $nvp |cut -f2 -d=`
                 	fi
         done
-
 }
