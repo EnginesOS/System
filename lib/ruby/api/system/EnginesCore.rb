@@ -261,28 +261,34 @@ class EnginesCore
   def attach_service(service_hash)
 
     if service_hash == nil
-      p :attached_Service_passed_nil
+      log_error_mesg("Attach Service passed a nil","")
+      return false
+    elsif service_hash.is_a(Hash) == false
+     log_error_mesg("Attached Service passed a non Hash",service_hash)
       return false
     end
-
-    service = load_software_service(service_hash)
-    p :attaching_to_service
-    p service_hash
-    if service !=nil && service != false
-      return service.add_consumer(service_hash)
-    end
-    @last_error = "Failed to attach Service: " + @last_error
+    
+    sm = loadServiceManager()
+    return sm.add_service(service_hash)
+#
+#    service = load_software_service(service_hash)
+#    p :attaching_to_service
+#    p service_hash
+#    if service !=nil && service != false
+#      return service.add_consumer(service_hash)
+#    end
+#    @last_error = "Failed to attach Service: " + @last_error
     return  false
   rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def dettach_service(params)
-    service = load_software_service(params)
-    if service !=nil && service != false
-      return service.remove_consumer(params)
-    end
-    @last_error = "Failed to dettach Service: " + @last_error
+#    service = load_software_service(params)
+#    if service !=nil && service != false
+#      return service.remove_consumer(params)
+#    end
+#    @last_error = "Failed to dettach Service: " + @last_error
     return  false
   rescue Exception=>e
     SystemUtils.log_exception e
