@@ -103,10 +103,14 @@ end
 #@param engine [ManagedContainer] 
 def SystemUtils.create_dns_service_hash(engine)
   service_hash = Hash.new
+  
+      service_hash[:publisher_namespace] = "EnginesSystem"
       service_hash[:type_path] = 'dns'
+      service_hash[:parent_engine]=engine.containerName
+        
         service_hash[:variables] = Hash.new
         service_hash[:variables][:parent_engine]= engine.containerName
-        service_hash[:parent_engine]=engine.containerName
+        
           if engine.ctype == "service"
             service_hash[:variables][:hostname]=engine.hostName
           else
@@ -115,9 +119,10 @@ def SystemUtils.create_dns_service_hash(engine)
         service_hash[:variables][:name]=service_hash[:variables][:hostname]
         service_hash[:container_type]=engine.ctype
         service_hash[:variables][:ip]=engine.get_ip_str.to_s
-        service_hash[:publisher_namespace] = "EnginesSystem"
+      
         service_hash[:service_handle]=service_hash[:variables][:name]
-          
+  p :created_dns_service_hash
+  p service_hash        
           return service_hash
 end
 
