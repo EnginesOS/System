@@ -29,7 +29,7 @@ class ManagedService < ManagedContainer
     @runtime=runtime
     @persistant=false  #Persistant means niether service or engine need to be up/running or even exist for this service to exist
   end
-
+  attr_reader :persistant
   #@return Hash of consumers 
   #creates fresh hash in instance @consumers is nil
   def consumers
