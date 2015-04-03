@@ -182,7 +182,8 @@ class ManagedService < ManagedContainer
   def create_service()
    
     if create_container() ==true
-      register_dns()
+      register_with_dns()
+      @core_api.register_non_persistant_services(containerName)
       reregister_consumers()
       save_state()
       return true
@@ -193,17 +194,7 @@ class ManagedService < ManagedContainer
   end
 
   
-  #Register the dns
-  #bootsrap service dns into ManagedService registry
-  #would be better if it check a pre exisiting record will throw error on recreate
-  # 
-   def register_dns
-     service_hash = SystemUtils.create_dns_service_hash(self)
-     if service_hash == nil
-       return false
-     end
-     return  @core_api.attach_service(service_hash)
-   end
+
   
   def recreate
     

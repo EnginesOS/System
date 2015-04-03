@@ -241,7 +241,9 @@ class ManagedContainer < Container
       @last_error ="Did not start"
       ret_val = false
     end
-    register_registered
+    register_with_dns
+    @core_api.register_non_persistant_services(containerName)
+  
   clear_error(ret_val)
   save_state()
   set_container_id
@@ -272,7 +274,7 @@ def unpause_container
   else
     @last_error ="Can't unpause Container as " + state
   end
- register_registered
+  @core_api.register_non_persistant_services(containerName)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -293,7 +295,7 @@ def pause_container
   else
     @last_error ="Can't pause Container as " + state
   end
-  deregister_registered
+  @core_api.deregister_non_persistant_services(containerName)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -310,13 +312,13 @@ def stop_container
 
   if state== "running"
     ret_val = @core_api.stop_container   self
-    deregister_registered
+    @core_api.deregister_non_persistant_services(containerName)
 
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
     if state != "paused" #force deregister if stopped or no container etc
-      deregister_registered
+      @core_api.deregister_non_persistant_services(containerName)
     end
   end
 
@@ -324,22 +326,22 @@ def stop_container
   save_state()
   return  ret_val
 end
+#
+#def deregister_registered
+#  if @core_api == nil
+#     @last_error="No connection to Engines OS System"
+#     return false
+#   end
+#  return @core_api.deregister_non_persistant_services(containerName)
+#end
 
-def deregister_registered
-  if @core_api == nil
-     @last_error="No connection to Engines OS System"
-     return false
-   end
-  return @core_api.deregister_non_persistant_services(containerName)
-end
-
-def register_registered
-  if @core_api == nil
-     @last_error="No connection to Engines OS System"
-     return false
-   end
-  return  @core_api.register_non_persistant_services(containerName)
-end
+#def register_registered
+#  if @core_api == nil
+#     @last_error="No connection to Engines OS System"
+#     return false
+#   end
+#  return  @core_api.register_non_persistant_services(containerName)
+#end
 
 def start_container
   if @core_api == nil
@@ -356,12 +358,25 @@ def start_container
   else
     @last_error ="Can't Start Container as " + state
   end
-  register_registered
+  @core_api.register_non_persistant_services(containerName)
+ 
   clear_error(ret_val)
   save_state()
   return ret_val
 end
 
+#Register the dns
+#bootsrap service dns into ManagedService registry
+#would be better if it check a pre exisiting record will throw error on recreate
+# 
+ def register_with_dns
+   service_hash = SystemUtils.create_dns_service_hash(self)
+   if service_hash == nil
+     return false
+   end
+   return  @core_api.attach_service(service_hash)
+ end
+ 
 def restart_container
   ret_val=false
   if (ret_val = stop_container  ) == true
