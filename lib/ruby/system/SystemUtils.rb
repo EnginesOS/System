@@ -117,6 +117,8 @@ def SystemUtils.create_dns_service_hash(engine)
         service_hash[:variables][:ip]=engine.get_ip_str.to_s
         service_hash[:publisher_namespace] = "EnginesSystem"
         service_hash[:service_handle]=service_hash[:variables][:name]
+          
+          return service_hash
 end
 
 #@return [Hash] completed nginx service_hash for engine on for the default website configured for
