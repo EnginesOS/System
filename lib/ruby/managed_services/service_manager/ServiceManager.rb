@@ -335,7 +335,7 @@ class ServiceManager
       return false
     end
 
-    if remove_from_services_tree(service_hash) == false
+    if remove_from_services_registry(service_hash) == false
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
     end
