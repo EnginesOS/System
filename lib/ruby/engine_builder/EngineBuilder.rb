@@ -869,7 +869,7 @@ class EngineBuilder
 #    mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
     mc.set_protocol(@protocol)
-    mc.conf_register_site=( true) # needs some intelligence here for worker only
+   
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false
