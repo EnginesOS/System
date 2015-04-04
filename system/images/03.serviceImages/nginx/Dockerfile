@@ -1,4 +1,4 @@
-FROM  engines/base:$release
+FROM  engines/servicebase:$release
 
 
 RUN usermod www-data -u 22005;\
