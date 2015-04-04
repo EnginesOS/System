@@ -9,7 +9,7 @@ RUN usermod www-data -u 22005;\
 	chown www-data /var/lib/nginx /var/run/nginx/
 
 #ADD nginx.conf /etc/nginx/
-#ADD home home
+COPY home home
 #ADD templates /etc/nginx/templates
 #ADD sites-enabled /etc/nginx/sites-enabled
 COPY etc/nginx/ /etc/nginx
