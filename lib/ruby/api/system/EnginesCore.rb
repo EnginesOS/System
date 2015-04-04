@@ -257,7 +257,9 @@ class EnginesCore
     SystemUtils.log_exception(e)
     return false
   end
-
+ 
+  #Attach the service defined in service_hash [Hash]
+  #@return boolean indicating sucess
   def attach_service(service_hash)
  p :attach_Service
  p service_hash

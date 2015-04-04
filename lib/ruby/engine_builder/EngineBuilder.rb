@@ -454,6 +454,7 @@ class EngineBuilder
         mc = create_managed_container()
         if mc != nil
           create_non_persistant_services
+          mc.set_deployment_type(@blueprint_reader.deployment_type)
         else
           post_failed_build_clean_up
            return false
@@ -613,8 +614,10 @@ class EngineBuilder
   end
 
   def create_non_persistant_services
+   
+      
     @blueprint_reader.services.each() do |service_hash|
-
+      
       service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition

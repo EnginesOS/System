@@ -60,8 +60,9 @@ class ManagedContainer < Container
   :cont_userid,\
   :setState,\
   :protocol,\
-  :volumes
-
+  :volumes,\
+  :is_web_host
+  
   attr_accessor :container_id,\
   :core_api,\
   :conf_self_start,\
@@ -242,6 +243,9 @@ class ManagedContainer < Container
       ret_val = false
     end
     register_with_dns
+    if is_web_host == true
+      register_site
+    end
     @core_api.register_non_persistant_services(containerName)
   
   clear_error(ret_val)
@@ -321,7 +325,7 @@ def stop_container
       @core_api.deregister_non_persistant_services(containerName)
     end
   end
-
+  @core_api.deregister_non_persistant_services(containerName)
   clear_error(ret_val)
   save_state()
   return  ret_val
@@ -465,6 +469,9 @@ end
 #     end
 #  end
 
+#@return a containers ip address as a [String]
+#@return nil if exception 
+#@ return false on inspect container error
 def get_ip_str
   if inspect_container == false
     return false
@@ -475,6 +482,28 @@ def get_ip_str
   return ip_str
 rescue
   return nil
+end
+
+
+def set_deployment_type(deployment_type)
+  #remove existing service mapping 
+  if @deployment_type && @deployment_type == "web"
+    return remove_nginx_service
+  end
+  @deployment_type = deployment_type
+  if @deployment_type == "web"
+     return add_nginx_service
+   end  
+end
+
+def add_nginx_service
+  service_hash =  SystemUtils.create_nginx_service_hash(self)
+  return @core_api.attach_service(service_hash)
+end
+
+def remove_nginx_service
+  service_hash =  SystemUtils.create_nginx_service_hash(self)
+   return @core_api.dettach_service(service_hash)
 end
 
 #  def register
