@@ -46,7 +46,7 @@ SQL="${Q1}${Q2}${Q3}"
 
 $MYSQL   -urma  -e "$SQL"
 
-if $? -ge 0
+if test $? -ge 0
 	then 
 		echo "Sucess"
 		exit 0
