@@ -61,7 +61,7 @@ class ManagedContainer < Container
   :setState,\
   :protocol,\
   :volumes,\
-  :is_web_host
+  :deployment_type
   
   attr_accessor :container_id,\
   :core_api,\
@@ -243,8 +243,8 @@ class ManagedContainer < Container
       ret_val = false
     end
     register_with_dns
-    if is_web_host == true
-      register_site
+    if @deployment_type  == "web"
+      add_nginx_service
     end
     @core_api.register_non_persistant_services(containerName)
   

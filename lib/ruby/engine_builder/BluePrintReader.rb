@@ -71,7 +71,7 @@ class BluePrintReader
        read_write_permissions_recursive
        read_write_permissions_single
        read_worker_commands
-       read_deploy_type
+       read_deployment_type
 #        read_cron_jobs
        read_sed_strings
        read_work_ports
@@ -86,7 +86,7 @@ class BluePrintReader
      end
 
    end
-  def read_deploy_type
+  def read_deployment_type
     @deployment_type = @blueprint[:software][:deployment_type] 
   end
   def re_set_service(service_cnt,service_hash)

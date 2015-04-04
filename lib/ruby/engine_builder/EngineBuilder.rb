@@ -453,8 +453,7 @@ class EngineBuilder
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
-          create_non_persistant_services
-          mc.set_deployment_type(@blueprint_reader.deployment_type)
+          create_non_persistant_services          
         else
           post_failed_build_clean_up
            return false
@@ -861,7 +860,8 @@ class EngineBuilder
     @blueprint_reader.runtime,
     @core_api,
     @blueprint_reader.data_uid,
-    @blueprint_reader.data_gid
+    @blueprint_reader.data_gid,
+    @blueprint_reader.deployment_type
     )
 
 #    p :set_cron_job_list
