@@ -496,11 +496,15 @@ def set_deployment_type(deployment_type)
    end  
 end
 
+#create nginx service_hash for container and register with nginx
+#@return boolean indicating sucess
 def add_nginx_service
   service_hash =  SystemUtils.create_nginx_service_hash(self)
   return @core_api.attach_service(service_hash)
 end
 
+#create nginx service_hash for container deregister with nginx
+#@return boolean indicating sucess
 def remove_nginx_service
   service_hash =  SystemUtils.create_nginx_service_hash(self)
    return @core_api.dettach_service(service_hash)
