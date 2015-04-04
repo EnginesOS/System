@@ -574,7 +574,7 @@ class EnginesCore
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        container.deregister_registered
+        
         @system_api.destroy_container(container)  #removes cid file
         return true
       else
