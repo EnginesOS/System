@@ -50,9 +50,9 @@ cat /tmp/site.port  | sed "/SERVER/s//$parent_engine/" > /tmp/site.name
 	        else
 	        	 cert_name=engines
 	        fi
-	    cat /tmp/site.port  | sed "/CERTNAME/s//$cert_name/" > /etc/nginx/sites_enabled/${proto}_${fqdn}.site
+	    cat /tmp/site.port  | sed "/CERTNAME/s//$cert_name/" > /etc/nginx/sites-enabled/${proto}_${fqdn}.site
 	 else
-	 	cp /tmp/site.name /etc/nginx/sites_enabled/${proto}_${fqdn}.site
+	 	cp /tmp/site.name /etc/nginx/sites-enabled/${proto}_${fqdn}.site
 	 fi
 	 
 	 rm /tmp/site.*
