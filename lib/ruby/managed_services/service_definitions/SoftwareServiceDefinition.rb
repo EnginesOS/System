@@ -13,7 +13,8 @@ class SoftwareServiceDefinition
               :publisher_namespace,
               :service_container, 
               :persistant,
-              :target_environment_variables
+              :target_environment_variables,
+              :service_handle_field
 
   
   def SoftwareServiceDefinition.from_yaml( yaml )
@@ -103,7 +104,15 @@ end
      end
      return service.persistant
   end
-
+  
+  def SoftwareServiceDefinition.service_handle_field(params)
+     service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
+       if service == nil
+        return nil
+       end
+       return service.service_handle_field
+    end
+    
   def to_h   
        hash = {}
        instance_variables.each {|var| 

@@ -12,6 +12,7 @@ service_container: volmanager
 publisher_namespace: EnginesSystem
 persistant: true
 dedicated: false
+service_handle_field: name
 consumer_params:
 setup_params:
  name:

@@ -13,6 +13,7 @@ service_container: mysql_server
 dedicated: false
 persistant: true
 exclusive: true
+service_handle_field: database_name
 image_name: engines/volmanager
 consumer_params:
 setup_params:

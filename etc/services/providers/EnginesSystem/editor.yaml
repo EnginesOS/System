@@ -10,6 +10,7 @@ publisher_namespace: EnginesSystem
 dedicated: true
 persistant: true
 image_name: engines/editor
+service_handle_field: name
 consumer_params:
 setup_params:
  dropbox_address:

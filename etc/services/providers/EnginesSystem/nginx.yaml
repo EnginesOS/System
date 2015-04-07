@@ -12,6 +12,7 @@ publisher_namespace: EnginesSystem
 service_container: nginx
 dedicated: false
 persistant: false
+service_handle_field: site_fqdn
 consumer_params:
 setup_params:
  site_fqdn:
