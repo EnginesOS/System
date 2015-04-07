@@ -7,7 +7,7 @@ RUN apt-get -y update;\
     mkdir -p /var/lib/bind/engines;\
     mkdir -p /var/run/named
 
-#ADD named.conf.local /etc/bind/named.conf.local
+ADD named.conf.local /etc/bind/named.conf.local
 #ADD named.conf.default-zones.ad /etc/
 ADD templates /etc/bind/templates
 
