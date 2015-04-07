@@ -7,6 +7,7 @@ type_path: filesystem/remote/nfs
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
+service_handle_field: name
 consumer_params:
 setup_params:
  dropbox_address:

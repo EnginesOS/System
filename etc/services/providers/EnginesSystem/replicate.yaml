@@ -8,6 +8,7 @@ publisher_namespace: EnginesSystem
 type_path: replicate
 persistant: true
 dedicated: true
+service_handle_field: name
 consumer_params:
 setup_params:
  dropbox_address:
