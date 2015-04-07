@@ -8,7 +8,7 @@ author: Engines
 title: AWS MySQL Database
 description: "AWS MYSQL Database "
 publisher_namespace: EnginesSystem
-service_type: database/sql/aws
+type_path: database/sql/aws
 service_container: awsdb
 dedicated: false
 persistant: true
