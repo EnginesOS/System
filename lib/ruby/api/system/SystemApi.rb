@@ -36,15 +36,15 @@ class SystemApi
 #     return true
 #   end
 
-#   def reload_dns
-#     dns_pid = File.read(SysConfig.NamedPIDFile)
-#     p :kill_HUP_TO_DNS
-#     p dns_pid.to_s
-#     return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
-#   rescue  Exception=>e
-#     SystemUtils.log_exception(e)
-#     return false
-#   end
+   def reload_dns
+     dns_pid = File.read(SysConfig.NamedPIDFile)
+     p :kill_HUP_TO_DNS
+     p dns_pid.to_s
+     return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
+   rescue  Exception=>e
+     SystemUtils.log_exception(e)
+     return false
+   end
 #
 #   def restart_nginx_process
 #     begin
