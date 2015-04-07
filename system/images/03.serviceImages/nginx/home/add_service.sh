@@ -23,13 +23,13 @@ if test -z $fqdn
  	exit -1
  fi
  
-   if test -z $parent_name
+   if test -z $parent_engine
  then
  	echo Error:no name in nginx service hash
  	exit -1
  fi
  
- nslookup ${parent_name}.engines.internal
+ nslookup ${parent_engine}.engines.internal
  if test $? -lt 0
   then
   	echo Error:failed to find internal dns entry for site
@@ -40,7 +40,7 @@ template="/etc/nginx/templates/${proto}_site.tmpl"
 
 cat $template | sed "/FQDN/s//$fqdn/" > /tmp/site.fqdn
 cat /tmp/site.fqdn  | sed "/PORT/s//$port/" > /tmp/site.port
-cat /tmp/site.port  | sed "/SERVER/s//$parent_name/" > /tmp/site.name
+cat /tmp/site.port  | sed "/SERVER/s//$parent_engine/" > /tmp/site.name
 
 	if ! test $proto = http
 	 then
