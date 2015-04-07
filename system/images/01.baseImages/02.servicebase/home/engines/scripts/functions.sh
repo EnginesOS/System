@@ -24,7 +24,7 @@ fcnt=`expr $fcnt + 1`
                 name=`echo $nvp |cut -f1 -d=`
                 if test ${#name} -gt 0
                 	then
-                		export $name="`echo $nvp |cut -f2 -d=`"
+                		export $name=\"`echo $nvp |cut -f2 -d=`\"
                 	fi
         done
 }
