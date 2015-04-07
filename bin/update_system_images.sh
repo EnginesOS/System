@@ -8,3 +8,6 @@ echo $images
          do
              docker pull $image:$release
          done
+
+         eservices stop 
+         eservices recreate
