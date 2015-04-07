@@ -13,9 +13,9 @@ load_service_hash_to_environment
 		echo Error:Missing cron_job
         exit -1
     fi
-  	if test -z ${title}
+  	if test -z ${name}
 	then
-		echo Error:missing title
+		echo Error:missing name
         exit -1
     fi  
     
@@ -25,4 +25,5 @@ echo $cron_line > /home/cron/entries/${parent_engine}/$name
 
 /home/rebuild_crontab.sh
 
-
+echo "Success"
+exit 0
