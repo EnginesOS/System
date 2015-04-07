@@ -8,18 +8,20 @@ require "git"
 require 'fileutils'
 require 'json'
 
-require_relative 'builder_public.rb'
-require_relative 'BluePrintReader.rb'
-require_relative 'DockerFileBuilder.rb'
-require_relative 'SystemAccess.rb'
 
-require_relative 'build_report.rb'
-include BuildReport
-
-require_relative 'templating.rb'
-include Templating
 
 class EngineBuilder
+  require_relative 'builder_public.rb'
+  require_relative 'BluePrintReader.rb'
+  require_relative 'DockerFileBuilder.rb'
+  require_relative 'SystemAccess.rb'
+  
+  require_relative 'build_report.rb'
+  include BuildReport
+  
+  require_relative 'templating.rb'
+  include Templating
+  
   @repoName=nil
   @hostname=nil
   @domain_name=nil
@@ -48,9 +50,16 @@ class EngineBuilder
   end
 
   def initialize(params,core_api)
+    
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
+      if @container_name == nil || @container_name == ""
+        @last_error = " empty container name"
+        return false
+      end
+   @container_name.gsub!(/ /,"_")
+   
     custom_env= params[:software_environment_variables]
     #   custom_env=params
     @core_api = core_api
@@ -400,7 +409,7 @@ class EngineBuilder
       create_template_files
       create_php_ini
       create_apache_config
-      create_scritps
+      create_scripts
 
       index=0
       #FIXME There has to be a ruby way
@@ -451,7 +460,7 @@ class EngineBuilder
         log_build_output("Creating Deploy Image")
         mc = create_managed_container()
         if mc != nil
-          create_non_persistant_services
+          create_non_persistant_services          
         else
           post_failed_build_clean_up
            return false
@@ -508,7 +517,7 @@ class EngineBuilder
     end
   end
 
-  def   create_scritps
+  def   create_scripts
 
     FileUtils.mkdir_p(get_basedir() + SysConfig.ScriptsDir)
     create_start_script
@@ -611,8 +620,10 @@ class EngineBuilder
   end
 
   def create_non_persistant_services
+   
+      
     @blueprint_reader.services.each() do |service_hash|
-
+      
       service_def =  get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
@@ -856,7 +867,8 @@ class EngineBuilder
     @blueprint_reader.runtime,
     @core_api,
     @blueprint_reader.data_uid,
-    @blueprint_reader.data_gid
+    @blueprint_reader.data_gid,
+    @blueprint_reader.deployment_type
     )
 
 #    p :set_cron_job_list
@@ -864,7 +876,7 @@ class EngineBuilder
 #    mc.set_cron_job_list(@cron_job_list)
     #:http_protocol=>"HTTPS and HTTP"
     mc.set_protocol(@protocol)
-    mc.conf_register_site=( true) # needs some intelligence here for worker only
+   
     mc.conf_self_start= (true)
     mc.save_state # no config.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false

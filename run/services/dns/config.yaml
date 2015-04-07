@@ -1,4 +1,4 @@
---- !ruby/object:DNSService
+--- !ruby/object:ManagedService
 containerName: dns
 ctype: service
 persistant: false
@@ -10,16 +10,6 @@ domainName:
 environments: []
 image: engines/dns:alpha
 volumes: 
- default_zones: !ruby/object:Volume
-  name: configuration
-  remotepath: "/etc/bind/named.conf.default-zones"
-  localpath: "/opt/engines/etc/dns/named.conf.default-zones"
-  mapping_permissions: "ro"  
- keys: !ruby/object:Volume
-  name: configuration
-  remotepath: "/opt/engines/etc/dns/keys/"
-  localpath: "/opt/engines/etc/dns/keys/"
-  mapping_permissions: "ro"
  configuration: !ruby/object:Volume
   name: configuration
   remotepath: "/etc/bind/engines"

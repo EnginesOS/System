@@ -99,7 +99,7 @@ setup_params:
   value: "utf8"
   select_collection:
   - !ruby/object:String  
-       "utf8"
+       "utf8_general_ci"
   - !ruby/object:String  
        "ascii"
   comment:  " "

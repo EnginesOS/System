@@ -1,4 +1,4 @@
---- !ruby/object:MySQLService
+--- !ruby/object:ManagedService
 containerName: mysql_server
 ctype: service
 persistant: true

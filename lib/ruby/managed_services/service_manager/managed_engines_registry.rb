@@ -36,8 +36,18 @@ def find_engine_services_hashes(params)
 
   end
 
+  
 #@return [Array] of all service_hashs marked persistant for :engine_name
-  def get_engine_persistant_services(params) #params is :engine_name
+  def get_engine_persistant_services(params)
+    return get_engine_persistance_services(params,true)
+  end
+#@return [Array] of all service_hashs not marked persistant for :engine_name
+def get_engine_nonpersistant_services(params)
+   return get_engine_persistance_services(params,false)
+ end 
+
+#@return [Array] of all service_hashs marked persistance [boolean] for :engine_name
+  def get_engine_persistance_services(params,persistance) #params is :engine_name
     
     leafs = Array.new
     
@@ -54,7 +64,7 @@ def find_engine_services_hashes(params)
     services.children.each do |service|
       p :finding_match_for
       p service.content
-      matches = get_matched_leafs(service,:persistant,true)
+      matches = get_matched_leafs(service,:persistant,persistance)
       SystemUtils.debug_output("matches",matches)
       leafs =  leafs.concat(matches)
     end

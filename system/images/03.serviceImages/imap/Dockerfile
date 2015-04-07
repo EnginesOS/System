@@ -1,4 +1,4 @@
-From engines/base:$release
+From engines/servicebase:$release
 RUN echo "Y" | adduser -q --disabled-password  -uid 22013 dovecot;\
 	echo "Y" | adduser -q --disabled-password  -uid 22014 --home /var/vmail  vmail
 RUN apt-get -y update;\

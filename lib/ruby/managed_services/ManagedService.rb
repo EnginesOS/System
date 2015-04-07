@@ -4,6 +4,7 @@ require 'objspace'
 class ManagedService < ManagedContainer
   @ctype="service"
   @consumers=Hash.new
+  @conf_register_site=false
   def ctype
     return @ctype
   end
@@ -28,7 +29,7 @@ class ManagedService < ManagedContainer
     @runtime=runtime
     @persistant=false  #Persistant means niether service or engine need to be up/running or even exist for this service to exist
   end
-
+  attr_reader :persistant
   #@return Hash of consumers 
   #creates fresh hash in instance @consumers is nil
   def consumers
@@ -60,9 +61,9 @@ class ManagedService < ManagedContainer
 #    end
    
 
-  def fetch_consumer name
-    return @consumers.fetch(name)
-  end
+#  def fetch_consumer name
+#    return @consumers.fetch(name)
+#  end
 
   def add_consumer(object)
   
@@ -100,19 +101,42 @@ class ManagedService < ManagedContainer
     if result != true
       return result
     end
-
-    if @consumers == nil
-      @consumers = Hash.new
-    end
-
-    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
-    @consumers.store(service_hash[:service_handle], service_hash)
+#
+#    if @consumers == nil
+#      @consumers = Hash.new
+#    end
+#
+#    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
+#    @consumers.store(service_hash[:service_handle], service_hash)
 
     # end
     save_state
     return result
   end
-
+  def service_hash_variables_as_str(service_hash)
+    argument = String.new
+      
+    service_variables =  service_hash[:variables]
+      if service_variables == nil
+        return argument
+      end
+    service_variables.each_pair do |key,value|
+      argument+= key.to_s + "=" + value + ":"      
+    end
+    
+    return argument
+  end
+  
+  def   add_consumer_to_service(service_hash)   
+  cmd = "docker exec " +  containerName + " /home/add_service.sh " + service_hash_variables_as_str(service_hash)
+    SystemUtils.run_system(cmd)
+  end
+  
+  def   rm_consumer_from_service(service_hash) 
+   cmd = "docker exec " +  containerName + " /home/rm_service.sh " + service_hash_variables_as_str(service_hash)
+     SystemUtils.run_system(cmd)
+  end 
+  
   def remove_consumer service_hash
    
     service_hash = get_service_hash(service_hash)
@@ -158,6 +182,8 @@ class ManagedService < ManagedContainer
   def create_service()
    
     if create_container() ==true
+      register_with_dns()
+      @core_api.register_non_persistant_services(containerName)
       reregister_consumers()
       save_state()
       return true
@@ -167,11 +193,13 @@ class ManagedService < ManagedContainer
     end
   end
 
+  
+
+  
   def recreate
     
     if  destroy_container() ==true
-      if   create_service()==true
-        reregister_consumers()
+      if   create_service()==true       
         return true
       else
         log_error_mesg("Failed to create service in recreate",self)

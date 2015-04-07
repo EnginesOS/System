@@ -145,4 +145,19 @@ module ServicesRegistry
     return false
   end
 
+
+#@return an [Array] of service_hashs of Active persistant services match @params [Hash]
+#:path_type :publisher_namespace    
+def get_active_persistant_services(params)
+  
+    
+    leafs = Array.new
+    services = find_service_consumers(params)
+    if services != nil && services != false
+      leafs = get_matched_leafs(services,:persistant,true)
+    end   
+    return leafs
+ 
+end
+  
 end

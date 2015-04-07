@@ -36,7 +36,8 @@ class BluePrintReader
                :data_gid,
                :cron_job_list,
                :web_port,
-               :services
+               :services,
+               :deployment_type
 
    def  log_build_output(line)
      @builder.log_build_output(line)
@@ -70,6 +71,7 @@ class BluePrintReader
        read_write_permissions_recursive
        read_write_permissions_single
        read_worker_commands
+       read_deployment_type
 #        read_cron_jobs
        read_sed_strings
        read_work_ports
@@ -84,7 +86,9 @@ class BluePrintReader
      end
 
    end
-   
+  def read_deployment_type
+    @deployment_type = @blueprint[:software][:deployment_type] 
+  end
   def re_set_service(service_cnt,service_hash)
     @services[service_cnt] = service_hash
     #services[service_cnt]=service_hash

@@ -21,7 +21,7 @@ module ServiceManagerTree
    # create new branch if none exists
   def orphaned_services_tree
     p :orphan_tree
-    if check_service_tree == false
+    if check_service_tree == false 
           return false
         end
     orphans = @service_tree["OphanedServices"]
@@ -91,6 +91,8 @@ module ServiceManagerTree
     end
     return true
   end
+  
+  
   #@branch the [TreeNode] under which to search
   #@param label the hash key for the value to match value against
   #@return [Array] all service_hash(s) which contain the hash pair label=value    
@@ -104,8 +106,8 @@ module ServiceManagerTree
             ret_val.push(sub_branch.content)
 #            p :push_match_leaf
 #            p   sub_branch.content
-        else
-          p " did not match" + sub_branch.content.to_s + " with  "  + label.to_s + ":" + value.to_s                     
+#        else
+#          p " did not match" + sub_branch.content.to_s + " with  "  + label.to_s + ":" + value.to_s                     
           end
         else
          SystemUtils.debug_output("Leaf Content not a hash ",sub_branch.content)
