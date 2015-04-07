@@ -686,10 +686,10 @@ class SystemApi
          SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
          if container.set_hostname_details(hostname,domain_name) == true
-           nginx_service =  EnginesOSapi.loadManagedService("nginx",self)
+           nginx_service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",self)
            nginx_service.remove_consumer(container)
 
-           dns_service = EnginesOSapi.loadManagedService("dns",self)
+           dns_service = EnginesOSapi::ServicesModule.loadManagedService("dns",self)
            dns_service.remove_consumer(container)
 
            dns_service.add_consumer(container)
