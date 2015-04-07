@@ -1,7 +1,7 @@
 #!/bin/bash
 #FIXME
 #rvm use ruby-2.1.1
-
+/sbin/ifconfig eth0 |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" " > /opt/engines/.ip
 if test `/opt/engines/bin/engines.rb service start dns |grep nocontainer |wc -c` -gt 0
 then
 	/opt/engines/bin/engines.rb service create dns
