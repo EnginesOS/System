@@ -27,7 +27,7 @@ class ManagedService < ManagedContainer
     @registerSite=false
     @framework=framework
     @runtime=runtime
-    @persistant=false  #Persistant means niether service or engine need to be up/running or even exist for this service to exist
+    @persistant=false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
   end
   attr_reader :persistant
   #@return Hash of consumers 
