@@ -3,7 +3,7 @@ require 'objspace'
 
 class ManagedService < ManagedContainer
   @ctype="service"
-  @consumers=Hash.new
+#  @consumers=Hash.new
   @conf_register_site=false
   def ctype
     return @ctype
@@ -32,12 +32,12 @@ class ManagedService < ManagedContainer
   attr_reader :persistant
   #@return Hash of consumers 
   #creates fresh hash in instance @consumers is nil
-  def consumers
-    if @consumers == nil
-      @consumers = Hash.new
-    end
-    return @consumers
-  end
+#  def consumers
+#    if @consumers == nil
+#      @consumers = Hash.new
+#    end
+#    return @consumers
+#  end
 
   
   def get_service_hash(service_hash)
@@ -168,9 +168,9 @@ class ManagedService < ManagedContainer
       
     end
     
-    if @consumers !=  nil
-      @consumers.delete(service_hash[:service_handle]) { |el|  log_error_mesg("Failed to find " + el.to_s + "to del ",service_hash)  }
-    end
+#    if @consumers !=  nil
+#      @consumers.delete(service_hash[:service_handle]) { |el|  log_error_mesg("Failed to find " + el.to_s + "to del ",service_hash)  }
+#    end
     save_state
     return result
   end
@@ -214,25 +214,25 @@ class ManagedService < ManagedContainer
 
   def reregister_consumers
     
-    if @consumers == nil
-      return
-    end
-    if is_running == false
-      log_error_mesg("Cant register consumers as not running ",self)
-      return
-    end
-
-    loop_cnt=0
-
-    while is_startup_complete() == false && loop_cnt <10
-      loop_cnt = loop_cnt + 1
-      sleep 1
-      #really need to sched it not block for some random time
-    end
-
-    @consumers.each_value do |service_hash|
-      add_consumer_to_service(service_hash)
-    end
+#    if @consumers == nil
+#      return
+#    end
+#    if is_running == false
+#      log_error_mesg("Cant register consumers as not running ",self)
+#      return
+#    end
+#
+#    loop_cnt=0
+#
+#    while is_startup_complete() == false && loop_cnt <10
+#      loop_cnt = loop_cnt + 1
+#      sleep 1
+#      #really need to sched it not block for some random time
+#    end
+#
+#    @consumers.each_value do |service_hash|
+#      add_consumer_to_service(service_hash)
+#    end
 
   end
 
@@ -277,7 +277,7 @@ class ManagedService < ManagedContainer
    #Calls SystemUtils.log_error_msg(msg,object) to log the error
    #@return none
   def self.log_error_mesg(msg,object)
-     obj_str = object.to_s.slice(0,256)
+     obj_str = object.to_s.slice(0,512)
      
     
     SystemUtils.log_error_msg(msg,object)
