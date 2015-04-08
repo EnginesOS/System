@@ -255,7 +255,7 @@ class EngineBuilder
 
     if res  == false
       puts "build init failed " + res.to_s
-      log_build_errors("build init failed " + res)
+      log_build_errors("build init failed " + res.to_s)
       return res
     end
 
