@@ -52,7 +52,7 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
-    @container_name.freeze
+
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -60,7 +60,8 @@ class EngineBuilder
         return false
       end
    @container_name.gsub!(/ /,"_")
-   
+    @container_name.freeze
+    
     custom_env= params[:software_environment_variables]
     #   custom_env=params
     @core_api = core_api
