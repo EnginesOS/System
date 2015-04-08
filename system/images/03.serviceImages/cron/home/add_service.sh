@@ -29,7 +29,14 @@ load_service_hash_to_environment
     
 mkdir -p /home/cron/entries/${parent_engine}/
 
-echo $cron_line  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$name
+mins=`echo $cron_line | cut -d' ' -f1`
+hrs=`echo $cron_line | cut -d' ' -f2`
+day=`echo $cron_line | cut -d' ' -f3`
+dow=`echo $cron_line | cut -d' ' -f4`
+dom=`echo $cron_line | cut -d' ' -f5`
+cmd=`echo $cron_line | cut -d' ' -f 6- `
+
+echo $mins $hrs $day $dow $dom docker exec ${parent_engine} $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$name
 
 /home/rebuild_crontab.sh
 
