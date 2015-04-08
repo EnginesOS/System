@@ -148,26 +148,7 @@ class EnginesCore
   def save_system_preferences
     return @system_api.save_system_preferences
   end
-#
-#  def register_site(site_hash)
-#    return @system_api.register_site(site_hash)
-#  end
-#
-#  def deregister_site(site_hash)
-#    return @system_api.deregister_site(site_hash)
-#  end
-#
-#  def hash_to_site_str(site_hash)
-#    return @system_api.hash_to_site_str(site_hash)
-#  end
-#
-#  def  deregister_dns(top_level_hostname)
-#    return @system_api.deregister_dns(top_level_hostname)
-#  end
-#
-#  def register_dns(top_level_hostname,ip_addr_str)
-#    return @system_api.register_dns(top_level_hostname,ip_addr_str)
-#  end
+
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
@@ -284,17 +265,18 @@ class EnginesCore
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
     
+  if service_hash.has_key?(:variables) == false
+    log_error_mesg("Attached Service passed no variables",service_hash)
+    return false
+  end
+  
+  if service_hash[:variables].has_key?(:parent_name) == false
+    service_hash[:variables][:parent_name] = service_hash[:parent_name]
+  end
+  
     sm = loadServiceManager()
     return sm.add_service(service_hash)
-#
-#    service = load_software_service(service_hash)
-#    p :attaching_to_service
-#    p service_hash
-#    if service !=nil && service != false
-#      return service.add_consumer(service_hash)
-#    end
-#    @last_error = "Failed to attach Service: " + @last_error
-    return  false
+
   rescue Exception=>e
     SystemUtils.log_exception e
   end
@@ -431,12 +413,6 @@ class EnginesCore
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-              #              p :service_as_serivce
-              #              p service
-              #              p :as_hash
-              #              p service.to_h
-              #              p :as_yaml
-              #              p service.to_yaml()
 
               retval.push(service.to_h)
             end
@@ -476,26 +452,6 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  #      if object.volumes.count >0
-  #
-  #
-  #        p :loading_vols
-  #        volumes = load_avail_services_for("Volume") #Array of hashes
-  #        retval[:volume] = volumes
-  #      end
-  #      if object.databases.count >0
-  #        databases = load_avail_services_for("Database") #Array of hashes
-  #        retval[:database] = databases
-  #      end
-  #
-  ##      ret_val[:type_path] = load_avail_services_for(object[:type_path])
-  #
-  #      return retval
-  #    else
-  #      return nil
-  #
-  #    end
-  #
 
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
@@ -787,20 +743,7 @@ end
       return false
     end
   end
-  #  @container_name = params[:engine_name]
-  #    @domain_name = params[:domain_name]
-  #    @hostname = params[:host_name]
-  #    custom_env= params[:software_environment_variables]
-  #    #   custom_env=params
-  #    @core_api = core_api
-  #    @http_protocol = params[:http_protocol]
-  #    p params
-  #    @repoName= params[:repository_url]
-  #    @cron_job_list = Array.new
-  #    @build_name = File.basename(@repoName).sub(/\.git$/,"")
-  #    @workerPorts=Array.new
-  #    @webPort=8000
-  #    @vols=Array.new
+
 
   #FIXME Kludge
   def get_container_network_metrics(containerName)
