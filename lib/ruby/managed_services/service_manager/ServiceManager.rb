@@ -375,7 +375,7 @@ class ServiceManager
   def get_registered_against_service(params)
     hashes = Array.new
     service_tree = find_service_consumers(params)
-    if service_tree != nil 
+    if service_tree != nil && service_tree != false
       hashes = get_all_leafs_service_hashes(service_tree)
     end
     return hashes
