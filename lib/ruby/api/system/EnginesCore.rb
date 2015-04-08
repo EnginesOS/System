@@ -193,8 +193,8 @@ class EnginesCore
 
   def list_avail_services_for(object)
     objectname = object.class.name.split('::').last
-    p :load_vail_services_for
-    p objectname
+#    p :load_vail_services_for
+#    p objectname
 
     services = load_avail_services_for(objectname)
 
@@ -211,12 +211,12 @@ class EnginesCore
   def load_software_service(params)
 
     sm = loadServiceManager()
-    p :load_software_service
-    p params
+#    p :load_software_service
+#    p params
     service_container =  sm.get_software_service_container_name(params)
     params[:service_container_name] = service_container
-    p :service_container_name
-    p service_container
+#    p :service_container_name
+#    p service_container
     service = loadManagedService(service_container)
     if service == nil
       return nil
@@ -359,8 +359,8 @@ class EnginesCore
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
-    p :open
-    p filename
+#    p :open
+#    p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
   rescue Exception=>e
@@ -368,21 +368,21 @@ class EnginesCore
   end
 
   def load_avail_services_for_type(typename)
-    p :load_avail_services_for_by_type
-    p typename
+#    p :load_avail_services_for_by_type
+#    p typename
     retval = Array.new
 
     dir = SysConfig.ServiceMapTemplateDir + "/" + typename
-    p :dir
-    p dir
+#    p :dir
+#    p dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
           if service_dir_entry.start_with?(".")   == true
             next
           end
-          p :service_dir_entry
-          p service_dir_entry
+#          p :service_dir_entry
+#          p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
@@ -402,29 +402,29 @@ class EnginesCore
         end
       end
     end
-    p typename
-    p retval
+#    p typename
+#    p retval
     return retval
   rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def load_avail_services_for(typename)
-    p :load_avail_services_for
-    p typename
+#    p :load_avail_services_for
+#    p typename
     retval = Array.new
 
     dir = SysConfig.ServiceMapTemplateDir + "/" + typename
-    p :dir
-    p dir
+#    p :dir
+#    p dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
           if service_dir_entry.start_with?(".")   == true
             next
           end
-          p :service_dir_entry
-          p service_dir_entry
+#          p :service_dir_entry
+#          p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
@@ -464,8 +464,8 @@ class EnginesCore
         #          p retval[type_path]
       end
     else
-      p :load_avail_component_services_for_engine_got_a
-      p engine.to_s
+#      p :load_avail_component_services_for_engine_got_a
+#      p engine.to_s
       return nil
     end
     return retval

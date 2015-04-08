@@ -469,8 +469,8 @@ class EngineBuilder
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
       @core_api.save_build_report(mc,build_report)
-      p :build_report
-      p build_report
+#      p :build_report
+#      p build_report
       close_all
 
       return mc
@@ -480,9 +480,7 @@ class EngineBuilder
       log_exception(e)
       post_failed_build_clean_up
       close_all
-      failed_report = generate_build_report(@blueprint)
-      p :failed_report
-      p failed_report
+
       return false
     end
   end
