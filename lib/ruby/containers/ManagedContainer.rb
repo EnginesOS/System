@@ -362,6 +362,7 @@ def start_container
   else
     @last_error ="Can't Start Container as " + state
   end
+  register_with_dns
   @core_api.register_non_persistant_services(containerName)
  
   clear_error(ret_val)
@@ -378,6 +379,8 @@ end
    if service_hash == nil
      return false
    end
+   
+     
    return  @core_api.attach_service(service_hash)
  end
  
