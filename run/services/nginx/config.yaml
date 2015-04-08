@@ -1,5 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: nginx
+publisher_namespace: EnginesSystem
+type_path: nginx
 ctype: service
 persistant: false
 publisher_namespace: EnginesSystem

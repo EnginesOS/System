@@ -1,5 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: mysql_server
+publisher_namespace: EnginesSystem
+type_path: database/sql/mysql
 ctype: service
 persistant: true
 last_error: 

@@ -6,7 +6,7 @@ last_error:
 memory: '90'
 hostName: email
 publisher_namespace: EnginesSystem
-type_path: cron
+type_path: email
 port: 8000
 domainName: engines.local.demo
 environments: []
