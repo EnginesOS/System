@@ -29,12 +29,12 @@ load_service_hash_to_environment
     
 mkdir -p /home/cron/entries/${parent_engine}/
 
-mins=`echo $cron_line | cut -d' ' -f1`
-hrs=`echo $cron_line | cut -d' ' -f2`
-day=`echo $cron_line | cut -d' ' -f3`
-dow=`echo $cron_line | cut -d' ' -f4`
-dom=`echo $cron_line | cut -d' ' -f5`
-cmd=`echo $cron_line | cut -d' ' -f 6- `
+mins=`echo $cron_job | cut -d' ' -f1`
+hrs=`echo $cron_job | cut -d' ' -f2`
+day=`echo $cron_job | cut -d' ' -f3`
+dow=`echo $cron_job | cut -d' ' -f4`
+dom=`echo $cron_job | cut -d' ' -f5`
+cmd=`echo $cron_job | cut -d' ' -f 6- `
 
 echo $mins $hrs $day $dow $dom docker exec ${parent_engine} $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$name
 
