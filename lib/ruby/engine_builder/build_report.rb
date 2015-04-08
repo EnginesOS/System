@@ -3,8 +3,8 @@ module BuildReport
   require_relative 'templating.rb'
   include Templating
   
-  
-  
+
+ 
   def get_build_report_template(blueprint)
     template = blueprint[:installation_report_template]
       if template == nil

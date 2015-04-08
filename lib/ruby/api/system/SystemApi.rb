@@ -38,8 +38,8 @@ class SystemApi
 
    def reload_dns
      dns_pid = File.read(SysConfig.NamedPIDFile)
-     p :kill_HUP_TO_DNS
-     p dns_pid.to_s
+#     p :kill_HUP_TO_DNS
+#     p dns_pid.to_s
      return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
    rescue  Exception=>e
      SystemUtils.log_exception(e)
@@ -325,8 +325,14 @@ class SystemApi
 #   
   def get_build_report(engine_name)
     clear_error
+   
          stateDir=SysConfig.CidDir + "/containers/" + engine_name
-         return File.read(stateDir  + "/buildreport.txt")                       
+    if File.exists?(stateDir  + "/buildreport.txt")
+         return File.read(stateDir  + "/buildreport.txt")
+    else
+      return "Build Not Successful"
+    end
+                           
       rescue Exception=>e
         SystemUtils.log_exception(e)
         return false
@@ -444,7 +450,7 @@ class SystemApi
      clear_error
      begin
        if File.exists?(SysConfig.DomainsFile) == false
-         p :creating_new_domain_list
+#         p :creating_new_domain_list
          self_hosted_domain_file = File.open(SysConfig.DomainsFile,"w")
          self_hosted_domain_file.close
          return Hash.new
@@ -484,8 +490,8 @@ class SystemApi
      if params[:self_hosted]
        add_self_hosted_domain params
      end
-     p :add_domain
-     p params
+#     p :add_domain
+#     p params
      domains = load_domains()
      domains[params[:domain_name]] = params
      if save_domains(domains)
@@ -535,8 +541,8 @@ class SystemApi
    def add_self_hosted_domain params
      clear_error
      begin
-       p :Lachlan_Sent_parrams
-       p params
+#       p :Lachlan_Sent_parrams
+#       p params
 
        return DNSHosting.add_hosted_domain(params,self)
        #       if ( DNSHosting.add_hosted_domain(params,self) == false)

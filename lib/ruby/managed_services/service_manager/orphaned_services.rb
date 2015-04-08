@@ -123,7 +123,7 @@ end
    service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
    if service_path_tree == nil
-     log_error_mesg("Failed to find matching service path",service_query_hash)
+     log_error_mesg("Failed to orphan find matching service path",service_query_hash)
      return false
    end
    

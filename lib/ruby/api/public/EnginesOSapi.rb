@@ -545,8 +545,8 @@ class EnginesOSapi
 #  end
 
   def get_engine_blueprint engine_name
-    p :get_blueprint_for
-    p engine_name
+#    p :get_blueprint_for
+#    p engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Load Engine Blueprint")

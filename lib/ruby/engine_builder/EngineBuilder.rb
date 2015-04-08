@@ -52,6 +52,7 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
+
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -59,7 +60,8 @@ class EngineBuilder
         return false
       end
    @container_name.gsub!(/ /,"_")
-   
+    @container_name.freeze
+    
     custom_env= params[:software_environment_variables]
     #   custom_env=params
     @core_api = core_api
@@ -255,7 +257,7 @@ class EngineBuilder
 
     if res  == false
       puts "build init failed " + res.to_s
-      log_build_errors("build init failed " + res)
+      log_build_errors("build init failed " + res.to_s)
       return res
     end
 
@@ -469,8 +471,8 @@ class EngineBuilder
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
       @core_api.save_build_report(mc,build_report)
-      p :build_report
-      p build_report
+#      p :build_report
+#      p build_report
       close_all
 
       return mc
@@ -480,9 +482,7 @@ class EngineBuilder
       log_exception(e)
       post_failed_build_clean_up
       close_all
-      failed_report = generate_build_report(@blueprint)
-      p :failed_report
-      p failed_report
+
       return false
     end
   end
@@ -692,11 +692,11 @@ class EngineBuilder
 
       p :adding_service
 
-      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-      p service_hash
-      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-      p :target_envs
-      p service_def[:target_environment_variables]
+#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+#      p service_hash
+#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+#      p :target_envs
+#      p service_def[:target_environment_variables]
 
       #FIXME need to unify filesystem creation with attach_service
       if service_hash[:servicetype_name] == "filesystem"
@@ -723,7 +723,7 @@ class EngineBuilder
         log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
       
         else #elseif over attach to existing true attached to existing
-          log_build_output("Failed ro build cannot over write " + service_hash[:service_handle].to_s + " No Service Found") 
+          log_build_output("Failed to build cannot over write " + service_hash[:service_handle].to_s + " No Service Found") 
       end
       p :attach_service
       p service_hash
@@ -988,8 +988,9 @@ class EngineBuilder
         end
       end
 
-      log_build_errors(error_mesg)
-      if error_mesg.include?("Error:") || error_mesg.include?("FATA")
+     
+      if error_mesg.length >2 #error_mesg.include?("Error:") || error_mesg.include?("FATA")
+        log_build_errors(error_mesg)
         p "docker_cmd error " + error_mesg
         last_error = error_mesg
         return false
