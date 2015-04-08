@@ -102,7 +102,7 @@ end
      if service == nil
       return nil
      end
-     return service.persistant
+     return service[:persistant]
   end
   
   def SoftwareServiceDefinition.service_handle_field(params)
@@ -110,7 +110,7 @@ end
        if service == nil
         return nil
        end
-       return service.service_handle_field
+       return service[:service_handle_field]
     end
     
   def to_h   
