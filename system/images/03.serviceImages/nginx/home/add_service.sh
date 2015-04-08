@@ -42,7 +42,7 @@ cat $template | sed "/FQDN/s//$fqdn/" > /tmp/site.fqdn
 cat /tmp/site.fqdn  | sed "/PORT/s//$port/" > /tmp/site.port
 cat /tmp/site.port  | sed "/SERVER/s//$parent_engine/" > /tmp/site.name
 
-	if ! test $proto = http
+	if ! test "$proto" = http
 	 then
 	 	if test -f /etc/nginx/ssl/certs/$fqdn.crt
 	 		then

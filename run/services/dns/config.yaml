@@ -1,5 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: dns
+publisher_namespace: EnginesSystem
+type_path: dns
 ctype: service
 persistant: false
 conf_self_start: false

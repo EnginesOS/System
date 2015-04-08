@@ -17,7 +17,12 @@ class EnginesCore
     sm = loadServiceManager
     return sm.software_service_definition(params)
   end
-
+  
+  def get_registered_against_service(params)
+    sm = loadServiceManager
+       return sm.get_registered_against_service(params)     
+  end
+  
   def add_domain(params)
     return  @system_api.add_domain(params)
   end
