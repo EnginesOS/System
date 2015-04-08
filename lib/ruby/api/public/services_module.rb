@@ -127,8 +127,25 @@ module ServicesModule
   def get_orphaned_services_tree
   return @core_api.get_orphaned_services_tree
   end
-     
   
+  #@return  an [Array] of service_hashes regsitered against the Service named service name
+  #wrapper for gui programs calls get_registered_against_service(params)
+  def registered_engines_on_service(service_name)
+    service = getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","list registerd Service")
+    end
+    params =  Hash.new
+    params[:type_path]= service.type_path
+      params[:publisher_namespace]= service.publisher_namespace
+    return @core_api.get_registered_against_service(params)
+    
+  end  
+    
+  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+    def get_registered_against_service(params)
+      return @core_api.get_registered_against_service(params)
+    end
 
     #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
     #:path_type :publisher_namespace    

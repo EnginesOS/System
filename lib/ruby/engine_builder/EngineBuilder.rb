@@ -60,7 +60,7 @@ class EngineBuilder
         return false
       end
    @container_name.gsub!(/ /,"_")
-    @container_name.freeze
+   @container_name.freeze
     
     custom_env= params[:software_environment_variables]
     #   custom_env=params
