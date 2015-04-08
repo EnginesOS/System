@@ -1,6 +1,7 @@
 FROM  engines/servicebase:$release
 RUN apt-get -y update;\
 	echo "Y" | adduser -q --disabled-password --home /home/cron -uid 22016 cron;\
+	groupadd -g 999 docker;\
 	usermod -G docker -a cron ;\
 	apt-get -y install build-essential gcc make syslogd;\
 	apt-get clean ;\
