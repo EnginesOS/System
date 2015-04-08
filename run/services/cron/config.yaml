@@ -2,6 +2,8 @@
 containerName: cron
 ctype: service
 persistant: false
+publisher_namespace: EnginesSystem
+type_path: cron
 last_error: 
 memory: '16'
 hostName: cron

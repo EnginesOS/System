@@ -223,7 +223,6 @@ class ServiceManager
       if add_to_services_tree(service_hash) == false
         log_error_mesg("Failed to add service to managed service registry",service_hash)
         return false
-
       end
     end
 
@@ -372,6 +371,16 @@ class ServiceManager
 
   end
   
+  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  def get_registered_against_service(params)
+    hashes = Array.new
+    service_tree = find_service_consumers(params)
+    if service_tree != nil && service_tree.is_a?(TreeNode)
+      hashes = get_all_leafs_service_hashes(branch)
+    end
+    return hashes
+  end
+
   #Calls remove service on the service_container to remove the service associated by the hash
   #@return result boolean
   #@param service_hash [Hash]
