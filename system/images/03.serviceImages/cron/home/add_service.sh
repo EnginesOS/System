@@ -27,7 +27,7 @@ load_service_hash_to_environment
         exit -1
     fi  
     
-mkdir -p /home/entries/${parent_engine}/
+mkdir -p /home/cron/entries/${parent_engine}/
 
 echo $cron_line  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$name
 
