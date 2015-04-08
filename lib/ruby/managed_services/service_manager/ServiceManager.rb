@@ -414,7 +414,7 @@ def add_to_managed_service(service_hash)
         end
    
     if service.is_running == false
-      log_error_mesg("Cant remove from service if service is stopped ",service_hash)
+      log_error_mesg("Cant add to service if service is stopped ",service_hash)
       return false
     end
   
