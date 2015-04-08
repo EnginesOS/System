@@ -11,7 +11,7 @@ load_service_hash_to_environment
 
 #FIXME make engines.internal settable
 
-	if test -z ${cron_job}
+	if test -z "${cron_job}"
 	then
 		echo Error:Missing cron_job
         exit -1
