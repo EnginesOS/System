@@ -52,6 +52,7 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
+    @container_name.freeze
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -690,11 +691,11 @@ class EngineBuilder
 
       p :adding_service
 
-      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-      p service_hash
-      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-      p :target_envs
-      p service_def[:target_environment_variables]
+#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+#      p service_hash
+#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
+#      p :target_envs
+#      p service_def[:target_environment_variables]
 
       #FIXME need to unify filesystem creation with attach_service
       if service_hash[:servicetype_name] == "filesystem"
@@ -721,7 +722,7 @@ class EngineBuilder
         log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
       
         else #elseif over attach to existing true attached to existing
-          log_build_output("Failed ro build cannot over write " + service_hash[:service_handle].to_s + " No Service Found") 
+          log_build_output("Failed to build cannot over write " + service_hash[:service_handle].to_s + " No Service Found") 
       end
       p :attach_service
       p service_hash
