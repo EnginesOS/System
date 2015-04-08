@@ -212,6 +212,9 @@ class ServiceManager
       end
       service_hash[:persistant] = persist
     end
+    if service_hash[:variables].has_key?(:parent_engine) == false
+      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
+    end
 
     add_to_managed_engines_tree(service_hash)
 
