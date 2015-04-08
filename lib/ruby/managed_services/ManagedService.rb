@@ -82,18 +82,19 @@ class ManagedService < ManagedContainer
       result = add_consumer_to_service(service_hash)
         end
         
-      if result == true
-        service_hash[:fresh] = false
-        p :adding_consumer_to_Sm
-        p service_hash
-        sm =  service_manager
-        if sm != false
-          result = sm.add_service(service_hash)
-        else
-          log_error_mesg("add consumer no ServiceManager ","")
-          return false
-        end
-      end
+        #Service manage is what calls this, this was trying to add twice
+#      if result == true
+#        service_hash[:fresh] = false
+#        p :adding_consumer_to_Sm
+#        p service_hash
+#        sm =  service_manager
+#        if sm != false
+#          result = sm.add_service(service_hash)
+#        else
+#          log_error_mesg("add consumer no ServiceManager ","")
+#          return false
+#        end
+#      end
     end
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
