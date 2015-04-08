@@ -130,7 +130,7 @@ end
 #@param engine [ManagedContainer] 
 def SystemUtils.create_nginx_service_hash(engine)
 
-  proto ="http https"
+  proto ="http_https"
   case engine.protocol
   when :https_only
     proto="https"
