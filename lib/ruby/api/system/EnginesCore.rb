@@ -18,6 +18,7 @@ class EnginesCore
     return sm.software_service_definition(params)
   end
   
+ 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     sm = loadServiceManager
