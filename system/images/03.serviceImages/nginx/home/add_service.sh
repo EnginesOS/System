@@ -29,12 +29,22 @@ if test -z $fqdn
  	exit -1
  fi
  
- nslookup ${parent_engine}.engines.internal
+ res=`nslookup ${parent_engine}.engines.internal`
  if test $? -lt 0
   then
   	echo Error:failed to find internal dns entry for site
   	exit -1
  fi  
+
+	  res=`nslookup ${parent_engine}.engines.internal`
+
+ teststr=`echo $res |grep NXDOMAIN`
+ if test ${#teststr} -gt 0
+  then
+        echo Error:failed to find internal dns entry for site
+        exit -1
+ fi
+	 
 
 template="/etc/nginx/templates/${proto}_site.tmpl"
 
