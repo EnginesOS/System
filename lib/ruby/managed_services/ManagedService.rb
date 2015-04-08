@@ -226,21 +226,14 @@ class ManagedService < ManagedContainer
     params[:publisher_namespace] = @publisher_namespace
     params[:type_path] = @type_path
     registered_hashes = @core_api.get_registered_against_service(params)
+    if registered_hashes == nil
+      return 
+    end
     registered_hashes.each do |service_hash|     
       add_consumer_to_service(service_hash)
     end 
-#
-#    loop_cnt=0
-#
-#    while is_startup_complete() == false && loop_cnt <10
-#      loop_cnt = loop_cnt + 1
-#      sleep 1
-#      #really need to sched it not block for some random time
-#    end
-#
-#    @consumers.each_value do |service_hash|
-#      add_consumer_to_service(service_hash)
-#    end
+    
+    return true
 
   end
 

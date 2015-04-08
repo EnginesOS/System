@@ -17,7 +17,7 @@ if test -z $fqdn
  	echo Error:no port in nginx service hash
  	exit -1
  fi
-  if test -z $proto
+  if test -z "$proto"
  then
  	echo Error:no proto in nginx service hash
  	exit -1
