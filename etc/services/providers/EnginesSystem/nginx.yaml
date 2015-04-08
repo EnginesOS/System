@@ -12,11 +12,11 @@ publisher_namespace: EnginesSystem
 service_container: nginx
 dedicated: false
 persistant: false
-service_handle_field: site_fqdn
+service_handle_field: fqdn
 consumer_params:
 setup_params:
- site_fqdn:
-  name: site_fqdn
+ fqdn:
+  name: fqdn
   label: site_fqdn
   regex_validator: ".*"
   tooltip: " "
