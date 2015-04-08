@@ -1,5 +1,7 @@
 --- !ruby/object:SoftwareService
 containerName: syslog
+publisher_namespace: EnginesSystem
+type_path: log
 ctype: service
 persistant: false
 last_error: 

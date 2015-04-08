@@ -212,6 +212,14 @@ class ManagedService < ManagedContainer
       return false
     end
   end
+  
+  def registered_consumers
+    params = Hash.new()
+    params[:publisher_namespace] = @publisher_namespace
+    params[:type_path] = @type_path
+    return   @core_api.get_registered_against_service(params)
+    
+  end
 
   def reregister_consumers
     
@@ -222,11 +230,8 @@ class ManagedService < ManagedContainer
       log_error_mesg("Cant register consumers as not running ",self)
       return false
     end
-    
-    params = Hash.new()
-    params[:publisher_namespace] = @publisher_namespace
-    params[:type_path] = @type_path
-    registered_hashes = @core_api.get_registered_against_service(params)
+
+    registered_hashes = registered_consumers
     if registered_hashes == nil
       return 
     end

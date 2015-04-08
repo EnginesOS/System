@@ -1,4 +1,6 @@
 --- !ruby/object:VolumeService
+publisher_namespace: EnginesSystem
+type_path: filesystem/local/filesystem
 containerName: volmanager
 ctype: service
 persistant: true

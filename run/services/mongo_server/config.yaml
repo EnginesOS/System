@@ -1,6 +1,8 @@
 --- !ruby/object:MongoDBService
 containerName: mongo_server
 ctype: service
+publisher_namespace: EnginesSystem
+type_path: database/nosql/mongo
 persistant: true
 last_error: 
 memory: '128'

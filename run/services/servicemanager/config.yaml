@@ -1,5 +1,7 @@
 --- !ruby/object:ServiceManager
 containerName: servicemanager
+publisher_namespace: EnginesSystem
+type_path: servicemgr
 ctype: service
 conf_self_start: true
 last_error: 
