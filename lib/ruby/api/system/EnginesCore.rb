@@ -270,9 +270,7 @@ class EnginesCore
     return false
   end
   
-  if service_hash[:variables].has_key?(:parent_name) == false
-    service_hash[:variables][:parent_name] = service_hash[:parent_name]
-  end
+
   
     sm = loadServiceManager()
     return sm.add_service(service_hash)
