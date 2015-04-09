@@ -111,17 +111,17 @@ module ServicesModule
       end
       end
    def register_service(service_hash)
-     return true
+     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"Register Service")
    end
    def deregister_service(service_hash)
-     return true
+     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"Deregister Service")
    end
    
    def reregister_service(service_hash)
-    if  deregister_service
+    if  deregister_service.was_success
       return register_service
     end
-    return false
+     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"reregister Service")
    end
       
     def get_managed_engine_tree
@@ -204,7 +204,7 @@ module ServicesModule
       return success(params[:service_handle],"Delete Service")    
      else
       SystemUtils.log_error_mesg("Delete Orphan Service",params)
-      return failed(params[:service_handle],sm.last_error,"Delete Orphan Service")
+      return failed(params[:service_handle],@core_api.last_error,"Delete Orphan Service")
     end
    
     rescue Exception=>e
