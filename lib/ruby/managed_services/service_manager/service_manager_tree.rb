@@ -77,7 +77,7 @@ module ServiceManagerTree
       remove_tree_entry(parent_node)
     end
 
-    return true
+    return save_tree
     rescue Exception=>e
          log_exception(e)
          return false

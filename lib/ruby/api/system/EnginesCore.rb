@@ -286,17 +286,17 @@ class EnginesCore
         SystemUtils.log_exception e
   end
   
-  def dettach_service(params)
-#    service = load_software_service(params)
-#    if service !=nil && service != false
-#      return service.remove_consumer(params)
-#    end
-#    @last_error = "Failed to dettach Service: " + @last_error
-    return  false
-  rescue Exception=>e
-    SystemUtils.log_exception e
-
-  end
+#  def dettach_service(params)
+##    service = load_software_service(params)
+##    if service !=nil && service != false
+##      return service.remove_consumer(params)
+##    end
+##    @last_error = "Failed to dettach Service: " + @last_error
+#    return  false
+#  rescue Exception=>e
+#    SystemUtils.log_exception e
+#
+#  end
 
   def list_providers_in_use
     sm = loadServiceManager()
@@ -608,6 +608,16 @@ class EnginesCore
 
         log_error_mesg("Failed to remove service ",service_hash)
         return false
+      end
+      #REMOVE THE SERVICE HERE AND NOW
+      if sm.remove_from_engine_registery(service_hash) ==true 
+        if sm.remove_from_services_registry(service_hash) == false
+          log_error_mesg("Cannot remove from Service Registry",service_hash)
+          return false
+        end
+      else
+        log_error_mesg("Cannot remove from Engine Registry",service_hash)
+        return false          
       end
     end
     return true
