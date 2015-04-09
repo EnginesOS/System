@@ -19,8 +19,13 @@ module OrphanedServices
   #Saves the service_hash in the orphaned service registry 
   #@return result 
   def save_as_orphan(service_hash)
+    provider_tree = orphaned_services_tree[service_hash[:publisher_namespace]]
+      if provider_tree == nil
+        provider_tree =  Tree::TreeNode.new(service_hash[:publisher_namespace],service_hash[:publisher_namespace])
+        orphaned_services_tree << provider_tree
+      end
     if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)    
-    type_node = create_type_path_node(orphaned_services_tree,service_hash[:type_path])     
+    type_node = create_type_path_node(provider_tree,service_hash[:type_path])     
     #INSERT Enginename here
       type_node << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
       return true
@@ -32,11 +37,18 @@ module OrphanedServices
   #@param params { :type_path , :service_handle}
   #@return nil on no match
   def retrieve_orphan(params)
-
+    
+    provider_tree = orphaned_services_tree[params[:publisher_namespace]]
+    if provider_tree == nil
+      log_error_mesg("No Orphan Matching publisher_namespace",params)
+      return false
+    end
     p :orpahns_retr_start
     p params[:type_path]
+      
       type_path = params[:type_path]
-    types = get_type_path_node(orphaned_services_tree,type_path)
+        
+    types = get_type_path_node(provider_tree,type_path)
     if types == nil
       log_error_mesg("No Orphan Matching type_path",params)
       return false
