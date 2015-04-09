@@ -110,7 +110,19 @@ module ServicesModule
         return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
       end
       end
-  
+   def register_service(service_hash)
+     return true
+   end
+   def deregister_service(service_hash)
+     return true
+   end
+   
+   def reregister_service(service_hash)
+    if  deregister_service
+      return register_service
+    end
+    return false
+   end
       
     def get_managed_engine_tree
       return @core_api.get_managed_engine_tree  
