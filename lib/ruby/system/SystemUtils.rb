@@ -82,8 +82,12 @@ class SystemUtils
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
       SystemUtils.debug_output("Run " + cmd + " Result:", res)
-
-      return res
+      if $?.to_i == 0
+        return true
+      else
+        SystemUtils.log_error_mesg("Run " + cmd + " Result:", res)
+        return $res
+      end
     rescue Exception=>e
       SystemUtils.log_exception(e)
       return "Error: " +e.to_s
