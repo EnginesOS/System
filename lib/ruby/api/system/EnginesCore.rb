@@ -279,6 +279,13 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
+  def remove_orphaned_service(params)
+    sm = loadServiceManager()
+    return sm.remove_orphaned_service(params)
+    rescue Exception=>e
+        SystemUtils.log_exception e
+  end
+  
   def dettach_service(params)
 #    service = load_software_service(params)
 #    if service !=nil && service != false

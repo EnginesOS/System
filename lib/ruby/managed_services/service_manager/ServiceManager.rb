@@ -124,6 +124,16 @@ class ServiceManager
     return false
   end
 
+  #@ removes underly service and remove entry from orphaned services
+  #@returns boolean indicating success
+  def remove_orphaned_service(service_hash)
+    if remove_from_managed_service(service_hash)
+         log_error_mesg("failed to remove managed service",service_hash)
+         return false
+       end
+    return release_orphan(service_hash)
+       
+  end
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
   #@identifier [String]

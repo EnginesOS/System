@@ -110,7 +110,19 @@ module ServicesModule
         return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
       end
       end
-  
+   def register_service(service_hash)
+     return true
+   end
+   def deregister_service(service_hash)
+     return true
+   end
+   
+   def reregister_service(service_hash)
+    if  deregister_service
+      return register_service
+    end
+    return false
+   end
       
     def get_managed_engine_tree
       return @core_api.get_managed_engine_tree  
@@ -185,6 +197,21 @@ module ServicesModule
     def detach_subservice(params)
     end
     
+  
+  def delete_orphaned_service(params)
+    
+    if @core_api.remove_orphaned_service(params) == true
+      return success(params[:service_handle],"Delete Service")    
+     else
+      SystemUtils.log_error_mesg("Delete Orphan Service",params)
+      return failed(params[:service_handle],sm.last_error,"Delete Orphan Service")
+    end
+   
+    rescue Exception=>e
+       return log_exception_and_fail("Orphan",e)
+   
+  end
+  
     def load_avail_services_for_type(typename)
       return  @core_api.load_avail_services_for_type(typename)
       
