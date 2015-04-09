@@ -60,17 +60,6 @@ setup_params:
     value: " "
     comment: " "
     regex_validator: ".*"
-  checkbox_test:
-    name: checkbox
-    label: checkbox test
-    tooltip: " "
-    field_type: checkbox
-    hint: " "
-    placeholder: " "
-    mandatory: true
-    value: true
-    comment: " "
-    regex_validator: ".*"
   access:
     name: rw_access
     label: RW Access
