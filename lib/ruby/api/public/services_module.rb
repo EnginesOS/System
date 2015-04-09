@@ -144,11 +144,11 @@ module ServicesModule
   #wrapper for gui programs calls get_registered_against_service(params)
   def registered_engines_on_service(service_name)
     service = getManagedService(service_name)
-    if service == nil
-      return failed(service_name,"No Such Service","list registerd Service")
+    if service == nil || service.is_a?(EnginesOSapiResult)
+      return failed(service_name,"No Such Service","list registered Service")
     end
     params =  Hash.new
-    params[:type_path]= service[:type_path]
+    params[:type_path]= service.type_path
       params[:publisher_namespace]= service.publisher_namespace
     return @core_api.get_registered_against_service(params)
     
