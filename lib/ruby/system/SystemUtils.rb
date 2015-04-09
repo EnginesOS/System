@@ -76,6 +76,10 @@ class SystemUtils
     return @@debug
   end
 
+  #Execute @param cmd [String]
+  #if sucessful exit code == 0 @return 
+  #else
+  #@return stdout and stderr from cmd
   def SystemUtils.run_system(cmd)
     @@last_error=""
     begin
