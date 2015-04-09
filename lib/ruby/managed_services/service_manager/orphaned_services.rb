@@ -27,6 +27,7 @@ module OrphanedServices
     end
     return false
   end
+  
   #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
   #@param params { :type_path , :service_handle}
   #@return nil on no match
@@ -92,6 +93,7 @@ end
    #:path_type :publisher_namespace      
    def get_orphaned_services(params)
      leafs = Array.new
+     p :looking_for_orphans
      orphans = find_orphan_consumers(params)
      if orphans != nil && orphans != false
        leafs = get_matched_leafs(orphans,:persistant,true)
@@ -118,10 +120,15 @@ end
      return provider_tree
    end
 
+   if provider_tree == nil
+     log_error_mesg("found no match for provider in orphans", service_query_hash[:publisher_namespace])
+     return false
+   end
+     
    service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
    if service_path_tree == nil
-     log_error_mesg("Failed to orphan find matching service path",service_query_hash)
+     log_error_mesg("Failed to find orphan matching service path",service_query_hash)
      return false
    end
    
