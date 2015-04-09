@@ -27,7 +27,7 @@ if test -z $db_username
 
 
 Q1="Drop DATABASE  ${BTICK}$database_name${BTICK}   ;"
-Q2="DELETE FROM user where user='$db_username'@'%';"
+Q2="DELETE FROM user where user='$db_username';"
 Q3="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}"
 

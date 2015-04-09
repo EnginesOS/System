@@ -34,7 +34,7 @@ class VolumeService < ManagedService
   def rm_volume(service_hash)
 
     begin
-      puts "would remove " + service_hash
+      puts "would remove " + service_hash.to_s
       #update details with some manager
       return true
     rescue  Exception=>e
