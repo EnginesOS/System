@@ -131,13 +131,13 @@ class ServiceManager
          log_error_mesg("failed to remove managed service",service_hash)
          return false
        end
-    return release_orphan(service_hash)
-       
+    return release_orphan(service_hash)       
   end
+  
+  
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
   #@identifier [String]
-
   def list_attached_services_for(objectName,identifier)
     p :services_on_objects_4
     SystemUtils.debug_output("services_on_objects_",objectName)

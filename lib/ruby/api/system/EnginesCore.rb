@@ -800,10 +800,17 @@ def register_non_persistant_services(engine_name)
    sm = loadServiceManager()
    return sm.register_non_persistant_services(engine_name)
    end
+   
  def deregister_non_persistant_services(engine_name)
    sm = loadServiceManager()
   return sm.deregister_non_persistant_services(engine_name)
  end
+ 
+#@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+#:path_type :publisher_namespace
+def get_orphaned_services(params)
+  return loadServiceManager.get_orphaned_services(params)
+end
  
   protected
 
@@ -838,11 +845,7 @@ def register_non_persistant_services(engine_name)
     return loadServiceManager.get_active_persistant_services(params)
   end
 
-  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
-  #:path_type :publisher_namespace
-  def get_orphaned_services(params)
-    return loadServiceManager.get_orphaned_services(params)
-  end
+
 
 end
 
