@@ -105,23 +105,23 @@ module ServicesModule
     
     def detach_service(params)
       if   @core_api.dettach_service(params)== true
-        success(params[:parent_engine],"detach service")
+        success(params[:parent_engine].to_s,"detach service")
       else
-        return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
+        return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
       end
       end
    def register_service(service_hash)
-     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"Register Service")
+     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
    end
    def deregister_service(service_hash)
-     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"Deregister Service")
+     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
    end
    
    def reregister_service(service_hash)
-    if  deregister_service.was_success
-      return register_service
+    if  deregister_service(service_hash).was_success
+      return register_service(service_hash)
     end
-     return success(service_hash[:parent_engine] + " " +service_hash[:service_handle] ,"reregister Service")
+     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
    end
       
     def get_managed_engine_tree
