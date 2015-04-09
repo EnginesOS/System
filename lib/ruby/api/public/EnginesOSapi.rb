@@ -402,16 +402,7 @@ class EnginesOSapi
     return log_exception_and_fail("Delete",e)
  
   end
-  
-  def delete_orphaned_service(params)
-    
-    
-    return success(params[:service_handle],"Delete Service")
-           
-    rescue Exception=>e
-       return log_exception_and_fail("Orphan",e)
-   
-  end
+
  
   
   def reinstall_engine(engine_name)

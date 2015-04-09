@@ -197,6 +197,21 @@ module ServicesModule
     def detach_subservice(params)
     end
     
+  
+  def delete_orphaned_service(params)
+    
+    if @core_api.remove_orphaned_service(params) == true
+      return success(params[:service_handle],"Delete Service")    
+     else
+       log_error_mesg("Delete Orphan Service",params)
+      return failed(params[:service_handle],sm.last_error,"Delete Orphan Service")
+    end
+   
+    rescue Exception=>e
+       return log_exception_and_fail("Orphan",e)
+   
+  end
+  
     def load_avail_services_for_type(typename)
       return  @core_api.load_avail_services_for_type(typename)
       

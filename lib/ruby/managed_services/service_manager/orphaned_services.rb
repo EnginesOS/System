@@ -9,13 +9,11 @@ module OrphanedServices
       return false
     end
 
-    remove_tree_entry(orphan)
+   if remove_tree_entry(orphan)
 
-#    service = find_service_consumers(orphan.content)
-#    if service != nil
-#      remove_tree_entry(service)
-#    end
     return save_tree
+   end
+   return false
   
   end
   #Saves the service_hash in the orphaned service registry 
