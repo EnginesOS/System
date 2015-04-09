@@ -15,8 +15,8 @@ module OrphanedServices
 #    if service != nil
 #      remove_tree_entry(service)
 #    end
- 
-    return true
+    return save_tree
+  
   end
   #Saves the service_hash in the orphaned service registry 
   #@return result 
