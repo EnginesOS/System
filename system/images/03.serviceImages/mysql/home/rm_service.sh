@@ -33,7 +33,7 @@ SQL="${Q1}${Q2}${Q3}"
 
 #echo "$SQL"
 
-$MYSQL   -urma  -e "$SQL" $database_name
+$MYSQL   -urma  -e "$SQL" mysql
 
 
 if test $? -ge 0
