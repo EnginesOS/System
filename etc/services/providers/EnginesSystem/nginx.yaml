@@ -15,6 +15,16 @@ persistant: false
 service_handle_field: fqdn
 consumer_params:
 setup_params:
+ port:
+  name: port
+  label: engine web port
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "engine"
+  placeholder: " "
+  mandatory: true
+  comment: " "
  fqdn:
   name: fqdn
   label: site_fqdn
