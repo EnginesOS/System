@@ -15,6 +15,20 @@ persistant: false
 service_handle_field: fqdn
 consumer_params:
 setup_params:
+ proto:
+  name: proto
+  label: Protocols to support
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: select_single
+  hint: "engine"
+  select_collection:
+      - "http"
+      - "https"
+      - "http_https"
+  placeholder: " "
+  mandatory: true
+  comment: " "
  port:
   name: port
   label: engine web port
