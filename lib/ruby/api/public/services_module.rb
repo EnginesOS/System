@@ -148,7 +148,7 @@ module ServicesModule
       return failed(service_name,"No Such Service","list registerd Service")
     end
     params =  Hash.new
-    params[:type_path]= service.type_path
+    params[:type_path]= service[:type_path]
       params[:publisher_namespace]= service.publisher_namespace
     return @core_api.get_registered_against_service(params)
     
