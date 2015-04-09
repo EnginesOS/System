@@ -97,7 +97,7 @@ setup_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "utf8"
+  value: "utf8_general_ci"
   select_collection:
   - !ruby/object:String  
        "utf8_general_ci"

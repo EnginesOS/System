@@ -103,7 +103,7 @@ class ServiceManager
     #      return false
     #    end
 
-    if remove_from_managed_service(service_hash)
+    if remove_from_managed_service(service_hash) == false
       log_error_mesg("failed to remove managed service",service_hash)
       return false
     end

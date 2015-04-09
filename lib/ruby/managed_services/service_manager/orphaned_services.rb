@@ -12,6 +12,8 @@ module OrphanedServices
    if remove_tree_entry(orphan)
 
     return save_tree
+   else
+     log_error_mesg("failed to remove tree entry for ",orphan)
    end
    return false
   
