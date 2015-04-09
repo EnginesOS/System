@@ -624,11 +624,11 @@ class EnginesCore
     sm = loadServiceManager()
     
     if params[:remove_all_application_data] == true
-    if delete_engine_persistant_services(params) == false
+        if delete_engine_persistant_services(params) == false
 
-      log_error_mesg("Failed to delete Service",params)
-      return false
-    end
+          log_error_mesg("Failed to delete Service",params)
+          return false
+         end
     end
     #do with Container
     #remove logs
@@ -638,9 +638,10 @@ class EnginesCore
     #remove services
 
     if sm.rm_remove_engine(params) == false
-      log_error_mesg("Failed to remove deleted Service",params)
-      
+      log_error_mesg("Failed to remove deleted Service",params)      
       return false
+      
+  return true
     end
     rescue Exception=>e
        SystemUtils.log_exception(e)
