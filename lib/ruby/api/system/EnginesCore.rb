@@ -640,9 +640,10 @@ class EnginesCore
     if sm.rm_remove_engine(params) == false
       log_error_mesg("Failed to remove deleted Service",params)      
       return false
-      
-  return true
     end
+    
+    return true
+    
     rescue Exception=>e
        SystemUtils.log_exception(e)
        return false
