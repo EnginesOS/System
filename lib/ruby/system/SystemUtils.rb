@@ -111,7 +111,7 @@ class SystemUtils
         res= %x<#{cmd}>
         SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
        
-          return $res
+        return res
 
       rescue Exception=>e
         SystemUtils.log_exception(e)
