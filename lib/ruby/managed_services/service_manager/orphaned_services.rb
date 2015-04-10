@@ -40,6 +40,7 @@ module OrphanedServices
     return false
   end
   
+  
   #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
   #@param params { :type_path , :service_handle}
   #@return nil on no match
@@ -78,6 +79,8 @@ module OrphanedServices
   end
       log_error_mesg("No Matching Orphan found in search",params)
       return false
+elsif types_for_engine == nil
+  return false
 else
     orphan =  types_for_engine[params[:service_handle]]
       if orphan == nil
