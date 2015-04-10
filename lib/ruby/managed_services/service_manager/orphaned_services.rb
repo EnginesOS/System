@@ -29,7 +29,12 @@ module OrphanedServices
     if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)    
     type_node = create_type_path_node(provider_tree,service_hash[:type_path])     
     #INSERT Enginename here
-      type_node << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
+      engine_node = type_node[service_hash[:parent_engine]]
+        if  engine_node == nil 
+          engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Belonged to " + service_hash[:parent_engine])
+          type_node  <<  engine_node
+        end
+      engine_node  << Tree::TreeNode.new(service_hash[:service_handle],service_hash)     
       return true
     end
     return false
