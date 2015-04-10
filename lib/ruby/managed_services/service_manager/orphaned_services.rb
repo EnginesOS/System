@@ -55,13 +55,16 @@ module OrphanedServices
       
       type_path = params[:type_path]
         
-    types = get_type_path_node(provider_tree,type_path)
-    if types == nil
+    type = get_type_path_node(provider_tree,type_path)
+    if type == nil
       log_error_mesg("No Orphan Matching type_path",params)
       return false
     end
-    if  types.is_a?(Array)
-      types.each do |type|
+    
+    types_for_engine = type[params[:parent_engine]] 
+    
+    if  types_for_engine.is_a?(Array)
+      types_for_engine.each do |type|
         # p type.content
         if type == nil
           log_error_mesg(" nil type in ",types)
@@ -73,10 +76,10 @@ module OrphanedServices
           log_error_mesg("params nil service_handle",params)
         end
   end
-      log_error_mesg("No Matching Orphan",params)
+      log_error_mesg("No Matching Orphan found in search",params)
       return false
 else
-    orphan =  types[params[:service_handle]]
+    orphan =  types_for_engine[params[:service_handle]]
       if orphan == nil
         log_error_mesg("No Matching Orphan",params)
         return false
