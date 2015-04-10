@@ -87,6 +87,7 @@ class SystemUtils
       res= %x<#{cmd}>
       SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
       if $?.to_i == 0
+        p :run_system_success
         return true
       else
         SystemUtils.log_error_mesg("Error Code:" + $?.to_s + " in run " + cmd + " Output:", res)
@@ -94,7 +95,7 @@ class SystemUtils
       end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): " + cmd.to_s)
+      SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): ")
       return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
     end
   end
