@@ -286,17 +286,18 @@ class EnginesCore
         SystemUtils.log_exception e
   end
   
-#  def dettach_service(params)
-##    service = load_software_service(params)
-##    if service !=nil && service != false
-##      return service.remove_consumer(params)
-##    end
-##    @last_error = "Failed to dettach Service: " + @last_error
-#    return  false
-#  rescue Exception=>e
-#    SystemUtils.log_exception e
-#
-#  end
+ def dettach_service(params)
+   sm = loadServiceManager()
+      return sm.remove_service(params)
+#    if service !=nil && service != false
+#      return service.remove_consumer(params)
+#    end
+#    @last_error = "Failed to dettach Service: " + @last_error
+    
+  rescue Exception=>e
+    SystemUtils.log_exception e
+   return  false
+  end
 
   def list_providers_in_use
     sm = loadServiceManager()
