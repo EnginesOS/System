@@ -13,8 +13,8 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 service_handle_field: name
-consumer_params:
 setup_params:
+consumer_params:
  name:
   name: name
   label: service tag name

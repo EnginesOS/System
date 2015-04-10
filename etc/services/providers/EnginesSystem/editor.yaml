@@ -11,8 +11,8 @@ dedicated: true
 persistant: true
 image_name: engines/editor
 service_handle_field: name
-consumer_params:
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address
