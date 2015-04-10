@@ -592,6 +592,7 @@ class EnginesCore
     services = sm.get_engine_persistant_services(params)
 
     services.each do |service_hash|
+      service_hash[:remove_all_application_data]  = params[:remove_all_application_data] 
       if service_hash.has_key?(:service_container_name) == false
         log_error_mesg("Missing :service_container_name in service_hash",service_hash)
         return false
