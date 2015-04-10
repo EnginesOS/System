@@ -85,16 +85,17 @@ class SystemUtils
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
-      SystemUtils.debug_output("Run " + cmd + " Result:", res)
+      SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
       if $?.to_i == 0
         return true
       else
-        SystemUtils.log_error_mesg("Run " + cmd + " Result:", res)
+        SystemUtils.log_error_mesg("Error Code:" + $?.to_s + " in run " + cmd + " Output:", res)
         return $res
       end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      return "Error: " +e.to_s
+      SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): " + cmd.to_s)
+      return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
     end
   end
 
