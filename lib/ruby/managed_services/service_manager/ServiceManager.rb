@@ -227,8 +227,8 @@ class ServiceManager
     engine_node = managed_engine_tree[params[:parent_engine]]
 
     if engine_node == nil
-      log_error_mesg("Failed to find engine to remove",params)
-      return false
+      log_error_mesg("Warning Failed to find engine to remove",params)
+      return true
     end
 
     services = get_engine_persistant_services(params)
@@ -253,7 +253,7 @@ class ServiceManager
       return false
     end
     log_error_mesg("Failed remove engine",params)
-    return false
+    return true
   end
 
   #@returns boolean indicating sucess
