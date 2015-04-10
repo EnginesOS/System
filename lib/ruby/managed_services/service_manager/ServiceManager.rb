@@ -91,23 +91,17 @@ class ServiceManager
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
-  def remove_service service_hash
+  def delete_service service_hash
 
-    #    if remove_consumer_from_service(service_hash) == false
-    #      log_error_mesg("failed to remove from engine from service",service_hash)
-    #      return false
-    #    end
-    #
-    #    if remove_from_engine_registery(service_hash) == false
-    #      log_error_mesg("failed to remove from engine registry",service_hash)
-    #      return false
-    #    end
 
     if remove_from_managed_service(service_hash) == false
       log_error_mesg("failed to remove managed service",service_hash)
       return false
     end
+   return remove_service(service_hash)
+  end
 
+  def remove_service service_hash
     if remove_from_services_registry(service_hash) == false
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
@@ -279,7 +273,7 @@ class ServiceManager
     services = get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_application_data] == true
-        if remove_service(service) == false
+        if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
         end
