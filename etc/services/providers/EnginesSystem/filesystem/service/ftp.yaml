@@ -10,12 +10,8 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 service_handle_field: name
-consumer_params:
-  - folder
-  - user
-  - password
-  - access
 setup_params:
+consumer_params:
   volume:
     name: volume
     label: volume

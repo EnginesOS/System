@@ -48,66 +48,21 @@ class ServiceManager
     return retval
   end
 
-  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
-  # Creates new attached [TreeNode] with required parent path if none exists
-  # return nil on error
-  #param parent_node the branch to create the node under
-  #param type_path the dir path format as in dns or database/sql/mysql
-  def create_type_path_node(parent_node,type_path)
-    if type_path == nil
-      log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
-      return nil
-    end
-
-    if type_path.include?("/") == false
-      service_node = parent_node[type_path]
-      if service_node == nil
-        service_node = Tree::TreeNode.new(type_path,type_path)
-        parent_node << service_node
-      end
-      return service_node
-    else
-
-      sub_paths= type_path.split("/")
-      prior_node = parent_node
-      count=0
-
-      sub_paths.each do |sub_path|
-        sub_node = prior_node[sub_path]
-        if sub_node == nil
-          sub_node = Tree::TreeNode.new(sub_path,sub_path)
-          prior_node << sub_node
-        end
-        prior_node = sub_node
-        count+=1
-        if count == sub_paths.count
-          return sub_node
-        end
-      end
-    end
-    log_error_mesg("create_type_path failed",type_path)
-    return nil
-  end
+ 
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
-  def remove_service service_hash
+  def delete_service service_hash
 
-    #    if remove_consumer_from_service(service_hash) == false
-    #      log_error_mesg("failed to remove from engine from service",service_hash)
-    #      return false
-    #    end
-    #
-    #    if remove_from_engine_registery(service_hash) == false
-    #      log_error_mesg("failed to remove from engine registry",service_hash)
-    #      return false
-    #    end
 
     if remove_from_managed_service(service_hash) == false
       log_error_mesg("failed to remove managed service",service_hash)
       return false
     end
+   return remove_service(service_hash)
+  end
 
+  def remove_service service_hash
     if remove_from_services_registry(service_hash) == false
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
@@ -127,7 +82,7 @@ class ServiceManager
   #@ removes underly service and remove entry from orphaned services
   #@returns boolean indicating success
   def remove_orphaned_service(service_hash)
-    if remove_from_managed_service(service_hash)
+    if remove_from_managed_service(service_hash) == false
          log_error_mesg("failed to remove managed service",service_hash)
          return false
        end
@@ -272,14 +227,14 @@ class ServiceManager
     engine_node = managed_engine_tree[params[:parent_engine]]
 
     if engine_node == nil
-      log_error_mesg("Failed to find engine to remove",params)
-      return false
+      log_error_mesg("Warning Failed to find engine to remove",params)
+      return true
     end
 
     services = get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_application_data] == true
-        if remove_service(service) == false
+        if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
         end
@@ -298,7 +253,7 @@ class ServiceManager
       return false
     end
     log_error_mesg("Failed remove engine",params)
-    return false
+    return true
   end
 
   #@returns boolean indicating sucess

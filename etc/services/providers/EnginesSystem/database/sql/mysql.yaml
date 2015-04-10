@@ -15,8 +15,8 @@ persistant: true
 exclusive: true
 service_handle_field: database_name
 image_name: engines/volmanager
-consumer_params:
 setup_params:
+consumer_params:
  name:
   name: name
   label: service tag name

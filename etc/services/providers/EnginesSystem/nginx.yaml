@@ -13,8 +13,8 @@ service_container: nginx
 dedicated: false
 persistant: false
 service_handle_field: fqdn
-consumer_params:
 setup_params:
+consumer_params:
  proto:
   name: proto
   label: Protocols to support

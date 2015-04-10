@@ -9,8 +9,8 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 service_handle_field: name
-consumer_params:
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

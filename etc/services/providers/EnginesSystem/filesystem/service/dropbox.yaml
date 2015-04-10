@@ -12,6 +12,7 @@ service_handle_field: name
 persistant: true
 dedicated: false
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

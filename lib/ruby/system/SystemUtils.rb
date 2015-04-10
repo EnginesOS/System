@@ -76,19 +76,49 @@ class SystemUtils
     return @@debug
   end
 
+  #Execute @param cmd [String]
+  #if sucessful exit code == 0 @return 
+  #else
+  #@return stdout and stderr from cmd
   def SystemUtils.run_system(cmd)
     @@last_error=""
     begin
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
-      SystemUtils.debug_output("Run " + cmd + " Result:", res)
-
-      return res
+      SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
+      if $?.to_i == 0
+        p :run_system_success
+        return true
+      else
+        SystemUtils.log_error_mesg("Error Code:" + $?.to_s + " in run " + cmd + " Output:", res)
+        return $res
+      end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      return "Error: " +e.to_s
+      SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): ")
+      return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
     end
   end
+  
+  
+   #Execute @param cmd [String]
+    #@return stdout and stderr from cmd
+    #No indication of success
+    def SystemUtils.run_command(cmd)
+      @@last_error=""
+      begin
+        cmd = cmd + " 2>&1"
+        res= %x<#{cmd}>
+        SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
+       
+        return res
+
+      rescue Exception=>e
+        SystemUtils.log_exception(e)
+        SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): ")
+        return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
+      end
+    end
 
   def SystemUtils.get_default_domain
     if File.exists?(SysConfig.DefaultDomainnameFile)
