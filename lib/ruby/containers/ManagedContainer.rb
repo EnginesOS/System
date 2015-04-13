@@ -623,6 +623,9 @@ def rebuild_container
     return false
   end
   ret_val = @core_api.rebuild_image(self)
+  if ret_val == true 
+    register_with_dns
+  end
   return ret_val
 end
 
