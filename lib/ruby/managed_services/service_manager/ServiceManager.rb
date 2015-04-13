@@ -230,7 +230,8 @@ class ServiceManager
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
-
+    p :rm_remove_engine_params
+    p params
     services = get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_application_data] == true

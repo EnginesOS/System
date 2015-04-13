@@ -592,6 +592,7 @@ class EnginesCore
     services = sm.get_engine_persistant_services(params)
 
     services.each do |service_hash|
+      service_hash[:remove_all_application_data]  = params[:remove_all_application_data] 
       if service_hash.has_key?(:service_container_name) == false
         log_error_mesg("Missing :service_container_name in service_hash",service_hash)
         return false
@@ -633,14 +634,16 @@ class EnginesCore
   def delete_image_dependancies(params)
     
     sm = loadServiceManager()
-    
-    if params[:remove_all_application_data] == true
-        if delete_engine_persistant_services(params) == false
-
-          log_error_mesg("Failed to delete Service",params)
-          return false
-         end
-    end
+#    
+#    if params[:remove_all_application_data] == true
+#        if delete_engine_persistant_services(params) == false
+#
+#          log_error_mesg("Failed to delete Service",params)
+#          return false
+#        else
+#          log_error_mesg("Deleted Service",params)
+#         end
+#    end
     #do with Container
     #remove logs
     #remove status

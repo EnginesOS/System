@@ -388,6 +388,8 @@ class EnginesOSapi
     end
   
     params[:engine_name] = engine_name
+      p :deleteEngineImage_params
+      p params
    if  @core_api.delete_image_dependancies(params) == true
      if engine.delete_image() == true
        return success(engine_name,"Delete")
