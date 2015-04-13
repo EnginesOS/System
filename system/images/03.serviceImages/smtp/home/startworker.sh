@@ -3,8 +3,9 @@
 touch   /var/log/mail.err
 touch  /var/log/maillog
 syslogd -R syslog.engines.internal:5140
-postmap /etc/postfix/transport
+
 service postfix start 
+postmap /etc/postfix/transport 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete

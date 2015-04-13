@@ -1,5 +1,7 @@
 --- !ruby/object:ManagedService
 containerName: imap
+publisher_namespace: EnginesSystem
+type_path: imap
 ctype: service
 persistant: true
 last_error: 

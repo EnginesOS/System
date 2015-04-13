@@ -4,17 +4,14 @@ accepts:
 author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
-service_type: ftp
+type_path: filesystem/service/ftp
 service_container: ftp
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
-consumer_params:
-  - folder
-  - user
-  - password
-  - access
+service_handle_field: name
 setup_params:
+consumer_params:
   volume:
     name: volume
     label: volume
@@ -57,17 +54,6 @@ setup_params:
     placeholder: " "
     mandatory: true
     value: " "
-    comment: " "
-    regex_validator: ".*"
-  checkbox_test:
-    name: checkbox
-    label: checkbox test
-    tooltip: " "
-    field_type: checkbox
-    hint: " "
-    placeholder: " "
-    mandatory: true
-    value: true
     comment: " "
     regex_validator: ".*"
   access:

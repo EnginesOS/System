@@ -1,0 +1,58 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: []
+author: Engines
+title: Smtp Relay
+description: "Outbound SMTP relay"
+type_path: nginx
+publisher_namespace: EnginesSystem
+service_container: smtp
+dedicated: false
+persistant: false
+service_handle_field: 
+consumer_params:
+setup_params:
+ auth_type:
+  name: auth_type
+  label: "Authenication with Smart host"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: select_single
+  hint: "engine"
+  select_collection:
+      - "none"
+      - "plaintext"
+      - "md5"
+  placeholder: " "
+  mandatory: true
+  comment: " "
+ smart_host_port:
+  name: smart_host_port
+  label: "Smart host port"
+  regex_validator: "[0-9]*"
+  tooltip: " "
+  field_type: text
+  hint: "25 or 587 "
+  placeholder: "port number "
+  mandatory: true
+  comment: " "
+  value: "25"
+ smart_host_user:
+  name: smart_host_user
+  label: "Username for Smart host authentication"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text
+  hint: "username "
+  placeholder: "user@somedomain.com"
+  mandatory: false
+  comment: " "
+ smart_host_password:
+  name: smart_host_passwd
+  label: "Password for Smart host authentication"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text
+  hint: "password"
+  placeholder: "password"
+  mandatory: true
+  comment: " " 

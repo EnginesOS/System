@@ -1,543 +1,408 @@
 require 'rubytree'
+
 require_relative 'service_manager_tree.rb'
- include ServiceManagerTree
+include ServiceManagerTree
+require_relative 'orphaned_services.rb'
+include OrphanedServices
+require_relative 'managed_engines_registry.rb'
+include ManagedEnginesRegistry
+require_relative 'services_registry.rb'
+include ServicesRegistry
+
 class ServiceManager
 
-  attr_accessor :last_error
-  def initialize
+  #@service_tree root of the Service Registry Tree
+  attr_accessor     :last_error
+  #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
+  def initialize(core_api)
+    @core_api = core_api
+    #@service_tree root of the Service Registry Tree
     @service_tree = initialize_tree
   end
 
+  #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
-    
-   server_service =  software_service_definition(params)
-   
-   if server_service == nil || server_service == false
-     return nil
-   end
+
+    server_service =  software_service_definition(params)
+
+    if server_service == nil || server_service == false
+      log_error_mesg("Failed to load service definitions",params)
+      return nil
+    end
     return server_service[:service_container]
-    
+
   end
-  
+
+  #list the Provider namespaces as an Array of Strings
+  #@return [Array]
   def list_providers_in_use
-     providers =  managed_service_tree.children
+    providers =  managed_service_tree.children
     retval=Array.new
-     if providers == nil
-       return retval
-      end
-     
-     providers.each do |provider|
-       retval.push(provider.name)
-     end 
-     return retval
+    if providers == nil
+      log_error_mesg("No providers","")
+      return retval
+    end
+    providers.each do |provider|
+      retval.push(provider.name)
+    end
+    return retval
   end
-  
 
-  
-  def find_service_consumers(service_query_hash)
-      
-      if service_query_hash.has_key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace]  == nil
-       p :no_publisher_namespace
-        return false
-      end
-      
-    provider_tree = get_service_provider_tree(service_query_hash[:publisher_namespace])
-     
-      if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
-        p :find_service_consumers_no_type_path
-        p service_query_hash
-       # p provider_tree
-        return provider_tree
-      end
-            
-      service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
-      #provider_tree[service_hash[:type_path]]
-     
-      if service_path_tree == nil
-        return false
-      end
-            
-      if service_query_hash.has_key?(:variables) == false || service_query_hash[:variables]  == nil
-        p :find_service_consumers_no_variables
-                p service_query_hash
-        return  service_path_tree
-      end
-      
-      
-     if  service_path_tree[service_query_hash[:variables][:name]] == nil
-       return false
-      end
-      
-#p :find_service_consumers
-#                p service_path_tree[service_query_hash[:variables][:name]]
-#      
-      return service_path_tree[service_query_hash[:variables][:name]]
-      
+ 
+
+  #remove service matching the service_hash from both the managed_engine registry and the service registry
+  #@return false
+  def delete_service service_hash
+
+
+    if remove_from_managed_service(service_hash) == false
+      log_error_mesg("failed to remove managed service",service_hash)
+      return false
+    end
+   return remove_service(service_hash)
   end
-    
-  def create_type_path_node(parent_node,type_path)
-    if type_path == nil
-         return nil
+
+  def remove_service service_hash
+    if remove_from_services_registry(service_hash) == false
+      log_error_mesg("failed to remove from service registry",service_hash)
+      return false
+    end
+    p :remove_service
+    p service_hash
+    return save_tree
+
+  rescue Exception=>e
+    if service_hash != nil
+      p service_hash
+    end
+    log_exception(e)
+    return false
+  end
+
+  #@ removes underly service and remove entry from orphaned services
+  #@returns boolean indicating success
+  def remove_orphaned_service(service_hash)
+    if remove_from_managed_service(service_hash) == false
+         log_error_mesg("failed to remove managed service",service_hash)
+         return false
        end
-       
-       if type_path.include?("/") == false
-         service_node = parent_node[type_path]
-           if service_node == nil
-             service_node = Tree::TreeNode.new(type_path,type_path)
-             parent_node << service_node
-           end
-         return service_node
-       else
-         
-         sub_paths= type_path.split("/")
-            prior_node = parent_node
-            count=0
-            
-              sub_paths.each do |sub_path|
-                sub_node = prior_node[sub_path]
-                if sub_node == nil                           
-                  sub_node = Tree::TreeNode.new(sub_path,sub_path)
-                  prior_node << sub_node
-                end
-                prior_node = sub_node
-                count+=1
-                if count == sub_paths.count
-                  return sub_node
-                end
-              end            
-       end
-       return nil
+    return release_orphan(service_hash)       
   end
   
-  def get_type_path_node(parent_node,type_path) 
-   if type_path == nil || parent_node == nil
-     p :get_type_path_node_passed_a_nil
-     return nil
-   end
-   
-   if type_path.include?("/") == false
-     return parent_node[type_path]
-   
-  else
-    sub_paths= type_path.split("/")
-    sub_node = parent_node
-      sub_paths.each do |sub_path|
-        sub_node = sub_node[sub_path]
-        if sub_node == nil
-          return nil
-        end 
-      end
-      return sub_node
-  end        
-  end
   
-
-
+  #@return [Array] of service hash for ObjectName matching the name  identifier
+  #@objectName [String]
+  #@identifier [String]
   def list_attached_services_for(objectName,identifier)
     p :services_on_objects_4
-    p objectName
-    p identifier
+    SystemUtils.debug_output("services_on_objects_",objectName)
+    SystemUtils.debug_output("services_on_objects_",identifier)
+
+    params = Hash.new
 
     case objectName
     when "ManagedEngine"
-      return attached_managed_engine_services(identifier)
+      params[:parent_engine] = identifier
+      p :get_engine_service_hashes
+      hashes = find_engine_services_hashes(params)
+      SystemUtils.debug_output("hashes",hashes)
+
+      return find_engine_services_hashes(params)
+      #    attached_managed_engine_services(identifier)
     when "Volume"
+      p :looking_for_volume
+      p identifier
       return attached_volume_services(identifier)
     when "Database"
+      p :looking_for_database
+      p identifier
       return attached_database_services(identifier)
     end
     p :no_object_name_match
     p objectName
-    rescue Exception=>e
-        puts e.message 
-    SystemUtils.log_exception(e)
-        
+
+    return nil
+
+  rescue Exception=>e
+    puts e.message
+    log_exception(e)
+
+    return nil
+
+  end
+  #
+  #  def remove_consumer_from_service(service_hash)
+  #
+  #    if service_hash.has_key?(:service_container_name) == false
+  #      log_error_mesg(":no service_container_name is hash",service_hash)
+  #               return false
+  #             end
+  #
+  #    service = EnginesOSapi.loadManagedService(service_hash[:service_container_name],@core_api)
+  #      if service == nil
+  #        log_error_mesg("Failed to Load Service",service_hash)
+  #                 return false
+  #       end
+  #
+  #       if service.is_running? == false
+  #         log_error_mesg("Cannot remove as Service is not running",service_hash)
+  #            return false
+  #        end
+  #
+  #       return service.remove_consumer(service_hash)
+  #  end
+
+  #load softwwareservicedefinition for serivce in service_hash and
+  #@return boolean indicating the persistance
+  #@return nil if no software definition found
+  def software_service_persistance(service_hash)
+    service_definition = software_service_definition(service_hash)
+    if service_definition != nil && service_definition != nil
+      return service_definition[:persistant]
+    end
+    return nil
   end
 
-
-  def attached_managed_engine_services(identifier)
-
-    retval = Hash.new
-
-    if identifier == nil
-      p :panic_passed_nil_identifier
-      return retval
-    end
-   
-
-    if  managed_engine_tree ==nil
-      p :panic_loaded_managedengine_tree
-      return retval
-    end
-
-    engine_node =managed_engine_tree[identifier]
-
-    if engine_node == nil
-      p :cant_find
-      p identifier
-      return retval
-    end
-   engine_node.children.each do |service_node|      
-      p :service_type
-      p service_node.name
-      if  service_node.name == nil
-        p :no_service_type
-        return retval
-      end
-      if retval.has_key?( service_node.name) == false
-        retval[ service_node.name] = Array.new
-      end
-      retval[ service_node.name].push(get_service_content(service_node))
-    end
-
-    return retval
- 
-rescue Exception=>e
-    puts e.message 
-SystemUtils.log_exception(e)
-    
-  end
-  
-  def get_service_content(service_node)
-    retval = Hash.new
-    service_node.children.each do |provider_node|
-
-      retval[provider_node.name] = Array.new
-          provider_node.children.each do |service_node|
-            retval[provider_node.name].push(service_node.content)
-          end       
-    end
-    return retval
-  end
-  
-  def attached_services(service_type,identifier)
-    retval = Array.new
-    if managed_service_tree ==nil
-      p :panic_no_managed_service_node
-      return retval
-    end
-    services =    get_type_path_node(managed_service_tree,service_type) 
- 
-    if services == nil
-      return retval
-    end
-    service = services[identifier]
-    if service == nil
-      return  retval
-    end
-    service.each do |node|
-      retval.push(node.content)
-#      p node
-    end
-    
-rescue Exception=>e
-    puts e.message 
-SystemUtils.log_exception(e)
-    
-  end
-
-
+  #@ Attach service called by builder and create service
+  #if persisttant it is added to the Service Registry Tree
+  #@ All are added to the ManagesEngine/Service Tree
+  #@ return true if successful or false if failed
   def add_service service_hash
 
-      add_to_managed_engines_tree(service_hash)
-      add_to_services_tree(service_hash) 
-      save_tree
+    if service_hash.has_key?(:persistant) == false
+      persist = software_service_persistance(service_hash)
+      if persist == nil
+        log_error_mesg("Failed to get persistance status for ",service_hash)
+        return false
+      end
+      service_hash[:persistant] = persist
+    end
+    if service_hash[:variables].has_key?(:parent_engine) == false
+      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
+    end
+
+    add_to_managed_engines_tree(service_hash)
+
+    if service_hash[:persistant] == true
+      if add_to_managed_service(service_hash) == false
+        log_error_mesg("Failed to create persistant service ",service_hash)
+        return false
+      end
+      if add_to_services_tree(service_hash) == false
+        log_error_mesg("Failed to add service to managed service registry",service_hash)
+        return false
+      end
+    end
+
+    return save_tree
+
   rescue Exception=>e
-      puts e.message 
-    SystemUtils.log_exception(e)
-      
+    puts e.message
+    log_exception(e)
+    return false
   end
-  
-  def add_to_managed_engines_tree(service_hash)
-    #write managed engine tree
 
-    if (managed_engine_tree == nil )
-      p :nil_active_node
-      return false
-    end
+  #@return the service_handle from the service_hash
+  # for backward compat (to be changed)
+  def get_service_handle(params)
 
-    if service_hash[:variables].has_key?(:parent_engine) == false && service_hash[:variables][:parent_engine] != nil
-      p :no_parent_engine_key
-      return false
-    end
-    if managed_engine_tree[service_hash[:variables][:parent_engine] ] != nil
-      engine_node = managed_engine_tree[ service_hash[:variables][:parent_engine] ]
+    if  params.has_key?(:service_handle) && params[:service_handle] != nil
+        return params[:service_handle]
     else
-      engine_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash[:variables][:parent_engine] + " Engine Service Tree")
-    managed_engine_tree << engine_node
-    end
+      log_error_mesg("no :service_handle",params)
 
-    service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
-      
-    
-    service_label = get_service_label(service_hash)
-    
-if service_type_node == nil 
-  p service_hash
-  p :error_service_type_node
-  return false
-end   
-if service_label == nil 
-  p service_hash
-  p :error_service_hash_has_nil_name
-  return false
-end
-
-    service_node = service_type_node[service_label]
-    
-    if  service_node == nil
-      service_node = Tree::TreeNode.new(service_label,service_hash)
-      service_type_node << service_node
-    else
-      p :Node_existed
-      p service_label
-    end
-    
- 
-end
-    
-def get_service_label(params)
-  if params.has_key?(:name) && params[:name] != nil
-       service_label = params[:name]
-    elsif  params.has_key?(:service_label) && params[:service_label] != nil
-    service_label = params[:service_label]  
-     elsif  params.has_key?(:variables) && params[:variables].has_key?(:name)
-       service_label = params[:variables][:name]
-     else
-       return nil
-     end
-end
-
- #write services tree
-   def add_to_services_tree(service_hash)
-
-       provider_node = get_service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
-        if provider_node == nil
-          provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
-          managed_service_tree << provider_node
-        end
-        
-        service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
-   
-          service_node = service_type_node[service_hash[:variables][:parent_engine]]
-            if service_node == nil
-              service_node = Tree::TreeNode.new(service_hash[:variables][:parent_engine],service_hash)
-              service_type_node << service_node
-            end
-    #FIXME need to handle updating service 
-            
-rescue Exception=>e
-    puts e.message 
-SystemUtils.log_exception(e)
-    
-  end
-  
-  def reparent_orphan(params)
-    orphan = retrieve_orphan(params)
-      if orphan !=nil
-        content =  orphan.content
-        content[:variables][:parent_engine]=params[:parent_engine]
-       
-          return content
-      else 
-        return nil
-      end   
-  end
-  
-  def release_orphan(params)
-    orphan = retrieve_orphan(params)
-    if orphan == nil
-      return false
-    end
-    
-    remove_tree_entry(orphan)
-    
-    service = find_service_consumers(orphan.content)
-    if service != nil
-      remove_tree_entry(service)
-    end
-    
-    save_tree
-  end
-  
-  def retrieve_orphan(params)
-    types = get_all_engines_type_path_node(orphaned_services_tree,params[:type_path])
-      if types == nil
-        return nil
-      end
-      if types.is_a?(Array)
-        types.each do |type|
-          p type.content
-          
-          if type[params[:service_handle]] != nil
-            return type[params[:service_handle]]
-          end
-        end
-        return nil
-      end
-     return types[params[:name]]
-    
-  end
-  
-  def get_all_engines_type_path_node(tree_node,type_path)
-    retval = Array.new
-    
-    tree_node.children.each do | engine_node |
-     retval.push(get_type_path_node(engine_node,type_path))
-    end
-    
-    if retval.count == 1
-      return retval[0]
-  elsif retval.count == 0
-    return nil
-  else
-    return retval
-  end
-  end
-  
-  def find_engine_services(params)
-    engine_node = managed_engine_tree[params[:engine_name]]
-      
-      if params.has_key?(:type_path) && params[:type_path] != nil
-        services = get_type_path_node(engine_node,params[:type_path]) #engine_node[params[:type_path]]                   
-              if services != nil  && params.has_key?(:name) && params[:name] != nil
-                 service = services[params[:name]]
-                return service
-              else
-            return services
-          end      
-      else
-        return engine_node
+      return nil
     end
   end
 
-  def get_engine_persistant_services(params) #params is :engine_name
-    services = find_engine_services(params)
-    
-    leafs = Array.new
-    
-     services.children.each do |service|
-       matches = get_matched_leafs(service,:persistant,true)
-       p matches
-       leafs =  leafs.concat(matches)
-    end
-    
-    return leafs
-    
-  end
-  
-
-  
+  #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
+  #@ if :remove_all_application_data is true all data is deleted and all persistant services removed
+  #@ if :remove_all_application_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
+  #@return true on success and false on fail
   def rm_remove_engine(params)
-   
-       engine_node = managed_engine_tree[params[:engine_name]]
 
-        if engine_node == nil
+    if params.has_key?(:parent_engine) == false
+      params[:parent_engine] = params[:engine_name]
+    end
+    engine_node = managed_engine_tree[params[:parent_engine]]
+
+    if engine_node == nil
+      log_error_mesg("Warning Failed to find engine to remove",params)
+      return true
+    end
+    p :rm_remove_engine_params
+    p params
+    services = get_engine_persistant_services(params)
+    services.each do | service |
+      if params[:remove_all_application_data] == true
+        if delete_service(service) == false
+          log_error_mesg("Failed to remove service ",service)
           return false
         end
+      else
+        if orphan_service(service) == false
+          log_error_mesg("Failed to orphan service ",service)
+          return false
+        end
+      end
+    end
 
-          if params[:remove_all_application_data] == true
-           services = get_engine_persistant_services(params)
-           services.each do | service |
-             p :removing_Service
-             remove_service(service)
-           end
- 
-            managed_engine_tree.remove!(engine_node)
-            save_tree
-            return true
-          end
-                
-         managed_engine_tree.remove!(engine_node)
-         orphaned_services_tree << engine_node                     
-           
-           save_tree
-           return true
+    if managed_engine_tree.remove!(engine_node)
+      return  save_tree
+    else
+      log_error_mesg("Failed to remove engine node ",engine_node)
+      return false
+    end
+    log_error_mesg("Failed remove engine",params)
+    return true
   end
+
+  #@returns boolean indicating sucess
+  #Saves service_hash in orphan registry before removing from service registry
+  def orphan_service(service_hash)
+    if save_as_orphan(service_hash)
+      return  remove_service(service_hash)
+    end
+    log_error_mesg("Failed to save orphan",service_hash)
+
+    return false
+  end
+
+  #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
+  def software_service_definition(params)
+
+    return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
+
+  rescue Exception=>e
+    p :error
+    p params
+
+    log_exception(e)
+    return nil
+  end
+
+  def register_non_persistant_service(service_hash)
+
+    if add_to_managed_service(service_hash) == false
+      log_error_mesg("Failed to create persistant service ",service_hash)
+      return false
+    end
+
+    if add_to_services_tree(service_hash) == false
+      log_error_mesg("Failed to add service to managed service registry",service_hash)
+      return false
+    end
+
+    return save_tree
+  end
+
+  def deregister_non_persistant_service(service_hash)
+
+    if remove_from_managed_service(service_hash) == false
+      log_error_mesg("Failed to create persistant service ",service_hash)
+      return false
+    end
+
+    if remove_from_services_registry(service_hash) == false
+      log_error_mesg("Failed to deregsiter service from managed service registry",service_hash)
+      return false
+    end
+    return save_tree
+  end
+
+  def register_non_persistant_services(engine_name)
   
-  def remove_service service_hash
-   
-#      parent_engine_node = managed_engine_tree[service_hash[:variables][:parent_engine]]
-#        if parent_engine_node == nil
-#          @last_error ="No services record found for "+ service_hash[:variables][:parent_engine] 
-#          p   @last_error
-#          return false
-#        end 
-#        
-#service_type_node =  get_type_path_node(parent_engine_node,service_hash[:type_path]) 
-#        
-#    #  parent_engine_node[]
-#        if service_type_node == nil
-#          @last_error ="No service record found for " + service_hash[:variables][:parent_engine] + ":" +  service_hash[:service_type]
-#          p   @last_error
-#          return false
-#        end
-#
-#        service_name = get_service_label(service_hash)
-#        if service_name  == nil
-#          p service_hash
-#          p :notfound
-#        end 
-#        service_node = service_type_node[service_name]
-#        #deal with new way variables are pass 
-    query_hash=Hash.new()
-                         p service_hash
-    query_hash[:engine_name] = service_hash[:variables][:parent_engine]
-    query_hash[:type_path] = service_hash[:type_path]
+    params = Hash.new()
+    params[:parent_engine] = engine_name
+    services = get_engine_nonpersistant_services(params)
+    services.each do |service_hash|
+      register_non_persistant_service(service_hash)
+    end
 
-      
-        service_node = find_engine_services(query_hash)
-          if service_node != nil  
-            sucess = remove_tree_entry(service_node)                
-            end
+    #service manager get non persistant services for engine_name
+    #for each servie_hash load_service_container and add hash
+    #add to service registry even if container is down
+    return true
+  end
 
+  def deregister_non_persistant_services(engine_name)
+    #service manager get non persistant services for engine_name
+    #for each servie_hash load_service_container and remove hash
+    #remove from service registry even if container is down
+    params = Hash.new()
+    params[:parent_engine] = engine_name
+    services = get_engine_nonpersistant_services(params)
     
+    services.each do |service_hash|
+      deregister_non_persistant_service(service_hash)
+    end
+    return true
 
-      if managed_service_tree !=nil
-        service_node = find_service_consumers(service_hash)
+  end
+  
+  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  def get_registered_against_service(params)
+    hashes = Array.new
+    service_tree = find_service_consumers(params)
+    if service_tree != nil && service_tree != false
+      hashes = get_all_leafs_service_hashes(service_tree)
+    end
+    return hashes
+  end
 
-            if service_node != nil
-              return remove_tree_entry(service_node)
-
-            end  
-                      
+  #Calls remove service on the service_container to remove the service associated by the hash
+  #@return result boolean
+  #@param service_hash [Hash]
+  #remove persistant services only if service is up
+  def remove_from_managed_service(service_hash)
+    service =  @core_api.load_software_service(service_hash)
+     if service == nil
+       log_error_mesg("Failed to load service to remove ",service_hash)
+            return false
           end
-   
-            p :FAILED_TO_REMOVE_SERVICE
-            p service_hash
-          
-        
-          
-@last_error ="No service record found for " + service_hash[:variables][:parent_engine].to_s
-@last_error += " service_type:" +  service_hash[:type_path].to_s 
-@last_error  += " Provider " + service_hash[:publisher_namespace].to_s 
-@last_error += " Name " + service_hash[:variables][:name].to_s
-        return false 
-
-rescue Exception=>e
-  if service_hash != nil
-    p service_hash
-  end
-SystemUtils.log_exception(e)
-  return false    
-  end
-
-def software_service_definition(params)
-  
- return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
-
-
+     
+      if service.is_running == true
+        return service.rm_consumer_from_service(service_hash)
+      elsif service.persistant == true 
+        log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
+        return false
+      else
+        return true                  
+      end
     
-rescue Exception=>e
-  p :error
-  p params
+  end
   
-  SystemUtils.log_exception(e)
-  return nil
-end  
-
-
- 
-
+#Calls on service on the service_container to add the service associated by the hash
+#@return result boolean
+#@param service_hash [Hash]
+def add_to_managed_service(service_hash)
+  service =  @core_api.load_software_service(service_hash)
+   if service == nil
+     log_error_mesg("Failed to load service to remove ",service_hash)
+          return false
+        end
+   
+    if service.is_running == false
+      log_error_mesg("Cant add to service if service is stopped ",service_hash)
+      return false
+    end
   
+    return service.add_consumer_to_service(service_hash) 
+end
+
+  #Sets @last_error to msg + object.to_s (truncated to 256 chars)
+  #Calls SystemUtils.log_error_msg(msg,object) to log the error
+  #@return none
+  def log_error_mesg(msg,object)
+    obj_str = object.to_s.slice(0,256)
+
+    @last_error = msg +":" + obj_str
+    SystemUtils.log_error_mesg(msg,object)
+
+  end
+
+  def log_exception(e)
+    @last_error = e.to_s.slice(0,256)
+    SystemUtils.log_exception(e)
+  end
 end

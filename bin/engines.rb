@@ -196,7 +196,7 @@ end
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
     end
     state = engines_api.read_state(eng)
     if eng.setState != state
@@ -279,10 +279,19 @@ end
   when "deleteimage"
     if c_type == "container"
       params = Hash.new
+      
       res = engines_api.deleteEngineImage(containerName,params)
     else
       puts("Error cannot delete a Service Image")
     end
+    when "DeleteImage"
+if c_type == "container"
+     params = Hash.new
+    params[:remove_all_application_data] = true
+     res = engines_api.deleteEngineImage(containerName,params)
+   else
+     puts("Error cannot delete a Service Image")
+   end
     when "delete_services"
     if c_type != "container"
       puts "Error cannot delete services from " +  c_type
@@ -369,7 +378,7 @@ end
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
     end
     if eng.instance_of?(EnginesOSapiResult)
       res = "Error: No such Container:" + containerName
@@ -388,7 +397,7 @@ end
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
     end
 
     res =  eng.last_error
@@ -436,7 +445,7 @@ end
     backup_name= containerName
     res = engines_api.stop_backup(backup_name)
   when "register_consumers"
-    eng = EnginesOSapi.loadManagedService(containerName,core_api)
+    eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
     eng.reregister_consumers
 
   else

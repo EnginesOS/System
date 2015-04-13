@@ -4,12 +4,13 @@ accepts:
 author: "Engines"
 title: "Replication of DB Service"
 description: "Provides replication of Database"
-service_provider: EnginesSystem
-service_type: db_replicate
+publisher_namespace: EnginesSystem
+type_path: replicate
 persistant: true
 dedicated: true
-consumer_params:
+service_handle_field: name
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

@@ -5,7 +5,7 @@ last_error:
 memory: '100'
 hostName: cadvisor
 domainName: enginesos.jvodan.com
-environments: 
+environments: []
 image: google/cadvisor:latest
 volumes:
  var_run: !ruby/object:Volume

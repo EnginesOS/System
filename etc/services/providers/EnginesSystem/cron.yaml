@@ -7,13 +7,14 @@ accepts:
 author: Engines
 title: Cron
 description: "Scheduales tasks"
-service_type: cron
+type_path: cron
 service_container: cron
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-consumer_params:
+service_handle_field: name
 setup_params:
+consumer_params:
  name:
   name: name
   label: service tag name

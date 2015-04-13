@@ -1,11 +1,14 @@
---- !ruby/object:CronService
+--- !ruby/object:ManagedService
 containerName: cron
 ctype: service
 persistant: false
+publisher_namespace: EnginesSystem
+type_path: cron
 last_error: 
 memory: '16'
 hostName: cron
 domainName: 
+environments: []
 image: engines/cron:alpha
 volumes:
  socket: !ruby/object:Volume
@@ -18,11 +21,7 @@ volumes:
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
   mapping_permissions: ro
-  contabs: !ruby/object:Volume
-  name: crontabs
-  remotepath: "/home/crontabs"
-  localpath: "/opt/engines/etc/cron/tabs"
-  mapping_permissions: ro
+
 port: 
 eports:
 repo: na

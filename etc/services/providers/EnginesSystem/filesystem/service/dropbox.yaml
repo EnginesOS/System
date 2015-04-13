@@ -5,12 +5,14 @@ accepts:
 author: Engines
 title: "Drop Box Service"
 description: "Provides Drop Box backing to a Persistant File Storage"
-service_type: dropbox
-service_provider: EnginesSystem
+type_path: filesystem/service/dropbox
+publisher_namespace: EnginesSystem
 service_container: dropbox
+service_handle_field: name
 persistant: true
 dedicated: false
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

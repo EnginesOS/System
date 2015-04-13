@@ -3,12 +3,13 @@ accepts: "Volume"
 author: Engines
 title: "NFS Sharing of Volumes"
 description: "Provides NFS Access to Persistant File Storage"
-service_type: nfs
-service_provider: EnginesSystem
+type_path: filesystem/remote/nfs
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
-consumer_params:
+service_handle_field: name
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

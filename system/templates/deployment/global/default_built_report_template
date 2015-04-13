@@ -1,0 +1,26 @@
+Built
+Built as
+_Builder(engine_name)
+_Builder(domain_name)
+_Builder(hostname)
+_Builder(http_protocol)
+_Builder(repoName)
+_Builder(webPort)
+_Builder(build_name)
+_Builder(runtime)
+_Builder(set_environments) 
+_Builder(environments)
+ 
+_Blueprint(software,license_name)
+_Blueprint(software,rake_tasks)
+_Blueprint(software,softwareservices)
+
+
+
+_Builder(engine_name) Now installed at http://_Builder(hostname)/
+
+Database host _Engines(dbhost)
+Database Name _Engines(dbname)
+Database User _Engines(dbuser)
+Database Password _Engines(dbpasswd)
+

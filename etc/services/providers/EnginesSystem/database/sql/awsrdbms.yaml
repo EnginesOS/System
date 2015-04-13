@@ -7,16 +7,16 @@ accepts:
 author: Engines
 title: AWS MySQL Database
 description: "AWS MYSQL Database "
-service_provider: EnginesSystem
-service_type: database/sql/aws
+publisher_namespace: EnginesSystem
+service_handle_field: database_name
+type_path: database/sql/awsrdbms
 service_container: awsdb
 dedicated: false
 persistant: true
 exclusive: true
 image_name: engines/awsdb
-consumer_params:
-#BPDS uses
 setup_params:
+consumer_params:
  database_host:
   name: database_host
   label: database_host

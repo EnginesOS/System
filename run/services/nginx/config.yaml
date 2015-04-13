@@ -1,12 +1,16 @@
---- !ruby/object:NginxService
+--- !ruby/object:ManagedService
 containerName: nginx
+publisher_namespace: EnginesSystem
+type_path: nginx
 ctype: service
 persistant: false
+publisher_namespace: EnginesSystem
+type_path: nginx
 last_error: 
 memory: '54'
 hostName: nginx
 domainName: 
-environments: 
+environments: []
 image: engines/nginx:alpha
 volumes:
  sslcerts: !ruby/object:Volume
@@ -14,11 +18,6 @@ volumes:
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engines/etc/nginx/ssl/"
   mapping_permissions: "ro"
- sites_enabled: !ruby/object:Volume
-  name: sites_enabled
-  remotepath: "/etc/nginx/sites-enabled/"
-  localpath: "/opt/engines/etc/nginx/sites-enabled/"
-  mapping_permissions: "ro" 
  var_run: !ruby/object:Volume
   name: var_run
   remotepath: "/var/run/nginx"

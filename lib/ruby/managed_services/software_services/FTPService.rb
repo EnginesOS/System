@@ -1,35 +1,28 @@
-
-
-
 require_relative "SoftwareService.rb"
 
 class FTPService < SoftwareService
-  def add_consumer_to_service(site_hash)
-   
-    return  add_ftp_service(site_hash)
+  def add_consumer_to_service(service_hash)
+
+    return  add_ftp_service(service_hash)
   end
 
-  def rm_consumer_from_service (site_hash)
-    return  rm_ftp_service(site_hash)
-  end
-  
-  def add_ftp_service(site_hash)
-    
-  end
-  
-  def rm_ftp_service(site_hash)
-    
+  def rm_consumer_from_service (service_hash)
+    return  rm_ftp_service(service_hash)
   end
 
-  def get_site_hash(site_hash)
-    site_hash[:service_type]='ftp'
-    
-    site_hash[:publisher_namespace] = "EnginesSystem"
-    return site_hash
+  def add_ftp_service(service_hash)
+
   end
 
-  
+  def rm_ftp_service(service_hash)
 
-
+  end
+  #
+  #  def get_service_hash(service_hash)
+  #    service_hash[:service_type]='ftp'
+  #
+  #    service_hash[:publisher_namespace] = "EnginesSystem"
+  #    return service_hash
+  #  end
 
 end 

@@ -4,12 +4,13 @@ accepts:
 author: Engines
 title: "Windows Network Share Service"
 description: "Windows Sharing of Persistant File Storage"
-service_type: smbfs
-service_provider: EnginesSystem
+type_path: filesystem/service/smbfs
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
-consumer_params:
+service_handle_field: name
 setup_params:
+consumer_params:
  dropbox_address:
   name: dropbox_address
   label: dropbox_address

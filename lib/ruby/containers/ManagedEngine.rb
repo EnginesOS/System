@@ -3,7 +3,7 @@
 class ManagedEngine < ManagedContainer
 
   
-  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid)
+  def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid,deployment_type)
                             
                  @last_error="None"                 
                  @containerName=name
@@ -24,16 +24,13 @@ class ManagedEngine < ManagedContainer
                  @framework=framework
                  @runtime=runtime
                  @core_api= core_api
-    
+                 @deployment_type = deployment_type
                  
     @ctype ="container"
     @conf_self_start=false
-    @conf_register_dns=true
-    @conf_register_site=true
-    @conf_monitor_site=false
     @data_uid=data_uid
     @data_gid=data_gid
-    
+   
     save_state # no config.yaml throws a no such container so save so others can use
     
          end 

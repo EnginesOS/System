@@ -1,15 +1,12 @@
 #!/bin/sh
 
-
-service ssh start
-
-
-cron
+/home/backup/fcron/sbin/fcron 
+syslogd -n -R syslog.engines.internal:5140
 touch /var/run/startup_complete
 chown 21000 /var/run/startup_complete
-sleep 25
+sleep 100
 
-while test -f /var/run/crond.pid
+while test -f /home/backup/fcron/fcron.pid
 do
 	  sleep 120
 done

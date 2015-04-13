@@ -36,7 +36,8 @@ class BluePrintReader
                :data_gid,
                :cron_job_list,
                :web_port,
-               :services
+               :services,
+               :deployment_type
 
    def  log_build_output(line)
      @builder.log_build_output(line)
@@ -70,6 +71,7 @@ class BluePrintReader
        read_write_permissions_recursive
        read_write_permissions_single
        read_worker_commands
+       read_deployment_type
 #        read_cron_jobs
        read_sed_strings
        read_work_ports
@@ -84,6 +86,13 @@ class BluePrintReader
      end
 
    end
+  def read_deployment_type
+    @deployment_type = @blueprint[:software][:deployment_type] 
+  end
+  def re_set_service(service_cnt,service_hash)
+    @services[service_cnt] = service_hash
+    #services[service_cnt]=service_hash
+  end
 
    def read_web_port_overide
      if @blueprint[:software].has_key?(:read_web_port_overide) == true
@@ -236,7 +245,7 @@ class BluePrintReader
          end
          
        ospackages.each do |package|
-         @os_packages.push(package[:name])
+         @os_packages.push(package[:package])
        end
        
      rescue Exception=>e
@@ -523,7 +532,7 @@ SystemUtils.log_exception(e)
            p name
            if ask == true  && @builder.set_environments.has_key?(name) == true              
              entered_value=@builder.set_environments[name]
-              if entered_value != nil && entered_value.count !=0#FIXme needs to be removed
+              if entered_value != nil && entered_value.length !=0#FIXme needs to be removed
                 value = entered_value 
               end
            end

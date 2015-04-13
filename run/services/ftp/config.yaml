@@ -1,12 +1,14 @@
 --- !ruby/object:FTPService
 containerName: ftp
 ctype: service
+publisher_namespace: EnginesSystem
+type_path: filesystem/service/ftp
 persistant: true
 last_error: 
 memory: '36'
 hostName: ftp
 domainName: 
-environments: 
+environments: []
 image: engines/ftp:alpha
 volumes:
  ssl_certs: !ruby/object:Volume

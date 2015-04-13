@@ -1,12 +1,14 @@
 --- !ruby/object:PgSQLService
 containerName: pgsql_server
+publisher_namespace: EnginesSystem
+type_path: database/sql/pgsql
 ctype: service
 persistant: true
 last_error: 
 memory: '128'
 hostName: pgsql
 domainName: 
-environments: 
+environments: []
 image: engines/pgsql:alpha
 volumes:
  pg_database: !ruby/object:Volume
@@ -14,6 +16,11 @@ volumes:
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
+ sslcerts: !ruby/object:Volume
+  name: sslcerts
+  remotepath: "/etc/ssl/"
+  localpath: "/opt/engines/etc/psql/ssl/"
+  mapping_permissions: "ro"
 port: 
 eports:
 - !ruby/object:WorkPort

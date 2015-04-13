@@ -1,12 +1,14 @@
---- !ruby/object:MySQLService
+--- !ruby/object:ManagedService
 containerName: mysql_server
+publisher_namespace: EnginesSystem
+type_path: database/sql/mysql
 ctype: service
-persistant: false
+persistant: true
 last_error: 
 memory: '128'
 hostName: mysql
 domainName: 
-environments: 
+environments: []
 image: engines/mysql:alpha
 volumes:
  my_database: !ruby/object:Volume

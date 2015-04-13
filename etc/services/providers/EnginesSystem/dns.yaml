@@ -7,13 +7,25 @@ accepts:
 author: Engines
 title: DNS
 description: "Resolves names to to IP address"
-service_type: dns
+type_path: dns
 service_container: dns
-service_provider: EnginesSystem
+publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-consumer_params:
+service_handle_variable: name
 setup_params:
+consumer_params:
+ name:
+  name: name
+  label: "service tag"
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "hostname"
+  placeholder: " "
+  mandatory: true
+  value: 
+  comment: " "
  hostname:
   name: hostname
   label: hostname
@@ -23,7 +35,7 @@ setup_params:
   hint: "hostname"
   placeholder: " "
   mandatory: true
-  default_value: " "
+  value: " "
   comment: " "
  domain_name:
   name: domain_name
@@ -34,5 +46,5 @@ setup_params:
   hint: "domain name"
   placeholder: " "
   mandatory: true
-  default_value: " "
+  value: " "
   comment: " "

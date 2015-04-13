@@ -1,9 +1,11 @@
 --- !ruby/object:ManagedService
 containerName: mgmt
 ctype: service
+publisher_namespace: EnginesSystem
+type_path: mgmt
 last_error: 
 memory: '384'
-hostName: mgmt
+hostName: 'mgmt'
 domainName: 
 environments:
 - !ruby/object:EnvironmentVariable
