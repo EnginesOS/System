@@ -10,4 +10,5 @@ echo $images
          done
 
          eservices stop 
+         eservice recreate dns
          eservices recreate
