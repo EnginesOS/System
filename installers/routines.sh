@@ -404,7 +404,7 @@ mkdir -p /opt/engines/system/images/04.systemApps/mgmt/home/app
 			
 			git remote add -t alpha origin 	https://github.com/EnginesOS/SystemGui.git
 			git fetch
-				
+		fi
 #			echo '[core]
 #				        repositoryformatversion = 0
 #				        filemode = true
