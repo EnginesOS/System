@@ -14,6 +14,7 @@ RUN apt-get -y  --force-yes update;\
 #ADD ddns.private /etc/
 #ADD dns-init.sh /home/
 ADD init.sh /home/
+ADD sources.list /etc/apt/
 
 
 CMD /bin/bash /home/init.sh
