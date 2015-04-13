@@ -196,7 +196,7 @@ end
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
     end
     state = engines_api.read_state(eng)
     if eng.setState != state
@@ -378,7 +378,7 @@ if c_type == "container"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
     end
     if eng.instance_of?(EnginesOSapiResult)
       res = "Error: No such Container:" + containerName
@@ -397,7 +397,7 @@ if c_type == "container"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(containerName)
     else
-      eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
     end
 
     res =  eng.last_error
@@ -445,7 +445,7 @@ if c_type == "container"
     backup_name= containerName
     res = engines_api.stop_backup(backup_name)
   when "register_consumers"
-    eng = EnginesOSapi::ServiceApi.loadManagedService(containerName,core_api)
+    eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
     eng.reregister_consumers
 
   else
