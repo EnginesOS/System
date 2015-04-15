@@ -10,9 +10,9 @@ rbenv  local 2.1.3
 
 generate_ssl
 configure_git 
-generate_keys
 
-set_os_flavor
+
+#set_os_flavor
 
 setup_mgmt_git
 
