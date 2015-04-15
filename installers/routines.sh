@@ -293,14 +293,15 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
+mkdir -p /opt/engines/etc/ssl/psql/
 mkdir -p /opt/engines/etc/smtp
 
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/
 }
 
 function set_permissions {
