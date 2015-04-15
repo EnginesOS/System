@@ -9,7 +9,7 @@ rbenv  local 2.1.3
 #gem install multi_json rspec rubytree git 
 
 
-configure_git 
+
 
 
 #set_os_flavor

@@ -18,12 +18,11 @@ install_docker_and_components
 passwd engines  
 
 generate_ssl
+configure_git 
 
 make_dirs
 
 set_permissions
-
-
 
 
 
