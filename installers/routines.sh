@@ -4,6 +4,8 @@ RUBY_VER=2.1.3
 
 
 function configure_git {
+
+	apt-get install -y git
 	
 	mkdir -p /opt/
 	
