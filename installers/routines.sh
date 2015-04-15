@@ -144,7 +144,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
  	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 		
-	
+	echo "Setup engines cron tab"
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
 */10 * * * * /opt/engines/bin/engines.sh  service  check_and_act all >>/opt/engines/logs/services/restarts.log" >/tmp/ct
 crontab -u engines /tmp/ct
@@ -291,6 +291,7 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
+
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
