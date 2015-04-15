@@ -13,12 +13,16 @@ export RUBY_VER
 
 dpkg-reconfigure tzdata
 
+
+configure_git 
+
 install_docker_and_components
 
 passwd engines  
 
 generate_ssl
-configure_git 
+
+
 
 make_dirs
 
