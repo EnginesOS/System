@@ -30,7 +30,7 @@ function configure_git {
 #	' > .git/config
 #	git pull
 
-chown -R engines /opt/engines/
+
 }
   
   function install_docker_and_components {

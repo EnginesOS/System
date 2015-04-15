@@ -17,7 +17,7 @@ dpkg-reconfigure tzdata
 configure_git 
 
 install_docker_and_components
-
+chown -R engines /opt/engines/
 passwd engines  
 
 generate_ssl
