@@ -5,12 +5,15 @@ RUBY_VER=2.1.3
 
 function configure_git {
 	
-	mkdir -p /opt/engines/
-	cd /opt/engines/
-	git init 
-
-	git remote add -t alpha origin 	https://github.com/EnginesOS/System.git
-	git fetch
+	mkdir -p /opt/
+	
+	
+	#engines/
+	#cd /opt/engines/
+	#git init 
+	git clone https://github.com/EnginesOS/System.git --branch alpha  --single-branch /opt/engines/
+	#git remote add -t alpha origin 	https://github.com/EnginesOS/System.git
+	#git fetch
 	
 #	echo '[core]
 #	        repositoryformatversion = 0
@@ -161,12 +164,12 @@ echo "nameserver 172.17.42.1" >>  /etc/resolv.conf
 
   }
 
-function make_dns_key {
-	rm -f ddns.private ddns.key
-	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
-	mv *private ddns.private
-	mv *key ddns.key
-}
+#function make_dns_key {
+#	rm -f ddns.private ddns.key
+#	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
+#	mv *private ddns.private
+#	mv *key ddns.key
+#}
 
 function generate_keys {
 echo "Generating system Keys"
@@ -224,22 +227,22 @@ keys=""
 #	mv backup.pub /opt/engines/system/images/03.serviceImages/backup
 #	mv mongo.pub /opt/engines/system/images/03.serviceImages/mongo
 #	
-	make_dns_key
+#	make_dns_key
 	
-	key=`cat ddns.private |grep Key | cut -f2 -d" "`
+#	key=`cat ddns.private |grep Key | cut -f2 -d" "`
 	
-	while test `echo $key |grep -e / |wc -c` -gt 0
-		do
-			make_dns_key
-			key=`cat ddns.private |grep Key | cut -f2 -d" "`
-			echo DNS key $key
-		done
+#	while test `echo $key |grep -e / |wc -c` -gt 0
+#		do
+#			make_dns_key
+#			key=`cat ddns.private |grep Key | cut -f2 -d" "`
+#			echo DNS key $key
+#		done
 			
-	echo DNS key $key
+#	echo DNS key $key
 	#cat /opt/engines/etc/dns/named.conf.default-zones.ad.tmpl| sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zones
+	#cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zones
 	#cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
-	mv ddns.* /opt/engines/etc/dns/keys/
+	#mv ddns.* /opt/engines/etc/dns/keys/
 	
 }
 
@@ -292,6 +295,8 @@ cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql
 }
 
 function set_permissions {
@@ -354,14 +359,14 @@ echo "Configuring OS Specific Dockerfiles"
 }
 
 function create_services {
-echo "Creating and starting Engines OS Services"
+echo "Creating and starting Engines Services"
 	 /opt/engines/bin/engines.rb service create dns
 	sleep 30
 	 /opt/engines/bin/engines.rb service create mysql_server
 	 /opt/engines/bin/engines.rb service create nginx
-	#su -l engines /opt/engines/bin/engines.rb service create monit
-	 /opt/engines/bin/engines.rb service create cAdvisor
-	 /opt/engines/bin/engines.rb service create backup
+	
+	 /opt/engines/bin/eservices create 
+	
 }
 function remove_services {
 echo "Creating and startingg Engines OS Services"
