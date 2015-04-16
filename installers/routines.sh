@@ -303,7 +303,7 @@ cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql/
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/private
 }
 
 function set_permissions {
@@ -331,7 +331,10 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
-	 chown 22003 -R /opt/engines/etc/smtp
+	chown -R 22002 /opt/engines/etc/ssl/psql
+	chmod og-rw -R /opt/engines/etc/ssl/psql
+	chown 22003 -R /opt/engines/etc/smtp
+	 
 	
 	 chown 22003 -R /var/log/engines/services/email/
 	 chown  -R 22015 /opt/engines/etc/backup/
