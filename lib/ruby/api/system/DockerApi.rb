@@ -262,6 +262,9 @@ class DockerApi
        envionment_options = get_envionment_options( container)
        port_options = get_port_options( container)
        volume_option = get_volume_option( container)
+       if volume_option == false || envionment_options == false || port_options == false
+         return false
+       end
        if container.conf_self_start == false
          start_cmd=" /bin/bash /home/init.sh"
        else
@@ -299,7 +302,7 @@ class DockerApi
        end
        #end
        #container specific
-       if(container.volumes)
+       if container.volumes  
          container.volumes.each_value do |volume|
            if volume !=nil
              if volume.localpath !=nil
