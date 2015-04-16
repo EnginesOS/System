@@ -11,6 +11,9 @@ USER dyndns
 COPY home home
 COPY dyndns.conf /home/dyndns/
 
+RUN chown dyndns -R /home/dyndns ;\
+	chmod og-rw home/dyndns/dyndns.conf
+
 ENV ContUser dyndns
 ENV ContGrp dyndns
 
