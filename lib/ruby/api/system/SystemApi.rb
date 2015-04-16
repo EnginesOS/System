@@ -947,6 +947,16 @@ SystemUtils.log_exception(e)
      end
    end
    
+
+  
+def generate_engines_user_ssh_key
+  newkey = SystemUtils.run_command(SysConfig.generate_ssh_private_keyfile)
+  return newkey
+   rescue Exception=>e
+     SystemUtils.log_exception(e)
+     return false
+   end
+   
 def system_update
   return SystemUtils.run_command("/opt/engines/bin/system_update.sh")
 end
