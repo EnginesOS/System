@@ -804,4 +804,9 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
+  def system_update
+    
+    return success("System Update", "Updating System ")        
+  end
+  
 end
