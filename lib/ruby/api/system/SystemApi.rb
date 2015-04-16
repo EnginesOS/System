@@ -946,7 +946,11 @@ SystemUtils.log_exception(e)
        return false
      end
    end
-
+   
+def system_update
+  return SystemUtils.run_command("/opt/engines/bin/system_update.sh")
+end
+   
    protected
 
    def container_cid_file(container)

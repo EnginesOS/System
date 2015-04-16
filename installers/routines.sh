@@ -4,6 +4,8 @@ RUBY_VER=2.1.3
 
 
 function configure_git {
+
+	apt-get install -y git
 	
 	mkdir -p /opt/
 	
@@ -29,6 +31,8 @@ function configure_git {
 #	        merge = refs/heads/master
 #	' > .git/config
 #	git pull
+
+
 }
   
   function install_docker_and_components {
@@ -144,7 +148,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
  	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 		
-	
+	echo "Setup engines cron tab"
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
 */10 * * * * /opt/engines/bin/engines.sh  service  check_and_act all >>/opt/engines/logs/services/restarts.log" >/tmp/ct
 crontab -u engines /tmp/ct
@@ -291,12 +295,15 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql
+mkdir -p /opt/engines/etc/ssl/psql/
+mkdir -p /opt/engines/etc/smtp
+
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/private
 }
 
 function set_permissions {
@@ -324,10 +331,13 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
-	 chown 22003 -R /opt/engines/etc/smtp
+	chown -R 22002 /opt/engines/etc/ssl/psql
+	chmod og-rw -R /opt/engines/etc/ssl/psql
+	chown 22003 -R /opt/engines/etc/smtp
+	 
 	
 	 chown 22003 -R /var/log/engines/services/email/
-	 chown  -R /opt/engines/etc/backup/
+	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
 	
 	}
