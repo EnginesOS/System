@@ -10,7 +10,7 @@ hostName: dyndns
 domainName: 
 environments: []
 image: engines/dyndns:alpha
-volumes: []
+volumes:
 port: 
 eports:
 repo: na
