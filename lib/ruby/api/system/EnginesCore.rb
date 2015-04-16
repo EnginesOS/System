@@ -564,6 +564,12 @@ class EnginesCore
     end
   end
 
+def generate_engines_user_ssh_key
+   return @system_api.regen_system_ssh_key
+ end
+ 
+ 
+  
 def system_update
   return @system_api.system_update
 end

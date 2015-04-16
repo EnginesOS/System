@@ -803,7 +803,19 @@ class EnginesOSapi
 
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
+  
 
+  #@returns EnginesOSapiResult on sucess with private ssh key in repsonse messages
+  def generate_engines_user_ssh_key
+    res = @core_api.generate_engines_user_ssh_key
+    if res == true    
+      return success("Engines ssh key regen", res)
+    end
+    
+    return failed("Update System SSH key",@core_api.last_error ,"Update System SSH key")
+          
+  end
+  
   #calls api to run system update
   #@return EnginesOSapiResult
   def system_update

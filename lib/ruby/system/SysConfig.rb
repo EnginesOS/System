@@ -6,7 +6,7 @@ class SysConfig
   #  @@rmSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.internal sudo sh /home/rmsite.sh"
   #  @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engines/etc/keys/mysql rma@"
   #
-
+  
   @@DBHost="mysql.engines.internal"
   @@CidDir="/opt/engines/run"
   @@ContainersDir="/opt/engines/run/containers/"
@@ -69,8 +69,16 @@ class SysConfig
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
-
+  
+  ##SSH
+  @@engines_ssh_private_keyfile="/home/engines/.ssh/sshaccess"
+  @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
+  
+  def SysConfig.engines_ssh_private_keyfile
+    return @@engines_ssh_private_keyfile
+  end
+  
   def SysConfig.DefaultBuildReportTemplateFile
     return @@DefaultBuildReportTemplateFile
   end
