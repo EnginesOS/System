@@ -564,6 +564,10 @@ class EnginesCore
     end
   end
 
+def system_update
+  return @system_api.system_update
+end
+
   def delete_image(container)
     begin
       clear_error

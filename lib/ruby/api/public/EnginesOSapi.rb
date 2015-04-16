@@ -804,9 +804,14 @@ class EnginesOSapi
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
+  #calls api to run system update
+  #@return EnginesOSapiResult
   def system_update
-    
-    return success("System Update", "Updating System ")        
+    res = @core_api.system_update
+    if res == false
+      return failed("System Update",@core_api.last_error ,"Update")
+    end
+    return success("System Update", res)        
   end
   
 end
