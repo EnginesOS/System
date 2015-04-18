@@ -16,7 +16,8 @@ RUN apt-get -y update;\
 	--with-fifodir=/home/cron --with-spooldir=/home/cron/spool\
 	--with-docdir=/home/cron/doc --prefix=/home/cron;\
 	make install;\
-	mkdir -p /home/cron/doc /home/cron/man /home/cron/spool;\
+	mkdir -p /home/cron/doc /home/cron/man /home/cron/spool /home/cron/log/;\
+	chown -R cron /home/cron/;\
 	cd /home/cron;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz ;\
