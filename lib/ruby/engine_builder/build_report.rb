@@ -6,7 +6,7 @@ module BuildReport
 
  
   def get_build_report_template(blueprint)
-    template = blueprint[:installation_report_template]
+    template = blueprint[:software][:installation_report_template]
       if template == nil
         return get_default_build_report_template
       else

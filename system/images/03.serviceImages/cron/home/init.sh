@@ -1,6 +1,7 @@
 #!/bin/sh
 
-/home/cron/sbin/fcron 
+/home/cron/sbin/fcron -p  /home/cron/log/cron.log
+
 syslogd -n -R syslog.engines.internal:5140
 touch /var/run/startup_complete
 chown 21000 /var/run/startup_complete
