@@ -6,7 +6,7 @@ ctype: service
 persistant: false
 conf_self_start: false
 last_error: 
-memory: '42'
+memory: '64'
 hostName: dns
 domainName: 
 environments: []
