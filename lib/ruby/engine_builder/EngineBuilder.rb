@@ -62,7 +62,7 @@ class EngineBuilder
    @container_name.gsub!(/ /,"_")
    @container_name.freeze
     
-    custom_env= params[:software_environment_variables]
+    custom_env= params[:variables]
     #   custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
