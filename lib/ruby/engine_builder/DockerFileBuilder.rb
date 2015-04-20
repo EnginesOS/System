@@ -735,7 +735,10 @@ SystemUtils.log_exception(e)
 
       @blueprint_reader.pear_modules.each do |pear_mod|
         if pear_mod !=nil
-          @docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+          #for pear
+          #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+          # for pecl
+          @docker_file.puts("RUN  pecl install  " + pear_mod )
           count_layer
         end
       end
