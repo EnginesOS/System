@@ -13,6 +13,11 @@ class SystemAccess
   def mysql_host
     return SysConfig.DBHost
   end
+  
+  def pqsql_host
+    return "pgsql.engines.internal"
+  end
+  
   def smtp_host
     return SysConfig.SMTPHost
   end

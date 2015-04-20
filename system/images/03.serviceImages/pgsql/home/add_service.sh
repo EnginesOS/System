@@ -35,23 +35,23 @@ if test -z $collation
 		exit -1
 	fi
 	
+echo  "CREATE ROLE $db_username WITH ENCRYPTED PASSWORD '$db_password'  LOGIN;" >/tmp/.c.sql
+echo "CREATE DATABASE $database_name OWNER = $db_username ;" >> /tmp/.c.sql
+echo "alter  ROLE $db_username login; " >> /tmp/.c.sql
 
-Q1="CREATE DATABASE IF NOT EXISTS ${BTICK}$database_name${BTICK}   DEFAULT CHARACTER SET utf8
-  DEFAULT COLLATE $collation ;"
-Q2="GRANT ALL ON ${BTICK}$database_name${BTICK}.* TO '$db_username'@'%' IDENTIFIED BY '$db_password';"
-Q3="FLUSH PRIVILEGES;"
-SQL="${Q1}${Q2}${Q3}"
 
 #echo "$SQL"
 
-$MYSQL   -urma  -e "$SQL"
+su postgres -c psql < /tmp/.c.sql
 
 if test $? -ge 0
 	then 
 		echo "Success"
+		rm /tmp/.c.sql
 		exit 0
 	fi
 	
 	echo "Error:"
 	exit -1
+	
 
