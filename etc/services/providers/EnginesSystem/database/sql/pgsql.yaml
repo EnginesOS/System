@@ -26,7 +26,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "mysql.engines.internal"
+  value: "_Builder(pgsql_host)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  database_name:
@@ -38,7 +38,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: :parent_engine
+  value: "_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  username:
@@ -50,7 +50,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " " 
+  value: "_Builder(engine_name)" 
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  password:
@@ -61,8 +61,37 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " "
+  value: "_Builder(random(10))"
   comment: " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ db_flavor:
+  name: db_flavor
+  label: DB db_flavor
+  tooltip: " "
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "pgsql"
+  comment:  " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ collation:
+  name: collation
+  label: DB collation
+  tooltip: " "
+  field_type: select_single
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "utf8_general_ci"
+  select_collection:
+  - !ruby/object:String  
+       "utf8_general_ci"
+  - !ruby/object:String  
+       "ascii"
+  comment:  " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
