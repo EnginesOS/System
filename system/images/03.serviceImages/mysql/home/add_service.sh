@@ -48,7 +48,7 @@ $MYSQL   -urma  -e "$SQL"
 
 if test $? -ge 0
 	then 
-		echo "Sucess"
+		echo "Success"
 		exit 0
 	fi
 	
