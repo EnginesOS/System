@@ -16,5 +16,6 @@ RUN apt-get -y  --force-yes update;\
 ADD init.sh /home/
 ADD sources.list /etc/apt/
 COPY sendmail /usr/bin/
+COPY sendmail /usr/sbin/sendmail
 
 CMD /bin/bash /home/init.sh
