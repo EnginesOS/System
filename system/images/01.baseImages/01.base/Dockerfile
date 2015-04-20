@@ -1,4 +1,7 @@
 FROM ubuntu:14.04 
+
+ADD sources.list /etc/apt/
+
 RUN apt-get -y  --force-yes update;\
 	apt-get -y  --force-yes upgrade;\
 	apt-get -y  --force-yes update;\
@@ -14,7 +17,7 @@ RUN apt-get -y  --force-yes update;\
 #ADD ddns.private /etc/
 #ADD dns-init.sh /home/
 ADD init.sh /home/
-ADD sources.list /etc/apt/
+
 COPY sendmail /usr/bin/
 COPY sendmail /usr/sbin/sendmail
 
