@@ -528,7 +528,7 @@ class EngineBuilder
   def create_start_script
     if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
       start_script_file = File.open(get_basedir() + SysConfig.StartScript,"wb", :crlf_newline => false)
-      start_script_file.puts(@blueprint[:software][:custom_start_script])
+      start_script_file.puts(@blueprint[:software][:custom_start_script].gsub!("\r", ""))
       start_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
@@ -537,7 +537,7 @@ class EngineBuilder
   def create_install_script
     if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
       install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
-      install_script_file.puts(@blueprint[:software][:custom_install_script])
+      install_script_file.puts(@blueprint[:software][:custom_install_script].gsub!("\r", ""))
       install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
@@ -546,7 +546,7 @@ class EngineBuilder
   def create_post_install_script
     if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
-      post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
+      post_install_script_file.puts(@blueprint[:software][:custom_post_install_script].gsub!("\r", ""))
       post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
@@ -558,7 +558,7 @@ class EngineBuilder
 
       php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"wb", :crlf_newline => false)
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
-        php_ini_file.puts(php_ini_hash[:content])
+        php_ini_file.puts(php_ini_hash[:content].gsub!("\r", ""))
       end
       php_ini_file.close
 
@@ -574,6 +574,7 @@ class EngineBuilder
   end
 
   def write_software_file(container_filename_path,content)
+    content.gsub!("\r", "")
     dir = File.dirname(get_basedir() + container_filename_path)
     p :dir_for_write_software_file
     p dir
