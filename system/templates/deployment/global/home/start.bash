@@ -2,19 +2,10 @@
 
 if  test ! -d /engines/var/run/flags/
 then
-	mkdir /engines/var/run/flags/
+	mkdir -p /engines/var/run/flags/
 	chmod oug+w /engines/var/run/flags/
 fi
 
-#if test ! -f  /engines/var/run/subs_run
-#	then
-#	echo "Performing substitutions"
-#	cd /home/
-#		source /home/config_functions.sh
-#		copy_substituted_templates
-#		touch /engines/var/run/subs_run
-#		cd /home/app			
-#	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
@@ -56,10 +47,6 @@ if test -f /home/engines/scripts/pre-running.sh
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
-#if test -n "$CRONJOBS"
-#then
-#	service cron start
-#fi
 
 if test -f /home/engines/scripts/custom_start.sh
 	then
