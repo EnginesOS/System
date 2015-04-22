@@ -1,4 +1,5 @@
-FROM ubuntu:14.04 
+#FROM ubuntu:14.04
+FROM engines/base_image:alpha 
 
 ADD sources.list /etc/apt/
 
