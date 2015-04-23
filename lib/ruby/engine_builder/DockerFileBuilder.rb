@@ -94,7 +94,7 @@ class DockerFileBuilder
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
     count_layer()
-    set_user("$ContUser")
+    
 
     insert_framework_frag_in_dockerfile("builder.end.tmpl")
     @docker_file.puts("")
