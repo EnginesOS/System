@@ -1,7 +1,6 @@
 #!/bin/sh
 
-rm /etc/nginx/sites-enabled/http*
-PID_FILE=/var/run/nginx.pid
+PID_FILE=/var/run/postgresql/9.3-main.pid
 
 trap trap_term  15
 trap trap_hup 1
@@ -29,16 +28,14 @@ if test -f /var/run/$PID_FILE
 	fi
 }
 
-
-/usr/sbin/nginx
-echo "started Nginx"
+ service postgresql
+ 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
-chmod oug+rw /engines/var/run/startup_complete
-echo 
-sleep 30
+chown 21000 /engines/var/run/startup_complete
 
-while test -f /var/run/nginx.pid
+sleep 30
+while test -f /var/run/postgresql/*.pid
 do
 	  sleep 200
 done
