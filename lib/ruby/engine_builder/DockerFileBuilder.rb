@@ -196,20 +196,20 @@ class DockerFileBuilder
 
   def write_data_permissions
     @docker_file.puts("#Data Permissions")
-    set_user("0")
+
     @docker_file.puts("")
     @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
     @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
     @docker_file.puts("chmod -R 770 /home/fs")
     count_layer
-    set_user("$ContUser")
+   
 
   end
 
   def write_run_install_script
     @docker_file.puts("WorkDir /home/")
     @docker_file.puts("#Setup templates and run installer")
-    set_user("$ContUser")
+
     @docker_file.puts("RUN bash /home/setup.sh")
     count_layer
   end
