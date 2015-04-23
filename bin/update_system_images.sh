@@ -12,3 +12,5 @@ echo $images
          eservices stop 
          eservice recreate dns
          eservices recreate
+         
+         docker rmi $( docker images -f "dangling=true" -q)

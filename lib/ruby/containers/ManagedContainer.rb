@@ -246,8 +246,9 @@ class ManagedContainer < Container
     if @deployment_type  == "web"
       add_nginx_service
     end
-    @core_api.register_non_persistant_services(containerName)
-  
+    @core_api.register_non_persistant_services(@containerName)
+    
+     
   clear_error(ret_val)
   save_state()
   set_container_id
@@ -278,7 +279,7 @@ def unpause_container
   else
     @last_error ="Can't unpause Container as " + state
   end
-  @core_api.register_non_persistant_services(containerName)
+  @core_api.register_non_persistant_services(@containerName)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -299,7 +300,7 @@ def pause_container
   else
     @last_error ="Can't pause Container as " + state
   end
-  @core_api.deregister_non_persistant_services(containerName)
+  @core_api.deregister_non_persistant_services(@containerName)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -316,16 +317,16 @@ def stop_container
 
   if state== "running"
     ret_val = @core_api.stop_container   self
-    @core_api.deregister_non_persistant_services(containerName)
+    @core_api.deregister_non_persistant_services(@containerName)
 
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
     if state != "paused" #force deregister if stopped or no container etc
-      @core_api.deregister_non_persistant_services(containerName)
+      @core_api.deregister_non_persistant_services(@containerName)
     end
   end
-  @core_api.deregister_non_persistant_services(containerName)
+  @core_api.deregister_non_persistant_services(@containerName)
   clear_error(ret_val)
   save_state()
   return  ret_val
@@ -363,7 +364,7 @@ def start_container
     @last_error ="Can't Start Container as " + state
   end
   register_with_dns
-  @core_api.register_non_persistant_services(containerName)
+  @core_api.register_non_persistant_services(@containerName)
  
   clear_error(ret_val)
   save_state()
@@ -624,7 +625,11 @@ def rebuild_container
   end
   ret_val = @core_api.rebuild_image(self)
   if ret_val == true 
-    register_with_dns
+    register_with_dns    
+       if @deployment_type  == "web"
+         add_nginx_service
+       end
+       @core_api.register_non_persistant_services(@containerName)
   end
   return ret_val
 end

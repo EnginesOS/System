@@ -132,6 +132,9 @@ class DockerApi
      begin
        commandargs= " rmi " +   container.image
        ret_val =  run_docker(commandargs,container)
+        if ret_val == true
+          clean_up_dangling_images
+        end
        return ret_val
      rescue Exception=>e
        container.last_error=( "Failed To Delete " + e.to_s)

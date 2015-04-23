@@ -2,19 +2,10 @@
 
 if  test ! -d /engines/var/run/flags/
 then
-	mkdir /engines/var/run/flags/
+	mkdir -p /engines/var/run/flags/
 	chmod oug+w /engines/var/run/flags/
 fi
 
-#if test ! -f  /engines/var/run/subs_run
-#	then
-#	echo "Performing substitutions"
-#	cd /home/
-#		source /home/config_functions.sh
-#		copy_substituted_templates
-#		touch /engines/var/run/subs_run
-#		cd /home/app			
-#	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
@@ -39,16 +30,16 @@ fi
  	 done
   fi
 
-#if test -f /home/engines/scripts/install.sh 
-#	then
-#	echo has custom install
-#		if test ! -f /engines/var/run/setup_complete
-#			then
-#			echo running custom install
-#				bash /home/engines/scripts/install.sh 
-#				touch  /engines/var/run/setup_complete
-#		fi
-#	fi
+if test -f /home/engines/scripts/custom_install.sh
+	then
+	echo has custom install
+		if test ! -f /engines/var/run/setup_complete
+			then
+			echo running custom install
+				bash /home/engines/scripts/custom_install.sh
+				touch  /engines/var/run/setup_complete
+		fi
+	fi
 	
 if test -f /home/engines/scripts/pre-running.sh
 	then
@@ -56,16 +47,12 @@ if test -f /home/engines/scripts/pre-running.sh
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
-#if test -n "$CRONJOBS"
-#then
-#	service cron start
-#fi
 
-if test -f /home/engines/scripts/start.sh
+if test -f /home/engines/scripts/custom_start.sh
 	then
 	    echo "Custom start"
 	    touch /engines/var/run/startup_complete 
-		bash	/home/engines/scripts/start.sh
+		bash	/home/engines/scripts/custom_start.sh
 	fi
 
 if test -f /home/app/Rack.sh
