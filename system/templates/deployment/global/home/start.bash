@@ -68,8 +68,10 @@ if test -f /home/startwebapp.sh
  	fi
 
 touch /engines/var/run/startup_complete
+ rm -f /run/apache2/apache2.pid 
 
-/usr/sbin/apache2ctl -D FOREGROUND 
+exec /usr/sbin/apache2ctl -D FOREGROUND 
+
  rm -f /run/apache2/apache2.pid 
  
  
