@@ -76,7 +76,9 @@ class DockerApi
      clear_error
      begin
        commandargs="docker top " + container.containerName + " axl"
-       return  SystemUtils.run_system(commandargs)
+         run_docker("top",container)
+       return   container.last_result
+       #SystemUtils.run_system(commandargs)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
