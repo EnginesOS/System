@@ -1,7 +1,8 @@
 #!/bin/sh
 
 
-
+ service postgresql
+ 
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete

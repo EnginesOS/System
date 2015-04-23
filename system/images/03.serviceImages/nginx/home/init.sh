@@ -1,6 +1,7 @@
 #!/bin/sh
 
-rm /etc/nginx/sites-enables/http*
+rm /etc/nginx/sites-enabled/http*
+trap "{kill -TERM `cat  /var/run/nginx.pid `}"
 /usr/sbin/nginx
 echo "started Nginx"
 mkdir -p /engines/var/run/
@@ -11,7 +12,6 @@ sleep 30
 
 while test -f /var/run/nginx.pid
 do
-
 	  sleep 200
 done
 
