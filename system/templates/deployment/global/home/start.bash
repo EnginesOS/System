@@ -41,6 +41,7 @@ if test -f /home/engines/scripts/custom_install.sh
 		fi
 	fi
 	
+#drop for custom start as if custom start no blocking then it is pre running
 if test -f /home/engines/scripts/pre-running.sh
 	then
 	echo "launch pre running"
@@ -48,6 +49,7 @@ if test -f /home/engines/scripts/pre-running.sh
 fi	
 
 
+#if not blocking continues
 if test -f /home/engines/scripts/custom_start.sh
 	then
 	    echo "Custom start"
@@ -55,21 +57,33 @@ if test -f /home/engines/scripts/custom_start.sh
 		bash	/home/engines/scripts/custom_start.sh
 	fi
 
-if test -f /home/app/Rack.sh
-	then 
-	
-		/home/app/Rack.sh
-	fi
-
-if test -f /home/startwebapp.sh
+if test -f /home/engines/scripts/startwebapp.sh 
 	then
-	touch /engines/var/run/startup_complete
- 	/home/startwebapp.sh
- 	fi
+		/home/engines/scripts/startwebapp.sh 
+	fi
+	
+#Apache based below here
+
+trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"
+rm -f /run/apache2/apache2.pid 
+  
+if test -f /home/app/Rack.sh
+	then 	 
+	#sets PATH only (might not be needed)
+		. /home/app/Rack.sh  
+	fi
 
 touch /engines/var/run/startup_complete
 
-/usr/sbin/apache2ctl -D FOREGROUND 
+	if test -f /home/blocking.sh
+		then
+		/etc/init.d/apache2 start
+			bash /home/blocking.sh
+	else		
+		/usr/sbin/apache2ctl -D FOREGROUND
+	fi	
+ 
+
  rm -f /run/apache2/apache2.pid 
  
  
