@@ -504,6 +504,7 @@ class EngineBuilder
   def create_template_files
     if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
+        
         write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
       end
     end
@@ -526,27 +527,47 @@ class EngineBuilder
   end
 
   def create_start_script
-    if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
+    if @blueprint[:software].has_key?(:custom_start_script) \
+      &&  @blueprint[:software][:custom_start_script] != nil\
+      &&  @blueprint[:software][:custom_start_script].length >0 
+      content = @blueprint[:software][:custom_start_script].gsub(/\r/, "")
+        
       start_script_file = File.open(get_basedir() + SysConfig.StartScript,"wb", :crlf_newline => false)
-      start_script_file.puts(@blueprint[:software][:custom_start_script].gsub!("\r", ""))
+      start_script_file.puts(content)
       start_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
   end
 
   def create_install_script
-    if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
+    if @blueprint[:software].has_key?(:custom_install_script) \
+      &&  @blueprint[:software][:custom_install_script] != nil\
+      && @blueprint[:software][:custom_install_script].length >0
+      content = @blueprint[:software][:custom_install_script].gsub(/\r/, "")
       install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
-      install_script_file.puts(@blueprint[:software][:custom_install_script].gsub!("\r", ""))
+      install_script_file.puts(content)
       install_script_file.close
+      p :create_install_script
+      p get_basedir() + SysConfig.InstallScript
+      p @blueprint[:software][:custom_install_script]
+        t = @blueprint[:software][:custom_install_script]
+        t.gsub!(/\r/, "")
+        p t
+        p "no_bang"
+        t =  @blueprint[:software][:custom_install_script]
+      t = t.gsub(/\r/, "")
+    p t
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
 
   def create_post_install_script
-    if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
+    if @blueprint[:software].has_key?(:custom_post_install_script) \
+      && @blueprint[:software][:custom_post_install_script] != nil \
+      && @blueprint[:software][:custom_post_install_script].length >0
+      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
-      post_install_script_file.puts(@blueprint[:software][:custom_post_install_script].gsub!("\r", ""))
+      post_install_script_file.puts(cotent)
       post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
@@ -554,11 +575,14 @@ class EngineBuilder
 
   def create_php_ini
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
-    if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
+    if @blueprint[:software].has_key?(:custom_php_inis) \
+      && @blueprint[:software][:custom_php_inis]  != nil\
+      && @blueprint[:software][:custom_php_inis].length >0
 
       php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"wb", :crlf_newline => false)
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
-        php_ini_file.puts(php_ini_hash[:content].gsub!("\r", ""))
+        content = php_ini_hash[:content].gsub(/\r/, "")
+        php_ini_file.puts(content)
       end
       php_ini_file.close
 
@@ -574,7 +598,7 @@ class EngineBuilder
   end
 
   def write_software_file(container_filename_path,content)
-    content.gsub!("\r", "")
+    content.gsub!(/\r/, "")
     dir = File.dirname(get_basedir() + container_filename_path)
     p :dir_for_write_software_file
     p dir

@@ -3,6 +3,10 @@ FROM engines/base_image:alpha
 
 ENV DEBIAN_FRONTEND noninteractive
 
+COPY invoke-rc.d /usr/sbin/
+COPY sendmail /usr/bin/
+
+
 RUN apt-get -y  --force-yes update;\
 	apt-get -y  --force-yes upgrade;\
 	apt-get -y  --force-yes update;\
@@ -12,11 +16,11 @@ RUN apt-get -y  --force-yes update;\
 	mkdir -p /etc/apt/apt.conf.d/;\
 	dpkg-divert --local --rename --add /sbin/initctl;\
 	ln -s /bin/true /sbin/initctl;\
-	apt-get clean
+	apt-get clean;\
+	ln -s /usr/bin/sendmail /usr/sbin/sendmail
 
 ADD init.sh /home/
 
-COPY sendmail /usr/bin/
-COPY sendmail /usr/sbin/sendmail
+
 
 CMD /bin/bash /home/init.sh
