@@ -526,7 +526,9 @@ class EngineBuilder
   end
 
   def create_start_script
-    if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
+    if @blueprint[:software].has_key?(:custom_start_script) \
+      &&  @blueprint[:software][:custom_start_script] != nil\
+      &&  @blueprint[:software][:custom_start_script].length >0 
       start_script_file = File.open(get_basedir() + SysConfig.StartScript,"wb", :crlf_newline => false)
       start_script_file.puts(@blueprint[:software][:custom_start_script].gsub!("\r", ""))
       start_script_file.close
@@ -535,16 +537,24 @@ class EngineBuilder
   end
 
   def create_install_script
-    if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
+    if @blueprint[:software].has_key?(:custom_install_script) \
+      &&  @blueprint[:software][:custom_install_script] != nil\
+      && @blueprint[:software][:custom_install_script].length >0
       install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
       install_script_file.puts(@blueprint[:software][:custom_install_script].gsub!("\r", ""))
       install_script_file.close
+      p :create_install_script
+      p get_basedir() + SysConfig.InstallScript
+      p @blueprint[:software][:custom_install_script]
+        p @blueprint[:software][:custom_install_script].gsub!("\r", "")
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
 
   def create_post_install_script
-    if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
+    if @blueprint[:software].has_key?(:custom_post_install_script) \
+      && @blueprint[:software][:custom_post_install_script] != nil \
+      && @blueprint[:software][:custom_post_install_script].length >0
       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
       post_install_script_file.puts(@blueprint[:software][:custom_post_install_script].gsub!("\r", ""))
       post_install_script_file.close
@@ -554,7 +564,9 @@ class EngineBuilder
 
   def create_php_ini
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
-    if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
+    if @blueprint[:software].has_key?(:custom_php_inis) \
+      && @blueprint[:software][:custom_php_inis]  != nil\
+      && @blueprint[:software][:custom_php_inis].length >0
 
       php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"wb", :crlf_newline => false)
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
