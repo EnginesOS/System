@@ -59,7 +59,9 @@ class DockerFileBuilder
     set_user("0")
          
     chown_home_app
-    set_user("0")
+   
+    set_user("$ContUser")
+ 
     write_worker_commands            
     write_sed_strings
     write_persistant_dirs
@@ -407,7 +409,6 @@ SystemUtils.log_exception(e)
       @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\")
       @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
       count_layer
-      set_user("$ContUser")
 
     rescue Exception=>e
       SystemUtils.log_exception(e)
