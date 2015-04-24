@@ -546,7 +546,13 @@ class EngineBuilder
       p :create_install_script
       p get_basedir() + SysConfig.InstallScript
       p @blueprint[:software][:custom_install_script]
-        p @blueprint[:software][:custom_install_script].gsub!(/\r/, "")
+        t = @blueprint[:software][:custom_install_script]
+          t = t.gsub!(/\r/, "")
+        p t
+        p "no_bang"
+        t =  @blueprint[:software][:custom_install_script]
+      t = t.gsub(/\r/, "")
+    p t
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
