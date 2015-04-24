@@ -10,6 +10,8 @@ RUN apt-get -y  --force-yes update;\
 	apt-get clean;\
 	mkdir -p /var/run;\
 	mkdir -p /etc/apt/apt.conf.d/;\
+	dpkg-divert --local --rename --add /sbin/initctl;\
+	ln -s /bin/true /sbin/initctl;\
 	apt-get clean
 
 ADD init.sh /home/
