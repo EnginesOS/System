@@ -6,11 +6,6 @@ then
 	chmod oug+w /engines/var/run/flags/
 fi
 
-	if test ! -f /engines/var/run/flags/configured
-	then
-		cp -r /home/engines/templates/* .
-		touch /engines/var/run/flags/configured
-	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
@@ -35,17 +30,7 @@ fi
  	 done
   fi
 
-if test -f /home/engines/scripts/custom_install.sh
-	then
-	echo has custom install
-		if test ! -f /engines/var/run/setup_complete
-			then
-			echo running custom install
-				bash /home/engines/scripts/custom_install.sh
-				touch  /engines/var/run/setup_complete
-		fi
-	fi
-	
+
 #drop for custom start as if custom start no blocking then it is pre running
 if test -f /home/engines/scripts/pre-running.sh
 	then
