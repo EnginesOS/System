@@ -1,5 +1,5 @@
 From engines/servicebase:$release
-RUN echo "Y" | adduser -q --disabled-password  -uid 22013 dovecot;\
+RUN adduser -q --disabled-password  -uid 22013 dovecot;\
  	apt-get -y update;\
 	apt-get -y install  syslogd dovecot-core=1:2.2.9-1ubuntu2 dovecot-imapd=1:2.2.9-1ubuntu2  dovecot-pop3d=1:2.2.9-1ubuntu2  dovecot-sieve=1:2.2.9-1ubuntu2 dovecot-lmtpd dovecot-mysql ;\
 	apt-get clean ;\
