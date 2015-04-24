@@ -6,6 +6,11 @@ then
 	chmod oug+w /engines/var/run/flags/
 fi
 
+	if test ! -f /engines/var/run/flags/configured
+	then
+		cp -r /home/engines/templates/* .
+		touch /engines/var/run/flags/configured
+	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
