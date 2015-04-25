@@ -81,7 +81,10 @@ def resolve_build_function(match)
       args = cmd[1]     
       args.sub!(/\)/,"")      
     end
- 
+p :getting_builder_function_for
+     p name.to_sym
+     p :with_args
+     p args
     
   var_method = @builder_public.method(name.to_sym)
       
@@ -169,7 +172,7 @@ end
            resolve_build_function(match)
          } 
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
-         resolve_build_variable(match)
+     resolve_build_variable(match)
        } 
        return template
  end

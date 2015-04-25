@@ -784,26 +784,27 @@ class EngineBuilder
       p variable
       if variable[1] != nil && variable[1].start_with?("_")
         #variable[1].sub!(/\$/,"")
-        result = evaluate_function(variable[1])
+      #  result = evaluate_function(variable[1])
+        result = process_templated_string(variable[1])
         service_hash[:variables][variable[0]] = result
       end
     end
   end
 
-  def evaluate_function(function)
-    if function.start_with?("_System")
-      return resolve_system_variable(function)
-    elsif function.start_with?("_Builder")
-      return resolve_build_variable(function)
-    elsif function.start_with?("_Blueprint")
-      return resolve_blueprint_variable(function)
-    end
-    #if no match return orginial
-    return function
-  rescue Exception=> e
-    return ""
-
-  end
+#  def evaluate_function(function)
+#    if function.start_with?("_System")
+#      return resolve_system_variable(function)
+#    elsif function.start_with?("_Builder")
+#      return resolve_build_variable(function)
+#    elsif function.start_with?("_Blueprint")
+#      return resolve_blueprint_variable(function)
+#    end
+#    #if no match return orginial
+#    return function
+#  rescue Exception=> e
+#    return ""
+#
+#  end
 
   def tail_of_build_log
     retval = String.new
