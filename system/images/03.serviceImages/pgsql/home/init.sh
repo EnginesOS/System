@@ -28,14 +28,14 @@ if test -f /var/run/$PID_FILE
 	fi
 }
 
- service postgresql
+ service postgresql start
  
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 chown 21000 /engines/var/run/startup_complete
 
 sleep 30
-while test -f /var/run/postgresql/*.pid
+while test -f /var/run/postgresql/9.3-main.pid
 do
 	  sleep 200
 done
