@@ -567,7 +567,7 @@ class EngineBuilder
       && @blueprint[:software][:custom_post_install_script].length >0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
       post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
-      post_install_script_file.puts(cotent)
+      post_install_script_file.puts(content)
       post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
