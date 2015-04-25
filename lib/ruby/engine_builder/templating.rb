@@ -72,28 +72,41 @@ module Templating
     return ""
   end
   
+def resolve_build_function(match)
+  name = match.sub!(/_Builder\(/,"")
+ 
+    cmd = name.split('(')
+    name = cmd[0]
+    if cmd.count >1
+      args = cmd[1]     
+      args.sub!(/\)/,"")      
+    end
+p :getting_builder_function_for
+     p name.to_sym
+     p :with_args
+     p args
+    
+  var_method = @builder_public.method(name.to_sym)
+      
+  val = var_method.call args
+  
+  p :got_val
+  p val
+  return val
+  rescue Exception=>e
+      SystemUtils.log_exception(e) 
+     return ""
+end
     def resolve_build_variable(match)
       name = match.sub!(/_Builder\(/,"")
       name.sub!(/[\)]/,"")
       p :getting_builder_value_for
       p name.to_sym
-      if name.include?('(')  == true
-        cmd = name.split('(')
-        name = cmd[0]
-        if cmd.count >1
-          args = cmd[1]     
-          args.sub!(/\)/,"")
-          args_array = args.split
-        end
-      end
         
       var_method = @builder_public.method(name.to_sym)
-      if args
-        p :got_args
-        val = var_method.call args
-      else
-        val = var_method.call 
-      end
+      
+      val = var_method.call 
+      
       p :got_val
       p val
       return val
@@ -140,7 +153,7 @@ def process_templated_string(template)
 
 def apply_engines_variables(template)
 
-  template.gsub!(/_Engines\([(1-9a-z_A-Z]*\)/) { | match |
+  template.gsub!(/_Engines\([(0-9a-z_A-Z]*\)/) { | match |
         resolve_engines_variable(match)
       } 
       return template
@@ -148,18 +161,21 @@ end
 
  
  def apply_system_variables(template)
-   template.gsub!(/_System\([(1-9a-z_A-Z]*\)/) { | match |
+   template.gsub!(/_System\([(0-9a-z_A-Z]*\)/) { | match |
      resolve_system_variable(match)
    } 
    return template
  end
  
  def apply_build_variables(template)
-   template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)\)/) { | match |
-           resolve_build_variable(match)
+   
+   template.gsub!(/_Builder\([(0-9a-z_A-Z]*\)\)/) { | match |
+     p :build_function_match
+     p match
+           resolve_build_function(match)
          } 
-   template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
-         resolve_build_variable(match)
+   template.gsub!(/_Builder\([(0-9a-z_A-Z]*\)/) { | match |
+     resolve_build_variable(match)
        } 
        return template
  end
