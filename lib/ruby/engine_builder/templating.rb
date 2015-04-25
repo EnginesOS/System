@@ -168,7 +168,10 @@ end
  end
  
  def apply_build_variables(template)
+   
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)\)/) { | match |
+     p :build_function_match
+     p match
            resolve_build_function(match)
          } 
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
