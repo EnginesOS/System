@@ -72,28 +72,38 @@ module Templating
     return ""
   end
   
+def resolve_build_function(match)
+  name = match.sub!(/_Builder\(/,"")
+ 
+    cmd = name.split('(')
+    name = cmd[0]
+    if cmd.count >1
+      args = cmd[1]     
+      args.sub!(/\)/,"")      
+    end
+ 
+    
+  var_method = @builder_public.method(name.to_sym)
+      
+  val = var_method.call args
+  
+  p :got_val
+  p val
+  return val
+  rescue Exception=>e
+      SystemUtils.log_exception(e) 
+     return ""
+end
     def resolve_build_variable(match)
       name = match.sub!(/_Builder\(/,"")
       name.sub!(/[\)]/,"")
       p :getting_builder_value_for
       p name.to_sym
-      if name.include?('(')  == true
-        cmd = name.split('(')
-        name = cmd[0]
-        if cmd.count >1
-          args = cmd[1]     
-          args.sub!(/\)/,"")
-          args_array = args.split
-        end
-      end
         
       var_method = @builder_public.method(name.to_sym)
-      if args
-        p :got_args
-        val = var_method.call args
-      else
-        val = var_method.call 
-      end
+      
+      val = var_method.call 
+      
       p :got_val
       p val
       return val
@@ -156,7 +166,7 @@ end
  
  def apply_build_variables(template)
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)\)/) { | match |
-           resolve_build_variable(match)
+           resolve_build_function(match)
          } 
    template.gsub!(/_Builder\([(1-9a-z_A-Z]*\)/) { | match |
          resolve_build_variable(match)
