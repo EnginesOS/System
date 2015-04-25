@@ -5,6 +5,7 @@ RUN adduser -q --disabled-password  -uid 22013 dovecot;\
 	apt-get clean ;\
 	mkdir -p /var/mail ;\
 	chown dovecot /var/mail ;\
+	mkdir -p /var/run/dovecot;\
 	chown -R dovecot /var/run/dovecot/
 	
 ADD dovecot/conf.d /etc/dovecot/conf.d
