@@ -21,7 +21,9 @@ class SystemAccess
   def smtp_host
     return SysConfig.SMTPHost
   end
-  
+  def timezone_city_country
+    return "Sydney/Australia"
+end
   def hrs_from_gmt
     return "+10"
   end
