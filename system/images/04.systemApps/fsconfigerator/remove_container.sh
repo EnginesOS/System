@@ -1,16 +1,16 @@
 #!/bin/sh
  
-function rm_container_state
+function rm_container_state ()
 {
-	rm -r /client/state
+	rm -r /client/state/*
 }
-function rm_container_logs
+function rm_container_logs ()
 {
-	rm -r /client/log
+	rm -r /client/log/*
 }
-function rm_container_fs
+function rm_container_fs ()
 {
-	rm -r /dest/fs
+	rm -r /dest/fs/*
 } 
 
 for cmd in $*
