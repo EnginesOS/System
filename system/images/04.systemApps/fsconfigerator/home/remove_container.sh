@@ -3,7 +3,7 @@
 
 for cmd in $*
  do
-  case cmd in
+  case $cmd in
  	state)
  		rm -r /client/state/*
  		;;
