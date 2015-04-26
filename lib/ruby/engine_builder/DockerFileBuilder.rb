@@ -507,7 +507,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
           @docker_file.puts("   touch  /home/app/" + path + ";\\")
           @docker_file.puts("     fi;\\")
-          @docker_file.puts( "  chown $CountUser /home/app/" + path + ";\\")
+          @docker_file.puts( "  chown $ContUser /home/app/" + path + ";\\")
           @docker_file.puts( "   chmod  775 /home/app/" + path )
           count_layer
         end
