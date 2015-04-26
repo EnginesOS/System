@@ -32,11 +32,6 @@ for cmd in $*
  		;;
   esac
  done
- 
-#VOLUME /client/var/log
-#VOLUME /client/log
-#VOLUME /client/state
-#VOLUME /client/fs
-#VOLUME /dest/fs
+
 
 

@@ -161,19 +161,26 @@ class SystemApi
 
    def delete_container_configs(container)
      clear_error
-     begin
-       stateDir = container_state_dir(container) + "/config.yaml"
-       File.delete(stateDir)
+  
+#       stateDir = container_state_dir(container) + "/config.yaml"
+#       File.delete(stateDir)
        cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
        if File.exists?(cidfile)
          File.delete(cidfile)
        end
-       return true
+      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data --cidfile /opt/engines/run/volbuilder.cid  -v /opt/engines/run/containers/" + container.containerName + "/:/client/state:rw  -v /var/log/engines/containers/" + container.containerName + ":/client/log:rw    -t engines/volbuilder /home/remove_container.sh state logs"  
+      retval =  SystemUtils.run_system(cmd)
+      if retval == true
+        Dir.delete(container_state_dir(container))
+      else
+        SystemUtils.log_error_mesg("Failed to Delete state and logs:" + retval.to_s ,container)
+        return false  
+      end
+      
      rescue Exception=>e
        container.last_error=( "Failed To Delete " )
        SystemUtils.log_exception(e)
        return false
-     end
    end
 
 #   def deregister_dns(top_level_hostname)
