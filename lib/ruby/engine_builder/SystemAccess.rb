@@ -4,10 +4,8 @@ class SystemAccess
   #release etc
   
   def release
-    if File.exists?(SysConfig.ReleaseFile) == false
-      return "current"
-    end
-    return File.read(SysConfig.ReleaseFile)        
+    return SystemUtils.system_release
+   
   end
   
   def mysql_host

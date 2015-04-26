@@ -29,6 +29,14 @@ class SystemUtils
   def SystemUtils.log_error(object)
     SystemUtils.log_output(object,10)
   end
+  
+  def SystemUtils.system_release
+    if File.exists?(SysConfig.ReleaseFile) == false
+         return "current"
+       end
+       release =  File.read(SysConfig.ReleaseFile)
+       return release.strip    
+  end
 
   def SystemUtils.symbolize_keys(hash)
     hash.inject({}){|result, (key, value)|
