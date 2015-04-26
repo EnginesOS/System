@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/sh -x
 
 #VOLUME /client/var/log
 #VOLUME /client/log
