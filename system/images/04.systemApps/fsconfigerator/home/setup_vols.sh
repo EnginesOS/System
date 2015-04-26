@@ -15,7 +15,8 @@ done
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
-chown $fw_user -R /client/state/
+mkdir /client/state/run
+chown $fw_user -R /client/state/run
 
 
 if test -f /dest/fs/.persistant
