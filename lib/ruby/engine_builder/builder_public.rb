@@ -10,12 +10,20 @@ end
  def domain_name
    @builder.domain_name
  end
+  def fqdn
+    @builder.hostname + "." + @builder.domain_name
+  end
  def hostname 
    @builder.hostname
  end
- def http_protocol
-   @builder.http_protocol
+ 
+ def http_protocol  
+   if @builder.http_protocol.include?(https)
+     return "https"     
+   end
+   return "http"
  end
+ 
  def repoName
    @builder.repoName
  end
