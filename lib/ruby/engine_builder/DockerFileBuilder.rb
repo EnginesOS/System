@@ -507,7 +507,8 @@ SystemUtils.log_exception(e)
           @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
           @docker_file.puts("   touch  /home/app/" + path + ";\\")
           @docker_file.puts("     fi;\\")
-          @docker_file.puts( "  chmod  775 /home/app/" + path )
+          @docker_file.puts( "  chown $CountUser /home/app/" + path + ";\\")
+          @docker_file.puts( "   chmod  775 /home/app/" + path )
           count_layer
         end
       end
@@ -535,6 +536,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
           @docker_file.puts("    then \\")
           @docker_file.puts("       mkdir  \"/home/app/" + directory + "\";\\")
+          @docker_file.puts( "      chown $CountUser /home/app/" +directory + "\";\\")
           @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
           @docker_file.puts("  else\\")
           @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
