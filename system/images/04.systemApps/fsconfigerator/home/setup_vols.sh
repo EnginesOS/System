@@ -15,7 +15,7 @@ done
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
-mkdir /client/state/run
+mkdir -p /client/state/run
 chown $fw_user -R /client/state/run
 
 
@@ -26,7 +26,7 @@ else
 dirs=`ls /home/fs_src/ | egrep -v "local"`
 	for dir in $dirs
 		do
-			cp -r  /home/fs_src/$dir /dest/fs/	
+			cp -r  /home/fs_src/$dir/* /dest/fs/	
 			
 		done
 	#if no presistance dirs/files need to set permission here
