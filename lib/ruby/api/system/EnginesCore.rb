@@ -17,14 +17,13 @@ class EnginesCore
     sm = loadServiceManager
     return sm.software_service_definition(params)
   end
-  
- 
+
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     sm = loadServiceManager
-       return sm.get_registered_against_service(params)     
+    return sm.get_registered_against_service(params)
   end
-  
+
   def add_domain(params)
     return  @system_api.add_domain(params)
   end
@@ -63,14 +62,12 @@ class EnginesCore
     return  @docker_api.start_container(container)
   end
 
- 
-   
   def inspect_container(container)
     return  @docker_api.inspect_container(container)
   end
 
   def stop_container(container)
-    return @docker_api.stop_container(container) 
+    return @docker_api.stop_container(container)
   end
 
   def pause_container(container)
@@ -78,7 +75,7 @@ class EnginesCore
   end
 
   def  unpause_container(container)
-   return   @docker_api.unpause_container(container)
+    return   @docker_api.unpause_container(container)
   end
 
   def  ps_container(container)
@@ -89,13 +86,13 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-#  def add_monitor(site_hash)
-#    return @system_api.add_monitor(site_hash)
-#  end
-#
-#  def rm_monitor(site_hash)
-#    return @system_api.rm_monitor(site_hash)
-#  end
+  #  def add_monitor(site_hash)
+  #    return @system_api.add_monitor(site_hash)
+  #  end
+  #
+  #  def rm_monitor(site_hash)
+  #    return @system_api.rm_monitor(site_hash)
+  #  end
 
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
@@ -149,7 +146,6 @@ class EnginesCore
     return @system_api.save_system_preferences
   end
 
-
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
   end
@@ -176,8 +172,8 @@ class EnginesCore
 
   def list_avail_services_for(object)
     objectname = object.class.name.split('::').last
-#    p :load_vail_services_for
-#    p objectname
+    #    p :load_vail_services_for
+    #    p objectname
 
     services = load_avail_services_for(objectname)
 
@@ -194,12 +190,12 @@ class EnginesCore
   def load_software_service(params)
 
     sm = loadServiceManager()
-#    p :load_software_service
-#    p params
+    #    p :load_software_service
+    #    p params
     service_container =  sm.get_software_service_container_name(params)
     params[:service_container_name] = service_container
-#    p :service_container_name
-#    p service_container
+    #    p :service_container_name
+    #    p service_container
     service = loadManagedService(service_container)
     if service == nil
       return nil
@@ -245,33 +241,31 @@ class EnginesCore
     SystemUtils.log_exception(e)
     return false
   end
- 
+
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def attach_service(service_hash)
- p :attach_Service
- p service_hash
-    
+    p :attach_Service
+    p service_hash
+
     if service_hash == nil
       log_error_mesg("Attach Service passed a nil","")
       return false
     elsif service_hash.is_a?(Hash) == false
-     log_error_mesg("Attached Service passed a non Hash",service_hash)
+      log_error_mesg("Attached Service passed a non Hash",service_hash)
       return false
     end
-    
+
     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
       service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
-    
-  if service_hash.has_key?(:variables) == false
-    log_error_mesg("Attached Service passed no variables",service_hash)
-    return false
-  end
-  
 
-  
+    if service_hash.has_key?(:variables) == false
+      log_error_mesg("Attached Service passed no variables",service_hash)
+      return false
+    end
+
     sm = loadServiceManager()
     return sm.add_service(service_hash)
 
@@ -282,21 +276,21 @@ class EnginesCore
   def remove_orphaned_service(params)
     sm = loadServiceManager()
     return sm.remove_orphaned_service(params)
-    rescue Exception=>e
-        SystemUtils.log_exception e
-  end
-  
- def dettach_service(params)
-   sm = loadServiceManager()
-      return sm.remove_service(params)
-#    if service !=nil && service != false
-#      return service.remove_consumer(params)
-#    end
-#    @last_error = "Failed to dettach Service: " + @last_error
-    
   rescue Exception=>e
     SystemUtils.log_exception e
-   return  false
+  end
+
+  def dettach_service(params)
+    sm = loadServiceManager()
+    return sm.remove_service(params)
+    #    if service !=nil && service != false
+    #      return service.remove_consumer(params)
+    #    end
+    #    @last_error = "Failed to dettach Service: " + @last_error
+
+  rescue Exception=>e
+    SystemUtils.log_exception e
+    return  false
   end
 
   def list_providers_in_use
@@ -321,7 +315,7 @@ class EnginesCore
     return true
   end
 
-  #returns 
+  #returns
   def find_service_consumers(params)
     sm = loadServiceManager()
     return sm.find_service_consumers(params)
@@ -350,8 +344,8 @@ class EnginesCore
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
-#    p :open
-#    p filename
+    #    p :open
+    #    p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue
   rescue Exception=>e
@@ -359,21 +353,21 @@ class EnginesCore
   end
 
   def load_avail_services_for_type(typename)
-#    p :load_avail_services_for_by_type
-#    p typename
+    #    p :load_avail_services_for_by_type
+    #    p typename
     retval = Array.new
 
     dir = SysConfig.ServiceMapTemplateDir + "/" + typename
-#    p :dir
-#    p dir
+    #    p :dir
+    #    p dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
           if service_dir_entry.start_with?(".")   == true
             next
           end
-#          p :service_dir_entry
-#          p service_dir_entry
+          #          p :service_dir_entry
+          #          p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
@@ -393,29 +387,29 @@ class EnginesCore
         end
       end
     end
-#    p typename
-#    p retval
+    #    p typename
+    #    p retval
     return retval
   rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def load_avail_services_for(typename)
-#    p :load_avail_services_for
-#    p typename
+    #    p :load_avail_services_for
+    #    p typename
     retval = Array.new
 
     dir = SysConfig.ServiceMapTemplateDir + "/" + typename
-#    p :dir
-#    p dir
+    #    p :dir
+    #    p dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
           if service_dir_entry.start_with?(".")   == true
             next
           end
-#          p :service_dir_entry
-#          p service_dir_entry
+          #          p :service_dir_entry
+          #          p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
@@ -449,15 +443,14 @@ class EnginesCore
         #          p retval[type_path]
       end
     else
-#      p :load_avail_component_services_for_engine_got_a
-#      p engine.to_s
+      #      p :load_avail_component_services_for_engine_got_a
+      #      p engine.to_s
       return nil
     end
     return retval
   rescue Exception=>e
     SystemUtils.log_exception e
   end
-
 
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
@@ -549,7 +542,7 @@ class EnginesCore
     clear_error
     begin
       if @docker_api.destroy_container(container) != false
-        
+
         @system_api.destroy_container(container)  #removes cid file
         return true
       else
@@ -560,19 +553,17 @@ class EnginesCore
       SystemUtils.log_exception(e)
 
       return false
-      
+
     end
   end
 
-def generate_engines_user_ssh_key
-   return @system_api.regen_system_ssh_key
- end
- 
- 
-  
-def system_update
-  return @system_api.system_update
-end
+  def generate_engines_user_ssh_key
+    return @system_api.regen_system_ssh_key
+  end
+
+  def system_update
+    return @system_api.system_update
+  end
 
   def delete_image(container)
     begin
@@ -586,23 +577,23 @@ end
       return false
 
     rescue Exception=>e
-     @last_error=( "Failed To Delete " + e.to_s)
+      @last_error=( "Failed To Delete " + e.to_s)
       SystemUtils.log_exception(e)
       return false
 
     end
   end
 
-#@return boolean indicating sucess
-#@params [Hash] :engine_name
-#Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)  
-# They are removed from the tree if delete is sucessful
+  #@return boolean indicating sucess
+  #@params [Hash] :engine_name
+  #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
+  # They are removed from the tree if delete is sucessful
   def delete_engine_persistant_services(params)
     sm = loadServiceManager()
     services = sm.get_engine_persistant_services(params)
 
     services.each do |service_hash|
-      service_hash[:remove_all_application_data]  = params[:remove_all_application_data] 
+      service_hash[:remove_all_application_data]  = params[:remove_all_application_data]
       if service_hash.has_key?(:service_container_name) == false
         log_error_mesg("Missing :service_container_name in service_hash",service_hash)
         return false
@@ -622,57 +613,40 @@ end
         return false
       end
       #REMOVE THE SERVICE HERE AND NOW
-      if sm.remove_from_engine_registery(service_hash) ==true 
+      if sm.remove_from_engine_registery(service_hash) ==true
         if sm.remove_from_services_registry(service_hash) == false
           log_error_mesg("Cannot remove from Service Registry",service_hash)
           return false
         end
       else
         log_error_mesg("Cannot remove from Engine Registry",service_hash)
-        return false          
+        return false
       end
     end
     return true
 
-    rescue Exception=>e
-      @last_error=( "Failed To Delete " + e.to_s)
-      SystemUtils.log_exception(e)
-      return false
+  rescue Exception=>e
+    @last_error=( "Failed To Delete " + e.to_s)
+    SystemUtils.log_exception(e)
+    return false
 
   end
 
   def delete_image_dependancies(params)
-    
-    sm = loadServiceManager()
-#    
-#    if params[:remove_all_application_data] == true
-#        if delete_engine_persistant_services(params) == false
-#
-#          log_error_mesg("Failed to delete Service",params)
-#          return false
-#        else
-#          log_error_mesg("Deleted Service",params)
-#         end
-#    end
-    #do with Container
-    #remove logs
-    #remove status
-    #remove flags
 
-    #remove services
+    sm = loadServiceManager()
 
     if sm.rm_remove_engine(params) == false
-      log_error_mesg("Failed to remove deleted Service",params)      
+      log_error_mesg("Failed to remove deleted Service",params)
       return false
     end
-    
+
     return true
-    
-    rescue Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-end
- 
+
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
+    return false
+  end
 
   def run_system(cmd)
     clear_error
@@ -778,7 +752,6 @@ end
     end
   end
 
-
   #FIXME Kludge
   def get_container_network_metrics(containerName)
     begin
@@ -817,30 +790,31 @@ end
       return false
     end
   end
-def log_error_mesg(msg,object)
-   obj_str = object.to_s.slice(0,256)
-   
-   @last_error = msg +":" + obj_str
-   SystemUtils.log_error_mesg(msg,object)
 
- end
-  
-def register_non_persistant_services(engine_name)
-   sm = loadServiceManager()
-   return sm.register_non_persistant_services(engine_name)
-   end
-   
- def deregister_non_persistant_services(engine_name)
-   sm = loadServiceManager()
-  return sm.deregister_non_persistant_services(engine_name)
- end
- 
-#@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
-#:path_type :publisher_namespace
-def get_orphaned_services(params)
-  return loadServiceManager.get_orphaned_services(params)
-end
- 
+  def log_error_mesg(msg,object)
+    obj_str = object.to_s.slice(0,256)
+
+    @last_error = msg +":" + obj_str
+    SystemUtils.log_error_mesg(msg,object)
+
+  end
+
+  def register_non_persistant_services(engine_name)
+    sm = loadServiceManager()
+    return sm.register_non_persistant_services(engine_name)
+  end
+
+  def deregister_non_persistant_services(engine_name)
+    sm = loadServiceManager()
+    return sm.deregister_non_persistant_services(engine_name)
+  end
+
+  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  #:path_type :publisher_namespace
+  def get_orphaned_services(params)
+    return loadServiceManager.get_orphaned_services(params)
+  end
+
   protected
 
   def get_volbuild_volmaps container
@@ -873,8 +847,6 @@ end
   def get_active_persistant_services(params)
     return loadServiceManager.get_active_persistant_services(params)
   end
-
-
 
 end
 
