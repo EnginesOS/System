@@ -175,6 +175,7 @@ class SystemApi
       
       if retval == true
         Dir.delete(container_state_dir(container))
+          return true
       else
         container.last_error=("Failed to Delete state and logs:" + retval.to_s) 
         
@@ -373,6 +374,7 @@ class SystemApi
        stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
        if File.directory?(stateDir) ==false
          Dir.mkdir(stateDir)
+         Dir.exists?(stateDir + "/run") == false
          Dir.mkdir(stateDir + "/run")
        end
        log_dir = container_log_dir(container)

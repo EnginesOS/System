@@ -234,7 +234,7 @@ class ServiceManager
     p params
     services = get_engine_persistant_services(params)
     services.each do | service |
-      if params[:remove_all_application_data] == true
+      if params[:remove_all_application_data] == true || params[:remove_all_application_data] == "true"
         if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
@@ -248,6 +248,7 @@ class ServiceManager
     end
 
     if managed_engine_tree.remove!(engine_node)
+      p :tree_saved
       return  save_tree
     else
       log_error_mesg("Failed to remove engine node ",engine_node)
