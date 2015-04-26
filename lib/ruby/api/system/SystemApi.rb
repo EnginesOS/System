@@ -170,6 +170,9 @@ class SystemApi
        end
       cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.containerName + "/:/client/state:rw  -v /var/log/engines/containers/" + container.containerName + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"  
       retval =  SystemUtils.run_system(cmd)
+       cmd = "docker rm volbuilder"
+     retval =  SystemUtils.run_system(cmd)
+      
       if retval == true
         Dir.delete(container_state_dir(container))
       else
