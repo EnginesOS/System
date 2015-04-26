@@ -41,9 +41,10 @@ class VolumeService < ManagedService
           return true 
       else
         SystemUtils.log_error_mesg("Failed to Delete FS:" + retval.to_s ,service_hash)
+        @last_error="Failed to Delete FS:" + retval.to_s
         return false        
       end
-      puts "would remove " + service_hash.to_s
+    
       #update details with some manager
       return true
     rescue  Exception=>e
