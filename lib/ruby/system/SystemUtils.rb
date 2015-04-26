@@ -34,7 +34,8 @@ class SystemUtils
     if File.exists?(SysConfig.ReleaseFile) == false
          return "current"
        end
-       return  File.read(SysConfig.ReleaseFile)    
+       release =  File.read(SysConfig.ReleaseFile)
+       return release.strip    
   end
 
   def SystemUtils.symbolize_keys(hash)
