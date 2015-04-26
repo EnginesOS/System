@@ -54,7 +54,7 @@ if test -f /home/engines/scripts/startwebapp.sh
 	
 #Apache based below here
 
-trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"
+trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"  15
 rm -f /run/apache2/apache2.pid 
   
 if test -f /home/app/Rack.sh
