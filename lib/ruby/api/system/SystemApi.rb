@@ -168,11 +168,13 @@ class SystemApi
        if File.exists?(cidfile)
          File.delete(cidfile)
        end
-      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data --cidfile /opt/engines/run/volbuilder.cid  -v /opt/engines/run/containers/" + container.containerName + "/:/client/state:rw  -v /var/log/engines/containers/" + container.containerName + ":/client/log:rw    -t engines/volbuilder /home/remove_container.sh state logs"  
+      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.containerName + "/:/client/state:rw  -v /var/log/engines/containers/" + container.containerName + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"  
       retval =  SystemUtils.run_system(cmd)
       if retval == true
         Dir.delete(container_state_dir(container))
       else
+        container.last_error=("Failed to Delete state and logs:" + retval.to_s) 
+        
         SystemUtils.log_error_mesg("Failed to Delete state and logs:" + retval.to_s ,container)
         return false  
       end
