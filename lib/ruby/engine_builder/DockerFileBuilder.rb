@@ -535,17 +535,18 @@ SystemUtils.log_exception(e)
           @docker_file.puts("    chmod -R gu+rw $dest;\\")
           @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
           @docker_file.puts("    then \\")
-          @docker_file.puts("       mkdir  \"/home/app/" + directory + "\";\\")
-          @docker_file.puts( "      chown $CountUser \"/home/app/" +directory + "\";\\")
-          @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
+          @docker_file.puts("       mkdir  -p \"/home/app/" + directory + "\";\\")
+          @docker_file.puts( "      chown $data_uid  \"/home/app/" +directory + ";\\")
+          @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\")         
           @docker_file.puts("  else\\")
+
           @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
           @docker_file.puts("     for dir in `find  /home/app/" + directory  + " -type d  `;\\")
           @docker_file.puts("       do\\")
           @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
           @docker_file.puts("            if test -n $adir;\\")
           @docker_file.puts("                then\\")
-          @docker_file.puts("                      dirs=\"$dirs $adir\";\\");
+          @docker_file.puts("                      dirs=$dirs \"$adir\";\\");
           @docker_file.puts("                fi;\\")
           @docker_file.puts("       done;\\")
           @docker_file.puts(" if test -n \"$dirs\" ;\\")
@@ -643,15 +644,15 @@ SystemUtils.log_exception(e)
             @docker_file.puts("WORKDIR /tmp")
             count_layer
           end
-          if  arc_loc.start_with?("/home/app") || arc_loc.start_with?("/home/local/")
-            dest_prefix=""
-          else
-            dest_prefix="/home/app"
+          if  arc_loc.start_with?("/home/app") == false && arc_loc.start_with?("/home/local/") == false
+            dest_prefix="/home/app/"
+#          else
+#            dest_prefix="/home/app"
           end
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
           @docker_file.puts("       then\\")
-          @docker_file.puts(" mkdir -p /home/app ;\\")
+          @docker_file.puts(" mkdir -p " + dest_prefix  + " ;\\")
           @docker_file.puts(" fi;\\")
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
