@@ -707,7 +707,7 @@ class EnginesOSapi
 
   
   def update_domain(params)
-    old_domain_name=update_domain[:original_domain_name]
+    old_domain_name=params[:original_domain_name]
     if @core_api.update_domain(old_domain_name,params) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
