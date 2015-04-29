@@ -64,6 +64,7 @@ if test -f /home/app/Rack.sh
 	fi
 
 touch /engines/var/run/startup_complete
+mkdir -p /var/log/apache2/
 
 	if test -f /home/blocking.sh
 		then
