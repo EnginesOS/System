@@ -54,6 +54,12 @@ if test -f /home/engines/scripts/startwebapp.sh
 	
 #Apache based below here
 
+if test -f /run/apache2/apache2.pid 
+	then
+ 		rm -f /run/apache2/apache2.pid
+ 		echo "Warning stale Apache pid file removed"
+    fi 
+
 trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"  15
 rm -f /run/apache2/apache2.pid 
   
@@ -75,7 +81,6 @@ mkdir -p /var/log/apache2/
 	fi	
  
 
- rm -f /run/apache2/apache2.pid 
  
  
  rm /engines/var/run/startup_complete
