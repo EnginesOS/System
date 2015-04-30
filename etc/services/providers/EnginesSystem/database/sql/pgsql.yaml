@@ -105,5 +105,5 @@ target_environment_variables:
   variable_name: database_name
   environment_name: dbname  
  dbpasswd:
-  variable_name: db_password
+  variable_name: dbpassword
   environment_name: dbpasswd  
