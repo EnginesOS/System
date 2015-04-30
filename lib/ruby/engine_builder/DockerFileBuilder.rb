@@ -602,7 +602,7 @@ SystemUtils.log_exception(e)
         p arc_extract + "_" 
         p arc_dir +"|"
           
-        if arc_loc == "./"
+        if arc_loc == "./" || arc_loc == "." 
           arc_loc=""
         elsif arc_loc.end_with?("/")
           arc_loc = arc_loc.chop() #note not String#chop
