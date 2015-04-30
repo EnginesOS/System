@@ -50,7 +50,7 @@ end
    return "mysql.engines.internal"
  end
  
- def pqsql_host
+ def pgsql_host
    return "pgsql.engines.internal"
  end
  
