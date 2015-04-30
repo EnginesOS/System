@@ -276,7 +276,10 @@ def log_exception(e)
 # calls [log_exception] on error and returns false
   #@return boolean 
   def save_tree
-    
+    if File.exists?(SysConfig.ServiceTreeFile)
+      statefile_bak = SysConfig.ServiceTreeFile + ".bak"
+      File.rename( statefile,   statefile_bak)
+    end
     serialized_object = YAML::dump(@service_tree)
     f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
     f.puts(serialized_object)
