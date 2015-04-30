@@ -142,8 +142,8 @@ class EnginesCore
     return @system_api.load_system_preferences
   end
 
-  def save_system_preferences
-    return @system_api.save_system_preferences
+  def save_system_preferences(preferences)
+    return @system_api.save_system_preferences(preferences)
   end
 
   def get_container_memory_stats(container)
@@ -813,6 +813,10 @@ class EnginesCore
   #:path_type :publisher_namespace
   def get_orphaned_services(params)
     return loadServiceManager.get_orphaned_services(params)
+  end
+  
+  def clean_up_dangling_images
+    @docker_api.clean_up_dangling_images
   end
 
   protected

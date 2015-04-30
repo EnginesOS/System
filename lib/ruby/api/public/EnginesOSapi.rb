@@ -284,7 +284,7 @@ class EnginesOSapi
     #default web_site
     #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}} 
     
-    return core_api.save_system_preferences
+    return core_api.save_system_preferences(preferences)
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
   end
