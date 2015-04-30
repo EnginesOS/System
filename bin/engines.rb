@@ -43,6 +43,9 @@ def do_cmd(c_type,containerName,command)
   #  puts "Command" + command + " on " + containerName
   case command
     
+  when "clean"
+    core_api.clean_up_dangling_images 
+    
   when "providers"
 
       engines_api = EnginesOSapi.new()
