@@ -576,6 +576,7 @@ SystemUtils.log_exception(e)
       #        dirs=String.new
       @docker_file.puts("")
 
+
       @blueprint_reader.archives_details.each do |archive_details|
         arc_src = archive_details[:source_url]
         arc_name = archive_details[:package_name]
@@ -602,7 +603,7 @@ SystemUtils.log_exception(e)
         p arc_extract + "_" 
         p arc_dir +"|"
           
-        if arc_loc == "./"
+        if arc_loc == "./" || arc_loc == "." 
           arc_loc=""
         elsif arc_loc.end_with?("/")
           arc_loc = arc_loc.chop() #note not String#chop
@@ -645,7 +646,7 @@ SystemUtils.log_exception(e)
             count_layer
           end
           if  arc_loc.start_with?("/home/app") == false && arc_loc.start_with?("/home/local/") == false
-            dest_prefix="/home/app/"
+            dest_prefix="/home/app"
           else
             dest_prefix=""
           end
@@ -654,10 +655,12 @@ SystemUtils.log_exception(e)
           @docker_file.puts("       then\\")
           @docker_file.puts(" mkdir -p " + dest_prefix + arc_loc + arc_dir + " ;\\")
           @docker_file.puts(" fi;\\")
-          @docker_file.puts(" mkdir -p " + dest_prefix + arc_loc + " ;\\")
+           if dest_prefix != "" &&  dest_prefix != "/home/app"
+              @docker_file.puts(" mkdir -p " + dest_prefix + " ;\\")
+           end
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
-
+          first_archive = false
         end
       end
 
