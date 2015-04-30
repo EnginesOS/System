@@ -8,7 +8,6 @@ RUN usermod www-data -u 22005;\
 	mkdir -p /var/lib/nginx /var/run/nginx/ ;\ 
 	chown www-data /var/lib/nginx /var/run/nginx/ /etc/nginx/sites-enabled
 
-
 COPY home home
 
 COPY etc/nginx/ /etc/nginx

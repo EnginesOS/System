@@ -52,18 +52,21 @@ cat $template | sed "/FQDN/s//$fqdn/" > /tmp/site.fqdn
 cat /tmp/site.fqdn  | sed "/PORT/s//$port/" > /tmp/site.port
 cat /tmp/site.port  | sed "/SERVER/s//$parent_engine/" > /tmp/site.name
 
-	if ! test "$proto" = http
+if test "$proto" = default 
+ then
+    cp /tmp/site.name /etc/nginx/sites-enabled/default
+ elif ! test "$proto" = http
 	 then
 	 	if test -f /etc/nginx/ssl/certs/$fqdn.crt
 	 		then
 	 			cert_name=$fqdn
 	        else
 	        	 cert_name=engines
-	        fi
+	     fi
 	    cat /tmp/site.name  | sed "/CERTNAME/s//$cert_name/" > /etc/nginx/sites-enabled/${proto}_${fqdn}.site
 	 else
 	 	cp /tmp/site.name /etc/nginx/sites-enabled/${proto}_${fqdn}.site
-	 fi
+fi
 	 
 	 rm /tmp/site.*
 	 
