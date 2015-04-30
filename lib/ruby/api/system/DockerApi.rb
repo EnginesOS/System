@@ -231,7 +231,7 @@ class DockerApi
      e_option =String.new
      if(container.environments && container.environments != nil)
        container.environments.each do |environment|
-         if environment != nil
+         if environment != nil && environment.name != nil  && environment.value != nil 
            e_option = e_option + " -e " + environment.name + "=" + '"' + environment.value + '"'
          end
        end
