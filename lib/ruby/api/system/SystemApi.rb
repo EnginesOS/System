@@ -610,10 +610,10 @@ class SystemApi
      end
    end
 
-   def save_system_preferences
+   def save_system_preferences(preferences)
      clear_error
      begin
-       SystemUtils.debug_output("save prefs",:pdsf)
+       SystemUtils.debug_output("save prefs",preferences)
        return true
      rescue  Exception=>e
        SystemUtils.log_exception(e)
