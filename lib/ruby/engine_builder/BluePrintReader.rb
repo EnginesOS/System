@@ -95,8 +95,8 @@ class BluePrintReader
   end
 
    def read_web_port_overide
-     if @blueprint[:software].has_key?(:read_web_port_overide) == true
-       @web_port=@blueprint[:software][:read_web_port_overide]
+     if @blueprint[:software].has_key?(:framework_port_overide) == true
+       @web_port=@blueprint[:software][:framework_port_overide]
      end
    end
 
