@@ -646,8 +646,8 @@ SystemUtils.log_exception(e)
           end
           if  arc_loc.start_with?("/home/app") == false && arc_loc.start_with?("/home/local/") == false
             dest_prefix="/home/app/"
-#          else
-#            dest_prefix="/home/app"
+          else
+            dest_prefix=""
           end
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
