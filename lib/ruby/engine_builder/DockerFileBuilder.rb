@@ -652,7 +652,7 @@ SystemUtils.log_exception(e)
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
           @docker_file.puts("       then\\")
-          @docker_file.puts(" mkdir -p " + dest_prefix  + " ;\\")
+          @docker_file.puts(" mkdir -p " + dest_prefix + arc_loc + " ;\\")
           @docker_file.puts(" fi;\\")
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
