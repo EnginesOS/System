@@ -481,63 +481,7 @@ class EnginesOSapi
     return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
-#  def registerEngineDNS engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","Register Engine DNS")
-#    end
-#    retval = engine.register_dns()
-#
-#    if retval.is_a?(String)
-#      p retval
-#      return failed(engine_name,retval,"Register Engine DNS")
-#    end
-#    return success(engine_name,"Register Engine DNS")
-#  rescue Exception=>e
-#    return log_exception_and_fail("Register Engine DNS",e)
-#  end
-#
-#  def deregisterEngineDNS engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","DeRegister Engine DNS")
-#    end
-#    retval = engine.deregister_dns()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"DeRegister Engine DNS")
-#    end
-#    return success(engine_name,"DeRegister Engine DNS")
-#  rescue Exception=>e
-#    return log_exception_and_fail("deRegister Engine DNS",e)
-#  end
-##
-#  def monitorEngine engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","Monitor Engine")
-#    end
-#    retval = engine.monitor_site()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"Monitor Engine")
-#    end
-#    return success(engine_name,"Monitor Engine")
-#  rescue Exception=>e
-#    return log_exception_and_fail("Monitor Engine",e)
-#  end
-#
-#  def demonitorEngine engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","DeMonitor Engine")
-#    end
-#    retval = engine.demonitor_site()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"DeMonitor Engine")
-#    end
-#    return success(engine_name,"DeMonitor Engine")
-#  rescue Exception=>e
-#    return log_exception_and_fail("DeMonitor Engine",e)
-#  end
+
 
   def get_engine_blueprint engine_name
 #    p :get_blueprint_for
