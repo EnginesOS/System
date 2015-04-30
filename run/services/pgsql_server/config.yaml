@@ -1,4 +1,4 @@
---- !ruby/object:PgSQLService
+--- !ruby/object:ManagedService
 containerName: pgsql_server
 publisher_namespace: EnginesSystem
 type_path: database/sql/pgsql

@@ -17,9 +17,9 @@ if test -z $database_name
 		exit -1
 	fi
 	
-if test -z $db_username
+if test -z $dbusername
 	then
-		echo Error:No db_username value
+		echo Error:No dbusername value
 		exit -1
 	fi
 		
@@ -35,8 +35,8 @@ if test -z $collation
 		exit -1
 	fi
 	
-echo  "CREATE ROLE $db_username WITH ENCRYPTED PASSWORD '$db_password'  LOGIN;" >/tmp/.c.sql
-echo "CREATE DATABASE $database_name OWNER = $db_username ;" >> /tmp/.c.sql
+echo  "CREATE ROLE $dbusername WITH ENCRYPTED PASSWORD '$dbpassword'  LOGIN;" >/tmp/.c.sql
+echo "CREATE DATABASE $database_name OWNER = $dbusername ;" >> /tmp/.c.sql
 echo "alter  ROLE $db_username login; " >> /tmp/.c.sql
 
 
