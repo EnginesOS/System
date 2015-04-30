@@ -110,13 +110,25 @@ module ServicesModule
         return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
       end
       end
-#   def register_service(service_hash)
-#     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
-#   end
-#   def deregister_service(service_hash)
-#     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
-#   end
-   
+    #@ return [EnginesOSapiResult]
+      #@params service_hash
+      #this method is called to register the service hash with service
+      #nothing is written to the service resgitry
+   def register_service(service_hash)
+     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
+   end
+  #@ return [EnginesOSapiResult]
+    #@params service_hash
+    #this method is called to deregister the service hash from service
+    #nothing is written to the service resgitry   
+   def deregister_service(service_hash)
+     return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
+   end
+  #@ return [EnginesOSapiResult]
+      #@params service_hash
+      #this method is called to deregister the service hash from service
+     # and then to register the service_hash with the service
+      #nothing is written to the service resgitry   
    def reregister_service(service_hash)
     if  deregister_service(service_hash).was_success
       return register_service(service_hash)
