@@ -23,9 +23,9 @@ if test -z $dbusername
 		exit -1
 	fi
 		
-if test -z $db_password
+if test -z $dbpassword
 	then
-		echo Error:No db_password value
+		echo Error:No dbpassword value
 		exit -1
 	fi
 	
