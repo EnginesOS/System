@@ -232,7 +232,8 @@ class DockerApi
      if(container.environments && container.environments != nil)
        container.environments.each do |environment|
          if environment != nil && environment.name != nil  && environment.value != nil 
-           e_option = e_option + " -e " + environment.name + "=" + '"' + environment.value + '"'
+           environment.value.gsub!(/ /,"\\ ")
+           e_option = e_option + " -e " + environment.name + "="  + environment.value 
          end
        end
      end
