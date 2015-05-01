@@ -19,9 +19,9 @@ if test -z $database_name
 		exit -1
 	fi
 	
-if test -z $db_username
+if test -z $dbusername
 	then
-		echo Error:No db_username value
+		echo Error:No dbusername value
 		exit -1
 	fi
 
@@ -31,7 +31,7 @@ if test -z $db_username
 #echo "$SQL"
 
 echo "drop  DATABASE $database_name  ;" >> /tmp/.c.sql
-echo "drop  ROLE $db_username  ;" >> /tmp/.c.sql
+echo "drop  ROLE $dbusername  ;" >> /tmp/.c.sql
 
 su postgres -c psql < /tmp/.c.sql
 
