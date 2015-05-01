@@ -13,20 +13,27 @@ RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ Ser
 	mv /tmp/apache2.conf /etc/apache2/apache2.conf ;\
 \
 \
-	echo "login: &login" > config/database.yml;\ 
-	echo "  adapter: $dbflavor" >> config/database.yml;\ 
-	echo "  host: localhost">> config/database.yml;\ 
-	echo "  username: root">> config/database.yml;\ 
-	echo "  password:">> config/database.yml;\ 
-	echo "development:" >> config/database.yml;\ 
-	echo "  database: ${dbname}_dev" >> config/database.yml;\ 
-	echo "  <<: *login" >> config/database.yml;\ 
-	echo "test:" >> config/database.yml;\ 
-	echo "  database: ${dbname}_tests" >> config/database.yml;\ 
-	echo "  <<: *login" >> config/database.yml;\ 
-	echo "production:">> config/database.yml;\ 
-	echo "  database: $dbname ">> config/database.yml;\ 
-	echo "  <<: *login" >> config/database.yml
+	if test -d config ;\
+		then \
+			config_dir=config;\
+		else \
+			config_dir=".";\
+	fi ;\
+	echo "login: &login" > $config_dir/database.yml;\ 
+	echo "  adapter: $dbflavor" >> $config_dir/database.yml;\ 
+	echo "  host: localhost">> $config_dir/database.yml;\ 
+	echo "  username: root">> $config_dir/database.yml;\ 
+	echo "  password:">> $config_dir/database.yml;\ 
+	echo "development:" >> $config_dir/database.yml;\ 
+	echo "  database: ${dbname}_dev" >> $config_dir/database.yml;\ 
+	echo "  <<: *login" >> $config_dir/database.yml;\ 
+	echo "test:" >> $config_dir/database.yml;\ 
+	echo "  database: ${dbname}_tests" >> $config_dir/database.yml;\ 
+	echo "  <<: *login" >> $config_dir/database.yml;\ 
+	echo "production:">> $config_dir/database.yml;\ 
+	echo "  database: $dbname ">> $config_dir/database.yml;\ 
+	echo "  <<: *login" >> $config_dir/database.yml 
+	
 
 ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
 
