@@ -185,6 +185,8 @@ module ServicesModule
       return @core_api.get_orphaned_services(params)
     end
     
+  #@ retruns [SoftwareServiceDefinition] 
+   #for params :type_path :publisher_namespace
     def software_service_definition (params)
       retval = @core_api.software_service_definition(params)
       if retval != nil

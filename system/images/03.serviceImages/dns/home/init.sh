@@ -1,15 +1,15 @@
 #!/bin/sh
 rm -f /engines/var/run/startup_complete
 
+
+PIDFILE=/var/run/named/named.pid
+source /home/trap.sh
+
 mkdir -p /var/run/named
 chown -R bind /var/run/named
 mkdir -p /var/log/named
 chown -R bind /var/log/named
 
-	if test -f /var/run/named/named.pid
-		then
-			rm /var/run/named/named.pid
-	fi
 /usr/sbin/named -c /etc/bind/named.conf -u bind 
 
 mkdir -p /engines/var/run/

@@ -7,6 +7,12 @@ syslogd -R syslog.engines.internal:5140
 
 PID_FILE=/var/spool/postfix/pid/master.pid
 
+ if test -f $PID_FILE
+ 	then
+ 		echo "Warning stale $PID_FILE"
+ 		rm $PID_FILE
+ 	fi
+ 	
 trap trap_term  15
 trap trap_hup 1
 trap trap_quit 3
