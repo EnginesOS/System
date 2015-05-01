@@ -39,8 +39,15 @@ echo  "CREATE ROLE $dbusername WITH ENCRYPTED PASSWORD '$dbpassword'  LOGIN;" >/
 echo "CREATE DATABASE $database_name OWNER = $dbusername ;" >> /tmp/.c.sql
 echo "alter  ROLE $db_username login; " >> /tmp/.c.sql
 
+if ! test -z $full_access
+ then
+ 	echo "alter  ROLE $db_username with superuser; " >> /tmp/.c.sql
+ fi
 
-#echo "$SQL"
+if ! test -z $debug
+ then
+		echo "$SQL"
+  fi
 
 su postgres -c psql < /tmp/.c.sql
 

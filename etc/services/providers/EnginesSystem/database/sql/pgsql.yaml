@@ -17,6 +17,20 @@ image_name: engines/pssql_server
 service_handle_field: database_name
 setup_params:
 consumer_params:
+ full_access:
+  name: full_access
+  label: Full Database Server Access
+  regex_validator: true|false
+  tooltip: "Access to all databases includes the ability to delete"
+  field_type: select_single
+  hint: "true|false"
+  select_collection:
+    - true
+    - false
+  placeholder: "true|false"
+  mandatory: true
+  value: false
+  comment: "Access to all databases includes the ability to delete"
  database_host:
   name: database_host
   label: database_host

@@ -3,19 +3,24 @@
 WORKDIR /home/app
 USER 0
 #lock down gems Do I need to ? Long process
-
-RUN chown -R root /usr/local/rbenv/versions/$ruby_version/;\
-\
-	groupadd -g $data_gid writegrp;\
+#RUN chown -R root /usr/local/rbenv/versions/$ruby_version/;\
+\#
+RUN 	groupadd -g $data_gid writegrp;\
 	usermod -G $data_gid www-data;\
 	chown -R  $data_uid.$data_gid  ./;\
 \
-	mkdir -p /home/app/tmp/ /home/app/public/cache/ home/app/public/assets /run/apache2;\
+	mkdir -p /home/app/tmp/ /home/app/public/cache/ /home/app/public/assets /run/apache2;\
 	chown www-data.$data_gid -R public;\
 	chown www-data.$data_gid -R /home/app/tmp/ /run/apache2;\
 \
-	chmod -R g+w log  app/assets;\
-	chmod g+w db
+	mkdir -p log;\
+	chmod -R g+w  log;\
+
+		if test -d db;\
+			then \
+				chmod -R g+w  db;\
+		fi
+	
 
 
 #after chmod so protected
