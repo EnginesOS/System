@@ -41,7 +41,7 @@ consumer_params:
   value: "_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- username:
+ dbusername:
   name: dbusername
   label: DB User Name
   regex_validator: ".*"
@@ -102,8 +102,8 @@ target_environment_variables:
   variable_name: database_name
   environment_name: dbname
  dbuser:
-  variable_name: database_name
-  environment_name: dbname  
+  variable_name: dbusername
+  environment_name: dbuser  
  dbpasswd:
-  variable_name: db_password
+  variable_name: dbpassword
   environment_name: dbpasswd  

@@ -97,10 +97,12 @@ module ServicesModule
     end
   end
   
-  def get_service_definition(service_type,service_provider)
+  #@ retruns [SoftwareServiceDefinition] 
+  #for type_path [String] and service_provider[String]
+  def get_service_definition(type_path,service_provider)
       #Fixme ignoring service_provider
       
-      return SoftwareServiceDefinition.find(service_type,service_provider)
+      return SoftwareServiceDefinition.find(type_path,service_provider)
     end
     
     def detach_service(params)

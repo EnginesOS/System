@@ -50,6 +50,11 @@ end
    return "mysql.engines.internal"
  end
  
+ def pgsql_host
+   return "pgsql.engines.internal"
+ end
+ 
+ 
  def blueprint
    return @builder.blueprint
  end
