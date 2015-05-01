@@ -1,5 +1,8 @@
 #!/bin/sh
 
+PIDFILE=/home/cron/fcron.pid
+source /home/trap.sh
+
 /home/backup/fcron/sbin/fcron 
 syslogd -n -R syslog.engines.internal:5140
 touch /var/run/startup_complete

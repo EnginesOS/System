@@ -1,5 +1,9 @@
 #!/bin/sh
 
+
+PIDFILE=/home/cron/fcron.pid
+source /home/trap.sh
+
 /home/cron/sbin/fcron -p  /home/cron/log/cron.log
 
 syslogd -n -R syslog.engines.internal:5140

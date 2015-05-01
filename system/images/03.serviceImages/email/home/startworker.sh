@@ -1,5 +1,8 @@
 #!/bin/sh
 
+PIDFILE=/var/spool/postfix/pid/master.pid
+source /home/trap.sh
+
 touch   /var/log/mail.err
 touch  /var/log/maillog
 postmap /etc/postfix/transport

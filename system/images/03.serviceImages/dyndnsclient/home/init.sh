@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PIDFILE=/home/dyndns/dyndns.pid
+source /home/trap.sh
 
 while test 0 -ne 1
 do
