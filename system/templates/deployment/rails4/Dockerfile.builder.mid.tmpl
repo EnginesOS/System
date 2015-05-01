@@ -40,11 +40,11 @@ ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
 
 USER $ContUser
 
-RUN  /usr/local/rbenv/shims/bundle config build.nokogiri --use-system-libraries;\
-	/usr/local/rbenv/shims/bundle install 
-#   /usr/local/rbenv/shims/bundle exec rake db:migrate;\
-#   /usr/local/rbenv/shims/bundle exec rake db:populate;\
-#   /usr/local/rbenv/shims/bundle exec rake assets:precompile
+RUN  if test -f Gemfile ;\
+	then \
+	 /usr/local/rbenv/shims/bundle config build.nokogiri --use-system-libraries;\
+	 /usr/local/rbenv/shims/bundle install;\
+	 fi  
 
 #include custom rakes here
 
