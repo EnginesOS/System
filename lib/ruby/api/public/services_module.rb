@@ -86,6 +86,8 @@ module ServicesModule
     return @core_api.get_engine_persistant_services(params)
   end
   
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
   def attach_service(params)
     if params.has_key?(:service_handle) == false
       params[:service_handle] = params[:variables][:name]
@@ -105,6 +107,8 @@ module ServicesModule
       return SoftwareServiceDefinition.find(type_path,service_provider)
     end
     
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
     def detach_service(params)
       if   @core_api.dettach_service(params)== true
         success(params[:parent_engine].to_s,"detach service")
@@ -112,10 +116,12 @@ module ServicesModule
         return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
       end
       end
+      
     #@ return [EnginesOSapiResult]
       #@params service_hash
       #this method is called to register the service hash with service
-      #nothing is written to the service resgitry
+      #nothing is written to the service registry
+      #effectivitly activating non persistant services
    def register_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
    end
