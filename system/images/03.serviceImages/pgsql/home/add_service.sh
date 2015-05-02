@@ -29,14 +29,25 @@ if test -z $dbpassword
 		exit -1
 	fi
 	
-if test -z $collation
+if test -z $encoding
 	then
-		echo Error:No collation value
+		echo Error:No encoding value
 		exit -1
 	fi
 	
 echo  "CREATE ROLE $dbusername WITH ENCRYPTED PASSWORD '$dbpassword'  LOGIN;" >/tmp/.c.sql
-echo "CREATE DATABASE $database_name OWNER = $dbusername ;" >> /tmp/.c.sql
+	if test $encoding = "ascii"
+		then 
+			echo "CREATE DATABASE $database_name OWNER = $dbusername ;" >> /tmp/.c.sql
+		else
+			echo "CREATE DATABASE $database_name \
+			with OWNER  $dbusername\
+			Encoding 'UTF8'\
+			TEMPLATE = template0\;" >> /tmp/.c.sql			
+			
+			#LC_COLLATE = '$collation'\
+  			#LC_CTYPE = '$collation';" >> /tmp/.c.sql			
+		fi
 echo "alter  ROLE $db_username login; " >> /tmp/.c.sql
 
 if ! test -z $full_access
