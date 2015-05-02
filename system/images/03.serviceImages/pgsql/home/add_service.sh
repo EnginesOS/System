@@ -43,18 +43,18 @@ echo  "CREATE ROLE $dbusername WITH ENCRYPTED PASSWORD '$dbpassword'  LOGIN;" >/
 			echo "CREATE DATABASE $database_name \
 			with OWNER  $dbusername\
 			Encoding 'UTF8'\
-			TEMPLATE = template0\;" >> /tmp/.c.sql			
+			TEMPLATE = template0;" >> /tmp/.c.sql			
 			
 			#LC_COLLATE = '$collation'\
   			#LC_CTYPE = '$collation';" >> /tmp/.c.sql			
 		fi
-echo "alter  ROLE $db_username login; " >> /tmp/.c.sql
+echo "alter  ROLE $dbusername login; " >> /tmp/.c.sql
 
 if ! test -z $full_access
  then
  		if $full_access == true
  			then
- 				echo "alter  ROLE $db_username with superuser; " >> /tmp/.c.sql
+ 				echo "alter  ROLE $dbusername with superuser; " >> /tmp/.c.sql
  			fi
  fi
 
