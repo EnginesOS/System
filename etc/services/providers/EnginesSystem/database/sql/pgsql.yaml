@@ -99,13 +99,13 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "utf8_general_ci"
+  value: "en_US.UTF-8"
   select_collection:
   - !ruby/object:String  
-       "utf8_general_ci"
+       "en_US.UTF-8"
   - !ruby/object:String  
-       "ascii"
-  comment:  " "
+       "default"
+  comment:  " defaults to acsii"
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
