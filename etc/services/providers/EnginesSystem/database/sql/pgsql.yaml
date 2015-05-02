@@ -91,21 +91,21 @@ consumer_params:
   comment:  " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
- collation:
-  name: collation
-  label: DB collation
+ encoding:
+  name: encoding
+  label: DB encoding
   tooltip: " "
   field_type: select_single
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "utf8_general_ci"
+  value: "ascii"
   select_collection:
   - !ruby/object:String  
-       "utf8_general_ci"
+       "utf8"
   - !ruby/object:String  
        "ascii"
-  comment:  " "
+  comment:  " defaults to acsii"
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
