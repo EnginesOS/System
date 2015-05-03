@@ -15,7 +15,7 @@ touch /var/run/startup_complete
 
 syslogd  -R syslog.engines.internal:5140
 
-exec sshd -D -f /home/auth/ssh/sshd_config
+exec /usr/sbin/sshd -D -f /home/auth/ssh/sshd_config
  
 
 
