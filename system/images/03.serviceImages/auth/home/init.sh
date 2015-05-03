@@ -13,8 +13,10 @@ if test -f /home/auth/first_run.sh
 
 touch /var/run/startup_complete
 
-sshd -f /home/ssh/sshd_config
-exec syslogd -n -R syslog.engines.internal:5140
+syslogd  -R syslog.engines.internal:5140
+
+exec sshd -D -f /home/auth/ssh/sshd_config
+ 
 
 
 rm -f /engines/var/run/startup_complete
