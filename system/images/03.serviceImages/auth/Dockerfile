@@ -1,7 +1,11 @@
 FROM  engines/servicebase:$release
 RUN apt-get -y update;\
 	apt-get -y install syslogd openssh-server mysql-client ;\
-	echo "Y" | adduser -q --disabled-password --home /home/auth -uid 22017 auth
+	echo "Y" | adduser -q --disabled-password --home /home/auth -uid 22017 auth;\
+	ssh-keygen -f /home/auth/ssh/ssh_host_rsa_key  -N '' -t rsa;\
+	ssh-keygen -f /home/auth/ssh/ssh_host_dsa_key  -N '' -t dsa;\
+	ssh-keygen -f /home/auth/ssh/ssh_host_ecdsa_key  -N '' -t ecdsa;\
+	ssh-keygen -f /home/auth/ssh/ssh_host_ed25519_key  -N '' -t ed25519
 	
 
 COPY home home
