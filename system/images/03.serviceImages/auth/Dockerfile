@@ -1,6 +1,6 @@
 FROM  engines/servicebase:$release
 RUN apt-get -y update;\
-	apt-get -y install syslogd openssh-server ;\
+	apt-get -y install syslogd openssh-server mysql-client ;\
 	echo "Y" | adduser -q --disabled-password --home /home/auth -uid 22017 auth
 	
 
