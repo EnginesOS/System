@@ -5,7 +5,7 @@ author: Engines
 title: "FTP Access Service"
 description: "Provides FTP access to Persistant File Storage"
 type_path: filesystem/service/ftp
-service_container: ftp
+service_container: auth
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
@@ -83,4 +83,5 @@ consumer_params:
    placeholder: "true|false"
    mandatory: true
    value: false
-   comment: "Allow ftp that passes plain text password"   
+   comment: "Allow ftp that passes plain text password"
+ 

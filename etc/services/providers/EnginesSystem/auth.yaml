@@ -1,25 +1,21 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: 
-- !ruby/object:String  
-  "ManagedEngine"
-- !ruby/object:String    
-  "ManagedService"
 author: Engines
-title: Cron
-description: "Scheduales tasks"
-type_path: cron
-service_container: cron
+title: Auth
+description: "Credential management"
+type_path: auth
+service_container: auth
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
-service_handle_field: name
+persistant: true
+service_handle_field: userid
 setup_params:
 consumer_params:
- name:
-  name: name
-  label: service tag name
+ userid:
+  name: userid
+  label: User name
   regex_validator: ".*"
-  tooltip: "service tag name"
+  tooltip: "User name"
   field_type: "text_field"
   hint: " "
   placeholder: " "
@@ -27,25 +23,39 @@ consumer_params:
   value: "_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- cron_job:
-  regex_invalid_message: "wrong go back and try again"
-  name: cron_job
-  label: Cron line
+ passwd:
+  name: passwd
+  label: Password
   regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: "* * * * * command"
+  tooltip: "Password"
+  field_type: "text_field"
+  hint: " "
   placeholder: " "
   mandatory: true
+  value: "_Builder(random(10))"
   comment: " "
- title:
-  regex_invalid_message: "wrong go back and try again"
-  name: title
-  label: Cron line title
+  regex_invalid_message: "wrong go back and try again" 
+ homedir:
+  name: homedir
+  label: Homedirectory
   regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: ""
-  placeholder: "a label "
+  tooltip: "Homedirectory"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
   mandatory: true
+  value: ""
   comment: " "
+  regex_invalid_message: "wrong go back and try again"   
+ engine:
+  name: engine
+  label: engine
+  regex_validator: ".*"
+  tooltip: "engine"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"   
