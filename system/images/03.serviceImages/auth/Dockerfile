@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	
 
 COPY home home
-RUN chown -T auth /home/auth
+RUN chown -R auth /home/auth
 
 USER auth
 
