@@ -1,0 +1,22 @@
+--- !ruby/object:ManagedService
+containerName: auth
+ctype: service
+persistant: false
+publisher_namespace: EnginesSystem
+type_path: auth
+last_error: 
+memory: '16'
+hostName: auth
+domainName: 
+environments: []
+image: engines/auth:alpha
+port: 
+eports:
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true

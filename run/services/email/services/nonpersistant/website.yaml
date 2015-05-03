@@ -1,12 +1,12 @@
-parent_engine:cAdvisor
+parent_engine:email
 publisher_namespace: EnginesSystem
 type_path: nginx
-service_handle: cAdvisor
+service_handle: email_admin
 service_container_name: nginx
 container_type: service
 persistant: false
 variables:
- proto: http
- port: 8080
- fqdn: cAdvisor.engines.local.demo
+ proto: https
+ port: 8000
+ fqdn: email.engines.local.demo
  internal_dir: /

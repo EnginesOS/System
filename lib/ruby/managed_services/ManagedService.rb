@@ -225,6 +225,7 @@ class ManagedService < ManagedContainer
   def reregister_consumers
     
     if @persitant == true
+      p :no_reregister_persistant
       return true
     end
     if is_running == false
