@@ -1,0 +1,51 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Cron
+description: "Scheduales tasks"
+type_path: cron
+service_container: cron
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: false
+service_handle_field: name
+setup_params:
+consumer_params:
+ name:
+  name: name
+  label: service tag name
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Builder(engine_name)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ cron_job:
+  regex_invalid_message: "wrong go back and try again"
+  name: cron_job
+  label: Cron line
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "* * * * * command"
+  placeholder: " "
+  mandatory: true
+  comment: " "
+ title:
+  regex_invalid_message: "wrong go back and try again"
+  name: title
+  label: Cron line title
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: ""
+  placeholder: "a label "
+  mandatory: true
+  comment: " "

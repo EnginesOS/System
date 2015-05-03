@@ -1,4 +1,4 @@
---- !ruby/object:FTPService
+--- !ruby/object:ManagedService
 containerName: ftp
 ctype: service
 publisher_namespace: EnginesSystem

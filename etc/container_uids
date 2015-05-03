@@ -17,6 +17,7 @@ dovecot					22013
 #vmail					22014
 backup		backup		22015
 cron					22016
+auth	auth		22017
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672
