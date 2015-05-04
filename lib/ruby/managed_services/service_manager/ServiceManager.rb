@@ -236,7 +236,9 @@ class ServiceManager
   envs = Array.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
       service_hash = YAML.load(File.read(service_file))
-      
+      p "load_File:" + service_file
+      p :got
+      p service_hash
       
       ServiceManager.set_top_level_service_params(service_hash,container.containerName)
        
