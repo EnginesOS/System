@@ -203,7 +203,7 @@ class ServiceManager
   end
   
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
-    service_def =  get_service_def(service_hash)
+   
     service_def = SoftwareServiceDefinition.find(service_hash[:service_type],service_hash[:provider])
       if service_hash  == nil
         p :panic
