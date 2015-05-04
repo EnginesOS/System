@@ -734,7 +734,7 @@ def load_and_attach_persistant_services(container)
   end
 
   def get_container_dir(container)
-    return container_state_dir(container) +"/services/"
+    return @system_api.container_state_dir(container) +"/services/"
   end
 
 
