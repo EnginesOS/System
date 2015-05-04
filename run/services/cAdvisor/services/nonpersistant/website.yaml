@@ -1,12 +1,11 @@
+--- !ruby/object:Hash
 parent_engine:cAdvisor
 publisher_namespace: EnginesSystem
 type_path: nginx
 service_handle: cAdvisor
-service_container_name: nginx
 container_type: service
-persistant: false
 variables:
  proto: http
  port: 8080
- fqdn: cAdvisor.engines.local.demo
+ fqdn: _Engine(fqdn)
  internal_dir: /

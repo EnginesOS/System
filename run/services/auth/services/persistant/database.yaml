@@ -1,0 +1,15 @@
+--- !ruby/object:Hash
+publisher_namespace: "EnginesSystem"
+type_path: "database/sql/mysql"
+variables:
+ name: "Auth_DB"
+ database_host: "_System(mysql_host)"
+ database_name: "_Engine(engine_name)"
+ db_username: "_Engine(engine_name)"
+ db_password: "_System(random(10))"
+ db_flavor: "mysql2"
+ collation: "utf8_general_ci"
+ parent_engine: "_Engine(engine_name)"
+
+
+
