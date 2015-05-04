@@ -204,8 +204,12 @@ class ServiceManager
   
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
    
-    service_def = SoftwareServiceDefinition.find(service_hash[:service_type],service_hash[:provider])
-      if service_hash  == nil
+    if service_hash == nil
+      p :set_top_level_service_params_nil_service_hash
+      return false
+    end
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:provider])
+      if service_def  == nil
         p :panic
         p :unknown_service
         return nil
