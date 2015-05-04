@@ -11,7 +11,8 @@ COPY home home
 COPY dyndns.conf /home/dyndns/
 
 RUN chown dyndns -R /home/dyndns ;\
-	chmod og-rw home/dyndns/dyndns.conf;\
+	chmod og-rw home/dyndns/dyndns.conf;\	
+	groupadd -g 22020 containers;\
 	usermod -G containers -a dyndns
 
 ENV ContUser dyndns
