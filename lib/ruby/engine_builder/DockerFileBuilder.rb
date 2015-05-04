@@ -536,7 +536,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
           @docker_file.puts("    then \\")
           @docker_file.puts("       mkdir  -p \"/home/app/" + directory + "\";\\")
-          @docker_file.puts( "      chown $data_uid  \"/home/app/" +directory + ";\\")
+          @docker_file.puts( "      chown $data_uid  \"/home/app/" +directory + "\";\\")
           @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\")         
           @docker_file.puts("  else\\")
 

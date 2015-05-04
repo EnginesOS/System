@@ -22,7 +22,8 @@ RUN apt-get -y update;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz ;\
 	apt-get -y remove  build-essential gcc make ;\
-	apt-get -y clean
+	apt-get -y clean 
+
 
 
 COPY home home
