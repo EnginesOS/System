@@ -235,10 +235,13 @@ class ServiceManager
   def load_and_attach_services(dirname,container)
   envs = Array.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
-      service_hash = YAML.load(File.read(service_file))
+      yaml = File.read(service_file)
+      service_hash = YAML::load( yaml )
       p "load_File:" + service_file
       p :got
       p service_hash
+      p :from
+      p yaml
       
       ServiceManager.set_top_level_service_params(service_hash,container.containerName)
        
