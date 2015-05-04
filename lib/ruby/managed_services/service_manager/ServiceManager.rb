@@ -212,6 +212,7 @@ class ServiceManager
       if service_def  == nil
         p :panic
         p :unknown_service
+        p service_hash
         return nil
       end
       
