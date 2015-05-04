@@ -1,5 +1,6 @@
 FROM busybox
-RUN echo "Y" | adduser  -D -h /home/volmgr -u 22007 volmgr
+RUN echo "Y" | adduser  -D -h /home/volmgr -u 22007 volmgr;\
+	usermod -G containers -a syslog
 VOLUME /fs/
 
 ENV ContUser volmgr

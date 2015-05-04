@@ -20,7 +20,8 @@ RUN /usr/sbin/usermod -u 22671 www-data ;\
  	mkdir -p /lock/apache2 ;\
  	chown www-data /run/lock/apache2;\
  	mkdir   -p /var/www/.passenger ;\
- 	chown www-data /var/www/.passenger 
+ 	chown www-data /var/www/.passenger ;\
+ 	usermod -G containers -a www-data
  	
 ADD 000-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/

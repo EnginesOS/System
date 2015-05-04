@@ -20,7 +20,8 @@ RUN cd /tmp/;\
 	 chown www-user /var/log/apache2 ;\
 	 ln -s /etc/php5/mods-available/imap.ini /etc/php5/apache2/conf.d/;\
 	 chgrp www-data /home/app/templates_c/;\
-	  chmod g+w /home/app/templates_c
+	  chmod g+w /home/app/templates_c;\
+	  usermod -G containers -a postfix
 	 
 	 
 	 

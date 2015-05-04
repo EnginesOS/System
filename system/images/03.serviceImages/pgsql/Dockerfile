@@ -15,7 +15,8 @@ RUN mv /var/lib/postgresql /var/lib/postgresql_firstrun;\
  	 sed "/ssl-cert-snakeoil\.key/s//engines\.key/"  /etc/postgresql/9.3/main/postgresql.conf > /etc/postgresql/9.3/main/postgresql.conf.new ;\
  	 cp /etc/postgresql/9.3/main/postgresql.conf.new /etc/postgresql/9.3/main/postgresql.conf	;\
  	 echo "listen_addresses = '*'" >> /etc/postgresql/9.3/main/postgresql.conf;\
- 	 echo "host all all 172.17.42.0/16  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
+ 	 echo "host all all 172.17.42.0/16  md5" >> /etc/postgresql/9.3/main/pg_hba.conf;\
+ 	 usermod -G containers -a postgres
  	
 ENV ContUser postgres
 ENV ContGrp  postgres

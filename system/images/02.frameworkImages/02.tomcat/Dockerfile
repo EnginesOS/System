@@ -6,7 +6,8 @@ RUN apt-get -y  --force-yes update;\
 	apt-get clean ;\
 	ln -s /var/log/tomcat7 /usr/share/tomcat7/logs;\
  	ln -s  /etc/tomcat7  /usr/share/tomcat7/conf;\
- 	ln -s /tmp /usr/share/tomcat7/temp
+ 	ln -s /tmp /usr/share/tomcat7/temp;\
+ 	usermod -G containers -a www-data
 
 ADD home home
 

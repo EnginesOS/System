@@ -6,7 +6,8 @@ RUN usermod www-data -u 22005;\
 	apt-get -y install nginx;\
 	apt-get clean;\
 	mkdir -p /var/lib/nginx /var/run/nginx/ ;\ 
-	chown www-data /var/lib/nginx /var/run/nginx/ /etc/nginx/sites-enabled
+	chown www-data /var/lib/nginx /var/run/nginx/ /etc/nginx/sites-enabled;\
+	usermod -G containers -a www-data
 
 COPY home home
 
