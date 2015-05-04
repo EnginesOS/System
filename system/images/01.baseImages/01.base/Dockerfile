@@ -17,7 +17,8 @@ RUN apt-get -y  --force-yes update;\
 	dpkg-divert --local --rename --add /sbin/initctl;\
 	ln -s /bin/true /sbin/initctl;\
 	apt-get clean;\
-	ln -s /usr/bin/sendmail /usr/sbin/sendmail
+	ln -s /usr/bin/sendmail /usr/sbin/sendmail;\
+	groupadd -g 22020 containers
 
 ADD init.sh /home/
 

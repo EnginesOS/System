@@ -6,7 +6,8 @@ RUN echo "Y" |/usr/sbin/usermod -u  22012 syslog ;\
  	apt-get -y install syslog-ng-core syslog-ng ;\
  	apt-get clean ;\
  	mkdir -p /home/rlog/;\
- 	chown syslog /var/lib/syslog-ng/ 
+ 	chown syslog /var/lib/syslog-ng/ ;\
+ 	usermod -G containers -a syslog
 #
 
 

@@ -3,6 +3,7 @@ RUN apt-get -y update;\
 	echo "Y" | adduser -q --disabled-password --home /home/cron -uid 22016 cron;\
 	groupadd -g 999 docker;\
 	usermod -G docker -a cron ;\
+	usermod -G containers -a cron ;\
 	apt-get -y install build-essential gcc make syslogd;\
 	apt-get clean ;\
 	cd /tmp; \
@@ -22,7 +23,8 @@ RUN apt-get -y update;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz ;\
 	apt-get -y remove  build-essential gcc make ;\
-	apt-get -y clean
+	apt-get -y clean 
+
 
 
 COPY home home

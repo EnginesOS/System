@@ -15,6 +15,7 @@ ADD engines.internal.domain /var/lib/bind/engines/engines.dnsrecords
 
 RUN chown bind /var/run/named;\
 	chown bind /var/lib/bind/engines;\
+	usermod -G containers -a bind;\
 	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE;\
 	mkdir -p /etc/bind/keys/;\
 	mv *private /etc/bind/keys/ddns.private;\
