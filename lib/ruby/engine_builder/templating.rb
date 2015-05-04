@@ -1,6 +1,13 @@
+# @builder_public
+# @system_access
+# @builder_public.blueprint
+# @engine_public
+# def engine_environment
+# end
 module Templating
   
-@sections = ["Blueprint","System","Builder","Engines"]
+  
+@sections = ["Blueprint","System","Builder","Engines","Engine"]
   
   
   def resolve_system_variable(match)
@@ -120,7 +127,7 @@ end
       name.sub!(/[\)]/,"")
       p :getting_engines_value_for
       p name.to_sym
-      @blueprint_reader.environments.each do |environment|
+      engine_environment.each do |environment|
         p :checking_env
         p :looking_at
         p environment.name
@@ -133,18 +140,33 @@ end
       return ""
       
       rescue Exception=>e
-        p @blueprint_reader.environments
+        p engine_environment
            SystemUtils.log_exception(e) 
           return ""
     end
+    
 
   
 def process_templated_string(template)
+    if  @system_access != nil
       template = apply_system_variables(template)
+    end
+    if @builder_public != nil
       template = apply_build_variables(template)
+    end
+    if @builder_public != nil && @builder_public.blueprint != nil
       template = apply_blueprint_variables(template)
+    end
+    if engine_environment != nil
       template = apply_engines_variables(template)
+    end
+    
+    if @engine_public != nil
+      template = apply_engine_variables(template)
+    end
+   
    return template
+   
  rescue Eception=>e
    SystemUtils.log_exception(e)
    return template
@@ -180,7 +202,22 @@ end
        return template
  end
  
- 
+
+def fill_in_dynamic_vars(service_hash)
+  p "FILLING_+@+#+@+@+@+@+@+"
+  if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
+    return
+  end
+  service_hash[:variables].each do |variable|
+    p variable
+    if variable[1] != nil && variable[1].start_with?("_")
+      #variable[1].sub!(/\$/,"")
+    #  result = evaluate_function(variable[1])
+      result = process_templated_string(variable[1])
+      service_hash[:variables][variable[0]] = result
+    end
+  end
+end
   
   
 end

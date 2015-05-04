@@ -720,6 +720,23 @@ class EnginesCore
       return false
     end
   end
+def load_and_attach_persistant_services(container)
+    dirname = get_container_dir(container) + "/persistant/"
+  sm = loadServiceManager()
+    return sm.load_and_attach_services(dirname,container )
+  end
+  
+
+  def load_and_attach_nonpersistant_services(container)
+    dirname = get_container_dir(container) + "/nonpersistant/"
+    sm = loadServiceManager()
+    return sm.load_and_attach_services(dirname,container)
+  end
+
+  def get_container_dir(container)
+    return container_state_dir(container) +"/services/"
+  end
+
 
   #install from fresh copy of blueprint in repositor
   def reinstall_engine(engine)

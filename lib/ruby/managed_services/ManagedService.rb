@@ -183,9 +183,18 @@ class ManagedService < ManagedContainer
 
   def create_service()
    
+    envs = @core_api.load_and_attach_persistant_services(self)
+    if envs !=nil    
+      @envionments.concat(envs)
+    end
+    
     if create_container() ==true
       register_with_dns()
+      
+      @core_api.load_and_attach_nonpersistant_services(self)       
+      
       @core_api.register_non_persistant_services(containerName)
+      
       reregister_consumers()
       save_state()
       return true
@@ -197,6 +206,7 @@ class ManagedService < ManagedContainer
 
   
 
+  
   
   def recreate
     

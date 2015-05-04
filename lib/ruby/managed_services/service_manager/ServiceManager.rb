@@ -201,6 +201,54 @@ class ServiceManager
     log_exception(e)
     return false
   end
+  
+  def ServiceManager.set_top_level_service_params(service_hash,container_name)
+    service_def =  get_service_def(service_hash)
+    service_def = SoftwareServiceDefinition.find(service_hash[:service_type],service_hash[:provider])
+      if service_hash  == nil
+        p :panic
+        p :unknown_service
+        return nil
+      end
+      
+    service_hash[:persistant] = service_def[:persistant]
+     
+     service_hash[:parent_engine]=container_name
+     if service_hash.has_key?(:variables) == false
+       service_hash[:variables] = Hash.new
+     end
+     service_hash[:variables][:parent_engine]=container_name
+     if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
+       service_hash[:service_handle] = service_hash[:variables][:name]
+     else
+       service_hash[:service_handle] = container_name
+     end
+ 
+   end
+  #@returns boolean
+  #load persistant and non persistant service definitions off disk and registers them
+  def load_and_attach_services(dirname,container)
+  envs = Array.new
+    Dir.glob(dirname + "/*.yaml").each do |service_file|
+      service_hash = YAML.load(File.read(service_file))
+      
+      
+      ServiceManager.set_top_level_service_params(service_hash,container.containerName)
+       
+      new_envs = process_templated_hash(service_hash,container)
+            
+        if new_envs != nil
+          envs.concat(new_envs)
+        end
+      add_service(service_hash)        
+    end    
+    return envs  
+
+    rescue Exception=>e
+       puts e.message
+       log_exception(e)
+       return false
+  end
 
   #@return the service_handle from the service_hash
   # for backward compat (to be changed)
@@ -214,6 +262,9 @@ class ServiceManager
       return nil
     end
   end
+  
+  
+  
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_application_data is true all data is deleted and all persistant services removed

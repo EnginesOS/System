@@ -371,7 +371,8 @@ class SystemApi
        container.core_api = nil
        serialized_object = YAML::dump(container)
        container.core_api = api
-       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+       stateDir = container_state_dir(container)
+       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
        if File.directory?(stateDir) ==false
          Dir.mkdir(stateDir)
          Dir.exists?(stateDir + "/run") == false

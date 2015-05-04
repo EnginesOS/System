@@ -8,8 +8,9 @@ syslogd -R syslog.engines.internal:5140
 #source /home/trap.sh
 
 mkdir -p /engines/var/run/
-touch  /engines/var/run/startup_complete
-chown 21000 /engines/var/run/startup_complete
+	touch  /engines/var/run/startup_complete
+	chown 21000 /engines/var/run/startup_complete	
+	
 exec proftpd -n
 
 

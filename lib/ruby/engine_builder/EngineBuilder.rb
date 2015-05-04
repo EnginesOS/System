@@ -52,7 +52,11 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
-
+    
+      #fixme
+      @engine_public = nil
+      
+      
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -678,18 +682,10 @@ class EngineBuilder
   end
 
   def set_top_level_service_params(service_hash)
-    service_hash[:parent_engine]=@container_name
-    if service_hash.has_key?(:variables) == false
-      service_hash[:variables] = Hash.new
-    end
-    service_hash[:variables][:parent_engine]=@container_name
-    if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
-      service_hash[:service_handle] = service_hash[:variables][:name]
-    else
-      service_hash[:service_handle] = @container_name
-    end
-
+    return ServiceManager.set_top_level_service_params(service_hash,@container_name)
   end
+  
+
 
   def create_persistant_services
 
@@ -700,10 +696,7 @@ class EngineBuilder
       service_def = get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
-        p :servicetype_name
-        p service_hash[:service_type]
-        p :service_provider
-        p service_hash[:publisher_namespace]
+        p service_hash
         return false
       end
       if service_def[:persistant] == false
@@ -775,21 +768,6 @@ class EngineBuilder
     sm.release_orphan(service_hash)
   end
 
-  def fill_in_dynamic_vars(service_hash)
-    p "FILLING_+@+#+@+@+@+@+@+"
-    if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
-      return
-    end
-    service_hash[:variables].each do |variable|
-      p variable
-      if variable[1] != nil && variable[1].start_with?("_")
-        #variable[1].sub!(/\$/,"")
-      #  result = evaluate_function(variable[1])
-        result = process_templated_string(variable[1])
-        service_hash[:variables][variable[0]] = result
-      end
-    end
-  end
 
 #  def evaluate_function(function)
 #    if function.start_with?("_System")
@@ -953,6 +931,10 @@ class EngineBuilder
       end
     end
 
+  end
+  
+  def engine_environment
+   return @blueprint_reader.environments 
   end
 
   def debug(fld)
