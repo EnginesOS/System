@@ -21,6 +21,9 @@ class EngineBuilder
   
   require_relative 'templating.rb'
   include Templating
+  #no @engine_public avail as engine not built
+  @engine_public = nil
+  
   
   @repoName=nil
   @hostname=nil
