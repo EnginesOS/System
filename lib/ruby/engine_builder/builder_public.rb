@@ -18,6 +18,9 @@ end
  end
  
  def http_protocol  
+   if @builder.http_protocol == nil
+     return ""
+   end
    if @builder.http_protocol.include?("https")
      return "https"     
    end
