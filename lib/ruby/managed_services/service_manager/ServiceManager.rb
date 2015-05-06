@@ -218,7 +218,7 @@ class ServiceManager
         return nil
       end
       if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
-        handle_field_sym = service_def[:service_handle_field].to_symbol
+        handle_field_sym = service_def[:service_handle_field].to_sym
       end
       
     service_hash[:persistant] = service_def[:persistant]
