@@ -8,6 +8,7 @@ class EnginesCore
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @system_preferences = SystemPreferences.new
     @last_error = String.new
   end
 
@@ -227,16 +228,21 @@ class EnginesCore
   end
   
   def set_default_domain(params)
-    
+    @system_preferences.set_default_domain
   end
   
   def set_default_site(params)
+    @system_preferences.set_default_site
   end
 
-  def get_default_site(params)
-    
+  def get_default_site()
+    @system_preferences.get_default_site
   end
-    
+  
+  def get_default_site()
+    @system_preferences.get_default_domain
+  end  
+  
   def set_database_password(container_name,params)
     arg = "mysql_password=" + params[:mysql_password] +":" \
     + "server=" + container_name + ":" \
