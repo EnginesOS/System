@@ -44,27 +44,12 @@ end
    @builder.environments
  end
  
- def mysql_host
-   return "mysql.engines.internal"
- end
- 
- def pgsql_host
-   return "pgsql.engines.internal"
- end
- 
+
  
  def blueprint
    return @builder.blueprint
  end
- 
- def random cnt
-   len = cnt.to_i
-   rnd = SecureRandom.hex(len)
-#       p :RANDOM__________
-#       p rnd.byteslice(0,len) 
-   return rnd.byteslice(0,len) 
- end
- 
+
  
 
 end

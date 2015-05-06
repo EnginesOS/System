@@ -26,7 +26,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  database_host:
@@ -38,7 +38,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(mysql_host)"
+  value: "_Engines_System(mysql_host)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  database_name:
@@ -50,7 +50,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  db_username:
@@ -62,7 +62,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  db_password:
@@ -73,7 +73,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(random(10))"
+  value: "_Engines_System(random(10))"
   comment: " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"

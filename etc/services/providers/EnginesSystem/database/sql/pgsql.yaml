@@ -40,7 +40,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(pgsql_host)"
+  value: "_Engines_System(pgsql_host)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  database_name:
@@ -52,7 +52,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  dbusername:
@@ -64,7 +64,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)" 
+  value: "_Engines_Builder(engine_name)" 
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  password:
@@ -75,7 +75,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(random(10))"
+  value: "_Engines_System(random(10))"
   comment: " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"

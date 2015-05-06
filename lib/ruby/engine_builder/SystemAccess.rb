@@ -4,17 +4,16 @@ class SystemAccess
   #release etc
   
   def release
-    return SystemUtils.system_release
-   
+    return SystemUtils.system_release   
+  end
+  
+  def mysql_host
+    return "mysql.engines.internal"
   end
   
   def mysql_host
     return SysConfig.DBHost
-  end
-  
-  def pqsql_host
-    return "pgsql.engines.internal"
-  end
+  end 
   
   def smtp_host
     return SysConfig.SMTPHost
@@ -28,4 +27,13 @@ end
   def default_domain
     return SystemUtils.get_default_domain
   end
+    
+  def random cnt
+    len = cnt.to_i
+    rnd = SecureRandom.hex(len)
+ #       p :RANDOM__________
+ #       p rnd.byteslice(0,len) 
+    return rnd.byteslice(0,len) 
+  end
+  
 end
