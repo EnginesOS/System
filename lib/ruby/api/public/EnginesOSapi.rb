@@ -56,12 +56,32 @@ class EnginesOSapi
   
   def set_smarthost(params)
     #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
-    @core_api.set_smarthost(params) 
+    return @core_api.set_smarthost(params) 
   end
-  def  set_default_domain(params) 
-   
-    @core_api.set_default_domain(params) 
+  
+  #@return boolean
+  #set the default Domain used by the system in creating new engines and for services that use web
+  def  set_default_domain(params)    
+    return @core_api.set_default_domain(params) 
   end
+  
+  #@return boolean
+  #get the default Domain used by the system in creating new engines and for services that use web
+  def  get_default_domain(params)    
+    return @core_api.set_default_domain(params) 
+  end
+  
+  #@return boolean
+   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def set_default_site(params)
+    return @core_api.set_default_site(params) 
+  end
+  #@return boolean
+   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def get_default_site()
+    return @core_api.get_default_site 
+  end
+    
   def set_first_run_parameters params
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
