@@ -982,6 +982,9 @@ def generate_engines_user_ssh_key
 def system_update
   return SystemUtils.run_command("/opt/engines/bin/system_update.sh")
 end
+def container_state_dir(container)
+    return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+  end
    
    protected
 
@@ -989,9 +992,7 @@ end
      return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
    end
 
-   def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-   end
+  
 
    def container_log_dir container
      return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName

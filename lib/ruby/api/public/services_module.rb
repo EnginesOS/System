@@ -203,11 +203,7 @@ module ServicesModule
        return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
     end
     
-    #protected if protected static cant call
-    def success(item_name ,cmd)
-      return EnginesOSapiResult.success(item_name ,cmd)
-    end
-  
+
     def list_services_for(object)
       return @core_api.list_services_for(object)
     end

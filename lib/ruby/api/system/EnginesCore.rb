@@ -225,7 +225,18 @@ class EnginesCore
     SystemUtils.run_system(cmd)
 
   end
+  
+  def set_default_domain(params)
+    
+  end
+  
+  def set_default_site(params)
+  end
 
+  def get_default_site(params)
+    
+  end
+    
   def set_database_password(container_name,params)
     arg = "mysql_password=" + params[:mysql_password] +":" \
     + "server=" + container_name + ":" \
@@ -734,7 +745,7 @@ def load_and_attach_persistant_services(container)
   end
 
   def get_container_dir(container)
-    return container_state_dir(container) +"/services/"
+    return @system_api.container_state_dir(container) +"/services/"
   end
 
 

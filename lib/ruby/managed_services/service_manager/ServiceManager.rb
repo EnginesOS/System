@@ -203,11 +203,16 @@ class ServiceManager
   end
   
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
-    service_def =  get_service_def(service_hash)
-    service_def = SoftwareServiceDefinition.find(service_hash[:service_type],service_hash[:provider])
-      if service_hash  == nil
+   
+    if service_hash == nil
+      p :set_top_level_service_params_nil_service_hash
+      return false
+    end
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:provider])
+      if service_def  == nil
         p :panic
         p :unknown_service
+        p service_hash
         return nil
       end
       
@@ -230,12 +235,17 @@ class ServiceManager
   def load_and_attach_services(dirname,container)
   envs = Array.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
-      service_hash = YAML.load(File.read(service_file))
-      
+      yaml = File.read(service_file)
+      service_hash = YAML::load( yaml )
+      p "load_File:" + service_file
+      p :got
+      p service_hash
+      p :from
+      p yaml
       
       ServiceManager.set_top_level_service_params(service_hash,container.containerName)
        
-      new_envs = process_templated_hash(service_hash,container)
+      new_envs = procscess_templated_hash(service_hash,container)
             
         if new_envs != nil
           envs.concat(new_envs)

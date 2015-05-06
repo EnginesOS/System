@@ -56,12 +56,40 @@ class EnginesOSapi
   
   def set_smarthost(params)
     #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
-    @core_api.set_smarthost(params) 
+    return @core_api.set_smarthost(params) 
   end
-  def  set_default_domain(params) 
-   
-    @core_api.set_default_domain(params) 
+  
+  #@return EngineOSapiResult
+  #set the default Domain used by the system in creating new engines and for services that use web
+  def  set_default_domain(params)    
+    if @core_api.set_default_domain(params)
+      return success("Preferences","Set Default Domain")
+    else
+      return failed("Preferences", @core_api.last_error,"Set Default Domain")
+    end
   end
+  
+  #@return String
+  #get the default Domain used by the system in creating new engines and for services that use web
+  def  get_default_domain(params)    
+    return @core_api.set_default_domain(params) 
+  end
+  
+  #@return boolean
+   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def set_default_site(params)
+   if @core_api.set_default_site(params) 
+    return success("Preferences","Set Default Site")
+  else
+    return failed("Preferences", @core_api.last_error,"Set Default Site")
+  end
+end
+  #@return String
+   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def get_default_site()
+    return @core_api.get_default_site 
+  end
+    
   def set_first_run_parameters params
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
@@ -726,6 +754,10 @@ class EnginesOSapi
      return @core_api.list_providers_in_use
   end
 
+  #protected if protected static cant call
+  def success(item_name ,cmd)
+    return EnginesOSapiResult.success(item_name ,cmd)
+  end
 
   
   def failed(item_name,mesg ,cmd)
