@@ -614,27 +614,27 @@ class SystemApi
      end
    end
 
-   def save_system_preferences(preferences)
-     clear_error
-     begin
-       SystemUtils.debug_output("save prefs",preferences)
-       return true
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def load_system_preferences
-     clear_error
-     begin
-       SystemUtils.debug_output("load pres",:psdfsd)
-        
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#   def save_system_preferences(preferences)
+#     clear_error
+#     begin
+#       SystemUtils.debug_output("save prefs",preferences)
+#       return true
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
+#
+#   def load_system_preferences
+#     clear_error
+#     begin
+#       SystemUtils.debug_output("load pres",:psdfsd)
+#        
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def get_container_memory_stats(container)
      clear_error

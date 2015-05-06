@@ -29,6 +29,7 @@ class SysConfig
   #System_private
   @@DomainsFile="/opt/engines/etc/domains"
   @@FirstRunRan="/opt/engines/etc/first_ran"
+  @@SystemPreferencesFile="/opt/engines/etc/preferences/settings.yaml"
 
   #NGINX
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
@@ -75,6 +76,10 @@ class SysConfig
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
   
+  
+  def SysConfig.SystemPreferencesFile
+    return @@SystemPreferencesFile
+  end
   def SysConfig.engines_ssh_private_keyfile
     return @@engines_ssh_private_keyfile
   end
