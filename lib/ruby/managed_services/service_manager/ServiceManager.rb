@@ -205,26 +205,33 @@ class ServiceManager
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
    
     if service_hash == nil
-      p :set_top_level_service_params_nil_service_hash
+      log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
+      return false
+    end
+    if container_name == nil
+      log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
       return false
     end
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
       if service_def  == nil
-        p :panic
-        p :unknown_service
-        p service_hash
+        log_error_mesg("no service_def for",service_hash)
         return nil
+      end
+      if service_def.has_key?(service_handle_field) && service_def[:service_handle_field] !=nil
+        handle_field_sym = service_def[:service_handle_field].to_symbol
       end
       
     service_hash[:persistant] = service_def[:persistant]
      
-     service_hash[:parent_engine]=container_name
+     service_hash[:parent_engine]=container_name     
+       
      if service_hash.has_key?(:variables) == false
        service_hash[:variables] = Hash.new
      end
      service_hash[:variables][:parent_engine]=container_name
-     if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
-       service_hash[:service_handle] = service_hash[:variables][:name]
+       
+     if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
      else
        service_hash[:service_handle] = container_name
      end

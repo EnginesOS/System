@@ -695,7 +695,7 @@ class EngineBuilder
 
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      service_hash[:parent_engine]=@container_name #do I need this?
+#      service_hash[:parent_engine]=@container_name #do I need this?
         
       service_def = get_service_def(service_hash)
       if service_def == nil
