@@ -6,10 +6,7 @@ class SystemAccess
   def release
     return SystemUtils.system_release   
   end
-  
-  def mysql_host
-    return "mysql.engines.internal"
-  end
+
   
   def mysql_host
     return SysConfig.DBHost
@@ -18,7 +15,7 @@ class SystemAccess
   def smtp_host
     return SysConfig.SMTPHost
   end
-  def timezone_city_country
+  def timezone_country_city
     return "Australia/Sydney"
 end
   def hrs_from_gmt
