@@ -4,6 +4,7 @@ class EnginesCore
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'
+  require_relative 'SystemPreferences.rb'
 
   def initialize
     @docker_api = DockerApi.new
