@@ -208,7 +208,7 @@ class ServiceManager
       p :set_top_level_service_params_nil_service_hash
       return false
     end
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:provider])
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
       if service_def  == nil
         p :panic
         p :unknown_service
