@@ -6,7 +6,9 @@ class SystemAccess
   def release
     return SystemUtils.system_release   
   end
-
+  def pgsql_host
+    return "pgsql.engines.internal"
+  end 
   
   def mysql_host
     return SysConfig.DBHost
