@@ -538,7 +538,7 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_start_script] != nil\
       &&  @blueprint[:software][:custom_start_script].length >0 
       content = @blueprint[:software][:custom_start_script].gsub(/\r/, "")
-      write_software_file(get_basedir() + SysConfig.StartScript,content)      
+      write_software_file(SysConfig.StartScript,content)      
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
   end
@@ -548,7 +548,7 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_install_script] != nil\
       && @blueprint[:software][:custom_install_script].length >0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, "")
-      write_software_file(get_basedir() + SysConfig.InstallScript,content)
+      write_software_file(SysConfig.InstallScript,content)
 #      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
 #      install_script_file.puts(content)
 #      install_script_file.close
@@ -572,7 +572,7 @@ class EngineBuilder
       && @blueprint[:software][:custom_post_install_script] != nil \
       && @blueprint[:software][:custom_post_install_script].length >0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
-      write_software_file(get_basedir() + SysConfig.PostInstallScript,content)
+      write_software_file(SysConfig.PostInstallScript,content)
 #        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
 #      post_install_script_file.puts(content)
 #      post_install_script_file.close
@@ -592,7 +592,7 @@ class EngineBuilder
             contents = contents + "\n" + content
   
         end
-        write_software_file(get_basedir() + SysConfig.CustomPHPiniFile,contents)
+        write_software_file( SysConfig.CustomPHPiniFile,contents)
   
       end
     end
