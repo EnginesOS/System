@@ -538,10 +538,7 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_start_script] != nil\
       &&  @blueprint[:software][:custom_start_script].length >0 
       content = @blueprint[:software][:custom_start_script].gsub(/\r/, "")
-        
-      start_script_file = File.open(get_basedir() + SysConfig.StartScript,"wb", :crlf_newline => false)
-      start_script_file.puts(content)
-      start_script_file.close
+      write_software_file(get_basedir() + SysConfig.StartScript,content)      
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
   end
@@ -551,19 +548,21 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_install_script] != nil\
       && @blueprint[:software][:custom_install_script].length >0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, "")
-      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
-      install_script_file.puts(content)
-      install_script_file.close
+      write_software_file(get_basedir() + SysConfig.InstallScript,content)
+#      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
+#      install_script_file.puts(content)
+#      install_script_file.close
       p :create_install_script
-      p get_basedir() + SysConfig.InstallScript
-      p @blueprint[:software][:custom_install_script]
-        t = @blueprint[:software][:custom_install_script]
-        t.gsub!(/\r/, "")
-        p t
-        p "no_bang"
-        t =  @blueprint[:software][:custom_install_script]
-      t = t.gsub(/\r/, "")
-    p t
+#      p get_basedir() + SysConfig.InstallScript
+#      p @blueprint[:software][:custom_install_script]
+#        t = @blueprint[:software][:custom_install_script]
+#        t.gsub!(/\r/, "")
+#        p t
+#        p "no_bang"
+#        t =  @blueprint[:software][:custom_install_script]
+#      t = t.gsub(/\r/, "")
+#    p t
+#    
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
@@ -573,28 +572,30 @@ class EngineBuilder
       && @blueprint[:software][:custom_post_install_script] != nil \
       && @blueprint[:software][:custom_post_install_script].length >0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
-      post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
-      post_install_script_file.puts(content)
-      post_install_script_file.close
+      write_software_file(get_basedir() + SysConfig.PostInstallScript,content)
+#        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
+#      post_install_script_file.puts(content)
+#      post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
   end
 
-  def create_php_ini
-    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
-    if @blueprint[:software].has_key?(:custom_php_inis) \
-      && @blueprint[:software][:custom_php_inis]  != nil\
-      && @blueprint[:software][:custom_php_inis].length >0
-
-      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"wb", :crlf_newline => false)
-      @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
-        content = php_ini_hash[:content].gsub(/\r/, "")
-        php_ini_file.puts(content)
+    def create_php_ini
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
+      if @blueprint[:software].has_key?(:custom_php_inis) \
+        && @blueprint[:software][:custom_php_inis]  != nil\
+        && @blueprint[:software][:custom_php_inis].length >0
+  
+     
+        @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+          content = php_ini_hash[:content].gsub(/\r/, "")
+            contents = contents + "\n" + content
+  
+        end
+        write_software_file(get_basedir() + SysConfig.CustomPHPiniFile,contents)
+  
       end
-      php_ini_file.close
-
     end
-  end
 
   def create_apache_config
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
