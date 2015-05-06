@@ -59,13 +59,17 @@ class EnginesOSapi
     return @core_api.set_smarthost(params) 
   end
   
-  #@return boolean
+  #@return EngineOSapiResult
   #set the default Domain used by the system in creating new engines and for services that use web
   def  set_default_domain(params)    
-    return @core_api.set_default_domain(params) 
+    if @core_api.set_default_domain(params)
+      return success("Preferences","Set Default Domain")
+    else
+      return failed("Preferences", @core_api.last_error,"Set Default Domain")
+    end
   end
   
-  #@return boolean
+  #@return String
   #get the default Domain used by the system in creating new engines and for services that use web
   def  get_default_domain(params)    
     return @core_api.set_default_domain(params) 
@@ -74,9 +78,13 @@ class EnginesOSapi
   #@return boolean
    #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
   def set_default_site(params)
-    return @core_api.set_default_site(params) 
+   if @core_api.set_default_site(params) 
+    return success("Preferences","Set Default Site")
+  else
+    return failed("Preferences", @core_api.last_error,"Set Default Site")
   end
-  #@return boolean
+end
+  #@return String
    #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
   def get_default_site()
     return @core_api.get_default_site 
@@ -746,6 +754,10 @@ class EnginesOSapi
      return @core_api.list_providers_in_use
   end
 
+  #protected if protected static cant call
+  def success(item_name ,cmd)
+    return EnginesOSapiResult.success(item_name ,cmd)
+  end
 
   
   def failed(item_name,mesg ,cmd)
