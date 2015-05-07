@@ -8,5 +8,5 @@ persistant: false
 variables:
  proto: https
  port: 8000
- fqdn: email.engines.local.demo
+ fqdn: email._Engines_System(default_domain)
  internal_dir: /
