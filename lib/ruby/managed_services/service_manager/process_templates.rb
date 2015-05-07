@@ -16,7 +16,10 @@ module ProcessTemplates
   end
   
   def proccess_templated_service_hash(service_hash,container)
-    
+      p :processing_service_hash_ 
+      p service_hash
+      p :container
+      p container
   end
   
 end

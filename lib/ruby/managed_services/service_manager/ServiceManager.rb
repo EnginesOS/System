@@ -237,6 +237,9 @@ class ServiceManager
      end
  
    end
+   
+   require_relative "process_templates.rb"
+   include ProcessTemplates
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
   def load_and_attach_services(dirname,container)
