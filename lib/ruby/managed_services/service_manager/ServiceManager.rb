@@ -214,7 +214,7 @@ class ServiceManager
     end
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
       if service_def  == nil
-        log_error_mesg("no service_def for",service_hash)
+        SystemUtils.log_error_mesg("no service_def for",service_hash)
         return nil
       end
       if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
