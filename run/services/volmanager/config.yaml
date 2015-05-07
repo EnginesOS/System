@@ -1,14 +1,14 @@
 --- !ruby/object:VolumeService
 publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem
-containerName: volmanager
+container_name: volmanager
 ctype: service
 persistant: true
 conf_self_start: true
 last_error: 
 memory: '16'
-hostName: volmanager
-domainName: 
+hostname: volmanager
+domain_name: 
 environments: []
 image: engines/fs:alpha
 volumes: 

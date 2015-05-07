@@ -1,13 +1,13 @@
 --- !ruby/object:BackupService
-containerName: backup
+container_name: backup
 publisher_namespace: EnginesSystem
 type_path: backup
 ctype: service
 persistant: false
 last_error: 
 memory: '50'
-hostName: backup
-domainName: 
+hostname: backup
+domain_name: 
 environments: []
 image: engines/backup:alpha
 volumes:

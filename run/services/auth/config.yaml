@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: auth
+container_name: auth
 ctype: service
 persistant: false
 publisher_namespace: EnginesSystem
 type_path: auth
 last_error: 
 memory: '16'
-hostName: auth
-domainName: 
+hostname: auth
+domain_name: 
 environments: []
 image: engines/auth:alpha
 port: 

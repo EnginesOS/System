@@ -1,10 +1,10 @@
 --- !ruby/object:ManagedService
-containerName: cAdvisor
+container_name: cAdvisor
 ctype: service
 last_error: 
 memory: '100'
-hostName: cadvisor
-domainName: enginesos.jvodan.com
+hostname: cadvisor
+domain_name: enginesos.jvodan.com
 environments: []
 image: google/cadvisor:latest
 volumes:
