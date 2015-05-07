@@ -208,7 +208,7 @@ def fill_in_dynamic_vars(service_hash)
   end
   service_hash[:variables].each do |variable|
     p variable
-    if variable[1] != nil && variable[1].start_with?("_")
+    if variable[1] != nil && variable[1].include?("_Engines")
       #variable[1].sub!(/\$/,"")
     #  result = evaluate_function(variable[1])
       result = process_templated_string(variable[1])
