@@ -20,7 +20,7 @@ module ProcessTemplates
       p :processing_service_hash_ 
       p service_hash
       p :container
-      p container
+      p container.container_name
       
       return ret_val
   end
