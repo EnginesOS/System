@@ -7,7 +7,7 @@ module ProcessTemplates
   @builder_public = nil
   @system_access = SystemAccess.new
   #@builder_public.blueprint
-  @engine_public = nil
+  
   
   
   
@@ -21,6 +21,7 @@ module ProcessTemplates
       p service_hash
       p :container
       p container.container_name
+      fill_in_dynamic_vars(service_hash)
       
       return ret_val
   end
