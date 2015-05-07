@@ -252,7 +252,7 @@ class ServiceManager
       
       ServiceManager.set_top_level_service_params(service_hash,container.containerName)
        
-      new_envs = procscess_templated_hash(service_hash,container)
+      new_envs = proccess_templated_service_hash(service_hash,container)
             
         if new_envs != nil
           envs.concat(new_envs)

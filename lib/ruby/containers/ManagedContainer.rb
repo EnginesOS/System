@@ -23,9 +23,9 @@ class ManagedContainer < Container
     @repo = repo
     @last_error = last_error
     @memory = mem
-    @containerName = name
-    @hostName = host
-    @domainName = domain
+    @container_name = name
+    @hostname = host
+    @domain_name = domain
     @image = image
     @eports = e_ports
     @volumes = vols
@@ -102,7 +102,7 @@ class ManagedContainer < Container
   end
 
   def to_s
-    "#{@containerName.to_s}, #{@ctype}, #{@memory}, #{@hostName}, #{@self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
+    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
   end
 
   def read_state()
@@ -246,7 +246,7 @@ class ManagedContainer < Container
     if @deployment_type  == "web"
       add_nginx_service
     end
-    @core_api.register_non_persistant_services(@containerName)
+    @core_api.register_non_persistant_services(@container_name)
     
      
   clear_error(ret_val)
@@ -279,7 +279,7 @@ def unpause_container
   else
     @last_error ="Can't unpause Container as " + state
   end
-  @core_api.register_non_persistant_services(@containerName)
+  @core_api.register_non_persistant_services(@container_name)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -300,7 +300,7 @@ def pause_container
   else
     @last_error ="Can't pause Container as " + state
   end
-  @core_api.deregister_non_persistant_services(@containerName)
+  @core_api.deregister_non_persistant_services(@container_name)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -317,16 +317,16 @@ def stop_container
 
   if state== "running"
     ret_val = @core_api.stop_container   self
-    @core_api.deregister_non_persistant_services(@containerName)
+    @core_api.deregister_non_persistant_services(@container_name)
 
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
     if state != "paused" #force deregister if stopped or no container etc
-      @core_api.deregister_non_persistant_services(@containerName)
+      @core_api.deregister_non_persistant_services(@container_name)
     end
   end
-  @core_api.deregister_non_persistant_services(@containerName)
+  @core_api.deregister_non_persistant_services(@container_name)
   clear_error(ret_val)
   save_state()
   return  ret_val
@@ -364,7 +364,7 @@ def start_container
     @last_error ="Can't Start Container as " + state
   end
   register_with_dns
-  @core_api.register_non_persistant_services(@containerName)
+  @core_api.register_non_persistant_services(@container_name)
  
   clear_error(ret_val)
   save_state()
@@ -629,7 +629,7 @@ def rebuild_container
        if @deployment_type  == "web"
          add_nginx_service
        end
-       @core_api.register_non_persistant_services(@containerName)
+       @core_api.register_non_persistant_services(@container_name)
   end
   return ret_val
 end

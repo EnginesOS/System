@@ -160,9 +160,7 @@ def process_templated_string(template)
     if engine_environment != nil
       template = apply_engines_variables(template)
     end
-    if @engine_public != nil
-      template = apply_engine_variables(template)
-    end
+   
    
    return template
    
@@ -218,6 +216,7 @@ def fill_in_dynamic_vars(service_hash)
     end
   end
 end
-  
+
+
   
 end
