@@ -143,15 +143,15 @@ class SystemUtils
 
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:type_path] = 'dns'
-    service_hash[:parent_engine]=engine.containerName
+    service_hash[:parent_engine]=engine.container_name
 
     service_hash[:variables] = Hash.new
-    service_hash[:variables][:parent_engine]= engine.containerName
+    service_hash[:variables][:parent_engine]= engine.container_name
 
     if engine.ctype == "service"
-      service_hash[:variables][:hostname]=engine.hostName
+      service_hash[:variables][:hostname]=engine.hostname
     else
-      service_hash[:variables][:hostname]=engine.containerName
+      service_hash[:variables][:hostname]=engine.container_name
     end
     service_hash[:variables][:name]=service_hash[:variables][:hostname]
     service_hash[:container_type]=engine.ctype
@@ -182,9 +182,9 @@ class SystemUtils
 
     service_hash = Hash.new()
     service_hash[:variables] = Hash.new
-    service_hash[:parent_engine]=engine.containerName
-    service_hash[:variables][:parent_engine]=engine.containerName
-    service_hash[:variables][:name]=engine.containerName
+    service_hash[:parent_engine]=engine.container_name
+    service_hash[:variables][:parent_engine]=engine.container_name
+    service_hash[:variables][:name]=engine.container_name
     service_hash[:service_handle] =  engine.fqdn
     service_hash[:container_type]=engine.ctype
     service_hash[:variables][:fqdn]=engine.fqdn
