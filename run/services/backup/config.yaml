@@ -1,4 +1,4 @@
---- !ruby/object:BackupService
+--- !ruby/object:ManagedService
 container_name: backup
 publisher_namespace: EnginesSystem
 type_path: backup
