@@ -69,7 +69,18 @@ class ManagedContainer < Container
   :last_result,\
   :last_error
 
-
+#to support Gui's wierd convention on names 
+  def containerName
+    return @container_names
+  end
+  
+  def domainName
+    return @domain_name
+  end
+  
+  def hostName
+    return @hostname
+  end
 
   def http_protocol
     case @protocol
