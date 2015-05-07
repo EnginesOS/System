@@ -469,13 +469,13 @@ class SystemApi
      begin
        if File.exists?(SysConfig.DomainsFile) == false
 #         p :creating_new_domain_list
-         self_hosted_domain_file = File.open(SysConfig.DomainsFile,"w")
-         self_hosted_domain_file.close
+         domains_file = File.open(SysConfig.DomainsFile,"w")
+         domains_file.close
          return Hash.new
        else
-         self_hosted_domain_file = File.open(SysConfig.DomainsFile,"r")
+         domains_file = File.open(SysConfig.DomainsFile,"r")
        end
-       domains = YAML::load( self_hosted_domain_file )
+       domains = YAML::load( domains_file )
        self_hosted_domain_file.close
        if domains == false
          p :domains_error_in_load
