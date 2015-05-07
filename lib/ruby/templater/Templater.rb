@@ -168,7 +168,8 @@ def process_templated_string(template)
    
    return template
    
- rescue Eception=>e
+ rescue Exception=>e
+   p template
    SystemUtils.log_exception(e)
    return template
  end
