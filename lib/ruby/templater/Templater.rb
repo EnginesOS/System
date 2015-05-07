@@ -1,14 +1,14 @@
-# @builder_public
-# @system_access
-# @builder_public.blueprint
-# @engine_public
-# def engine_environment
-# end
-module Templating
+class Templater
   require_relative '../system/SystemAccess.rb'
   
-@sections = ["Blueprint","System","Builder","Engines","Engine"]
+#@sections = ["Blueprint","System","Builder","Engines","Engine"]
+#  
   
+  
+  def initialize(system_access,builder_public)
+    @system_access = system_access
+    @builder_public = builder_public
+  end
   
   def resolve_system_variable(match)
     #$config['db_dsnw'] = 'mysql://_Engines(dbuser):_Engines(dbpasswd)@_System(mysql_host)'/_Engines(dbname)';
@@ -223,6 +223,22 @@ def fill_in_dynamic_vars(service_hash)
   end
 end
 
+def engine_environment
+  return nil
+end
+
+def proccess_templated_service_hash(service_hash)
+  
+  
+  ret_val = Array.new
+    p :processing_service_hash_ 
+    p service_hash
+    p :container
+    p container.container_name
+    fill_in_dynamic_vars(service_hash)
+    
+    return ret_val
+end
 
   
 end
