@@ -31,6 +31,7 @@ class EngineBuilder
   @web_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,
+    :templater,
   :repoName,
   :hostname,
   :domain_name,
