@@ -238,7 +238,7 @@ class ServiceManager
  
    end
    
-   require_relative "process_templates.rb"
+   require_relative "../templater/process_templates.rb"
    include ProcessTemplates
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them

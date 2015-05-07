@@ -5,7 +5,7 @@
 # def engine_environment
 # end
 module Templating
-  
+  require_relative '../system/SystemAccess.rb'
   
 @sections = ["Blueprint","System","Builder","Engines","Engine"]
   
@@ -145,7 +145,9 @@ end
           return ""
     end
     
-
+ def set_system_access(system)
+   @system_access = system
+ end
   
 def process_templated_string(template)
     if  @system_access != nil

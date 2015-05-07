@@ -14,15 +14,14 @@ class EngineBuilder
   require_relative 'builder_public.rb'
   require_relative 'BluePrintReader.rb'
   require_relative 'DockerFileBuilder.rb'
-  require_relative 'SystemAccess.rb'
+
   
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative 'templating.rb'
+  require_relative '../templater/templating.rb'
   include Templating
-  #no @engine_public avail as engine not built
-  @engine_public = nil
+
   
   
   @repoName=nil
