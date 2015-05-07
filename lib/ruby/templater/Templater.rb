@@ -233,8 +233,7 @@ def proccess_templated_service_hash(service_hash)
   ret_val = Array.new
     p :processing_service_hash_ 
     p service_hash
-    p :container
-    p container.container_name
+
     fill_in_dynamic_vars(service_hash)
     
     return ret_val
