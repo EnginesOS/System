@@ -127,7 +127,7 @@ end
       name.sub!(/[\)]/,"")
       p :getting_engines_value_for
       p name.to_sym
-      engine_environment.each do |environment|
+      @builder_public.environments.each do |environment|
         p :checking_env
         p :looking_at
         p environment.name
@@ -161,9 +161,10 @@ def process_templated_string(template)
         && @builder_public.blueprint != nil        
         template = apply_blueprint_variables(template)
         end
-    end
-    if engine_environment != nil
-      template = apply_engines_variables(template)
+    
+       if @builder_public.environments != nil
+          template = apply_engines_variables(template)
+      end
     end
    
    
