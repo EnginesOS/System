@@ -150,7 +150,7 @@ end
  end
   
 def process_templated_string(template)
-    if  @system_access != nil
+    if @system_access != nil
       template = apply_system_variables(template)
     else
       log_error_mesg("nil system access",template)
@@ -158,7 +158,10 @@ def process_templated_string(template)
     if @builder_public != nil
       template = apply_build_variables(template)
     end
-    if @builder_public != nil && @builder_public.blueprint != nil
+    if @builder_public != nil \
+        && @builder_public.public_instance_methods.include?('blueprint') \
+        && @builder_public.blueprint != nil
+        
       template = apply_blueprint_variables(template)
     end
     if engine_environment != nil
