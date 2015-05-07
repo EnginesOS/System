@@ -2,7 +2,8 @@
 
 function copy_substituted_templates {
 
-
+if test -d /home/engines/templates/
+ then
 templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         for file in $templates
         	do     
@@ -40,6 +41,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
 #       				/home/engines/scripts/revoke_rw_access.sh `dirname $_dest_file`
 #				fi
         done
+fi
         echo run as `whoami` in `pwd`
 }
 
