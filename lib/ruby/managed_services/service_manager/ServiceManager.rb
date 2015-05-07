@@ -9,6 +9,8 @@ include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
 
+require_relative '../../templater/Templator.rb'
+require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
   #@service_tree root of the Service Registry Tree
@@ -238,8 +240,7 @@ class ServiceManager
  
    end
    
-   require_relative "../../templater/process_templates.rb"
-   include ProcessTemplates
+
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
   def load_and_attach_services(dirname,container)
@@ -257,8 +258,8 @@ class ServiceManager
       p yaml
       
       ServiceManager.set_top_level_service_params(service_hash,container.container_name)
-       
-      new_envs = proccess_templated_service_hash(service_hash,container)
+       templater =  Templater.new(SystemAccess.new,container)
+      new_envs = templater.proccess_templated_service_hash(service_hash)
             
         if new_envs != nil
           envs.concat(new_envs)

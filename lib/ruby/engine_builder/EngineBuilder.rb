@@ -19,7 +19,7 @@ class EngineBuilder
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative '../templater/templating.rb'
+  require_relative '../templater/Templator.rb'
   include Templating
 
   
@@ -84,8 +84,10 @@ class EngineBuilder
 
     @attached_services = Array.new
 
-    @builder_public = BuilderPublic.new(self)
-    @system_access = SystemAccess.new()
+    builder_public = BuilderPublic.new(self)
+    system_access = SystemAccess.new()
+    @templater = Templater.new(system_access,builder_public)
+    
     p :custom_env
     p custom_env
 
@@ -408,7 +410,7 @@ class EngineBuilder
       @blueprint_reader.environments.each do |env|
         p :env_before
         p env.value
-        env.value= process_templated_string(env.value)
+        env.value= @templator.process_templated_string(env.value)
         p :env_after
         p env.value
       end
@@ -422,7 +424,7 @@ class EngineBuilder
       index=0
       #FIXME There has to be a ruby way
       @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
-        sed_string = process_templated_string(sed_string)
+        sed_string = @templator.process_templated_string(sed_string)
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index+=1
       end
@@ -614,7 +616,7 @@ class EngineBuilder
       FileUtils.mkdir_p(dir)
     end
     out_file  = File.open(get_basedir() + container_filename_path ,"wb", :crlf_newline => false)
-    content = process_templated_string(content)
+    content = @templator.process_templated_string(content)
     out_file.puts(content)
 
     out_file.close
@@ -634,7 +636,7 @@ class EngineBuilder
     p filename
     template = File.read(filename)
 
-    template = process_templated_string(template)
+    template = @templator.process_templated_string(template)
     output_filename = filename.sub(/.tmpl/,"")
 
     out_file = File.new(output_filename,"wb")
