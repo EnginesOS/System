@@ -600,8 +600,12 @@ class EngineBuilder
 
   def create_apache_config
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
-    if @blueprint[:software].has_key?(:custom_apache_conf) && @blueprint[:software][:custom_apache_conf]  != nil
-      write_software_file(SysConfig.CustomApacheConfFile,@blueprint[:software][:custom_apache_conf])
+    if @blueprint[:software].has_key?(:apache_httpd_configurations) && @blueprint[:software][:apache_httpd_configurations]  != nil
+      contents=String.new
+      @blueprint[:software][:apache_httpd_configurations].each do | httpd_configuration|
+        contents = contents + httpd_configuration[:httpd_configuration] + "\n"
+      end
+      write_software_file(SysConfig.CustomApacheConfFile,contents)
 
     end
   end
