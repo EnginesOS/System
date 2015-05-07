@@ -19,7 +19,7 @@ class EngineBuilder
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative '../templater/Templator.rb'
+  require_relative '../templater/Templater.rb'
   include Templating
 
   
