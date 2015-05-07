@@ -77,7 +77,7 @@ class DockerApi
      begin
        commandargs="docker top " + container.container_name + " axl"
         if run_docker("top",container) == true
-          return   container.last
+          return   container.last_result
         else
           return   container.last_error
         end
