@@ -1,4 +1,4 @@
---- !ruby/object:SoftwareService
+--- !ruby/object:ManagedService
 container_name: syslog
 publisher_namespace: EnginesSystem
 type_path: log
