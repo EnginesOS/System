@@ -909,6 +909,11 @@ class EngineBuilder
     end
     return mc
   end
+  
+def engine_environment
+ return @blueprint_reader.environments 
+end
+
 
   protected
 
@@ -939,9 +944,6 @@ class EngineBuilder
 
   end
   
-  def engine_environment
-   return @blueprint_reader.environments 
-  end
 
   def debug(fld)
     puts "ERROR: "
