@@ -156,13 +156,11 @@ def process_templated_string(template)
       log_error_mesg("nil system access",template)
     end
     if @builder_public != nil
-      template = apply_build_variables(template)
-    end
-    if @builder_public != nil \
-        && @builder_public.public_instance_methods.include?('blueprint') \
-        && @builder_public.blueprint != nil
-        
-      template = apply_blueprint_variables(template)
+      template = apply_build_variables(template)    
+      if  @builder_public.public_instance_methods.include?('blueprint') \
+        && @builder_public.blueprint != nil        
+        template = apply_blueprint_variables(template)
+        end
     end
     if engine_environment != nil
       template = apply_engines_variables(template)
