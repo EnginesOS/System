@@ -26,7 +26,8 @@ module BuildReport
     report_template = get_build_report_template(blueprint)
     report = @templater.process_templated_string(report_template)
    return report
-    
+    rescue
+        return " Template generation error "
   end
   
 end

@@ -409,5 +409,14 @@ module ServicesModule
              return log_exception_and_fail("set_engine_hostname_details ",e)
     end
  
+    def get_managed_service_details_for(service_function)
+      service = Hash.new
+      if service_function == "http_router"        
+        service[:provider_namespace] = "EnginesSystem"
+        service[:type_path] = "nginx"
+      end
+     return service
+    end
+    
     
 end
