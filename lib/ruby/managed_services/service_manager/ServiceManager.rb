@@ -241,7 +241,9 @@ class ServiceManager
   #load persistant and non persistant service definitions off disk and registers them
   def load_and_attach_services(dirname,container)
   envs = Array.new
+    curr_service_file = String.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
+      curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       p "load_File:" + service_file
@@ -263,6 +265,7 @@ class ServiceManager
 
     rescue Exception=>e
        puts e.message
+       log_error_mesg("Parse error on " + curr_service_file,container)
        log_exception(e)
        return false
   end
