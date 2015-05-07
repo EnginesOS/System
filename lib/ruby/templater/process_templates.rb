@@ -1,7 +1,7 @@
 module ProcessTemplates
   
-  require_relative "../../templater/templating.rb"
-  require_relative "../../system/SystemAccess.rb"
+  require_relative "templating.rb"
+  require_relative "../system/SystemAccess.rb"
   include Templating
   
   @builder_public = nil
