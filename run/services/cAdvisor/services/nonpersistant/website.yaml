@@ -1,4 +1,3 @@
---- !ruby/object:Hash
 parent_engine: cAdvisor
 publisher_namespace: EnginesSystem
 type_path: nginx
