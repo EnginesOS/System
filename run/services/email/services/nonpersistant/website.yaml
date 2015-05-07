@@ -1,4 +1,4 @@
-parent_engine:email
+parent_engine: email
 publisher_namespace: EnginesSystem
 type_path: nginx
 service_handle: email_admin
