@@ -150,6 +150,8 @@ end
 def process_templated_string(template)
     if  @system_access != nil
       template = apply_system_variables(template)
+    else
+      log_error_mesg("nil system access",template)
     end
     if @builder_public != nil
       template = apply_build_variables(template)
