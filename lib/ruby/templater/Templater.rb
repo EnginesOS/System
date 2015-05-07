@@ -162,7 +162,7 @@ def process_templated_string(template)
         template = apply_blueprint_variables(template)
         end
     
-       if @builder_public.environments != nil && @builder_public.environments >0
+       if @builder_public.environments != nil && @builder_public.environments.count >0
           template = apply_engines_variables(template)
        else
          log_error_mesg("nil engines variables ",template)
