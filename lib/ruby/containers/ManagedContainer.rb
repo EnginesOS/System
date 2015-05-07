@@ -337,7 +337,7 @@ end
 #     @last_error="No connection to Engines OS System"
 #     return false
 #   end
-#  return @core_api.deregister_non_persistant_services(containerName)
+#  return @core_api.deregister_non_persistant_services(container_name)
 #end
 
 #def register_registered
@@ -345,7 +345,7 @@ end
 #     @last_error="No connection to Engines OS System"
 #     return false
 #   end
-#  return  @core_api.register_non_persistant_services(containerName)
+#  return  @core_api.register_non_persistant_services(container_name)
 #end
 
 def start_container
@@ -482,7 +482,7 @@ def get_ip_str
   end
   output = JSON.parse(@last_result)
   ip_str=output[0]['NetworkSettings']['IPAddress']
-  #    puts containerName + ":" + ip_str
+  #    puts container_name + ":" + ip_str
   return ip_str
 rescue
   return nil

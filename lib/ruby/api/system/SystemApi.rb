@@ -164,11 +164,11 @@ class SystemApi
   
 #       stateDir = container_state_dir(container) + "/config.yaml"
 #       File.delete(stateDir)
-       cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
+       cidfile  = SysConfig.CidDir + "/" + container.container_name + ".cid"
        if File.exists?(cidfile)
          File.delete(cidfile)
        end
-      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.containerName + "/:/client/state:rw  -v /var/log/engines/containers/" + container.containerName + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"  
+      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.container_name + "/:/client/state:rw  -v /var/log/engines/containers/" + container.container_name + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"  
       retval =  SystemUtils.run_system(cmd)
        cmd = "docker rm volbuilder"
      retval =  SystemUtils.run_system(cmd)
@@ -353,7 +353,7 @@ class SystemApi
   
    def save_build_report(container,build_report)
       clear_error
-      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
       f = File.new(stateDir  + "/buildreport.txt",File::CREAT|File::TRUNC|File::RDWR, 0644)
       f.puts(build_report)
       f.close           
@@ -372,7 +372,7 @@ class SystemApi
        serialized_object = YAML::dump(container)
        container.core_api = api
        stateDir = container_state_dir(container)
-       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
        if File.directory?(stateDir) ==false
          Dir.mkdir(stateDir)
          Dir.exists?(stateDir + "/run") == false
@@ -704,9 +704,9 @@ class SystemApi
 
        SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
-       if container.hostName != hostname || container.domainName != domain_name
-         saved_hostName = container.hostName
-         saved_domainName =  container.domainName
+       if container.hostname != hostname || container.domain_name != domain_name
+         saved_hostName = container.hostname
+         saved_domainName =  container.domain_name
          SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
          if container.set_hostname_details(hostname,domain_name) == true
@@ -983,19 +983,19 @@ def system_update
   return SystemUtils.run_command("/opt/engines/bin/system_update.sh")
 end
 def container_state_dir(container)
-    return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+    return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
   end
    
    protected
 
    def container_cid_file(container)
-     return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
+     return  SysConfig.CidDir + "/"  + container.container_name + ".cid"
    end
 
   
 
    def container_log_dir container
-     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def run_system (cmd)

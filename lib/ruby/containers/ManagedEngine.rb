@@ -6,10 +6,10 @@ class ManagedEngine < ManagedContainer
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid,deployment_type)
                             
                  @last_error="None"                 
-                 @containerName=name
+                 @container_name=name
                  @memory=memory
-                 @hostName=hostname
-                 @domainName=domain_name
+                 @hostname=hostname
+                 @domain_name=domain_name
                  @image=image
                  @eports=eports 
                  @environments=environments                

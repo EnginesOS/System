@@ -250,7 +250,7 @@ class ServiceManager
       p :from
       p yaml
       
-      ServiceManager.set_top_level_service_params(service_hash,container.containerName)
+      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
        
       new_envs = proccess_templated_service_hash(service_hash,container)
             

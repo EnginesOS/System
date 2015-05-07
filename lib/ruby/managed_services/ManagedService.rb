@@ -11,10 +11,10 @@ class ManagedService < ManagedContainer
 
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,dbs,environments,framework,runtime)
     @last_error="None"
-    @containerName=name
+    @container_name=name
     @memory=memory
-    @hostName=hostname
-    @domainName=domain_name
+    @hostname=hostname
+    @domain_name=domain_name
     @image=image
     @eports=eports
     @environments=environments
@@ -129,12 +129,12 @@ class ManagedService < ManagedContainer
   end
   
   def   add_consumer_to_service(service_hash)   
-  cmd = "docker exec " +  containerName + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+  cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
     return  SystemUtils.run_system(cmd)
   end
   
   def   rm_consumer_from_service(service_hash) 
-   cmd = "docker exec " +  containerName + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+   cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
      return SystemUtils.run_system(cmd)
      
   end 
@@ -193,7 +193,7 @@ class ManagedService < ManagedContainer
       
       @core_api.load_and_attach_nonpersistant_services(self)       
       
-      @core_api.register_non_persistant_services(containerName)
+      @core_api.register_non_persistant_services(container_name)
       
       reregister_consumers()
       save_state()

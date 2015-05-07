@@ -9,9 +9,9 @@ require 'securerandom'
 #   @repo = repo
 #   @last_error = last_error
 #   @memory = mem
-#   @containerName = name
-#   @hostName = host
-#   @domainName = domain
+#   @container_name = name
+#   @host_name = host
+#   @domain_name = domain
 #   @image = image
 #   @eports = e_ports
 #   @volumes = vols

@@ -2,9 +2,9 @@ class Container
   
   def initialize(mem,name,host,domain,image,e_ports,vols,environs) #for test only
     @memory = mem
-    @containerName = name
-    @hostName = host
-    @domainName = domain
+    @container_name = name
+    @hostname = host
+    @domain_name = domain
     @image = image
     @eports = e_ports
     @volumes = vols
@@ -12,22 +12,22 @@ class Container
     @container_id
   end
   
-  attr_reader :container_id, :memory,:containerName ,:hostName,:domainName, :image, :eports,:volumes,:environments
+  attr_reader :container_id, :memory,:container_name ,:hostname,:domain_name, :image, :eports,:volumes,:environments
    
   def update_memory(new_memory)
     @memory = new_memory
   end
          
   def fqdn
-    if @domainName == nil
+    if @domain_name == nil
       return "N/A"
     end
-    return @hostName + "." + @domainName
+    return @hostname + "." + @domain_name
   end
    
    def set_hostname_details(host_name,domain_name)
-     @hostName = host_name
-     @domainName = domain_name
+     @hostname = host_name
+     @domain_name = domain_name
      return true
    end
    

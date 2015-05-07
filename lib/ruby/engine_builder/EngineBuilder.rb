@@ -802,9 +802,9 @@ class EngineBuilder
   def EngineBuilder.re_install_engine(engine,core)
     params = Hash.new
 
-    params[:engine_name] = engine.containerName
-    params[:domain_name] = engine.domainName
-    params[:host_name] = engine.hostName
+    params[:engine_name] = engine.container_name
+    params[:domain_name] = engine.domain_name
+    params[:host_name] = engine.hostname
     params[:software_environment_variables] = engine.environments
     params[:http_protocol] = engine.protocol
     params[:memory] = engine.memory
