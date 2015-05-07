@@ -476,7 +476,7 @@ class SystemApi
          domains_file = File.open(SysConfig.DomainsFile,"r")
        end
        domains = YAML::load( domains_file )
-       self_hosted_domain_file.close
+       domains_file.close
        if domains == false
          p :domains_error_in_load
          return Hash.new
