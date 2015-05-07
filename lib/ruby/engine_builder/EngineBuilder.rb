@@ -587,8 +587,7 @@ class EngineBuilder
       if @blueprint[:software].has_key?(:custom_php_inis) \
         && @blueprint[:software][:custom_php_inis]  != nil\
         && @blueprint[:software][:custom_php_inis].length >0
-  
-     
+        contents=String.new
         @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
           content = php_ini_hash[:content].gsub(/\r/, "")
             contents = contents + "\n" + content
