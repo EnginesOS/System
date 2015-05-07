@@ -130,7 +130,8 @@ class SystemUtils
 
   def SystemUtils.get_default_domain
     if File.exists?(SysConfig.DefaultDomainnameFile)
-      return File.read(SysConfig.DefaultDomainnameFile)
+      domain = File.read(SysConfig.DefaultDomainnameFile)
+      return domain.strip
     else
       return "engines"
     end
