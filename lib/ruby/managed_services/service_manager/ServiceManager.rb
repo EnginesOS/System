@@ -9,7 +9,7 @@ include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
 
-require_relative '../../templater/Templator.rb'
+require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
