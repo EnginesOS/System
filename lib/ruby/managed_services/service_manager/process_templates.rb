@@ -16,10 +16,13 @@ module ProcessTemplates
   end
   
   def proccess_templated_service_hash(service_hash,container)
+    ret_val = Array.new
       p :processing_service_hash_ 
       p service_hash
       p :container
       p container
+      
+      return ret_val
   end
   
 end
