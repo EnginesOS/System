@@ -157,7 +157,7 @@ def process_templated_string(template)
     end
     if @builder_public != nil
       template = apply_build_variables(template)    
-      if  @builder_public.public_instance_methods.include?('blueprint') \
+      if  @builder_public.respond_to?('blueprint') \
         && @builder_public.blueprint != nil        
         template = apply_blueprint_variables(template)
         end
