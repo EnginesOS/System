@@ -68,6 +68,11 @@ class ManagedContainer < Container
   :conf_self_start,\
   :last_result,\
   :last_error
+  
+  
+  def engine_environment
+    return @environments
+  end
 
 #to support Gui's wierd convention on names 
   def containerName

@@ -127,7 +127,7 @@ end
       name.sub!(/[\)]/,"")
       p :getting_engines_value_for
       p name.to_sym
-      @builder_public.environments.each do |environment|
+      @builder_public.engine_environment.each do |environment|
         p :checking_env
         p :looking_at
         p environment.name
@@ -162,7 +162,7 @@ def process_templated_string(template)
         template = apply_blueprint_variables(template)
         end
     
-       if @builder_public.environments != nil && @builder_public.environments.count >0
+       if @builder_public.engine_environment != nil && @builder_public.engine_environment.count >0
           template = apply_engines_variables(template)
        else
          SystemUtils.log_error_mesg("nil or empty engines variables " + template,@builder_public.environments)
