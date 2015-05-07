@@ -249,7 +249,7 @@ class ServiceManager
       curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
-      SystemUtils.symbolize_keys(service_hash)
+      service_hash = SystemUtils.symbolize_keys(service_hash)
       p "load_File:" + service_file
       p :got
       p service_hash
