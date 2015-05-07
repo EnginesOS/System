@@ -1,6 +1,6 @@
 module BuildReport
   
-  require_relative 'templating.rb'
+  require_relative '../templater/templating.rb'
   include Templating
   
 
