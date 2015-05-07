@@ -138,8 +138,8 @@ end
 #      end
 #      params = Hash.new
 #      
-#      params[:engine_name] = engine.containerName  
-#      params[:domain_name] = engine.domainName
+#      params[:engine_name] = engine.container_name  
+#      params[:domain_name] = engine.domain_name
 #      params[:host_name] = engine.hostname
 #      params[:software_environment_variables] = engine.environments 
 #      params[:http_protocol] = engine.http_protocol
@@ -532,9 +532,9 @@ end
 
     retval =   container.read_state()
     # if retval == false
-    #  return failed(container.containerName,"Failed to ReadState","read state")
+    #  return failed(container.container_name,"Failed to ReadState","read state")
     #end
-    #return success(container.containerName,"read state")
+    #return success(container.container_name,"read state")
     retval
   rescue Exception=>e
     return log_exception_and_fail("read_start",e)
@@ -576,8 +576,8 @@ end
     return log_exception_and_fail("Get Service Memory Statistics",e)
   end
 
-  def get_container_network_metrics(containerName)
-    return @core_api.get_container_network_metrics(containerName)
+  def get_container_network_metrics(container_name)
+    return @core_api.get_container_network_metrics(container_name)
   rescue Exception=>e
     return log_exception_and_fail("get_container_network_metrics",e)
   end

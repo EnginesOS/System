@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: ftp
+container_name: ftp
 ctype: service
 publisher_namespace: EnginesSystem
 type_path: filesystem/service/ftp
 persistant: true
 last_error: 
 memory: '36'
-hostName: ftp
-domainName: 
+hostname: ftp
+domain_name: 
 environments: []
 image: engines/ftp:alpha
 volumes:

@@ -1,13 +1,13 @@
---- !ruby/object:SoftwareService
-containerName: syslog
+--- !ruby/object:ManagedService
+container_name: syslog
 publisher_namespace: EnginesSystem
 type_path: log
 ctype: service
 persistant: false
 last_error: 
 memory: '16'
-hostName: syslog
-domainName: 
+host_name: syslog
+domain_name: 
 environments: []
 image: engines/syslog:alpha
 volumes:

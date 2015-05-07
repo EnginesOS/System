@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: imap
+container_name: imap
 publisher_namespace: EnginesSystem
 type_path: imap
 ctype: service
 persistant: true
 last_error: 
 memory: '90'
-hostName: imap
-domainName: 
+hostname: imap
+domain_name: 
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser

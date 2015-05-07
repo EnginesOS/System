@@ -1,14 +1,14 @@
 --- !ruby/object:ManagedService
-containerName: email
+container_name: email
 ctype: service
 persistant: true
 last_error: 
 memory: '90'
-hostName: email
+hostname: email
 publisher_namespace: EnginesSystem
 type_path: email
 port: 8000
-domainName: engines.local.demo
+domain_name: engines.local.demo
 environments: []
 volumes:
  mailname: !ruby/object:Volume

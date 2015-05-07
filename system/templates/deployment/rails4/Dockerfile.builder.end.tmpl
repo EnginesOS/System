@@ -4,7 +4,7 @@ WORKDIR /home/app
 USER 0
 #lock down gems Do I need to ? Long process
 #RUN chown -R root /usr/local/rbenv/versions/$ruby_version/;\
-\#
+
 RUN 	groupadd -g $data_gid writegrp;\
 	usermod -G $data_gid www-data;\
 	chown -R  $data_uid.$data_gid  ./;\

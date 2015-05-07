@@ -1,5 +1,5 @@
 --- !ruby/object:ManagedService
-containerName: dns
+container_name: dns
 publisher_namespace: EnginesSystem
 type_path: dns
 ctype: service
@@ -7,8 +7,8 @@ persistant: false
 conf_self_start: false
 last_error: 
 memory: '64'
-hostName: dns
-domainName: 
+hostname: dns
+domain_name: 
 environments: []
 image: engines/dns:alpha
 volumes: 

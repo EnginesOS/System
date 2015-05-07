@@ -1,4 +1,4 @@
-parent_engine:email
+parent_engine: email
 publisher_namespace: EnginesSystem
 type_path: nginx
 service_handle: email_admin
@@ -8,5 +8,5 @@ persistant: false
 variables:
  proto: https
  port: 8000
- fqdn: email.engines.local.demo
+ fqdn: email._Engines_System(default_domain)
  internal_dir: /

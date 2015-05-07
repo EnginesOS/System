@@ -9,6 +9,8 @@ include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
 
+require_relative '../../templater/Templater.rb'
+require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
   #@service_tree root of the Service Registry Tree
@@ -205,47 +207,59 @@ class ServiceManager
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
    
     if service_hash == nil
-      p :set_top_level_service_params_nil_service_hash
+      log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
       return false
     end
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:provider])
+    if container_name == nil
+      log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
+      return false
+    end
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
       if service_def  == nil
-        p :panic
-        p :unknown_service
-        p service_hash
+        SystemUtils.log_error_mesg("no service_def for",service_hash)
         return nil
+      end
+      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
+        handle_field_sym = service_def[:service_handle_field].to_sym
       end
       
     service_hash[:persistant] = service_def[:persistant]
      
-     service_hash[:parent_engine]=container_name
+     service_hash[:parent_engine]=container_name     
+       
      if service_hash.has_key?(:variables) == false
        service_hash[:variables] = Hash.new
      end
      service_hash[:variables][:parent_engine]=container_name
-     if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
-       service_hash[:service_handle] = service_hash[:variables][:name]
+       
+     if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
      else
        service_hash[:service_handle] = container_name
      end
  
    end
+   
+
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
   def load_and_attach_services(dirname,container)
   envs = Array.new
+    curr_service_file = String.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
+      curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
+      service_hash = SystemUtils.symbolize_keys(service_hash)
       p "load_File:" + service_file
       p :got
       p service_hash
       p :from
       p yaml
       
-      ServiceManager.set_top_level_service_params(service_hash,container.containerName)
-       
-      new_envs = procscess_templated_hash(service_hash,container)
+      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+       templater =  Templater.new(SystemAccess.new,container)
+      new_envs = templater.proccess_templated_service_hash(service_hash)
             
         if new_envs != nil
           envs.concat(new_envs)
@@ -256,6 +270,7 @@ class ServiceManager
 
     rescue Exception=>e
        puts e.message
+       log_error_mesg("Parse error on " + curr_service_file,container)
        log_exception(e)
        return false
   end

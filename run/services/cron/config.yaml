@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: cron
+container_name: cron
 ctype: service
 persistant: false
 publisher_namespace: EnginesSystem
 type_path: cron
 last_error: 
 memory: '16'
-hostName: cron
-domainName: 
+hostname: cron
+domain_name: 
 environments: []
 image: engines/cron:alpha
 volumes:

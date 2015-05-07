@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: smtp
+container_name: smtp
 publisher_namespace: EnginesSystem
 type_path: smtp
 ctype: service
 persistant: true
 last_error: 
 memory: '32'
-hostName: smtp
-domainName: 
+hostname: smtp
+domain_name: 
 environments: []
 image: engines/smtp:alpha
 volumes: 

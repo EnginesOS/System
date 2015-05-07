@@ -14,15 +14,14 @@ class EngineBuilder
   require_relative 'builder_public.rb'
   require_relative 'BluePrintReader.rb'
   require_relative 'DockerFileBuilder.rb'
-  require_relative 'SystemAccess.rb'
+
   
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative 'templating.rb'
-  include Templating
-  #no @engine_public avail as engine not built
-  @engine_public = nil
+  require_relative '../templater/Templater.rb'
+
+
   
   
   @repoName=nil
@@ -32,6 +31,7 @@ class EngineBuilder
   @web_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,
+    :templater,
   :repoName,
   :hostname,
   :domain_name,
@@ -85,8 +85,10 @@ class EngineBuilder
 
     @attached_services = Array.new
 
-    @builder_public = BuilderPublic.new(self)
-    @system_access = SystemAccess.new()
+    builder_public = BuilderPublic.new(self)
+    system_access = SystemAccess.new()
+    @templater = Templater.new(system_access,builder_public)
+    
     p :custom_env
     p custom_env
 
@@ -409,7 +411,7 @@ class EngineBuilder
       @blueprint_reader.environments.each do |env|
         p :env_before
         p env.value
-        env.value= process_templated_string(env.value)
+        env.value= @templater.process_templated_string(env.value)
         p :env_after
         p env.value
       end
@@ -423,7 +425,7 @@ class EngineBuilder
       index=0
       #FIXME There has to be a ruby way
       @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
-        sed_string = process_templated_string(sed_string)
+        sed_string = @templater.process_templated_string(sed_string)
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index+=1
       end
@@ -538,10 +540,7 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_start_script] != nil\
       &&  @blueprint[:software][:custom_start_script].length >0 
       content = @blueprint[:software][:custom_start_script].gsub(/\r/, "")
-        
-      start_script_file = File.open(get_basedir() + SysConfig.StartScript,"wb", :crlf_newline => false)
-      start_script_file.puts(content)
-      start_script_file.close
+      write_software_file(SysConfig.StartScript,content)      
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
   end
@@ -551,19 +550,21 @@ class EngineBuilder
       &&  @blueprint[:software][:custom_install_script] != nil\
       && @blueprint[:software][:custom_install_script].length >0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, "")
-      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
-      install_script_file.puts(content)
-      install_script_file.close
+      write_software_file(SysConfig.InstallScript,content)
+#      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
+#      install_script_file.puts(content)
+#      install_script_file.close
       p :create_install_script
-      p get_basedir() + SysConfig.InstallScript
-      p @blueprint[:software][:custom_install_script]
-        t = @blueprint[:software][:custom_install_script]
-        t.gsub!(/\r/, "")
-        p t
-        p "no_bang"
-        t =  @blueprint[:software][:custom_install_script]
-      t = t.gsub(/\r/, "")
-    p t
+#      p get_basedir() + SysConfig.InstallScript
+#      p @blueprint[:software][:custom_install_script]
+#        t = @blueprint[:software][:custom_install_script]
+#        t.gsub!(/\r/, "")
+#        p t
+#        p "no_bang"
+#        t =  @blueprint[:software][:custom_install_script]
+#      t = t.gsub(/\r/, "")
+#    p t
+#    
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
@@ -573,28 +574,29 @@ class EngineBuilder
       && @blueprint[:software][:custom_post_install_script] != nil \
       && @blueprint[:software][:custom_post_install_script].length >0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
-      post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
-      post_install_script_file.puts(content)
-      post_install_script_file.close
+      write_software_file(SysConfig.PostInstallScript,content)
+#        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
+#      post_install_script_file.puts(content)
+#      post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
   end
 
-  def create_php_ini
-    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
-    if @blueprint[:software].has_key?(:custom_php_inis) \
-      && @blueprint[:software][:custom_php_inis]  != nil\
-      && @blueprint[:software][:custom_php_inis].length >0
-
-      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"wb", :crlf_newline => false)
-      @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
-        content = php_ini_hash[:content].gsub(/\r/, "")
-        php_ini_file.puts(content)
+    def create_php_ini
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
+      if @blueprint[:software].has_key?(:custom_php_inis) \
+        && @blueprint[:software][:custom_php_inis]  != nil\
+        && @blueprint[:software][:custom_php_inis].length >0
+        contents=String.new
+        @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+          content = php_ini_hash[:content].gsub(/\r/, "")
+            contents = contents + "\n" + content
+  
+        end
+        write_software_file( SysConfig.CustomPHPiniFile,contents)
+  
       end
-      php_ini_file.close
-
     end
-  end
 
   def create_apache_config
     FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
@@ -614,7 +616,7 @@ class EngineBuilder
       FileUtils.mkdir_p(dir)
     end
     out_file  = File.open(get_basedir() + container_filename_path ,"wb", :crlf_newline => false)
-    content = process_templated_string(content)
+    content = @templater.process_templated_string(content)
     out_file.puts(content)
 
     out_file.close
@@ -634,7 +636,7 @@ class EngineBuilder
     p filename
     template = File.read(filename)
 
-    template = process_templated_string(template)
+    template = @templater.process_templated_string(template)
     output_filename = filename.sub(/.tmpl/,"")
 
     out_file = File.new(output_filename,"wb")
@@ -694,7 +696,7 @@ class EngineBuilder
 
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      service_hash[:parent_engine]=@container_name #do I need this?
+#      service_hash[:parent_engine]=@container_name #do I need this?
         
       service_def = get_service_def(service_hash)
       if service_def == nil
@@ -801,9 +803,9 @@ class EngineBuilder
   def EngineBuilder.re_install_engine(engine,core)
     params = Hash.new
 
-    params[:engine_name] = engine.containerName
-    params[:domain_name] = engine.domainName
-    params[:host_name] = engine.hostName
+    params[:engine_name] = engine.container_name
+    params[:domain_name] = engine.domain_name
+    params[:host_name] = engine.hostname
     params[:software_environment_variables] = engine.environments
     params[:http_protocol] = engine.protocol
     params[:memory] = engine.memory
@@ -906,6 +908,11 @@ class EngineBuilder
     end
     return mc
   end
+  
+def engine_environment
+ return @blueprint_reader.environments 
+end
+
 
   protected
 
@@ -936,9 +943,6 @@ class EngineBuilder
 
   end
   
-  def engine_environment
-   return @blueprint_reader.environments 
-  end
 
   def debug(fld)
     puts "ERROR: "

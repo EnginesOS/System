@@ -31,9 +31,9 @@ class EnginesCore
   end
 
   #
-  #  def remove_containers_cron_list(containerName)
+  #  def remove_containers_cron_list(container_name)
   #    p :remove_containers_cron
-  #    if @system_api.remove_containers_cron_list(containerName)
+  #    if @system_api.remove_containers_cron_list(container_name)
   #      cron_service = loadManagedService("cron")
   #      return @system_api.rebuild_crontab(cron_service)
   #    else
@@ -156,8 +156,8 @@ class EnginesCore
     return @system_api.set_engine_hostname_details(container,params)
   end
 
-  def image_exists?(containerName)
-    imageName = containerName
+  def image_exists?(container_name)
+    imageName = container_name
     return @docker_api.image_exists?(imageName)
   rescue Exception=>e
     SystemUtils.log_exception(e)
@@ -452,7 +452,7 @@ class EnginesCore
     retval = Hash.new
     if engine.is_a?(ManagedEngine)
       params = Hash.new
-      params[:engine_name]=engine.containerName
+      params[:engine_name]=engine.container_name
 
       persistant_services =  get_engine_persistant_services(params)
       persistant_services.each do |service|
@@ -770,9 +770,9 @@ def load_and_attach_persistant_services(container)
     clear_error
     begin
       params=Hash.new
-      params[:engine_name] = container.containerName
-      params[:domain_name] = container.domainName
-      params[:host_name] = container.hostName
+      params[:engine_name] = container.container_name
+      params[:domain_name] = container.domain_name
+      params[:host_name] = container.hostname
       params[:env_variables] = container.environments
       params[:http_protocol] = container.protocol
       params[:repository_url]  = container.repo
@@ -788,11 +788,11 @@ def load_and_attach_persistant_services(container)
   end
 
   #FIXME Kludge
-  def get_container_network_metrics(containerName)
+  def get_container_network_metrics(container_name)
     begin
       ret_val = Hash.new
       clear_error
-      cmd = "docker exec " + containerName + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
+      cmd = "docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       res= %x<#{cmd}>
       vals = res.split("bytes:")
       if vals.count < 2
@@ -859,8 +859,8 @@ def load_and_attach_persistant_services(container)
   def get_volbuild_volmaps container
     begin
       clear_error
-      state_dir = SysConfig.CidDir + "/containers/" + container.containerName + "/run/"
-      log_dir = SysConfig.SystemLogRoot + "/containers/" + container.containerName
+      state_dir = SysConfig.CidDir + "/containers/" + container.container_name + "/run/"
+      log_dir = SysConfig.SystemLogRoot + "/containers/" + container.container_name
       volume_option = " -v " + state_dir + ":/client/state:rw "
       volume_option += " -v " + log_dir + ":/client/log:rw "
       if container.volumes != nil
@@ -869,7 +869,7 @@ def load_and_attach_persistant_services(container)
           volume_option += " -v " + vol.localpath.to_s + ":/dest/fs:rw"
         end
       end
-      volume_option += " --volumes-from " + container.containerName
+      volume_option += " --volumes-from " + container.container_name
       return volume_option
     rescue Exception=>e
       SystemUtils.log_exception(e)

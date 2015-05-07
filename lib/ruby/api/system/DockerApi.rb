@@ -18,7 +18,7 @@ class DockerApi
    def start_container   container
      clear_error
      begin
-       commandargs =" start " + container.containerName
+       commandargs =" start " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -29,7 +29,7 @@ class DockerApi
    def stop_container container
      clear_error
      begin
-       commandargs=" stop " + container.containerName
+       commandargs=" stop " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -40,7 +40,7 @@ class DockerApi
    def pause_container container
      clear_error
      begin
-       commandargs = " pause " + container.containerName
+       commandargs = " pause " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -64,7 +64,7 @@ class DockerApi
    def unpause_container container
      clear_error
      begin
-       commandargs=" unpause " + container.containerName
+       commandargs=" unpause " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -75,9 +75,9 @@ class DockerApi
    def ps_container container
      clear_error
      begin
-       commandargs="docker top " + container.containerName + " axl"
+       commandargs="docker top " + container.container_name + " axl"
         if run_docker("top",container) == true
-          return   container.last
+          return   container.last_result
         else
           return   container.last_error
         end
@@ -91,7 +91,7 @@ class DockerApi
 
    def signal_container_process(pid,signal,container)
      clear_error
-     commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s
+     commandargs=" exec " + container.container_name + " kill -" + signal + " " + pid.to_s
      return  run_docker(commandargs,container)
    rescue  Exception=>e
      SystemUtils.log_exception(e)
@@ -101,7 +101,7 @@ class DockerApi
    def logs_container container
      clear_error
      begin
-       commandargs="docker logs " + container.containerName
+       commandargs="docker logs " + container.container_name
        return  SystemUtils.run_system(commandargs)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -112,7 +112,7 @@ class DockerApi
    def inspect_container container
      clear_error
      begin
-       commandargs=" inspect " + container.containerName
+       commandargs=" inspect " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -123,7 +123,7 @@ class DockerApi
    def destroy_container container
      clear_error
      begin
-       commandargs= " rm " +   container.containerName
+       commandargs= " rm " +   container.container_name
        ret_val = run_docker(commandargs,container)
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
@@ -150,7 +150,7 @@ class DockerApi
    end
 
    def docker_exec(container,command,args)
-     run_args = "exec " + container.containerName + " " + command + " " + args
+     run_args = "exec " + container.container_name + " " + command + " " + args
      
      return run_docker(run_args,container)
    end
@@ -280,13 +280,13 @@ class DockerApi
        else
          start_cmd=" "
        end
-       commandargs =  "-h " + container.hostName + \
+       commandargs =  "-h " + container.hostname + \
        envionment_options + \
        " --memory=" + container.memory.to_s + "m " +\
        volume_option + " " +\
        port_options +\
-       " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid " +\
-       "--name " + container.containerName + \
+       " --cidfile " + SysConfig.CidDir + "/" + container.container_name + ".cid " +\
+       "--name " + container.container_name + \
        "  -t " + container.image + " " +\
        start_cmd
 
@@ -367,11 +367,11 @@ class DockerApi
    protected
 
    def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def container_log_dir container
-     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def clear_error
