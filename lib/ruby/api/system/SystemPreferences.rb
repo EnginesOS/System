@@ -18,7 +18,7 @@ def get_default_site()
  return @preferences[:default_site]
 end
     
-def get_default_site()   
+def get_default_domain()   
   @preferences[:default_domain]
  end  
     
