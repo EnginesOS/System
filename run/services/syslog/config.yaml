@@ -6,7 +6,7 @@ ctype: service
 persistant: false
 last_error: 
 memory: '16'
-host_name: syslog
+hostname: syslog
 domain_name: 
 environments: []
 image: engines/syslog:alpha
