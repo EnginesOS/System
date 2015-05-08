@@ -229,11 +229,11 @@ class EnginesCore
   end
   
   def set_default_domain(params)
-    @system_preferences.set_default_domain
+    @system_preferences.set_default_domain(params)
   end
   
   def set_default_site(params)
-    @system_preferences.set_default_site
+    @system_preferences.set_default_site(params)
   end
 
   def get_default_site()
@@ -838,6 +838,7 @@ def load_and_attach_persistant_services(container)
     sm = loadServiceManager()
     return sm.register_non_persistant_services(engine_name)
   end
+
 
   def deregister_non_persistant_services(engine_name)
     sm = loadServiceManager()

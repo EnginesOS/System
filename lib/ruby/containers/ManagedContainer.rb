@@ -70,6 +70,10 @@ class ManagedContainer < Container
   :last_error
   
   
+  def engine_name
+    @container_name
+  end
+  
   def engine_environment
     return @environments
   end

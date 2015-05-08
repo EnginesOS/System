@@ -69,3 +69,6 @@ target_environment_variables:
  VOLDIR:
   variable_name: engine_path
   environment_name: VOLDIR
+ volume_name:
+  variable_name: name
+  environment_name: volume_name

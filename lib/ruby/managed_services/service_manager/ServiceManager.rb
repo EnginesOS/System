@@ -387,6 +387,10 @@ class ServiceManager
     return save_tree
   end
 
+ 
+#service manager get non persistant services for engine_name
+ #for each servie_hash load_service_container and add hash
+ #add to service registry even if container is down
   def register_non_persistant_services(engine_name)
   
     params = Hash.new()
@@ -396,12 +400,12 @@ class ServiceManager
       register_non_persistant_service(service_hash)
     end
 
-    #service manager get non persistant services for engine_name
-    #for each servie_hash load_service_container and add hash
-    #add to service registry even if container is down
+ 
     return true
   end
-
+  
+  
+  
   def deregister_non_persistant_services(engine_name)
     #service manager get non persistant services for engine_name
     #for each servie_hash load_service_container and remove hash
