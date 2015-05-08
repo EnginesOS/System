@@ -37,7 +37,11 @@ class SystemUtils
        release =  File.read(SysConfig.ReleaseFile)
        return release.strip    
   end
-
+  
+  def SystemUtils.version
+     return SystemUtils.system_release + "." + SysConfig.api_version + "." + SysConfig.engines_system_version
+   end
+   
   def SystemUtils.symbolize_keys(hash)
     hash.inject({}){|result, (key, value)|
       new_key = case key

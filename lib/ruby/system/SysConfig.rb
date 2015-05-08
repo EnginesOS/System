@@ -6,6 +6,8 @@ class SysConfig
   #  @@rmSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.internal sudo sh /home/rmsite.sh"
   #  @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engines/etc/keys/mysql rma@"
   #
+  @@api_version="0.0"
+  @@engines_system_version="0.0"
   
   @@DBHost="mysql.engines.internal"
   @@CidDir="/opt/engines/run"
@@ -76,6 +78,16 @@ class SysConfig
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
   
+  def SysConfig.api_version
+    return @@api_version
+  end
+  @@api_version="0.0"
+  @@engines_system_version="0.0"
+  def SysConfig.engines_system_version
+    return @@engines_system_version
+  end
+  
+ 
   
   def SysConfig.SystemPreferencesFile
     return @@SystemPreferencesFile
