@@ -15,6 +15,7 @@ trap_term()
 	if test -f $PID_FILE
 	then
 		kill -TERM `cat   $PID_FILE `
+		touch /engines/var/run/flags/termed
 	fi
 }
 trap_hup()
@@ -22,6 +23,7 @@ trap_hup()
 if test -f $PID_FILE
 	then
 		kill -HUP `cat   $PID_FILE `
+		touch /engines/var/run/flags/huped
 	fi
 }
 trap_quit()
@@ -29,5 +31,6 @@ trap_quit()
 if test -f $PID_FILE
 	then
 		kill -QUIT `cat   $PID_FILE `
+		touch /engines/var/run/flags/quited
 	fi
 }
