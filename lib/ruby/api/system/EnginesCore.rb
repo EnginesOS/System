@@ -240,7 +240,7 @@ class EnginesCore
     @system_preferences.get_default_site
   end
   
-  def get_default_site()
+  def get_default_domain()
     @system_preferences.get_default_domain
   end  
   
