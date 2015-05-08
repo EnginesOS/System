@@ -27,6 +27,9 @@ class EnginesOSapi
   require_relative "services_module.rb"
   include ServicesModule
   
+  require_relative "engines_api_version.rb"
+ include EngOSapiVersion
+ 
   def initialize()
     @core_api = EnginesCore.new
   end

@@ -140,13 +140,13 @@ class EnginesCore
     @system_api.update_self_hosted_domain(old_domain_name, params)
   end
 
-  def load_system_preferences
-    return @system_api.load_system_preferences
-  end
-
-  def save_system_preferences(preferences)
-    return @system_api.save_system_preferences(preferences)
-  end
+#  def load_system_preferences
+#    return @system_api.load_system_preferences
+#  end
+#
+#  def save_system_preferences(preferences)
+#    return @system_api.save_system_preferences(preferences)
+#  end
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
