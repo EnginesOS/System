@@ -5,7 +5,7 @@ type_path: database/sql/mysql
 ctype: service
 persistant: true
 last_error: 
-memory: '128'
+memory: '150'
 hostname: mysql
 domain_name: 
 environments: []
