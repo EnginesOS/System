@@ -71,8 +71,8 @@ class EnginesOSapi
   
   #@return String
   #get the default Domain used by the system in creating new engines and for services that use web
-  def  get_default_domain(params)    
-    return @core_api.set_default_domain(params) 
+  def  get_default_domain()    
+    return @core_api.get_default_domain() 
   end
   
   #@return boolean
