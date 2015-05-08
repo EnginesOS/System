@@ -192,8 +192,10 @@ class ManagedService < ManagedContainer
       register_with_dns()
       
       @core_api.load_and_attach_nonpersistant_services(self)       
+      @core_api.load_and_attach_persistant_services(self)  
       
       @core_api.register_non_persistant_services(container_name)
+     
       
       reregister_consumers()
       save_state()
