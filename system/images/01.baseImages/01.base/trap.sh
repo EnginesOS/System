@@ -6,9 +6,7 @@ if test -f $PID_FILE
  		rm $PID_FILE
  	fi
  	
-trap trap_term  15
-trap trap_hup 1
-trap trap_quit 3
+
 
 trap_term()
 {
@@ -34,3 +32,7 @@ if test -f $PID_FILE
 		touch /engines/var/run/flags/quited
 	fi
 }
+
+trap trap_term  15
+trap trap_hup 1
+trap trap_quit 3

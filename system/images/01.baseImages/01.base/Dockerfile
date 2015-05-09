@@ -21,7 +21,7 @@ RUN apt-get -y  --force-yes update;\
 	groupadd -g 22020 containers
 
 ADD init.sh /home/
-
+ADD trap.sh /home/
 
 
 CMD /bin/bash /home/init.sh
