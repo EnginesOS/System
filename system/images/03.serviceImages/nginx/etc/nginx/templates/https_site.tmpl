@@ -1,7 +1,7 @@
  server {
         listen 4430;
     server_name FQDN;
-    proxy_read_timeout 300;
+    proxy_read_timeout 300s;
     ssl on;
     ssl_session_cache    shared:SSL:1m;
     ssl_session_timeout  10m;
