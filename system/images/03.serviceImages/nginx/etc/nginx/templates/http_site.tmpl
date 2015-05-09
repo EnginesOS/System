@@ -1,7 +1,7 @@
  server {
         listen 8000;
         server_name FQDN;
-		proxy_read_timeout 300
+		proxy_read_timeout 300;
         location / {
 proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
