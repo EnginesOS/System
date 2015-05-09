@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PID_FILE=/var/run/postgresql/9.3-main.pid
- source /home/trap.sh
+source /home/trap.sh
  
 
  service postgresql start
