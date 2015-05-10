@@ -1,0 +1,2 @@
+proftpd ALL = (root) NOPASSWD: /usr/sbin/proftpd
+proftpd ALL = (root) NOPASSWD: /sbin/syslogd
