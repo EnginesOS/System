@@ -185,17 +185,15 @@ class ManagedService < ManagedContainer
    
     envs = @core_api.load_and_attach_persistant_services(self)
     if envs !=nil    
-      if@envionments != nil && @envionments != false
+      if@environments != nil && @environments != false
          p     envs
-         p @envionments
-        @envionments.concat(envs)
+         p @environments
+        @environments.concat(envs)
       else
-        @envionments = envs
+        @environments = envs
       end
     end
-    
-
-    
+ 
     if create_container() ==true
       register_with_dns()
       

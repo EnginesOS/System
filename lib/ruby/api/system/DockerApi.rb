@@ -227,7 +227,7 @@ class DockerApi
      return true
    end
 
-   def get_envionment_options(container)
+   def get_environment_options(container)
      e_option =String.new
      if(container.environments && container.environments != nil)
        container.environments.each do |environment|
@@ -269,10 +269,10 @@ class DockerApi
    def container_commandline_args(container)
      clear_error
      begin
-       envionment_options = get_envionment_options( container)
+       environment_options = get_environment_options( container)
        port_options = get_port_options( container)
        volume_option = get_volume_option( container)
-       if volume_option == false || envionment_options == false || port_options == false
+       if volume_option == false || environment_options == false || port_options == false
          return false
        end
        if container.conf_self_start == false
@@ -281,7 +281,7 @@ class DockerApi
          start_cmd=" "
        end
        commandargs =  "-h " + container.hostname + \
-       envionment_options + \
+       environment_options + \
        " --memory=" + container.memory.to_s + "m " +\
        volume_option + " " +\
        port_options +\
