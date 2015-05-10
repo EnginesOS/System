@@ -185,7 +185,7 @@ class ManagedService < ManagedContainer
    
     envs = @core_api.load_and_attach_persistant_services(self)
     if envs !=nil    
-      if@envionments != nil
+      if@envionments != nil && @envionments != false
          p     envs
          p @envionments
         @envionments.concat(envs)
