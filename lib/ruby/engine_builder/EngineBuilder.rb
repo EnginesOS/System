@@ -764,6 +764,7 @@ class EngineBuilder
       end
       p :attach_service
       p service_hash
+      @templater.fill_in_dynamic_vars(service_hash)
       fill_service_environment_variables(service_hash)
       #FIXME release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) ==true
