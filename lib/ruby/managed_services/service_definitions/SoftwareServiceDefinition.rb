@@ -33,6 +33,7 @@ class SoftwareServiceDefinition
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namspace])
         if  service_def != nil
           service_environment_variables = service_def[:target_environment_variables]
+            p service_environment_variables.to_s
            if service_environment_variables != nil
              service_environment_variables.values.each do |env_variable_pair|
                env_name = env_variable_pair[:environment_name]

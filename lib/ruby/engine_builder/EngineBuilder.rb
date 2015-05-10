@@ -934,6 +934,8 @@ end
    
     services.each do |service_hash|
      service_envs = SoftwareServiceDefinition.service_environments(service_hash)
+     p :service_envs
+      p service_envs
       @blueprint_reader.environments.concat(service_envs)
 #      service_def =  get_service_def(service_hash)
 #      
