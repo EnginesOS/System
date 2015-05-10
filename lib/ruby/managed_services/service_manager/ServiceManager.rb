@@ -255,7 +255,7 @@ class ServiceManager
 
       if service_is_registered?(service_hash) == false
         add_service(service_hash)
-
+      end
         service_hash =  get_service_entry(service_hash)
 
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
@@ -263,8 +263,7 @@ class ServiceManager
         if new_envs != nil
           envs.concat(new_envs)
         end
-      end
-    end
+     end
     return envs
 
   rescue Exception=>e
