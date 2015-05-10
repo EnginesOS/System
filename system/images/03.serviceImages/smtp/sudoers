@@ -1,5 +1,5 @@
 
-postfix ALL = (root) NOPASSWD: /usr/sbin/proftpd
+postfix ALL = (root) NOPASSWD: /usr/lib/postfix/master
 
 postfix ALL = (root) NOPASSWD: /sbin/syslogd
 
