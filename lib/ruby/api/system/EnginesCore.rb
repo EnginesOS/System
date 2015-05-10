@@ -338,7 +338,10 @@ class EnginesCore
     sm = loadServiceManager()
     return sm.find_service_consumers(params)
   end
-
+  def  service_is_registered?(service_hash)
+    sm = loadServiceManager()
+       return sm.service_is_registered?(service_hash)
+  end
   def get_engine_persistant_services(params)
     sm = loadServiceManager()
     return sm.get_engine_persistant_services(params)
