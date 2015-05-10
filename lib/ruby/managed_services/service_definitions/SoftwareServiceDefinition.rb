@@ -50,7 +50,7 @@ class SoftwareServiceDefinition
     SystemUtils.log_error_mesg("Failed to load service definition",service_hash)
   end
      return retval
-          
+  
   end
   def SoftwareServiceDefinition.find(service_type,provider)
 

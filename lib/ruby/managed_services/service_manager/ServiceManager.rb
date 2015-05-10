@@ -275,7 +275,8 @@ class ServiceManager
       else
         #fill in the live variables
         p "pre  " + service_hash.to_s
-        service_hash =  find_service_consumers(service_hash)
+        service_hash =  get_service_entry(service_hash)
+        
         p "post  " + service_hash.to_s
     end
      
