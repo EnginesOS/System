@@ -37,13 +37,17 @@ class SoftwareServiceDefinition
              service_environment_variables.values.each do |env_variable_pair|
                env_name = env_variable_pair[:environment_name]
                value_name = env_variable_pair[:variable_name]
+                 p :hunting 
+                 p env_variable_pair[:variable_name]
                value=service_hash[:variables][value_name.to_sym]
                p service_hash
                p env_variable_pair
              retval.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
              end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
         end
-        end
+  else
+    SystemUtils.log_error_mesg("Failed to load service definition",service_hash)
+  end
      return retval
           
   end
