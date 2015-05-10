@@ -274,9 +274,9 @@ class ServiceManager
       add_service(service_hash)        
       else
         #fill in the live variables
-        p "pre  " + service_hash
+        p "pre  " + service_hash.to_s
         service_hash =  find_service_consumers(service_hash)
-        p "post  " + service_hash
+        p "post  " + service_hash.to_s
     end
      
     new_envs = SoftwareServiceDefinition.service_environments(service_hash)
