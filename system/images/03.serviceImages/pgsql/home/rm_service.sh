@@ -33,7 +33,7 @@ if test -z $dbusername
 echo "drop  DATABASE $database_name  ;" >> /tmp/.c.sql
 echo "drop  ROLE $dbusername  ;" >> /tmp/.c.sql
 
-su postgres -c psql < /tmp/.c.sql
+psql < /tmp/.c.sql
 
 if test $? -ge 0
 	then 

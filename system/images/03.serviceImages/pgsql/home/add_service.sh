@@ -63,7 +63,7 @@ if ! test -z $debug
 		echo "$SQL"
   fi
 
-su postgres -c psql < /tmp/.c.sql
+psql < /tmp/.c.sql
 
 if test $? -ge 0
 	then 
