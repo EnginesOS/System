@@ -17,7 +17,7 @@ RUN cd /tmp/;\
 	 tar -xzpf postfixadmin-2.92.tar.gz;\
 	 mv  postfixadmin-2.92 /home/app ;\
 	 mkdir /var/log/apache2;\
-	 chown www-user /var/log/apache2 ;\
+	 chown www-data /var/log/apache2 ;\
 	 ln -s /etc/php5/mods-available/imap.ini /etc/php5/apache2/conf.d/;\
 	 chgrp www-data /home/app/templates_c/;\
 	  chmod g+w /home/app/templates_c;\
@@ -32,5 +32,5 @@ ADD config.inc.php  /home/app/
 
 ENV ContUser postfix
 ENV ContGrp postfix
-
+USER postfix
 CMD /home/init.sh
