@@ -19,7 +19,7 @@ module ServicesRegistry
           p :nil_engine_node
           return false
         end
-        p :serivce_hash_is_registered
+        p :service_hash_is_registered
    return true    
   end  
 

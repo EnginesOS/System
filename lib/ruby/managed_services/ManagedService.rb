@@ -251,8 +251,10 @@ class ManagedService < ManagedContainer
     if registered_hashes == nil
       return 
     end
-    registered_hashes.each do |service_hash|     
-      add_consumer_to_service(service_hash)
+    registered_hashes.each do |service_hash|   
+        if service_hash[:persistant] == false
+          add_consumer_to_service(service_hash)
+        end
     end 
     
     return true
