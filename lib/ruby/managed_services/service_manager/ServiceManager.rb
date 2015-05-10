@@ -272,6 +272,11 @@ class ServiceManager
           envs.concat(new_envs)
         end
       add_service(service_hash)        
+      else
+        #fill in the live variables
+        p "pre  " + service_hash
+        service_hash =  find_service_consumers(service_hash)
+        p "post  " + service_hash
     end
      
     new_envs = SoftwareServiceDefinition.service_environments(service_hash)

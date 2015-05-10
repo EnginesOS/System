@@ -184,8 +184,14 @@ class ManagedService < ManagedContainer
   def create_service()
    
     envs = @core_api.load_and_attach_persistant_services(self)
-    if envs !=nil    && @envionments != nil
-      @envionments.concat(envs)
+    if envs !=nil    
+      if@envionments != nil
+         p     envs
+         p @envionments
+        @envionments.concat(envs)
+      else
+        @envionments = envs
+      end
     end
     
 
