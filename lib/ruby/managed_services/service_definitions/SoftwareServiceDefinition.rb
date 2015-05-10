@@ -30,7 +30,7 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
-      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namspace])
+      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
         if  service_def != nil
           service_environment_variables = service_def[:target_environment_variables]
             p service_environment_variables.to_s
