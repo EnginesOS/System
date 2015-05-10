@@ -21,4 +21,7 @@ RUN mv /var/lib/postgresql /var/lib/postgresql_firstrun;\
 ENV ContUser postgres
 ENV ContGrp  postgres
 
-CMD /home/init.sh
+#CMD /home/init.sh
+USER postgres
+
+CMD /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf
