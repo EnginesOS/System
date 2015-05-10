@@ -28,7 +28,7 @@ class SoftwareServiceDefinition
     end
   end
 
-  def SoftwareServiceDefintion.service_environments(service_hash)
+  def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namspace])
         if  service_def != nil

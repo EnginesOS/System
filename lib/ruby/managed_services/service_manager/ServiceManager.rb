@@ -274,7 +274,7 @@ class ServiceManager
       add_service(service_hash)        
     end
      
-    new_envs = SoftwareServiceDefintion.service_environments(service_hash)
+    new_envs = SoftwareServiceDefinition.service_environments(service_hash)
     
       if new_envs != nil
         envs.concat(new_envs)
