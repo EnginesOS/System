@@ -28,6 +28,25 @@ class SoftwareServiceDefinition
     end
   end
 
+  def SoftwareServiceDefintion.service_environments(service_hash)
+    retval = Array.new
+      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namspace])
+        if  service_def != nil
+          service_environment_variables = service_def[:target_environment_variables]
+           if service_environment_variables != nil
+             service_environment_variables.values.each do |env_variable_pair|
+               env_name = env_variable_pair[:environment_name]
+               value_name = env_variable_pair[:variable_name]
+               value=service_hash[:variables][value_name.to_sym]
+               p service_hash
+               p env_variable_pair
+             retval.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+             end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+        end
+        end
+     return retval
+          
+  end
   def SoftwareServiceDefinition.find(service_type,provider)
 
     if service_type == nil  || provider == nil

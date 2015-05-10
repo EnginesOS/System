@@ -931,26 +931,30 @@ end
   def fill_service_environment_variables
     p :fill_service_environment_variables
     services =@attached_services #@blueprint_reader.services
+   
     services.each do |service_hash|
-      service_def =  get_service_def(service_hash)
-      if service_def != nil
-        service_environment_variables = service_def[:target_environment_variables]
-        if service_environment_variables != nil
-          service_environment_variables.values.each do |env_variable_pair|
-            env_name = env_variable_pair[:environment_name]
-            value_name = env_variable_pair[:variable_name]
-            value=service_hash[:variables][value_name.to_sym]
-            p service_hash
-            p env_variable_pair
-            @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
-          end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
-          p :no_target_envs
-          p service_hash
-        end
-      else
-        p :Failed_to_load_service_def
-        p service_hash
-      end
+     service_envs = SoftwareServiceDefintion.service_environments(service_hash)
+      @blueprint_reader.environments.concat(service_envs)
+#      service_def =  get_service_def(service_hash)
+#      
+#      if service_def != nil
+#        service_environment_variables = service_def[:target_environment_variables]
+#        if service_environment_variables != nil
+#          service_environment_variables.values.each do |env_variable_pair|
+#            env_name = env_variable_pair[:environment_name]
+#            value_name = env_variable_pair[:variable_name]
+#            value=service_hash[:variables][value_name.to_sym]
+#            p service_hash
+#            p env_variable_pair
+#            @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+#          end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+#          p :no_target_envs
+#          p service_hash
+#        end
+#      else
+#        p :Failed_to_load_service_def
+#        p service_hash
+#      end
     end
 
   end

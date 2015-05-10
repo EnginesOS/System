@@ -257,16 +257,31 @@ class ServiceManager
       p :from
       p yaml
       
+     
+      
       ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+      
+      if service_is_registered?(service_hash) == false
+      
        templater =  Templater.new(SystemAccess.new,container)
-      new_envs = templater.proccess_templated_service_hash(service_hash)
-            
+       templater.proccess_templated_service_hash(service_hash)
+       
+      ServiceManager.get_service_hash_environment_nvps(service_hash)
+      
         if new_envs != nil
           envs.concat(new_envs)
         end
       add_service(service_hash)        
-    end    
-    return envs  
+    end
+     
+    new_envs = SoftwareServiceDefintion.service_environments(service_hash)
+    
+      if new_envs != nil
+        envs.concat(new_envs)
+      end
+  end
+  
+  return envs  
 
     rescue Exception=>e
        puts e.message

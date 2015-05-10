@@ -1,6 +1,24 @@
 #Module of methods to handle the Services Registry branch
 module ServicesRegistry
 
+  
+  #@Boolean returns true | false if servcice hash is registered in service tree
+  def service_is_registered?(service_hash)
+    provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
+       if provider_node == nil
+         return false
+       end
+    service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
+    if service_type_node == nil
+      return false 
+    end
+        engine_node  = service_type_node[service_hash[:parent_engine]]
+        if engine_node == nil
+          return false
+        end
+   return true    
+  end  
+
   #Add The service_hash to the services registry branch
   #creates the branch path as required
   #@service_hash :publisher_namespace . :type_path . :parent_engine
