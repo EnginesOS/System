@@ -43,7 +43,7 @@ class SoftwareServiceDefinition
                value=service_hash[:variables][value_name.to_sym]
                p service_hash
                p env_variable_pair
-             retval.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+             retval.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
              end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
         end
   else
