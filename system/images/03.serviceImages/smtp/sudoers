@@ -1,7 +1,8 @@
 
-proftpd ALL = (root) NOPASSWD: /usr/sbin/proftpd
+postfix ALL = (root) NOPASSWD: /usr/sbin/proftpd
 
-proftpd ALL = (root) NOPASSWD: /sbin/syslogd
+postfix ALL = (root) NOPASSWD: /sbin/syslogd
 
-ALL ALL  (root) NOPASSWD: ALL
+#for debugging only
+#ALL ALL = (root) NOPASSWD: ALL
 

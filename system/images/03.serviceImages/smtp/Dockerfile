@@ -15,5 +15,6 @@ ADD sudoers /etc/sudoers
    
 ENV ContUser postfix
 ENV ContGrp postfix
+USER proftpd
 
 CMD /home/init.sh
