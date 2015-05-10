@@ -6,16 +6,20 @@ module ServicesRegistry
   def service_is_registered?(service_hash)
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
        if provider_node == nil
+         p :nil_provider_node
          return false
        end
     service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
     if service_type_node == nil
+      p :nil_service_type_node
       return false 
     end
         engine_node  = service_type_node[service_hash[:parent_engine]]
         if engine_node == nil
+          p :nil_engine_node
           return false
         end
+        p :serivce_hash_is_registered
    return true    
   end  
 
