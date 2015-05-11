@@ -105,7 +105,7 @@ when "persistant_services"
 when "rm_service"
    hash_values =  container_name.split(".")
    if hash_values.count < 3
-     p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
+     p "Incorrect Arguments for rm service engines services provide.service_type{.name} .name is optional"
      exit
    end 
    params = Hash.new()
