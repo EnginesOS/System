@@ -73,9 +73,9 @@ def do_cmd(c_type,container_name,command)
 #        p "looking_for"
 #        p params
   if hash_values.count >2
-         params[:name] = hash_values[2]
+         params[:service_handle] = hash_values[2]
      end 
-    params[:engine_name]=hash_values[0]
+    params[:parent_engine]=hash_values[0]
       
         services = core_api.find_engine_services(params)
         if services == false
