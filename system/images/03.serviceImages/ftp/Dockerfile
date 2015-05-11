@@ -12,4 +12,7 @@ RUN mkdir /ftp/
 ADD home home
 #CMD proftpd -n
 USER proftpd
+
+RUN 	ssh-keygen  -f ~/.ssh/id_rsa -P ""
+
 CMD /home/init.sh
