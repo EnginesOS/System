@@ -141,7 +141,7 @@ params[:parent_engine] = hash_values[0]
 params[:type_path] = hash_values[1]
    
   if hash_values.count > 2
-   params[:service_handle]= hash_values[3]
+   params[:service_handle]= hash_values[2]
   end
 
 services = core_api.delete_service_from_engine_registry(params)
