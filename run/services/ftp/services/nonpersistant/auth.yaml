@@ -5,6 +5,6 @@ service_handle: ftp
 container_type: service
 variables:
  engine: ftp
- pubkey: _Engines_System(pubkey(add))
+ pubkey: _Engines_System(pubkey(ftp_add))
  service: ftp
  command: add
