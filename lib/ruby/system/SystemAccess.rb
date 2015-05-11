@@ -28,7 +28,7 @@ end
   end
     
   def pubkey type
-    args = type.split['_']
+    args = type.split('_')
       engine = args[0]
       cmd = args[1]
     return  SystemUtils.get_engine_pubkey(engine,cmd)      
