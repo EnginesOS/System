@@ -252,12 +252,14 @@ class ServiceManager
 
       templater =  Templater.new(SystemAccess.new,container)
       templater.proccess_templated_service_hash(service_hash)
-
+      p :templated_service_hash
+      p service_hash
       if service_is_registered?(service_hash) == false
         add_service(service_hash)
       end
         service_hash =  get_service_entry(service_hash)
-
+        p :post_entry_service_hash
+        p service_hash
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
        
       
