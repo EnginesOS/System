@@ -132,7 +132,7 @@ module ServicesRegistry
     end
 
     if service_query_hash.has_key?(:parent_engine) == false || service_query_hash[:parent_engine]  == nil
-      log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
+      #log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
       return  service_path_tree
     end
 
