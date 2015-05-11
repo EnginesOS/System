@@ -27,6 +27,13 @@ end
     return SystemUtils.get_default_domain
   end
     
+  def pubkey type
+    args = type.split['_']
+      engine = args[0]
+      cmd = args[1]
+    return  SystemUtils.get_engine_pubkey(engine,cmd)      
+  end
+  
   def random cnt
     len = cnt.to_i
     rnd = SecureRandom.hex(len)

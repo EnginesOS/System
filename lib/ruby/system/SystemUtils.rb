@@ -30,6 +30,12 @@ class SystemUtils
     SystemUtils.log_output(object,10)
   end
   
+  def SystemUtils.get_engine_pubkey(engine,cmd)
+    cmd_line = "docker run " + engine + " /home/get_pubkey.sh " + cmd     
+    key = SystemUtils.run_system(cmd_line)
+    return key
+  end
+  
   def SystemUtils.system_release
     if File.exists?(SysConfig.ReleaseFile) == false
          return "current"
