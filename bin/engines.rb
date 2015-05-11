@@ -113,9 +113,16 @@ when "rm_service"
    params[:publisher_namespace] = hash_values[0]
 
    params[:type_path] = hash_values[1]
+     
+    if hash_values.count > 2
+      params[:parent_engine]= hash_values[2]
+    end
+     
+     if hash_values.count > 3
+      params[:service_handle]= hash_values[3]
+     end
 
-
-     params[:name]= hash_values[2]
+    
 
    services = core_api.delete_service_from_service_registry(params)
    if services == false
@@ -138,8 +145,11 @@ when "rm_service"
     params[:type_path] = hash_values[1]
 end
     if hash_values.count > 2
-      params[:name]= hash_values[2]
+      params[:parent_engine]= hash_values[2]
     end
+if hash_values.count > 3
+   params[:service_handle]= hash_values[3]
+ end
     p "looking_for"
     p params
     services = core_api.find_service_consumers(params)
