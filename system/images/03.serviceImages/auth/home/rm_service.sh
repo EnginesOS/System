@@ -18,13 +18,7 @@ if test -z $service
 	echo "Error service not set"
 		exit -1
 	fi	
-	
-if test -z $pubkey 
-	then
-	echo "Error pubkey not set"
-		exit -1
-	fi	
-	
+
 if test -z $command 
 	then
 	echo "Error command not set"
