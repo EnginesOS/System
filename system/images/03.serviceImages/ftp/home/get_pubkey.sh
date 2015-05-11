@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if test -f "~/.ssh/$1_rsa.pub"
+if test -f ~/.ssh/${1}_rsa.pub
 	then
- 		cat ~/.ssh/$1_rsa.pub | awk '{print $2}'
+ 		cat ~/.ssh/${1}_rsa.pub | awk '{print $2}'
  	fi
  
