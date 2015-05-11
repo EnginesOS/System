@@ -3,7 +3,7 @@
 
 #PIDFILE=/rub/auth.pid
 #source /home/trap.sh
-
+mkdir -p /home/auth/logs/
 
 if test -f /home/auth/first_run.sh
 	then
@@ -15,7 +15,7 @@ touch /var/run/startup_complete
 
 syslogd  -R syslog.engines.internal:5140
 
-exec /usr/sbin/sshd -D -f /home/auth/ssh/sshd.conf
+exec /usr/sbin/sshd -D -f /home/auth/ssh/sshd.conf -E /home/auth/logs/ssh.log
  
 
 
