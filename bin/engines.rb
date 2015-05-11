@@ -98,6 +98,33 @@ when "persistant_services"
     result = engines_api.get_engine_persistant_services(params)
     p result.to_s
 
+#remove the service matching the service_hash from the tree
+ #@service_hash :publisher_namespace :type_path :service_handle
+ #def remove_from_services_registry(service_hash)
+    
+when "rm_service"
+   hash_values =  container_name.split(".")
+   if hash_values.count < 3
+     p "Incorrect Arguments for rm service engines services provide.service_type{.name} .name is optional"
+     exit
+   end 
+   params = Hash.new()
+   
+   params[:publisher_namespace] = hash_values[0]
+
+   params[:type_path] = hash_values[1]
+
+
+     params[:name]= hash_values[2]
+
+   services = core_api.delete_service_from_service_registry(params)
+   if services == false
+     p "Service " + container_name + " not found"
+     exit
+   end
+
+     
+
   when "list_services"
     hash_values =  container_name.split(".")
     if hash_values.count < 1

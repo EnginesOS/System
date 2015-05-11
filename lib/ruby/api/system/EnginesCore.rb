@@ -857,7 +857,14 @@ def load_and_attach_persistant_services(container)
   def clean_up_dangling_images
     @docker_api.clean_up_dangling_images
   end
-
+  
+  #@ return [Boolean] indicating sucess
+  #For Maintanence ONLY 
+  def delete_service_from_service_registry(service_hash)
+    sm = loadServiceManager()
+       return sm.remove_from_services_registry(service_hash)
+  end
+  
   protected
 
   def get_volbuild_volmaps container
