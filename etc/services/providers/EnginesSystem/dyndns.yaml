@@ -12,7 +12,6 @@ dedicated: false
 persistant: false
 service_handle_field: hostname
 setup_params:
-consumer_params:
  name:
   name: hostname
   label: service tag name
@@ -47,3 +46,4 @@ consumer_params:
   placeholder: "password"
   mandatory: true
   comment: " "
+consumer_params:
