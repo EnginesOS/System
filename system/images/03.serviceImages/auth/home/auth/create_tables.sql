@@ -26,5 +26,5 @@ CREATE TABLE IF NOT EXISTS groups (
   
   #these baff if already created but who cares at this stage
   
-  CREATE INDEX IF NOT EXISTS  groups_gid_idx ON groups (gid);
-  CREATE INDEX IF NOT EXISTS  users_userid_idx ON users (userid);
+  CREATE INDEX  groups_gid_idx ON groups (gid);
+  CREATE INDEX   users_userid_idx ON users (userid);
