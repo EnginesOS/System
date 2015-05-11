@@ -8,3 +8,4 @@ variables:
  pubkey: "_Engines_System(pubkey(ftp_rm))"
  service: ftp
  command: rm
+
