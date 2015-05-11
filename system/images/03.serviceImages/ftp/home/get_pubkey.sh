@@ -1,2 +1,7 @@
 #!/bin/sh
- cat ~/.ssh/id_rsa.pub | awk '{print $1 " " $2}'
+
+if test -f "~/.ssh/$1_rsa.pub"
+	then
+ 		cat ~/.ssh/$1_rsa.pub | awk '{print $2}'
+ 	fi
+ 

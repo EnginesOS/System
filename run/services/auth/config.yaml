@@ -9,6 +9,12 @@ memory: '16'
 hostname: auth
 domain_name: 
 environments: []
+volumes:
+ ssl_certs: !ruby/object:Volume
+  name: ssl_certs
+  remotepath: "/home/auth/scripts"
+  localpath: "/opt/engines/etc/auth/scripts/"
+  mapping_permissions: "ro"
 image: engines/auth:alpha
 port: 
 eports:

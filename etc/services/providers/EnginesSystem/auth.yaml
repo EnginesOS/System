@@ -7,12 +7,12 @@ type_path: auth
 service_container: auth
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: true
-service_handle_field: userid
+persistant: false
+service_handle_field: engine
 setup_params:
 consumer_params:
- userid:
-  name: userid
+ engine:
+  name: engine
   label: User name
   regex_validator: ".*"
   tooltip: "User name"
@@ -23,23 +23,23 @@ consumer_params:
   value: "_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- passwd:
-  name: passwd
-  label: Password
+ pubkey:
+  name: pubkey
+  label: pubkey
   regex_validator: ".*"
-  tooltip: "Password"
+  tooltip: "pubkey"
   field_type: "text_field"
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(random(10))"
+  value: "_Engines_System(pubkey)"
   comment: " "
   regex_invalid_message: "wrong go back and try again" 
- homedir:
-  name: homedir
-  label: Homedirectory
+ service:
+  name: service
+  label: service
   regex_validator: ".*"
-  tooltip: "Homedirectory"
+  tooltip: "service"
   field_type: "text_field"
   hint: " "
   placeholder: " "
@@ -47,11 +47,11 @@ consumer_params:
   value: ""
   comment: " "
   regex_invalid_message: "wrong go back and try again"   
- engine:
-  name: engine
-  label: engine
+ command:
+  name: command
+  label: command
   regex_validator: ".*"
-  tooltip: "engine"
+  tooltip: "command"
   field_type: "text_field"
   hint: " "
   placeholder: " "
