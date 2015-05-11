@@ -864,7 +864,11 @@ def load_and_attach_persistant_services(container)
     sm = loadServiceManager()
        return sm.remove_from_services_registry(service_hash)
   end
-  
+
+    def delete_service_from_engine_registry(service_hash)
+      sm = loadServiceManager()
+            return sm.remove_from_engine_registery(service_hash)
+    end
   protected
 
   def get_volbuild_volmaps container

@@ -123,6 +123,7 @@ def add_to_managed_engines_tree(service_hash)
    return true
  end
  
+ 
  #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
 #@return boolean
  def remove_from_engine_registery service_hash
