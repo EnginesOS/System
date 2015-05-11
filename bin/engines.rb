@@ -102,34 +102,55 @@ when "persistant_services"
  #@service_hash :publisher_namespace :type_path :service_handle
  #def remove_from_services_registry(service_hash)
     
-when  "rm_service"
-hash_values =  container_name.split(".")
-  if hash_values.count < 1
-    p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
-    exit
-  end 
+when "rm_service"
+   hash_values =  container_name.split(".")
+   if hash_values.count < 3
+     p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
+     exit
+   end 
+   params = Hash.new()
+   
+   params[:publisher_namespace] = hash_values[0]
+
+   params[:type_path] = hash_values[1]
+
+
+     params[:name]= hash_values[2]
+
+   services = core_api.delete_service_from_service_registry(params)
+   if services == false
+     p "Service " + container_name + " not found"
+     exit
+   end
+
+     
 
   when "list_services"
     hash_values =  container_name.split(".")
-    if hash_values.count < 3
+    if hash_values.count < 1
       p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
       exit
     end 
     params = Hash.new()
     
     params[:publisher_namespace] = hash_values[0]
-
+  if hash_values.count >1 
     params[:type_path] = hash_values[1]
-
-
+end
+    if hash_values.count > 2
       params[:name]= hash_values[2]
-
-    services = core_api.delete_service_from_service_registry(params)
+    end
+    p "looking_for"
+    p params
+    services = core_api.find_service_consumers(params)
     if services == false
       p "Service " + container_name + " not found"
       exit
     end
-
+    services.each do |service|
+      p service.name
+      p service.content
+    end
       
   when "list"
     engines = engines_api.list_managed_engines
