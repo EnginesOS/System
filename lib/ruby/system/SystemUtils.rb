@@ -33,6 +33,7 @@ class SystemUtils
   def SystemUtils.get_engine_pubkey(engine,cmd)
     cmd_line = "docker exec " + engine + " /home/get_pubkey.sh " + cmd     
     key = SystemUtils.run_system(cmd_line)
+    p key
     return key
   end
   
