@@ -51,7 +51,7 @@ consumer_params:
   name: command
   label: command
   regex_validator: ".*"
-  tooltip: "command"
+  tooltip: "service"
   field_type: "text_field"
   hint: " "
   placeholder: " "
