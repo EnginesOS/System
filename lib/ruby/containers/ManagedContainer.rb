@@ -346,7 +346,7 @@ def stop_container
       @core_api.deregister_non_persistant_services(@container_name)
     end
   end
-  @core_api.deregister_non_persistant_services(@container_name)
+  
   clear_error(ret_val)
   save_state()
   return  ret_val

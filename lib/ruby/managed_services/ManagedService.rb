@@ -184,15 +184,21 @@ class ManagedService < ManagedContainer
   def create_service()
    
     envs = @core_api.load_and_attach_persistant_services(self)
-    if envs !=nil    && @envionments != nil
-      @envionments.concat(envs)
+    if envs !=nil    
+      if@environments != nil && @environments != false
+         p     envs
+         p @environments
+        @environments.concat(envs)
+      else
+        @environments = envs
+      end
     end
-    
+ 
     if create_container() ==true
       register_with_dns()
       
       @core_api.load_and_attach_nonpersistant_services(self)       
-      @core_api.load_and_attach_persistant_services(self)  
+     
       
       @core_api.register_non_persistant_services(container_name)
      
@@ -249,8 +255,10 @@ class ManagedService < ManagedContainer
     if registered_hashes == nil
       return 
     end
-    registered_hashes.each do |service_hash|     
-      add_consumer_to_service(service_hash)
+    registered_hashes.each do |service_hash|   
+        if service_hash[:persistant] == false
+          add_consumer_to_service(service_hash)
+        end
     end 
     
     return true

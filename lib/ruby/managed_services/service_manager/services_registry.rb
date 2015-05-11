@@ -1,6 +1,28 @@
 #Module of methods to handle the Services Registry branch
 module ServicesRegistry
 
+  
+  #@Boolean returns true | false if servcice hash is registered in service tree
+  def service_is_registered?(service_hash)
+    provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
+       if provider_node == nil
+         p :nil_provider_node
+         return false
+       end
+    service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
+    if service_type_node == nil
+      p :nil_service_type_node
+      return false 
+    end
+        engine_node  = service_type_node[service_hash[:parent_engine]]
+        if engine_node == nil
+          p :nil_engine_node
+          return false
+        end
+        p :service_hash_is_registered
+   return true    
+  end  
+
   #Add The service_hash to the services registry branch
   #creates the branch path as required
   #@service_hash :publisher_namespace . :type_path . :parent_engine
@@ -73,7 +95,16 @@ module ServicesRegistry
     log_exception(e)
 
   end
+#@returns a [Hash] matching
 
+#@service_query_hash :publisher_namespace , :type_path , :service_handle
+  def get_service_entry(service_query_hash)
+      tree_node = find_service_consumers(service_query_hash)
+        if tree_node == nil || tree_node == false
+          return nil                 
+        end
+        return tree_node.content
+  end
   #@returns a [TreeNode] to the depth of the search
   #@service_query_hash :publisher_namespace
   #@service_query_hash :publisher_namespace , :type_path
