@@ -136,7 +136,7 @@ if hash_values.count < 2
 end 
 params = Hash.new()
 
-params[:engine_name] = hash_values[0]
+params[:parent_engine] = hash_values[0]
 
 params[:type_path] = hash_values[1]
    
