@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo $SSH_ORIGINAL_COMMAND
+echo rm_ftp_service.sh

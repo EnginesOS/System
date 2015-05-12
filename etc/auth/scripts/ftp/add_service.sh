@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo $SSH_ORIGINAL_COMMAND
+echo add_ftp_service.sh
