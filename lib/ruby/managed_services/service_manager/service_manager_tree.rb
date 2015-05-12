@@ -21,9 +21,9 @@ module ServiceManagerTree
   def service_tree
   
    current_time = File.mtime(SysConfig.ServiceTreeFile)
-     if (@last_tree_mod_time <=> current_time ) != 0
-       load_tree
-     end
+#     if (@last_tree_mod_time <=> current_time ) != 0
+#       load_tree
+#     end
      
     return @service_tree
   end
@@ -301,7 +301,7 @@ def log_exception(e)
       statefile_bak = SysConfig.ServiceTreeFile + ".bak"
       File.rename( SysConfig.ServiceTreeFile,   statefile_bak)
     end
-    serialized_object = YAML::dump(service_tree)
+    serialized_object = YAML::dump(@service_tree)
     f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
