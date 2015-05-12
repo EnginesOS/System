@@ -21,7 +21,7 @@ module ServiceManagerTree
   def service_tree
   
    current_time = File.mtime(SysConfig.ServiceTreeFile)
-     if @last_tree_mod_time.eql?(current_time)
+     if @last_tree_mod_time.eql?(current_time) == false
        load_tree
      end
      
