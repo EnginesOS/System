@@ -219,9 +219,9 @@ module ServiceManagerTree
     if File.exists?(SysConfig.ServiceTreeFile)
       load_tree
     else
-      service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
-      service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
-      service_tree << Tree::TreeNode.new("Services","Managed Services")
+      @service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
+      @service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
+      @service_tree << Tree::TreeNode.new("Services","Managed Services")
     end
 
     return service_tree
@@ -283,15 +283,16 @@ def log_exception(e)
    SystemUtils.log_exception(e)
  end
   
+#@sets the service_tree and loast mod time 
+ def load_tree
+    @service_tree = tree_from_yaml()
+    @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+     p :loaded_service_tree
+ end
+ 
   protected
   
- #@sets the service_tree and loast mod time 
-  def load_tree
-     @service_tree = tree_from_yaml()
-     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
-      p :loaded_service_tree
-  end
-  
+
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
 # calls [log_exception] on error and returns false
   #@return boolean 
