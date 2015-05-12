@@ -85,7 +85,7 @@ def add_to_managed_engines_tree(service_hash)
      return false
    end
    
-   if managed_engine_tree[service_hash[:parent_engine] ] != nil
+   if managed_engine_tree[service_hash[:parent_engine]] != nil
      engine_node = managed_engine_tree[ service_hash[:parent_engine] ]
    else
      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")

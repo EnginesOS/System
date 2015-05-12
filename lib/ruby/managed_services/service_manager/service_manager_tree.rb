@@ -19,12 +19,12 @@ module ServiceManagerTree
   
   
   def service_tree
-     #chk_file_mod
-   current_time = File.mtime(SysConfig.ServiceTreeFile)
-     if (@last_tree_mod_time <=> current_time ) != 0
-       load_tree
-     end
-     #if need by reload
+  
+#   current_time = File.mtime(SysConfig.ServiceTreeFile)
+#     if (@last_tree_mod_time <=> current_time ) != 0
+#       load_tree
+#     end
+#     
     return @service_tree
   end
 
@@ -289,6 +289,7 @@ def log_exception(e)
   def load_tree
      @service_tree = tree_from_yaml()
      @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+      p :loaded_service_tree
   end
   
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
