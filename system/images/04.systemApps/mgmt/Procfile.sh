@@ -15,7 +15,7 @@ export  RAILS_ENV
 
 /usr/local/rbenv/shims/bundle exec rake db:migrate
 
-/usr/local/rbenv/shims/bundle exec rake db:populate
+/usr/local/rbenv/shims/bundle exec rake db:seed
 
 /usr/local/rbenv/shims/bundle exec rake assets:precompile
 

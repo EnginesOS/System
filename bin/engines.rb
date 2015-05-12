@@ -73,9 +73,9 @@ def do_cmd(c_type,container_name,command)
 #        p "looking_for"
 #        p params
   if hash_values.count >2
-         params[:name] = hash_values[2]
+         params[:service_handle] = hash_values[2]
      end 
-    params[:engine_name]=hash_values[0]
+    params[:parent_engine]=hash_values[0]
       
         services = core_api.find_engine_services(params)
         if services == false
@@ -122,14 +122,33 @@ when "rm_service"
       params[:service_handle]= hash_values[3]
      end
 
-    
-
    services = core_api.delete_service_from_service_registry(params)
    if services == false
      p "Service " + container_name + " not found"
      exit
    end
 
+  when "rm_service_from_engine"
+hash_values =  container_name.split(".")
+if hash_values.count < 2
+  p "Incorrect Arguments for rm service from engine engine.service_type{.name} .name is optional"
+  exit
+end 
+params = Hash.new()
+
+params[:parent_engine] = hash_values[0]
+
+params[:type_path] = hash_values[1]
+   
+  if hash_values.count > 2
+   params[:service_handle]= hash_values[2]
+  end
+
+services = core_api.delete_service_from_engine_registry(params)
+if services == false
+  p "Service " + container_name + " not found"
+  exit
+end
      
 
   when "list_services"

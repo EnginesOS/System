@@ -229,10 +229,12 @@ class ServiceManager
     end
     service_hash[:variables][:parent_engine]=container_name
 
-    if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
-      service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
-    else
-      service_hash[:service_handle] = container_name
+    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+      if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+        service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
+      else
+        service_hash[:service_handle] = container_name
+      end
     end
 
   end
@@ -256,17 +258,17 @@ class ServiceManager
       p service_hash
       if service_is_registered?(service_hash) == false
         add_service(service_hash)
-      end
+      else
         service_hash =  get_service_entry(service_hash)
-        p :post_entry_service_hash
-        p service_hash
-        new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-       
-      
-        if new_envs != nil
-          envs.concat(new_envs)
-        end
-     end
+      end
+      p :post_entry_service_hash
+      p service_hash
+      new_envs = SoftwareServiceDefinition.service_environments(service_hash)
+
+      if new_envs != nil
+        envs.concat(new_envs)
+      end
+    end
     return envs
 
   rescue Exception=>e

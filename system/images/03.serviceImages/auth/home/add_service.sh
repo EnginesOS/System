@@ -32,7 +32,7 @@ if test -z $command
 		exit -1
 	fi
 	
-	echo "command=/home/auth/scripts/${service}/${command}_service.sh ,no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey" >>  ~/ssh/authorized_keys	
+	echo "command=\"/home/auth/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/authorized_keys	
 #
 echo "Success"
 exit 0

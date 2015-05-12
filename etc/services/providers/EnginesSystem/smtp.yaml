@@ -41,6 +41,17 @@ configurators:
     mandatory: true
     comment: " "
     value: "25"
+   smart_hostname:
+    name: smart_hostname
+    label: "Smart host Name"
+    regex_validator: '*\.*\.*\.*'
+    tooltip: " "
+    field_type: text_field
+    hint: "smtp-host.domain.com "
+    placeholder: "host name or address "
+    mandatory: true
+    comment: " "
+    value: ""
    smart_host_user:
     name: smart_host_user
     label: "Username for Smart host authentication"
