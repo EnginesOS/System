@@ -283,6 +283,8 @@ touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
+ mkdir -p  /var/log/engines/services/auth/ftp/
+
 mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
@@ -339,7 +341,7 @@ echo "Setting directory and file permissions"
 	 chown 22003 -R /var/log/engines/services/email/
 	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
-	
+	chown 22017 -R /var/log/engines/services/auth/
 	}
 
 function set_os_flavor {
