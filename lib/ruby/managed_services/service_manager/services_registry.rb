@@ -19,6 +19,13 @@ module ServicesRegistry
           p :nil_engine_node
           return false
         end
+ 
+  service_node  = engine_node[service_hash[:service_handle]]
+         if service_node == nil
+           p :nil_service_handle
+           return false
+         end
+ 
         p :service_hash_is_registered
    return true    
   end  
