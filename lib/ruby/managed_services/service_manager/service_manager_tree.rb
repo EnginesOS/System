@@ -20,11 +20,11 @@ module ServiceManagerTree
   
   def service_tree
   
-#   current_time = File.mtime(SysConfig.ServiceTreeFile)
-#     if (@last_tree_mod_time <=> current_time ) != 0
-#       load_tree
-#     end
-#     
+   current_time = File.mtime(SysConfig.ServiceTreeFile)
+     if (@last_tree_mod_time <=> current_time ) != 0
+       load_tree
+     end
+     
     return @service_tree
   end
 
