@@ -177,10 +177,12 @@ module ServiceManagerTree
 # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     ret_val = Array.new
+    SystemUtils.debug_output("top node",sub_branch.name)
     branch.children.each do |sub_branch|
+      SystemUtils.debug_output("on node",sub_branch.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
-
+         
           SystemUtils.debug_output("pushed_content", sub_branch.content)
           ret_val.push(sub_branch.content)
         else
