@@ -10,12 +10,7 @@ ADD sudoers /etc/sudoers
 
 RUN mkdir /ftp/
 ADD home home
-#CMD proftpd -n
-USER proftpd
 
-RUN 	ssh-keygen  -f ~/.ssh/add_rsa -P "";\
-		ssh-keygen  -f ~/.ssh/rm_rsa -P "";\
-		ssh-keygen  -f ~/.ssh/list_rsa -P "";\
-		ssh-keygen  -f ~/.ssh/update_rsa -P ""
+USER proftpd
 
 CMD /home/init.sh

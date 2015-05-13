@@ -28,6 +28,15 @@ if test -z $command
 	 cat ~/ssh/authorized_keys | grep -v ${service}/${command}_service.sh  >/tmp/.keys
 	 mv /tmp/.keys ~/ssh/authorized_keys
 	
+service_records=`grep ${service} ~/ssh/authorized_keys`
+
+if test `echo $service_records |wc -c ` -lt 2 
+	then 
+		BTICK='`'
+		echo "
+		drop user ${BTICK}auth_$service${BTICK}@${BTICK}%${BTICK} ;" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+		rm -r /home/auth/access/$service
+	fi
 #
 echo "Success"
 exit 0
