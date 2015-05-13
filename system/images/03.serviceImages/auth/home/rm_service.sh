@@ -27,6 +27,9 @@ if test -z $command
 	
 	 cat ~/ssh/authorized_keys | grep -v ${service}/${command}_service.sh  >/tmp/.keys
 	 mv /tmp/.keys ~/ssh/authorized_keys
+	BTICK='`'
+echo "
+drop user ${BTICK}auth_$1${BTICK}@${BTICK}%${BTICK} ;" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 
 	
 #
 echo "Success"

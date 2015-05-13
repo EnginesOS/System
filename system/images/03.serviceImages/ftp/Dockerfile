@@ -10,9 +10,7 @@ ADD sudoers /etc/sudoers
 
 RUN mkdir /ftp/
 ADD home home
-#CMD proftpd -n
+
 USER proftpd
-
-
 
 CMD /home/init.sh

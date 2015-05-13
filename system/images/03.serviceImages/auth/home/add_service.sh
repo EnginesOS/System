@@ -33,6 +33,16 @@ if test -z $command
 	fi
 	
 	echo "command=\"/home/auth/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/authorized_keys	
+
+pass=test
+
+BTICK='`'
+echo "
+create user ${BTICK}auth_$1${BTICK}@${BTICK}%${BTICK} identified by ${BTICK}$pass${BTICK};
+GRANT SELECT,INSERT,UPDATE on auth.* to ${BTICK}auth_$1${BTICK}@${BTICK}%${BTICK};" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 
+
+
+
 #
 echo "Success"
 exit 0
