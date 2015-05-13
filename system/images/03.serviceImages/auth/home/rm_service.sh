@@ -32,9 +32,9 @@ service_records=`grep ${service} ~/ssh/authorized_keys`
 
 if test `echo $service_records |wc -c ` -lt 2 
 	then 
-		BTICK='`'
+		
 		echo "
-		drop user ${BTICK}auth_$service${BTICK}@${BTICK}%${BTICK} ;" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+		drop user 'auth_$service$'@'%' ;" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
 		rm -r /home/auth/access/$service
 	fi
 #

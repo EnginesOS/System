@@ -1,0 +1,11 @@
+parent_engine: ftp
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: ftp_access
+container_type: service
+variables:
+ engine: ftp
+ pubkey: "_Engines_System(pubkey(ftp_access))"
+ service: ftp
+ command: access
+
