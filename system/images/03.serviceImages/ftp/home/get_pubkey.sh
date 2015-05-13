@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if test $1 = 'add' -o $1 = 'rm' - ~4 = 'access'
+if test $1 = 'add' -o $1 = 'rm' -o $1 = 'access'
  then
 	if test -f /home/.ssh/${1}_rsa.pub
 		then
