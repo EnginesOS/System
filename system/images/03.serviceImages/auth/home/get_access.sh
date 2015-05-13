@@ -1,3 +1,4 @@
 #!/bin/sh
 
-cat /home/auth/scripts/$1/access
+service=`echo $0 | cut -f 5 -d/`
+cat /home/auth/scripts/$service/access
