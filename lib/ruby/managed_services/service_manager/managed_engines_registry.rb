@@ -4,7 +4,13 @@ module ManagedEnginesRegistry
   #Returns service_type node when supplied with params  :engine_name and :type_path
   #Returns service node when supplied with params  :engine_name :type_path and :service_handle
   def find_engine_services(params)
+    if params == nil
+      log_error_mesg("find_engine_services passed nil params",params)
+      return nil
+    end
+    
       engine_node = managed_engine_tree[params[:parent_engine]]
+        
   p :find_engine_services_with_params
   p params
       if params.has_key?(:type_path) && params[:type_path] != nil

@@ -37,6 +37,7 @@ class ManagedEngine < ManagedContainer
          
   attr_reader :ctype
 
+
   def attached_services
     @core_api.attached_services(self)
   end

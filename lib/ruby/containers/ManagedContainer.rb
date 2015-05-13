@@ -70,6 +70,14 @@ class ManagedContainer < Container
   :last_error
   
   
+  def is_service? 
+    if @ctype && @ctype != nil && @ctype == "service"
+      return true
+    end
+    
+    return false
+  end
+  
   def engine_name
     @container_name
   end
