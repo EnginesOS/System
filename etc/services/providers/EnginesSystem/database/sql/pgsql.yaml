@@ -91,6 +91,23 @@ consumer_params:
   comment:  " "
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
+ collation:
+  name: collation
+  label: DB Collation
+  tooltip: " "
+  field_type: select_single
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "C"
+  select_collection:
+  - !ruby/object:String  
+       "C"
+  - !ruby/object:String  
+       "en_GB"
+  comment:  " defaults to C"
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
  encoding:
   name: encoding
   label: DB encoding
