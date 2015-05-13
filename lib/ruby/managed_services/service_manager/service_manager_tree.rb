@@ -21,7 +21,7 @@ module ServiceManagerTree
   def service_tree
   
    current_time = File.mtime(SysConfig.ServiceTreeFile)
-     if @last_tree_mod_time.eql?(current_time) == false
+     if @last_tree_mod_time && @last_tree_mod_time != nil && @last_tree_mod_time.eql?(current_time) == false
        load_tree
      end
      
@@ -207,7 +207,7 @@ module ServiceManagerTree
     begin
       if File.exist?(SysConfig.ServiceTreeFile)
         tree_data = File.read(SysConfig.ServiceTreeFile)
-      else
+      elsif  File.exist?(SysConfig.ServiceTreeFile + ".bak")
         tree_data = File.read(SysConfig.ServiceTreeFile + ".bak")
       end
       service_tree =   YAML::load(tree_data)
@@ -294,7 +294,11 @@ def log_exception(e)
 #@sets the service_tree and loast mod time 
  def load_tree
     @service_tree = tree_from_yaml()
+   if File.exist?(SysConfig.ServiceTreeFile)
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+   else
+     @last_tree_mod_time =nil
+   end
      p :loaded_service_tree
  end
  
