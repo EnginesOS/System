@@ -299,7 +299,7 @@ mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
 mkdir -p /opt/engines/etc/ssl/psql/
 mkdir -p /opt/engines/etc/smtp
-
+mkdir -p /opt/engines/ssh/keys/services/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
@@ -336,7 +336,7 @@ echo "Setting directory and file permissions"
 	chown -R 22002 /opt/engines/etc/ssl/psql
 	chmod og-rw -R /opt/engines/etc/ssl/psql
 	chown 22003 -R /opt/engines/etc/smtp
-	 
+	chown 22017 -R  /opt/engines/ssh/keys/services/
 	
 	 chown 22003 -R /var/log/engines/services/email/
 	 chown  -R 22015 /opt/engines/etc/backup/

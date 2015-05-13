@@ -310,6 +310,9 @@ class DockerApi
        if incontainer_logdir !="/var/log" && incontainer_logdir !="/var/log/"
          volume_option += " -v " + container_log_dir(container) + "/vlog:/var/log/:rw"
        end
+       if container.is_service? 
+          volume_option += " -v " + service_sshkey_local_dir(container)   + ":" + service_sshkey_container_dir(container) + ":rw"
+       end
        #end
        #container specific
        if container.volumes  
@@ -327,7 +330,15 @@ class DockerApi
        return false
      end
    end
-
+   
+  def service_sshkey_local_dir(container) 
+    return "/opt/engines/ssh/keys/services/" +container.container_name
+  end
+  
+  def service_sshkey_container_dir(container)
+     return "/home/.ssh/"
+  end
+  
    def get_container_logdir(container)
      clear_error
      if container.framework == nil || container.framework.length ==0
