@@ -71,7 +71,7 @@ class ManagedContainer < Container
   
   
   def is_service? 
-    if @ctype && @ctype != nil && @ctype ="service"
+    if @ctype && @ctype != nil && @ctype == "service"
       return true
     end
     
