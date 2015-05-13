@@ -205,7 +205,11 @@ module ServiceManagerTree
   #@return service_tree [TreeNode]
   def tree_from_yaml()
     begin
-      tree_data = File.read(SysConfig.ServiceTreeFile)
+      if File.exist?(SysConfig.ServiceTreeFile)
+        tree_data = File.read(SysConfig.ServiceTreeFile)
+      else
+        tree_data = File.read(SysConfig.ServiceTreeFile + ".bak")
+      end
       service_tree =   YAML::load(tree_data)
       return service_tree
     rescue Exception=>e
