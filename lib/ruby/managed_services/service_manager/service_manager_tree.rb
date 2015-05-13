@@ -19,11 +19,12 @@ module ServiceManagerTree
   
   
   def service_tree
-  
-   current_time = File.mtime(SysConfig.ServiceTreeFile)
-     if @last_tree_mod_time && @last_tree_mod_time != nil && @last_tree_mod_time.eql?(current_time) == false
-       load_tree
-     end
+    if @last_tree_mod_time && @last_tree_mod_time != nil 
+          current_time = File.mtime(SysConfig.ServiceTreeFile)
+          if  @last_tree_mod_time.eql?(current_time) == false
+            load_tree
+          end
+    end
      
     return @service_tree
   end
