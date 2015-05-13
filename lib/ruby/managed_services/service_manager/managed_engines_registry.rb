@@ -36,7 +36,7 @@ def find_engine_services_hashes(params)
 
   end
 
-  
+
 #@return [Array] of all service_hashs marked persistant for :engine_name
   def get_engine_persistant_services(params)
     return get_engine_persistance_services(params,true)
