@@ -40,7 +40,7 @@ if  test $command = "access"
 		cp /home/get_access.sh /home/auth/access/$service/
 		chmod u+x /home/auth/access/$service/get_access.sh 
 	#FIX ME as this allows for any auth user so sneak a peak at other auth
-		echo "command=\"/home/auth/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/authorized_keys	
+		echo "command=\"/home/auth/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/keys/authorized_keys	
 		pass=test67
 	
 		echo "
