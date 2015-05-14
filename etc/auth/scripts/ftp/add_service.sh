@@ -35,10 +35,15 @@ fcnt=`expr $fcnt + 1`
           else
           	access="ro"
         fi
-        set
+     
         pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
-        sql="insert into users (userid,passwd,homedir) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/')"
+        sql="insert into users (userid,passwd,ftphomedir,use_count) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/',0)"
         
         . /home/auth/.dbenv
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+        
+           sql="update users set use_count+=1,ftphome='/ftp/$access/$parent_engine/$volume/$folder/' where userid = '$username';"  
+               
+         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
