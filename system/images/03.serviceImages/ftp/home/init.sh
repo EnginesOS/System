@@ -11,7 +11,7 @@ mkdir -p /engines/var/run/
 	touch  /engines/var/run/startup_complete
 	chown 21000 /engines/var/run/startup_complete	
 	
-service_hash=`fg`
+service_hash=`ssh -p 2222  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/.ssh/access_rsa auth@auth.engines.internal /home/auth/access/ftp/get_access.sh`
 
 
 n=1
