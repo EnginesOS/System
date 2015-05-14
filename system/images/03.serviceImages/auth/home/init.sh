@@ -13,7 +13,7 @@ if test -f /home/auth/first_run.sh
 	
  echo dbflavor=$dbflavor >/home/auth/.dbenv
  echo dbhost=$dbhost >>/home/auth/.dbenv
- echo dbname=$dbpasswd >>/home/auth/.dbenv
+ echo dbname=$dbname >>/home/auth/.dbenv
  echo dbpasswd=$dbpasswd >>/home/auth/.dbenv
  echo dbuser=$dbuser >>/home/auth/.dbenv
 	
