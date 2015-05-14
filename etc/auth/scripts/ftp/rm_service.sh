@@ -36,14 +36,15 @@ fcnt=`expr $fcnt + 1`
           	access="ro"
         fi
         set
-        pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
-        sql="delete from users where userid = '$username' and use_count = 1;"        
+
+     
         . /home/auth/.dbenv
-        echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+         sql="update users set use_count = use_count - 1,ftphome='' where userid = '$username';"  
+         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
-        echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
-         sql="update users set use_count-=1,ftphome='' where userid = '$username';"  
-               
+         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+        
+         sql="delete from users where use_count=0 and  userid = '$username';"  
          echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
