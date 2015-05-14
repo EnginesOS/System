@@ -50,7 +50,7 @@ if  test $command = "access"
 		echo ":db_username=auth_$service:db_password=$pass:database_name=$dbname:db_host=$dbhost:" > /home/auth/access/$service/access
 		
 		else
-			echo "command=\"/home/auth/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/authorized_keys	
+			echo "command=\"/home/auth/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  ~/ssh/keys/authorized_keys	
 	fi
 
 #
