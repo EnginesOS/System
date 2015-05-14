@@ -7,7 +7,7 @@ type_path: auth
 service_container: auth
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
+persistant: true
 service_handle_field: engine
 setup_params:
 consumer_params:
