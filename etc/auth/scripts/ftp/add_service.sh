@@ -4,7 +4,7 @@ echo add_ftp_service.sh
 TS=` date +%Y%m%d%H%M%S`
 echo $TS: $SSH_ORIGINAL_COMMAND >> /var/log/ftp/add.log
 
-service_hash=`echo  $SSH_ORIGINAL_COMMAND | cut -f2 -d\" \"`
+service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $1}'`
 echo $service_hash
 new=`echo $service_hash | sed "/^:/s///" |  sed "/:$/s///"`
 
