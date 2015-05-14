@@ -10,10 +10,15 @@ hostname: auth
 domain_name: 
 environments: []
 volumes:
- ssl_certs: !ruby/object:Volume
-  name: ssl_certs
+ auth_scripts: !ruby/object:Volume
+  name: auth_scripts
   remotepath: "/home/auth/scripts"
   localpath: "/opt/engines/etc/auth/scripts/"
+  mapping_permissions: "ro"
+ authorized_keys: !ruby/object:Volume
+  name: authorized_keys
+  remotepath: "/home/auth/ssh/keys/"
+  localpath: "/opt/engines/etc/auth/keys/"
   mapping_permissions: "ro"
 image: engines/auth:alpha
 port: 
