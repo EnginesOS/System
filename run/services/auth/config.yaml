@@ -12,13 +12,8 @@ environments: []
 volumes:
  auth_scripts: !ruby/object:Volume
   name: auth_scripts
-  remotepath: "/home/auth/scripts"
-  localpath: "/opt/engines/etc/auth/scripts/"
-  mapping_permissions: "ro"
- authorized_keys: !ruby/object:Volume
-  name: authorized_keys
-  remotepath: "/home/auth/ssh/keys/"
-  localpath: "/opt/engines/etc/auth/keys/"
+  remotepath: "/home/auth/static/"
+  localpath: "/opt/engines/etc/auth/"
   mapping_permissions: "rw"
 image: engines/auth:alpha
 port: 
