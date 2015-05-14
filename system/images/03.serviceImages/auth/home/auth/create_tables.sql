@@ -3,9 +3,11 @@
     passwd VARCHAR(32) NOT NULL,
     uid INTEGER NOT NULL UNIQUE,
     gid INTEGER,
-    homedir VARCHAR(255),
+    ftphomedir VARCHAR(255),
+    nfshomedir VARCHAR(255),
     shell VARCHAR(255),
-    last_accessed DATETIME
+    last_accessed DATETIME,
+    use_count int
   );
 
   
