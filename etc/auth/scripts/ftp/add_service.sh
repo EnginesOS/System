@@ -4,6 +4,7 @@ echo add_ftp_service.sh
 TS=` date +%Y%m%d%H%M%S`
 echo $TS: $SSH_ORIGINAL_COMMAND >> /var/log/ftp/add.log
 
+service_hash=$1
 
 new=`echo $service_hash | sed "/^:/s///" |  sed "/:$/s///"`
 
@@ -26,12 +27,14 @@ fcnt=`expr $fcnt + 1`
                 		export $name="$value"
                 	fi
         done
-        
-        access="ro"
-         if test $rw_access = 'true'
+                
+         if test "$rw_access" = "true"
           then
           	access="rw"
+          else
+          	access="ro"
         fi
+        set
         pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
         sql="insert into users (userid,passwd,homedir) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/')
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
