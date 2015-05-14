@@ -14,7 +14,7 @@ volumes:
   name: auth_scripts
   remotepath: "/home/auth/scripts"
   localpath: "/opt/engines/etc/auth/scripts/"
-  mapping_permissions: "ro"
+  mapping_permissions: "rw"
  authorized_keys: !ruby/object:Volume
   name: authorized_keys
   remotepath: "/home/auth/ssh/keys/"
