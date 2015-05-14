@@ -48,7 +48,7 @@ fcnt=`expr $fcnt + 1`
                 	fi
         done
 
-	echo "	SQLConnectInfo $db_username@$db_host $db_username $db_password " >> /etc/proftpd/sql.conf
+	echo "	SQLConnectInfo $database_name@$db_host $db_username $db_password " >> /etc/proftpd/sql.conf
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
 
