@@ -19,7 +19,7 @@ volumes:
   name: authorized_keys
   remotepath: "/home/auth/ssh/keys/"
   localpath: "/opt/engines/etc/auth/keys/"
-  mapping_permissions: "ro"
+  mapping_permissions: "rw"
 image: engines/auth:alpha
 port: 
 eports:
