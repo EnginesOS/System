@@ -31,9 +31,9 @@ service_hash=$new
 
 
 
-res="${service_hash//[^:]}"
+fcnt=`echo $service_hash| grep -o : |wc -l`
 echo $res
-fcnt=${#res}
+#fcnt=${#res}
 fcnt=`expr $fcnt + 1`
 
         while test $fcnt -ge $n
