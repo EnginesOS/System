@@ -11,7 +11,7 @@ domain_name:
 environments: []
 volumes:
  auth_scripts: !ruby/object:Volume
-  name: auth_scripts
+  name: auth_static
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
   mapping_permissions: "rw"
