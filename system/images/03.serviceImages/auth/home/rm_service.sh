@@ -28,7 +28,7 @@ if test -z $command
 	 cat /home/auth/static/ssh/keys/authorized_keys		| grep -v ${service}/${command}_service.sh  >/tmp/.keys
 	 mv /tmp/.keys /home/auth/static/ssh/keys/authorized_keys	
 	
-service_records=`grep ${service} /home/auth/static/ssh/keys/authorized_keys	
+service_records=`grep ${service} /home/auth/static/ssh/keys/authorized_keys	`
 
 if test `echo $service_records |wc -c ` -lt 2 
 	then 		
