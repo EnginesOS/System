@@ -36,6 +36,6 @@ fcnt=`expr $fcnt + 1`
         fi
         set
         pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
-        sql="insert into users (userid,passwd,homedir) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/')
+        sql="insert into users (userid,passwd,homedir) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/')"
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
