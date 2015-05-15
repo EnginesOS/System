@@ -43,7 +43,7 @@ def get_default_domain()
     
 def save_preferences
   File.rename( SysConfig.SystemPreferencesFile,   SysConfig.SystemPreferencesFile + ".bak")
-  serialized_object = YAML::dump(self)
+  serialized_object = YAML::dump(@preferences)
   f = File.new(SysConfig.SystemPreferencesFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
   f.puts(serialized_object)
  f.close
