@@ -1,0 +1,2 @@
+/nfs/rw 172.16.0.0/26(rw,sync,no_subtree_check)
+/nfs/ro  172.16.0.0/26(ro,sync,no_subtree_check)
