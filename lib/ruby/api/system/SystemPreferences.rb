@@ -20,6 +20,7 @@ end
     
 def  set_default_site(params)
   @preferences[:default_site] = params[:default_site]
+    p params
   save_preferences
   return EnginesOSapiResult.success(params[:default_site] ,:default_site)
 
