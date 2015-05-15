@@ -43,7 +43,7 @@ fcnt=`expr $fcnt + 1`
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
-           sql="update users set use_count = 1 + use_count,ftphome='/ftp/$access/$parent_engine/$volume/$folder/' where userid = '$username';"  
+           sql="update users set use_count = 1 + use_count,ftphomedir='/ftp/$access/$parent_engine/$volume/$folder/' where userid = '$username';"  
                
          echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
          echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname

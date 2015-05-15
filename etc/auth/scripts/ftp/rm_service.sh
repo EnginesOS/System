@@ -39,7 +39,7 @@ fcnt=`expr $fcnt + 1`
 
      
         . /home/auth/.dbenv
-         sql="update users set use_count = use_count - 1,ftphome='' where userid = '$username';"  
+         sql="update users set use_count = use_count - 1,ftphomedir='' where userid = '$username';"  
          echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
          echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
