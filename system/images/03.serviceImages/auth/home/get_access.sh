@@ -1,4 +1,4 @@
 #!/bin/sh
-
-service=`echo $0 | cut -f 5 -d/`
-cat /home/auth/access/$service/access
+echo $SSH_ORIGINAL_COMMAND
+service=`echo $SSH_ORIGINAL_COMMAND |  awk -F/ '{print $5}'`
+cat /home/auth/static/access/$service/access
