@@ -3,10 +3,16 @@
     passwd VARCHAR(32) NOT NULL,
     uid INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
     gid INTEGER,
+    realname VARCHAR(255),
     ftphomedir VARCHAR(255),
     nfshomedir VARCHAR(255),
     shell VARCHAR(255),
     last_accessed DATETIME,
+    min int(11) NOT NULL default '0',
+  max int(11) NOT NULL default '0',
+  warn int(11) NOT NULL default '7',
+  inact int(11) NOT NULL default '-1',
+  expire int(11) NOT NULL default '-1',
     use_count int
   );
 

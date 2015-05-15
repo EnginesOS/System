@@ -1,7 +1,11 @@
 class SystemPreferences
   
   def initialize
-      @preferences = YAML::load(File.read(SysConfig.SystemPreferencesFile))    
+    if File.exists?(SysConfig.SystemPreferencesFile) == true
+     @preferences = YAML::load(File.read(SysConfig.SystemPreferencesFile))
+  else
+    @preferences = Hash.new
+ end
     rescue Exception=>e
     SystemUtils.log_exception(e) 
   end
@@ -16,6 +20,7 @@ end
     
 def  set_default_site(params)
   @preferences[:default_site] = params[:default_site]
+    p params
   save_preferences
   return EnginesOSapiResult.success(params[:default_site] ,:default_site)
 
@@ -38,8 +43,10 @@ def get_default_domain()
  end  
     
 def save_preferences
-  File.rename( SysConfig.SystemPreferencesFile,   SysConfig.SystemPreferencesFile + ".bak")
-  serialized_object = YAML::dump(self)
+  if File.exists?(SysConfig.SystemPreferencesFile) == true
+    File.rename( SysConfig.SystemPreferencesFile,   SysConfig.SystemPreferencesFile + ".bak")
+  end
+  serialized_object = YAML::dump(@preferences)
   f = File.new(SysConfig.SystemPreferencesFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
   f.puts(serialized_object)
  f.close

@@ -10,53 +10,61 @@ persistant: true
 service_handle_field: name
 setup_params:
 consumer_params:
- dropbox_address:
-  name: dropbox_address
-  label: dropbox_address
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  placeholder: " "
-  hint: " "
-  mandatory: true
-  regex_invalid_message: "wrong go back and try again"
- username:
-  name: username
-  label: Drop Box Account login
-  regex_validator: ".*"
-  tooltip: " "
-  placeholder: " "
-  field_type: text_field
-  hint: " "
-  mandatory: true
- password:
-  name: password
-  label:  Drop Box Account Password
-  regex_validator: ".*"
-  placeholder: " "
-  hint: " "
-  field_type: password
-  mandatory: true
- target_directory:
-  name: target_directory
-  label: Directory
-  field_type: text_field
-  regex_validator: ".*"
-  name: button
-  label: button test
-  placeholder: " "
-  tooltip: " "
-  mandatory: true
-  comment: " 
- volume:
-  name: volume
-  label: volume
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: " "
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"
+  volume:
+    name: volume
+    label: volume
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "_Engines_Environment(volume_name)"
+    comment: " "
+  folder:
+    name: folder
+    label: folder
+    regex_validator: ".*"
+    tooltip: "Folder with in volume "
+    field_type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "/"
+    comment: " "
+  username:
+    name: username
+    label: User Name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "_Engines_Builder(engine_name)" 
+    comment: " "
+  password:
+    name: password
+    label: password
+    tooltip: " "
+    field_type: password_with_confirmation
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "_Engines_System(random(8))"
+    comment: " "
+    regex_validator: ".*"
+  access:
+    name: rw_access
+    label: RW Access
+    regex_validator: true|false
+    tooltip: "Allow ftp service to write files"
+    field_type: select_single
+    hint: "true|false"
+    select_collection:
+      - true
+      - false
+    placeholder: "true|false"
+    mandatory: true
+    value: false
+    comment: "Write access includes the ability to delete" 

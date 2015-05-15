@@ -1,0 +1,11 @@
+parent_engine: nfs
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: nfs_access
+container_type: service
+variables:
+ engine: nfs
+ pubkey: "_Engines_System(pubkey(nfs_access))"
+ service: nfs
+ command: access
+
