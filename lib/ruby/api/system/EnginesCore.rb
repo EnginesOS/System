@@ -234,6 +234,7 @@ class EnginesCore
   
   def set_default_site(params)
     @system_preferences.set_default_site(params)
+    
   end
 
   def get_default_site()
