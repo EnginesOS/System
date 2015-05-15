@@ -1,7 +1,11 @@
 class SystemPreferences
   
   def initialize
-      @preferences = YAML::load(File.read(SysConfig.SystemPreferencesFile))    
+    if FileList.exists?(SysConfig.SystemPreferencesFile)      
+     @preferences = YAML::load(File.read(SysConfig.SystemPreferencesFile))
+  else
+    @preferences = Hash.new
+ end
     rescue Exception=>e
     SystemUtils.log_exception(e) 
   end
