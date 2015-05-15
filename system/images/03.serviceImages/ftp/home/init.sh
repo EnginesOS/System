@@ -42,8 +42,10 @@ fcnt=`expr $fcnt + 1`
                 n=`expr $n + 1`
                 name=`echo $nvp |cut -f1 -d=`
                 value=`echo $nvp |cut -f2 -d=`
-                if test ${#name} -gt 0
+                name_length=`echo  $name |wc -c`
+                if test $name_length -gt 0
                 	then
+                	echo $name=$value
                 		export $name="$value"
                 	fi
         done
