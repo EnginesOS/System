@@ -1,7 +1,7 @@
 class SystemPreferences
   
   def initialize
-    if FileList.exists?(SysConfig.SystemPreferencesFile)      
+    if File.exists?(SysConfig.SystemPreferencesFile) == true
      @preferences = YAML::load(File.read(SysConfig.SystemPreferencesFile))
   else
     @preferences = Hash.new
