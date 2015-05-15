@@ -1,7 +1,7 @@
   CREATE TABLE IF NOT EXISTS users (
     userid VARCHAR(64) NOT NULL UNIQUE,
     passwd VARCHAR(32) NOT NULL,
-    uid INTEGER NOT NULL UNIQUE,
+    uid INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
     gid INTEGER,
     ftphomedir VARCHAR(255),
     nfshomedir VARCHAR(255),
