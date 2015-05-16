@@ -18,13 +18,15 @@ RUN apt-get -y  --force-yes update;\
 	ln -s /bin/true /sbin/initctl;\
 	apt-get clean;\
 	ln -s /usr/bin/sendmail /usr/sbin/sendmail;\
-	groupadd -g 22020 containers
+	groupadd -g 22020 containers ;\
+	apt-mark hold tzdata
 
 ADD init.sh /home/
 ADD trap.sh /home/
 
 #increment build line to trigger upgrade
 ENV	build 20150515
-	RUN apt-get upgrade -y
+	RUN apt-get -y  --force-yes update;\
+		apt-get upgrade -y
 
 CMD /bin/bash /home/init.sh
