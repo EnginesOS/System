@@ -51,8 +51,7 @@ module OrphanedServices
       log_error_mesg("No Orphan Matching publisher_namespace",params)
       return false
     end
-    p :orpahns_retr_start
-    p params[:type_path]
+SystemUtils.debug_output( :orpahns_retr_start, params[:type_path])
       
       type_path = params[:type_path]
         
@@ -118,7 +117,7 @@ end
    #:path_type :publisher_namespace      
    def get_orphaned_services(params)
      leafs = Array.new
-     p :looking_for_orphans
+     SystemUtils.debug_output(   :looking_for_orphans,params)
      orphans = find_orphan_consumers(params)
      if orphans != nil && orphans != false
        leafs = get_matched_leafs(orphans,:persistant,true)

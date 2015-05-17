@@ -32,7 +32,7 @@ module ServiceManagerTree
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
   def orphaned_services_tree
-    p :orphan_tree
+    
     if check_service_tree == false 
           return false
         end
@@ -51,8 +51,7 @@ module ServiceManagerTree
   #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
   def managed_service_tree
-    p :service_manager_
-    p :managed_service_tree
+   
     if check_service_tree == false
       return false
     end
@@ -251,8 +250,7 @@ module ServiceManagerTree
      log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
-   p :get_type_path_node
-   p type_path.to_s
+   SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
    if type_path.include?("/") == false
      return parent_node[type_path]
 
@@ -300,7 +298,7 @@ def log_exception(e)
    else
      @last_tree_mod_time =nil
    end
-     p :loaded_service_tree
+     
  end
  
   protected

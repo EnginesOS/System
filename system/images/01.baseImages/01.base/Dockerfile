@@ -26,7 +26,9 @@ ADD trap.sh /home/
 
 #increment build line to trigger upgrade
 ENV	build 20150515
-	RUN apt-get -y  --force-yes update;\
-		apt-get upgrade -y
+
+RUN 	apt-get -y  --force-yes update;\
+		apt-get upgrade -y;\
+		apt-get clean
 
 CMD /bin/bash /home/init.sh

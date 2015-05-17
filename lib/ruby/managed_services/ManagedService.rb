@@ -159,8 +159,7 @@ class ManagedService < ManagedContainer
       if result == true
         sm =  service_manager
         if sm != false
-          p :remove_consumer
-          p service_hash
+          SystemUtils.debug_output( :remove_consumer  , service_hash)
           result =  sm.remove_service(service_hash)
         else
           log_error_mesg("rm consumer no ServiceManager ","")
@@ -191,8 +190,7 @@ class ManagedService < ManagedContainer
     envs = @core_api.load_and_attach_persistant_services(self)
     if envs !=nil    
       if@environments != nil && @environments != false
-         p     envs
-         p @environments
+        SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
       else
         @environments = envs
