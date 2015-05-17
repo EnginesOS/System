@@ -139,7 +139,7 @@ class SoftwareServiceDefinition
     hash = {}
     instance_variables.each {|var|
       symbol = var.to_s.delete("@").to_sym
-      p symbol
+     
       hash[symbol] = instance_variable_get(var) }
 
     return SystemUtils.symbolize_keys(hash)
