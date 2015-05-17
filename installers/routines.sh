@@ -260,7 +260,7 @@ mkdir -p  /var/log/engines/services/nginx/nginx
 mkdir -p  /var/log/engines/services/backup
 mkdir -p  /var/log/engines/services/mgmt
 mkdir -p  /var/log/engines/services/pgsql/
-
+mkdir -p  /var/log/engines/services/nfs/
 
 mkdir -p  /var/log/engines/services/mysql/
 mkdir -p  /var/log/engines/services/dns/
@@ -337,7 +337,7 @@ echo "Setting directory and file permissions"
 	chmod og-rw -R /opt/engines/etc/ssl/psql
 	chown 22003 -R /opt/engines/etc/smtp
 	chown 22017 -R  /opt/engines/ssh/keys/services/
-	
+	chown 22018 -R  /var/log/engines/services/nfs/
 	 chown 22003 -R /var/log/engines/services/email/
 	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/

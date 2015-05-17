@@ -22,6 +22,11 @@ volumes:
   remotepath: "/nfs/ro/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
+ cgroup: !ruby/object:Volume
+  name: cgroup
+  remotepath: "/sys/fs/cgroup"
+  localpath: "/sys/fs/cgroup"
+  mapping_permissions: "ro"
 port: 
 eports:
 - !ruby/object:WorkPort
