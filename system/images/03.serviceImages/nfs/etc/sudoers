@@ -1,0 +1,8 @@
+
+nfs ALL = (root) NOPASSWD: /usr/bin/ganesha.nfsd
+
+nfs ALL = (root) NOPASSWD: /sbin/syslogd
+nfs ALL = (root) NOPASSWD: /etc/init.d/rpcbind
+#for debugging only
+#ALL ALL = (root) NOPASSWD: ALL
+
