@@ -220,10 +220,10 @@ class EnginesCore
     SystemUtils.log_exception(e)
   end
 
-  def set_engines_ssl_pw(params)
+  def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
     cmd = "echo -e " + pass + "\n" + pass + " | passwd engines"
-    p cmd
+    SystemUtils.debug_output( "ssh_pw",cmd)
     SystemUtils.run_system(cmd)
 
   end

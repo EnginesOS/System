@@ -52,11 +52,11 @@ module ServicesRegistry
 
     service_node = engine_node[service_hash[:service_handle]]
     if service_node == nil
-      p :create_new_service_regstry_entry
+      SystemUtils.debug_output( :create_new_service_regstry_entry,service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle],service_hash)
       engine_node << service_node
     elsif service_hash[:persistant] == false
-      p :reattachexistsing_service_persistant_false
+      SystemUtils.debug_output( :reattachexistsing_service_persistant_false,service_hash)
       service_node.content = service_hash
     else
       p :failed
@@ -154,8 +154,7 @@ module ServicesRegistry
       log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
       return  services
     end
-    p :find_service_consumers_
-    p service_query_hash[:service_handle]
+SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
  
     service = services[service_query_hash[:service_handle]]
     if service == nil

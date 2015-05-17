@@ -18,6 +18,8 @@ dovecot		dovecot			22013
 backup		backup		22015
 cron		cron			22016
 auth	auth		22017
+nfs		nfs		22018	
+samba	samba	22019
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672

@@ -67,8 +67,7 @@ class ServiceManager
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
     end
-    p :remove_service
-    p service_hash
+    SystemUtils.debug_output(  :remove_service, service_hash)
     return save_tree
 
   rescue Exception=>e
@@ -102,19 +101,17 @@ class ServiceManager
     case objectName
     when "ManagedEngine"
       params[:parent_engine] = identifier
-      p :get_engine_service_hashes
+      SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
       hashes = find_engine_services_hashes(params)
       SystemUtils.debug_output("hashes",hashes)
 
       return find_engine_services_hashes(params)
       #    attached_managed_engine_services(identifier)
     when "Volume"
-      p :looking_for_volume
-      p identifier
+      SystemUtils.debug_output(  :looking_for_volume,identifier)
       return attached_volume_services(identifier)
     when "Database"
-      p :looking_for_database
-      p identifier
+      SystemUtils.debug_output(  :looking_for_database,identifier)
       return attached_database_services(identifier)
     end
     p :no_object_name_match
@@ -254,15 +251,13 @@ class ServiceManager
 
       templater =  Templater.new(SystemAccess.new,container)
       templater.proccess_templated_service_hash(service_hash)
-      p :templated_service_hash
-      p service_hash
+      SystemUtils.debug_output(  :templated_service_hash, service_hash)
       if service_is_registered?(service_hash) == false
         add_service(service_hash)
       else
         service_hash =  get_service_entry(service_hash)
       end
-      p :post_entry_service_hash
-      p service_hash
+      SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
       new_envs = SoftwareServiceDefinition.service_environments(service_hash)
 
       if new_envs != nil
@@ -306,8 +301,7 @@ class ServiceManager
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
-    p :rm_remove_engine_params
-    p params
+    SystemUtils.debug_output(  :rm_remove_engine_params, params)
     services = get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_application_data] == true || params[:remove_all_application_data] == "true"
@@ -324,7 +318,7 @@ class ServiceManager
     end
 
     if managed_engine_tree.remove!(engine_node)
-      p :tree_saved
+     
       return  save_tree
     else
       log_error_mesg("Failed to remove engine node ",engine_node)
