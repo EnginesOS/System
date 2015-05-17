@@ -6,7 +6,20 @@ RUN   apt-get -y update;\
 COPY etc /etc/
 
 RUN 	chmod 600 /etc/nss-mysql-root.conf ;\
-	adduser --uid 22018 -q --home /home/nfs --disabled-password samba
-	
-	
+	adduser --uid 22018 -q --home /home/nfs --disabled-password nfs;\
+	 apt-get install git-core cmake build-essential portmap libcephfs-dev bison flex libkrb5-dev libtirpc1;\
+	cd /tmp;\
+	git clone https://github.com/nfs-ganesha/nfs-ganesha.git;\
+	cd nfs-ganesha;\
+	 git checkout -b V2.2-stable origin/V2.2-stable;\
+	 git submodule update --init	;\
+	 mkdir build;\
+	cd build;\
+	cmake ../src;\
+	 make;\
+	 make install;\
+	 cd /tmp/;\
+	 rm -r /tmp/nfs-ganesha
+	 
+	 cp ganesha.conf   /usr/local/etc/ganesha.conf
 #USER nfs
