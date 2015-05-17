@@ -13,6 +13,7 @@ mkdir -p /engines/var/run/
 	
 service_hash=`ssh -p 2222  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/.ssh/access_rsa auth@auth.engines.internal /home/auth/access/nfs/get_access.sh`
 
+sudo /etc/init.d/rpcbind start
 
 n=1
 
@@ -55,7 +56,7 @@ fcnt=`expr $fcnt + 1`
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
 
-exec sudo /usr/sbin/proftpd -n
+exec sudo /usr/bin/ganesha.nfsd  -c /usr/local/etc/ganesha.conf -F
 
 
 rm /engines/var/run/startup_complete
