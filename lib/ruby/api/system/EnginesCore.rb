@@ -277,6 +277,9 @@ class EnginesCore
 
     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
       service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
+      p :service_handle_field
+      p service_handle_field
+      p service_hash[:variables][service_handle_field.to_sym]
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
 
