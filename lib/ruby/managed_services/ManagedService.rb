@@ -131,6 +131,7 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)   
   cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+    p cmd
     return  SystemUtils.run_system(cmd)
   end
   
