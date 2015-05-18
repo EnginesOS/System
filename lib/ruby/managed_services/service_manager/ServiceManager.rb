@@ -189,7 +189,7 @@ class ServiceManager
         return false
       end
     end
-
+    register_service_hash_with_service(service_hash)
     return save_tree
 
   rescue Exception=>e
