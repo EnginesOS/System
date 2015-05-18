@@ -428,7 +428,7 @@ class EnginesCore
           end
         rescue Exception=>e
           SystemUtils.log_exception e
-          puts  dir + "/" + service_dir_entry
+          puts  dir.to_s + "/" + service_dir_entry
           next
         end
       end
