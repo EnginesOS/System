@@ -199,6 +199,8 @@ class ServiceManager
   end
   
   def register_service_hash_with_service(service_hash) 
+    p :register_service_hash_with_service
+    p service_hash
     service = @core_api.loadManagedService( service_hash[:service_container_name])
       if service != nil && service != false
         return service.add_consumer_to_service(service_hash)        
