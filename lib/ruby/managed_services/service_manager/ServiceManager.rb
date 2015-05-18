@@ -197,6 +197,14 @@ class ServiceManager
     log_exception(e)
     return false
   end
+  
+  def register_service_hash_with_service(service_hash) 
+    service = @core_api.loadManagedService( service_hash[:service_container_name])
+      if service != nil
+        return service.add_consumer_to_service(service_hash)        
+      end
+      return false
+  end   
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
 
