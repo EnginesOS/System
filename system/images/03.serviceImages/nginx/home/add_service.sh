@@ -32,7 +32,7 @@ if test -z $fqdn
  res=`nslookup ${parent_engine}.engines.internal`
  if test $? -lt 0
   then
-  	echo Error:failed to find internal dns entry for site
+  	echo Error:failed to find internal dns entry for ${parent_engine}.engines.internal
   	exit -1
  fi  
 
@@ -41,7 +41,7 @@ if test -z $fqdn
  teststr=`echo $res |grep NXDOMAIN`
  if test ${#teststr} -gt 0
   then
-        echo Error:failed to find internal dns entry for site
+        echo Error:failed to find internal dns entry for ${parent_engine}.engines.internal
         exit -1
  fi
 	 
