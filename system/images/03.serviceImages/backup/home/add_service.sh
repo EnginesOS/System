@@ -24,9 +24,17 @@ Backup_ConfigDir=/home/backup/.duply/
 #bash makebackconf.sh publify publify:fs:publifyfs ftp:engback:back_eng@203.14.203.141/publify
 
 
-src_engine=`echo $2 |cut -f 1 -d:`
-src_type=`echo $2 |cut -f 2 -d:`
-src_vol=`echo $2 |cut -f 3 -d:`
+#For Engine
+#name
+#parent_engine
+#dest_proto
+#dest_folder
+#dest_address
+#dest_user
+#dest_pass
+#:parent_engine
+
+
 
 mkdir -p $Backup_ConfigDir/$1
 
