@@ -106,7 +106,12 @@ module ServicesModule
       
       return SoftwareServiceDefinition.find(type_path,service_provider)
     end
-    
+  #@ returns [SoftwareServiceDefinition] with TEmplating evaluated 
+  #requires keys :type_path and "publisher_namespace :parent_engine
+  def get_resolved_service_definition(service_hash)           
+      
+   return  @core_api.fillin_template_for_service_def(service_hash)  
+     end
   #@returns [EnginesOSapiResult]
   #expects a service_hash as @params
     def detach_service(params)

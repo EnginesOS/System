@@ -377,11 +377,24 @@ class EnginesCore
     #    p :open
     #    p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
-  rescue
+  
   rescue Exception=>e
     SystemUtils.log_exception e
   end
 
+  def fillin_template_for_service_def(service_hash)
+    
+    service_def =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    container = getManagedEngines(service_hash[:parent_engine])   
+    templater =  Templater.new(SystemAccess.new,container)
+    templater.proccess_templated_service_hash(service_def)
+    return service_def
+    
+    rescue Exception=>e
+      p service_hash
+      p service_def
+      SystemUtils.log_exception e 
+  end
   def load_avail_services_for_type(typename)
     #    p :load_avail_services_for_by_type
     #    p typename
