@@ -290,8 +290,10 @@ class EnginesCore
     end
 
     sm = loadServiceManager()
-    return sm.add_service(service_hash)
-
+    if sm.add_service(service_hash)
+      return sm.register_service_hash_with_service(service_hash) 
+    end
+    return false
   rescue Exception=>e
     SystemUtils.log_exception e
   end

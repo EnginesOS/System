@@ -189,7 +189,7 @@ class ServiceManager
         return false
       end
     end
-    register_service_hash_with_service(service_hash)
+    
     return save_tree
 
   rescue Exception=>e
@@ -200,7 +200,7 @@ class ServiceManager
   
   def register_service_hash_with_service(service_hash) 
     service = @core_api.loadManagedService( service_hash[:service_container_name])
-      if service != nil
+      if service != nil && service != false
         return service.add_consumer_to_service(service_hash)        
       end
       return false
