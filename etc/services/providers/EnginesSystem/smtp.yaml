@@ -44,7 +44,7 @@ configurators:
    smart_hostname:
     name: smart_hostname
     label: "Smart host Name"
-    regex_validator: '*\.*\.*\.*'
+    regex_validator: '.*'
     tooltip: " "
     field_type: text_field
     hint: "smtp-host.domain.com "
