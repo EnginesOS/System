@@ -20,7 +20,7 @@ if test -f /home/auth/first_run.sh
 
 touch /var/run/startup_complete
 
-syslogd  -R syslog.engines.internal:5140
+sudo syslogd  -R syslog.engines.internal:5140
 
 exec /usr/sbin/sshd -D -f /home/auth/ssh/sshd.conf -E /home/auth/logs/ssh.log
  
