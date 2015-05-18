@@ -342,6 +342,12 @@ module ServicesModule
      return log_exception_and_fail("Unpause Service",e)
    end
  
+   
+   def update_service_configuration(service_param)
+     p :update_service_configuration
+     p service_param
+     
+   end
 #   def registerServiceWebSite service_name
 #     service = getManagedService(service_name)
 #     if service == nil
