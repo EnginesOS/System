@@ -12,21 +12,9 @@ service_container: cron
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-service_handle_field: name
+service_handle_field: title
 setup_params:
 consumer_params:
- name:
-  name: name
-  label: service tag name
-  regex_validator: ".*"
-  tooltip: "service tag name"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: "_Engines_Builder(engine_name)"
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"
  cron_job:
   regex_invalid_message: "wrong go back and try again"
   name: cron_job
