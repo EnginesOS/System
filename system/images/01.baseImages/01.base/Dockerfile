@@ -5,7 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 COPY invoke-rc.d /usr/sbin/
 COPY sendmail /usr/bin/
-COPY sources.list /etc/apt/
+
+ADD sources.list /etc/apt/
 
 RUN apt-get -y  --force-yes update;\
 	apt-get -y  --force-yes upgrade;\
