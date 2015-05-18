@@ -1,8 +1,8 @@
 --- !ruby/object:SoftwareServiceDefinition
-accepts: "Volume"
+accepts: "ManagedEngine"
 author: Engines
-title: "NFS Sharing of Volumes"
-description: "Provides NFS Access to Persistant File Storage"
+title: "NFS access to external Volumes"
+description: "Provides NFS Access for File Storage"
 type_path: filesystem/remote/nfs
 publisher_namespace: EnginesSystem
 dedicated: false

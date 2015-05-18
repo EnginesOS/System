@@ -5,6 +5,7 @@ title: "NFS Sharing of Volumes"
 description: "Provides NFS Access to Persistant File Storage"
 type_path: filesystem/service/nfs
 publisher_namespace: EnginesSystem
+service_container: nfs
 dedicated: false
 persistant: true
 service_handle_field: name
