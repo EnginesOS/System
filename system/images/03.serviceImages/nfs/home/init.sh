@@ -13,7 +13,7 @@ mkdir -p /engines/var/run/
 	
 
 sudo /etc/init.d/rpcbind start
-
+#sudo /etc/init.d/rpcbind start
 exec sudo  /usr/bin/ganesha.nfsd  -L /var/log/ganesha.log -f /usr/local/etc/ganesha.conf -F
 
 

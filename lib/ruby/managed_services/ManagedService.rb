@@ -131,6 +131,7 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)   
   cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+    p cmd
     return  SystemUtils.run_system(cmd)
   end
   
@@ -310,8 +311,7 @@ class ManagedService < ManagedContainer
    #@return none
   def self.log_error_mesg(msg,object)
      obj_str = object.to_s.slice(0,512)
-     
-    
+         
     SystemUtils.log_error_msg(msg,object)
   
    end

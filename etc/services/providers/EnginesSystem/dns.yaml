@@ -12,20 +12,9 @@ service_container: dns
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-service_handle_variable: name
+service_handle_field: hostname
 setup_params:
 consumer_params:
- name:
-  name: name
-  label: "service tag"
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: "hostname"
-  placeholder: " "
-  mandatory: true
-  value: 
-  comment: " "
  hostname:
   name: hostname
   label: hostname

@@ -266,7 +266,10 @@ class EnginesCore
   def attach_service(service_hash)
     p :attach_Service
     p service_hash
+    
+    service_hash =  SystemUtils.symbolize_keys(service_hash)
 
+      
     if service_hash == nil
       log_error_mesg("Attach Service passed a nil","")
       return false
@@ -277,6 +280,7 @@ class EnginesCore
 
     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
       service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
+
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
 
@@ -286,8 +290,12 @@ class EnginesCore
     end
 
     sm = loadServiceManager()
-    return sm.add_service(service_hash)
-
+    if sm.add_service(service_hash)
+      return sm.register_service_hash_with_service(service_hash) 
+    else  
+      log_error_mesg("register failed",  service_hash)
+    end
+    return false
   rescue Exception=>e
     SystemUtils.log_exception e
   end
