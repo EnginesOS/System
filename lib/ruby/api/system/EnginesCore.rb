@@ -379,6 +379,8 @@ class EnginesCore
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   
   rescue Exception=>e
+    p :filename
+    p filename
     SystemUtils.log_exception e
   end
 
@@ -426,6 +428,7 @@ class EnginesCore
           end
         rescue Exception=>e
           SystemUtils.log_exception e
+          puts  dir + "/" + service_dir_entry
           next
         end
       end
