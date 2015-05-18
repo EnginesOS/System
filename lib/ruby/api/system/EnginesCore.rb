@@ -267,7 +267,7 @@ class EnginesCore
     p :attach_Service
     p service_hash
     
-    SystemUtils.symbolize_keys(service_hash[:variables])
+    service_hash =  SystemUtils.symbolize_keys(service_hash[:variables])
     p service_hash
       
     if service_hash == nil
