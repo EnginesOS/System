@@ -17,6 +17,20 @@ image_name: engines/pssql_server
 service_handle_field: database_name
 setup_params:
 consumer_params:
+ full_access:
+  name: full_access
+  label: Full Database Server Access
+  regex_validator: true|false
+  tooltip: "Access to all databases includes the ability to delete"
+  field_type: select_single
+  hint: "true|false"
+  select_collection:
+    - true
+    - false
+  placeholder: "true|false"
+  mandatory: true
+  value: false
+  comment: "Access to all databases includes the ability to delete"
  database_host:
   name: database_host
   label: database_host
@@ -26,7 +40,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "mysql.engines.internal"
+  value: "_Engines_System(pgsql_host)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  database_name:
@@ -38,10 +52,10 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: :parent_engine
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- username:
+ dbusername:
   name: dbusername
   label: DB User Name
   regex_validator: ".*"
@@ -50,7 +64,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " " 
+  value: "_Engines_Builder(engine_name)" 
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  password:
@@ -61,8 +75,54 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: " "
+  value: "_Engines_System(random(10))"
   comment: " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ db_flavor:
+  name: db_flavor
+  label: DB db_flavor
+  tooltip: " "
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "pgsql"
+  comment:  " "
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ collation:
+  name: collation
+  label: DB Collation
+  tooltip: " "
+  field_type: select_single
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "C"
+  select_collection:
+  - !ruby/object:String  
+       "C"
+  - !ruby/object:String  
+       "en_GB"
+  comment:  " defaults to C"
+  regex_validator: ".*"
+  regex_invalid_message: "wrong go back and try again"
+ encoding:
+  name: encoding
+  label: DB encoding
+  tooltip: " "
+  field_type: select_single
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "ascii"
+  select_collection:
+  - !ruby/object:String  
+       "utf8"
+  - !ruby/object:String  
+       "ascii"
+  comment:  " defaults to acsii"
   regex_validator: ".*"
   regex_invalid_message: "wrong go back and try again"
 target_environment_variables:
@@ -73,8 +133,8 @@ target_environment_variables:
   variable_name: database_name
   environment_name: dbname
  dbuser:
-  variable_name: database_name
-  environment_name: dbname  
+  variable_name: dbusername
+  environment_name: dbuser  
  dbpasswd:
-  variable_name: db_password
+  variable_name: dbpassword
   environment_name: dbpasswd  

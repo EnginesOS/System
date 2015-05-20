@@ -1,12 +1,10 @@
 module BuildReport
   
-  require_relative 'templating.rb'
-  include Templating
-  
+
 
  
   def get_build_report_template(blueprint)
-    template = blueprint[:installation_report_template]
+    template = blueprint[:software][:installation_report_template]
       if template == nil
         return get_default_build_report_template
       else
@@ -26,9 +24,10 @@ module BuildReport
   
   def generate_build_report(blueprint)
     report_template = get_build_report_template(blueprint)
-    report = process_templated_string(report_template)
+    report = @templater.process_templated_string(report_template)
    return report
-    
+    rescue
+        return " Template generation error "
   end
   
 end

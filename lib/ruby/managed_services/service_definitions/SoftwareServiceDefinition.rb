@@ -28,6 +28,30 @@ class SoftwareServiceDefinition
     end
   end
 
+  def SoftwareServiceDefinition.service_environments(service_hash)
+    retval = Array.new
+      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+        if  service_def != nil
+          service_environment_variables = service_def[:target_environment_variables]
+#            p service_environment_variables.to_s
+           if service_environment_variables != nil
+             service_environment_variables.values.each do |env_variable_pair|
+               env_name = env_variable_pair[:environment_name]
+               value_name = env_variable_pair[:variable_name]
+#                 p :hunting 
+#                 p env_variable_pair[:variable_name]
+               value=service_hash[:variables][value_name.to_sym]
+#               p service_hash
+#               p env_variable_pair
+             retval.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+             end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+        end
+  else
+    SystemUtils.log_error_mesg("Failed to load service definition",service_hash)
+  end
+     return retval
+  
+  end
   def SoftwareServiceDefinition.find(service_type,provider)
 
     if service_type == nil  || provider == nil
@@ -115,7 +139,7 @@ class SoftwareServiceDefinition
     hash = {}
     instance_variables.each {|var|
       symbol = var.to_s.delete("@").to_sym
-      p symbol
+     
       hash[symbol] = instance_variable_get(var) }
 
     return SystemUtils.symbolize_keys(hash)

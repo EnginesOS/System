@@ -5,7 +5,10 @@ pass="pass"
  	
  if ! test -f /var/lib/postgresql/conf
  then
-
+ 
+ 	 chown -R postgres /var/lib/postgresql
+	 chown postgres -R /var/log/postgresql
+	 
 	cp -rp /var/lib/postgresql_firstrun/* /var/lib/postgresql/ 
 
 	chown -R postgres /var/lib/postgresql

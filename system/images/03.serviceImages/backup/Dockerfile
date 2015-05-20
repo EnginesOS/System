@@ -1,11 +1,12 @@
 FROM  engines/python:$release
 
 RUN apt-get -y update;\
-	apt-get -y install vim  duply ncftp  python-paramiko python-gobject-2 syslogd ;\
+	apt-get -y install vim  duply ncftp  python-paramiko python-gobject-2 build-essential gcc make syslogd ;\
 	apt-get clean 
 ADD etc  etc
 ADD home home
 RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
+	usermod -G containers -a backup;\ 
 	cd /tmp; \
   	wget ftp://ftp.seul.org/pub/fcron/fcron-3.2.0.src.tar.gz;\
   	tar -xzpf fcron-3.2.0.src.tar.gz;\
@@ -22,8 +23,9 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	rm -r /tmp/fcron-3.2.0 ;\
 	rm /tmp/fcron-3.2.0.src.tar.gz;\	
 	mkdir -p /var/log/backup/  /home/sql_dumps;\
-	chown -R backup  /home/sql_dumps /var/log/backup/ 
-
+	chown -R backup  /home/sql_dumps /var/log/backup/ ;\
+	apt-get -y remove  build-essential gcc make ;\
+	apt-get -y clean
 
 
 ADD crontab  /home/backup/fcron/spool/backup.orig

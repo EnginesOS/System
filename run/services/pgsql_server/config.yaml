@@ -1,13 +1,13 @@
---- !ruby/object:PgSQLService
-containerName: pgsql_server
+--- !ruby/object:ManagedService
+container_name: pgsql_server
 publisher_namespace: EnginesSystem
 type_path: database/sql/pgsql
 ctype: service
 persistant: true
 last_error: 
 memory: '128'
-hostName: pgsql
-domainName: 
+hostname: pgsql
+domain_name: 
 environments: []
 image: engines/pgsql:alpha
 volumes:

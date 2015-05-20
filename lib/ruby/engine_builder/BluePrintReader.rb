@@ -95,8 +95,8 @@ class BluePrintReader
   end
 
    def read_web_port_overide
-     if @blueprint[:software].has_key?(:read_web_port_overide) == true
-       @web_port=@blueprint[:software][:read_web_port_overide]
+     if @blueprint[:software].has_key?(:framework_port_overide) == true
+       @web_port=@blueprint[:software][:framework_port_overide]
      end
    end
 
@@ -197,7 +197,7 @@ class BluePrintReader
    def add_service (service_hash)
      p :add_service
      p service_hash
-     @builder.fill_in_dynamic_vars(service_hash)
+     @builder.templater.fill_in_dynamic_vars(service_hash)
      if service_hash[:type_path] == "filesystem/local/filesystem"
        add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
      end

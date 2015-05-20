@@ -1,0 +1,23 @@
+--- !ruby/object:ManagedService
+container_name: dyndns
+ctype: service
+persistant: false
+publisher_namespace: EnginesSystem
+type_path: dyndns
+last_error: 
+memory: '10'
+hostname: dyndns
+domain_name: 
+environments: []
+image: engines/dyndns:alpha
+volumes:
+port: 
+eports:
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true

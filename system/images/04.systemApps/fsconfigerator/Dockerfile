@@ -1,5 +1,5 @@
 FROM busybox
-ADD setup_vols.sh /home/
+ADD home /home/
 VOLUME /client/var/log
 VOLUME /client/log
 VOLUME /client/state

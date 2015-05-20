@@ -13,15 +13,22 @@ export RUBY_VER
 
 dpkg-reconfigure tzdata
 
+
+configure_git 
+
 install_docker_and_components
+chown -R engines /opt/engines/
+passwd engines  
+
+generate_ssl
+
 
 make_dirs
 
 set_permissions
 
+cp -r /opt/engines/system/install_source/* /
 
-
-passwd engines  
 
 chmod +x /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
 

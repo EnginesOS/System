@@ -18,7 +18,7 @@ class DockerApi
    def start_container   container
      clear_error
      begin
-       commandargs =" start " + container.containerName
+       commandargs =" start " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -29,7 +29,7 @@ class DockerApi
    def stop_container container
      clear_error
      begin
-       commandargs=" stop " + container.containerName
+       commandargs=" stop " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -40,7 +40,7 @@ class DockerApi
    def pause_container container
      clear_error
      begin
-       commandargs = " pause " + container.containerName
+       commandargs = " pause " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -50,7 +50,7 @@ class DockerApi
 
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
-     p cmd
+     SystemUtils.debug_output( "image_exists",cmd)
      res = SystemUtils.run_command(cmd)
 
      if res.length >0
@@ -64,7 +64,7 @@ class DockerApi
    def unpause_container container
      clear_error
      begin
-       commandargs=" unpause " + container.containerName
+       commandargs=" unpause " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -75,8 +75,14 @@ class DockerApi
    def ps_container container
      clear_error
      begin
-       commandargs="docker top " + container.containerName + " axl"
-       return  SystemUtils.run_system(commandargs)
+       commandargs="docker top " + container.container_name + " axl"
+        if run_docker("top",container) == true
+          return   container.last_result
+        else
+          return   container.last_error
+        end
+          
+       #SystemUtils.run_system(commandargs)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -85,7 +91,7 @@ class DockerApi
 
    def signal_container_process(pid,signal,container)
      clear_error
-     commandargs=" exec " + container.containerName + " kill -" + signal + " " + pid.to_s
+     commandargs=" exec " + container.container_name + " kill -" + signal + " " + pid.to_s
      return  run_docker(commandargs,container)
    rescue  Exception=>e
      SystemUtils.log_exception(e)
@@ -95,7 +101,7 @@ class DockerApi
    def logs_container container
      clear_error
      begin
-       commandargs="docker logs " + container.containerName
+       commandargs="docker logs " + container.container_name
        return  SystemUtils.run_system(commandargs)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -106,7 +112,7 @@ class DockerApi
    def inspect_container container
      clear_error
      begin
-       commandargs=" inspect " + container.containerName
+       commandargs=" inspect " + container.container_name
        return  run_docker(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
@@ -117,7 +123,7 @@ class DockerApi
    def destroy_container container
      clear_error
      begin
-       commandargs= " rm " +   container.containerName
+       commandargs= " rm " +   container.container_name
        ret_val = run_docker(commandargs,container)
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
@@ -132,6 +138,9 @@ class DockerApi
      begin
        commandargs= " rmi " +   container.image
        ret_val =  run_docker(commandargs,container)
+        if ret_val == true
+          clean_up_dangling_images
+        end
        return ret_val
      rescue Exception=>e
        container.last_error=( "Failed To Delete " + e.to_s)
@@ -141,7 +150,7 @@ class DockerApi
    end
 
    def docker_exec(container,command,args)
-     run_args = "exec " + container.containerName + " " + command + " " + args
+     run_args = "exec " + container.container_name + " " + command + " " + args
      
      return run_docker(run_args,container)
    end
@@ -218,12 +227,13 @@ class DockerApi
      return true
    end
 
-   def get_envionment_options(container)
+   def get_environment_options(container)
      e_option =String.new
      if(container.environments && container.environments != nil)
        container.environments.each do |environment|
-         if environment != nil
-           e_option = e_option + " -e " + environment.name + "=" + '"' + environment.value + '"'
+         if environment != nil && environment.name != nil  && environment.value != nil 
+           environment.value.gsub!(/ /,"\\ ")
+           e_option = e_option + " -e " + environment.name + "="  + environment.value 
          end
        end
      end
@@ -259,21 +269,24 @@ class DockerApi
    def container_commandline_args(container)
      clear_error
      begin
-       envionment_options = get_envionment_options( container)
+       environment_options = get_environment_options( container)
        port_options = get_port_options( container)
        volume_option = get_volume_option( container)
+       if volume_option == false || environment_options == false || port_options == false
+         return false
+       end
        if container.conf_self_start == false
          start_cmd=" /bin/bash /home/init.sh"
        else
          start_cmd=" "
        end
-       commandargs =  "-h " + container.hostName + \
-       envionment_options + \
+       commandargs =  "-h " + container.hostname + \
+       environment_options + \
        " --memory=" + container.memory.to_s + "m " +\
        volume_option + " " +\
        port_options +\
-       " --cidfile " + SysConfig.CidDir + "/" + container.containerName + ".cid " +\
-       "--name " + container.containerName + \
+       " --cidfile " + SysConfig.CidDir + "/" + container.container_name + ".cid " +\
+       "--name " + container.container_name + \
        "  -t " + container.image + " " +\
        start_cmd
 
@@ -297,9 +310,12 @@ class DockerApi
        if incontainer_logdir !="/var/log" && incontainer_logdir !="/var/log/"
          volume_option += " -v " + container_log_dir(container) + "/vlog:/var/log/:rw"
        end
+       if container.is_service? 
+          volume_option += " -v " + service_sshkey_local_dir(container)   + ":" + service_sshkey_container_dir(container) + ":rw"
+       end
        #end
        #container specific
-       if(container.volumes)
+       if container.volumes  
          container.volumes.each_value do |volume|
            if volume !=nil
              if volume.localpath !=nil
@@ -314,7 +330,15 @@ class DockerApi
        return false
      end
    end
-
+   
+  def service_sshkey_local_dir(container) 
+    return "/opt/engines/ssh/keys/services/" +container.container_name
+  end
+  
+  def service_sshkey_container_dir(container)
+     return "/home/.ssh/"
+  end
+  
    def get_container_logdir(container)
      clear_error
      if container.framework == nil || container.framework.length ==0
@@ -354,11 +378,11 @@ class DockerApi
    protected
 
    def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def container_log_dir container
-     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def clear_error

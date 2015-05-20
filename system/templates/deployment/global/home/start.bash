@@ -2,19 +2,10 @@
 
 if  test ! -d /engines/var/run/flags/
 then
-	mkdir /engines/var/run/flags/
+	mkdir -p /engines/var/run/flags/
 	chmod oug+w /engines/var/run/flags/
 fi
 
-#if test ! -f  /engines/var/run/subs_run
-#	then
-#	echo "Performing substitutions"
-#	cd /home/
-#		source /home/config_functions.sh
-#		copy_substituted_templates
-#		touch /engines/var/run/subs_run
-#		cd /home/app			
-#	fi
 	
 	if test -f /engines/var/run/flags/post_install
 		then
@@ -39,51 +30,57 @@ fi
  	 done
   fi
 
-#if test -f /home/engines/scripts/install.sh 
-#	then
-#	echo has custom install
-#		if test ! -f /engines/var/run/setup_complete
-#			then
-#			echo running custom install
-#				bash /home/engines/scripts/install.sh 
-#				touch  /engines/var/run/setup_complete
-#		fi
-#	fi
-	
+
+#drop for custom start as if custom start no blocking then it is pre running
 if test -f /home/engines/scripts/pre-running.sh
 	then
 	echo "launch pre running"
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
-#if test -n "$CRONJOBS"
-#then
-#	service cron start
-#fi
 
-if test -f /home/engines/scripts/start.sh
+#if not blocking continues
+if test -f /home/engines/scripts/custom_start.sh
 	then
 	    echo "Custom start"
 	    touch /engines/var/run/startup_complete 
-		bash	/home/engines/scripts/start.sh
+		bash	/home/engines/scripts/custom_start.sh
 	fi
 
-if test -f /home/app/Rack.sh
-	then 
-	
-		/home/app/Rack.sh
-	fi
-
-if test -f /home/startwebapp.sh
+if test -f /home/engines/scripts/startwebapp.sh 
 	then
-	touch /engines/var/run/startup_complete
- 	/home/startwebapp.sh
- 	fi
+		/home/engines/scripts/startwebapp.sh 
+	fi
+	
+#Apache based below here
+
+if test -f /run/apache2/apache2.pid 
+	then
+ 		rm -f /run/apache2/apache2.pid
+ 		echo "Warning stale Apache pid file removed"
+    fi 
+
+trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"  15
+rm -f /run/apache2/apache2.pid 
+  
+if test -f /home/app/Rack.sh
+	then 	 
+	#sets PATH only (might not be needed)
+		. /home/app/Rack.sh  
+	fi
 
 touch /engines/var/run/startup_complete
+mkdir -p /var/log/apache2/
 
-/usr/sbin/apache2ctl -D FOREGROUND 
- rm -f /run/apache2/apache2.pid 
+	if test -f /home/blocking.sh
+		then
+		/etc/init.d/apache2 start
+			bash /home/blocking.sh
+	else		
+		/usr/sbin/apache2ctl -D FOREGROUND
+	fi	
+ 
+
  
  
  rm /engines/var/run/startup_complete

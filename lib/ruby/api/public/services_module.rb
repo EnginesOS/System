@@ -86,6 +86,8 @@ module ServicesModule
     return @core_api.get_engine_persistant_services(params)
   end
   
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
   def attach_service(params)
     if params.has_key?(:service_handle) == false
       params[:service_handle] = params[:variables][:name]
@@ -97,12 +99,21 @@ module ServicesModule
     end
   end
   
-  def get_service_definition(service_type,service_provider)
+  #@ retruns [SoftwareServiceDefinition] 
+  #for type_path [String] and service_provider[String]
+  def get_service_definition(type_path,service_provider)
       #Fixme ignoring service_provider
       
-      return SoftwareServiceDefinition.find(service_type,service_provider)
+      return SoftwareServiceDefinition.find(type_path,service_provider)
     end
-    
+  #@ returns [SoftwareServiceDefinition] with TEmplating evaluated 
+  #requires keys :type_path and "publisher_namespace :parent_engine
+  def get_resolved_service_definition(service_hash)           
+      
+   return  @core_api.fillin_template_for_service_def(service_hash)  
+     end
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
     def detach_service(params)
       if   @core_api.dettach_service(params)== true
         success(params[:parent_engine].to_s,"detach service")
@@ -110,13 +121,27 @@ module ServicesModule
         return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
       end
       end
+      
+    #@ return [EnginesOSapiResult]
+      #@params service_hash
+      #this method is called to register the service hash with service
+      #nothing is written to the service registry
+      #effectivitly activating non persistant services
    def register_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
    end
+  #@ return [EnginesOSapiResult]
+    #@params service_hash
+    #this method is called to deregister the service hash from service
+    #nothing is written to the service resgitry   
    def deregister_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
    end
-   
+  #@ return [EnginesOSapiResult]
+      #@params service_hash
+      #this method is called to deregister the service hash from service
+     # and then to register the service_hash with the service
+      #nothing is written to the service resgitry   
    def reregister_service(service_hash)
     if  deregister_service(service_hash).was_success
       return register_service(service_hash)
@@ -171,6 +196,8 @@ module ServicesModule
       return @core_api.get_orphaned_services(params)
     end
     
+  #@ retruns [SoftwareServiceDefinition] 
+   #for params :type_path :publisher_namespace
     def software_service_definition (params)
       retval = @core_api.software_service_definition(params)
       if retval != nil
@@ -181,11 +208,7 @@ module ServicesModule
        return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
     end
     
-    #protected if protected static cant call
-    def success(item_name ,cmd)
-      return EnginesOSapiResult.success(item_name ,cmd)
-    end
-  
+
     def list_services_for(object)
       return @core_api.list_services_for(object)
     end
@@ -319,6 +342,12 @@ module ServicesModule
      return log_exception_and_fail("Unpause Service",e)
    end
  
+   
+   def update_service_configuration(service_param)
+     p :update_service_configuration
+     p service_param
+     
+   end
 #   def registerServiceWebSite service_name
 #     service = getManagedService(service_name)
 #     if service == nil
@@ -391,5 +420,14 @@ module ServicesModule
              return log_exception_and_fail("set_engine_hostname_details ",e)
     end
  
+    def get_managed_service_details_for(service_function)
+      service = Hash.new
+      if service_function == "http_router"        
+        service[:provider_namespace] = "EnginesSystem"
+        service[:type_path] = "nginx"
+      end
+     return service
+    end
+    
     
 end

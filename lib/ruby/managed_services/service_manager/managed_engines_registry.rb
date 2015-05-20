@@ -4,9 +4,14 @@ module ManagedEnginesRegistry
   #Returns service_type node when supplied with params  :engine_name and :type_path
   #Returns service node when supplied with params  :engine_name :type_path and :service_handle
   def find_engine_services(params)
+    if params == nil
+      log_error_mesg("find_engine_services passed nil params",params)
+      return nil
+    end
+    
       engine_node = managed_engine_tree[params[:parent_engine]]
-  p :find_engine_services_with_params
-  p params
+        
+  SystemUtils.debug_output( :find_engine_services_with_params, params)
       if params.has_key?(:type_path) && params[:type_path] != nil
         services = get_type_path_node(engine_node,params[:type_path]) #engine_node[params[:type_path]]
         if services != nil  && params.has_key?(:service_handle) && params[:service_handle] != nil
@@ -36,7 +41,7 @@ def find_engine_services_hashes(params)
 
   end
 
-  
+
 #@return [Array] of all service_hashs marked persistant for :engine_name
   def get_engine_persistant_services(params)
     return get_engine_persistance_services(params,true)
@@ -62,8 +67,7 @@ def get_engine_nonpersistant_services(params)
     
 
     services.children.each do |service|
-      p :finding_match_for
-      p service.content
+      SystemUtils.debug_output(:finding_match_for, service.content)
       matches = get_matched_leafs(service,:persistant,persistance)
       SystemUtils.debug_output("matches",matches)
       leafs =  leafs.concat(matches)
@@ -85,7 +89,7 @@ def add_to_managed_engines_tree(service_hash)
      return false
    end
    
-   if managed_engine_tree[service_hash[:parent_engine] ] != nil
+   if managed_engine_tree[service_hash[:parent_engine]] != nil
      engine_node = managed_engine_tree[ service_hash[:parent_engine] ]
    else
      engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
@@ -122,6 +126,7 @@ def add_to_managed_engines_tree(service_hash)
 
    return true
  end
+ 
  
  #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
 #@return boolean

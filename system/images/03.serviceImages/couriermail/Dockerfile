@@ -17,7 +17,8 @@ ADD  000-default.conf /etc/apache2/sites-enabled/
 RUN 	 cp -rp /usr/lib/courier/courier/webmail/webadmin /usr/lib/cgi-bin;\
 		 ln -s /usr/share/courier/webadmin /var/www/html/;\
 		 mkdir /var/log/apache2/;\
-		 chown www-data /var/log/apache2/
+		 chown www-data /var/log/apache2/;\
+		 usermod -G containers -a courier
 		 
 
 ENV ContUser courier

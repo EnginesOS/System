@@ -8,8 +8,8 @@ rbenv  local 2.1.3
  	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 #gem install multi_json rspec rubytree git 
 
-generate_ssl
-configure_git 
+
+
 
 
 #set_os_flavor

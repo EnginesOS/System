@@ -1,6 +1,35 @@
 #Module of methods to handle the Services Registry branch
 module ServicesRegistry
 
+  
+  #@Boolean returns true | false if servcice hash is registered in service tree
+  def service_is_registered?(service_hash)
+    provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
+       if provider_node == nil
+         p :nil_provider_node
+         return false
+       end
+    service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
+    if service_type_node == nil
+      p :nil_service_type_node
+      return false 
+    end
+        engine_node  = service_type_node[service_hash[:parent_engine]]
+        if engine_node == nil
+          p :nil_engine_node
+          return false
+        end
+ 
+  service_node  = engine_node[service_hash[:service_handle]]
+         if service_node == nil
+           p :nil_service_handle
+           return false
+         end
+ 
+        p :service_hash_is_registered
+   return true    
+  end  
+
   #Add The service_hash to the services registry branch
   #creates the branch path as required
   #@service_hash :publisher_namespace . :type_path . :parent_engine
@@ -23,11 +52,11 @@ module ServicesRegistry
 
     service_node = engine_node[service_hash[:service_handle]]
     if service_node == nil
-      p :create_new_service_regstry_entry
+      SystemUtils.debug_output( :create_new_service_regstry_entry,service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle],service_hash)
       engine_node << service_node
     elsif service_hash[:persistant] == false
-      p :reattachexistsing_service_persistant_false
+      SystemUtils.debug_output( :reattachexistsing_service_persistant_false,service_hash)
       service_node.content = service_hash
     else
       p :failed
@@ -73,7 +102,16 @@ module ServicesRegistry
     log_exception(e)
 
   end
+#@returns a [Hash] matching
 
+#@service_query_hash :publisher_namespace , :type_path , :service_handle
+  def get_service_entry(service_query_hash)
+      tree_node = find_service_consumers(service_query_hash)
+        if tree_node == nil || tree_node == false
+          return nil                 
+        end
+        return tree_node.content
+  end
   #@returns a [TreeNode] to the depth of the search
   #@service_query_hash :publisher_namespace
   #@service_query_hash :publisher_namespace , :type_path
@@ -101,7 +139,7 @@ module ServicesRegistry
     end
 
     if service_query_hash.has_key?(:parent_engine) == false || service_query_hash[:parent_engine]  == nil
-      log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
+      #log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
       return  service_path_tree
     end
 
@@ -116,8 +154,7 @@ module ServicesRegistry
       log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
       return  services
     end
-    p :find_service_consumers_
-    p service_query_hash[:service_handle]
+SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
  
     service = services[service_query_hash[:service_handle]]
     if service == nil

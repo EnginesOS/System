@@ -1,6 +1,6 @@
 # Module of Methods to handle tree structure for ServiceManager
 module ServiceManagerTree
-  
+  @last_read
   
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
@@ -8,26 +8,38 @@ module ServiceManagerTree
     if check_service_tree == false
           return false
         end
-    if (@service_tree["ManagedEngine"] == nil )
-      @service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
+    if (service_tree["ManagedEngine"] == nil )
+      service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
-    return @service_tree["ManagedEngine"]
+    return service_tree["ManagedEngine"]
     rescue Exception=>e
          log_exception(e)
          return nil
+  end
+  
+  
+  def service_tree
+    if @last_tree_mod_time && @last_tree_mod_time != nil 
+          current_time = File.mtime(SysConfig.ServiceTreeFile)
+          if  @last_tree_mod_time.eql?(current_time) == false
+            load_tree
+          end
+    end
+     
+    return @service_tree
   end
 
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
   def orphaned_services_tree
-    p :orphan_tree
+    
     if check_service_tree == false 
           return false
         end
-    orphans = @service_tree["OphanedServices"]
+    orphans = service_tree["OphanedServices"]
     if orphans == nil
-      @service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
-      orphans = @service_tree["OphanedServices"]
+      service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
+      orphans = service_tree["OphanedServices"]
     end
 
     return orphans
@@ -39,16 +51,15 @@ module ServiceManagerTree
   #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
   def managed_service_tree
-    p :service_manager_
-    p :managed_service_tree
+   
     if check_service_tree == false
       return false
     end
-    if (@service_tree["Services"] == nil )
-       @service_tree << Tree::TreeNode.new("Services"," Service register")       
+    if (service_tree["Services"] == nil )
+       service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
    
-     return @service_tree["Services"]
+     return service_tree["Services"]
        
     rescue Exception=>e
          log_exception(e)
@@ -85,8 +96,8 @@ module ServiceManagerTree
   
   #@return boolean true if not nil
   def    check_service_tree
-    if @service_tree == nil || @service_tree == false
-      SystemUtils.log_error_mesg("Nil servicetree ?","")
+    if service_tree == nil || service_tree == false
+      SystemUtils.log_error_mesg("Nil service tree ?",service_tree)
       return false
     end
     return true
@@ -140,7 +151,9 @@ module ServiceManagerTree
   #@return empty array if none
   def get_matched_leafs(branch,label,value)
     ret_val = Array.new
+    SystemUtils.debug_output("top node",branch.name)
     branch.children.each do |sub_branch|
+      SystemUtils.debug_output("sub node",sub_branch.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash) 
           if  sub_branch.content[label] == value
@@ -166,10 +179,12 @@ module ServiceManagerTree
 # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     ret_val = Array.new
+    SystemUtils.debug_output("top node",branch.name)
     branch.children.each do |sub_branch|
+      SystemUtils.debug_output("on node",sub_branch.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
-
+         
           SystemUtils.debug_output("pushed_content", sub_branch.content)
           ret_val.push(sub_branch.content)
         else
@@ -190,7 +205,11 @@ module ServiceManagerTree
   #@return service_tree [TreeNode]
   def tree_from_yaml()
     begin
-      tree_data = File.read(SysConfig.ServiceTreeFile)
+      if File.exist?(SysConfig.ServiceTreeFile)
+        tree_data = File.read(SysConfig.ServiceTreeFile)
+      elsif  File.exist?(SysConfig.ServiceTreeFile + ".bak")
+        tree_data = File.read(SysConfig.ServiceTreeFile + ".bak")
+      end
       service_tree =   YAML::load(tree_data)
       return service_tree
     rescue Exception=>e
@@ -206,11 +225,11 @@ module ServiceManagerTree
   def initialize_tree
     
     if File.exists?(SysConfig.ServiceTreeFile)
-      service_tree = tree_from_yaml()
+      load_tree
     else
-      service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
-      service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
-      service_tree << Tree::TreeNode.new("Services","Managed Services")
+      @service_tree = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
+      @service_tree << Tree::TreeNode.new("ManagedEngine","Engines")
+      @service_tree << Tree::TreeNode.new("Services","Managed Services")
     end
 
     return service_tree
@@ -221,6 +240,7 @@ module ServiceManagerTree
   end
 
   
+  
 #@returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
  #@return nil on error
  #@param parent_node the branch to search under
@@ -230,8 +250,7 @@ module ServiceManagerTree
      log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
-   p :get_type_path_node
-   p type_path.to_s
+   SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
    if type_path.include?("/") == false
      return parent_node[type_path]
 
@@ -271,16 +290,33 @@ def log_exception(e)
    SystemUtils.log_exception(e)
  end
   
+#@sets the service_tree and loast mod time 
+ def load_tree
+    @service_tree = tree_from_yaml()
+   if File.exist?(SysConfig.ServiceTreeFile)
+    @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+   else
+     @last_tree_mod_time =nil
+   end
+     
+ end
+ 
   protected
+  
+
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
 # calls [log_exception] on error and returns false
   #@return boolean 
   def save_tree
-    
+    if File.exists?(SysConfig.ServiceTreeFile)
+      statefile_bak = SysConfig.ServiceTreeFile + ".bak"
+      File.rename( SysConfig.ServiceTreeFile,   statefile_bak)
+    end
     serialized_object = YAML::dump(@service_tree)
     f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
+    @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true
   rescue Exception=>e
     @last_error=( "load error")

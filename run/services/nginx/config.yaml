@@ -1,5 +1,5 @@
 --- !ruby/object:ManagedService
-containerName: nginx
+container_name: nginx
 publisher_namespace: EnginesSystem
 type_path: nginx
 ctype: service
@@ -8,8 +8,8 @@ publisher_namespace: EnginesSystem
 type_path: nginx
 last_error: 
 memory: '54'
-hostName: nginx
-domainName: 
+hostname: nginx
+domain_name: 
 environments: []
 image: engines/nginx:alpha
 volumes:

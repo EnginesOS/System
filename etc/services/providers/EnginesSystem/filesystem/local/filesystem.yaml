@@ -24,7 +24,7 @@ consumer_params:
   hint: " "
   placeholder: " "
   mandatory: true
-  value: "_Builder(engine_name)"
+  value: "_Engines_Builder(engine_name)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  volume_src:
@@ -69,3 +69,6 @@ target_environment_variables:
  VOLDIR:
   variable_name: engine_path
   environment_name: VOLDIR
+ volume_name:
+  variable_name: name
+  environment_name: volume_name

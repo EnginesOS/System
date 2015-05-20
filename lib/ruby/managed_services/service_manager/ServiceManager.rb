@@ -9,6 +9,9 @@ include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
 
+require_relative '../../templater/Templater.rb'
+require_relative '../../system/SystemAccess.rb'
+
 class ServiceManager
 
   #@service_tree root of the Service Registry Tree
@@ -48,18 +51,15 @@ class ServiceManager
     return retval
   end
 
- 
-
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
   def delete_service service_hash
-
 
     if remove_from_managed_service(service_hash) == false
       log_error_mesg("failed to remove managed service",service_hash)
       return false
     end
-   return remove_service(service_hash)
+    return remove_service(service_hash)
   end
 
   def remove_service service_hash
@@ -67,8 +67,7 @@ class ServiceManager
       log_error_mesg("failed to remove from service registry",service_hash)
       return false
     end
-    p :remove_service
-    p service_hash
+    SystemUtils.debug_output(  :remove_service, service_hash)
     return save_tree
 
   rescue Exception=>e
@@ -83,13 +82,12 @@ class ServiceManager
   #@returns boolean indicating success
   def remove_orphaned_service(service_hash)
     if remove_from_managed_service(service_hash) == false
-         log_error_mesg("failed to remove managed service",service_hash)
-         return false
-       end
-    return release_orphan(service_hash)       
+      log_error_mesg("failed to remove managed service",service_hash)
+      return false
+    end
+    return release_orphan(service_hash)
   end
-  
-  
+
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
   #@identifier [String]
@@ -103,19 +101,17 @@ class ServiceManager
     case objectName
     when "ManagedEngine"
       params[:parent_engine] = identifier
-      p :get_engine_service_hashes
+      SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
       hashes = find_engine_services_hashes(params)
       SystemUtils.debug_output("hashes",hashes)
 
       return find_engine_services_hashes(params)
       #    attached_managed_engine_services(identifier)
     when "Volume"
-      p :looking_for_volume
-      p identifier
+      SystemUtils.debug_output(  :looking_for_volume,identifier)
       return attached_volume_services(identifier)
     when "Database"
-      p :looking_for_database
-      p identifier
+      SystemUtils.debug_output(  :looking_for_database,identifier)
       return attached_database_services(identifier)
     end
     p :no_object_name_match
@@ -193,11 +189,99 @@ class ServiceManager
         return false
       end
     end
-
+    
     return save_tree
 
   rescue Exception=>e
     puts e.message
+    log_exception(e)
+    return false
+  end
+  
+  def register_service_hash_with_service(service_hash) 
+    p :register_service_hash_with_service
+    p service_hash
+    if service_hash.has_key?(:service_container_name) == false
+      service_hash[:service_container_name] = get_software_service_container_name(service_hash) 
+    end
+    service = @core_api.loadManagedService( service_hash[:service_container_name])
+      if service != nil && service != false
+        return service.add_consumer_to_service(service_hash)        
+      end
+      return false
+  end   
+
+  def ServiceManager.set_top_level_service_params(service_hash,container_name)
+
+    if service_hash == nil
+      log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
+      return false
+    end
+    if container_name == nil
+      log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
+      return false
+    end
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    if service_def  == nil
+      SystemUtils.log_error_mesg("no service_def for",service_hash)
+      return nil
+    end
+    if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
+      handle_field_sym = service_def[:service_handle_field].to_sym
+    end
+
+    service_hash[:persistant] = service_def[:persistant]
+
+    service_hash[:parent_engine]=container_name
+
+    if service_hash.has_key?(:variables) == false
+      service_hash[:variables] = Hash.new
+    end
+    service_hash[:variables][:parent_engine]=container_name
+
+    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+      if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+        service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
+      else
+        service_hash[:service_handle] = container_name
+      end
+    end
+
+  end
+
+  #@returns boolean
+  #load persistant and non persistant service definitions off disk and registers them
+  def load_and_attach_services(dirname,container)
+    envs = Array.new
+    curr_service_file = String.new
+    Dir.glob(dirname + "/*.yaml").each do |service_file|
+      curr_service_file = service_file
+      yaml = File.read(service_file)
+      service_hash = YAML::load( yaml )
+      service_hash = SystemUtils.symbolize_keys(service_hash)
+
+      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+
+      templater =  Templater.new(SystemAccess.new,container)
+      templater.proccess_templated_service_hash(service_hash)
+      SystemUtils.debug_output(  :templated_service_hash, service_hash)
+      if service_is_registered?(service_hash) == false
+        add_service(service_hash)
+      else
+        service_hash =  get_service_entry(service_hash)
+      end
+      SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
+      new_envs = SoftwareServiceDefinition.service_environments(service_hash)
+
+      if new_envs != nil
+        envs.concat(new_envs)
+      end
+    end
+    return envs
+
+  rescue Exception=>e
+    puts e.message
+    log_error_mesg("Parse error on " + curr_service_file,container)
     log_exception(e)
     return false
   end
@@ -207,7 +291,7 @@ class ServiceManager
   def get_service_handle(params)
 
     if  params.has_key?(:service_handle) && params[:service_handle] != nil
-        return params[:service_handle]
+      return params[:service_handle]
     else
       log_error_mesg("no :service_handle",params)
 
@@ -230,11 +314,10 @@ class ServiceManager
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
-    p :rm_remove_engine_params
-    p params
+    SystemUtils.debug_output(  :rm_remove_engine_params, params)
     services = get_engine_persistant_services(params)
     services.each do | service |
-      if params[:remove_all_application_data] == true
+      if params[:remove_all_application_data] == true || params[:remove_all_application_data] == "true"
         if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
@@ -248,6 +331,7 @@ class ServiceManager
     end
 
     if managed_engine_tree.remove!(engine_node)
+     
       return  save_tree
     else
       log_error_mesg("Failed to remove engine node ",engine_node)
@@ -310,8 +394,11 @@ class ServiceManager
     return save_tree
   end
 
+  #service manager get non persistant services for engine_name
+  #for each servie_hash load_service_container and add hash
+  #add to service registry even if container is down
   def register_non_persistant_services(engine_name)
-  
+
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
@@ -319,9 +406,6 @@ class ServiceManager
       register_non_persistant_service(service_hash)
     end
 
-    #service manager get non persistant services for engine_name
-    #for each servie_hash load_service_container and add hash
-    #add to service registry even if container is down
     return true
   end
 
@@ -332,14 +416,14 @@ class ServiceManager
     params = Hash.new()
     params[:parent_engine] = engine_name
     services = get_engine_nonpersistant_services(params)
-    
+
     services.each do |service_hash|
       deregister_non_persistant_service(service_hash)
     end
     return true
 
   end
-  
+
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     hashes = Array.new
@@ -356,39 +440,39 @@ class ServiceManager
   #remove persistant services only if service is up
   def remove_from_managed_service(service_hash)
     service =  @core_api.load_software_service(service_hash)
-     if service == nil
-       log_error_mesg("Failed to load service to remove ",service_hash)
-            return false
-          end
-     
-      if service.is_running == true
-        return service.rm_consumer_from_service(service_hash)
-      elsif service.persistant == true 
-        log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
-        return false
-      else
-        return true                  
-      end
-    
+    if service == nil
+      log_error_mesg("Failed to load service to remove ",service_hash)
+      return false
+    end
+
+    if service.is_running == true
+      return service.rm_consumer_from_service(service_hash)
+    elsif service.persistant == true
+      log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
+      return false
+    else
+      return true
+    end
+
   end
-  
-#Calls on service on the service_container to add the service associated by the hash
-#@return result boolean
-#@param service_hash [Hash]
-def add_to_managed_service(service_hash)
-  service =  @core_api.load_software_service(service_hash)
-   if service == nil
-     log_error_mesg("Failed to load service to remove ",service_hash)
-          return false
-        end
-   
+
+  #Calls on service on the service_container to add the service associated by the hash
+  #@return result boolean
+  #@param service_hash [Hash]
+  def add_to_managed_service(service_hash)
+    service =  @core_api.load_software_service(service_hash)
+    if service == nil
+      log_error_mesg("Failed to load service to remove ",service_hash)
+      return false
+    end
+
     if service.is_running == false
       log_error_mesg("Cant add to service if service is stopped ",service_hash)
       return false
     end
-  
-    return service.add_consumer_to_service(service_hash) 
-end
+
+    return service.add_consumer_to_service(service_hash)
+  end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error

@@ -1,0 +1,49 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+author: Engines
+title: Dynamic dns
+description: "Set IP address for Hosts on Dynamic addresses"
+type_path: dyndns
+service_container: dyndns
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: false
+service_handle_field: hostname
+setup_params:
+ name:
+  name: hostname
+  label: service tag name
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ username:
+  regex_invalid_message: "wrong go back and try again"
+  name: username
+  label: DynDns User Name
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "username"
+  placeholder: " "
+  mandatory: true
+  comment: " "
+ password:
+  regex_invalid_message: "wrong go back and try again"
+  name: password
+  label: DynDns User password
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: ""
+  placeholder: "password"
+  mandatory: true
+  comment: " "
+consumer_params:

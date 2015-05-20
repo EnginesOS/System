@@ -36,12 +36,15 @@ def format_volumes(volumes)
   return res
 end
 
-def do_cmd(c_type,containerName,command)
+def do_cmd(c_type,container_name,command)
   engines_api = EnginesOSapi.new()
   core_api = engines_api.core_api
 
-  #  puts "Command" + command + " on " + containerName
+  #  puts "Command" + command + " on " + container_name
   case command
+    
+  when "clean"
+    core_api.clean_up_dangling_images 
     
   when "providers"
 
@@ -57,7 +60,7 @@ def do_cmd(c_type,containerName,command)
     
   when "services"
     ## latter this will allow addressing engine.type_path
-    hash_values =  containerName.split(".")
+    hash_values =  container_name.split(".")
         if hash_values.count < 1
           p "Incorrect Arguments for services engine services engine.provide.service_type all after engine is optional"
           exit
@@ -70,13 +73,13 @@ def do_cmd(c_type,containerName,command)
 #        p "looking_for"
 #        p params
   if hash_values.count >2
-         params[:name] = hash_values[2]
+         params[:service_handle] = hash_values[2]
      end 
-    params[:engine_name]=hash_values[0]
+    params[:parent_engine]=hash_values[0]
       
         services = core_api.find_engine_services(params)
         if services == false
-          p "Service " + containerName + " not found"
+          p "Service " + container_name + " not found"
           exit
         end
         if services == nil
@@ -91,12 +94,65 @@ def do_cmd(c_type,containerName,command)
 
 when "persistant_services"
   params = Hash.new()
-  params[:engine_name] =   containerName
+  params[:engine_name] =   container_name
     result = engines_api.get_engine_persistant_services(params)
     p result.to_s
 
+#remove the service matching the service_hash from the tree
+ #@service_hash :publisher_namespace :type_path :service_handle
+ #def remove_from_services_registry(service_hash)
+    
+when "rm_service"
+   hash_values =  container_name.split(".")
+   if hash_values.count < 3
+     p "Incorrect Arguments for rm service engines services provide.service_type{.name} .name is optional"
+     exit
+   end 
+   params = Hash.new()
+   
+   params[:publisher_namespace] = hash_values[0]
+
+   params[:type_path] = hash_values[1]
+     
+    if hash_values.count > 2
+      params[:parent_engine]= hash_values[2]
+    end
+     
+     if hash_values.count > 3
+      params[:service_handle]= hash_values[3]
+     end
+
+   services = core_api.delete_service_from_service_registry(params)
+   if services == false
+     p "Service " + container_name + " not found"
+     exit
+   end
+
+  when "rm_service_from_engine"
+hash_values =  container_name.split(".")
+if hash_values.count < 2
+  p "Incorrect Arguments for rm service from engine engine.service_type{.name} .name is optional"
+  exit
+end 
+params = Hash.new()
+
+params[:parent_engine] = hash_values[0]
+
+params[:type_path] = hash_values[1]
+   
+  if hash_values.count > 2
+   params[:service_handle]= hash_values[2]
+  end
+
+services = core_api.delete_service_from_engine_registry(params)
+if services == false
+  p "Service " + container_name + " not found"
+  exit
+end
+     
+
   when "list_services"
-    hash_values =  containerName.split(".")
+    hash_values =  container_name.split(".")
     if hash_values.count < 1
       p "Incorrect Arguments for services engines services provide.service_type{.name} .name is optional"
       exit
@@ -108,13 +164,16 @@ when "persistant_services"
     params[:type_path] = hash_values[1]
 end
     if hash_values.count > 2
-      params[:name]= hash_values[2]
+      params[:parent_engine]= hash_values[2]
     end
+if hash_values.count > 3
+   params[:service_handle]= hash_values[3]
+ end
     p "looking_for"
     p params
     services = core_api.find_service_consumers(params)
     if services == false
-      p "Service " + containerName + " not found"
+      p "Service " + container_name + " not found"
       exit
     end
     services.each do |service|
@@ -142,15 +201,15 @@ end
     return
 
   when "network"
-    net_use_hash = engines_api.get_container_network_metrics(containerName)
+    net_use_hash = engines_api.get_container_network_metrics(container_name)
     res = "In:" + net_use_hash[:in].to_s + "Bytes Out:" + net_use_hash[:out].to_s + "Bytes"
     puts res
 
   when "memory"
     if c_type == "container"
-      mem_use_hash = engines_api.get_engine_memory_statistics(containerName)
+      mem_use_hash = engines_api.get_engine_memory_statistics(container_name)
     else
-      mem_use_hash = engines_api.get_service_memory_statistics(containerName)
+      mem_use_hash = engines_api.get_service_memory_statistics(container_name)
     end
 
     if mem_use_hash  != nil && !mem_use_hash.instance_of?(EnginesOSapiResult)
@@ -180,7 +239,7 @@ end
           curr_p = 0
         end
 
-        res =containerName + ": Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB\n"
+        res =container_name + ": Current: " + current.to_s + "MB / " + curr_p.to_s + "% Maximum: " + maximum.to_s + "MB / " + max_p.to_s + "% Limit: " + limit.to_s  + "MB\n"
 
         print res
       end
@@ -190,89 +249,89 @@ when "reinstall"
 if c_type != "container"
   res = "Error: Reinstall not applicable to " +  c_type
 else
-  engines_api.reinstall_engine(containerName)
+  engines_api.reinstall_engine(container_name)
 end
   when "check_and_act"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
     end
     state = engines_api.read_state(eng)
     if eng.setState != state
-      res = "Error:" + containerName + ":" + state + ":set to:" + eng.setState
+      res = "Error:" + container_name + ":" + state + ":set to:" + eng.setState
       case eng.setState
       when "running"
-        res = "Error:starting " + containerName + " was in " + state
+        res = "Error:starting " + container_name + " was in " + state
         if state == "nocontainer"
-          do_cmd(c_type,containerName,"create")
+          do_cmd(c_type,container_name,"create")
         elsif state == "paused"
-          do_cmd(c_type,containerName,"unpause")
+          do_cmd(c_type,container_name,"unpause")
         else
-          do_cmd(c_type,containerName,"start")
+          do_cmd(c_type,container_name,"start")
         end
       when "stopped"
-        res = "Error:stopping " + containerName + " was in " + state
-        do_cmd(c_type,containerName,"stop")
+        res = "Error:stopping " + container_name + " was in " + state
+        do_cmd(c_type,container_name,"stop")
       end
     end
 
   when "stop"
     if c_type == "container"
-      res = engines_api.stopEngine(containerName)
+      res = engines_api.stopEngine(container_name)
     else
-      res = engines_api.stopService(containerName)
+      res = engines_api.stopService(container_name)
     end
   when  "start"
     if c_type == "container"
-      res = engines_api.startEngine(containerName)
+      res = engines_api.startEngine(container_name)
     else
-      res = engines_api.startService(containerName)
+      res = engines_api.startService(container_name)
     end
   when "pause"
     if c_type == "container"
-      res = engines_api.pauseEngine(containerName)
+      res = engines_api.pauseEngine(container_name)
     else
-      res = engines_api.pauseService(containerName)
+      res = engines_api.pauseService(container_name)
     end
   when  "unpause"
     if c_type == "container"
-      res = engines_api.unpauseEngine(containerName)
+      res = engines_api.unpauseEngine(container_name)
     else
-      res = engines_api.unpauseService(containerName)
+      res = engines_api.unpauseService(container_name)
     end
   when "restart"
     if c_type == "container"
-      res = engines_api.restartEngine(containerName)
+      res = engines_api.restartEngine(container_name)
     else
-      res = engines_api.restartService(containerName)
+      res = engines_api.restartService(container_name)
     end
 
   when "rebuild"
     if c_type == "container"
-      res = engines_api.rebuild_engine_container(containerName)
+      res = engines_api.rebuild_engine_container(container_name)
     else
       puts "Cannot rebuild Service"
     end
 
   when "logs"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
-    res =  containerName + ":" + engines_api.logs_container
+    res =  container_name + ":" + engines_api.logs_container
 
   when "ps"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
-    res =  containerName + ":" + engines_api.ps_container
+    res =  container_name + ":" + engines_api.ps_container
   when "destroy"
     if c_type == "container"
-      res = engines_api.destroyEngine(containerName)
+      res = engines_api.destroyEngine(container_name)
     else
       puts("Error cannot destroy Service")
     end
@@ -280,7 +339,7 @@ end
     if c_type == "container"
       params = Hash.new
       
-      res = engines_api.deleteEngineImage(containerName,params)
+      res = engines_api.deleteEngineImage(container_name,params)
     else
       puts("Error cannot delete a Service Image")
     end
@@ -288,7 +347,7 @@ end
 if c_type == "container"
      params = Hash.new
     params[:remove_all_application_data] = true
-     res = engines_api.deleteEngineImage(containerName,params)
+     res = engines_api.deleteEngineImage(container_name,params)
    else
      puts("Error cannot delete a Service Image")
    end
@@ -297,69 +356,69 @@ if c_type == "container"
       puts "Error cannot delete services from " +  c_type
       exit
     end
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
       if eng.is_a?(EnginesOSapiResult) == false
         p "Error cannot delete Services from an active Image"
         exit
       end
       params = Hash.new
-      params[:engine_name] = containerName
+      params[:engine_name] = container_name
       params[:remove_all_application_data] = true
       engines_api.delete_image_dependancies(params)    
     
   when  "create"
     if c_type == "container"
-      res = engines_api.createEngine(containerName)
+      res = engines_api.createEngine(container_name)
     else
-      res = engines_api.createService(containerName)
+      res = engines_api.createService(container_name)
     end
   when  "recreate"
     if c_type == "container"
-      res = engines_api.recreateEngine(containerName)
+      res = engines_api.recreateEngine(container_name)
     else
-      res = engines_api.recreateService(containerName)
+      res = engines_api.recreateService(container_name)
     end
   when  "registersite"
     if c_type == "container"
-      res = engines_api.registerEngineWebSite(containerName)
+      res = engines_api.registerEngineWebSite(container_name)
     else
-      res = engines_api.registerServiceWebSite(containerName)
+      res = engines_api.registerServiceWebSite(container_name)
     end
   when  "deregistersite"
     if c_type == "container"
-      res = engines_api.deregisterEngineWebSite(containerName)
+      res = engines_api.deregisterEngineWebSite(container_name)
     else
-      res = engines_api.deregisterServiceWebSite(containerName)
+      res = engines_api.deregisterServiceWebSite(container_name)
     end
   when  "registerdns"
     if c_type == "container"
-      res = engines_api.registerEngineDNS(containerName)
+      res = engines_api.registerEngineDNS(container_name)
     else
-      res = engines_api.registerServiceDNS(containerName)
+      res = engines_api.registerServiceDNS(container_name)
     end
   when  "deregisterdns"
     if c_type == "container"
-      res = engines_api.deregisterEngineDNS(containerName)
+      res = engines_api.deregisterEngineDNS(container_name)
     else
-      res = engines_api.deregisterServiceDNS(containerName)
+      res = engines_api.deregisterServiceDNS(container_name)
     end
   when  "monitor"
     if c_type == "container"
-      res = engines_api.monitorEngine(containerName)
+      res = engines_api.monitorEngine(container_name)
     else
       puts("Error Monitor Service not applicable")
     end
   when  "demonitor"
     if c_type == "container"
-      res = engines_api.demonitorEngine(containerName)
+      res = engines_api.demonitorEngine(container_name)
     else
       puts("Error Monitor Service not applicable")
     end
   when  "stats"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
     if eng.is_a?(EnginesOSapiResult) == false
       res = eng.stats
@@ -376,28 +435,28 @@ if c_type == "container"
 
   when  "status"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
     end
     if eng.instance_of?(EnginesOSapiResult)
-      res = "Error: No such Container:" + containerName
+      res = "Error: No such Container:" + container_name
     else
 
       state = engines_api.read_state(eng)
       if eng.setState != state
-        res = "Error:" + containerName + ":" + state + ":set to:" + eng.setState
+        res = "Error:" + container_name + ":" + state + ":set to:" + eng.setState
       else
-        res =  containerName + ":" + state
+        res =  container_name + ":" + state
       end
     end
     puts res
 
   when  "lasterror"
     if c_type == "container"
-      eng = engines_api.loadManagedEngine(containerName)
+      eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
+      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
     end
 
     res =  eng.last_error
@@ -415,7 +474,7 @@ if c_type == "container"
 
   when "backup_vol"
     #backupname engine_name volumename proto host folder user pass
-    args=containerName.split(":")
+    args=container_name.split(":")
     backup_name=args[0]
     engine_name=args[1]
     volume_name=args[2]
@@ -428,7 +487,7 @@ if c_type == "container"
     p dest_hash
     res = engines_api.backup_volume(backup_name,engine_name,volume_name,dest_hash)
   when "backup_db"
-    args=containerName.split(":")
+    args=container_name.split(":")
     backup_name=args[0]
     engine_name=args[1]
     database_name=args[2]
@@ -442,10 +501,10 @@ if c_type == "container"
     res = engines_api.backup_database(backup_name,engine_name,database_name,dest_hash)
 
   when "stop_backup"
-    backup_name= containerName
+    backup_name= container_name
     res = engines_api.stop_backup(backup_name)
   when "register_consumers"
-    eng = EnginesOSapi::ServicesModule.loadManagedService(containerName,core_api)
+    eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
     eng.reregister_consumers
 
   else
@@ -468,16 +527,16 @@ if c_type == "container"
   end
 end
 
-containerName =""
+container_name =""
 c_type= ARGV[0]
 if c_type== "engine"
   c_type = "container"
 elsif c_type == "engines"
   c_type = "container"
-  containerName = "all"
+  container_name = "all"
 elsif  c_type == "services"
   c_type = "service"
-  containerName = "all"
+  container_name = "all"
 elsif  c_type == "service"
   c_type = "service"
 else
@@ -486,15 +545,15 @@ else
   exit
 end
 
-if ARGV.length != 3 && containerName != "all" || ARGV.length < 2 && containerName == "all"
+if ARGV.length != 3 && container_name != "all" || ARGV.length < 2 && container_name == "all"
   print_usage
   exit
 end
 
 command = ARGV[1]
 
-if containerName != "all" #backward for scripts that use all instead of plural
-  containerName = ARGV[2]
+if container_name != "all" #backward for scripts that use all instead of plural
+  container_name = ARGV[2]
 end
 
 if command == 'list'
@@ -502,22 +561,22 @@ if command == 'list'
   return
 end
 
-if containerName == "all"
+if container_name == "all"
   engines_api = EnginesOSapi.new()
   if command == 'list'
     do_cmd(c_type,"none",command)
   elsif c_type == "container"
     engines = engines_api.getManagedEngines()
     engines.each do |engine|
-      do_cmd(c_type,engine.containerName,command)
+      do_cmd(c_type,engine.container_name,command)
     end
   elsif c_type == "service"
     services = engines_api.getManagedServices()
     services.each do |service|
-      do_cmd(c_type,service.containerName,command)
+      do_cmd(c_type,service.container_name,command)
     end
   end
 else
-  do_cmd(c_type,containerName,command)
+  do_cmd(c_type,container_name,command)
 end
 

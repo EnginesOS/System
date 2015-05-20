@@ -11,10 +11,10 @@ class ManagedService < ManagedContainer
 
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,dbs,environments,framework,runtime)
     @last_error="None"
-    @containerName=name
+    @container_name=name
     @memory=memory
-    @hostName=hostname
-    @domainName=domain_name
+    @hostname=hostname
+    @domain_name=domain_name
     @image=image
     @eports=eports
     @environments=environments
@@ -29,7 +29,8 @@ class ManagedService < ManagedContainer
     @runtime=runtime
     @persistant=false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
   end
-  attr_reader :persistant
+  attr_reader :persistant,:type_path,:publisher_namespace
+  
   #@return Hash of consumers 
   #creates fresh hash in instance @consumers is nil
 #  def consumers
@@ -129,12 +130,13 @@ class ManagedService < ManagedContainer
   end
   
   def   add_consumer_to_service(service_hash)   
-  cmd = "docker exec " +  containerName + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+  cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+    p cmd
     return  SystemUtils.run_system(cmd)
   end
   
   def   rm_consumer_from_service(service_hash) 
-   cmd = "docker exec " +  containerName + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+   cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
      return SystemUtils.run_system(cmd)
      
   end 
@@ -158,8 +160,7 @@ class ManagedService < ManagedContainer
       if result == true
         sm =  service_manager
         if sm != false
-          p :remove_consumer
-          p service_hash
+          SystemUtils.debug_output( :remove_consumer  , service_hash)
           result =  sm.remove_service(service_hash)
         else
           log_error_mesg("rm consumer no ServiceManager ","")
@@ -182,10 +183,30 @@ class ManagedService < ManagedContainer
   end
 
   def create_service()
-   
+    if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    
+      FileUtils.mkdir_p("/opt/engines/ssh/keys/services/" + container_name)
+      SystemUtils.run_command("/opt/engines/scripts/setup_service_key_dir.sh " +container_name)
+      
+    end
+    envs = @core_api.load_and_attach_persistant_services(self)
+    if envs !=nil    
+      if@environments != nil && @environments != false
+        SystemUtils.debug_output( :envs, @environments)
+        @environments.concat(envs)
+      else
+        @environments = envs
+      end
+    end
+ 
     if create_container() ==true
       register_with_dns()
-      @core_api.register_non_persistant_services(containerName)
+      
+      @core_api.load_and_attach_nonpersistant_services(self)       
+     
+      
+      @core_api.register_non_persistant_services(container_name)
+     
+      
       reregister_consumers()
       save_state()
       return true
@@ -197,6 +218,7 @@ class ManagedService < ManagedContainer
 
   
 
+  
   
   def recreate
     
@@ -225,6 +247,7 @@ class ManagedService < ManagedContainer
   def reregister_consumers
     
     if @persitant == true
+      p :no_reregister_persistant
       return true
     end
     if is_running == false
@@ -236,8 +259,10 @@ class ManagedService < ManagedContainer
     if registered_hashes == nil
       return 
     end
-    registered_hashes.each do |service_hash|     
-      add_consumer_to_service(service_hash)
+    registered_hashes.each do |service_hash|   
+        if service_hash[:persistant] == false
+          add_consumer_to_service(service_hash)
+        end
     end 
     
     return true
@@ -286,8 +311,7 @@ class ManagedService < ManagedContainer
    #@return none
   def self.log_error_mesg(msg,object)
      obj_str = object.to_s.slice(0,512)
-     
-    
+         
     SystemUtils.log_error_msg(msg,object)
   
    end

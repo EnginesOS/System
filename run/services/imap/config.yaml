@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
-containerName: imap
+container_name: imap
 publisher_namespace: EnginesSystem
 type_path: imap
 ctype: service
 persistant: true
 last_error: 
 memory: '90'
-hostName: imap
-domainName: 
+hostname: imap
+domain_name: 
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
@@ -34,17 +34,17 @@ volumes:
 eports:
 - !ruby/object:WorkPort
   name: imap
-  port: 143
+  port: 10143
   publicFacing: true
   external: 143
 - !ruby/object:WorkPort
   name: pop3s
-  port: 995
+  port: 10995
   publicFacing: true
   external: 995
 - !ruby/object:WorkPort
   name: imaps
-  port: 993
+  port: 10993
   publicFacing: true
   external: 993
 

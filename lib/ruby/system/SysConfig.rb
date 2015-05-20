@@ -6,7 +6,9 @@ class SysConfig
   #  @@rmSiteMonitorCmd="ssh -i  /opt/engines/etc/keys/nagios   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@monit.engines.internal sudo sh /home/rmsite.sh"
   #  @@addDBServiceCmd="ssh  -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"  -i /opt/engines/etc/keys/mysql rma@"
   #
-
+  @@api_version="0.0"
+  @@engines_system_version="0.0"
+  
   @@DBHost="mysql.engines.internal"
   @@CidDir="/opt/engines/run"
   @@ContainersDir="/opt/engines/run/containers/"
@@ -29,6 +31,7 @@ class SysConfig
   #System_private
   @@DomainsFile="/opt/engines/etc/domains"
   @@FirstRunRan="/opt/engines/etc/first_ran"
+  @@SystemPreferencesFile="/opt/engines/etc/preferences/settings.yaml"
 
   #NGINX
   @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
@@ -43,7 +46,7 @@ class SysConfig
   @@internalDomain = "engines.internal"
   @@defaultDNS ="172.17.42.1"
 
-  @@DefaultDomainnameFile="/opt/engines/etc/defaul_domain_name"
+  @@DefaultDomainnameFile="/opt/engines/etc/default_domain_name"
 
   #Named
   @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid"
@@ -69,8 +72,30 @@ class SysConfig
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
-
+  
+  ##SSH
+  @@engines_ssh_private_keyfile="/home/engines/.ssh/sshaccess"
+  @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
+  
+  def SysConfig.api_version
+    return @@api_version
+  end
+  @@api_version="0.0"
+  @@engines_system_version="0.0"
+  def SysConfig.engines_system_version
+    return @@engines_system_version
+  end
+  
+ 
+  
+  def SysConfig.SystemPreferencesFile
+    return @@SystemPreferencesFile
+  end
+  def SysConfig.engines_ssh_private_keyfile
+    return @@engines_ssh_private_keyfile
+  end
+  
   def SysConfig.DefaultBuildReportTemplateFile
     return @@DefaultBuildReportTemplateFile
   end

@@ -39,8 +39,9 @@ if test -z $collation
 Q1="CREATE DATABASE IF NOT EXISTS ${BTICK}$database_name${BTICK}   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE $collation ;"
 Q2="GRANT ALL ON ${BTICK}$database_name${BTICK}.* TO '$db_username'@'%' IDENTIFIED BY '$db_password';"
-Q3="FLUSH PRIVILEGES;"
-SQL="${Q1}${Q2}${Q3}"
+Q3="Grant Create User on *.* to '$db_username'@'%';"
+Q4="FLUSH PRIVILEGES;"
+SQL="${Q1}${Q2}${Q3}${Q4}"
 
 #echo "$SQL"
 
@@ -48,7 +49,7 @@ $MYSQL   -urma  -e "$SQL"
 
 if test $? -ge 0
 	then 
-		echo "Sucess"
+		echo "Success"
 		exit 0
 	fi
 	

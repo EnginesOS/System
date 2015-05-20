@@ -1,13 +1,17 @@
 From engines/servicebase:$release
-RUN echo "Y" | adduser -q --disabled-password  -uid 22013 dovecot;\
-	echo "Y" | adduser -q --disabled-password  -uid 22014 --home /var/vmail  vmail
-RUN apt-get -y update;\
-	apt-get -y install  syslogd dovecot-core dovecot-imapd  dovecot-pop3d  dovecot-sieve dovecot-lmtpd dovecot-mysql ;\
+RUN adduser -q --disabled-password  -uid 22013 dovecot;\
+ 	apt-get -y update;\
+	apt-get -y install  syslogd dovecot-core=1:2.2.9-1ubuntu2 dovecot-imapd=1:2.2.9-1ubuntu2  dovecot-pop3d=1:2.2.9-1ubuntu2  dovecot-sieve=1:2.2.9-1ubuntu2 dovecot-lmtpd dovecot-mysql ;\
 	apt-get clean ;\
-	chown vmail /var/mail
+	mkdir -p /var/mail ;\
+	chown dovecot /var/mail ;\
+	mkdir -p /var/run/dovecot;\
+	chown -R dovecot /var/run/dovecot/;\
+	usermod -G containers -a dovecot
 	
 ADD dovecot/conf.d /etc/dovecot/conf.d
 
 ADD dovecot/dovecot-sql.conf.ext /etc/dovecot/
 
+USER dovecot
 ADD home home

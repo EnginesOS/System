@@ -1,0 +1,8 @@
+
+auth ALL = (root) NOPASSWD: ALL
+
+auth ALL = (root) NOPASSWD: /sbin/syslogd
+auth ALL = (root) NOPASSWD: ALL
+#for debugging only
+#ALL ALL = (root) NOPASSWD: ALL
+

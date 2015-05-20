@@ -46,10 +46,22 @@ class DockerFileBuilder
       @docker_file.puts("RUN ln -s /usr/local/ /home/local;\\")
       @docker_file.puts("     chown -R $ContUser /usr/local/")
     end
-
+    
+    set_user("$ContUser")
+   
+    
     write_app_archives
+    set_user("$ContUser")
+    
+    
     write_container_user
+    
+    set_user("0")
+         
     chown_home_app
+   
+    set_user("$ContUser")
+ 
     write_worker_commands            
     write_sed_strings
     write_persistant_dirs
@@ -57,32 +69,35 @@ class DockerFileBuilder
     insert_framework_frag_in_dockerfile("builder.mid.tmpl")
     @docker_file.puts("")
     write_rake_list
+    
+    @docker_file.puts("")
+    set_user("0")
+    
     write_pear_list
     write_apache_modules    
+
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
     write_write_permissions_single
 
     @docker_file.puts("")
-    @docker_file.puts("USER 0")
-    count_layer()
+
     @docker_file.puts("run mkdir -p /home/fs/local/")
     count_layer()
     @docker_file.puts("")
 
-
+    set_user("$ContUser")
     write_run_install_script
-
+    set_user("0")
     write_data_permissions
 
-    @docker_file.puts("USER 0")
-    count_layer()
+    
 
     @docker_file.puts("run mv /home/fs /home/fs_src")
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
     count_layer()
-    @docker_file.puts("USER $ContUser")
-    count_layer()
+    
+
     insert_framework_frag_in_dockerfile("builder.end.tmpl")
     @docker_file.puts("")
     @docker_file.puts("VOLUME /home/fs/")
@@ -183,23 +198,20 @@ class DockerFileBuilder
 
   def write_data_permissions
     @docker_file.puts("#Data Permissions")
-    @docker_file.puts("USER 0")
-    count_layer()
+
     @docker_file.puts("")
     @docker_file.puts("RUN /usr/sbin/usermod -u $data_uid data-user;\\")
     @docker_file.puts("chown -R $data_uid.$data_gid /home/app /home/fs ;\\")
     @docker_file.puts("chmod -R 770 /home/fs")
     count_layer
-    @docker_file.puts("USER $ContUser")
-    count_layer
+   
 
   end
 
   def write_run_install_script
     @docker_file.puts("WorkDir /home/")
     @docker_file.puts("#Setup templates and run installer")
-    @docker_file.puts("USER $ContUser")
-    count_layer
+
     @docker_file.puts("RUN bash /home/setup.sh")
     count_layer
   end
@@ -389,16 +401,13 @@ SystemUtils.log_exception(e)
     begin
       @docker_file.puts("#Chown App Dir")
       log_build_output("Dockerfile:Chown")
-      @docker_file.puts("USER 0")
-      count_layer
+      
       @docker_file.puts("RUN if [ ! -d /home/app ];\\")
       @docker_file.puts("  then \\")
       @docker_file.puts("    mkdir -p /home/app ;\\")
       @docker_file.puts("  fi;\\")
       @docker_file.puts(" mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\")
       @docker_file.puts(" chown -R $ContUser /home/app /home/fs /home/fs/local")
-      count_layer
-      @docker_file.puts("USER $ContUser")
       count_layer
 
     rescue Exception=>e
@@ -498,7 +507,8 @@ SystemUtils.log_exception(e)
           @docker_file.puts("   mkdir -p  `dirname /home/app/" + path + "`;\\")
           @docker_file.puts("   touch  /home/app/" + path + ";\\")
           @docker_file.puts("     fi;\\")
-          @docker_file.puts( "  chmod  775 /home/app/" + path )
+          @docker_file.puts( "  chown $ContUser /home/app/" + path + ";\\")
+          @docker_file.puts( "   chmod  775 /home/app/" + path )
           count_layer
         end
       end
@@ -525,16 +535,18 @@ SystemUtils.log_exception(e)
           @docker_file.puts("    chmod -R gu+rw $dest;\\")
           @docker_file.puts("  elif [ ! -d /home/app/" + directory + " ] ;\\" )
           @docker_file.puts("    then \\")
-          @docker_file.puts("       mkdir  \"/home/app/" + directory + "\";\\")
-          @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\" )
+          @docker_file.puts("       mkdir  -p \"/home/app/" + directory + "\";\\")
+          @docker_file.puts( "      chown $data_uid  \"/home/app/" +directory + "\";\\")
+          @docker_file.puts("       chmod -R gu+rw \"/home/app/" + directory + "\";\\")         
           @docker_file.puts("  else\\")
+
           @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
           @docker_file.puts("     for dir in `find  /home/app/" + directory  + " -type d  `;\\")
           @docker_file.puts("       do\\")
           @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
           @docker_file.puts("            if test -n $adir;\\")
           @docker_file.puts("                then\\")
-          @docker_file.puts("                      dirs=\"$dirs $adir\";\\");
+          @docker_file.puts("                      dirs=$dirs \"$adir\";\\");
           @docker_file.puts("                fi;\\")
           @docker_file.puts("       done;\\")
           @docker_file.puts(" if test -n \"$dirs\" ;\\")
@@ -564,6 +576,7 @@ SystemUtils.log_exception(e)
       #        dirs=String.new
       @docker_file.puts("")
 
+
       @blueprint_reader.archives_details.each do |archive_details|
         arc_src = archive_details[:source_url]
         arc_name = archive_details[:package_name]
@@ -590,7 +603,7 @@ SystemUtils.log_exception(e)
         p arc_extract + "_" 
         p arc_dir +"|"
           
-        if arc_loc == "./"
+        if arc_loc == "./" || arc_loc == "." 
           arc_loc=""
         elsif arc_loc.end_with?("/")
           arc_loc = arc_loc.chop() #note not String#chop
@@ -599,19 +612,13 @@ SystemUtils.log_exception(e)
         if arc_extract == "git"
           @docker_file.puts("WORKDIR /tmp")
           count_layer
-          @docker_file.puts("USER $ContUser")
-          count_layer
           @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
           count_layer
-          @docker_file.puts("USER 0  ")
-          count_layer
+          set_user("0")
           @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
           count_layer
-          @docker_file.puts("USER $ContUser")
-          count_layer
+          set_user("$ContUser")
         else
-          @docker_file.puts("USER $ContUser")
-          count_layer
           step_back=false
 
           if arc_dir == nil 
@@ -633,27 +640,27 @@ SystemUtils.log_exception(e)
           else
             @docker_file.puts("echo") #step past the next shell line implied by preceeding ;
           end
-          @docker_file.puts("USER 0  ")
-          count_layer
+          set_user("0")
           if step_back==true
             @docker_file.puts("WORKDIR /tmp")
             count_layer
           end
-          if  arc_loc.start_with?("/home/app") || arc_loc.start_with?("/home/local/")
-            dest_prefix=""
-          else
+          if  arc_loc.start_with?("/home/app") == false && arc_loc.start_with?("/home/local/") == false
             dest_prefix="/home/app"
+          else
+            dest_prefix=""
           end
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
           @docker_file.puts("       then\\")
-          @docker_file.puts(" mkdir -p /home/app ;\\")
+          @docker_file.puts(" mkdir -p " + dest_prefix + arc_loc + arc_dir + " ;\\")
           @docker_file.puts(" fi;\\")
+           if dest_prefix != "" &&  dest_prefix != "/home/app"
+              @docker_file.puts(" mkdir -p " + dest_prefix + " ;\\")
+           end
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
-          @docker_file.puts("USER $ContUser")
-          count_layer
-
+          first_archive = false
         end
       end
 
@@ -735,7 +742,10 @@ SystemUtils.log_exception(e)
 
       @blueprint_reader.pear_modules.each do |pear_mod|
         if pear_mod !=nil
-          @docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+          #for pear
+          #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+          # for pecl
+          @docker_file.puts("RUN  pecl install  " + pear_mod )
           count_layer
         end
       end
@@ -745,6 +755,10 @@ SystemUtils.log_exception(e)
     return false
   end
 
+  def set_user(user)
+    @docker_file.puts("User " + user)
+    count_layer
+  end
   protected
 
   ##################### End of

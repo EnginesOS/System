@@ -1,13 +1,13 @@
 --- !ruby/object:MongoDBService
-containerName: mongo_server
+container_name: mongo_server
 ctype: service
 publisher_namespace: EnginesSystem
 type_path: database/nosql/mongo
 persistant: true
 last_error: 
 memory: '128'
-hostName: mongo
-domainName: 
+hostname: mongo
+domain_name: 
 environments: []
 image: engines/mongo:alpha
 volumes:

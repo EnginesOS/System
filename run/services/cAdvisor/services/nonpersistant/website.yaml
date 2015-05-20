@@ -1,0 +1,10 @@
+parent_engine: cAdvisor
+publisher_namespace: EnginesSystem
+type_path: nginx
+service_handle: cAdvisor
+container_type: service
+variables:
+ proto: http
+ port: 8080
+ fqdn: cAdvisor._Engines_System(default_domain)
+ internal_dir: /

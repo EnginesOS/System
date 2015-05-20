@@ -14,13 +14,15 @@ class EngineBuilder
   require_relative 'builder_public.rb'
   require_relative 'BluePrintReader.rb'
   require_relative 'DockerFileBuilder.rb'
-  require_relative 'SystemAccess.rb'
+
   
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative 'templating.rb'
-  include Templating
+  require_relative '../templater/Templater.rb'
+
+
+  
   
   @repoName=nil
   @hostname=nil
@@ -29,6 +31,7 @@ class EngineBuilder
   @web_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,
+    :templater,
   :repoName,
   :hostname,
   :domain_name,
@@ -52,7 +55,11 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
-
+    
+      #fixme
+      @engine_public = nil
+      
+      
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -62,7 +69,7 @@ class EngineBuilder
    @container_name.gsub!(/ /,"_")
    @container_name.freeze
     
-    custom_env= params[:software_environment_variables]
+    custom_env= params[:variables]
     #   custom_env=params
     @core_api = core_api
     @http_protocol = params[:http_protocol]
@@ -78,8 +85,10 @@ class EngineBuilder
 
     @attached_services = Array.new
 
-    @builder_public = BuilderPublic.new(self)
-    @system_access = SystemAccess.new()
+    builder_public = BuilderPublic.new(self)
+    system_access = SystemAccess.new()
+    @templater = Templater.new(system_access,builder_public)
+    
     p :custom_env
     p custom_env
 
@@ -402,12 +411,12 @@ class EngineBuilder
       @blueprint_reader.environments.each do |env|
         p :env_before
         p env.value
-        env.value= process_templated_string(env.value)
+        env.value= @templater.process_templated_string(env.value)
         p :env_after
         p env.value
       end
 
-      fill_service_environment_variables
+      #fill_service_environment_variables
       create_template_files
       create_php_ini
       create_apache_config
@@ -416,7 +425,7 @@ class EngineBuilder
       index=0
       #FIXME There has to be a ruby way
       @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
-        sed_string = process_templated_string(sed_string)
+        sed_string = @templater.process_templated_string(sed_string)
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index+=1
       end
@@ -504,6 +513,7 @@ class EngineBuilder
   def create_template_files
     if  @blueprint[:software].has_key?(:template_files) && @blueprint[:software][:template_files] != nil
       @blueprint[:software][:template_files].each do |template_hash|
+        
         write_software_file( "/home/engines/templates/" + template_hash[:path],template_hash[:content])
       end
     end
@@ -526,54 +536,90 @@ class EngineBuilder
   end
 
   def create_start_script
-    if @blueprint[:software].has_key?(:custom_start_script) &&  @blueprint[:software][:custom_start_script] != nil
-      start_script_file = File.open(get_basedir() + SysConfig.StartScript,"w", :crlf_newline => false)
-      start_script_file.puts(@blueprint[:software][:custom_start_script])
-      start_script_file.close
+    if @blueprint[:software].has_key?(:custom_start_script) \
+      &&  @blueprint[:software][:custom_start_script] != nil\
+      &&  @blueprint[:software][:custom_start_script].length >0 
+      content = @blueprint[:software][:custom_start_script].gsub(/\r/, "")
+      write_software_file(SysConfig.StartScript,content)      
       File.chmod(0755,get_basedir() + SysConfig.StartScript)
     end
   end
 
   def create_install_script
-    if @blueprint[:software].has_key?(:custom_install_script) &&  @blueprint[:software][:custom_install_script] != nil
-      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"w", :crlf_newline => false)
-      install_script_file.puts(@blueprint[:software][:custom_install_script])
-      install_script_file.close
+    if @blueprint[:software].has_key?(:custom_install_script) \
+      &&  @blueprint[:software][:custom_install_script] != nil\
+      && @blueprint[:software][:custom_install_script].length >0
+      content = @blueprint[:software][:custom_install_script].gsub(/\r/, "")
+      write_software_file(SysConfig.InstallScript,content)
+#      install_script_file = File.open(get_basedir() + SysConfig.InstallScript,"wb", :crlf_newline => false)
+#      install_script_file.puts(content)
+#      install_script_file.close
+      p :create_install_script
+#      p get_basedir() + SysConfig.InstallScript
+#      p @blueprint[:software][:custom_install_script]
+#        t = @blueprint[:software][:custom_install_script]
+#        t.gsub!(/\r/, "")
+#        p t
+#        p "no_bang"
+#        t =  @blueprint[:software][:custom_install_script]
+#      t = t.gsub(/\r/, "")
+#    p t
+#    
       File.chmod(0755,get_basedir() + SysConfig.InstallScript)
     end
   end
 
   def create_post_install_script
-    if @blueprint[:software].has_key?(:custom_post_install_script) && @blueprint[:software][:custom_post_install_script] != nil
-      post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"w", :crlf_newline => false)
-      post_install_script_file.puts(@blueprint[:software][:custom_post_install_script])
-      post_install_script_file.close
+    if @blueprint[:software].has_key?(:custom_post_install_script) \
+      && @blueprint[:software][:custom_post_install_script] != nil \
+      && @blueprint[:software][:custom_post_install_script].length >0
+      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, "")
+      write_software_file(SysConfig.PostInstallScript,content)
+#        post_install_script_file = File.open(get_basedir() + SysConfig.PostInstallScript,"wb", :crlf_newline => false)
+#      post_install_script_file.puts(content)
+#      post_install_script_file.close
       File.chmod(0755,get_basedir() + SysConfig.PostInstallScript)
     end
   end
 
-  def create_php_ini
-    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
-    if @blueprint[:software].has_key?(:custom_php_inis) && @blueprint[:software][:custom_php_inis]  != nil
-
-      php_ini_file = File.open(get_basedir() + SysConfig.CustomPHPiniFile,"w", :crlf_newline => false)
-      @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
-        php_ini_file.puts(php_ini_hash[:content])
+    def create_php_ini
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomPHPiniFile))
+      if @blueprint[:software].has_key?(:custom_php_inis) \
+        && @blueprint[:software][:custom_php_inis]  != nil\
+        && @blueprint[:software][:custom_php_inis].length >0
+        contents=String.new
+        @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+          content = php_ini_hash[:content].gsub(/\r/, "")
+            contents = contents + "\n" + content
+  
+        end
+        write_software_file( SysConfig.CustomPHPiniFile,contents)
+  
       end
-      php_ini_file.close
-
     end
-  end
 
   def create_apache_config
-    FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
-    if @blueprint[:software].has_key?(:custom_apache_conf) && @blueprint[:software][:custom_apache_conf]  != nil
-      write_software_file(SysConfig.CustomApacheConfFile,@blueprint[:software][:custom_apache_conf])
+  
+    p :apache_httpd_configurations
+      p  @blueprint[:software][:apache_httpd_configurations]
+    if @blueprint[:software].has_key?(:apache_httpd_configurations) \
+      && @blueprint[:software][:apache_httpd_configurations]  != nil\
+      && @blueprint[:software][:apache_httpd_configurations].length >0
+      FileUtils.mkdir_p(get_basedir() + File.dirname(SysConfig.CustomApacheConfFile))
+ #  @ if @blueprint[:software].has_key?(:apache_httpd_configurations) && @blueprint[:software][:apache_httpd_configurations]  != nil
+      contents=String.new
+      @blueprint[:software][:apache_httpd_configurations].each do | httpd_configuration|
+        contents = contents + httpd_configuration[:httpd_configuration] + "\n"
+          p :apache
+          p contents
+      end
+      write_software_file(SysConfig.CustomApacheConfFile,contents)
 
     end
   end
 
   def write_software_file(container_filename_path,content)
+    content.gsub!(/\r/, "")
     dir = File.dirname(get_basedir() + container_filename_path)
     p :dir_for_write_software_file
     p dir
@@ -581,8 +627,8 @@ class EngineBuilder
     if Dir.exist?(dir) == false
       FileUtils.mkdir_p(dir)
     end
-    out_file  = File.open(get_basedir() + container_filename_path ,"w", :crlf_newline => false)
-    content = process_templated_string(content)
+    out_file  = File.open(get_basedir() + container_filename_path ,"wb", :crlf_newline => false)
+    content = @templater.process_templated_string(content)
     out_file.puts(content)
 
     out_file.close
@@ -602,10 +648,10 @@ class EngineBuilder
     p filename
     template = File.read(filename)
 
-    template = process_templated_string(template)
+    template = @templater.process_templated_string(template)
     output_filename = filename.sub(/.tmpl/,"")
 
-    out_file = File.new(output_filename,"w")
+    out_file = File.new(output_filename,"wb")
     out_file.write(template)
     out_file.close()
   end
@@ -653,32 +699,21 @@ class EngineBuilder
   end
 
   def set_top_level_service_params(service_hash)
-    service_hash[:parent_engine]=@container_name
-    if service_hash.has_key?(:variables) == false
-      service_hash[:variables] = Hash.new
-    end
-    service_hash[:variables][:parent_engine]=@container_name
-    if service_hash[:variables].has_key?(:name) == true  && service_hash[:variables][:name] != nil
-      service_hash[:service_handle] = service_hash[:variables][:name]
-    else
-      service_hash[:service_handle] = @container_name
-    end
-
+    return ServiceManager.set_top_level_service_params(service_hash,@container_name)
   end
+  
+
 
   def create_persistant_services
 
     service_cnt=0
     @blueprint_reader.services.each() do |service_hash|
-      service_hash[:parent_engine]=@container_name #do I need this?
+#      service_hash[:parent_engine]=@container_name #do I need this?
         
       service_def = get_service_def(service_hash)
       if service_def == nil
         p :failed_to_load_service_definition
-        p :servicetype_name
-        p service_hash[:service_type]
-        p :service_provider
-        p service_hash[:publisher_namespace]
+        p service_hash
         return false
       end
       if service_def[:persistant] == false
@@ -718,16 +753,19 @@ class EngineBuilder
                 free_orphan = true
                 log_build_output("Reattached Service " + service_hash[:service_handle].to_s)
               end
-      elsif  @core_api.find_service_consumers(service_hash) == false
+      elsif  @core_api.service_is_registered?(service_hash) == false
         @first_build = true
         service_hash[:fresh]=true
         log_build_output("Creating New Service " + service_hash[:service_handle].to_s)
       
         else #elseif over attach to existing true attached to existing
+          service_hash[:fresh]=false
           log_build_output("Failed to build cannot over write " + service_hash[:service_handle].to_s + " No Service Found") 
       end
       p :attach_service
       p service_hash
+      @templater.fill_in_dynamic_vars(service_hash)
+      fill_service_environment_variables(service_hash)
       #FIXME release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) ==true
         @attached_services.push(service_hash)
@@ -750,35 +788,7 @@ class EngineBuilder
     sm.release_orphan(service_hash)
   end
 
-  def fill_in_dynamic_vars(service_hash)
-    p "FILLING_+@+#+@+@+@+@+@+"
-    if service_hash.has_key?(:variables) == false || service_hash[:variables] == nil
-      return
-    end
-    service_hash[:variables].each do |variable|
-      p variable
-      if variable[1] != nil && variable[1].start_with?("_")
-        #variable[1].sub!(/\$/,"")
-        result = evaluate_function(variable[1])
-        service_hash[:variables][variable[0]] = result
-      end
-    end
-  end
 
-  def evaluate_function(function)
-    if function.start_with?("_System")
-      return resolve_system_variable(function)
-    elsif function.start_with?("_Builder")
-      return resolve_build_variable(function)
-    elsif function.start_with?("_Blueprint")
-      return resolve_blueprint_variable(function)
-    end
-    #if no match return orginial
-    return function
-  rescue Exception=> e
-    return ""
-
-  end
 
   def tail_of_build_log
     retval = String.new
@@ -794,9 +804,9 @@ class EngineBuilder
   def EngineBuilder.re_install_engine(engine,core)
     params = Hash.new
 
-    params[:engine_name] = engine.containerName
-    params[:domain_name] = engine.domainName
-    params[:host_name] = engine.hostName
+    params[:engine_name] = engine.container_name
+    params[:domain_name] = engine.domain_name
+    params[:host_name] = engine.hostname
     params[:software_environment_variables] = engine.environments
     params[:http_protocol] = engine.protocol
     params[:memory] = engine.memory
@@ -899,35 +909,24 @@ class EngineBuilder
     end
     return mc
   end
+  
+def engine_environment
+ return @blueprint_reader.environments 
+end
+
 
   protected
 
-  def fill_service_environment_variables
+  def fill_service_environment_variables(service_hash)
     p :fill_service_environment_variables
-    services =@attached_services #@blueprint_reader.services
-    services.each do |service_hash|
-      service_def =  get_service_def(service_hash)
-      if service_def != nil
-        service_environment_variables = service_def[:target_environment_variables]
-        if service_environment_variables != nil
-          service_environment_variables.values.each do |env_variable_pair|
-            env_name = env_variable_pair[:environment_name]
-            value_name = env_variable_pair[:variable_name]
-            value=service_hash[:variables][value_name.to_sym]
-            p service_hash
-            p env_variable_pair
-            @blueprint_reader.environments.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
-          end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
-          p :no_target_envs
-          p service_hash
-        end
-      else
-        p :Failed_to_load_service_def
-        p service_hash
-      end
-    end
-
+#    services =@attached_services #@blueprint_reader.services
+#   
+#    services.each do |service_hash|
+     service_envs = SoftwareServiceDefinition.service_environments(service_hash)
+      @blueprint_reader.environments.concat(service_envs)
+#    end
   end
+  
 
   def debug(fld)
     puts "ERROR: "

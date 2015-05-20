@@ -34,7 +34,20 @@ class VolumeService < ManagedService
   def rm_volume(service_hash)
 
     begin
-      puts "would remove " + service_hash.to_s
+      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data    -v /var/lib/engines/fs/" + service_hash[:parent_engine] + ":/dest/fs:rw   -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh fs"  
+      retval =  SystemUtils.run_system(cmd)
+      cmd = "docker rm volbuilder"
+      retval =  SystemUtils.run_system(cmd)
+      
+      if retval == true
+        Dir.delete( SysConfig.LocalFSVolHome() + "/" + service_hash[:parent_engine])
+          return true 
+      else
+        SystemUtils.log_error_mesg("Failed to Delete FS:" + retval.to_s ,service_hash)
+        @last_error="Failed to Delete FS:" + retval.to_s
+        return false        
+      end
+    
       #update details with some manager
       return true
     rescue  Exception=>e

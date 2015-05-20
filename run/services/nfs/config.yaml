@@ -1,0 +1,55 @@
+--- !ruby/object:ManagedService
+container_name: nfs
+ctype: service
+publisher_namespace: EnginesSystem
+type_path: filesystem/service/nfs
+persistant: true
+last_error: 
+memory: '36'
+hostname: nfs
+domain_name: 
+environments: []
+image: engines/nfs:alpha
+volumes:
+ ssl_certs: !ruby/object:Volume
+ fs_rw: !ruby/object:Volume
+  name: fs_rw
+  remotepath: "/nfs/rw/"
+  localpath: "/var/lib/engines/fs/"
+  mapping_permissions: "rw"
+ fs_ro: !ruby/object:Volume
+  name: fs_ro
+  remotepath: "/nfs/ro/"
+  localpath: "/var/lib/engines/fs/"
+  mapping_permissions: "rw"
+ cgroup: !ruby/object:Volume
+  name: cgroup
+  remotepath: "/sys/fs/cgroup"
+  localpath: "/sys/fs/cgroup"
+  mapping_permissions: "ro"
+port: 
+eports:
+- !ruby/object:WorkPort
+  name: rpc
+  port: 111
+  publicFacing: true
+  external: 111
+- !ruby/object:WorkPort
+  name: mountd
+  port: 2049
+  publicFacing: true
+  external: 2049
+- !ruby/object:WorkPort
+  name: lockd
+  port: 32768
+  publicFacing: true
+  external: 32768
+repo: na
+last_result: |
+  nginx
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true

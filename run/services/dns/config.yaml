@@ -1,14 +1,14 @@
 --- !ruby/object:ManagedService
-containerName: dns
+container_name: dns
 publisher_namespace: EnginesSystem
 type_path: dns
 ctype: service
 persistant: false
 conf_self_start: false
 last_error: 
-memory: '42'
-hostName: dns
-domainName: 
+memory: '64'
+hostname: dns
+domain_name: 
 environments: []
 image: engines/dns:alpha
 volumes: 

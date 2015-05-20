@@ -1,8 +1,13 @@
 #!/bin/sh
 
-/home/cron/sbin/fcron 
-syslogd -n -R syslog.engines.internal:5140
+
+PIDFILE=/home/cron/fcron.pid
+source /home/trap.sh
+
+/home/cron/sbin/fcron -p  /home/cron/log/cron.log
 touch /var/run/startup_complete
+syslogd -n -R syslog.engines.internal:5140
+
 chown 21000 /var/run/startup_complete
 sleep 100
 

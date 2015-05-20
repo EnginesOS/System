@@ -1,0 +1,8 @@
+
+postfix ALL = (root) NOPASSWD: /usr/lib/postfix/master
+
+postfix ALL = (root) NOPASSWD: /sbin/syslogd
+
+#for debugging only
+#ALL ALL = (root) NOPASSWD: ALL
+

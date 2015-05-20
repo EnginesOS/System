@@ -3,7 +3,7 @@ PATH="/usr/local/rbenv/bin:$PATH"
 mkdir /var/log/apache2
 cd /home/app/
 rm /home/app/app/config/newrelic.yml
-git pull
+git pull --depth 1
 cp /home/newrelic.yml /home/app/
 
 RAILS_ENV=production
@@ -15,7 +15,7 @@ export  RAILS_ENV
 
 /usr/local/rbenv/shims/bundle exec rake db:migrate
 
-/usr/local/rbenv/shims/bundle exec rake db:populate
+/usr/local/rbenv/shims/bundle exec rake db:seed
 
 /usr/local/rbenv/shims/bundle exec rake assets:precompile
 

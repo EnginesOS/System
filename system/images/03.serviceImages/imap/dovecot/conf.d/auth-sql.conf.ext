@@ -17,7 +17,7 @@ passdb {
 #}
 userdb {
   driver = static
-  args = uid=vmail gid=vmail home=/home/%u
+  args = uid=dovecot gid=dovecot home=/home/%u
 }
 #userdb {
 #  driver = sql
@@ -29,5 +29,5 @@ userdb {
 # <doc/wiki/UserDatabase.Static.txt>
 userdb {
   driver = static
-  args = uid=vmail gid=vmail home=/var/vmail/%d_%u
+  args = uid=vmail gid=dovecot home=/var/vmail/%d_%u
 }

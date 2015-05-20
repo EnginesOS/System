@@ -1,5 +1,6 @@
 FROM busybox
 RUN echo "Y" | adduser  -D -h /home/volmgr -u 22007 volmgr
+
 VOLUME /fs/
 
 ENV ContUser volmgr

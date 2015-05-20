@@ -4,6 +4,8 @@ RUBY_VER=2.1.3
 
 
 function configure_git {
+
+	apt-get install -y git
 	
 	mkdir -p /opt/
 	
@@ -29,6 +31,8 @@ function configure_git {
 #	        merge = refs/heads/master
 #	' > .git/config
 #	git pull
+
+
 }
   
   function install_docker_and_components {
@@ -144,7 +148,7 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
  	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 		
-	
+	echo "Setup engines cron tab"
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
 */10 * * * * /opt/engines/bin/engines.sh  service  check_and_act all >>/opt/engines/logs/services/restarts.log" >/tmp/ct
 crontab -u engines /tmp/ct
@@ -256,7 +260,7 @@ mkdir -p  /var/log/engines/services/nginx/nginx
 mkdir -p  /var/log/engines/services/backup
 mkdir -p  /var/log/engines/services/mgmt
 mkdir -p  /var/log/engines/services/pgsql/
-
+mkdir -p  /var/log/engines/services/nfs/
 
 mkdir -p  /var/log/engines/services/mysql/
 mkdir -p  /var/log/engines/services/dns/
@@ -279,6 +283,8 @@ touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
+ mkdir -p  /var/log/engines/services/auth/ftp/
+mkdir -p /opt/engines/etc/auth/keys/
 mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
@@ -291,12 +297,15 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql
+mkdir -p /opt/engines/etc/ssl/psql/
+mkdir -p /opt/engines/etc/smtp
+mkdir -p /opt/engines/ssh/keys/services/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/private
 }
 
 function set_permissions {
@@ -324,12 +333,16 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
-	 chown 22003 -R /opt/engines/etc/smtp
-	
+	chown -R 22002 /opt/engines/etc/ssl/psql
+	chmod og-rw -R /opt/engines/etc/ssl/psql
+	chown 22003 -R /opt/engines/etc/smtp
+	chown 22017 -R  /opt/engines/ssh/keys/services/
+	chown 22018 -R  /var/log/engines/services/nfs/
 	 chown 22003 -R /var/log/engines/services/email/
-	 chown  -R /opt/engines/etc/backup/
+	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
-	
+	chown 22017 -R /var/log/engines/services/auth/
+	chown 22017 -R  /opt/engines/etc/auth/keys/
 	}
 
 function set_os_flavor {
@@ -408,7 +421,7 @@ mkdir -p /opt/engines/system/images/04.systemApps/mgmt/home/app
 			git init
 			
 			git remote add -t alpha origin 	https://github.com/EnginesOS/SystemGui.git
-			git fetch
+			git fetch 
 		fi
 #			echo '[core]
 #				        repositoryformatversion = 0

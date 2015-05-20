@@ -5,7 +5,7 @@ require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
 
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"
-require "/opt/engines/lib/ruby/prefs/SystemPreferences.rb"
+
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
@@ -27,6 +27,9 @@ class EnginesOSapi
   require_relative "services_module.rb"
   include ServicesModule
   
+  require_relative "engines_api_version.rb"
+ include EngOSapiVersion
+ 
   def initialize()
     @core_api = EnginesCore.new
   end
@@ -56,12 +59,40 @@ class EnginesOSapi
   
   def set_smarthost(params)
     #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
-    @core_api.set_smarthost(params) 
+    return @core_api.set_smarthost(params) 
   end
-  def  set_default_domain(params) 
-   
-    @core_api.set_default_domain(params) 
+  
+  #@return EngineOSapiResult
+  #set the default Domain used by the system in creating new engines and for services that use web
+  def  set_default_domain(params)    
+    if @core_api.set_default_domain(params)
+      return success("Preferences","Set Default Domain")
+    else
+      return failed("Preferences", @core_api.last_error,"Set Default Domain")
+    end
   end
+  
+  #@return String
+  #get the default Domain used by the system in creating new engines and for services that use web
+  def  get_default_domain()    
+    return @core_api.get_default_domain() 
+  end
+  
+  #@return boolean
+   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def set_default_site(params)
+   if @core_api.set_default_site(params) 
+    return success("Preferences","Set Default Site")
+  else
+    return failed("Preferences", @core_api.last_error,"Set Default Site")
+  end
+end
+  #@return String
+   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+  def get_default_site()
+    return @core_api.get_default_site 
+  end
+    
   def set_first_run_parameters params
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
@@ -110,8 +141,8 @@ class EnginesOSapi
 #      end
 #      params = Hash.new
 #      
-#      params[:engine_name] = engine.containerName  
-#      params[:domain_name] = engine.domainName
+#      params[:engine_name] = engine.container_name  
+#      params[:domain_name] = engine.domain_name
 #      params[:host_name] = engine.hostname
 #      params[:software_environment_variables] = engine.environments 
 #      params[:http_protocol] = engine.http_protocol
@@ -135,7 +166,7 @@ class EnginesOSapi
   end
 
   def list_apps()
-    p :list_apps
+    
     return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
@@ -284,7 +315,7 @@ class EnginesOSapi
     #default web_site
     #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}} 
     
-    return core_api.save_system_preferences
+    return core_api.save_system_preferences(preferences)
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
   end
@@ -481,63 +512,7 @@ class EnginesOSapi
     return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
-#  def registerEngineDNS engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","Register Engine DNS")
-#    end
-#    retval = engine.register_dns()
-#
-#    if retval.is_a?(String)
-#      p retval
-#      return failed(engine_name,retval,"Register Engine DNS")
-#    end
-#    return success(engine_name,"Register Engine DNS")
-#  rescue Exception=>e
-#    return log_exception_and_fail("Register Engine DNS",e)
-#  end
-#
-#  def deregisterEngineDNS engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","DeRegister Engine DNS")
-#    end
-#    retval = engine.deregister_dns()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"DeRegister Engine DNS")
-#    end
-#    return success(engine_name,"DeRegister Engine DNS")
-#  rescue Exception=>e
-#    return log_exception_and_fail("deRegister Engine DNS",e)
-#  end
-##
-#  def monitorEngine engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","Monitor Engine")
-#    end
-#    retval = engine.monitor_site()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"Monitor Engine")
-#    end
-#    return success(engine_name,"Monitor Engine")
-#  rescue Exception=>e
-#    return log_exception_and_fail("Monitor Engine",e)
-#  end
-#
-#  def demonitorEngine engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","DeMonitor Engine")
-#    end
-#    retval = engine.demonitor_site()
-#    if  retval.is_a?(String)
-#      return failed(engine_name,retval,"DeMonitor Engine")
-#    end
-#    return success(engine_name,"DeMonitor Engine")
-#  rescue Exception=>e
-#    return log_exception_and_fail("DeMonitor Engine",e)
-#  end
+
 
   def get_engine_blueprint engine_name
 #    p :get_blueprint_for
@@ -560,9 +535,9 @@ class EnginesOSapi
 
     retval =   container.read_state()
     # if retval == false
-    #  return failed(container.containerName,"Failed to ReadState","read state")
+    #  return failed(container.container_name,"Failed to ReadState","read state")
     #end
-    #return success(container.containerName,"read state")
+    #return success(container.container_name,"read state")
     retval
   rescue Exception=>e
     return log_exception_and_fail("read_start",e)
@@ -604,8 +579,8 @@ class EnginesOSapi
     return log_exception_and_fail("Get Service Memory Statistics",e)
   end
 
-  def get_container_network_metrics(containerName)
-    return @core_api.get_container_network_metrics(containerName)
+  def get_container_network_metrics(container_name)
+    return @core_api.get_container_network_metrics(container_name)
   rescue Exception=>e
     return log_exception_and_fail("get_container_network_metrics",e)
   end
@@ -707,7 +682,7 @@ class EnginesOSapi
 
   
   def update_domain(params)
-    old_domain_name=update_domain[:original_domain_name]
+    old_domain_name=params[:original_domain_name]
     if @core_api.update_domain(old_domain_name,params) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
@@ -782,6 +757,10 @@ class EnginesOSapi
      return @core_api.list_providers_in_use
   end
 
+  #protected if protected static cant call
+  def success(item_name ,cmd)
+    return EnginesOSapiResult.success(item_name ,cmd)
+  end
 
   
   def failed(item_name,mesg ,cmd)
@@ -803,5 +782,27 @@ class EnginesOSapi
 
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
+  
 
+  #@returns EnginesOSapiResult on sucess with private ssh key in repsonse messages
+  def generate_engines_user_ssh_key
+    res = @core_api.generate_engines_user_ssh_key
+    if res == true    
+      return success("Engines ssh key regen", res)
+    end
+    
+    return failed("Update System SSH key",@core_api.last_error ,"Update System SSH key")
+          
+  end
+  
+  #calls api to run system update
+  #@return EnginesOSapiResult
+  def system_update
+    res = @core_api.system_update
+    if res == false
+      return failed("System Update",@core_api.last_error ,"Update")
+    end
+    return success("System Update", res)        
+  end
+  
 end

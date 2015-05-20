@@ -8,7 +8,7 @@ class SystemApi
      clear_error
      begin
        cid = read_container_id(container)
-       container.container_id=(cid)
+       container.container_id=(cid)       
        return save_container(container)  
 
      rescue Exception=>e
@@ -161,19 +161,32 @@ class SystemApi
 
    def delete_container_configs(container)
      clear_error
-     begin
-       stateDir = container_state_dir(container) + "/config.yaml"
-       File.delete(stateDir)
-       cidfile  = SysConfig.CidDir + "/" + container.containerName + ".cid"
+  
+#       stateDir = container_state_dir(container) + "/config.yaml"
+#       File.delete(stateDir)
+       cidfile  = SysConfig.CidDir + "/" + container.container_name + ".cid"
        if File.exists?(cidfile)
          File.delete(cidfile)
        end
-       return true
+      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.container_name + "/:/client/state:rw  -v /var/log/engines/containers/" + container.container_name + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"  
+      retval =  SystemUtils.run_system(cmd)
+       cmd = "docker rm volbuilder"
+     retval =  SystemUtils.run_system(cmd)
+      
+      if retval == true
+        Dir.delete(container_state_dir(container))
+          return true
+      else
+        container.last_error=("Failed to Delete state and logs:" + retval.to_s) 
+        
+        SystemUtils.log_error_mesg("Failed to Delete state and logs:" + retval.to_s ,container)
+        return false  
+      end
+      
      rescue Exception=>e
        container.last_error=( "Failed To Delete " )
        SystemUtils.log_exception(e)
        return false
-     end
    end
 
 #   def deregister_dns(top_level_hostname)
@@ -340,7 +353,7 @@ class SystemApi
   
    def save_build_report(container,build_report)
       clear_error
-      stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+      stateDir=container_state_dir(container)
       f = File.new(stateDir  + "/buildreport.txt",File::CREAT|File::TRUNC|File::RDWR, 0644)
       f.puts(build_report)
       f.close           
@@ -358,10 +371,15 @@ class SystemApi
        container.core_api = nil
        serialized_object = YAML::dump(container)
        container.core_api = api
-       stateDir=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
+       stateDir = container_state_dir(container)
+       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
        if File.directory?(stateDir) ==false
          Dir.mkdir(stateDir)
+         Dir.exists?(stateDir + "/run") == false
          Dir.mkdir(stateDir + "/run")
+         Dir.mkdir(stateDir + "/run/flags")
+         FileUtils.chown_R(nil,"containers",stateDir + "/run")
+         FileUtils.chmod_R("u+r",stateDir + "/run")
        end
        log_dir = container_log_dir(container)
        if File.directory?(log_dir) ==false
@@ -451,14 +469,14 @@ class SystemApi
      begin
        if File.exists?(SysConfig.DomainsFile) == false
 #         p :creating_new_domain_list
-         self_hosted_domain_file = File.open(SysConfig.DomainsFile,"w")
-         self_hosted_domain_file.close
+         domains_file = File.open(SysConfig.DomainsFile,"w")
+         domains_file.close
          return Hash.new
        else
-         self_hosted_domain_file = File.open(SysConfig.DomainsFile,"r")
+         domains_file = File.open(SysConfig.DomainsFile,"r")
        end
-       domains = YAML::load( self_hosted_domain_file )
-       self_hosted_domain_file.close
+       domains = YAML::load( domains_file )
+       domains_file.close
        if domains == false
          p :domains_error_in_load
          return Hash.new
@@ -596,27 +614,27 @@ class SystemApi
      end
    end
 
-   def save_system_preferences
-     clear_error
-     begin
-       SystemUtils.debug_output("save prefs",:pdsf)
-       return true
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def load_system_preferences
-     clear_error
-     begin
-       SystemUtils.debug_output("load pres",:psdfsd)
-        
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
+#   def save_system_preferences(preferences)
+#     clear_error
+#     begin
+#       SystemUtils.debug_output("save prefs",preferences)
+#       return true
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
+#
+#   def load_system_preferences
+#     clear_error
+#     begin
+#       SystemUtils.debug_output("load pres",:psdfsd)
+#        
+#     rescue  Exception=>e
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#   end
 
    def get_container_memory_stats(container)
      clear_error
@@ -686,9 +704,9 @@ class SystemApi
 
        SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
-       if container.hostName != hostname || container.domainName != domain_name
-         saved_hostName = container.hostName
-         saved_domainName =  container.domainName
+       if container.hostname != hostname || container.domain_name != domain_name
+         saved_hostName = container.hostname
+         saved_domainName =  container.domain_name
          SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
          if container.set_hostname_details(hostname,domain_name) == true
@@ -946,19 +964,38 @@ SystemUtils.log_exception(e)
        return false
      end
    end
+   
 
+  
+def generate_engines_user_ssh_key
+  newkey = SystemUtils.run_command(SysConfig.generate_ssh_private_keyfile)
+  if newkey.start_with?("-----BEGIN RSA PRIVATE KEY-----") == false
+    last_error = res
+    return false
+  end
+  return newkey
+   rescue Exception=>e
+     SystemUtils.log_exception(e)
+     return false
+   end
+   
+def system_update
+  return SystemUtils.run_command("/opt/engines/bin/system_update.sh")
+end
+def container_state_dir(container)
+    return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+  end
+   
    protected
 
    def container_cid_file(container)
-     return  SysConfig.CidDir + "/"  + container.containerName + ".cid"
+     return  SysConfig.CidDir + "/"  + container.container_name + ".cid"
    end
 
-   def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.containerName
-   end
+  
 
    def container_log_dir container
-     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.containerName
+     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def run_system (cmd)
