@@ -123,7 +123,7 @@ class SystemUtils
     
     hash_pairs = hash_string.split(":")
       hash_pairs.each do |hash_pair|
-        pair = hash_pair.split
+        pair = hash_pair.split("=")
         if pair.length > 1
           val = pair[1]
           else
