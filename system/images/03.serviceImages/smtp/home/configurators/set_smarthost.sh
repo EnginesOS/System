@@ -25,10 +25,10 @@ fcnt=`expr $fcnt + 1`
                 nvp="`echo $1 |cut -f$n -d:`"
                 n=`expr $n + 1`
                 name=`echo $nvp |cut -f1 -d=`
-                if test -z $name 
+                if ! test -z $name 
                 	then
                 	value="`echo $nvp |cut -f2 -d=`"
-                		if test -z "$value"
+                		if ! test -z $value
                 			then
                 			export $name="$value"
                 		fi
