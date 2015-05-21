@@ -141,6 +141,13 @@ class ManagedService < ManagedContainer
      
   end 
   
+  def run_configurator(configurator_params)
+    
+    cmd = "docker exec " +  container_name + " /home/" + configurator_params[:configurator_name] + ".sh \"" + service_hash_variables_as_str(configurator_params) + "\""
+         return SystemUtils.run_system(cmd)
+         
+  end
+  
   def remove_consumer service_hash
    
     service_hash = get_service_hash(service_hash)

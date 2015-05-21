@@ -439,6 +439,17 @@ class EnginesCore
   rescue Exception=>e
     SystemUtils.log_exception e
   end
+  
+  def update_service_configuration(service_param)    
+    
+   if service_param.has_key?(:service_name) 
+     service = loadManagedService(service_param[:service_name])
+       if service != false && service != nil
+          return  service.run_configurator(service_param)
+       end
+   end
+  return false
+  end
 
   def load_avail_services_for(typename)
     #    p :load_avail_services_for
