@@ -118,7 +118,25 @@ class SystemUtils
       return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
     end
   end
-  
+  def SystemUtils.hash_string_to_hash(hash_string)
+    retval = Hash.new
+    
+    hash_pairs = hash_string.split_libs(":")
+      hash_pairs.each do |hash_pair|
+        pair = hash_pair.split
+        if pair.length > 1
+          val = pair[1]
+          else
+          val = nil
+        end
+          
+        if pair != nil
+          retval[pair[0].to_sym] = val
+        end        
+     end
+
+    return retval
+  end
 #Execute @param cmd [String]
     #@return hash
     #:result_code = command exit/result code
