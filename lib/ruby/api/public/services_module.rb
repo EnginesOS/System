@@ -214,10 +214,14 @@ module ServicesModule
     end
     
     def attach_subservice(params)
+      p :attach_subservice
+      p params
       #service params and component objectname / and component name and parent name    
     end
     
     def detach_subservice(params)
+      p :dettach_subservice
+           p params
     end
     
   
@@ -347,7 +351,25 @@ module ServicesModule
      p :update_service_configuration
      p service_param
      
+     if @core_api.update_service_configuration(service_param) == true      
+       return success(service_param[:service_name],service_param[:configurator_name])
+     else
+       return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
+     end
+
    end
+  def retrieve_service_configuration(service_param)
+       p :retrieve_service_configuration
+       p service_param
+       result = @core_api.retrieve_service_configuration(service_param)
+       if  result != nil && result != false
+         p  result       
+         return result
+       else
+         return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
+       end
+  
+     end
 #   def registerServiceWebSite service_name
 #     service = getManagedService(service_name)
 #     if service == nil

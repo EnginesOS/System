@@ -118,6 +118,87 @@ class SystemUtils
       return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
     end
   end
+  def SystemUtils.hash_string_to_hash(hash_string)
+    retval = Hash.new
+    
+    hash_pairs = hash_string.split(":")
+      hash_pairs.each do |hash_pair|
+        pair = hash_pair.split("=")
+        if pair.length > 1
+          val = pair[1]
+          else
+          val = nil
+        end
+          
+        if pair != nil
+          retval[pair[0].to_sym] = val
+        end        
+     end
+
+    return retval
+rescue Exception=>e
+      SystemUtils.log_exception(e)
+      
+  end
+#Execute @param cmd [String]
+    #@return hash
+    #:result_code = command exit/result code
+    #:stdout = what was written to standard out
+    #:stderr = wahat was written to standard err
+def SystemUtils.execute_command(cmd)
+     @@last_error=""
+     
+  require 'open3'
+   SystemUtils.debug_output("exec command ",cmd)
+
+   retval = Hash.new
+   retval[:stdout] = String.new
+   retval[:stderr] = String.new
+   retval[:result] = -1
+
+     Open3.popen3(cmd)  do |stdin, stdout, stderr, th|
+       oline = String.new
+       stderr_is_open=true
+       begin
+         stdout.each do |line|
+           line = line.gsub(/\\\"/,"")
+           oline = line
+           retval[:stdout]+= line.chop
+           #              p :lne_by_line
+           #              p line
+           if stderr_is_open
+             retval[:stderr] += stderr.read_nonblock(256)
+           end
+         end
+         
+         retval[:result] = th.value
+         
+       rescue Errno::EIO
+         retval[:stdout] += oline.chop
+         SystemUtils.debug_output("read stderr",oline)
+         retval[:stderr]  += stderr.read_nonblock(256)
+       rescue  IO::WaitReadable
+         retry
+       rescue EOFError
+         if stdout.closed? == false
+           stderr_is_open = false
+           retry
+         elsif stderr.closed? == false
+           retval[:stderr]  += stderr.read_nonblock(1000)
+         end
+         
+       end     
+         return retval
+ 
+       end       
+     return retval
+
+     rescue Exception=>e
+       SystemUtils.log_exception(e)
+       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ")
+       retval[:stderr] += "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
+       retval[:result] =-99
+   end
   
   
    #Execute @param cmd [String]

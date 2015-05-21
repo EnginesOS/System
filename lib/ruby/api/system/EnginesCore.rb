@@ -439,6 +439,38 @@ class EnginesCore
   rescue Exception=>e
     SystemUtils.log_exception e
   end
+  
+ def retrieve_service_configuration(service_param)
+   if service_param.has_key?(:service_name) 
+        service = loadManagedService(service_param[:service_name])
+          if service != false && service != nil
+             retval =  service.retrieve_configurator(service_param)
+          else
+            @last_error = "no Service"
+            return false
+          end
+      end
+   @last_error = retval[:stderr]
+     return retval
+ end
+ 
+  def update_service_configuration(service_param)    
+    
+   if service_param.has_key?(:service_name) 
+     service = loadManagedService(service_param[:service_name])
+       if service != false && service != nil
+          retval =  service.run_configurator(service_param)
+          if retval[:result] == 0
+            return true
+          else
+            @last_error = retval[:stderr]
+         end
+       else
+         @last_error = "no Service"
+       end
+   end
+  return false
+  end
 
   def load_avail_services_for(typename)
     #    p :load_avail_services_for

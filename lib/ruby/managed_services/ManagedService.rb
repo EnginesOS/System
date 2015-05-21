@@ -131,15 +131,32 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)   
   cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
-    p cmd
+    
     return  SystemUtils.run_system(cmd)
   end
   
   def   rm_consumer_from_service(service_hash) 
    cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
-     return SystemUtils.run_system(cmd)
+   return SystemUtils.run_system(cmd)
      
   end 
+  
+  def run_configurator(configurator_params)    
+    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name] + ".sh \"" + service_hash_variables_as_str(configurator_params) + "\""
+     result = SystemUtils.execute_command(cmd)
+     
+    return result 
+  end
+  
+  def retrieve_configurator(configurator_params)
+    cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name] + ".sh "
+     result = SystemUtils.execute_command(cmd)
+     p result
+     variables = SystemUtils.hash_string_to_hash(result[:stdout])
+    configurator_params[:variables] = variables
+      p configurator_params
+     return configurator_params
+  end
   
   def remove_consumer service_hash
    
@@ -202,11 +219,9 @@ class ManagedService < ManagedContainer
       register_with_dns()
       
       @core_api.load_and_attach_nonpersistant_services(self)       
-     
-      
+
       @core_api.register_non_persistant_services(container_name)
-     
-      
+          
       reregister_consumers()
       save_state()
       return true
@@ -216,10 +231,6 @@ class ManagedService < ManagedContainer
     end
   end
 
-  
-
-  
-  
   def recreate
     
     if  destroy_container() ==true
