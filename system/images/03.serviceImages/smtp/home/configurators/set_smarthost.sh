@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 service_hash=$1
 
@@ -25,7 +25,14 @@ fcnt=`expr $fcnt + 1`
                 nvp="`echo $1 |cut -f$n -d:`"
                 n=`expr $n + 1`
                 name=`echo $nvp |cut -f1 -d=`
-                export $name=`echo $nvp |cut -f2 -d=`
+                if test -z $name 
+                	then
+                	value="`echo $nvp |cut -f2 -d=`"
+                		if test -z "$value"
+                			then
+                			export $name="$value"
+                		fi
+                fi
         done
         
         
@@ -56,7 +63,16 @@ fcnt=`expr $fcnt + 1`
  
  if test -z $smarthost_username -a -z $smarthost_password
  then 
-   rm    smarthost_passwd.db smarthost_passwd
+ 	if test -f /etc/postfix/smarthost_passwd
+ 		then
+ 			rm /etc/postfix/smarthost_passwd
+ 	fi
+ 	
+ 	if test -f /etc/postfix/smarthost_passwd.db
+ 		then
+ 			rm /etc/postfix/smarthost_passwd.db
+ 	fi
+ 
  	exit
  fi
  
