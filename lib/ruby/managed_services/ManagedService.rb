@@ -153,6 +153,7 @@ class ManagedService < ManagedContainer
      result = SystemUtils.execute_command(cmd)
      variables = SystemUtils.hash_string_to_hash(result[:stdout])
     configurator_params[:variables] = variables
+      p configurator_params
      return configurator_params
   end
   
