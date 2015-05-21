@@ -33,6 +33,7 @@ configurators:
     placeholder: " "
     mandatory: true
     comment: " "
+    value: "none"
    smart_host_port:
     name: smart_host_port
     label: "Smart host port"
@@ -73,7 +74,7 @@ configurators:
     field_type: password
     hint: "password"
     placeholder: "password"
-    mandatory: true
+    mandatory: false
     comment: " " 
  default_domain:
   name: default_domain
