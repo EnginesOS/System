@@ -383,6 +383,8 @@ class SystemApi
        end
        log_dir = container_log_dir(container)
        if File.directory?(log_dir) ==false
+         p :log_dir
+         p log_dir
          Dir.mkdir(log_dir)
        end
 
