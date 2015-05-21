@@ -11,8 +11,7 @@ ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
 RUN chown postfix /etc/postfix/;\
 	chown postfix /home/configurators/saved;\
-	chgrp postfix /home/configurators/read_smarthost.sh;\
-	chgrp postfix /home/configurators/set_smarthost.sh
+	chgrp postfix /home/configurators/*.sh
 	
 ADD sudoers /etc/sudoers
 

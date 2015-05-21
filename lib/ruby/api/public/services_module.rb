@@ -364,7 +364,7 @@ module ServicesModule
        result = @core_api.retrieve_service_configuration(service_param)
        if  result != nil && result != false
          p  result       
-         return result[:stdout]
+         return result
        else
          return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
        end
