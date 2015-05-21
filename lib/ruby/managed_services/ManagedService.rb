@@ -151,6 +151,7 @@ class ManagedService < ManagedContainer
   def retrieve_configurator(configurator_params)
     cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name] + ".sh "
      result = SystemUtils.execute_command(cmd)
+     p result
      variables = SystemUtils.hash_string_to_hash(result[:stdout])
     configurator_params[:variables] = variables
       p configurator_params

@@ -121,7 +121,7 @@ class SystemUtils
   def SystemUtils.hash_string_to_hash(hash_string)
     retval = Hash.new
     
-    hash_pairs = hash_string.split_libs(":")
+    hash_pairs = hash_string.split(":")
       hash_pairs.each do |hash_pair|
         pair = hash_pair.split
         if pair.length > 1
@@ -136,6 +136,9 @@ class SystemUtils
      end
 
     return retval
+rescue Exception=>e
+      SystemUtils.log_exception(e)
+      
   end
 #Execute @param cmd [String]
     #@return hash
