@@ -35,8 +35,15 @@ class ManagedEngine < ManagedContainer
     
          end 
          
-  attr_reader :ctype
+  attr_reader :ctype, :plugins_path, :extract_plugins
 
+  def plugins_path
+    return  "/plugins/"
+  end
+  
+  def extract_plugins
+    false
+  end
 
   def attached_services
     @core_api.attached_services(self)

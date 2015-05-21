@@ -444,10 +444,14 @@ class EnginesCore
    if service_param.has_key?(:service_name) 
         service = loadManagedService(service_param[:service_name])
           if service != false && service != nil
-             return  service.retrieve_configurator(service_param)
+             retval =  service.retrieve_configurator(service_param)
+          else
+            @last_error = "no Service"
+            return false
           end
       end
-     return false
+   @last_error = retval[:stderr]
+     return retval
  end
  
   def update_service_configuration(service_param)    
@@ -455,7 +459,14 @@ class EnginesCore
    if service_param.has_key?(:service_name) 
      service = loadManagedService(service_param[:service_name])
        if service != false && service != nil
-          return  service.run_configurator(service_param)
+          retval =  service.run_configurator(service_param)
+          if retval[:result] == 0
+            return true
+          else
+            @last_error = retval[:stderr]
+         end
+       else
+         @last_error = "no Service"
        end
    end
   return false
