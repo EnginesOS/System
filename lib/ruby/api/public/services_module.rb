@@ -357,8 +357,18 @@ module ServicesModule
        return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
      end
 
-     
    end
+  def retrieve_service_configuration(service_param)
+       p :retrieve_service_configuration
+       p service_param
+       config = @core_api.retrieve_service_configuration(service_param)
+       if  config != nil && config != false        
+         return config
+       else
+         return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
+       end
+  
+     end
 #   def registerServiceWebSite service_name
 #     service = getManagedService(service_name)
 #     if service == nil
