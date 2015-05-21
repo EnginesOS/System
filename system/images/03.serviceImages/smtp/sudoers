@@ -2,6 +2,7 @@
 postfix ALL = (root) NOPASSWD: /usr/lib/postfix/master
 
 postfix ALL = (root) NOPASSWD: /sbin/syslogd
+postfix ALL = (root) NOPASSWD: /usr/sbin/postmap
 
 #for debugging only
 #ALL ALL = (root) NOPASSWD: ALL
