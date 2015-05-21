@@ -24,9 +24,12 @@ configurators:
     field_type: select_single
     hint: "engine"
     select_collection:
-       - "none"
-       - "plaintext"
-       - "md5"
+    - !ruby/object:String
+      "none"
+    - !ruby/object:String
+      "plaintext"
+    - !ruby/object:String
+      "md5"
     placeholder: " "
     mandatory: true
     comment: " "
