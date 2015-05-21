@@ -441,9 +441,14 @@ class EnginesCore
   end
   
   def update_service_configuration(service_param)    
-    service = loadManagedService(service_param[:service_name])
     
-    return 
+   if service_param.has_key?(:service_name) 
+     service = loadManagedService(service_param[:service_name])
+       if service != false && service != nil
+          return  service.run_configurator(configurator_params)
+       end
+   end
+  return false
   end
 
   def load_avail_services_for(typename)
