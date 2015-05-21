@@ -131,7 +131,7 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)   
   cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
-    p cmd
+   
     return  SystemUtils.run_system(cmd)
   end
   
@@ -143,13 +143,13 @@ class ManagedService < ManagedContainer
   
   def run_configurator(configurator_params)
     
-    cmd = "docker exec " +  container_name + " /home/set_" + configurator_params[:configurator_name] + ".sh \"" + service_hash_variables_as_str(configurator_params) + "\""
+    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name] + ".sh \"" + service_hash_variables_as_str(configurator_params) + "\""
          return SystemUtils.run_system(cmd)
          
   end
   
   def retrieve_configurator(configurator_params)
-    cmd = "docker exec " +  container_name + " /home/read_" + configurator_params[:configurator_name] + ".sh "
+    cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name] + ".sh "
              return SystemUtils.run_command(cmd)
   end
   
