@@ -22,7 +22,7 @@ class SoftwareServiceDefinition
 
       return serviceDefinition
     rescue Exception=>e
-      puts e.message + " with " + yaml
+      puts e.message + " with " + yaml.to_s
       SystemUtils.log_exception(e)
 
     end
