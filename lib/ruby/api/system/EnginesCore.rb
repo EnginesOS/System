@@ -422,8 +422,11 @@ class EnginesCore
               #              p service.to_h
               #              p :as_yaml
               #              p service.to_yaml()
-
-              retval.push(service.to_h)
+                if service.is_a?(String)
+                  log_error_mesg("service yaml load error",service)
+                else
+                  retval.push(service.to_h)
+                end
             end
           end
         rescue Exception=>e
