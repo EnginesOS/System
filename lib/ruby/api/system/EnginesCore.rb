@@ -374,8 +374,8 @@ class EnginesCore
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
-    #    p :open
-    #    p filename
+        p :open
+        p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   
   rescue Exception=>e
@@ -422,8 +422,11 @@ class EnginesCore
               #              p service.to_h
               #              p :as_yaml
               #              p service.to_yaml()
-
-              retval.push(service.to_h)
+                if service.is_a?(String)
+                  log_error_mesg("service yaml load error",service)
+                else
+                  retval.push(service.to_h)
+                end
             end
           end
         rescue Exception=>e

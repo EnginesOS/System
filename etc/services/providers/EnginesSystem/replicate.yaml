@@ -43,7 +43,6 @@ consumer_params:
   label: Directory
   field_type: text_field
   regex_validator: ".*"
-  name: button
   label: button test
   placeholder: " "
   tooltip: " "

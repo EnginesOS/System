@@ -131,14 +131,24 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)   
   cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
-    
-    return  SystemUtils.run_system(cmd)
+    result = SystemUtils.execute_command(cmd)
+      if result[:result] == 0 
+        return true
+      end
+    log_error_mesg("Failed add_consumer_to_servicee",result)
+      return false
+    #return  SystemUtils.run_system(cmd)
   end
   
   def   rm_consumer_from_service(service_hash) 
    cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
-   return SystemUtils.run_system(cmd)
-     
+    result = SystemUtils.execute_command(cmd)
+       if result[:result] == 0 
+         return true
+       end
+    log_error_mesg("Failed rm_consumer_from_service",result)
+       return false
+     #return  SystemUtils.run_system(cmd)
   end 
   
   def run_configurator(configurator_params)    
@@ -152,10 +162,14 @@ class ManagedService < ManagedContainer
     cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name] + ".sh "
      result = SystemUtils.execute_command(cmd)
      p result
+    if result[:result] == 0 
      variables = SystemUtils.hash_string_to_hash(result[:stdout])
     configurator_params[:variables] = variables
       p configurator_params
      return configurator_params
+    end
+    log_error_mesg("Failed retrieve_configurator",result)
+    return nil
   end
   
   def remove_consumer service_hash

@@ -9,7 +9,7 @@ service_container: ftp
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
-service_handle_field: name
+service_handle_field: username
 setup_params:
 consumer_params:
   volume:
