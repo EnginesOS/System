@@ -377,10 +377,11 @@ class SystemApi
          Dir.mkdir(stateDir)
          Dir.exists?(stateDir + "/run") == false
          Dir.mkdir(stateDir + "/run")
-         Dir.mkdir(stateDir + "/run/flags")
+         Dir.mkdir(stateDir + "/run/flags")         
          FileUtils.chown_R(nil,"containers",stateDir + "/run")
          FileUtils.chmod_R("u+r",stateDir + "/run")
        end
+       
        log_dir = container_log_dir(container)
        if File.directory?(log_dir) ==false
          p :log_dir
@@ -388,6 +389,15 @@ class SystemApi
          Dir.mkdir(log_dir)
        end
 
+       if container.is_service?
+         if File.directory?(stateDir + "/configurations") ==false
+           Dir.mkdir(stateDir + "/configurations/")
+         end
+         if File.directory?(stateDir + "/configurations/default") ==false
+                  Dir.mkdir(stateDir + "/configurations/default")
+         end
+       end
+       
        statefile=stateDir + "/config.yaml"
        # BACKUP Current file with rename
        if File.exists?(statefile)
@@ -449,8 +459,6 @@ class SystemApi
        return false
      end
    end
-
-
 
 
    def  save_domains(domains)

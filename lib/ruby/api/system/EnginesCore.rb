@@ -461,6 +461,7 @@ class EnginesCore
        if service != false && service != nil
           retval =  service.run_configurator(service_param)
           if retval[:result] == 0
+            
             return true
           else
             @last_error = retval[:stderr]
