@@ -41,18 +41,17 @@ consumer_params:
     hint: ""
     placeholder: "a label "
     mandatory: true
-    value: " "
     comment: " "
     select_collection:  
-    - !ruby/object:String   
+     - !ruby/object:String   
       "ftp"
-    - !ruby/object:String
+     - !ruby/object:String
       "local"
-    - !ruby/object:String
+     - !ruby/object:String
       "smbfs"
-    - !ruby/object:String
+     - !ruby/object:String
       "nfs"
-    - !ruby/object:String
+     - !ruby/object:String
       "s3"
    dest_folder:
     regex_invalid_message: "wrong go back and try again"
