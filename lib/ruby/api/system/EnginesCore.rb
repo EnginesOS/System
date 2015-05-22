@@ -474,11 +474,19 @@ class EnginesCore
   end
 
 def attach_subservice(params)
-  false
+  if  params.has_key?(parent_service)    && params[:parent_service].has_key?(publisher_namespace)     && params[:parent_service].has_key?(type_path)    && params[:parent_service].has_key?(service_handle)     
+    return attach_service(params)
+  end
+  @last_error = "missing parrameters"
+  return false
 end
 
 def dettach_subservice(params)
-  false
+  if  params.has_key?(parent_service)    && params[:parent_service].has_key?(publisher_namespace)     && params[:parent_service].has_key?(type_path)    && params[:parent_service].has_key?(service_handle)     
+  return dettach_service(params)
+  end
+    @last_error = "missing parrameters"
+  return false
 end
 
   def load_avail_services_for(typename)
