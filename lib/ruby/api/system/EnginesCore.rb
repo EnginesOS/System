@@ -473,6 +473,14 @@ class EnginesCore
   return false
   end
 
+def attach_subservice(params)
+  false
+end
+
+def dettach_subservice(params)
+  false
+end
+
   def load_avail_services_for(typename)
     #    p :load_avail_services_for
     #    p typename
