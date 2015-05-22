@@ -374,8 +374,8 @@ class EnginesCore
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
-    #    p :open
-    #    p filename
+        p :open
+        p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   
   rescue Exception=>e
