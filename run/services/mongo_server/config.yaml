@@ -20,7 +20,12 @@ port:
 eports:
 - !ruby/object:WorkPort
   name: mongo
-  port: 3306
+  port: 27017
+  publicFacing: false
+  external: 0
+- !ruby/object:WorkPort
+  name: mongoweb
+  port: 28017
   publicFacing: false
   external: 0
 repo: na
