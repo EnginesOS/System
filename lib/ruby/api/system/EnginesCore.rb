@@ -584,10 +584,11 @@ end
       end
     end
 
-    if  create_container(engine) == false
+    if  engine.create_container == false      
       last_error= engine.last_error
       return false
     end
+    
     return true
 
   end
