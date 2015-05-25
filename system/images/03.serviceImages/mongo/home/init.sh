@@ -8,7 +8,7 @@
 mkdir -p /engines/var/run/
 touch  /engines/var/run/startup_complete
 
-exec mongod   -v  -f /etc/mongod.conf 
+exec mongod   -v  -f /etc/mongod.conf  --directoryperdb    --journal  
 
 
 rm /engines/var/run/startup_complete
