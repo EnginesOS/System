@@ -198,7 +198,7 @@ module ServicesModule
     
   #@ retruns [SoftwareServiceDefinition] 
    #for params :type_path :publisher_namespace
-    def software_service_definition (params)
+    def software_service_definition(params)
       retval = @core_api.software_service_definition(params)
       if retval != nil
         return retval
@@ -208,6 +208,12 @@ module ServicesModule
        return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
     end
     
+   def templated_software_service_definition(params)
+     ret_val = software_service_definition(params)
+     
+     
+     return ret_val
+   end
 
     def list_services_for(object)
       return @core_api.list_services_for(object)
