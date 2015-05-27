@@ -171,7 +171,7 @@ def SystemUtils.execute_command(cmd)
            end
          end
          
-         retval[:result] = th.value
+         retval[:result] = th.value.exitstatus 
          
        rescue Errno::EIO
          retval[:stdout] += oline.chop
