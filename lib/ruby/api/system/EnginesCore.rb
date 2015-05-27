@@ -892,7 +892,7 @@ def load_and_attach_persistant_services(container)
         vals = res.split("bytes:")
         p res
         p vals
-        if vals.count < 2
+        if vals.count > 2
           if vals[1] != nil && vals[2] != nil
             ret_val[:in] = vals[1].chop
             ret_val[:out] = vals[2].chop
