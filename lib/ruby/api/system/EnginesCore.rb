@@ -30,22 +30,6 @@ class EnginesCore
     return  @system_api.add_domain(params)
   end
 
-  #
-  #  def remove_containers_cron_list(container_name)
-  #    p :remove_containers_cron
-  #    if @system_api.remove_containers_cron_list(container_name)
-  #      cron_service = loadManagedService("cron")
-  #      return @system_api.rebuild_crontab(cron_service)
-  #    else
-  #      return false
-  #    end
-  #  end
-  #
-  #  def rebuild_crontab(cron_service)
-  #    #acutally a rebuild (or resave) as hadh already removed from consumer list
-  #    p :rebuild_crontab
-  #    return  @system_api.rebuild_crontab(cron_service)
-  #  end
 
   def remove_domain(params)
     return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -88,13 +72,6 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  #  def add_monitor(site_hash)
-  #    return @system_api.add_monitor(site_hash)
-  #  end
-  #
-  #  def rm_monitor(site_hash)
-  #    return @system_api.rm_monitor(site_hash)
-  #  end
 
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
@@ -140,13 +117,7 @@ class EnginesCore
     @system_api.update_self_hosted_domain(old_domain_name, params)
   end
 
-#  def load_system_preferences
-#    return @system_api.load_system_preferences
-#  end
-#
-#  def save_system_preferences(preferences)
-#    return @system_api.save_system_preferences(preferences)
-#  end
+
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
