@@ -74,7 +74,7 @@ class DockerApi
 
    def ps_container container
      clear_error
-     begin
+     
        commandargs="docker top " + container.container_name + " axl"
       result = SystemUtils.execute_command(commandargs)
        container.last_result = result[:stdout]
@@ -84,10 +84,10 @@ class DockerApi
          else
            return container.last_error 
          end
-
+       rescue  Exception=>e
        SystemUtils.log_exception(e)
-       return false
-     end
+       return "error"
+    
    end
 
    def signal_container_process(pid,signal,container)
@@ -101,13 +101,19 @@ class DockerApi
 
    def logs_container container
      clear_error
-     begin
+  
        commandargs="docker logs " + container.container_name
-       return  SystemUtils.run_system(commandargs)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
+           result = SystemUtils.execute_command(commandargs)
+            container.last_result = result[:stdout]
+            container.last_error = result[:stderr]
+              if  result[:result] == 0
+                return container.last_result
+              else
+                return container.last_error 
+              end
+            rescue  Exception=>e
+            SystemUtils.log_exception(e)
+            return "error"        
    end
 
    def inspect_container container
