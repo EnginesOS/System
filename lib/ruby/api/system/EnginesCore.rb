@@ -897,13 +897,13 @@ def load_and_attach_persistant_services(container)
         else
           ret_val = error_result
         end
+        p ret_val
         return ret_val
       end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      ret_val[:in] = -1
-      ret_val[:out] = -1
-      return  ret_val = error_result
+
+      return   error_result
     end
   end
 
