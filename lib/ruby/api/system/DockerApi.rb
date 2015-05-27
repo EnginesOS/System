@@ -74,19 +74,20 @@ class DockerApi
 
    def ps_container container
      clear_error
-     begin
+     
        commandargs="docker top " + container.container_name + " axl"
-        if run_docker("top",container) == true
-          return   container.last_result
-        else
-          return   container.last_error
-        end
-          
-       #SystemUtils.run_system(commandargs)
-     rescue  Exception=>e
+      result = SystemUtils.execute_command(commandargs)
+       container.last_result = result[:stdout]
+       container.last_error = result[:stderr]
+         if  result[:result] == 0
+           return container.last_result
+         else
+           return container.last_error 
+         end
+       rescue  Exception=>e
        SystemUtils.log_exception(e)
-       return false
-     end
+       return "error"
+    
    end
 
    def signal_container_process(pid,signal,container)
@@ -100,13 +101,19 @@ class DockerApi
 
    def logs_container container
      clear_error
-     begin
+  
        commandargs="docker logs " + container.container_name
-       return  SystemUtils.run_system(commandargs)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
+           result = SystemUtils.execute_command(commandargs)
+            container.last_result = result[:stdout]
+            container.last_error = result[:stderr]
+              if  result[:result] == 0
+                return container.last_result
+              else
+                return container.last_error 
+              end
+            rescue  Exception=>e
+            SystemUtils.log_exception(e)
+            return "error"        
    end
 
    def inspect_container container
@@ -170,9 +177,7 @@ class DockerApi
            stdout.each do |line|
              line = line.gsub(/\\\"/,"")
              oline = line
-             res += line.chop
-             #              p :lne_by_line
-             #              p line
+             res += line.chop  #
              if stderr_is_open
                error_mesg += stderr.read_nonblock(256)
              end
@@ -214,6 +219,9 @@ class DockerApi
          end
 
          container.last_result=(res)
+         if th.value != 0
+           return false
+         end
          return true
        end
      rescue Exception=>e

@@ -868,32 +868,47 @@ def load_and_attach_persistant_services(container)
     end
   end
 
-  #FIXME Kludge
+  #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
       ret_val = Hash.new
       clear_error
-      cmd = "docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
-      res= %x<#{cmd}>
-      vals = res.split("bytes:")
-      if vals.count < 2
-        if vals[1] != nil && vals[2] != nil
-          ret_val[:in] = vals[1].chop
-          ret_val[:out] = vals[2].chop
-        else
-          ret_val[:in] ="-1"
-          ret_val[:out] ="-1"
-        end
-      else
-        ret_val[:in] ="-1"
-        ret_val[:out] ="-1"
+      
+      def error_result
+        ret_val = Hash.new
+        ret_val[:in]="n/a"
+        ret_val[:out]="n/a"
+          return ret_val
       end
-      return ret_val
+
+      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
+      result = SystemUtils.execute_command(commandargs)
+      p result
+      if result[:result] != 0
+        
+        ret_val = error_result
+      else
+        res = result[:stdout]
+        vals = res.split("bytes:")
+        p res
+        p vals
+        if vals.count > 2
+          if vals[1] != nil && vals[2] != nil
+            ret_val[:in] = vals[1].chop
+            ret_val[:out] = vals[2].chop
+          else
+            ret_val = error_result
+          end
+        else
+          ret_val = error_result
+        end
+        p ret_val
+        return ret_val
+      end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      ret_val[:in] = -1
-      ret_val[:out] = -1
-      return ret_val
+
+      return   error_result
     end
   end
 
