@@ -881,7 +881,7 @@ def load_and_attach_persistant_services(container)
           return ret_val
       end
 
-      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
+      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
       result = SystemUtils.execute_command(commandargs)
       p result
       if result[:result] !=0
