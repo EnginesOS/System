@@ -546,7 +546,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
           @docker_file.puts("            if test -n $adir;\\")
           @docker_file.puts("                then\\")
-          @docker_file.puts("                      dirs=$dirs \"$adir\";\\");
+          @docker_file.puts("                      dirs=`echo $dirs \"$adir\"`;\\");
           @docker_file.puts("                fi;\\")
           @docker_file.puts("       done;\\")
           @docker_file.puts(" if test -n \"$dirs\" ;\\")
