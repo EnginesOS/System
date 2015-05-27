@@ -374,8 +374,8 @@ class EnginesCore
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
-    #    p :open
-    #    p filename
+        p :open
+        p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
   
   rescue Exception=>e
@@ -422,8 +422,11 @@ class EnginesCore
               #              p service.to_h
               #              p :as_yaml
               #              p service.to_yaml()
-
-              retval.push(service.to_h)
+                if service.is_a?(String)
+                  log_error_mesg("service yaml load error",service)
+                else
+                  retval.push(service.to_h)
+                end
             end
           end
         rescue Exception=>e
@@ -461,6 +464,7 @@ class EnginesCore
        if service != false && service != nil
           retval =  service.run_configurator(service_param)
           if retval[:result] == 0
+            
             return true
           else
             @last_error = retval[:stderr]
@@ -471,6 +475,22 @@ class EnginesCore
    end
   return false
   end
+
+def attach_subservice(params)
+  if  params.has_key?(:parent_service)    && params[:parent_service].has_key?(:publisher_namespace)     && params[:parent_service].has_key?(:type_path)    && params[:parent_service].has_key?(:service_handle)     
+    return attach_service(params)
+  end
+  @last_error = "missing parrameters"
+  return false
+end
+
+def dettach_subservice(params)
+  if  params.has_key?(:parent_service)    && params[:parent_service].has_key?(:publisher_namespace)     && params[:parent_service].has_key?(:type_path)    && params[:parent_service].has_key?(:service_handle)     
+  return dettach_service(params)
+  end
+    @last_error = "missing parrameters"
+  return false
+end
 
   def load_avail_services_for(typename)
     #    p :load_avail_services_for
@@ -564,10 +584,11 @@ class EnginesCore
       end
     end
 
-    if  create_container(engine) == false
+    if  engine.create_container == false      
       last_error= engine.last_error
       return false
     end
+    
     return true
 
   end

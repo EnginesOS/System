@@ -45,12 +45,10 @@ consumer_params:
   label: Directory
   field_type: text_field
   regex_validator: ".*"
-  name: button
-  label: button test
   placeholder: " "
   tooltip: " "
   mandatory: true
-  comment: " 
+  comment: " "
  volume:
   name: volume
   label: volume
@@ -73,7 +71,7 @@ consumer_params:
   placeholder: " "
   hint: " "
   select_collection:
-  - !ruby/object:String
+   - !ruby/object:String
     "up"
-  - !ruby/object:String
+   - !ruby/object:String
     "down"

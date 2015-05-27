@@ -213,15 +213,30 @@ module ServicesModule
       return @core_api.list_services_for(object)
     end
     
+    
+  #service params and component objectname / and component name and parent name    
     def attach_subservice(params)
       p :attach_subservice
       p params
-      #service params and component objectname / and component name and parent name    
+      
+      if @core_api.attach_subservice(params) == true
+        return success(params[:service_handle],"attach subservice")    
+       else
+        SystemUtils.log_error_mesg("attach subservice",params)
+              return failed(params[:service_handle],@core_api.last_error,"attach subservice")
+      end
+     
     end
     
-    def detach_subservice(params)
+    def dettach_subservice(params)
       p :dettach_subservice
            p params
+      if @core_api.dettach_subservice(params) == true
+             return success(params[:service_handle],"attach subservice")    
+            else
+             SystemUtils.log_error_mesg("attach subservice",params)
+                   return failed(params[:service_handle],@core_api.last_error,"attach subservice")
+           end
     end
     
   
