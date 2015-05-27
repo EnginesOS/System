@@ -170,9 +170,7 @@ class DockerApi
            stdout.each do |line|
              line = line.gsub(/\\\"/,"")
              oline = line
-             res += line.chop
-             #              p :lne_by_line
-             #              p line
+             res += line.chop  #
              if stderr_is_open
                error_mesg += stderr.read_nonblock(256)
              end
@@ -214,6 +212,9 @@ class DockerApi
          end
 
          container.last_result=(res)
+         if th.value != 0
+           return false
+         end
          return true
        end
      rescue Exception=>e
