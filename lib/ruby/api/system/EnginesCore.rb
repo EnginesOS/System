@@ -30,22 +30,6 @@ class EnginesCore
     return  @system_api.add_domain(params)
   end
 
-  #
-  #  def remove_containers_cron_list(container_name)
-  #    p :remove_containers_cron
-  #    if @system_api.remove_containers_cron_list(container_name)
-  #      cron_service = loadManagedService("cron")
-  #      return @system_api.rebuild_crontab(cron_service)
-  #    else
-  #      return false
-  #    end
-  #  end
-  #
-  #  def rebuild_crontab(cron_service)
-  #    #acutally a rebuild (or resave) as hadh already removed from consumer list
-  #    p :rebuild_crontab
-  #    return  @system_api.rebuild_crontab(cron_service)
-  #  end
 
   def remove_domain(params)
     return @system_api.rm_domain(params[:domain_name],@system_api)
@@ -88,13 +72,6 @@ class EnginesCore
     return  @docker_api.logs_container(container)
   end
 
-  #  def add_monitor(site_hash)
-  #    return @system_api.add_monitor(site_hash)
-  #  end
-  #
-  #  def rm_monitor(site_hash)
-  #    return @system_api.rm_monitor(site_hash)
-  #  end
 
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
@@ -140,13 +117,7 @@ class EnginesCore
     @system_api.update_self_hosted_domain(old_domain_name, params)
   end
 
-#  def load_system_preferences
-#    return @system_api.load_system_preferences
-#  end
-#
-#  def save_system_preferences(preferences)
-#    return @system_api.save_system_preferences(preferences)
-#  end
+
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
@@ -868,32 +839,47 @@ def load_and_attach_persistant_services(container)
     end
   end
 
-  #FIXME Kludge
+  #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
       ret_val = Hash.new
       clear_error
-      cmd = "docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
-      res= %x<#{cmd}>
-      vals = res.split("bytes:")
-      if vals.count < 2
-        if vals[1] != nil && vals[2] != nil
-          ret_val[:in] = vals[1].chop
-          ret_val[:out] = vals[2].chop
-        else
-          ret_val[:in] ="-1"
-          ret_val[:out] ="-1"
-        end
-      else
-        ret_val[:in] ="-1"
-        ret_val[:out] ="-1"
+      
+      def error_result
+        ret_val = Hash.new
+        ret_val[:in]="n/a"
+        ret_val[:out]="n/a"
+          return ret_val
       end
-      return ret_val
+
+      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
+      result = SystemUtils.execute_command(commandargs)
+      p result
+      if result[:result] != 0
+        
+        ret_val = error_result
+      else
+        res = result[:stdout]
+        vals = res.split("bytes:")
+        p res
+        p vals
+        if vals.count > 2
+          if vals[1] != nil && vals[2] != nil
+            ret_val[:in] = vals[1].chop
+            ret_val[:out] = vals[2].chop
+          else
+            ret_val = error_result
+          end
+        else
+          ret_val = error_result
+        end
+        p ret_val
+        return ret_val
+      end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      ret_val[:in] = -1
-      ret_val[:out] = -1
-      return ret_val
+
+      return   error_result
     end
   end
 
