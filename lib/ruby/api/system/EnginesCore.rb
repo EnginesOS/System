@@ -884,11 +884,14 @@ def load_and_attach_persistant_services(container)
       commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
       result = SystemUtils.execute_command(commandargs)
       p result
-      if result[:result] !=0
+      if result[:result] != 0
+        
         ret_val = error_result
       else
         res = result[:stdout]
         vals = res.split("bytes:")
+        p res
+        p vals
         if vals.count < 2
           if vals[1] != nil && vals[2] != nil
             ret_val[:in] = vals[1].chop
