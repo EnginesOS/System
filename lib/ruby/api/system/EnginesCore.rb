@@ -878,10 +878,12 @@ def load_and_attach_persistant_services(container)
         ret_val = Hash.new
         ret_val[:in]="n/a"
         ret_val[:out]="n/a"
+          return ret_val
       end
 
       commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       result = SystemUtils.execute_command(commandargs)
+      p result
       if result[:result] !=0
         ret_val = error_result
       else
