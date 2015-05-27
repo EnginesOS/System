@@ -868,7 +868,7 @@ def load_and_attach_persistant_services(container)
     end
   end
 
-  #FIXME Kludge
+  #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
       ret_val = Hash.new
@@ -880,7 +880,7 @@ def load_and_attach_persistant_services(container)
         ret_val[:out]="n/a"
       end
 
-      commandargs="docker top " + container.container_name + " axl"
+      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 " " $6}'  2>&1"
       result = SystemUtils.execute_command(commandargs)
       if result[:result] !=0
         ret_val = error_result
