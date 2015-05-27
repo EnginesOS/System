@@ -84,7 +84,7 @@ class DockerApi
    
    def execute_docker_cmd(cmdline,container)
      clear_error
-     result = SystemUtils.execute_command(commandargs)
+     result = SystemUtils.execute_command(cmdline)
             container.last_result = result[:stdout]
             container.last_error = result[:stderr]
               if  result[:result] == 0
