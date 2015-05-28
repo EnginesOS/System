@@ -444,7 +444,7 @@ class ServiceManager
   #@param service_hash [Hash]
   def add_to_managed_service(service_hash)
     service =  @core_api.load_software_service(service_hash)
-    if service == nil
+    if service == nil || service == false
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end
