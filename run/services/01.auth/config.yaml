@@ -1,0 +1,28 @@
+--- !ruby/object:ManagedService
+container_name: auth
+ctype: service
+persistant: false
+publisher_namespace: EnginesSystem
+type_path: auth
+last_error: 
+memory: '16'
+hostname: auth
+domain_name: 
+environments: []
+volumes:
+ auth_scripts: !ruby/object:Volume
+  name: auth_static
+  remotepath: "/home/auth/static/"
+  localpath: "/opt/engines/etc/auth/"
+  mapping_permissions: "rw"
+image: engines/auth:alpha
+port: 
+eports:
+repo: na
+last_result: |
+  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
