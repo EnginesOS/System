@@ -160,6 +160,7 @@ class ManagedContainer < Container
       end
       if state == nil #Kludge
         state = "nocontainer"
+        @last_error = "state nil"
       end
       if (@setState && state != @setState)
         if    @last_error == nil
@@ -416,6 +417,7 @@ end
 #@return nil if exception 
 #@ return false on inspect container error
 def get_ip_str
+  @docker_info = nil
   if inspect_container == false
     return false
   end
