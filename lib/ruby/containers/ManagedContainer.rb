@@ -279,7 +279,7 @@ p @setState
     if @deployment_type  == "web"
       add_nginx_service
     end
-    @core_api.register_non_persistant_services(@container_name)
+    @core_api.register_non_persistant_services(self)
     
      
   clear_error(ret_val)
@@ -312,7 +312,7 @@ def unpause_container
   else
     @last_error ="Can't unpause Container as " + state
   end
-  @core_api.register_non_persistant_services(@container_name)
+  @core_api.register_non_persistant_services(self)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -333,7 +333,7 @@ def pause_container
   else
     @last_error ="Can't pause Container as " + state
   end
-  @core_api.deregister_non_persistant_services(@container_name)
+  @core_api.deregister_non_persistant_services(self)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -350,13 +350,13 @@ def stop_container
 
   if state== "running"
     ret_val = @core_api.stop_container   self
-    @core_api.deregister_non_persistant_services(@container_name)
+    @core_api.deregister_non_persistant_services(self)
 
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
     if state != "paused" #force deregister if stopped or no container etc
-      @core_api.deregister_non_persistant_services(@container_name)
+      @core_api.deregister_non_persistant_services(self)
     end
   end
   
@@ -382,7 +382,7 @@ def start_container
     @last_error ="Can't Start Container as " + state
   end
   register_with_dns
-  @core_api.register_non_persistant_services(@container_name)
+  @core_api.register_non_persistant_services(self)
  
   clear_error(ret_val)
   save_state()
@@ -548,7 +548,7 @@ def rebuild_container
        if @deployment_type  == "web"
          add_nginx_service
        end
-       @core_api.register_non_persistant_services(@container_name)
+       @core_api.register_non_persistant_services(self)
   end
   return ret_val
 end
