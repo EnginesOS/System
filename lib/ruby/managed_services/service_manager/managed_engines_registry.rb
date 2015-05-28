@@ -133,7 +133,7 @@ def add_to_managed_engines_tree(service_hash)
      log_error_mesg("Site hash missing :container_type",site_hash)
      #return false
    end
-   if site_hash[:container_type] == service
+   if site_hash[:container_type] == "service"
    if managed_engine_tree["Service"] == nil 
      managed_engine_tree << Tree::TreeNode.new("Service"," Managed Services register")
    end
