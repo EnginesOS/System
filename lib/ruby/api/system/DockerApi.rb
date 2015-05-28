@@ -50,16 +50,21 @@ class DockerApi
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
      SystemUtils.debug_output( "image_exists",cmd)
-     if execute_docker_cmd(commandargs,container) == false
-       return false
+     result = SystemUtils.execute_command(cmd)
+     if  result[:result] != 0
+       last_error = result[:stderr]
+                  return false
      end
-
-     if container.last_result >0
-       return true
+     if  result[:stdout].length > 4
+      return true
      else
-       return false
+       last_error = result[:stderr]
      end
-
+     
+     return false
+     rescue  Exception=>e
+            SystemUtils.log_exception(e)
+            return false
    end
 
    def unpause_container container
