@@ -201,9 +201,11 @@ class SystemApi
        #FIXME 
        api = container.core_api
        container.core_api = nil
-       save_last_result_and_error
+       
        last_result = container.last_result
        last_error = container.last_error
+       
+    #   save_last_result_and_error(container)
        
        container.last_result=""
        container.last_error=""
