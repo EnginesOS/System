@@ -4,10 +4,9 @@ class DockerApi
      clear_error
      begin
        commandargs = container_commandline_args(container)
-       commandargs = " run  -d " + commandargs
+       commandargs = "docker run  -d " + commandargs
        SystemUtils.debug_output("create cont",commandargs)
-       retval = run_docker(commandargs,container)
-       return retval
+       return   execute_docker_cmd(commandargs,container)
      rescue Exception=>e
        container.last_error=("Failed To Create ")
        SystemUtils.log_exception(e)
@@ -18,8 +17,8 @@ class DockerApi
    def start_container   container
      clear_error
      begin
-       commandargs =" start " + container.container_name
-       return  run_docker(commandargs,container)
+       commandargs ="docker start " + container.container_name
+       return execute_docker_cmd(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -29,8 +28,8 @@ class DockerApi
    def stop_container container
      clear_error
      begin
-       commandargs=" stop " + container.container_name
-       return  run_docker(commandargs,container)
+       commandargs="docker stop " + container.container_name
+       return execute_docker_cmd(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -40,8 +39,8 @@ class DockerApi
    def pause_container container
      clear_error
      begin
-       commandargs = " pause " + container.container_name
-       return  run_docker(commandargs,container)
+       commandargs = "docker pause " + container.container_name
+       return execute_docker_cmd(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -51,49 +50,62 @@ class DockerApi
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
      SystemUtils.debug_output( "image_exists",cmd)
-     res = SystemUtils.run_command(cmd)
-
-     if res.length >0
-       return true
-     else
-       return false
+     result = SystemUtils.execute_command(cmd)
+     if  result[:result] != 0
+       last_error = result[:stderr]
+                  return false
      end
-
+     if  result[:stdout].length > 4
+      return true
+     else
+       last_error = result[:stderr]
+     end
+     
+     return false
+     rescue  Exception=>e
+            SystemUtils.log_exception(e)
+            return false
    end
 
    def unpause_container container
      clear_error
      begin
-       commandargs=" unpause " + container.container_name
-       return  run_docker(commandargs,container)
+       commandargs="docker unpause " + container.container_name
+       return  execute_docker_cmd(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
      end
    end
 
-   def ps_container container
-     clear_error
-     
-       commandargs="docker top " + container.container_name + " axl"
-      result = SystemUtils.execute_command(commandargs)
-       container.last_result = result[:stdout]
-       container.last_error = result[:stderr]
-         if  result[:result] == 0
-           return container.last_result
-         else
-           return container.last_error 
-         end
-       rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return "error"
-    
+   def ps_container container     
+     cmdline="docker top " + container.container_name + " axl"
+         return execute_docker_cmd(cmdline,container)   
+     rescue  Exception=>e
+          SystemUtils.log_exception(e)
+          return false  
    end
 
+   
+   def execute_docker_cmd(cmdline,container)
+     clear_error
+     result = SystemUtils.execute_command(cmdline)
+            container.last_result = result[:stdout]
+            container.last_error = result[:stderr]
+              if  result[:result] == 0
+                return container.last_result
+              else
+                return container.last_error 
+              end
+            rescue  Exception=>e
+            SystemUtils.log_exception(e)
+        return false
+         
+   end
    def signal_container_process(pid,signal,container)
      clear_error
-     commandargs=" exec " + container.container_name + " kill -" + signal + " " + pid.to_s
-     return  run_docker(commandargs,container)
+     commandargs="docker exec " + container.container_name + " kill -" + signal + " " + pid.to_s
+     return  execute_docker_cmd(commandargs,container)
    rescue  Exception=>e
      SystemUtils.log_exception(e)
      return false
@@ -103,10 +115,7 @@ class DockerApi
      clear_error
   
        commandargs="docker logs " + container.container_name
-           result = SystemUtils.execute_command(commandargs)
-            container.last_result = result[:stdout]
-            container.last_error = result[:stderr]
-              if  result[:result] == 0
+    if  execute_docker_cmd(commandargs,container) == false
                 return container.last_result
               else
                 return container.last_error 
@@ -119,8 +128,8 @@ class DockerApi
    def inspect_container container
      clear_error
      begin
-       commandargs=" inspect " + container.container_name
-       return  run_docker(commandargs,container)
+       commandargs=" docker inspect " + container.container_name
+       return   execute_docker_cmd(commandargs,container)
      rescue  Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -130,12 +139,11 @@ class DockerApi
    def destroy_container container
      clear_error
      begin
-       commandargs= " rm " +   container.container_name
-       ret_val = run_docker(commandargs,container)
+       commandargs= "docker  rm " +   container.container_name
+       return   execute_docker_cmd(commandargs,container)
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
        SystemUtils.log_exception(e)
-
        return false
      end
    end
@@ -143,8 +151,8 @@ class DockerApi
    def delete_image container
      clear_error
      begin
-       commandargs= " rmi " +   container.image
-       ret_val =  run_docker(commandargs,container)
+       commandargs= "docker rmi " +   container.image
+       ret_val =   execute_docker_cmd(commandargs,container)
         if ret_val == true
           clean_up_dangling_images
         end
@@ -157,83 +165,83 @@ class DockerApi
    end
 
    def docker_exec(container,command,args)
-     run_args = "exec " + container.container_name + " " + command + " " + args
+     run_args = "docker exec " + container.container_name + " " + command + " " + args
      
-     return run_docker(run_args,container)
+     return  execute_docker_cmd(commandargs,container)
    end
    
-   def run_docker (args,container)
-     clear_error
-     require 'open3'
-     SystemUtils.debug_output("Run docker",args)
-     res = String.new
-     error_mesg = String.new
-     begin
-       container.last_result=(  "")
-       Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
-         oline = String.new
-         stderr_is_open=true
-         begin
-           stdout.each do |line|
-             line = line.gsub(/\\\"/,"")
-             oline = line
-             res += line.chop  #
-             if stderr_is_open
-               error_mesg += stderr.read_nonblock(256)
-             end
-           end
-           
-         rescue Errno::EIO
-           res += oline.chop
-           SystemUtils.debug_output("read stderr",oline)
-           error_mesg += stderr.read_nonblock(256)
-         rescue  IO::WaitReadable
-           retry
-         rescue EOFError
-           if stdout.closed? == false
-             stderr_is_open = false
-             retry
-           elsif stderr.closed? == false
-             error_mesg += stderr.read_nonblock(1000)
-             container.last_result=(  res)
-             container.last_error=( error_mesgs)
-           else
-             container.last_result=(  res)
-             container.last_error=( error_mesgs)
-           end
-         end
-         @last_error=error_mesg
-         if error_mesg.include?("Error")
-           container.last_error=(error_mesg)
-
-           return false
-         else
-           container.last_error=("")
-         end
-         #
-         #          if res.start_with?("[") == true
-         #            res = res +"]"
-         #          end
-         if res != nil && res.end_with?(']') == false
-           res+=']'
-         end
-
-         container.last_result=(res)
-         if th.value != 0
-           return false
-         end
-         return true
-       end
-     rescue Exception=>e
-       @last_error=error_mesg + e.to_s
-       container.last_result=(res)
-       container.last_error=(error_mesg + e.to_s)
-       SystemUtils.log_exception(e)
-       return false
-     end
-
-     return true
-   end
+#   def run_docker (args,container)
+#     clear_error
+#     require 'open3'
+#     SystemUtils.debug_output("Run docker",args)
+#     res = String.new
+#     error_mesg = String.new
+#     begin
+#       container.last_result=(  "")
+#       Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
+#         oline = String.new
+#         stderr_is_open=true
+#         begin
+#           stdout.each do |line|
+#             line = line.gsub(/\\\"/,"")
+#             oline = line
+#             res += line.chop  #
+#             if stderr_is_open
+#               error_mesg += stderr.read_nonblock(256)
+#             end
+#           end
+#           
+#         rescue Errno::EIO
+#           res += oline.chop
+#           SystemUtils.debug_output("read stderr",oline)
+#           error_mesg += stderr.read_nonblock(256)
+#         rescue  IO::WaitReadable
+#           retry
+#         rescue EOFError
+#           if stdout.closed? == false
+#             stderr_is_open = false
+#             retry
+#           elsif stderr.closed? == false
+#             error_mesg += stderr.read_nonblock(1000)
+#             container.last_result=(  res)
+#             container.last_error=( error_mesgs)
+#           else
+#             container.last_result=(  res)
+#             container.last_error=( error_mesgs)
+#           end
+#         end
+#         @last_error=error_mesg
+#         if error_mesg.include?("Error")
+#           container.last_error=(error_mesg)
+#
+#           return false
+#         else
+#           container.last_error=("")
+#         end
+#         #
+#         #          if res.start_with?("[") == true
+#         #            res = res +"]"
+#         #          end
+#         if res != nil && res.end_with?(']') == false
+#           res+=']'
+#         end
+#
+#         container.last_result=(res)
+#         if th.value != 0
+#           return false
+#         end
+#         return true
+#       end
+#     rescue Exception=>e
+#       @last_error=error_mesg + e.to_s
+#       container.last_result=(res)
+#       container.last_error=(error_mesg + e.to_s)
+#       SystemUtils.log_exception(e)
+#       return false
+#     end
+#
+#     return true
+#   end
 
    def get_environment_options(container)
      e_option =String.new
@@ -256,18 +264,19 @@ class DockerApi
      if(container.eports )
        container.eports.each do |eport|
          if eport != nil 
-           eportoption = eportoption +  " -p "
+          
            if eport.external != nil && eport.external  >0
-             eportoption = eportoption + eport.external.to_s + ":"
-           end
-           eportoption = eportoption + eport.port.to_s
-           if eport.proto_type == nil
-             eport.proto_type=('tcp')
-           end
+             eportoption = eportoption +  " -p "
+             eportoption = eportoption + eport.external.to_s + ":"           
+             eportoption = eportoption + eport.port.to_s
+               if eport.proto_type == nil
+                  eport.proto_type=('tcp')
+               end
            eportoption = eportoption + "/"+ eport.proto_type + " "
          end
-       end
-     end
+        end
+      end
+  end
      return eportoption
    rescue Exception=>e
      SystemUtils.log_exception(e)
@@ -380,7 +389,7 @@ class DockerApi
    def clean_up_dangling_images
    
   cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
-     SystemUtils.run_system(cmd)
+    return execute_docker_cmd(cmd,container)
    end
    
    protected

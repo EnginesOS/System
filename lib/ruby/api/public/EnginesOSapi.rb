@@ -122,38 +122,7 @@ end
     
   end
   
-  
 
-#    def reinstall_engine engine_name
-#      
-#      engine = loadManaged(engine_name)
-#      
-#      if engine.is_a?(EnginesOSapiResult)
-#        return engine
-#      end
-#      if engine.is_active == true
-#        return  failed(host,"Cannot reinstall running engine:" + engine_name,"reinstall_engine") 
-#      end
-#      if engine.has_container? == true
-#       if engine.destroy == false
-#         return  failed(host,"Failed to destroy engine:" + engine_name,"reinstall_engine") 
-#       end
-#      end
-#      params = Hash.new
-#      
-#      params[:engine_name] = engine.container_name  
-#      params[:domain_name] = engine.domain_name
-#      params[:host_name] = engine.hostname
-#      params[:software_environment_variables] = engine.environments 
-#      params[:http_protocol] = engine.http_protocol
-#      params[:memory] = engine.memory
-#      params[:repository_url] = engine.repo
-#        
-#      build_engine(params)
-#      #   custom_env=params
-#     
-#    end
-  
   
   def last_api_error
     if @core_api

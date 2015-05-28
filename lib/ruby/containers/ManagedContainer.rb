@@ -135,12 +135,12 @@ class ManagedContainer < Container
 
   def read_state()
     begin
-      if (inspect_container == false)
+      if inspect_container == false
         state="nocontainer"
       else
         @res= last_result
         output = JSON.parse(last_result)
-        if output.is_a?(Array) == false
+        if output.is_a?(Array) == false || output.empty? == true 
           @last_error = "Failed to get container status"
             return "nocontainer"
         end
@@ -219,7 +219,8 @@ class ManagedContainer < Container
 
     state = read_state
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
-
+    p :set_state_in_destroy
+p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
     else if state == "nocontainer"
@@ -278,7 +279,7 @@ class ManagedContainer < Container
     if @deployment_type  == "web"
       add_nginx_service
     end
-    @core_api.register_non_persistant_services(@container_name)
+    @core_api.register_non_persistant_services(self)
     
      
   clear_error(ret_val)
@@ -311,7 +312,7 @@ def unpause_container
   else
     @last_error ="Can't unpause Container as " + state
   end
-  @core_api.register_non_persistant_services(@container_name)
+  @core_api.register_non_persistant_services(self)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -332,7 +333,7 @@ def pause_container
   else
     @last_error ="Can't pause Container as " + state
   end
-  @core_api.deregister_non_persistant_services(@container_name)
+  @core_api.deregister_non_persistant_services(self)
   clear_error(ret_val)
   save_state()
   return ret_val
@@ -349,13 +350,13 @@ def stop_container
 
   if state== "running"
     ret_val = @core_api.stop_container   self
-    @core_api.deregister_non_persistant_services(@container_name)
+    @core_api.deregister_non_persistant_services(self)
 
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
     if state != "paused" #force deregister if stopped or no container etc
-      @core_api.deregister_non_persistant_services(@container_name)
+      @core_api.deregister_non_persistant_services(self)
     end
   end
   
@@ -363,22 +364,7 @@ def stop_container
   save_state()
   return  ret_val
 end
-#
-#def deregister_registered
-#  if @core_api == nil
-#     @last_error="No connection to Engines OS System"
-#     return false
-#   end
-#  return @core_api.deregister_non_persistant_services(container_name)
-#end
 
-#def register_registered
-#  if @core_api == nil
-#     @last_error="No connection to Engines OS System"
-#     return false
-#   end
-#  return  @core_api.register_non_persistant_services(container_name)
-#end
 
 def start_container
   if @core_api == nil
@@ -396,7 +382,7 @@ def start_container
     @last_error ="Can't Start Container as " + state
   end
   register_with_dns
-  @core_api.register_non_persistant_services(@container_name)
+  @core_api.register_non_persistant_services(self)
  
   clear_error(ret_val)
   save_state()
@@ -412,8 +398,7 @@ end
    if service_hash == nil
      return false
    end
-   
-     
+    
    return  @core_api.attach_service(service_hash)
  end
  
@@ -425,85 +410,6 @@ def restart_container
   return ret_val
 end
 
-#  def register_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    if conf_register_site == false
-#      return true
-#    end
-#
-#    if is_active == true
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",@core_api)
-#      return service.add_consumer(self)
-#     else
-#            @last_error="Cannot register when Engine is inactive"
-#            return false
-#      end
-#  end
-
-#  def monitor_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    service =  EnginesOSapi::ServicesModule.loadManagedService("monit",@core_api)
-#      if service.is_a?(ManagedService)
-#      return service.add_consumer(self)
-#    end
-#    return false
-#  end
-
-#  def deregister_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",@core_api)
-#    if service.is_a?(ManagedService)
-#    return service.remove_consumer(self)
-#    end
-#    return false
-#  end
-#
-#  def demonitor_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("monit",@core_api)
-#      return service.remove_consumer(self)
-#  end
-#
-#  def register_dns
-#    if @core_api == nil
-#       @last_error="No connection to Engines OS System"
-#       return false
-#     end
-#
-#     if is_active == true
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("dns",@core_api)
-#      return service.add_consumer(self)
-#     else
-#       @last_error="Cannot register when Engine is inactive"
-#       return false
-#     end
-#  end
-#
-#  def deregister_dns
-#    if @core_api == nil
-#       @last_error="No connection to Engines OS System"
-#       return false
-#     end
-#     service =  EnginesOSapi::ServicesModule.loadManagedService("dns",@core_api)
-#     if service.is_a?(ManagedService) == false
-#       p failed_to_load_dns_service
-#       return false
-#     else
-#    return service.remove_consumer(self)
-#     end
-#  end
 
 #@return a containers ip address as a [String]
 #@return nil if exception 
@@ -546,26 +452,7 @@ def remove_nginx_service
    return @core_api.dettach_service(service_hash)
 end
 
-#  def register
-#
-#         if @conf_register_dns ==true
-#           register_dns
-#        end
-#          if @conf_register_site == true
-#            register_site
-#          end
-#
-#        if @conf_monitor_site == true
-#          monitor_site
-#        end
-#    cron_service = @core_api.loadManagedService("cron")
-#    cron_job_list.each do |cj|
-#      p :register_cj
-#      p cj
-#       cron_service.add_consumer(cj)
-#    end
-#    #FIXME check results
-#  end
+
 
 def stats
 
@@ -661,7 +548,7 @@ def rebuild_container
        if @deployment_type  == "web"
          add_nginx_service
        end
-       @core_api.register_non_persistant_services(@container_name)
+       @core_api.register_non_persistant_services(self)
   end
   return ret_val
 end
@@ -696,7 +583,7 @@ end
 
 def is_error
   state = read_state
-  if setStat != state
+  if @setState != state
     return false
   end
 

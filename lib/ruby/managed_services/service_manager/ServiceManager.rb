@@ -127,26 +127,7 @@ class ServiceManager
 
   end
   #
-  #  def remove_consumer_from_service(service_hash)
-  #
-  #    if service_hash.has_key?(:service_container_name) == false
-  #      log_error_mesg(":no service_container_name is hash",service_hash)
-  #               return false
-  #             end
-  #
-  #    service = EnginesOSapi.loadManagedService(service_hash[:service_container_name],@core_api)
-  #      if service == nil
-  #        log_error_mesg("Failed to Load Service",service_hash)
-  #                 return false
-  #       end
-  #
-  #       if service.is_running? == false
-  #         log_error_mesg("Cannot remove as Service is not running",service_hash)
-  #            return false
-  #        end
-  #
-  #       return service.remove_consumer(service_hash)
-  #  end
+ 
 
   #load softwwareservicedefinition for serivce in service_hash and
   #@return boolean indicating the persistance
@@ -397,10 +378,11 @@ class ServiceManager
   #service manager get non persistant services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
-  def register_non_persistant_services(engine_name)
+  def register_non_persistant_services(engine)
 
     params = Hash.new()
-    params[:parent_engine] = engine_name
+    params[:parent_engine] = engine.container_name
+    params[:container_type] = engine.ctype
     services = get_engine_nonpersistant_services(params)
     services.each do |service_hash|
       register_non_persistant_service(service_hash)
@@ -409,12 +391,13 @@ class ServiceManager
     return true
   end
 
-  def deregister_non_persistant_services(engine_name)
-    #service manager get non persistant services for engine_name
-    #for each servie_hash load_service_container and remove hash
-    #remove from service registry even if container is down
+#service manager get non persistant services for engine_name
+#for each servie_hash load_service_container and remove hash
+#remove from service registry even if container is down
+  def deregister_non_persistant_services(engine)
     params = Hash.new()
-    params[:parent_engine] = engine_name
+    params[:parent_engine] = engine.container_name
+    params[:container_type] = engine.ctype
     services = get_engine_nonpersistant_services(params)
 
     services.each do |service_hash|

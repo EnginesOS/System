@@ -25,10 +25,12 @@ RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
 	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/;\
 	chown -R 21000 /usr/local/rbenv/versions/$ruby_version/lib/ruby/gems/2.1.0/extensions;\
 	mkdir -p  /run/apache2;\
-	chown -R 21000 /run/apache2;\
+	chown -R 21000 /run/apache2 ;\
  	mkdir -p /run/lock/apache2 ;\
  	a2enmod ssl;\
- 	chown 21000 /run/lock/apache2
+ 	chown 21000 /run/lock/apache2;\
+ 	mkdir -p /home/app/public/system;\
+ 	chown -R 21000 /home/app/public
 
 #After after chmod so not rewritable
 
