@@ -310,6 +310,7 @@ class ManagedService < ManagedContainer
       p yaml.path
       managedService = YAML::load( yaml )
       managedService.core_api=(core_api)
+      managedContainer.docker_info = nil
       #      puts(" managed Service")
       #      p ObjectSpace.memsize_of(managedService)
       #      puts(" Hash total")

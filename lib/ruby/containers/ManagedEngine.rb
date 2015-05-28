@@ -54,6 +54,7 @@ class ManagedEngine < ManagedContainer
            if managedEngine == nil ||  managedEngine == false
              return false
            end
+    managedEngine.docker_info = nil
           managedEngine.core_api=(core_api)
           return managedEngine
     end
