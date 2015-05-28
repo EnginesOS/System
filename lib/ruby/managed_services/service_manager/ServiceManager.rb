@@ -237,7 +237,7 @@ class ServiceManager
     curr_service_file = String.new
     p :load_and_attach_services
     p dirname
-    p container
+    p container.container_name
     Dir.glob(dirname + "/*.yaml").each do |service_file|
       p "service_File"
       p service_file
