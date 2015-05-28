@@ -511,6 +511,8 @@ def inspect_container
   end
   if @docker_info == nil
     @docker_info = @core_api.inspect_container self
+  else
+    p :usering_docker_info_cache
   end 
   return @docker_info
 end
