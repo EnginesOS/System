@@ -427,9 +427,11 @@ class ServiceManager
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end
-
-    if service.is_running == true
-      return service.rm_consumer_from_service(service_hash)
+   
+    if service.is_running == true || service.persistant == false
+      if service.rm_consumer_from_service(service_hash) == true
+        remove_from_engine_registery(service_hash)
+      end
     elsif service.persistant == true
       log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
       return false
