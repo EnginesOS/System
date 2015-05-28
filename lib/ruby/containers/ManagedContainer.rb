@@ -140,7 +140,7 @@ class ManagedContainer < Container
       else
         @res= last_result
         output = JSON.parse(last_result)
-        if output.is_a?(Array) == false
+        if output.is_a?(Array) == false || output.empty? == true 
           @last_error = "Failed to get container status"
             return "nocontainer"
         end
