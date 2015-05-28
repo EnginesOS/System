@@ -439,7 +439,7 @@ class SystemApi
          container.container_id=(container_id)
        end
        if container && container.container_id != nil && container.container_id != '-1'
-         path = "/sys/fs/cgroup/memory/docker/" + container.container_id + "/"
+         path = "/sys/fs/cgroup/memory/docker/" + container.container_id.to_s + "/"
          if Dir.exists?(path)
            ret_val.store(:maximum , File.read(path + "/memory.max_usage_in_bytes"))
            ret_val.store(:current , File.read(path + "/memory.usage_in_bytes"))
