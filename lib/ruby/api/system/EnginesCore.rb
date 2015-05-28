@@ -908,15 +908,15 @@ def load_and_attach_persistant_services(container)
 
   end
 
-  def register_non_persistant_services(engine_name)
+  def register_non_persistant_services(engine)
     sm = loadServiceManager()
-    return sm.register_non_persistant_services(engine_name)
+    return sm.register_non_persistant_services(engine)
   end
 
 
-  def deregister_non_persistant_services(engine_name)
+  def deregister_non_persistant_services(engine)
     sm = loadServiceManager()
-    return sm.deregister_non_persistant_services(engine_name)
+    return sm.deregister_non_persistant_services(engine)
   end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
