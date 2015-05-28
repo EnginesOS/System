@@ -235,6 +235,9 @@ class ServiceManager
   def load_and_attach_services(dirname,container)
     envs = Array.new
     curr_service_file = String.new
+    p :load_and_attach_services
+    p dirname
+    p container
     Dir.glob(dirname + "/*.yaml").each do |service_file|
       p "service_File"
       p service_file
