@@ -126,24 +126,25 @@ def add_to_managed_engines_tree(service_hash)
 
    return true
  end
- 
-#@return the appropriate tree under managedservices trees either engine or service
- def managed_engines_type_tree(site_hash)
-   if site_hash.has_key?(:container_type) == false
-     log_error_mesg("Site hash missing :container_type",site_hash)
-     #return false
-   end
-   if site_hash[:container_type] == "service"
-   if managed_engine_tree["Service"] == nil 
-     managed_engine_tree << Tree::TreeNode.new("Service"," Managed Services register")
-   end
-     return managed_engine_tree["Service"]    
-   else
-     managed_engine_tree << Tree::TreeNode.new("Engine"," Managed Engine register")
-     return managed_engine_tree["Engine"]
-   end
- end
- 
+  #@return the appropriate tree under managedservices trees either engine or service
+  def managed_engines_type_tree(site_hash)
+    if site_hash.has_key?(:container_type) == false
+      log_error_mesg("Site hash missing :container_type",site_hash)
+      #return false
+    end
+    if site_hash[:container_type] == "service"
+      if managed_engine_tree["Service"] == nil
+        managed_engine_tree << Tree::TreeNode.new("Service"," Managed Services register")
+      end
+      return managed_engine_tree["Service"]
+    else
+      if managed_engine_tree["Engine"] == nil
+        managed_engine_tree << Tree::TreeNode.new("Engine"," Managed Engine register")
+      end
+      return managed_engine_tree["Engine"]
+    end
+  end
+
  #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
 #@return boolean
  def remove_from_engine_registery service_hash
