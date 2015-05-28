@@ -504,8 +504,10 @@ def inspect_container
     @last_error="No connection to Engines OS System"
     return false
   end
-  ret_val = @core_api.inspect_container self
-  return ret_val
+  if @docker_info == nil
+    @docker_info = @core_api.inspect_container self
+  end 
+  return @docker_info
 end
 
 def save_state()
@@ -513,8 +515,8 @@ def save_state()
     @last_error="No connection to Engines OS System"
     return false
   end
-  trim_last_result
-  trim_last_error
+
+  @docker_info = nil
   ret_val = @core_api.save_container self
   return ret_val
 end
@@ -625,19 +627,7 @@ end
 
 protected
 
-def trim_last_result
-  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
-  #  if @last_result.is_a?(String) && @last_result.length >256
-  #    @last_result=@last_result.slice!(0,256)
-  #  end
-end
 
-def trim_last_error
-  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
-  #  if  @last_error.is_a?(String) && @last_error.length >256
-  #    @last_error=@last_error.slice!(0,256)
-  #  end
-end
 
 def clear_error ret_val
   if ret_val==true
