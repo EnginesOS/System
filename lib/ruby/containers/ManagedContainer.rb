@@ -419,7 +419,7 @@ end
 #@return nil if exception 
 #@ return false on inspect container error
 def get_ip_str
-#  @docker_info = nil
+  @docker_info = nil
   if inspect_container == false
     return false
   end
