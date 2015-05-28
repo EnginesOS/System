@@ -3,6 +3,8 @@ PATH="/usr/local/rbenv/bin:$PATH"
 mkdir /var/log/apache2
 cd /home/app/
 rm /home/app/app/config/newrelic.yml
+git fetch origin master
+git reset --hard FETCH_HEAD
 git pull --depth 1
 cp /home/newrelic.yml /home/app/
 
