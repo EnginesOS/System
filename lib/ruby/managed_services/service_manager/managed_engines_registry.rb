@@ -139,7 +139,7 @@ def add_to_managed_engines_tree(service_hash)
    end
      return managed_engine_tree["Service"]    
    else
-     managed_engine_tree << Tree::TreeNode.new("Service"," Managed Engine register")
+     managed_engine_tree << Tree::TreeNode.new("Engine"," Managed Engine register")
      return managed_engine_tree["Engine"]
    end
  end
