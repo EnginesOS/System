@@ -219,7 +219,8 @@ class ManagedContainer < Container
 
     state = read_state
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
-
+    p :set_state_in_destroy
+p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
     else if state == "nocontainer"
@@ -363,22 +364,7 @@ def stop_container
   save_state()
   return  ret_val
 end
-#
-#def deregister_registered
-#  if @core_api == nil
-#     @last_error="No connection to Engines OS System"
-#     return false
-#   end
-#  return @core_api.deregister_non_persistant_services(container_name)
-#end
 
-#def register_registered
-#  if @core_api == nil
-#     @last_error="No connection to Engines OS System"
-#     return false
-#   end
-#  return  @core_api.register_non_persistant_services(container_name)
-#end
 
 def start_container
   if @core_api == nil
@@ -412,8 +398,7 @@ end
    if service_hash == nil
      return false
    end
-   
-     
+    
    return  @core_api.attach_service(service_hash)
  end
  
@@ -425,85 +410,6 @@ def restart_container
   return ret_val
 end
 
-#  def register_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    if conf_register_site == false
-#      return true
-#    end
-#
-#    if is_active == true
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",@core_api)
-#      return service.add_consumer(self)
-#     else
-#            @last_error="Cannot register when Engine is inactive"
-#            return false
-#      end
-#  end
-
-#  def monitor_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    service =  EnginesOSapi::ServicesModule.loadManagedService("monit",@core_api)
-#      if service.is_a?(ManagedService)
-#      return service.add_consumer(self)
-#    end
-#    return false
-#  end
-
-#  def deregister_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#    service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",@core_api)
-#    if service.is_a?(ManagedService)
-#    return service.remove_consumer(self)
-#    end
-#    return false
-#  end
-#
-#  def demonitor_site
-#    if @core_api == nil
-#      @last_error="No connection to Engines OS System"
-#      return false
-#    end
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("monit",@core_api)
-#      return service.remove_consumer(self)
-#  end
-#
-#  def register_dns
-#    if @core_api == nil
-#       @last_error="No connection to Engines OS System"
-#       return false
-#     end
-#
-#     if is_active == true
-#      service =  EnginesOSapi::ServicesModule.loadManagedService("dns",@core_api)
-#      return service.add_consumer(self)
-#     else
-#       @last_error="Cannot register when Engine is inactive"
-#       return false
-#     end
-#  end
-#
-#  def deregister_dns
-#    if @core_api == nil
-#       @last_error="No connection to Engines OS System"
-#       return false
-#     end
-#     service =  EnginesOSapi::ServicesModule.loadManagedService("dns",@core_api)
-#     if service.is_a?(ManagedService) == false
-#       p failed_to_load_dns_service
-#       return false
-#     else
-#    return service.remove_consumer(self)
-#     end
-#  end
 
 #@return a containers ip address as a [String]
 #@return nil if exception 
@@ -546,26 +452,7 @@ def remove_nginx_service
    return @core_api.dettach_service(service_hash)
 end
 
-#  def register
-#
-#         if @conf_register_dns ==true
-#           register_dns
-#        end
-#          if @conf_register_site == true
-#            register_site
-#          end
-#
-#        if @conf_monitor_site == true
-#          monitor_site
-#        end
-#    cron_service = @core_api.loadManagedService("cron")
-#    cron_job_list.each do |cj|
-#      p :register_cj
-#      p cj
-#       cron_service.add_consumer(cj)
-#    end
-#    #FIXME check results
-#  end
+
 
 def stats
 
@@ -696,7 +583,7 @@ end
 
 def is_error
   state = read_state
-  if setStat != state
+  if @setState != state
     return false
   end
 

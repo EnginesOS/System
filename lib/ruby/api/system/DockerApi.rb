@@ -144,7 +144,6 @@ class DockerApi
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
        SystemUtils.log_exception(e)
-
        return false
      end
    end
