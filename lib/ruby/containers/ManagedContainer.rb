@@ -137,6 +137,7 @@ class ManagedContainer < Container
 
   def read_state()
     @docker_info = nil
+    p :read_state
     begin
       if inspect_container == false
         state="nocontainer"
@@ -420,6 +421,7 @@ end
 #@ return false on inspect container error
 def get_ip_str
   @docker_info = nil
+  p :read_ip
   if inspect_container == false
     return false
   end
@@ -464,7 +466,7 @@ def stats
   if inspect_container() == false
     return false
   end
-
+  p :read_stats
   output = JSON.parse(last_result)
   started = output[0]["State"]["StartedAt"]
   stopped = output[0]["State"]["FinishedAt"]
