@@ -236,6 +236,8 @@ class ServiceManager
     envs = Array.new
     curr_service_file = String.new
     Dir.glob(dirname + "/*.yaml").each do |service_file|
+      p "service_File"
+      p service_file
       curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
