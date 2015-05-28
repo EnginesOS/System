@@ -135,7 +135,7 @@ class ManagedContainer < Container
 
   def read_state()
     begin
-      if (inspect_container == false)
+      if inspect_container == false
         state="nocontainer"
       else
         @res= last_result
