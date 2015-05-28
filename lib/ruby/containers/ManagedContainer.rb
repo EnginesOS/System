@@ -67,7 +67,8 @@ class ManagedContainer < Container
   :core_api,\
   :conf_self_start,\
   :last_result,\
-  :last_error
+  :last_error,
+  :docker_info
   
   
   def is_service? 
