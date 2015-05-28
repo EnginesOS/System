@@ -134,6 +134,7 @@ class ManagedContainer < Container
   end
 
   def read_state()
+    @docker_info = nil
     begin
       if inspect_container == false
         state="nocontainer"
