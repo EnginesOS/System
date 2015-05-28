@@ -14,6 +14,11 @@ environments:
  setatrun: false
 image: engines/mgmt:alpha
 volumes:
+ icons_dir: !ruby/object:Volume
+  name: icons_dir
+  remotepath: "/home/app/public/system/"
+  localpath: "/var/lib/engines/mgmt/public/system/"
+  mapping_permissions: rw
  socket: !ruby/object:Volume
   name: socket
   remotepath: "/var/run/docker.sock"
