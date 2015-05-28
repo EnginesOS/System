@@ -237,7 +237,7 @@ def SystemUtils.execute_command(cmd)
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:type_path] = 'dns'
     service_hash[:parent_engine]=engine.container_name
-
+    service_hash[:container_type]=engine.ctype
     service_hash[:variables] = Hash.new
     service_hash[:variables][:parent_engine]= engine.container_name
 
