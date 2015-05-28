@@ -639,8 +639,15 @@ end
     begin
       clear_error
 
+      
+      
       if @docker_api.delete_image(container) == true
         #only delete if del all otherwise backup
+        return  @system_api.delete_container_configs(container)
+      end
+      
+      #NO Image well delete the rest
+      if @docker_api.image_exists?(container.image) == false
         return  @system_api.delete_container_configs(container)
       end
 
