@@ -289,7 +289,7 @@ class ServiceManager
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] = params[:engine_name]
     end
-    engine_node = managed_engine_tree[params[:parent_engine]]
+    engine_node =  managed_engines_type_tree(params)[params[:parent_engine]]
 
     if engine_node == nil
       log_error_mesg("Warning Failed to find engine to remove",params)
@@ -311,7 +311,7 @@ class ServiceManager
       end
     end
 
-    if managed_engine_tree.remove!(engine_node)
+    if  managed_engines_type_tree(params).remove!(engine_node)
      
       return  save_tree
     else

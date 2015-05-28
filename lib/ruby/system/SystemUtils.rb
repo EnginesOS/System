@@ -249,7 +249,6 @@ def SystemUtils.execute_command(cmd)
     service_hash[:variables][:name]=service_hash[:variables][:hostname]
     service_hash[:container_type]=engine.ctype
     service_hash[:variables][:ip]=engine.get_ip_str.to_s
-
     service_hash[:service_handle]=service_hash[:variables][:name]
     p :created_dns_service_hash
     p service_hash

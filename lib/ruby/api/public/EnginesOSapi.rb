@@ -386,7 +386,7 @@ end
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(engine_name,"no Engine","Delete")
     end
-  
+    params[:container_type] = "container"
     params[:engine_name] = engine_name
       p :deleteEngineImage_params
       p params
