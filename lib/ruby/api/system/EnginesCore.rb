@@ -231,6 +231,16 @@ class EnginesCore
     SystemUtils.log_exception(e)
     return false
   end
+  
+  def container_type(container_name)
+    if loadManagedEngine(container_name) != false
+      return "container"
+    elsif loadManagedService(container_name) != false
+      return "service"
+    else
+        return "not found"
+    end
+  end
 
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
@@ -254,7 +264,11 @@ class EnginesCore
 
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
-
+  
+    if service_hash.has_key?(:container_type) == false
+      service_hash[:container_type] = container_type(service_hash[:parent_engine])
+    end
+   
     if service_hash.has_key?(:variables) == false
       log_error_mesg("Attached Service passed no variables",service_hash)
       return false
