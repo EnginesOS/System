@@ -9,6 +9,34 @@ class SystemApi
      begin
        cid = read_container_id(container)
        container.container_id=(cid)       
+       
+       stateDir = container_state_dir(container)
+       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+       if File.directory?(stateDir) ==false
+         Dir.mkdir(stateDir)
+         Dir.exists?(stateDir + "/run") == false
+         Dir.mkdir(stateDir + "/run")
+         Dir.mkdir(stateDir + "/run/flags")         
+         FileUtils.chown_R(nil,"containers",stateDir + "/run")
+         FileUtils.chmod_R("u+r",stateDir + "/run")
+       end
+       
+       log_dir = container_log_dir(container)
+       if File.directory?(log_dir) ==false
+         p :log_dir
+         p log_dir
+         Dir.mkdir(log_dir)
+       end
+
+       if container.is_service?
+         if File.directory?(stateDir + "/configurations") ==false
+           Dir.mkdir(stateDir + "/configurations/")
+         end
+         if File.directory?(stateDir + "/configurations/default") ==false
+                  Dir.mkdir(stateDir + "/configurations/default")
+         end
+       end
+       
        return save_container(container)  
 
      rescue Exception=>e
@@ -173,35 +201,23 @@ class SystemApi
        #FIXME 
        api = container.core_api
        container.core_api = nil
+       
+       last_result = container.last_result
+       last_error = container.last_error
+       
+    #   save_last_result_and_error(container)
+       
+       container.last_result=""
+       container.last_error=""
+       
        serialized_object = YAML::dump(container)
+       
        container.core_api = api
+       container.last_result = last_result
+       container.last_error = last_error
+       
        stateDir = container_state_dir(container)
-       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
-       if File.directory?(stateDir) ==false
-         Dir.mkdir(stateDir)
-         Dir.exists?(stateDir + "/run") == false
-         Dir.mkdir(stateDir + "/run")
-         Dir.mkdir(stateDir + "/run/flags")         
-         FileUtils.chown_R(nil,"containers",stateDir + "/run")
-         FileUtils.chmod_R("u+r",stateDir + "/run")
-       end
-       
-       log_dir = container_log_dir(container)
-       if File.directory?(log_dir) ==false
-         p :log_dir
-         p log_dir
-         Dir.mkdir(log_dir)
-       end
 
-       if container.is_service?
-         if File.directory?(stateDir + "/configurations") ==false
-           Dir.mkdir(stateDir + "/configurations/")
-         end
-         if File.directory?(stateDir + "/configurations/default") ==false
-                  Dir.mkdir(stateDir + "/configurations/default")
-         end
-       end
-       
        statefile=stateDir + "/config.yaml"
        # BACKUP Current file with rename
        if File.exists?(statefile)
@@ -213,7 +229,7 @@ class SystemApi
        f.close
        return true
      rescue Exception=>e
-       container.last_error=( "save error")
+       container.last_error=("save error")
        #FIXME Need to rename back if failure
        SystemUtils.log_exception(e)
        return false

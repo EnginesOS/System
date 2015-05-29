@@ -10,9 +10,10 @@ class Container
     @volumes = vols
     @environments = environs
     @container_id
+    @docker_info=nil
   end
   
-  attr_reader :container_id, :memory,:container_name ,:hostname,:domain_name, :image, :eports,:volumes,:environments
+  attr_reader :docker_info,:container_id, :memory,:container_name ,:hostname,:domain_name, :image, :eports,:volumes,:environments
    
   def update_memory(new_memory)
     @memory = new_memory

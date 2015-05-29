@@ -67,7 +67,8 @@ class ManagedContainer < Container
   :core_api,\
   :conf_self_start,\
   :last_result,\
-  :last_error
+  :last_error,
+  :docker_info
   
   
   def is_service? 
@@ -126,6 +127,7 @@ class ManagedContainer < Container
   def ManagedContainer.from_yaml( yaml, core_api )
     managedContainer = YAML::load( yaml )
     managedContainer.core_api = core_api
+    managedContainer.docker_info = nil
     managedContainer
   end
 
@@ -134,6 +136,10 @@ class ManagedContainer < Container
   end
 
   def read_state()
+    
+#    p :read_state
+# p   caller_locations(1,1)[0].label 
+    
     begin
       if inspect_container == false
         state="nocontainer"
@@ -159,6 +165,7 @@ class ManagedContainer < Container
       end
       if state == nil #Kludge
         state = "nocontainer"
+        @last_error = "state nil"
       end
       if (@setState && state != @setState)
         if    @last_error == nil
@@ -223,6 +230,8 @@ class ManagedContainer < Container
 p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
+      @docker_info = nil
+     
     else if state == "nocontainer"
         @last_error ="No Active Container"
       else
@@ -230,7 +239,10 @@ p @setState
       end
 
       clear_error(ret_val)
+
+    @setState="nocontainer" 
       save_state()
+    p @setState
       return ret_val
     end
   end
@@ -246,6 +258,7 @@ p @setState
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
       @setState="stopped"
+      
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -257,6 +270,7 @@ p @setState
   end
 
   def create_container
+
     if @core_api == nil
       @last_error="No connection to Engines OS System"
       return false
@@ -270,7 +284,7 @@ p @setState
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
-
+    @docker_info = nil
     if read_state != "running"
       @last_error ="Did not start"
       ret_val = false
@@ -309,6 +323,7 @@ def unpause_container
   if state == "paused"
     @setState="running"
     ret_val= @core_api.unpause_container self
+    @docker_info = nil
   else
     @last_error ="Can't unpause Container as " + state
   end
@@ -330,6 +345,7 @@ def pause_container
   if state == "running"
     @setState="paused"
     ret_val = @core_api.pause_container self
+    @docker_info = nil
   else
     @last_error ="Can't pause Container as " + state
   end
@@ -351,7 +367,7 @@ def stop_container
   if state== "running"
     ret_val = @core_api.stop_container   self
     @core_api.deregister_non_persistant_services(self)
-
+    @docker_info = nil
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
@@ -377,7 +393,7 @@ def start_container
   if state == "stopped"
     ret_val = @core_api.start_container self
     @setState="running"
-
+    @docker_info = nil
   else
     @last_error ="Can't Start Container as " + state
   end
@@ -415,6 +431,8 @@ end
 #@return nil if exception 
 #@ return false on inspect container error
 def get_ip_str
+  @docker_info = nil
+  p :read_ip
   if inspect_container == false
     return false
   end
@@ -459,7 +477,7 @@ def stats
   if inspect_container() == false
     return false
   end
-
+  p :read_stats
   output = JSON.parse(last_result)
   started = output[0]["State"]["StartedAt"]
   stopped = output[0]["State"]["FinishedAt"]
@@ -504,8 +522,10 @@ def inspect_container
     @last_error="No connection to Engines OS System"
     return false
   end
-  ret_val = @core_api.inspect_container self
-  return ret_val
+  if @docker_info == nil
+    @docker_info = @core_api.inspect_container self
+  end 
+  return @docker_info
 end
 
 def save_state()
@@ -513,8 +533,8 @@ def save_state()
     @last_error="No connection to Engines OS System"
     return false
   end
-  trim_last_result
-  trim_last_error
+
+  @docker_info = nil
   ret_val = @core_api.save_container self
   return ret_val
 end
@@ -625,19 +645,7 @@ end
 
 protected
 
-def trim_last_result
-  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
-  #  if @last_result.is_a?(String) && @last_result.length >256
-  #    @last_result=@last_result.slice!(0,256)
-  #  end
-end
 
-def trim_last_error
-  #FIX ME tyhsi breaks teh yaml  if it cuts off trailing "
-  #  if  @last_error.is_a?(String) && @last_error.length >256
-  #    @last_error=@last_error.slice!(0,256)
-  #  end
-end
 
 def clear_error ret_val
   if ret_val==true

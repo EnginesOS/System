@@ -216,8 +216,7 @@ class ManagedService < ManagedContainer
   def create_service()
     if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    
       FileUtils.mkdir_p("/opt/engines/ssh/keys/services/" + container_name)
-      SystemUtils.run_command("/opt/engines/scripts/setup_service_key_dir.sh " +container_name)
-      
+      SystemUtils.run_command("/opt/engines/scripts/setup_service_key_dir.sh " +container_name)      
     end
     envs = @core_api.load_and_attach_persistant_services(self)
     if envs !=nil    
@@ -231,10 +230,10 @@ class ManagedService < ManagedContainer
  
     if create_container() ==true
       register_with_dns()
-      
+      p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
-
-      @core_api.register_non_persistant_services(container_name)
+      p :register_non_persis
+      @core_api.register_non_persistant_services(self)
           
       reregister_consumers()
       save_state()
@@ -311,6 +310,7 @@ class ManagedService < ManagedContainer
       p yaml.path
       managedService = YAML::load( yaml )
       managedService.core_api=(core_api)
+      managedService.docker_info = nil
       #      puts(" managed Service")
       #      p ObjectSpace.memsize_of(managedService)
       #      puts(" Hash total")
