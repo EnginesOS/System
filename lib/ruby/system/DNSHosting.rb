@@ -269,7 +269,7 @@ def  DNSHosting.save_domains(domains)
   end
 
   def DNSHosting.add_self_hosted_domain params
-    clear_error
+    
     begin
       if DNSHosting.add_hosted_domain(params,self) == true
        return  save_self_hosted_domains(domains)
@@ -282,7 +282,7 @@ def  DNSHosting.save_domains(domains)
   end
 
   def DNSHosting.list_self_hosted_domains()
-    clear_error
+    
     begin
       return DNSHosting.load_self_hosted_domains()
     rescue  Exception=>e
@@ -292,7 +292,7 @@ def  DNSHosting.save_domains(domains)
   end
 
   def  DNSHosting.update_self_hosted_domain(old_domain_name, params)
-    clear_error
+    
     begin
       domains = load_self_hosted_domains()
       domains.delete(old_domain_name)
@@ -306,7 +306,7 @@ def  DNSHosting.save_domains(domains)
   end
 
   def   DNSHosting.remove_self_hosted_domain( domain_name)
-    clear_error
+    
     begin
       return DNSHosting.rm_hosted_domain(domain_name,self)
     rescue  Exception=>e
