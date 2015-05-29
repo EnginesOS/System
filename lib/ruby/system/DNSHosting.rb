@@ -241,8 +241,8 @@ module DNSHosting
     return false
   end
 
-  def DNSHosting.rm_domain(domain,system_api)
-
+  def DNSHosting.rm_domain(params,system_api)
+    domain = params[:domain_name]
     domains = load_domains
     if domains.has_key?(domain)
       domains.delete(domain)
