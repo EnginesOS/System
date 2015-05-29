@@ -118,6 +118,7 @@ module DNSHosting
        p "in " + domains.to_s
        return true
     end
+    
     return ret_val
   rescue Exception=>e
     SystemUtils.SystemUtils.log_exception(e)
@@ -247,6 +248,11 @@ module DNSHosting
       domains.delete(domain)
       save_domains(domains)
       system_api.reload_dns
+    else 
+  
+      p :failed_to_find_domain
+         p  domain
+         p "in " + domains.to_s
     end
 
   end
