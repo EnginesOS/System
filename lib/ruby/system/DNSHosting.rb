@@ -55,7 +55,7 @@ module DNSHosting
       end
     end
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+    SystemUtils.SystemUtils.log_exception(e)
     return false
   end
 
@@ -70,7 +70,7 @@ module DNSHosting
     dns_file.close
     return true
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+    SystemUtils.SystemUtils.log_exception(e)
     return false
   end
 
@@ -83,7 +83,7 @@ module DNSHosting
 
     return true
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+    SystemUtils.SystemUtils.log_exception(e)
     return false
   end
 
@@ -98,7 +98,7 @@ module DNSHosting
 
     return ret_val
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+    SystemUtils.SystemUtils.log_exception(e)
     return false
   end
 
@@ -111,11 +111,10 @@ module DNSHosting
       DNSHosting.save_self_hosted_domains(domains)
       system_api.reload_dns
       ret_val=true
-
     end
     return ret_val
   rescue Exception=>e
-    SystemUtils. SystemUtils.log_exception(e)
+    SystemUtils.SystemUtils.log_exception(e)
     return false
   end
 
