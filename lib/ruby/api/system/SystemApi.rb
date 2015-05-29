@@ -9,6 +9,34 @@ class SystemApi
      begin
        cid = read_container_id(container)
        container.container_id=(cid)       
+       
+       stateDir = container_state_dir(container)
+       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+       if File.directory?(stateDir) ==false
+         Dir.mkdir(stateDir)
+         Dir.exists?(stateDir + "/run") == false
+         Dir.mkdir(stateDir + "/run")
+         Dir.mkdir(stateDir + "/run/flags")         
+         FileUtils.chown_R(nil,"containers",stateDir + "/run")
+         FileUtils.chmod_R("u+r",stateDir + "/run")
+       end
+       
+       log_dir = container_log_dir(container)
+       if File.directory?(log_dir) ==false
+         p :log_dir
+         p log_dir
+         Dir.mkdir(log_dir)
+       end
+
+       if container.is_service?
+         if File.directory?(stateDir + "/configurations") ==false
+           Dir.mkdir(stateDir + "/configurations/")
+         end
+         if File.directory?(stateDir + "/configurations/default") ==false
+                  Dir.mkdir(stateDir + "/configurations/default")
+         end
+       end
+       
        return save_container(container)  
 
      rescue Exception=>e
@@ -173,35 +201,23 @@ class SystemApi
        #FIXME 
        api = container.core_api
        container.core_api = nil
+       
+       last_result = container.last_result
+       last_error = container.last_error
+       
+    #   save_last_result_and_error(container)
+       
+       container.last_result=""
+       container.last_error=""
+       
        serialized_object = YAML::dump(container)
+       
        container.core_api = api
+       container.last_result = last_result
+       container.last_error = last_error
+       
        stateDir = container_state_dir(container)
-       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
-       if File.directory?(stateDir) ==false
-         Dir.mkdir(stateDir)
-         Dir.exists?(stateDir + "/run") == false
-         Dir.mkdir(stateDir + "/run")
-         Dir.mkdir(stateDir + "/run/flags")         
-         FileUtils.chown_R(nil,"containers",stateDir + "/run")
-         FileUtils.chmod_R("u+r",stateDir + "/run")
-       end
-       
-       log_dir = container_log_dir(container)
-       if File.directory?(log_dir) ==false
-         p :log_dir
-         p log_dir
-         Dir.mkdir(log_dir)
-       end
 
-       if container.is_service?
-         if File.directory?(stateDir + "/configurations") ==false
-           Dir.mkdir(stateDir + "/configurations/")
-         end
-         if File.directory?(stateDir + "/configurations/default") ==false
-                  Dir.mkdir(stateDir + "/configurations/default")
-         end
-       end
-       
        statefile=stateDir + "/config.yaml"
        # BACKUP Current file with rename
        if File.exists?(statefile)
@@ -213,7 +229,7 @@ class SystemApi
        f.close
        return true
      rescue Exception=>e
-       container.last_error=( "save error")
+       container.last_error=("save error")
        #FIXME Need to rename back if failure
        SystemUtils.log_exception(e)
        return false
@@ -265,169 +281,7 @@ class SystemApi
    end
 
 
-   def  save_domains(domains)
-     clear_error
-     begin
-       domain_file = File.open(SysConfig.DomainsFile,"w")
-       domain_file.write(domains.to_yaml())
-       domain_file.close
-       return true
-     rescue Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def load_domains
-     clear_error
-     begin
-       if File.exists?(SysConfig.DomainsFile) == false
-#         p :creating_new_domain_list
-         domains_file = File.open(SysConfig.DomainsFile,"w")
-         domains_file.close
-         return Hash.new
-       else
-         domains_file = File.open(SysConfig.DomainsFile,"r")
-       end
-       domains = YAML::load( domains_file )
-       domains_file.close
-       if domains == false
-         p :domains_error_in_load
-         return Hash.new
-       end
-       return domains
-     rescue Exception=>e
-       domains = Hash.new
-       p "failed_to_load_domains"
-       SystemUtils.log_exception(e)
-       return domains
-     end
-   end
-
-   def list_domains
-     domains = load_domains
-     return domains
-   rescue Exception=>e
-     domains = Hash.new
-     p :error_listing_domains
-     SystemUtils.log_exception(e)
-     return domains
-   end
-
-
-   
-   def add_domain(params)
-     clear_error
-     domain= params[:domain_name]
-     if params[:self_hosted]
-       add_self_hosted_domain params
-     end
-#     p :add_domain
-#     p params
-     domains = load_domains()
-     domains[params[:domain_name]] = params
-     if save_domains(domains)
-       return true
-     end
-
-     p :failed_add_hosted_domains
-     return false
-
-   rescue Exception=>e
-     SystemUtils.log_exception(e)
-     return false
-   end
-
-   def rm_domain(domain,system_api)
-     clear_error
-     domains = load_domains
-     if domains.has_key?(domain)
-       domains.delete(domain)
-       save_domains(domains)
-       system_api.reload_dns
-     end
-
-   end
-
-   def  update_domain(old_domain_name, params,system_api)
-     clear_error
-     begin
-       domains = load_domains()
-       domains.delete(old_domain_name)
-       domains[params[:domain_name]] = params
-       save_domains(domains)
-
-       if params[:self_hosted]
-         add_self_hosted_domain params
-         rm_self_hosted_domain(old_domain_name)
-         system_api.reload_dns
-       end
-
-       return true
-     rescue  Exception=>e
-     SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def add_self_hosted_domain params
-     clear_error
-     begin
-#       p :Lachlan_Sent_parrams
-#       p params
-
-       return DNSHosting.add_hosted_domain(params,self)
-       #       if ( DNSHosting.add_hosted_domain(params,self) == false)
-       #         return false
-       #       end
-       #
-       #     domains = load_self_hosted_domains()
-       #       domains[params[:domain_name]] = params
-       #
-       return  save_self_hosted_domains(domains)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def list_self_hosted_domains()
-     clear_error
-     begin
-       return DNSHosting.load_self_hosted_domains()
-       #        domains = load_self_hosted_domains()
-       #        p domains
-       #        return domains
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def  update_self_hosted_domain(old_domain_name, params)
-     clear_error
-     begin
-       domains = load_self_hosted_domains()
-       domains.delete(old_domain_name)
-       domains[params[:domain_name]] = params
-       save_self_hosted_domains(domains)
-       return true
-     rescue  Exception=>e
-     SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
-   def   remove_self_hosted_domain( domain_name)
-     clear_error
-     begin
-       return DNSHosting.rm_hosted_domain(domain_name,self)
-     rescue  Exception=>e
-       SystemUtils.log_exception(e)
-       return false
-     end
-   end
-
+  
 
 
    def get_container_memory_stats(container)

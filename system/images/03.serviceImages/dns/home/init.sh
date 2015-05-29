@@ -1,5 +1,5 @@
 #!/bin/sh
-rm -f /engines/var/run/startup_complete
+
 
 
 PIDFILE=/var/run/named/named.pid
@@ -22,15 +22,4 @@ cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.def
 
 exec /usr/sbin/named -f -c /etc/bind/named.conf -u bind 
 
-mkdir -p /engines/var/run/
-touch  /engines/var/run/startup_complete
-chown 21000 /engines/var/run/startup_complete
 
-sleep 30
-
-while test -f /var/run/named/named.pid
-	do
-	  sleep 120
-	done
-
-rm /engines/var/run/startup_complete

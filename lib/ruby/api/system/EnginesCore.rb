@@ -213,6 +213,8 @@ class EnginesCore
   end
   
   def get_default_domain()
+    p :get_default_domain
+    p @system_preferences.get_default_domain
     @system_preferences.get_default_domain
   end  
   

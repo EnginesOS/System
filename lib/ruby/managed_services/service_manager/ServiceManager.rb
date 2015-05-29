@@ -235,7 +235,12 @@ class ServiceManager
   def load_and_attach_services(dirname,container)
     envs = Array.new
     curr_service_file = String.new
+    p :load_and_attach_services
+    p dirname
+    p container.container_name
     Dir.glob(dirname + "/*.yaml").each do |service_file|
+      p "service_File"
+      p service_file
       curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
@@ -289,7 +294,7 @@ class ServiceManager
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] = params[:engine_name]
     end
-    engine_node = managed_engine_tree[params[:parent_engine]]
+    engine_node =  managed_engines_type_tree(params)[params[:parent_engine]]
 
     if engine_node == nil
       log_error_mesg("Warning Failed to find engine to remove",params)
@@ -311,7 +316,7 @@ class ServiceManager
       end
     end
 
-    if managed_engine_tree.remove!(engine_node)
+    if  managed_engines_type_tree(params).remove!(engine_node)
      
       return  save_tree
     else
@@ -427,9 +432,11 @@ class ServiceManager
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end
-
-    if service.is_running == true
-      return service.rm_consumer_from_service(service_hash)
+   
+    if service.is_running == true || service.persistant == false
+      if service.rm_consumer_from_service(service_hash) == true
+        remove_from_engine_registery(service_hash)
+      end
     elsif service.persistant == true
       log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
       return false
@@ -444,7 +451,7 @@ class ServiceManager
   #@param service_hash [Hash]
   def add_to_managed_service(service_hash)
     service =  @core_api.load_software_service(service_hash)
-    if service == nil
+    if service == nil || service == false
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end

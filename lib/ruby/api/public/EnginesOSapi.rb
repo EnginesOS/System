@@ -386,7 +386,7 @@ end
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(engine_name,"no Engine","Delete")
     end
-  
+    params[:container_type] = "container"
     params[:engine_name] = engine_name
       p :deleteEngineImage_params
       p params
@@ -652,28 +652,35 @@ end
   
   def update_domain(params)
     old_domain_name=params[:original_domain_name]
-    if @core_api.update_domain(old_domain_name,params) == false
+    if  DNSHosting.update_domain(old_domain_name,params,self) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
+    
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add self hosted domain")
   end
-    if @core_api.update_self_hosted_domain(old_domain_name, params) ==true
+  
+    if DNSHosting.update_self_hosted_domain(old_domain_name, params) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+      
+      
   rescue Exception=>e
-    return log_exception_and_fail("Update self hosted domain ",e)
+    
+     log_exception_and_fail("Update self hosted domain ",e)
+    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
+    
   end
 
   def add_domain params
-    if @core_api.add_domain(params) == false
+    if DNSHosting.add_domain(params) == false
        return  failed(params[:domain_name],last_api_error, "Add  domain")
     end  
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add domain")
   end
-    if @core_api.add_self_hosted_domain( params) ==true
+    if DNSHosting.add_self_hosted_domain( params) ==true
       return success(params[:domain_name], "Add self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Add self hosted domain")
@@ -691,9 +698,13 @@ end
       p params
       return success(params[:domain_name], "upload self hosted ssl cert domain")        
     end
-    
+  
+    def reload_dns    
+    return @core_api.reload_dns
+  end
+  
   def remove_domain params    
-    if @core_api.remove_domain(params) == false
+    if DNSHosting.rm_domain(params,self) == false
       p :remove_domain_last_error
       p last_api_error
        return  failed(params[:domain_name],last_api_error, "Remove domain")
@@ -702,7 +713,7 @@ end
     return success(params[:domain_name], "Remove domain")
   end
   
-    if @core_api.remove_self_hosted_domain( params[:domain_name]) ==true
+    if DNSHosting.remove_self_hosted_domain( params[:domain_name],self) ==true
       return success(params[:domain_name], "Remove self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
@@ -711,19 +722,19 @@ end
   end
 
   def list_self_hosted_domains
-    return @core_api.list_self_hosted_domains( )
+    return DNSHosting.list_self_hosted_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list self hosted domain ",e)
   end
 
   def list_domains
-    return @core_api.list_domains( )
+    return DNSHosting.list_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list domains ",e)
   end 
   
   def list_service_providers_in_use
-     return @core_api.list_providers_in_use
+     return DNSHosting.list_providers_in_use
   end
 
   #protected if protected static cant call
