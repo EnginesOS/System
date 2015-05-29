@@ -704,7 +704,7 @@ end
   end
   
   def remove_domain params    
-    if DNSHosting.remove_domain(params) == false
+    if DNSHosting.rm_domain(params,self) == false
       p :remove_domain_last_error
       p last_api_error
        return  failed(params[:domain_name],last_api_error, "Remove domain")
