@@ -227,6 +227,7 @@ class ManagedContainer < Container
     state = read_state
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
     p :set_state_in_destroy
+    @container_id="-1"
 p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
@@ -287,14 +288,14 @@ p @setState
     @docker_info = nil
     if read_state != "running"
       @last_error ="Did not start"
-      ret_val = false
-    end
+      ret_val = false           
+  else
     register_with_dns
     if @deployment_type  == "web"
       add_nginx_service
     end
     @core_api.register_non_persistant_services(self)
-    
+  end
      
   clear_error(ret_val)
   save_state()
@@ -362,7 +363,7 @@ def stop_container
   end
   ret_val = false
   state = read_state()
-  @set_container_id="-1"
+
 
   if state== "running"
     ret_val = @core_api.stop_container   self
@@ -654,7 +655,11 @@ def clear_error ret_val
 end
 
 def set_container_id
-  return "-1"
+  if @docker_info == nil || @docker_info == false  || @docker_info.is_a?(Array) == false ||  @docker_info.empty? == true
+    return "-1"
+  end
+  
+  return @docker_info[0]["Id"]
 
 end
 

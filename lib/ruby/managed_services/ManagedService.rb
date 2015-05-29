@@ -223,6 +223,7 @@ class ManagedService < ManagedContainer
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
+        @environments.uniq!
       else
         @environments = envs
       end
