@@ -375,7 +375,7 @@ class SystemApi
 
        if params[:self_hosted]
          add_self_hosted_domain params
-         rm_self_hosted_domain(old_domain_name)
+         remove_self_hosted_domain(old_domain_name)
          system_api.reload_dns
        end
 
