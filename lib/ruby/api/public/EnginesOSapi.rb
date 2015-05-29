@@ -655,15 +655,22 @@ end
     if @core_api.update_domain(old_domain_name,params) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
+    
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add self hosted domain")
   end
-    if @core_api.update_self_hosted_domain(old_domain_name, params) ==true
+  
+    if @core_api.update_self_hosted_domain(old_domain_name, params) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+      
+      
   rescue Exception=>e
-    return log_exception_and_fail("Update self hosted domain ",e)
+    
+     log_exception_and_fail("Update self hosted domain ",e)
+    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
+    
   end
 
   def add_domain params
