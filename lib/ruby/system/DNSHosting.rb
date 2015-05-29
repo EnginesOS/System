@@ -164,6 +164,156 @@ module DNSHosting
     end
    
 
+def  DNSHosting.save_domains(domains)
+    
+    begin
+      domain_file = File.open(SysConfig.DomainsFile,"w")
+      domain_file.write(domains.to_yaml())
+      domain_file.close
+      return true
+    rescue Exception=>e
+      SystemUtils.log_exception(e)
+      return false
+    end
+  end
+
+  def DNSHosting.load_domains
+    
+    begin
+      if File.exists?(SysConfig.DomainsFile) == false
+#         p :creating_new_domain_list
+        domains_file = File.open(SysConfig.DomainsFile,"w")
+        domains_file.close
+        return Hash.new
+      else
+        domains_file = File.open(SysConfig.DomainsFile,"r")
+      end
+      domains = YAML::load( domains_file )
+      domains_file.close
+      if domains == false
+        p :domains_error_in_load
+        return Hash.new
+      end
+      return domains
+    rescue Exception=>e
+      domains = Hash.new
+      p "failed_to_load_domains"
+      SystemUtils.log_exception(e)
+      return domains
+    end
+  end
+
+  def DNSHosting.list_domains
+    domains = load_domains
+    return domains
+  rescue Exception=>e
+    domains = Hash.new
+    p :error_listing_domains
+    SystemUtils.log_exception(e)
+    return domains
+  end
+
+
+  
+  def DNSHosting.add_domain(params)
+    
+    domain= params[:domain_name]
+    if params[:self_hosted]
+      add_self_hosted_domain params
+    end
+#     p :add_domain
+#     p params
+    domains = load_domains()
+    domains[params[:domain_name]] = params
+    if save_domains(domains)
+      return true
+    end
+
+    p :failed_add_hosted_domains
+    return false
+
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
+    return false
+  end
+
+  def DNSHosting.rm_domain(domain,system_api)
+    
+    domains = load_domains
+    if domains.has_key?(domain)
+      domains.delete(domain)
+      save_domains(domains)
+      system_api.reload_dns
+    end
+
+  end
+
+  def  DNSHosting.update_domain(old_domain_name, params,system_api)
+    
+    begin
+      domains = load_domains()
+      domains.delete(old_domain_name)
+      domains[params[:domain_name]] = params
+      save_domains(domains)
+
+      if params[:self_hosted]
+        add_self_hosted_domain params
+        remove_self_hosted_domain(old_domain_name)
+        system_api.reload_dns
+      end
+      return true
+    rescue  Exception=>e
+    SystemUtils.log_exception(e)
+      return false
+    end
+  end
+
+  def DNSHosting.add_self_hosted_domain params
+    clear_error
+    begin
+      if DNSHosting.add_hosted_domain(params,self) == true
+       return  save_self_hosted_domains(domains)
+      end
+      return false
+    rescue  Exception=>e
+      SystemUtils.log_exception(e)
+      return false
+    end
+  end
+
+  def DNSHosting.list_self_hosted_domains()
+    clear_error
+    begin
+      return DNSHosting.load_self_hosted_domains()
+    rescue  Exception=>e
+      SystemUtils.log_exception(e)
+      return false
+    end
+  end
+
+  def  DNSHosting.update_self_hosted_domain(old_domain_name, params)
+    clear_error
+    begin
+      domains = load_self_hosted_domains()
+      domains.delete(old_domain_name)
+      domains[params[:domain_name]] = params
+      save_self_hosted_domains(domains)
+      return true
+    rescue  Exception=>e
+    SystemUtils.log_exception(e)
+      return false
+    end
+  end
+
+  def   DNSHosting.remove_self_hosted_domain( domain_name)
+    clear_error
+    begin
+      return DNSHosting.rm_hosted_domain(domain_name,self)
+    rescue  Exception=>e
+      SystemUtils.log_exception(e)
+      return false
+    end
+  end
 
     
     
