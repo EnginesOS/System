@@ -713,7 +713,7 @@ end
     return success(params[:domain_name], "Remove domain")
   end
   
-    if DNSHosting.remove_self_hosted_domain( params[:domain_name]) ==true
+    if DNSHosting.remove_self_hosted_domain( params[:domain_name],self) ==true
       return success(params[:domain_name], "Remove self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
