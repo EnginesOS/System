@@ -36,7 +36,7 @@ def get_default_site()
 end
     
 def get_default_domain()
-  P :get_default_domain   
+  p :get_default_domain   
   @preferences[:default_domain]
   rescue Exception=>e
    SystemUtils.log_exception(e)
