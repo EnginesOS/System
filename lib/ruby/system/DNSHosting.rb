@@ -111,6 +111,9 @@ module DNSHosting
       DNSHosting.save_self_hosted_domains(domains)
       system_api.reload_dns
       ret_val=true
+    else
+     p :failed_to_find_domains
+     p  domain
     end
     return ret_val
   rescue Exception=>e
