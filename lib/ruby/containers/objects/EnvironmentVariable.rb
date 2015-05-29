@@ -10,7 +10,7 @@ class EnvironmentVariable
     @immutable = immutable
   end
   def setatrun
-    return setatrun
+    return @ask_at_build_time
   end
   attr_reader :ask_at_build_time,:name,:build_time_only,:mandatory,:label,:immutable
  attr_accessor :value
