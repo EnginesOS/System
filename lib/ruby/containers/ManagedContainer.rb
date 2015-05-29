@@ -137,8 +137,8 @@ class ManagedContainer < Container
 
   def read_state()
     
-    p :read_state
- p   caller_locations(1,1)[0].label 
+#    p :read_state
+# p   caller_locations(1,1)[0].label 
     
     begin
       if inspect_container == false
@@ -231,6 +231,7 @@ p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
       @docker_info = nil
+     
     else if state == "nocontainer"
         @last_error ="No Active Container"
       else
@@ -238,7 +239,10 @@ p @setState
       end
 
       clear_error(ret_val)
+
+    @setState="nocontainer" 
       save_state()
+    p @setState
       return ret_val
     end
   end
@@ -520,8 +524,6 @@ def inspect_container
   end
   if @docker_info == nil
     @docker_info = @core_api.inspect_container self
-  else
-    p :usering_docker_info_cache
   end 
   return @docker_info
 end
