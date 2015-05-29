@@ -136,7 +136,7 @@ class ManagedContainer < Container
   end
 
   def read_state()
-    @docker_info = nil
+    
     p :read_state
  p   caller_locations(1,1)[0].label 
     
@@ -230,6 +230,7 @@ class ManagedContainer < Container
 p @setState
     if state == "stopped"
       ret_val=@core_api.destroy_container self
+      @docker_info = nil
     else if state == "nocontainer"
         @last_error ="No Active Container"
       else
@@ -253,6 +254,7 @@ p @setState
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
       @setState="stopped"
+      
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -264,6 +266,7 @@ p @setState
   end
 
   def create_container
+
     if @core_api == nil
       @last_error="No connection to Engines OS System"
       return false
@@ -277,7 +280,7 @@ p @setState
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
-
+    @docker_info = nil
     if read_state != "running"
       @last_error ="Did not start"
       ret_val = false
@@ -316,6 +319,7 @@ def unpause_container
   if state == "paused"
     @setState="running"
     ret_val= @core_api.unpause_container self
+    @docker_info = nil
   else
     @last_error ="Can't unpause Container as " + state
   end
@@ -337,6 +341,7 @@ def pause_container
   if state == "running"
     @setState="paused"
     ret_val = @core_api.pause_container self
+    @docker_info = nil
   else
     @last_error ="Can't pause Container as " + state
   end
@@ -358,7 +363,7 @@ def stop_container
   if state== "running"
     ret_val = @core_api.stop_container   self
     @core_api.deregister_non_persistant_services(self)
-
+    @docker_info = nil
     @setState="stopped"
   else
     @last_error ="Can't stop Container as " + state
@@ -384,7 +389,7 @@ def start_container
   if state == "stopped"
     ret_val = @core_api.start_container self
     @setState="running"
-
+    @docker_info = nil
   else
     @last_error ="Can't Start Container as " + state
   end
