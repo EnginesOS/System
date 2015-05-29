@@ -19,7 +19,7 @@ WORKDIR /home/app/
 RUN	git init
 
 ADD gitconfig /home/app/.git/config
-
+ADD sudoers /etc/
 RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\	
 	chown -R 21000 /home/app/ /home/engines /var/log/apache2/;\
 	chmod -R g+w /usr/local/rbenv/versions/ ;chgrp -R docker /usr/local/rbenv/versions/;\
@@ -31,8 +31,8 @@ RUN /usr/local/rbenv/shims/gem install git bundle oink vmstat;\
  	chown 21000 /run/lock/apache2;\
  	mkdir -p /home/app/public/system;\
  	chown -R 21000 /home/app/public;\
- 	echo "engines  ALL = (root) NOPASSWD: ALL " >>/etc/sudoers
- 	ehco "" >>/etc/sudoers
+ 	echo "engines  ALL = (root) NOPASSWD: ALL " >>/etc/sudoers;\
+ 	echo "" >>/etc/sudoers
  	
 
 #After after chmod so not rewritable
