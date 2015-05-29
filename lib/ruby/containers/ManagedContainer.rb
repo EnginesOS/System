@@ -40,12 +40,12 @@ class ManagedContainer < Container
   end
 
   def container_id
-    if @container_id == nil
+
       @container_id = set_container_id
-      if @container_id == false
+      if @container_id == false || @container_id == nil
         @container_id == "-1"
       end
-    end
+   
     p @container_id
     return @container_id
   end
