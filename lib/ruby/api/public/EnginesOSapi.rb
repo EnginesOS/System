@@ -700,7 +700,7 @@ end
     end
   
     def reload_dns    
-    return @core_api.eload_dns
+    return @core_api.reload_dns
   end
   
   def remove_domain params    
