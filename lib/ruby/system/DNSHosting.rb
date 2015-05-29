@@ -112,9 +112,11 @@ module DNSHosting
       system_api.reload_dns
       ret_val=true
     else
-     p :failed_to_find_domain
-     p  domain
-     p "in " + domains.to_s
+   
+    p :failed_to_find_domain
+       p  domain
+       p "in " + domains.to_s
+       return true
     end
     return ret_val
   rescue Exception=>e
