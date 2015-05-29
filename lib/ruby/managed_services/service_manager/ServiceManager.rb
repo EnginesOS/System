@@ -210,6 +210,10 @@ class ServiceManager
     if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
       handle_field_sym = service_def[:service_handle_field].to_sym
     end
+    
+    if service_hash.has_key?(:container_type) == false
+      service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
+    end
 
     service_hash[:persistant] = service_def[:persistant]
 
