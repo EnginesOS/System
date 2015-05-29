@@ -652,7 +652,7 @@ end
   
   def update_domain(params)
     old_domain_name=params[:original_domain_name]
-    if  DNSHosting.update_domain(old_domain_name,params) == false
+    if  DNSHosting.update_domain(old_domain_name,params,self) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
     
@@ -698,7 +698,11 @@ end
       p params
       return success(params[:domain_name], "upload self hosted ssl cert domain")        
     end
-    
+  
+    def reload_dns    
+    return @core_api.eload_dns
+  end
+  
   def remove_domain params    
     if DNSHosting.remove_domain(params) == false
       p :remove_domain_last_error
