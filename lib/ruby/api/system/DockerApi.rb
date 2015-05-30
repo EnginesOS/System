@@ -94,6 +94,7 @@ class DockerApi
             container.last_error = result[:stderr]
               if  result[:result] == 0
                 return container.last_result
+                return true
               else
                 return container.last_error 
               end
