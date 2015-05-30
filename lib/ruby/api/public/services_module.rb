@@ -210,15 +210,12 @@ module ServicesModule
     
    def templated_software_service_definition(params)
      ret_val = software_service_definition(params)
-     
-     
      return ret_val
    end
 
     def list_services_for(object)
       return @core_api.list_services_for(object)
-    end
-    
+    end    
     
   #service params and component objectname / and component name and parent name    
     def attach_subservice(params)
@@ -230,8 +227,7 @@ module ServicesModule
        else
         SystemUtils.log_error_mesg("attach subservice",params)
               return failed(params[:service_handle],@core_api.last_error,"attach subservice")
-      end
-     
+      end     
     end
     
     def dettach_subservice(params)
