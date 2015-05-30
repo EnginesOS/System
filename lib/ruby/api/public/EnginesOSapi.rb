@@ -52,10 +52,10 @@ class EnginesOSapi
     return false
   end
 
-  def get_available_smtp_auth_types
-    retval = ["plain","md5","?"]
-      return retval
-  end
+#  def get_available_smtp_auth_types
+#    retval = ["plain","md5","?"]
+#      return retval
+#  end
   
   def set_smarthost(params)
     #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
