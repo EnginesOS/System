@@ -96,6 +96,7 @@ class DockerApi
                 return container.last_result
                 return true
               else
+                p container.last_error 
                 return container.last_error 
               end
             rescue  Exception=>e
@@ -390,7 +391,8 @@ class DockerApi
    def clean_up_dangling_images
    
   cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
-    return execute_docker_cmd(cmd,container)
+     execute_docker_cmd(cmd,container)
+     return true # oftern warning not error
    end
    
    protected
