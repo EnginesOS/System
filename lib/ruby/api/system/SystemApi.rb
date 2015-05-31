@@ -120,7 +120,7 @@ class SystemApi
        end
        return true #File may or may not exist
      rescue Exception=>e
-       container.last_error=( "Failed To Destroy " + e.to_s)
+       container.last_error=( "Failed To delete cid " + e.to_s)
        SystemUtils.log_exception(e)
 
        return false
