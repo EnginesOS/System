@@ -219,11 +219,11 @@ module DNSHosting
     return domains
   end
 
-  def DNSHosting.add_domain(params)
+  def DNSHosting.add_domain(params,api)
 
     domain= params[:domain_name]
     if params[:self_hosted]
-      add_self_hosted_domain params
+      add_self_hosted_domai(params,api)
     end
     #     p :add_domain
     #     p params
