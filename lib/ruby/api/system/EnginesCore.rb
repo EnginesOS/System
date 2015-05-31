@@ -539,8 +539,8 @@ end
 
   def reload_dns
    dns_pid = File.read(SysConfig.NamedPIDFile)
-
-   return @docker_api.signal_container_process(dns_pid.to_s,'HUP','dns')
+   dns_service = loadManagedService("dns")
+   return @docker_api.signal_container_process(dns_pid.to_s,'HUP',dns_service)
  rescue  Exception=>e
    SystemUtils.log_exception(e)
    return false
