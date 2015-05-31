@@ -542,7 +542,7 @@ class ManagedContainer < Container
     return ret_val
   end
 
-  def is_running
+  def is_running?
     state = read_state
     if state == "running"
       return true
