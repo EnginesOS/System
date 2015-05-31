@@ -13,4 +13,4 @@ echo $images
          eservice recreate dns
          eservices recreate
          
-         docker rmi $( docker images -f "dangling=true" -q)
+         docker rmi $( docker images -f "dangling=true" -q) > /dev/null
