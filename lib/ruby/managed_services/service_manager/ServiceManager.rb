@@ -437,7 +437,7 @@ class ServiceManager
       return false
     end
    
-    if service.is_running == true || service.persistant == false
+    if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
         remove_from_engine_registery(service_hash)
       end
@@ -460,7 +460,7 @@ class ServiceManager
       return false
     end
 
-    if service.is_running == false
+    if service.is_running? == false
       log_error_mesg("Cant add to service if service is stopped ",service_hash)
       return false
     end

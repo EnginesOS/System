@@ -547,7 +547,7 @@ end
       return false
     end
 
-    if engine.is_active == true
+    if engine.is_active? == true
       last_error="Container is active"
       return false
     end
@@ -696,7 +696,7 @@ end
         log_error_mesg("Failed to load container name keyed by :service_container_name ",service_hash)
         return false
       end
-      if service.is_running == false
+      if service.is_running? == false
         log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
         return false
       end
