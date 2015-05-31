@@ -201,8 +201,8 @@ class ManagedContainer < Container
 
     ret_val=false
     state = read_state()
-    if state == "nocontainer"
-      ret_val=@core_api.delete_image(self)
+    if  has_container? == false
+      ret_val = @core_api.delete_image(self)
     else
       @last_error ="Cannot Delete the Image while container exists. Please stop/destroy first"
     end
@@ -220,23 +220,24 @@ class ManagedContainer < Container
     p :set_state_in_destroy
     @container_id="-1"
     p @setState
-    if state == "stopped"
-      ret_val = @core_api.destroy_container self
-      @docker_info = nil
-
-    else if state == "nocontainer"
-        @last_error ="No Active Container"
+    if is_active == false
+      if has_container == true        
+        ret_val = @core_api.destroy_container self
       else
-        @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"
+        retval = true        
       end
+      @docker_info = nil
+    else 
+        @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"
+    end
 
       clear_error(ret_val)
 
-      @setState="nocontainer"
+      @setState="nocontainer"#this represents the state we want and not necessarily the one we get
       save_state()
       p @setState
       return ret_val
-    end
+    
   end
 
   def setup_container
