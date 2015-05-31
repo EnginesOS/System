@@ -93,7 +93,7 @@ class DockerApi
             container.last_result = result[:stdout]
             container.last_error = result[:stderr]
               if  result[:result] == 0
-                return container.last_result
+                container.last_error =  result[:result].to_s + ":" + result[:stderr].to_s
                 return true
               else
                 p container.last_error 
@@ -143,9 +143,13 @@ class DockerApi
      begin
        commandargs= "docker  rm " +   container.container_name
        if execute_docker_cmd(commandargs,container) != true
+         p "docker  rm "  +   container.container_name
          p container.last_error
+         
          return false
        end
+       clean_up_dangling_images
+       
        return   true
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
