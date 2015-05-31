@@ -221,7 +221,7 @@ class ManagedContainer < Container
     @container_id="-1"
     p @setState
     if state == "stopped"
-      ret_val=@core_api.destroy_container self
+      ret_val = @core_api.destroy_container self
       @docker_info = nil
 
     else if state == "nocontainer"

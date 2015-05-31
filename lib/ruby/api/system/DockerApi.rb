@@ -142,7 +142,11 @@ class DockerApi
      clear_error
      begin
        commandargs= "docker  rm " +   container.container_name
-       return   execute_docker_cmd(commandargs,container)
+       if execute_docker_cmd(commandargs,container) != true
+         p container.last_error
+         return false
+       end
+       return   true
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
        SystemUtils.log_exception(e)
@@ -392,7 +396,7 @@ class DockerApi
    
   cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
      execute_docker_cmd(cmd,container)
-     return true # oftern warning not error
+     return true # often warning not error
    end
    
    protected
