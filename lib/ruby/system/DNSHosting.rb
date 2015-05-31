@@ -267,7 +267,7 @@ module DNSHosting
 
       if params[:self_hosted]
         add_self_hosted_domain(params,system_api)
-        remove_self_hosted_domain(old_domain_name)
+        remove_self_hosted_domain(old_domain_name,system_api)
         system_api.reload_dns
       end
       return true
