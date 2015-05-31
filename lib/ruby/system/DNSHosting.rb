@@ -223,7 +223,7 @@ module DNSHosting
 
     domain= params[:domain_name]
     if params[:self_hosted]
-      add_self_hosted_domai(params,api)
+      add_self_hosted_domain(params,api)
     end
     #     p :add_domain
     #     p params
