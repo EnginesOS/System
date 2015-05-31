@@ -538,6 +538,7 @@ class ManagedContainer < Container
         add_nginx_service
       end
       @core_api.register_non_persistant_services(self)
+      save_state()
     end
     return ret_val
   end
@@ -572,6 +573,10 @@ class ManagedContainer < Container
       return false
     end
     return true
+  end
+  
+  def is_active
+    return is_active?
   end
 
   def is_active?
