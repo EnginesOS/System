@@ -223,19 +223,19 @@ class ManagedService < ManagedContainer
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
-        @environments.uniq!
+        @environments.uniq! #fix me as new values dont replace old only duplicates values
       else
         @environments = envs
       end
     end
- 
+    @setState="running"
     if create_container() == true
       register_with_dns()
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
-          
+      
       reregister_consumers()
       save_state()
       return true
