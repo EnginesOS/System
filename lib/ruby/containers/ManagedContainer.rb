@@ -241,10 +241,10 @@ class ManagedContainer < Container
 
     ret_val =false
     state = read_state()
-
+    @setState="stopped"
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
-      @setState="stopped"
+      
 
     else
       @last_error ="Cannot create container if container by the same name exists"
@@ -261,10 +261,10 @@ class ManagedContainer < Container
 
     ret_val =false
     state = read_state()
-
+    @setState="running"
+    
     if state == "nocontainer"
-      ret_val = @core_api.create_container self
-      @setState="running"
+      ret_val = @core_api.create_container self      
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -300,10 +300,10 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     state = read_state()
-
+    @setState="running"
     ret_val = false
     if state == "paused"
-      @setState="running"
+     
       ret_val= @core_api.unpause_container self
       @docker_info = nil
     else
@@ -320,10 +320,10 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     state = read_state()
-
+    @setState="paused"
     ret_val = false
     if state == "running"
-      @setState="paused"
+     
       ret_val = @core_api.pause_container self
       @docker_info = nil
     else
@@ -340,12 +340,12 @@ class ManagedContainer < Container
 
     ret_val = false
     state = read_state()
-
+    @setState="stopped"
     if state== "running"
       ret_val = @core_api.stop_container   self
       @core_api.deregister_non_persistant_services(self)
       @docker_info = nil
-      @setState="stopped"
+      
     else
       @last_error ="Can't stop Container as " + state
       if state != "paused" #force deregister if stopped or no container etc
@@ -363,10 +363,10 @@ class ManagedContainer < Container
 
     ret_val=false
     state = read_state()
-
+    @setState="running"
     if state == "stopped"
       ret_val = @core_api.start_container self
-      @setState="running"
+      
       @docker_info = nil
     else
       @last_error ="Can't Start Container as " + state
@@ -571,9 +571,9 @@ class ManagedContainer < Container
     return true
   end
   
-  def is_active
-    return is_active?
-  end
+#  def is_active
+#    return is_active?
+#  end
 
   def is_active?
     state = read_state
