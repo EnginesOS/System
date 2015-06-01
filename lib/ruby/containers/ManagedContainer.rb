@@ -376,6 +376,8 @@ class ManagedContainer < Container
 
     clear_error(ret_val)
     save_state()
+    p :engine_start
+    p @setState
     return ret_val
   end
 
