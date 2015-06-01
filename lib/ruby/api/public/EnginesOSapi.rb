@@ -628,26 +628,26 @@ end
    return SoftwareServiceDefinition.find("backup","EnginesSystem")   
  end
  
-  def set_engine_hostname_properties(params)
-    #    engine_name = params[:engine_name]
-    #    hostname = params[:host_name]
-    #    domain_name = params[:domain_name]
-    p :set_engine_hostname_properties
-    p params
-    engine = loadManagedEngine(params[:engine_name])
-    if engine == nil || engine.instance_of?(EnginesOSapiResult)
-      p "p cant change name as cant load"
-      p engine
-      return engine
-    end
-    if @core_api.set_engine_hostname_details(engine, params)
-      return success(params[:engine_name], "Update hostname details")
-    else
-      return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
-    end
-  rescue Exception=>e
-    return log_exception_and_fail("set_engine_hostname_details ",e)
-  end
+#  def set_engine_hostname_properties(params)
+#    #    engine_name = params[:engine_name]
+#    #    hostname = params[:host_name]
+#    #    domain_name = params[:domain_name]
+#    p :set_engine_hostname_properties
+#    p params
+#    engine = loadManagedEngine(params[:engine_name])
+#    if engine == nil || engine.instance_of?(EnginesOSapiResult)
+#      p "p cant change name as cant load"
+#      p engine
+#      return engine
+#    end
+#    if @core_api.set_engine_hostname_details(engine, params)
+#      return success(params[:engine_name], "Update hostname details")
+#    else
+#      return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
+#    end
+#  rescue Exception=>e
+#    return log_exception_and_fail("set_engine_hostname_details ",e)
+#  end
 
   
   def update_domain(params)
