@@ -48,16 +48,7 @@ class SystemApi
    end
 
 
-   def reload_dns
-     dns_pid = File.read(SysConfig.NamedPIDFile)
-#     p :kill_HUP_TO_DNS
-#     p dns_pid.to_s
-     return @engines_api.signal_service_process(dns_pid.to_s,'HUP','dns')
-   rescue  Exception=>e
-     SystemUtils.log_exception(e)
-     return false
-   end
-
+ 
 
    def clear_cid(container)
      container.container_id=(-1)
@@ -85,12 +76,13 @@ class SystemApi
      clear_error
      begin
        cidfile =  container_cid_file(container)
-       if File.exists? cidfile
-         File.delete cidfile
+       if File.exists? cidfile    
+          File.delete cidfile
        end
+       clear_cid(container)
        return true
      rescue Exception=>e
-       container.last_error=("Failed To Create " + e.to_s)
+       container.last_error="Failed To remove cid file" + e.to_s
        SystemUtils.log_exception(e)
 
        return false
@@ -120,7 +112,7 @@ class SystemApi
        end
        return true #File may or may not exist
      rescue Exception=>e
-       container.last_error=( "Failed To Destroy " + e.to_s)
+       container.last_error=( "Failed To delete cid " + e.to_s)
        SystemUtils.log_exception(e)
 
        return false

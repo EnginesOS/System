@@ -52,10 +52,10 @@ class EnginesOSapi
     return false
   end
 
-  def get_available_smtp_auth_types
-    retval = ["plain","md5","?"]
-      return retval
-  end
+#  def get_available_smtp_auth_types
+#    retval = ["plain","md5","?"]
+#      return retval
+#  end
   
   def set_smarthost(params)
     #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
@@ -674,13 +674,13 @@ end
   end
 
   def add_domain params
-    if DNSHosting.add_domain(params) == false
+    if DNSHosting.add_domain(params,self) == false
        return  failed(params[:domain_name],last_api_error, "Add  domain")
     end  
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add domain")
   end
-    if DNSHosting.add_self_hosted_domain( params) ==true
+    if DNSHosting.add_self_hosted_domain( params,self) ==true
       return success(params[:domain_name], "Add self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Add self hosted domain")

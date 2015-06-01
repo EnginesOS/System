@@ -70,7 +70,7 @@ if test -f /home/app/Rack.sh
 	fi
 
 touch /engines/var/run/startup_complete
-mkdir -p /var/log/apache2/
+mkdir -p /var/log/apache2/ >/dev/null
 
 	if test -f /home/blocking.sh
 		then

@@ -93,8 +93,10 @@ class DockerApi
             container.last_result = result[:stdout]
             container.last_error = result[:stderr]
               if  result[:result] == 0
-                return container.last_result
+                container.last_error =  result[:result].to_s + ":" + result[:stderr].to_s
+                return true
               else
+                p container.last_error 
                 return container.last_error 
               end
             rescue  Exception=>e
@@ -140,7 +142,15 @@ class DockerApi
      clear_error
      begin
        commandargs= "docker  rm " +   container.container_name
-       return   execute_docker_cmd(commandargs,container)
+       if execute_docker_cmd(commandargs,container) != true
+         p "err with docker  rm "  +   container.container_name
+         p container.last_error
+         
+         return false
+       end
+       clean_up_dangling_images
+       
+       return   true
      rescue Exception=>e
        container.last_error=( "Failed To Destroy " + e.to_s)
        SystemUtils.log_exception(e)
@@ -389,7 +399,8 @@ class DockerApi
    def clean_up_dangling_images
    
   cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
-    return execute_docker_cmd(cmd,container)
+     result = SystemUtils.execute_command(cmd)
+     return true # often warning not error
    end
    
    protected
