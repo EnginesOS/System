@@ -223,7 +223,7 @@ class ManagedService < ManagedContainer
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
-        @environments.uniq! #fix me as new values dont replace old only duplicates values
+        @environments.uniq! #FIXME as new values dont replace old only duplicates values
       else
         @environments = envs
       end

@@ -1,0 +1,6 @@
+
+
+
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_system_update.sh
+
+#Must have tailing empty line
