@@ -184,25 +184,25 @@ class ManagedContainer < Container
   end
 
   def logs_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     return @core_api.logs_container(self)
   end
 
   def ps_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     return @core_api.ps_container(self)
 
   end
 
   def delete_image()
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val=false
     state = read_state()
-    if state == "nocontainer"
-      ret_val=@core_api.delete_image(self)
+    if  has_container? == false
+      ret_val = @core_api.delete_image(self)
     else
       @last_error ="Cannot Delete the Image while container exists. Please stop/destroy first"
     end
@@ -211,7 +211,7 @@ class ManagedContainer < Container
   end
 
   def destroy_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val=false
 
@@ -220,27 +220,24 @@ class ManagedContainer < Container
     p :set_state_in_destroy
     @container_id="-1"
     p @setState
-    if state == "stopped"
-      ret_val=@core_api.destroy_container self
+    if is_active? == false      
+        ret_val = @core_api.destroy_container self
       @docker_info = nil
-
-    else if state == "nocontainer"
-        @last_error ="No Active Container"
-      else
+    else 
         @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"
-      end
+    end
 
       clear_error(ret_val)
 
-      @setState="nocontainer"
+      @setState="nocontainer"#this represents the state we want and not necessarily the one we get
       save_state()
       p @setState
       return ret_val
-    end
+    
   end
 
   def setup_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val =false
     state = read_state()
@@ -260,7 +257,7 @@ class ManagedContainer < Container
   end
 
   def create_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val =false
     state = read_state()
@@ -300,7 +297,7 @@ class ManagedContainer < Container
   end
 
   def unpause_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     state = read_state()
 
@@ -320,7 +317,7 @@ class ManagedContainer < Container
   end
 
   def pause_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     state = read_state()
 
@@ -339,7 +336,7 @@ class ManagedContainer < Container
   end
 
   def stop_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val = false
     state = read_state()
@@ -362,7 +359,7 @@ class ManagedContainer < Container
   end
 
   def start_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val=false
     state = read_state()
@@ -387,7 +384,7 @@ class ManagedContainer < Container
   #would be better if it check a pre exisiting record will throw error on recreate
   #
   def register_with_dns
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     service_hash = SystemUtils.create_dns_service_hash(self)
     if service_hash == nil
@@ -436,7 +433,7 @@ class ManagedContainer < Container
   #create nginx service_hash for container and register with nginx
   #@return boolean indicating sucess
   def add_nginx_service
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     service_hash =  SystemUtils.create_nginx_service_hash(self)
     return @core_api.attach_service(service_hash)
@@ -445,7 +442,7 @@ class ManagedContainer < Container
   #create nginx service_hash for container deregister with nginx
   #@return boolean indicating sucess
   def remove_nginx_service
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     service_hash =  SystemUtils.create_nginx_service_hash(self)
     return @core_api.dettach_service(service_hash)
@@ -497,7 +494,7 @@ class ManagedContainer < Container
   end
 
   def inspect_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     if @docker_info == nil
       @docker_info = @core_api.inspect_container self
@@ -506,7 +503,7 @@ class ManagedContainer < Container
   end
 
   def save_state()
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     @docker_info = nil
     ret_val = @core_api.save_container self
@@ -514,21 +511,21 @@ class ManagedContainer < Container
   end
 
   def save_blueprint blueprint
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val = @core_api.save_blueprint(blueprint, self)
     return ret_val
   end
 
   def load_blueprint
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val = @core_api.load_blueprint(self)
     return ret_val
   end
 
   def rebuild_container
-    return false  if have_api? == false
+    return false  if has_api? == false
 
     ret_val = @core_api.rebuild_image(self)
     if ret_val == true
@@ -537,11 +534,12 @@ class ManagedContainer < Container
         add_nginx_service
       end
       @core_api.register_non_persistant_services(self)
+      save_state()
     end
     return ret_val
   end
 
-  def is_running
+  def is_running?
     state = read_state
     if state == "running"
       return true
@@ -551,8 +549,8 @@ class ManagedContainer < Container
 
   end
 
-  def is_startup_complete
-    return false  if have_api? == false
+  def is_startup_complete?
+    return false  if has_api? == false
 
     ret_val = @core_api.is_startup_complete(self)
     return ret_val
@@ -565,15 +563,19 @@ class ManagedContainer < Container
     return true
   end
 
-  def is_error
+  def is_error?
     state = read_state
     if @setState != state
       return false
     end
     return true
   end
-
+  
   def is_active
+    return is_active?
+  end
+
+  def is_active?
     state = read_state
     case state
     when "running"
@@ -607,7 +609,7 @@ class ManagedContainer < Container
 
   protected
 
-  def have_api?
+  def has_api?
     if @core_api == nil
       @last_error="No connection to Engines OS System"
       return false

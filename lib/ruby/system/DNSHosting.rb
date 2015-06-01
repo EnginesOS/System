@@ -219,11 +219,11 @@ module DNSHosting
     return domains
   end
 
-  def DNSHosting.add_domain(params)
+  def DNSHosting.add_domain(params,api)
 
     domain= params[:domain_name]
     if params[:self_hosted]
-      add_self_hosted_domain params
+      add_self_hosted_domain(params,api)
     end
     #     p :add_domain
     #     p params
@@ -265,9 +265,9 @@ module DNSHosting
       domains[params[:domain_name]] = params
       save_domains(domains)
 
-      if params[:self_hosted]
+      if params[:self_hosted]      
+        remove_self_hosted_domain(old_domain_name,system_api)
         add_self_hosted_domain(params,system_api)
-        remove_self_hosted_domain(old_domain_name)
         system_api.reload_dns
       end
       return true
@@ -280,10 +280,11 @@ module DNSHosting
   def DNSHosting.add_self_hosted_domain(params,api)
 
     begin
-      if DNSHosting.add_hosted_domain(params,api) == true
-        return  save_self_hosted_domains(domains)
-      end
-      return false
+      return DNSHosting.add_hosted_domain(params,api)
+#      if DNSHosting.add_hosted_domain(params,api) == true
+#        return  save_self_hosted_domains(domains)
+#      end
+#      return false
     rescue  Exception=>e
       SystemUtils.log_exception(e)
       return false

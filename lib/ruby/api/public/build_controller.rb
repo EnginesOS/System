@@ -9,7 +9,7 @@ module BuildController
       return  failed(params[:engine_name],@engine_builder.last_error,"build_engine")
     end
     if engine != nil
-      if engine.is_active == false
+      if engine.is_active? == false
         return failed(params[:engine_name],"Failed to start  " + @engine_builder.last_error.to_s ,"build_engine")
       end
       return engine

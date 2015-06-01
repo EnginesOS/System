@@ -537,6 +537,15 @@ end
     SystemUtils.log_exception e
   end
 
+  def reload_dns
+   dns_pid = File.read(SysConfig.NamedPIDFile)
+   dns_service = loadManagedService("dns")
+   return @docker_api.signal_container_process(dns_pid.to_s,'HUP',dns_service)
+ rescue  Exception=>e
+   SystemUtils.log_exception(e)
+   return false
+ end
+
   def set_engine_runtime_properties(params)
     #FIX ME also need to deal with Env Variables
     engine_name = params[:engine_name]
@@ -547,7 +556,7 @@ end
       return false
     end
 
-    if engine.is_active == true
+    if engine.is_active? == true
       last_error="Container is active"
       return false
     end
@@ -627,13 +636,17 @@ end
   def destroy_container(container)
     clear_error
     begin
-      if @docker_api.destroy_container(container) != false
-
-        @system_api.destroy_container(container)  #removes cid file
-        return true
+      if container.has_container? == true        
+        ret_val = @docker_api.destroy_container(container)
       else
-        return false
+        retval = true        
       end
+      if ret_val == true
+        ret_val = @system_api.destroy_container(container)  #removes cid file        
+      end
+      
+      return ret_val
+      
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       SystemUtils.log_exception(e)
@@ -696,7 +709,7 @@ end
         log_error_mesg("Failed to load container name keyed by :service_container_name ",service_hash)
         return false
       end
-      if service.is_running == false
+      if service.is_running? == false
         log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
         return false
       end
@@ -798,7 +811,11 @@ end
   def create_container(container)
     clear_error
     begin
-      if @system_api.clear_cid(container) != false
+      if container.has_container? == true         
+         container.last_error="Failed To create container exists by the same name"
+                 return false
+          end
+      if @system_api.clear_cid_file(container) != false
         @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)

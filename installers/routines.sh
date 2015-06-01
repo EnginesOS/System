@@ -74,26 +74,12 @@ echo "Configuring Docker DNS settings"
 		 sleep 20
 		 service docker start
 		  
-echo "Installing required  packages"
-		 #kludge to deal with the fact we install bind just to get dnssec-keygen
-		 bind=`service bind9 status  |grep unrecognized | wc -l`
-		 
-		 #echo "Configure Apt-cache"
-		 # apt-get -y install apt-cacher
-		  
-		  
-		#echo "allowed_hosts = *" >>  /etc/apt-cacher/apt-cacher.conf
+echo "Installing required  packages"		  		  
 		
-		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git 
+		 apt-get -y install libssl-dev  imagemagick cmake  dc mysql-client libmysqlclient-dev unzip wget git 
 		
-		 
-		 #Only Remove if not present
-		 if test $bind -eq 0
-		 	then
-		 	service bind9 stop
-		 		update-rc.d bind9 disable
-		 	fi
-		 
+		 echo 1 > /sys/fs/cgroup/memory.use_hierarchy
+
 echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
 		 adduser -q --uid 21000 --ingroup docker   -gecos "Engines OS User"  --home /home/engines --disabled-password engines

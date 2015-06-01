@@ -76,7 +76,7 @@ class ManagedService < ManagedContainer
     end
     service_hash[:persistant] =@persistant
 
-    if is_running ==true   || @persistant == true
+    if is_running? ==true   || @persistant == true
         if service_hash[:fresh] == false
           result = true
         else
@@ -179,7 +179,7 @@ class ManagedService < ManagedContainer
       log_error_mesg("remove consumer nil service hash ","")
       return false
     end
-    if is_running != true
+    if is_running? != true
       log_error_mesg("Cannot remove consumer if Service is not running ",service_hash)
       return false
     end
@@ -223,19 +223,19 @@ class ManagedService < ManagedContainer
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
-        @environments.uniq!
+        @environments.uniq! #fix me as new values dont replace old only duplicates values
       else
         @environments = envs
       end
     end
- 
-    if create_container() ==true
+    @setState="running"
+    if create_container() == true
       register_with_dns()
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
-          
+      
       reregister_consumers()
       save_state()
       return true
@@ -275,7 +275,7 @@ class ManagedService < ManagedContainer
       p :no_reregister_persistant
       return true
     end
-    if is_running == false
+    if is_running? == false
       log_error_mesg("Cant register consumers as not running ",self)
       return false
     end
