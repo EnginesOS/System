@@ -807,7 +807,11 @@ end
   def create_container(container)
     clear_error
     begin
-      if @system_api.clear_cid(container) != false
+      if container.has_container? == true         
+         container.last_error="Failed To create container exists by the same name"
+                 return false
+          end
+      if @system_api.clear_cid_file(container) != false
         @system_api.clear_container_var_run(container)
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)

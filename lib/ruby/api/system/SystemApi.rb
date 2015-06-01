@@ -76,12 +76,13 @@ class SystemApi
      clear_error
      begin
        cidfile =  container_cid_file(container)
-       if File.exists? cidfile
-         File.delete cidfile
+       if File.exists? cidfile    
+          File.delete cidfile
        end
+       clear_cid(container)
        return true
      rescue Exception=>e
-       container.last_error=("Failed To Create " + e.to_s)
+       container.last_error="Failed To remove cid file" + e.to_s
        SystemUtils.log_exception(e)
 
        return false
