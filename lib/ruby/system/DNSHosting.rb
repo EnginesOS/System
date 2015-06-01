@@ -280,10 +280,11 @@ module DNSHosting
   def DNSHosting.add_self_hosted_domain(params,api)
 
     begin
-      if DNSHosting.add_hosted_domain(params,api) == true
-        return  save_self_hosted_domains(domains)
-      end
-      return false
+      return DNSHosting.add_hosted_domain(params,api)
+#      if DNSHosting.add_hosted_domain(params,api) == true
+#        return  save_self_hosted_domains(domains)
+#      end
+#      return false
     rescue  Exception=>e
       SystemUtils.log_exception(e)
       return false
