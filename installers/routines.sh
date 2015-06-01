@@ -58,7 +58,7 @@ function configure_git {
 		 
 		
 echo "Installing Docker"		
-		 apt-get install apt-transport-https
+		 apt-get install apt-transport-https  lvm2 thin-provisioning-tools
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
 #IF AWS	 and not devmapper	 
@@ -100,6 +100,9 @@ echo "Installing ruby"
 #chown: cannot access â: No such file or directory
 #Enter new UNIX password: 
 
+mkdir /etc/sudoers.d/
+cp /opt/engines/system/install_source/etc/sudoers.d/engines /etc/sudoers.d/engines 
+cp /opt/engines/system/install_source/etc/sudoers /etc/sudoers
 
 mkdir -p /usr/local/  
 cd /usr/local/  
