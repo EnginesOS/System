@@ -86,7 +86,7 @@ echo "Installing required  packages"
 		
 		 apt-get -y install libssl-dev  imagemagick cmake bind9 dc mysql-client libmysqlclient-dev unzip wget git 
 		
-		 
+		 echo 1 > /sys/fs/cgroup/memory.use_hierarchy
 		 #Only Remove if not present
 		 if test $bind -eq 0
 		 	then
