@@ -636,13 +636,17 @@ end
   def destroy_container(container)
     clear_error
     begin
-      if @docker_api.destroy_container(container) != false
-
-        @system_api.destroy_container(container)  #removes cid file
-        return true
+      if container.has_container? == true        
+        ret_val = @docker_api.destroy_container(container)
       else
-        return false
+        retval = true        
       end
+      if ret_val == true
+        ret_val = @system_api.destroy_container(container)  #removes cid file        
+      end
+      
+      return ret_val
+      
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       SystemUtils.log_exception(e)

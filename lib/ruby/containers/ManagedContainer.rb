@@ -220,12 +220,8 @@ class ManagedContainer < Container
     p :set_state_in_destroy
     @container_id="-1"
     p @setState
-    if is_active? == false
-      if has_container? == true        
+    if is_active? == false      
         ret_val = @core_api.destroy_container self
-      else
-        retval = true        
-      end
       @docker_info = nil
     else 
         @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"

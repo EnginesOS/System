@@ -143,7 +143,7 @@ class DockerApi
      begin
        commandargs= "docker  rm " +   container.container_name
        if execute_docker_cmd(commandargs,container) != true
-         p "docker  rm "  +   container.container_name
+         p "err with docker  rm "  +   container.container_name
          p container.last_error
          
          return false
