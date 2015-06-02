@@ -119,8 +119,20 @@ class ManagedContainer < Container
     when "HTTP only"
       enable_http_only
     when "HTTPS only"
-      enable_httpd_only
+      enable_https_only
     end
+  end
+  
+  def enable_http_and_https
+    @protocol = :http_and_https
+  end
+  
+  def enable_https_only
+    @protocol = :https_only
+  end
+   
+  def enable_http_only
+    @protocol = :http_only
   end
 
   def ManagedContainer.from_yaml( yaml, core_api )
