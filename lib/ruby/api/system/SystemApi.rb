@@ -346,6 +346,7 @@ class SystemApi
         SystemUtils.debug_output("Changing Domainame to " , domain_name)
         container.remove_nginx_service
         container.set_hostname_details(hostname,domain_name) 
+        save_container(container)
         container.add_nginx_service
 #          nginx_service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",self)
 #          nginx_service.remove_consumer(container)
