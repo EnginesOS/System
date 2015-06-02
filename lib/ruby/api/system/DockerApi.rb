@@ -122,7 +122,7 @@ class DockerApi
    def logs_container container
      clear_error
   
-       commandargs="docker logs " + container.container_name
+     cmdline="docker logs " + container.container_name
      result = SystemUtils.execute_command(cmdline)
      if result[:result] == 0
        return result[:stdout]
