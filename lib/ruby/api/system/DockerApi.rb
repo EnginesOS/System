@@ -80,7 +80,13 @@ class DockerApi
 
    def ps_container container     
      cmdline="docker top " + container.container_name + " axl"
-         return execute_docker_cmd(cmdline,container)   
+     result = SystemUtils.execute_command(cmdline)
+     if result[:result] == 0
+       return result[:stdout]
+     end
+     
+    return    false
+    
      rescue  Exception=>e
           SystemUtils.log_exception(e)
           return false  
