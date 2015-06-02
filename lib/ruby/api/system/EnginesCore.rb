@@ -123,9 +123,9 @@ class EnginesCore
     return @system_api.get_container_memory_stats(container)
   end
 
-  def set_engine_hostname_details(container,params)
-    return @system_api.set_engine_hostname_details(container,params)
-  end
+#  def set_engine_hostname_details(container,params)
+#    return @system_api.set_engine_hostname_details(container,params)
+#  end
 
   def image_exists?(container_name)
     imageName = container_name
