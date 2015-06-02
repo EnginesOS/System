@@ -150,7 +150,7 @@ class ManagedContainer < Container
 
     #    p :read_state
     # p   caller_locations(1,1)[0].label
-    @docker_info = nil
+   
     begin
       if inspect_container == false
         state="nocontainer"
@@ -581,9 +581,9 @@ class ManagedContainer < Container
   def is_error?
     state = read_state
     if @setState != state
-      return false
+      return true
     end
-    return true
+    return false
   end
   
 #  def is_active
