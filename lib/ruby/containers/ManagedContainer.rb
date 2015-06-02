@@ -272,6 +272,7 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     ret_val =false
+    @docker_info = nil
     state = read_state()
     @setState="running"
     
