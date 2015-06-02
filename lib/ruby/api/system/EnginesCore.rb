@@ -240,7 +240,7 @@ class EnginesCore
     elsif loadManagedService(container_name) != false
       return "service"
     else
-        return "not found"
+        return "container" #FIXME poor assumption
     end
   end
 
