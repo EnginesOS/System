@@ -581,9 +581,9 @@ class ManagedContainer < Container
   def is_error?
     state = read_state
     if @setState != state
-      return false
+      return true
     end
-    return true
+    return false
   end
   
 #  def is_active
