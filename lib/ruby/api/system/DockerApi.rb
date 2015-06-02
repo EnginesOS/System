@@ -96,8 +96,8 @@ class DockerApi
                 container.last_error =  result[:result].to_s + ":" + result[:stderr].to_s
                 return true
               else
-                p container.last_error 
-                return container.last_error 
+                SystemUtils.log_error_mesg("execute_docker_cmd " +  cmdline + " on " + container.container_name ,result)
+                 return false 
               end
             rescue  Exception=>e
             SystemUtils.log_exception(e)
