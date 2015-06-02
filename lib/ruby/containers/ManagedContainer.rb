@@ -150,13 +150,13 @@ class ManagedContainer < Container
 
     #    p :read_state
     # p   caller_locations(1,1)[0].label
-
+    @docker_info = nil
     begin
       if inspect_container == false
         state="nocontainer"
       else
 #        @res= last_result
-        output = JSON.parse(last_result)
+        output = JSON.parse(@last_result)
         if output.is_a?(Array) == false || output.empty? == true
           @last_error = "Failed to get container status"
           return "nocontainer"
@@ -256,7 +256,7 @@ class ManagedContainer < Container
     @setState="stopped"
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
-      
+      @docker_info = nil
 
     else
       @last_error ="Cannot create container if container by the same name exists"
@@ -272,6 +272,7 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     ret_val =false
+    @docker_info = nil
     state = read_state()
     @setState="running"
     
@@ -541,6 +542,7 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     ret_val = @core_api.rebuild_image(self)
+    @docker_info = nil
     if ret_val == true
       register_with_dns
       if @deployment_type  == "web"
