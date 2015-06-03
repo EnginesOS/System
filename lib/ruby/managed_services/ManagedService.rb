@@ -169,7 +169,7 @@ class ManagedService < ManagedContainer
      return configurator_params
     end
     log_error_mesg("Failed retrieve_configurator",result)
-    return nil
+    return Hash.new
   end
   
   def remove_consumer service_hash
