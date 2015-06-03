@@ -552,37 +552,54 @@ end
 
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(EnginesOSapiResult) == true
-      last_error = engine.result_mesg
+      @last_error = engine.result_mesg
       return false
     end
 
     if engine.is_active? == true
-      last_error="Container is active"
+      @last_error="Container is active"
       return false
     end
 
     if params.has_key?(:memory)
       if params[:memory] == engine.memory
-        last_error="No Change in Memory Value"
+        @last_error="No Change in Memory Value"
         return false
       end
 
       if engine.update_memory(params[:memory]) == false
-        last_error= engine.last_error
+        @last_error= engine.last_error
         return false
       end
     end
-    p params 
+   
+    if params.has_key?(:environment_variables)
+      new_variables = params[:environment_variables]
+      #update_environment(engine,params[:environment_variables])
+    engine.environments.each do |env|
+      new_variables.each do |new_env|
+        if  env.name == new_env.name
+          if env.immutable == true
+            @last_error = "Cannot Change Value of " + env.name
+            return false
+          end
+          env.value =  new_env.value
+        end
+      end
+    
+    end
+    
+    end
     
     if engine.has_container? == true
       if destroy_container(engine)  == false
-        last_error= engine.last_error
+        @last_error= engine.last_error
         return false
       end
     end
 
     if  engine.create_container == false      
-      last_error= engine.last_error
+      @last_error= engine.last_error
       return false
     end
     

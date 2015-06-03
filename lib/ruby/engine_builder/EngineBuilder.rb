@@ -992,7 +992,7 @@ end
       if error_mesg.length >2 #error_mesg.include?("Error:") || error_mesg.include?("FATA")
         log_build_errors(error_mesg)
         p "docker_cmd error " + error_mesg
-        last_error = error_mesg
+        @last_error = error_mesg
         return false
       end
       p :build_suceeded
@@ -1008,14 +1008,14 @@ end
 
 def log_exception_and_fail(cmd,e)
   e_str = SystemUtils.log_exception(e)
-  last_error =  e_str
+  @last_error =  e_str
   return  false
 end
 
 def log_exception(e)
   log_build_errors(e.to_s)
-  if last_error == nil
-    last_error = e.to_s
+  if @last_error == nil
+    @last_error = e.to_s
   end
 ensure
   SystemUtils.log_exception(e)

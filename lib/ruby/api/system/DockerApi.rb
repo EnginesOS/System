@@ -52,13 +52,13 @@ class DockerApi
      SystemUtils.debug_output( "image_exists",cmd)
      result = SystemUtils.execute_command(cmd)
      if  result[:result] != 0
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
                   return false
      end
      if  result[:stdout].length > 4
       return true
      else
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
      end
      
      return false
