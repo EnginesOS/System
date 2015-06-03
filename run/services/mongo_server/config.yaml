@@ -1,4 +1,4 @@
---- !ruby/object:MongoDBService
+--- !ruby/object:ManagedService
 container_name: mongo_server
 ctype: service
 publisher_namespace: EnginesSystem

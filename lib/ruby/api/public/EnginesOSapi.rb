@@ -57,10 +57,10 @@ class EnginesOSapi
 #      return retval
 #  end
   
-  def set_smarthost(params)
-    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
-    return @core_api.set_smarthost(params) 
-  end
+#  def set_smarthost(params)
+#    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
+#    return @core_api.set_smarthost(params) 
+#  end
   
   #@return EngineOSapiResult
   #set the default Domain used by the system in creating new engines and for services that use web
@@ -164,114 +164,114 @@ end
 
  
 
-  def backup_volume(params)
-    
-    backup_name = params[:backup_name]
-    engine_name = params[:engine_name]
-    volume_name  = params[:source_name]
-    dest_hash  = params[:destination_hash]
-      
-    engine = loadManagedEngine engine_name
-    if engine.is_a?(EnginesOSapiResult)
-      return engine
-    end
-    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
-    backup_hash = dest_hash
-    backup_hash.store(:name, backup_name)
-    backup_hash.store(:engine_name, engine_name)
-    backup_hash.store(:backup_type, "fs")
-    backup_hash.store(:parent_engine,engine_name)
-    
-      if engine.volumes != nil     
-        volume =  engine.volumes["volume_name"]
-          if volume != nil
-            volume.add_backup_src_to_hash(backup_hash)
-            SystemUtils.debug_output("Backup hash",backup_hash)
-          end
-     end           
+#  def backup_volume(params)
+#    
+#    backup_name = params[:backup_name]
+#    engine_name = params[:engine_name]
+#    volume_name  = params[:source_name]
+#    dest_hash  = params[:destination_hash]
+#      
+#    engine = loadManagedEngine engine_name
+#    if engine.is_a?(EnginesOSapiResult)
+#      return engine
+#    end
+#    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
+#    backup_hash = dest_hash
+#    backup_hash.store(:name, backup_name)
+#    backup_hash.store(:engine_name, engine_name)
+#    backup_hash.store(:backup_type, "fs")
+#    backup_hash.store(:parent_engine,engine_name)
+#    
+#      if engine.volumes != nil     
+#        volume =  engine.volumes["volume_name"]
+#          if volume != nil
+#            volume.add_backup_src_to_hash(backup_hash)
+#            SystemUtils.debug_output("Backup hash",backup_hash)
+#          end
+#     end           
 #    engine.volumes.values do |volume|
 #      if volume.name == volume_name
 #        volume.add_backup_src_to_hash(backup_hash)
 #        SystemUtils.debug_output backup_hash
 #      end
 #    end
-
-    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-    if backup_service.is_a?(EnginesOSapiResult)
-      return backup_service
-    end
-    if backup_service.read_state != "running"
-      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
-    end
-    if backup_service.add_consumer(backup_hash)
-      #    p backup_hash
-      return success(engine_name,"Add Volume Backup")
-    else
-      return failed(engine_name,last_api_error,"Backup Volume")
-    end
-  rescue Exception=>e
-    return log_exception_and_fail("Backup Volume",e)
-  end
-
-  def stop_backup backup_name
-    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-    if backup_service.is_a?(EnginesOSapiResult)
-      return backup_service
-    end
-    if backup_service.read_state != "running"
-      return failed(engine_name,"Backup Service not running" ,"Stop Volume Backup")
-    end
-    backup_hash = Hash.new
-    backup_hash[:name]=backup_name
-    if  backup_service.remove_consumer(backup_hash)
-      return success(backup_name,"Stop Volume Backup")
-    else
-      return failed(backup_name,last_api_error,"Stop Volume Backup")
-    end
-  rescue Exception=>e
-    return log_exception_and_fail("Stop Volume Backup",e)
-  end
-
-  def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
-
-    backup_name = params[:backup_name]
-    engine_name = params[:engine_name]
-    database_name = params[:source_name]    
-    dest_hash = params[:destination_hash]
-      
-    engine = loadManagedEngine engine_name
-    if engine.is_a?(EnginesOSapiResult)
-      return engine
-    end
-    params 
-    backup_hash = dest_hash
-    backup_hash.store(:name, backup_name)
-    backup_hash.store(:engine_name, engine_name)
-    backup_hash.store(:backup_type, "db")
-    engine.databases.each do |database|
-      if database.name == database_name
-        database.add_backup_src_to_hash(backup_hash)
-      end
-    end
-
-    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-    if backup_service.is_a?(EnginesOSapiResult)
-      return backup_service
-    end
-    if backup_service.read_state != "running"
-      return failed(engine_name,"Backup Service not running" ,"Backup Database")
-    end
-    if backup_service.add_consumer(backup_hash)
-      return success(engine_name,"Add Database Backup")
-    else
-      return  failed(backup_name,last_api_error,"Backup Database")
-    end
-  rescue Exception=>e
-    return log_exception_and_fail("Backup Database",e)
-  end
+#
+#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
+#    if backup_service.is_a?(EnginesOSapiResult)
+#      return backup_service
+#    end
+#    if backup_service.read_state != "running"
+#      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
+#    end
+#    if backup_service.add_consumer(backup_hash)
+#      #    p backup_hash
+#      return success(engine_name,"Add Volume Backup")
+#    else
+#      return failed(engine_name,last_api_error,"Backup Volume")
+#    end
+#  rescue Exception=>e
+#    return log_exception_and_fail("Backup Volume",e)
+#  end
+#
+#  def stop_backup backup_name
+#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
+#    if backup_service.is_a?(EnginesOSapiResult)
+#      return backup_service
+#    end
+#    if backup_service.read_state != "running"
+#      return failed(engine_name,"Backup Service not running" ,"Stop Volume Backup")
+#    end
+#    backup_hash = Hash.new
+#    backup_hash[:name]=backup_name
+#    if  backup_service.remove_consumer(backup_hash)
+#      return success(backup_name,"Stop Volume Backup")
+#    else
+#      return failed(backup_name,last_api_error,"Stop Volume Backup")
+#    end
+#  rescue Exception=>e
+#    return log_exception_and_fail("Stop Volume Backup",e)
+#  end
+#
+#  def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
+#
+#    backup_name = params[:backup_name]
+#    engine_name = params[:engine_name]
+#    database_name = params[:source_name]    
+#    dest_hash = params[:destination_hash]
+#      
+#    engine = loadManagedEngine engine_name
+#    if engine.is_a?(EnginesOSapiResult)
+#      return engine
+#    end
+#    params 
+#    backup_hash = dest_hash
+#    backup_hash.store(:name, backup_name)
+#    backup_hash.store(:engine_name, engine_name)
+#    backup_hash.store(:backup_type, "db")
+#    engine.databases.each do |database|
+#      if database.name == database_name
+#        database.add_backup_src_to_hash(backup_hash)
+#      end
+#    end
+#
+#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
+#    if backup_service.is_a?(EnginesOSapiResult)
+#      return backup_service
+#    end
+#    if backup_service.read_state != "running"
+#      return failed(engine_name,"Backup Service not running" ,"Backup Database")
+#    end
+#    if backup_service.add_consumer(backup_hash)
+#      return success(engine_name,"Add Database Backup")
+#    else
+#      return  failed(backup_name,last_api_error,"Backup Database")
+#    end
+#  rescue Exception=>e
+#    return log_exception_and_fail("Backup Database",e)
+#  end
 
   def get_system_preferences
-    return core_api.load_system_preferences
+    return @core_api.load_system_preferences
   rescue Exception=>e
     return log_exception_and_fail("get_system_preferences",e)
   end
@@ -284,7 +284,7 @@ end
     #default web_site
     #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}} 
     
-    return core_api.save_system_preferences(preferences)
+    return @core_api.save_system_preferences(preferences)
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
   end
@@ -386,10 +386,10 @@ end
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(engine_name,"no Engine","Delete")
     end
-    params[:container_type] = "container"
-    params[:engine_name] = engine_name
-      p :deleteEngineImage_params
-      p params
+#    params[:container_type] = "container"
+#    params[:engine_name] = engine_name
+#      p :deleteEngineImage_params
+#      p params
    if  @core_api.delete_image_dependancies(params) == true
      if engine.delete_image() == true
        return success(engine_name,"Delete")
@@ -417,9 +417,9 @@ end
       if engine.has_container? == true
         engine.destroy_container
       end
-      p "reinstalling " + engine_name
+#      p "reinstalling " + engine_name
     if @core_api.reinstall_engine(engine) == false
-                return  failed(engine_name,last_api_error, "Delete Image")
+                return  failed(engine_name,last_api_error, "Reinstall Image")
              end  
     return success(engine_name,"Reinstall")
      
@@ -432,7 +432,7 @@ end
     end
     retval =   engine.create_container()
     if retval == false
-      p failed(engine_name,engine.last_error,"Create")
+#      p failed(engine_name,engine.last_error,"Create")
 
       return failed(engine_name,engine.last_error,"Create")
     end
@@ -579,15 +579,15 @@ end
     return db_service.consumers
   end
 
-  def get_backups
-    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-    if backup_service == nil
-      return failed("backup service","No Such Service","get_backup list")
-    end
-    return backup_service.consumers
-  rescue Exception=>e
-    return log_exception_and_fail("get_backup list",e)
-  end
+#  def get_backups
+#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
+#    if backup_service == nil
+#      return failed("backup service","No Such Service","get_backup list")
+#    end
+#    return backup_service.consumers
+#  rescue Exception=>e
+#    return log_exception_and_fail("get_backup list",e)
+#  end
   
   def set_engine_runtime_properties(params)
     if @core_api.set_engine_runtime_properties(params) ==true
@@ -609,6 +609,9 @@ end
        p params
     engine = loadManagedEngine(params[:engine_name])
        if engine == nil || engine.instance_of?(EnginesOSapiResult)
+         if engine == nil
+          engine =  failed("set_engine_network_details",last_api_error,"set_engine_network_details")
+         end
          p "p cant change network as cant load"
          p engine
          return engine
@@ -622,11 +625,11 @@ end
  
 
   
- def default_backup_service_definition(params)
-   #FixMe read backup from mappings
-   
-   return SoftwareServiceDefinition.find("backup","EnginesSystem")   
- end
+# def default_backup_service_definition(params)
+#   #FixMe read backup from mappings
+#   
+#   return SoftwareServiceDefinition.find("backup","EnginesSystem")   
+# end
  
 #  def set_engine_hostname_properties(params)
 #    #    engine_name = params[:engine_name]
