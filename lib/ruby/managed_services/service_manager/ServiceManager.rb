@@ -410,7 +410,8 @@ class ServiceManager
     services = get_engine_nonpersistant_services(params)
 
     services.each do |service_hash|
-      deregister_non_persistant_service(service_hash)
+      remove_from_services_registry(service_hash)
+#      deregister_non_persistant_service(service_hash)
     end
     return true
 
