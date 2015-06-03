@@ -815,17 +815,17 @@ class EngineBuilder
     builder = EngineBuilder.new(params,core)
     engine = builder.build_from_blue_print
     if engine == false
-      post_failed_build_clean_up
-      return  failed(params[:engine_name],builder.last_error,"build_engine")
+      builder.post_failed_build_clean_up
+      return  builder.failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active == false
         close_all
-        return failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
+        return builder.failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
       end
       return engine
     end
-    post_failed_build_clean_up
+    builder.post_failed_build_clean_up
     return failed(@hostname,@last_api_error,"build_engine")
 
   rescue Exception=>e
