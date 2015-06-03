@@ -819,7 +819,7 @@ class EngineBuilder
       return  builder.failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
-      if engine.is_active == false
+      if engine.is_active? == false
         close_all
         return builder.failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
       end
