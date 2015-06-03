@@ -382,12 +382,12 @@ end
     
     #
     if params.has_key?(:engine_name) == false || params[:engine_name] == nil
-      return failed(engine_name,"no Engine name","Delete")
+      return failed(params.to_s,"no Engine name","Delete")
     end
     engine = loadManagedEngine(params[:engine_name])
     if   engine.is_a?(EnginesOSapiResult)
       SystemUtils.log_error_mesg("no Engine to delete",params)
-      return failed(engine_name,"no Engine","Delete")
+      return failed(params[:engine_name],"no Engine","Delete")
     end
 #    params[:container_type] = "container"
 #    params[:engine_name] = engine_name
@@ -395,7 +395,7 @@ end
 #      p params
    if  @core_api.delete_image_dependancies(params) == true
      if engine.delete_image() == true
-       return success(engine_name,"Delete")
+       return success(params[:engine_name],"Delete")
      end
    else
      SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
