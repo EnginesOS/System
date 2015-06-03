@@ -70,7 +70,7 @@ module BuildController
   end
 
   def build_engine_from_docker_image(params)
-
+  p params
     return success(engine_name,"Build Engine from Docker Image")
 
   rescue Exception=>e
