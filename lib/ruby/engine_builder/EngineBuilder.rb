@@ -826,10 +826,10 @@ class EngineBuilder
       return engine
     end
     builder.post_failed_build_clean_up
-    return failed(@hostname,@last_api_error,"build_engine")
+    return failed(engine.container_name,builder.last_error,"build_engine")
 
   rescue Exception=>e
-    post_failed_build_clean_up
+    builder.post_failed_build_clean_up
     return log_exception_and_fail("build_engine",e)
   end
 
