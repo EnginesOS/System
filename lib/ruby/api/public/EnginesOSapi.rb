@@ -378,10 +378,13 @@ end
     return log_exception_and_fail("Destroy",e)
   end
 
-  def deleteEngineImage(engine_name,params) 
+  def deleteEngineImage(params) 
     
     #
-    engine = loadManagedEngine engine_name
+    if params.has_key?(:engine_name) == false || params[:engine_name] == nil
+      return failed(engine_name,"no Engine name","Delete")
+    end
+    engine = loadManagedEngine(params[:engine_name])
     if   engine.is_a?(EnginesOSapiResult)
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(engine_name,"no Engine","Delete")
