@@ -572,7 +572,8 @@ end
         return false
       end
     end
-
+    p params 
+    
     if engine.has_container? == true
       if destroy_container(engine)  == false
         last_error= engine.last_error
