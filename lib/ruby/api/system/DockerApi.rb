@@ -406,7 +406,7 @@ class DockerApi
 
    def clean_up_dangling_images
    
-  cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
+  cmd = "docker rmi $( docker images -f \"dangling=true\" -q) &"
      result = SystemUtils.execute_command(cmd)
      return true # often warning not error
    end
