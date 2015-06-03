@@ -547,7 +547,7 @@ end
  end
 
   def set_engine_runtime_properties(params)
-    #FIX ME also need to deal with Env Variables
+    
     engine_name = params[:engine_name]
 
     engine = loadManagedEngine(engine_name)
@@ -576,6 +576,7 @@ end
     if params.has_key?(:environment_variables)
       new_variables = params[:environment_variables]
       #update_environment(engine,params[:environment_variables])
+        p new_variables
     engine.environments.each do |env|
       new_variables.each do |new_env|
         if  env.name == new_env.name
