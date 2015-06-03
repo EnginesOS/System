@@ -290,8 +290,8 @@ class ServiceManager
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
-  #@ if :remove_all_application_data is true all data is deleted and all persistant services removed
-  #@ if :remove_all_application_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
+  #@ if :remove_all_data is true all data is deleted and all persistant services removed
+  #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
 
@@ -307,7 +307,7 @@ class ServiceManager
     SystemUtils.debug_output(  :rm_remove_engine_params, params)
     services = get_engine_persistant_services(params)
     services.each do | service |
-      if params[:remove_all_application_data] == true || params[:remove_all_application_data] == "true"
+      if params[:remove_all_data] == true 
         if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
