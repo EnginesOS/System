@@ -575,6 +575,7 @@ class EnginesCore
     if params.has_key?(:environment_variables)
       new_variables = params[:environment_variables]
       #update_environment(engine,params[:environment_variables])
+        p :new_varables
       p new_variables
       engine.environments.each do |env|
        # new_variables.each do |new_env|
