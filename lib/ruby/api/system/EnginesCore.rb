@@ -533,6 +533,7 @@ class EnginesCore
     return retval
   rescue Exception=>e
     SystemUtils.log_exception e
+    return nil
   end
 
   def reload_dns
@@ -576,8 +577,8 @@ class EnginesCore
       #update_environment(engine,params[:environment_variables])
       p new_variables
       engine.environments.each do |env|
-        new_variables.each do |new_env|
-         new_env.each_pair  do | new_env_name, new_env_value |
+       # new_variables.each do |new_env|
+        new_variables.each_pair  do | new_env_name, new_env_value |
           if  env.name == new_env_name
             if env.immutable == true
               @last_error = "Cannot Change Value of " + env.name
@@ -585,7 +586,7 @@ class EnginesCore
             end
             env.value =  new_env_value
           end
-         end
+        # end
         end
       end
     end
@@ -603,7 +604,9 @@ class EnginesCore
     end
 
     return true
-
+    rescue Exception=>e
+      SystemUtils.log_exception e
+      return false
   end
 
   def set_engine_network_properties (engine, params)
