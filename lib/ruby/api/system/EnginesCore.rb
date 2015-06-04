@@ -577,13 +577,15 @@ class EnginesCore
       p new_variables
       engine.environments.each do |env|
         new_variables.each do |new_env|
-          if  env.name == new_env.name
+         new_env.each_pair  do | new_env_name, new_env_value |
+          if  env.name == new_env_name
             if env.immutable == true
               @last_error = "Cannot Change Value of " + env.name
               return false
             end
-            env.value =  new_env.value
+            env.value =  new_env_value
           end
+         end
         end
       end
     end
