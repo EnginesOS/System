@@ -595,7 +595,7 @@ end
     if @core_api.set_engine_runtime_properties(params) ==true
         return success(params[:engine_name],"update engine runtime params")
     end
-      
+      p :failed
    return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
     rescue Exception=>e
         return log_exception_and_fail("set_engine_runtime params ",e)
