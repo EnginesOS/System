@@ -29,7 +29,7 @@ module ServiceManagerTree
     return @service_tree
     rescue Exception=>e
     log_exception(e)
-      return nil
+      return false
   end
 
     #@return The OrphanedServices Tree [TreeNode] branch
@@ -99,7 +99,7 @@ module ServiceManagerTree
   
   #@return boolean true if not nil
   def    check_service_tree
-    if service_tree == nil || service_tree == false
+    if  service_tree == false
       SystemUtils.log_error_mesg("Nil service tree ?",service_tree)
       return false
     end
