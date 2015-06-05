@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-
-cat /home/configurators/saved/smarthost
+if test -f /home/configurators/saved/smarthost
+then
+	cat /home/configurators/saved/smarthost
+fi

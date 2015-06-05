@@ -615,7 +615,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
           count_layer
           set_user("0")
-          @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+          @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
           count_layer
           set_user("$ContUser")
         else
@@ -653,7 +653,7 @@ SystemUtils.log_exception(e)
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
           @docker_file.puts("       then\\")
-          @docker_file.puts(" mkdir -p " + dest_prefix + arc_loc + arc_dir + " ;\\")
+          @docker_file.puts(" mkdir -p " + dest_prefix + "/" + arc_loc  + " ;\\")
           @docker_file.puts(" fi;\\")
            if dest_prefix != "" &&  dest_prefix != "/home/app"
               @docker_file.puts(" mkdir -p " + dest_prefix + " ;\\")

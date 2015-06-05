@@ -815,21 +815,21 @@ class EngineBuilder
     builder = EngineBuilder.new(params,core)
     engine = builder.build_from_blue_print
     if engine == false
-      post_failed_build_clean_up
-      return  failed(params[:engine_name],builder.last_error,"build_engine")
+      builder.post_failed_build_clean_up
+      return  builder.failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
-      if engine.is_active == false
+      if engine.is_active? == false
         close_all
-        return failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
+        return builder.failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
       end
       return engine
     end
-    post_failed_build_clean_up
-    return failed(@hostname,@last_api_error,"build_engine")
+    builder.post_failed_build_clean_up
+    return failed(engine.container_name,builder.last_error,"build_engine")
 
   rescue Exception=>e
-    post_failed_build_clean_up
+    builder.post_failed_build_clean_up
     return log_exception_and_fail("build_engine",e)
   end
 
@@ -992,7 +992,7 @@ end
       if error_mesg.length >2 #error_mesg.include?("Error:") || error_mesg.include?("FATA")
         log_build_errors(error_mesg)
         p "docker_cmd error " + error_mesg
-        last_error = error_mesg
+        @last_error = error_mesg
         return false
       end
       p :build_suceeded
@@ -1008,14 +1008,14 @@ end
 
 def log_exception_and_fail(cmd,e)
   e_str = SystemUtils.log_exception(e)
-  last_error =  e_str
+  @last_error =  e_str
   return  false
 end
 
 def log_exception(e)
   log_build_errors(e.to_s)
-  if last_error == nil
-    last_error = e.to_s
+  if @last_error == nil
+    @last_error = e.to_s
   end
 ensure
   SystemUtils.log_exception(e)

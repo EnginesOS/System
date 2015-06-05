@@ -378,21 +378,23 @@ end
     return log_exception_and_fail("Destroy",e)
   end
 
-  def deleteEngineImage(engine_name,params) 
+  def deleteEngineImage(params) 
     
     #
-    engine = loadManagedEngine engine_name
+    if params.has_key?(:engine_name) == false || params[:engine_name] == nil
+      return failed(params.to_s,"no Engine name","Delete")
+    end
+    engine = loadManagedEngine(params[:engine_name])
     if   engine.is_a?(EnginesOSapiResult)
       SystemUtils.log_error_mesg("no Engine to delete",params)
-      return failed(engine_name,"no Engine","Delete")
+      return failed(params[:engine_name],"no Engine","Delete")
     end
-#    params[:container_type] = "container"
-#    params[:engine_name] = engine_name
-#      p :deleteEngineImage_params
-#      p params
+
+    params[:container_type] = "container"
+      
    if  @core_api.delete_image_dependancies(params) == true
      if engine.delete_image() == true
-       return success(engine_name,"Delete")
+       return success(params[:engine_name],"Delete")
      end
    else
      SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
@@ -593,7 +595,7 @@ end
     if @core_api.set_engine_runtime_properties(params) ==true
         return success(params[:engine_name],"update engine runtime params")
     end
-      
+      p :failed
    return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
     rescue Exception=>e
         return log_exception_and_fail("set_engine_runtime params ",e)

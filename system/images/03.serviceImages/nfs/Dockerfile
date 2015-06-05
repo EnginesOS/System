@@ -19,7 +19,9 @@ RUN 	chmod 600 /etc/nss-mysql-root.conf ;\
 	 make;\
 	 make install;\
 	 cd /tmp/;\
-	 rm -r /tmp/nfs-ganesha
+	 rm -r /tmp/nfs-ganesha;\
+	 mkdir -p /home/nfs/.ssh;\
+	 chown nfs /home/nfs/.ssh
 	 
 COPY	 ganesha.conf   /usr/local/etc/ganesha.conf
 COPY 	home /home

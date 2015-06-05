@@ -322,6 +322,7 @@ class ManagedContainer < Container
     else
       @last_error ="Can't unpause Container as " + state
     end
+    register_with_dns      
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state()

@@ -52,13 +52,13 @@ class DockerApi
      SystemUtils.debug_output( "image_exists",cmd)
      result = SystemUtils.execute_command(cmd)
      if  result[:result] != 0
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
                   return false
      end
      if  result[:stdout].length > 4
       return true
      else
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
      end
      
      return false
@@ -406,7 +406,7 @@ class DockerApi
 
    def clean_up_dangling_images
    
-  cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
+  cmd = "docker rmi $( docker images -f \"dangling=true\" -q) &"
      result = SystemUtils.execute_command(cmd)
      return true # often warning not error
    end
