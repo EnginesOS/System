@@ -169,7 +169,7 @@ class ManagedService < ManagedContainer
      return configurator_params
     end
     log_error_mesg("Failed retrieve_configurator",result)
-    return nil
+    return Hash.new
   end
   
   def remove_consumer service_hash
@@ -185,7 +185,7 @@ class ManagedService < ManagedContainer
     end
     
     if @persistant == true    
-     if  service_hash.has_key?(:remove_all_application_data)  && service_hash[:remove_all_application_data] == true 
+     if  service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data] == true 
       p :removing_consumer
       result = rm_consumer_from_service(service_hash)
       if result == true
@@ -223,7 +223,7 @@ class ManagedService < ManagedContainer
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
-        @environments.uniq! #fix me as new values dont replace old only duplicates values
+        @environments.uniq! #FIXME as new values dont replace old only duplicates values
       else
         @environments = envs
       end

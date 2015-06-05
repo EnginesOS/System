@@ -17,6 +17,82 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 service_handle_field: name
+configurators:
+ default_destination:
+   name: default_destination
+  label: Default Backup settings
+  description: Configure Default Backup settings
+  params:
+   dest_proto:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_proto
+    label: Backup Destination Type
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "ftp"
+    - !ruby/object:String
+      "local"
+    - !ruby/object:String
+      "smbfs"
+    - !ruby/object:String
+      "nfs"
+    - !ruby/object:String
+      "s3"
+   dest_folder:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_folder
+    label: destination folder
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "    
+   dest_address:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_address
+    label: destination
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_user:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_user
+    label: user_name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_pass:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_pass
+    label: password
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: password
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " " 
 setup_params:
 consumer_params:
    name:

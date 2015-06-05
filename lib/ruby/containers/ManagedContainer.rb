@@ -119,8 +119,20 @@ class ManagedContainer < Container
     when "HTTP only"
       enable_http_only
     when "HTTPS only"
-      enable_httpd_only
+      enable_https_only
     end
+  end
+  
+  def enable_http_and_https
+    @protocol = :http_and_https
+  end
+  
+  def enable_https_only
+    @protocol = :https_only
+  end
+   
+  def enable_http_only
+    @protocol = :http_only
   end
 
   def ManagedContainer.from_yaml( yaml, core_api )
@@ -138,13 +150,13 @@ class ManagedContainer < Container
 
     #    p :read_state
     # p   caller_locations(1,1)[0].label
-
+   
     begin
       if inspect_container == false
         state="nocontainer"
       else
-        @res= last_result
-        output = JSON.parse(last_result)
+#        @res= last_result
+        output = JSON.parse(@last_result)
         if output.is_a?(Array) == false || output.empty? == true
           @last_error = "Failed to get container status"
           return "nocontainer"
@@ -177,7 +189,7 @@ class ManagedContainer < Container
 
     rescue Exception=>e
       p :json_Str
-      p @res
+#      p @res
       SystemUtils.log_exception(e)
       return "nocontainer"
     end
@@ -241,10 +253,10 @@ class ManagedContainer < Container
 
     ret_val =false
     state = read_state()
-
+    @setState="stopped"
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
-      @setState="stopped"
+      @docker_info = nil
 
     else
       @last_error ="Cannot create container if container by the same name exists"
@@ -260,11 +272,12 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     ret_val =false
+    @docker_info = nil
     state = read_state()
-
+    @setState="running"
+    
     if state == "nocontainer"
-      ret_val = @core_api.create_container self
-      @setState="running"
+      ret_val = @core_api.create_container self      
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -300,15 +313,16 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     state = read_state()
-
+    @setState="running"
     ret_val = false
     if state == "paused"
-      @setState="running"
+     
       ret_val= @core_api.unpause_container self
       @docker_info = nil
     else
       @last_error ="Can't unpause Container as " + state
     end
+    register_with_dns      
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state()
@@ -320,10 +334,10 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     state = read_state()
-
+    @setState="paused"
     ret_val = false
     if state == "running"
-      @setState="paused"
+     
       ret_val = @core_api.pause_container self
       @docker_info = nil
     else
@@ -340,12 +354,12 @@ class ManagedContainer < Container
 
     ret_val = false
     state = read_state()
-
+    @setState="stopped"
     if state== "running"
       ret_val = @core_api.stop_container   self
       @core_api.deregister_non_persistant_services(self)
       @docker_info = nil
-      @setState="stopped"
+      
     else
       @last_error ="Can't stop Container as " + state
       if state != "paused" #force deregister if stopped or no container etc
@@ -363,10 +377,10 @@ class ManagedContainer < Container
 
     ret_val=false
     state = read_state()
-
+    @setState="running"
     if state == "stopped"
       ret_val = @core_api.start_container self
-      @setState="running"
+      
       @docker_info = nil
     else
       @last_error ="Can't Start Container as " + state
@@ -376,6 +390,7 @@ class ManagedContainer < Container
 
     clear_error(ret_val)
     save_state()
+   
     return ret_val
   end
 
@@ -528,6 +543,7 @@ class ManagedContainer < Container
     return false  if has_api? == false
 
     ret_val = @core_api.rebuild_image(self)
+    @docker_info = nil
     if ret_val == true
       register_with_dns
       if @deployment_type  == "web"
@@ -566,14 +582,14 @@ class ManagedContainer < Container
   def is_error?
     state = read_state
     if @setState != state
-      return false
+      return true
     end
-    return true
+    return false
   end
   
-  def is_active
-    return is_active?
-  end
+#  def is_active
+#    return is_active?
+#  end
 
   def is_active?
     state = read_state

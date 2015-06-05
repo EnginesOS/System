@@ -1,9 +1,10 @@
 FROM  engines/passenger:$release
 
 RUN /usr/sbin/addgroup --gid 999 docker;\
-	apt-get -y install telnet;\
-	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/engines --disabled-password engines
-
+	apt-get -y install telnet openssl-dev;\
+	echo "Y" | adduser -q --uid 21000 --gid 999 --home /home/engines --disabled-password engines;\
+	 /usr/local/rbenv/bin/rbenv  install 2.2.2;\
+	 /usr/local/rbenv/bin/rbenv  global 2.2.2
 ADD home home
 ADD profile /home/engines/.profile
 

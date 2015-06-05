@@ -52,13 +52,13 @@ class DockerApi
      SystemUtils.debug_output( "image_exists",cmd)
      result = SystemUtils.execute_command(cmd)
      if  result[:result] != 0
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
                   return false
      end
      if  result[:stdout].length > 4
       return true
      else
-       last_error = result[:stderr]
+       @last_error = result[:stderr]
      end
      
      return false
@@ -80,7 +80,13 @@ class DockerApi
 
    def ps_container container     
      cmdline="docker top " + container.container_name + " axl"
-         return execute_docker_cmd(cmdline,container)   
+     result = SystemUtils.execute_command(cmdline)
+     if result[:result] == 0
+       return result[:stdout]
+     end
+     
+    return    false
+    
      rescue  Exception=>e
           SystemUtils.log_exception(e)
           return false  
@@ -96,8 +102,8 @@ class DockerApi
                 container.last_error =  result[:result].to_s + ":" + result[:stderr].to_s
                 return true
               else
-                p container.last_error 
-                return container.last_error 
+                SystemUtils.log_error_mesg("execute_docker_cmd " +  cmdline + " on " + container.container_name ,result)
+                 return false 
               end
             rescue  Exception=>e
             SystemUtils.log_exception(e)
@@ -116,15 +122,17 @@ class DockerApi
    def logs_container container
      clear_error
   
-       commandargs="docker logs " + container.container_name
-    if  execute_docker_cmd(commandargs,container) == false
-                return container.last_result
-              else
-                return container.last_error 
-              end
-            rescue  Exception=>e
-            SystemUtils.log_exception(e)
-            return "error"        
+     cmdline="docker logs " + container.container_name
+     result = SystemUtils.execute_command(cmdline)
+     if result[:result] == 0
+       return result[:stdout]
+     end
+     
+    return    false
+    
+     rescue  Exception=>e
+         SystemUtils.log_exception(e)
+         return "error"        
    end
 
    def inspect_container container
@@ -398,7 +406,7 @@ class DockerApi
 
    def clean_up_dangling_images
    
-  cmd = "docker rmi $( docker images -f \"dangling=true\" -q)"
+  cmd = "docker rmi $( docker images -f \"dangling=true\" -q) &"
      result = SystemUtils.execute_command(cmd)
      return true # often warning not error
    end

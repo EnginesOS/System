@@ -29,7 +29,12 @@ rescue Exception=>e
 end
   
 def get_default_site()     
+  if @preferences.has_key?(:default_site) == false
+   return "unset"
+  end
+  
  return @preferences[:default_site]
+   
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return "err"
@@ -37,7 +42,11 @@ end
     
 def get_default_domain()
   p :get_default_domain   
-  @preferences[:default_domain]
+  if @preferences.has_key?(:default_domain) == false
+   return "unset"
+  end
+    
+  return @preferences[:default_domain]
   rescue Exception=>e
    SystemUtils.log_exception(e)
    return "err"
