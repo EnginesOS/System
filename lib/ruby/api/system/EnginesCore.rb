@@ -851,22 +851,22 @@ class EnginesCore
   end
 
   def load_and_attach_persistant_services(container)
-    dirname = get_container_dir(container) + "/persistant/"
+    dirname = get_container_services_dir(container) + "/pre/"
     sm = loadServiceManager()
     return sm.load_and_attach_services(dirname,container )
   end
 
   def load_and_attach_nonpersistant_services(container)
-    dirname = get_container_dir(container) + "/nonpersistant/"
+    dirname = get_container_services_dir(container) + "/post/"
     sm = loadServiceManager()
     return sm.load_and_attach_services(dirname,container)
   end
 
-  def get_container_dir(container)
+  def get_container_services_dir(container)
     return @system_api.container_state_dir(container) +"/services/"
   end
 
-  #install from fresh copy of blueprint in repositor
+  #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
     EngineBuilder.re_install_engine(engine,self)
