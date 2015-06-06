@@ -240,6 +240,7 @@ class ManagedService < ManagedContainer
       save_state()
       return true
     else
+      save_state()
       log_error_mesg("Failed to create service",self)
       return false
     end
