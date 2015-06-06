@@ -23,7 +23,7 @@ class Container
     if @domain_name == nil
       return "N/A"
     end
-    return @hostname + "." + @domain_name
+    return @hostname.to_s + "." + @domain_name.to_s
   end
    
    def set_hostname_details(host_name,domain_name)
@@ -37,6 +37,4 @@ class Container
    end
    
 
-   
-   
 end
