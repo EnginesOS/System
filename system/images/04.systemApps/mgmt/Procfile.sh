@@ -5,7 +5,7 @@ cd /home/app/
 rm /home/app/app/config/newrelic.yml
 git fetch origin master
 git reset --hard FETCH_HEAD
-git pull --depth 1
+git pull --depth 1 master
 cp /home/newrelic.yml /home/app/
 
 RAILS_ENV=production
