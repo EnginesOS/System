@@ -55,7 +55,7 @@ configurators:
       "yes"
     - !ruby/object:String
       "no"
-  include_files:
+   include_files:
     name: include_files
     regex_invalid_message: "wrong go back and try again"
     label: Backup File Systems
@@ -71,7 +71,7 @@ configurators:
       "yes"
     - !ruby/object:String
       "no"
-  include_logs:
+   include_logs:
     name: include_logs
     regex_invalid_message: "wrong go back and try again"
     label: Backup Logs
@@ -87,7 +87,7 @@ configurators:
       "yes"
     - !ruby/object:String
       "no"
-  frequency:
+   frequency:
     name: frequency
     regex_invalid_message: "wrong go back and try again"
     label: Backup Logs
