@@ -19,7 +19,7 @@ persistant: false
 service_handle_field: name
 configurators:
  default_destination:
-   name: default_destination
+  name: default_destination
   label: Default Backup settings
   description: Configure Default Backup settings
   params:
