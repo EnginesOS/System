@@ -434,7 +434,7 @@ class EnginesCore
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
       else
-        @last_error = "no Service"
+        @last_error = "No Service"
         return false
       end
     end
