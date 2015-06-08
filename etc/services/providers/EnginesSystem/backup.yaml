@@ -18,6 +18,93 @@ dedicated: false
 persistant: false
 service_handle_field: name
 configurators:
+ system_backup:
+  name: system_backup
+  label: System Backup
+  description: Configure System Backup settings
+  params:
+   include_system:
+    name: include_system
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup System
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+   include_databases:
+    name: include_databases
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Databases
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+  include_files:
+    name: include_files
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup File Systems
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+  include_logs:
+    name: include_logs
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Logs
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+  frequency:
+    name: frequency
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Logs
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "nightly"
+    - !ruby/object:String
+      "weekly"
+    - !ruby/object:String
+      "monthly"  
  default_destination:
   name: default_destination
   label: Default Backup settings
