@@ -244,6 +244,7 @@ class ManagedService < ManagedContainer
       log_error_mesg("Failed to create service",self)
       return false
     end
+   
   end
 
   def recreate
@@ -253,7 +254,8 @@ class ManagedService < ManagedContainer
         return true
       else
         log_error_mesg("Failed to create service in recreate",self)
-              
+        @setState="running"
+        save_state()
         return false
       end
     else
