@@ -90,7 +90,7 @@ configurators:
    frequency:
     name: frequency
     regex_invalid_message: "wrong go back and try again"
-    label: Backup Logs
+    label: Backup Frequency
     regex_validator: ".*"
     tooltip: " "
     field_type: select
