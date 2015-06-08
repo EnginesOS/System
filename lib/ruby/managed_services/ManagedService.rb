@@ -244,6 +244,7 @@ class ManagedService < ManagedContainer
       log_error_mesg("Failed to create service",self)
       return false
     end
+    save_state()
   end
 
   def recreate
