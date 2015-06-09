@@ -74,6 +74,8 @@ class DockerFileBuilder
     set_user("0")
     
     write_pear_list
+    write_php_list
+    write_pecl_list
     write_apache_modules    
 
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
@@ -745,7 +747,7 @@ SystemUtils.log_exception(e)
           #for pear
           #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
           # for pecl
-          @docker_file.puts("RUN  pecl install  " + pear_mod )
+          @docker_file.puts("RUN  pear install  " + pear_mod )
           count_layer
         end
       end
@@ -754,7 +756,29 @@ SystemUtils.log_exception(e)
     SystemUtils.log_exception(e)
     return false
   end
+def write_pecl_list
+  @docker_file.puts("#Pecl List")
+  log_build_output("Dockerfile:Pecl List")
+  if @blueprint_reader.pecl_modules.count >0
+    @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
+    @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
+    @docker_file.puts("  php go-pear.phar")
+    count_layer
 
+    @blueprint_reader.pecl_modules.each do |pecl_mod|
+      if pear_mod !=nil
+        #for pear
+        #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+        # for pecl
+        @docker_file.puts("RUN  pecl install  " + pecl_mod )
+        count_layer
+      end
+    end
+  end
+rescue Exception=>e
+  SystemUtils.log_exception(e)
+  return false
+end
   def set_user(user)
     @docker_file.puts("User " + user)
     count_layer
