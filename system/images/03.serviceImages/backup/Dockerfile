@@ -30,7 +30,9 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 
 
 ADD crontab  /home/backup/fcron/spool/backup.orig
-RUN chown -R backup ~backup 
+RUN chown -R backup ~backup ;\
+	chown backup /home/configurators/saved;\
+	chgrp backup /home/configurators/*.sh
 	
 
 VOLUME /backup_src/volumes
