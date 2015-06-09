@@ -48,11 +48,9 @@ class DockerFileBuilder
     end
     
     set_user("$ContUser")
-   
-    
+       
     write_app_archives
-    set_user("$ContUser")
-    
+    set_user("$ContUser")    
     
     write_container_user
     
@@ -92,14 +90,11 @@ class DockerFileBuilder
     set_user("0")
     write_data_permissions
 
-    
-
     @docker_file.puts("run mv /home/fs /home/fs_src")
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
     count_layer()
-    
-
+   
     insert_framework_frag_in_dockerfile("builder.end.tmpl")
     @docker_file.puts("")
     @docker_file.puts("VOLUME /home/fs/")
@@ -107,7 +102,6 @@ class DockerFileBuilder
  
     write_clear_env_variables
     
-
     @docker_file.close
 
   end

@@ -313,8 +313,8 @@ class BluePrintReader
      @pecl_modules = Array.new
      
      pkg_modules =  @blueprint[:software][:modules]
-       if read_pkg_modules
-         read_pkg_modules.each do |pkg_module |
+       if pkg_modules
+         pkg_modules.each do |pkg_module |
            os_package = pkg_module[:os_package]
                    if os_package != nil && os_package != ""
                     @os_packages.push(os_package)
