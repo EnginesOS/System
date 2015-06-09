@@ -144,9 +144,9 @@ class DockerFileBuilder
       @docker_file.puts("#Environment Variables")
       #Fixme
       #kludge
-      @docker_file.puts("#System Envs")
-      @docker_file.puts("ENV TZ Sydney/Australia")
-      count_layer
+#      @docker_file.puts("#System Envs")
+#      @docker_file.puts("ENV TZ Sydney/Australia")
+#      count_layer
       
       @blueprint_reader.environments.each do |env|
         @docker_file.puts("#Blueprint ENVs")
