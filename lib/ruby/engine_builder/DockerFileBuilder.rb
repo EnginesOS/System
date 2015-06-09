@@ -39,7 +39,7 @@ class DockerFileBuilder
     #write_db_service
     #write_cron_jobs
     write_os_packages
-    write_apache_modules
+   
     write_user_local = true
 
     if write_user_local == true
@@ -73,9 +73,9 @@ class DockerFileBuilder
     @docker_file.puts("")
     set_user("0")
     
-    write_pear_list
-    write_php_list
-    write_pecl_list
+    write_pear_modules 
+    write_php_modules 
+    write_pecl_modules 
     write_apache_modules    
 
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
@@ -137,6 +137,19 @@ class DockerFileBuilder
       ap_modules_str += ap_module + " "
     end
     @docker_file.puts("RUN a2enmod " + ap_modules_str)
+    count_layer()
+  end
+  def write_php_modules
+    if @blueprint_reader.php_modules.count <1
+      return
+    end
+    @docker_file.puts("#PHP Modules")
+    php_modules_str = String.new
+    @blueprint_reader.php_modules.each do |php_module|
+
+      php_modules_str += php_module + " "
+    end
+    @docker_file.puts("RUN php5enmod  " + php_modules_str)
     count_layer()
   end
 
@@ -733,9 +746,9 @@ SystemUtils.log_exception(e)
     end
   end
 
-  def write_pear_list
-    @docker_file.puts("#OPear List")
-    log_build_output("Dockerfile:Pear List")
+  def write_pear_modules 
+    @docker_file.puts("#OPear modules ")
+    log_build_output("Dockerfile:Pear modules ")
     if @blueprint_reader.pear_modules.count >0
       @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
       @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
@@ -756,9 +769,9 @@ SystemUtils.log_exception(e)
     SystemUtils.log_exception(e)
     return false
   end
-def write_pecl_list
-  @docker_file.puts("#Pecl List")
-  log_build_output("Dockerfile:Pecl List")
+def write_pecl_modules 
+  @docker_file.puts("#Pecl modules ")
+  log_build_output("Dockerfile:Pecl modules ")
   if @blueprint_reader.pecl_modules.count >0
     @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
     @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
