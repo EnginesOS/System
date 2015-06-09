@@ -1,4 +1,0 @@
-SOURCE='/home/backup/tmp/'
-TARGET='file://var/lib/engines/local_backup_dests/system'
-TARGET_USER=''
-TARGET_PASS=''
