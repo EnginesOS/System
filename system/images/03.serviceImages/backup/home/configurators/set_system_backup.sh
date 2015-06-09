@@ -39,7 +39,7 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
 					then
 						src=/home/sql_dumps
 						mkdir -p $Backup_ConfigDir/system_databases
-						cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/system_databases/pre
+						cat /home/tmpl/dumpall >>  $Backup_ConfigDir/system_databases/pre
                 		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system_databases/post
                 		chmod u+x $Backup_ConfigDir/system/pre
                 		chmod u+x $Backup_ConfigDir/system/post
