@@ -106,6 +106,8 @@ module ServicesModule
       
       return SoftwareServiceDefinition.find(type_path,service_provider)
     end
+    
+    
   #@ returns [SoftwareServiceDefinition] with TEmplating evaluated 
   #requires keys :type_path and "publisher_namespace :parent_engine
   def get_resolved_service_definition(service_hash)           
@@ -210,6 +212,11 @@ module ServicesModule
     
    def templated_software_service_definition(params)
      ret_val = software_service_definition(params)
+     p :pre_template
+     p ret_val
+     fillin_template_for_service_def(ret_val)
+     p "post_template"
+     p ret_val
      return ret_val
    end
 
