@@ -264,3 +264,11 @@ consumer_params:
     mandatory: true
     value: " "
     comment: " "
+   src_type:
+    field_type: hidden
+    name: src_type
+    value: engine
+   sources:
+    field_type: hidden
+    name: sources
+    value: _Engines_System(engine_persitant)

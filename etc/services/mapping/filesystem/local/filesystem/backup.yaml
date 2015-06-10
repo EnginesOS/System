@@ -1,1 +1,274 @@
-../../../../providers/EnginesSystem/backup.yaml
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+- !ruby/object:String    
+  "filesystem/local/filesystem"
+- !ruby/object:String    
+  "database/sql/mysql"
+author: Engines
+title: Backup
+description: "Backup tasks"
+type_path: backup
+service_container: backup
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: false
+service_handle_field: name
+configurators:
+ system_backup:
+  name: system_backup
+  label: System Backup
+  description: Configure System Backup settings
+  params:
+   include_system:
+    name: include_system
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup System
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+   include_databases:
+    name: include_databases
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Databases
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+   include_files:
+    name: include_files
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup File Systems
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+   include_logs:
+    name: include_logs
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Logs
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "yes"
+    - !ruby/object:String
+      "no"
+   frequency:
+    name: frequency
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup Frequency
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "nightly"
+    - !ruby/object:String
+      "weekly"
+    - !ruby/object:String
+      "monthly"  
+ default_destination:
+  name: default_destination
+  label: Default Backup settings
+  description: Configure Default Backup settings
+  params:
+   dest_proto:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_proto
+    label: Backup Destination Type
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+    - !ruby/object:String   
+      "ftp"
+    - !ruby/object:String
+      "local"
+    - !ruby/object:String
+      "smbfs"
+    - !ruby/object:String
+      "nfs"
+    - !ruby/object:String
+      "s3"
+   dest_folder:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_folder
+    label: destination folder
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "    
+   dest_address:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_address
+    label: destination
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_user:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_user
+    label: user_name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_pass:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_pass
+    label: password
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: password
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " " 
+setup_params:
+consumer_params:
+   name:
+    regex_invalid_message: "wrong go back and try again"
+    name: name
+    label: Backup Name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_proto:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_proto
+    label: Backup Destination Type
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: select
+    hint: ""
+    placeholder: "a label "
+    mandatory: true
+    comment: " "
+    select_collection:  
+     - !ruby/object:String   
+      "ftp"
+     - !ruby/object:String
+      "local"
+     - !ruby/object:String
+      "smbfs"
+     - !ruby/object:String
+      "nfs"
+     - !ruby/object:String
+      "s3"
+   dest_folder:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_folder
+    label: destination folder
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "    
+   dest_address:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_address
+    label: destination
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_user:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_user
+    label: user_name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   dest_pass:
+    regex_invalid_message: "wrong go back and try again"
+    name: dest_pass
+    label: password
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: password
+    hint: ""
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   src_type:
+    field_type: hidden
+    name: src_type
+    value: volume
+   sources:
+    field_type: hidden
+    name: sources
+    value: _Engines_System(engine_services(EnginesSystem/filesystem/local/filesystem))
