@@ -198,6 +198,9 @@ end
      resolve_system_variable(match)
    } 
    return template
+ rescue Exception=>e
+   p "problem with " + template
+  SystemUtils.log_exception(e)
  end
  
  def apply_build_variables(template)
