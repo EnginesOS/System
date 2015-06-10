@@ -206,16 +206,16 @@ consumer_params:
     mandatory: true
     comment: " "
     select_collection:  
-     - !ruby/object:String   
-      "ftp"
-     - !ruby/object:String
-      "local"
-     - !ruby/object:String
-      "smbfs"
-     - !ruby/object:String
-      "nfs"
-     - !ruby/object:String
-      "s3"
+    - !ruby/object:String   
+     "ftp"
+    - !ruby/object:String
+     "local"
+    - !ruby/object:String
+     "smbfs"
+    - !ruby/object:String
+     "nfs"
+    - !ruby/object:String
+     "s3"
    dest_folder:
     regex_invalid_message: "wrong go back and try again"
     name: dest_folder
