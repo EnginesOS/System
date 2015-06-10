@@ -51,7 +51,7 @@ class ManagedEngine < ManagedContainer
     
     if services.is_a?(Array)
       services.each do |service|
-        retval += SystemUtils.service_hash_variables_as_str(service) + " "
+        retval += " " + SystemUtils.service_hash_variables_as_str(service) 
       end
     elsif services.is_a?(Hash)
       retval = SystemUtils.service_hash_variables_as_str(services)

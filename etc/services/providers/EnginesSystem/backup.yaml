@@ -192,7 +192,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_proto:
     regex_invalid_message: "wrong go back and try again"
@@ -226,7 +226,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "    
    dest_address:
     regex_invalid_message: "wrong go back and try again"
@@ -238,7 +238,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_user:
     regex_invalid_message: "wrong go back and try again"
@@ -250,7 +250,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_pass:
     regex_invalid_message: "wrong go back and try again"
@@ -262,7 +262,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    src_type:
     field_type: hidden
@@ -271,4 +271,4 @@ consumer_params:
    sources:
     field_type: hidden
     name: sources
-    value: _Engines_Builder(engine_persistant_services)
+    value: :_Engines_Builder(engine_persistant_services)

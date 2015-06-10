@@ -294,12 +294,18 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
    argument = String.new
      
    service_variables =  service_hash[:variables]
+     sources = ""
      if service_variables == nil
        return argument
      end
    service_variables.each_pair do |key,value|
+     if key == :sources
+       sources = values
+     end
      argument+= key.to_s + "=" + value.to_s + ":"      
    end
+   
+  argument += sources
    
    return argument
  end
