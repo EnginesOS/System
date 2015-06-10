@@ -372,6 +372,9 @@ class EnginesCore
 
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
+      if container == false
+        log_error_mesg("container load error",service_hash)
+      end
     templater =  Templater.new(SystemAccess.new,container)
     templater.fill_in_service_def_values(service_def)
     return service_def
