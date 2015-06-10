@@ -371,7 +371,7 @@ class EnginesCore
   def fillin_template_for_service_def(service_hash)
 
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    container = getManagedEngines(service_hash[:parent_engine])
+    container = loadManagedEngine(service_hash[:parent_engine])
     templater =  Templater.new(SystemAccess.new,container)
     templater.proccess_templated_service_hash(service_def)
     return service_def
