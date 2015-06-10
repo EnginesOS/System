@@ -45,9 +45,10 @@ class ManagedEngine < ManagedContainer
     false
   end
 
-  def attached_services
-    @core_api.attached_services(self)
+  def engine_attached_services
+    return @core_api.engine_attached_services(@container_name)
   end
+  
   
   def ManagedEngine.from_yaml( yaml ,core_api )
           managedEngine = YAML::load( yaml )

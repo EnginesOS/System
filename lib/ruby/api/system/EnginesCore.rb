@@ -460,6 +460,15 @@ class EnginesCore
     end
     return false
   end
+  
+  def engine_attached_services(container_name)
+    sm = loadServiceManager()
+    params = Hash.new()
+    params[:parent_engine] = container_name
+       return sm.find_engine_services(params)
+     rescue Exception=>e
+       SystemUtils.log_exception e
+  end
 
   def attach_subservice(params)
     if  params.has_key?(:parent_service)    && params[:parent_service].has_key?(:publisher_namespace)     && params[:parent_service].has_key?(:type_path)    && params[:parent_service].has_key?(:service_handle)
