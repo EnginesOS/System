@@ -288,4 +288,20 @@ def SystemUtils.execute_command(cmd)
     return service_hash
 
   end
+  
+  
+def SystemUtils.service_hash_variables_as_str(service_hash)
+   argument = String.new
+     
+   service_variables =  service_hash[:variables]
+     if service_variables == nil
+       return argument
+     end
+   service_variables.each_pair do |key,value|
+     argument+= key.to_s + "=" + value.to_s + ":"      
+   end
+   
+   return argument
+ end
+ 
 end
