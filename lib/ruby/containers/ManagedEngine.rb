@@ -45,6 +45,11 @@ class ManagedEngine < ManagedContainer
     false
   end
 
+  def engine_persistant_services
+    return @core_api.engine_persistant_services(@container_name)
+  end
+  
+    
   def engine_attached_services
     return @core_api.engine_attached_services(@container_name)
   end

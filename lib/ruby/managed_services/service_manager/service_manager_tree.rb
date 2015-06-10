@@ -306,7 +306,10 @@ def log_exception(e)
    else
      @last_tree_mod_time =nil
    end
-     
+   rescue Exception=>e
+       @last_error=( "load tree")
+       log_exception(e)
+       return nil
  end
  
   protected
@@ -327,7 +330,7 @@ def log_exception(e)
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true
   rescue Exception=>e
-    @last_error=( "load error")
+    @last_error=( "save error")
     log_exception(e)
     return false
   end

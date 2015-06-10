@@ -464,6 +464,17 @@ class EnginesCore
     return false
   end
   
+
+def engine_persistant_services(container_name)
+  sm = loadServiceManager()
+  params = Hash.new()
+  params[:parent_engine] = container_name
+  params[:persistant] = true 
+     return sm.find_engine_services_hashes(params)
+   rescue Exception=>e
+     SystemUtils.log_exception e
+end
+
   def engine_attached_services(container_name)
     sm = loadServiceManager()
     params = Hash.new()

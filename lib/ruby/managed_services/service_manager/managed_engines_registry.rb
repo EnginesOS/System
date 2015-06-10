@@ -37,6 +37,9 @@ module ManagedEnginesRegistry
     if engine_node == nil
       log_error_mesg("Failed to find in managed service tree",params)
     end
+      if params.has_key?(:persistant) &&  params[:persistant] == true
+        return get_matched_leafs(engine_node,:persistant,true)
+      end
     return get_all_leafs_service_hashes(engine_node)
   end
 
