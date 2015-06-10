@@ -214,7 +214,7 @@ module ServicesModule
      ret_val = software_service_definition(params)
      p :pre_template
      p ret_val
-     @core_api.fillin_template_for_service_def(ret_val)
+     @core_api.fill_in_service_def_values(ret_val)
      p "post_template"
      p ret_val
      return ret_val

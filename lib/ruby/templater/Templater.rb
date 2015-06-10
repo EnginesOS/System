@@ -228,6 +228,19 @@ def fill_in_dynamic_vars(service_hash)
   end
 end
 
+def fill_in_service_def_values(service_def)
+  if service_def.has_key?(:consumer_params) && service_def[:consumer_params].is_a(Array)
+    field_params = service_def[:consumer_params]
+    field_params.each do | field|
+      if field.has_key?(:value)
+        value = process_templated_string(field[:value])
+        field[:value] = value
+      end        
+     end
+  end
+  return service_def
+end
+
 def engine_environment
   return nil
 end
