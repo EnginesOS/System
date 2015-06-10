@@ -300,7 +300,7 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
      end
    service_variables.each_pair do |key,value|
      if key == :sources
-       sources = values
+       sources = value
      end
      argument+= key.to_s + "=" + value.to_s + ":"      
    end
