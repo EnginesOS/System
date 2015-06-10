@@ -199,7 +199,7 @@ end
    } 
    return template
  rescue Exception=>e
-   p "problem with " + template
+   p "problem with " + template.to_s
   SystemUtils.log_exception(e)
  end
  
