@@ -503,7 +503,7 @@ class EngineBuilder
     p :Clean_up_Failed_build
     @blueprint_reader.services.each do |service_hash|
       if service_hash[:fresh] == true
-        service_hash[:delete_persistant]=true
+        service_hash[:remove_all_data]=true
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
     end
