@@ -301,13 +301,14 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
    service_variables.each_pair do |key,value|
      if key == :sources
        sources = value
+       next 
      end
      value=value.to_s
-     value.gsub!(/ /,"\\ ")
-     argument+= key.to_s + "=" + value.to_s + ":"      
+     val = value.gsub(/ /,"\\ ")
+     argument+= key.to_s + "=" + val + ":"      
    end
    
-  argument += sources
+  argument += " " + sources
    
    return argument
  end
