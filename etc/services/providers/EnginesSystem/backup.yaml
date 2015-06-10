@@ -271,4 +271,4 @@ consumer_params:
    sources:
     field_type: hidden
     name: sources
-    value: :_Engines_Builder(engine_persistant_services)
+    value: ":_Engines_Builder(engine_persistant_services)"
