@@ -303,9 +303,8 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
        sources = value
        next 
      end
-     value=value.to_s
-     
-     argument+= key.to_s + "=\"" + val + "\":"      
+          
+     argument+= key.to_s + "=\"" + value.to_s + "\":"      
    end
    
   argument += " " + sources
