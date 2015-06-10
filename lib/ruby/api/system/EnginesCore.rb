@@ -468,7 +468,7 @@ class EnginesCore
     sm = loadServiceManager()
     params = Hash.new()
     params[:parent_engine] = container_name
-       return sm.find_engine_services(params)
+       return sm.find_engine_services_hashes(params)
      rescue Exception=>e
        SystemUtils.log_exception e
   end
