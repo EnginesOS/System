@@ -304,8 +304,8 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
        next 
      end
      value=value.to_s
-     val = value.gsub(/ /,"\\ ")
-     argument+= key.to_s + "=" + val + ":"      
+     
+     argument+= key.to_s + "=\"" + val + "\":"      
    end
    
   argument += " " + sources
