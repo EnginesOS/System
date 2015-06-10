@@ -70,6 +70,10 @@ class ManagedContainer < Container
   :last_error,
   :docker_info
 
+  def engine_environment
+    return environments
+  end
+  
   def is_service?
     if @ctype && @ctype != nil && @ctype == "service"
       return true
