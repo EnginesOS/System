@@ -99,8 +99,9 @@ module ServiceManagerTree
   
   #@return boolean true if not nil
   def    check_service_tree
-    if  service_tree == nil || service_tree == false
-      SystemUtils.log_error_mesg("Nil service tree ?",service_tree)
+    st = service_tree
+    if  st == nil || st == false
+      SystemUtils.log_error_mesg("Nil service tree ?",st)
       return false
     end
     return true
