@@ -231,8 +231,9 @@ end
 def fill_in_service_def_values(service_def)
   p :fill_in_service_def_values
   if service_def.has_key?(:consumer_params) && service_def[:consumer_params].is_a?(Hash)
-    p service_def
+    p service_def[:consumer_params]
     service_def[:consumer_params].values do | field|
+      p :value
       p field
       if field.has_key?(:value)
         value = process_templated_string(field[:value])
