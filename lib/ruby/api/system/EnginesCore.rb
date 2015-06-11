@@ -371,9 +371,12 @@ class EnginesCore
   def fillin_template_for_service_def(service_hash)
 
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    container = getManagedEngines(service_hash[:parent_engine])
+    container = loadManagedEngine(service_hash[:parent_engine])
+      if container == false
+        log_error_mesg("container load error",service_hash)
+      end
     templater =  Templater.new(SystemAccess.new,container)
-    templater.proccess_templated_service_hash(service_def)
+    templater.fill_in_service_def_values(service_def)
     return service_def
 
   rescue Exception=>e
@@ -459,6 +462,26 @@ class EnginesCore
       end
     end
     return false
+  end
+  
+
+def engine_persistant_services(container_name)
+  sm = loadServiceManager()
+  params = Hash.new()
+  params[:parent_engine] = container_name
+  params[:persistant] = true 
+     return sm.find_engine_services_hashes(params)
+   rescue Exception=>e
+     SystemUtils.log_exception e
+end
+
+  def engine_attached_services(container_name)
+    sm = loadServiceManager()
+    params = Hash.new()
+    params[:parent_engine] = container_name
+       return sm.find_engine_services_hashes(params)
+     rescue Exception=>e
+       SystemUtils.log_exception e
   end
 
   def attach_subservice(params)

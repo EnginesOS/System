@@ -115,22 +115,10 @@ class ManagedService < ManagedContainer
     save_state
     return result
   end
-  def service_hash_variables_as_str(service_hash)
-    argument = String.new
-      
-    service_variables =  service_hash[:variables]
-      if service_variables == nil
-        return argument
-      end
-    service_variables.each_pair do |key,value|
-      argument+= key.to_s + "=" + value.to_s + ":"      
-    end
-    
-    return argument
-  end
+ 
   
   def   add_consumer_to_service(service_hash)   
-  cmd = "docker exec " +  container_name + " /home/add_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+  cmd = "docker exec " +  container_name + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
     result = SystemUtils.execute_command(cmd)
       if result[:result] == 0 
         return true
@@ -141,7 +129,7 @@ class ManagedService < ManagedContainer
   end
   
   def   rm_consumer_from_service(service_hash) 
-   cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + service_hash_variables_as_str(service_hash) + "\""
+   cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + SystemUtils.service_hash_variables_as_str(service_hash) + "\""
     result = SystemUtils.execute_command(cmd)
        if result[:result] == 0 
          return true
@@ -152,7 +140,7 @@ class ManagedService < ManagedContainer
   end 
   
   def run_configurator(configurator_params)    
-    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name] + ".sh \"" + service_hash_variables_as_str(configurator_params) + "\""
+    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name] + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
      result = SystemUtils.execute_command(cmd)
      
     return result 

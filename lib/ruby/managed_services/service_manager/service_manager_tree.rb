@@ -99,8 +99,9 @@ module ServiceManagerTree
   
   #@return boolean true if not nil
   def    check_service_tree
-    if  service_tree == false
-      SystemUtils.log_error_mesg("Nil service tree ?",service_tree)
+    st = service_tree
+    if  st == nil || st == false
+      SystemUtils.log_error_mesg("Nil service tree ?",st)
       return false
     end
     return true
@@ -305,7 +306,10 @@ def log_exception(e)
    else
      @last_tree_mod_time =nil
    end
-     
+   rescue Exception=>e
+       @last_error=( "load tree")
+       log_exception(e)
+       return nil
  end
  
   protected
@@ -326,7 +330,7 @@ def log_exception(e)
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true
   rescue Exception=>e
-    @last_error=( "load error")
+    @last_error=( "save error")
     log_exception(e)
     return false
   end

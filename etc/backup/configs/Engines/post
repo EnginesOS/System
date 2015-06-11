@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -r /home/backup/tmp/
-
-#have to do this to skip any errors from above
-echo ok

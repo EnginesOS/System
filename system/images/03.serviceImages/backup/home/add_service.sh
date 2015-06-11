@@ -3,6 +3,53 @@
 
 service_hash=$1
 
+
+
+. /home/engines/scripts/functions.sh
+
+echo $1 >/home/configurators/saved/system_backup
+
+
+
+
+ echo "$*" >>/var/log/backup/addbackup.log
+
+Backup_ConfigDir=/home/backup/.duply/
+
+
+dest=$dest_proto://$dest_address/$dest_folder
+user=$dest_user
+pass=$dest_pass
+
+			
+
+						mkdir -p $Backup_ConfigDir/system
+						cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/system/pre
+                		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system/post
+                		chmod u+x $Backup_ConfigDir/system/pre
+                		chmod u+x $Backup_ConfigDir/system/post
+                		
+                		cp /home/tmpl/duply_conf $Backup_ConfigDir/system/conf
+                		src=/backup_src/engines
+                		echo "SOURCE='$src'" >>$Backup_ConfigDir/system/conf
+
+echo "TARGET='$dest'" >>$Backup_ConfigDir/system/conf
+echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/system/conf
+echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
+
+
+
+
+
+
+
+
+
+
+
+
+service_hash=$1
+
 . /home/engines/scripts/functions.sh
 
 load_service_hash_to_environment

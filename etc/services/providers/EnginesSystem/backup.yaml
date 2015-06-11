@@ -123,15 +123,15 @@ configurators:
     comment: " "
     select_collection:  
     - !ruby/object:String   
-      "ftp"
+     "ftp"
     - !ruby/object:String
-      "local"
+     "local"
     - !ruby/object:String
-      "smbfs"
+     "smbfs"
     - !ruby/object:String
-      "nfs"
+     "nfs"
     - !ruby/object:String
-      "s3"
+     "s3"
    dest_folder:
     regex_invalid_message: "wrong go back and try again"
     name: dest_folder
@@ -192,7 +192,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_proto:
     regex_invalid_message: "wrong go back and try again"
@@ -206,16 +206,16 @@ consumer_params:
     mandatory: true
     comment: " "
     select_collection:  
-     - !ruby/object:String   
-      "ftp"
-     - !ruby/object:String
-      "local"
-     - !ruby/object:String
-      "smbfs"
-     - !ruby/object:String
-      "nfs"
-     - !ruby/object:String
-      "s3"
+    - !ruby/object:String   
+     "ftp"
+    - !ruby/object:String
+     "local"
+    - !ruby/object:String
+     "smbfs"
+    - !ruby/object:String
+     "nfs"
+    - !ruby/object:String
+     "s3"
    dest_folder:
     regex_invalid_message: "wrong go back and try again"
     name: dest_folder
@@ -226,7 +226,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "    
    dest_address:
     regex_invalid_message: "wrong go back and try again"
@@ -238,7 +238,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_user:
     regex_invalid_message: "wrong go back and try again"
@@ -250,7 +250,7 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
    dest_pass:
     regex_invalid_message: "wrong go back and try again"
@@ -262,5 +262,13 @@ consumer_params:
     hint: ""
     placeholder: " "
     mandatory: true
-    value: " "
+    value: ""
     comment: " "
+   src_type:
+    field_type: hidden
+    name: src_type
+    value: engine
+   sources:
+    field_type: hidden
+    name: sources
+    value: _Engines_Builder(engine_persistant_services)

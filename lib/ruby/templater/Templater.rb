@@ -198,6 +198,9 @@ end
      resolve_system_variable(match)
    } 
    return template
+ rescue Exception=>e
+   p "problem with " + template.to_s
+  SystemUtils.log_exception(e)
  end
  
  def apply_build_variables(template)
@@ -226,6 +229,23 @@ def fill_in_dynamic_vars(service_hash)
       service_hash[:variables][variable[0]] = result
     end
   end
+end
+
+def fill_in_service_def_values(service_def)
+  p :fill_in_service_def_values
+  if service_def.has_key?(:consumer_params) && service_def[:consumer_params].is_a?(Hash)
+    p service_def[:consumer_params]
+      p service_def[:consumer_params].values
+    service_def[:consumer_params].values.each do | field|
+      p :value
+      p field
+      if field.has_key?(:value)
+        value = process_templated_string(field[:value])
+        field[:value] = value
+      end        
+     end
+  end
+  return service_def
 end
 
 def engine_environment
