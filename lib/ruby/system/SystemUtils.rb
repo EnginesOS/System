@@ -292,7 +292,9 @@ def SystemUtils.execute_command(cmd)
   
 def SystemUtils.service_hash_variables_as_str(service_hash)
    argument = String.new
-     
+   if service_hash.has_key?(:publisher_namespace) 
+     argument = "publisher_namespace=" + service_hash[:publisher_namespace] +":type_path="+service_hash[:type_path]
+   end
    service_variables =  service_hash[:variables]
      sources = ""
      if service_variables == nil
