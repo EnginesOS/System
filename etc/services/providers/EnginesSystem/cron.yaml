@@ -46,7 +46,7 @@ consumer_params:
   field_type: select
   select_collection:
    "command"
-   "http"
+   "web"
   hint: ""
   placeholder: "a label "
   mandatory: true

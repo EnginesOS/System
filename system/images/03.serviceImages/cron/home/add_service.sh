@@ -40,8 +40,14 @@ mins=`echo $cron_job | cut -d' ' -f1`
 	cmd=`echo $cron_job | cut -d' ' -f 6- `
 fi 
 
+if test $type == "web"
+	then
+		cmd="wget http://${parent_engine}.engines.internal:8000/$cmd"
+	else
+		cmd="docker exec ${parent_engine} $cmd"
+	fi
 
-echo $mins $hrs $day $dow $dom docker exec ${parent_engine} $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$title
+echo $mins $hrs $day $dow $dom $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$title
 
 /home/rebuild_crontab.sh
 
