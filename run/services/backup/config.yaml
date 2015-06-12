@@ -31,18 +31,17 @@ volumes:
   remotepath: "/var/lib/engines/local_backup_dests/"
   localpath: "/var/lib/engines/backup_paths"
   mapping_permissions: "rw"
- Logs: !ruby/object:Volume
-  name: Logs
+ BackupLogs: !ruby/object:Volume
+  name: BackupLogs
   remotepath: "/var/log/backup"
   localpath: "/var/log/engines/services/backup/"
   mapping_permissions: "rw"
+ SystemLogs: !ruby/object:Volume
+  name: SystemLogs
+  remotepath: "/backup_src/logs"
+  localpath: "/var/log/engines/"
+  mapping_permissions: "ro"
 port: 
-eports:
-- !ruby/object:WorkPort
-  name: ssh
-  port: 22
-  publicFacing: false
-  external: 0
 repo: na
 last_result: |
   nginx

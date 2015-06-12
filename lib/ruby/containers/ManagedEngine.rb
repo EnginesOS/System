@@ -45,9 +45,26 @@ class ManagedEngine < ManagedContainer
     false
   end
 
-  def attached_services
-    @core_api.attached_services(self)
+  def engine_persistant_services
+    services = @core_api.engine_persistant_services(@container_name)
+    retval = String.new
+    
+    if services.is_a?(Array)
+      services.each do |service|
+        retval += " " + SystemUtils.service_hash_variables_as_str(service) 
+      end
+    elsif services.is_a?(Hash)
+      retval = SystemUtils.service_hash_variables_as_str(services)
+    end
+    
+    return retval
   end
+  
+    
+  def engine_attached_services
+    return @core_api.engine_attached_services(@container_name)
+  end
+  
   
   def ManagedEngine.from_yaml( yaml ,core_api )
           managedEngine = YAML::load( yaml )

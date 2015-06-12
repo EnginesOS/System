@@ -1,6 +1,7 @@
 #!/bin/sh
 
   if test $# -eq 2
+  then
    entered_path=$2
    recursive=-R
  else

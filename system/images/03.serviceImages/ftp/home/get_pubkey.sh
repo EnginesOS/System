@@ -6,7 +6,7 @@ if test $1 = 'add' -o $1 = 'rm' -o $1 = 'access'
 		then
 	 		cat /home/.ssh/${1}_rsa.pub | awk '{print $2}'	
  		else
- 	 		ssh-keygen  -f /home/.ssh/${1}_rsa -P ""
+ 	 		ssh-keygen  -f /home/.ssh/${1}_rsa -P "" > /dev/null
  	 		cat /home/.ssh/${1}_rsa.pub | awk '{print $2}' 	 	
  	fi
  fi

@@ -39,7 +39,7 @@ class DockerFileBuilder
     #write_db_service
     #write_cron_jobs
     write_os_packages
-    write_apache_modules
+   
     write_user_local = true
 
     if write_user_local == true
@@ -48,11 +48,9 @@ class DockerFileBuilder
     end
     
     set_user("$ContUser")
-   
-    
+       
     write_app_archives
-    set_user("$ContUser")
-    
+    set_user("$ContUser")    
     
     write_container_user
     
@@ -73,7 +71,9 @@ class DockerFileBuilder
     @docker_file.puts("")
     set_user("0")
     
-    write_pear_list
+    write_pear_modules 
+    write_php_modules 
+    write_pecl_modules 
     write_apache_modules    
 
     write_write_permissions_recursive #recursive firs (as can use to create blank dir)
@@ -90,14 +90,11 @@ class DockerFileBuilder
     set_user("0")
     write_data_permissions
 
-    
-
     @docker_file.puts("run mv /home/fs /home/fs_src")
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
     count_layer()
-    
-
+   
     insert_framework_frag_in_dockerfile("builder.end.tmpl")
     @docker_file.puts("")
     @docker_file.puts("VOLUME /home/fs/")
@@ -105,7 +102,6 @@ class DockerFileBuilder
  
     write_clear_env_variables
     
-
     @docker_file.close
 
   end
@@ -137,6 +133,19 @@ class DockerFileBuilder
     @docker_file.puts("RUN a2enmod " + ap_modules_str)
     count_layer()
   end
+  def write_php_modules
+    if @blueprint_reader.php_modules.count <1
+      return
+    end
+    @docker_file.puts("#PHP Modules")
+    php_modules_str = String.new
+    @blueprint_reader.php_modules.each do |php_module|
+
+      php_modules_str += php_module + " "
+    end
+    @docker_file.puts("RUN php5enmod  " + php_modules_str)
+    count_layer()
+  end
 
   def write_environment_variables
 
@@ -144,9 +153,9 @@ class DockerFileBuilder
       @docker_file.puts("#Environment Variables")
       #Fixme
       #kludge
-      @docker_file.puts("#System Envs")
-      @docker_file.puts("ENV TZ Sydney/Australia")
-      count_layer
+#      @docker_file.puts("#System Envs")
+#      @docker_file.puts("ENV TZ Sydney/Australia")
+#      count_layer
       
       @blueprint_reader.environments.each do |env|
         @docker_file.puts("#Blueprint ENVs")
@@ -731,9 +740,9 @@ SystemUtils.log_exception(e)
     end
   end
 
-  def write_pear_list
-    @docker_file.puts("#OPear List")
-    log_build_output("Dockerfile:Pear List")
+  def write_pear_modules 
+    @docker_file.puts("#OPear modules ")
+    log_build_output("Dockerfile:Pear modules ")
     if @blueprint_reader.pear_modules.count >0
       @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
       @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
@@ -745,7 +754,7 @@ SystemUtils.log_exception(e)
           #for pear
           #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
           # for pecl
-          @docker_file.puts("RUN  pecl install  " + pear_mod )
+          @docker_file.puts("RUN  pear install  " + pear_mod )
           count_layer
         end
       end
@@ -754,7 +763,29 @@ SystemUtils.log_exception(e)
     SystemUtils.log_exception(e)
     return false
   end
+def write_pecl_modules 
+  @docker_file.puts("#Pecl modules ")
+  log_build_output("Dockerfile:Pecl modules ")
+  if @blueprint_reader.pecl_modules.count >0
+    @docker_file.puts("RUN   wget http://pear.php.net/go-pear.phar;\\")
+    @docker_file.puts("  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\")
+    @docker_file.puts("  php go-pear.phar")
+    count_layer
 
+    @blueprint_reader.pecl_modules.each do |pecl_mod|
+      if pear_mod !=nil
+        #for pear
+        #@docker_file.puts("RUN  pear install pear_mod " + pear_mod )
+        # for pecl
+        @docker_file.puts("RUN  pecl install  " + pecl_mod )
+        count_layer
+      end
+    end
+  end
+rescue Exception=>e
+  SystemUtils.log_exception(e)
+  return false
+end
   def set_user(user)
     @docker_file.puts("User " + user)
     count_layer

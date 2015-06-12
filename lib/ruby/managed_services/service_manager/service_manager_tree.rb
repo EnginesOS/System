@@ -27,6 +27,9 @@ module ServiceManagerTree
     end
      
     return @service_tree
+    rescue Exception=>e
+    log_exception(e)
+      return false
   end
 
     #@return The OrphanedServices Tree [TreeNode] branch
@@ -96,11 +99,16 @@ module ServiceManagerTree
   
   #@return boolean true if not nil
   def    check_service_tree
-    if service_tree == nil || service_tree == false
-      SystemUtils.log_error_mesg("Nil service tree ?",service_tree)
+    st = service_tree
+    if   st == false
+      SystemUtils.log_error_mesg("Nil service tree ?",st)
       return false
     end
     return true
+  rescue
+    rescue Exception=>e
+             log_exception(e)
+             return false
   end
   
   
@@ -298,7 +306,10 @@ def log_exception(e)
    else
      @last_tree_mod_time =nil
    end
-     
+   rescue Exception=>e
+       @last_error=( "load tree")
+       log_exception(e)
+       return nil
  end
  
   protected
@@ -319,7 +330,7 @@ def log_exception(e)
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true
   rescue Exception=>e
-    @last_error=( "load error")
+    @last_error=( "save error")
     log_exception(e)
     return false
   end

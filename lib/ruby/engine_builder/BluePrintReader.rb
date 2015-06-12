@@ -25,13 +25,15 @@ class BluePrintReader
                :rake_actions,
                :os_packages,
                :pear_modules,
+               :apache_modules,
+               :php_modules,
+               :pecl_modules,
                :archives_details,
                :worker_commands,
                :cron_jobs,
                :sed_strings,
                :volumes,
                :databases,
-               :apache_modules,
                :data_uid,
                :data_gid,
                :cron_job_list,
@@ -65,9 +67,10 @@ class BluePrintReader
       
        read_os_packages
        read_lang_fw_values
-       read_pear_list
+    
+       read_pkg_modules
        read_app_packages
-       read_apache_modules
+   
        read_write_permissions_recursive
        read_write_permissions_single
        read_worker_commands
@@ -268,64 +271,102 @@ class BluePrintReader
      end
    end
 
-   def read_pear_list
-     begin
-       @pear_modules = Array.new
+#   def read_pear_list
+#     begin
+#       @pear_modules = Array.new
+#
+#       log_build_output("Read Pear List")
+#       pear_mods = @blueprint[:software][:pear_modules]
+#       
+#         if pear_mods == nil || pear_mods.length == 0
+#           log_build_output("no pear")
+#         return
+#         end
+#           log_build_output(pear_mods.length.to_s + "Pears")
+#         pear_mods.each do |pear_mod|
+#           p :Pear_mod
+#           p pear_mod
+#           log_build_output(pear_mod.to_s)
+#           mod =  pear_mod[:module]
+#         os_package = pear_mod[:os_package]
+#                if os_package != nil && os_package != ""
+#                @os_packages.push(os_package)
+#                end
+#           if mod !=nil
+#             @pear_modules.push(mod)
+#             p :added_pear
+#             p mod
+#           end
+#       end
+#   end
+#     rescue Exception=>e
+#     SystemUtils.log_exception(e)
+#       return false
+#   end
+#   
+   def read_pkg_modules
+     
 
-       log_build_output("Read Pear List")
-       pear_mods = @blueprint[:software][:pear_modules]
-       
-         if pear_mods == nil || pear_mods.length == 0
-           log_build_output("no pear")
-         return
-         end
-           log_build_output(pear_mods.length.to_s + "Pears")
-         pear_mods.each do |pear_mod|
-           p :Pear_mod
-           p pear_mod
-           log_build_output(pear_mod.to_s)
-           mod =  pear_mod[:module]
-         os_package = pear_mod[:os_package]
-                if os_package != nil && os_package != ""
-                @os_packages.push(os_package)
-                end
-           if mod !=nil
-             @pear_modules.push(mod)
-             p :added_pear
-             p mod
-           end
-       end
-   end
-     rescue Exception=>e
-     SystemUtils.log_exception(e)
-       return false
-   end
-
-   def read_apache_modules
      @apache_modules = Array.new
-     log_build_output("Read Apache Modules List")
-     mods =  @blueprint[:software][:apache_modules]
-     if mods == nil
-       p :no_apache_modules
-       return true
-     end
-     mods.each do |ap_module|
-       mod = ap_module[:module]
-       os_package = ap_module[:os_package]
-         if os_package != nil && os_package != ""
-         @os_packages.push(os_package)
+     @pear_modules = Array.new
+     @php_modules = Array.new
+     @pecl_modules = Array.new
+     
+     pkg_modules =  @blueprint[:software][:modules]
+       if pkg_modules
+         pkg_modules.each do |pkg_module |
+           os_package = pkg_module[:os_package]
+                   if os_package != nil && os_package != ""
+                    @os_packages.push(os_package)
+                   end
+               pkg_module_type =  pkg_module[:module_type]
+                 if    pkg_module_type == nil
+                   @last_error="pkg Module missing module_type"
+                   return false
+                 end
+                 modname = pkg_module[:module_name]
+                   
+               if   pkg_module_type == "pear"
+                 @pear_modules.push(modname)
+               elsif pkg_module_type == "pecl"
+                 @pecl_modules.push(modname)
+               elsif pkg_module_type == "php"
+                   @php_modules.push(modname)
+               elsif pkg_module_type == "apache"
+                 @apache_modules.push(modname)
+               else
+                  @last_error="pkg module_type " + pkg_module_type + " Unknown for " +  modname 
+                  return false
+               end
          end
-       if mod != nil
-         @apache_modules.push(mod)
-         p :Add_apache
-         p mod
-       end
-     end
-     return true
-   rescue Exception=>e
-SystemUtils.log_exception(e)
-     return false
+      end
    end
+
+#   def read_apache_modules
+#     @apache_modules = Array.new
+#     log_build_output("Read Apache Modules List")
+#     mods =  @blueprint[:software][:apache_modules]
+#     if mods == nil
+#       p :no_apache_modules
+#       return true
+#     end
+#     mods.each do |ap_module|
+#       mod = ap_module[:module]
+#       os_package = ap_module[:os_package]
+#         if os_package != nil && os_package != ""
+#         @os_packages.push(os_package)
+#         end
+#       if mod != nil
+#         @apache_modules.push(mod)
+#         p :Add_apache
+#         p mod
+#       end
+#     end
+#     return true
+#   rescue Exception=>e
+#SystemUtils.log_exception(e)
+#     return false
+#   end
 
    def read_app_packages
      begin

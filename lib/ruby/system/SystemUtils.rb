@@ -288,4 +288,30 @@ def SystemUtils.execute_command(cmd)
     return service_hash
 
   end
+  
+  
+def SystemUtils.service_hash_variables_as_str(service_hash)
+   argument = String.new
+   if service_hash.has_key?(:publisher_namespace) 
+     argument = "publisher_namespace=" + service_hash[:publisher_namespace] +":type_path="+service_hash[:type_path]+":"
+   end
+   service_variables =  service_hash[:variables]
+     sources = ""
+     if service_variables == nil
+       return argument
+     end
+   service_variables.each_pair do |key,value|
+     if key == :sources
+       sources = value
+       next 
+     end
+          
+     argument+= key.to_s + "=\"" + value.to_s + "\":"      
+   end
+   
+  argument += " " + sources
+   
+   return argument
+ end
+ 
 end

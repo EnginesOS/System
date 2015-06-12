@@ -70,6 +70,10 @@ class ManagedContainer < Container
   :last_error,
   :docker_info
 
+  def engine_environment
+    return environments
+  end
+  
   def is_service?
     if @ctype && @ctype != nil && @ctype == "service"
       return true
@@ -305,7 +309,8 @@ class ManagedContainer < Container
     if(retval=destroy_container()) == true
       ret_val=create_container()
     end
-
+    @setState="running"
+    save_state()
     return ret_val
   end
 
@@ -550,8 +555,10 @@ class ManagedContainer < Container
         add_nginx_service
       end
       @core_api.register_non_persistant_services(self)
-      save_state()
+     
     end
+    @setState="running"
+    save_state()
     return ret_val
   end
 

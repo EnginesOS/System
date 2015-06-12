@@ -14,9 +14,9 @@ load_service_hash_to_environment
 		echo Error:Missing cron_job
         exit -1
     fi
-  	if test -z ${name}
+  	if test -z ${title}
 	then
-		echo Error:missing name
+		echo Error:missing title
         exit -1
     fi  
     	if test -z ${parent_engine}
@@ -28,13 +28,26 @@ load_service_hash_to_environment
 mkdir -p /home/cron/entries/${parent_engine}/
 
 mins=`echo $cron_job | cut -d' ' -f1`
-hrs=`echo $cron_job | cut -d' ' -f2`
-day=`echo $cron_job | cut -d' ' -f3`
-dow=`echo $cron_job | cut -d' ' -f4`
-dom=`echo $cron_job | cut -d' ' -f5`
-cmd=`echo $cron_job | cut -d' ' -f 6- `
+ if [[ $mins == @* ]] 
+  then
+  cmd=`echo $cron_job | cut -d' ' -f 2- `
+	
+  else
+    hrs=`echo $cron_job | cut -d' ' -f2`
+	day=`echo $cron_job | cut -d' ' -f3`
+	dow=`echo $cron_job | cut -d' ' -f4`
+	dom=`echo $cron_job | cut -d' ' -f5`
+	cmd=`echo $cron_job | cut -d' ' -f 6- `
+fi 
 
-echo $mins $hrs $day $dow $dom docker exec ${parent_engine} $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$name
+if test $action_type == "web"
+	then
+		cmd="wget http://${parent_engine}.engines.internal:8000/$cmd"
+	else
+		cmd="docker exec ${parent_engine} $cmd"
+	fi
+
+echo $mins $hrs $day $dow $dom $cmd  | sed "/STAR/s//\*/g" > /home/cron/entries/${parent_engine}/$title
 
 /home/rebuild_crontab.sh
 
