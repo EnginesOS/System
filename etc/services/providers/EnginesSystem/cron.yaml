@@ -37,3 +37,17 @@ consumer_params:
   placeholder: "a label "
   mandatory: true
   comment: " "
+ type:
+  regex_invalid_message: "wrong go back and try again"
+  name: type
+  label: Cron type web or command
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: select
+  select_collection:
+   "command"
+   "web"
+  hint: ""
+  placeholder: "a label "
+  mandatory: true
+  comment: " "
