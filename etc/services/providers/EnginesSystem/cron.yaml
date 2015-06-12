@@ -37,16 +37,18 @@ consumer_params:
   placeholder: "a label "
   mandatory: true
   comment: " "
- type:
+ action_type:
   regex_invalid_message: "wrong go back and try again"
-  name: type
+  name: action_type
   label: Cron type web or command
   regex_validator: ".*"
   tooltip: " "
   field_type: select
   select_collection:
-   "command"
-   "web"
+    - !ruby/object:String
+     "command"
+    - !ruby/object:String
+     "web"
   hint: ""
   placeholder: "a label "
   mandatory: true

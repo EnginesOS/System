@@ -40,7 +40,7 @@ mins=`echo $cron_job | cut -d' ' -f1`
 	cmd=`echo $cron_job | cut -d' ' -f 6- `
 fi 
 
-if test $type == "web"
+if test $action_type == "web"
 	then
 		cmd="wget http://${parent_engine}.engines.internal:8000/$cmd"
 	else
