@@ -333,6 +333,8 @@ echo "Setting directory and file permissions"
 	
 	chown 22017 -R /var/log/engines/services/auth/
 	chown 22017 -R  /opt/engines/etc/auth/keys/
+	chgrp -R 22020 /opt/engines/run/services/
+	chmod g+w -R  /opt/engines/run/services/
 	
 	}
 
