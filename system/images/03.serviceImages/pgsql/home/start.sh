@@ -2,7 +2,7 @@
 
 mkdir -p /engines/var/run/flags
 
-export PID_FILE /var/run/postgresql/postgresql.pid
+PID_FILE=/var/run/postgresql/postgresql.pid
 
 
 if test -f $PID_FILE

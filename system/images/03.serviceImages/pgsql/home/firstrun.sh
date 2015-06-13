@@ -20,7 +20,7 @@ pass="pass"
 	 echo "Alter ROLE rma WITH superuser;" >> /tmp/t.sql
 	 echo "Alter ROLE rma WITH   login;" >> /tmp/t.sql
 	 echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
-	 su postgres -c  psql </tmp/t.sql
+	 psql </tmp/t.sql
 	 
 	kill -TERM `cat /var/run/postgresql/postgresql.pid`
 	  	 
