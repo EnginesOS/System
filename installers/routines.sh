@@ -330,8 +330,10 @@ echo "Setting directory and file permissions"
 	 chown 22003 -R /var/log/engines/services/email/
 	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
+	
 	chown 22017 -R /var/log/engines/services/auth/
 	chown 22017 -R  /opt/engines/etc/auth/keys/
+	
 	}
 
 function set_os_flavor {
