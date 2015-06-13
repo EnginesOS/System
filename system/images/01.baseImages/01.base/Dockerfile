@@ -32,4 +32,4 @@ RUN 	apt-get -y  --force-yes update;\
 		apt-get upgrade -y;\
 		apt-get clean
 
-CMD /bin/bash /home/init.sh
+CMD ["/home/init.sh"]

@@ -10,4 +10,4 @@ RUN apt-get update -y;\
 		chown www-data $chowns;\
 		fi 
 		
-CMD /home/start.bash
+CMD ["/home/start.bash"]

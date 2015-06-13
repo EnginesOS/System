@@ -18,7 +18,7 @@ RUN	apt-get update -y;\
 			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf;\
 	fi
 	
-CMD /home/start.bash
+CMD ["/home/start.bash"]
 
 
 
