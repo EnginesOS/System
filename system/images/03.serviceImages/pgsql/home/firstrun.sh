@@ -22,7 +22,7 @@ pass="pass"
 	 echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
 	 psql </tmp/t.sql
 	 
-	kill -TERM `cat /var/run/postgresql/postgresql.pid`
+	kill -TERM `cat /var/run/postgresql/9.3-main.pid`
 	  	 
 	 	 
  fi
