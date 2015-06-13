@@ -30,4 +30,4 @@ RUN apt-get -y update;\
 COPY home home
 USER cron
 
-CMD /home/init.sh
+CMD ["/home/init.sh"]

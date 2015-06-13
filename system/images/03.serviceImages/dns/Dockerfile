@@ -28,4 +28,4 @@ COPY home home
 ENV ContUser bind
 ENV ContGrp bind
 
-CMD /home/init.sh
+CMD ["/home/init.sh"]

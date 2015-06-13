@@ -44,5 +44,5 @@ ADD SSL-default.conf /etc/apache2/sites-enabled/
 ADD	passenger.conf  /etc/apache2/mods-enabled/
 ADD Procfile.sh /home/app/
 
-CMD /home/app/Procfile.sh
+CMD ["/home/app/Procfile.sh"]
 USER 21000
