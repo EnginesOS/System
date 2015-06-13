@@ -1,4 +1,4 @@
-
+#!/bin/sh
 
 mkdir -p /engines/var/run/flags
 
