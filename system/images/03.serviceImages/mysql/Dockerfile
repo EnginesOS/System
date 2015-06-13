@@ -11,7 +11,7 @@ RUN   apt-get -y update;\
 	echo event-scheduler = 1 >> /etc/mysql/my.cnf;\
 	usermod -G containers -a mysql
 ADD home home
-
+RUN chown mysql /home/firstrun.sh
 
 EXPOSE 3306
 
