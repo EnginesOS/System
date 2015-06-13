@@ -14,5 +14,4 @@ else
 fi 
 
 
-/opt/engines/bin/eservice register_consumers dns
-/opt/engines/bin/eservice register_consumers nginx
+

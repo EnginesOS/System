@@ -9,6 +9,12 @@ then
 else
 	/opt/engines/bin/engines.rb service start dns 
 fi
+if test `/opt/engines/bin/engines.rb service start mysql_server |grep nocontainer |wc -c` -gt 0
+then
+	/opt/engines/bin/engines.rb service create mysql_server
+else
+	/opt/engines/bin/engines.rb service start mysql_server 
+fi
 
 if test `/opt/engines/bin/engines.rb service start nginx |grep nocontainer |wc -c` -gt 0
 then
@@ -17,6 +23,12 @@ else
 	/opt/engines/bin/engines.rb service start nginx 
 fi
 
+if test `/opt/engines/bin/engines.rb service start auth |grep nocontainer |wc -c` -gt 0
+then
+	/opt/engines/bin/engines.rb service create auth
+else
+	/opt/engines/bin/engines.rb service start auth 
+fi
 
 sleep 20
 /opt/engines/bin/engines.rb service check_and_act all

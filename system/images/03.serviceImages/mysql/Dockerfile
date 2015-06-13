@@ -11,7 +11,7 @@ RUN   apt-get -y update;\
 	echo event-scheduler = 1 >> /etc/mysql/my.cnf;\
 	usermod -G containers -a mysql
 ADD home home
-
+RUN chown mysql /home/firstrun.sh
 
 EXPOSE 3306
 
@@ -20,5 +20,5 @@ ENV ContUser mysql
 ENV ContGrp mysql
 
 USER mysql
-#CMD /home/init.sh
-CMD /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
+CMD /home/start.sh
+#CMD /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
