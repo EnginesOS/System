@@ -37,9 +37,8 @@ if test -f $PID_FILE
 	fi
 }
 
-trap trap_term  15
-trap trap_hup 1
-trap trap_quit 3
+trap trap_term  SIGKILL SIGTERM SIGHUP SIGINT EXIT
+
 
  if test -f /home/firstrun.sh 
 	 then
