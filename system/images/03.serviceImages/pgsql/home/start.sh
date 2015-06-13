@@ -2,7 +2,7 @@
 
 mkdir -p /engines/var/run/flags
 
-PID_FILE=/var/run/postgresql/postgresql.pid
+PID_FILE=/var/run/postgresql/9.3-main.pid
 
 
 if test -f $PID_FILE
@@ -14,7 +14,7 @@ if test -f $PID_FILE
  if test -f /home/firstrun.sh 
 	 then
         bash /home/firstrun.sh 
-        mv /home/firstrun.sh /home/mysql/firstrun.sh.save
+        cp /home/firstrun.sh /home/postgres/firstrun.sh.save
 fi
 
 exec /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf
