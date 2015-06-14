@@ -1,8 +1,9 @@
 #!/bin/sh
 
 
-#PID_FILE=/var/run/mongodb.pid
-#source /home/trap.sh
+PID_FILE=/var/run/mongodb.pid
+export PID_FILE
+source /home/trap.sh
 
  
 mkdir -p /engines/var/run/
