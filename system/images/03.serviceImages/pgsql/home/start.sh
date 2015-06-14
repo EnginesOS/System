@@ -46,5 +46,5 @@ trap trap_term  1 3 15
         cp /home/firstrun.sh /home/postgres/firstrun.sh.save
 fi
 
- /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf
-
+ /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &
+ wait $!
