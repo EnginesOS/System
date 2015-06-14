@@ -54,17 +54,10 @@ if test -f /home/engines/scripts/startwebapp.sh
 	
 #Apache based below here
 
-if test -f /run/apache2/apache2.pid 
-	then
- 		rm -f /run/apache2/apache2.pid
- 		echo "Warning stale Apache pid file removed"
-    fi 
-    
 PIDFILE=/run/apache2/apache2.pid
+export PIDFILE
 source /home/trap.sh
 
-trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"  15
-rm -f /run/apache2/apache2.pid 
   
 if test -f /home/app/Rack.sh
 	then 	 
@@ -78,11 +71,13 @@ mkdir -p /var/log/apache2/ >/dev/null
 	if test -f /home/blocking.sh
 		then
 		/etc/init.d/apache2 start
-			bash /home/blocking.sh
+			bash /home/blocking.sh &
 	else		
-		/usr/sbin/apache2ctl -D FOREGROUND
+		/usr/sbin/apache2ctl start
+	
 	fi	
  
+ wait $!
 
  
  
