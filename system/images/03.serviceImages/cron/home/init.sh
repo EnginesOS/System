@@ -9,7 +9,7 @@ source /home/trap.sh
 
 touch /engines/var/run/startup_complete
 
-sudo syslogd -n -R syslog.engines.internal:5140
+sudo syslogd  -R syslog.engines.internal:5140
 
 wait $!
 
