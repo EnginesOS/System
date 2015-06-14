@@ -2,17 +2,15 @@
 
 
 PIDFILE=/home/cron/fcron.pid
+export PIDFILE
 source /home/trap.sh
 
 /home/cron/sbin/fcron -p  /home/cron/log/cron.log
-touch /var/run/startup_complete
-syslogd -n -R syslog.engines.internal:5140
 
-chown 21000 /var/run/startup_complete
-sleep 100
+touch /engines/var/run/startup_complete
 
-while test -f /home/cron/fcron.pid
-do
-	  sleep 120
-done
+sudo syslogd -n -R syslog.engines.internal:5140
+
+wait $!
+
 rm -f /engines/var/run/startup_complete

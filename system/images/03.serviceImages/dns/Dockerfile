@@ -10,7 +10,7 @@ RUN apt-get -y update;\
 ADD named.conf.local /etc/bind/named.conf.local
 #ADD named.conf.default-zones.ad /etc/
 ADD templates /etc/bind/templates
-
+COPY sudoers /etc/	
 ADD engines.internal.domain /var/lib/bind/engines/engines.dnsrecords
 
 RUN chown bind /var/run/named;\
@@ -22,8 +22,8 @@ RUN chown bind /var/run/named;\
 	
 	
 COPY home home
+USER bind
 
-#CMD /usr/sbin/named -c /etc/bind/named.conf -u bind -g
 
 ENV ContUser bind
 ENV ContGrp bind
