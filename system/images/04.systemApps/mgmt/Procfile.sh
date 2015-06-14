@@ -31,7 +31,14 @@ rm -rf  /home/app/log
 ln -s /var/log/app /home/app/log 
 
 touch  /engines/var/run/startup_complete
-rm /var/run/apache2/apache2.pid
+
+
+PID_FILE=/var/run/apache2/apache2.pid
+
+export PID_FILE
+. /home/trap.sh
+
+
 /usr/sbin/apache2ctl -D FOREGROUND
 
 rm /var/run/apache2/apache2.pid
