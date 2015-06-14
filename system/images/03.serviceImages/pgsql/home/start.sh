@@ -3,44 +3,8 @@
 mkdir -p /engines/var/run/flags
 
 PID_FILE=/var/run/postgresql/9.3-main.pid
-
-
-if test -f $PID_FILE
- 	then
- 		echo "Warning stale $PID_FILE"
- 		rm $PID_FILE
- 	fi
- 	
- 	
-trap_term()
-{
-	if test -f $PID_FILE
-	then
-		kill -TERM `cat   $PID_FILE `
-		 touch /engines/var/run/flags/termed
-		 wait `cat   $PID_FILE `
-	fi
-}
-trap_hup()
-{
-if test -f $PID_FILE
-	then
-		kill -HUP `cat   $PID_FILE `
-		 touch /engines/var/run/flags/huped
-		 wait `cat   $PID_FILE `
-	fi
-}
-trap_quit()
-{
-if test -f $PID_FILE
-	then
-		kill -QUIT `cat   $PID_FILE `
-		 touch /engines/var/run/flags/quited
-		 wait `cat   $PID_FILE `
-	fi
-}
-
-trap trap_term  1 3 15 
+export PID_FILE
+. /home/trap.sh
 
 
  if test -f /home/firstrun.sh 
