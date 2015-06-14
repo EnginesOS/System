@@ -16,6 +16,9 @@ echo Starting Apache
 touch /var/run/startup_complete
 #chown 21000 /var/run/startup_complete
 
+PIDFILE=/run/apache2/apache2.pid
+source /home/trap.sh
+
 check=0
 	if test -f /home/blocking.sh
 		then
