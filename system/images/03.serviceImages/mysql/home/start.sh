@@ -4,12 +4,9 @@ mkdir -p /engines/var/run/flags
 
 PID_FILE=/var/run/mysqld/mysqld.pid
 
+export PID_FILE
+. /home/trap.sh
 
-if test -f $PID_FILE
- 	then
- 		echo "Warning stale $PID_FILE"
- 		rm $PID_FILE
- 	fi
  	
  if test -f /home/firstrun.sh 
 	 then
@@ -17,4 +14,5 @@ if test -f $PID_FILE
         mv /home/firstrun.sh /home/mysql/firstrun.sh.save
 fi
 
-exec /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
+/usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306 &
+wait $!

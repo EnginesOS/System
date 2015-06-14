@@ -3,6 +3,7 @@
 
 #PIDFILE=/rub/auth.pid
 #source /home/trap.sh
+
 mkdir -p /home/auth/logs/
 
 if test -f /home/auth/first_run.sh
