@@ -3,9 +3,10 @@
 
 sudo syslogd -R syslog.engines.internal:5140
 
-#No need as uses exec
-#PIDFILE=/var/run/ftpd.pid
-#source /home/trap.sh
+
+PIDFILE=/var/run/ftpd.pid
+export PIDFILE
+source /home/trap.sh
 
 mkdir -p /engines/var/run/
 	touch  /engines/var/run/startup_complete
@@ -54,7 +55,8 @@ fcnt=`expr $fcnt + 1`
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
 
-exec sudo /usr/sbin/proftpd -n
+exec sudo /usr/sbin/proftpd 
+wait $!
 
 
 rm /engines/var/run/startup_complete

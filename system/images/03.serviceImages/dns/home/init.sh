@@ -20,7 +20,7 @@ cp /etc/bind/templates/named.conf.default-zones.start /etc/bind/named.conf.defau
 echo "secret \"$key\";" >> /etc/bind/named.conf.default-zones;\
 cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones
 
-
+sudo syslogd  -R syslog.engines.internal:5140
  sudo /usr/sbin/named  -c /etc/bind/named.conf -u bind 
  wait $! 
 

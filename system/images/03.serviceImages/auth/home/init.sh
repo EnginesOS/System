@@ -23,7 +23,7 @@ touch /var/run/startup_complete
 
 sudo syslogd  -R syslog.engines.internal:5140
 
-exec /usr/sbin/sshd -D -f /home/auth/ssh/sshd.conf -E /home/auth/logs/ssh.log
+exec sudo /usr/sbin/sshd -D -f /home/auth/ssh/sshd.conf -E /home/auth/logs/ssh.log
  
  
 
