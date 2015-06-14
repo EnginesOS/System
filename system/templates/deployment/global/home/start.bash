@@ -59,6 +59,9 @@ if test -f /run/apache2/apache2.pid
  		rm -f /run/apache2/apache2.pid
  		echo "Warning stale Apache pid file removed"
     fi 
+    
+PIDFILE=/run/apache2/apache2.pid
+source /home/trap.sh
 
 trap "{kill -TERM `cat   /run/apache2/apache2.pid `}"  15
 rm -f /run/apache2/apache2.pid 
