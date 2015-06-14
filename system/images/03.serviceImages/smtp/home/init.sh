@@ -1,9 +1,9 @@
 #!/bin/sh
 
 
-PIDFILE=/var/spool/postfix/pid/master.pid
+PID_FILE=/var/spool/postfix/pid/master.pid
 
-export PIDFILE
+export PID_FILE
 source /home/trap.sh
 
 

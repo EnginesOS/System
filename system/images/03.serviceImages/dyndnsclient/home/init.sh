@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PIDFILE=/home/dyndns/dyndns.pid
-export PIDFILE
+PID_FILE=/home/dyndns/dyndns.pid
+export PID_FILE
 source /home/trap.sh
 
 
