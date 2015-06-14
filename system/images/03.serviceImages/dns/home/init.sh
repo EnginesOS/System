@@ -2,8 +2,8 @@
 
 
 
-PIDFILE=/var/run/named/named.pid
-export PIDFILE
+PID_FILE=/var/run/named/named.pid
+export PID_FILE
 source /home/trap.sh
 
 sudo /home/setup.sh

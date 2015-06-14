@@ -1,8 +1,9 @@
 #!/bin/sh
 
 
-#PIDFILE=/rub/auth.pid
-#source /home/trap.sh
+PID_FILE=/rub/auth.pid
+export PID_FILE
+source /home/trap.sh
 
 mkdir -p /home/auth/logs/
 

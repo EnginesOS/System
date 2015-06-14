@@ -4,7 +4,8 @@
 sudo syslogd -R syslog.engines.internal:5140
 
 #No need as uses exec
-#PIDFILE=/var/run/ftpd.pid
+PID_FILE=/var/run/ftpd.pid
+export PID_FILE
 #source /home/trap.sh
 
 mkdir -p /engines/var/run/
