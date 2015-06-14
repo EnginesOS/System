@@ -2,8 +2,9 @@
 
 
 
-#PIDFILE=/var/run/named/named.pid
-#source /home/trap.sh
+PIDFILE=/var/run/named/named.pid
+export PIDFILE
+source /home/trap.sh
 
 mkdir -p /var/run/named
 chown -R bind /var/run/named
@@ -20,6 +21,7 @@ echo "secret \"$key\";" >> /etc/bind/named.conf.default-zones;\
 cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones
 
 
-exec /usr/sbin/named -f -c /etc/bind/named.conf -u bind 
+ sudo /usr/sbin/named  -c /etc/bind/named.conf -u bind 
+ wait $! 
 
 
