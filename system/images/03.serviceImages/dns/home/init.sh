@@ -13,7 +13,7 @@ mkdir -p /engines/var/run/flags/
 sudo /home/setup.sh
 
 sudo syslogd  -R syslog.engines.internal:5140
-sudo /usr/sbin/named  -c /etc/bind/named.conf -u bind 
+sudo /usr/sbin/named  -c /etc/bind/named.conf -f -u bind & 
 touch /engines/var/run/flags/startup_complete
 wait  
 
