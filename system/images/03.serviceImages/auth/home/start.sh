@@ -8,10 +8,10 @@ export PID_FILE
 
 mkdir -p /home/auth/logs/
 
-if test -f /home/auth/first_run.sh
+if ! test -f /engines/var/run/flags/first_run.done
 	then
 		/home/auth/first_run.sh
-		mv /home/auth/first_run.sh /home/auth/first_run.done
+		
 		touch /engines/var/run/flags/first_run.done
 	fi
 	
@@ -26,17 +26,20 @@ if test -f /home/auth/first_run.sh
 sudo -n syslogd  -R syslog.engines.internal:5140
 
 
-touch /engines/var/run/flags/startup_complete
+
   
 
 SIGNAL=0
 
 sudo /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
+touch /engines/var/run/flags/startup_complete
+echo "startup complete"
 
  while test $SIGNAL -ne 3 -a $SIGNAL -ne 15
  do
   if test -f $PID_FILE
   	then
+  	echo "waiting"
 		wait 
 		echo $SIGNAL
   fi
