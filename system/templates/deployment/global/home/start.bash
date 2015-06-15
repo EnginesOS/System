@@ -58,6 +58,7 @@ PID_FILE=/run/apache2/apache2.pid
 export PID_FILE
 . /home/trap.sh
 
+mkdir -p  /engines/var/run/flags/
   
 if test -f /home/app/Rack.sh
 	then 	 
@@ -73,8 +74,9 @@ mkdir -p /var/log/apache2/ >/dev/null
 		/etc/init.d/apache2 start
 			bash /home/blocking.sh &
 	else		
-		/usr/sbin/apache2ctl start	
+		/usr/sbin/apache2ctl -DFOREGROUND &
 	fi	
- touch /engines/var/run/flags/startup_complete
+		
+touch /engines/var/run/flags/startup_complete
  wait 
- /engines/var/run/flags/startup_complete
+ rm /engines/var/run/flags/startup_complete

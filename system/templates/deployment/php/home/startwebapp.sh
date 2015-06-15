@@ -1,11 +1,11 @@
 #!/bin/sh
 
 
-touch /var/run/startup_complete
 
 
-PIDFILE=/run/apache2/apache2.pid
-export PIDFILE
+
+PID_FILE=/run/apache2/apache2.pid
+export PID_FILE
 source /home/trap.sh
 
 
@@ -14,8 +14,11 @@ source /home/trap.sh
 		/etc/init.d/apache2 start
 			bash /home/blocking.sh &
 	else		
-		/usr/sbin/apache2ctl start
+		
+		/usr/sbin/apache2ctl -DFOREGROUND &
+		touch /var/run/flags/startup_complete
 	fi
 
-wait $!
+wait 
 
+rm /var/run/flags/startup_complete
