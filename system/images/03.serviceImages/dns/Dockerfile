@@ -8,7 +8,7 @@ RUN apt-get -y update;\
     mkdir -p /var/run/named
 
 ADD named.conf.local /etc/bind/named.conf.local
-#ADD named.conf.default-zones.ad /etc/
+
 ADD templates /etc/bind/templates
 COPY sudoers /etc/	
 ADD engines.internal.domain /var/lib/bind/engines/engines.dnsrecords

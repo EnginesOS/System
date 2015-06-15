@@ -31,7 +31,7 @@ sudo -n syslogd  -R syslog.engines.internal:5140
 
 SIGNAL=0
 
-sudo /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
+sudo -n /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
 touch /engines/var/run/flags/startup_complete
 echo "startup complete"
 

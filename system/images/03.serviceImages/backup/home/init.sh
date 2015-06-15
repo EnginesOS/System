@@ -8,7 +8,7 @@ export PID_FILE
 
 mkdir -p /engines/var/run/flags/
 
-sudo syslogd  -R syslog.engines.internal:5140
+sudo -n syslogd  -R syslog.engines.internal:5140
 
 
 /home/backup/fcron/sbin/fcron -f &
