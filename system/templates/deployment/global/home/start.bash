@@ -73,9 +73,8 @@ mkdir -p /var/log/apache2/ >/dev/null
 		/etc/init.d/apache2 start
 			bash /home/blocking.sh &
 	else		
-		/usr/sbin/apache2ctl start
-	
+		/usr/sbin/apache2ctl start	
 	fi	
- touch /engines/var/run/startup_complete
+ touch /engines/var/run/flags/startup_complete
  wait 
- /engines/var/run/startup_complete
+ /engines/var/run/flags/startup_complete
