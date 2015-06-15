@@ -62,7 +62,7 @@ trap_quit()
 			if test -f $PID_FILE
 	 			then
 	 				echo "Warning stale $PID_FILE"
-	 				rm $PID_FILE
+	 				rm -f $PID_FILE
 			fi
 	 			
 		trap trap_term 15 
