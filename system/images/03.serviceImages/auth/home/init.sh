@@ -36,7 +36,7 @@ touch /engines/var/run/flags/startup_complete
   	then
 		wait
 		echo $SIGNAL
-	end
+  fi
  done
 
 kill -TERM `cat /run/syslogd.pid`
