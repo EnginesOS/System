@@ -59,7 +59,7 @@ cd $MasterImagesDir
 										
 										touch last_built
 							
-										
+										docker rmi $( docker images -f "dangling=true" -q) 
 									else
 										echo "Failed to build $tag in $class/$dir"
 										exit
@@ -73,6 +73,8 @@ cd $MasterImagesDir
 		
 		done
 
+echo Clearing unlinked images
+docker rmi $( docker images -f "dangling=true" -q) 
 
 
 
