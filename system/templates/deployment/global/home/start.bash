@@ -54,9 +54,9 @@ if test -f /home/engines/scripts/startwebapp.sh
 	
 #Apache based below here
 
-PIDFILE=/run/apache2/apache2.pid
-export PIDFILE
-source /home/trap.sh
+PID_FILE=/run/apache2/apache2.pid
+export PID_FILE
+. /home/trap.sh
 
   
 if test -f /home/app/Rack.sh
@@ -65,7 +65,7 @@ if test -f /home/app/Rack.sh
 		. /home/app/Rack.sh  
 	fi
 
-touch /engines/var/run/startup_complete
+
 mkdir -p /var/log/apache2/ >/dev/null
 
 	if test -f /home/blocking.sh
@@ -73,12 +73,8 @@ mkdir -p /var/log/apache2/ >/dev/null
 		/etc/init.d/apache2 start
 			bash /home/blocking.sh &
 	else		
-		/usr/sbin/apache2ctl start
-	
+		/usr/sbin/apache2ctl start	
 	fi	
- 
- wait $!
-
- 
- 
- rm /engines/var/run/startup_complete
+ touch /engines/var/run/flags/startup_complete
+ wait 
+ /engines/var/run/flags/startup_complete

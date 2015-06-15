@@ -30,7 +30,7 @@ rm -rf  /home/app/log
 
 ln -s /var/log/app /home/app/log 
 
-touch  /engines/var/run/startup_complete
+
 
 
 PID_FILE=/var/run/apache2/apache2.pid
@@ -40,8 +40,8 @@ export PID_FILE
 
 
 /usr/sbin/apache2ctl start
-
-wait $!
+touch  /engines/var/run/startup_complete
+wait 
 
 rm /var/run/apache2/apache2.pid
 rm /engines/var/run/startup_complete

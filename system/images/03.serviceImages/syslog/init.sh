@@ -2,9 +2,12 @@
 
 PID_FILE=/var/run/ng-syslog.pid
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
+mkdir -p /engines/var/run/flags/
  
 syslog-ng -F -f /etc/syslog-ng/syslog-ng.conf -p /$PID_FILE --no-caps  -v -e &
-wait $!
+touch  /engines/var/run/flags/startup_complete
+wait  
+rm /engines/var/run/flags/startup_complete
 
 

@@ -6,10 +6,10 @@ sudo syslogd -R syslog.engines.internal:5140
 
 PID_FILE=/var/run/ftpd.pid
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
 
-mkdir -p /engines/var/run/
-	touch  /engines/var/run/startup_complete
+mkdir -p /engines/var/run/flags
+	
 	
 service_hash=`ssh -p 2222  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/.ssh/access_rsa auth@auth.engines.internal /home/auth/access/ftp/get_access.sh`
 
@@ -53,9 +53,9 @@ fcnt=`expr $fcnt + 1`
 	echo "	SQLConnectInfo $database_name@$db_host $db_username $db_password " >> /etc/proftpd/sql.conf
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
+touch  /engines/var/run/flags/startup_complete
+ sudo /usr/sbin/proftpd 
+wait 
 
-exec sudo /usr/sbin/proftpd 
-wait $!
 
-
-rm /engines/var/run/startup_complete
+rm /engines/var/run/flags/startup_complete
