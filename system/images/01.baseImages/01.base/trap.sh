@@ -8,6 +8,8 @@ trap_term()
 			 touch /engines/var/run/flags/termed
 			 wait `cat   $PID_FILE `
 		fi
+		SIGNAL=15
+		export SIGNAL
 	}
 trap_hup()
 	{
@@ -17,6 +19,8 @@ trap_hup()
 			 touch /engines/var/run/flags/huped
 			 wait `cat   $PID_FILE `
 		fi
+		SIGNAL=1
+		export SIGNAL
 	}
 
 trap_quit()
@@ -27,6 +31,8 @@ trap_quit()
 			 touch /engines/var/run/flags/quited
 			 wait `cat   $PID_FILE `
 		fi
+		SIGNAL=15
+		export SIGNAL
 	}
 	
 
