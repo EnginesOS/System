@@ -34,7 +34,7 @@ touch /engines/var/run/flags/startup_complete
  do
   if test -f $PID_FILE
   	then
-		wait
+		wait `cat $PID_FILE`
 		echo $SIGNAL
   fi
  done
