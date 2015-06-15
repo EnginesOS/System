@@ -18,4 +18,4 @@ RUN chown -R auth /home/auth
 
 USER auth
 
-CMD ["home/init.sh"]
+CMD ["home/start.sh"]

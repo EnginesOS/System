@@ -23,22 +23,11 @@ if test -f /home/auth/first_run.sh
 	
 
 
-sudo syslogd  -R syslog.engines.internal:5140
+sudo -n syslogd  -R syslog.engines.internal:5140
 
-sudo /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -E /home/auth/logs/ssh.log &
+
 touch /engines/var/run/flags/startup_complete
   
-  SIGNAL=0
-  
- while test $SIGNAL -ne 3 -a $SIGNAL -ne 15
- do
-  if test -f $PID_FILE
-  	then
-		wait `cat $PID_FILE`
-		echo $SIGNAL
-  fi
- done
-
-kill -TERM `cat /run/syslogd.pid`
+sudo -n /home/_start.sh
 
 rm -f /engines/var/run/flags/startup_complete
