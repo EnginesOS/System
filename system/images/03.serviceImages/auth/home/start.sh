@@ -28,6 +28,20 @@ sudo -n syslogd  -R syslog.engines.internal:5140
 
 touch /engines/var/run/flags/startup_complete
   
-sudo -n /home/_start.sh
+
+SIGNAL=0
+
+sudo /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
+
+ while test $SIGNAL -ne 3 -a $SIGNAL -ne 15
+ do
+  if test -f $PID_FILE
+  	then
+		wait 
+		echo $SIGNAL
+  fi
+ done
+
+
 
 rm -f /engines/var/run/flags/startup_complete
