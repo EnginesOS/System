@@ -23,11 +23,11 @@ if test -f /home/auth/first_run.sh
 	
 
 
-sudo syslogd  -R syslog.engines.internal:5140
+sudo -n syslogd  -R syslog.engines.internal:5140
 
 
 touch /engines/var/run/flags/startup_complete
   
-sudo /home/_run.sh
+sudo -n /home/_start.sh
 
 rm -f /engines/var/run/flags/startup_complete
