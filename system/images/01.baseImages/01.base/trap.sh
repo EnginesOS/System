@@ -2,37 +2,59 @@
 
 trap_term()
 	{
+	SIGNAL=15
+	export SIGNAL
+		
 		if test -f $PID_FILE
 		then
-			kill -TERM `cat   $PID_FILE `
+			if test -f /home/signal.sh
+				then
+					/home/signal.sh
+				else
+					kill -TERM `cat   $PID_FILE `
+			fi
 			 touch /engines/var/run/flags/termed
 			 wait `cat   $PID_FILE `
 		fi
-		SIGNAL=15
-		export SIGNAL
+
 	}
 trap_hup()
 	{
-	if test -f $PID_FILE
-		then
-			kill -HUP `cat   $PID_FILE `
+	SIGNAL=1
+	export SIGNAL
+	
+		if test -f $PID_FILE
+			then
+				if test -f /home/signal.sh
+					then
+						/home/signal.sh
+					else
+						kill -HUP `cat   $PID_FILE `
+				fi
 			 touch /engines/var/run/flags/huped
 			 wait `cat   $PID_FILE `
 		fi
-		SIGNAL=1
-		export SIGNAL
+		
 	}
 
 trap_quit()
 	{
-	if test -f $PID_FILE
-		then
-			kill -QUIT `cat   $PID_FILE `
-			 touch /engines/var/run/flags/quited
-			 wait `cat   $PID_FILE `
+	SIGNAL=15
+	export SIGNAL
+		if test -f $PID_FILE
+			then
+				
+				if test -f /home/signal.sh
+					then
+						/home/signal.sh
+					else
+						kill -QUIT `cat   $PID_FILE `
+				fi
+				
+			 	touch /engines/var/run/flags/quited
+			 	wait `cat   $PID_FILE `
 		fi
-		SIGNAL=15
-		export SIGNAL
+	
 	}
 	
 
