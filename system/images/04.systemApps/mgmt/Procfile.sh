@@ -39,7 +39,7 @@ export PID_FILE
 . /home/trap.sh
 
 
-/usr/sbin/apache2ctl start
+/usr/sbin/apache2ctl -DFOREGROUND &
 touch  /engines/var/run/startup_complete
 wait 
 
