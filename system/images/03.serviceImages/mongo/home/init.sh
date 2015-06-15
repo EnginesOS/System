@@ -3,15 +3,13 @@
 
 PID_FILE=/var/run/mongodb.pid
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
 
  
-mkdir -p /engines/var/run/
-touch  /engines/var/run/startup_complete
+mkdir -p /engines/var/run/flags/
+
 
  mongod   -v  -f /etc/mongod.conf  --directoryperdb    --journal &
- 
- wait $!  
-
-
-rm /engines/var/run/startup_complete
+touch  /engines/var/run/flags/startup_complete
+wait  
+rm /engines/var/run/flags/startup_complete

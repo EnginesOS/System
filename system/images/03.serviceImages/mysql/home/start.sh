@@ -15,4 +15,6 @@ export PID_FILE
 fi
 
  /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306 &
-wait $!
+touch  /engines/var/run/flags/startup_complete
+wait  
+rm /engines/var/run/flags/startup_complete
