@@ -1,10 +1,13 @@
 #!/bin/bash
 
-PIDFILE=/home/dyndns/dyndns.pid
-source /home/trap.sh
+PID_FILE=/home/dyndns/dyndns.pid
+export PID_FILE
+. /home/trap.sh
 
-while test 0 -ne 1
-do
-	ddclient   -file /home/dyndns/dyndns.conf -cache /home/dyndns/cache  -pid /home/dyndns/dyndns.pid
-	sleep 300
-done
+
+mkdir -p /engines/var/run/flags/
+
+	ddclient   -file /home/dyndns/dyndns.conf -cache /home/dyndns/cache  -pid /home/dyndns/dyndns.pid &
+	touch /engines/var/run/flags/startup_complete
+	wait 
+	rm /engines/var/run/flags/startup_complete

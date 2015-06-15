@@ -25,4 +25,4 @@ ENV ContUser courier
 ENV ContGrp courier
 
 ADD custom_start.sh /home/engines/scripts/
-CMD /home/init.sh
+CMD ["/home/init.sh"]

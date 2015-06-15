@@ -1,17 +1,16 @@
 #!/bin/sh
 
 PID_FILE=/var/run/dovecot/master.pid
+export PID_FILE
+. /home/trap.sh
 
-source /home/trap.sh
+
+mkdir -p /engines/var/run/flags
 
 
-mkdir -p /engines/var/run/
-touch  /engines/var/run/startup_complete
-chown 21000 /engines/var/run/startup_complete
+sudo syslogd  -R syslog.engines.internal:5140
 
 /usr/sbin/dovecot
-
-syslogd -n -R syslog.engines.internal:5140
-
-
-rm /engines/var/run/startup_complete
+touch  /engines/var/run/flags/startup_complete
+wait
+rm /engines/var/run/flags/startup_complete

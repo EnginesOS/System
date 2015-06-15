@@ -28,6 +28,7 @@ RUN apt-get -y update;\
 
 
 COPY home home
+COPY sudoers /etc/	
 USER cron
 
-CMD /home/init.sh
+CMD ["/home/init.sh"]

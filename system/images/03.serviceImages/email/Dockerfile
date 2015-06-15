@@ -33,4 +33,4 @@ ADD config.inc.php  /home/app/
 ENV ContUser postfix
 ENV ContGrp postfix
 USER postfix
-CMD /home/init.sh
+CMD ["/home/init.sh"]

@@ -21,8 +21,16 @@ dest=$dest_proto://$dest_address/$dest_folder
 user=$dest_user
 pass=$dest_pass
 
-			
+			if test $# -get 1
+				then
+				
+				fi 
 
+	case $src_type in
+		engine)
+		
+		;;
+		
 						mkdir -p $Backup_ConfigDir/system
 						cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/system/pre
                 		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system/post

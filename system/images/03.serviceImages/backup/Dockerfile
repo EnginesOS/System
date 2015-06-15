@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	apt-get -y install vim  python duply ncftp  python-paramiko python-gobject-2 build-essential gcc make syslogd ;\
 	apt-get clean 
 ADD etc  etc
-ADD home home
+
 RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	usermod -G containers -a backup;\ 
 	cd /tmp; \
@@ -27,21 +27,22 @@ RUN echo "Y" | /usr/sbin/usermod -u 22015 -d /home/backup  backup;\
 	chown -R backup  /home/sql_dumps /var/log/backup/ ;\
 	apt-get -y remove  build-essential gcc make ;\
 	apt-get -y clean
-
+ADD home home
 
 ADD crontab  /home/backup/fcron/spool/backup.orig
 RUN chown -R backup ~backup ;\
 	chown backup /home/configurators/saved;\
 	chgrp backup /home/configurators/*.sh
 	
-
+COPY sudoers /etc/	
 VOLUME /backup_src/volumes
 VOLUME /backup_src/engines
 VOLUME /local_backup_dests
 
 USER backup
+RUN		["/home/init.sh"]
 
-RUN		/home/backup/fcron/bin/fcrontab -u backup -z
+#RUN		["/home/backup/fcron/bin/fcrontab","-u","backup","-z"]
 
 ENV ContUser backup
 ENV ContGrp backup

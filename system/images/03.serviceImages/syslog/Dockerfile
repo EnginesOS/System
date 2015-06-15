@@ -17,5 +17,5 @@ ENV ContUser syslog
 ENV ContGrp syslog
 ADD syslog-ng.conf /etc/syslog-ng/
 ADD init.sh /home/
-CMD /home/init.sh
+CMD ["/home/init.sh"]
 USER syslog

@@ -11,4 +11,4 @@ RUN	deluser www-data;\
 	adduser  -G www-data -u 22673 -D node;\
 	adduser  -G www-data -u 22674 -D python
 	
-CMD /home/setup_vols.sh
+CMD ["/home/setup_vols.sh"]

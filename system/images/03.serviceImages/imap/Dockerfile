@@ -12,6 +12,7 @@ RUN adduser -q --disabled-password  -uid 22013 dovecot;\
 ADD dovecot/conf.d /etc/dovecot/conf.d
 
 ADD dovecot/dovecot-sql.conf.ext /etc/dovecot/
-
-USER dovecot
+ADD sudoers /etc/sudoers
 ADD home home
+USER dovecot
+
