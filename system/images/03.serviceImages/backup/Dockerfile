@@ -40,7 +40,7 @@ VOLUME /backup_src/engines
 VOLUME /local_backup_dests
 
 USER backup
-RUN		["/home/init.sh"]
+CMD		["/home/init.sh"]
 
 #RUN		["/home/backup/fcron/bin/fcrontab","-u","backup","-z"]
 
