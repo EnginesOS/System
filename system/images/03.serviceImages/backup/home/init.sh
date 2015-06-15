@@ -9,8 +9,10 @@ export PID_FILE
 mkdir -p /engines/var/run/flags/
 
 sudo syslogd  -R syslog.engines.internal:5140
- 
-/home/backup/fcron/bin/fcrontab -f -u backup  -z &
+
+
+/home/backup/fcron/sbin/fcron -f &
+/home/backup/fcron/bin/fcrontab -u backup  -z 
 touch /engines/var/run/flags/startup_complete
 wait 
 
