@@ -42,7 +42,7 @@ VOLUME /local_backup_dests
 USER backup
 CMD		["/home/init.sh"]
 
-#RUN		["/home/backup/fcron/bin/fcrontab","-u","backup","-z"]
+
 
 ENV ContUser backup
 ENV ContGrp backup
