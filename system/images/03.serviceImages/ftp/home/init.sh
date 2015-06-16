@@ -20,7 +20,7 @@ echo $service_hash |grep = >/dev/null
         if test $? -ne 0
         then
         		echo Error:No Arguments
-                exit -1
+                
         fi
 
 #Strip preceeding and trailing :
