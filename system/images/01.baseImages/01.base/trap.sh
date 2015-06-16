@@ -2,31 +2,59 @@
 
 trap_term()
 	{
+	SIGNAL=15
+	export SIGNAL
+		
 		if test -f $PID_FILE
 		then
-			kill -TERM `cat   $PID_FILE `
+			if test -f /home/signal.sh
+				then
+					/home/signal.sh
+				else
+					kill -TERM `cat   $PID_FILE `
+			fi
 			 touch /engines/var/run/flags/termed
 			 wait `cat   $PID_FILE `
 		fi
+
 	}
 trap_hup()
 	{
-	if test -f $PID_FILE
-		then
-			kill -HUP `cat   $PID_FILE `
+	SIGNAL=1
+	export SIGNAL
+	
+		if test -f $PID_FILE
+			then
+				if test -f /home/signal.sh
+					then
+						/home/signal.sh
+					else
+						kill -HUP `cat   $PID_FILE `
+				fi
 			 touch /engines/var/run/flags/huped
 			 wait `cat   $PID_FILE `
 		fi
+		
 	}
 
 trap_quit()
 	{
-	if test -f $PID_FILE
-		then
-			kill -QUIT `cat   $PID_FILE `
-			 touch /engines/var/run/flags/quited
-			 wait `cat   $PID_FILE `
+	SIGNAL=15
+	export SIGNAL
+		if test -f $PID_FILE
+			then
+				
+				if test -f /home/signal.sh
+					then
+						/home/signal.sh
+					else
+						kill -QUIT `cat   $PID_FILE `
+				fi
+				
+			 	touch /engines/var/run/flags/quited
+			 	wait `cat   $PID_FILE `
 		fi
+	
 	}
 	
 
@@ -34,7 +62,7 @@ trap_quit()
 			if test -f $PID_FILE
 	 			then
 	 				echo "Warning stale $PID_FILE"
-	 				rm $PID_FILE
+	 				rm -f $PID_FILE
 			fi
 	 			
 		trap trap_term 15 

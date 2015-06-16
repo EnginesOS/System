@@ -110,7 +110,10 @@ class BluePrintReader
        @persistant_dirs = Array.new
 
        pds =   @blueprint[:software][:persistent_directories]
-                                      
+                                 
+       if pds == nil
+              return true
+       end
        pds.each do |dir|
          @persistant_dirs.push(dir[:path])
 
@@ -159,7 +162,7 @@ class BluePrintReader
        log_build_output("Read Rake List")
        rake_cmds = @blueprint[:software][:rake_tasks]
        if rake_cmds == nil
-         return
+         return true
        end
 
        rake_cmds.each do |rake_cmd|
@@ -181,7 +184,7 @@ class BluePrintReader
      log_build_output("Read Services")
      services=@blueprint[:software][:service_configurations]
        if services == nil
-         return 
+         return true
        end
      services.each do |service|
        if service.has_key?(:publisher_namespace) == false || service[:publisher_namespace] == nil
@@ -377,6 +380,10 @@ class BluePrintReader
        archives = @blueprint[:software][:installed_packages]
        n=0
  
+       if archives == nil
+              return true
+       end
+       
        archives.each do |archive|
          archive_details = Hash.new
          arc_src=clean_path(archive[:source_url])
@@ -486,7 +493,7 @@ class BluePrintReader
        log_build_output("set sed strings")
        seds=@blueprint[:software][:replacement_strings]
        if seds == nil || seds.empty? == true
-         return
+         return true
        end
 
        n=0
@@ -557,6 +564,9 @@ class BluePrintReader
      p @builder.set_environments
      begin
        envs = @blueprint[:software][:variables]
+         if envs == nil
+           return true
+         end
        envs.each do |env|
          p env
          name=env[:name]

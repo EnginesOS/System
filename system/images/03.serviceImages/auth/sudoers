@@ -1,5 +1,9 @@
 
 auth ALL = (root) NOPASSWD: /usr/sbin/sshd
 auth ALL = (root) NOPASSWD: /sbin/syslogd
+auth ALL = (root) NOPASSWD: /home/_signal.sh
+
+#must have blank after last sudoers line
+
 
 

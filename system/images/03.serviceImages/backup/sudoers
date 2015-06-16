@@ -1,5 +1,10 @@
 
 
-auth ALL = (root) NOPASSWD: /sbin/syslogd
+backup ALL = (root) NOPASSWD: /sbin/syslogd
+
+backup ALL = (root) NOPASSWD: /home/_signal.sh
+
+
+#must have blank after last sudoers line
 
 

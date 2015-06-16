@@ -2,6 +2,9 @@
 
 
 cron ALL = (root) NOPASSWD: /sbin/syslogd
+cron ALL = (root) NOPASSWD: /home/_signal.sh
 
+
+#must have blank after last sudoers line
 
 
