@@ -16,3 +16,4 @@ cp /etc/bind/templates/named.conf.default-zones.start /etc/bind/named.conf.defau
 
 echo "secret \"$key\";" >> /etc/bind/named.conf.default-zones;\
 cat /etc/bind/templates/named.conf.default-zones.end >> /etc/bind/named.conf.default-zones
+chown bind -R /etc/bind/keys/
