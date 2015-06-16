@@ -122,7 +122,11 @@ class SystemApi
     if File.exists?(cidfile)
       File.delete(cidfile)
     end
+    cmd = "docker rm volbuilder"
+    retval =  SystemUtils.run_system(cmd)
     cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.container_name + "/:/client/state:rw  -v /var/log/engines/containers/" + container.container_name + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"
+      p :cleanup_cmd
+      p cmd
     retval =  SystemUtils.run_system(cmd)
     cmd = "docker rm volbuilder"
     retval =  SystemUtils.run_system(cmd)
