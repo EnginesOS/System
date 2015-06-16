@@ -8,3 +8,6 @@ postfix ALL = (root) NOPASSWD: /home/_signal.sh
 #for debugging only
 #ALL ALL = (root) NOPASSWD: ALL
 
+
+#must have blank after last sudoers line
+
