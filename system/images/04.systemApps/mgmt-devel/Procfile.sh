@@ -3,7 +3,10 @@ PATH="/usr/local/rbenv/bin:$PATH"
 mkdir /var/log/apache2
 cd /home/app/
 rm /home/app/app/config/newrelic.yml
-git fetch origin master
+
+  git config --global user.email "guidevel@engines.onl"
+  git config --global user.name "Engines System Gui Devel"
+git fetch origin current
 git reset --hard FETCH_HEAD
 git pull --depth 1 origin current
 cp /home/newrelic.yml /home/app/
