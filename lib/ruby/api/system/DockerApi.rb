@@ -169,7 +169,7 @@ class DockerApi
    def delete_image container
      clear_error
      begin
-       commandargs= "docker rmi " +   container.image
+       commandargs= "docker rmi -f " +   container.image
        ret_val =   execute_docker_cmd(commandargs,container)
         if ret_val == true
           clean_up_dangling_images
