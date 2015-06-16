@@ -557,6 +557,9 @@ class BluePrintReader
      p @builder.set_environments
      begin
        envs = @blueprint[:software][:variables]
+         if envs == nil
+           return true
+         end
        envs.each do |env|
          p env
          name=env[:name]
