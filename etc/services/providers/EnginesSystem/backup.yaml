@@ -253,12 +253,9 @@ consumer_params:
     value: ""
     comment: " "
    dest_pass:
-    regex_invalid_message: "wrong go back and try again"
+    regex_invalid_message: "wrong  try again"
     name: dest_pass
     label: password
-    dependant: 
-      field_name: dest_proto
-      regex: "ftp"
     regex_validator: ".*"
     tooltip: " "
     field_type: password
