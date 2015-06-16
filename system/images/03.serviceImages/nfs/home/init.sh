@@ -12,7 +12,7 @@ mkdir -p /engines/var/run/flags
 		
 sudo /etc/init.d/rpcbind start
 
-sudo  /usr/bin/ganesha.nfsd  -L /var/log/ganesha.log -f /usr/local/etc/ganesha.conf &
+sudo  /usr/bin/ganesha.nfsd  -L /var/log/ganesha.log -F -f /usr/local/etc/ganesha.conf &
 touch  /engines/var/run/flags/startup_complete
 wait  
 rm /engines/var/run/flags/startup_complete

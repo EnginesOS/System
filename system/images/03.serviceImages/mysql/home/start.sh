@@ -22,12 +22,9 @@ touch  /engines/var/run/flags/startup_complete
  while test $SIGNAL -ne 3 -a $SIGNAL -ne 15
  do
   if test -f $PID_FILE
-  	then
-  	echo "waiting"
+  	then	
   	sleep 600
-		wait 
-		
-		echo $SIGNAL
+		wait 	
   fi
  done
  rm /engines/var/run/flags/startup_complete
