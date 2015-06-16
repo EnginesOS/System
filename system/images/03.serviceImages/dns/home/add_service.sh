@@ -11,7 +11,7 @@ load_service_hash_to_environment
 	if test -z ${hostname}
 	then
 		echo Error:Missing hostname
-        exit -1
+        exit 128
     fi
   	if test -z ${ip}
 	then
