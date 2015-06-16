@@ -256,9 +256,6 @@ consumer_params:
     regex_invalid_message: "wrong go back and try again"
     name: dest_pass
     label: password
-    dependant: 
-      field_name: dest_proto
-      regex: "ftp"
     regex_validator: ".*"
     tooltip: " "
     field_type: password
