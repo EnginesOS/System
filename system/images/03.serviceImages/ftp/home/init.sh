@@ -53,8 +53,9 @@ fcnt=`expr $fcnt + 1`
 	echo "	SQLConnectInfo $database_name@$db_host $db_username $db_password " >> /etc/proftpd/sql.conf
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
-touch  /engines/var/run/flags/startup_complete
- sudo /usr/sbin/proftpd 
+
+ sudo /usr/sbin/proftpd -n &
+ touch  /engines/var/run/flags/startup_complete
 wait 
 
 
