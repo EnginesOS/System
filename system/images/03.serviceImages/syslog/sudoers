@@ -1,0 +1,6 @@
+
+syslog ALL = (root) NOPASSWD: /usr/sbin/syslog-ng
+
+
+#ALL ALL = (root) NOPASSWD: ALL
+

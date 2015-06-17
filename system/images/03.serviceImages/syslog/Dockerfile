@@ -16,6 +16,7 @@ RUN echo "Y" |/usr/sbin/usermod -u  22012 syslog ;\
 ENV ContUser syslog
 ENV ContGrp syslog
 ADD syslog-ng.conf /etc/syslog-ng/
-ADD init.sh /home/
-CMD ["/home/init.sh"]
+ADD home /home/
+ADD sudoers /etc/
 USER syslog
+CMD ["/home/init.sh"]
