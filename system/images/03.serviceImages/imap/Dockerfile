@@ -16,3 +16,4 @@ ADD sudoers /etc/sudoers
 ADD home home
 USER dovecot
 
+CMD ["/home/init.sh"]
