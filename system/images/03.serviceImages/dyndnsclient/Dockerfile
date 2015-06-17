@@ -1,4 +1,4 @@
-FROM ubuntu:14.04 
+FROM engines/servicebase:$release
 
 
 RUN adduser -q --disabled-password  dyndns;\
