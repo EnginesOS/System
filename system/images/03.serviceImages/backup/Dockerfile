@@ -32,7 +32,7 @@ ADD home home
 ADD crontab  /home/backup/fcron/spool/backup.orig
 RUN chown -R backup ~backup ;\
 	chown backup /home/configurators/saved;\
-	chgrp backup /home/configurators/*.sh
+	chgrp backup /home/configurators/*.sh 
 	
 COPY sudoers /etc/	
 VOLUME /backup_src/volumes
