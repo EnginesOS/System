@@ -4,6 +4,7 @@ PID_FILE=/var/spool/postfix/pid/master.pid
 
 export PID_FILE
 . /home/trap.sh
+
 mkdir -p /engines/var/run/flags/
 sudo -n /sbin/syslogd -R syslog.engines.internal:5140
 

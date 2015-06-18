@@ -8,3 +8,4 @@ if test -f /run/syslogd.pid -a $SIGNAL -ne 1
 	fi
 	
 	rm /engines/var/run/flags/startup_complete
+	
