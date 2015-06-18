@@ -4,9 +4,9 @@ trap_term()
 	{
 	SIGNAL=15
 	export SIGNAL
-		touch /engines/var/run/flags/sig_term
+	touch /engines/var/run/flags/sig_term
 		
-		if test -f $PID_FILE
+	if test -f $PID_FILE
 		then
 		kill -TERM `cat   $PID_FILE `
 			if test -f /home/_signal.sh
@@ -48,9 +48,7 @@ trap_quit()
 				kill -QUIT `cat   $PID_FILE `
 				if test -f /home/_signal.sh
 					then
-						/home/_signal.sh
-					else
-						
+						/home/_signal.sh			
 				fi
 				
 			 	touch /engines/var/run/flags/quited
