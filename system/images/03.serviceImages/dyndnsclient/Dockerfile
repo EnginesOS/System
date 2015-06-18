@@ -5,7 +5,7 @@ RUN adduser -q --disabled-password  dyndns;\
 	apt-get -y update;\
 	apt-get -y install ddclient ;\
 	apt-get clean 
-
+	
 
 COPY home home
 COPY dyndns.conf /home/dyndns/
