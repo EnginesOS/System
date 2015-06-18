@@ -26,9 +26,6 @@ if ! test -f /engines/var/run/flags/first_run.done
 sudo -n syslogd  -R syslog.engines.internal:5140
 
 
-
-  
-
 SIGNAL=0
 
 sudo -n /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
