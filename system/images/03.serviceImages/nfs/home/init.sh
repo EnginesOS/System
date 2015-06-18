@@ -5,7 +5,7 @@ sudo syslogd -R syslog.engines.internal:5140
 
 PID_FILE=/var/run/ganesha.pid
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
 
 mkdir -p /engines/var/run/flags
 
