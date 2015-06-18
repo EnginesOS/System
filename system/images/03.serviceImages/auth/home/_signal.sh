@@ -1,6 +1,7 @@
 #!/bin/sh
 
-echo received $SIGNAL
+echo received $1
+SIGNAL=$1
 
 if test -f /run/syslogd.pid 
 	then
