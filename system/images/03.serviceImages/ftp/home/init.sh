@@ -54,7 +54,7 @@ fcnt=`expr $fcnt + 1`
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
 
- sudo /usr/sbin/proftpd -n &
+/usr/sbin/proftpd -n &
  touch  /engines/var/run/flags/startup_complete
 wait 
 

@@ -23,7 +23,7 @@ touch  /engines/var/run/flags/startup_complete
  do
   if test -f $PID_FILE
   	then	
-  	sleep 600
+  	sleep 600 &
 		wait 	
   fi
  done
