@@ -1,5 +1,5 @@
 FROM	engines/servicebase:$release
-#FROM  engines/python:$release
+
 
 RUN apt-get -y update;\
 	apt-get -y install vim  python duply ncftp  python-paramiko python-gobject-2 build-essential gcc make syslogd ;\
