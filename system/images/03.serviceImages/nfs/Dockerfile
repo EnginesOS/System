@@ -22,7 +22,7 @@ RUN 	chmod 600 /etc/nss-mysql-root.conf ;\
 	 rm -r /tmp/nfs-ganesha;\
 	 mkdir -p /home/nfs/.ssh;\
 	 chown nfs /home/nfs/.ssh ;\
-	 usermod -G containers -a
+	 usermod -G containers -a nfs
 	 
 COPY	 ganesha.conf   /usr/local/etc/ganesha.conf
 COPY 	home /home
