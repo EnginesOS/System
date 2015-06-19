@@ -36,8 +36,7 @@ trap_term()
 				then
 					sudo /home/_signal.sh $SIGNAL	$PID_FILE				 	
 			fi
-		touch /engines/var/run/flags/termed	 
-			 wait `cat   $PID_FILE `
+		touch /engines/var/run/flags/termed	 			
 		fi
 
 	}
@@ -55,8 +54,7 @@ trap_hup()
 						sudo /home/_signal.sh $SIGNAL	$PID_FILE	
 
 				fi
-			 touch /engines/var/run/flags/huped
-			 wait `cat   $PID_FILE `
+			 touch /engines/var/run/flags/huped			
 		fi
 		
 	}
@@ -71,11 +69,9 @@ trap_quit()
 				kill -QUIT `cat   $PID_FILE `
 				if test -f /home/_signal.sh
 					then
-						/home/_signal.sh $SIGNAL	$PID_FILE	
-				fi
-				
+					sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
+				fi				
 			 	touch /engines/var/run/flags/quited
-			 	wait `cat   $PID_FILE `
 		fi
 	
 	}
@@ -87,7 +83,7 @@ trap_quit()
 		if test -f $PID_FILE
 	 		then
 	 			echo "Warning stale $PID_FILE"
-	 			rm -f $PID_FILE
+	 			rm -f $PID_FILE 1&>/dev/null
 		fi
 	 			
 	
