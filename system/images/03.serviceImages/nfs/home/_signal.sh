@@ -11,6 +11,4 @@ if test -f /run/rpc.pid
 		kill -$SIGNAL `cat /run/rpcbind.pid`
 	fi
 	
-		kill -$SIGNAL `cat /run/syslogd.pid`
-	
-	
+/home/engines/scripts/_kill_syslog.sh

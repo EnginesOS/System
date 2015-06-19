@@ -14,4 +14,5 @@ sudo postmap /etc/postfix/transport
 sudo /usr/lib/postfix/master &
 touch  /engines/var/run/flags/startup_complete
 wait  
+sudo /home/engines/scripts/_kill_syslog.sh
 rm /engines/var/run/flags/startup_complete

@@ -8,6 +8,7 @@ mkdir -p /engines/var/run/flags/
 sudo syslog-ng -F -f /etc/syslog-ng/syslog-ng.conf -p /$PID_FILE --no-caps  -v -e &
 touch  /engines/var/run/flags/startup_complete
 wait  
+sudo /home/engines/scripts/_kill_syslog.sh
 rm /engines/var/run/flags/startup_complete
 
 

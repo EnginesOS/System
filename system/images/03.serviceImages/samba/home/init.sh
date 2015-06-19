@@ -58,5 +58,5 @@ fcnt=`expr $fcnt + 1`
 
 exec sudo /usr/sbin/proftpd -n
 
-
+sudo /home/engines/scripts/_kill_syslog.sh
 rm /engines/var/run/startup_complete
