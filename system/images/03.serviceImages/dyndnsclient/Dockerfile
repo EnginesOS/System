@@ -3,7 +3,7 @@ FROM engines/servicebase:$release
 
 RUN adduser -q --disabled-password  dyndns -uid 22021;\
 	apt-get -y update;\
-	apt-get -y install ddclient ;\
+	apt-get -y install ddclient syslogd ;\
 	apt-get clean 
 	
 
