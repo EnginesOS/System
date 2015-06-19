@@ -69,7 +69,7 @@ trap_quit()
 				kill -QUIT `cat   $PID_FILE `
 				if test -f /home/_signal.sh
 					then
-						/home/_signal.sh $SIGNAL	$PID_FILE	
+					sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
 				fi				
 			 	touch /engines/var/run/flags/quited
 		fi
