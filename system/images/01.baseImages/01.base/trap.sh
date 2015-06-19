@@ -36,8 +36,7 @@ trap_term()
 				then
 					sudo /home/_signal.sh $SIGNAL	$PID_FILE				 	
 			fi
-		touch /engines/var/run/flags/termed	 
-			 wait `cat   $PID_FILE `
+		touch /engines/var/run/flags/termed	 			
 		fi
 
 	}
@@ -55,8 +54,7 @@ trap_hup()
 						sudo /home/_signal.sh $SIGNAL	$PID_FILE	
 
 				fi
-			 touch /engines/var/run/flags/huped
-			 wait `cat   $PID_FILE `
+			 touch /engines/var/run/flags/huped			
 		fi
 		
 	}
@@ -72,10 +70,8 @@ trap_quit()
 				if test -f /home/_signal.sh
 					then
 						/home/_signal.sh $SIGNAL	$PID_FILE	
-				fi
-				
+				fi				
 			 	touch /engines/var/run/flags/quited
-			 	wait `cat   $PID_FILE `
 		fi
 	
 	}
