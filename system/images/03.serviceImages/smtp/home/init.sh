@@ -4,7 +4,7 @@
 PID_FILE=/var/spool/postfix/pid/master.pid
 
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
 
 mkdir -p /engines/var/run/flags/
 
