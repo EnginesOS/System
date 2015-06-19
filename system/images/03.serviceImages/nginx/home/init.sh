@@ -8,15 +8,11 @@ export PID_FILE
 
 mkdir -p /engines/var/run/flags/
 
-/usr/sbin/nginx
+/usr/sbin/nginx &
 
 
 touch  /engines/var/run/flags/startup_complete
 
-while test -f $PID_FILE
-	do
-		sleep 600 &
 		wait
-	done
-
+	
 rm /engines/var/run/flags/startup_complete
