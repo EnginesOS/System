@@ -54,8 +54,7 @@ eports:
   publicFacing: true
   external: 115
 repo: na
-last_result: |
-  nginx
+last_result: 
 setState: running
 nginxored: false
 databases: []

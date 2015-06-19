@@ -5,7 +5,7 @@ type_path: database/sql/pgsql
 ctype: service
 persistant: true
 last_error: 
-memory: '128'
+memory: '160'
 hostname: pgsql
 domain_name: 
 environments: []
@@ -29,8 +29,7 @@ eports:
   publicFacing: false
   external: 0
 repo: na
-last_result: |
-  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+last_result: 
 setState: running
 nginxored: false
 databases: []

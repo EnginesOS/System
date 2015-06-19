@@ -1,24 +1,30 @@
 #!/bin/sh
 
 if test -f  /engines/var/run/flags/sig_term
+then
 	rm -f /engines/var/run/flags/sig_term
 fi 
 
 if test -f  /engines/var/run/flags/termed
+then
 	rm -f /engines/var/run/flags/termed
 fi 
 if test -f  /engines/var/run/flags/sig_hup
+then
 	rm -f /engines/var/run/flags/sig_hup
 fi 
 
 if test -f  /engines/var/run/flags/huped
+then
 	rm -f /engines/var/run/flags/huped
 fi 
 if test -f  /engines/var/run/flags/sig_quit
+then
 	rm -f /engines/var/run/flags/sig_quit
 fi 
 
 if test -f  /engines/var/run/flags/quited
+then
 	rm -f /engines/var/run/flags/quited
 fi 
 

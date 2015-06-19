@@ -29,8 +29,7 @@ eports:
   publicFacing: false
   external: 0
 repo: na
-last_result: |
-   rf
+last_result: 
 setState: running
 nginxored: false
 databases: []

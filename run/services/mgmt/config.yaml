@@ -72,8 +72,7 @@ eports:
   publicFacing: true
   external: 828
 repo: na
-last_result: |
-  b06184ef59759baec2c7bb6a854c9d529cfa47eda9fa9d4e95c8ac27f6da424c
+last_result: 
 setState: running
 nginxored: false
 databases: []
