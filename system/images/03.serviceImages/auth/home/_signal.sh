@@ -8,4 +8,3 @@ if test -f /run/syslogd.pid
 		kill -$SIGNAL  `cat /run/syslogd.pid`
 	fi
 	
-rm -f /engines/var/run/flags/startup_complete
