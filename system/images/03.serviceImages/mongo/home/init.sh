@@ -12,4 +12,5 @@ mkdir -p /engines/var/run/flags/
  mongod   -v  -f /etc/mongod.conf  --directoryperdb    --journal &
 touch  /engines/var/run/flags/startup_complete
 wait  
+
 rm /engines/var/run/flags/startup_complete

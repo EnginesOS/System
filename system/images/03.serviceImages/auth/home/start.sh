@@ -41,7 +41,7 @@ echo "startup complete"
 		echo $SIGNAL
   fi
  done
-
+sudo /home/engines/scripts/_kill_syslog.sh
 
 
 rm -f /engines/var/run/flags/startup_complete

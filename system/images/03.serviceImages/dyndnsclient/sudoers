@@ -5,7 +5,8 @@
 
 dyndns ALL = (root) NOPASSWD: /sbin/syslogd
 
-dyndns ALL = (root) NOPASSWD: /home/_signal.sh
+
+dyndns ALL = (root) NOPASSWD: /home/engines/scripts/_kill_syslog.sh
 
 #must have blank after last sudoers line
 

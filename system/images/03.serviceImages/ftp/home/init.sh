@@ -57,6 +57,6 @@ fcnt=`expr $fcnt + 1`
 /usr/sbin/proftpd -n &
  touch  /engines/var/run/flags/startup_complete
 wait 
-
+sudo /home/engines/scripts/_kill_syslog.sh
 
 rm /engines/var/run/flags/startup_complete

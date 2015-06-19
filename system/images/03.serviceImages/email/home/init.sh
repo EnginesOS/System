@@ -14,7 +14,7 @@ sudo -n /usr/lib/postfix/master &
 sudo -n  /usr/sbin/apache2ctl  -DFOREGROUND & 
 touch /engines/var/run/flags/startup_complete  
 wait 
-
+sudo /home/engines/scripts/_kill_syslog.sh
 rm -f /engines/var/run/flags/startup_complete
  
  
