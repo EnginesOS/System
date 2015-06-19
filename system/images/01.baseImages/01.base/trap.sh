@@ -11,7 +11,7 @@ trap_term()
 		kill -TERM `cat   $PID_FILE `
 			if test -f /home/_signal.sh
 				then
-					sudo /home/_signal.sh $SIGNAL					 	
+					sudo /home/_signal.sh $SIGNAL	$PID_FILE				 	
 			fi
 		touch /engines/var/run/flags/termed	 
 			 wait `cat   $PID_FILE `
@@ -29,7 +29,7 @@ trap_hup()
 			then
 				if test -f /home/_signal.sh
 					then
-						sudo /home/_signal.sh $SIGNAL		
+						sudo /home/_signal.sh $SIGNAL	$PID_FILE	
 
 				fi
 			 touch /engines/var/run/flags/huped
@@ -48,7 +48,7 @@ trap_quit()
 				kill -QUIT `cat   $PID_FILE `
 				if test -f /home/_signal.sh
 					then
-						/home/_signal.sh $SIGNAL		
+						/home/_signal.sh $SIGNAL	$PID_FILE	
 				fi
 				
 			 	touch /engines/var/run/flags/quited
