@@ -15,5 +15,6 @@ sudo -n syslogd  -R syslog.engines.internal:5140
 /home/backup/fcron/bin/fcrontab -u backup  -z 
 touch /engines/var/run/flags/startup_complete
 wait 
-sudo /home/engines/scripts/_kill_syslog.sh
 rm -f /engines/var/run/flags/startup_complete
+sudo /home/engines/scripts/_kill_syslog.sh
+
