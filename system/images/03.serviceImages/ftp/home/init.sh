@@ -54,7 +54,7 @@ fcnt=`expr $fcnt + 1`
 	echo  "</IfModule> " >> /etc/proftpd/sql.conf
 
 
-/usr/sbin/proftpd -n &
+sudo /usr/sbin/proftpd -n &
  touch  /engines/var/run/flags/startup_complete
 wait 
 sudo /home/engines/scripts/_kill_syslog.sh
