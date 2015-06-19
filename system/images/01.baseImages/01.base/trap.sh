@@ -83,7 +83,7 @@ trap_quit()
 		if test -f $PID_FILE
 	 		then
 	 			echo "Warning stale $PID_FILE"
-	 			rm -f $PID_FILE
+	 			rm -f $PID_FILE 1&>/dev/null
 		fi
 	 			
 	
