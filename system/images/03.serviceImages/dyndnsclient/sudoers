@@ -1,0 +1,11 @@
+
+
+
+
+
+bind ALL = (root) NOPASSWD: /sbin/syslogd
+
+bind ALL = (root) NOPASSWD: /home/_signal.sh
+
+#must have blank after last sudoers line
+
