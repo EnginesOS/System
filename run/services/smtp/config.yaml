@@ -39,11 +39,9 @@ eports:
   publicFacing: true
   external: 465
 repo: na
-last_result: |
-  nginx
+last_result:
 setState: running
 nginxored: false
 databases: []
 conf_register_site: false
 conf_register_dns: true
-
