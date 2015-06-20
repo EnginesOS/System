@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-SIGNAL=$1
+
 
 if test -f /run/syslogd.pid 
 	then
