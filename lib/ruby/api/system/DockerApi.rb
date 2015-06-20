@@ -151,10 +151,11 @@ class DockerApi
      begin
        commandargs= "docker  rm " +   container.container_name
        if execute_docker_cmd(commandargs,container) != true
-         p "err with docker  rm "  +   container.container_name
-         p container.last_error
-         
-         return false
+
+         log_error_mesg(container.last_error,container)
+         if image_exists?(container.image) == true
+          return false
+         end
        end
        clean_up_dangling_images
        
@@ -425,7 +426,13 @@ class DockerApi
      @last_error = ""
    end
 
-   
+  def log_error_mesg(msg,object)
+      obj_str = object.to_s.slice(0,256)
+  
+      @last_error = msg +":" + obj_str
+      SystemUtils.log_error_mesg(msg,object)
+  
+    end
    
    
  end#END of DockerApi
