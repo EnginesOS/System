@@ -37,13 +37,11 @@ trap_term()
 		
 	if test -f $PID_FILE  #if exists 
 		then
-		if test -r $PID_FILE  #and is readable
-			then
-				kill -TERM `cat   $PID_FILE `
-		fi
 		if test -f /home/_signal.sh
 			then
-				sudo /home/_signal.sh $SIGNAL	$PID_FILE				 	
+				sudo /home/_signal.sh $SIGNAL	$PID_FILE
+			else
+				kill -$SIGNAL `cat    $PID_FILE `		 	
 		fi
 	  touch /engines/var/run/flags/termed	 			
 	fi
@@ -57,14 +55,11 @@ trap_hup()
 	
 		if test -f $PID_FILE
 			then
-				if test -r $PID_FILE  #and is readable
-					then
-						kill -HUP `cat   $PID_FILE `
-				fi
 				if test -f /home/_signal.sh
 					then
-						sudo /home/_signal.sh $SIGNAL	$PID_FILE	
-
+						sudo /home/_signal.sh $SIGNAL	$PID_FILE
+					else
+						kill -$SIGNAL `cat  $PID_FILE  `	
 				fi
 			 touch /engines/var/run/flags/huped			
 		fi
@@ -78,14 +73,11 @@ trap_quit()
 	touch /engines/var/run/flags/sig_quit
 		if test -f $PID_FILE
 			then
-				if test -r $PID_FILE  #and is readable
-				then
-					kill -$SIGNAL `cat   $PID_FILE `
-				fi
-
 				if test -f /home/_signal.sh
 					then
 						sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
+					else
+						kill -$SIGNAL `cat  $PID_FILE  `	
 				fi				
 			 touch /engines/var/run/flags/quited
 		fi
