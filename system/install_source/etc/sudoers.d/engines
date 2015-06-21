@@ -3,4 +3,6 @@
 
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_system_update.sh
 
+engines ALL = (root) NOPASSWD: /sbin/reboot
+
 #Must have tailing empty line
