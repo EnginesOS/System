@@ -6,7 +6,7 @@ function complete_install {
 
 create_services
 
-/opt/engines/bin/containers_startup.sh 
+/opt/engines/bin/containers_startup.sh > /var/log/engines/install_startup
 
 echo "System startup"
 /opt/engines/bin/mgmt_startup.sh 
