@@ -90,7 +90,7 @@ echo "Setting up engines system user"
 		  usermod  -a -G engines  backup
 		echo "PATH=\"/opt/engines/bin:$PATH\"" >>~engines/.profile 
 		
-echo "Installing ruby"
+echo "Installing rbenv"
 
 #10 gems installed
 #cp: cannot stat â: No such file or directory
