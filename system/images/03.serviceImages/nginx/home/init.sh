@@ -1,7 +1,7 @@
 #!/bin/sh
 
 rm /etc/nginx/sites-enabled/http*
-PID_FILE=/var/run/nginx.pid
+PID_FILE=/var/run/nginx/nginx.pid
 export PID_FILE
 . /home/trap.sh
 

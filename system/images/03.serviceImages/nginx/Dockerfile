@@ -7,7 +7,8 @@ RUN usermod www-data -u 22005;\
 	apt-get clean;\
 	mkdir -p /var/lib/nginx /var/run/nginx/ ;\ 
 	chown www-data /var/lib/nginx /var/run/nginx/ /etc/nginx/sites-enabled;\
-	usermod -G containers -a www-data
+	usermod -G containers -a www-data ;\
+	service stop nginx
 
 COPY home home
 
