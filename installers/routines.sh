@@ -1,5 +1,5 @@
 #!/bin/bash
-RUBY_VER=2.1.3
+RUBY_VER=2.2.2
 
 
 
@@ -58,7 +58,7 @@ function configure_git {
 		 
 		
 echo "Installing Docker"		
-		 apt-get install apt-transport-https  lvm2 thin-provisioning-tools
+		 apt-get install -y apt-transport-https   linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
 #IF AWS	 and not devmapper	 
@@ -67,7 +67,8 @@ echo "Installing Docker"
 		 apt-get -y  --force-yes install lxc-docker
 	
 echo "Configuring Docker DNS settings"	 
-		 echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker 
+		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
+		 echo "DOCKER_OPTS=\" --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 	
 		 #need to restart to get dns set
 		 service docker stop
@@ -157,17 +158,10 @@ echo "nameserver 172.17.42.1" >>  /etc/resolv.conf
 
   }
 
-#function make_dns_key {
-#	rm -f ddns.private ddns.key
-#	/usr/sbin/dnssec-keygen -a HMAC-MD5 -b 128 -n HOST  -r /dev/urandom -n HOST DDNS_UPDATE
-#	mv *private ddns.private
-#	mv *key ddns.key
-#}
 
 function generate_keys {
 echo "Generating system Keys"
 keys=""
-#keys=" nagios mgmt volmgr backup "
 
 
 
@@ -181,61 +175,8 @@ keys=""
 	      cp $key.pub /opt/engines/system/images/03.serviceImages/$key/
 	   done
 	   
-	   #FIXME add Intelligence to above loop ie use find
+	 
 
-#	   cp mgmt.pub /opt/engines/system/images/04.systemApps/mgmt/
-#	   cp nagios.pub /opt/engines/system/images/04.systemApps/nagios/
-	     
-#	ssh-keygen -q -N "" -f nagios
-#	ssh-keygen -q -N "" -f mysql
-#	ssh-keygen -q -N "" -f mgmt
-#	ssh-keygen -q -N "" -f nginx
-#	ssh-keygen -q -N "" -f backup
-#	ssh-keygen -q -N "" -f pgsql
-#	ssh-keygen -q -N "" -f mongo
-#	
-#	cat mongo pub | awk '{ print $1 " " $2}' > mongo.p
-#	#remove host limits from pub key
-#	cat pgsql.pub | awk '{ print $1 " " $2}' > pgsql.p
-#	mv pgsql.p  pgsql.pub 
-#	
-#	cat nginx.pub | awk '{ print $1 " " $2}' > nginx.p
-#	mv nginx.p  nginx.pub 
-#	
-#	cat nagios.pub | awk '{ print $1 " " $2}' > nagios.p
-#	mv nagios.p  nagios.pub 
-#	f
-#	cat mgmt.pub | awk '{ print $1 " " $2}' > mgmt.p
-#	mv mgmt.p  mgmt.pub 	
-#	
-#	cat mysql.pub | awk '{ print $1 " " $2}' > mysql.p
-#	mv mysql.p  mysql.pub 	
-#	
-#	mv mongo mgmt nagios mysql nginx backup pgsql /opt/engines/etc/keys/
-#	mv pgsql.pub /opt/engines/system/images/03.serviceImages/pgsql/
-#	mv mysql.pub /opt/engines/system/images/03.serviceImages/mysql/
-#	mv nagios.pub /opt/engines/system/images/04.systemApps/nagios/
-#	mv nginx.pub /opt/engines/system/images/03.serviceImages/nginx/
-#	mv mgmt.pub  /opt/engines/system/images/04.systemApps/mgmt/
-#	mv backup.pub /opt/engines/system/images/03.serviceImages/backup
-#	mv mongo.pub /opt/engines/system/images/03.serviceImages/mongo
-#	
-#	make_dns_key
-	
-#	key=`cat ddns.private |grep Key | cut -f2 -d" "`
-	
-#	while test `echo $key |grep -e / |wc -c` -gt 0
-#		do
-#			make_dns_key
-#			key=`cat ddns.private |grep Key | cut -f2 -d" "`
-#			echo DNS key $key
-#		done
-			
-#	echo DNS key $key
-	#cat /opt/engines/etc/dns/named.conf.default-zones.ad.tmpl| sed "/KEY_VALUE/s//"$key"/" > /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad
-	#cat /opt/engines/system/images/03.serviceImages/dns/named.conf.default-zones.ad.tmpl | sed "/KEY_VALUE/s//"$key"/" > /opt/engines/etc/dns/named.conf.default-zones
-	#cp ddns.* /opt/engines/system/images/01.baseImages/01.base/
-	#mv ddns.* /opt/engines/etc/dns/keys/
 	
 }
 
@@ -370,7 +311,7 @@ echo "Creating and starting Engines Services"
 	sleep 30
 	 /opt/engines/bin/engines.rb service create mysql_server
 	 /opt/engines/bin/engines.rb service create nginx
-	
+	 /opt/engines/bin/engines.rb service create auth
 	 /opt/engines/bin/eservices create 
 	
 }
@@ -416,19 +357,5 @@ mkdir -p /opt/engines/system/images/04.systemApps/mgmt/home/app
 			git remote add -t alpha origin 	https://github.com/EnginesOS/SystemGui.git
 			git fetch 
 		fi
-#			echo '[core]
-#				        repositoryformatversion = 0
-#				        filemode = true
-#				        bare = false
-#				        logallrefupdates = true
-#				[branch "master"]
-#				[remote "origin"]
-#				        url = https://github.com/EnginesOS/SystemGui.git
-#				        fetch = +refs/heads/*:refs/remotes/origin/*
-#				[branch "master"]
-#				        remote = origin
-#				        merge = refs/heads/master
-#				' > .git/config		
-#		fi
-#		git pull
+
 }

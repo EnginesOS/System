@@ -1,4 +1,4 @@
-#!/home/engines/.rbenv/versions/2.1.3/bin/ruby
+#!/home/engines/.rbenv/shims/ruby
 require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
