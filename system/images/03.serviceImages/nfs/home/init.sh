@@ -5,7 +5,7 @@ sudo syslogd -R syslog.engines.internal:5140
 
 PID_FILE=/var/run/ganesha.pid
 export PID_FILE
-source /home/trap.sh
+. /home/trap.sh
 
 mkdir -p /engines/var/run/flags
 
@@ -16,6 +16,8 @@ sudo  /usr/bin/ganesha.nfsd  -L /var/log/ganesha.log -F -f /usr/local/etc/ganesh
 touch  /engines/var/run/flags/startup_complete
 wait  
 rm /engines/var/run/flags/startup_complete
+sudo /home/engines/scripts/_kill_syslog.sh
+
 
 
 

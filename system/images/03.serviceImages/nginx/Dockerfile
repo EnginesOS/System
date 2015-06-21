@@ -19,4 +19,4 @@ ENV ContGrp www-data
 
 USER 22005
 
-CMD nginx
+CMD ["/home/init.sh"]

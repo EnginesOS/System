@@ -3,8 +3,10 @@
 echo received $1
 SIGNAL=$1
 PID_FILE=$2
-
 kill -$SIGNAL `cat $PID_FILE`
+ 
+/home/engines/scripts/_kill_syslog.sh
+
  if test -f $PID_FILE
  	then
 		wait `cat $PID_FILE`

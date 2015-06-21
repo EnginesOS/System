@@ -2,7 +2,7 @@
 
 
 dovecot ALL = (root) NOPASSWD: /sbin/syslogd
-dovecot ALL = (root) NOPASSWD: /home/_signal.sh
+dovecot ALL = (root) NOPASSWD: /home/engines/scripts/_kill_syslog.sh
 
 
 

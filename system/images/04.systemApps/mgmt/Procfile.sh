@@ -8,6 +8,7 @@ git reset --hard FETCH_HEAD
 git pull --depth 1 origin master
 cp /home/newrelic.yml /home/app/
 
+mkdir -p /engines/var/run/flags/
 RAILS_ENV=production
 
 
@@ -40,8 +41,8 @@ export PID_FILE
 
 
 /usr/sbin/apache2ctl -DFOREGROUND &
-touch  /engines/var/run/startup_complete
+touch  /engines/var/run/flags/startup_complete
 wait 
 
 rm /var/run/apache2/apache2.pid
-rm /engines/var/run/startup_complete
+rm /engines/var/run/flags/startup_complete

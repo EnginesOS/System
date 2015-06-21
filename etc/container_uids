@@ -20,6 +20,7 @@ cron		cron			22016
 auth	auth		22017
 nfs		nfs		22018	
 samba	samba	22019
+dyndns	dyndns	22021
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672

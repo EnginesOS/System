@@ -1,16 +1,18 @@
 #!/bin/sh
 
-
-PID_FILE=/var/run/mongodb.pid
+rm /etc/nginx/sites-enabled/http*
+PID_FILE=/var/run/nginx.pid
 export PID_FILE
 . /home/trap.sh
 
- 
+
 mkdir -p /engines/var/run/flags/
 
+/usr/sbin/nginx &
 
- mongod   -v  -f /etc/mongod.conf  --directoryperdb    --journal &
+
 touch  /engines/var/run/flags/startup_complete
-wait  
 
+		wait
+	
 rm /engines/var/run/flags/startup_complete
