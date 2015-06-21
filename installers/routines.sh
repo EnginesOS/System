@@ -129,14 +129,14 @@ git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 	
 	/usr/local/rbenv/plugins/ruby-build/install.sh 
 	 
-	/usr/local/rbenv/bin/rbenv install $RUBY_VER
-	/usr/local/rbenv/bin/rbenv global $RUBY_VER
-	echo "gem: --no-ri --no-rdoc" > ~/.gemrc
+#	/usr/local/rbenv/bin/rbenv install $RUBY_VER
+#	/usr/local/rbenv/bin/rbenv global $RUBY_VER
+#	echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 	
-	/usr/local/rbenv/bin/rbenv rehash
-	cp -rp  ~/.gemrc ~/.bashrc ~engines
+#	/usr/local/rbenv/bin/rbenv rehash
+#	cp -rp  ~/.gemrc ~/.bashrc ~engines
 	
- 	~/.rbenv/shims/gem install multi_json rspec rubytree git 
+#	~/.rbenv/shims/gem install multi_json rspec rubytree git 
 		
 	echo "Setup engines cron tab"
 echo "*/10 * * * * /opt/engines/bin/engines.sh engine check_and_act all >>/opt/engines/logs/engines/restarts.log
