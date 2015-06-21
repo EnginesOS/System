@@ -16,4 +16,5 @@ fi
  /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &
 touch  /engines/var/run/flags/startup_complete
 wait  
+
 rm /engines/var/run/flags/startup_complete
