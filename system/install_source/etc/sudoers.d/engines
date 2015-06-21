@@ -4,5 +4,6 @@
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_system_update.sh
 
 engines ALL = (root) NOPASSWD: /sbin/reboot
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_key_dir.sh
 
 #Must have tailing empty line
