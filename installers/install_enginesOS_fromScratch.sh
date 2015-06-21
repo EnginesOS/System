@@ -27,8 +27,8 @@ make_dirs
 
 set_permissions
 
-#cp -r /opt/engines/system/install_source/* /
-cat opt/engines/system/install_source/etc/sudoers >> /etc/sudoers
+cp -r /opt/engines/system/install_source/* /
+#cat /opt/engines/system/install_source/etc/sudoers >> /etc/sudoers
 
 chmod +x /tmp/203.14.203.141/EnginesInstaller/complete_install.sh
 
