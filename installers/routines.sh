@@ -118,9 +118,9 @@ echo "Installing rbenv"
 #chown: cannot access â: No such file or directory
 #Enter new UNIX password: 
 
-mkdir /etc/sudoers.d/
+mkdir -p /etc/sudoers.d/
 cp /opt/engines/system/install_source/etc/sudoers.d/engines /etc/sudoers.d/engines 
-cp /opt/engines/system/install_source/etc/sudoers /etc/sudoers
+#cp /opt/engines/system/install_source/etc/sudoers /etc/sudoers
 
 mkdir -p /usr/local/  
 cd /usr/local/  

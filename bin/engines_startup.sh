@@ -2,7 +2,7 @@
 
 if test -f  /opt/engines/.complete_install
 then
-   /opt/engines/installers/complete_install.sh
+   /opt/engines/installers/finish_install.sh
 else
 	/opt/engines/bin/containers_startup.sh &
 
