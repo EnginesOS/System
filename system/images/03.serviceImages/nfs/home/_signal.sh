@@ -13,7 +13,7 @@ if test -f /run/rpc.pid
 	
  if test -f $PID_FILE
  	then
- 	$pid=`cat $PID_FILE`
+ 	pid=`cat $PID_FILE`
  		if test `echo $pid | wc -c ` -gt 0
  			then
 				wait $pid
