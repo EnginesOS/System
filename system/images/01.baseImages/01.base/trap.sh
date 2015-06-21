@@ -42,7 +42,11 @@ trap_term()
 				sudo /home/_signal.sh $SIGNAL	$PID_FILE
 			else
 				kill -$SIGNAL `cat    $PID_FILE `	
-				wait 	 	`cat    $PID_FILE `
+				pid=`cat    $PID_FILE `				
+					if test `echo $pid |wc -c ` -gt 0
+						then
+							wait $pid
+						fi				
 		fi
 	  touch /engines/var/run/flags/termed	 			
 	fi
@@ -79,7 +83,11 @@ trap_quit()
 						sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
 					else
 						kill -$SIGNAL `cat  $PID_FILE  `
-						wait 	 	`cat    $PID_FILE `
+				        pid=`cat    $PID_FILE `				
+					     if test `echo $pid |wc -c ` -gt 0
+						   then
+							wait $pid
+						 fi		
 				fi				
 			 touch /engines/var/run/flags/quited
 		fi
