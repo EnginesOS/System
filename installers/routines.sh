@@ -218,7 +218,7 @@ mkdir -p  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/r
 mkdir -p /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /var/lib/engines/pgsql /var/log/engines/services/pgsql	/opt/engines/run/services/pgsql_server/run/postgres
 mkdir -p /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
-mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
+mkdir -p /var/lib/engines/mongo /var/log/engines/services/mongo_server	/opt/engines/run/services/mongo_server/run/mongo/
 mkdir -p /opt/engines/run/services/dns/run/dns
 mkdir -p /opt/engines/run/services/mysql_server/run/mysqld
 mkdir -p /opt/engines/run/services/nginx/run/nginx/
@@ -261,7 +261,7 @@ echo "Setting directory and file permissions"
 	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
 	chown -R 22002.22002	/var/lib/engines/pgsql /var/log/engines/services/pgsql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
-    chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo	/opt/engines/run/services/mongo_server/run/mongo/
+    chown -R 22008.22008 /var/lib/engines/mongo /var/log/engines/services/mongo_server	/opt/engines/run/services/mongo_server/run/mongo/
 	chown -R 22009.22009 /opt/engines/run/services/dns/run/dns
 	chown -R 22010 /var/log/engines/services/ftp
 	 
