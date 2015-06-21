@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RUBY_VER=2.1.2
+RUBY_VER=2.2.2
 
 export RUBY_VER
 
@@ -17,6 +17,7 @@ dpkg-reconfigure tzdata
 configure_git 
 
 install_docker_and_components
+ln -s /opt/engines/bin/set_ip.sh /etc/network/if-up.d/
 chown -R engines /opt/engines/
 passwd engines  
 

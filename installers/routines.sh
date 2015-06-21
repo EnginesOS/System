@@ -2,6 +2,23 @@
 RUBY_VER=2.2.2
 
 
+function complete_install {
+
+create_services
+
+/opt/engines/bin/containers_startup.sh 
+
+echo "System startup"
+/opt/engines/bin/mgmt_startup.sh 
+
+rm /opt/engines/.complete_install
+touch /opt/engines/.installed
+
+hostname=`hostname`
+
+
+echo "Congratulations Engines OS is now installed please go to http://${hostname}:88/"
+}
 
 function configure_git {
 
@@ -45,7 +62,7 @@ function configure_git {
   #apt-get -y  --force-yes upgrade
   
   echo "Adding startup script"
-		 cat /etc/rc.local | sed "/^exit.*$/s//su -l engines \/opt\/engines\/bin\/mgmt_startup.sh/" > /tmp/rc.local
+		 cat /etc/rc.local | sed "/^exit.*$/s//su -l engines \/opt\/engines\/bin\/engines_startup.sh/" > /tmp/rc.local
 		 echo "exit 0"  >> /tmp/rc.local
 		 cp /tmp/rc.local /etc/rc.local
 		 rm  /tmp/rc.local

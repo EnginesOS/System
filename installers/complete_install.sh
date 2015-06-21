@@ -19,16 +19,8 @@ setup_mgmt_git
 #echo "Building Images"
 # /opt/engines/bin/buildimages.sh
 
+touch /opt/engines/.complete_install
 
-create_services
-
-/opt/engines/bin/containers_startup.sh 
-
-echo "System startup"
-/opt/engines/bin/mgmt_startup.sh 
-
-sleep 180  # would be nice to tail docker logs -f mgmt and break when :8000 in log line
-hostname=`hostname`
+sudo reboot
 
 
-echo "Congratulations Engines OS is now installed please go to http://${hostname}:88/"
