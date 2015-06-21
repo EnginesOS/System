@@ -11,3 +11,7 @@ if test -f /run/rpc.pid
 		kill -$SIGNAL `cat /run/rpcbind.pid`
 	fi
 	
+ if test -f $PID_FILE
+ 	then
+		wait `cat $PID_FILE`
+	fi

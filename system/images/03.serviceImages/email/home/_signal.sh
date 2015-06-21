@@ -9,3 +9,7 @@ kill -$SIGNAL `cat /var/run/apache2/apache2.pid`
 kill -$SIGNAL `cat $PID_FILE`
 
 
+ if test -f $PID_FILE
+ 	then
+		wait `cat $PID_FILE`
+	fi
