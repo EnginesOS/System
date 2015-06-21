@@ -41,7 +41,8 @@ trap_term()
 			then
 				sudo /home/_signal.sh $SIGNAL	$PID_FILE
 			else
-				kill -$SIGNAL `cat    $PID_FILE `		 	
+				kill -$SIGNAL `cat    $PID_FILE `	
+				wait 	 	`cat    $PID_FILE `
 		fi
 	  touch /engines/var/run/flags/termed	 			
 	fi
@@ -77,7 +78,8 @@ trap_quit()
 					then
 						sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
 					else
-						kill -$SIGNAL `cat  $PID_FILE  `	
+						kill -$SIGNAL `cat  $PID_FILE  `
+						wait 	 	`cat    $PID_FILE `
 				fi				
 			 touch /engines/var/run/flags/quited
 		fi

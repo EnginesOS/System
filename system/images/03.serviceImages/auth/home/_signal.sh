@@ -6,3 +6,4 @@ PID_FILE=$2
 
 kill -$SIGNAL `cat $PID_FILE`
  
+wait `cat $PID_FILE`
