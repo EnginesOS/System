@@ -45,6 +45,7 @@ trap_term()
 				pid=`cat    $PID_FILE `				
 					if test `echo $pid |wc -c ` -gt 0
 						then
+							echo waiting on \"$pid\"
 							wait $pid
 						fi				
 		fi
