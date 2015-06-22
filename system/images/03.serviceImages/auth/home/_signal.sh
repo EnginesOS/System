@@ -10,7 +10,9 @@ kill -$SIGNAL `cat $PID_FILE`
  	then
  	pid=`cat $PID_FILE`
  				case $pid in
-						 (*[^0-9]*|'') t=1;;
-   						 (*)    wait $pid ;;  
+						 (*[^0-9]*|'') echo "no wait for \"$pid\" ";;
+   						 (*)    
+   						 	echo wait $pid 
+   						 	wait $pid ;;  
 					esac
 	fi
