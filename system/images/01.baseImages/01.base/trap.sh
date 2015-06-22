@@ -94,7 +94,7 @@ trap_quit()
  	
 	if test $? -ne 0
         then
-                echo no wait
+                echo no wait for \"$pid\"
         else
                 echo wait \"$pid\"
                 wait $pid   
