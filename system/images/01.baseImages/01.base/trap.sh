@@ -43,11 +43,15 @@ trap_term()
 			else
 				kill -$SIGNAL `cat    $PID_FILE `	
 				pid=`cat    $PID_FILE `				
-					if test `echo $pid |wc -c ` -gt 0
-						then
-							echo waiting on \"$pid\"
-							wait $pid
-						fi				
+					case $pid in
+						 (*[^0-9]*|'') t=1;;
+   						 (*)    wait $pid ;;  
+					esac
+					#if test `echo $pid |wc -c ` -gt 0
+					#	then
+					#		echo waiting on \"$pid\"
+					#		wait $pid
+					#	fi				
 		fi
 	  touch /engines/var/run/flags/termed	 			
 	fi
