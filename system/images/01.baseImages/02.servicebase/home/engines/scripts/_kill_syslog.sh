@@ -10,7 +10,7 @@ if test -f /run/syslogd.pid
  	
 	if test $? -ne 0
         then
-                echo no wait
+                echo no wait for syslog
         else
                 echo wait \"$pid\"
                 wait $pid   
