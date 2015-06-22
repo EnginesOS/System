@@ -14,7 +14,7 @@ kill -$SIGNAL `cat $PID_FILE`
  	
 	if test $? -ne 0
         then
-                echo no wait
+                echo no wait \"$pid\"
         else
                 echo wait \"$pid\"
                 wait $pid   
