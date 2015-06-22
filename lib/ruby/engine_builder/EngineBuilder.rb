@@ -258,7 +258,7 @@ class EngineBuilder
 
     log_build_output("Building Image")
     # cmd="cd " + get_basedir + "; docker build  -t " + @hostname + "/init ."
-    cmd="/usr/bin/docker build  --tag=" + @container_name + " " +  get_basedir
+    cmd="/usr/bin/docker build --force-rm=true --tag=" + @container_name + " " +  get_basedir
 
     puts cmd
 
