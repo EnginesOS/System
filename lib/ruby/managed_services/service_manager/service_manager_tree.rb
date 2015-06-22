@@ -18,6 +18,7 @@ module ServiceManagerTree
   end
   
   
+  
   def service_tree
     if @last_tree_mod_time && @last_tree_mod_time != nil 
           current_time = File.mtime(SysConfig.ServiceTreeFile)
@@ -279,7 +280,19 @@ rescue Exception=>e
      return nil
    
  end
-  
+ 
+def service_configurations_tree
+  if check_service_tree == false
+        return false
+      end
+  if (service_tree["Configurations"] == nil )
+    service_tree << Tree::TreeNode.new("Configurations","Service Configurations")       
+  end
+  return service_tree["Configurations"]
+  rescue Exception=>e
+       log_exception(e)
+       return nil
+end
   #Wrapper for Gui to 
  #@return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
