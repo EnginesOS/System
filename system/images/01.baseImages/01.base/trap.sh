@@ -44,8 +44,11 @@ trap_term()
 				kill -$SIGNAL `cat    $PID_FILE `	
 				pid=`cat    $PID_FILE `				
 					case $pid in
-						 (*[^0-9]*|'') t=1;;
-   						 (*)    wait $pid ;;  
+						 (*[^0-9]*|'') echo "no wait for \"${pid}\" ";;
+   						 (*)
+   						 	echo waiting on $pid
+   						    wait $pid   						     
+   						 ;;  
 					esac
 					#if test `echo $pid |wc -c ` -gt 0
 					#	then
