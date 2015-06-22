@@ -9,10 +9,16 @@ kill -$SIGNAL `cat $PID_FILE`
  if test -f $PID_FILE
  	then
  	pid=`cat $PID_FILE`
- 				case $pid in
-						 (*[^0-9]*|'') echo "no wait for \"$pid\" ";;
-   						 (*)    
-   						 	echo wait $pid 
-   						 	wait $pid ;;  
-					esac
+ 	
+ 	echo $pid |grep ^[0-9]
+ 	
+	if test $? -ne 0
+        then
+                echo no wait
+        else
+                echo wait \"$pid\"
+                wait $pid ;;  
+	fi
+ 	
+
 	fi
