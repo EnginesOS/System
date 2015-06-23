@@ -43,16 +43,15 @@ trap_term()
 			else
 				kill -$SIGNAL `cat    $PID_FILE `	
 				pid=`cat    $PID_FILE `				
-	echo $pid |grep ^[0-9]
+				echo $pid |grep ^[0-9]
  	
-	if test $? -ne 0
-        then
-                echo no wait
-        else
-                echo wait \"$pid\"
-                wait $pid   
-	fi
-			
+				if test $? -ne 0
+        			then
+                		echo no wait for  \"$pid\"
+        		else
+                		echo wait \"$pid\"
+                		wait $pid   
+				fi			
 		fi
 	  touch /engines/var/run/flags/termed	 			
 	fi
@@ -90,15 +89,15 @@ trap_quit()
 					else
 						kill -$SIGNAL `cat  $PID_FILE  `
 				        pid=`cat    $PID_FILE `				
-					    	echo $pid |grep ^[0-9]
+					    echo $pid |grep ^[0-9]
  	
-	if test $? -ne 0
-        then
-                echo no wait for \"$pid\"
-        else
-                echo wait \"$pid\"
-                wait $pid   
-	fi
+							if test $? -ne 0
+        						then
+                					echo no wait for \"$pid\"
+        					else
+                					echo wait \"$pid\"
+                					wait $pid   
+							fi
 				fi				
 			 touch /engines/var/run/flags/quited
 		fi

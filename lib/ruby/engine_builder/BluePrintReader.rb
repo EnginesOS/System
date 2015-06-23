@@ -10,6 +10,8 @@ class BluePrintReader
      @blueprint = blue_print
      @web_port=nil
      @services = Array.new
+     @os_packages = Array.new
+
    end
 
    attr_reader :persistant_files,
@@ -241,8 +243,9 @@ class BluePrintReader
 
    def read_os_packages
      begin
-       @os_packages = Array.new
-
+       
+   
+       
        log_build_output("Read OS Packages")
        ospackages = @blueprint[:software][:system_packages]
          

@@ -9,7 +9,7 @@ sudo syslog-ng -F -f /etc/syslog-ng/syslog-ng.conf -p /$PID_FILE --no-caps  -v -
 touch  /engines/var/run/flags/startup_complete
 wait  
 rm /engines/var/run/flags/startup_complete
-sudo /home/engines/scripts/_kill_syslog.sh
+
 
 
 

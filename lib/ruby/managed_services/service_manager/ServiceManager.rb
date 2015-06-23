@@ -8,6 +8,8 @@ require_relative 'managed_engines_registry.rb'
 include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
+require_relative 'service_configurations.rb'
+include ServiceConfigurations
 
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'

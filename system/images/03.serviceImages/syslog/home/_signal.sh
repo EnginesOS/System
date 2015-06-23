@@ -9,9 +9,14 @@ kill -$SIGNAL `cat $PID_FILE`
  if test -f $PID_FILE
  	then
  	pid=`cat $PID_FILE`
- 							case $pid in
-						 (*[^0-9]*|'') t=1;;
-   						 (*)    wait $pid ;;  
-					esac
+ 	echo $pid |grep ^[0-9]
+ 	
+	if test $? -ne 0
+        then
+                echo no wait \"$pid\"
+        else
+                echo wait \"$pid\"
+                wait $pid   
 	fi
-/home/engines/scripts/_kill_syslog.sh
+ 	
+	fi
