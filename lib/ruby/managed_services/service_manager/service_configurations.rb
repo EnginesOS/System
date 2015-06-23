@@ -72,12 +72,14 @@ module ServiceConfigurations
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
             if service_configurations == false
               p :serivce_configurations_not_found
-              return false
+              return add_service_configuration(service_configuration_hash)
+              #return false
             end
             
             if service_configuration_hash.has_key?(:configuration_name) == false
               p :no_configuration_name     
-                    return false
+              return  add_service_configuration(service_configuration_hash)
+              
             end
             
               service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
