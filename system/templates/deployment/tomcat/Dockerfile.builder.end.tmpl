@@ -5,7 +5,7 @@
 #after chmod so protected
 ADD home/start.bash /home/start.bash
 
-
+RUN chown -R www-data /usr/share/tomcat7/work/Catalina/localhost/
 	
 USER www-data
 

@@ -45,8 +45,8 @@ echo  "CREATE ROLE $dbusername WITH ENCRYPTED PASSWORD '$dbpassword'  LOGIN;" >/
 			Encoding 'UTF8'\
 			TEMPLATE = template0;" >> /tmp/.c.sql			
 			
-			LC_COLLATE = '$collation'\
-  			LC_CTYPE = '$collation';" >> /tmp/.c.sql			
+			#LC_COLLATE = '$collation'\
+  			#LC_CTYPE = '$collation'; >> /tmp/.c.sql			
 		fi
 echo "alter  ROLE $dbusername login; " >> /tmp/.c.sql
 
