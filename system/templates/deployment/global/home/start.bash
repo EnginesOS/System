@@ -50,6 +50,7 @@ if test -f /home/engines/scripts/custom_start.sh
 if test -f /home/startwebapp.sh 
 	then
 		/home/startwebapp.sh 
+		exit
 	fi
 	
 #Apache based below here
