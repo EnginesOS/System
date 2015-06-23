@@ -16,9 +16,9 @@ source /home/trap.sh
 	else		
 		
 		/usr/sbin/apache2ctl -DFOREGROUND &
-		touch /var/run/flags/startup_complete
+		touch /engines/var/run/flags/startup_complete
 	fi
 
 wait 
 
-rm /var/run/flags/startup_complete
+rm /engines/var/run/flags/startup_complete
