@@ -9,7 +9,7 @@ RUN groupadd -g $data_gid writegrp;\
 	mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
  
 ADD home/startwebapp.sh /home/app/
-ENV RAILS_ENV production
+
 USER www-data
 
 #do this after chmods and chowns

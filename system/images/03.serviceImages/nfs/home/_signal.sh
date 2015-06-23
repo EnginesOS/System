@@ -13,5 +13,9 @@ if test -f /run/rpc.pid
 	
  if test -f $PID_FILE
  	then
-		wait `cat $PID_FILE`
+ 	pid=`cat $PID_FILE`
+ 							case $pid in
+						 (*[^0-9]*|'') t=1;;
+   						 (*)    wait $pid ;;  
+					esac
 	fi
