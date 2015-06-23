@@ -47,9 +47,9 @@ if test -f /home/engines/scripts/custom_start.sh
 		bash	/home/engines/scripts/custom_start.sh
 	fi
 
-if test -f /home/engines/scripts/startwebapp.sh 
+if test -f /home/startwebapp.sh 
 	then
-		/home/engines/scripts/startwebapp.sh 
+		/home/startwebapp.sh 
 	fi
 	
 #Apache based below here

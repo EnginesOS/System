@@ -1,8 +1,8 @@
 #!/bin/sh
 
- /usr/share/tomcat7/bin/catalina.sh  start
-	 while test t = t
-		do	
-		sleep 100
-		done
+ /usr/share/tomcat7/bin/catalina.sh  start &
+ touch /var/run/flags/startup_complete
+ wait
+ rm /var/run/flags/startup_complete
+	
 
