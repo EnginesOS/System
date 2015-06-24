@@ -96,6 +96,7 @@ module ServiceConfigurations
               service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
               if service_configuration.is_a?(Tree::TreeNode)
                 service_configuration.content = service_configuration_hash
+                p "saved " + service_configuration_hash
                 save_tree
                return true
             end
