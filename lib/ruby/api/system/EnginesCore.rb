@@ -355,6 +355,11 @@ class EnginesCore
     return sm.find_engine_services(params)
   end
 
+  def get_configurations_tree
+    sm = loadServiceManager()
+        return sm.service_configurations_tree
+  end
+  
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
