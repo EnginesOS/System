@@ -220,7 +220,7 @@ class ManagedService < ManagedContainer
     if create_container() == true
       #start with configurations
       
-      service_configurations = service_manager.get_service_configurations_hashes(service_name)
+      service_configurations = service_manager.get_service_configurations_hashes(@container_name)
         if service_configurations
           service_configurations.each do |configuration|
             run_configurator(configuration)
