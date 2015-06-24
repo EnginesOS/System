@@ -231,7 +231,9 @@ class DockerFileBuilder
       log_build_output("set setup_env")
       src_paths = @blueprint_reader.persistant_files[:src_paths]
       dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
-
+       if src_paths == nil
+         return
+       end
       src_paths.each do |path|
         #          path = dest_paths[n]
         p :path
