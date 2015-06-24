@@ -14,7 +14,7 @@ module ServiceConfigurations
   def get_service_configurations_hashes(service_name)
     configurations = get_service_configurations(service_name)
     if  configurations == false
-      p "no service configurations for " + service_name
+      p "no service configurations for " + service_name.to_s
       return Array.new
     else
       leafs = get_all_leafs_service_hashes(configurations)
@@ -51,12 +51,12 @@ module ServiceConfigurations
       service_configurations_tree << configurations
     elsif !configurations[service_configuration_hash[:configurator_name]]
       p :service_configuration_hash_exists
-      p service_configuration_hash
+      p service_configuration_hash.to_s
       return false 
     end
       configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
       configurations << configuration
-p "add " + service_configuration_hash
+p "add " + service_configuration_hash.to_s
       save_tree
     
   end
