@@ -92,7 +92,7 @@ p "add " + service_configuration_hash.to_s
             
             if service_configuration_hash.has_key?(:configurator_name) == false
               p :no_configuration_name     
-              return  add_service_configuration(service_configuration_hash)
+              return  false 
               
             end
             
@@ -102,7 +102,10 @@ p "add " + service_configuration_hash.to_s
                 p "saved " + service_configuration_hash
                 save_tree
                return true
+              else
+                return add_service_configuration(service_configuration_hash)
             end
+
             return false
     end
   
