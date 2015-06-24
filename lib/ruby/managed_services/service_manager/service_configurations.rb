@@ -14,6 +14,7 @@ module ServiceConfigurations
   def get_service_configurations_hashes(service_name)
     configurations = get_service_configurations(service_name)
     if  configurations == false
+      p "no service configurations for " + service_name
       return Array.new
     else
       return get_all_leafs_service_hashes(configurations)
