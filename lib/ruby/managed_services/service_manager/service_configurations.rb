@@ -10,6 +10,16 @@ module ServiceConfigurations
     end
     return false
   end
+
+  def get_service_configurations_hashes(service_name)
+    configurations = get_service_configurations(service_name)
+    if  configurations == false
+      return Array.new
+    else
+      return get_all_leafs_service_hashes(configurations)
+  end
+  
+  end
   
   #@ return a service_configuration_hash addressed by :service_name :configuration_name
   
