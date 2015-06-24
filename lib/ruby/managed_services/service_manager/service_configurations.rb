@@ -20,11 +20,11 @@ module ServiceConfigurations
       return false
     end
     
-    if service_configuration_hash.has_key?(:configuration_name) == false     
+    if service_configuration_hash.has_key?(:configurator_name) == false     
             return get_all_leafs_service_hashes(service_configurations)
     end
     
-      service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
+      service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
       if service_configuration.is_a?(Tree::TreeNode)
         return service_configuration.content
     end
@@ -36,12 +36,12 @@ module ServiceConfigurations
     if configurations == false
       configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
       service_configurations_tree << configurations
-    elsif !configurations[service_configuration_hash[:configuration_name]]
+    elsif !configurations[service_configuration_hash[:configurator_name]]
       p :service_configuration_hash_exists
       p service_configuration_hash
       return false 
     end
-      configuration = Tree::TreeNode.new(service_configuration_hash[:configuration_name],service_configuration_hash[:configuration_hash])
+      configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash[:variables])
       configurations << configuration
       save_tree
     
@@ -54,12 +54,12 @@ module ServiceConfigurations
           return false
         end
         
-        if service_configuration_hash.has_key?(:configuration_name) == false
+        if service_configuration_hash.has_key?(:configurator_name) == false
           p :no_configuration_name     
                 return false
         end
         
-          service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
+          service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
           if service_configuration.is_a?(Tree::TreeNode)
             remove_tree_entry(service_configuration)
             save_tree
@@ -76,15 +76,15 @@ module ServiceConfigurations
               #return false
             end
             
-            if service_configuration_hash.has_key?(:configuration_name) == false
+            if service_configuration_hash.has_key?(:configurator_name) == false
               p :no_configuration_name     
               return  add_service_configuration(service_configuration_hash)
               
             end
             
-              service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
+              service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
               if service_configuration.is_a?(Tree::TreeNode)
-                service_configuration.content = service_configuration_hash[:configuration_hash]
+                service_configuration.content = service_configuration_hash[:variables]
                 save_tree
                return true
             end
