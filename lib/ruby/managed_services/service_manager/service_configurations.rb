@@ -54,6 +54,7 @@ module ServiceConfigurations
     end
       configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
       configurations << configuration
+p "add " + service_configuration_hash
       save_tree
     
   end
