@@ -5,7 +5,7 @@ module ServiceConfigurations
     
     service_configurations = service_configurations_tree[service_name]
     
-    if service_configurations.is_a?(TreeNode)
+    if service_configurations.is_a?(Tree::TreeNode)
       return service_configurations     
     end
     return false
@@ -25,7 +25,7 @@ module ServiceConfigurations
     end
     
       service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
-      if service_configuration.is_a?(TreeNode)
+      if service_configuration.is_a?(Tree::TreeNode)
         return service_configuration.content
     end
     return false
@@ -60,7 +60,7 @@ module ServiceConfigurations
         end
         
           service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
-          if service_configuration.is_a?(TreeNode)
+          if service_configuration.is_a?(Tree::TreeNode)
             remove_tree_entry(service_configuration)
             save_tree
            return true
@@ -83,7 +83,7 @@ module ServiceConfigurations
             end
             
               service_configuration = service_configurations[service_configuration_hash[:configuration_name]]
-              if service_configuration.is_a?(TreeNode)
+              if service_configuration.is_a?(Tree::TreeNode)
                 service_configuration.content = service_configuration_hash[:configuration_hash]
                 save_tree
                return true
