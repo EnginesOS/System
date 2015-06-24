@@ -52,7 +52,7 @@ module ServiceConfigurations
       p service_configuration_hash
       return false 
     end
-      configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash[:variables])
+      configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
       configurations << configuration
       save_tree
     
@@ -95,7 +95,7 @@ module ServiceConfigurations
             
               service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
               if service_configuration.is_a?(Tree::TreeNode)
-                service_configuration.content = service_configuration_hash[:variables]
+                service_configuration.content = service_configuration_hash
                 save_tree
                return true
             end
