@@ -627,6 +627,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
           count_layer
           set_user("$ContUser")
+       
         else
           step_back=false
 
@@ -643,7 +644,8 @@ SystemUtils.log_exception(e)
           end
 
           @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
-          if arc_extract!= nil
+          
+          if arc_extract != nil && arc_extract != "" 
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts(" rm \"" + arc_name + "\"")
           else
