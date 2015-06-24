@@ -17,7 +17,9 @@ module ServiceConfigurations
       p "no service configurations for " + service_name
       return Array.new
     else
-      return get_all_leafs_service_hashes(configurations)
+      leafs = get_all_leafs_service_hashes(configurations)
+      p "leafs are " +  leafs.to_s
+      return leafs
   end
   
   end
