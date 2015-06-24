@@ -218,12 +218,20 @@ class ManagedService < ManagedContainer
     end
     @setState="running"
     if create_container() == true
+      #start with configurations
+      
+      service_configurations = service_manager.get_service_configurations_hashes(service_name)
+        if service_configurations
+          service_configurations.each do |configuration|
+            run_configurator(configuration)
+          end
+        end
       register_with_dns()
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
-      
+            
       reregister_consumers()
       save_state()
       return true
