@@ -52,7 +52,7 @@ module ServiceConfigurations
     elsif !configurations[service_configuration_hash[:configurator_name]]
       p :service_configuration_hash_exists
       p service_configuration_hash.to_s
-      return false 
+      return update_service_configuration(service_configuration_hash) 
     end
       configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
       configurations << configuration
