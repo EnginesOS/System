@@ -11,8 +11,7 @@ SIGNAL=0
  	
  if ! test -f /engines/var/run/flags/first_run_done 
 	 then
-        bash /home/firstrun.sh 
-        
+        bash /home/firstrun.sh         
 fi
 
  /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306 &
