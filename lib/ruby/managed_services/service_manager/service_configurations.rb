@@ -49,10 +49,10 @@ module ServiceConfigurations
     if configurations == false
       configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
       service_configurations_tree << configurations
-    elsif !configurations[service_configuration_hash[:configurator_name]]
+    elsif configurations[service_configuration_hash[:configurator_name]]
       p :service_configuration_hash_exists
       p service_configuration_hash.to_s
-      return update_service_configuration(service_configuration_hash) 
+      return false
     end
       configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
       configurations << configuration
