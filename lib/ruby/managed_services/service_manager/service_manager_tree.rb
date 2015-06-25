@@ -121,7 +121,7 @@ module ServiceManagerTree
    def create_type_path_node(parent_node,type_path)
      if type_path == nil
        log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
-       return nil
+       return false
      end
  
      if type_path.include?("/") == false
@@ -151,7 +151,7 @@ module ServiceManagerTree
        end
      end
      log_error_mesg("create_type_path failed",type_path)
-     return nil
+     return false
    end
   
   #@branch the [TreeNode] under which to search
@@ -255,7 +255,7 @@ module ServiceManagerTree
  #@param parent_node the branch to search under
  #@param type_path the dir path format as in dns or database/sql/mysql
  def get_type_path_node(parent_node,type_path)
-   if type_path == nil || parent_node == nil
+   if type_path == nil || parent_node.is_a?(Tree::TreeNode) == false
      log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
      return nil
    end
@@ -270,14 +270,14 @@ module ServiceManagerTree
        sub_node = sub_node[sub_path]
        if sub_node == nil
          log_error_mesg("Subnode not found for " + type_path + "under node ", parent_node)
-         return nil
+         return false
        end
      end
      return sub_node
    end
 rescue Exception=>e
      log_exception(e)
-     return nil
+     return false
    
  end
  
@@ -322,7 +322,7 @@ def log_exception(e)
    rescue Exception=>e
        @last_error=( "load tree")
        log_exception(e)
-       return nil
+       return false
  end
  
   protected

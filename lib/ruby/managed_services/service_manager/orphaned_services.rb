@@ -4,7 +4,7 @@ module OrphanedServices
   #@param params { :type_path , :service_handle}
   def release_orphan(params)
     orphan = retrieve_orphan(params)
-    if orphan == nil
+    if orphan == false
       log_error_mesg("No Orphan found to release",params)
       return false
     end
@@ -56,7 +56,7 @@ SystemUtils.debug_output( :orpahns_retr_start, params[:type_path])
       type_path = params[:type_path]
         
     type = get_type_path_node(provider_tree,type_path)
-    if type == nil
+    if type == false
       log_error_mesg("No Orphan Matching type_path",params)
       return false
     end
@@ -101,14 +101,14 @@ end
   #@return new service_hash
   def reparent_orphan(params)
     orphan = retrieve_orphan(params)
-    if orphan !=nil
+    if orphan !=  false
       content = orphan.content
       content[:variables][:parent_engine]=params[:parent_engine]
       content[:parent_engine]=params[:parent_engine]
       return content
     else
       log_error_mesg("No orphan found to reparent",params)
-      return nil
+      return false
     end
 
   end
@@ -151,7 +151,7 @@ end
      
    service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
-   if service_path_tree == nil
+   if service_path_tree == false
      log_error_mesg("Failed to find orphan matching service path",service_query_hash)
      return false
    end
