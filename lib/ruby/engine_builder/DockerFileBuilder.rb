@@ -231,7 +231,9 @@ class DockerFileBuilder
       log_build_output("set setup_env")
       src_paths = @blueprint_reader.persistant_files[:src_paths]
       dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
-
+       if src_paths == nil
+         return
+       end
       src_paths.each do |path|
         #          path = dest_paths[n]
         p :path
@@ -627,6 +629,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
           count_layer
           set_user("$ContUser")
+       
         else
           step_back=false
 
@@ -643,10 +646,12 @@ SystemUtils.log_exception(e)
           end
 
           @docker_file.puts("RUN   wget  -O \"" + arc_name + "\" \""  + arc_src + "\" ;\\" )
-          if arc_extract!= nil
+          
+          if arc_extract != nil && arc_extract != "" 
             @docker_file.puts(" " + arc_extract + " \"" + arc_name + "\" ;\\") # + "\"* 2>&1 > /dev/null ")
             @docker_file.puts(" rm \"" + arc_name + "\"")
           else
+            arc_dir=arc_name
             @docker_file.puts("echo") #step past the next shell line implied by preceeding ;
           end
           set_user("0")

@@ -355,6 +355,11 @@ class EnginesCore
     return sm.find_engine_services(params)
   end
 
+  def get_configurations_tree
+    sm = loadServiceManager()
+        return sm.service_configurations_tree
+  end
+  
   def load_service_definition(filename)
 
     yaml_file = File.open(filename)
@@ -434,6 +439,7 @@ class EnginesCore
   def retrieve_service_configuration(service_param)
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
+        
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
       else
@@ -449,10 +455,14 @@ class EnginesCore
 
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
+      sm = loadServiceManager()
+      sm.update_service_configuration(service_param)
+      
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
+        
         if retval[:result] == 0
-
+          
           return true
         else
           @last_error = retval[:stderr]

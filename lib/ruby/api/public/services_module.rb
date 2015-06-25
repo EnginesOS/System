@@ -155,6 +155,10 @@ module ServicesModule
       return @core_api.get_managed_engine_tree  
     end
   
+    def get configurations_tree
+        return @core_api.get_configurations_tree
+    end
+    
     def managed_service_tree
       return fetch_managed_service_tree
     end  

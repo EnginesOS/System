@@ -19,7 +19,7 @@ volumes:
  sslcerts: !ruby/object:Volume
   name: sslcerts
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ssl/psql/"
+  localpath: "/opt/engines/etc/ssl/pgsql/"
   mapping_permissions: "ro"
 port: 
 eports:
