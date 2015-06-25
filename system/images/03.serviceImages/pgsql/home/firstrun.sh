@@ -26,7 +26,7 @@ pass="pass"
 	kill -TERM $pid
 	wait $pid
 	  	
-	/engines/var/run/flags/first_run_done   	 
+touch	/engines/var/run/flags/first_run_done   	 
 	 	 
  fi
  	
