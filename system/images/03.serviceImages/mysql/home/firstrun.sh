@@ -11,7 +11,7 @@ pass="pass"
 	 /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock &
  pid=$!
  
- while ! test -f /var/run/mysqld/mysqld.sock 	
+ while ! test -S /var/run/mysqld/mysqld.sock 	
  	do
  		sleep 10
  	done
