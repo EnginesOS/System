@@ -244,15 +244,15 @@ mkdir -p /var/log/engines/services/email/apache2
 mkdir -p /opt/engines/etc/backup/configs
 mkdir -p /opt/engines/etc/ssl/imap
 mkdir -p /opt/engines/etc/ssl/smtp
-mkdir -p /opt/engines/etc/ssl/psql/
+mkdir -p /opt/engines/etc/ssl/pgsql/
 mkdir -p /opt/engines/etc/smtp
 mkdir -p /opt/engines/ssh/keys/services/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/smtp/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/smtp/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
-cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/psql/
-cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/psql/private
+cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/pgsql/
+cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/pgsql/private
 }
 
 function set_permissions {
@@ -280,8 +280,8 @@ echo "Setting directory and file permissions"
 	chown -R 22014  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
-	chown -R 22002 /opt/engines/etc/ssl/psql
-	chmod og-rw -R /opt/engines/etc/ssl/psql
+	chown -R 22002 /opt/engines/etc/ssl/pgsql
+	chmod og-rw -R /opt/engines/etc/ssl/pgsql
 	chown 22003 -R /opt/engines/etc/smtp
 	chown 22017 -R  /opt/engines/ssh/keys/services/
 	chown 22018 -R  /var/log/engines/services/nfs/

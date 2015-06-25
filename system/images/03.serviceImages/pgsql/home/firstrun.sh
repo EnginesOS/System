@@ -12,6 +12,7 @@ pass="pass"
 
    pass=pass
    /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &
+   pid=$!
    
  	touch /var/lib/postgresql/conf 	
  #	psql template1 -c 'create extension hstore;'
@@ -22,8 +23,10 @@ pass="pass"
 	 echo "CREATE DATABASE rma OWNER = rma ;" >> /tmp/t.sql
 	 psql </tmp/t.sql
 	 
-	kill -TERM `cat /var/run/postgresql/9.3-main.pid`
-	  	 
+	kill -TERM $pid
+	wait $pid
+	  	
+	/engines/var/run/flags/first_run_done   	 
 	 	 
  fi
  	
