@@ -5,12 +5,12 @@ module ServicesRegistry
   #@Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
-       if provider_node == nil
+       if provider_node == false
          p :nil_provider_node
          return false
        end
     service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
-    if service_type_node == nil
+    if service_type_node == false
       p :nil_service_type_node
       return false 
     end
@@ -37,7 +37,7 @@ module ServicesRegistry
   def add_to_services_tree(service_hash)
 
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
-    if provider_node == nil
+    if provider_node == false
       provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
       managed_service_tree << provider_node
     end
@@ -86,7 +86,7 @@ module ServicesRegistry
     end
     services = get_type_path_node(managed_service_tree,type_path)
 
-    if services == nil
+    if services == false
       return retval
     end
     service = services[identifier]
@@ -108,7 +108,7 @@ module ServicesRegistry
   def get_service_entry(service_query_hash)
       tree_node = find_service_consumers(service_query_hash)
         if tree_node == nil || tree_node == false
-          return nil                 
+          return false                 
         end
         return tree_node.content
   end
@@ -133,7 +133,7 @@ module ServicesRegistry
 
     service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
-    if service_path_tree == nil
+    if service_path_tree ==  false
       log_error_mesg("Failed to find matching service path",service_query_hash)
       return false
     end
@@ -172,7 +172,7 @@ SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_h
     if managed_service_tree !=nil
       service_node = find_service_consumers(service_hash)
 
-      if service_node != nil
+      if service_node != false
         return remove_tree_entry(service_node)
       else
         log_error_mesg("Fail to find service for removal",service_hash)

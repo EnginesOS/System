@@ -42,9 +42,13 @@ fi
 #if not blocking continues
 if test -f /home/engines/scripts/custom_start.sh
 	then
-	    echo "Custom start"
-	    touch /engines/var/run/startup_complete 
-		bash	/home/engines/scripts/custom_start.sh
+	    echo "Custom start"	   
+		result=`/home/engines/scripts/custom_start.sh`
+		if test "$result" = "exit"
+			then 
+				exit
+		fi
+		
 	fi
 
 if test -f /home/startwebapp.sh 

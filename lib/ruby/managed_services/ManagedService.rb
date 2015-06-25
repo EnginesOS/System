@@ -140,14 +140,14 @@ class ManagedService < ManagedContainer
   end 
   
   def run_configurator(configurator_params)    
-    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name] + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
+    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
      result = SystemUtils.execute_command(cmd)
      
     return result 
   end
   
   def retrieve_configurator(configurator_params)
-    cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name] + ".sh "
+    cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
      result = SystemUtils.execute_command(cmd)
      p result
     if result[:result] == 0 
@@ -218,12 +218,20 @@ class ManagedService < ManagedContainer
     end
     @setState="running"
     if create_container() == true
+      #start with configurations
+      
+      service_configurations = service_manager.get_service_configurations_hashes(@container_name)
+        if service_configurations != false
+          service_configurations.each do |configuration|
+            run_configurator(configuration)
+          end
+        end
       register_with_dns()
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
-      
+            
       reregister_consumers()
       save_state()
       return true
