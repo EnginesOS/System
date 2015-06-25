@@ -16,8 +16,8 @@ pass="pass"
 	echo "CREATE USER 'root'@'%' identified by '$pass';  grant all ON *.* TO  'root'@'%'  WITH GRANT OPTION; " |mysql -u root
 	 /usr/bin/mysqladmin -u root  password '$pass'
 	 
-	 pid=`cat `/var/run/mysqld/mysqld.pid`
-	 kill -TERM `/var/run/mysqld/mysqld.pid`
+	 pid=`cat /var/run/mysqld/mysqld.pid`
+	 kill -TERM `cat /var/run/mysqld/mysqld.pid`
 	 wait $pid
 	 touch /engines/var/run/flags/first_run_done
  fi
