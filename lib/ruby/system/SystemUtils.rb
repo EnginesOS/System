@@ -199,7 +199,7 @@ def SystemUtils.execute_command(cmd)
 
      rescue Exception=>e
        SystemUtils.log_exception(e)
-       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ")
+       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ",retval)
        retval[:stderr] += "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
        retval[:result] =-99
    end
