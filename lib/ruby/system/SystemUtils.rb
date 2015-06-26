@@ -187,10 +187,12 @@ def SystemUtils.execute_command(cmd)
            retval[:stderr]  += stderr.read_nonblock(1000)
          end
          
-       end     
+       end
+       retval[:stdout] += stdin.read_nonblock(256) 
          return retval
  
        end       
+  retval[:stdout] += stdin.read_nonblock(256) 
      return retval
 
      rescue Exception=>e
