@@ -9,7 +9,12 @@ module ManagedEnginesRegistry
       return false
     end
 
-    engine_node =  managed_engines_type_tree(params)[params[:parent_engine]]
+    engines_type_tree = managed_engines_type_tree(params)
+    if engines_type_tree == false
+      return false
+    end
+    
+    engine_node =   engines_type_tree[params[:parent_engine]]
     if engine_node == false
       return false
     end
