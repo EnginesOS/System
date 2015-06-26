@@ -296,7 +296,11 @@ end
   #Wrapper for Gui to 
  #@return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
+    if managed_service_tree != false
     managed_service_tree[publisher]
+  end
+  return false
+    
   end
   
 #Wrapper for Gui to be removed
