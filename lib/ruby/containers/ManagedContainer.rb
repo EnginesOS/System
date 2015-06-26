@@ -158,6 +158,7 @@ class ManagedContainer < Container
     begin
       docker_info = inspect_container
       if docker_info == false
+        @last_error="failed to inspect container"
         state="nocontainer"
       else
 #        @res= last_result
@@ -520,7 +521,7 @@ p @last_result
   def inspect_container
     return false  if has_api? == false
 
-    if @docker_info == nil
+    if @docker_info == nil || @docker_info == false
       @docker_info = @core_api.inspect_container self
     end
     return @docker_info
