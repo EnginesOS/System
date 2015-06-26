@@ -5,6 +5,9 @@ RUN apt-get -y update;\
 	usermod -G containers -a auth 
 
 COPY home home
+COPY kadm5.acl /var/lib/krb5kdc/
+COPY krb5.conf /etc/
+
 COPY sudoers /etc/	
 RUN	ssh-keygen -f /home/auth/ssh/ssh_host_rsa_key  -N '' -t rsa;\
 	ssh-keygen -f /home/auth/ssh/ssh_host_dsa_key  -N '' -t dsa;\
@@ -15,6 +18,9 @@ RUN	ssh-keygen -f /home/auth/ssh/ssh_host_rsa_key  -N '' -t rsa;\
 
 
 RUN chown -R auth /home/auth
+#;\
+#	/usr/sbin/kdb5_util create -s;\
+#	 /usr/sbin/kadmin.local -q "addprinc administrator/admin"
 
 USER auth
 
