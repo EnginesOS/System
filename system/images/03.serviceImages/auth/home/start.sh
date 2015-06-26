@@ -23,12 +23,13 @@ if ! test -f /engines/var/run/flags/first_run.done
 	
 
 
-sudo -n syslogd  -R syslog.engines.internal:5140
 
 
 SIGNAL=0
+sudo /home/_start_syslog.sh
+sudo /home/_start_ssh.sh
+sudo /home/_start_kerobos.sh
 
-sudo -n /usr/sbin/sshd  -f /home/auth/ssh/sshd.conf -D -E /home/auth/logs/ssh.log &
 touch /engines/var/run/flags/startup_complete
 echo "startup complete"
 
