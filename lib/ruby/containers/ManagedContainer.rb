@@ -160,6 +160,7 @@ class ManagedContainer < Container
         state="nocontainer"
       else
 #        @res= last_result
+       
         output = JSON.parse(@last_result)
         if output.is_a?(Array) == false || output.empty? == true
           @last_error = "Failed to get container status"
@@ -192,7 +193,9 @@ class ManagedContainer < Container
       return state
 
     rescue Exception=>e
+      
       p :json_Str
+p @last_result
 #      p @res
       SystemUtils.log_exception(e)
       return "nocontainer"
