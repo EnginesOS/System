@@ -181,7 +181,7 @@ def SystemUtils.execute_command(cmd)
        rescue  IO::WaitReadable
          retry
        rescue EOFError
-         retval[:stdout] += stdin.read_nonblock(256) 
+         
          if stdout.closed? == false
            stderr_is_open = false
            retry
@@ -190,7 +190,7 @@ def SystemUtils.execute_command(cmd)
          end
          
        end
-     
+        
          return retval
  
        end       
@@ -202,6 +202,7 @@ def SystemUtils.execute_command(cmd)
        SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ",retval)
        retval[:stderr] += "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
        retval[:result] =-99
+       return retval
    end
   
   
