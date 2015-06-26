@@ -300,9 +300,14 @@ class ServiceManager
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] = params[:engine_name]
     end
-    engine_node =  managed_engines_type_tree(params)[params[:parent_engine]]
+    engines_type_tree = managed_engines_type_tree(params)
+    if engines_type_tree == false
+      log_error_mesg("Warning Failed to find engine to remove",params)
+            return true
+          end
+    engine_node =  engines_type_tree[params[:parent_engine]]
 
-    if engine_node == nil
+    if engine_node == false
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
