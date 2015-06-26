@@ -156,12 +156,13 @@ class ManagedContainer < Container
     # p   caller_locations(1,1)[0].label
    
     begin
-      if inspect_container == false
+      docker_info = inspect_container
+      if docker_info == false
         state="nocontainer"
       else
 #        @res= last_result
-       
-        output = JSON.parse(@last_result)
+     
+        output = JSON.parse(docker_info)
         if output.is_a?(Array) == false || output.empty? == true
           @last_error = "Failed to get container status"
           return "nocontainer"
