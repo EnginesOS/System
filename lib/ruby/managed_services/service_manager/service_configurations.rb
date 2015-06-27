@@ -2,7 +2,9 @@ module ServiceConfigurations
   
   #@ return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
   def get_service_configurations(service_name)    
-    
+    if  service_configurations_tree == false
+      return false
+     end
     service_configurations = service_configurations_tree[service_name]
     
     if service_configurations.is_a?(Tree::TreeNode)

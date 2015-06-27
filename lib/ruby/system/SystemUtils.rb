@@ -175,11 +175,13 @@ def SystemUtils.execute_command(cmd)
          
        rescue Errno::EIO
          retval[:stdout] += oline.chop
+         retval[:stdout] += stdin.read_nonblock(256) 
          SystemUtils.debug_output("read stderr",oline)
          retval[:stderr]  += stderr.read_nonblock(256)
        rescue  IO::WaitReadable
          retry
        rescue EOFError
+         
          if stdout.closed? == false
            stderr_is_open = false
            retry
@@ -187,17 +189,20 @@ def SystemUtils.execute_command(cmd)
            retval[:stderr]  += stderr.read_nonblock(1000)
          end
          
-       end     
+       end
+        
          return retval
  
        end       
+  
      return retval
 
      rescue Exception=>e
        SystemUtils.log_exception(e)
-       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ")
+       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(cmd): ",retval)
        retval[:stderr] += "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
        retval[:result] =-99
+       return retval
    end
   
   
