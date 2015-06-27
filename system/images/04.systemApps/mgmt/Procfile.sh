@@ -6,6 +6,10 @@ rm /home/app/app/config/newrelic.yml
 git fetch origin master
 git reset --hard FETCH_HEAD
 git pull --depth 1 origin master
+
+cat /home/app/Gemfile |grep -v rubyracer >/tmp/gf
+cp /tmp/gf  /home/app/Gemfile 
+
 cp /home/newrelic.yml /home/app/
 
 mkdir -p /engines/var/run/flags/
