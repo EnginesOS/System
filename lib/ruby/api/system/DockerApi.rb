@@ -97,6 +97,10 @@ class DockerApi
      clear_error
      result = SystemUtils.execute_command(cmdline)
             container.last_result = result[:stdout]
+            if container.last_result.start_with?("[") == true && (container.last_result.end_with?("]")  == false || container.last_result.end_with?("]") ==false)
+                container.last_result+="]"
+                
+              end
             container.last_error = result[:stderr]
               if  result[:result] == 0
                 container.last_error =  result[:result].to_s + ":" + result[:stderr].to_s

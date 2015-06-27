@@ -67,7 +67,7 @@ module ServiceManagerTree
        
     rescue Exception=>e
          log_exception(e)
-         return nil
+         return false
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -297,7 +297,7 @@ end
  #@return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
     if managed_service_tree != false
-    managed_service_tree[publisher]
+      return managed_service_tree[publisher]
   end
   return false
     
