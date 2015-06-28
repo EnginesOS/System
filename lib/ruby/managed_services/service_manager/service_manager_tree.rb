@@ -123,7 +123,10 @@ module ServiceManagerTree
        log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
        return false
      end
- 
+     if parent_node.is_a?(Tree::TreeNode) == false
+       log_error_mesg("parent node not a tree node ",parent_node)
+             return false
+           end
      if type_path.include?("/") == false
        service_node = parent_node[type_path]
        if service_node == nil
