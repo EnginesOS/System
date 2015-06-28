@@ -53,14 +53,16 @@ SQL="${Q1}${Q2}${Q3}${Q4}${Q5}"
 
 #echo "$SQL"
 
-$MYSQL   -urma  -e "$SQL"
+res=`$MYSQL   -urma  -e "$SQL"`
 
-if test $? -ge 0
+echo $res | grep -v ERROR
+ 
+if test $? -eq 0
 	then 
 		echo "Success"
 		exit 0
 	fi
 	
-	echo "Error:"
+	echo "Error:$res"
 	exit -1
 
