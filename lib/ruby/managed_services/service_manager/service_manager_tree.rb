@@ -14,7 +14,7 @@ module ServiceManagerTree
     return service_tree["ManagedEngine"]
     rescue Exception=>e
          log_exception(e)
-         return nil
+         return false
   end
   
   
@@ -41,7 +41,7 @@ module ServiceManagerTree
           return false
         end
     orphans = service_tree["OphanedServices"]
-    if orphans == nil
+    if orphans.is_a?(Tree::TreeNode) == false
       service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
       orphans = service_tree["OphanedServices"]
     end
@@ -59,7 +59,7 @@ module ServiceManagerTree
     if check_service_tree == false
       return false
     end
-    if (service_tree["Services"] == nil )
+    if service_tree["Services"].is_a?(Tree::TreeNode) == false
        service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
    
@@ -81,7 +81,7 @@ module ServiceManagerTree
       return false
     end
 
-    if tree_node.parent == nil
+    if tree_node.parent.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Parent Node ! on remove tree entry",tree_node)
       return false
     end
