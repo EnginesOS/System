@@ -97,7 +97,7 @@ module ManagedEnginesRegistry
       return false
     end
     engines_type_tree = managed_engines_type_tree(service_hash)
-    if engines_type_tree == false
+    if engines_type_tree.is_a?(Tree::TreeNode) == false 
         return false 
     end
     if engines_type_tree[service_hash[:parent_engine]] != nil
@@ -110,7 +110,7 @@ module ManagedEnginesRegistry
     service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
     service_handle = get_service_handle(service_hash)
     service_handle = service_hash[:service_handle]
-    if service_type_node == false
+    if service_type_node.is_a?(Tree::TreeNode) == false 
       log_error_mesg("no service type node",service_hash)
       return false
     end
