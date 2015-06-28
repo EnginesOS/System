@@ -101,7 +101,7 @@ module ServiceManagerTree
   #@return boolean true if not nil
   def    check_service_tree
     st = service_tree
-    if   st == false
+    if   st.is_a?(Tree::TreeNode) == false
       SystemUtils.log_error_mesg("Nil service tree ?",st)
       return false
     end
@@ -296,7 +296,7 @@ end
   #Wrapper for Gui to 
  #@return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
-    if managed_service_tree != false
+    if managed_service_tree.is_a?(Tree::TreeNode) == true
       return managed_service_tree[publisher]
   end
   return false
