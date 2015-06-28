@@ -130,6 +130,10 @@ module ServicesRegistry
 
       return provider_tree
     end
+    
+    if provider_tree.is_a?(Tree::TreeNode) == false
+      return false
+    end
 
     service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
