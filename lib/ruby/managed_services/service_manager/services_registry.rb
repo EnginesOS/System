@@ -141,7 +141,7 @@ module ServicesRegistry
 
     service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
 
-    if service_path_tree ==  false
+    if service_path_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find matching service path",service_query_hash)
       return false
     end
@@ -153,7 +153,7 @@ module ServicesRegistry
 
     services = service_path_tree[service_query_hash[:parent_engine]] 
       
-    if  services == nil || services == false
+    if  services.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find matching parent_engine",service_query_hash)
       return false
     end
@@ -180,7 +180,7 @@ SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_h
     if managed_service_tree.is_a?(Tree::TreeNode) == true
       service_node = find_service_consumers(service_hash)
 
-      if service_node != false
+      if service_node.is_a?(Tree::TreeNode) == true
         return remove_tree_entry(service_node)
       else
         log_error_mesg("Fail to find service for removal",service_hash)
