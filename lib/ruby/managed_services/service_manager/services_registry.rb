@@ -173,7 +173,7 @@ SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_h
   #@service_hash :publisher_namespace :type_path :service_handle
   def remove_from_services_registry(service_hash)
 
-    if managed_service_tree != false
+    if managed_service_tree.is_a?(Tree::TreeNode) == true
       service_node = find_service_consumers(service_hash)
 
       if service_node != false

@@ -69,7 +69,7 @@ module ManagedEnginesRegistry
       params[:parent_engine] =  params[:engine_name]
     end
     services = find_engine_services(params)
-    if services == false
+    if services.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find engine in persistant service",params)
       return leafs
     end
