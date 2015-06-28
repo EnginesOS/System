@@ -76,7 +76,7 @@ module ServiceManagerTree
   def remove_tree_entry(tree_node)
 
    
-    if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
+    if tree_node == false || tree_node.is_a?(Tree::TreeNode ) == false
       log_error_mesg("Nil treenode ?",tree_node)      
       return false
     end
