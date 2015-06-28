@@ -88,6 +88,12 @@ echo "Configuring Docker DNS settings"
 		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 		 echo "DOCKER_OPTS=\" --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 	
+	#for systemd
+		if test -f /lib/systemd/system/docker.service
+			then
+				cp /opt/engines/system/install_source/lib/systemd/system/docker.service /lib/systemd/system/docker.service
+			fi
+					
 		 #need to restart to get dns set
 		 service docker stop
 		 sleep 20

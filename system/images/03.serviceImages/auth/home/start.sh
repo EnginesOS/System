@@ -23,6 +23,15 @@ if ! test -f /engines/var/run/flags/first_run.done
 	
 
 
+#> kdb5_util create -r ENGINES.INTERNAL -s
+#<Loading random data
+#<Initializing database '/etc/krb5kdc/principal' for realm 'ENGINES.INTERNAL',
+#<master key name 'K/M@ENGINES.INTERNAL'
+#<You will be prompted for the database Master Password.
+#<It is important that you NOT FORGET this password.
+#<Enter KDC database master key: 
+#<Re-enter KDC database master key to verify: 
+
 
 
 SIGNAL=0
