@@ -8,7 +8,7 @@ module ServiceManagerTree
     if check_service_tree == false
           return false
         end
-    if (service_tree["ManagedEngine"] == nil )
+    if service_tree["ManagedEngine"].is_a?(Tree::TreeNode) == false
       service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
     return service_tree["ManagedEngine"]
