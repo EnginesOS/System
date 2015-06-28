@@ -8,13 +8,13 @@ module ServiceManagerTree
     if check_service_tree == false
           return false
         end
-    if (service_tree["ManagedEngine"] == nil )
+    if service_tree["ManagedEngine"].is_a?(Tree::TreeNode) == false
       service_tree << Tree::TreeNode.new("ManagedEngine","ManagedEngine Service register")       
     end
     return service_tree["ManagedEngine"]
     rescue Exception=>e
          log_exception(e)
-         return nil
+         return false
   end
   
   
@@ -41,7 +41,7 @@ module ServiceManagerTree
           return false
         end
     orphans = service_tree["OphanedServices"]
-    if orphans == nil
+    if orphans.is_a?(Tree::TreeNode) == false
       service_tree << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
       orphans = service_tree["OphanedServices"]
     end
@@ -59,7 +59,7 @@ module ServiceManagerTree
     if check_service_tree == false
       return false
     end
-    if (service_tree["Services"] == nil )
+    if service_tree["Services"].is_a?(Tree::TreeNode) == false
        service_tree << Tree::TreeNode.new("Services"," Service register")       
      end
    
@@ -76,12 +76,12 @@ module ServiceManagerTree
   def remove_tree_entry(tree_node)
 
    
-    if tree_node == nil || tree_node.is_a?(Tree::TreeNode ) == false
+    if   tree_node.is_a?(Tree::TreeNode ) == false
       log_error_mesg("Nil treenode ?",tree_node)      
       return false
     end
 
-    if tree_node.parent == nil
+    if tree_node.parent.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Parent Node ! on remove tree entry",tree_node)
       return false
     end
@@ -101,7 +101,7 @@ module ServiceManagerTree
   #@return boolean true if not nil
   def    check_service_tree
     st = service_tree
-    if   st == false
+    if   st.is_a?(Tree::TreeNode) == false
       SystemUtils.log_error_mesg("Nil service tree ?",st)
       return false
     end
@@ -123,7 +123,10 @@ module ServiceManagerTree
        log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
        return false
      end
- 
+     if parent_node.is_a?(Tree::TreeNode) == false
+       log_error_mesg("parent node not a tree node ",parent_node)
+             return false
+           end
      if type_path.include?("/") == false
        service_node = parent_node[type_path]
        if service_node == nil
@@ -296,7 +299,7 @@ end
   #Wrapper for Gui to 
  #@return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
-    if managed_service_tree != false
+    if managed_service_tree.is_a?(Tree::TreeNode) == true
       return managed_service_tree[publisher]
   end
   return false

@@ -82,6 +82,7 @@ echo "Installing Docker"
 		#  apt-get install -y linux-image-extra-$(uname -r) -qq
 		 wget -qO- https://get.docker.io/gpg | apt-key add -
 		 apt-get -y  --force-yes install lxc-docker
+		 update-rc.d docker defaults 
 	
 echo "Configuring Docker DNS settings"	 
 		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker

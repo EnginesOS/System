@@ -27,8 +27,8 @@ if ! test -f /engines/var/run/flags/first_run.done
 
 SIGNAL=0
 sudo /home/_start_syslog.sh
-sudo /home/_start_ssh.sh
-sudo /home/_start_kerobos.sh
+sudo /home/_start_sshd.sh
+sudo /home/_start_kerobos.sh &
 
 touch /engines/var/run/flags/startup_complete
 echo "startup complete"
@@ -38,6 +38,7 @@ echo "startup complete"
   if test -f $PID_FILE
   	then
   	echo "waiting"
+  	sleep 50 &
 		wait 
 		echo $SIGNAL
   fi

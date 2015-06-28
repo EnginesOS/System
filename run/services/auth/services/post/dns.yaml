@@ -1,0 +1,11 @@
+parent_engine: auth
+publisher_namespace: EnginesSystem
+type_path: dns
+service_handle: kdc
+container_type: service
+variables:
+ engine: auth
+ hostname: kdc
+ domain_name: engines.internal
+ service: dns
+
