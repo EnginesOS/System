@@ -37,13 +37,17 @@ module ServicesRegistry
   def add_to_services_tree(service_hash)
 
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
-    if provider_node == false
+    if provider_node.is_a?(Tree::TreeNode) == false
       provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
       managed_service_tree << provider_node
     end
 
     service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
-
+      
+    if service_type_node.is_a?(Tree::TreeNode) == false
+      return false
+    end
+    
     engine_node  = service_type_node[service_hash[:parent_engine]]
     if engine_node == nil
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine])
@@ -51,7 +55,7 @@ module ServicesRegistry
     end
 
     service_node = engine_node[service_hash[:service_handle]]
-    if service_node == nil
+    if service_node.is_a?(Tree::TreeNode) == false 
       SystemUtils.debug_output( :create_new_service_regstry_entry,service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle],service_hash)
       engine_node << service_node
