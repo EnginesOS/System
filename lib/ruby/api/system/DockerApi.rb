@@ -97,7 +97,7 @@ class DockerApi
      clear_error
     
      docker_exec="docker exec -u " + container.cont_userid + " "
-     cmdline.gsub!(/docker[ ].*exec/,docker_exec)
+     cmdline.gsub!(/docker exec/,docker_exec)
      
      result = SystemUtils.execute_command(cmdline)
             container.last_result = result[:stdout]
