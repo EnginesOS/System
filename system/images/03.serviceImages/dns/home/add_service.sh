@@ -15,8 +15,9 @@ load_service_hash_to_environment
     fi
   	if test -z ${ip}
 	then
-		echo Error:missing ip
-        exit -1
+		update_line=" update add $fqdn_str 30 A $ip"
+       else
+         update_line=" update add $fqdn_str 30 CNAME ${parent_engine}.engines.internal"
     fi  
     
 
@@ -24,7 +25,8 @@ load_service_hash_to_environment
 	echo server 127.0.0.1 > /tmp/.dns_cmd
 	echo update delete $fqdn_str >> /tmp/.dns_cmd
 	echo send >> /tmp/.dns_cmd
-	echo update add $fqdn_str 30 A $ip >> /tmp/.dns_cmd
+	echo $update_line >> /tmp/.dns_cmd
+	#echo update add $fqdn_str 30 A $ip >> /tmp/.dns_cmd
 	echo send >> /tmp/.dns_cmd
 	nsupdate -k /etc/bind/keys/ddns.private /tmp/.dns_cmd
 	
