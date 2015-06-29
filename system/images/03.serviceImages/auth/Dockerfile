@@ -1,11 +1,11 @@
 FROM  engines/servicebase:$release
 RUN apt-get -y update;\
-	apt-get -y install syslogd openssh-server mysql-client krb5-kdc krb5-admin-server;\
+	apt-get -y install syslogd openssh-server mysql-client krb5-kdc krb5-admin-server expect;\
 	echo "Y" | adduser -q --disabled-password --home /home/auth -uid 22017 auth;\
 	usermod -G containers -a auth 
 
 COPY home home
-COPY kadm5.acl /var/lib/krb5kdc/
+COPY kadm5.acl /etc/
 COPY krb5.conf /etc/
 
 COPY sudoers /etc/	

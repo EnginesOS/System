@@ -88,6 +88,12 @@ echo "Configuring Docker DNS settings"
 		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 		 echo "DOCKER_OPTS=\" --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 	
+	#for systemd
+		if test -f /lib/systemd/system/docker.service
+			then
+				cp /opt/engines/system/install_source/lib/systemd/system/docker.service /lib/systemd/system/docker.service
+			fi
+					
 		 #need to restart to get dns set
 		 service docker stop
 		 sleep 20
@@ -103,6 +109,8 @@ echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
 		 adduser -q --uid 21000 --ingroup docker   -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 addgroup engines
+		 addgroup -gid 22020 containers
+		 usermod  -G containers -a engines
 		 usermod  -G engines engines
 		  usermod -u 22015 backup
 		  usermod  -a -G engines  backup
@@ -229,10 +237,12 @@ mkdir -p /opt/engines/etc/syslog/conf/
 mkdir -p /home/engines/db
 touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
+mkdir -p  /var/lib/engines/mgmt/public/system/
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
  mkdir -p  /var/log/engines/services/auth/ftp/
 mkdir -p /opt/engines/etc/auth/keys/
+mkdir -p /var/lib/engines/auth/
 mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
@@ -254,11 +264,12 @@ cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/pgsql/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/pgsql/private
+
 }
 
 function set_permissions {
 echo "Setting directory and file permissions"
-	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines
+	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines  /var/lib/engines/mgmt/public/system/
 	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
 	chown -R 22002.22002	/var/lib/engines/pgsql /var/log/engines/services/pgsql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
@@ -290,10 +301,13 @@ echo "Setting directory and file permissions"
 	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
 	
-	chown 22017 -R /var/log/engines/services/auth/
+	chown 22017 -R /var/log/engines/services/auth/ /var/lib/engines/auth/
+	
 	chown 22017 -R  /opt/engines/etc/auth/keys/
 	chgrp -R 22020 /opt/engines/run/services/
 	chmod g+w -R  /opt/engines/run/services/
+	 chgrp containers /opt/engines/run/services/*/run
+	 chmod g+w /opt/engines/run/services/*/run
 	
 	}
 

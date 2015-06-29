@@ -118,7 +118,7 @@ class ManagedService < ManagedContainer
  
   
   def   add_consumer_to_service(service_hash)   
-  cmd = "docker exec " +  container_name + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
+  cmd = "docker exec -u " + @cont_userid.to_s + " " + @container_name.to_s  + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
     result = SystemUtils.execute_command(cmd)
       if result[:result] == 0 
         return true
@@ -129,7 +129,7 @@ class ManagedService < ManagedContainer
   end
   
   def   rm_consumer_from_service(service_hash) 
-   cmd = "docker exec " +  container_name + " /home/rm_service.sh \"" + SystemUtils.service_hash_variables_as_str(service_hash) + "\""
+   cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/rm_service.sh \"" + SystemUtils.service_hash_variables_as_str(service_hash) + "\""
     result = SystemUtils.execute_command(cmd)
        if result[:result] == 0 
          return true
@@ -140,14 +140,14 @@ class ManagedService < ManagedContainer
   end 
   
   def run_configurator(configurator_params)    
-    cmd = "docker exec " +  container_name + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
+    cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
      result = SystemUtils.execute_command(cmd)
      
     return result 
   end
   
   def retrieve_configurator(configurator_params)
-    cmd = "docker exec " +  container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
+    cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
      result = SystemUtils.execute_command(cmd)
      p result
     if result[:result] == 0 
@@ -226,7 +226,9 @@ class ManagedService < ManagedContainer
             run_configurator(configuration)
           end
         end
+      @cont_userid = running_user
       register_with_dns()
+     
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
@@ -256,6 +258,8 @@ class ManagedService < ManagedContainer
       end
     else
       log_error_mesg("Failed to destroy service in recreate",self)
+      @setState="running"
+     save_state()
       return false
     end
   end

@@ -42,10 +42,14 @@ module DNSHosting
 
   def DNSHosting.get_local_ip
     #case of management app in container
+    if File.exists?("/opt/engines/.ip") == false
+     res =  SystemUtils.execute_command( "/opt/engines/bin/set_ip.sh")
+    end
     if File.exists?("/opt/engines/.ip")
       ip = File.read("/opt/engines/.ip")
       return ip
     end
+    
     #devel/lachlan case
     Socket.ip_address_list.each do |addr|
       if addr.ipv4?

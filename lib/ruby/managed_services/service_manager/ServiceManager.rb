@@ -301,13 +301,13 @@ class ServiceManager
       params[:parent_engine] = params[:engine_name]
     end
     engines_type_tree = managed_engines_type_tree(params)
-    if engines_type_tree == false
+    if engines_type_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
             return true
           end
     engine_node =  engines_type_tree[params[:parent_engine]]
 
-    if engine_node == false
+    if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
@@ -428,7 +428,7 @@ class ServiceManager
   def get_registered_against_service(params)
     hashes = Array.new
     service_tree = find_service_consumers(params)
-    if service_tree != nil && service_tree != false
+    if service_tree.is_a?(Tree::TreeNode)== true
       hashes = get_all_leafs_service_hashes(service_tree)
     end
     return hashes

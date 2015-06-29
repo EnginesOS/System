@@ -33,14 +33,16 @@ SQL="${Q1}${Q2}${Q3}"
 
 #echo "$SQL"
 
-$MYSQL   -urma  -e "$SQL" mysql
+$MYSQL   -urma  -e "$SQL" &> /tmp/res
+res=`cat /tmp/res`
 
-
-if test $? -ge 0
+echo $res | grep -v ERROR
+ 
+if test $? -eq 0
 	then 
 		echo "Success"
 		exit 0
 	fi
 	
-	echo "Error:"
+	echo "Error:$res"
 	exit -1
