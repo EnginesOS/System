@@ -95,6 +95,13 @@ class DockerApi
    
    def execute_docker_cmd(cmdline,container)
      clear_error
+     if container.is_running? == false
+       container.last_error = "Cannot exec in container that is not running"
+       return false
+     end
+     docker_exec="docker exec -u " + container.running_user + " "
+     cmdline.gsub!(/docker[ ].*exec/,docker_exec)
+     
      result = SystemUtils.execute_command(cmdline)
             container.last_result = result[:stdout]
             if container.last_result.start_with?("[") == true && (container.last_result.end_with?("]")  == false || container.last_result.end_with?("]") ==false)

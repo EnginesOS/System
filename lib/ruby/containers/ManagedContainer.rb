@@ -517,6 +517,20 @@ p @last_result
     statistics = ContainerStatistics.new(state,pcnt,started,stopped,rss,vss,cpu)
     return statistics
   end
+  
+  def running_user
+    if inspect_container == false
+         return false
+       end
+       output = JSON.parse(@last_result)
+       user=output[0]['Config']['User']
+       
+       return user
+     rescue
+       return false
+  end
+ 
+      
 
   def inspect_container
     return false  if has_api? == false
