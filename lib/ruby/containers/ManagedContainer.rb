@@ -143,6 +143,7 @@ class ManagedContainer < Container
     managedContainer = YAML::load( yaml )
     managedContainer.core_api = core_api
     managedContainer.docker_info = nil
+    managedContainer.set_running_user
     managedContainer
   end
 
@@ -531,7 +532,11 @@ p @last_result
        return false
   end
  
-      
+  def set_running_user
+        if  @cont_userid == nil || @cont_userid == -1
+          @cont_userid =  running_user
+        end 
+  end
 
   def inspect_container
     return false  if has_api? == false
