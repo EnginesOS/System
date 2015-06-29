@@ -13,6 +13,9 @@ load_service_hash_to_environment
 		echo Error:Missing hostname
         exit 128
     fi
+    
+    fqdn_str=${hostname}.engines.internal
+    
   	if test -z ${ip}
 	then
 		update_line=" update add $fqdn_str 30 A $ip"
@@ -21,7 +24,7 @@ load_service_hash_to_environment
     fi  
     
 
-	fqdn_str=${hostname}.engines.internal
+	
 	echo server 127.0.0.1 > /tmp/.dns_cmd
 	echo update delete $fqdn_str >> /tmp/.dns_cmd
 	echo send >> /tmp/.dns_cmd
