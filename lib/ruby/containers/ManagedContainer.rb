@@ -526,7 +526,8 @@ p @last_result
        end
        output = JSON.parse(@last_result)
        user=output[0]['Config']['User']
-       
+         p :got_user
+       p user
        return user
      rescue
        return false
