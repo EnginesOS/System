@@ -111,7 +111,7 @@ module ServicesRegistry
 #@service_query_hash :publisher_namespace , :type_path , :service_handle
   def get_service_entry(service_query_hash)
       tree_node = find_service_consumers(service_query_hash)
-        if tree_node == nil || tree_node == false
+        if tree_node.is_a?(Tree::TreeNode) == false
           return false                 
         end
         return tree_node.content
