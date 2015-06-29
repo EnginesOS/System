@@ -226,7 +226,9 @@ class ManagedService < ManagedContainer
             run_configurator(configuration)
           end
         end
+      @cont_userid = running_user
       register_with_dns()
+     
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)       
       p :register_non_persis
