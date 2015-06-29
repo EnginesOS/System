@@ -11,11 +11,6 @@ port: 8000
 domain_name: engines.local.demo
 environments: []
 volumes:
- mailname: !ruby/object:Volume
-  name: mailname
-  remotepath: "/etc/postfix/mailname"
-  localpath: "/opt/engines/etc/smtp/mailname"
-  mapping_permissions: "rw"
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"

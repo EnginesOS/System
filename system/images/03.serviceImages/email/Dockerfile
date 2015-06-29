@@ -7,7 +7,7 @@ ADD home home
 
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
-ADD postfix/mailname /etc/mailname
+ADD postfix/mailname /etc/postfix/mailname
 ADD postfix/mysql /etc/postfix/mysql
 ADD postgrey /etc/default/postgrey
 ADD sudoers /etc/

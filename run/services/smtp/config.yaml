@@ -11,21 +11,6 @@ domain_name:
 environments: []
 image: engines/smtp:alpha
 volumes: 
- transport: !ruby/object:Volume
-  name: transport
-  remotepath: "/etc/postfix/transport"
-  localpath: "/opt/engines/etc/smtp/transport"
-  mapping_permissions: "rw"
- mailname: !ruby/object:Volume
-  name: mailname
-  remotepath: "/etc/postfix/mailname"
-  localpath: "/opt/engines/etc/smtp/mailname"
-  mapping_permissions: "rw"
- smart_host_passwd: !ruby/object:Volume
-  name: smarthost_passwd
-  remotepath: "/etc/postfix/smarthost_passwd"
-  localpath: "/opt/engines/etc/smtp/smarthost_passwd"
-  mapping_permissions: "rw" 
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"
