@@ -5,7 +5,7 @@ RUN apt-get -y update;\
 	usermod -G containers -a auth 
 
 COPY home home
-COPY kadm5.acl /etc/krb5kdc/
+COPY kadm5.acl /etc/
 COPY krb5.conf /etc/
 
 COPY sudoers /etc/	
