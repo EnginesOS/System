@@ -301,13 +301,13 @@ class ServiceManager
       params[:parent_engine] = params[:engine_name]
     end
     engines_type_tree = managed_engines_type_tree(params)
-    if engines_type_tree == false
+    if engines_type_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
             return true
           end
     engine_node =  engines_type_tree[params[:parent_engine]]
 
-    if engine_node == false
+    if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
     end
