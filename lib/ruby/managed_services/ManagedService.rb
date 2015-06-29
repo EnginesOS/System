@@ -256,6 +256,8 @@ class ManagedService < ManagedContainer
       end
     else
       log_error_mesg("Failed to destroy service in recreate",self)
+      @setState="running"
+     save_state()
       return false
     end
   end
