@@ -240,6 +240,7 @@ mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
  mkdir -p  /var/log/engines/services/auth/ftp/
 mkdir -p /opt/engines/etc/auth/keys/
+mkdir -p /var/lib/engines/auth/
 mkdir -p  /opt/engines/etc/cron/tabs
 mkdir -p /var/log/engines/services/cron
 mkdir -p    /opt/engines/run/service_manager/
@@ -297,7 +298,8 @@ echo "Setting directory and file permissions"
 	 chown  -R 22015 /opt/engines/etc/backup/
 	chown 22015 /var/lib/engines/backup_paths/
 	
-	chown 22017 -R /var/log/engines/services/auth/
+	chown 22017 -R /var/log/engines/services/auth/ /var/lib/engines/auth/
+	
 	chown 22017 -R  /opt/engines/etc/auth/keys/
 	chgrp -R 22020 /opt/engines/run/services/
 	chmod g+w -R  /opt/engines/run/services/

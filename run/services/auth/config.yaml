@@ -15,6 +15,11 @@ volumes:
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
   mapping_permissions: "rw"
+ krdb: !ruby/object:Volume
+  name: krdb
+  remotepath: "/etc/krb5kdc"
+  localpath: "/var/lib/engines/auth/"
+  mapping_permissions: "rw"
 image: engines/auth:alpha
 port: 
 eports:
