@@ -1,5 +1,5 @@
 #!/bin/bash
-
+/opt/engines/bin/set_ip.sh
 if test -f  /opt/engines/.complete_install
 then
    /opt/engines/installers/finish_install.sh

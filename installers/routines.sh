@@ -235,6 +235,7 @@ mkdir -p /opt/engines/etc/syslog/conf/
 mkdir -p /home/engines/db
 touch /home/engines/db/production.sqlite3
 touch /home/engines/db/development.sqlite3
+mkdir -p  /var/lib/engines/mgmt/public/system/
 mkdir -p /home/engines/deployment/deployed/
 mkdir -p  /var/log/engines/services/ftp/proftpd
  mkdir -p  /var/log/engines/services/auth/ftp/
@@ -264,7 +265,7 @@ cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/pgsql/private
 
 function set_permissions {
 echo "Setting directory and file permissions"
-	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines
+	chown -R engines /opt/engines/ /var/lib/engines ~engines/  /var/log/engines  /var/lib/engines/mgmt/public/system/
 	chown -R 22006.22006  /var/lib/engines/mysql /var/log/engines/services/mysql/ /opt/engines/run/services/mysql_server/run/mysqld
 	chown -R 22002.22002	/var/lib/engines/pgsql /var/log/engines/services/pgsql	/opt/engines/run/services/pgsql_server/run/postgres
 	chown -R 22005.22005 /var/log/engines/services/nginx /opt/engines/run/services/nginx/run/nginx
