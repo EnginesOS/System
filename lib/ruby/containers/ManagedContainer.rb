@@ -143,6 +143,7 @@ class ManagedContainer < Container
     managedContainer = YAML::load( yaml )
     managedContainer.core_api = core_api
     managedContainer.docker_info = nil
+    managedContainer.set_running_user
     managedContainer
   end
 
@@ -295,6 +296,7 @@ p @last_result
       @last_error ="Did not start"
       ret_val = false
     else
+      @cont_userid = running_user
       register_with_dns
       if @deployment_type  == "web"
         add_nginx_service
@@ -516,6 +518,25 @@ p @last_result
     cpu = 3600 * h + 60 * m + s
     statistics = ContainerStatistics.new(state,pcnt,started,stopped,rss,vss,cpu)
     return statistics
+  end
+  
+  def running_user
+    if inspect_container == false
+         return false
+       end
+       output = JSON.parse(@last_result)
+       user=output[0]['Config']['User']
+         p :got_user
+       p user
+       return user
+     rescue
+       return false
+  end
+ 
+  def set_running_user
+        if  @cont_userid == nil || @cont_userid == -1
+          @cont_userid =  running_user
+        end 
   end
 
   def inspect_container

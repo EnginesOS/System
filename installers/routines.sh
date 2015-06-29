@@ -109,6 +109,8 @@ echo "Setting up engines system user"
 		 #Kludge should not be a static but a specified or atleaqst checked id
 		 adduser -q --uid 21000 --ingroup docker   -gecos "Engines OS User"  --home /home/engines --disabled-password engines
 		 addgroup engines
+		 addgroup -gid 22020 containers
+		 usermod  -G containers -a engines
 		 usermod  -G engines engines
 		  usermod -u 22015 backup
 		  usermod  -a -G engines  backup
@@ -262,6 +264,7 @@ cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/imap/
 cp -r /opt/engines/etc/ssl/certs /opt/engines/etc/ssl/pgsql/
 cp -r /opt/engines/etc/ssl/keys /opt/engines/etc/ssl/pgsql/private
+
 }
 
 function set_permissions {
@@ -303,6 +306,8 @@ echo "Setting directory and file permissions"
 	chown 22017 -R  /opt/engines/etc/auth/keys/
 	chgrp -R 22020 /opt/engines/run/services/
 	chmod g+w -R  /opt/engines/run/services/
+	 chgrp containers /opt/engines/run/services/*/run
+	 chmod g+w /opt/engines/run/services/*/run
 	
 	}
 

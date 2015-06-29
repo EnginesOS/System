@@ -54,5 +54,7 @@ if  test $command = "access"
 	fi
 
 #
+chmod og-rwx /home/auth/static/ssh/keys/authorized_keys	
+
 echo "Success"
 exit 0
