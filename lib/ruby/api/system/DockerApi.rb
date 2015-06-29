@@ -95,6 +95,7 @@ class DockerApi
    
    def execute_docker_cmd(cmdline,container)
      clear_error
+     p cmdline
     if cmdline.include?("docker exec") == true
      docker_exec="docker exec -u " + container.cont_userid + " "
        p cmdline
