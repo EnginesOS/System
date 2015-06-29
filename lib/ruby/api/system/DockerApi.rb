@@ -96,7 +96,7 @@ class DockerApi
    def execute_docker_cmd(cmdline,container)
      clear_error
     
-     docker_exec="docker exec -u " + container.running_user + " "
+     docker_exec="docker exec -u " + container.cont_userid + " "
      cmdline.gsub!(/docker[ ].*exec/,docker_exec)
      
      result = SystemUtils.execute_command(cmdline)

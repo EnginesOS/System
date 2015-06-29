@@ -295,6 +295,7 @@ p @last_result
       @last_error ="Did not start"
       ret_val = false
     else
+      @cont_userid = running_user
       register_with_dns
       if @deployment_type  == "web"
         add_nginx_service
