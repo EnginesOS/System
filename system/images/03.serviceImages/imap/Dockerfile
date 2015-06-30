@@ -1,4 +1,7 @@
 From engines/servicebase:$release
+
+ADD dovecot/conf.d /etc/dovecot/conf.d
+
 RUN adduser -q --disabled-password  -uid 22013 dovecot;\
  	apt-get -y  update;\
 	apt-get -y install  syslogd dovecot-core dovecot-imapd  dovecot-pop3d  dovecot-sieve dovecot-lmtpd dovecot-mysql ;\
@@ -10,7 +13,7 @@ RUN adduser -q --disabled-password  -uid 22013 dovecot;\
 	usermod -G containers -a dovecot 
 	
 	
-ADD dovecot/conf.d /etc/dovecot/conf.d
+
 
 ADD dovecot/dovecot-sql.conf.ext /etc/dovecot/
 run chown dovecot /etc/dovecot/dovecot-sql.conf.ext
