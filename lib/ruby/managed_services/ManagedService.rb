@@ -207,6 +207,7 @@ class ManagedService < ManagedContainer
       SystemUtils.run_command("/opt/engines/scripts/setup_service_key_dir.sh " +container_name)      
     end
     envs = @core_api.load_and_attach_persistant_services(self)
+    @core_api.load_and_attach_shared_services(self)    
     if envs !=nil    && envs != false
       if@environments != nil && @environments != false
         SystemUtils.debug_output( :envs, @environments)
@@ -231,7 +232,7 @@ class ManagedService < ManagedContainer
      
       p :service_non_persis
       @core_api.load_and_attach_nonpersistant_services(self)
-      @core_api.load_and_attach_shared_services(self)     
+      
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
             
