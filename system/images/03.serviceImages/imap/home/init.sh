@@ -12,6 +12,7 @@ cat /home/_dovecot-sql.conf.ext \
 	| sed  "/DBNAME/s//$dbname/"\
 	| sed  "/DBUSER/s//$dbuser/"\
 	| sed   "/DBPASSWD/s//$dbpasswd/" > /etc/dovecot/dovecot-sql.conf.ext
+#sudo /usr/sbin/rsyslogd  -n -s syslog.engines.internal:5140 &
 
 sudo syslogd  -R syslog.engines.internal:5140
 
