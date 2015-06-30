@@ -1,6 +1,6 @@
 
 driver =  mysql
-  connect = host=mysql.engines.internal dbname=postfix user=postfix password=postfix
+  connect = host=DBHOST dbname=DBNAME user=DBUSER password=DBPASSWD
 
 password_query = \
   SELECT username, domain, password \

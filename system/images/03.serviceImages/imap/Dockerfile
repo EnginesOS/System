@@ -7,11 +7,13 @@ RUN adduser -q --disabled-password  -uid 22013 dovecot;\
 	chown dovecot /var/mail ;\
 	mkdir -p /var/run/dovecot;\
 	chown -R dovecot /var/run/dovecot/;\
-	usermod -G containers -a dovecot
+	usermod -G containers -a dovecot 
+	
 	
 ADD dovecot/conf.d /etc/dovecot/conf.d
 
 ADD dovecot/dovecot-sql.conf.ext /etc/dovecot/
+run chown dovecot /etc/dovecot/dovecot-sql.conf.ext
 ADD sudoers /etc/sudoers
 ADD home home
 USER dovecot
