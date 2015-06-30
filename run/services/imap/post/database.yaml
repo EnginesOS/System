@@ -8,7 +8,7 @@ variables:
  db_password: "_Engines_System(random(10))"
  db_flavor: "mysql2"
  collation: "utf8_general_ci"
- parent_engine: "email"
+ parent_engine: "_Engines_Builder(engine_name)"
 
 
 
