@@ -289,7 +289,7 @@ echo "Setting directory and file permissions"
 	chown -R 21000 /opt/engines/run/service_manager/
 	chown -R 21000 /home/engines/deployment/deployed/
 	chown -R 22013 /var/lib/engines/imap
-	chown -R 22014  /var/lib/engines/imap/mail
+	chown -R 22013  /var/lib/engines/imap/mail
 	chown -R 22013 /opt/engines/etc/ssl/imap
 	chmod og-rw -R /opt/engines/etc/ssl/imap
 	chown -R 22002 /opt/engines/etc/ssl/pgsql
