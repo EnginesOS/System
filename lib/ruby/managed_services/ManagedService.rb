@@ -230,7 +230,8 @@ class ManagedService < ManagedContainer
       register_with_dns()
      
       p :service_non_persis
-      @core_api.load_and_attach_nonpersistant_services(self)       
+      @core_api.load_and_attach_nonpersistant_services(self)
+      @core_api.load_and_attach_shared_services(self)     
       p :register_non_persis
       @core_api.register_non_persistant_services(self)
             
