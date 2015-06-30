@@ -25,7 +25,7 @@ RUN cd /tmp/;\
 	 
 	 
 ADD config.inc.php  /home/app/
-	 
+ADD 000-default.conf /etc/apache2/sites-enabled/ 
 	
 	
 
