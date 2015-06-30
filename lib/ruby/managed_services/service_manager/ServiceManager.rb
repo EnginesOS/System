@@ -268,7 +268,8 @@ class ServiceManager
       end
       SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
       new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-
+      p "new_envs"
+      p new_envs.to_s
       if new_envs != nil
         envs.concat(new_envs)
       end
