@@ -84,10 +84,10 @@ function language_hook($PALANG, $language) {
 // mysqli = MySQL 4.1+
 // pgsql = PostgreSQL
 $CONF['database_type'] = 'mysqli';
-$CONF['database_host'] = 'mysql.engines.internal';
-$CONF['database_user'] = 'postfix';
-$CONF['database_password'] = 'postfix';
-$CONF['database_name'] = 'postfix';
+$CONF['database_host'] = 'DBHOST';
+$CONF['database_user'] = 'DBUSER';
+$CONF['database_password'] = 'DBPASSWD';
+$CONF['database_name'] = 'DBNAME';
 // If you need to specify a different port for a MYSQL database connection, use e.g.
 //   $CONF['database_host'] = '172.30.33.66:3308';
 // If you need to specify a different port for POSTGRESQL database connection

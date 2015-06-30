@@ -24,7 +24,9 @@ RUN cd /tmp/;\
 	 
 	 
 	 
+ADD _config.inc.php  /home/app/
 ADD config.inc.php  /home/app/
+RUN chown postfix /home/app/config.inc.php 
 ADD 000-default.conf /etc/apache2/sites-enabled/ 
 	
 	
