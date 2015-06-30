@@ -1,5 +1,2 @@
-user = postfix
-password = postfix
-hosts = mysql.engines.internal
-dbname = postfix
+
 query = SELECT domain FROM domain WHERE domain='%s' and backupmx = false and active = true
