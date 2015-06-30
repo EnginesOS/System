@@ -7,6 +7,11 @@ export PID_FILE
 
 mkdir -p /engines/var/run/flags
 
+cat /home/_dovecot-sql.conf.ext \
+ | sed "/DBHOST/s//$dbhost/"\
+	| sed  "/DBNAME/s//$dbname/"\
+	| sed  "/DBUSER/s//$dbuser/"\
+	| sed   "/DBPASSWD/s//$dbpasswd/" > /etc/dovecot/dovecot-sql.conf.ext
 
 sudo syslogd  -R syslog.engines.internal:5140
 

@@ -888,7 +888,11 @@ end
     sm = loadServiceManager()
     return sm.load_and_attach_services(dirname,container )
   end
-
+def load_and_attach_shared_services(container)
+   dirname = get_container_services_dir(container) + "/shared/"
+   sm = loadServiceManager()
+   return sm.load_and_attach_services(dirname,container)
+ end
   def load_and_attach_nonpersistant_services(container)
     dirname = get_container_services_dir(container) + "/post/"
     sm = loadServiceManager()

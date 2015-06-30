@@ -1,0 +1,5 @@
+publisher_namespace: "EnginesSystem"
+type_path: "database/sql/mysql"
+parent_engine: email
+service_handle: email
+shared_service: true
