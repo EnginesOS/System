@@ -1,11 +1,11 @@
 publisher_namespace: "EnginesSystem"
 type_path: "database/sql/mysql"
 variables:
- name: "backup_database"
+ name: "backuplog_database"
  database_host: "_Engines_System(mysql_host)"
  database_name: "_Engines_Builder(engine_name)"
  db_username: "_Engines_Builder(engine_name)"
- db_password: "_Engines_System(random(10))"
+ db_password: "_Engines_System(random(12))"
  db_flavor: "mysql2"
  collation: "utf8_general_ci"
  parent_engine: "_Engines_Builder(engine_name)"
