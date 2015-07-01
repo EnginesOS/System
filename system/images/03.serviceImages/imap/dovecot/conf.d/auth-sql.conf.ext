@@ -27,7 +27,7 @@ userdb {
 # If you don't have any user-specific settings, you can avoid the user_query
 # by using userdb static instead of userdb sql, for example:
 # <doc/wiki/UserDatabase.Static.txt>
-userdb {
-  driver = static
-  args = uid=vmail gid=dovecot home=/var/vmail/%d_%u
-}
+#userdb {
+#  driver = static
+#  args = uid=vmail gid=dovecot home=/var/vmail/%d_%u
+#}

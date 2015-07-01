@@ -249,22 +249,27 @@ class ServiceManager
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
-
-      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
-      if service_hash.has_key?(:container_type) == false
-         service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
-       end
-      templater =  Templater.new(SystemAccess.new,container)
-      templater.proccess_templated_service_hash(service_hash)
-      SystemUtils.debug_output(  :templated_service_hash, service_hash)
-      if service_is_registered?(service_hash) == false
-        add_service(service_hash)
+      
+      if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
+        ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+        if service_hash.has_key?(:container_type) == false
+          service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
+        end
+        templater =  Templater.new(SystemAccess.new,container)
+        templater.proccess_templated_service_hash(service_hash)
+        SystemUtils.debug_output(  :templated_service_hash, service_hash)
+        if service_hash[:persistant] == false || service_is_registered?(service_hash) == false
+          add_service(service_hash)
+        else
+          service_hash =  get_service_entry(service_hash)
+        end
       else
         service_hash =  get_service_entry(service_hash)
       end
       SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
       new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-
+      p "new_envs"
+      p new_envs.to_s
       if new_envs != nil
         envs.concat(new_envs)
       end

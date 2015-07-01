@@ -1,5 +1,0 @@
-user = postfix
-password = postfix
-hosts = mysql.engines.internal
-dbname = postfix
-query = SELECT goto FROM alias WHERE address='%s' AND active = true

@@ -7,25 +7,27 @@ ADD home home
 
 ADD postfix/main.cf /etc/postfix/
 ADD postfix/master.cf /etc/postfix/
-ADD postfix/mailname /etc/mailname
-ADD postfix/mysql /etc/postfix/mysql
+ADD postfix/mailname /etc/postfix/mailname
+
 ADD postgrey /etc/default/postgrey
 ADD sudoers /etc/
 RUN cd /tmp/;\
 	 wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.92/postfixadmin-2.92.tar.gz;\
 	 tar -xzpf postfixadmin-2.92.tar.gz;\
 	 mv  postfixadmin-2.92 /home/app ;\
-	 mkdir /var/log/apache2;\
+	 mkdir -p /var/log/apache2 /etc/postfix/mysql;\
 	 chown www-data /var/log/apache2 ;\
 	 ln -s /etc/php5/mods-available/imap.ini /etc/php5/apache2/conf.d/;\
 	 chgrp www-data /home/app/templates_c/;\
-	  chmod g+w /home/app/templates_c;\
-	  usermod -G containers -a postfix
+	 chmod g+w /home/app/templates_c;\
+	 usermod -G containers -a postfix
 	 
 	 
-	 
+
+ADD _config.inc.php  /home/app/
 ADD config.inc.php  /home/app/
-	 
+RUN chown postfix /home/app/config.inc.php /etc/postfix/mysql
+ADD 000-default.conf /etc/apache2/sites-enabled/ 
 	
 	
 

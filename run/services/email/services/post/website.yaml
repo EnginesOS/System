@@ -7,6 +7,6 @@ container_type: service
 persistant: false
 variables:
  proto: https
- port: 8000
+ port: 80
  fqdn: email._Engines_System(default_domain)
  internal_dir: /
