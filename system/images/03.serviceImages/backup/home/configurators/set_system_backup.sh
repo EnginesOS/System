@@ -24,7 +24,7 @@ pass=$dest_pass
 				if test  $include_system = "true"
 					then
 						mkdir -p $Backup_ConfigDir/system
-#						cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/system/pre
+#						cat /home/tmpl/duply_sql_pre >  $Backup_ConfigDir/system/pre
 #                		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system/post
 #                		chmod u+x $Backup_ConfigDir/system/pre
 #                		chmod u+x $Backup_ConfigDir/system/post
@@ -38,9 +38,9 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
 					fi
 				if test  $include_databases = "true"
 					then
-						src=/home/sql_dumps
+						src=/home/backup/sql_dumps
 						mkdir -p $Backup_ConfigDir/system_databases
-						cat /home/tmpl/dumpall.sh >>  $Backup_ConfigDir/system_databases/pre
+						cat /home/tmpl/dumpall.sh >  $Backup_ConfigDir/system_databases/pre
                 		cp /home/tmpl/dumpall_post.sh  $Backup_ConfigDir/system_databases/post
                 		chmod u+x $Backup_ConfigDir/system/pre
                 		chmod u+x $Backup_ConfigDir/system/post
