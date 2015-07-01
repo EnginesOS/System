@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm /home/sql_dumps/alldatabases.sql 
+rm /home/backup/sql_dumps/alldatabases.sql 
