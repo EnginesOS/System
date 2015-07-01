@@ -24,15 +24,11 @@ pass=$dest_pass
 				if test  $include_system = "true"
 					then
 						mkdir -p $Backup_ConfigDir/system
-#						cat /home/tmpl/duply_sql_pre >  $Backup_ConfigDir/system/pre
-#                		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system/post
-#                		chmod u+x $Backup_ConfigDir/system/pre
-#                		chmod u+x $Backup_ConfigDir/system/post
                 		cp /home/tmpl/duply_conf $Backup_ConfigDir/system/conf
                 		src=/backup_src/engines
                 		echo "SOURCE='$src'" >>$Backup_ConfigDir/system/conf
-
-echo "TARGET='$dest'" >>$Backup_ConfigDir/system/conf
+_dest=$dest/system
+echo "TARGET='$_dest'" >>$Backup_ConfigDir/system/conf
 echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/system/conf
 echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
 					fi
@@ -42,12 +38,12 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
 						mkdir -p $Backup_ConfigDir/system_databases
 						cat /home/tmpl/dumpall.sh >  $Backup_ConfigDir/system_databases/pre
                 		cp /home/tmpl/dumpall_post.sh  $Backup_ConfigDir/system_databases/post
-                		chmod u+x $Backup_ConfigDir/system/pre
-                		chmod u+x $Backup_ConfigDir/system/post
+                		chmod u+x $Backup_ConfigDir/system_databases/pre
+                		chmod u+x $Backup_ConfigDir/system_databases/post
                 		cp /home/tmpl/duply_conf $Backup_ConfigDir/system_databases/conf
                 		echo "SOURCE='$src'" >>$Backup_ConfigDir/system_databases/conf
-
-echo "TARGET='$dest'" >>$Backup_ConfigDir/system_databases/conf
+_dest=$dest/databases
+echo "TARGET='$_dest'" >>$Backup_ConfigDir/system_databases/conf
 echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/system_databases/conf
 echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system_databases/conf
 				fi
@@ -58,8 +54,8 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system_databases/conf
 						src=/backup_src/logs
 						cp /home/tmpl/duply_conf $Backup_ConfigDir/system_logs/conf
 						echo "SOURCE='$src'" >>$Backup_ConfigDir/system_logs/conf
-
-echo "TARGET='$dest'" >>$Backup_ConfigDir/system_logs/conf
+_dest=$dest/logs
+echo "TARGET='$_dest'" >>$Backup_ConfigDir/system_logs/conf
 echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/system_logs/conf
 echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system_logs/conf
 				fi
@@ -70,8 +66,8 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system_logs/conf
 						src=/backup_src/volumes/
 						cp /home/tmpl/duply_conf $Backup_ConfigDir/system_files/conf
 						echo "SOURCE='$src'" >>$Backup_ConfigDir/system_files/conf
-				
-echo "TARGET='$dest'" >>$Backup_ConfigDir/system_files/conf
+_dest=$dest/volumes				
+echo "TARGET='$_dest'" >>$Backup_ConfigDir/system_files/conf
 echo "TARGET_USER='$user'"  >>$Backup_ConfigDir/system_files/conf
 echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system_files/conf
 				fi
