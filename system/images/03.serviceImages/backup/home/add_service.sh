@@ -32,7 +32,7 @@ pass=$dest_pass
 		;;
 		
 						mkdir -p $Backup_ConfigDir/system
-						cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/system/pre
+						cat /home/tmpl/duply_sql_pre >  $Backup_ConfigDir/system/pre
                 		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system/post
                 		chmod u+x $Backup_ConfigDir/system/pre
                 		chmod u+x $Backup_ConfigDir/system/post
@@ -98,14 +98,14 @@ mkdir -p $Backup_ConfigDir/$1
                 src=/backup_src/volumes/$src_vol
           else
 echo "src type $src_type"
-                part=`echo $2 | cut -f 1 -d@`
-                flavor=`echo $part | cut -f 2 -d:`
-                dbuser=`echo $part | cut -f 3 -d:`
-                dbpass=`echo $part | cut -f 4 -d:`
+#                part=`echo $2 | cut -f 1 -d@`
+#                flavor=`echo $part | cut -f 2 -d:`
+#                dbuser=`echo $part | cut -f 3 -d:`
+#                dbpass=`echo $part | cut -f 4 -d:`
 
-                end=`echo $2 | cut -f 2 -d@`
-                dbhost=`echo $end |cut -f 1 -d/`
-                dbname=`echo $end |cut -f 2 -d/`
+#                end=`echo $2 | cut -f 2 -d@`
+#                dbhost=`echo $end |cut -f 1 -d/`
+#                dbname=`echo $end |cut -f 2 -d/`
 
                 echo "#!/bin/sh " > $Backup_ConfigDir/$1/pre
                 echo "dbflavor=$flavor" >> $Backup_ConfigDir/$1/pre
@@ -113,26 +113,28 @@ echo "src type $src_type"
                 echo "dbname=$dbname" >> $Backup_ConfigDir/$1/pre
                 echo "dbuser=$dbuser" >> $Backup_ConfigDir/$1/pre
                 echo "dbpass=$dbpass" >> $Backup_ConfigDir/$1/pre
-                cat /home/tmpl/duply_sql_pre >>  $Backup_ConfigDir/$1/pre
+                cat /home/tmpl/duply_sql_pre >  $Backup_ConfigDir/$1/pre
 
                 cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/$1/post
                 chmod u+x $Backup_ConfigDir/$1/pre
                  chmod u+x $Backup_ConfigDir/$1/post
-                src=/home/sql_dumps
+                 src=/home/backup/sql_dumps
+                
         fi
 
-dest_proto=`echo $3 |cut -f1 -d:`
+#dest_proto=`echo $3 |cut -f1 -d:`
+
         if test $dest_proto = "file"
                 then
-                 path=`echo $3 |cut -f4 -d:`
+                 #path=`echo $3 |cut -f4 -d:`
                   dest=/var/lib/engines/local_backup_dests/$path
           else
-                first=`echo $3 |cut -f1 -d@`
-                user=`echo $first |cut -f2 -d:`
-                pass=`echo $first |cut -f3 -d:`
-                rest=`echo $3 |cut -f2 -d@`
-                host=`echo $rest |cut -f1 -d/`
-                path=`echo $rest |cut -f2 -d/`
+                #first=`echo $3 |cut -f1 -d@`
+                #user=`echo $first |cut -f2 -d:`
+                #pass=`echo $first |cut -f3 -d:`
+                #rest=`echo $3 |cut -f2 -d@`
+                #host=`echo $rest |cut -f1 -d/`
+                #path=`echo $rest |cut -f2 -d/`
                 dest="$dest_proto://$host/$path"
         fi
 
