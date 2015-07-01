@@ -15,7 +15,7 @@ module ServiceConfigurations
 
   def get_service_configurations_hashes(service_name)
     configurations = get_service_configurations(service_name)
-    if  configurations == false
+    if  configurations.is_a?(Tree::TreeNode) == false
       p "no service configurations for " + service_name.to_s
       return Array.new
     else
