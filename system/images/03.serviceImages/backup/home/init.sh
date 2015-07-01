@@ -10,6 +10,7 @@ mkdir -p /engines/var/run/flags/
 
 sudo -n syslogd  -R syslog.engines.internal:5140
 
+mkdir -p /home/backup/sql_dumps/
 
 /home/backup/fcron/sbin/fcron -f &
 /home/backup/fcron/bin/fcrontab -u backup  -z 

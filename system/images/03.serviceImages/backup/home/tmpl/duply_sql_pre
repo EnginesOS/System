@@ -2,6 +2,6 @@
 
          if test $dbflavor = "mysql"
          	then
-         		mysqldump -h $dbhost -u $dbuser --password=$dbpass $dbname >    /home/sql_dumps/$dbname.sql
+         		mysqldump -h $dbhost -u $dbuser --password=$dbpass $dbname >    /home/backup/sql_dumps/$dbname.sql
          fi   
     
