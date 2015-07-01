@@ -12,6 +12,7 @@ load_service_hash_to_environment
  echo "$*" >>/var/log/backup/addbackup.log
 
 Backup_ConfigDir=/home/backup/.duply/
+export
 
 service_hash=`cat /home/configurators/saved/default_destination`
 load_service_hash_to_environment
@@ -40,7 +41,7 @@ echo "TARGET_PASS='$pass'"  >>$Backup_ConfigDir/system/conf
 						src=/home/sql_dumps
 						mkdir -p $Backup_ConfigDir/system_databases
 						cat /home/tmpl/dumpall >>  $Backup_ConfigDir/system_databases/pre
-                		cp /home/tmpl/duply_sql_post  $Backup_ConfigDir/system_databases/post
+                		cp /home/tmpl/dumpall_post  $Backup_ConfigDir/system_databases/post
                 		chmod u+x $Backup_ConfigDir/system/pre
                 		chmod u+x $Backup_ConfigDir/system/post
                 		cp /home/tmpl/duply_conf $Backup_ConfigDir/system_databases/conf
