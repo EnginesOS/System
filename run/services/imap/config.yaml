@@ -55,6 +55,6 @@ databases: []
 conf_register_site: false
 conf_register_dns: true
 dependant_on:
- "dns"
- "mysql_server"
- "syslog"
+- "dns"
+- "mysql_server"
+- "syslog"

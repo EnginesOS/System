@@ -50,6 +50,6 @@ databases: []
 conf_register_site: false
 conf_register_dns: true
 dependant_on:
- "dns"
- "volmanager"
- "syslog"
+- "dns"
+- "volmanager"
+- "syslog"
