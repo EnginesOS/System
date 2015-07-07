@@ -61,7 +61,8 @@ class ManagedContainer < Container
   :setState,\
   :protocol,\
   :volumes,\
-  :deployment_type
+  :deployment_type,\
+  :dependant_on
 
   attr_accessor :container_id,\
   :core_api,\
@@ -391,6 +392,7 @@ p @last_result
     state = read_state()
     @setState="running"
     if state == "stopped"
+      
       ret_val = @core_api.start_container self
       
       @docker_info = nil
@@ -673,6 +675,7 @@ p @last_result
   end
 
   def set_container_id
+    
     if @docker_info == nil || @docker_info == false  || @docker_info.is_a?(Array) == false ||  @docker_info.empty? == true
       return "-1"
     end

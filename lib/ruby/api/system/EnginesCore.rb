@@ -44,6 +44,9 @@ class EnginesCore
   end
 
   def start_container(container)
+    if container.dependant_on.is_a?(Array)
+        start_dependancies(container)
+    end
     return  @docker_api.start_container(container)
   end
 
@@ -1026,6 +1029,37 @@ def load_and_attach_shared_services(container)
     sm = loadServiceManager()
     return sm.remove_from_engine_registery(service_hash)
   end
+  
+ def  start_dependancies(container)
+   container.dependant_on.each do |service_name|
+     service = loadManagedService(service_name)
+     if service == false
+       @last_error = "Failed to load " + service_name
+       return false
+     end
+     if service.is_running? != true
+       if service.has_container? == true
+         if service.is_active? == true
+           if service.unpause == false
+             @last_error = "Failed to unpause " + service_name
+             return false
+            end
+         elsif service.start == false
+             @last_error = "Failed to start " + service_name
+             return false            
+         end
+     elsif service.create_container == false
+       @last_error = "Failed to create " + service_name
+        return false
+       end
+     end
+   end
+   
+   return true
+ end
+  
+
+       
   protected
 
   def get_volbuild_volmaps container
