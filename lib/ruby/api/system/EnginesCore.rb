@@ -1040,11 +1040,11 @@ def load_and_attach_shared_services(container)
      if service.is_running? != true
        if service.has_container? == true
          if service.is_active? == true
-           if service.unpause == false
+           if service.unpause_container == false
              @last_error = "Failed to unpause " + service_name
              return false
             end
-         elsif service.start == false
+         elsif service.start_container == false
              @last_error = "Failed to start " + service_name
              return false            
          end
