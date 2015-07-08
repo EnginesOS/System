@@ -288,7 +288,8 @@ p @last_result
     @setState="running"
     
     if state == "nocontainer"
-      ret_val = @core_api.create_container self      
+      ret_val = @core_api.create_container self       
+
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -297,6 +298,7 @@ p @last_result
       @last_error ="Did not start"
       ret_val = false
     else
+      set_container_id
       @cont_userid = running_user
       register_with_dns
       if @deployment_type  == "web"
@@ -307,7 +309,7 @@ p @last_result
 
     clear_error(ret_val)
     save_state()
-    set_container_id
+    
 
     return ret_val
   end

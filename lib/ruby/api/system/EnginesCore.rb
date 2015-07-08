@@ -872,6 +872,9 @@ end
       end
       if @system_api.clear_cid_file(container) != false
         @system_api.clear_container_var_run(container)
+        if container.dependant_on.is_a?(Array)
+                start_dependancies(container)
+            end
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)
         end
