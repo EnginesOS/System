@@ -4,9 +4,9 @@ RUBY_VER=2.2.2
 
 function complete_install {
 
-create_services
+create_services > /var/log/engines/install_startup
 
-/opt/engines/bin/containers_startup.sh > /var/log/engines/install_startup
+/opt/engines/bin/containers_startup.sh >> /var/log/engines/install_startup
 
 echo "System startup"
 /opt/engines/bin/mgmt_startup.sh 
