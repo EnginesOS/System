@@ -75,7 +75,7 @@ function configure_git {
 		 
 		
 echo "Installing Docker"		
-		 apt-get install -y apt-transport-https   linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools
+		 apt-get install -y apt-transport-https   linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools openssh-server
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
 #IF AWS	 and not devmapper	 
