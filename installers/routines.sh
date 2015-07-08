@@ -9,7 +9,7 @@ create_services > /var/log/engines/install_startup
 /opt/engines/bin/containers_startup.sh >> /var/log/engines/install_startup
 
 echo "System startup"
-/opt/engines/bin/mgmt_startup.sh 
+/opt/engines/bin/engines_startup.sh
 
 rm /opt/engines/.complete_install
 touch /opt/engines/.installed
