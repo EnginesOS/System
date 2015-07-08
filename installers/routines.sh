@@ -4,12 +4,12 @@ RUBY_VER=2.2.2
 
 function complete_install {
 
-create_services
+create_services > /var/log/engines/install_startup
 
-/opt/engines/bin/containers_startup.sh > /var/log/engines/install_startup
+/opt/engines/bin/containers_startup.sh >> /var/log/engines/install_startup
 
 echo "System startup"
-/opt/engines/bin/mgmt_startup.sh 
+/opt/engines/bin/engines_startup.sh
 
 rm /opt/engines/.complete_install
 touch /opt/engines/.installed
@@ -75,7 +75,7 @@ function configure_git {
 		 
 		
 echo "Installing Docker"		
-		 apt-get install -y apt-transport-https   linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools
+		 apt-get install -y apt-transport-https   linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools openssh-server
 		 echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
 		 apt-get -y update
 #IF AWS	 and not devmapper	 
@@ -86,7 +86,7 @@ echo "Installing Docker"
 	
 echo "Configuring Docker DNS settings"	 
 		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
-		 echo "DOCKER_OPTS=\" --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
+		 echo "DOCKER_OPTS=\" --storage-driver=aufs --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 	
 	#for systemd
 		if test -f /lib/systemd/system/docker.service
@@ -118,18 +118,9 @@ echo "Setting up engines system user"
 		
 echo "Installing rbenv"
 
-#10 gems installed
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#Setting directory and file permissions
-#chown: cannot access â: No such file or directory
-#Enter new UNIX password: 
-
 mkdir -p /etc/sudoers.d/
 cp /opt/engines/system/install_source/etc/sudoers.d/engines /etc/sudoers.d/engines 
-#cp /opt/engines/system/install_source/etc/sudoers /etc/sudoers
+
 
 mkdir -p /usr/local/  
 cd /usr/local/  

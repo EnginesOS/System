@@ -47,7 +47,6 @@ eports:
   port: 10993
   publicFacing: true
   external: 993
-
 repo: na
 last_result: 
 setState: running
@@ -55,3 +54,7 @@ nginxored: false
 databases: []
 conf_register_site: false
 conf_register_dns: true
+dependant_on:
+- "dns"
+- "mysql_server"
+- "syslog"
