@@ -86,7 +86,7 @@ echo "Installing Docker"
 	
 echo "Configuring Docker DNS settings"	 
 		# echo "DOCKER_OPTS=\"--storage-driver=devicemapper --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
-		 echo "DOCKER_OPTS=\" --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
+		 echo "DOCKER_OPTS=\" --storage-driver=aufs --dns  172.17.42.1 --dns 8.8.8.8  --bip=172.17.42.1/16\"" >> /etc/default/docker
 	
 	#for systemd
 		if test -f /lib/systemd/system/docker.service
@@ -118,18 +118,9 @@ echo "Setting up engines system user"
 		
 echo "Installing rbenv"
 
-#10 gems installed
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#cp: cannot stat â: No such file or directory
-#Setting directory and file permissions
-#chown: cannot access â: No such file or directory
-#Enter new UNIX password: 
-
 mkdir -p /etc/sudoers.d/
 cp /opt/engines/system/install_source/etc/sudoers.d/engines /etc/sudoers.d/engines 
-#cp /opt/engines/system/install_source/etc/sudoers /etc/sudoers
+
 
 mkdir -p /usr/local/  
 cd /usr/local/  
