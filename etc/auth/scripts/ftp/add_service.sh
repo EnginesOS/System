@@ -37,7 +37,7 @@ fcnt=`expr $fcnt + 1`
         fi
      
         pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
-        sql="insert into users (userid,passwd,ftphomedir,use_count) values('$username','{md5}$pass','/ftp/$access/$parent_engine/$volume/$folder/',0)"
+        sql="insert into users (userid,passwd,gid,ftphomedir,use_count) values('$username','{md5}$pass',${ftp_gid},'/ftp/$access/$parent_engine/$volume/$folder/',0)"
         
         . /home/auth/.dbenv
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
