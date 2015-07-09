@@ -61,7 +61,8 @@ class ManagedContainer < Container
   :setState,\
   :protocol,\
   :volumes,\
-  :deployment_type
+  :deployment_type,\
+  :dependant_on
 
   attr_accessor :container_id,\
   :core_api,\
@@ -287,7 +288,8 @@ p @last_result
     @setState="running"
     
     if state == "nocontainer"
-      ret_val = @core_api.create_container self      
+      ret_val = @core_api.create_container self       
+
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -296,6 +298,7 @@ p @last_result
       @last_error ="Did not start"
       ret_val = false
     else
+      set_container_id
       @cont_userid = running_user
       register_with_dns
       if @deployment_type  == "web"
@@ -306,7 +309,7 @@ p @last_result
 
     clear_error(ret_val)
     save_state()
-    set_container_id
+    
 
     return ret_val
   end
@@ -391,6 +394,7 @@ p @last_result
     state = read_state()
     @setState="running"
     if state == "stopped"
+      
       ret_val = @core_api.start_container self
       
       @docker_info = nil
@@ -673,6 +677,7 @@ p @last_result
   end
 
   def set_container_id
+    
     if @docker_info == nil || @docker_info == false  || @docker_info.is_a?(Array) == false ||  @docker_info.empty? == true
       return "-1"
     end

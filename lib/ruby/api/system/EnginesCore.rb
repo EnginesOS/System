@@ -44,6 +44,9 @@ class EnginesCore
   end
 
   def start_container(container)
+    if container.dependant_on.is_a?(Array)
+        start_dependancies(container)
+    end
     return  @docker_api.start_container(container)
   end
 
@@ -838,8 +841,8 @@ end
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
-      SystemUtils.debug_output("Run volumen builder",command)
+      command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      SystemUtils.debug_output("Run volume builder",command)
       run_system(command)
 
       #Note no -d so process will not return until setup.sh completes
@@ -869,6 +872,9 @@ end
       end
       if @system_api.clear_cid_file(container) != false
         @system_api.clear_container_var_run(container)
+        if container.dependant_on.is_a?(Array)
+                start_dependancies(container)
+            end
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)
         end
@@ -1026,6 +1032,37 @@ def load_and_attach_shared_services(container)
     sm = loadServiceManager()
     return sm.remove_from_engine_registery(service_hash)
   end
+  
+ def  start_dependancies(container)
+   container.dependant_on.each do |service_name|
+     service = loadManagedService(service_name)
+     if service == false
+       @last_error = "Failed to load " + service_name
+       return false
+     end
+     if service.is_running? != true
+       if service.has_container? == true
+         if service.is_active? == true
+           if service.unpause_container == false
+             @last_error = "Failed to unpause " + service_name
+             return false
+            end
+         elsif service.start_container == false
+             @last_error = "Failed to start " + service_name
+             return false            
+         end
+     elsif service.create_container == false
+       @last_error = "Failed to create " + service_name
+        return false
+       end
+     end
+   end
+   
+   return true
+ end
+  
+
+       
   protected
 
   def get_volbuild_volmaps container
