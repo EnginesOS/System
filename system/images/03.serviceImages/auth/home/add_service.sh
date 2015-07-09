@@ -41,8 +41,8 @@ if  test $command = "access"
 		chmod u+x /home/auth/static/access/$service/get_access.sh 
 	#FIX ME as this allows for any auth user so sneak a peak at other auth
 		echo "command=\"/home/auth/static/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/ssh/keys/authorized_keys	
-		pass=test67
 	
+	pass=`dd if=/dev/urandom count=6 bs=1  | od -h | awk '{ print $2$3$4}'`
 		echo "
 			create user 'auth_$service'@'%' identified by '$pass';
 			GRANT SELECT,INSERT,UPDATE on auth.* to 'auth_$service'@'%';" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 
