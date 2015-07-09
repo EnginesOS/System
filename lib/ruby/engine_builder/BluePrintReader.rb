@@ -382,10 +382,10 @@ class BluePrintReader
        log_build_output("Configuring install Environment")
        archives = @blueprint[:software][:installed_packages]
        n=0
- 
-       if archives == nil
-              return true
-       end
+       if archives.is_a?(Array) == false
+               return true #not an error just nada
+             end
+
        
        archives.each do |archive|
          archive_details = Hash.new
@@ -423,7 +423,9 @@ class BluePrintReader
        log_build_output("set permissions recussive")
        chmods = @blueprint[:software][:file_write_permissions]
        p :Single_Chmods
-       if chmods != nil
+       if chmods.is_a?(Array) == false
+               return true #not an error just nada
+        end
          chmods.each do |chmod |
            p chmod
            if chmod[:recursive]==true
@@ -431,9 +433,9 @@ class BluePrintReader
              p directory
              @recursive_chmods.push(directory)
            end
-         end
+       
          #FIXME need to strip any ../ and any preceeding ./
-         return
+         return true
        end
      rescue Exception=>e
        SystemUtils.log_exception(e)
@@ -448,7 +450,9 @@ class BluePrintReader
        log_build_output("set permissions  single")
        chmods = @blueprint[:software][:file_write_permissions]
        p :Recursive_Chmods
-       if chmods != nil
+       if chmods.is_a?(Array) == false
+                    return true #not an error just nada
+                  end
          chmods.each do |chmod |
            p chmod
            if chmod[:recursive]==false
@@ -457,7 +461,7 @@ class BluePrintReader
              @single_chmods.push(directory)
            end
          end
-       end
+       
        return true
 
      rescue Exception=>e
@@ -472,7 +476,9 @@ class BluePrintReader
        log_build_output("Read Workers")
        @worker_commands = Array.new
        workers =@blueprint[:software][:workers]
-
+       if workers.is_a?(Array) == false
+         return true #not an error just nada
+       end
        workers.each do |worker|
          @worker_commands.push(worker[:command])
        end
@@ -495,9 +501,9 @@ class BluePrintReader
 
        log_build_output("set sed strings")
        seds=@blueprint[:software][:replacement_strings]
-       if seds == nil || seds.empty? == true
-         return true
-       end
+       if seds.is_a?(Array) == false
+                    return true #not an error just nada
+                  end
 
        n=0
        seds.each do |sed|
@@ -539,7 +545,9 @@ class BluePrintReader
        log_build_output("Read Work Ports")
        ports =  @blueprint[:software][:worker_ports]
        puts("Ports Json" + ports.to_s)
-       if ports != nil
+       if ports.is_a?(Array) == false
+                     return true #not an error just nada
+              end
          ports.each do |port|
            portnum = port[:port]
            name = port[:name]
@@ -553,7 +561,7 @@ class BluePrintReader
            @workerPorts.push(WorkPort.new(name,portnum,external,false,type))
          end
 
-       end
+       return true
      rescue Exception=>e
        SystemUtils.log_exception(e)
        return false
@@ -567,9 +575,9 @@ class BluePrintReader
      p @builder.set_environments
      begin
        envs = @blueprint[:software][:variables]
-         if envs == nil
-           return true
-         end
+       if envs.is_a?(Array) == false
+                     return true #not an error just nada
+              end
        envs.each do |env|
          p env
          name=env[:name]
