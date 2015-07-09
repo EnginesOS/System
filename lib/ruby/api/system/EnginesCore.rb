@@ -841,8 +841,8 @@ end
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
-      SystemUtils.debug_output("Run volumen builder",command)
+      command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      SystemUtils.debug_output("Run volume builder",command)
       run_system(command)
 
       #Note no -d so process will not return until setup.sh completes
