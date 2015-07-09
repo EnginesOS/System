@@ -15,7 +15,7 @@ done
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
-mkdir -p /client/state/run
+mkdir -p /client/state/run/flags
 chown $fw_user -R /client/state/run
 
 
@@ -23,7 +23,7 @@ if test -f /dest/fs/.persistant
  then
   chown -R $fw_user /dest/fs/
 else
-dirs=`ls /home/fs_src/ | egrep -v "local"`
+  dirs=`ls /home/fs_src/ | egrep -v "local"`
 	for dir in $dirs
 		do
 			cp -r  /home/fs_src/$dir/* /dest/fs/	
@@ -32,9 +32,10 @@ dirs=`ls /home/fs_src/ | egrep -v "local"`
 	#if no presistance dirs/files need to set permission here
 	
 	chown -R ${fw_user}.${data_gid}  /dest/fs/
+	chmod g+w -R /dest/fs/
 	
 	touch /dest/fs/.persistant
 fi
 
-touch /client/state/volume_setup_complete
+touch /client/state/run/flags/volume_setup_complete
 

@@ -69,7 +69,18 @@ consumer_params:
     placeholder: "true|false"
     mandatory: true
     value: false
-    comment: "Write access includes the ability to delete" 
+    comment: "Write access includes the ability to delete"     
+  ftp_gid:
+   name: ftp_gid
+   label: ftp_gid
+   regex_validator: "[0-9]."
+   tooltip: "auto set"
+   field_type: text_field
+   hint: "a number"
+   placeholder: "true|false"
+   mandatory: true
+   value: _Engines_Builder(data_gid)
+   comment: "group access "   
   non_secure_access:
    name: non_secure_access
    label: Allow non secure access
