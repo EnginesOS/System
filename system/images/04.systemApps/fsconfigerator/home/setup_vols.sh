@@ -32,6 +32,7 @@ dirs=`ls /home/fs_src/ | egrep -v "local"`
 	#if no presistance dirs/files need to set permission here
 	
 	chown -R ${fw_user}.${data_gid}  /dest/fs/
+	chmod g+w -R /dest/fs/
 	
 	touch /dest/fs/.persistant
 fi
