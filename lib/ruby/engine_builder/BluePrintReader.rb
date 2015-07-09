@@ -113,9 +113,9 @@ class BluePrintReader
 
        pds =   @blueprint[:software][:persistent_directories]
                                  
-       if pds == nil
-              return true
-       end
+       if pds.is_a?(Array) == false
+                     return true #not an error just nada
+              end
        pds.each do |dir|
          @persistant_dirs.push(dir[:path])
 
@@ -136,9 +136,9 @@ class BluePrintReader
        dest_paths = Array.new
 
        pfs =   @blueprint[:software][:persistent_files]
-         if pfs == nil
-           return
-         end
+       if pfs.is_a?(Array) == false
+                     return true #not an error just nada
+              end
        files= String.new
        pfs.each do |file|
          path = clean_path(file[:path])
@@ -163,9 +163,9 @@ class BluePrintReader
        @rake_actions = Array.new
        log_build_output("Read Rake List")
        rake_cmds = @blueprint[:software][:rake_tasks]
-       if rake_cmds == nil
-         return true
-       end
+       if rake_cmds.is_a?(Array) == false
+                     return true #not an error just nada
+              end
 
        rake_cmds.each do |rake_cmd|
            @rake_actions.push(rake_cmd)         
@@ -185,9 +185,9 @@ class BluePrintReader
      
      log_build_output("Read Services")
      services=@blueprint[:software][:service_configurations]
-       if services == nil
-         return true
-       end
+     if services.is_a?(Array) == false
+                   return true #not an error just nada
+            end
      services.each do |service|
        if service.has_key?(:publisher_namespace) == false || service[:publisher_namespace] == nil
          service[:publisher_namespace] = "EnginesSystem"  
@@ -243,15 +243,13 @@ class BluePrintReader
 
    def read_os_packages
      begin
-       
-   
-       
+     
        log_build_output("Read OS Packages")
        ospackages = @blueprint[:software][:system_packages]
          
-         if ospackages == nil
-           return
-         end
+       if ospackages.is_a?(Array) == false
+                     return true #not an error just nada
+              end
          
        ospackages.each do |package|
          @os_packages.push(package[:package])
@@ -319,7 +317,9 @@ class BluePrintReader
      @pecl_modules = Array.new
      
      pkg_modules =  @blueprint[:software][:modules]
-       if pkg_modules
+     if pkg_modules.is_a?(Array) == false
+                   return true #not an error just nada
+            end
          pkg_modules.each do |pkg_module |
            os_package = pkg_module[:os_package]
                    if os_package != nil && os_package != ""
@@ -345,7 +345,7 @@ class BluePrintReader
                   return false
                end
          end
-      end
+      return true
    end
 
 #   def read_apache_modules
