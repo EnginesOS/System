@@ -76,6 +76,9 @@ end
    return @builder.blueprint
  end
 
+ def data_gid
+   return @builder.data_gid
+ end
  
 
 end
