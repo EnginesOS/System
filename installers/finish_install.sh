@@ -11,7 +11,7 @@ function complete_install {
 
 rm /opt/engines/.complete_install
 echo "System startup"
-/opt/engines/bin/engines_startup.sh
+
 touch /opt/engines/.installed
 
 hostname=`hostname`
