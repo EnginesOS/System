@@ -369,6 +369,10 @@ class EngineBuilder
     end
   end
 
+  def data_gid
+    return @blueprint_reader.data_gid
+  end
+  
   def build_container
     begin
 
