@@ -212,11 +212,17 @@ class ManagedService < ManagedContainer
         envs.concat(shared_envs)  
       end
      
-    if envs !=nil    && envs != false
-      if@environments != nil && @environments != false
+    if envs.is_a?(Array) == true
+      if@environments.is_a?(Array) == true
         SystemUtils.debug_output( :envs, @environments)
+        
+#        @environments.each do |variable|
+#          
+#        end
         @environments.concat(envs)
         @environments.uniq! #FIXME as new values dont replace old only duplicates values
+        
+        
       else
         @environments = envs
       end
@@ -226,7 +232,7 @@ class ManagedService < ManagedContainer
       #start with configurations
       
       service_configurations = service_manager.get_service_configurations_hashes(@container_name)
-        if service_configurations != false
+        if service_configurations.is_a?(Array)
           service_configurations.each do |configuration|
             run_configurator(configuration)
           end
