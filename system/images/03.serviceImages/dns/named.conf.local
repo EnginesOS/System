@@ -4,9 +4,5 @@ acl "trusted" {
      172.17.42.0/16;
      10.0.0.0/8;
  };
-options {     
-     allow-recursion { trusted; };
-     allow-query { any; };
-     allow-query-cache { trusted; };     
- };
+
 include "/etc/bind/engines/named.conf.engines";

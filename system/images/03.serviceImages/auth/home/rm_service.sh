@@ -25,16 +25,16 @@ if test -z $command
 		exit -1
 	fi
 	
-	 cat /home/auth/static/ssh/keys/authorized_keys		| grep -v ${service}/${command}_service.sh  >/tmp/.keys
-	 mv /tmp/.keys /home/auth/static/ssh/keys/authorized_keys	
-	
-service_records=`grep ${service} /home/auth/static/ssh/keys/authorized_keys	`
+	rm /home/auth/static/ssh/keys/${service}_${command}_authorized_keys	
+	cat /home/auth/static/keys/*_authorized_keys > /home/auth/static/keys/authorized_keys
+chmod og-rwx /home/auth/static/keys/authorized_keys	
 
-if test `echo $service_records |wc -c ` -lt 2 
+
+if test `echo  ${command} |grep access |wc -c ` -gt 2 
 	then 		
 		echo "
 		drop user 'auth_$service$'@'%' ;" | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
-		rm -r /home/auth/static/access/$service
+		rm -r /home/auth/static/access/$service/access
 	fi
 #
 echo "Success"
