@@ -40,7 +40,7 @@ if  test $command = "access"
 		cp /home/get_access.sh /home/auth/static/scripts/$service/
 		chmod u+x /home/auth/static/scripts/$service/get_access.sh 
 	
-		echo "command=\"/home/auth/static/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/keys/${service}_${command}_authorized_keys	
+		echo "command=\"/home/auth/static/scripts/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/keys/${service}_${command}_authorized_keys	
 	
 		pass=`dd if=/dev/urandom count=6 bs=1  | od -h | awk '{ print $2$3$4}'`
 		echo "
@@ -50,7 +50,7 @@ if  test $command = "access"
 		echo ":db_username=auth_$service:db_password=$pass:database_name=$dbname:db_host=$dbhost:" > /home/auth/static/access/$service/access
 		
 	else
-			echo "command=\"/home/auth/static/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/ssh/keys/${service}_${command}_authorized_keys	
+			echo "command=\"/home/auth/static/scripts/${service}/${command}_service.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/keys/${service}_${command}_authorized_keys	
 	fi
 
 #
