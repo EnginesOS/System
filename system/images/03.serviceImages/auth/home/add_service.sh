@@ -40,7 +40,7 @@ if  test $command = "access"
 		cp /home/get_access.sh /home/auth/static/access/$service/
 		chmod u+x /home/auth/static/access/$service/get_access.sh 
 	#FIX ME as this allows for any auth user so sneak a peak at other auth
-		echo "command=\"/home/auth/static/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/ssh/keys/authorized_keys	
+		echo "command=\"/home/auth/static/access/$service/get_access.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa $pubkey auth" >>  /home/auth/static/keys/authorized_keys	
 	
 	pass=`dd if=/dev/urandom count=6 bs=1  | od -h | awk '{ print $2$3$4}'`
 		echo "
@@ -54,7 +54,7 @@ if  test $command = "access"
 	fi
 
 #
-chmod og-rwx /home/auth/static/ssh/keys/authorized_keys	
+chmod og-rwx /home/auth/static/keys/authorized_keys	
 
 echo "Success"
 exit 0
