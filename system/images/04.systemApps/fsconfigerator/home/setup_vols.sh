@@ -15,7 +15,7 @@ done
 
 chown $fw_user -R /client/log/
 chown $fw_user -R /client/var/log
-mkdir -p /client/state/run/flags
+mkdir -p /client/state/flags
 chown $fw_user -R /client/state/run
 
 
@@ -37,5 +37,5 @@ else
 	touch /dest/fs/.persistant
 fi
 
-touch /client/state/run/flags/volume_setup_complete
+touch /client/state/flags/volume_setup_complete
 
