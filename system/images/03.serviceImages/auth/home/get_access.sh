@@ -1,6 +1,6 @@
 #!/bin/sh
 
-service=`echo $SSH_ORIGINAL_COMMAND |  awk -F/ '{print $6}'`
+service=`echo $SSH_ORIGINAL_COMMAND |  awk -F/ '{print $5}'`
 	if test -f /home/auth/static/access/$service/access
 		then
 			cat /home/auth/static/access/$service/access
