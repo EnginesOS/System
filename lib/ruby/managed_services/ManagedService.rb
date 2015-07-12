@@ -202,10 +202,11 @@ class ManagedService < ManagedContainer
   end
 
   def create_service()
-    if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    
+    if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    || Dir.exists?("/opt/engines/run/services/" + container_name + "/run")
      # FileUtils.mkdir_p("/opt/engines/ssh/keys/services/" + container_name)
-      SystemUtils.run_command("/opt/engines/scripts/setup_service_key_dir.sh " +container_name)      
+      SystemUtils.run_command("/opt/engines/scripts/setup_service_dir.sh " +container_name)      
     end
+    SystemUtils.run_command("/opt/engines/scripts/setup_service_dir.sh " +container_name)      
     envs = @core_api.load_and_attach_persistant_services(self)
     shared_envs = @core_api.load_and_attach_shared_services(self)
       if shared_envs.is_a?(Array)
