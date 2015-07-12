@@ -65,7 +65,7 @@ eports:
   name: web
   port: 8000
   publicFacing: true
-  external: 88
+  external: 10443
 - !ruby/object:WorkPort
   name: ssh
   port: 22
