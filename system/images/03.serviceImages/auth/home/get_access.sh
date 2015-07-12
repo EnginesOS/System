@@ -6,5 +6,5 @@ service=`echo $SSH_ORIGINAL_COMMAND |  awk -F/ '{print $6}'`
 			cat /home/auth/static/access/$service/access
 		
 else
-	echo err with $SSH_ORIGINAL_COMMAND
+	echo err with  $service in $SSH_ORIGINAL_COMMAND
 fi
