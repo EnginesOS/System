@@ -12,7 +12,7 @@ COPY proftpd /etc/proftpd/
 ADD sudoers /etc/sudoers
 
 RUN mkdir /ftp/;\
-	chgrp proftpd /etc/proftpd/sql.conf;\
+	chgrp proftpd /etc/proftpd/sql.conf ;\
 	chmod g+w /etc/proftpd/sql.conf
 	
 ADD home home
