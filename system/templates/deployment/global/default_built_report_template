@@ -1,26 +1,26 @@
 Built
 Built as
-_Builder(engine_name)
-_Builder(domain_name)
-_Builder(hostname)
-_Builder(http_protocol)
-_Builder(repoName)
-_Builder(webPort)
-_Builder(build_name)
-_Builder(runtime)
-_Builder(set_environments) 
-_Builder(environments)
+_Engines_Builder(engine_name)
+_Engines_Builder(domain_name)
+_Engines_Builder(hostname)
+_Engines_Builder(http_protocol)
+_Engines_Builder(repoName)
+_Engines_Builder(webPort)
+_Engines_Builder(build_name)
+_Engines_Builder(runtime)
+_Engines_Builder(set_environments) 
+_Engines_Builder(environments)
  
-_Blueprint(software,license_name)
-_Blueprint(software,rake_tasks)
-_Blueprint(software,softwareservices)
+_Engines__Blueprint(software,license_name)
+_Engines_Blueprint(software,rake_tasks)
+_Engines_Blueprint(software,softwareservices)
 
 
 
-_Builder(engine_name) Now installed at http://_Builder(hostname)/
+_Engines_Builder(engine_name) Now installed at _Engines_Builder(http_protocol)://_Engines_Builder(hostname)/
 
-Database host _Engines(dbhost)
-Database Name _Engines(dbname)
-Database User _Engines(dbuser)
-Database Password _Engines(dbpasswd)
+Database host _Engines_Environment(dbhost)
+Database Name _Engines_Environment(dbname)
+Database User _Engines_Environment(dbuser)
+Database Password _Engines_Environment(dbpasswd)
 
