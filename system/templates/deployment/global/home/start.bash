@@ -20,10 +20,10 @@ fi
 			fi		
 	fi
 	
-  if test  ! -f /engines/var/run/volume_setup_complete
+  if test  ! -f /engines/var/run/flags/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "
- 	while test ! -f /engines/var/run/volume_setup_complete
+ 	while test ! -f /engines/var/run/flags/volume_setup_complete
  	  do
  	  echo  "."
  		sleep 10
