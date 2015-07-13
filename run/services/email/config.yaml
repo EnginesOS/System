@@ -38,5 +38,4 @@ conf_register_dns: true
 dependant_on:
 - "dns"
 - "nginx"
-- "imap"
 - "syslog"
