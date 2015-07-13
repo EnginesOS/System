@@ -46,7 +46,7 @@ class SysConfig
   @@internalDomain = "engines.internal"
   @@defaultDNS ="172.17.42.1"
 
-  @@DefaultDomainnameFile="/opt/engines/etc/default_domain_name"
+#  @@DefaultDomainnameFile="/opt/engines/etc/default_domain_name"
   
   #Named
   @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid"
