@@ -352,6 +352,9 @@ def log_exception(e)
   rescue Exception=>e
     @last_error=( "save error")
     log_exception(e)
+    if File.exists?(SysConfig.ServiceTreeFile) == false
+      FileUtils.copy(SysConfig.ServiceTreeFile + ".bak", SysConfig.ServiceTreeFile)
+    end 
     return false
   end
   

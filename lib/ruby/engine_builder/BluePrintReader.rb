@@ -432,11 +432,10 @@ class BluePrintReader
              directory = clean_path(chmod[:path])
              p directory
              @recursive_chmods.push(directory)
-           end
-       
-         #FIXME need to strip any ../ and any preceeding ./
-         return true
+           end       
+         #FIXME need to strip any ../ and any preceeding ./ in clean_path         
        end
+       return true
      rescue Exception=>e
        SystemUtils.log_exception(e)
        return false

@@ -58,3 +58,4 @@ dependant_on:
 - "dns"
 - "mysql_server"
 - "syslog"
+- "email"
