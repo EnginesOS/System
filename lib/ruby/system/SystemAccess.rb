@@ -24,7 +24,8 @@ end
     return "+10"
   end
   def default_domain
-    return SystemUtils.get_default_domain
+    prefs = SystemPreferences.new()
+    return  prefs.get_default_domain   
   end
     
   def pubkey type
@@ -32,7 +33,7 @@ end
       engine = args[0]
       cmd = args[1]
       cmd.gsub!(/\)/,"")
-    return  SystemUtils.get_engine_pubkey(engine,cmd)      
+    return  SystemUtils.get_service_pubkey(engine,cmd)      
   end
   
 

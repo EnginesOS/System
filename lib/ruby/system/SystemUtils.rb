@@ -30,8 +30,8 @@ class SystemUtils
     SystemUtils.log_output(object,10)
   end
   
-  def SystemUtils.get_engine_pubkey(engine,cmd)
-    cmd_line = "docker exec " + engine + " /home/get_pubkey.sh " + cmd     
+  def SystemUtils.get_service_pubkey(service,cmd)
+    cmd_line = "docker exec " + service + " /home/get_pubkey.sh " + cmd     
     key = SystemUtils.run_command(cmd_line)
     p key
     return key
@@ -225,14 +225,14 @@ def SystemUtils.execute_command(cmd)
       end
     end
 
-  def SystemUtils.get_default_domain
-    if File.exists?(SysConfig.DefaultDomainnameFile)
-      domain = File.read(SysConfig.DefaultDomainnameFile)
-      return domain.strip
-    else
-      return "engines"
-    end
-  end
+#  def SystemUtils.get_default_domain
+#    if File.exists?(SysConfig.DefaultDomainnameFile)
+#      domain = File.read(SysConfig.DefaultDomainnameFile)
+#      return domain.strip
+#    else
+#      return "engines"
+#    end
+#  end
 
   #@return [Hash] completed dns service_hash for engine on the engines.internal dns for
   #@param engine [ManagedContainer]

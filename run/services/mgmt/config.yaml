@@ -4,7 +4,7 @@ ctype: service
 publisher_namespace: EnginesSystem
 type_path: mgmt
 last_error: 
-memory: '384'
+memory: '512'
 hostname: 'mgmt'
 domain_name: 
 environments:
