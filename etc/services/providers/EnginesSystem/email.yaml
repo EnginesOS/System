@@ -31,9 +31,9 @@ configurators:
     regex_invalid_message: "wrong go back and try again"
     label: Backup System
     regex_validator: ".*"
-    tooltip: " "
+    tooltip: "Not saved"
     field_type: text_field
     hint: ""
-    placeholder: "a label "
+    placeholder: "Not saved "
     mandatory: true
     comment: " "
