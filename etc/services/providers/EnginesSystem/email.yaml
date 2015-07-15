@@ -26,8 +26,8 @@ configurators:
   label: Admin Secret
   description: System Email Admin Accounts 
   params:
-   install_pass:
-    name: install_pass
+   email_admin_secret:
+    name: email_admin_secret
     regex_invalid_message: "wrong go back and try again"
     label: Backup System
     regex_validator: ".*"
