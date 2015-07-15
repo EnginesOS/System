@@ -10,7 +10,7 @@ dedicated: false
 persistant: true
 service_handle_field: name
 consumer_params:
- engine:
+ email_address:
   name: email_address
   label: Email Address
   regex_validator: ".*"
@@ -21,12 +21,12 @@ consumer_params:
   mandatory: true
   value: ""
 configurators:
- system_backup:
+ email_admin_secret:
   name: email_admin_secret
   label: Admin Secret
   description: System Email Admin Accounts 
   params:
-   include_system:
+   install_pass:
     name: install_pass
     regex_invalid_message: "wrong go back and try again"
     label: Backup System
