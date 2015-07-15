@@ -10,6 +10,16 @@ dedicated: false
 persistant: true
 service_handle_field: name
 consumer_params:
+ engine:
+  name: email_address
+  label: Email Address
+  regex_validator: ".*"
+  tooltip: "Email Address name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
 configurators:
  system_backup:
   name: email_admin_secret
@@ -22,7 +32,7 @@ configurators:
     label: Backup System
     regex_validator: ".*"
     tooltip: " "
-    field_type: text
+    field_type: text_field
     hint: ""
     placeholder: "a label "
     mandatory: true
