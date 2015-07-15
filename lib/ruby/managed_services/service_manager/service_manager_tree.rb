@@ -347,6 +347,7 @@ def log_exception(e)
     f = File.new(SysConfig.ServiceTreeFile+".tmp",File::CREAT|File::TRUNC|File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
+    #FIXME do a del a rename as killing copu part way through ...
     FileUtils.copy(SysConfig.ServiceTreeFile+".tmp", SysConfig.ServiceTreeFile);
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true

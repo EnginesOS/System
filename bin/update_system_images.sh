@@ -11,15 +11,18 @@ echo $images
 
 for service in `find /opt/engines/run/services/  -type d -maxdepth 1 |cut -f 6 -d/` 
 	do
+		
 		rm /opt/engines/run/${service}.cid
 	done
-         eservices stop 
-         eservice recreate dns
-         eservice create dns
-         eservice recreate nginx
-         eservice create nginx
-         eservice recreate auth
-         eservice create auth
-         eservices recreate
+  
+  	eservices stop
+  	eservice recreate dns
+  	eservice recreate mgmt
+  	eservices recreate
+  	/home/engines/follow_start.sh
          
          docker rmi $( docker images -f "dangling=true" -q) > /dev/null
+         
+         
+         
+         

@@ -1,0 +1,39 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: [] 
+author: Engines
+title: Email
+description: "Email server"
+type_path: email
+service_container: email
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: true
+service_handle_field: name
+consumer_params:
+ email_address:
+  name: email_address
+  label: Email Address
+  regex_validator: ".*"
+  tooltip: "Email Address name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+configurators:
+ email_admin_secret:
+  name: email_admin_secret
+  label: Admin Secret
+  description: System Email Admin Accounts 
+  params:
+   email_admin_secret:
+    name: email_admin_secret
+    regex_invalid_message: "wrong go back and try again"
+    label: Backup System
+    regex_validator: ".*"
+    tooltip: "Not saved"
+    field_type: text_field
+    hint: ""
+    placeholder: "Not saved "
+    mandatory: true
+    comment: " "

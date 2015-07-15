@@ -130,7 +130,7 @@ class SystemUtils
           val = nil
         end
           
-        if pair != nil
+        if pair != nil && pair[0] != nil
           retval[pair[0].to_sym] = val
         end        
      end
