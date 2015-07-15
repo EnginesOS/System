@@ -9,6 +9,7 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 service_handle_field: name
+consumer_params:
 configurators:
  system_backup:
   name: email_admin_secret
