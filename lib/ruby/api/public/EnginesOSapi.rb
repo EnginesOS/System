@@ -93,7 +93,8 @@ end
     return @core_api.get_default_site 
   end
     
-  def set_first_run_parameters params
+  def set_first_run_parameters params_from_gui
+    params =params_from_gui.dup 
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
     
