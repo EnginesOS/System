@@ -178,17 +178,17 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  def setup_email_params(params)
-
-    arg="smarthost_hostname=" + params[:smarthost_hostname] \
-    + ":smarthost_username=" + params[:smarthost_username]\
-    + ":smarthost_password=" + params[:smarthost_password]\
-    + ":mail_name=smtp."  + params[:default_domain]
-    container=loadManagedService("smtp")
-    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
-  rescue   Exception=>e
-    SystemUtils.log_exception(e)
-  end
+#  def setup_email_params(params)
+#
+#    arg="smarthost_hostname=" + params[:smarthost_hostname] \
+#    + ":smarthost_username=" + params[:smarthost_username]\
+#    + ":smarthost_password=" + params[:smarthost_password]\
+#    + ":mail_name=smtp."  + params[:default_domain]
+#    container=loadManagedService("smtp")
+#    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
+#  rescue   Exception=>e
+#    SystemUtils.log_exception(e)
+#  end
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]

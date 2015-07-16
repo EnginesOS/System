@@ -197,7 +197,7 @@ class DockerApi
    def docker_exec(container,command,args)
      run_args = "docker exec " + container.container_name + " " + command + " " + args
      
-     return  execute_docker_cmd(commandargs,container)
+     return  execute_docker_cmd(run_args,container)
    end
    
 #   def run_docker (args,container)

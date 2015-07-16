@@ -46,7 +46,8 @@ class EnginesOSapi
 
  ##fix me and put in system api
   def first_run_required?      
-    if File.exists?(SysConfig.FirstRunRan) ==false      
+    if File.exists?(SysConfig.FirstRunRan) ==false    
+      p :please_first_ran  
         return true
     end
     return false
@@ -98,8 +99,8 @@ end
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
     
-    params[:mail_name] = "smtp." + params[:default_domain]
-    @core_api.setup_email_params(params)
+#    params[:mail_name] = "smtp." + params[:default_domain]
+#    @core_api.setup_email_params(params)
          
         
     @core_api.set_database_password("mysql_server",params)              
