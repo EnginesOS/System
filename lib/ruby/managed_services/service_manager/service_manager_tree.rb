@@ -341,12 +341,14 @@ def log_exception(e)
   def save_tree
     if File.exists?(SysConfig.ServiceTreeFile)
       statefile_bak = SysConfig.ServiceTreeFile + ".bak"
-      File.rename( SysConfig.ServiceTreeFile,   statefile_bak)
+      FileUtils.copy( SysConfig.ServiceTreeFile,   statefile_bak)
     end
     serialized_object = YAML::dump(@service_tree)
-    f = File.new(SysConfig.ServiceTreeFile,File::CREAT|File::TRUNC|File::RDWR, 0644)
+    f = File.new(SysConfig.ServiceTreeFile+".tmp",File::CREAT|File::TRUNC|File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
+    #FIXME do a del a rename as killing copu part way through ...
+    FileUtils.copy(SysConfig.ServiceTreeFile+".tmp", SysConfig.ServiceTreeFile);
     @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
     return true
   rescue Exception=>e
