@@ -46,7 +46,8 @@ class EnginesOSapi
 
  ##fix me and put in system api
   def first_run_required?      
-    if File.exists?(SysConfig.FirstRunRan) ==false      
+    if File.exists?(SysConfig.FirstRunRan) ==false    
+      p :please_first_ran  
         return true
     end
     return false
