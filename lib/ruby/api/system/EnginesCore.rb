@@ -445,6 +445,9 @@ class EnginesCore
         
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
+          if retval.is_a?(Array) == false
+            return false
+          end
       else
         @last_error = "No Service"
         return false
