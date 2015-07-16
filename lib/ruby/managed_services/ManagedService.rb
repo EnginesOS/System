@@ -147,6 +147,10 @@ class ManagedService < ManagedContainer
   end
   
   def retrieve_configurator(configurator_params)
+    if is_running? == false
+      log_error_mesg("service not running ",configurator_params)
+      return false
+    end
     cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
      result = SystemUtils.execute_command(cmd)
      p result
