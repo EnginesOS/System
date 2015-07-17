@@ -278,45 +278,7 @@ module ServicesModule
      # p attached
        return @core_api.list_attached_services_for(object_name,identifier)
      end
-#  def registerServiceDNS service_name
-#     service =getManagedService(service_name)
-#     if service == nil
-#       return  failed(service_name,service.last_error,"Register Service DNS")
-#     end
-# 
-#     if service.is_a?(EnginesOSapiResult)
-#       return service
-#     end
-# 
-#     retval =   service.register_dns()
-# 
-#     if retval != true
-#       return failed(service_name,retval,"Register Service DNS")
-#     end
-#     return success(service_name,"Register Service DNS")
-#   rescue Exception=>e
-#     return log_exception_and_fail("Register Service DNS",e)
-#   end
-# 
-#   def deregisterServiceDNS service_name
-#     service =getManagedService(service_name)
-#     if service == nil
-#       return  failed(service_name,service.last_error,"Deregister Service DNS")
-#     end
-# 
-#     if service.is_a?(EnginesOSapiResult)
-#       return service
-#     end
-# 
-#     retval =   service.deregister_dns()
-#     if retval != true
-#       return failed(service_name,retval,"Deregister Service DNS")
-#     end
-#     return success(service_name,"Deregister Service DNS")
-#   rescue Exception=>e
-#     return log_exception_and_fail("DeRegister Service DNS",e)
-#   end
- 
+
   def startService service_name
      service = getManagedService(service_name)
      if service == nil
@@ -399,43 +361,7 @@ module ServicesModule
        end
   
      end
-#   def registerServiceWebSite service_name
-#     service = getManagedService(service_name)
-#     if service == nil
-#       return failed(service_name,"No Such Service","Register Service Web")
-#     end
-# 
-#     if service.is_a?(EnginesOSapiResult)
-#       return service
-#     end
-# 
-#     retval =   service.register_site()
-#     if retval != true
-#       return failed(service_name,service.last_error,"Register Service Web")
-#     end
-#     return success(service_name,"Register Service Web")
-#   rescue Exception=>e
-#     return log_exception_and_fail("Register Service Web",e)
-#   end
-# 
-#   def deregisterServiceWebSite service_name
-#     service =getManagedService(service_name)
-#     if service == nil
-#       return  failed(service_name,"No Such Service","Deregister Service Web")
-#     end
-# 
-#     if service.is_a?(EnginesOSapiResult)
-#       return service
-#     end
-# 
-#     retval =   service.deregister_site()
-#     if retval != true
-#       return failed(service_name,service.last_error,"Deregister Service Web")
-#     end
-#     return success(service_name,"Deregister Service Web")
-#   rescue Exception=>e
-#     return log_exception_and_fail("DeRegister Service Web",e)
-#   end
+
 
   def get_available_services_for(item)
      res = @core_api.get_available_services_for(item)

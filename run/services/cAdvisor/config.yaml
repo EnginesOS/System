@@ -33,6 +33,7 @@ databases: []
 conf_register_site: true
 conf_register_dns: true
 conf_self_start: true
+setState: stopped
 dependant_on:
 - "dns"
 - "nginx"
