@@ -391,6 +391,7 @@ module ServicesModule
        p service_param
        result = @core_api.retrieve_service_configuration(service_param)
        if  result != nil && result != false
+         p :configurators_at_public_api
          p  result       
          return result
        else
