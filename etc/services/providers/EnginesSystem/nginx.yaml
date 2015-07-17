@@ -30,7 +30,7 @@ configurators:
     hint: ""
     placeholder: "http(s)://....../ "
     mandatory: true
-    comment: "
+    comment: ""
     value: https://mgmt._Engines_System(default_domain):10443/
 consumer_params:
  proto:
