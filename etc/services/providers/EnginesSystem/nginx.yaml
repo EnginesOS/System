@@ -14,6 +14,24 @@ dedicated: false
 persistant: false
 service_handle_field: fqdn
 setup_params:
+configurators:
+ default_site:
+  name: default_site
+  label: Default site
+  description:  Default site
+  params:
+   default_site_url:
+    name: default_site_url
+    regex_invalid_message: "wrong go back and try again"
+    label: Default Web Site
+    regex_validator: "^http.*[.]"
+    tooltip: "http(s)://....../"
+    field_type: text_field
+    hint: ""
+    placeholder: "http(s)://....../ "
+    mandatory: true
+    comment: "
+    value: https://mgmt._Engines_System(default_domain):10443/
 consumer_params:
  proto:
   name: proto
@@ -59,21 +77,3 @@ consumer_params:
   placeholder: " "
   mandatory: true
   comment: " "
-configurators:
- default_site:
-  name: default_site
-  label: Default site
-  description:  Default site
-  params:
-   default_site_url:
-    name: default_site_url
-    regex_invalid_message: "wrong go back and try again"
-    label: Default Web Site
-    regex_validator: "^http.*[.]"
-    tooltip: "http(s)://....../"
-    field_type: text_field
-    hint: ""
-    placeholder: "http(s)://....../ "
-    mandatory: true
-    comment: "
-    value: https://mgmt._Engines_System(default_domain):10443/
