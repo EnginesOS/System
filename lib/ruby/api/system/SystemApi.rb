@@ -344,7 +344,7 @@ class SystemApi
 
       SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
-      if container.hostname != hostname || container.domain_name != domain_name
+#      if container.hostname != hostname || container.domain_name != domain_name
         saved_hostName = container.hostname
         saved_domainName =  container.domain_name
         SystemUtils.debug_output("Changing Domainame to " , domain_name)
@@ -363,8 +363,8 @@ class SystemApi
 #          save_container(container)
      
 
-        return true
-      end
+#        return true
+#      end
       return true
     rescue  Exception=>e
       SystemUtils.log_exception(e)
