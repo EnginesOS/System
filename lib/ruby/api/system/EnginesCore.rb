@@ -449,7 +449,7 @@ class EnginesCore
         
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
-          if retval.is_a?(Array) == false && retval.is_a?(Hash)
+          if retval.is_a?(Hash) == false
             return false
           end
       else
