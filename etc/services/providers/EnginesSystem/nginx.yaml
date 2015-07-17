@@ -24,7 +24,7 @@ configurators:
     name: default_site_url
     regex_invalid_message: "wrong go back and try again"
     label: Default Web Site
-    regex_validator: "just the host name"
+    regex_validator: ".*[.].*"
     tooltip: "not http(s)://....../ just x.y.c "
     field_type: text_field
     hint: ""
