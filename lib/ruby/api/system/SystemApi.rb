@@ -621,7 +621,7 @@ class SystemApi
 
   def system_update
 \
-    res =  SystemUtils.execute_command("ssh -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh")
+    res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh")
   end
 
   def container_state_dir(container)
@@ -630,7 +630,7 @@ class SystemApi
 
   def restart_system
 
-   res =  SystemUtils.execute_command("ssh  -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh")
+   res =  SystemUtils.execute_command("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh")
    if res[:result] ==0
      return true
    else
