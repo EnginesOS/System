@@ -24,14 +24,14 @@ configurators:
     name: default_site_url
     regex_invalid_message: "wrong go back and try again"
     label: Default Web Site
-    regex_validator: "^http.*[.]"
-    tooltip: "http(s)://....../"
+    regex_validator: "just the host name"
+    tooltip: "not http(s)://....../ just x.y.c "
     field_type: text_field
     hint: ""
-    placeholder: "http(s)://....../ "
+    placeholder: "not http(s)://....../ just x.y.c "
     mandatory: true
     comment: ""
-    value: https://mgmt._Engines_System(default_domain):10443/
+    value: mgmt._Engines_System(default_domain):10443
 consumer_params:
  proto:
   name: proto
