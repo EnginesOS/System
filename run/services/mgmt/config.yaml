@@ -34,6 +34,11 @@ volumes:
   remotepath: "/home/engines/.ssh/mgmt"
   localpath: "/home/engines/.ssh/mgmt"
   mapping_permissions: rw 
+ ssh_pubkey: !ruby/object:Volume
+  name: ssh_pubkey
+  remotepath: "/home/engines/.ssh/mgmt.pub"
+  localpath: "/home/engines/.ssh/mgmt.pub"
+  mapping_permissions: rw   
  sqlite: !ruby/object:Volume
   name: sqlite
   remotepath: "/home/app/db/production.sqlite3"
