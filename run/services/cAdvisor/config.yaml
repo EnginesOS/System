@@ -4,7 +4,6 @@ ctype: service
 last_error: 
 memory: '100'
 hostname: cadvisor
-domain_name: enginesos.jvodan.com
 environments: []
 image: google/cadvisor:latest
 volumes:

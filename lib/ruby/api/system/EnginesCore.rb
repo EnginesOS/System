@@ -77,6 +77,10 @@ class EnginesCore
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
   end
+  
+  def restart_system 
+    return @system_api.restart_system
+  end
 
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
