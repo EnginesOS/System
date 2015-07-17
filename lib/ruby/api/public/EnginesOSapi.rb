@@ -471,6 +471,13 @@ end
     return success(engine_name,"Register Engine Web Site")
   end
 
+  def restart_system
+    if @core_api.restart_system == false
+      return success("System","System Restarting")
+    else
+      return failed("System","not permitted","System Restarting")
+    end
+  end
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)

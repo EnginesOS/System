@@ -627,6 +627,19 @@ class SystemApi
     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
   end
 
+  def restart_system
+
+   res =  SystemUtils.execute_command("/opt/engines/bin/restart_system.sh")
+   if res[:result] ==0
+     return true
+   else
+     log_error("failed to restart " + res[:stderr] )
+       return false
+   end
+    
+
+end
+
   protected
 
   def container_cid_file(container)
@@ -636,6 +649,8 @@ class SystemApi
   def container_log_dir container
     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
   end
+  
+
 
   def run_system (cmd)
     clear_error
