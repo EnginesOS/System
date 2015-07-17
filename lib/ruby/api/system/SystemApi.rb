@@ -633,7 +633,7 @@ class SystemApi
    if res[:result] ==0
      return true
    else
-     log_error("failed to restart " + res[:stderr] )
+     log_error("failed to restart " + res[:stderr] + ":" + res[:stdout])
        return false
    end
     
