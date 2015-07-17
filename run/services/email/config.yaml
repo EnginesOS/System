@@ -29,7 +29,7 @@ eports:
   external: 25
 repo: na
 last_result: 
-setState: running
+setState: stopped
 nginxored: false
 databases: []
 conf_register_site: true
