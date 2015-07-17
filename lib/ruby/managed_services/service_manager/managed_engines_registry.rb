@@ -41,7 +41,7 @@ module ManagedEnginesRegistry
 
     engine_node = managed_engines_type_tree(params)[params[:parent_engine]]
     #p get_all_leafs_service_hashes(engine_node)
-    if engine_node == false
+    if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find in managed service tree",params)
     end
       if params.has_key?(:persistant) &&  params[:persistant] == true
