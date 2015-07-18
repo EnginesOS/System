@@ -630,9 +630,9 @@ class SystemApi
 
   def restart_system
 
-    res =  system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh")
+    res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh") }
     p :restarting
-   return res
+   return true
 
 end
 
