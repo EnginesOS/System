@@ -473,6 +473,7 @@ end
 
   def restart_system
     if @core_api.restart_system == true
+      p :Restarting
       return success("System","System Restarting")
     else
       return failed("System","not permitted","System Restarting")
