@@ -1,0 +1,44 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+author: Engines
+title: Management
+description: "System  management"
+type_path: mgmt
+service_container: auth
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: false
+service_handle_field: engine
+configurators:
+ ssh_master_pass:
+  name: ssh_master_pass
+  label: Engines Login Password
+  description:  Engines Login Password  for engines user
+  params:
+   ssh_master_pass:
+    name: ssh_master_pass
+    regex_invalid_message: "wrong go back and try again"
+    label: Password for engines user
+    regex_validator: ".*"
+    tooltip: "no : or #"
+    field_type: text_field
+    hint: ""
+    placeholder: ""
+    mandatory: true
+    comment: ""    
+ ssh_master_key:
+  name: ssh_master_key
+  label: Engines access key
+  description:  Engines access key 
+  params:
+   ssh_master_key:
+    name: ssh_master_key
+    regex_invalid_message: "wrong go back and try again"
+    label: Password for engines user
+    regex_validator: ".*"
+    tooltip: "no : or #"
+    field_type: text_field
+    hint: ""
+    placeholder: ""
+    mandatory: true
+    comment: ""    
