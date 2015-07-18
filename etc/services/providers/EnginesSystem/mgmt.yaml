@@ -15,7 +15,7 @@ configurators:
   label: Engines Login Password
   description:  Engines Login Password  for engines user
   params:
-   ssh_master_pass:
+   v:
     name: ssh_master_pass
     regex_invalid_message: "wrong go back and try again"
     label: Password for engines user
