@@ -104,7 +104,7 @@ end
          
         
     @core_api.set_database_password("mysql_server",params)              
-    @core_api.set_database_password("pgsql_server",params)    
+    #@core_api.set_database_password("pgsql_server",params)    
         
     @core_api.set_engines_ssl_pw(params)
     
@@ -472,12 +472,14 @@ end
   end
 
   def restart_system
-    if @core_api.restart_system == false
+    if @core_api.restart_system == true
+      p :Restarting
       return success("System","System Restarting")
     else
       return failed("System","not permitted","System Restarting")
     end
   end
+  
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)

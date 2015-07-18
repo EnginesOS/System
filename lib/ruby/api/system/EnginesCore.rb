@@ -221,21 +221,21 @@ class EnginesCore
     @system_preferences.get_default_domain
   end
 
-  def set_database_password(container_name,params)
-    arg = "mysql_password=" + params[:mysql_password] +":" \
-    + "server=" + container_name + ":" \
-    +  "psql_password=" + params[:psql_password] #Need two args
-    if container_name
-      server_container = loadManagedService(container_name)
-      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
-    end
-
-    return true
-
-  rescue Exception=>e
-    SystemUtils.log_exception(e)
-    return false
-  end
+#  def set_database_password(container_name,params)
+#    arg = "mysql_password=" + params[:mysql_password] +":" \
+#    + "server=" + container_name + ":" \
+#    +  "psql_password=" + params[:psql_password] #Need two args
+#    if container_name
+#      server_container = loadManagedService(container_name)
+#      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
+#    end
+#
+#    return true
+#
+#  rescue Exception=>e
+#    SystemUtils.log_exception(e)
+#    return false
+#  end
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false

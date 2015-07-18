@@ -16,6 +16,23 @@ exclusive: true
 image_name: engines/pssql_server
 service_handle_field: database_name
 setup_params:
+configurators:
+ db_master_pass:
+  name: db_master_pass
+  label: PgSQL Master Password
+  description:  PgSQL Master Password for root user
+  params:
+   db_master_pass:
+    name: db_master_pass
+    regex_invalid_message: "wrong go back and try again"
+    label: root passwowd for PgSQL 
+    regex_validator: ".*"
+    tooltip: "no : or #"
+    field_type: text_field
+    hint: ""
+    placeholder: ""
+    mandatory: true
+    comment: ""    
 consumer_params:
  full_access:
   name: full_access
