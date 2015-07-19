@@ -119,7 +119,7 @@ class ManagedService < ManagedContainer
   
   def   add_consumer_to_service(service_hash)  
     if is_running? == false
-         log_error_mesg("service not running ",configurator_params)
+         log_error_mesg("service not running ",service_hash)
          return false
        end
   cmd = "docker exec -u " + @cont_userid.to_s + " " + @container_name.to_s  + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
@@ -127,7 +127,7 @@ class ManagedService < ManagedContainer
       if result[:result] == 0 
         return true
       end
-    log_error_mesg("Failed add_consumer_to_servicee",result)
+    log_error_mesg("Failed add_consumer_to_service",result)
       return false
     #return  SystemUtils.run_system(cmd)
   end
