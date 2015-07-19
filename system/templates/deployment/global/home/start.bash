@@ -1,10 +1,24 @@
 #!/bin/bash
 
-if  test ! -d /engines/var/run/flags/
-then
-	mkdir -p /engines/var/run/flags/
-	chmod oug+w /engines/var/run/flags/
-fi
+  if test  ! -f /engines/var/run/flags/volume_setup_complete
+   then
+   echo "Waiting for Volume setup to Complete "
+ 	while test ! -f /engines/var/run/flags/volume_setup_complete
+ 	  do
+ 	  echo  "."
+ 		sleep 10
+ 	 done
+  fi
+
+if ! test -f /engines/var/run/flags/built
+ then
+ 	if test -f /home/.init.sh
+ 		then
+ 			/home/.init.sh
+ 		fi
+ 	touch /engines/var/run/flags/built
+ fi
+
 
 	
 	if test -f /engines/var/run/flags/post_install
@@ -20,15 +34,6 @@ fi
 			fi		
 	fi
 	
-  if test  ! -f /engines/var/run/flags/volume_setup_complete
-   then
-   echo "Waiting for Volume setup to Complete "
- 	while test ! -f /engines/var/run/flags/volume_setup_complete
- 	  do
- 	  echo  "."
- 		sleep 10
- 	 done
-  fi
 
 
 #drop for custom start as if custom start no blocking then it is pre running
@@ -51,6 +56,7 @@ if test -f /home/engines/scripts/custom_start.sh
 		
 	fi
 
+#for non apache framework (or use custom start)
 if test -f /home/startwebapp.sh 
 	then
 		/home/startwebapp.sh 
@@ -63,13 +69,13 @@ PID_FILE=/run/apache2/apache2.pid
 export PID_FILE
 . /home/trap.sh
 
-mkdir -p  /engines/var/run/flags/
+
   
-if test -f /home/app/Rack.sh
-	then 	 
-	#sets PATH only (might not be needed)
-		. /home/app/Rack.sh  
-	fi
+#if test -f /home/app/Rack.sh
+#	then 	 
+#	#sets PATH only (might not be needed)
+#		. /home/app/Rack.sh  
+#	fi
 
 
 mkdir -p /var/log/apache2/ >/dev/null
@@ -77,7 +83,7 @@ mkdir -p /var/log/apache2/ >/dev/null
 	if test -f /home/blocking.sh
 		then
 		/etc/init.d/apache2 start
-			bash /home/blocking.sh &
+			 /home/blocking.sh &
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
 	fi	
