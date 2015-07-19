@@ -10,15 +10,11 @@
  	 done
   fi
 
-if ! test -f /engines/var/run/flags/built
- then
- 	if test -f /home/.init.sh
- 		then
- 			/home/.init.sh
- 		fi
- 	touch /engines/var/run/flags/built
- fi
 
+if test -f /home/_init.sh
+ 	then
+ 		/home/_init.sh
+ 	fi
 
 	
 	if test -f /engines/var/run/flags/post_install
@@ -29,8 +25,9 @@ if ! test -f /engines/var/run/flags/built
 				then 				
 				echo "Running Post Install"
 				/bin/bash /home/engines/scripts/post_install.sh 
-				mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
-				touch /engines/var/run/post_install.done
+				#mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
+				rm engines/var/run/flags/post_install
+				touch /engines/var/run/flags/post_install.done
 			fi		
 	fi
 	
