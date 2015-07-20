@@ -624,7 +624,7 @@ end
   if params[:self_hosted] == false
     return success(params[:domain_name], "Remove domain")
   end
-  
+    service_hash = Hash.new
     service_hash[:parent_engine]="system"
         service_hash[:variables] = Hash.new
         service_hash[:variables][:domainname] = params[:domain_name]   
