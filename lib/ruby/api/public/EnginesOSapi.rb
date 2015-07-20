@@ -560,7 +560,8 @@ end
        service_hash[:publisher_namespace]="EnginesSystem"
        service_hash[:type_path]="dns"
        @core_api.dettach_service(service_hash) 
-    @core_api.delete_service_from_engine_registry(service_hash)
+    @core_api.deregister_non_persistant_service(service_hash)
+    
     service_hash[:variables][:domainname] = params[:domain_name]   
     service_hash[:service_handle]=params[:domain_name] + "_dns"
     if(params[:internal_only])
@@ -570,6 +571,7 @@ end
            end
        service_hash[:variables][:ip] = ip;
     if @core_api.attach_service(service_hash) == true
+      @core_api.register_non_persistant_service(service_hash)
       return success(params[:domain_name], "Update self hosted domain")
     end
     
@@ -608,6 +610,7 @@ end
     service_hash[:variables][:ip] = ip;
        
     if @core_api.attach_service(service_hash) == true
+      @core_api.register_non_persistant_service(service_hash)
       return success(params[:domain_name], "Add self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
@@ -640,7 +643,7 @@ end
         service_hash[:type_path]="dns"
           
     if @core_api.dettach_service(service_hash) == true
-      @core_api.delete_service_from_engine_registry(service_hash)
+      @core_api.deregister_non_persistant_service(service_hash)
       return success(params[:domain_name], "Remove self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Remove self hosted domain")

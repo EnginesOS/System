@@ -1010,7 +1010,14 @@ def load_and_attach_shared_services(container)
     SystemUtils.log_error_mesg(msg,object)
 
   end
-
+  def register_non_persistant_service(service_hash)
+    sm = loadServiceManager()
+       return sm.register_non_persistant_service(engine)
+     end
+def deregister_non_persistant_service(service_hash)
+  sm = loadServiceManager()
+     return sm.deregister_non_persistant_service(engine)
+   end
   def register_non_persistant_services(engine)
     sm = loadServiceManager()
     return sm.register_non_persistant_services(engine)
