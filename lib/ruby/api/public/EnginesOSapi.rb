@@ -46,7 +46,8 @@ class EnginesOSapi
 
  ##fix me and put in system api
   def first_run_required?      
-    if File.exists?(SysConfig.FirstRunRan) ==false      
+    if File.exists?(SysConfig.FirstRunRan) ==false    
+      p :please_first_ran  
         return true
     end
     return false
@@ -98,12 +99,12 @@ end
     p params
   #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
     
-    params[:mail_name] = "smtp." + params[:default_domain]
-    @core_api.setup_email_params(params)
+#    params[:mail_name] = "smtp." + params[:default_domain]
+#    @core_api.setup_email_params(params)
          
         
     @core_api.set_database_password("mysql_server",params)              
-    @core_api.set_database_password("pgsql_server",params)    
+    #@core_api.set_database_password("pgsql_server",params)    
         
     @core_api.set_engines_ssl_pw(params)
     
@@ -165,111 +166,7 @@ end
 
  
 
-#  def backup_volume(params)
-#    
-#    backup_name = params[:backup_name]
-#    engine_name = params[:engine_name]
-#    volume_name  = params[:source_name]
-#    dest_hash  = params[:destination_hash]
-#      
-#    engine = loadManagedEngine engine_name
-#    if engine.is_a?(EnginesOSapiResult)
-#      return engine
-#    end
-#    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
-#    backup_hash = dest_hash
-#    backup_hash.store(:name, backup_name)
-#    backup_hash.store(:engine_name, engine_name)
-#    backup_hash.store(:backup_type, "fs")
-#    backup_hash.store(:parent_engine,engine_name)
-#    
-#      if engine.volumes != nil     
-#        volume =  engine.volumes["volume_name"]
-#          if volume != nil
-#            volume.add_backup_src_to_hash(backup_hash)
-#            SystemUtils.debug_output("Backup hash",backup_hash)
-#          end
-#     end           
-#    engine.volumes.values do |volume|
-#      if volume.name == volume_name
-#        volume.add_backup_src_to_hash(backup_hash)
-#        SystemUtils.debug_output backup_hash
-#      end
-#    end
-#
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
-#    end
-#    if backup_service.add_consumer(backup_hash)
-#      #    p backup_hash
-#      return success(engine_name,"Add Volume Backup")
-#    else
-#      return failed(engine_name,last_api_error,"Backup Volume")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Backup Volume",e)
-#  end
-#
-#  def stop_backup backup_name
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Stop Volume Backup")
-#    end
-#    backup_hash = Hash.new
-#    backup_hash[:name]=backup_name
-#    if  backup_service.remove_consumer(backup_hash)
-#      return success(backup_name,"Stop Volume Backup")
-#    else
-#      return failed(backup_name,last_api_error,"Stop Volume Backup")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Stop Volume Backup",e)
-#  end
-#
-#  def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
-#
-#    backup_name = params[:backup_name]
-#    engine_name = params[:engine_name]
-#    database_name = params[:source_name]    
-#    dest_hash = params[:destination_hash]
-#      
-#    engine = loadManagedEngine engine_name
-#    if engine.is_a?(EnginesOSapiResult)
-#      return engine
-#    end
-#    params 
-#    backup_hash = dest_hash
-#    backup_hash.store(:name, backup_name)
-#    backup_hash.store(:engine_name, engine_name)
-#    backup_hash.store(:backup_type, "db")
-#    engine.databases.each do |database|
-#      if database.name == database_name
-#        database.add_backup_src_to_hash(backup_hash)
-#      end
-#    end
-#
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Backup Database")
-#    end
-#    if backup_service.add_consumer(backup_hash)
-#      return success(engine_name,"Add Database Backup")
-#    else
-#      return  failed(backup_name,last_api_error,"Backup Database")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Backup Database",e)
-#  end
+
 
   def get_system_preferences
     return @core_api.load_system_preferences
@@ -470,6 +367,15 @@ end
     return success(engine_name,"Register Engine Web Site")
   end
 
+  def restart_system
+    if @core_api.restart_system == true
+      p :Restarting
+      return success("System","System Restarting")
+    else
+      return failed("System","not permitted","System Restarting")
+    end
+  end
+  
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -557,10 +463,6 @@ end
     return log_exception_and_fail("get_container_network_metrics",e)
   end
 
-  
-
- 
- 
 
   def get_volumes
 
@@ -627,33 +529,16 @@ end
  end
  
 
-  
-# def default_backup_service_definition(params)
-#   #FixMe read backup from mappings
-#   
-#   return SoftwareServiceDefinition.find("backup","EnginesSystem")   
-# end
- 
-#  def set_engine_hostname_properties(params)
-#    #    engine_name = params[:engine_name]
-#    #    hostname = params[:host_name]
-#    #    domain_name = params[:domain_name]
-#    p :set_engine_hostname_properties
-#    p params
-#    engine = loadManagedEngine(params[:engine_name])
-#    if engine == nil || engine.instance_of?(EnginesOSapiResult)
-#      p "p cant change name as cant load"
-#      p engine
-#      return engine
-#    end
-#    if @core_api.set_engine_hostname_details(engine, params)
-#      return success(params[:engine_name], "Update hostname details")
-#    else
-#      return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("set_engine_hostname_details ",e)
-#  end
+  def create_ssl_certificate(params)
+     p params
+     #params[:default_cert]
+     #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
+     return success(params[:domain_name], "Add self hosted ssl cert domain")        
+   end
+   def upload_ssl_certificate(params)
+       p params
+       return success(params[:domain_name], "upload self hosted ssl cert domain")        
+     end
 
   
   def update_domain(params)
@@ -666,9 +551,24 @@ end
     return success(params[:domain_name], "Add self hosted domain")
   end
   
-    if DNSHosting.update_self_hosted_domain(old_domain_name, params) == true
+    service_hash = Hash.new
+       service_hash[:parent_engine]="system"
+       service_hash[:variables] = Hash.new
+       service_hash[:variables][:domainname] = params[:original_domain_name]   
+       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+       service_hash[:container_type]="system"
+       service_hash[:publisher_namespace]="EnginesSystem"
+       service_hash[:type_path]="dns"
+       @core_api.dettach_service(service_hash) 
+         
+    service_hash[:variables][:domainname] = params[:domain_name]   
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+          
+    if @core_api.attach_service(service_hash) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
+    
+    
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
       
       
@@ -686,24 +586,30 @@ end
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add domain")
   end
-    if DNSHosting.add_self_hosted_domain( params,self) ==true
+  service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+    service_hash[:variables] = Hash.new
+    service_hash[:variables][:domainname] = params[:domain_name]   
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+    service_hash[:container_type]="system"
+    service_hash[:publisher_namespace]="EnginesSystem"
+    service_hash[:type_path]="dns"
+    if(params[:internal_only])
+          ip = DNSHosting.get_local_ip
+        else
+          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+        end
+    service_hash[:variables][:ip] = ip;
+       
+    if @core_api.attach_service(service_hash) == true
       return success(params[:domain_name], "Add self hosted domain")
     end
-    return failed(params[:domain_name],last_api_error, "Add self hosted domain")
+    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
   rescue Exception=>e
-    return log_exception_and_fail("Add self hosted domain ",e)
+    return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
   end
 
-  def create_ssl_certificate(params)
-    p params
-    #params[:default_cert]
-    #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
-    return success(params[:domain_name], "Add self hosted ssl cert domain")        
-  end
-  def upload_ssl_certificate(params)
-      p params
-      return success(params[:domain_name], "upload self hosted ssl cert domain")        
-    end
+ 
   
     def reload_dns    
     return @core_api.reload_dns
@@ -718,8 +624,16 @@ end
   if params[:self_hosted] == false
     return success(params[:domain_name], "Remove domain")
   end
-  
-    if DNSHosting.remove_self_hosted_domain( params[:domain_name],self) ==true
+    service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+        service_hash[:variables] = Hash.new
+        service_hash[:variables][:domainname] = params[:domain_name]   
+        service_hash[:service_handle]=params[:domain_name] + "_dns"
+        service_hash[:container_type]="system"
+        service_hash[:publisher_namespace]="EnginesSystem"
+        service_hash[:type_path]="dns"
+          
+    if @core_api.dettach_service(service_hash) == true
       return success(params[:domain_name], "Remove self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
@@ -739,9 +653,9 @@ end
     return log_exception_and_fail("list domains ",e)
   end 
   
-  def list_service_providers_in_use
-     return DNSHosting.list_providers_in_use
-  end
+#  def list_service_providers_in_use
+#     return DNSHosting.list_providers_in_use
+#  end
 
   #protected if protected static cant call
   def success(item_name ,cmd)

@@ -20,3 +20,4 @@ nginxored: false
 databases: []
 conf_register_site: false
 conf_register_dns: true
+conf_self_start: true

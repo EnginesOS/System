@@ -29,6 +29,11 @@ volumes:
   remotepath: "/home/engines/deployment"
   localpath: "/home/engines/deployment"
   mapping_permissions: rw
+ ssh_key_dir: !ruby/object:Volume
+  name: ssh_key_dir
+  remotepath: "/home/engines/.ssh/mgmt/"
+  localpath: "/home/engines/.ssh/mgmt/"
+  mapping_permissions: rw 
  sqlite: !ruby/object:Volume
   name: sqlite
   remotepath: "/home/app/db/production.sqlite3"
@@ -78,5 +83,6 @@ nginxored: false
 databases: []
 conf_register_site: false
 conf_register_dns: true
+conf_self_start: true
 dependant_on:
 - "dns"

@@ -4,6 +4,7 @@ publisher_namespace: EnginesSystem
 type_path: backup
 ctype: service
 persistant: false
+conf_self_start: true
 last_error: 
 memory: '50'
 hostname: backup

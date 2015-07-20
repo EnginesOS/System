@@ -77,6 +77,10 @@ class EnginesCore
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
   end
+  
+  def restart_system 
+    return @system_api.restart_system
+  end
 
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
@@ -101,22 +105,22 @@ class EnginesCore
   def rm_volume(site_hash)
     return @system_api.rm_volume(site_hash)
   end
-
-  def remove_self_hosted_domain(domain_name)
-    return @system_api.remove_self_hosted_domain(domain_name)
-  end
-
-  def add_self_hosted_domain(params)
-    return @system_api.add_self_hosted_domain(params)
-  end
-
-  def list_self_hosted_domains()
-    return @system_api.list_self_hosted_domains()
-  end
-
-  def  update_self_hosted_domain(old_domain_name, params)
-    @system_api.update_self_hosted_domain(old_domain_name, params)
-  end
+#
+#  def remove_self_hosted_domain(domain_name)
+#    return @system_api.remove_self_hosted_domain(domain_name)
+#  end
+#
+#  def add_self_hosted_domain(params)
+#    return @system_api.add_self_hosted_domain(params)
+#  end
+#
+#  def list_self_hosted_domains()
+#    return @system_api.list_self_hosted_domains()
+#  end
+#
+#  def  update_self_hosted_domain(old_domain_name, params)
+#    @system_api.update_self_hosted_domain(old_domain_name, params)
+#  end
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)
@@ -178,17 +182,17 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-  def setup_email_params(params)
-
-    arg="smarthost_hostname=" + params[:smarthost_hostname] \
-    + ":smarthost_username=" + params[:smarthost_username]\
-    + ":smarthost_password=" + params[:smarthost_password]\
-    + ":mail_name=smtp."  + params[:default_domain]
-    container=loadManagedService("smtp")
-    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
-  rescue   Exception=>e
-    SystemUtils.log_exception(e)
-  end
+#  def setup_email_params(params)
+#
+#    arg="smarthost_hostname=" + params[:smarthost_hostname] \
+#    + ":smarthost_username=" + params[:smarthost_username]\
+#    + ":smarthost_password=" + params[:smarthost_password]\
+#    + ":mail_name=smtp."  + params[:default_domain]
+#    container=loadManagedService("smtp")
+#    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
+#  rescue   Exception=>e
+#    SystemUtils.log_exception(e)
+#  end
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
@@ -217,21 +221,21 @@ class EnginesCore
     @system_preferences.get_default_domain
   end
 
-  def set_database_password(container_name,params)
-    arg = "mysql_password=" + params[:mysql_password] +":" \
-    + "server=" + container_name + ":" \
-    +  "psql_password=" + params[:psql_password] #Need two args
-    if container_name
-      server_container = loadManagedService(container_name)
-      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
-    end
-
-    return true
-
-  rescue Exception=>e
-    SystemUtils.log_exception(e)
-    return false
-  end
+#  def set_database_password(container_name,params)
+#    arg = "mysql_password=" + params[:mysql_password] +":" \
+#    + "server=" + container_name + ":" \
+#    +  "psql_password=" + params[:psql_password] #Need two args
+#    if container_name
+#      server_container = loadManagedService(container_name)
+#      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
+#    end
+#
+#    return true
+#
+#  rescue Exception=>e
+#    SystemUtils.log_exception(e)
+#    return false
+#  end
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false
@@ -445,6 +449,9 @@ class EnginesCore
         
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
+          if retval.is_a?(Hash) == false
+            return false
+          end
       else
         @last_error = "No Service"
         return false
@@ -463,7 +470,10 @@ class EnginesCore
       
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
-        
+        if retval == false
+          @last_error = "Service not running"
+          return false
+        end
         if retval[:result] == 0
           
           return true

@@ -31,7 +31,7 @@ module ServiceConfigurations
   def get_service_configuration(service_configuration_hash)
 
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-    if service_configurations == false
+    if service_configurations.is_a?(Tree::TreeNode) == false
       return false
     end
     
@@ -48,7 +48,7 @@ module ServiceConfigurations
   
   def add_service_configuration(service_configuration_hash)
     configurations = get_service_configurations(service_configuration_hash[:service_name])
-    if configurations == false
+    if configurations.is_a?(Tree::TreeNode) == false
       configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
       service_configurations_tree << configurations
     elsif configurations[service_configuration_hash[:configurator_name]]
@@ -65,7 +65,7 @@ p "add " + service_configuration_hash.to_s
   
   def rm_service_configuration(service_configuration_hash)
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-        if service_configurations == false
+        if service_configurations.is_a?(Tree::TreeNode) == false
           p :serivce_configurations_not_found
           return false
         end
@@ -86,7 +86,7 @@ p "add " + service_configuration_hash.to_s
   
   def update_service_configuration(service_configuration_hash)
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-            if service_configurations == false
+            if service_configurations.is_a?(Tree::TreeNode) == false
               p :serivce_configurations_not_found
               return add_service_configuration(service_configuration_hash)
               #return false

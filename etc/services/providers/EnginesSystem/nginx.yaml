@@ -14,6 +14,24 @@ dedicated: false
 persistant: false
 service_handle_field: fqdn
 setup_params:
+configurators:
+ default_site:
+  name: default_site
+  label: Default site
+  description:  Default site
+  params:
+   default_site_url:
+    name: default_site_url
+    regex_invalid_message: "wrong go back and try again"
+    label: Default Web Site
+    regex_validator: ".*[.].*"
+    tooltip: "not http(s)://....../ just x.y.c "
+    field_type: text_field
+    hint: ""
+    placeholder: "not http(s)://....../ just x.y.c "
+    mandatory: true
+    comment: ""
+    value: mgmt._Engines_System(default_domain):10443
 consumer_params:
  proto:
   name: proto
@@ -59,3 +77,14 @@ consumer_params:
   placeholder: " "
   mandatory: true
   comment: " "
+ public:
+  name: public
+  label: public
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: boolean
+  hint: "Publish beyond Lan"
+  placeholder: " "
+  mandatory: true
+  comment: " "
+  value: true
