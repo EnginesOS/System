@@ -166,111 +166,7 @@ end
 
  
 
-#  def backup_volume(params)
-#    
-#    backup_name = params[:backup_name]
-#    engine_name = params[:engine_name]
-#    volume_name  = params[:source_name]
-#    dest_hash  = params[:destination_hash]
-#      
-#    engine = loadManagedEngine engine_name
-#    if engine.is_a?(EnginesOSapiResult)
-#      return engine
-#    end
-#    SystemUtils.debug_output("backing up " + volume_name + " to " ,  dest_hash )
-#    backup_hash = dest_hash
-#    backup_hash.store(:name, backup_name)
-#    backup_hash.store(:engine_name, engine_name)
-#    backup_hash.store(:backup_type, "fs")
-#    backup_hash.store(:parent_engine,engine_name)
-#    
-#      if engine.volumes != nil     
-#        volume =  engine.volumes["volume_name"]
-#          if volume != nil
-#            volume.add_backup_src_to_hash(backup_hash)
-#            SystemUtils.debug_output("Backup hash",backup_hash)
-#          end
-#     end           
-#    engine.volumes.values do |volume|
-#      if volume.name == volume_name
-#        volume.add_backup_src_to_hash(backup_hash)
-#        SystemUtils.debug_output backup_hash
-#      end
-#    end
-#
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Backup Volume")
-#    end
-#    if backup_service.add_consumer(backup_hash)
-#      #    p backup_hash
-#      return success(engine_name,"Add Volume Backup")
-#    else
-#      return failed(engine_name,last_api_error,"Backup Volume")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Backup Volume",e)
-#  end
-#
-#  def stop_backup backup_name
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Stop Volume Backup")
-#    end
-#    backup_hash = Hash.new
-#    backup_hash[:name]=backup_name
-#    if  backup_service.remove_consumer(backup_hash)
-#      return success(backup_name,"Stop Volume Backup")
-#    else
-#      return failed(backup_name,last_api_error,"Stop Volume Backup")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Stop Volume Backup",e)
-#  end
-#
-#  def backup_database(params)#backup_name,engine_name,database_name,dest_hash)
-#
-#    backup_name = params[:backup_name]
-#    engine_name = params[:engine_name]
-#    database_name = params[:source_name]    
-#    dest_hash = params[:destination_hash]
-#      
-#    engine = loadManagedEngine engine_name
-#    if engine.is_a?(EnginesOSapiResult)
-#      return engine
-#    end
-#    params 
-#    backup_hash = dest_hash
-#    backup_hash.store(:name, backup_name)
-#    backup_hash.store(:engine_name, engine_name)
-#    backup_hash.store(:backup_type, "db")
-#    engine.databases.each do |database|
-#      if database.name == database_name
-#        database.add_backup_src_to_hash(backup_hash)
-#      end
-#    end
-#
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service.is_a?(EnginesOSapiResult)
-#      return backup_service
-#    end
-#    if backup_service.read_state != "running"
-#      return failed(engine_name,"Backup Service not running" ,"Backup Database")
-#    end
-#    if backup_service.add_consumer(backup_hash)
-#      return success(engine_name,"Add Database Backup")
-#    else
-#      return  failed(backup_name,last_api_error,"Backup Database")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("Backup Database",e)
-#  end
+
 
   def get_system_preferences
     return @core_api.load_system_preferences
@@ -655,7 +551,20 @@ end
     return success(params[:domain_name], "Add self hosted domain")
   end
   
-    if DNSHosting.update_self_hosted_domain(old_domain_name, params) == true
+    service_hash = Hash.new
+       service_hash[:parent_engine]="system"
+       service_hash[:variables] = Hash.new
+       service_hash[:variables][:domainname] = params[:original_domain_name]   
+       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+       service_hash[:container_type]="system"
+       service_hash[:publisher_namespace]="EnginesSystem"
+       service_hash[:type_path]="dns"
+       @core_api.dettach_service(service_hash) 
+         
+    service_hash[:variables][:domainname] = params[:domain_name]   
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+          
+    if @core_api.attach_service(service_hash) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
     
@@ -716,7 +625,15 @@ end
     return success(params[:domain_name], "Remove domain")
   end
   
-    if DNSHosting.remove_self_hosted_domain( params[:domain_name],self) ==true
+    service_hash[:parent_engine]="system"
+        service_hash[:variables] = Hash.new
+        service_hash[:variables][:domainname] = params[:domain_name]   
+        service_hash[:service_handle]=params[:domain_name] + "_dns"
+        service_hash[:container_type]="system"
+        service_hash[:publisher_namespace]="EnginesSystem"
+        service_hash[:type_path]="dns"
+          
+    if @core_api.dettach_service(service_hash) == true
       return success(params[:domain_name], "Remove self hosted domain")
     end
     return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
