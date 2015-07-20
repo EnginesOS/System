@@ -543,7 +543,7 @@ end
   
   def update_domain(params)
     old_domain_name=params[:original_domain_name]
-    if  DNSHosting.update_domain(old_domain_name,params,self) == false
+    if  DNSHosting.update_domain(old_domain_name,params) == false
        return  failed(params[:domain_name],last_api_error, "update  domain")
     end  
     
@@ -585,7 +585,7 @@ end
   end
 
   def add_domain params
-    if DNSHosting.add_domain(params,self) == false
+    if DNSHosting.add_domain(params) == false
        return  failed(params[:domain_name],last_api_error, "Add  domain")
     end  
   if params[:self_hosted] == false
@@ -622,7 +622,7 @@ end
 #  end
   
   def remove_domain params    
-    if DNSHosting.rm_domain(params,self) == false
+    if DNSHosting.rm_domain(params) == false
       p :remove_domain_last_error
       p last_api_error
        return  failed(params[:domain_name],last_api_error, "Remove domain")

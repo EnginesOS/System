@@ -256,7 +256,7 @@ module DNSHosting
 
   end
 
-  def  DNSHosting.update_domain(old_domain_name, params,system_api)
+  def  DNSHosting.update_domain(old_domain_name, params)
 
     begin
       domains = load_domains()
