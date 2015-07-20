@@ -478,7 +478,7 @@ class EnginesCore
           
           return true
         else
-          @last_error = "stderr" + retval[:stderr]
+          @last_error = "stderr" + retval[:stderr] +  "  " + retval[:result].to_s
         end
       else
         @last_error = "no Service"
