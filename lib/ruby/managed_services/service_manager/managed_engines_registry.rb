@@ -152,6 +152,11 @@ module ManagedEnginesRegistry
         managed_engine_tree << Tree::TreeNode.new("Service"," Managed Services register")
       end
       return managed_engine_tree["Service"]
+    elsif site_hash[:container_type] == "system"
+      if managed_engine_tree["System"] == nil
+              managed_engine_tree << Tree::TreeNode.new("System"," System Services register")
+            end
+            return managed_engine_tree["System"]
     else
       if managed_engine_tree["Application"] == nil
         managed_engine_tree << Tree::TreeNode.new("Application"," Managed Application register")
