@@ -26,14 +26,41 @@ consumer_params:
   mandatory: true
   value: " "
   comment: " "
- domain_name:
-  name: domain_name
-  label: domain name
+ ip:
+  name: ip
+  label: IP Address
   regex_validator: ".*"
   tooltip: " "
   field_type: text_field
-  hint: "domain name"
+  hint: "ip address"
   placeholder: " "
   mandatory: true
   value: " "
   comment: " "
+system_consumer_params:
+ self_host:
+  label: "Self Hosted Domains"
+  description: "some stuff"
+  params:
+    domain_name:
+    name: domain_name
+    label: Domain name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: "domain_name"
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
+   ip:
+    name: ip
+    label: IP Address
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: "ip address"
+    placeholder: " "
+    mandatory: true
+    value: " "
+    comment: " "
