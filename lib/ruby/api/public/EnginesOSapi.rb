@@ -567,10 +567,6 @@ end
     return log_exception_and_fail("get_container_network_metrics",e)
   end
 
-  
-
- 
- 
 
   def get_volumes
 
@@ -637,33 +633,16 @@ end
  end
  
 
-  
-# def default_backup_service_definition(params)
-#   #FixMe read backup from mappings
-#   
-#   return SoftwareServiceDefinition.find("backup","EnginesSystem")   
-# end
- 
-#  def set_engine_hostname_properties(params)
-#    #    engine_name = params[:engine_name]
-#    #    hostname = params[:host_name]
-#    #    domain_name = params[:domain_name]
-#    p :set_engine_hostname_properties
-#    p params
-#    engine = loadManagedEngine(params[:engine_name])
-#    if engine == nil || engine.instance_of?(EnginesOSapiResult)
-#      p "p cant change name as cant load"
-#      p engine
-#      return engine
-#    end
-#    if @core_api.set_engine_hostname_details(engine, params)
-#      return success(params[:engine_name], "Update hostname details")
-#    else
-#      return failed("set_engine_hostname_details",last_api_error,"set_engine_hostname_details")
-#    end
-#  rescue Exception=>e
-#    return log_exception_and_fail("set_engine_hostname_details ",e)
-#  end
+  def create_ssl_certificate(params)
+     p params
+     #params[:default_cert]
+     #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
+     return success(params[:domain_name], "Add self hosted ssl cert domain")        
+   end
+   def upload_ssl_certificate(params)
+       p params
+       return success(params[:domain_name], "upload self hosted ssl cert domain")        
+     end
 
   
   def update_domain(params)
@@ -679,6 +658,8 @@ end
     if DNSHosting.update_self_hosted_domain(old_domain_name, params) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
+    
+    
     return failed(params[:domain_name],last_api_error, "Update self hosted domain")
       
       
@@ -696,24 +677,30 @@ end
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add domain")
   end
-    if DNSHosting.add_self_hosted_domain( params,self) ==true
+  service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+    service_hash[:variables] = Hash.new
+    service_hash[:variables][:domainname] = params[:domain_name]   
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+    service_hash[:container_type]="system"
+    service_hash[:publisher_namespace]="EnginesSystem"
+    service_hash[:type_path]="dns"
+    if(params[:internal_only])
+          ip = DNSHosting.get_local_ip
+        else
+          ip =  open( 'http://jsonip.com/ ' ){ |s| JSON::parse( s.string())['ip'] };
+        end
+    service_hash[:variables][:ip] = ip;
+       
+    if @core_api.attach_service(service_hash) == true
       return success(params[:domain_name], "Add self hosted domain")
     end
-    return failed(params[:domain_name],last_api_error, "Add self hosted domain")
+    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
   rescue Exception=>e
-    return log_exception_and_fail("Add self hosted domain ",e)
+    return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
   end
 
-  def create_ssl_certificate(params)
-    p params
-    #params[:default_cert]
-    #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
-    return success(params[:domain_name], "Add self hosted ssl cert domain")        
-  end
-  def upload_ssl_certificate(params)
-      p params
-      return success(params[:domain_name], "upload self hosted ssl cert domain")        
-    end
+ 
   
     def reload_dns    
     return @core_api.reload_dns
@@ -749,9 +736,9 @@ end
     return log_exception_and_fail("list domains ",e)
   end 
   
-  def list_service_providers_in_use
-     return DNSHosting.list_providers_in_use
-  end
+#  def list_service_providers_in_use
+#     return DNSHosting.list_providers_in_use
+#  end
 
   #protected if protected static cant call
   def success(item_name ,cmd)
