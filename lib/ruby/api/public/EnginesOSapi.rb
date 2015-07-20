@@ -563,7 +563,12 @@ end
          
     service_hash[:variables][:domainname] = params[:domain_name]   
     service_hash[:service_handle]=params[:domain_name] + "_dns"
-          
+    if(params[:internal_only])
+             ip = DNSHosting.get_local_ip
+           else
+             ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+           end
+       service_hash[:variables][:ip] = ip;
     if @core_api.attach_service(service_hash) == true
       return success(params[:domain_name], "Update self hosted domain")
     end
@@ -586,6 +591,7 @@ end
   if params[:self_hosted] == false
     return success(params[:domain_name], "Add domain")
   end
+  
   service_hash = Hash.new
     service_hash[:parent_engine]="system"
     service_hash[:variables] = Hash.new
@@ -610,10 +616,10 @@ end
   end
 
  
-  
-    def reload_dns    
-    return @core_api.reload_dns
-  end
+#  
+#    def reload_dns    
+#    return @core_api.reload_dns
+#  end
   
   def remove_domain params    
     if DNSHosting.rm_domain(params,self) == false
@@ -641,11 +647,11 @@ end
     return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
   end
 
-  def list_self_hosted_domains
-    return DNSHosting.list_self_hosted_domains( )
-  rescue Exception=>e
-    return log_exception_and_fail("list self hosted domain ",e)
-  end
+#  def list_self_hosted_domains
+#    return DNSHosting.list_self_hosted_domains( )
+#  rescue Exception=>e
+#    return log_exception_and_fail("list self hosted domain ",e)
+#  end
 
   def list_domains
     return DNSHosting.list_domains( )
