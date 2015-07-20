@@ -180,7 +180,9 @@ def process_templated_string(template)
  
 
 def apply_engines_variables(template)
-
+  if template.is_a?(String) == false
+    return template
+  end
   template.gsub!(/_Engines_Environment\([(0-9a-z_A-Z]*\)/) { | match |
         resolve_engines_variable(match)
       } 
@@ -189,6 +191,9 @@ end
 
  
  def apply_system_variables(template)
+   if template.is_a?(String) == false
+     return template
+   end
    template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)\)/) { | match |
      p :build_function_match
      p match
@@ -204,7 +209,9 @@ end
  end
  
  def apply_build_variables(template)
-   
+   if template.is_a?(String) == false
+     return template
+   end
 
    template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { | match |
      resolve_build_variable(match)
