@@ -1012,11 +1012,11 @@ def load_and_attach_shared_services(container)
   end
   def register_non_persistant_service(service_hash)
     sm = loadServiceManager()
-       return sm.register_non_persistant_service(engine)
+       return sm.register_non_persistant_service(service_hash)
      end
 def deregister_non_persistant_service(service_hash)
   sm = loadServiceManager()
-     return sm.deregister_non_persistant_service(engine)
+     return sm.deregister_non_persistant_service(service_hash)
    end
   def register_non_persistant_services(engine)
     sm = loadServiceManager()
