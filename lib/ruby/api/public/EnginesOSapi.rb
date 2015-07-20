@@ -688,7 +688,7 @@ end
     if(params[:internal_only])
           ip = DNSHosting.get_local_ip
         else
-          ip =  open( 'http://jsonip.com/ ' ){ |s| JSON::parse( s.string())['ip'] };
+          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
         end
     service_hash[:variables][:ip] = ip;
        
