@@ -360,6 +360,7 @@ class DockerApi
        if container.is_service? 
           volume_option += " -v " + service_sshkey_local_dir(container)   + ":" + service_sshkey_container_dir(container) + ":rw"
        end
+       volume_option +=" -v /usr/local/share/ca-certificates/engines_internal_ca.crt:/usr/local/share/ca-certificates/engines_internal_ca.crt:ro " 
        #end
        #container specific
        if container.volumes  

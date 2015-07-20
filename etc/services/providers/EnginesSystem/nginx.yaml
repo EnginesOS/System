@@ -77,3 +77,14 @@ consumer_params:
   placeholder: " "
   mandatory: true
   comment: " "
+ public:
+  name: public
+  label: public
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: boolean
+  hint: "Publish beyond Lan"
+  placeholder: " "
+  mandatory: true
+  comment: " "
+  value: true

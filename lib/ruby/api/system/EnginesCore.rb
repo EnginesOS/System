@@ -105,22 +105,22 @@ class EnginesCore
   def rm_volume(site_hash)
     return @system_api.rm_volume(site_hash)
   end
-
-  def remove_self_hosted_domain(domain_name)
-    return @system_api.remove_self_hosted_domain(domain_name)
-  end
-
-  def add_self_hosted_domain(params)
-    return @system_api.add_self_hosted_domain(params)
-  end
-
-  def list_self_hosted_domains()
-    return @system_api.list_self_hosted_domains()
-  end
-
-  def  update_self_hosted_domain(old_domain_name, params)
-    @system_api.update_self_hosted_domain(old_domain_name, params)
-  end
+#
+#  def remove_self_hosted_domain(domain_name)
+#    return @system_api.remove_self_hosted_domain(domain_name)
+#  end
+#
+#  def add_self_hosted_domain(params)
+#    return @system_api.add_self_hosted_domain(params)
+#  end
+#
+#  def list_self_hosted_domains()
+#    return @system_api.list_self_hosted_domains()
+#  end
+#
+#  def  update_self_hosted_domain(old_domain_name, params)
+#    @system_api.update_self_hosted_domain(old_domain_name, params)
+#  end
 
   def get_container_memory_stats(container)
     return @system_api.get_container_memory_stats(container)

@@ -4,7 +4,7 @@ publisher_namespace: EnginesSystem
 type_path: dns
 ctype: service
 persistant: false
-conf_self_start: false
+conf_self_start: true
 last_error: 
 memory: '64'
 hostname: dns

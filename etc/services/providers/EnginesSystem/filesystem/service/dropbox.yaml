@@ -64,7 +64,7 @@ consumer_params:
  direction:
   name: direction
   label: Direction
-  field_type: select_multi
+  field_type: select_radio
   regex_validator: up|down|both
   tooltip: " "
   mandatory: true
@@ -75,3 +75,5 @@ consumer_params:
     "up"
    - !ruby/object:String
     "down"
+   - !ruby/object:String
+    "both"

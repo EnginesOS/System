@@ -2,6 +2,7 @@
 container_name: auth
 ctype: service
 persistant: false
+conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: auth
 last_error: 
