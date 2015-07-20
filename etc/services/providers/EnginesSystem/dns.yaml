@@ -42,7 +42,7 @@ system_consumer_params:
   label: "Self Hosted Domains"
   description: "some stuff"
   params:
-    domain_name:
+   domain_name:
     name: domain_name
     label: Domain name
     regex_validator: ".*"
