@@ -655,9 +655,9 @@ end
      service_hash[:container_type]="system"
      service_hash[:publisher_namespace]="EnginesSystem"
      service_hash[:type_path]="dns"
-     dettach_service(service_hash) 
-  deregister_non_persistant_service(service_hash)
-  delete_service_from_engine_registry(service_hash)
+  @engines_api.dettach_service(service_hash) 
+  @engines_api.deregister_non_persistant_service(service_hash)
+  @engines_api.delete_service_from_engine_registry(service_hash)
   service_hash[:variables][:domainname] = params[:domain_name]   
   service_hash[:service_handle]=params[:domain_name] + "_dns"
   if(params[:internal_only])
@@ -666,8 +666,8 @@ end
            ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
          end
      service_hash[:variables][:ip] = ip;
-  if attach_service(service_hash) == true
-    register_non_persistant_service(service_hash)
+  if  @engines_api.attach_service(service_hash) == true
+    @engines_api.register_non_persistant_service(service_hash)
     return true
   end
   
@@ -705,8 +705,8 @@ service_hash = Hash.new
       end
   service_hash[:variables][:ip] = ip;
      
-  if  attach_service(service_hash) == true
-    register_non_persistant_service(service_hash)
+  if   @engines_api.attach_service(service_hash) == true
+    @engines_api.register_non_persistant_service(service_hash)
     return true
   end
   return false
@@ -739,9 +739,9 @@ end
       service_hash[:publisher_namespace]="EnginesSystem"
       service_hash[:type_path]="dns"
         
-  if dettach_service(service_hash) == true
-    deregister_non_persistant_service(service_hash)
-    delete_service_from_engine_registry(service_hash)
+  if  @engines_api.dettach_service(service_hash) == true
+    @engines_api.deregister_non_persistant_service(service_hash)
+    @engines_api.delete_service_from_engine_registry(service_hash)
     return true
   end
   return false
