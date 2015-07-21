@@ -1,9 +1,9 @@
 --- !ruby/object:ManagedService
-container_name: certs
+container_name: cert_auth
 ctype: service
 persistant: false
 publisher_namespace: EnginesSystem
-type_path: certs
+type_path: cert_auth
 last_error: 
 memory: '4'
 hostname: certs
