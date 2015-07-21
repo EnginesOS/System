@@ -5,7 +5,7 @@ persistant: false
 publisher_namespace: EnginesSystem
 type_path: certs
 last_error: 
-memory: '2'
+memory: '4'
 hostname: certs
 domain_name: 
 environments: []
