@@ -9,6 +9,8 @@ require "/opt/engines/lib/ruby/ManagedServices.rb"
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
+require_relative "FirstRun.rb"
+
 #
 #require_relative "services_api.rb"
 #include ServicesApi
@@ -95,28 +97,16 @@ end
   end
     
   def set_first_run_parameters params_from_gui
+  
     params =params_from_gui.dup 
     p params
-  #  {"admin_password"=>"EngOS2014", "admin_password_confirmation"=>"EngOS2014", "ssh_password"=>"qCCedhQCb2", "ssh_password_confirmation"=>"qCCedhQCb2", "mysql_password"=>"TpBGZmQixr", "mysql_password_confirmation"=>"TpBGZmQixr", "psql_password"=>"8KqfESacSg", "psql_password_confirmation"=>"8KqfESacSg", "smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"", "default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
+    first_run = FirstRun.new(params)
+    if first_run.sucess == true
+      return success("Gui","First Run")
+    else
+      return failed("Gui","First Run",first_run.error.to_s)
+    end
     
-#    params[:mail_name] = "smtp." + params[:default_domain]
-#    @core_api.setup_email_params(params)
-         
-        
-    @core_api.set_database_password("mysql_server",params)              
-    #@core_api.set_database_password("pgsql_server",params)    
-        
-    @core_api.set_engines_ssl_pw(params)
-    
-    params[:default_cert]=true      
-  #  create_ssl_certificate(params)
-     
-    f = File.new(SysConfig.FirstRunRan,"w")
-           date = DateTime.now
-           f.puts(date.to_s)
-           f.close    
-           
-    return success("Gui","First Run")
     rescue Exception=>e
     SystemUtils.log_exception(e)
     
@@ -542,120 +532,145 @@ end
 
   
   def update_domain(params)
-    old_domain_name=params[:original_domain_name]
-    if  DNSHosting.update_domain(old_domain_name,params,self) == false
-       return  failed(params[:domain_name],last_api_error, "update  domain")
-    end  
     
-  if params[:self_hosted] == false
-    return success(params[:domain_name], "Add self hosted domain")
-  end
-  
-    service_hash = Hash.new
-       service_hash[:parent_engine]="system"
-       service_hash[:variables] = Hash.new
-       service_hash[:variables][:domainname] = params[:original_domain_name]   
-       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
-       service_hash[:container_type]="system"
-       service_hash[:publisher_namespace]="EnginesSystem"
-       service_hash[:type_path]="dns"
-       @core_api.dettach_service(service_hash) 
-         
-    service_hash[:variables][:domainname] = params[:domain_name]   
-    service_hash[:service_handle]=params[:domain_name] + "_dns"
-          
-    if @core_api.attach_service(service_hash) == true
-      return success(params[:domain_name], "Update self hosted domain")
-    end
-    
-    
-    return failed(params[:domain_name],last_api_error, "Update self hosted domain")
-      
-      
-  rescue Exception=>e
-    
-     log_exception_and_fail("Update self hosted domain ",e)
-    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
-    
-  end
+    if @core_api.update_domain(params) == false
+         return  failed(params[:domain_name],last_api_error, "update  domain")
+       else
+         return success(params[:domain_name], "update domain")
+       end
+       rescue Exception=>e
+         return log_exception_and_fail("update self hosted domain " + params.to_s,e)
+       end
+#       
+#    old_domain_name=params[:original_domain_name]
+#    if  DNSHosting.update_domain(old_domain_name,params) == false
+#       return  failed(params[:domain_name],last_api_error, "update  domain")
+#    end  
+#    
+#  if params[:self_hosted] == false
+#    return success(params[:domain_name], "Add self hosted domain")
+#  end
+#  
+#    service_hash = Hash.new
+#       service_hash[:parent_engine]="system"
+#       service_hash[:variables] = Hash.new
+#       service_hash[:variables][:domainname] = params[:original_domain_name]   
+#       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+#       service_hash[:container_type]="system"
+#       service_hash[:publisher_namespace]="EnginesSystem"
+#       service_hash[:type_path]="dns"
+#       @core_api.dettach_service(service_hash) 
+#    @core_api.deregister_non_persistant_service(service_hash)
+#    @core_api.delete_service_from_engine_registry(service_hash)
+#    service_hash[:variables][:domainname] = params[:domain_name]   
+#    service_hash[:service_handle]=params[:domain_name] + "_dns"
+#    if(params[:internal_only])
+#             ip = DNSHosting.get_local_ip
+#           else
+#             ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+#           end
+#       service_hash[:variables][:ip] = ip;
+#    if @core_api.attach_service(service_hash) == true
+#      @core_api.register_non_persistant_service(service_hash)
+#      return success(params[:domain_name], "Update self hosted domain")
+#    end
+#    
+#    
+#    return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+#      
+#      
+#  rescue Exception=>e
+#    
+#     log_exception_and_fail("Update self hosted domain ",e)
+#    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
+#    
+#  end
 
   def add_domain params
-    if DNSHosting.add_domain(params,self) == false
-       return  failed(params[:domain_name],last_api_error, "Add  domain")
-    end  
-  if params[:self_hosted] == false
-    return success(params[:domain_name], "Add domain")
-  end
-  service_hash = Hash.new
-    service_hash[:parent_engine]="system"
-    service_hash[:variables] = Hash.new
-    service_hash[:variables][:domainname] = params[:domain_name]   
-    service_hash[:service_handle]=params[:domain_name] + "_dns"
-    service_hash[:container_type]="system"
-    service_hash[:publisher_namespace]="EnginesSystem"
-    service_hash[:type_path]="dns"
-    if(params[:internal_only])
-          ip = DNSHosting.get_local_ip
-        else
-          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
-        end
-    service_hash[:variables][:ip] = ip;
-       
-    if @core_api.attach_service(service_hash) == true
-      return success(params[:domain_name], "Add self hosted domain")
+    if @core_api.add_domain(params) == false
+      return  failed(params[:domain_name],last_api_error, "Add  domain")
+    else
+      return success(params[:domain_name], "Add domain")
     end
-    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
-  rescue Exception=>e
-    return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
-  end
+    rescue Exception=>e
+      return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
+    end
+
+#    if DNSHosting.add_domain(params) == false
+#       return  failed(params[:domain_name],last_api_error, "Add  domain")
+#    end  
+#  if params[:self_hosted] == false
+#    return success(params[:domain_name], "Add domain")
+#  end
+#  
+#  service_hash = Hash.new
+#    service_hash[:parent_engine]="system"
+#    service_hash[:variables] = Hash.new
+#    service_hash[:variables][:domainname] = params[:domain_name]   
+#    service_hash[:service_handle]=params[:domain_name] + "_dns"
+#    service_hash[:container_type]="system"
+#    service_hash[:publisher_namespace]="EnginesSystem"
+#    service_hash[:type_path]="dns"
+#    if(params[:internal_only])
+#          ip = DNSHosting.get_local_ip
+#        else
+#          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+#        end
+#    service_hash[:variables][:ip] = ip;
+#       
+#    if @core_api.attach_service(service_hash) == true
+#      @core_api.register_non_persistant_service(service_hash)
+#      return success(params[:domain_name], "Add self hosted domain")
+#    end
+#    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
 
  
-  
-    def reload_dns    
-    return @core_api.reload_dns
-  end
+#  
+#    def reload_dns    
+#    return @core_api.reload_dns
+#  end
   
   def remove_domain params    
-    if DNSHosting.rm_domain(params,self) == false
-      p :remove_domain_last_error
-      p last_api_error
-       return  failed(params[:domain_name],last_api_error, "Remove domain")
-    end  
-  if params[:self_hosted] == false
-    return success(params[:domain_name], "Remove domain")
-  end
-    service_hash = Hash.new
-    service_hash[:parent_engine]="system"
-        service_hash[:variables] = Hash.new
-        service_hash[:variables][:domainname] = params[:domain_name]   
-        service_hash[:service_handle]=params[:domain_name] + "_dns"
-        service_hash[:container_type]="system"
-        service_hash[:publisher_namespace]="EnginesSystem"
-        service_hash[:type_path]="dns"
-          
-    if @core_api.dettach_service(service_hash) == true
-      return success(params[:domain_name], "Remove self hosted domain")
-    end
-    return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
-  rescue Exception=>e
-    return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
-  end
+    if @core_api.remove_domain(params) == false
+         return  failed(params[:domain_name],last_api_error, "Add  domain")
+       else
+         return success(params[:domain_name], "Add domain")
+       end
+ 
+    rescue Exception=>e
+       return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
+     end
+#    service_hash = Hash.new
+#    service_hash[:parent_engine]="system"
+#        service_hash[:variables] = Hash.new
+#        service_hash[:variables][:domainname] = params[:domain_name]   
+#        service_hash[:service_handle]=params[:domain_name] + "_dns"
+#        service_hash[:container_type]="system"
+#        service_hash[:publisher_namespace]="EnginesSystem"
+#        service_hash[:type_path]="dns"
+#          
+#    if @core_api.dettach_service(service_hash) == true
+#      @core_api.deregister_non_persistant_service(service_hash)
+#      @core_api.delete_service_from_engine_registry(service_hash)
+#      return success(params[:domain_name], "Remove self hosted domain")
+#    end
+#    return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
+#  rescue Exception=>e
+#    return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
+#  end
 
-  def list_self_hosted_domains
-    return DNSHosting.list_self_hosted_domains( )
-  rescue Exception=>e
-    return log_exception_and_fail("list self hosted domain ",e)
-  end
+#  def list_self_hosted_domains
+#    return DNSHosting.list_self_hosted_domains( )
+#  rescue Exception=>e
+#    return log_exception_and_fail("list self hosted domain ",e)
+#  end
 
   def list_domains
-    return DNSHosting.list_domains( )
+    return @core_api.list_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list domains ",e)
   end 
   
-#  def list_service_providers_in_use
-#     return DNSHosting.list_providers_in_use
-#  end
 
   #protected if protected static cant call
   def success(item_name ,cmd)

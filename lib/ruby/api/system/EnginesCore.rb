@@ -478,7 +478,7 @@ class EnginesCore
           
           return true
         else
-          @last_error = retval[:stderr]
+          @last_error = "stderr" + retval[:stderr] +  "  " + retval[:result].to_s
         end
       else
         @last_error = "no Service"
@@ -688,6 +688,16 @@ end
     return @system_api.getManagedServices
   end
 
+   def add_domain(params)
+     return @system_api.add_domain(params)
+   end
+def update_domain(params)
+  return @system_api.update_domain(params)
+end 
+ def remove_domain(params)
+   return @system_api.remove_domain(params)
+ end 
+ 
   def list_domains
     return @system_api.list_domains
   end
@@ -1010,7 +1020,14 @@ def load_and_attach_shared_services(container)
     SystemUtils.log_error_mesg(msg,object)
 
   end
-
+  def register_non_persistant_service(service_hash)
+    sm = loadServiceManager()
+       return sm.register_non_persistant_service(service_hash)
+     end
+def deregister_non_persistant_service(service_hash)
+  sm = loadServiceManager()
+     return sm.deregister_non_persistant_service(service_hash)
+   end
   def register_non_persistant_services(engine)
     sm = loadServiceManager()
     return sm.register_non_persistant_services(engine)

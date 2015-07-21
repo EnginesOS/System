@@ -1,2 +1,0 @@
-include "/etc/bind/engines/named.conf.logging";
-include "/etc/bind/engines/conf/domains.hosted";
