@@ -102,13 +102,15 @@ class FirstRun
   require 'r509'
 
   def create_ca(ca_params)
+    
+  
     csr = R509::CSR.new(
       :subject => [
-        ['CN','somedomain.com'],
-        ['O','My Org'],
-        ['L','City'],
-        ['ST','State'],
-        ['C','US']
+        ['CN', params[:domainname]],
+        ['O',params[:organisation]],
+        ['L',params[:city]],
+        ['ST', params[:state]],
+        ['C', params[:country]]
       ]
     )
     
@@ -117,7 +119,8 @@ class FirstRun
    
     encrypted_pem = key.to_encrypted_pem("aes256","my-password")
     # or write it to disk
-    key.write_encrypted_pem("/tmp/key","aes256","my-password")
+    key.write_encrypted_pem("/tmp/ekey","aes256","my-password")
+    key.write_pem("/tmp/key")
     not_before = Time.now.to_i
     not_after = Time.now.to_i+3600*24*7300
     
@@ -126,7 +129,13 @@ class FirstRun
       :not_before => not_before,
       :not_after => not_after
     )
+    cert.write_pem("/tmp/cert")
   ####  
+
+
+  end
+
+  def create_default_cert
     cert_pem = File.read("/tmp/cert")
     key_pem = File.read("/tmp/key")
     cert = R509::Cert.new(
@@ -136,10 +145,6 @@ class FirstRun
     config = R509::Config::CAConfig.new(
       :ca_cert => cert
     )
-
-  end
-
-  def create_default_cert
-
+    
   end
 end
