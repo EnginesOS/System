@@ -745,7 +745,7 @@ end
   end
   return false
 rescue Exception=>e
-   log_exception("Remove self hosted domain " + params[:domain_name],e)
+   log_exception(e)
      return false
 end
 
@@ -758,7 +758,7 @@ end
 def list_domains
   return DNSHosting.list_domains( )
 rescue Exception=>e
-  return log_exception_and_fail("list domains ",e)
+  return log_exception(e)
 end 
 
   protected
