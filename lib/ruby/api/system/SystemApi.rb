@@ -711,7 +711,8 @@ service_hash = Hash.new
   end
   return false
 rescue Exception=>e
-   log_exception("Add self hosted domain " + params.to_s,e)
+  log_error("Add self hosted domain exception" + params.to_s)
+   log_exception(e)
   return false
 end
 
