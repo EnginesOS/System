@@ -688,6 +688,16 @@ end
     return @system_api.getManagedServices
   end
 
+   def add_domain(params)
+     return @system_api.add_domain(params)
+   end
+def update_domain(params)
+  return @system_api.update_domain(params)
+end 
+ def remove_domain(params)
+   return @system_api.remove_domain(params)
+ end 
+ 
   def list_domains
     return @system_api.list_domains
   end
