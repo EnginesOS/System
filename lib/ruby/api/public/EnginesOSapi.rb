@@ -48,11 +48,7 @@ class EnginesOSapi
 
  ##fix me and put in system api
   def first_run_required?      
-    if File.exists?(SysConfig.FirstRunRan) ==false    
-      p :please_first_ran  
-        return true
-    end
-    return false
+   return FirstRun.required?
   end
 
 #  def get_available_smtp_auth_types
@@ -80,27 +76,28 @@ class EnginesOSapi
   def  get_default_domain()    
     return @core_api.get_default_domain() 
   end
-  
-  #@return boolean
-   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
-  def set_default_site(params)
-   if @core_api.set_default_site(params) 
-    return success("Preferences","Set Default Site")
-  else
-    return failed("Preferences", @core_api.last_error,"Set Default Site")
-  end
-end
-  #@return String
-   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
-  def get_default_site()
-    return @core_api.get_default_site 
-  end
+#  
+#  #@return boolean
+#   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+#  def set_default_site(params)
+#   if @core_api.set_default_site(params) 
+#    return success("Preferences","Set Default Site")
+#  else
+#    return failed("Preferences", @core_api.last_error,"Set Default Site")
+#  end
+#end
+#  #@return String
+#   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+#  def get_default_site()
+#    return @core_api.get_default_site 
+#  end
     
   def set_first_run_parameters params_from_gui
   
     params =params_from_gui.dup 
     p params
     first_run = FirstRun.new(params)
+    first_run.apply(@core_api)
     if first_run.sucess == true
       return success("Gui","First Run")
     else

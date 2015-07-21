@@ -206,14 +206,14 @@ class EnginesCore
     @system_preferences.set_default_domain(params)
   end
 
-  def set_default_site(params)
-    @system_preferences.set_default_site(params)
-
-  end
-
-  def get_default_site()
-    @system_preferences.get_default_site
-  end
+#  def set_default_site(params)
+#    @system_preferences.set_default_site(params)
+#
+#  end
+#
+#  def get_default_site()
+#    @system_preferences.get_default_site
+#  end
 
   def get_default_domain()
     #    p :get_default_domain
