@@ -636,6 +636,132 @@ class SystemApi
 
 end
 
+
+def update_domain(params)
+  old_domain_name=params[:original_domain_name]
+  if  DNSHosting.update_domain(old_domain_name,params) == false
+     return  false
+  end  
+  
+if params[:self_hosted] == false
+  return true
+end
+
+  service_hash = Hash.new
+     service_hash[:parent_engine]="system"
+     service_hash[:variables] = Hash.new
+     service_hash[:variables][:domainname] = params[:original_domain_name]   
+     service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+     service_hash[:container_type]="system"
+     service_hash[:publisher_namespace]="EnginesSystem"
+     service_hash[:type_path]="dns"
+  @engines_api.dettach_service(service_hash) 
+  @engines_api.deregister_non_persistant_service(service_hash)
+  @engines_api.delete_service_from_engine_registry(service_hash)
+  service_hash[:variables][:domainname] = params[:domain_name]   
+  service_hash[:service_handle]=params[:domain_name] + "_dns"
+  if(params[:internal_only])
+           ip = DNSHosting.get_local_ip
+         else
+           ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+         end
+     service_hash[:variables][:ip] = ip;
+  if  @engines_api.attach_service(service_hash) == true
+    @engines_api.register_non_persistant_service(service_hash)
+    return true
+  end
+  
+  
+  return false
+    
+    
+rescue Exception=>e
+  
+   log_exception_and_fail("Update self hosted domain ",e)
+  return false
+  
+end
+
+def add_domain params
+  if DNSHosting.add_domain(params) == false
+     return false
+  end  
+if params[:self_hosted] == false
+  return true
+end
+
+service_hash = Hash.new
+  service_hash[:parent_engine]="system"
+  service_hash[:variables] = Hash.new
+  service_hash[:variables][:domainname] = params[:domain_name]   
+  service_hash[:service_handle]=params[:domain_name] + "_dns"
+  service_hash[:container_type]="system"
+  service_hash[:publisher_namespace]="EnginesSystem"
+  service_hash[:type_path]="dns"
+  if(params[:internal_only])
+        ip = DNSHosting.get_local_ip
+      else
+        ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+      end
+  service_hash[:variables][:ip] = ip;
+     
+  if   @engines_api.attach_service(service_hash) == true
+    @engines_api.register_non_persistant_service(service_hash)
+    return true
+  end
+  return false
+rescue Exception=>e
+  log_error("Add self hosted domain exception" + params.to_s)
+   log_exception(e)
+  return false
+end
+
+
+#  
+#    def reload_dns    
+#    return @core_api.reload_dns
+#  end
+
+def remove_domain params    
+  if DNSHosting.rm_domain(params) == false
+    p :remove_domain_last_error
+     return  false
+  end  
+if params[:self_hosted] == false
+  return true
+end
+  service_hash = Hash.new
+  service_hash[:parent_engine]="system"
+      service_hash[:variables] = Hash.new
+      service_hash[:variables][:domainname] = params[:domain_name]   
+      service_hash[:service_handle]=params[:domain_name] + "_dns"
+      service_hash[:container_type]="system"
+      service_hash[:publisher_namespace]="EnginesSystem"
+      service_hash[:type_path]="dns"
+        
+  if  @engines_api.dettach_service(service_hash) == true
+    @engines_api.deregister_non_persistant_service(service_hash)
+    @engines_api.delete_service_from_engine_registry(service_hash)
+    return true
+  end
+  return false
+rescue Exception=>e
+   log_exception(e)
+     return false
+end
+
+#  def list_self_hosted_domains
+#    return DNSHosting.list_self_hosted_domains( )
+#  rescue Exception=>e
+#    return log_exception_and_fail("list self hosted domain ",e)
+#  end
+
+def list_domains
+  return DNSHosting.list_domains( )
+rescue Exception=>e
+  return log_exception(e)
+end 
+
   protected
 
   def container_cid_file(container)

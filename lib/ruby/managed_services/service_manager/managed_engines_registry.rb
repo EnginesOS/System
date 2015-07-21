@@ -98,6 +98,7 @@ module ManagedEnginesRegistry
     end
     engines_type_tree = managed_engines_type_tree(service_hash)
     if engines_type_tree.is_a?(Tree::TreeNode) == false 
+      log_error_mesg("no_type tree ",service_hash)
         return false 
     end
     if engines_type_tree[service_hash[:parent_engine]] != nil
