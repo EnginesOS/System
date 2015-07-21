@@ -1,5 +1,5 @@
 class FirstRun
-   attr_accessor error,sucess
+  attr_reader  :error,:sucess
    
   def initialize(params)
     @sucess = false
@@ -7,7 +7,7 @@ class FirstRun
     @first_run_params = params
     
     
-  end
+  end 
   
   def apply(api)
     
