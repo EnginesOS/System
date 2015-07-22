@@ -19,6 +19,9 @@ if test -d EnginesInstaller
 		groupdel containers
 		rm -rf /usr/local/rbenv
 		 rm /etc/network/if-up.d/set_ip.sh 
+		rm -r /home/engines/.ssh
+		 docker rm `docker ps -a |awk '{print $1}' `
+		rm -fr /home/engines/.rbenv
     else
       echo Script must be run as root from the dir that contains EnginesInstaller
 fi
