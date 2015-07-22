@@ -29,7 +29,7 @@ configurators:
    email_admin_secret:
     name: email_admin_secret
     regex_invalid_message: "wrong go back and try again"
-    label: Backup System
+    label: Email System Config password
     regex_validator: ".*"
     tooltip: "Not saved"
     field_type: text_field

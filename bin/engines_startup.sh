@@ -6,7 +6,7 @@
 
 /opt/engines/bin/engines check_and_act 
 
-if test -f  /opt/engines/.complete_install
+if test -f  ~/.complete_install
 then
    /opt/engines/installers/finish_install.sh
 fi 

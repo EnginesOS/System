@@ -360,9 +360,9 @@ class DockerApi
        if container.is_service? 
           volume_option += " -v " + service_sshkey_local_dir(container)   + ":" + service_sshkey_container_dir(container) + ":rw"
        end
-       volume_option +=" -v /usr/local/share/ca-certificates/engines_internal_ca.crt:/usr/local/share/ca-certificates/engines_internal_ca.crt:ro " 
+       volume_option +=" -v " + SysConfig.EnginesInternalCA + ":/usr/local/share/ca-certificates/engines_internal_ca.crt:ro " 
        #end
-       #container specific
+       #container specificvolume_option +=" -v " + SysConfig.EnginesInternalCA + ":ro " 
        if container.volumes  
          container.volumes.each_value do |volume|
            if volume !=nil
@@ -427,7 +427,7 @@ class DockerApi
    protected
 
    def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+     return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def container_log_dir container

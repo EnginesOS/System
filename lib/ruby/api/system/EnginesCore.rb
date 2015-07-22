@@ -207,12 +207,29 @@ class EnginesCore
   end
 
   def set_default_site(params)
-    @system_preferences.set_default_site(params)
+    service_param = Hash.new
+    service_param[:service_name] = "nginx"
+          service_param[:configurator_name] = "default_site"
+    service_param[:vaiables] = Hash.new
+    service_param[:vaiables][:default_site_url] = params[:default_site_url]
+         config_params = update_service_configuration(service_param)
 
   end
 
   def get_default_site()
-    @system_preferences.get_default_site
+    
+    service_param = Hash.new
+      service_param[:service_name] = "nginx"
+      service_param[:configurator_name] = "default_site"
+     config_params = retrieve_service_configuration(service_param)
+     p config_params
+     if config_params.is_a?(Hash) == true && config_params.has_key?(:variable) == true
+        vars = config_params[:variables]
+          if vars.has_key?(:default_site_url)
+            return vars[:default_site_url]
+          end
+     end
+     return ""
   end
 
   def get_default_domain()
@@ -861,7 +878,7 @@ end
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=20m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile /opt/engines/run/volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      command = "docker run --name volbuilder --memory=4m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output("Run volume builder",command)
       run_system(command)
 
@@ -1083,19 +1100,40 @@ def deregister_non_persistant_service(service_hash)
         return false
        end
      end
+  
+   
+   retries=0
+   
+   while  has_service_started?(service_name) == false
+     sleep 10
+     retries+=1
+      if retries >3
+        log_error_mesg("Time out in waiting for Service Dependancy " + service_name + " to start ",service_name)
+          
+        return false
+      end
    end
+ end
    
    return true
  end
   
-
+ def has_container_started?(container_name)
+   completed_flag_file= SysConfig.RunDir + "/containers/" + container_name + "/run/flags/startup_complete"
+      return File.exist?(completed_flag_file)
+ end
+ def has_service_started?(service_name)
+   completed_flag_file= SysConfig.RunDir + "/services/" + service_name + "/run/flags/startup_complete"
+    return File.exist?(completed_flag_file)
+   
+ end
        
   protected
 
   def get_volbuild_volmaps container
     begin
       clear_error
-      state_dir = SysConfig.CidDir + "/containers/" + container.container_name + "/run/"
+      state_dir = SysConfig.RunDir + "/containers/" + container.container_name + "/run/"
       log_dir = SysConfig.SystemLogRoot + "/containers/" + container.container_name
       volume_option = " -v " + state_dir + ":/client/state:rw "
       volume_option += " -v " + log_dir + ":/client/log:rw "
