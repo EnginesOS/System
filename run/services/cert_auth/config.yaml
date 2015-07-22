@@ -14,7 +14,7 @@ volumes:
  socket: !ruby/object:Volume
   name: socket
   remotepath: "/home/certs/store"
-  localpath: "/var/lib/engines/certs"
+  localpath: "/var/lib/engines/cert_auth"
   mapping_permissions: rw
 port: 
 eports:
