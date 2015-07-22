@@ -4,6 +4,7 @@ echo "15 seconds until destruction with no visual countdown starting now"
 sleep 20
 if test -d EnginesInstaller
 	then
+	 docker rm `docker ps -a |awk '{print $1}' `
 		service docker stop
 		rm -r /var/lib/engines
 		rm -r /var/log/engines
@@ -21,7 +22,7 @@ if test -d EnginesInstaller
 		rm -rf /usr/local/rbenv
 		 rm /etc/network/if-up.d/set_ip.sh 
 		rm -r /home/engines/.ssh
-		 docker rm `docker ps -a |awk '{print $1}' `
+		
 		rm -fr /home/engines/.rbenv
     else
       echo Script must be run as root from the dir that contains EnginesInstaller
