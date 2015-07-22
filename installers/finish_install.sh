@@ -9,10 +9,10 @@ function complete_install {
 
 
 
-rm /opt/engines/.complete_install
+rm ~/.complete_install
 echo "System startup"
 
-touch /opt/engines/.installed
+touch ~/.installed
 
 hostname=`hostname`
 
