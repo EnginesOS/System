@@ -9,7 +9,7 @@ require "/opt/engines/lib/ruby/ManagedServices.rb"
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
-require_relative "FirstRun.rb"
+require_relative "FirstRunWizard.rb"
 
 #
 #require_relative "services_api.rb"
