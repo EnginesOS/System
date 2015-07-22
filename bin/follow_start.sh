@@ -1,6 +1,13 @@
 #!/bin/sh
 
+if ! test `docker inspect -f='{{.State.Running}}' mgmt` = 'true'
+ then
+ 	eservice create mgmt >/dev/null
+ 	eservice start mgmt >/dev/null
+ fi
+ 
 docker logs -f mgmt &
+
 pid=$!
 
 while ! test -f /opt/engines/run/services/mgmt/run/flags/startup_complete 
