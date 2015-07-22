@@ -211,9 +211,15 @@ class EnginesCore
 #
 #  end
 #
-#  def get_default_site()
-#    @system_preferences.get_default_site
-#  end
+  def get_default_site()
+    
+    service_param = Hash.new
+      service_param[:service_name] = "nginx"
+      service_param[:configurator_name] = "default_site"
+     config_params = retrieve_service_configuration(service_param)
+     p config_params
+     return config_params[:default_site]
+  end
 
   def get_default_domain()
     #    p :get_default_domain
