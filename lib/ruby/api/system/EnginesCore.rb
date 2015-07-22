@@ -1120,11 +1120,11 @@ def deregister_non_persistant_service(service_hash)
   
  def has_container_started?(container_name)
    completed_flag_file= SysConfig.RunDir + "/containers/" + container_name + "/run/flags/startup_complete"
-      return File.exits(completed_flag_file)
+      return File.exist?(completed_flag_file)
  end
  def has_service_started?(service_name)
    completed_flag_file= SysConfig.RunDir + "/services/" + service_name + "/run/flags/startup_complete"
-    return File.exits(completed_flag_file)
+    return File.exist?(completed_flag_file)
    
  end
        
