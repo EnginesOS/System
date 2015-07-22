@@ -79,13 +79,13 @@ class EnginesOSapi
 #  
 #  #@return boolean
 #   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
-#  def set_default_site(params)
-#   if @core_api.set_default_site(params) 
-#    return success("Preferences","Set Default Site")
-#  else
-#    return failed("Preferences", @core_api.last_error,"Set Default Site")
-#  end
-#end
+  def set_default_site(params)
+   if @core_api.set_default_site(params) 
+    return success("Preferences","Set Default Site")
+  else
+    return failed("Preferences", @core_api.last_error,"Set Default Site")
+  end
+end
 #  #@return String
 #   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
   def get_default_site()
