@@ -211,7 +211,7 @@ class EnginesCore
     service_param[:service_name] = "nginx"
           service_param[:configurator_name] = "default_site"
     service_param[:vaiables] = Hash.new
-    service_param[:vaiables][:default_site] = params[:default_site]
+    service_param[:vaiables][:default_site_url] = params[:default_site_url]
          config_params = update_service_configuration(service_param)
 
   end
@@ -225,8 +225,8 @@ class EnginesCore
      p config_params
      if config_params.is_a?(Hash) == true && config_params.has_key?(:variable) == true
         vars = config_params[:variables]
-          if vars.has_key?(:default_site)
-            return vars[:default_site]
+          if vars.has_key?(:default_site_url)
+            return vars[:default_site_url]
           end
      end
      return ""
