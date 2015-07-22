@@ -1,4 +1,4 @@
-class FirstRun
+class FirstRunWizard
   attr_reader  :error,:sucess
   def initialize(params)
     @sucess = false
@@ -91,7 +91,7 @@ class FirstRun
   end
 
 
-  def FirstRun.required?
+  def FirstRunWizard.required?
     if File.exists?(SysConfig.FirstRunRan) ==false
       return true
     end

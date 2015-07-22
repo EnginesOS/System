@@ -48,7 +48,7 @@ class EnginesOSapi
 
  ##fix me and put in system api
   def first_run_required?      
-   return FirstRun.required?
+   return FirstRunWizard.required?
   end
 
 #  def get_available_smtp_auth_types
