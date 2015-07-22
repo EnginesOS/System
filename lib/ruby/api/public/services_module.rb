@@ -336,6 +336,9 @@ module ServicesModule
      return log_exception_and_fail("Unpause Service",e)
    end
  
+    def update_attached_service (params)
+      return success(params[:service_handle],"update attached Service")
+    end
    
    def update_service_configuration(service_param)
      p :update_service_configuration
