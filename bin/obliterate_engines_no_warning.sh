@@ -12,11 +12,12 @@ if test -d EnginesInstaller
 		apt-get -y remove lxc-docker
 		apt-get -y autoremove
 		userdel -r  engines
-		groupdel engines
+
 		cat /etc/rc.local |grep -v engines >/tmp/.local
 		cp /tmp/.local   /etc/rc.local
 		 rm -r EnginesInstaller
 		groupdel containers
+				groupdel engines
 		rm -rf /usr/local/rbenv
 		 rm /etc/network/if-up.d/set_ip.sh 
 		rm -r /home/engines/.ssh
