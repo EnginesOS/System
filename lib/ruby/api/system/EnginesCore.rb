@@ -207,6 +207,7 @@ class EnginesCore
   end
 
   def set_default_site(params)
+    service_param = Hash.new
     service_param[:service_name] = "nginx"
           service_param[:configurator_name] = "default_site"
     service_param[:vaiables] = Hash.new
