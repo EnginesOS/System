@@ -99,52 +99,13 @@ class FirstRun
   end
 
   #FIXME and put in it's own class or even service
-  require 'r509'
-
+ 
   def create_ca(ca_params)
     
   
-    csr = R509::CSR.new(
-      :subject => [
-        ['CN', params[:domainname]],
-        ['O',params[:organisation]],
-        ['L',params[:city]],
-        ['ST', params[:state]],
-        ['C', params[:country]]
-      ]
-    )
-    
-    #key = R509::PrivateKey.new(:type => "RSA", :bit_length => 1536)
-    key = R509::PrivateKey.new(:type => "RSA", :bit_length => 2048)
-   
-    encrypted_pem = key.to_encrypted_pem("aes256","my-password")
-    # or write it to disk
-    key.write_encrypted_pem("/tmp/ekey","aes256","my-password")
-    key.write_pem("/tmp/key")
-    not_before = Time.now.to_i
-    not_after = Time.now.to_i+3600*24*7300
-    
-    cert = R509::CertificateAuthority::Signer.selfsign(
-      :csr => csr,
-      :not_before => not_before,
-      :not_after => not_after
-    )
-    cert.write_pem("/tmp/cert")
-  ####  
-
-
   end
 
   def create_default_cert
-    cert_pem = File.read("/tmp/cert")
-    key_pem = File.read("/tmp/key")
-    cert = R509::Cert.new(
-      :cert => cert_pem,
-      :key => key_pem
-    )
-    config = R509::Config::CAConfig.new(
-      :ca_cert => cert
-    )
-    
+   
   end
 end
