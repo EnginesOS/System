@@ -1100,7 +1100,7 @@ def deregister_non_persistant_service(service_hash)
         return false
        end
      end
-   end
+  
    
    retries=0
    
@@ -1113,7 +1113,7 @@ def deregister_non_persistant_service(service_hash)
         return false
       end
    end
- 
+ end
    
    return true
  end
