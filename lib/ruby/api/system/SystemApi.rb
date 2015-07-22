@@ -14,9 +14,10 @@ class SystemApi
       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
       if File.directory?(stateDir) ==false
         Dir.mkdir(stateDir)
-        Dir.exists?(stateDir + "/run") == false
+       if  Dir.exists?(stateDir + "/run") == false
         Dir.mkdir(stateDir + "/run")
         Dir.mkdir(stateDir + "/run/flags")
+       end
         FileUtils.chown_R(nil,"containers",stateDir + "/run")
         FileUtils.chmod_R("u+r",stateDir + "/run")
       end
