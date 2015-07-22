@@ -427,7 +427,7 @@ class DockerApi
    protected
 
    def container_state_dir(container)
-     return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+     return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
    end
 
    def container_log_dir container

@@ -10,6 +10,7 @@ class SysConfig
   @@engines_system_version="0.0"
   
   @@DBHost="mysql.engines.internal"
+  @@RunDir="/opt/engines/run/"
   @@CidDir="/opt/engines/run/cid/"
   @@ContainersDir="/opt/engines/run/containers/"
   @@DeploymentDir="/home/engines/deployment/deployed"
@@ -89,6 +90,9 @@ class SysConfig
   
   @@EnginesInternalCA="/opt/engines/etc/ca/engines_internal_ca.crt"
   
+  def SysConfig.RunDir
+    return @@RunDir
+  end
   def SysConfig.EnginesInternalCA
     return @@EnginesInternalCA
   end
