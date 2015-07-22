@@ -10,7 +10,7 @@ class SysConfig
   @@engines_system_version="0.0"
   
   @@DBHost="mysql.engines.internal"
-  @@CidDir="/opt/engines/run"
+  @@CidDir="/opt/engines/run/cid/"
   @@ContainersDir="/opt/engines/run/containers/"
   @@DeploymentDir="/home/engines/deployment/deployed"
   @@DeploymentTemplates="/opt/engines/system/templates/deployment"
