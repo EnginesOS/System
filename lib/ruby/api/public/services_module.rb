@@ -116,7 +116,7 @@ module ServicesModule
      end
   #@returns [EnginesOSapiResult]
   #expects a service_hash as @params
-    def detach_service(params)
+    def dettach_service(params)
       if   @core_api.dettach_service(params)== true
         success(params[:parent_engine].to_s,"detach service")
       else
