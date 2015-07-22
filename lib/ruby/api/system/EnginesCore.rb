@@ -1095,7 +1095,7 @@ def deregister_non_persistant_service(service_hash)
   def get_volbuild_volmaps container
     begin
       clear_error
-      state_dir = SysConfig.CidDir + "/containers/" + container.container_name + "/run/"
+      state_dir = SysConfig.RunDir + "/containers/" + container.container_name + "/run/"
       log_dir = SysConfig.SystemLogRoot + "/containers/" + container.container_name
       volume_option = " -v " + state_dir + ":/client/state:rw "
       volume_option += " -v " + log_dir + ":/client/log:rw "

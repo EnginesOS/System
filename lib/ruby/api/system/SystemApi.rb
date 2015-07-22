@@ -159,7 +159,7 @@ class SystemApi
   def get_build_report(engine_name)
     clear_error
 
-    stateDir=SysConfig.CidDir + "/containers/" + engine_name
+    stateDir=SysConfig.RunDir + "/containers/" + engine_name
     if File.exists?(stateDir  + "/buildreport.txt")
       return File.read(stateDir  + "/buildreport.txt")
     else
@@ -445,8 +445,8 @@ class SystemApi
   def getManagedEngines()
     begin
       ret_val=Array.new
-      Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
-        yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"
+      Dir.entries(SysConfig.RunDir + "/containers/").each do |contdir|
+        yfn = SysConfig.RunDir + "/containers/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           managed_engine = loadManagedEngine(contdir)
           if managed_engine.is_a?(ManagedEngine)
@@ -469,7 +469,7 @@ class SystemApi
       return false
     end
     begin
-      yam_file_name = SysConfig.CidDir + "/containers/" + engine_name + "/config.yaml"
+      yam_file_name = SysConfig.RunDir + "/containers/" + engine_name + "/config.yaml"
 
       if File.exists?(yam_file_name) == false
         log_error("no such file " + yam_file_name )
@@ -505,7 +505,7 @@ class SystemApi
         last_error="No Service Name"
         return false
       end
-      yam_file_name = SysConfig.CidDir + "/services/" + service_name + "/config.yaml"
+      yam_file_name = SysConfig.RunDir + "/services/" + service_name + "/config.yaml"
 
       if File.exists?(yam_file_name) == false
         return false # return failed(yam_file_name,"No such configuration:","Load Service")
@@ -536,8 +536,8 @@ class SystemApi
   def getManagedServices()
     begin
       ret_val=Array.new
-      Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
-        yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
+      Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
+        yfn =SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           yf = File.open(yfn)
           managed_service = ManagedService.from_yaml(yf,@engines_api)
@@ -558,8 +558,8 @@ class SystemApi
     clear_error
     ret_val=Array.new
     begin
-      Dir.entries(SysConfig.CidDir + "/containers/").each do |contdir|
-        yfn = SysConfig.CidDir + "/containers/" + contdir + "/config.yaml"
+      Dir.entries(SysConfig.RunDir + "/containers/").each do |contdir|
+        yfn =SysConfig.RunDir + "/containers/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           ret_val.push(contdir)
         end
@@ -576,8 +576,8 @@ class SystemApi
 
     ret_val=Array.new
     begin
-      Dir.entries(SysConfig.CidDir + "/services/").each do |contdir|
-        yfn = SysConfig.CidDir + "/services/" + contdir + "/config.yaml"
+      Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
+        yfn = SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           ret_val.push(contdir)
         end
@@ -626,7 +626,7 @@ class SystemApi
   end
 
   def container_state_dir(container)
-    return SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
+    return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
   end
 
   def restart_system
