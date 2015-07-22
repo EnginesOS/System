@@ -87,7 +87,11 @@ class SysConfig
     return @@engines_system_version
   end
   
- 
+  @@EnginesInternalCA="/opt/engines/etc/ca/engines_internal_ca.crt"
+  
+  def SysConfig.EnginesInternalCA
+    return @@EnginesInternalCA
+  end
   
   def SysConfig.SystemPreferencesFile
     return @@SystemPreferencesFile
