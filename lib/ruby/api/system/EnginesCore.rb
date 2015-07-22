@@ -1102,10 +1102,30 @@ def deregister_non_persistant_service(service_hash)
      end
    end
    
+   retries=0
+   
+   while  has_service_started?(service_name) == false
+     sleep 10
+     retries+=1
+      if retries >3
+        log_error_mesg(msg,service_name)
+        return false
+      end
+   end
+ 
+   
    return true
  end
   
-
+ def has_container_started?(container_name)
+   completed_flag_file= SysConfig.RunDir + "/containers/" + container_name + "/run/flags/startup_complete"
+      return File.exits(completed_flag_file)
+ end
+ def has_service_started?(service_name)
+   completed_flag_file= SysConfig.RunDir + "/services/" + service_name + "/run/flags/startup_complete"
+    return File.exits(completed_flag_file)
+   
+ end
        
   protected
 
