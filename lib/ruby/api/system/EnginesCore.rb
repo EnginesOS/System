@@ -1108,7 +1108,8 @@ def deregister_non_persistant_service(service_hash)
      sleep 10
      retries+=1
       if retries >3
-        log_error_mesg(msg,service_name)
+        log_error_mesg("Time out in waiting for Service Dependancy " + service_name + " to start ",service_name)
+          
         return false
       end
    end
