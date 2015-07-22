@@ -632,8 +632,12 @@ class SystemApi
   def restart_system
 
     res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh") }
-    p :restarting
+      #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
+ if res.status == "run"
    return true
+ end
+ 
+ return false
 
 end
 
