@@ -37,9 +37,9 @@ class FirstRunWizard
         return false
       end
     end
-    #
-    #
-    #    create_ca(@first_run_params[])
+    
+    
+        create_ca(@first_run_params[])
     #
     #    create_default_cert
     #
@@ -105,11 +105,45 @@ class FirstRunWizard
   #FIXME and put in it's own class or even service
  
   def create_ca(ca_params)
-    
+    service_param = Hash.new
+      service_param[:service_name] = "cert_auth"
+      service_param[:configurator_name] = "system_ca"
+      service_param[:variables] = Hash.new
+#      service_param[:variables][:cert_name] = "engines"
+    service_param[:variables][:country] = ca_params[:ssl_country]
+    service_param[:variables][:state]= ca_params[:ssl_state]
+    service_param[:variables][:city]= ca_params[:ssl_city]
+    service_param[:variables][:organisation]= ca_params[:ssl_organisation_name]
+    service_param[:variables][:person]= ca_params[:ssl_person_name]
+    service_param[:variables][:domainname]= ca_params[:default_domain]
+      
+    return  @api.update_service_configuration(service_param)
+
   
   end
 
-  def create_default_cert
-   
+  def create_default_cert (params)
+    service_param = Hash.new
+    service_param[:parent_engine] = "system"
+    service_param[:type_path] = "cert_auth"
+    service_param[:service_container_name] = "cert_auth"
+     service_param[:container_type] = "system"
+
+       service_param[:publisher_namespace] = "EnginesSystem"
+       service_param[:service_handle] ="default_ssl_cert"
+       service_param[:variables] = Hash.new
+       service_param[:variables][:cert_name] = "engines"
+       service_param[:variables][:country] = params[:ssl_country]
+       service_param[:variables][:state]= params[:ssl_state]
+       service_param[:variables][:city]= params[:ssl_city]
+       service_param[:variables][:organisation]= params[:ssl_organisation_name]
+       service_param[:variables][:person]= params[:ssl_person_name]
+       service_param[:variables][:domainname]= params[:default_domain]
+         
+    if   @api.attach_service(service_hash) == true
+        @api.register_persistant_service(service_hash)
+        return true
+      end
   end
+  
 end
