@@ -1,0 +1,30 @@
+--- !ruby/object:ManagedService
+container_name: cert_auth
+ctype: service
+persistant: false
+publisher_namespace: EnginesSystem
+type_path: cert_auth
+last_error: 
+memory: '4'
+hostname: certs
+domain_name: 
+environments: []
+image: engines/certs:alpha
+volumes:
+ socket: !ruby/object:Volume
+  name: socket
+  remotepath: "/home/certs/store"
+  localpath: "/var/lib/engines/cert_auth"
+  mapping_permissions: rw
+port: 
+eports:
+repo: na
+last_result: 
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
+dependant_on:
+- "dns"
+- "syslog"

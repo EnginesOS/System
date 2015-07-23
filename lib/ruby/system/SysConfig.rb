@@ -10,7 +10,8 @@ class SysConfig
   @@engines_system_version="0.0"
   
   @@DBHost="mysql.engines.internal"
-  @@CidDir="/opt/engines/run"
+  @@RunDir="/opt/engines/run/"
+  @@CidDir="/opt/engines/run/cid/"
   @@ContainersDir="/opt/engines/run/containers/"
   @@DeploymentDir="/home/engines/deployment/deployed"
   @@DeploymentTemplates="/opt/engines/system/templates/deployment"
@@ -29,7 +30,7 @@ class SysConfig
   #System_public
   @@ReleaseFile="/opt/engines/release"
   #System_private
-  @@DomainsFile="/opt/engines/etc/domains"
+  @@DomainsFile="/opt/engines/etc/domains/domains"
   @@FirstRunRan="/opt/engines/etc/first_ran"
   @@SystemPreferencesFile="/opt/engines/etc/preferences/settings.yaml"
 
@@ -53,7 +54,7 @@ class SysConfig
   @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
   @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
   @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
-  @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
+ # @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
 
   #Cron
@@ -87,7 +88,14 @@ class SysConfig
     return @@engines_system_version
   end
   
- 
+  @@EnginesInternalCA="/opt/engines/etc/ca/engines_internal_ca.crt"
+  
+  def SysConfig.RunDir
+    return @@RunDir
+  end
+  def SysConfig.EnginesInternalCA
+    return @@EnginesInternalCA
+  end
   
   def SysConfig.SystemPreferencesFile
     return @@SystemPreferencesFile
@@ -216,9 +224,9 @@ class SysConfig
     return @@HttpHttpsNginxTemplate
   end
 
-  def SysConfig.HostedDomainsFile
-    return @@HostedDomainsFile
-  end
+#  def SysConfig.HostedDomainsFile
+#    return @@HostedDomainsFile
+#  end
 
   def SysConfig.SystemLogRoot
     return @@SystemLogRoot

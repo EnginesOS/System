@@ -6,7 +6,7 @@
  	while test ! -f /engines/var/run/flags/volume_setup_complete
  	  do
  	  echo  "."
- 		sleep 10
+ 		sleep 4
  	 done
   fi
 

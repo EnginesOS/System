@@ -41,12 +41,12 @@ module DNSHosting
 #  end
 
   def DNSHosting.get_local_ip
-    #case of management app in container
-    if File.exists?("/opt/engines/.ip") == false
-     res =  SystemUtils.execute_command( "/opt/engines/bin/set_ip.sh")
-    end
-    if File.exists?("/opt/engines/.ip")
-      ip = File.read("/opt/engines/.ip")
+    #case of management app in container cannot run here from within container
+#    if File.exists?("/opt/engines/etc/net/ip") == false
+#     res =  SystemUtils.execute_command( "/opt/engines/bin/set_ip.sh")
+#    end
+    if File.exists?("/opt/engines/etc/net/ip")
+      ip = File.read("/opt/engines/etc/net/ip")
       return ip
     end
     
