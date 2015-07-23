@@ -67,7 +67,7 @@ class FirstRunWizard
     return  @api.update_service_configuration(service_param)
   end
 
-  def ssh_password_configurator(passwd)
+  def ssh_password_configurator(password)
     service_param = Hash.new
     service_param[:service_name] = "mgmt"
     service_param[:configurator_name] = "ssh_master_pass"
