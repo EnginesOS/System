@@ -128,7 +128,7 @@ class FirstRunWizard
     service_param[:type_path] = "cert_auth"
     service_param[:service_container_name] = "cert_auth"
      service_param[:container_type] = "system"
-
+    service_param[:persistant]=true
        service_param[:publisher_namespace] = "EnginesSystem"
        service_param[:service_handle] ="default_ssl_cert"
        service_param[:variables] = Hash.new
