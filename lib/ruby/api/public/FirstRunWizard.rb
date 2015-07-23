@@ -46,7 +46,7 @@ class FirstRunWizard
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
     @sucess=true
-   # mark_as_run
+    mark_as_run
   end
 
   def get_domain_params(params)
