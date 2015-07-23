@@ -39,13 +39,14 @@ class FirstRunWizard
     end
     
     
-        create_ca(@first_run_params[])
+        create_ca(@first_run_params)
     #
-    #    create_default_cert
-    #
-    #    restart_ssl_dependant_services
+        create_default_cert(@first_run_params)
+    #@api.install_refresh_ca
+    #@api.install_default_cert
+    #  happens above  restart_ssl_dependant_services
     @sucess=true
-    mark_as_run
+   # mark_as_run
   end
 
   def get_domain_params(params)
@@ -105,19 +106,19 @@ class FirstRunWizard
   #FIXME and put in it's own class or even service
  
   def create_ca(ca_params)
-    service_param = Hash.new
-      service_param[:service_name] = "cert_auth"
-      service_param[:configurator_name] = "system_ca"
-      service_param[:variables] = Hash.new
+    config_param = Hash.new
+    config_param[:service_name] = "cert_auth"
+    config_param[:configurator_name] = "system_ca"
+    config_param[:variables] = Hash.new
 #      service_param[:variables][:cert_name] = "engines"
-    service_param[:variables][:country] = ca_params[:ssl_country]
-    service_param[:variables][:state]= ca_params[:ssl_state]
-    service_param[:variables][:city]= ca_params[:ssl_city]
-    service_param[:variables][:organisation]= ca_params[:ssl_organisation_name]
-    service_param[:variables][:person]= ca_params[:ssl_person_name]
-    service_param[:variables][:domainname]= ca_params[:default_domain]
+    config_param[:variables][:country] = ca_params[:ssl_country]
+    config_param[:variables][:state]= ca_params[:ssl_state]
+    config_param[:variables][:city]= ca_params[:ssl_city]
+    config_param[:variables][:organisation]= ca_params[:ssl_organisation_name]
+    config_param[:variables][:person]= ca_params[:ssl_person_name]
+    config_param[:variables][:domainname]= ca_params[:default_domain]
       
-    return  @api.update_service_configuration(service_param)
+    return  @api.update_service_configuration(config_param)
 
   
   end
@@ -128,7 +129,7 @@ class FirstRunWizard
     service_param[:type_path] = "cert_auth"
     service_param[:service_container_name] = "cert_auth"
      service_param[:container_type] = "system"
-
+    service_param[:persistant]=true
        service_param[:publisher_namespace] = "EnginesSystem"
        service_param[:service_handle] ="default_ssl_cert"
        service_param[:variables] = Hash.new
@@ -139,9 +140,9 @@ class FirstRunWizard
        service_param[:variables][:organisation]= params[:ssl_organisation_name]
        service_param[:variables][:person]= params[:ssl_person_name]
        service_param[:variables][:domainname]= params[:default_domain]
-         
-    if   @api.attach_service(service_hash) == true
-        @api.register_persistant_service(service_hash)
+    service_param[:variables][:service_handle] ="default_ssl_cert"
+    if   @api.attach_service(service_param) == true
+        @api.register_persistant_service(service_param)
         return true
       end
   end
