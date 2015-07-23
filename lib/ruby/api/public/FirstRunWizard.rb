@@ -142,7 +142,7 @@ class FirstRunWizard
        service_param[:variables][:domainname]= params[:default_domain]
     service_param[:variables][:service_handle] ="default_ssl_cert"
     if   @api.attach_service(service_param) == true
-        @api.register_persistant_service(service_param)
+        
         return true
       end
   end
