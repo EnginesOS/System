@@ -8,7 +8,8 @@ class FirstRunWizard
   end
 
   def apply(api)
-
+  @api = api
+  
     if mysql_password_configurator(@first_run_params[:mysql_password]) == false
       @error="Fail to setup mysql password " + api.last_error()
       return false
@@ -63,7 +64,7 @@ class FirstRunWizard
     service_param[:configurator_name] = "db_master_pass"
     service_param[:variables] = Hash.new
     service_param[:variables][:db_master_pass] = password
-    return  update_service_configuration(service_param)
+    return  @api.update_service_configuration(service_param)
   end
 
   def ssh_password_configurator(passwd)
@@ -72,7 +73,7 @@ class FirstRunWizard
     service_param[:configurator_name] = "ssh_master_pass"
     service_param[:variables] = Hash.new
     service_param[:variables][:ssh_master_pass] = password
-    return  update_service_configuration(service_param)
+    return  @api.update_service_configuration(service_param)
   end
 
   def ssh_key_configurator(key)
@@ -81,7 +82,7 @@ class FirstRunWizard
     service_param[:configurator_name] = "ssh_master_key"
     service_param[:variables] = Hash.new
     service_param[:variables][:ssh_master_key] = key
-    return  update_service_configuration(service_param)
+    return  @api.update_service_configuration(service_param)
 
   end
 
