@@ -96,7 +96,7 @@ end
   
     params =params_from_gui.dup 
     p params
-    first_run = FirstRun.new(params)
+    first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
     if first_run.sucess == true
       return success("Gui","First Run")

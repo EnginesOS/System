@@ -68,11 +68,11 @@ export PID_FILE
 
 
   
-#if test -f /home/app/Rack.sh
-#	then 	 
-#	#sets PATH only (might not be needed)
-#		. /home/app/Rack.sh  
-#	fi
+if test -f /home/app/Rack.sh
+	then 	 
+	#sets PATH only (might not be needed)
+		. /home/app/Rack.sh  
+	fi
 
 
 mkdir -p /var/log/apache2/ >/dev/null

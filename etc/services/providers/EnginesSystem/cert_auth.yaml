@@ -1,0 +1,97 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+author: Engines
+title: Cert Auth
+description: "Certificate management"
+type_path: cert_auth
+service_container: cert_auth
+publisher_namespace: EnginesSystem
+dedicated: false
+persistant: true
+service_handle_field: cert_name
+setup_params:
+consumer_params:
+ cert_name:
+  name: cert_name
+  label: cert name name
+  regex_validator: ".*"
+  tooltip: "Cert name usually domainname"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ country:
+  name: country
+  label: Country
+  regex_validator: ".2"
+  tooltip: "2 Character Country Code"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again" 
+ state:
+  name: state
+  label: State
+  regex_validator: ".*"
+  tooltip: "State"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"   
+ city:
+  name: city
+  label: city
+  regex_validator: ".*"
+  tooltip: "City/Location"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"   
+ organisation:
+  name: organisation
+  label: organisation
+  regex_validator: ".*"
+  tooltip: "Organisation"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"   
+ person:
+  name: person
+  label: person
+  regex_validator: ".*"
+  tooltip: "person/OU"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again" 
+ domainname:
+  name: domainname
+  label: domainname
+  regex_validator: ".*"
+  tooltip: "domainname or CN"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: ""
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"   
