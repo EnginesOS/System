@@ -31,7 +31,7 @@ class SysConfig
   @@ReleaseFile="/opt/engines/release"
   #System_private
   @@DomainsFile="/opt/engines/etc/domains/domains"
-  @@FirstRunRan="/opt/engines/etc/first_ran"
+  @@FirstRunRan="/opt/engines/run/system/flags/first_ran"
   @@SystemPreferencesFile="/opt/engines/etc/preferences/settings.yaml"
 
   #NGINX
