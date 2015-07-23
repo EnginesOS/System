@@ -39,13 +39,13 @@ class FirstRunWizard
     end
     
     
-        create_ca(@first_run_params[])
+        create_ca(@first_run_params)
     #
-    #    create_default_cert
+        create_default_cert
     #
     #    restart_ssl_dependant_services
     @sucess=true
-    mark_as_run
+   # mark_as_run
   end
 
   def get_domain_params(params)
