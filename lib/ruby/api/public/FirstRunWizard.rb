@@ -15,10 +15,10 @@ class FirstRunWizard
       return false
     end
 
-    if ssh_password_configurator(@first_run_params[:ssh_password]) == false
-      @error="Fail to setup ssh password " + api.last_error()
-      return false
-    end
+#    if ssh_password_configurator(@first_run_params[:ssh_password]) == false
+#      @error="Fail to setup ssh password " + api.last_error()
+#      return false
+#    end
 
     domain_hash = get_domain_params(@first_run_params)
     if api.add_domain(domain_hash) == false
