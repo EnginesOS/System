@@ -508,7 +508,7 @@ class SystemApi
      end
     config_template = File.read(config_template_file_name)
     system_access = SystemAccess.new
-    templator = Templater.new(system_access)
+    templator = Templater.new(system_access,nil)
     running_config = templator.process_templated_string(config_template)
       
      yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
