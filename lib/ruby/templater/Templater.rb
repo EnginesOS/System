@@ -9,7 +9,11 @@ class Templater
     @system_access = system_access
     @builder_public = builder_public
   end
-  
+  def initialize(system_access)
+      @system_access = system_access
+      @builder_public = nil
+    end
+    
   def resolve_system_variable(match)
     #$config['db_dsnw'] = 'mysql://_Engines(dbuser):_Engines(dbpasswd)@_System(mysql_host)'/_Engines(dbname)';
       name = match.sub!(/_Engines_System\(/,"")

@@ -31,7 +31,7 @@ class ManagedEngine < ManagedContainer
     @data_uid=data_uid
     @data_gid=data_gid
    
-    save_state # no config.yaml throws a no such container so save so others can use
+    save_state # no running.yaml throws a no such container so save so others can use
     
          end 
          

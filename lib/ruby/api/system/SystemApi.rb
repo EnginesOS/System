@@ -117,7 +117,7 @@ class SystemApi
   def delete_container_configs(container)
     clear_error
 
-    #       stateDir = container_state_dir(container) + "/config.yaml"
+    #       stateDir = container_state_dir(container) + "/running.yaml"
     #       File.delete(stateDir)
     cidfile  = SysConfig.CidDir + "/" + container.container_name + ".cid"
     if File.exists?(cidfile)
@@ -206,7 +206,7 @@ class SystemApi
 
       stateDir = container_state_dir(container)
 
-      statefile=stateDir + "/config.yaml"
+      statefile=stateDir + "/running.yaml"
       # BACKUP Current file with rename
       if File.exists?(statefile)
         statefile_bak = statefile + ".bak"
@@ -446,7 +446,7 @@ class SystemApi
     begin
       ret_val=Array.new
       Dir.entries(SysConfig.RunDir + "/containers/").each do |contdir|
-        yfn = SysConfig.RunDir + "/containers/" + contdir + "/config.yaml"
+        yfn = SysConfig.RunDir + "/containers/" + contdir + "/running.yaml"
         if File.exists?(yfn) == true
           managed_engine = loadManagedEngine(contdir)
           if managed_engine.is_a?(ManagedEngine)
@@ -469,9 +469,10 @@ class SystemApi
       return false
     end
     begin
-      yam_file_name = SysConfig.RunDir + "/containers/" + engine_name + "/config.yaml"
+      yam_file_name = SysConfig.RunDir + "/containers/" + engine_name + "/running.yaml"
 
       if File.exists?(yam_file_name) == false
+        
         log_error("no such file " + yam_file_name )
         return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
@@ -499,19 +500,41 @@ class SystemApi
     end
   end
 
+  def build_running_service(service_name)
+    config_template_file_name = SysConfig.RunDir + "/services/" + service_name + "/config.yaml"
+
+    if File.exists?(config_template_file_name) == false
+     return false       
+     end
+      config_template = File.open(config_template_file_name)
+    system_access = SystemAccess.new
+    templator = Templater.new(system_access)
+      running_config = templator.process_templated_string(config_template)
+      
+      yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
+      yaml_file = File.new(yam1_file_name,"w+")
+    yaml_file.write(running_config)
+    yaml_file.close
+    
+    return true
+      
+  end
+  
   def loadManagedService(service_name)
     begin
       if service_name == nil || service_name.length ==0
         last_error="No Service Name"
         return false
       end
-      yam_file_name = SysConfig.RunDir + "/services/" + service_name + "/config.yaml"
+      yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
 
-      if File.exists?(yam_file_name) == false
+      if File.exists?(yam1_file_name) == false
+       if  build_running_service(service_name) == false
         return false # return failed(yam_file_name,"No such configuration:","Load Service")
+       end
       end
 
-      yaml_file = File.open(yam_file_name)
+      yaml_file = File.open(yam1_file_name)
       # managed_service = YAML::load( yaml_file)
       managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
       if managed_service == nil
@@ -537,7 +560,7 @@ class SystemApi
     begin
       ret_val=Array.new
       Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
-        yfn =SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
+        yfn =SysConfig.RunDir + "/services/" + contdir + "/running.yaml"
         if File.exists?(yfn) == true
           yf = File.open(yfn)
           managed_service = ManagedService.from_yaml(yf,@engines_api)
@@ -559,7 +582,7 @@ class SystemApi
     ret_val=Array.new
     begin
       Dir.entries(SysConfig.RunDir + "/containers/").each do |contdir|
-        yfn =SysConfig.RunDir + "/containers/" + contdir + "/config.yaml"
+        yfn =SysConfig.RunDir + "/containers/" + contdir + "/running.yaml"
         if File.exists?(yfn) == true
           ret_val.push(contdir)
         end
@@ -577,7 +600,7 @@ class SystemApi
     ret_val=Array.new
     begin
       Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
-        yfn = SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
+        yfn = SysConfig.RunDir + "/services/" + contdir + "/running.yaml"
         if File.exists?(yfn) == true
           ret_val.push(contdir)
         end
