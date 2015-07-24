@@ -231,6 +231,8 @@ class EnginesCore
      if config_params.is_a?(Hash) == true && config_params.has_key?(:variable) == true
         vars = config_params[:variables]
           if vars.has_key?(:default_site_url)
+            p :DEFAUL_SITE
+            p vars[:default_site_url]
             return vars[:default_site_url]
           end
      end
