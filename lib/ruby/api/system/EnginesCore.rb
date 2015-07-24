@@ -81,7 +81,12 @@ class EnginesCore
   def restart_system 
     return @system_api.restart_system
   end
-
+  def update_engines_system_software
+    @system_api.update_engines_system_software
+  end 
+  def update_system    
+    @system_api.update_system
+  end
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
   end
