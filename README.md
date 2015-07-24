@@ -32,7 +32,7 @@ See https://github.com/EnginesOS/SystemGui.git for the System Gui
 <br>
 See https://github.com/EnginesBlueprints for available blueprints
 <br>
-See https://github.com/EnginesOS/EnginesInstallerfor installer
+See https://github.com/EnginesOS/EnginesInstaller for installer
 <p>
 
 <strong>Abstract</strong>
