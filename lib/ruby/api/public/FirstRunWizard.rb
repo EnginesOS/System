@@ -15,10 +15,10 @@ class FirstRunWizard
       return false
     end
 
-#    if ssh_password_configurator(@first_run_params[:ssh_password]) == false
-#      @error="Fail to setup ssh password " + api.last_error()
-#      return false
-#    end
+   if console_password_configurator(@first_run_params[:console_password]) == false
+      @error="Fail to setup ssh password " + api.last_error()
+      return false
+    end
 
     domain_hash = get_domain_params(@first_run_params)
     if api.add_domain(domain_hash) == false
@@ -69,12 +69,12 @@ class FirstRunWizard
     return  @api.update_service_configuration(service_param)
   end
 
-  def ssh_password_configurator(password)
+  def console_password_configurator(password)
     service_param = Hash.new
     service_param[:service_name] = "mgmt"
-    service_param[:configurator_name] = "ssh_master_pass"
+    service_param[:configurator_name] = "console_pass"
     service_param[:variables] = Hash.new
-    service_param[:variables][:ssh_master_pass] = password
+    service_param[:variables][:console_pass] = password
     return  @api.update_service_configuration(service_param)
   end
 
