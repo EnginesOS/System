@@ -560,14 +560,12 @@ class SystemApi
     begin
       ret_val=Array.new
       Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
-        yfn =SysConfig.RunDir + "/services/" + contdir + "/running.yaml"
+        yfn =SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
-          yf = File.open(yfn)
-          managed_service = ManagedService.from_yaml(yf,@engines_api)
-          if managed_service
+          managed_service =  loadManagedService(cont_dir)
+           if managed_service
             ret_val.push(managed_service)
-          end
-          yf.close
+           end          
         end
       end
       return ret_val
