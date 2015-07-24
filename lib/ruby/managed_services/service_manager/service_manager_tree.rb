@@ -20,6 +20,7 @@ module ServiceManagerTree
   
   
   def service_tree
+    
     if @last_tree_mod_time && @last_tree_mod_time != nil 
           current_time = File.mtime(SysConfig.ServiceTreeFile)
           if  @last_tree_mod_time.eql?(current_time) == false
