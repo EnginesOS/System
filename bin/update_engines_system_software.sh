@@ -6,4 +6,4 @@ eservice stop mgmt
 
 eservice start mgmt
 
-/opt/engines/follow_start.sh
+/opt/engines/bin/follow_start.sh
