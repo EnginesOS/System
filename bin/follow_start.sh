@@ -1,9 +1,15 @@
 #!/bin/sh
-
-if ! test `docker inspect -f='{{.State.Running}}' mgmt` = 'true'
+if ! test -z `docker inspect -f='{{.State.Running}}' mgmt`
  then
- 	eservice create mgmt >/dev/null
- 	eservice start mgmt >/dev/null
+	if ! test `docker inspect -f='{{.State.Running}}' mgmt` = 'true'
+ 	then
+	 	eservice create mgmt >/dev/null
+ 		eservice start mgmt >/dev/null
+ 	fi
+ else
+  echo "mgmt not started"
+  docker logs mgmt
+  exit
  fi
  
 docker logs -f mgmt &
