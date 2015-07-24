@@ -67,7 +67,7 @@ class EnginesOSapi
   def upload_ssl_certifcate (params)
     if param.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
       p "errorexpect keys  :certificate :domain_name with optional :use_as_default"
-      return  failed("errorexpect keys  :certificate :domain_name with optional :use_as_default", params)
+      return  failed("error expect keys  :certificate :domain_name with optional :use_as_default", params)
     end
     return success("Access","upload Cert" + params[:domain_name])
      
@@ -384,7 +384,23 @@ end
       return failed("System","not permitted","System Restarting")
     end
   end
+  def update_engines_system_software
+    if @core_api.update_engines_system_software == true
+      p :update_engines_system_software
+      return success("System","Engines System Updating")
+    else
+      return failed("System","not permitted","Engines System Updating")
+    end
+  end
   
+  def update_system
+     if @core_api.update_system == true
+       p :update_system
+       return success("System","System Updating")
+     else
+       return failed("System","not permitted","Updating")
+     end
+   end
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
