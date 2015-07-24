@@ -336,27 +336,27 @@ class ManagedService < ManagedContainer
     return false
     #noop never do  this as need buildimage again or only for expert
   end
-
-  def self.from_yaml( yaml,core_api )
-   
-    begin
-      p yaml.path
-      managedService = YAML::load( yaml )
-      managedService.core_api=(core_api)
-      managedService.docker_info = nil
-      #      puts(" managed Service")
-      #      p ObjectSpace.memsize_of(managedService)
-      #      puts(" Hash total")
-      #      p ObjectSpace.memsize_of_all(Hash)
-      #      puts("All managed Service")
-      #      p ObjectSpace.memsize_of_all(ManagedService)
-      return managedService
-    rescue Exception=>e
-    
-      puts e.message + " with " + yaml.path
-      
-    end
-  end
+#
+#  def self.from_yaml( yaml,core_api )
+#   
+#    begin
+#      p yaml.path
+#      managedService = YAML::load( yaml )
+#      managedService.core_api=(core_api)
+#      managedService.docker_info = nil
+#      #      puts(" managed Service")
+#      #      p ObjectSpace.memsize_of(managedService)
+#      #      puts(" Hash total")
+#      #      p ObjectSpace.memsize_of_all(Hash)
+#      #      puts("All managed Service")
+#      #      p ObjectSpace.memsize_of_all(ManagedService)
+#      return managedService
+#    rescue Exception=>e
+#    
+#      puts e.message + " with " + yaml.path
+#      
+#    end
+#  end
 
   def set_container_pid
 
