@@ -600,7 +600,7 @@ class SystemApi
     ret_val=Array.new
     begin
       Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
-        yfn = SysConfig.RunDir + "/services/" + contdir + "/running.yaml"
+        yfn = SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           ret_val.push(contdir)
         end
