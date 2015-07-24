@@ -21,13 +21,18 @@ End users complete total control of their data
 End Users choice of jusristritions where they host, unlike SAS
  ...
 <p>
+<h4>Installation</h4>
+See https://github.com/EnginesOS/EnginesInstaller
+
 <strong>This repository contains the base system</strong>
 <br>
 See https://github.com/EnginesOS/BluePrint-Designer.git for the Blue Print Designer
 <br>
 See https://github.com/EnginesOS/SystemGui.git for the System Gui
 <br>
-See https://github.com/EnginesOS-Blueprints for available blueprints
+See https://github.com/EnginesBlueprints for available blueprints
+<br>
+See https://github.com/EnginesOS/EnginesInstallerfor installer
 <p>
 
 <strong>Abstract</strong>
@@ -46,7 +51,7 @@ Currently the only options available to end users to make use of such packages a
 
 
 <strong>Licensing and current status</strong>
-The system is  currently in Alpha on a weekly release cycle with a planned Beta Release due in May. The software is released under the Apache 2.0 license and is available from https://github.com/EnginesOS/System. Some of the advanced features may be non functional as they are a work in progress. We have an AWS AMI we can share. There is also a youtube video at
+The system is  currently in Alpha on a weekly release cycle with a planned Beta Release due in August. The software is released under the Apache 2.0 license and is available from https://github.com/EnginesOS/System. Some of the advanced features may be non functional as they are a work in progress. We have an AWS AMI we can share. There is also a youtube video at
 Currently there are about 25 applications available in our gallery. Some require further input from the user to complete the installation via a browser, though where possible the installation is automated. These applications represent a range of applications and installation test cases, the small number is not indicative in any way of the number of applications that could be blueprinted with relative ease to run on the engines system. 
 
   <p>
