@@ -228,7 +228,7 @@ class EnginesCore
       service_param[:configurator_name] = "default_site"
      config_params = retrieve_service_configuration(service_param)
      p config_params
-     if config_params.is_a?(Hash) == true && config_params.has_key?(:variable) == true
+     if config_params.is_a?(Hash) == true && config_params.has_key?(:variables) == true
         vars = config_params[:variables]
           if vars.has_key?(:default_site_url)
             p :DEFAUL_SITE
