@@ -65,15 +65,15 @@ class ManagedEngine < ManagedContainer
     return @core_api.engine_attached_services(@container_name)
   end
   
-  
-  def ManagedEngine.from_yaml( yaml ,core_api )
-          managedEngine = YAML::load( yaml )
-           if managedEngine == nil ||  managedEngine == false
-             return false
-           end
-    managedEngine.docker_info = nil
-          managedEngine.core_api=(core_api)
-          return managedEngine
-    end
+
+#  def ManagedEngine.from_yaml( yaml ,core_api )
+#          managedEngine = YAML::load( yaml )
+#           if managedEngine == nil ||  managedEngine == false
+#             return false
+#           end
+#    managedEngine.docker_info = nil
+#          managedEngine.core_api=(core_api)
+#          return managedEngine
+#    end
 end
   
