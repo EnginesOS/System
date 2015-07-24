@@ -9,7 +9,7 @@ memory: '16'
 hostname: cron
 domain_name: 
 environments: []
-image: engines/cron:alpha
+image: engines/cron:_Engines_System(release)
 volumes:
  socket: !ruby/object:Volume
   name: socket

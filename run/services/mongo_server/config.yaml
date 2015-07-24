@@ -9,7 +9,7 @@ memory: '128'
 hostname: mongo
 domain_name: 
 environments: []
-image: engines/mongo:alpha
+image: engines/mongo:_Engines_System(release)
 volumes:
  mg_database: !ruby/object:Volume
   name: mg_database

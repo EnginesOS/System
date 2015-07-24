@@ -10,7 +10,7 @@ memory: '10'
 hostname: dyndns
 domain_name: 
 environments: []
-image: engines/dyndns:alpha
+image: engines/dyndns:_Engines_System(release)
 volumes:
 port: 
 eports:

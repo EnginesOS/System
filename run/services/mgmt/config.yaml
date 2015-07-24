@@ -12,7 +12,7 @@ environments:
  name: ContUser
  value: engines
  setatrun: false
-image: engines/mgmt:alpha
+image: engines/mgmt:_Engines_System(release)
 volumes:
  icons_dir: !ruby/object:Volume
   name: icons_dir

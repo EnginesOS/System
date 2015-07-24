@@ -10,7 +10,7 @@ memory: '16'
 hostname: volmanager
 domain_name: 
 environments: []
-image: engines/fs:alpha
+image: engines/fs:_Engines_System(release)
 volumes: 
 eports: []
 repo: na

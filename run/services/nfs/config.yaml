@@ -9,7 +9,7 @@ memory: '36'
 hostname: nfs
 domain_name: 
 environments: []
-image: engines/nfs:alpha
+image: engines/nfs:_Engines_System(release)
 volumes:
  ssl_certs: !ruby/object:Volume
  fs_rw: !ruby/object:Volume

@@ -20,7 +20,7 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/email:alpha
+image: engines/email:_Engines_System(release)
 eports:
 - !ruby/object:WorkPort
   name: smtp

@@ -9,7 +9,7 @@ memory: '4'
 hostname: certs
 domain_name: 
 environments: []
-image: engines/certs:alpha
+image: engines/certs:_Engines_System(release)
 volumes:
  socket: !ruby/object:Volume
   name: socket

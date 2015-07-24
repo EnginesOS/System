@@ -9,7 +9,7 @@ memory: '32'
 hostname: smtp
 domain_name: 
 environments: []
-image: engines/smtp:alpha
+image: engines/smtp:_Engines_System(release)
 volumes: 
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
