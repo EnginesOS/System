@@ -562,7 +562,7 @@ class SystemApi
       Dir.entries(SysConfig.RunDir + "/services/").each do |contdir|
         yfn =SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
-          managed_service =  loadManagedService(cont_dir)
+          managed_service =  loadManagedService(contdir)
            if managed_service
             ret_val.push(managed_service)
            end          
