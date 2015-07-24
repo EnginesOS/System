@@ -142,10 +142,14 @@ class ManagedContainer < Container
 
   def ManagedContainer.from_yaml( yaml, core_api )
     managedContainer = YAML::load( yaml )
+    
     managedContainer.core_api = core_api
     managedContainer.docker_info = nil
     managedContainer.set_running_user
     managedContainer
+  rescue Exception=> e
+    @last_error="Exception " + e.to_s
+    return false
   end
 
   def to_s
@@ -621,6 +625,7 @@ p @last_result
     if @setState != state
       return true
     end
+    p "state " + state + " does not match set state " + @setState
     return false
   end
   

@@ -10,7 +10,7 @@ memory: '64'
 hostname: dns
 domain_name: 
 environments: []
-image: engines/dns:alpha
+image: engines/dns:_Engines_System(release)
 volumes: 
  configuration: !ruby/object:Volume
   name: configuration

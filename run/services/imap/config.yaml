@@ -13,7 +13,7 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/imap:alpha
+image: engines/imap:_Engines_System(release)
 port: 
 volumes:
  imap_data: !ruby/object:Volume

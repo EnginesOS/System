@@ -893,7 +893,7 @@ class EngineBuilder
     mc.set_protocol(@protocol)
    
     mc.conf_self_start= (true)
-    mc.save_state # no config.yaml throws a no such container so save so others can use
+    mc.save_state # no running.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false
       log_build_errors( "Failed to save blueprint " + @blueprint.to_s)
     end
