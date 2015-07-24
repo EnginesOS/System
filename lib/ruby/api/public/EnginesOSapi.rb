@@ -560,10 +560,6 @@ end
      #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
      return success(params[:domain_name], "Add self hosted ssl cert domain")        
    end
-   def upload_ssl_certificate(params)
-       p params
-       return success(params[:domain_name], "upload self hosted ssl cert domain")        
-     end
 
   
   def update_domain(params)
