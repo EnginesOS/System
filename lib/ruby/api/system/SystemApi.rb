@@ -506,13 +506,13 @@ class SystemApi
     if File.exists?(config_template_file_name) == false
      return false       
      end
-      config_template = File.open(config_template_file_name)
+    config_template = File.read(config_template_file_name)
     system_access = SystemAccess.new
     templator = Templater.new(system_access)
-      running_config = templator.process_templated_string(config_template)
+    running_config = templator.process_templated_string(config_template)
       
-      yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
-      yaml_file = File.new(yam1_file_name,"w+")
+     yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
+     yaml_file = File.new(yam1_file_name,"w+")
     yaml_file.write(running_config)
     yaml_file.close
     
