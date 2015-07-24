@@ -67,7 +67,7 @@ class EnginesOSapi
   def upload_ssl_certifcate (params)
     if param.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
       p "errorexpect keys  :certificate :domain_name with optional :use_as_default"
-      return  failed("errorexpect keys  :certificate :domain_name with optional :use_as_default", params)
+      return  failed("error expect keys  :certificate :domain_name with optional :use_as_default", params)
     end
     return success("Access","upload Cert" + params[:domain_name])
      
