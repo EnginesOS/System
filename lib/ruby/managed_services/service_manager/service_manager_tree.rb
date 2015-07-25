@@ -1,6 +1,6 @@
 # Module of Methods to handle tree structure for ServiceManager
 module ServiceManagerTree
-  @last_read
+  @last_read=nil
   
   # @return the ManagedEngine Tree Branch
   # creates if does not exist

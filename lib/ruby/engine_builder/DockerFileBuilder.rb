@@ -22,7 +22,7 @@ class DockerFileBuilder
   end
 
   def count_layer
-    ++@layer_count
+    @layer_count+=1
 
     if @layer_count >75
       raise EngineBuilder.BuildError.new()
