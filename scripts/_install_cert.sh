@@ -1,7 +1,7 @@
 #!/bin/sh
 
 name=$1
-file_prefix=/opt/engines/etc/ssl/certs/engines/${name}
+file_prefix=/opt/engines/etc/ssl/certs/${name}
 chmod og-rw ${file_prefix}.key
 chmod og-w ${file_prefix}.crt
 
