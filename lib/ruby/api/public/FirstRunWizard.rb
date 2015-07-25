@@ -74,7 +74,7 @@ class FirstRunWizard
     service_param[:service_name] = "mgmt"
     service_param[:configurator_name] = "console_pass"
     service_param[:variables] = Hash.new
-    service_param[:variables][:console_pass] = password
+    service_param[:variables][:console_password] = password
     return  @api.update_service_configuration(service_param)
   end
 
