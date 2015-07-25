@@ -1,13 +1,14 @@
 #!/bin/sh
 
 #FIXME check arugments and verifice .crt is a pem
+ca_cert_file=/var/lib/engines/cert_auth/ca/system_CA.pem
 
-file $1 | grep PEM
+file $ca_cert_file | grep PEM
  if test $? -eq 0
  	then
-		cp $1 /usr/local/share/ca-certificates/engines_internal_ca.crt
+		cp $ca_cert_file /usr/local/share/ca-certificates/engines_internal_ca.crt
 	else
-		echo $1 not a PEM certificate
+		echo $ca_cert_file not a PEM certificate
 		exit
 	fi
 
