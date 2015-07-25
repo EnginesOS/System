@@ -3,7 +3,7 @@
 name=$1
 file_prefix=/opt/engines/etc/certs/engines/${name}
 chmod og-rw ${file_prefix}.key
-chmod og-w ${file_prefix}.cert
+chmod og-w ${file_prefix}.crt
 
 	file $file_prefix.cert | grep PEM
 	   if test $? -ne 0
