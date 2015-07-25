@@ -64,6 +64,16 @@ volumes:
   remotepath: "/sys"
   localpath: "/sys"
   mapping_permissions: ro 
+ engines_ca: !ruby/object:Volume
+  name: engines_ca
+  remotepath: "/var/lib/engines/cert_auth/ca/certs/"
+  localpath: "/opt/engines/etc/certs/ca/"
+  mapping_permissions: ro
+ engines_certs: !ruby/object:Volume
+  name: engines_certs
+  remotepath: "/var/lib/engines/cert_auth/certs/"
+  localpath: "/opt/engines/etc/certs/engines/"
+  mapping_permissions: ro
 port: 
 eports:
 - !ruby/object:WorkPort
