@@ -12,5 +12,5 @@ if test -z $console_password
  	exit -1
  fi
  
- sudo /opt/engines/bin/scripts/_update_engines_console_password.sh '$console_password'
+ sudo /opt/engines/scripts/_update_engines_console_password.sh '$console_password'
  
