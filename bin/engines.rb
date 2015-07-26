@@ -528,7 +528,7 @@ if c_type == "container"
   end
 end
 
-if Process.euid != 22022
+if Process.euid != 21000
   p "This program can only be run be the engines user"
   exit
 end
