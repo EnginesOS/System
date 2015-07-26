@@ -640,7 +640,12 @@ class SystemApi
     SystemUtils.log_exception(e)
     return false
   end
-
+  
+  def update_public_key(key)
+    res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/update_access_system_pub.sh " + key)
+    
+  end
+  
 def container_state_dir(container)
   return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
 end
