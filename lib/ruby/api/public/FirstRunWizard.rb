@@ -42,6 +42,7 @@ class FirstRunWizard
         create_ca(@first_run_params)
     #
         create_default_cert(@first_run_params)
+        
     #@api.install_refresh_ca
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
