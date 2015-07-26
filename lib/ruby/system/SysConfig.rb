@@ -88,7 +88,8 @@ class SysConfig
     return @@engines_system_version
   end
   
-  @@EnginesInternalCA="/opt/engines/etc/ca/engines_internal_ca.crt"
+  @@EnginesInternalCA="/opt/engines/etc/ssl/ca/certs/system_CA.pem"
+  #/opt/engines/etc/ca/engines_internal_ca.crt"
   
   def SysConfig.RunDir
     return @@RunDir
