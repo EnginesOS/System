@@ -42,7 +42,8 @@ class FirstRunWizard
         create_ca(@first_run_params)
     #
         create_default_cert(@first_run_params)
-        
+    SystemUtils.execute_command("/opt/engines/bin/install_ca.sh")
+    SystemUtils.execute_command("/opt/engines/bin/install_cert.sh engines")
     #@api.install_refresh_ca
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services

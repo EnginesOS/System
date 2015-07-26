@@ -2,7 +2,7 @@
 
 args=$SSH_ORIGINAL_COMMAND
 
-console_password=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
+console_password=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}' | sed  '/:$/s///'`
 
 echo $console_password
 

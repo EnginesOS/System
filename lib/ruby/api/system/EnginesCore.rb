@@ -606,14 +606,14 @@ end
     return nil
   end
 
-  def reload_dns
-    dns_pid = File.read(SysConfig.NamedPIDFile)
-    dns_service = loadManagedService("dns")
-    return @docker_api.signal_container_process(dns_pid.to_s,'HUP',dns_service)
-  rescue  Exception=>e
-    SystemUtils.log_exception(e)
-    return false
-  end
+#  def reload_dns
+#    dns_pid = File.read(SysConfig.NamedPIDFile)
+#    dns_service = loadManagedService("dns")
+#    return @docker_api.signal_container_process(dns_pid.to_s,'HUP',dns_service)
+#  rescue  Exception=>e
+#    SystemUtils.log_exception(e)
+#    return false
+#  end
 
   def set_engine_runtime_properties(params)
 
@@ -760,6 +760,12 @@ end
   def generate_engines_user_ssh_key
     return @system_api.regen_system_ssh_key
   end
+  def update_public_key(key)
+    return @system_api.update_public_key(key)
+  end
+def generate_engines_user_ssh_key
+  return @system_api.generate_engines_user_ssh_key
+end
 
   def system_update
     return @system_api.system_update
