@@ -6,6 +6,7 @@ type_path: mgmt
 last_error: 
 memory: '512'
 hostname: 'mgmt'
+no_ca_map: true
 domain_name: 
 environments:
 - !ruby/object:EnvironmentVariable

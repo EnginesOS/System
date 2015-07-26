@@ -7,6 +7,7 @@ type_path: cert_auth
 last_error: 
 memory: '4'
 hostname: certs
+no_ca_map: true
 domain_name: 
 environments: []
 image: engines/certs:_Engines_System(release)
