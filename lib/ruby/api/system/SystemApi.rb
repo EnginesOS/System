@@ -640,7 +640,10 @@ class SystemApi
     SystemUtils.log_exception(e)
     return false
   end
-
+  
+  def update_public_key(key)
+  end
+  
 def container_state_dir(container)
   return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
 end

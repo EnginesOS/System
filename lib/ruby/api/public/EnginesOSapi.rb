@@ -2,10 +2,8 @@ require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
 require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
 require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
-
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 require "/opt/engines/lib/ruby/ManagedServices.rb"
-
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
@@ -28,10 +26,9 @@ class EnginesOSapi
   include EnginesController
   require_relative "services_module.rb"
   include ServicesModule
-  
+
   require_relative "engines_api_version.rb"
- include EngOSapiVersion
- 
+  include EngOSapiVersion
   def initialize()
     @core_api = EnginesCore.new
   end
@@ -39,84 +36,85 @@ class EnginesOSapi
   def core_api
     return @core_api
   end
-  
-  
+
   def log_exception_and_fail(cmd,e)
-      e_str = SystemUtils.log_exception(e)
-      return failed("Exception",e_str,cmd)
-    end
+    e_str = SystemUtils.log_exception(e)
+    return failed("Exception",e_str,cmd)
+  end
 
-
-  def first_run_required?      
-   return FirstRunWizard.required?
+  def first_run_required?
+    return FirstRunWizard.required?
   end
 
   def generate_private_key
     key = String.new()
     key = "-----BEGIN RSA PRIVATE KEY-----77La9gRav1qSbDAi9NNIbTH3GQ3vg7uLKGSOTFoyJ/TwQvwccJTFAoGBAMkKu/immL9ZMsheOQq1XlSglnbMk9wS4KphsQKBCou5lZdE9pWPHvYWuhRK9LW8g4HSS7RIQkm5B5H5b5A9RyJZ40bHy59S0R/lI4VTFi6lmpTr9d3ScVCAi/YdPkdeFS8RM5Q7F1OPg9I84zP1XmBPOvG5M86tAnCLa0PS7fCvAoGAOnJUeEkPoym4itA6fIq0OuM8+qtZ5wNVUvDD3QmfOIIsNiuNA69UtAYocwuQKwZDUb7PkOvWoIGtwA90QJDnr2UFDCAxaOuqzkL6p7xt2tn9llGYzeuyrO2rWeCIZ4UMokLonqnnLwP+0lV7eJys2HQ9MIIEoQIBAAKCAQEAsn9KZsQrePI+gxAxAizmDzXdsP0xw//f9rbfxZQNjI7kJsDx61UPJg/uDQ0VvQclll06UgN4+3YhbCInbDgv4T9SSOg7YD6fKnQiEuhLJxOCfoVo+NUebeEJz+NpCdcTyUdJGwjnbTNe6Jo/CgG0eyraDo4yPWzD4Zvt8R1G1WpQ5mOP9U2gd+9ThMm5ng1U9iWEtV/hq7Cn0UEJzOvKmKSvGEGBrRgSkwXmB1U4Yvs5BJoLtF6xyMn3uc+pZA4xZYH5scyplEatIEJlQZCnFeAbvfCl3QRUOipOmwDgv4A5VygK+IKdgmraKA+wyPZjp2bt4Gu+fPH4YRnTUM9iqwIBIwKCAQBbzG9oDR2r6kwI48Fu1UMdw+5bBd8UV7UCie9s7Q5ISXymN1fYHR27za2gT99LRYELgGci3TbnuRiAwRuWvc97J+EszzR6o9zUATYYWjVHS9y2GLmkitxzBgUL1AoiUVqiB2ds/UPRwqXWtboFJXLDABhfQdCx4Co5g2RtX4ODsii/gV0+lYU4tV3SdlmOJL2YuatqKiY5S0or9YuBfoq+0+kOP7Pj8/cPCUtCcGIr1C/A0kzyNXgpUZ5EBxbGPzs778Aas6h2N00GKTJSPrQfW8g90wWNIMVQ7BqrfygSDycpIYNlYX7bVJnrPTG3IF9wwATSTUWhmdaEnbmCkdDbAoGBAONK1rdVA+xM6hvUcatwvOUB7SQoloJiS9DEwM1eTr9Pj31UB/Hiuy3fDxS7MKdRPq+tJzOVJjdNo7IDNd6lTBveMBK2FXuUe8zLleGj5BozS/M9Uj0/RRJGljM4NHNMGmmq0x1BhVcCgYEAvY3HLEVOMMHQy4wJ5YZu4hPBEOzF7MFXfBL3WiHlXytSh0+mqkUdMSte/TC61zy2gbemdsfJeLXFTx5h38S/aYfzi+DzL9G93D5x8rwNmbIVZ9cppULCnFvxrYlJWTtzDx7Y3De26GK+Hf7k2TfOAwjfzffDIfOUlf/LiRdVX0UCgYAlc3Fbf3jh26jl/VDlvgPgzpv4I21pFCNKDDMjDAKdc46vEylIOTX98BMFRK2XPadZ6Z3dmo7u9rVA68NK03PJhfQLG63y/H8EJMeBrMYAaCQpNzdn//+DHClZhoF5ZGhuClzUjaVbreaxdsJ63Q2fNI23a5EOAeZucGplR5Vk8Q==\-----END RSA PRIVATE KEY-----"
-    return key 
+    return @core_api.generate_engines_user_ssh_key
   end
+
   def update_public_key(key)
-    return success("Access","update public key")
+    if @core_ap.update_public_key(key) == false
+      return success("Access","update public key")
+    else
+      return failed("Failed update key ",@core_api.last_error)
+    end
   end
-  
+
   def get_system_ca
-    return "CA String"
+    ca_string= File.read(SysConfig.EnginesInternalCA)
+
+    return ca_string
+
+  rescue Exception=>e
+    return  failed("Failed to load CA",e.to_s)
+
   end
-  
+
   def upload_ssl_certifcate (params)
     if param.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
       p "errorexpect keys  :certificate :domain_name with optional :use_as_default"
       return  failed("error expect keys  :certificate :domain_name with optional :use_as_default", params)
     end
     return success("Access","upload Cert" + params[:domain_name])
-     
-end
-  
-#  def get_available_smtp_auth_types
-#    retval = ["plain","md5","?"]
-#      return retval
-#  end
-  
-#  def set_smarthost(params)
-#    #smarthost_hostname"=>"203.14.203.141", "smarthost_username"=>"", "smarthost_password"=>"", "smarthost_authtype"=>"", "smarthost_port"=>"",
-#    return @core_api.set_smarthost(params) 
-#  end
-  
+
+  end
+
   #@return EngineOSapiResult
   #set the default Domain used by the system in creating new engines and for services that use web
-  def  set_default_domain(params)    
+  def  set_default_domain(params)
     if @core_api.set_default_domain(params)
       return success("Preferences","Set Default Domain")
     else
       return failed("Preferences", @core_api.last_error,"Set Default Domain")
     end
   end
-  
+
   #@return String
   #get the default Domain used by the system in creating new engines and for services that use web
-  def  get_default_domain()    
-    return @core_api.get_default_domain() 
+  def  get_default_domain()
+    return @core_api.get_default_domain()
   end
-#  
-#  #@return boolean
-#   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+
+  #
+  #  #@return boolean
+  #   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login
   def set_default_site(params)
-   if @core_api.set_default_site(params) 
-    return success("Preferences","Set Default Site")
-  else
-    return failed("Preferences", @core_api.last_error,"Set Default Site")
+    if @core_api.set_default_site(params)
+      return success("Preferences","Set Default Site")
+    else
+      return failed("Preferences", @core_api.last_error,"Set Default Site")
+    end
   end
-end
-#  #@return String
-#   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login 
+
+  #  #@return String
+  #   #get the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login
   def get_default_site()
-    return @core_api.get_default_site 
+    return @core_api.get_default_site
   end
-    
+
   def set_first_run_parameters params_from_gui
-  
-    params =params_from_gui.dup 
+
+    params =params_from_gui.dup
     p params
     first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
@@ -127,16 +125,14 @@ end
       p first_run.error.to_s
       return failed("Gui","First Run",first_run.error.to_s)
     end
-    
-    rescue Exception=>e
-    SystemUtils.log_exception(e)
-    
-      return failed("Gui","First Run","failed")
-    
-  end
-  
 
-  
+  rescue Exception=>e
+    SystemUtils.log_exception(e)
+
+    return failed("Gui","First Run","failed")
+
+  end
+
   def last_api_error
     if @core_api
       return @core_api.last_error
@@ -148,13 +144,11 @@ end
   end
 
   def list_apps()
-    
+
     return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
   end
-
-
 
   def getManagedEngines()
     return  @core_api.getManagedEngines()
@@ -162,11 +156,8 @@ end
     return log_exception_and_fail("getManagedEngines",e)
   end
 
-
-
-
   def loadManagedEngine(engine_name)
-    engine = @core_api.loadManagedEngine(engine_name)   
+    engine = @core_api.loadManagedEngine(engine_name)
     if engine == false
       return failed(engine_name,last_api_error ,"Load Engine")
     end
@@ -174,10 +165,6 @@ end
   rescue Exception=>e
     return log_exception_and_fail("loadManagedEngine",e)
   end
-
- 
-
-
 
   def get_system_preferences
     return @core_api.load_system_preferences
@@ -189,10 +176,10 @@ end
     #preferences is a hash
     # :default_domain need to set on mail server
     # :elsewhere ssl cert for mgmt?
-    
+
     #default web_site
-    #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}} 
-    
+    #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}}
+
     return @core_api.save_system_preferences(preferences)
   rescue Exception=>e
     return log_exception_and_fail("save_system_preferences",e)
@@ -258,7 +245,6 @@ end
     return log_exception_and_fail("startEngine",e)
   end
 
-
   def unpauseEngine engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -287,8 +273,8 @@ end
     return log_exception_and_fail("Destroy",e)
   end
 
-  def deleteEngineImage(params) 
-    
+  def deleteEngineImage(params)
+
     #
     if params.has_key?(:engine_name) == false || params[:engine_name] == nil
       return failed(params.to_s,"no Engine name","Delete")
@@ -300,40 +286,38 @@ end
     end
 
     params[:container_type] = "container"
-      
-   if  @core_api.delete_image_dependancies(params) == true
-     if engine.delete_image() == true
-       return success(params[:engine_name],"Delete")
-     end
-   else
-     SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
-      return failed(params[:engine_name],last_api_error, "Delete Image Dependancies")     
-   end
-   
-   SystemUtils.log_error_mesg("failed to delete image ",params)
-   return  failed(params[:engine_name],last_api_error, "Delete Image")
+
+    if  @core_api.delete_image_dependancies(params) == true
+      if engine.delete_image() == true
+        return success(params[:engine_name],"Delete")
+      end
+    else
+      SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
+      return failed(params[:engine_name],last_api_error, "Delete Image Dependancies")
+    end
+
+    SystemUtils.log_error_mesg("failed to delete image ",params)
+    return  failed(params[:engine_name],last_api_error, "Delete Image")
 
   rescue Exception=>e
     return log_exception_and_fail("Delete",e)
- 
+
   end
 
- 
-  
   def reinstall_engine(engine_name)
     engine = loadManagedEngine engine_name
-      if engine.is_a?(EnginesOSapiResult)
-        return  engine #acutally EnginesOSapiResult
-      end
-      if engine.has_container? == true
-        engine.destroy_container
-      end
-#      p "reinstalling " + engine_name
+    if engine.is_a?(EnginesOSapiResult)
+      return  engine #acutally EnginesOSapiResult
+    end
+    if engine.has_container? == true
+      engine.destroy_container
+    end
+    #      p "reinstalling " + engine_name
     if @core_api.reinstall_engine(engine) == false
-                return  failed(engine_name,last_api_error, "Reinstall Image")
-             end  
+      return  failed(engine_name,last_api_error, "Reinstall Image")
+    end
     return success(engine_name,"Reinstall")
-     
+
   end
 
   def createEngine engine_name
@@ -343,7 +327,7 @@ end
     end
     retval =   engine.create_container()
     if retval == false
-#      p failed(engine_name,engine.last_error,"Create")
+      #      p failed(engine_name,engine.last_error,"Create")
 
       return failed(engine_name,engine.last_error,"Create")
     end
@@ -386,6 +370,7 @@ end
       return failed("System","not permitted","System Restarting")
     end
   end
+
   def update_engines_system_software
     if @core_api.update_engines_system_software == true
       p :update_engines_system_software
@@ -394,15 +379,16 @@ end
       return failed("System","not permitted","Engines System Updating")
     end
   end
-  
+
   def update_system
-     if @core_api.update_system == true
-       p :update_system
-       return success("System","System Updating")
-     else
-       return failed("System","not permitted","Updating")
-     end
-   end
+    if @core_api.update_system == true
+      p :update_system
+      return success("System","System Updating")
+    else
+      return failed("System","not permitted","Updating")
+    end
+  end
+
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -417,11 +403,9 @@ end
     return log_exception_and_fail("DeRegister Engine Web Site",e)
   end
 
-
-
   def get_engine_blueprint engine_name
-#    p :get_blueprint_for
-#    p engine_name
+    #    p :get_blueprint_for
+    #    p engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Load Engine Blueprint")
@@ -448,8 +432,6 @@ end
     return log_exception_and_fail("read_start",e)
   end
 
-  
-  
   def get_system_memory_info
     return @core_api.get_system_memory_info
   rescue Exception=>e
@@ -490,7 +472,6 @@ end
     return log_exception_and_fail("get_container_network_metrics",e)
   end
 
-
   def get_volumes
 
     vol_service = EnginesOSapi.loadManagedService("volmanager",@core_api)
@@ -511,113 +492,112 @@ end
     return db_service.consumers
   end
 
-#  def get_backups
-#    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
-#    if backup_service == nil
-#      return failed("backup service","No Such Service","get_backup list")
-#    end
-#    return backup_service.consumers
-#  rescue Exception=>e
-#    return log_exception_and_fail("get_backup list",e)
-#  end
-  
+  #  def get_backups
+  #    backup_service = EnginesOSapi.loadManagedService("backup",@core_api)
+  #    if backup_service == nil
+  #      return failed("backup service","No Such Service","get_backup list")
+  #    end
+  #    return backup_service.consumers
+  #  rescue Exception=>e
+  #    return log_exception_and_fail("get_backup list",e)
+  #  end
+
   def set_engine_runtime_properties(params)
     if @core_api.set_engine_runtime_properties(params) ==true
-        return success(params[:engine_name],"update engine runtime params")
+      return success(params[:engine_name],"update engine runtime params")
     end
-      p :failed
-   return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
-    rescue Exception=>e
-        return log_exception_and_fail("set_engine_runtime params ",e)
+    p :failed
+    return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
+  rescue Exception=>e
+    return log_exception_and_fail("set_engine_runtime params ",e)
   end
+
   def set_service_runtime_properties params
-     return success(params[:engine_name],"update service runtime params")
-     rescue Exception=>e
-         return log_exception_and_fail("update service runtime params ",e)
-   end
-  
+    return success(params[:engine_name],"update service runtime params")
+  rescue Exception=>e
+    return log_exception_and_fail("update service runtime params ",e)
+  end
+
   def set_engine_network_properties(params)
     p :set_engine_network_properties
-       p params
+    p params
     engine = loadManagedEngine(params[:engine_name])
-       if engine == nil || engine.instance_of?(EnginesOSapiResult)
-         if engine == nil
-          engine =  failed("set_engine_network_details",last_api_error,"set_engine_network_details")
-         end
-         p "p cant change network as cant load"
-         p engine
-         return engine
-       end
+    if engine == nil || engine.instance_of?(EnginesOSapiResult)
+      if engine == nil
+        engine =  failed("set_engine_network_details",last_api_error,"set_engine_network_details")
+      end
+      p "p cant change network as cant load"
+      p engine
+      return engine
+    end
     if @core_api.set_engine_network_properties(engine, params)
       return success(params[:engine_name], "Update network details")
-       else
-         return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
-       end
- end
- 
+    else
+      return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
+    end
+  end
 
   def create_ssl_certificate(params)
-     p params
-     #params[:default_cert]
-     #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
-     return success(params[:domain_name], "Add self hosted ssl cert domain")        
-   end
+    p params
+    #params[:default_cert]
+    #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
+    return success(params[:domain_name], "Add self hosted ssl cert domain")
+  end
 
-  
   def update_domain(params)
-    
+
     if @core_api.update_domain(params) == false
-         return  failed(params[:domain_name],last_api_error, "update  domain")
-       else
-         return success(params[:domain_name], "update domain")
-       end
-       rescue Exception=>e
-         return log_exception_and_fail("update self hosted domain " + params.to_s,e)
-       end
-#       
-#    old_domain_name=params[:original_domain_name]
-#    if  DNSHosting.update_domain(old_domain_name,params) == false
-#       return  failed(params[:domain_name],last_api_error, "update  domain")
-#    end  
-#    
-#  if params[:self_hosted] == false
-#    return success(params[:domain_name], "Add self hosted domain")
-#  end
-#  
-#    service_hash = Hash.new
-#       service_hash[:parent_engine]="system"
-#       service_hash[:variables] = Hash.new
-#       service_hash[:variables][:domainname] = params[:original_domain_name]   
-#       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
-#       service_hash[:container_type]="system"
-#       service_hash[:publisher_namespace]="EnginesSystem"
-#       service_hash[:type_path]="dns"
-#       @core_api.dettach_service(service_hash) 
-#    @core_api.deregister_non_persistant_service(service_hash)
-#    @core_api.delete_service_from_engine_registry(service_hash)
-#    service_hash[:variables][:domainname] = params[:domain_name]   
-#    service_hash[:service_handle]=params[:domain_name] + "_dns"
-#    if(params[:internal_only])
-#             ip = DNSHosting.get_local_ip
-#           else
-#             ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
-#           end
-#       service_hash[:variables][:ip] = ip;
-#    if @core_api.attach_service(service_hash) == true
-#      @core_api.register_non_persistant_service(service_hash)
-#      return success(params[:domain_name], "Update self hosted domain")
-#    end
-#    
-#    
-#    return failed(params[:domain_name],last_api_error, "Update self hosted domain")
-#      
-#      
-#  rescue Exception=>e
-#    
-#     log_exception_and_fail("Update self hosted domain ",e)
-#    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
-#    
-#  end
+      return  failed(params[:domain_name],last_api_error, "update  domain")
+    else
+      return success(params[:domain_name], "update domain")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("update self hosted domain " + params.to_s,e)
+  end
+  #
+  #    old_domain_name=params[:original_domain_name]
+  #    if  DNSHosting.update_domain(old_domain_name,params) == false
+  #       return  failed(params[:domain_name],last_api_error, "update  domain")
+  #    end
+  #
+  #  if params[:self_hosted] == false
+  #    return success(params[:domain_name], "Add self hosted domain")
+  #  end
+  #
+  #    service_hash = Hash.new
+  #       service_hash[:parent_engine]="system"
+  #       service_hash[:variables] = Hash.new
+  #       service_hash[:variables][:domainname] = params[:original_domain_name]
+  #       service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+  #       service_hash[:container_type]="system"
+  #       service_hash[:publisher_namespace]="EnginesSystem"
+  #       service_hash[:type_path]="dns"
+  #       @core_api.dettach_service(service_hash)
+  #    @core_api.deregister_non_persistant_service(service_hash)
+  #    @core_api.delete_service_from_engine_registry(service_hash)
+  #    service_hash[:variables][:domainname] = params[:domain_name]
+  #    service_hash[:service_handle]=params[:domain_name] + "_dns"
+  #    if(params[:internal_only])
+  #             ip = DNSHosting.get_local_ip
+  #           else
+  #             ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+  #           end
+  #       service_hash[:variables][:ip] = ip;
+  #    if @core_api.attach_service(service_hash) == true
+  #      @core_api.register_non_persistant_service(service_hash)
+  #      return success(params[:domain_name], "Update self hosted domain")
+  #    end
+  #
+  #
+  #    return failed(params[:domain_name],last_api_error, "Update self hosted domain")
+  #
+  #
+  #  rescue Exception=>e
+  #
+  #     log_exception_and_fail("Update self hosted domain ",e)
+  #    return failed(params[:domain_name],e.to_s, "Update self hosted domain")
+  #
+  #  end
 
   def add_domain params
     if @core_api.add_domain(params) == false
@@ -625,92 +605,89 @@ end
     else
       return success(params[:domain_name], "Add domain")
     end
-    rescue Exception=>e
-      return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
+  rescue Exception=>e
+    return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
+  end
+
+  #    if DNSHosting.add_domain(params) == false
+  #       return  failed(params[:domain_name],last_api_error, "Add  domain")
+  #    end
+  #  if params[:self_hosted] == false
+  #    return success(params[:domain_name], "Add domain")
+  #  end
+  #
+  #  service_hash = Hash.new
+  #    service_hash[:parent_engine]="system"
+  #    service_hash[:variables] = Hash.new
+  #    service_hash[:variables][:domainname] = params[:domain_name]
+  #    service_hash[:service_handle]=params[:domain_name] + "_dns"
+  #    service_hash[:container_type]="system"
+  #    service_hash[:publisher_namespace]="EnginesSystem"
+  #    service_hash[:type_path]="dns"
+  #    if(params[:internal_only])
+  #          ip = DNSHosting.get_local_ip
+  #        else
+  #          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+  #        end
+  #    service_hash[:variables][:ip] = ip;
+  #
+  #    if @core_api.attach_service(service_hash) == true
+  #      @core_api.register_non_persistant_service(service_hash)
+  #      return success(params[:domain_name], "Add self hosted domain")
+  #    end
+  #    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
+
+  #
+  #    def reload_dns
+  #    return @core_api.reload_dns
+  #  end
+
+  def remove_domain params
+    if @core_api.remove_domain(params) == false
+      return  failed(params[:domain_name],last_api_error, "Add  domain")
+    else
+      return success(params[:domain_name], "Add domain")
     end
 
-#    if DNSHosting.add_domain(params) == false
-#       return  failed(params[:domain_name],last_api_error, "Add  domain")
-#    end  
-#  if params[:self_hosted] == false
-#    return success(params[:domain_name], "Add domain")
-#  end
-#  
-#  service_hash = Hash.new
-#    service_hash[:parent_engine]="system"
-#    service_hash[:variables] = Hash.new
-#    service_hash[:variables][:domainname] = params[:domain_name]   
-#    service_hash[:service_handle]=params[:domain_name] + "_dns"
-#    service_hash[:container_type]="system"
-#    service_hash[:publisher_namespace]="EnginesSystem"
-#    service_hash[:type_path]="dns"
-#    if(params[:internal_only])
-#          ip = DNSHosting.get_local_ip
-#        else
-#          ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
-#        end
-#    service_hash[:variables][:ip] = ip;
-#       
-#    if @core_api.attach_service(service_hash) == true
-#      @core_api.register_non_persistant_service(service_hash)
-#      return success(params[:domain_name], "Add self hosted domain")
-#    end
-#    return failed(params[:domain_name],last_api_error, "Add self hosted domain " + params.to_s)
+  rescue Exception=>e
+    return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
+  end
+  #    service_hash = Hash.new
+  #    service_hash[:parent_engine]="system"
+  #        service_hash[:variables] = Hash.new
+  #        service_hash[:variables][:domainname] = params[:domain_name]
+  #        service_hash[:service_handle]=params[:domain_name] + "_dns"
+  #        service_hash[:container_type]="system"
+  #        service_hash[:publisher_namespace]="EnginesSystem"
+  #        service_hash[:type_path]="dns"
+  #
+  #    if @core_api.dettach_service(service_hash) == true
+  #      @core_api.deregister_non_persistant_service(service_hash)
+  #      @core_api.delete_service_from_engine_registry(service_hash)
+  #      return success(params[:domain_name], "Remove self hosted domain")
+  #    end
+  #    return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
+  #  rescue Exception=>e
+  #    return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
+  #  end
 
- 
-#  
-#    def reload_dns    
-#    return @core_api.reload_dns
-#  end
-  
-  def remove_domain params    
-    if @core_api.remove_domain(params) == false
-         return  failed(params[:domain_name],last_api_error, "Add  domain")
-       else
-         return success(params[:domain_name], "Add domain")
-       end
- 
-    rescue Exception=>e
-       return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
-     end
-#    service_hash = Hash.new
-#    service_hash[:parent_engine]="system"
-#        service_hash[:variables] = Hash.new
-#        service_hash[:variables][:domainname] = params[:domain_name]   
-#        service_hash[:service_handle]=params[:domain_name] + "_dns"
-#        service_hash[:container_type]="system"
-#        service_hash[:publisher_namespace]="EnginesSystem"
-#        service_hash[:type_path]="dns"
-#          
-#    if @core_api.dettach_service(service_hash) == true
-#      @core_api.deregister_non_persistant_service(service_hash)
-#      @core_api.delete_service_from_engine_registry(service_hash)
-#      return success(params[:domain_name], "Remove self hosted domain")
-#    end
-#    return failed(params[:domain_name],last_api_error, "Remove self hosted domain")
-#  rescue Exception=>e
-#    return log_exception_and_fail("Remove self hosted domain " + params[:domain_name],e)
-#  end
-
-#  def list_self_hosted_domains
-#    return DNSHosting.list_self_hosted_domains( )
-#  rescue Exception=>e
-#    return log_exception_and_fail("list self hosted domain ",e)
-#  end
+  #  def list_self_hosted_domains
+  #    return DNSHosting.list_self_hosted_domains( )
+  #  rescue Exception=>e
+  #    return log_exception_and_fail("list self hosted domain ",e)
+  #  end
 
   def list_domains
     return @core_api.list_domains( )
   rescue Exception=>e
     return log_exception_and_fail("list domains ",e)
-  end 
-  
+  end
 
   #protected if protected static cant call
   def success(item_name ,cmd)
     return EnginesOSapiResult.success(item_name ,cmd)
   end
 
-  
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name
@@ -730,19 +707,18 @@ end
 
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
-  
 
   #@returns EnginesOSapiResult on sucess with private ssh key in repsonse messages
   def generate_engines_user_ssh_key
     res = @core_api.generate_engines_user_ssh_key
-    if res == true    
+    if res == true
       return success("Engines ssh key regen", res)
     end
-    
+
     return failed("Update System SSH key",@core_api.last_error ,"Update System SSH key")
-          
+
   end
-  
+
   #calls api to run system update
   #@return EnginesOSapiResult
   def system_update
@@ -750,7 +726,7 @@ end
     if res == false
       return failed("System Update",@core_api.last_error ,"Update")
     end
-    return success("System Update", res)        
+    return success("System Update", res)
   end
-  
+
 end
