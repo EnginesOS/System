@@ -528,6 +528,11 @@ if c_type == "container"
   end
 end
 
+if Process.euid != 21000
+  p "This program can only be run be the engines user"
+  exit
+end
+
 container_name =""
 c_type= ARGV[0]
 if c_type== "engine"
