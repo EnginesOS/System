@@ -123,6 +123,8 @@ end
     if first_run.sucess == true
       return success("Gui","First Run")
     else
+      p :first_run_error
+      p first_run.error.to_s
       return failed("Gui","First Run",first_run.error.to_s)
     end
     

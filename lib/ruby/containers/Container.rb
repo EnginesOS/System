@@ -9,7 +9,7 @@ class Container
     @eports = e_ports
     @volumes = vols
     @environments = environs
-    @container_id
+    @container_id = -1
     @docker_info=nil
   end
   

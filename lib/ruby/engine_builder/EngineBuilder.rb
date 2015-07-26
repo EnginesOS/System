@@ -721,7 +721,7 @@ class EngineBuilder
         return false
       end
       if service_def[:persistant] == false
-        ++service_cnt
+        service_cnt+=1
         next
       else
         service_hash[:persistant] =true
@@ -797,7 +797,7 @@ class EngineBuilder
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
-    lines_count = lines.count -1
+    lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count
       retval+=lines[n]

@@ -11,29 +11,29 @@ class FirstRunWizard
   @api = api
   
     if mysql_password_configurator(@first_run_params[:mysql_password]) == false
-      @error="Fail to setup mysql password " + api.last_error()
+      log_error("Fail to setup mysql password " + api.last_error())
       return false
     end
 
    if console_password_configurator(@first_run_params[:console_password]) == false
-      @error="Fail to setup ssh password " + api.last_error()
+     log_error("Fail to setup console password " + api.last_error())
       return false
     end
 
     domain_hash = get_domain_params(@first_run_params)
     if api.add_domain(domain_hash) == false
-      @error="Fail to add domain " + api.last_error() + " " + domain_hash.to_s
+      log_error("Fail to add domain " + api.last_error() + " " + domain_hash.to_s)
       return false
     end
    
     if api.set_default_domain(domain_hash)  == false
-      @error="Fail to set default domain " + api.last_error() + " " + domain_hash.to_s
+      log_error("Fail to set default domain " + api.last_error() + " " + domain_hash.to_s)
       return false
     end
 
     if @first_run_params.has_key?(:ssh_key) == true
       if ssh_key_configurator(@first_run_params[:ssh_key]) == false
-        @error="Fail to setup ssh key " + api.last_error()
+        log_error("Fail to setup ssh key " + api.last_error())
         return false
       end
     end
@@ -42,6 +42,7 @@ class FirstRunWizard
         create_ca(@first_run_params)
     #
         create_default_cert(@first_run_params)
+        
     #@api.install_refresh_ca
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
@@ -66,7 +67,12 @@ class FirstRunWizard
     service_param[:configurator_name] = "db_master_pass"
     service_param[:variables] = Hash.new
     service_param[:variables][:db_master_pass] = password
-    return  @api.update_service_configuration(service_param)
+    if  @api.update_service_configuration(service_param) == true
+      return true
+    else
+      log_error("mysql_password_configurator " + @api.last_error.to_s)
+      return false
+    end
   end
 
   def console_password_configurator(password)
@@ -74,8 +80,20 @@ class FirstRunWizard
     service_param[:service_name] = "mgmt"
     service_param[:configurator_name] = "console_pass"
     service_param[:variables] = Hash.new
-    service_param[:variables][:console_pass] = password
-    return  @api.update_service_configuration(service_param)
+    service_param[:variables][:console_password] = password
+          
+    if @api.update_service_configuration(service_param) == true
+      return true
+    else
+      log_error("console_password_configurator " + @api.last_error.to_s)
+      return false
+    end
+end
+
+  
+  def log_error(err)
+    p "Error with first run " +err
+    @error = err
   end
 
   def ssh_key_configurator(key)
@@ -84,7 +102,12 @@ class FirstRunWizard
     service_param[:configurator_name] = "ssh_master_key"
     service_param[:variables] = Hash.new
     service_param[:variables][:ssh_master_key] = key
-    return  @api.update_service_configuration(service_param)
+    if   @api.update_service_configuration(service_param) == true
+      return true
+    else
+      log_error("ssh_key_configurator " + @api.last_error.to_s)
+      return false
+    end
 
   end
 
@@ -118,9 +141,13 @@ class FirstRunWizard
     config_param[:variables][:person]= ca_params[:ssl_person_name]
     config_param[:variables][:domainname]= ca_params[:default_domain]
       
-    return  @api.update_service_configuration(config_param)
+    if  @api.update_service_configuration(config_param)  == true
+      return true
+    else
+      log_error("create_ca " + @api.last_error.to_s)
+      return false
+    end
 
-  
   end
 
   def create_default_cert (params)
@@ -142,9 +169,11 @@ class FirstRunWizard
        service_param[:variables][:domainname]= params[:default_domain]
     service_param[:variables][:service_handle] ="default_ssl_cert"
     if   @api.attach_service(service_param) == true
-        
-        return true
-      end
+      return true
+    else
+      log_error("create_default_cert " + @api.last_error.to_s)
+      return false
+    end
   end
   
 end

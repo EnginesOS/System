@@ -1,5 +1,7 @@
 #!/bin/sh
 
-echo 'engines:$1'  | chpasswd -e
+echo $1
+echo "engines:\'$1\'  | chpasswd -e"
+echo engines:\'$1\'  | chpasswd -e
 
 exit $?

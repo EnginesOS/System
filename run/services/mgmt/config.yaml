@@ -6,6 +6,7 @@ type_path: mgmt
 last_error: 
 memory: '512'
 hostname: 'mgmt'
+no_ca_map: true
 domain_name: 
 environments:
 - !ruby/object:EnvironmentVariable
@@ -64,6 +65,11 @@ volumes:
   remotepath: "/sys"
   localpath: "/sys"
   mapping_permissions: ro 
+ engines_ca: !ruby/object:Volume
+  name: engines_ca
+  remotepath: "/opt/engines/etc/ssl/"
+  localpath: "/var/lib/engines/cert_auth/public/"
+  mapping_permissions: ro
 port: 
 eports:
 - !ruby/object:WorkPort

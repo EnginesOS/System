@@ -29,7 +29,7 @@ volumes:
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/ssl/imap"
+  localpath: "/opt/engines/etc/imap/ssl"
   mapping_permissions: "ro"
 eports:
 - !ruby/object:WorkPort

@@ -14,7 +14,7 @@ volumes:
  ssl_certs: !ruby/object:Volume
   name: ssl_certs
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ssl/"
+  localpath: "/opt/engines/etc/ftp/ssl/"
   mapping_permissions: "ro"
  fs_rw: !ruby/object:Volume
   name: fs_rw

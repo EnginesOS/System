@@ -62,7 +62,8 @@ class ManagedContainer < Container
   :protocol,\
   :volumes,\
   :deployment_type,\
-  :dependant_on
+  :dependant_on,\
+  :no_ca_map
 
   attr_accessor :container_id,\
   :core_api,\
