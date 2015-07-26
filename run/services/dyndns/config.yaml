@@ -10,13 +10,13 @@ memory: '10'
 hostname: dyndns
 domain_name: 
 environments: []
-image: engines/dyndns:alpha
+image: engines/dyndns:_Engines_System(release)
 volumes:
 port: 
 eports:
 repo: na
 last_result:
-setState: stopped
+setState: nocontainer
 nginxored: false
 databases: []
 conf_register_site: false

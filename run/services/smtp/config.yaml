@@ -9,12 +9,12 @@ memory: '32'
 hostname: smtp
 domain_name: 
 environments: []
-image: engines/smtp:alpha
+image: engines/smtp:_Engines_System(release)
 volumes: 
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/ssl/smtp"
+  localpath: "/opt/engines/etc/smtp/ssl"
   mapping_permissions: "ro"
 port: 
 eports: 

@@ -9,7 +9,7 @@ memory: '200'
 hostname: mysql
 domain_name: 
 environments: []
-image: engines/mysql:alpha
+image: engines/mysql:_Engines_System(release)
 volumes:
  my_database: !ruby/object:Volume
   name: my_database

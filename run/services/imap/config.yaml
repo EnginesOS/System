@@ -13,7 +13,7 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/imap:alpha
+image: engines/imap:_Engines_System(release)
 port: 
 volumes:
  imap_data: !ruby/object:Volume
@@ -29,7 +29,7 @@ volumes:
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/ssl/imap"
+  localpath: "/opt/engines/etc/imap/ssl"
   mapping_permissions: "ro"
 eports:
 - !ruby/object:WorkPort
@@ -49,7 +49,7 @@ eports:
   external: 993
 repo: na
 last_result: 
-setState: stopped
+setState: nocontainer
 nginxored: false
 databases: []
 conf_register_site: false

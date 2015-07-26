@@ -64,13 +64,13 @@ SystemUtils.debug_output( :orpahns_retr_start, params[:type_path])
     types_for_engine = type[params[:parent_engine]] 
     
     if  types_for_engine.is_a?(Array)
-      types_for_engine.each do |type|
+      types_for_engine.each do |engine_type|
         # p type.content
-        if type == nil
+        if engine_type == nil
           log_error_mesg(" nil type in ",types)
             next
         end
-         if type[params[:service_handle]] != nil
+         if engine_type[params[:service_handle]] != nil
           return type[params[:service_handle]]
         else
           log_error_mesg("params nil service_handle",params)

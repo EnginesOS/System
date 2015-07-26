@@ -721,7 +721,7 @@ class EngineBuilder
         return false
       end
       if service_def[:persistant] == false
-        ++service_cnt
+        service_cnt+=1
         next
       else
         service_hash[:persistant] =true
@@ -797,7 +797,7 @@ class EngineBuilder
   def tail_of_build_log
     retval = String.new
     lines = File.readlines(SysConfig.DeploymentDir + "/build.out")
-    lines_count = lines.count -1
+    lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count
       retval+=lines[n]
@@ -893,7 +893,7 @@ class EngineBuilder
     mc.set_protocol(@protocol)
    
     mc.conf_self_start= (true)
-    mc.save_state # no config.yaml throws a no such container so save so others can use
+    mc.save_state # no running.yaml throws a no such container so save so others can use
     if mc.save_blueprint(@blueprint) == false
       log_build_errors( "Failed to save blueprint " + @blueprint.to_s)
     end

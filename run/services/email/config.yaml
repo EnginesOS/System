@@ -13,14 +13,14 @@ volumes:
  ssl_dir: !ruby/object:Volume
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/ssl/smtp"
+  localpath: "/opt/engines/etc/email/ssl"
   mapping_permissions: "ro"
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
  value: root
  setatrun: false
-image: engines/email:alpha
+image: engines/email:_Engines_System(release)
 eports:
 - !ruby/object:WorkPort
   name: smtp
@@ -29,7 +29,7 @@ eports:
   external: 25
 repo: na
 last_result: 
-setState: stopped
+setState: nocontainer
 nginxored: false
 databases: []
 conf_register_site: true

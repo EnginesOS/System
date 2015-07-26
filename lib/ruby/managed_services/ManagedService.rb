@@ -122,6 +122,10 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",service_hash)
          return false
        end
+    if @cont_userid == nil
+       log_error_mesg("service missing cont_userid ",configurator_params)
+             return false
+     end
   cmd = "docker exec -u " + @cont_userid.to_s + " " + @container_name.to_s  + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
     result = SystemUtils.execute_command(cmd)
       if result[:result] == 0 
@@ -137,6 +141,10 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",configurator_params)
          return false
        end
+    if @cont_userid == nil
+       log_error_mesg("service missing cont_userid ",configurator_params)
+             return false
+     end
    cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/rm_service.sh \"" + SystemUtils.service_hash_variables_as_str(service_hash) + "\""
     result = SystemUtils.execute_command(cmd)
        if result[:result] == 0 
@@ -152,6 +160,10 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",configurator_params)
          return false
        end
+    if @cont_userid == nil
+      log_error_mesg("service missing cont_userid ",configurator_params)
+            return false
+    end
     cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
      result = SystemUtils.execute_command(cmd)
      
@@ -163,6 +175,12 @@ class ManagedService < ManagedContainer
       log_error_mesg("service not running ",configurator_params)
       return false
     end
+    
+    if @cont_userid == nil
+      log_error_mesg("service missing cont_userid ",configurator_params)
+            return false
+    end
+    
     cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
      result = SystemUtils.execute_command(cmd)
      p result
@@ -336,27 +354,27 @@ class ManagedService < ManagedContainer
     return false
     #noop never do  this as need buildimage again or only for expert
   end
-
-  def self.from_yaml( yaml,core_api )
-   
-    begin
-      p yaml.path
-      managedService = YAML::load( yaml )
-      managedService.core_api=(core_api)
-      managedService.docker_info = nil
-      #      puts(" managed Service")
-      #      p ObjectSpace.memsize_of(managedService)
-      #      puts(" Hash total")
-      #      p ObjectSpace.memsize_of_all(Hash)
-      #      puts("All managed Service")
-      #      p ObjectSpace.memsize_of_all(ManagedService)
-      return managedService
-    rescue Exception=>e
-    
-      puts e.message + " with " + yaml.path
-      
-    end
-  end
+#
+#  def self.from_yaml( yaml,core_api )
+#   
+#    begin
+#      p yaml.path
+#      managedService = YAML::load( yaml )
+#      managedService.core_api=(core_api)
+#      managedService.docker_info = nil
+#      #      puts(" managed Service")
+#      #      p ObjectSpace.memsize_of(managedService)
+#      #      puts(" Hash total")
+#      #      p ObjectSpace.memsize_of_all(Hash)
+#      #      puts("All managed Service")
+#      #      p ObjectSpace.memsize_of_all(ManagedService)
+#      return managedService
+#    rescue Exception=>e
+#    
+#      puts e.message + " with " + yaml.path
+#      
+#    end
+#  end
 
   def set_container_pid
 

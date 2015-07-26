@@ -83,10 +83,10 @@ class ServiceManager
   #@ removes underly service and remove entry from orphaned services
   #@returns boolean indicating success
   def remove_orphaned_service(service_hash)
-#    if remove_from_managed_service(service_hash) == false
-#      log_error_mesg("failed to remove managed service",service_hash)
-#      return false
-#    end
+    #    if remove_from_managed_service(service_hash) == false
+    #      log_error_mesg("failed to remove managed service",service_hash)
+    #      return false
+    #    end
     return release_orphan(service_hash)
   end
 
@@ -129,7 +129,6 @@ class ServiceManager
 
   end
   #
- 
 
   #load softwwareservicedefinition for serivce in service_hash and
   #@return boolean indicating the persistance
@@ -172,7 +171,7 @@ class ServiceManager
         return false
       end
     end
-    
+
     return save_tree
 
   rescue Exception=>e
@@ -180,19 +179,19 @@ class ServiceManager
     log_exception(e)
     return false
   end
-  
-  def register_service_hash_with_service(service_hash) 
+
+  def register_service_hash_with_service(service_hash)
     p :register_service_hash_with_service
     p service_hash
     if service_hash.has_key?(:service_container_name) == false
-      service_hash[:service_container_name] = get_software_service_container_name(service_hash) 
+      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
     end
     service = @core_api.loadManagedService( service_hash[:service_container_name])
-      if service != nil && service != false
-        return service.add_consumer_to_service(service_hash)        
-      end
-      return false
-  end   
+    if service != nil && service != false
+      return service.add_consumer_to_service(service_hash)
+    end
+    return false
+  end
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
 
@@ -212,8 +211,6 @@ class ServiceManager
     if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
       handle_field_sym = service_def[:service_handle_field].to_sym
     end
-    
- 
 
     service_hash[:persistant] = service_def[:persistant]
 
@@ -242,6 +239,7 @@ class ServiceManager
     p :load_and_attach_services
     p dirname
     p container.container_name
+
     Dir.glob(dirname + "/*.yaml").each do |service_file|
       p "service_File"
       p service_file
@@ -249,7 +247,7 @@ class ServiceManager
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
-      
+
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
         ServiceManager.set_top_level_service_params(service_hash,container.container_name)
         if service_hash.has_key?(:container_type) == false
@@ -266,12 +264,16 @@ class ServiceManager
       else
         service_hash =  get_service_entry(service_hash)
       end
-      SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
-      new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-      p "new_envs"
-      p new_envs.to_s
-      if new_envs != nil
-        envs.concat(new_envs)
+      if service_hash.is_a?(Hash)
+        SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
+        new_envs = SoftwareServiceDefinition.service_environments(service_hash)
+        p "new_envs"
+        p new_envs.to_s
+        if new_envs != nil
+          envs.concat(new_envs)
+        end
+      else
+        log_error_mesg("failed to get service entry from " ,service_hash)
       end
     end
     return envs
@@ -308,8 +310,8 @@ class ServiceManager
     engines_type_tree = managed_engines_type_tree(params)
     if engines_type_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
-            return true
-          end
+      return true
+    end
     engine_node =  engines_type_tree[params[:parent_engine]]
 
     if engine_node.is_a?(Tree::TreeNode) == false
@@ -319,7 +321,7 @@ class ServiceManager
     SystemUtils.debug_output(  :rm_remove_engine_params, params)
     services = get_engine_persistant_services(params)
     services.each do | service |
-      if params[:remove_all_data] == true 
+      if params[:remove_all_data] == true
         if delete_service(service) == false
           log_error_mesg("Failed to remove service ",service)
           return false
@@ -333,7 +335,7 @@ class ServiceManager
     end
 
     if  managed_engines_type_tree(params).remove!(engine_node)
-     
+
       return  save_tree
     else
       log_error_mesg("Failed to remove engine node ",engine_node)
@@ -412,9 +414,9 @@ class ServiceManager
     return true
   end
 
-#service manager get non persistant services for engine_name
-#for each servie_hash load_service_container and remove hash
-#remove from service registry even if container is down
+  #service manager get non persistant services for engine_name
+  #for each servie_hash load_service_container and remove hash
+  #remove from service registry even if container is down
   def deregister_non_persistant_services(engine)
     params = Hash.new()
     params[:parent_engine] = engine.container_name
@@ -423,7 +425,7 @@ class ServiceManager
 
     services.each do |service_hash|
       remove_from_services_registry(service_hash)
-#      deregister_non_persistant_service(service_hash)
+      #      deregister_non_persistant_service(service_hash)
     end
     return true
 
@@ -449,7 +451,7 @@ class ServiceManager
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end
-   
+
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
         remove_from_engine_registery(service_hash)

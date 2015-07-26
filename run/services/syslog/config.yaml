@@ -9,7 +9,7 @@ memory: '16'
 hostname: syslog
 domain_name: 
 environments: []
-image: engines/syslog:alpha
+image: engines/syslog:_Engines_System(release)
 volumes:
  config: !ruby/object:Volume
   name: config

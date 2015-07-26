@@ -21,7 +21,7 @@ volumes:
   remotepath: "/etc/krb5kdc"
   localpath: "/var/lib/engines/auth/"
   mapping_permissions: "rw"
-image: engines/auth:alpha
+image: engines/auth:_Engines_System(release)
 port: 
 eports:
 repo: na

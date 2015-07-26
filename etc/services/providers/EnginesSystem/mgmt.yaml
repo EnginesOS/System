@@ -10,13 +10,13 @@ dedicated: false
 persistant: false
 service_handle_field: engine
 configurators:
- ssh_master_pass:
-  name: ssh_master_pass
-  label: Engines Login Password
+ console_pass:
+  name: console_pass
+  label: Engines Console Login Password
   description:  Engines Login Password  for engines user
   params:
-   ssh_master_pass:
-    name: ssh_master_pass
+   console_pass:
+    name: console_pass
     regex_invalid_message: "wrong go back and try again"
     label: Password for engines user
     regex_validator: ".*"

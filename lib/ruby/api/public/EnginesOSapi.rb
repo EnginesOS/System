@@ -67,7 +67,7 @@ class EnginesOSapi
   def upload_ssl_certifcate (params)
     if param.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
       p "errorexpect keys  :certificate :domain_name with optional :use_as_default"
-      return  failed("errorexpect keys  :certificate :domain_name with optional :use_as_default", params)
+      return  failed("error expect keys  :certificate :domain_name with optional :use_as_default", params)
     end
     return success("Access","upload Cert" + params[:domain_name])
      
@@ -123,6 +123,8 @@ end
     if first_run.sucess == true
       return success("Gui","First Run")
     else
+      p :first_run_error
+      p first_run.error.to_s
       return failed("Gui","First Run",first_run.error.to_s)
     end
     
@@ -384,7 +386,23 @@ end
       return failed("System","not permitted","System Restarting")
     end
   end
+  def update_engines_system_software
+    if @core_api.update_engines_system_software == true
+      p :update_engines_system_software
+      return success("System","Engines System Updating")
+    else
+      return failed("System","not permitted","Engines System Updating")
+    end
+  end
   
+  def update_system
+     if @core_api.update_system == true
+       p :update_system
+       return success("System","System Updating")
+     else
+       return failed("System","not permitted","Updating")
+     end
+   end
   def deregisterEngineWebSite engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
@@ -544,10 +562,6 @@ end
      #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
      return success(params[:domain_name], "Add self hosted ssl cert domain")        
    end
-   def upload_ssl_certificate(params)
-       p params
-       return success(params[:domain_name], "upload self hosted ssl cert domain")        
-     end
 
   
   def update_domain(params)

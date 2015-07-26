@@ -81,7 +81,12 @@ class EnginesCore
   def restart_system 
     return @system_api.restart_system
   end
-
+  def update_engines_system_software
+    @system_api.update_engines_system_software
+  end 
+  def update_system    
+    @system_api.update_system
+  end
   def save_build_report(container,build_report)
     return @system_api.save_build_report(container,build_report)
   end
@@ -223,9 +228,11 @@ class EnginesCore
       service_param[:configurator_name] = "default_site"
      config_params = retrieve_service_configuration(service_param)
      p config_params
-     if config_params.is_a?(Hash) == true && config_params.has_key?(:variable) == true
+     if config_params.is_a?(Hash) == true && config_params.has_key?(:variables) == true
         vars = config_params[:variables]
           if vars.has_key?(:default_site_url)
+            p :DEFAUL_SITE
+            p vars[:default_site_url]
             return vars[:default_site_url]
           end
      end

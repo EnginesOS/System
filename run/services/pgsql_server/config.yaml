@@ -9,7 +9,7 @@ memory: '160'
 hostname: pgsql
 domain_name: 
 environments: []
-image: engines/pgsql:alpha
+image: engines/pgsql:_Engines_System(release)
 volumes:
  pg_database: !ruby/object:Volume
   name: pg_database
@@ -19,7 +19,7 @@ volumes:
  sslcerts: !ruby/object:Volume
   name: sslcerts
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ssl/pgsql/"
+  localpath: "/opt/engines/etc/pgsql/ssl/"
   mapping_permissions: "ro"
 port: 
 eports:
@@ -30,7 +30,7 @@ eports:
   external: 0
 repo: na
 last_result: 
-setState: stopped
+setState: nocontainer
 nginxored: false
 databases: []
 conf_register_site: false

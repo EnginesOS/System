@@ -11,7 +11,7 @@ memory: '54'
 hostname: nginx
 domain_name: 
 environments: []
-image: engines/nginx:alpha
+image: engines/nginx:_Engines_System(release)
 volumes:
  sslcerts: !ruby/object:Volume
   name: sslcerts
