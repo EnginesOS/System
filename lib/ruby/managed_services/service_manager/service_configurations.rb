@@ -1,4 +1,4 @@
-module ServiceConfigurations
+#module ServiceConfigurations
   
   #@ return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
   def get_service_configurations(service_name)    
@@ -111,4 +111,4 @@ p "add " + service_configuration_hash.to_s
             return false
     end
   
-end
+#end

@@ -1,5 +1,5 @@
 #@Methods for handling orphaned persistant services
-module OrphanedServices
+#module OrphanedServices
   #@ remove from both the service registry and orphan registery
   #@param params { :type_path , :service_handle}
   def release_orphan(params)
@@ -159,4 +159,3 @@ end
    return  service_path_tree
  end
       
-end

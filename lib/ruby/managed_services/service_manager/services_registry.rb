@@ -1,5 +1,5 @@
 #Module of methods to handle the Services Registry branch
-module ServicesRegistry
+#module ServicesRegistry
 
   
   #@Boolean returns true | false if servcice hash is registered in service tree
@@ -205,4 +205,4 @@ def get_active_persistant_services(params)
  
 end
   
-end
+#end

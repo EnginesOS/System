@@ -1,15 +1,15 @@
 require 'rubytree'
 
 require_relative 'service_manager_tree.rb'
-include ServiceManagerTree
+#include ServiceManagerTree
 require_relative 'orphaned_services.rb'
-include OrphanedServices
+#include OrphanedServices
 require_relative 'managed_engines_registry.rb'
 #include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
-include ServicesRegistry
+#include ServicesRegistry
 require_relative 'service_configurations.rb'
-include ServiceConfigurations
+#include ServiceConfigurations
 
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
