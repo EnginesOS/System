@@ -1,5 +1,5 @@
 #Module of methods to handle the Managed Engine Registry branch
-module ManagedEnginesRegistry
+#module ManagedEnginesRegistry
   #Returns the engine node when supplied with params containing only :engine_name
   #Returns service_type node when supplied with params  :engine_name and :type_path
   #Returns service node when supplied with params  :engine_name :type_path and :service_handle
@@ -178,4 +178,4 @@ module ManagedEnginesRegistry
     return false
   end
 
-end
+#end

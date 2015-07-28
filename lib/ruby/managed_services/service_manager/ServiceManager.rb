@@ -5,7 +5,7 @@ include ServiceManagerTree
 require_relative 'orphaned_services.rb'
 include OrphanedServices
 require_relative 'managed_engines_registry.rb'
-include ManagedEnginesRegistry
+#include ManagedEnginesRegistry
 require_relative 'services_registry.rb'
 include ServicesRegistry
 require_relative 'service_configurations.rb'
