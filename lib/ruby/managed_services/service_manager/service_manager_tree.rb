@@ -311,7 +311,7 @@ end
 #Should use managed_engine_tree
 #@return [TreeNode] 
 def get_managed_engine_tree
-    return managed_engine_tree
+    return _managed_engine_tree
   end
   
 def log_exception(e)
