@@ -115,7 +115,7 @@ end
   
 #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
    #:path_type :publisher_namespace      
-   def get_orphaned_services(params)
+   def _get_orphaned_services(params)
      leafs = Array.new
      SystemUtils.debug_output(   :looking_for_orphans,params)
      orphans = find_orphan_consumers(params)

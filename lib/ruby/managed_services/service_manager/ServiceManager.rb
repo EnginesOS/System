@@ -474,8 +474,8 @@ def  get_managed_engine_tree
 end
 
 
-def get_orphaned_services
-  return orphaned_services_tree
+def get_orphaned_services(params)
+  return _get_orphaned_services_tree(params)
 end
 
 def get_orphaned_services_tree  
