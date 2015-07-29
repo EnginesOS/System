@@ -606,6 +606,13 @@ SystemUtils.log_exception(e)
         #            extracts =extracts + " "
         #            dirs =dirs + " "
         #          end
+#        "ownstagram_"
+#        App 402 stdout: "ownstagram_"
+#        App 402 stdout: "_"
+#        App 402 stdout: "git_"
+#        App 402 stdout: "ownstagram|"
+
+
         p "_+_+_+_+_+_+_+_+_+_+_"
         p archive_details
         p arc_src + "_" 
@@ -614,7 +621,7 @@ SystemUtils.log_exception(e)
         p arc_extract + "_" 
         p arc_dir +"|"
         set_user("0")
-        if arc_loc == "./" || arc_loc == "." || arc_loc == "/"
+        if arc_loc == "./" || arc_loc == "." || arc_loc == "/" || arc_loc == ""
           arc_loc=""
         else
           if arc_loc.end_with?("/")
