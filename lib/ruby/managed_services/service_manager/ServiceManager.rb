@@ -477,6 +477,9 @@ def retrieve_orphan(params)
   return _retrieve_orphan(params)
 end
 
+def service_is_registered?(service_hash)
+  _service_is_registered?(service_hash)
+end
 def release_orphan(params)
   
   return _release_orphan(params)

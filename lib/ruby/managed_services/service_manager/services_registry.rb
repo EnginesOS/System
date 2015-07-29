@@ -3,7 +3,7 @@
 
   
   #@Boolean returns true | false if servcice hash is registered in service tree
-  def service_is_registered?(service_hash)
+  def _service_is_registered?(service_hash)
     provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
        if provider_node.is_a?(Tree::TreeNode) == false
          p :nil_provider_node
