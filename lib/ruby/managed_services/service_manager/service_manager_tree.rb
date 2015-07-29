@@ -333,7 +333,7 @@ def log_exception(e)
        return false
  end
  
-  protected
+#  protected
   
 
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
