@@ -476,6 +476,10 @@ def orphaned_services_tree
   
   return _orphaned_services_tree
 end
+def services_tree_of_orphaned_services
+  
+  return _orphaned_services_tree
+end
 
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
