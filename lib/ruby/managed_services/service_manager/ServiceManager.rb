@@ -472,7 +472,14 @@ end
 def  get_managed_engine_tree
   return _get_managed_engine_tree
 end
-
+def retrieve_orphan(params)
+  
+  return _retrieve_orphan(params)
+end
+def reparent_orphan(params)
+  
+  return _reparent_orphan(params)
+end
 
 def get_orphaned_services(params)
   return _get_orphaned_services(params)

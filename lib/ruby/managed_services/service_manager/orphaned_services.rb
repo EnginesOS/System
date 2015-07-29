@@ -44,7 +44,7 @@
   #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
   #@param params { :type_path , :service_handle}
   #@return nil on no match
-  def retrieve_orphan(params)
+  def _retrieve_orphan(params)
     
     provider_tree = orphaned_services_tree[params[:publisher_namespace]]
     if provider_tree == nil
@@ -99,7 +99,7 @@ end
 
   #@ Assign a new parent to an orphan
   #@return new service_hash
-  def reparent_orphan(params)
+  def _reparent_orphan(params)
     orphan = retrieve_orphan(params)
     if orphan !=  false
       content = orphan.content
