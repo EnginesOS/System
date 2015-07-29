@@ -475,7 +475,7 @@ end
 
 
 def get_orphaned_services(params)
-  return _get_orphaned_services_tree(params)
+  return _get_orphaned_services(params)
 end
 
 def get_orphaned_services_tree  
