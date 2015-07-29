@@ -35,7 +35,7 @@
 
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
-  def orphaned_services_tree
+  def _orphaned_services_tree
     
     if check_service_tree == false 
           return false
