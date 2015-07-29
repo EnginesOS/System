@@ -55,7 +55,7 @@
   
   #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
-  def managed_service_tree()
+  def _managed_service_tree()
    
     if check_service_tree == false
       return false
