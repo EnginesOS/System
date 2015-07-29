@@ -469,9 +469,7 @@ class ServiceManager
     return _managed_service_tree()
   end
   
-  def service_provider_tree
-    return _service_provider_tree
-  end
+
 
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
