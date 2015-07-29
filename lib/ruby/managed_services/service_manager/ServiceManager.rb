@@ -482,6 +482,10 @@ def get_orphaned_services_tree
   return _orphaned_services_tree
 end
 
+def service_configurations_tree
+  _service_configurations_tree
+end
+
 def orphaned_services_tree  
   return _orphaned_services_tree
 end

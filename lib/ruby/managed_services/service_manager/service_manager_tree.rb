@@ -284,7 +284,7 @@ rescue Exception=>e
    
  end
  
-def service_configurations_tree
+def _service_configurations_tree
   if check_service_tree == false
         return false
       end
