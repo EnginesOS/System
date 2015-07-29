@@ -482,6 +482,10 @@ def release_orphan(params)
   return _release_orphan(params)
 end
 
+def reparent_orphan(params)
+  return _reparent_orphan(params)
+  end
+  
 def get_orphaned_services(params)
   return _get_orphaned_services(params)
 end
