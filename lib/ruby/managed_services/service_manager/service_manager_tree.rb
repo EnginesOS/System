@@ -17,10 +17,7 @@
          return false
   end
   
-  def  get_managed_engine_tree
-    return _get_managed_engine_tree
-  end
-  
+
   def service_tree
     
     if @last_tree_mod_time && @last_tree_mod_time != nil 

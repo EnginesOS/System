@@ -468,7 +468,10 @@ class ServiceManager
   def managed_service_tree()
     return _managed_service_tree()
   end
-  
+def  get_managed_engine_tree
+  return _get_managed_engine_tree
+end
+
 
 
   #Calls on service on the service_container to add the service associated by the hash
