@@ -613,11 +613,15 @@ SystemUtils.log_exception(e)
         p arc_loc + "_" 
         p arc_extract + "_" 
         p arc_dir +"|"
-          
-        if arc_loc == "./" || arc_loc == "." 
+        set_user("0")
+        if arc_loc == "./" || arc_loc == "." || arc_loc == "/"
           arc_loc=""
-        elsif arc_loc.end_with?("/")
-          arc_loc = arc_loc.chop() #note not String#chop
+        else
+          if arc_loc.end_with?("/")
+            arc_loc = arc_loc.chop() #note not String#chop
+          end
+          @docker_file.puts("RUN mkdir -p  /home/app/" +  arc_loc )
+          count_layer
         end
         
         if arc_extract == "git"
@@ -626,7 +630,13 @@ SystemUtils.log_exception(e)
           @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
           count_layer
           set_user("0")
+          
           @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
+#          @docker_file.puts("RUN  if ! test -d `dirname /home/app/" + arc_dir + "` ;\\")
+#          @docker_file.puts("then \\")
+#          @docker_file.puts("mkdir  -p `dirname /home/app/" + arc_dir + ";\\")
+#          @docker_file.puts("fi ;\\")
+#          @docker_file.puts("  mv  " + arc_dir + " /home/app/" +  arc_loc )
           count_layer
           set_user("$ContUser")
        
@@ -675,6 +685,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
           first_archive = false
+          set_user("$ContUser")
         end
       end
 
