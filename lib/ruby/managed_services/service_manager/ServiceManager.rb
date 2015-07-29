@@ -465,20 +465,27 @@ class ServiceManager
 
   end
   
-  def managed_service_tree()
+def managed_service_tree()
     return _managed_service_tree()
-  end
+end
+
 def  get_managed_engine_tree
   return _get_managed_engine_tree
 end
 
+
 def get_orphaned_services
   return orphaned_services_tree
 end
-def orphaned_services_tree
-  
+
+def get_orphaned_services_tree  
   return _orphaned_services_tree
 end
+
+def orphaned_services_tree  
+  return _orphaned_services_tree
+end
+
 def services_tree_of_orphaned_services
   get_orphaned_services
   return _orphaned_services_tree
