@@ -17,7 +17,9 @@
          return false
   end
   
-  
+  def  get_managed_engine_tree
+    return _get_managed_engine_tree
+  end
   
   def service_tree
     
