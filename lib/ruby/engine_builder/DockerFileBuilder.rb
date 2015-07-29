@@ -620,7 +620,8 @@ SystemUtils.log_exception(e)
           if arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          @docker_file.puts("RUN mkdir -p  /home/app/" +  arc_loc )
+          arc_loc = arc_loc +"/"
+          @docker_file.puts("RUN mkdir -p  /home/app" +  arc_loc )
           count_layer
         end
         
@@ -631,7 +632,7 @@ SystemUtils.log_exception(e)
           count_layer
           set_user("0")
           
-          @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
+          @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
 #          @docker_file.puts("RUN  if ! test -d `dirname /home/app/" + arc_dir + "` ;\\")
 #          @docker_file.puts("then \\")
 #          @docker_file.puts("mkdir  -p `dirname /home/app/" + arc_dir + ";\\")
