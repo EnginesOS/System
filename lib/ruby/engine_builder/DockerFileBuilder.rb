@@ -99,6 +99,11 @@ class DockerFileBuilder
     @docker_file.puts("")
     @docker_file.puts("VOLUME /home/fs/")
     count_layer()
+    
+    
+    @docker_file.puts("VOLUME /home/app/")
+    count_layer()
+     
  
     write_clear_env_variables
     
