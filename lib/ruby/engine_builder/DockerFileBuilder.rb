@@ -105,6 +105,8 @@ class DockerFileBuilder
       count_layer()
       @docker_file.puts("VOLUME /home/app_src/")
       count_layer()
+    else
+      @docker_file.puts("#Non persistant App")
     end
      
  

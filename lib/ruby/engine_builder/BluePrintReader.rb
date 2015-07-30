@@ -226,7 +226,7 @@ class BluePrintReader
              dest="/home/fs/" + dest
            end
          end
-       elsif dest== "/home/fs/" ||  dest== "/home/fs"
+       elsif dest== "/home/app/" ||  dest== "/home/app"
          @builder.app_is_persistant=true
          
        end
