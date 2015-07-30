@@ -226,6 +226,9 @@ class BluePrintReader
              dest="/home/fs/" + dest
            end
          end
+       elsif dest== "/home/fs/" ||  dest== "/home/fs"
+         @builder.app_is_persistant=true
+         
        end
        permissions = PermissionRights.new(@container_name,"","")
        vol=Volume.new(name,SysConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
