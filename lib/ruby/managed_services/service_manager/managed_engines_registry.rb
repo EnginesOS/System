@@ -61,7 +61,7 @@
   end
 
   #@return [Array] of all service_hashs marked persistance [boolean] for :engine_name
-  def get_engine_persistance_services(params,persistance) #params is :engine_name
+  def _get_engine_persistance_services(params,persistance) #params is :engine_name
 
     leafs = Array.new
 

@@ -476,6 +476,9 @@ def retrieve_orphan(params)
   
   return _retrieve_orphan(params)
 end
+def get_engine_persistance_services(params,persistance)
+  return _get_engine_persistance_services(params,persistance)
+end
 
 def service_is_registered?(service_hash)
   _service_is_registered?(service_hash)
