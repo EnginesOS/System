@@ -90,6 +90,15 @@ class DockerFileBuilder
     set_user("0")
     write_data_permissions
 
+    if   @builder.app_is_persistant  == true
+          @docker_file.puts("RUN cp -rp /home/app /home/app_src")
+          count_layer()
+          @docker_file.puts("VOLUME /home/app_src/")
+          count_layer()
+        else
+          @docker_file.puts("#Non persistant App")
+        end
+        
     @docker_file.puts("run mv /home/fs /home/fs_src")
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
@@ -100,14 +109,7 @@ class DockerFileBuilder
     @docker_file.puts("VOLUME /home/fs/")
     count_layer()
     
-    if   @builder.app_is_persistant  == true
-      @docker_file.puts("RUN mv /home/app /home/app_src/")
-      count_layer()
-      @docker_file.puts("VOLUME /home/app_src/")
-      count_layer()
-    else
-      @docker_file.puts("#Non persistant App")
-    end
+    
      
  
     write_clear_env_variables
