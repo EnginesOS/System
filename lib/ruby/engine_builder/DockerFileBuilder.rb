@@ -100,7 +100,7 @@ class DockerFileBuilder
     @docker_file.puts("VOLUME /home/fs/")
     count_layer()
     
-    if  @app_is_persistant  == true
+    if   @builder.app_is_persistant  == true
       @docker_file.puts("RUN mv /home/app /home/app_src/")
       count_layer()
       @docker_file.puts("VOLUME /home/app_src/")
