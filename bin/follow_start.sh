@@ -29,4 +29,4 @@ if ! test -f ~/.has_run
 		touch ~/.has_run
 	fi
 	
-	echo "Please use chrome for the time being as there are problems with some java scripts in the Management Interface."
+	#echo "Please use chrome for the time being as there are problems with some java scripts in the Management Interface."
