@@ -4,7 +4,7 @@
   #@param params { :type_path , :service_handle}
   def _release_orphan(params)
     orphan = retrieve_orphan(params)
-    if orphan == false
+    if orphan.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan found to release",params)
       return false
     end
@@ -22,7 +22,7 @@
   #@return result 
   def save_as_orphan(service_hash)
     provider_tree = orphaned_services_tree[service_hash[:publisher_namespace]]
-      if provider_tree == nil
+      if provider_tree.is_a?(Tree::TreeNode) == false
         provider_tree =  Tree::TreeNode.new(service_hash[:publisher_namespace],service_hash[:publisher_namespace])
         orphaned_services_tree << provider_tree
       end
@@ -30,7 +30,7 @@
     type_node = create_type_path_node(provider_tree,service_hash[:type_path])     
     #INSERT Enginename here
       engine_node = type_node[service_hash[:parent_engine]]
-        if  engine_node == nil 
+        if  engine_node.is_a?(Tree::TreeNode) == false
           engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Belonged to " + service_hash[:parent_engine])
           type_node  <<  engine_node
         end
@@ -47,7 +47,7 @@
   def _retrieve_orphan(params)
     
     provider_tree = orphaned_services_tree[params[:publisher_namespace]]
-    if provider_tree == nil
+    if provider_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan Matching publisher_namespace",params)
       return false
     end
@@ -56,7 +56,7 @@ SystemUtils.debug_output( :orpahns_retr_start, params[:type_path])
       type_path = params[:type_path]
         
     type = get_type_path_node(provider_tree,type_path)
-    if type == false
+    if type.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan Matching type_path",params)
       return false
     end
