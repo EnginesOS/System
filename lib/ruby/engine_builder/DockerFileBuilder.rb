@@ -627,7 +627,7 @@ SystemUtils.log_exception(e)
           if arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          arc_loc = arc_loc +"/"
+          arc_loc = "/" + arc_loc +"/"
           @docker_file.puts("RUN mkdir -p  /home/app" +  arc_loc )
           count_layer
         end
