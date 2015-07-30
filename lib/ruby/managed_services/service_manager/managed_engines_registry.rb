@@ -33,7 +33,7 @@
   end
 
   #@return all service_hashs for :engine_name
-  def find_engine_services_hashes(params)
+  def _find_engine_services_hashes(params)
     if params.has_key?(:engine_name)
       params[:parent_engine] = params[:engine_name]
     end

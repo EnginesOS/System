@@ -468,7 +468,9 @@ class ServiceManager
 def managed_service_tree()
     return _managed_service_tree()
 end
-
+def find_engine_services_hashes(params)
+  _find_engine_services_hashes(params)
+end
 def  get_managed_engine_tree
   return _get_managed_engine_tree
 end
