@@ -50,15 +50,6 @@
     return get_all_leafs_service_hashes(engine_node)
   end
 
-  #@return [Array] of all service_hashs marked persistant for :engine_name
-  def get_engine_persistant_services(params)
-    return get_engine_persistance_services(params,true)
-  end
-
-  #@return [Array] of all service_hashs not marked persistant for :engine_name
-  def get_engine_nonpersistant_services(params)
-    return get_engine_persistance_services(params,false)
-  end
 
   #@return [Array] of all service_hashs marked persistance [boolean] for :engine_name
   def _get_engine_persistance_services(params,persistance) #params is :engine_name

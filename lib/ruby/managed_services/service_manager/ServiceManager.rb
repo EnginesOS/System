@@ -480,6 +480,16 @@ def get_engine_persistance_services(params,persistance)
   return _get_engine_persistance_services(params,persistance)
 end
 
+#@return [Array] of all service_hashs marked persistant for :engine_name
+def get_engine_persistant_services(params)
+  return _get_engine_persistance_services(params,true)
+end
+
+#@return [Array] of all service_hashs not marked persistant for :engine_name
+def get_engine_nonpersistant_services(params)
+  return _get_engine_persistance_services(params,false)
+end
+
 def service_is_registered?(service_hash)
   _service_is_registered?(service_hash)
 end
