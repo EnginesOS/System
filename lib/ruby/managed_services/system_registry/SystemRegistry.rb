@@ -56,7 +56,17 @@ class SystemRegistry < Registry
     if  @services_registry.remove_from_services_registry(service_hash) == true
     save_tree
   end
+   end
+   
+  def orphan_service(service_hash)
+    if save_as_orphan(service_hash)
+         return  remove_from_services_registry(service_hash)
+       end
+       log_error_mesg("Failed to save orphan",service_hash)   
+       return false
   end
+  
+ 
   def service_is_registered?(service_hash)
     @services_registry.service_is_registered?(service_hash)
   end
@@ -125,7 +135,7 @@ end
           return false
         end
       else
-        if @orphan_server_registry.orphan_service(service) == false
+        if orphan_service(service) == false
           log_error_mesg("Failed to orphan service ",service)
           return false
         end

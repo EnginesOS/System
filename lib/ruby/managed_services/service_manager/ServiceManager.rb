@@ -28,6 +28,10 @@ class ServiceManager
   def get_orphaned_services(params)
     @system_registry.get_orphaned_services(params)
   end
+  def orphan_services(params)
+    @system_registry.orphan_services(params)
+  end
+  
   def retrieve_orphan(params)
     @system_registry.retrieve_orphan(params)
   end
@@ -324,16 +328,16 @@ end
     
   end
 
-  #@returns boolean indicating sucess
-  #Saves service_hash in orphan registry before removing from service registry
-  def orphan_service(service_hash)
-    if @system_registry.save_as_orphan(service_hash)
-      return  remove_service(service_hash)
-    end
-    log_error_mesg("Failed to save orphan",service_hash)
-
-    return false
-  end
+#  #@returns boolean indicating sucess
+#  #Saves service_hash in orphan registry before removing from service registry
+#  def orphan_service(service_hash)
+#    if @system_registry.save_as_orphan(service_hash)
+#      return  remove_service(service_hash)
+#    end
+#    log_error_mesg("Failed to save orphan",service_hash)
+#
+#    return false
+#  end
 
   #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
   def software_service_definition(params)
@@ -429,7 +433,7 @@ end
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
-        @system_registry.remove_from_engine_registry(service_hash)
+        @system_registry.remove_from_services_registry(service_hash)
       end
     elsif service.persistant == true
       log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
