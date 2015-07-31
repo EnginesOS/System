@@ -22,10 +22,10 @@ class OrphanServicesRegistry < SubRegistry
     #Saves the service_hash in the orphaned service registry 
     #@return result 
     def save_as_orphan(service_hash)
-      provider_tree = orphaned_services_tree[service_hash[:publisher_namespace]]
+      provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
         if provider_tree.is_a?(Tree::TreeNode) == false
           provider_tree =  Tree::TreeNode.new(service_hash[:publisher_namespace],service_hash[:publisher_namespace])
-          orphaned_services_tree << provider_tree
+          orphaned_services_registry << provider_tree
         end
       if service_hash.has_key?(:service_handle) && service_hash.has_key?(:type_path)    
       type_node = create_type_path_node(provider_tree,service_hash[:type_path])     
@@ -47,7 +47,7 @@ class OrphanServicesRegistry < SubRegistry
     #@return nil on no match
     def retrieve_orphan(params)
       
-      provider_tree = orphaned_services_tree[params[:publisher_namespace]]
+      provider_tree = orphaned_services_registry[params[:publisher_namespace]]
       if provider_tree.is_a?(Tree::TreeNode) == false
         log_error_mesg("No Orphan Matching publisher_namespace",params)
         return false
@@ -94,7 +94,7 @@ class OrphanServicesRegistry < SubRegistry
   
     #@return  orphaned_services_tree
     #@wrapper for the gui
-    def get_orphaned_services_tree
+    def orphaned_services_registry
       return  @registry
     end
   
@@ -125,7 +125,7 @@ class OrphanServicesRegistry < SubRegistry
        end   
        return leafs
      end
-     
+
   #@returns a [TreeNode] to the depth of the search
    #@service_query_hash :publisher_namespace
    #@service_query_hash :publisher_namespace , :type_path
@@ -137,7 +137,7 @@ class OrphanServicesRegistry < SubRegistry
        return false
      end
   
-     provider_tree = orphaned_services_tree[service_query_hash[:publisher_namespace]]
+     provider_tree = orphaned_services_registry[service_query_hash[:publisher_namespace]]
   
      if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
        log_error_mesg("find_service_consumers_no_type_path", service_query_hash)
