@@ -464,7 +464,7 @@ def remove_service service_hash
     SystemUtils.log_error_mesg(msg,object)
 
   end
-
+ 
   def log_exception(e)
     @last_error = e.to_s.slice(0,256)
     SystemUtils.log_exception(e)

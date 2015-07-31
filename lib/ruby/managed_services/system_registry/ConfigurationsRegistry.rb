@@ -59,7 +59,7 @@ class ConfigurationsRegistry < SubRegistry
         configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
         configurations << configuration
   p "add " + service_configuration_hash.to_s
-        save_tree
+        return true
       
     end
     
@@ -78,7 +78,7 @@ class ConfigurationsRegistry < SubRegistry
             service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
             if service_configuration.is_a?(Tree::TreeNode)
               remove_tree_entry(service_configuration)
-              save_tree
+
              return true
           end
           return false
@@ -102,7 +102,7 @@ class ConfigurationsRegistry < SubRegistry
                 if service_configuration.is_a?(Tree::TreeNode)
                   service_configuration.content = service_configuration_hash
                   p "saved " + service_configuration_hash.to_s
-                  save_tree
+                 
                  return true
                 else
                   return add_service_configuration(service_configuration_hash)
