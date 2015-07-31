@@ -1,5 +1,35 @@
 class Registry
 
+  #@returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+   #@return nil on error
+   #@param parent_node the branch to search under
+   #@param type_path the dir path format as in dns or database/sql/mysql
+   def get_type_path_node(parent_node,type_path)
+     if type_path == nil || parent_node.is_a?(Tree::TreeNode) == false
+       log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
+       return nil
+     end
+     SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
+     if type_path.include?("/") == false
+       return parent_node[type_path]
+  
+     else
+       sub_paths= type_path.split("/")
+       sub_node = parent_node
+       sub_paths.each do |sub_path|
+         sub_node = sub_node[sub_path]
+         if sub_node == nil
+           log_error_mesg("Subnode not found for " + type_path + "under node ", parent_node)
+           return false
+         end
+       end
+       return sub_node
+     end
+  rescue Exception=>e
+       log_exception(e)
+       return false
+     
+   end
   # @return [Array] of all service_hash(s) below this branch
      def get_all_leafs_service_hashes(branch)
        ret_val = Array.new
