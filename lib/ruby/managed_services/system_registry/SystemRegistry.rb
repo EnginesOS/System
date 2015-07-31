@@ -46,8 +46,12 @@ class SystemRegistry < Registry
   def remove_from_services_registry(service_hash)
     @services_registry.remove_from_services_registry(service_hash)
   end
-  
-  
+  def  find_engine_services_hashes(params)
+    @managed_engines_registry.find_engine_services_hashes(params)
+  end
+ def  find_engine_services_hashes(params)
+  @managed_engines_registry.find_engine_services_hashes(params)
+end
   def get_engine_nonpersistant_services(params)
     @managed_engines_registry.get_engine_persistance_services(params,false)
   end
@@ -158,7 +162,9 @@ class SystemRegistry < Registry
     log_exception(e)
       return false
   end
-  
+  def update_service_configuration(config_hash)
+    @configuration_registry.update_service_configuration(config_hash)
+  end
   
   def service_configurations_registry
     if check_system_registry_tree == false
