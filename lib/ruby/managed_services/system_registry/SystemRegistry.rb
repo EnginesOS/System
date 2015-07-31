@@ -19,7 +19,9 @@ class SystemRegistry < Registry
    end
    
 
-  
+  def find_service_consumers(service_query_hash)
+    @services_registry.find_service_consumers(service_query_hash)
+  end
  
   def add_to_services_registry(service_hash)
     @services_registry.add_to_services_registry(service_hash)
