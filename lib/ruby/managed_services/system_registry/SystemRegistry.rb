@@ -35,9 +35,9 @@ class SystemRegistry < Registry
   end
   
   def remove_from_managed_engines_registry(service_hash)
-    @managed_engines_registry.add_to_managed_engines_registry(service_hash)    
+    @managed_engines_registry.remove_from_managed_engines_registry(service_hash)    
   end
-  def remove_from_managed_engines_registry(service_hash)
+  def add_to_managed_engines_registry(service_hash)
      @managed_engines_registry.add_to_managed_engines_registry(service_hash)    
    end
   
@@ -188,6 +188,7 @@ class SystemRegistry < Registry
  
     end
     
+  
   
   # Load tree from file or create initial service tree
    #@return ServiceTree as a [TreeNode]
