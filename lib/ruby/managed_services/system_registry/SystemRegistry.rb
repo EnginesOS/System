@@ -17,11 +17,25 @@ class SystemRegistry < Registry
      @orphan_server_registry = OrphanServicesRegistry.new( orphaned_services_registry)
      
    end
-   
-   
+  def save_as_orphan(params)
+      @orphan_server_registry.save_as_orphan(params)
+    end  
+  def release_orphan(params)
+     @orphan_server_registry.release_orphan(params)
+   end  
+  def reparent_orphan(params)
+    @orphan_server_registry.reparent_orphan(params)
+  end
+  def retrieve_orphan(params)
+      @orphan_server_registry.retrieve_orphan(params)
+    end
   def get_orphaned_services(params)
     @orphan_server_registry.get_orphaned_services(params)
    end
+  def find_orphan_consumers(params)
+     @orphan_server_registry.find_orphan_consumers(params)
+  end  
+    
   def find_service_consumers(service_query_hash)
     @services_registry.find_service_consumers(service_query_hash)
   end
@@ -32,6 +46,7 @@ class SystemRegistry < Registry
   def remove_from_services_registry(service_hash)
     @services_registry.remove_from_services_registry(service_hash)
   end
+  
   
   def get_engine_nonpersistant_services(params)
     @managed_engines_registry.get_engine_persistance_services(params,false)
@@ -46,14 +61,10 @@ class SystemRegistry < Registry
   
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
     def get_registered_against_service(params)
-      
-      hashes = Array.new
-      service_tree = find_service_consumers(params)
-      if service_tree.is_a?(Tree::TreeNode)== true
-        hashes = get_all_leafs_service_hashes(service_tree)
-      end
-      return hashes
+      @services_registry.get_registered_against_service(params)
+    
     end
+    
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
@@ -114,16 +125,7 @@ class SystemRegistry < Registry
 
   
   def list_providers_in_use
-  providers =  managed_service_tree.children
-  retval=Array.new
-  if providers == nil
-    log_error_mesg("No providers","")
-    return retval
-  end
-  providers.each do |provider|
-    retval.push(provider.name)
-  end
-  return retval
+    @services_registry.list_providers_in_use
   end
   
  

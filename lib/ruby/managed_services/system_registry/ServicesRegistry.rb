@@ -180,6 +180,32 @@ class ServicesRegistry < SubRegistry
       return service
   
     end
+
+    
+def list_providers_in_use
+providers =  @registry.children
+retval=Array.new
+if providers == nil
+  log_error_mesg("No providers","")
+  return retval
+end
+providers.each do |provider|
+  retval.push(provider.name)
+end
+return retval
+end
+
+
+#@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  def get_registered_against_service(params)
+    
+    hashes = Array.new
+    service_tree = find_service_consumers(params)
+    if service_tree.is_a?(Tree::TreeNode)== true
+      hashes = get_all_leafs_service_hashes(service_tree)
+    end
+    return hashes
+  end
   
     #remove the service matching the service_hash from the tree
     #@service_hash :publisher_namespace :type_path :service_handle
