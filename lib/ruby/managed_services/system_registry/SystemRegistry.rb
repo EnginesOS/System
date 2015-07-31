@@ -23,6 +23,10 @@ class SystemRegistry < Registry
     
   end
   
+  def get_engine_nonpersistance_services(params)
+    @managed_engines_registry.get_engine_persistance_services(params,false)
+  end
+  
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
     def get_registered_against_service(params)
       
