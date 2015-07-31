@@ -429,7 +429,7 @@ end
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
-        @system_registry.remove_from_engine_registery(service_hash)
+        @system_registry.remove_from_engine_registry(service_hash)
       end
     elsif service.persistant == true
       log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
