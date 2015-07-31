@@ -5,7 +5,7 @@ class SystemRegistry < Registry
   require_relative 'ManagedEnginesRegistry.rb'
   require_relative 'ServicesRegistry.rb'
   require_relative 'OrphanServicesRegistry.rb'
-   attr_reader :last_error
+ 
    
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
    def initialize() 

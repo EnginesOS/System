@@ -1,5 +1,5 @@
 class Registry
-    
+  attr_reader :last_error
   #  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
   #   # Creates new attached [TreeNode] with required parent path if none exists
   #   # return nil on error
@@ -148,4 +148,17 @@ class Registry
          log_exception(e)
          return false
   end
+def log_error_mesg(msg,object)
+   obj_str = object.to_s.slice(0,256)
+
+   @last_error = msg +":" + obj_str
+   SystemUtils.log_error_mesg(msg,object)
+
+ end
+
+ def log_exception(e)
+   @last_error = e.to_s.slice(0,256)
+   SystemUtils.log_exception(e)
+ end
+  
 end
