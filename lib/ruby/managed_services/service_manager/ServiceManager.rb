@@ -254,18 +254,7 @@ class ServiceManager
     return false
   end
 
-  #@return the service_handle from the service_hash
-  # for backward compat (to be changed)
-  def get_service_handle(params)
 
-    if  params.has_key?(:service_handle) && params[:service_handle] != nil
-      return params[:service_handle]
-    else
-      log_error_mesg("no :service_handle",params)
-
-      return nil
-    end
-  end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
