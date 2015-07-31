@@ -79,6 +79,12 @@ end
     save_tree
   end    
    end
+   
+  def update_service_configuration(config_hash)
+    if  @configuration_registry.update_service_configuration(config_hash) == true
+    save_tree
+  end    
+  end
   
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
     def get_registered_against_service(params)
@@ -179,9 +185,7 @@ end
     log_exception(e)
       return false
   end
-  def update_service_configuration(config_hash)
-    @configuration_registry.update_service_configuration(config_hash)
-  end
+
   
   def service_configurations_registry
     if check_system_registry_tree == false
