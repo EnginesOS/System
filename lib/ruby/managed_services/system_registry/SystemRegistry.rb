@@ -143,16 +143,7 @@ end
     return true
   end
 
-  #remove service matching the service_hash from both the managed_engine registry and the service registry
-  #@return false
-  def delete_service service_hash
-   
-    if remove_from_managed_service(service_hash) == false
-      log_error_mesg("failed to remove managed service",service_hash)
-      return false
-    end
-    return remove_service(service_hash)
-  end
+
 
   
   def list_providers_in_use
