@@ -84,7 +84,7 @@ end
     @managed_engines_registry.get_engine_persistance_services(params,true)
   end
   def remove_from_managed_engines_registry(service_hash)
-    if  @managed_engines_registry.remove_from_managed_engines_registry(service_hash) == true
+    if  @managed_engines_registry.remove_from_engine_registry(service_hash) == true
     save_tree
   end    
   end
