@@ -31,7 +31,7 @@ class ServiceManager
   end
   
   def managed_service_tree
-    @system_registry.managed_services_registry
+    @system_registry.services_registry
   end
   def managed_engines_tree
      @system_registry.managed_engines_registry
