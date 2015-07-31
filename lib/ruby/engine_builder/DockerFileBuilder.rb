@@ -689,10 +689,10 @@ SystemUtils.log_exception(e)
             @docker_file.puts("WORKDIR /tmp")
             count_layer
           end
-          if  arc_loc.start_with?("/home/app") == false || arc_loc.start_with?("/home/local/") == false
-            dest_prefix="/home/app"
+          if  arc_loc.start_with?("/home/app") == true || arc_loc.start_with?("/home/local/") == true
+            dest_prefix=""        
           else
-            dest_prefix=""
+            dest_prefix="/home/app"
           end
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
