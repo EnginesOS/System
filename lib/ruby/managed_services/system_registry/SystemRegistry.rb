@@ -18,17 +18,24 @@ class SystemRegistry < Registry
      
    end
   def save_as_orphan(params)
-      @orphan_server_registry.save_as_orphan(params)
-    end  
+    if  @orphan_server_registry.save_as_orphan(params) == true
+      save_tree
+    end
+  end  
   def release_orphan(params)
-     @orphan_server_registry.release_orphan(params)
+    if  @orphan_server_registry.release_orphan(params) == true
+    save_tree
+  end
    end  
   def reparent_orphan(params)
-    @orphan_server_registry.reparent_orphan(params)
+    if  @orphan_server_registry.reparent_orphan(params) == true
+    save_tree
+  end
   end
   def retrieve_orphan(params)
       @orphan_server_registry.retrieve_orphan(params)
     end
+    
   def get_orphaned_services(params)
     @orphan_server_registry.get_orphaned_services(params)
    end
@@ -41,10 +48,14 @@ class SystemRegistry < Registry
   end
  
   def add_to_services_registry(service_hash)
-    @services_registry.add_to_services_registry(service_hash)
+    if  @services_registry.add_to_services_registry(service_hash) == true
+    save_tree
+  end
   end   
   def remove_from_services_registry(service_hash)
-    @services_registry.remove_from_services_registry(service_hash)
+    if  @services_registry.remove_from_services_registry(service_hash) == true
+    save_tree
+  end
   end
   def  find_engine_services_hashes(params)
     @managed_engines_registry.find_engine_services_hashes(params)
@@ -59,10 +70,14 @@ end
     @managed_engines_registry.get_engine_persistance_services(params,true)
   end
   def remove_from_managed_engines_registry(service_hash)
-    @managed_engines_registry.remove_from_managed_engines_registry(service_hash)    
+    if  @managed_engines_registry.remove_from_managed_engines_registry(service_hash) == true
+    save_tree
+  end    
   end
   def add_to_managed_engines_registry(service_hash)
-     @managed_engines_registry.add_to_managed_engines_registry(service_hash)    
+    if  @managed_engines_registry.add_to_managed_engines_registry(service_hash) == true
+    save_tree
+  end    
    end
   
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
@@ -77,21 +92,21 @@ end
   #@return true on success and false on fail
   def rm_remove_engine(params)
 
-    if params.has_key?(:parent_engine) == false
-      params[:parent_engine] = params[:engine_name]
-    end
-    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
-    if managed_engines_registry.is_a?(Tree::TreeNode) == false
-      log_error_mesg("Warning Failed to find engine to remove",params)
-      return true
-    end
-    engine_node =  managed_engines_registry[params[:parent_engine]]
-
-    if engine_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg("Warning Failed to find engine to remove",params)
-      return true
-    end
-    SystemUtils.debug_output(  :rm_remove_engine_params, params)
+#    if params.has_key?(:parent_engine) == false
+#      params[:parent_engine] = params[:engine_name]
+#    end
+#    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
+#    if managed_engines_registry.is_a?(Tree::TreeNode) == false
+#      log_error_mesg("Warning Failed to find engine to remove",params)
+#      return true
+#    end
+#    engine_node =  managed_engines_registry[params[:parent_engine]]
+#
+#    if engine_node.is_a?(Tree::TreeNode) == false
+#      log_error_mesg("Warning Failed to find engine to remove",params)
+#      return true
+#    end
+#    SystemUtils.debug_output(  :rm_remove_engine_params, params)
     services = @managed_engines_registry.get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_data] == true

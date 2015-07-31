@@ -289,6 +289,7 @@ class ServiceManager
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
+    
     @system_registry.rm_remove_engine(params)
     
   end
