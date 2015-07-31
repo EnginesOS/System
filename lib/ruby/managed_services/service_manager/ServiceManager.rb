@@ -25,6 +25,10 @@ class ServiceManager
     #@service_tree = initialize_tree
     @system_registry = SystemRegistry.new()
   end
+  def get_orphaned_services(params)
+    @system_registry.get_orphaned_services(params)
+  end
+  
   def get_orphaned_services_tree
     @system_registry.orphaned_services_registry
   end

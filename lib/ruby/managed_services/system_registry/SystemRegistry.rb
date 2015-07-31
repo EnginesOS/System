@@ -18,9 +18,12 @@ class SystemRegistry < Registry
      
    end
    
-
+   
+  def get_orphaned_services(params)
+     @system_registry.get_orphaned_services(params)
+   end
   def find_service_consumers(service_query_hash)
-    @services_registry.find_service_consumers(service_query_hash)
+    @orphan_server_registry.find_service_consumers(service_query_hash)
   end
  
   def add_to_services_registry(service_hash)
