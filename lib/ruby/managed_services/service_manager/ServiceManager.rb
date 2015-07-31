@@ -26,8 +26,8 @@ class ServiceManager
     @system_registry = SystemRegistry.new()
   end
 
-  def get_engine_nonpersistant_services
-    @system_registry.get_engine_nonpersistant_services
+  def get_engine_nonpersistant_services(params)
+    @system_registry.get_engine_nonpersistant_services(params)
   end
   
   
