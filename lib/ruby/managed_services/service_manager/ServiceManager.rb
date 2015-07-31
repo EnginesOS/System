@@ -141,7 +141,7 @@ class ServiceManager
       end
     end
 
-    return save_tree
+    return true
 
   rescue Exception=>e
     puts e.message
@@ -562,7 +562,7 @@ def remove_service service_hash
      return false
    end
    SystemUtils.debug_output(  :remove_service, service_hash)
-   return save_tree
+   return true
 
  rescue Exception=>e
    if service_hash != nil
