@@ -81,11 +81,6 @@ class ServiceManager
 
   end
 
-  #remove service matching the service_hash from both the managed_engine registry and the service registry
-  #@return false
-  def delete_service service_hash
-    @system_registry.delete_service service_hash  
-  end
 
  
 
@@ -285,14 +280,47 @@ class ServiceManager
   end
 
 
+#remove service matching the service_hash from both the managed_engine registry and the service registry
+#@return false
+def delete_service service_hash
+ 
+  if remove_from_managed_service(service_hash) == false
+    log_error_mesg("failed to remove managed service",service_hash)
+    return false
+  end
+  return @system_registry.remove_from_services_registry(service_hash)
+end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
-    
-    @system_registry.rm_remove_engine(params)
+    services = @system_registry.get_engine_persistant_services(params)
+       services.each do | service |
+         if params[:remove_all_data] == true
+           if delete_service(service) == false
+             log_error_mesg("Failed to remove service ",service)
+             return false
+           end
+         else
+           if orphan_service(service) == false
+             log_error_mesg("Failed to orphan service ",service)
+             return false
+           end
+         end
+       end
+   return @system_registry.rm_remove_engine(params)
+#       if  managed_engines_type_tree(params).remove!(engine_node)
+#    
+#         return  save_tree
+#       else
+#         log_error_mesg("Failed to remove engine node ",engine_node)
+#         return false
+#       end
+#       log_error_mesg("Failed remove engine",params)
+#       return true
+   
     
   end
 

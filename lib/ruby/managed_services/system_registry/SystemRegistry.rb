@@ -117,7 +117,7 @@ end
 #      return true
 #    end
 #    SystemUtils.debug_output(  :rm_remove_engine_params, params)
-    services = @managed_engines_registry.get_engine_persistant_services(params)
+    services = get_engine_persistant_services(params)
     services.each do | service |
       if params[:remove_all_data] == true
         if delete_service(service) == false
