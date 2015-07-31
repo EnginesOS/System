@@ -11,10 +11,10 @@ class SystemRegistry < Registry
    def initialize() 
      #@service_tree root of the Service Registry Tree
      @system_registry = initialize_tree
-     @configuration_registry = ConfigurationRegistry.new(service_configurations_registry)
+     @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry)
      @services_registry = ServicesRegistry.new(services_registry)
-     @managed_engines_registry = ManagesEnginesRegistry.new( managed_engines_registry)
-     @orphan_server_registry = OrphanServiceRegistry.new( orphaned_services_registry)
+     @managed_engines_registry = ManagedEnginesRegistry.new( managed_engines_registry)
+     @orphan_server_registry = OrphanServicesRegistry.new( orphaned_services_registry)
      
    end
    
