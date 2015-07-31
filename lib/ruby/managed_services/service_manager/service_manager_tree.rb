@@ -284,28 +284,28 @@ rescue Exception=>e
    
  end
  
-def _service_configurations_tree
-  if check_service_tree == false
-        return false
-      end
-  if (service_tree["Configurations"] == nil )
-    service_tree << Tree::TreeNode.new("Configurations","Service Configurations")       
-  end
-  return service_tree["Configurations"]
-  rescue Exception=>e
-       log_exception(e)
-       return nil
-end
-  #Wrapper for Gui to 
- #@return [TreeNode] managed_service_tree[publisher]
-  def service_provider_tree(publisher)
-    if managed_service_tree.is_a?(Tree::TreeNode) == true
-      return managed_service_tree[publisher]
-  end
-  return false
-    
-  end
-  
+#def _service_configurations_tree
+#  if check_service_tree == false
+#        return false
+#      end
+#  if (service_tree["Configurations"] == nil )
+#    service_tree << Tree::TreeNode.new("Configurations","Service Configurations")       
+#  end
+#  return service_tree["Configurations"]
+#  rescue Exception=>e
+#       log_exception(e)
+#       return nil
+#end
+#  #Wrapper for Gui to 
+# #@return [TreeNode] managed_service_tree[publisher]
+#  def service_provider_tree(publisher)
+#    if managed_service_tree.is_a?(Tree::TreeNode) == true
+#      return managed_service_tree[publisher]
+#  end
+#  return false
+#    
+#  end
+#  
 #Wrapper for Gui to be removed
 #Should use managed_engine_tree
 #@return [TreeNode] 

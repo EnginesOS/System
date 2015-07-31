@@ -1,16 +1,16 @@
 require 'rubytree'
 
-require_relative 'service_manager_tree.rb'
+#require_relative 'service_manager_tree.rb'
 #include ServiceManagerTree
-require_relative 'orphaned_services.rb'
+#require_relative 'orphaned_services.rb'
 #include OrphanedServices
-require_relative 'managed_engines_registry.rb'
+#require_relative 'managed_engines_registry.rb'
 #include ManagedEnginesRegistry
-require_relative 'services_registry.rb'
+#require_relative 'services_registry.rb'
 #include ServicesRegistry
-require_relative 'service_configurations.rb'
+#require_relative 'service_configurations.rb'
 #include ServiceConfigurations
-
+require_relative '../system_registry/SystemRegistry.rb'
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 
@@ -22,7 +22,8 @@ class ServiceManager
   def initialize(core_api)
     @core_api = core_api
     #@service_tree root of the Service Registry Tree
-    @service_tree = initialize_tree
+    #@service_tree = initialize_tree
+    @system_registry = SystemRegistry.new()
   end
 
   #Find the assigned service container_name from teh service definition file
@@ -41,54 +42,17 @@ class ServiceManager
   #list the Provider namespaces as an Array of Strings
   #@return [Array]
   def list_providers_in_use
-    providers =  managed_service_tree.children
-    retval=Array.new
-    if providers == nil
-      log_error_mesg("No providers","")
-      return retval
-    end
-    providers.each do |provider|
-      retval.push(provider.name)
-    end
-    return retval
+    @system_registry.list_providers_in_use
+
   end
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
   def delete_service service_hash
-
-    if remove_from_managed_service(service_hash) == false
-      log_error_mesg("failed to remove managed service",service_hash)
-      return false
-    end
-    return remove_service(service_hash)
+    @system_registry.delete_service service_hash  
   end
 
-  def remove_service service_hash
-    if remove_from_services_registry(service_hash) == false
-      log_error_mesg("failed to remove from service registry",service_hash)
-      return false
-    end
-    SystemUtils.debug_output(  :remove_service, service_hash)
-    return save_tree
-
-  rescue Exception=>e
-    if service_hash != nil
-      p service_hash
-    end
-    log_exception(e)
-    return false
-  end
-
-  #@ removes underly service and remove entry from orphaned services
-  #@returns boolean indicating success
-  def remove_orphaned_service(service_hash)
-    #    if remove_from_managed_service(service_hash) == false
-    #      log_error_mesg("failed to remove managed service",service_hash)
-    #      return false
-    #    end
-    return release_orphan(service_hash)
-  end
+ 
 
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
@@ -104,10 +68,10 @@ class ServiceManager
     when "ManagedEngine"
       params[:parent_engine] = identifier
       SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
-      hashes = find_engine_services_hashes(params)
-      SystemUtils.debug_output("hashes",hashes)
+#      hashes = @system_registry.find_engine_services_hashes(params)
+#      SystemUtils.debug_output("hashes",hashes)
 
-      return find_engine_services_hashes(params)
+      return @system_registry.find_engine_services_hashes(params)
       #    attached_managed_engine_services(identifier)
     when "Volume"
       SystemUtils.debug_output(  :looking_for_volume,identifier)
@@ -159,14 +123,14 @@ class ServiceManager
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
 
-    add_to_managed_engines_tree(service_hash)
+    @system_registry.add_to_managed_engines_tree(service_hash)
 
     if service_hash[:persistant] == true
       if add_to_managed_service(service_hash) == false
         log_error_mesg("Failed to create persistant service ",service_hash)
         return false
       end
-      if add_to_services_tree(service_hash) == false
+      if @system_registry.add_to_services_tree(service_hash) == false
         log_error_mesg("Failed to add service to managed service registry",service_hash)
         return false
       end
@@ -256,13 +220,13 @@ class ServiceManager
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
         SystemUtils.debug_output(  :templated_service_hash, service_hash)
-        if service_hash[:persistant] == false || service_is_registered?(service_hash) == false
+        if service_hash[:persistant] == false || @system_registry.service_is_registered?(service_hash) == false
           add_service(service_hash)
         else
-          service_hash =  get_service_entry(service_hash)
+          service_hash =  @system_registry.get_service_entry(service_hash)
         end
       else
-        service_hash =  get_service_entry(service_hash)
+        service_hash =  @system_registry.get_service_entry(service_hash)
       end
       if service_hash.is_a?(Hash)
         SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
@@ -303,52 +267,14 @@ class ServiceManager
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine(params)
-
-    if params.has_key?(:parent_engine) == false
-      params[:parent_engine] = params[:engine_name]
-    end
-    engines_type_tree = managed_engines_type_tree(params)
-    if engines_type_tree.is_a?(Tree::TreeNode) == false
-      log_error_mesg("Warning Failed to find engine to remove",params)
-      return true
-    end
-    engine_node =  engines_type_tree[params[:parent_engine]]
-
-    if engine_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg("Warning Failed to find engine to remove",params)
-      return true
-    end
-    SystemUtils.debug_output(  :rm_remove_engine_params, params)
-    services = get_engine_persistant_services(params)
-    services.each do | service |
-      if params[:remove_all_data] == true
-        if delete_service(service) == false
-          log_error_mesg("Failed to remove service ",service)
-          return false
-        end
-      else
-        if orphan_service(service) == false
-          log_error_mesg("Failed to orphan service ",service)
-          return false
-        end
-      end
-    end
-
-    if  managed_engines_type_tree(params).remove!(engine_node)
-
-      return  save_tree
-    else
-      log_error_mesg("Failed to remove engine node ",engine_node)
-      return false
-    end
-    log_error_mesg("Failed remove engine",params)
-    return true
+    @system_registry.rm_remove_engine(params)
+    
   end
 
   #@returns boolean indicating sucess
   #Saves service_hash in orphan registry before removing from service registry
   def orphan_service(service_hash)
-    if save_as_orphan(service_hash)
+    if @system_registry.save_as_orphan(service_hash)
       return  remove_service(service_hash)
     end
     log_error_mesg("Failed to save orphan",service_hash)
@@ -376,12 +302,12 @@ class ServiceManager
       return false
     end
 
-    if add_to_services_tree(service_hash) == false
+    if @system_registry.add_to_services_tree(service_hash) == false
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
     end
 
-    return save_tree
+    return true
   end
 
   def deregister_non_persistant_service(service_hash)
@@ -391,11 +317,11 @@ class ServiceManager
       return false
     end
 
-    if remove_from_services_registry(service_hash) == false
+    if @system_registry.remove_from_services_registry(service_hash) == false
       log_error_mesg("Failed to deregsiter service from managed service registry",service_hash)
       return false
     end
-    return save_tree
+    return true
   end
 
   #service manager get non persistant services for engine_name
@@ -424,7 +350,7 @@ class ServiceManager
     services = get_engine_nonpersistant_services(params)
 
     services.each do |service_hash|
-      remove_from_services_registry(service_hash)
+      @system_registry.remove_from_services_registry(service_hash)
       #      deregister_non_persistant_service(service_hash)
     end
     return true
@@ -433,12 +359,8 @@ class ServiceManager
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
-    hashes = Array.new
-    service_tree = find_service_consumers(params)
-    if service_tree.is_a?(Tree::TreeNode)== true
-      hashes = get_all_leafs_service_hashes(service_tree)
-    end
-    return hashes
+    @system_registry.get_registered_against_service(params)
+   
   end
 
   #Calls remove service on the service_container to remove the service associated by the hash
@@ -454,7 +376,7 @@ class ServiceManager
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
-        remove_from_engine_registery(service_hash)
+        @system_registry.remove_from_engine_registery(service_hash)
       end
     elsif service.persistant == true
       log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
@@ -465,182 +387,207 @@ class ServiceManager
 
   end
   
-def managed_service_tree()
-    return _managed_service_tree()
-end
-def find_engine_services_hashes(params)
-  _find_engine_services_hashes(params)
-end
-def  get_managed_engine_tree
-  return _get_managed_engine_tree
-end
-def retrieve_orphan(params)
-  
-  return _retrieve_orphan(params)
-end
-def get_engine_persistance_services(params,persistance)
-  return _get_engine_persistance_services(params,persistance)
-end
-
-#@return [Array] of all service_hashs marked persistant for :engine_name
-def get_engine_persistant_services(params)
-  return _get_engine_persistance_services(params,true)
-end
-
-#@return [Array] of all service_hashs not marked persistant for :engine_name
-def get_engine_nonpersistant_services(params)
-  return _get_engine_persistance_services(params,false)
-end
-
-def service_is_registered?(service_hash)
-  _service_is_registered?(service_hash)
-end
-def release_orphan(params)
-  
-  return _release_orphan(params)
-end
-
-def reparent_orphan(params)
-  return _reparent_orphan(params)
-  end
-  
-def get_orphaned_services(params)
-  return _get_orphaned_services(params)
-end
-
-def get_orphaned_services_tree  
-  return _orphaned_services_tree
-end
-
-def service_configurations_tree
-  _service_configurations_tree
-end
-
-def orphaned_services_tree  
-  return _orphaned_services_tree
-end
-
-def services_tree_of_orphaned_services
-  get_orphaned_services
-  return _orphaned_services_tree
-end
-
-#module ServiceConfigurations
-  
-  #@ return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
-  def get_service_configurations(service_name)    
-    if  service_configurations_tree.is_a?(Tree::TreeNode) == false
-      return false
-     end
-    service_configurations = service_configurations_tree[service_name]
-    
-    if service_configurations.is_a?(Tree::TreeNode)
-      return service_configurations     
-    end
-    return false
-  end
-
-  def get_service_configurations_hashes(service_name)
-    configurations = get_service_configurations(service_name)
-    if  configurations.is_a?(Tree::TreeNode) == false
-      p "no service configurations for " + service_name.to_s
-      return Array.new
-    else
-      leafs = get_all_leafs_service_hashes(configurations)
-      p "leafs are " +  leafs.to_s
-      return leafs
-  end
-  
-  end
-  
-  #@ return a service_configuration_hash addressed by :service_name :configuration_name
-  
-  def get_service_configuration(service_configuration_hash)
-
-    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-    if service_configurations.is_a?(Tree::TreeNode) == false
-      return false
-    end
-    
-    if service_configuration_hash.has_key?(:configurator_name) == false     
-            return get_all_leafs_service_hashes(service_configurations)
-    end
-    
-      service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
-      if service_configuration.is_a?(Tree::TreeNode)
-        return service_configuration.content
-    end
-    return false
-  end
-  
-  def add_service_configuration(service_configuration_hash)
-    configurations = get_service_configurations(service_configuration_hash[:service_name])
-    if configurations.is_a?(Tree::TreeNode) == false
-      configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
-      service_configurations_tree << configurations
-    elsif configurations[service_configuration_hash[:configurator_name]]
-      p :service_configuration_hash_exists
-      p service_configuration_hash.to_s
-      return false
-    end
-      configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
-      configurations << configuration
-p "add " + service_configuration_hash.to_s
-      save_tree
-    
-  end
-  
-  def rm_service_configuration(service_configuration_hash)
-    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-        if service_configurations.is_a?(Tree::TreeNode) == false
-          p :serivce_configurations_not_found
-          return false
-        end
-        
-        if service_configuration_hash.has_key?(:configurator_name) == false
-          p :no_configuration_name     
-                return false
-        end
-        
-          service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
-          if service_configuration.is_a?(Tree::TreeNode)
-            remove_tree_entry(service_configuration)
-            save_tree
-           return true
-        end
-        return false
-  end
-  
-  def update_service_configuration(service_configuration_hash)
-    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
-            if service_configurations.is_a?(Tree::TreeNode) == false
-              p :serivce_configurations_not_found
-              return add_service_configuration(service_configuration_hash)
-              #return false
-            end
-            
-            if service_configuration_hash.has_key?(:configurator_name) == false
-              p :no_configuration_name     
-              return  false 
-              
-            end
-            
-              service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
-              if service_configuration.is_a?(Tree::TreeNode)
-                service_configuration.content = service_configuration_hash
-                p "saved " + service_configuration_hash.to_s
-                save_tree
-               return true
-              else
-                return add_service_configuration(service_configuration_hash)
-            end
-
-            return false
-    end
-  
+#def managed_service_tree()
+#    return _managed_service_tree()
+#end
+#def find_engine_services_hashes(params)
+#  _find_engine_services_hashes(params)
+#end
+#def  get_managed_engine_tree
+#  return _get_managed_engine_tree
+#end
+#def retrieve_orphan(params)
+#  
+#  return _retrieve_orphan(params)
+#end
+#def get_engine_persistance_services(params,persistance)
+#  return _get_engine_persistance_services(params,persistance)
+#end
+#
+##@return [Array] of all service_hashs marked persistant for :engine_name
+#def get_engine_persistant_services(params)
+#  return _get_engine_persistance_services(params,true)
+#end
+#
+##@return [Array] of all service_hashs not marked persistant for :engine_name
+#def get_engine_nonpersistant_services(params)
+#  return _get_engine_persistance_services(params,false)
+#end
+#
+#def service_is_registered?(service_hash)
+#  _service_is_registered?(service_hash)
+#end
+#def release_orphan(params)
+#  
+#  return _release_orphan(params)
+#end
+#
+#def reparent_orphan(params)
+#  return _reparent_orphan(params)
+#  end
+#  
+#def get_orphaned_services(params)
+#  return _get_orphaned_services(params)
+#end
+#
+#def get_orphaned_services_tree  
+#  return _orphaned_services_tree
+#end
+#
+#def service_configurations_tree
+#  _service_configurations_tree
+#end
+#
+#def orphaned_services_tree  
+#  return _orphaned_services_tree
+#end
+#
+#def services_tree_of_orphaned_services
+#  get_orphaned_services
+#  return _orphaned_services_tree
 #end
 
+##module ServiceConfigurations
+#  
+#  #@ return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
+#  def get_service_configurations(service_name)    
+#    if  service_configurations_tree.is_a?(Tree::TreeNode) == false
+#      return false
+#     end
+#    service_configurations = service_configurations_tree[service_name]
+#    
+#    if service_configurations.is_a?(Tree::TreeNode)
+#      return service_configurations     
+#    end
+#    return false
+#  end
+#
+#  def get_service_configurations_hashes(service_name)
+#    configurations = get_service_configurations(service_name)
+#    if  configurations.is_a?(Tree::TreeNode) == false
+#      p "no service configurations for " + service_name.to_s
+#      return Array.new
+#    else
+#      leafs = get_all_leafs_service_hashes(configurations)
+#      p "leafs are " +  leafs.to_s
+#      return leafs
+#  end
+#  
+#  end
+#  
+#  #@ return a service_configuration_hash addressed by :service_name :configuration_name
+#  
+#  def get_service_configuration(service_configuration_hash)
+#
+#    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
+#    if service_configurations.is_a?(Tree::TreeNode) == false
+#      return false
+#    end
+#    
+#    if service_configuration_hash.has_key?(:configurator_name) == false     
+#            return get_all_leafs_service_hashes(service_configurations)
+#    end
+#    
+#      service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
+#      if service_configuration.is_a?(Tree::TreeNode)
+#        return service_configuration.content
+#    end
+#    return false
+#  end
+#  
+#  def add_service_configuration(service_configuration_hash)
+#    configurations = get_service_configurations(service_configuration_hash[:service_name])
+#    if configurations.is_a?(Tree::TreeNode) == false
+#      configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
+#      service_configurations_tree << configurations
+#    elsif configurations[service_configuration_hash[:configurator_name]]
+#      p :service_configuration_hash_exists
+#      p service_configuration_hash.to_s
+#      return false
+#    end
+#      configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name],service_configuration_hash)
+#      configurations << configuration
+#p "add " + service_configuration_hash.to_s
+#      save_tree
+#    
+#  end
+#  
+#  def rm_service_configuration(service_configuration_hash)
+#    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
+#        if service_configurations.is_a?(Tree::TreeNode) == false
+#          p :serivce_configurations_not_found
+#          return false
+#        end
+#        
+#        if service_configuration_hash.has_key?(:configurator_name) == false
+#          p :no_configuration_name     
+#                return false
+#        end
+#        
+#          service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
+#          if service_configuration.is_a?(Tree::TreeNode)
+#            remove_tree_entry(service_configuration)
+#            save_tree
+#           return true
+#        end
+#        return false
+#  end
+#  
+#  def update_service_configuration(service_configuration_hash)
+#    service_configurations = get_service_configurations(service_configuration_hash[:service_name])  
+#            if service_configurations.is_a?(Tree::TreeNode) == false
+#              p :serivce_configurations_not_found
+#              return add_service_configuration(service_configuration_hash)
+#              #return false
+#            end
+#            
+#            if service_configuration_hash.has_key?(:configurator_name) == false
+#              p :no_configuration_name     
+#              return  false 
+#              
+#            end
+#            
+#              service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
+#              if service_configuration.is_a?(Tree::TreeNode)
+#                service_configuration.content = service_configuration_hash
+#                p "saved " + service_configuration_hash.to_s
+#                save_tree
+#               return true
+#              else
+#                return add_service_configuration(service_configuration_hash)
+#            end
+#
+#            return false
+#    end
+#  
+##end
 
+def remove_service service_hash
+   if @system_registry.remove_from_services_registry(service_hash) == false
+     log_error_mesg("failed to remove from service registry",service_hash)
+     return false
+   end
+   SystemUtils.debug_output(  :remove_service, service_hash)
+   return save_tree
+
+ rescue Exception=>e
+   if service_hash != nil
+     p service_hash
+   end
+   log_exception(e)
+   return false
+ end
+
+ #@ removes underly service and remove entry from orphaned services
+ #@returns boolean indicating success
+ def remove_orphaned_service(service_hash)
+   #    if remove_from_managed_service(service_hash) == false
+   #      log_error_mesg("failed to remove managed service",service_hash)
+   #      return false
+   #    end
+   return release_orphan(service_hash)
+ end
+ 
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
   #@param service_hash [Hash]
