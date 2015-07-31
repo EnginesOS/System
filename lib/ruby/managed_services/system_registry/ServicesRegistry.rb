@@ -185,7 +185,7 @@ class ServicesRegistry < SubRegistry
     #@service_hash :publisher_namespace :type_path :service_handle
     def remove_from_services_registry(service_hash)
   
-      if managed_service_tree.is_a?(Tree::TreeNode) == true
+      if @registry.is_a?(Tree::TreeNode) == true
         service_node = find_service_consumers(service_hash)
   
         if service_node.is_a?(Tree::TreeNode) == true
