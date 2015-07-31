@@ -1,4 +1,4 @@
-class ConfigurationRegistry < SubRegistry  
+class ConfigurationsRegistry < SubRegistry  
  
     #@ return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
     def get_service_configurations(service_name)    
