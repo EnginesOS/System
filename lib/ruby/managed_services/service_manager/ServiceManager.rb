@@ -135,7 +135,7 @@ class ServiceManager
         log_error_mesg("Failed to create persistant service ",service_hash)
         return false
       end
-      if @system_registry.add_to_services_tree(service_hash) == false
+      if @system_registry.add_to_services_registry(service_hash) == false
         log_error_mesg("Failed to add service to managed service registry",service_hash)
         return false
       end
@@ -307,7 +307,7 @@ class ServiceManager
       return false
     end
 
-    if @system_registry.add_to_services_tree(service_hash) == false
+    if @system_registry.add_to_services_registry(service_hash) == false
       log_error_mesg("Failed to add service to managed service registry",service_hash)
       return false
     end
