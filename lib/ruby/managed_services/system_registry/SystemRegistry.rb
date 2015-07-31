@@ -23,7 +23,7 @@ class SystemRegistry < Registry
     
   end
   
-  def get_engine_nonpersistance_services(params)
+  def get_engine_nonpersistant_services(params)
     @managed_engines_registry.get_engine_persistance_services(params,false)
   end
   

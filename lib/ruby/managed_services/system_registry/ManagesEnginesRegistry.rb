@@ -7,7 +7,7 @@ class ManagesEnginesRegistry  < SubRegistry
       return false
     end
 
-    engines_type_tree = managed_engines_type_tree(params)
+    engines_type_tree = managed_engines_type_registry(params)
     if engines_type_tree.is_a?(Tree::TreeNode) == false
       return false
     end
@@ -37,7 +37,7 @@ class ManagesEnginesRegistry  < SubRegistry
     end
     SystemUtils.debug_output("find_engine_services_hashes", params)
 
-    engine_node = managed_engines_type_tree(params)[params[:parent_engine]]
+    engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     #p get_all_leafs_service_hashes(engine_node)
     if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find in managed service tree",params)
@@ -85,7 +85,7 @@ class ManagesEnginesRegistry  < SubRegistry
       log_error_mesg("no_parent_engine_key",service_hash)
       return false
     end
-    engines_type_tree = managed_engines_type_tree(service_hash)
+    engines_type_tree = managed_engines_type_registry(service_hash)
     if engines_type_tree.is_a?(Tree::TreeNode) == false 
       log_error_mesg("no_type tree ",service_hash)
         return false 
@@ -94,7 +94,7 @@ class ManagesEnginesRegistry  < SubRegistry
       engine_node = engines_type_tree[ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
-      managed_engines_type_tree(service_hash) << engine_node
+    managed_engines_type_registry(service_hash) << engine_node
     end
 
     service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
