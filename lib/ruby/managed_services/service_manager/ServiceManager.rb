@@ -43,7 +43,9 @@ class ServiceManager
   def get_engine_nonpersistant_services(params)
     @system_registry.get_engine_nonpersistant_services(params)
   end
-  
+  def get_engine_persistant_services(params)
+    @system_registry.get_engine_persistant_services(params)
+      end
   def managed_service_tree
     @system_registry.services_registry
   end

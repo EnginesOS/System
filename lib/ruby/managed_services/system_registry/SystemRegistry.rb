@@ -55,7 +55,9 @@ end
   def get_engine_nonpersistant_services(params)
     @managed_engines_registry.get_engine_persistance_services(params,false)
   end
-  
+  def get_engine_persistant_services(params)
+    @managed_engines_registry.get_engine_persistance_services(params,true)
+  end
   def remove_from_managed_engines_registry(service_hash)
     @managed_engines_registry.remove_from_managed_engines_registry(service_hash)    
   end
