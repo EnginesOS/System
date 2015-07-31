@@ -120,7 +120,7 @@ class OrphanServicesRegistry < SubRegistry
        leafs = Array.new
        SystemUtils.debug_output(   :looking_for_orphans,params)
        orphans = find_orphan_consumers(params)
-       if orphans != nil && orphans != false
+       if orphans.is_a?(Tree::TreeNode) == true
          leafs = get_matched_leafs(orphans,:persistant,true)
        end   
        return leafs
@@ -152,7 +152,7 @@ class OrphanServicesRegistry < SubRegistry
        
      service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
   
-     if service_path_tree == false
+     if service_path_tree.is_a?(Tree::TreeNode) == false
        log_error_mesg("Failed to find orphan matching service path",service_query_hash)
        return false
      end
