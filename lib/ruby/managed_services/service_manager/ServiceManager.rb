@@ -30,6 +30,12 @@ class ServiceManager
     @system_registry.get_engine_nonpersistant_services(params)
   end
   
+  def managed_service_tree
+    @system_registry.managed_services_registry
+  end
+  def managed_engines_tree
+     @system_registry.managed_engines_registry
+   end
   
   #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)

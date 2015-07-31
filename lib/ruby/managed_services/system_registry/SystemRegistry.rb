@@ -123,7 +123,7 @@ class SystemRegistry < Registry
   return retval
   end
   
-  protected
+ 
   
   #@return boolean true if not nil
   def    check_system_registry_tree
@@ -268,49 +268,49 @@ class SystemRegistry < Registry
   end
 
 
-# returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
- # Creates new attached [TreeNode] with required parent path if none exists
- # return nil on error
- #param parent_node the branch to create the node under
- #param type_path the dir path format as in dns or database/sql/mysql
- def create_type_path_node(parent_node,type_path)
-   if type_path == nil
-     log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
-     return false
-   end
-   if parent_node.is_a?(Tree::TreeNode) == false
-     log_error_mesg("parent node not a tree node ",parent_node)
-           return false
-         end
-   if type_path.include?("/") == false
-     service_node = parent_node[type_path]
-     if service_node == nil
-       service_node = Tree::TreeNode.new(type_path,type_path)
-       parent_node << service_node
-     end
-     return service_node
-   else
-
-     sub_paths= type_path.split("/")
-     prior_node = parent_node
-     count=0
-
-     sub_paths.each do |sub_path|
-       sub_node = prior_node[sub_path]
-       if sub_node == nil
-         sub_node = Tree::TreeNode.new(sub_path,sub_path)
-         prior_node << sub_node
-       end
-       prior_node = sub_node
-       count+=1
-       if count == sub_paths.count
-         return sub_node
-       end
-     end
-   end
-   log_error_mesg("create_type_path failed",type_path)
-   return false
- end
+## returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+# # Creates new attached [TreeNode] with required parent path if none exists
+# # return nil on error
+# #param parent_node the branch to create the node under
+# #param type_path the dir path format as in dns or database/sql/mysql
+# def create_type_path_node(parent_node,type_path)
+#   if type_path == nil
+#     log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
+#     return false
+#   end
+#   if parent_node.is_a?(Tree::TreeNode) == false
+#     log_error_mesg("parent node not a tree node ",parent_node)
+#           return false
+#         end
+#   if type_path.include?("/") == false
+#     service_node = parent_node[type_path]
+#     if service_node == nil
+#       service_node = Tree::TreeNode.new(type_path,type_path)
+#       parent_node << service_node
+#     end
+#     return service_node
+#   else
+#
+#     sub_paths= type_path.split("/")
+#     prior_node = parent_node
+#     count=0
+#
+#     sub_paths.each do |sub_path|
+#       sub_node = prior_node[sub_path]
+#       if sub_node == nil
+#         sub_node = Tree::TreeNode.new(sub_path,sub_path)
+#         prior_node << sub_node
+#       end
+#       prior_node = sub_node
+#       count+=1
+#       if count == sub_paths.count
+#         return sub_node
+#       end
+#     end
+#   end
+#   log_error_mesg("create_type_path failed",type_path)
+#   return false
+# end
  
 # @return the ManagedEngine Tree Branch
   # creates if does not exist
