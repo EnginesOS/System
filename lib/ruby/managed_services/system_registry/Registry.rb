@@ -76,4 +76,32 @@ class Registry
        end #do
        return ret_val
      end
+     
+# param remove [TreeNode] from the @servicetree
+  # If the tree_node is the last child then the parent is removed this is continued up.
+  #@return boolean  
+  def remove_tree_entry(tree_node)
+
+   
+    if   tree_node.is_a?(Tree::TreeNode ) == false
+      log_error_mesg("Nil treenode ?",tree_node)      
+      return false
+    end
+
+    if tree_node.parent.is_a?(Tree::TreeNode) == false
+      log_error_mesg("No Parent Node ! on remove tree entry",tree_node)
+      return false
+    end
+
+    parent_node = tree_node.parent
+    parent_node.remove!(tree_node)
+    if parent_node.has_children? == false
+      remove_tree_entry(parent_node)
+    end
+
+    return save_tree
+    rescue Exception=>e
+         log_exception(e)
+         return false
+  end
 end
