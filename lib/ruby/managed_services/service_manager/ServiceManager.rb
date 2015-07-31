@@ -10,11 +10,13 @@ require 'rubytree'
 #include ServicesRegistry
 #require_relative 'service_configurations.rb'
 #include ServiceConfigurations
+require_relative '../system_registry/Registry.rb'
 require_relative '../system_registry/SystemRegistry.rb'
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 
-class ServiceManager
+
+
 
   #@service_tree root of the Service Registry Tree
   attr_accessor     :last_error

@@ -1,9 +1,9 @@
 class SystemRegistry < Registry 
-  require 'Registry.rb'
-  require 'SubRegistry.rb'
-  require 'ConfigurationRegistry.rb'
-  require 'ManagesEnginesRegistry.rb'
-  require 'ServicesRegistry.rb'
+  require_relative 'Registry.rb'
+  require_relative 'SubRegistry.rb'
+  require_relative 'ConfigurationRegistry.rb'
+  require_relative 'ManagesEnginesRegistry.rb'
+  require_relative 'ServicesRegistry.rb'
    attr_reader :last_error
    
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
