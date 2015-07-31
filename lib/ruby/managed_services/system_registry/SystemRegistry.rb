@@ -110,48 +110,48 @@ end
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
-  def rm_remove_engine(params)
-
-#    if params.has_key?(:parent_engine) == false
-#      params[:parent_engine] = params[:engine_name]
-#    end
-#    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
-#    if managed_engines_registry.is_a?(Tree::TreeNode) == false
-#      log_error_mesg("Warning Failed to find engine to remove",params)
-#      return true
-#    end
-#    engine_node =  managed_engines_registry[params[:parent_engine]]
+#  def rm_remove_engine(params)
 #
-#    if engine_node.is_a?(Tree::TreeNode) == false
-#      log_error_mesg("Warning Failed to find engine to remove",params)
-#      return true
+##    if params.has_key?(:parent_engine) == false
+##      params[:parent_engine] = params[:engine_name]
+##    end
+##    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
+##    if managed_engines_registry.is_a?(Tree::TreeNode) == false
+##      log_error_mesg("Warning Failed to find engine to remove",params)
+##      return true
+##    end
+##    engine_node =  managed_engines_registry[params[:parent_engine]]
+##
+##    if engine_node.is_a?(Tree::TreeNode) == false
+##      log_error_mesg("Warning Failed to find engine to remove",params)
+##      return true
+##    end
+##    SystemUtils.debug_output(  :rm_remove_engine_params, params)
+#    services = get_engine_persistant_services(params)
+#    services.each do | service |
+#      if params[:remove_all_data] == true
+#        if delete_service(service) == false
+#          log_error_mesg("Failed to remove service ",service)
+#          return false
+#        end
+#      else
+#        if orphan_service(service) == false
+#          log_error_mesg("Failed to orphan service ",service)
+#          return false
+#        end
+#      end
 #    end
-#    SystemUtils.debug_output(  :rm_remove_engine_params, params)
-    services = get_engine_persistant_services(params)
-    services.each do | service |
-      if params[:remove_all_data] == true
-        if delete_service(service) == false
-          log_error_mesg("Failed to remove service ",service)
-          return false
-        end
-      else
-        if orphan_service(service) == false
-          log_error_mesg("Failed to orphan service ",service)
-          return false
-        end
-      end
-    end
-
-    if  managed_engines_type_tree(params).remove!(engine_node)
- 
-      return  save_tree
-    else
-      log_error_mesg("Failed to remove engine node ",engine_node)
-      return false
-    end
-    log_error_mesg("Failed remove engine",params)
-    return true
-  end
+#
+#    if  managed_engines_type_tree(params).remove!(engine_node)
+# 
+#      return  save_tree
+#    else
+#      log_error_mesg("Failed to remove engine node ",engine_node)
+#      return false
+#    end
+#    log_error_mesg("Failed remove engine",params)
+#    return true
+#  end
 
 
 

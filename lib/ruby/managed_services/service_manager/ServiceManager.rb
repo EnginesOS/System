@@ -28,8 +28,8 @@ class ServiceManager
   def get_orphaned_services(params)
     @system_registry.get_orphaned_services(params)
   end
-  def orphan_services(params)
-    @system_registry.orphan_services(params)
+  def orphan_service(params)
+    @system_registry.orphan_service(params)
   end
   
   def retrieve_orphan(params)
@@ -314,7 +314,7 @@ end
            end
          end
        end
-   return @system_registry.rm_remove_engine(params)
+   return @system_registry.remove_from_managed_engines_registry(params)
 #       if  managed_engines_type_tree(params).remove!(engine_node)
 #    
 #         return  save_tree
