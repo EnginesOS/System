@@ -639,7 +639,9 @@ SystemUtils.log_exception(e)
           if arc_loc.end_with?("/")
             arc_loc = arc_loc.chop() #note not String#chop
           end
-          arc_loc = "/" + arc_loc 
+            if arc_loc.start_with?("/") == false
+              arc_loc = "/" + arc_loc
+            end 
           @docker_file.puts("RUN mkdir -p  /home/app"  )
           count_layer
         end
@@ -689,7 +691,7 @@ SystemUtils.log_exception(e)
             @docker_file.puts("WORKDIR /tmp")
             count_layer
           end
-          if  arc_loc.start_with?("/home/app") == true || arc_loc.start_with?("/home/local/") == true
+          if  arc_loc.start_with?("/home/app") == true || arc_loc.start_with?("/home/local") == true
             dest_prefix=""        
           else
             dest_prefix="/home/app"
