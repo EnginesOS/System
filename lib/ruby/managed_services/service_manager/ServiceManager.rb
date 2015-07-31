@@ -65,6 +65,10 @@ class ServiceManager
   def update_service_configuration(config_hash)
     @system_registry.update_service_configuration(config_hash)
       end
+  def get_service_configurations_hashes(service_hash)
+      @system_registry.get_service_configurations_hashes(service_hash)
+    end
+      
   #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
 

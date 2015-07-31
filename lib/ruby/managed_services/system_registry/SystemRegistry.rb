@@ -94,6 +94,11 @@ end
   end    
    end
    
+  def get_service_configurations_hashes(service_hash)
+    @configuration_registry.get_service_configurations_hashes(service_hash)
+  end
+  
+  end
   def update_service_configuration(config_hash)
     if  @configuration_registry.update_service_configuration(config_hash) == true
     save_tree
