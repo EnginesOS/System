@@ -80,7 +80,7 @@ end
     if params.has_key?(:parent_engine) == false
       params[:parent_engine] = params[:engine_name]
     end
-    engines_type_tree = @managed_engines_registry.managed_engines_type_tree(params)
+    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
     if managed_engines_registry.is_a?(Tree::TreeNode) == false
       log_error_mesg("Warning Failed to find engine to remove",params)
       return true
