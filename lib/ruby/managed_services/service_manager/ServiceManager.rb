@@ -38,7 +38,9 @@ class ServiceManager
   def get_managed_engine_tree
      @system_registry.managed_engines_registry
    end
-  
+  def service_configurations_tree
+    @system_registry.service_configurations_registry
+  end
   #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
 
