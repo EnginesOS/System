@@ -27,6 +27,12 @@ class SystemRegistry < Registry
     @managed_engines_registry.get_engine_persistance_services(params,false)
   end
   
+  def add_to_managed_engines_registry(service_hash)
+    @managed_engines_registry.add_to_managed_engines_registry(service_hash)
+    
+  end
+  
+  
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
     def get_registered_against_service(params)
       

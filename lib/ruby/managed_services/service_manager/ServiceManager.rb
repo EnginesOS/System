@@ -128,7 +128,7 @@ class ServiceManager
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
 
-    @system_registry.add_to_managed_engines_tree(service_hash)
+    @system_registry.add_to_managed_engines_registry(service_hash)
 
     if service_hash[:persistant] == true
       if add_to_managed_service(service_hash) == false

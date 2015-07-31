@@ -79,7 +79,7 @@ class ManagesEnginesRegistry  < SubRegistry
   #requires :parent_engine :type_path
   #@return boolean
   #overwrites
-  def add_to_managed_engines_tree(service_hash)
+  def add_to_managed_engines_registry(service_hash)
 
     if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
       log_error_mesg("no_parent_engine_key",service_hash)
@@ -129,7 +129,7 @@ class ManagesEnginesRegistry  < SubRegistry
   end
 
   #@return the appropriate tree under managedservices trees either engine or service
-  def managed_engines_type_tree(site_hash)
+  def managed_engines_type_registry(site_hash)
     if @registry.is_a?(Tree::TreeNode) == false
       return false
     end
@@ -157,7 +157,7 @@ class ManagesEnginesRegistry  < SubRegistry
 
   #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
   #@return boolean
-  def remove_from_engine_registery service_hash
+  def remove_from_engine_registry service_hash
 
     service_node = find_engine_services(service_hash)
     if service_node.is_a?(Tree::TreeNode) == true
