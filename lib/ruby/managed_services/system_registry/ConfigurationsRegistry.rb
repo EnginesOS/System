@@ -50,7 +50,7 @@ class ConfigurationsRegistry < SubRegistry
       configurations = get_service_configurations(service_configuration_hash[:service_name])
       if configurations.is_a?(Tree::TreeNode) == false
         configurations = Tree::TreeNode.new(service_configuration_hash[:service_name] ," Configurations for :" + service_configuration_hash[:service_name]  )
-        service_configurations_tree << configurations
+        @registry << configurations
       elsif configurations[service_configuration_hash[:configurator_name]]
         p :service_configuration_hash_exists
         p service_configuration_hash.to_s
