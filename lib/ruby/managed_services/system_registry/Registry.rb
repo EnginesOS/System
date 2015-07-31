@@ -99,7 +99,7 @@ class Registry
       remove_tree_entry(parent_node)
     end
 
-    return save_tree
+    return true
     rescue Exception=>e
          log_exception(e)
          return false
