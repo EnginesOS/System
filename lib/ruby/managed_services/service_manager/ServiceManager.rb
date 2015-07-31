@@ -55,7 +55,9 @@ class ServiceManager
   def service_configurations_tree
     @system_registry.service_configurations_registry
   end
-  
+  def service_is_registered?(service_hash)
+    @system_registry.service_is_registered?(service_hash)
+  end
   def update_service_configuration(config_hash)
     @system_registry.update_service_configuration(config_hash)
       end

@@ -57,6 +57,10 @@ class SystemRegistry < Registry
     save_tree
   end
   end
+  def service_is_registered?(service_hash)
+    @services_registry.service_is_registered?(service_hash)
+  end
+  
   def  find_engine_services_hashes(params)
     @managed_engines_registry.find_engine_services_hashes(params)
   end
