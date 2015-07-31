@@ -26,7 +26,7 @@ class ServiceManager
     @system_registry = SystemRegistry.new()
   end
   def get_orphaned_services_tree
-    @system_registry.
+    @system_registry.orphaned_services_registry
   end
   def get_engine_nonpersistant_services(params)
     @system_registry.get_engine_nonpersistant_services(params)
