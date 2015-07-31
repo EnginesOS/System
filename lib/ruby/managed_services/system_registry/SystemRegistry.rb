@@ -2,8 +2,9 @@ class SystemRegistry < Registry
   require_relative 'Registry.rb'
   require_relative 'SubRegistry.rb'
   require_relative 'ConfigurationRegistry.rb'
-  require_relative 'ManagesEnginesRegistry.rb'
+  require_relative 'ManagedEnginesRegistry.rb'
   require_relative 'ServicesRegistry.rb'
+  require_relative 'OrphanServicesRegistry.rb'
    attr_reader :last_error
    
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
@@ -13,16 +14,13 @@ class SystemRegistry < Registry
      @configuration_registry = ConfigurationRegistry.new(service_configurations_registry)
      @services_registry = ServicesRegistry.new(services_registry)
      @managed_engines_registry = ManagesEnginesRegistry.new( managed_engines_registry)
+     @orphan_server_registry = OrphanServiceRegistry.new( orphaned_services_registry)
      
    end
    
 
   
-  
-  class OrphanServiceRegistry
-    
-  end
-  
+ 
   def add_to_services_registry(service_hash)
     @services_registry.add_to_services_registry(service_hash)
   end   
@@ -311,6 +309,23 @@ class SystemRegistry < Registry
 #   log_error_mesg("create_type_path failed",type_path)
 #   return false
 # end
+  
+def orphaned_services_registry
+    
+    if check_system_registry_tree == false 
+          return false
+        end
+    orphans = @system_registry["OphanedServices"]
+    if orphans.is_a?(Tree::TreeNode) == false
+      @system_registry << Tree::TreeNode.new("OphanedServices","Persistant Services left after Engine Deinstall")
+      orphans = @system_registry["OphanedServices"]
+    end
+
+    return orphans
+    rescue Exception=>e
+         log_exception(e)
+         return nil
+  end
  
 # @return the ManagedEngine Tree Branch
   # creates if does not exist

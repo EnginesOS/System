@@ -1,4 +1,4 @@
-class ManagesEnginesRegistry  < SubRegistry  
+class ManagedEnginesRegistry  < SubRegistry  
   
   
   def find_engine_services(params)
