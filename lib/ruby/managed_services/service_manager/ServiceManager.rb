@@ -31,6 +31,9 @@ class ServiceManager
   def retrieve_orphan(params)
     @system_registry.retrieve_orphan(params)
   end
+  def release_orphan(params)
+      @system_registry.release_orphan(params)
+    end
   def reparent_orphan(params)
      @system_registry.reparent_orphan(params)
    end
