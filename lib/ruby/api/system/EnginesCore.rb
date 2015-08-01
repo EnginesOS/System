@@ -679,7 +679,13 @@ end
       SystemUtils.log_exception e
       return false
   end
-
+  
+ #@returns [Boolena]
+ # whether pulled or no false if no new image 
+ def pull_image 
+    return @docker_api.pull_image(image_name)   
+  end
+  
   def set_engine_network_properties (engine, params)
     return @system_api.set_engine_network_properties(engine,params)
   end

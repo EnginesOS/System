@@ -3,6 +3,7 @@ class DockerApi
    def create_container container
      clear_error
      begin
+       
        commandargs = container_commandline_args(container)
        commandargs = "docker run  -d " + commandargs
        SystemUtils.debug_output("create cont",commandargs)
@@ -47,6 +48,26 @@ class DockerApi
      end
    end
 
+   def pull_image(image_name)
+     cmd= "docker pull " + image_name
+          SystemUtils.debug_output( "Pull Image",cmd)
+          result = SystemUtils.execute_command(cmd)
+          if  result[:result] != 0
+            @last_error = result[:stderr]
+                       return false
+          end
+          if  result[:stdout].length > 4
+           return true
+          else
+            @last_error = result[:stderr]
+          end
+          
+          return false
+          rescue  Exception=>e
+                 SystemUtils.log_exception(e)
+                 return false
+   end
+   
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
      SystemUtils.debug_output( "image_exists",cmd)
@@ -55,8 +76,9 @@ class DockerApi
        @last_error = result[:stderr]
                   return false
      end
-     if  result[:stdout].length > 4
-      return true
+     if  result[:stdout].include?("Status: Image is up to date for " + image_name) == true
+       @last_error = "No Change"
+      return false
      else
        @last_error = result[:stderr]
      end

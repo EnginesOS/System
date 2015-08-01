@@ -14,7 +14,9 @@ class Container
   end
   
   attr_reader :docker_info,:container_id, :memory,:container_name ,:hostname,:domain_name, :image, :eports,:volumes,:environments
-   
+  
+ 
+  
   def update_memory(new_memory)
     @memory = new_memory
   end
