@@ -90,6 +90,15 @@ class DockerFileBuilder
     set_user("0")
     write_data_permissions
 
+    if   @builder.app_is_persistant  == true
+          @docker_file.puts("RUN cp -rp /home/app /home/app_src")
+          count_layer()
+          @docker_file.puts("VOLUME /home/app_src/")
+          count_layer()
+        else
+          @docker_file.puts("#Non persistant App")
+        end
+        
     @docker_file.puts("run mv /home/fs /home/fs_src")
     count_layer()
     @docker_file.puts("VOLUME /home/fs_src/")
@@ -99,6 +108,9 @@ class DockerFileBuilder
     @docker_file.puts("")
     @docker_file.puts("VOLUME /home/fs/")
     count_layer()
+    
+    
+     
  
     write_clear_env_variables
     
@@ -606,6 +618,13 @@ SystemUtils.log_exception(e)
         #            extracts =extracts + " "
         #            dirs =dirs + " "
         #          end
+#        "ownstagram_"
+#        App 402 stdout: "ownstagram_"
+#        App 402 stdout: "_"
+#        App 402 stdout: "git_"
+#        App 402 stdout: "ownstagram|"
+
+
         p "_+_+_+_+_+_+_+_+_+_+_"
         p archive_details
         p arc_src + "_" 
@@ -613,11 +632,18 @@ SystemUtils.log_exception(e)
         p arc_loc + "_" 
         p arc_extract + "_" 
         p arc_dir +"|"
-          
-        if arc_loc == "./" || arc_loc == "." 
+        set_user("0")
+        if arc_loc == "./" || arc_loc == "." || arc_loc == "/" || arc_loc == ""
           arc_loc=""
-        elsif arc_loc.end_with?("/")
-          arc_loc = arc_loc.chop() #note not String#chop
+        else
+          if arc_loc.end_with?("/")
+            arc_loc = arc_loc.chop() #note not String#chop
+          end
+            if arc_loc.start_with?("/") == false
+              arc_loc = "/" + arc_loc
+            end 
+          @docker_file.puts("RUN mkdir -p  /home/app"  )
+          count_layer
         end
         
         if arc_extract == "git"
@@ -626,7 +652,13 @@ SystemUtils.log_exception(e)
           @docker_file.puts("RUN git clone " + arc_src + " --depth 1 " )
           count_layer
           set_user("0")
-          @docker_file.puts("RUN mv  " + arc_dir + " /home/app/" +  arc_loc )
+          
+          @docker_file.puts("RUN mv  " + arc_dir + " /home/app" +  arc_loc )
+#          @docker_file.puts("RUN  if ! test -d `dirname /home/app/" + arc_dir + "` ;\\")
+#          @docker_file.puts("then \\")
+#          @docker_file.puts("mkdir  -p `dirname /home/app/" + arc_dir + ";\\")
+#          @docker_file.puts("fi ;\\")
+#          @docker_file.puts("  mv  " + arc_dir + " /home/app/" +  arc_loc )
           count_layer
           set_user("$ContUser")
        
@@ -659,10 +691,10 @@ SystemUtils.log_exception(e)
             @docker_file.puts("WORKDIR /tmp")
             count_layer
           end
-          if  arc_loc.start_with?("/home/app") == false && arc_loc.start_with?("/home/local/") == false
-            dest_prefix="/home/app"
+          if  arc_loc.start_with?("/home/app") == true || arc_loc.start_with?("/home/local") == true
+            dest_prefix=""        
           else
-            dest_prefix=""
+            dest_prefix="/home/app"
           end
 
           @docker_file.puts("run   if test ! -d " + arc_dir  +" ;\\")
@@ -675,6 +707,7 @@ SystemUtils.log_exception(e)
           @docker_file.puts(" mv " + arc_dir + " " + dest_prefix +  arc_loc )
           count_layer
           first_archive = false
+          set_user("$ContUser")
         end
       end
 

@@ -1,5 +1,5 @@
 # Module of Methods to handle tree structure for ServiceManager
-module ServiceManagerTree
+#module ServiceManagerTree
   @last_read=nil
   
   # @return the ManagedEngine Tree Branch
@@ -17,8 +17,7 @@ module ServiceManagerTree
          return false
   end
   
-  
-  
+
   def service_tree
     
     if @last_tree_mod_time && @last_tree_mod_time != nil 
@@ -36,7 +35,7 @@ module ServiceManagerTree
 
     #@return The OrphanedServices Tree [TreeNode] branch
    # create new branch if none exists
-  def orphaned_services_tree
+  def _orphaned_services_tree
     
     if check_service_tree == false 
           return false
@@ -55,7 +54,7 @@ module ServiceManagerTree
   
   #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
-  def managed_service_tree()
+  def _managed_service_tree()
    
     if check_service_tree == false
       return false
@@ -113,50 +112,50 @@ module ServiceManagerTree
              return false
   end
   
-  
-  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
-   # Creates new attached [TreeNode] with required parent path if none exists
-   # return nil on error
-   #param parent_node the branch to create the node under
-   #param type_path the dir path format as in dns or database/sql/mysql
-   def create_type_path_node(parent_node,type_path)
-     if type_path == nil
-       log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
-       return false
-     end
-     if parent_node.is_a?(Tree::TreeNode) == false
-       log_error_mesg("parent node not a tree node ",parent_node)
-             return false
-           end
-     if type_path.include?("/") == false
-       service_node = parent_node[type_path]
-       if service_node == nil
-         service_node = Tree::TreeNode.new(type_path,type_path)
-         parent_node << service_node
-       end
-       return service_node
-     else
- 
-       sub_paths= type_path.split("/")
-       prior_node = parent_node
-       count=0
- 
-       sub_paths.each do |sub_path|
-         sub_node = prior_node[sub_path]
-         if sub_node == nil
-           sub_node = Tree::TreeNode.new(sub_path,sub_path)
-           prior_node << sub_node
-         end
-         prior_node = sub_node
-         count+=1
-         if count == sub_paths.count
-           return sub_node
-         end
-       end
-     end
-     log_error_mesg("create_type_path failed",type_path)
-     return false
-   end
+#  
+#  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
+#   # Creates new attached [TreeNode] with required parent path if none exists
+#   # return nil on error
+#   #param parent_node the branch to create the node under
+#   #param type_path the dir path format as in dns or database/sql/mysql
+#   def create_type_path_node(parent_node,type_path)
+#     if type_path == nil
+#       log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
+#       return false
+#     end
+#     if parent_node.is_a?(Tree::TreeNode) == false
+#       log_error_mesg("parent node not a tree node ",parent_node)
+#             return false
+#           end
+#     if type_path.include?("/") == false
+#       service_node = parent_node[type_path]
+#       if service_node == nil
+#         service_node = Tree::TreeNode.new(type_path,type_path)
+#         parent_node << service_node
+#       end
+#       return service_node
+#     else
+# 
+#       sub_paths= type_path.split("/")
+#       prior_node = parent_node
+#       count=0
+# 
+#       sub_paths.each do |sub_path|
+#         sub_node = prior_node[sub_path]
+#         if sub_node == nil
+#           sub_node = Tree::TreeNode.new(sub_path,sub_path)
+#           prior_node << sub_node
+#         end
+#         prior_node = sub_node
+#         count+=1
+#         if count == sub_paths.count
+#           return sub_node
+#         end
+#       end
+#     end
+#     log_error_mesg("create_type_path failed",type_path)
+#     return false
+#   end
   
   #@branch the [TreeNode] under which to search
   #@param label the hash key for the value to match value against
@@ -285,32 +284,32 @@ rescue Exception=>e
    
  end
  
-def service_configurations_tree
-  if check_service_tree == false
-        return false
-      end
-  if (service_tree["Configurations"] == nil )
-    service_tree << Tree::TreeNode.new("Configurations","Service Configurations")       
-  end
-  return service_tree["Configurations"]
-  rescue Exception=>e
-       log_exception(e)
-       return nil
-end
-  #Wrapper for Gui to 
- #@return [TreeNode] managed_service_tree[publisher]
-  def service_provider_tree(publisher)
-    if managed_service_tree.is_a?(Tree::TreeNode) == true
-      return managed_service_tree[publisher]
-  end
-  return false
-    
-  end
-  
+#def _service_configurations_tree
+#  if check_service_tree == false
+#        return false
+#      end
+#  if (service_tree["Configurations"] == nil )
+#    service_tree << Tree::TreeNode.new("Configurations","Service Configurations")       
+#  end
+#  return service_tree["Configurations"]
+#  rescue Exception=>e
+#       log_exception(e)
+#       return nil
+#end
+#  #Wrapper for Gui to 
+# #@return [TreeNode] managed_service_tree[publisher]
+#  def service_provider_tree(publisher)
+#    if managed_service_tree.is_a?(Tree::TreeNode) == true
+#      return managed_service_tree[publisher]
+#  end
+#  return false
+#    
+#  end
+#  
 #Wrapper for Gui to be removed
 #Should use managed_engine_tree
 #@return [TreeNode] 
-def get_managed_engine_tree
+def _get_managed_engine_tree
     return managed_engine_tree
   end
   
@@ -333,7 +332,7 @@ def log_exception(e)
        return false
  end
  
-  protected
+#  protected
   
 
 #saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree  
@@ -362,4 +361,4 @@ def log_exception(e)
   end
   
  
-end
+#end

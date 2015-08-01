@@ -1,15 +1,13 @@
-#Module of methods to handle the Managed Engine Registry branch
-module ManagedEnginesRegistry
-  #Returns the engine node when supplied with params containing only :engine_name
-  #Returns service_type node when supplied with params  :engine_name and :type_path
-  #Returns service node when supplied with params  :engine_name :type_path and :service_handle
+class ManagedEnginesRegistry  < SubRegistry  
+  
+  
   def find_engine_services(params)
     if params == nil
       log_error_mesg("find_engine_services passed nil params",params)
       return false
     end
 
-    engines_type_tree = managed_engines_type_tree(params)
+    engines_type_tree = managed_engines_type_registry(params)
     if engines_type_tree.is_a?(Tree::TreeNode) == false
       return false
     end
@@ -39,7 +37,7 @@ module ManagedEnginesRegistry
     end
     SystemUtils.debug_output("find_engine_services_hashes", params)
 
-    engine_node = managed_engines_type_tree(params)[params[:parent_engine]]
+    engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     #p get_all_leafs_service_hashes(engine_node)
     if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find in managed service tree",params)
@@ -50,19 +48,10 @@ module ManagedEnginesRegistry
     return get_all_leafs_service_hashes(engine_node)
   end
 
-  #@return [Array] of all service_hashs marked persistant for :engine_name
-  def get_engine_persistant_services(params)
-    return get_engine_persistance_services(params,true)
-  end
-
-  #@return [Array] of all service_hashs not marked persistant for :engine_name
-  def get_engine_nonpersistant_services(params)
-    return get_engine_persistance_services(params,false)
-  end
 
   #@return [Array] of all service_hashs marked persistance [boolean] for :engine_name
   def get_engine_persistance_services(params,persistance) #params is :engine_name
-
+     
     leafs = Array.new
 
     if params.has_key?(:parent_engine) == false
@@ -90,13 +79,13 @@ module ManagedEnginesRegistry
   #requires :parent_engine :type_path
   #@return boolean
   #overwrites
-  def add_to_managed_engines_tree(service_hash)
+  def add_to_managed_engines_registry(service_hash)
 
     if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
       log_error_mesg("no_parent_engine_key",service_hash)
       return false
     end
-    engines_type_tree = managed_engines_type_tree(service_hash)
+    engines_type_tree = managed_engines_type_registry(service_hash)
     if engines_type_tree.is_a?(Tree::TreeNode) == false 
       log_error_mesg("no_type tree ",service_hash)
         return false 
@@ -105,7 +94,7 @@ module ManagedEnginesRegistry
       engine_node = engines_type_tree[ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
-      managed_engines_type_tree(service_hash) << engine_node
+    managed_engines_type_registry(service_hash) << engine_node
     end
 
     service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
@@ -138,10 +127,21 @@ module ManagedEnginesRegistry
 
     return true
   end
+#@return the service_handle from the service_hash
+# for backward compat (to be changed)
+def get_service_handle(params)
 
+  if  params.has_key?(:service_handle) && params[:service_handle] != nil
+    return params[:service_handle]
+  else
+    log_error_mesg("no :service_handle",params)
+
+    return nil
+  end
+end
   #@return the appropriate tree under managedservices trees either engine or service
-  def managed_engines_type_tree(site_hash)
-    if managed_engine_tree.is_a?(Tree::TreeNode) == false
+  def managed_engines_type_registry(site_hash)
+    if @registry.is_a?(Tree::TreeNode) == false
       return false
     end
     if site_hash.has_key?(:container_type) == false
@@ -149,26 +149,26 @@ module ManagedEnginesRegistry
       #return false
     end
     if site_hash[:container_type] == "service"
-      if managed_engine_tree["Service"] == nil
-        managed_engine_tree << Tree::TreeNode.new("Service"," Managed Services register")
+      if @registry["Service"] == nil
+        @registry << Tree::TreeNode.new("Service"," Managed Services register")
       end
-      return managed_engine_tree["Service"]
+      return @registry["Service"]
     elsif site_hash[:container_type] == "system"
-      if managed_engine_tree["System"] == nil
-              managed_engine_tree << Tree::TreeNode.new("System"," System Services register")
+      if @registry["System"] == nil
+              @registry << Tree::TreeNode.new("System"," System Services register")
             end
-            return managed_engine_tree["System"]
+            return @registry["System"]
     else
-      if managed_engine_tree["Application"] == nil
-        managed_engine_tree << Tree::TreeNode.new("Application"," Managed Application register")
+      if @registry["Application"] == nil
+        @registry << Tree::TreeNode.new("Application"," Managed Application register")
       end
-      return managed_engine_tree["Application"]
+      return @registry["Application"]
     end
   end
 
   #Remove Service from engine service registry matching :parent_engine :type_path :service_handle
   #@return boolean
-  def remove_from_engine_registery service_hash
+  def remove_from_engine_registry service_hash
 
     service_node = find_engine_services(service_hash)
     if service_node.is_a?(Tree::TreeNode) == true
@@ -178,4 +178,5 @@ module ManagedEnginesRegistry
     return false
   end
 
+#end
 end

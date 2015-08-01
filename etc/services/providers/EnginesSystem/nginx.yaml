@@ -31,7 +31,7 @@ configurators:
     placeholder: "not http(s)://....../ just x.y.c "
     mandatory: true
     comment: ""
-    value: mgmt._Engines_System(default_domain):10443
+    value: "mgmt._Engines_System(default_domain):10443"
 consumer_params:
  proto:
   name: proto
@@ -41,9 +41,12 @@ consumer_params:
   field_type: select_single
   hint: "engine"
   select_collection:
-      - "http"
-      - "https"
-      - "http_https"
+  - !ruby/object:String
+   "https"
+  - !ruby/object:String
+   "https"
+  - !ruby/object:String    
+   "http_https"
   placeholder: " "
   mandatory: true
   comment: " "

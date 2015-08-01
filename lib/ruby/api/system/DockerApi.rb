@@ -279,7 +279,7 @@ class DockerApi
        container.environments.each do |environment|
          if environment != nil && environment.name != nil  && environment.value != nil 
            environment.value.gsub!(/ /,"\\ ")
-           e_option = e_option + " -e " + environment.name + "="  + environment.value 
+           e_option = e_option + " -e \"" + environment.name + "="  + environment.value + "\""
          end
        end
      end

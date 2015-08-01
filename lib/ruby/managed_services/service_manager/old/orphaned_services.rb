@@ -1,10 +1,10 @@
 #@Methods for handling orphaned persistant services
-module OrphanedServices
+#module OrphanedServices
   #@ remove from both the service registry and orphan registery
   #@param params { :type_path , :service_handle}
-  def release_orphan(params)
+  def _release_orphan(params)
     orphan = retrieve_orphan(params)
-    if orphan == false
+    if orphan.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan found to release",params)
       return false
     end
@@ -22,7 +22,7 @@ module OrphanedServices
   #@return result 
   def save_as_orphan(service_hash)
     provider_tree = orphaned_services_tree[service_hash[:publisher_namespace]]
-      if provider_tree == nil
+      if provider_tree.is_a?(Tree::TreeNode) == false
         provider_tree =  Tree::TreeNode.new(service_hash[:publisher_namespace],service_hash[:publisher_namespace])
         orphaned_services_tree << provider_tree
       end
@@ -30,7 +30,7 @@ module OrphanedServices
     type_node = create_type_path_node(provider_tree,service_hash[:type_path])     
     #INSERT Enginename here
       engine_node = type_node[service_hash[:parent_engine]]
-        if  engine_node == nil 
+        if  engine_node.is_a?(Tree::TreeNode) == false
           engine_node = Tree::TreeNode.new(service_hash[:parent_engine],"Belonged to " + service_hash[:parent_engine])
           type_node  <<  engine_node
         end
@@ -44,10 +44,10 @@ module OrphanedServices
   #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
   #@param params { :type_path , :service_handle}
   #@return nil on no match
-  def retrieve_orphan(params)
+  def _retrieve_orphan(params)
     
     provider_tree = orphaned_services_tree[params[:publisher_namespace]]
-    if provider_tree == nil
+    if provider_tree.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan Matching publisher_namespace",params)
       return false
     end
@@ -56,7 +56,7 @@ SystemUtils.debug_output( :orpahns_retr_start, params[:type_path])
       type_path = params[:type_path]
         
     type = get_type_path_node(provider_tree,type_path)
-    if type == false
+    if type.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Orphan Matching type_path",params)
       return false
     end
@@ -99,7 +99,7 @@ end
 
   #@ Assign a new parent to an orphan
   #@return new service_hash
-  def reparent_orphan(params)
+  def _reparent_orphan(params)
     orphan = retrieve_orphan(params)
     if orphan !=  false
       content = orphan.content
@@ -115,7 +115,7 @@ end
   
 #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
    #:path_type :publisher_namespace      
-   def get_orphaned_services(params)
+   def _get_orphaned_services(params)
      leafs = Array.new
      SystemUtils.debug_output(   :looking_for_orphans,params)
      orphans = find_orphan_consumers(params)
@@ -159,4 +159,3 @@ end
    return  service_path_tree
  end
       
-end

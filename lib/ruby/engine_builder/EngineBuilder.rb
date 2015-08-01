@@ -44,6 +44,11 @@ class EngineBuilder
   :http_protocol,
   :blueprint,
   :first_build
+  
+  attr_accessor :app_is_persistant
+  
+  
+  
   class BuildError < StandardError
     attr_reader :parent_exception,:method_name
     def initialize(parent,method_name)
@@ -55,7 +60,7 @@ class EngineBuilder
   def initialize(params,core_api)
     
     @container_name = params[:engine_name]
-    
+    @app_is_persistant= false
       #fixme
       @engine_public = nil
       
