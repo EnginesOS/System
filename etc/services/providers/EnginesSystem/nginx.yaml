@@ -31,7 +31,7 @@ configurators:
     placeholder: "not http(s)://....../ just x.y.c "
     mandatory: true
     comment: ""
-    value: mgmt._Engines_System(default_domain):10443
+    value: "mgmt._Engines_System(default_domain):10443"
 consumer_params:
  proto:
   name: proto
