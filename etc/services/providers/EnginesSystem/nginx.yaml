@@ -42,11 +42,11 @@ consumer_params:
   hint: "engine"
   select_collection:
   - !ruby/object:String
-    - "https
+   "https
   - !ruby/object:String
-    - "https"
+   "https"
   - !ruby/object:String    
-    - "http_https"
+   "http_https"
   placeholder: " "
   mandatory: true
   comment: " "
