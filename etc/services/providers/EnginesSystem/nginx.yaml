@@ -41,9 +41,12 @@ consumer_params:
   field_type: select_single
   hint: "engine"
   select_collection:
-      - "http"
-      - "https"
-      - "http_https"
+  - !ruby/object:String
+    - "https
+  - !ruby/object:String
+    - "https"
+  - !ruby/object:String    
+    - "http_https"
   placeholder: " "
   mandatory: true
   comment: " "
