@@ -665,7 +665,7 @@ SystemUtils.log_exception(e)
         else
           step_back=false
 
-          if arc_dir == nil 
+          if arc_dir == nil || arc_dir == ""
             step_back=true
             @docker_file.puts("RUN   mkdir /tmp/app")
             count_layer
