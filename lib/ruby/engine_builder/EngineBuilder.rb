@@ -448,7 +448,9 @@ class EngineBuilder
       env_file = File.new(get_basedir + "/home/app.env","a")
       env_file.puts("")
       @blueprint_reader.environments.each do |env|
-        env_file.puts(env.name)
+        if env.build_time_only != true
+          env_file.puts(env.name)
+        end
       end
       @set_environments.each do |env|
         env_file.puts(env[0])
@@ -486,11 +488,28 @@ class EngineBuilder
            return false
         end
       end
+      
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
       @core_api.save_build_report(mc,build_report)
 #      p :build_report
 #      p build_report
+      cnt=0
+      
+      while mc.is_startup_complete? == false && mc.is_running? == true
+        cnt=cnt+1
+          if cnt == 10
+            log_build_output("Startup still running")
+              break
+          end
+          sleep 2
+      end
+      
+      if mc.is_running? == false
+        log_build_output("Container Stopped")
+      end
+      
+      
       close_all
 
       return mc
