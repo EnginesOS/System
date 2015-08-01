@@ -669,7 +669,7 @@ SystemUtils.log_exception(e)
             step_back=true
             @docker_file.puts("RUN   mkdir /tmp/app")
             count_layer
-            arc_dir = "app"
+            arc_dir = "/tmp/app"
             @docker_file.puts("WORKDIR /tmp/app")
             count_layer
           else
