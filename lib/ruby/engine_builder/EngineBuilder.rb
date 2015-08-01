@@ -494,16 +494,23 @@ class EngineBuilder
       @core_api.save_build_report(mc,build_report)
 #      p :build_report
 #      p build_report
-      cnt=0
+  cnt=0
+  lcnt = 5
   log_build_output("Starting Engine")
   while mc.is_startup_complete? == false && mc.is_running? == true
     cnt=cnt+1
-      if cnt == 10
+      if cnt == 120
         log_build_output("Startup still running")
           break        
       end
-    log_build_output(".")
-      sleep 2
+    if lcnt == 5  
+      log_build_output(".")
+      lcnt=0
+    else
+      lcnt = lcnt +1
+    end
+    
+      sleep 1
   end
   
   if mc.is_running? == false
