@@ -56,13 +56,13 @@ class DockerApi
             @last_error = result[:stderr]
                        return false
           end
-          if  result[:stdout].length > 4
-           return true
-          else
-            @last_error = result[:stderr]
-          end
-          
+     if  result[:stdout].include?("Status: Image is up to date for " + image_name) == true
+           @last_error = "No Change"
           return false
+         else
+           @last_error = result[:stderr]
+         end
+ 
           rescue  Exception=>e
                  SystemUtils.log_exception(e)
                  return false
@@ -76,12 +76,11 @@ class DockerApi
        @last_error = result[:stderr]
                   return false
      end
-     if  result[:stdout].include?("Status: Image is up to date for " + image_name) == true
-       @last_error = "No Change"
-      return false
-     else
-       @last_error = result[:stderr]
-     end
+     if  result[:stdout].length > 4
+       return true
+      else
+        @last_error = result[:stderr]
+      end
      
      return false
      rescue  Exception=>e
