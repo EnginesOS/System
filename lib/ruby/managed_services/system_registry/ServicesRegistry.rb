@@ -47,7 +47,7 @@ class ServicesRegistry < SubRegistry
       provider_node = service_provider_tree( service_hash[:publisher_namespace]) #managed_service_tree[service_hash[:publisher_namespace] ]
       if provider_node.is_a?(Tree::TreeNode) == false
         provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace] ," Provider:" + service_hash[:publisher_namespace] + ":" + service_hash[:type_path]  )
-        managed_service_tree << provider_node
+        @registry << provider_node
       end
   
       service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
