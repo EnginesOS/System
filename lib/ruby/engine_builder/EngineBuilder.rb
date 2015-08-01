@@ -495,20 +495,21 @@ class EngineBuilder
 #      p :build_report
 #      p build_report
       cnt=0
-      
-      while mc.is_startup_complete? == false && mc.is_running? == true
-        cnt=cnt+1
-          if cnt == 10
-            log_build_output("Startup still running")
-              break
-          end
-          sleep 2
+  log_build_output("Starting Engine")
+  while mc.is_startup_complete? == false && mc.is_running? == true
+    cnt=cnt+1
+      if cnt == 10
+        log_build_output("Startup still running")
+          break        
       end
-      
-      if mc.is_running? == false
-        log_build_output("Container Stopped")
-      end
-      
+    log_build_output(".")
+      sleep 2
+  end
+  
+  if mc.is_running? == false
+    log_build_output("Engine Stopped")
+  end
+  
       
       close_all
 
