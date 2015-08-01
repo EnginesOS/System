@@ -35,25 +35,25 @@ class SysConfig
   @@SystemPreferencesFile="/opt/engines/etc/preferences/settings.yaml"
 
   #NGINX
-  @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
-  @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
-  @@HttpHttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/http_to_https_site.tmpl"
-  @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
-  @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
-  @@NginxDefaultCert="engines"
-  @@NginxPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid"
+#  @@HttpNginxTemplate="/opt/engines/etc/nginx/tmpls/http_site.tmpl"
+#  @@HttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/https_site.tmpl"
+#  @@HttpHttpsNginxTemplate="/opt/engines/etc/nginx/tmpls/http_to_https_site.tmpl"
+#  @@NginxSiteDir="/opt/engines/etc/nginx/sites-enabled/"
+#  @@NginxCertDir="/opt/engines/etc/nginx/ssl/certs"
+#  @@NginxDefaultCert="engines"
+#  @@NginxPIDFile="/opt/engines/run/services/nginx/run/nginx/nginx.pid"
   #DNS
-  @@ddnsKey = "/opt/engines/etc/dns/keys/ddns.key"
-  @@internalDomain = "engines.internal"
-  @@defaultDNS ="172.17.42.1"
+#  @@ddnsKey = "/opt/engines/etc/dns/keys/ddns.key"
+#  @@internalDomain = "engines.internal"
+#  @@defaultDNS ="172.17.42.1"
 
 #  @@DefaultDomainnameFile="/opt/engines/etc/default_domain_name"
   
   #Named
-  @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid"
-  @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
-  @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
-  @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
+#  @@NamedPIDFile="/opt/engines/run/services/dns/run/dns/named/named.pid"
+#  @@SelfHostedDNStemplate="/opt/engines/etc/dns/tmpls/selfhosted.tmpl"
+#  @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
+#  @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
  # @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
   @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
 
