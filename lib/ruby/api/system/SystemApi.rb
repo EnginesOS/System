@@ -56,7 +56,7 @@ class SystemApi
     clear_error
     begin
       runDir=container_state_dir(container)
-      if File.exists?(runDir + "/startup_complete")
+      if File.exists?(runDir + "/flags/startup_complete")
         return true
       else
         return false
