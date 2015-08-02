@@ -65,7 +65,7 @@ class SysConfig
   @@StartScript="/home/engines/scripts/custom_start.sh"
   @@PostInstallScript="/home/engines/scripts/post_install.sh"
   @@ScriptsDir="/home/engines/scripts/"
-  @@CustomPHPiniFile="/home/engines/configs/php/71-custom.ini"
+  @@CustomPHPiniFile="/home/engines/configs/php/01-custom.ini"
   @@CustomApacheConfFile="/home/engines/configs/apache2/extra.conf"
 
   #service Manager
