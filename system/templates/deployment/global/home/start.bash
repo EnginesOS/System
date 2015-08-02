@@ -17,19 +17,17 @@ if test -f /home/_init.sh
  	fi
 
 	
-	if test -f /engines/var/run/flags/post_install
-		then
+
+		if test -f /home/engines/scripts/post_install.sh
+			then 				
 			echo "Has Post install"
-			
-			if test -f /home/engines/scripts/post_install.sh
-				then 				
-				echo "Running Post Install"
-				/bin/bash /home/engines/scripts/post_install.sh 
-				#mv /home/engines/scripts/post_install.sh /home/engines/scripts/post_install.sh.done
-				rm engines/var/run/flags/post_install
-				touch /engines/var/run/flags/post_install.done
-			fi		
-	fi
+				if ! test -f /engines/var/run/flags/post_install.done
+					then
+						echo "Running Post Install"
+						/bin/bash /home/engines/scripts/post_install.sh 							
+						touch /engines/var/run/flags/post_install.done
+				fi
+		fi		
 	
 
 
