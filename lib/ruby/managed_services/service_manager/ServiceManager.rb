@@ -337,6 +337,9 @@ end
    return @system_registry.remove_from_managed_engines_registry(params)
   end
   
+#def find_engine_services(params)
+#  @system_registry.find_engine_services(params)
+#end
    def find_engine_services_hashes(params)
      @system_registry.find_engine_services_hashes(params)
    end

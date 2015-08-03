@@ -89,9 +89,9 @@ class SystemRegistry < Registry
   def  find_engine_services_hashes(params)
     @managed_engines_registry.find_engine_services_hashes(params)
   end
- def  find_engine_services_hashes(params)
-  @managed_engines_registry.find_engine_services_hashes(params)
-end
+  def find_engine_services(params)
+    @managed_engines_registry.find_engine_services(params)
+  end
   def get_engine_nonpersistant_services(params)
     @managed_engines_registry.get_engine_persistance_services(params,false)
   end

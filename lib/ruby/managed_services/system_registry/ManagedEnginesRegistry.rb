@@ -40,10 +40,26 @@ class ManagedEnginesRegistry  < SubRegistry
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     #p get_all_leafs_service_hashes(engine_node)
     if engine_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg("Failed to find in managed service tree",params)
+      log_error_mesg("Failed to find in managed service tree",params)    
+      return nil    
     end
-      if params.has_key?(:persistant) &&  params[:persistant] == true
-        return get_matched_leafs(engine_node,:persistant,true)
+    
+    if  params.has_key?(:type_path)
+      engine_node = engine_node[params[:type_path]]
+    end
+    
+  if engine_node.is_a?(Tree::TreeNode) == false
+    
+     log_error_mesg("Failed to find type_path " + params[:type_path] + "in managed service tree",params)
+     return nil    
+   end
+   
+      if params.has_key?(:persistant) 
+        if params[:persistant] == true
+          return get_matched_leafs(engine_node,:persistant,true)
+        else 
+          return get_matched_leafs(engine_node,:persistant,false)
+       end
       end
     return get_all_leafs_service_hashes(engine_node)
   end

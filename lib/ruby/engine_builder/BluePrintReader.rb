@@ -73,7 +73,7 @@ class BluePrintReader
     
        read_pkg_modules
        read_app_packages
-   
+       read_sql_seed
        read_write_permissions_recursive
        read_write_permissions_single
        read_worker_commands

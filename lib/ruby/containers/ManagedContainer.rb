@@ -39,6 +39,11 @@ class ManagedContainer < Container
     @protocol=:http_and_https
   end
   
+  def web_sites
+    @core_api.web_sites_for(self)
+  end
+  
+  
   #@returns [Boolena]
   # whether pulled or no false if no new image 
   def pull_image
@@ -384,7 +389,7 @@ p @last_result
 
   def stop_container
     return false  if has_api? == false
-
+    web_sites
     ret_val = false
     state = read_state()
     @setState="stopped"
