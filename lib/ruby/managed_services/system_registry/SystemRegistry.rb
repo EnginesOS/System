@@ -52,7 +52,7 @@ class SystemRegistry < Registry
     @services_registry.find_service_consumers(service_query_hash)
   end
  
-  def update_attached_service
+  def update_attached_service(service_hash)
    if remove_from_managed_engines_registry(service_hash) &&
     remove_from_services_registry(service_hash) &&
     add_to_managed_engines_registry(service_hash) &&
