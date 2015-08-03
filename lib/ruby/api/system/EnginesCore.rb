@@ -409,7 +409,7 @@ class EnginesCore
   
   def find_engine_services(params)
     sm = loadServiceManager()
-    return sm.find_engine_services(params)
+    return sm.find_engine_services_hashes(params)
   end
 
   def get_configurations_tree
