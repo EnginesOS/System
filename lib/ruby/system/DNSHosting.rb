@@ -214,7 +214,7 @@ module DNSHosting
   end
 
   def DNSHosting.list_domains
-    domains = load_domains
+    domains = DNSHosting.load_domains
     return domains
   rescue Exception=>e
     domains = Hash.new
