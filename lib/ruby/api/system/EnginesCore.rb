@@ -834,7 +834,7 @@ end
         return false
       end
       #REMOVE THE SERVICE HERE AND NOW
-      if sm.remove_from_engine_registery(service_hash) ==true
+      if sm.remove_from_engine_registry(service_hash) ==true
         if sm.remove_from_services_registry(service_hash) == false
           log_error_mesg("Cannot remove from Service Registry",service_hash)
           return false
