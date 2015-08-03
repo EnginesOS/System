@@ -299,6 +299,20 @@ def delete_service service_hash
   return @system_registry.remove_from_services_registry(service_hash)
 end
 
+def update_attached_service(params)
+ if @system_registry.update_attached_service(params) == true
+   if remove_from_managed_service(params) == true
+    return add_to_managed_service(params)
+   else 
+     @last_error="Filed to remove " + @last_error 
+   end
+ else
+   @last_error=@system_registry.last_error 
+ end
+ return false
+ 
+end
+
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree

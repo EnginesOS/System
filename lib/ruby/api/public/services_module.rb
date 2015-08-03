@@ -337,7 +337,10 @@ module ServicesModule
    end
  
     def update_attached_service (params)
+      if @core_api.update_attached_service(params) == true     
       return success(params[:service_handle],"update attached Service")
+      end
+      return failed(service_param[:service_handle],@core_api.last_error,"update_attached_service")
     end
    
    def update_service_configuration(service_param)
