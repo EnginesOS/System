@@ -38,7 +38,20 @@ class ManagedContainer < Container
     @cont_userid=-1
     @protocol=:http_and_https
   end
-
+  
+  #@returns [Boolena]
+  # whether pulled or no false if no new image 
+  def pull_image
+     #if has repo field prepend repo
+     #if has no / then local image
+     # return false 
+     #
+    if image.include?("/")
+     return @core_api.pull_image(image_name)
+    end
+    return false     
+   end
+   
   def container_id
 
       @container_id = set_container_id

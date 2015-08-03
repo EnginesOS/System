@@ -22,7 +22,7 @@ class ServiceManager
   def initialize(core_api)
     @core_api = core_api
     #@service_tree root of the Service Registry Tree
-    #@service_tree = initialize_tree
+    #@service_tree = initialize_tree remove_from_engine_registery
     @system_registry = SystemRegistry.new()
   end
   def get_orphaned_services(params)
@@ -299,6 +299,22 @@ def delete_service service_hash
   return @system_registry.remove_from_services_registry(service_hash)
 end
 
+def update_attached_service(params)
+  p :update_attach_service_params
+  p params
+ if @system_registry.update_attached_service(params) == true   
+   if remove_from_managed_service(params) == true
+    return add_to_managed_service(params)
+   else 
+     @last_error="Filed to remove " + @last_error 
+   end
+ else
+   @last_error=@system_registry.last_error 
+ end
+ return false
+ 
+end
+
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
@@ -319,6 +335,11 @@ end
          end
        end
    return @system_registry.remove_from_managed_engines_registry(params)
+  end
+  
+   def find_engine_services_hashes(params)
+     @system_registry.find_engine_services_hashes(params)
+   end
 #       if  managed_engines_type_tree(params).remove!(engine_node)
 #    
 #         return  save_tree
@@ -330,7 +351,7 @@ end
 #       return true
    
     
-  end
+
 
 #  #@returns boolean indicating sucess
 #  #Saves service_hash in orphan registry before removing from service registry

@@ -44,7 +44,7 @@ consumer_params:
   - !ruby/object:String
    "https"
   - !ruby/object:String
-   "https"
+   "http"
   - !ruby/object:String    
    "http_https"
   placeholder: " "

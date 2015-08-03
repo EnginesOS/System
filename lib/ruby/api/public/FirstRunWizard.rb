@@ -25,7 +25,8 @@ class FirstRunWizard
       log_error("Fail to add domain " + api.last_error() + " " + domain_hash.to_s)
       return false
     end
-   
+   domain_hash = Hash.new()
+    domain_hash[:domain_name]=params[:default_domain]
     if api.set_default_domain(domain_hash)  == false
       log_error("Fail to set default domain " + api.last_error() + " " + domain_hash.to_s)
       return false
@@ -53,7 +54,7 @@ class FirstRunWizard
 
   def get_domain_params(params)
     domain_hash = Hash.new()
-    domain_hash[:domain_name]=params[:default_domain]
+ 
     domain_hash[:default_domain]=params[:default_domain]
     domain_hash[:self_hosted] = params[:default_domain_self_hosted]
     domain_hash[:internal_only] = params[:default_domain_internal_only]

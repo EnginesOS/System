@@ -129,14 +129,14 @@ module ServicesModule
       #this method is called to register the service hash with service
       #nothing is written to the service registry
       #effectivitly activating non persistant services
-   def register_service(service_hash)
+   def register_attached_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
    end
   #@ return [EnginesOSapiResult]
     #@params service_hash
     #this method is called to deregister the service hash from service
     #nothing is written to the service resgitry   
-   def deregister_service(service_hash)
+   def deregister_attached_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
    end
   #@ return [EnginesOSapiResult]
@@ -144,9 +144,9 @@ module ServicesModule
       #this method is called to deregister the service hash from service
      # and then to register the service_hash with the service
       #nothing is written to the service resgitry   
-   def reregister_service(service_hash)
-    if  deregister_service(service_hash).was_success
-      return register_service(service_hash)
+   def reregister_attached_service(service_hash)
+    if  deregister_attached_service(service_hash).was_success
+      return register_attached_service(service_hash)
     end
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
    end
@@ -337,7 +337,10 @@ module ServicesModule
    end
  
     def update_attached_service (params)
+      if @core_api.update_attached_service(params) == true     
       return success(params[:service_handle],"update attached Service")
+      end
+      return failed(service_param[:service_handle],@core_api.last_error,"update_attached_service")
     end
    
    def update_service_configuration(service_param)

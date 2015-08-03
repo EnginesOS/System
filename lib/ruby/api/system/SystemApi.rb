@@ -56,7 +56,7 @@ class SystemApi
     clear_error
     begin
       runDir=container_state_dir(container)
-      if File.exists?(runDir + "/startup_complete")
+      if File.exists?(runDir + "/run/flags/startup_complete")
         return true
       else
         return false
@@ -713,7 +713,7 @@ end
      service_hash[:publisher_namespace]="EnginesSystem"
      service_hash[:type_path]="dns"
   @engines_api.dettach_service(service_hash) 
-  @engines_api.deregister_non_persistant_service(service_hash)
+  #@engines_api.deregister_non_persistant_service(service_hash)
   @engines_api.delete_service_from_engine_registry(service_hash)
   service_hash[:variables][:domainname] = params[:domain_name]   
   service_hash[:service_handle]=params[:domain_name] + "_dns"

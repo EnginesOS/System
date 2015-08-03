@@ -8,11 +8,12 @@ class EnvironmentVariable
     @mandatory = mandatory
     @label = label
     @immutable = immutable
+    @has_changed = false
   end
   def setatrun
     return @ask_at_build_time
   end
-  attr_reader :ask_at_build_time,:name,:build_time_only,:mandatory,:label,:immutable
+  attr_reader :ask_at_build_time,:name,:build_time_only,:mandatory,:label,:immutable,:has_changed
  attr_accessor :value
   def attributes
     retval = Hash.new()
@@ -23,7 +24,7 @@ class EnvironmentVariable
     retval[:build_time_only] = @build_time_only
     retval[:mandatory] = @mandatory
     retval[:immutable] = @immutable
-      
+    retval[:changed] = @has_changed
     return retval
   end
 end

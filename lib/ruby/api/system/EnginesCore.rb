@@ -26,6 +26,10 @@ class EnginesCore
     return sm.get_registered_against_service(params)
   end
 
+  def update_attached_service(params)
+    sm = loadServiceManager()
+    return sm.update_attached_service(params)
+  end 
   def add_domain(params)
     return  @system_api.add_domain(params)
   end
@@ -679,7 +683,13 @@ end
       SystemUtils.log_exception e
       return false
   end
-
+  
+ #@returns [Boolena]
+ # whether pulled or no false if no new image 
+ def pull_image 
+    return @docker_api.pull_image(image_name)   
+  end
+  
   def set_engine_network_properties (engine, params)
     return @system_api.set_engine_network_properties(engine,params)
   end
@@ -1080,14 +1090,14 @@ def deregister_non_persistant_service(service_hash)
 
   #@ return [Boolean] indicating sucess
   #For Maintanence ONLY
-  def delete_service_from_service_registry(service_hash)
-    sm = loadServiceManager()
-    return sm.remove_from_services_registry(service_hash)
-  end
+#  def delete_service_from_service_registry(service_hash)
+#    sm = loadServiceManager()
+#    return sm.remove_from_services_registry(service_hash)
+#  end
 
   def delete_service_from_engine_registry(service_hash)
     sm = loadServiceManager()
-    return sm.remove_from_engine_registery(service_hash)
+    return sm.rm_remove_engine(service_hash)
   end
   
  def  start_dependancies(container)
