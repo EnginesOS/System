@@ -45,12 +45,12 @@ class ManagedEnginesRegistry  < SubRegistry
     end
     
     if  params.has_key?(:type_path)
-      engine_node = engine_node[:type_path]
+      engine_node = engine_node[params[:type_path]]
     end
     
   if engine_node.is_a?(Tree::TreeNode) == false
     
-     log_error_mesg("Failed to find in managed service tree",params)
+     log_error_mesg("Failed to find type_path " + params[:type_path] + "in managed service tree",params)
      return nil    
    end
    

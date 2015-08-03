@@ -398,7 +398,7 @@ class EnginesCore
       params[:type_path]="nginx"
         
       sites = find_engine_services(params)
-      if sites.is_a(Array) == false
+      if sites.is_a?(Array) == false
         return urls
       end
         sites.each do |site|
