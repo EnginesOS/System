@@ -1086,14 +1086,14 @@ def deregister_non_persistant_service(service_hash)
 
   #@ return [Boolean] indicating sucess
   #For Maintanence ONLY
-  def delete_service_from_service_registry(service_hash)
-    sm = loadServiceManager()
-    return sm.remove_from_services_registry(service_hash)
-  end
+#  def delete_service_from_service_registry(service_hash)
+#    sm = loadServiceManager()
+#    return sm.remove_from_services_registry(service_hash)
+#  end
 
   def delete_service_from_engine_registry(service_hash)
     sm = loadServiceManager()
-    return sm.remove_from_engine_registery(service_hash)
+    return sm.rm_remove_engine(service_hash)
   end
   
  def  start_dependancies(container)
