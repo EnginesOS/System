@@ -41,7 +41,8 @@ class BluePrintReader
                :cron_job_list,
                :web_port,
                :services,
-               :deployment_type
+               :deployment_type,
+               :database_seed
 
    def  log_build_output(line)
      @builder.log_build_output(line)
@@ -376,6 +377,13 @@ class BluePrintReader
 #SystemUtils.log_exception(e)
 #     return false
 #   end
+   
+   def read_sql_seed
+     database_seed_file =  @blueprint[:software][:database_seed_file]
+       if database_seed_file != nil
+         @database_seed = database_seed_file
+       end
+   end
 
    def read_app_packages
      begin

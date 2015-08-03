@@ -53,7 +53,7 @@ class Registry
        log_error_mesg("get_type_path_node_passed_a_nil path:" + type_path.to_s , parent_node.to_s)
        return nil
      end
-     SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
+    # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
      if type_path.include?("/") == false
        return parent_node[type_path]
   
@@ -77,13 +77,13 @@ class Registry
   # @return [Array] of all service_hash(s) below this branch
      def get_all_leafs_service_hashes(branch)
        ret_val = Array.new
-       SystemUtils.debug_output("top node",branch.name)
+       #SystemUtils.debug_output("top node",branch.name)
        branch.children.each do |sub_branch|
-         SystemUtils.debug_output("on node",sub_branch.name)
+     #    SystemUtils.debug_output("on node",sub_branch.name)
          if sub_branch.children.count == 0
            if sub_branch.content.is_a?(Hash)
             
-             SystemUtils.debug_output("pushed_content", sub_branch.content)
+             #SystemUtils.debug_output("pushed_content", sub_branch.content)
              ret_val.push(sub_branch.content)
            else
              SystemUtils.debug_output("skipping content ", sub_branch.content)
@@ -103,9 +103,9 @@ class Registry
      #@return empty array if none
      def get_matched_leafs(branch,label,value)
        ret_val = Array.new
-       SystemUtils.debug_output("top node",branch.name)
+      # SystemUtils.debug_output("top node",branch.name)
        branch.children.each do |sub_branch|
-         SystemUtils.debug_output("sub node",sub_branch.name)
+      #   SystemUtils.debug_output("sub node",sub_branch.name)
          if sub_branch.children.count == 0
            if sub_branch.content.is_a?(Hash) 
              if  sub_branch.content[label] == value

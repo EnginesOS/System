@@ -326,7 +326,7 @@ class EnginesCore
 
   def dettach_service(params)
     sm = loadServiceManager()
-    return sm.remove_service(params)
+    return sm.delete_service(params)
     #    if service !=nil && service != false
     #      return service.remove_consumer(params)
     #    end
