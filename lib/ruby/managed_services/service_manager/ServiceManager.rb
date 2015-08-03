@@ -319,7 +319,8 @@ end
          end
        end
    return @system_registry.remove_from_managed_engines_registry(params)
-   
+  end
+  
    def find_engine_services_hashes
      @system_registry.find_engine_services_hashes
    end
@@ -334,7 +335,7 @@ end
 #       return true
    
     
-  end
+
 
 #  #@returns boolean indicating sucess
 #  #Saves service_hash in orphan registry before removing from service registry
