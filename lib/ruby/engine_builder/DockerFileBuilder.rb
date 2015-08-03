@@ -239,7 +239,7 @@ class DockerFileBuilder
 
   def write_database_seed 
     if @blueprint_reader.database_seed != nil
-      seed_file = File.new(build_dir + "/home/database_seed","w")
+      seed_file = File.new(@blueprint_reader.get_basedir  + "/home/database_seed","w")
       seed_file.write(@blueprint_reader.database_seed)
       seed_file.close
       
@@ -415,7 +415,7 @@ SystemUtils.log_exception(e)
     end
   end
 
-  def build_dir
+  def deploy_dir
     SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework 
    end
    
