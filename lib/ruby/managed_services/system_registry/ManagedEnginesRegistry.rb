@@ -41,6 +41,7 @@ class ManagedEnginesRegistry  < SubRegistry
     #p get_all_leafs_service_hashes(engine_node)
     if engine_node.is_a?(Tree::TreeNode) == false
       log_error_mesg("Failed to find in managed service tree",params)    
+      return nil    
     end
     
     if  params.has_key?(:type_path)
@@ -48,7 +49,9 @@ class ManagedEnginesRegistry  < SubRegistry
     end
     
   if engine_node.is_a?(Tree::TreeNode) == false
-     log_error_mesg("Failed to find in managed service tree",params)    
+    
+     log_error_mesg("Failed to find in managed service tree",params)
+     return nil    
    end
    
       if params.has_key?(:persistant) 
