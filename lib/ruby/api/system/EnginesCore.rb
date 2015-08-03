@@ -399,8 +399,9 @@ class EnginesCore
         
       sites = find_engine_services(params)
         sites.each do |site|
+          p :Site
           p site
-        url= site[:protocol] + "://" + site[:fqdn]
+        url= site[:variables][:protocol] + "://" + site[:variables][:fqdn]
             urls.push(url)
         end
         
