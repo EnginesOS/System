@@ -59,7 +59,7 @@ class DockerFileBuilder
     chown_home_app
    
     set_user("$ContUser")
- 
+    write_database_seed 
     write_worker_commands            
     write_sed_strings
     write_persistant_dirs
@@ -237,6 +237,15 @@ class DockerFileBuilder
     count_layer
   end
 
+  def write_database_seed 
+    if @blueprint_reader.database_seed != nil
+      seed_file = File.new(build_dir + "/home/database_seed","w")
+      seed_file.write(@blueprint_reader)
+      seed_file.close
+      
+    end
+  end
+  
   def write_persistant_files
     begin
       @docker_file.puts("#Persistant Files")
@@ -406,11 +415,15 @@ SystemUtils.log_exception(e)
     end
   end
 
+  def build_dir
+    SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework 
+   end
+   
   def insert_framework_frag_in_dockerfile(frag_name)
     begin
       log_build_output(frag_name)
       @docker_file.puts("#Framework Frag")
-      frame_build_docker_frag = File.open(SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework + "/Dockerfile." + frag_name)
+      frame_build_docker_frag = File.open(build_dir + "/Dockerfile." + frag_name)
       builder_frag = frame_build_docker_frag.read
       @docker_file.write(builder_frag)
       count_layer
