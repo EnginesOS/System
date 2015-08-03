@@ -15,6 +15,9 @@ persistant: true
 exclusive: true
 image_name: engines/mongo_server
 service_handle_field: database_name
+immutable: true
+attach_post_build: false
+attach_requires_restart: false
 setup_params:
 consumer_params:
  database_host:

@@ -10,6 +10,9 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 service_handle_field: username
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 setup_params:
 consumer_params:
   volume:

@@ -9,6 +9,9 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: true
 service_handle_field: name
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 consumer_params:
  email_address:
   name: email_address

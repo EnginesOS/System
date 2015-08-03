@@ -17,6 +17,9 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 service_handle_field: name
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 configurators:
  system_backup:
   name: system_backup

@@ -12,6 +12,9 @@ persistant: true
 image_name: engines/editor
 service_handle_field: name
 setup_params:
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 consumer_params:
  dropbox_address:
   name: dropbox_address

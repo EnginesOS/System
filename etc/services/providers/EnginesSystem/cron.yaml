@@ -13,6 +13,9 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 service_handle_field: title
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 setup_params:
 consumer_params:
  cron_job:
