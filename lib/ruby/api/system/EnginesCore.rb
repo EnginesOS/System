@@ -386,7 +386,7 @@ class EnginesCore
   end
 
   def web_sites_for(container)
-    urls = Array,new
+    urls = Array.new
     params = Hash.new()
     params[:parent_engine] = container.container_name
       if container.ctype == "container"
