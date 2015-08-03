@@ -240,7 +240,7 @@ class DockerFileBuilder
   def write_database_seed 
     if @blueprint_reader.database_seed != nil
       seed_file = File.new(build_dir + "/home/database_seed","w")
-      seed_file.write(@blueprint_reader)
+      seed_file.write(@blueprint_reader.database_seed)
       seed_file.close
       
     end
