@@ -385,6 +385,28 @@ class EnginesCore
     return sm.get_managed_engine_tree
   end
 
+  def web_sites_for(container)
+    urls = Array,new
+    params = Hash.new()
+    params[:parent_engine] = container.container_name
+      if container.ctype == "container"
+          params[:container_type] = "container"
+      else
+        params[:container_type] = "service"
+      end
+      params[:publish_namespace]="EnginesSystem"
+      params[:type_path]="nginx"
+        
+      sites = find_engine_services(params)
+        sites.each do |site|
+          p site
+        url= site[:protocol] + "://" + site[:fqdn]
+            urls.push(url)
+        end
+        
+        return urls
+  end
+  
   def find_engine_services(params)
     sm = loadServiceManager()
     return sm.find_engine_services(params)
