@@ -394,7 +394,7 @@ class EnginesCore
       else
         params[:container_type] = "service"
       end
-      params[:publish_namespace]="EnginesSystem"
+      params[:publisher_namespace]="EnginesSystem"
       params[:type_path]="nginx"
         
       sites = find_engine_services(params)
