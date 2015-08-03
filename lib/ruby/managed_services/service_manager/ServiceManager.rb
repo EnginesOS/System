@@ -300,7 +300,9 @@ def delete_service service_hash
 end
 
 def update_attached_service(params)
- if @system_registry.update_attached_service(params) == true
+  p :update_attach_service_params
+  p params
+ if @system_registry.update_attached_service(params) == true   
    if remove_from_managed_service(params) == true
     return add_to_managed_service(params)
    else 
