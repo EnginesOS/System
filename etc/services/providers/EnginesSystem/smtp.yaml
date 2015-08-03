@@ -9,6 +9,9 @@ service_container: smtp
 dedicated: false
 persistant: false
 service_handle_field: 
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 consumer_params:
 configurators:
  smarthost:

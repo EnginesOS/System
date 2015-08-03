@@ -9,6 +9,9 @@ publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
 service_handle_field: engine
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
 configurators:
  console_pass:
   name: console_pass
