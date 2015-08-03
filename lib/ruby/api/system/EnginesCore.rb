@@ -404,8 +404,13 @@ class EnginesCore
         sites.each do |site|
           p :Site
           p site
-        url= site[:variables][:protocol] + "://" + site[:variables][:fqdn]
-            urls.push(url)
+       if site[:variables][:proto] ==     "http_https"              
+          protocol="https"
+       else
+         protocol=site[:variables][:proto]
+        end
+        url= protocol + "://" + site[:variables][:fqdn]
+         urls.push(url)
         end
         
         return urls
