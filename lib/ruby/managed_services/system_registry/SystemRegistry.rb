@@ -18,8 +18,8 @@ class SystemRegistry < Registry
      
    end
    
-   def find_engine_services_hashes
-     @managed_engines_registry.find_engine_services_hashes
+   def find_engine_services_hashes(params)
+     @managed_engines_registry.find_engine_services_hashes(params)
    end
    
   def save_as_orphan(params)
