@@ -319,6 +319,10 @@ end
          end
        end
    return @system_registry.remove_from_managed_engines_registry(params)
+   
+   def find_engine_services_hashes
+     @system_registry.find_engine_services_hashes
+   end
 #       if  managed_engines_type_tree(params).remove!(engine_node)
 #    
 #         return  save_tree

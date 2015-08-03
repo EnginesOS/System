@@ -17,6 +17,11 @@ class SystemRegistry < Registry
      @orphan_server_registry = OrphanServicesRegistry.new( orphaned_services_registry)
      
    end
+   
+   def find_engine_services_hashes
+     @managed_engines_registry.find_engine_services_hashes
+   end
+   
   def save_as_orphan(params)
     if  @orphan_server_registry.save_as_orphan(params) == true
       save_tree
