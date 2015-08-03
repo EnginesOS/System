@@ -13,9 +13,6 @@ service_container: nginx
 dedicated: false
 persistant: false
 service_handle_field: fqdn
-immutable: false
-attach_post_build: true
-attach_requires_restart: false
 setup_params:
 configurators:
  default_site:
