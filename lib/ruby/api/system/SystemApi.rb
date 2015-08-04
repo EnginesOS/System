@@ -133,7 +133,7 @@ class SystemApi
     retval =  SystemUtils.run_system(cmd)
 
     if retval == true
-      Dir.delete(container_state_dir(container))
+    FileUtils.rm_rf(container_state_dir(container))
       return true
     else
       container.last_error=("Failed to Delete state and logs:" + retval.to_s)
