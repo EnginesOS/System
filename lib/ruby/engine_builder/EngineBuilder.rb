@@ -161,6 +161,14 @@ class EngineBuilder
     @error_pipe_rd
   end
 
+   def add_to_build_output(word)
+     @log_file.write(word)
+     @log_file.flush
+        # @log_pipe_wr.puts(line)
+      rescue
+        return
+   end
+   
   def  log_build_output(line)
     @log_file.puts(line)
     @log_file.flush
@@ -504,7 +512,7 @@ class EngineBuilder
           break        
       end
     if lcnt == 5  
-      log_build_output(".")
+      add_to_build_output(".")
       lcnt=0
     else
       lcnt = lcnt +1
@@ -512,6 +520,7 @@ class EngineBuilder
     
       sleep 1
   end
+  log_build_output("") #force EOL to end the ...
   
   if mc.is_running? == false
     log_build_output("Engine Stopped")
