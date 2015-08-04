@@ -43,7 +43,8 @@ class EngineBuilder
   :webPort,
   :http_protocol,
   :blueprint,
-  :first_build
+  :first_build,
+  :memory
   
   attr_accessor :app_is_persistant
   
