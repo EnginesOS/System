@@ -508,6 +508,7 @@ class EngineBuilder
   while mc.is_startup_complete? == false && mc.is_running? == true
     cnt=cnt+1
       if cnt == 120
+        log_build_output("")  #force EOL to end the ...
         log_build_output("Startup still running")
           break        
       end
