@@ -419,6 +419,10 @@ SystemUtils.log_exception(e)
     SysConfig.DeploymentTemplates + "/" + @blueprint_reader.framework 
    end
    
+   def build_dir
+     @blueprint_reader.get_basedir 
+   end
+   
   def insert_framework_frag_in_dockerfile(frag_name)
     begin
       log_build_output(frag_name)
