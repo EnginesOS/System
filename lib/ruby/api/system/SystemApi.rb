@@ -14,10 +14,10 @@ class SystemApi
       #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
       if File.directory?(stateDir) ==false
         Dir.mkdir(stateDir)
-       if  Dir.exists?(stateDir + "/run") == false
-        Dir.mkdir(stateDir + "/run")
-        Dir.mkdir(stateDir + "/run/flags")
-       end
+        if  Dir.exists?(stateDir + "/run") == false
+          Dir.mkdir(stateDir + "/run")
+          Dir.mkdir(stateDir + "/run/flags")
+        end
         FileUtils.chown_R(nil,"containers",stateDir + "/run")
         FileUtils.chmod_R("u+r",stateDir + "/run")
       end
@@ -126,14 +126,14 @@ class SystemApi
     cmd = "docker rm volbuilder"
     retval =  SystemUtils.run_system(cmd)
     cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.container_name + "/:/client/state:rw  -v /var/log/engines/containers/" + container.container_name + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"
-      p :cleanup_cmd
-      p cmd
+    p :cleanup_cmd
+    p cmd
     retval =  SystemUtils.run_system(cmd)
     cmd = "docker rm volbuilder"
     retval =  SystemUtils.run_system(cmd)
 
     if retval == true
-    FileUtils.rm_rf(container_state_dir(container))
+      FileUtils.rm_rf(container_state_dir(container))
       return true
     else
       container.last_error=("Failed to Delete state and logs:" + retval.to_s)
@@ -345,27 +345,26 @@ class SystemApi
 
       SystemUtils.debug_output("Changing Domainame to " , domain_name)
 
-#      if container.hostname != hostname || container.domain_name != domain_name
-        saved_hostName = container.hostname
-        saved_domainName =  container.domain_name
-        SystemUtils.debug_output("Changing Domainame to " , domain_name)
-        container.remove_nginx_service
-        container.set_hostname_details(hostname,domain_name) 
-        save_container(container)
-        container.add_nginx_service
-#          nginx_service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",self)
-#          nginx_service.remove_consumer(container)
-#
-#          dns_service = EnginesOSapi::ServicesModule.loadManagedService("dns",self)
-#          dns_service.remove_consumer(container)
-#
-#          dns_service.add_consumer(container)
-#          nginx_service.add_consumer(container)
-#          save_container(container)
-     
+      #      if container.hostname != hostname || container.domain_name != domain_name
+      saved_hostName = container.hostname
+      saved_domainName =  container.domain_name
+      SystemUtils.debug_output("Changing Domainame to " , domain_name)
+      container.remove_nginx_service
+      container.set_hostname_details(hostname,domain_name)
+      save_container(container)
+      container.add_nginx_service
+      #          nginx_service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",self)
+      #          nginx_service.remove_consumer(container)
+      #
+      #          dns_service = EnginesOSapi::ServicesModule.loadManagedService("dns",self)
+      #          dns_service.remove_consumer(container)
+      #
+      #          dns_service.add_consumer(container)
+      #          nginx_service.add_consumer(container)
+      #          save_container(container)
 
-#        return true
-#      end
+      #        return true
+      #      end
       return true
     rescue  Exception=>e
       SystemUtils.log_exception(e)
@@ -472,7 +471,7 @@ class SystemApi
       yam_file_name = SysConfig.RunDir + "/containers/" + engine_name + "/running.yaml"
 
       if File.exists?(yam_file_name) == false
-        
+
         log_error("no such file " + yam_file_name )
         return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
@@ -504,22 +503,22 @@ class SystemApi
     config_template_file_name = SysConfig.RunDir + "/services/" + service_name + "/config.yaml"
 
     if File.exists?(config_template_file_name) == false
-     return false       
-     end
+      return false
+    end
     config_template = File.read(config_template_file_name)
     system_access = SystemAccess.new
     templator = Templater.new(system_access,nil)
     running_config = templator.process_templated_string(config_template)
-      
-     yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
-     yaml_file = File.new(yam1_file_name,"w+")
+
+    yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
+    yaml_file = File.new(yam1_file_name,"w+")
     yaml_file.write(running_config)
     yaml_file.close
-    
+
     return true
-      
+
   end
-  
+
   def loadManagedService(service_name)
     begin
       if service_name == nil || service_name.length ==0
@@ -529,9 +528,9 @@ class SystemApi
       yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
 
       if File.exists?(yam1_file_name) == false
-       if  build_running_service(service_name) == false
-        return false # return failed(yam_file_name,"No such configuration:","Load Service")
-       end
+        if  build_running_service(service_name) == false
+          return false # return failed(yam_file_name,"No such configuration:","Load Service")
+        end
       end
 
       yaml_file = File.open(yam1_file_name)
@@ -563,9 +562,9 @@ class SystemApi
         yfn =SysConfig.RunDir + "/services/" + contdir + "/config.yaml"
         if File.exists?(yfn) == true
           managed_service =  loadManagedService(contdir)
-           if managed_service
+          if managed_service
             ret_val.push(managed_service)
-           end          
+          end
         end
       end
       return ret_val
@@ -640,184 +639,177 @@ class SystemApi
     SystemUtils.log_exception(e)
     return false
   end
-  
+
   def update_public_key(key)
     res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/update_access_system_pub.sh " + key)
-    
+
   end
-  
-def container_state_dir(container)
-  return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
-end
+
+  def container_state_dir(container)
+    return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
+  end
 
   def system_update
 
     res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh")
   end
 
-
-
   def restart_system
 
     res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh") }
-      #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
- if res.status == "run"
-   return true
- end
- 
- return false
-
-end
-
-def  update_system
-
-  res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh") }
     #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-if res.status == "run"
- return true
-end
+    if res.status == "run"
+      return true
+    end
 
-return false
+    return false
 
-end
-
-
-
-def update_engines_system_software
-  res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh") }
-       #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-  if res.status == "run"
-    return true
   end
-  
-  return false
- 
- end
 
-def update_domain(params)
-  old_domain_name=params[:original_domain_name]
-  if  DNSHosting.update_domain(old_domain_name,params) == false
-     return  false
-  end  
-  
-if params[:self_hosted] == false
-  return true
-end
+  def  update_system
 
-  service_hash = Hash.new
-     service_hash[:parent_engine]="system"
-     service_hash[:variables] = Hash.new
-     service_hash[:variables][:domainname] = params[:original_domain_name]   
-     service_hash[:service_handle]=params[:original_domain_name] + "_dns"
-     service_hash[:container_type]="system"
-     service_hash[:publisher_namespace]="EnginesSystem"
-     service_hash[:type_path]="dns"
-  @engines_api.dettach_service(service_hash) 
-  #@engines_api.deregister_non_persistant_service(service_hash)
-  @engines_api.delete_service_from_engine_registry(service_hash)
-  service_hash[:variables][:domainname] = params[:domain_name]   
-  service_hash[:service_handle]=params[:domain_name] + "_dns"
-  if(params[:internal_only])
-           ip = DNSHosting.get_local_ip
-         else
-           ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
-         end
-     service_hash[:variables][:ip] = ip;
-  if  @engines_api.attach_service(service_hash) == true
-    @engines_api.register_non_persistant_service(service_hash)
-    return true
+    res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh") }
+    #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
+    if res.status == "run"
+      return true
+    end
+
+    return false
+
   end
-  
-  
-  return false
-    
-    
-rescue Exception=>e
-  
-   log_exception_and_fail("Update self hosted domain ",e)
-  return false
-  
-end
 
-def add_domain params
-  if DNSHosting.add_domain(params) == false
-     return false
-  end  
-if params[:self_hosted] == false
-  return true
-end
+  def update_engines_system_software
+    res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh") }
+    #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
+    if res.status == "run"
+      return true
+    end
 
-service_hash = Hash.new
-  service_hash[:parent_engine]="system"
-  service_hash[:variables] = Hash.new
-  service_hash[:variables][:domainname] = params[:domain_name]   
-  service_hash[:service_handle]=params[:domain_name] + "_dns"
-  service_hash[:container_type]="system"
-  service_hash[:publisher_namespace]="EnginesSystem"
-  service_hash[:type_path]="dns"
-  if(params[:internal_only])
-        ip = DNSHosting.get_local_ip
-      else
-        ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
-      end
-  service_hash[:variables][:ip] = ip;
-     
-  if   @engines_api.attach_service(service_hash) == true
-    @engines_api.register_non_persistant_service(service_hash)
-    return true
+    return false
+
   end
-  return false
-rescue Exception=>e
-  log_error("Add self hosted domain exception" + params.to_s)
-   log_exception(e)
-  return false
-end
 
+  def update_domain(params)
+    old_domain_name=params[:original_domain_name]
+    if  DNSHosting.update_domain(old_domain_name,params) == false
+      return  false
+    end
 
-#  
-#    def reload_dns    
-#    return @core_api.reload_dns
-#  end
+    if params[:self_hosted] == false
+      return true
+    end
 
-def remove_domain params    
-  if DNSHosting.rm_domain(params) == false
-    p :remove_domain_last_error
-     return  false
-  end  
-if params[:self_hosted] == false
-  return true
-end
-  service_hash = Hash.new
-  service_hash[:parent_engine]="system"
-      service_hash[:variables] = Hash.new
-      service_hash[:variables][:domainname] = params[:domain_name]   
-      service_hash[:service_handle]=params[:domain_name] + "_dns"
-      service_hash[:container_type]="system"
-      service_hash[:publisher_namespace]="EnginesSystem"
-      service_hash[:type_path]="dns"
-        
-  if  @engines_api.dettach_service(service_hash) == true
-    @engines_api.deregister_non_persistant_service(service_hash)
+    service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+    service_hash[:variables] = Hash.new
+    service_hash[:variables][:domainname] = params[:original_domain_name]
+    service_hash[:service_handle]=params[:original_domain_name] + "_dns"
+    service_hash[:container_type]="system"
+    service_hash[:publisher_namespace]="EnginesSystem"
+    service_hash[:type_path]="dns"
+    @engines_api.dettach_service(service_hash)
+    #@engines_api.deregister_non_persistant_service(service_hash)
     @engines_api.delete_service_from_engine_registry(service_hash)
-    return true
+    service_hash[:variables][:domainname] = params[:domain_name]
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+    if(params[:internal_only])
+      ip = DNSHosting.get_local_ip
+    else
+      ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+    end
+    service_hash[:variables][:ip] = ip;
+    if  @engines_api.attach_service(service_hash) == true
+      @engines_api.register_non_persistant_service(service_hash)
+      return true
+    end
+
+    return false
+
+  rescue Exception=>e
+
+    log_exception_and_fail("Update self hosted domain ",e)
+    return false
+
   end
-  return false
-rescue Exception=>e
-   log_exception(e)
-     return false
-end
 
-#  def list_self_hosted_domains
-#    return DNSHosting.list_self_hosted_domains( )
-#  rescue Exception=>e
-#    return log_exception_and_fail("list self hosted domain ",e)
-#  end
+  def add_domain params
+    if DNSHosting.add_domain(params) == false
+      return false
+    end
+    if params[:self_hosted] == false
+      return true
+    end
 
-def list_domains
-  return DNSHosting.list_domains( )
-rescue Exception=>e
-  return log_exception(e)
-end 
+    service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+    service_hash[:variables] = Hash.new
+    service_hash[:variables][:domainname] = params[:domain_name]
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+    service_hash[:container_type]="system"
+    service_hash[:publisher_namespace]="EnginesSystem"
+    service_hash[:type_path]="dns"
+    if(params[:internal_only])
+      ip = DNSHosting.get_local_ip
+    else
+      ip =  open( 'http://jsonip.com/' ){ |s| JSON::parse( s.string())['ip'] };
+    end
+    service_hash[:variables][:ip] = ip;
+
+    if   @engines_api.attach_service(service_hash) == true
+      @engines_api.register_non_persistant_service(service_hash)
+      return true
+    end
+    return false
+  rescue Exception=>e
+    log_error("Add self hosted domain exception" + params.to_s)
+    log_exception(e)
+    return false
+  end
+
+  #
+  #    def reload_dns
+  #    return @core_api.reload_dns
+  #  end
+
+  def remove_domain params
+    if DNSHosting.rm_domain(params) == false
+      p :remove_domain_last_error
+      return  false
+    end
+    if params[:self_hosted] == false
+      return true
+    end
+    service_hash = Hash.new
+    service_hash[:parent_engine]="system"
+    service_hash[:variables] = Hash.new
+    service_hash[:variables][:domainname] = params[:domain_name]
+    service_hash[:service_handle]=params[:domain_name] + "_dns"
+    service_hash[:container_type]="system"
+    service_hash[:publisher_namespace]="EnginesSystem"
+    service_hash[:type_path]="dns"
+
+    if  @engines_api.dettach_service(service_hash) == true
+      @engines_api.deregister_non_persistant_service(service_hash)
+      @engines_api.delete_service_from_engine_registry(service_hash)
+      return true
+    end
+    return false
+  rescue Exception=>e
+    log_exception(e)
+    return false
+  end
+
+  #  def list_self_hosted_domains
+  #    return DNSHosting.list_self_hosted_domains( )
+  #  rescue Exception=>e
+  #    return log_exception_and_fail("list self hosted domain ",e)
+  #  end
+
+  def list_domains
+    return DNSHosting.list_domains( )
+  rescue Exception=>e
+    return log_exception(e)
+  end
 
   protected
 
@@ -828,8 +820,6 @@ end
   def container_log_dir container
     return SysConfig.SystemLogRoot + "/"  + container.ctype + "s/" + container.container_name
   end
-  
-
 
   def run_system (cmd)
     clear_error
