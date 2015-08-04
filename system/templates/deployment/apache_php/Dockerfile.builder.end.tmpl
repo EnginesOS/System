@@ -4,7 +4,7 @@ USER 0
 #protect source
 RUN groupadd -g $data_gid writegrp;\
 	usermod -a -G $data_gid www-data;\
-	chown -R  $data_uid.$data_gid  /home/app/;\
+	chown -R  $data_uid.$data_gid  /home/app/  /home/local/;\
 	mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/ ;\
 	mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
  
