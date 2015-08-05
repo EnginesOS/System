@@ -40,7 +40,7 @@ class VolumeService < ManagedService
       retval =  SystemUtils.run_system(cmd)
       
       if retval == true
-        Dir.delete( SysConfig.LocalFSVolHome() + "/" + service_hash[:parent_engine])
+        FileUtils.rm_rf( SysConfig.LocalFSVolHome() + "/" + service_hash[:parent_engine])
           return true 
       else
         SystemUtils.log_error_mesg("Failed to Delete FS:" + retval.to_s ,service_hash)

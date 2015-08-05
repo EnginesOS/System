@@ -19,7 +19,7 @@ for service in `find /opt/engines/run/services/  -type d -maxdepth 1 |cut -f 6 -
   	eservice recreate dns
   	eservice recreate mgmt
   	eservices recreate
-  	/home/engines/bin/follow_start.sh
+  	/opt/engines/bin/follow_start.sh
          
          docker rmi $( docker images -f "dangling=true" -q) > /dev/null
          

@@ -79,5 +79,9 @@ end
  def data_gid
    return @builder.data_gid
  end
+ 
+ def memory
+   return @builder.memory
+ end
 
 end

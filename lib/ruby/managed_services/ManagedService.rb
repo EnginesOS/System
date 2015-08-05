@@ -243,8 +243,12 @@ class ManagedService < ManagedContainer
     SystemUtils.run_command("/opt/engines/scripts/setup_service_dir.sh " +container_name)      
     envs = @core_api.load_and_attach_persistant_services(self)
     shared_envs = @core_api.load_and_attach_shared_services(self)
-      if shared_envs.is_a?(Array)
-        envs.concat(shared_envs)  
+      if shared_envs.is_a?(Array) 
+        if envs.is_a?(Array) == false
+          envs = shared_envs
+        else
+         envs.concat(shared_envs)
+        end  
       end
      
     if envs.is_a?(Array) == true
