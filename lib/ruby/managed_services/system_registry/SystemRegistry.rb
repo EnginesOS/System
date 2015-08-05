@@ -15,6 +15,7 @@ class SystemRegistry < Registry
      @services_registry = ServicesRegistry.new(services_registry)
      @managed_engines_registry = ManagedEnginesRegistry.new( managed_engines_registry)
      @orphan_server_registry = OrphanServicesRegistry.new( orphaned_services_registry)
+     @registry_socket = open_socket("127.0.0.1",21028)
      
    end
    
@@ -230,6 +231,7 @@ class SystemRegistry < Registry
     #@return service_tree [TreeNode]
     def tree_from_yaml()
       begin
+        
         if File.exist?(SysConfig.ServiceTreeFile)
           tree_data = File.read(SysConfig.ServiceTreeFile)
         elsif  File.exist?(SysConfig.ServiceTreeFile + ".bak")
@@ -401,5 +403,22 @@ def orphaned_services_registry
          return false
   end
   
+  def send_request(command,params)
+    request_hash = params.dup
+    request_hash[:command] = command
+     request_json
+    @registry_socket.send(request_json,0,"127.0.0.1",21027)
+  end
+  protected 
+  
+  def open_socket(host,port)
+      
+      socket = UDPSocket.new(Socket::AF_INET)
+      if socket     
+        socket.bind(host,port)           
+        return socket
+      end
+      
+    end
   
 end
