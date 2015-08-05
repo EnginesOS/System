@@ -16,7 +16,10 @@ if test -f /home/_init.sh
  		/home/_init.sh
  	fi
 
-	
+	if ! test -f /engines/var/run/flags/first_run_done
+		then
+			touch /engines/var/run/flags/first_run_done
+	else		
 
 		if test -f /home/engines/scripts/post_install.sh
 			then 				
@@ -27,7 +30,8 @@ if test -f /home/_init.sh
 						/bin/bash /home/engines/scripts/post_install.sh 							
 						touch /engines/var/run/flags/post_install.done
 				fi
-		fi		
+		fi
+	fi		
 	
 
 
