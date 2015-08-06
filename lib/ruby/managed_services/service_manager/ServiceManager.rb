@@ -10,7 +10,7 @@ require 'rubytree'
 #include ServicesRegistry
 #require_relative 'service_configurations.rb'
 #include ServiceConfigurations
-require_relative '../system_registry/Registry.rb'
+
 require_relative '../system_registry/SystemRegistry.rb'
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
