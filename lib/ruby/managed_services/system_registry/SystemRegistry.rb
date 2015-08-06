@@ -130,17 +130,17 @@ class SystemRegistry
  
    #
    def  orphaned_services_registry
-     send_request("orphaned_services_registry",params)
+     send_request("orphaned_services_registry",nil)
    end
  
    #
    def  services_registry
-     send_request("services_registry",params)
+     send_request("services_registry",nil)
    end
  
    #
    def  managed_engines_registry
-     send_request("managed_engines_registry",params)
+     send_request("managed_engines_registry",nil)
    end
    
    def last_log
