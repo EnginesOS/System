@@ -350,6 +350,28 @@ class EnginesCore
     return @service_manager
   end
 
+  def get_registry_ip
+    registry_service = LoadManagedService("registry")
+    case registry_service.state
+    when "nocontainer"
+      registry_service.create
+    when "paused"
+      registry_service.unpause
+    when "stopped"   
+      registry_service.start
+    end
+    if registry_service.state != "running"
+      if registry_service.forced_recreate == false
+        @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
+        return nil
+      end
+    end  
+    return registry_service.get_ip_str
+    rescue Exception=>e
+    @last_error= "Fatal Unable to Start Registry Service: " + e.tos
+       SystemUtils.log_exception e
+  end
+  
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
 

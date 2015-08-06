@@ -234,7 +234,14 @@ class ManagedService < ManagedContainer
   def service_manager
     return @core_api.loadServiceManager()
   end
-
+  
+  def  forced_recreate
+    unpause
+    stop
+    destroy
+    return create    
+  end
+  
   def create_service()
     if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    || Dir.exists?("/opt/engines/run/services/" + container_name + "/run")
      # FileUtils.mkdir_p("/opt/engines/ssh/keys/services/" + container_name)
