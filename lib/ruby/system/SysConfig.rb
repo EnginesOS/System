@@ -9,7 +9,7 @@ class SysConfig
   @@api_version="0.0"
   @@engines_system_version="0.0"
   
-  @@RegistryPort=22027
+  @@RegistryPort=21027
   @@DBHost="mysql.engines.internal"
   @@RunDir="/opt/engines/run/"
   @@CidDir="/opt/engines/run/cid/"
