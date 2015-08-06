@@ -1,0 +1,28 @@
+--- !ruby/object:ManagedService
+container_name: registry
+ctype: service
+persistant: false
+publisher_namespace: EnginesSystem
+type_path: registry
+last_error: 
+memory: '32'
+hostname: registry
+domain_name: 
+environments: []
+image: engines/registry:_Engines_System(release)
+volumes:
+ docker_bin: !ruby/object:Volume
+  name: registry_dir
+  remotepath: "/opt/engines/run/service_manager/"
+  localpath: "/var/lib/fs/services/registry/"
+  mapping_permissions: rw
+port: 
+eports:
+repo: na
+last_result: 
+setState: running
+nginxored: false
+databases: []
+conf_register_site: false
+conf_register_dns: true
+dependant_on:
