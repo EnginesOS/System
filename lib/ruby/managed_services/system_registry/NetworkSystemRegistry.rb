@@ -1,6 +1,6 @@
 class NetworkSystemRegistry
-
-  require 'json'
+require 'yaml'
+#  require 'json'
  attr_accessor :server,
                 :port,
                 :retry_count_limit,
@@ -63,7 +63,7 @@ class NetworkSystemRegistry
       p mesg_len
       total_length = first_bytes.size
       end_byte =  total_length - end_tag_indx
-      messege_response = first_bytes.slice(end_tag_indx+1,end_byte)
+      messege_response = first_bytes.slice(end_tag_indx+1,end_byte+1)
 
       while messege_response.size < mesg_len
         begin
@@ -78,7 +78,7 @@ class NetworkSystemRegistry
       retry
     end
 
-    response_hash = convert_json_message_to_hash(messege_response)
+    response_hash = YAML::load(messege_response)
 
     return response_hash
 
