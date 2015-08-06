@@ -8,6 +8,10 @@ class NetworkSystemRegistry
                 
   def initialize(server,port)
     @registry_socket = open_socket(server,port)
+    if @registry_socket.is_a?(String) == true
+      p @registry_socket.to_s
+      return nil
+    end
     @retry_count_limit=20
     @server= server
     @port=port
