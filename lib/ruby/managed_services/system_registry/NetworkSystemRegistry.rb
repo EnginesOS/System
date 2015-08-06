@@ -109,20 +109,30 @@ class NetworkSystemRegistry
     mesg_str = build_mesg(request_json)
     
     begin
+
+      @registry_socket.write(mesg_str)
+      
+    rescue Errno::EIO
+      retry_count+=1
       if retry_count > @retry_count_limit
         @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
         return send_request_failed(command,request_hash) 
       end
-      @registry_socket.write(mesg_str)
-    rescue Errno::EIO
-      retry_count+=1
       retry
     rescue IO::EAGAINWaitWritable
       retry_count+=1
+      if retry_count > @retry_count_limit
+        @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+        return send_request_failed(command,request_hash) 
+      end
       retry
     rescue Errno::ECONNRESET
       if reopen_registry_socket == true
         retry_count+=1
+        if retry_count > @retry_count_limit
+          @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+          return send_request_failed(command,request_hash) 
+        end
         retry
       else
         return  send_request_failed(command,request_hash) 
@@ -130,13 +140,17 @@ class NetworkSystemRegistry
     rescue Errno::EPIPE
       if reopen_registry_socket == true
         retry_count+=1
+        if retry_count > @retry_count_limit
+          @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+          return send_request_failed(command,request_hash) 
+        end
         retry
       else
         return  send_request_failed(command,request_hash) 
       end
     rescue EOFError
       if reopen_registry_socket == true
-        retry_count+=1
+        retry_count+=1 
         retry
       else
         return  send_request_failed(command,request_hash) 
