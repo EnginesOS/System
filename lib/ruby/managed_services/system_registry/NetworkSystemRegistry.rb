@@ -24,13 +24,13 @@ class NetworkSystemRegistry
 
  
 
-  def convert_json_message_to_hash(request)
-    require 'json'
-    hash_request = JSON.parse(request)
-    return  symbolize_top_level_keys(hash_request)
-  rescue
-    return nil
-  end
+#  def convert_json_message_to_hash(request)
+#    require 'json'
+#    hash_request = JSON.parse(request)
+#    return  symbolize_top_level_keys(hash_request)
+#  rescue
+#    return nil
+#  end
 
   def symbolize_top_level_keys(hash)
     hash.inject({}){|result, (key, value)|
@@ -97,16 +97,13 @@ class NetworkSystemRegistry
         SystemUtils.log_error_mesg("Failed to send command " +command + " with:" + @last_error, params)
         return false
     end
-    if params.is_a?(Hash)
-      request_hash = params.dup
-    else
-      request_hash = Hash.new
-      request_hash[:single_value]=params
-    end
+    
+     request_hash = Hash.new
+     request_hash[:value]=params
     
     request_hash[:command] = command
-    request_json = request_hash.to_json
-    mesg_str = build_mesg(request_json)
+    request_yaml = request_hash.to_yaml
+    mesg_str = build_mesg(request_yaml)
     
     begin
 
