@@ -368,7 +368,7 @@ class EnginesCore
     end  
     return registry_service.get_ip_str
     rescue Exception=>e
-    @last_error= "Fatal Unable to Start Registry Service: " + e.tos
+    @last_error= "Fatal Unable to Start Registry Service: " + e.to_s
        SystemUtils.log_exception e
   end
   
