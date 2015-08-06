@@ -519,7 +519,15 @@ class SystemApi
 
   end
 
-  def loadManagedService(service_name)
+  def loadSystemService(service_name)
+    _loadManagedService(service_name,SysConfig.RunDir + "/system_services/")
+  end
+  
+  def  loadManagedService(service_name)
+    _loadManagedService(service_name,SysConfig.RunDir + "/services/")
+  end
+  
+  def _loadManagedService(service_name,service_type_dir)
     begin
       if service_name == nil || service_name.length ==0
         last_error="No Service Name"
