@@ -15,7 +15,7 @@ class NetworkSystemRegistry
 
  
 
-  private
+ 
 
   def convert_json_message_to_hash(request)
     require 'json'
