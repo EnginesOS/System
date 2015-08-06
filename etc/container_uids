@@ -23,6 +23,7 @@ nfs		nfs		22018
 samba	samba	22019
 dyndns	dyndns	22021
 certs 	certs    22022
+registry registry	22023
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672
