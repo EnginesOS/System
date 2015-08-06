@@ -9,6 +9,7 @@ class SysConfig
   @@api_version="0.0"
   @@engines_system_version="0.0"
   
+  @@RegistryPort=22027
   @@DBHost="mysql.engines.internal"
   @@RunDir="/opt/engines/run/"
   @@CidDir="/opt/engines/run/cid/"
@@ -79,6 +80,9 @@ class SysConfig
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
   
+  def SysConfig.RegistryPort
+    return @@RegistryPort
+  end
   def SysConfig.api_version
     return @@api_version
   end

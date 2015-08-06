@@ -23,7 +23,7 @@ class ServiceManager
     @core_api = core_api
     #@service_tree root of the Service Registry Tree
     #@service_tree = initialize_tree remove_from_engine_registery
-    @system_registry = SystemRegistry.new()
+    @system_registry = SystemRegistry.new(@core_api)
   end
   def get_orphaned_services(params)
     @system_registry.get_orphaned_services(params)
