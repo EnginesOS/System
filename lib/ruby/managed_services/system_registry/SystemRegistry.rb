@@ -1,4 +1,4 @@
-require 'NetworkSystemRegistry.rb'
+require '/opt/engines/lib/ruby/managed_services/system_registry/NetworkSystemRegistry.rb'
 class SystemRegistry
   attr_accessor :network_registry
   def initialize(core_api)
