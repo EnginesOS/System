@@ -352,7 +352,7 @@ class EnginesCore
 
   def get_registry_ip
     registry_service = LoadManagedService("registry")
-    case registry_service.state
+    case registry_service.read_state
     when "nocontainer"
       registry_service.create
     when "paused"
@@ -360,7 +360,7 @@ class EnginesCore
     when "stopped"   
       registry_service.start
     end
-    if registry_service.state != "running"
+    if registry_service.read_state != "running"
       if registry_service.forced_recreate == false
         @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
         return nil
