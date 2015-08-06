@@ -97,8 +97,13 @@ class NetworkSystemRegistry
         SystemUtils.log_error_mesg("Failed to send command " +command + " with:" + @last_error, params)
         return false
     end
+    if params.is_a?(Hash)
+      request_hash = params.dup
+    else
+      request_hash = Hash.new
+      request_hash[:single_value]=params
+    end
     
-    request_hash = params.dup
     request_hash[:command] = command
     request_json = request_hash.to_json
     mesg_str = build_mesg(request_json)
