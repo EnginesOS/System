@@ -1,3 +1,4 @@
+require 'NetworkSystemRegistry.rb'
 class SystemRegistry
   attr_accessor :network_registry
   def initialize(core_api)
