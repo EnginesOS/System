@@ -99,8 +99,7 @@ require 'yaml'
     end
     
      request_hash = Hash.new
-     request_hash[:value]=params
-    
+     request_hash[:value]=params    
     request_hash[:command] = command
     request_yaml = request_hash.to_yaml
     mesg_str = build_mesg(request_yaml)
