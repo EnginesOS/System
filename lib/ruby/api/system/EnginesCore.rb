@@ -351,7 +351,7 @@ class EnginesCore
   end
 
   def get_registry_ip
-    registry_service = LoadManagedService("registry")
+    registry_service = @system_api.loadManagedService("registry")
     case registry_service.read_state
     when "nocontainer"
       registry_service.create
