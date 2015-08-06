@@ -108,7 +108,8 @@ class NetworkSystemRegistry
     begin
 
       @registry_socket.write(mesg_str)
-      
+      p :Sent
+      p "Message:" + mesg_str.to_s
     rescue Errno::EIO
       retry_count+=1
       if retry_count > @retry_count_limit

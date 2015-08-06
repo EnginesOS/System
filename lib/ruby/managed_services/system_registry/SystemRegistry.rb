@@ -148,6 +148,8 @@ class SystemRegistry
    end
    private 
    def send_request(command,params)
+     p :Sending 
+     p command +":" + params.to_s
      @network_registry.send_request(command,params)   
    end
 end
