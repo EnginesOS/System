@@ -123,7 +123,7 @@ class ManagedService < ManagedContainer
          return false
        end
     if @cont_userid == nil || @cont_userid == false
-       log_error_mesg("service missing cont_userid ",configurator_params)
+       log_error_mesg("service missing cont_userid ",service_hash)
              return false
      end
   cmd = "docker exec -u " + @cont_userid.to_s + " " + @container_name.to_s  + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
