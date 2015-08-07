@@ -106,10 +106,13 @@ require 'yaml'
     mesg_str = build_mesg(request_yaml)
     
     begin
-
+      #Check if open Will chuck an error if not and read nothing if is 
+      @registry_socket.recv(0)
+      
       @registry_socket.write(mesg_str)
       p :Sent
       p "Message:" + mesg_str.to_s
+
     rescue Errno::EIO
       retry_count+=1
       if retry_count > @retry_count_limit
