@@ -181,6 +181,17 @@ require 'yaml'
         p "Exception"
         p e.to_s
         p e.backtrace.to_s
+      if reopen_registry_socket == true
+              retry_count+=1 
+              if retry_count > @retry_count_limit
+                 @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+                 p   @last_error
+                 return send_request_failed(command,request_hash) 
+               end
+              retry
+            else
+              return  send_request_failed(command,request_hash) 
+            end
         
     end
     result_hash = wait_for_reply(@registry_socket)
