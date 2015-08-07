@@ -111,7 +111,7 @@ require 'yaml'
       #Check if open Will chuck an error if not and read nothing if is 
      @registry_socket.read_nonblock(0)
       
-      @registry_socket.send(mesg_str)
+      @registry_socket.send(mesg_str,0)
       
       p :Sent
       p "Message:" + mesg_str.to_s
