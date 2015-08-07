@@ -177,6 +177,7 @@ require 'yaml'
 #    if @registry_socket.is_open?
 #      @registry_socket.close
 #    end
+    p :reopen_socket
       begin
         @registry_socket = open_socket(@host,@port)
         return true
