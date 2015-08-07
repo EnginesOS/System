@@ -70,7 +70,9 @@ require 'yaml'
           more = socket.read_nonblock(32768)
           messege_response = messege_response + more
         rescue IO::EAGAINWaitReadable
+          p :retry_in_wait_for_reply
           retry
+          
         end
       end
 
