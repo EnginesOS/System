@@ -91,6 +91,9 @@ require 'yaml'
     response_hash = YAML::load(messege_response)
     p :response_as_yaml
     p response_hash
+    if response_hash[:object] == nil
+      return nil
+    end
     return YAML::load(response_hash[:object])
 
   end
