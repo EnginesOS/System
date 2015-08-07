@@ -138,7 +138,8 @@ class EngineBuilder
 
   def close_all
     if @log_file.closed? == false
-      log_build_output("Build Finished")
+      log_build_output("Build Result:Comming Soon")   
+      log_build_output("Build Finished")      
       @log_file.close()
     end
     if@err_file.closed? == false
