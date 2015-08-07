@@ -184,6 +184,7 @@ require 'yaml'
         @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + e.to_s
         return false
       end   
+     
   end
 
   def open_socket(host,port)
@@ -194,6 +195,7 @@ require 'yaml'
     return socket
       rescue Exception=>e
          @last_error="Failed to open Connection to " + host.to_s + ":" + port.to_s + e.to_s
+         p @last_error
     end
   end
 end
