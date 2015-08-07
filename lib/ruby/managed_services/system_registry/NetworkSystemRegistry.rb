@@ -209,6 +209,9 @@ require 'yaml'
     p :reopen_socket
       begin
         @registry_socket = open_socket(@server,@port)
+        if registry_socket.is_a?(String)
+          return false
+        end
         return true
       rescue Exception=>e
         @last_error="Failed to Reopen Connection to " + @server.to_s + ":" + @port.to_s + e.to_s
