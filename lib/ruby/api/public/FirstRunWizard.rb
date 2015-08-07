@@ -9,7 +9,8 @@ class FirstRunWizard
 
   def apply(api)
   @api = api
-  
+  p :applyin
+  p @first_run_params 
     if mysql_password_configurator(@first_run_params[:mysql_password]) == false
       log_error("Fail to setup mysql password " + api.last_error())
       return false
