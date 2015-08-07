@@ -80,7 +80,7 @@ require 'yaml'
 
     response_hash = YAML::load(messege_response)
     p :response_as_yaml
-    p reponse_hash
+    p response_hash
     return response_hash[:object]
 
   end
