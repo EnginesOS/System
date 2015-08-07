@@ -356,9 +356,9 @@ class EnginesCore
     when "nocontainer"
       registry_service.create_service
     when "paused"
-      registry_service.unpause
+      registry_service.unpause_container
     when "stopped"   
-      registry_service.start
+      registry_service.start_container
     end
     if registry_service.read_state != "running"
       if registry_service.forced_recreate == false
