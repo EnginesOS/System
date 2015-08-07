@@ -117,6 +117,10 @@ require 'yaml'
     
     begin
       #Check if open Will chuck an error if not and read nothing if is 
+      if  @registry_socket.is_a?(String)
+        p :REGSOCKER_OS_TRIOGN
+        p @registry_socket
+      end
      @registry_socket.read_nonblock(0)
     
       @registry_socket.send(mesg_str,0)
