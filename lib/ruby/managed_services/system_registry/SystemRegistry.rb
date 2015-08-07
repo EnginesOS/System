@@ -3,13 +3,11 @@ class SystemRegistry
   attr_accessor :network_registry
   def initialize(core_api)
     
-    registry_ip = core_api.get_registry_ip
+   
     
-    if registry_ip.is_a?(String)
-      @network_registry = NetworkSystemRegistry.new(registry_ip,SysConfig.RegistryPort)
-    else
-      SystemUtils.log_error_mesg("Failed to Create Network Registry", + last_log)
-    end
+
+      @network_registry = NetworkSystemRegistry.new( core_api)
+   
     
   end
   def  find_engine_services(params)    

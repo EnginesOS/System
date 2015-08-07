@@ -1,29 +1,28 @@
 class NetworkSystemRegistry
 require 'yaml'
 #  require 'json'
- attr_accessor :server,
-                :port,
+ attr_accessor  :port,
                 :retry_count_limit,
                 :last_error
                 
   def initialize(core_api)
     @retry_count_limit=20
   @core_api = core_api
-  server = core_api.get_registry_ip
-    @registry_socket = open_socket(server,port)    
+  server = @core_api.get_registry_ip
+  @port=SysConfig.RegistryPort
+  @registry_socket = open_socket(server,@port)    
     
     if @registry_socket.is_a?(String) == true
       p @registry_socket.to_s
       return nil
     end
-
-    @server= server
-    @port=port
+ 
+    
   end
 
- 
-
- 
+ def server
+   @core_api.get_registry_ip
+ end 
 
 #  def convert_json_message_to_hash(request)
 #    require 'json'
