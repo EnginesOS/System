@@ -122,7 +122,7 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",service_hash)
          return false
        end
-    if @cont_userid == nil
+    if @cont_userid == nil || @cont_userid == false
        log_error_mesg("service missing cont_userid ",configurator_params)
              return false
      end
@@ -141,7 +141,7 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",configurator_params)
          return false
        end
-    if @cont_userid == nil
+    if @cont_userid == nil || @cont_userid == false
        log_error_mesg("service missing cont_userid ",configurator_params)
              return false
      end
