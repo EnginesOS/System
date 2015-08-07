@@ -75,9 +75,17 @@ require 'yaml'
           
         end
       end
-
+      
+    rescue EOFError
+      return nil
+      
     rescue IO::EAGAINWaitReadable
       retry
+        
+  rescue Exception=>e
+    p "Eception"
+    p e.to_s
+    p e.backtrace.to_s
     end
 
     response_hash = YAML::load(messege_response)
@@ -116,6 +124,7 @@ require 'yaml'
       p :Sent
       p "Message:" + mesg_str.to_s
       @registry_socket.recv(0)
+      
     rescue Errno::EIO
       retry_count+=1
       if retry_count > @retry_count_limit
