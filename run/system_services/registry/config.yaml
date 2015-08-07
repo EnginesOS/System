@@ -14,7 +14,7 @@ volumes:
  docker_bin: !ruby/object:Volume
   name: registry_dir
   remotepath: "/opt/engines/run/service_manager/"
-  localpath: "/var/lib/fs/services/registry/"
+  localpath: "/var/lib/engines/registry"
   mapping_permissions: rw
 port: 
 eports:
