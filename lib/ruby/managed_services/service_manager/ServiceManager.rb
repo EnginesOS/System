@@ -435,6 +435,8 @@ end
     services = get_engine_nonpersistant_services(params)
 
     services.each do |service_hash|
+      p :deregister_non_persistant_services
+      p service_hash
       @system_registry.remove_from_services_registry(service_hash)
       #      deregister_non_persistant_service(service_hash)
     end
@@ -461,6 +463,7 @@ end
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
+        p service_hash
         @system_registry.remove_from_services_registry(service_hash)
       end
     elsif service.persistant == true
@@ -498,6 +501,7 @@ def remove_service service_hash
        end
    return release_orphan(service_hash)
  end
+
  
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
