@@ -365,7 +365,16 @@ class EnginesCore
         @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
         return nil
       end
-    end  
+    end
+    wait = 0  
+    while registry_service.is_startup_complete? == false
+      sleep 1
+      wait=wait+1
+        if wait >5
+          break
+        end
+    end
+
     return registry_service.get_ip_str
     rescue Exception=>e
     @last_error= "Fatal Unable to Start Registry Service: " + e.to_s
