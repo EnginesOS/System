@@ -8,9 +8,9 @@ require 'yaml'
   def initialize(core_api)
     @retry_count_limit=20
   @core_api = core_api
-  server = @core_api.get_registry_ip
+  server_ip = server
   @port=SysConfig.RegistryPort
-  @registry_socket = open_socket(server,@port)    
+  @registry_socket = open_socket(server_ip,@port)    
     
     if @registry_socket.is_a?(String) == true
       p @registry_socket.to_s
@@ -21,7 +21,8 @@ require 'yaml'
   end
 
  def server
-   @core_api.get_registry_ip
+   #@core_api.get_registry_ip
+   return "192.168.208.101"
  end 
 
 #  def convert_json_message_to_hash(request)
