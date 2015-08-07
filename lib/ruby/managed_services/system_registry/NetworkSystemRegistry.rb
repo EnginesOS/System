@@ -107,7 +107,7 @@ require 'yaml'
     
     begin
       #Check if open Will chuck an error if not and read nothing if is 
-      @registry_socket.recv(0)
+      @registry_socket.read(0)
       
       @registry_socket.write(mesg_str)
       p :Sent
