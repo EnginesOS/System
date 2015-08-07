@@ -6,9 +6,10 @@ require 'yaml'
                 :retry_count_limit,
                 :last_error
                 
-  def initialize(server,port)
+  def initialize(core_api)
     @retry_count_limit=20
-
+  @core_api = core_api
+  server = core_api.get_registry_ip
     @registry_socket = open_socket(server,port)    
     
     if @registry_socket.is_a?(String) == true
@@ -210,7 +211,8 @@ require 'yaml'
       begin
         @registry_socket = open_socket(@server,@port)
         if registry_socket.is_a?(String)
-          return false
+          
+          return force_registry_start
         end
         return true
       rescue Exception=>e
@@ -220,6 +222,9 @@ require 'yaml'
      
   end
 
+  def force_registry_start
+  end
+  
   def open_socket(host,port)
     require 'socket.rb'
     begin
