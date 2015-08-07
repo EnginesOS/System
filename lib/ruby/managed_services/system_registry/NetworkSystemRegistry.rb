@@ -171,9 +171,9 @@ require 'yaml'
   end
 
   def reopen_registry_socket
-    if @registry_socket.is_open?
-      @registry_socket.close
-    end
+#    if @registry_socket.is_open?
+#      @registry_socket.close
+#    end
       begin
         @registry_socket = open_socket(@host,@port)
         return true
