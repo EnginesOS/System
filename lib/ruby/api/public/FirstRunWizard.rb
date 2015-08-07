@@ -27,7 +27,7 @@ class FirstRunWizard
       return false
     end
    domain_hash = Hash.new()
-    domain_hash[:domain_name]=params[:default_domain]
+    domain_hash[:domain_name]=@first_run_params[:default_domain]
     if api.set_default_domain(domain_hash)  == false
       log_error("Fail to set default domain " + api.last_error() + " " + domain_hash.to_s)
       return false
