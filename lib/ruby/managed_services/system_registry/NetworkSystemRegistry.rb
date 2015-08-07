@@ -177,6 +177,11 @@ require 'yaml'
       else
         return  send_request_failed(command,request_hash) 
       end
+      rescue Exception=>e
+        p "Exception"
+        p e.to_s
+        p e.backtrace.to_s
+        
     end
     result_hash = wait_for_reply(@registry_socket)
     return result_hash
