@@ -354,7 +354,7 @@ class EnginesCore
     registry_service = @system_api.loadSystemService("registry")
     case registry_service.read_state
     when "nocontainer"
-      registry_service.create
+      registry_service.create_service
     when "paused"
       registry_service.unpause
     when "stopped"   
