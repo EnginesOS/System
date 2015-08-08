@@ -21,8 +21,8 @@ require 'yaml'
   end
 
  def server
-   #@core_api.get_registry_ip
-   return "192.168.208.101"
+   @core_api.get_registry_ip
+  # return "192.168.208.101"
  end 
 
 #  def convert_json_message_to_hash(request)
