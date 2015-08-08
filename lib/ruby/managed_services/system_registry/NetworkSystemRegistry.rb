@@ -6,7 +6,7 @@ require 'yaml'
                 :last_error
                 
   def initialize(core_api)
-    @retry_count_limit=20
+    @retry_count_limit=5
   @core_api = core_api
   server_ip = server
   @port=SysConfig.RegistryPort
@@ -25,13 +25,7 @@ require 'yaml'
   # return "192.168.208.101"
  end 
 
-#  def convert_json_message_to_hash(request)
-#    require 'json'
-#    hash_request = JSON.parse(request)
-#    return  symbolize_top_level_keys(hash_request)
-#  rescue
-#    return nil
-#  end
+
 
   def symbolize_top_level_keys(hash)
     hash.inject({}){|result, (key, value)|
@@ -47,12 +41,7 @@ require 'yaml'
   def wait_for_reply(socket)
     #  def process_messages(socket)
     begin
-      # while socket.is_open? ==true
-      #blocking read
-      #readup to first ,
-      #get count
-      #sub traact bytes already read and read until the rest.
-      #save next segment if there is any (or stay sync)
+
       first_bytes = socket.read_nonblock(32768)
 
       end_tag_indx = first_bytes.index(',')
@@ -125,10 +114,12 @@ require 'yaml'
         p :REGSOCKER_OS_TRIOGN
         p @registry_socket
       end
+      status = Timeout::timeout(5) {
+    
      @registry_socket.read_nonblock(0)
     
       @registry_socket.send(mesg_str,0)
-      
+      }
       p :Sent
       p "Message:" + mesg_str.to_s
      
@@ -149,6 +140,14 @@ require 'yaml'
         return send_request_failed(command,request_hash) 
       end
       retry
+      rescue  Timeout::Error 
+      retry_count+=1
+            if retry_count > @retry_count_limit
+              @last_error="Timeout on Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+              p   @last_error
+              return send_request_failed(command,request_hash) 
+            end
+            retry
     rescue Errno::ECONNRESET
       if reopen_registry_socket == true
         retry_count+=1
@@ -202,8 +201,16 @@ require 'yaml'
             end
         
     end
+    status = Timeout::timeout(15) {
     result_hash = wait_for_reply(@registry_socket)
+    }
+    
     return result_hash
+    
+    rescue  Timeout::Error 
+    @last_error="Timeout waiting for reply"
+    return send_request_failed(command,request_hash) 
+   
   end
 
   def reopen_registry_socket
