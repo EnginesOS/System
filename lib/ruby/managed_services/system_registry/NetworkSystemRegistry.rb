@@ -202,6 +202,7 @@ require 'timeout'
             end
         
     end
+    result_hash = false
     status = Timeout::timeout(15) {
     result_hash = wait_for_reply(@registry_socket)
     }
