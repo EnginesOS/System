@@ -1,5 +1,6 @@
 class NetworkSystemRegistry
 require 'yaml'
+require 'timeout'
 #  require 'json'
  attr_accessor  :port,
                 :retry_count_limit,
