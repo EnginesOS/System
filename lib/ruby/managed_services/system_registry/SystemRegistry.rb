@@ -1,6 +1,7 @@
 require '/opt/engines/lib/ruby/managed_services/system_registry/NetworkSystemRegistry.rb'
 class SystemRegistry
-  attr_accessor :network_registry
+  attr_accessor :network_registry,
+                :last_error
   def initialize(core_api)
     
    
@@ -148,6 +149,8 @@ class SystemRegistry
    def send_request(command,params)
      p :Sending 
      p command +":" + params.to_s
-     @network_registry.send_request(command,params)   
+     request_result = @network_registry.send_request(command,params)   
+     @last_error = network_registry.last_error
+     return request_result
    end
 end
