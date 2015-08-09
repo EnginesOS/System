@@ -85,7 +85,15 @@ require 'timeout'
     if response_hash[:object] == nil
       return nil
     end
+    
+    
     return YAML::load(response_hash[:object])
+    rescue Exception=>e
+        p "Eception"
+        p e.to_s
+        p e.backtrace.to_s
+       
+
 
   end
 
