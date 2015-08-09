@@ -130,14 +130,20 @@ module ServicesModule
       #nothing is written to the service registry
       #effectivitly activating non persistant services
    def register_attached_service(service_hash)
+     if register_attached_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
+     end
+     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
    end
   #@ return [EnginesOSapiResult]
     #@params service_hash
     #this method is called to deregister the service hash from service
     #nothing is written to the service resgitry   
    def deregister_attached_service(service_hash)
+     if  deregister_attached_service(service_hash).was_success
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
+     end
+     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
    end
   #@ return [EnginesOSapiResult]
       #@params service_hash
@@ -146,9 +152,13 @@ module ServicesModule
       #nothing is written to the service resgitry   
    def reregister_attached_service(service_hash)
     if  deregister_attached_service(service_hash).was_success
-      return register_attached_service(service_hash)
-    end
+      if register_attached_service(service_hash).was_success    
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
+      else
+        return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in register_attached_service")
+      end      
+    end
+     return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in deregister_attached_service")
    end
       
     def get_managed_engine_tree
