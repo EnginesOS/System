@@ -42,7 +42,7 @@ require 'timeout'
   def wait_for_reply(socket)
     #  def process_messages(socket)
     begin
-
+p :getting_first_bytes
       first_bytes = socket.read_nonblock(32768)
 p :first_bytes
 p first_bytes
