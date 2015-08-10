@@ -136,23 +136,16 @@ def process_first_chunk(mesg_data)
     begin
    
       if  @registry_socket.is_a?(String)
-#        p :send_reopening_socker
-#        p @registry_socket
           if reopen_registry_socket  == false
             @last_error="Failed to reopen registry connection"
             return send_request_failed(command,request_hash) 
           end
       end
-      status = Timeout::timeout(5) {
-    
-     @registry_socket.read_nonblock(0)
-    
-      @registry_socket.send(mesg_str,0)
+      status = Timeout::timeout(5) {    
+          @registry_socket.read_nonblock(0)    
+          @registry_socket.send(mesg_str,0)
       }
-#      p :Sent
-#      p "Message:" + mesg_str.to_s
-     
-      
+         
     rescue Errno::EIO
       retry_count+=1
       p :send_EIO
