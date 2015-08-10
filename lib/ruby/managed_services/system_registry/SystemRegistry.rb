@@ -9,7 +9,7 @@ class SystemRegistry
 
   end
 
-  def test_result(equest_result_hash)
+  def test_result(request_result_hash)
     if request_result_hash[:result]=="OK"
       return request_result_hash[:object]
     end
