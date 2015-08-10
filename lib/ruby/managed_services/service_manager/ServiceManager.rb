@@ -483,7 +483,26 @@ def get_managed_engine_tree
 def service_configurations_tree      
   test_registry_result(@system_registry.service_configurations_registry)
 end
-   
+  
+def get_orphaned_services(params)    
+  test_registry_result(@system_registry.get_orphaned_services(params))
+end 
+
+def service_is_registered?(service_hash)      
+  test_registry_result(@system_registry.service_is_registered?(service_hash))
+end
+
+def get_service_configurations_hashes(service_hash)      
+  test_registry_result(@system_registry.get_service_configurations_hashes(service_hash))
+  end
+    
+
+def get_engine_nonpersistant_services(params)      
+  test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
+end
+def get_engine_persistant_services(params)      
+  test_registry_result(@system_registry.get_engine_persistant_services(params))
+end 
    
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
