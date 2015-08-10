@@ -10,7 +10,7 @@ class SystemRegistry
   end
 
   def test_result(request_result_hash)
-   
+   clear_error
     if request_result_hash == nil
       @last_error = @network_registry.last_error
         return nil
@@ -19,7 +19,7 @@ class SystemRegistry
       p request_result_hash[:object].class.name
       return request_result_hash[:object]
     end
-    @last_error = request_result_hash[:error]
+    @last_error = request_result_hash[:error] + ":"+@network_registry.last_error
       if   request_result_hash.has_key?(object)     
         return request_result_hash[:object]     
       end
@@ -162,7 +162,10 @@ class SystemRegistry
     test_result(send_request("managed_engines_registry",nil))
   end
 
-
+  def clear_error
+    @last_error = nil
+  end
+  
   private
 
   def send_request(command,params)

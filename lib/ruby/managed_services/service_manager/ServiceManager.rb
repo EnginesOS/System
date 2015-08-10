@@ -2,11 +2,12 @@ require 'rubytree'
 
 
 
-require_relative '../system_registry/SystemRegistry.rb'
+require_relative '../../system_registry/SystemRegistry.rb'
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
+  require_relative 'system_registry.rb'
   
   attr_accessor     :last_error
   #@ call initialise Service Registry Tree which conects to the registry server
@@ -15,105 +16,46 @@ class ServiceManager
     @system_registry = SystemRegistry.new(@core_api)
   end
   
-  def test_registry_result(result)
-    if result == nil
-      @last_error=@system_registry.last_error      
+
+  def is_service_persistant?(service_hash)
+    if service_hash.has_key?(:persistant) == false
+          persist = software_service_persistance(service_hash)
+          if persist == nil
+            log_error_mesg("Failed to get persistance status for ",service_hash)
+            return false
+          end
+          service_hash[:persistant] = persist
+        end
+    service_hash[:persistant]
+  end
+    
+  #load softwwareservicedefinition for serivce in service_hash and
+  #@return boolean indicating the persistance
+  #@return nil if no software definition found
+  def software_service_persistance(service_hash)
+    clear_last_error
+    service_definition = software_service_definition(service_hash)
+    if service_definition != nil && service_definition != nil
+      return service_definition[:persistant]
     end
-    return result
+    return nil
   end
   
-  def get_orphaned_services(params)
-    clear_last_error
-    test_registry_result(@system_registry.get_orphaned_services(params))
-  end
-  def orphan_service(params)
-    clear_last_error
-    test_registry_result(@system_registry.orphan_service(params))
-  end
   
-  def retrieve_orphan(params)
-    clear_last_error
-    test_registry_result(@system_registry.retrieve_orphan(params))
-  end
-  def release_orphan(params)
-    clear_last_error
-    test_registry_result(@system_registry.release_orphan(params))
-    end
-  def reparent_orphan(params)
-    clear_last_error
-    test_registry_result(@system_registry.reparent_orphan(params))
-   end
-  def get_orphaned_services_tree
-    clear_last_error
-    test_registry_result(@system_registry.orphaned_services_registry)
-  end
-  def get_engine_nonpersistant_services(params)
-    clear_last_error
-    test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
-  end
-  def get_engine_persistant_services(params)
-    clear_last_error
-    test_registry_result(@system_registry.get_engine_persistant_services(params))
-      end
-  def managed_service_tree
-    test_registry_result(@system_registry.services_registry)
-    clear_last_error
-  end
-  def get_managed_engine_tree
-    clear_last_error
-    test_registry_result(@system_registry.managed_engines_registry)
-   end
-  def service_configurations_tree
-    clear_last_error
-    test_registry_result(@system_registry.service_configurations_registry)
-  end
-  def service_is_registered?(service_hash)
-    clear_last_error
-    test_registry_result(@system_registry.service_is_registered?(service_hash))
-  end
-
-  def get_service_configurations_hashes(service_hash)
-    clear_last_error
-    test_registry_result(@system_registry.get_service_configurations_hashes(service_hash))
-    end
-      
-  def update_service_configuration(config_hash)
-    clear_last_error
-    test_registry_result(@system_registry.update_service_configuration(config_hash))
-      end
-      
-      
-  #list the Provider namespaces as an Array of Strings
-  #@return [Array]
-  def list_providers_in_use
-    clear_last_error
-    test_registry_result(@system_registry.list_providers_in_use)
-
-  end
-
-
-
   #@ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
   #@ All are added to the ManagesEngine/Service Tree
   #@ return true if successful or false if failed
   def add_service service_hash
     clear_last_error
-    if service_hash.has_key?(:persistant) == false
-      persist = software_service_persistance(service_hash)
-      if persist == nil
-        log_error_mesg("Failed to get persistance status for ",service_hash)
-        return false
-      end
-      service_hash[:persistant] = persist
-    end
+    
     if service_hash[:variables].has_key?(:parent_engine) == false
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
 
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
 
-    if service_hash[:persistant] == true
+    if is_service_persistant?(service_hash) == true
       if add_to_managed_service(service_hash) == false
         log_error_mesg("Failed to create persistant service ",service_hash)
         return false
@@ -417,17 +359,7 @@ def remove_service service_hash
     return result
   end
   
-  #load softwwareservicedefinition for serivce in service_hash and
-  #@return boolean indicating the persistance
-  #@return nil if no software definition found
-  def software_service_persistance(service_hash)
-    clear_last_error
-    service_definition = software_service_definition(service_hash)
-    if service_definition != nil && service_definition != nil
-      return service_definition[:persistant]
-    end
-    return nil
-  end
+
 
   #Find the assigned service container_name from teh service definition file
    def get_software_service_container_name(params)
