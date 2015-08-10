@@ -31,15 +31,8 @@ end
 def get_engine_persistant_services(params)      
   test_registry_result(@system_registry.get_engine_persistant_services(params))
     end
-def managed_service_tree
-  test_registry_result(@system_registry.services_registry)      
-end
-def get_managed_engine_tree      
-  test_registry_result(@system_registry.managed_engines_registry)
- end
-def service_configurations_tree      
-  test_registry_result(@system_registry.service_configurations_registry)
-end
+    
+
 def service_is_registered?(service_hash)      
   test_registry_result(@system_registry.service_is_registered?(service_hash))
 end
@@ -53,9 +46,4 @@ def update_service_configuration(config_hash)
     end
     
     
-#list the Provider namespaces as an Array of Strings
-#@return [Array]
-def list_providers_in_use
-  test_registry_result(@system_registry.list_providers_in_use)
 
-end

@@ -464,7 +464,22 @@ def remove_service service_hash
  
    end
    
-   
+#list the Provider namespaces as an Array of Strings
+#@return [Array]
+def list_providers_in_use
+  test_registry_result(@system_registry.list_providers_in_use)
+
+end
+
+def managed_service_tree
+  test_registry_result(@system_registry.services_registry)      
+end
+def get_managed_engine_tree      
+  test_registry_result(@system_registry.managed_engines_registry)
+ end
+def service_configurations_tree      
+  test_registry_result(@system_registry.service_configurations_registry)
+end
    
    
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
