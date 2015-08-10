@@ -152,8 +152,6 @@ class SystemRegistry
 
   #
   def  services_registry
-    res = send_request("services_registry",nil)
-     p  res.to_s
     test_result(send_request("services_registry",nil))
   end
 
