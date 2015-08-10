@@ -44,7 +44,7 @@ require 'timeout'
     begin
 p :getting_first_bytes
  
-p 
+
       first_bytes = socket.read_nonblock(32768)
 p :first_bytes
 p first_bytes
@@ -136,7 +136,7 @@ p first_bytes
     
      @registry_socket.read_nonblock(0)
     
-      @registry_socket.write(mesg_str)#,0)
+      @registry_socket.send(mesg_str,0)
       }
       p :Sent
       p "Message:" + mesg_str.to_s
