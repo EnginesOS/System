@@ -43,6 +43,8 @@ require 'timeout'
     #  def process_messages(socket)
     begin
 p :getting_first_bytes
+ 
+p 
       first_bytes = socket.read_nonblock(32768)
 p :first_bytes
 p first_bytes
@@ -69,14 +71,15 @@ p first_bytes
       end
       
     rescue EOFError
-      
+      p :eof_first
       continue 
       
     rescue IO::EAGAINWaitReadable
+      p :retry_first
       retry
         
   rescue Exception=>e
-    p "Eception"
+    p "Exception"
     p e.to_s
     p e.backtrace.to_s
     end
@@ -122,7 +125,7 @@ p first_bytes
     begin
    
       if  @registry_socket.is_a?(String)
-        p :REGSOCKER_OS_TRIOGN
+        p :send_reopening_socker
         p @registry_socket
           reopen_registry_socket
       end
@@ -138,6 +141,7 @@ p first_bytes
       
     rescue Errno::EIO
       retry_count+=1
+      p :send_EIO
       if retry_count > @retry_count_limit
         @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
         p   @last_error
@@ -145,6 +149,7 @@ p first_bytes
       end
       retry
     rescue IO::EAGAINWaitWritable
+      p :send_EAGAINWaitWritable
       retry_count+=1
       if retry_count > @retry_count_limit
         @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
@@ -153,6 +158,7 @@ p first_bytes
       end
       retry
       rescue  Timeout::Error 
+        p :send_Error_to
       retry_count+=1
             if retry_count > @retry_count_limit
               @last_error="Timeout on Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
@@ -161,6 +167,7 @@ p first_bytes
             end
             retry
     rescue Errno::ECONNRESET
+      p :send_ECONNRESET
       if reopen_registry_socket == true
         retry_count+=1
         if retry_count > @retry_count_limit
@@ -173,6 +180,7 @@ p first_bytes
         return  send_request_failed(command,request_hash) 
       end
     rescue Errno::EPIPE
+      p :send_EPIPE
       if reopen_registry_socket == true
         retry_count+=1
         if retry_count > @retry_count_limit
@@ -185,6 +193,7 @@ p first_bytes
         return  send_request_failed(command,request_hash) 
       end
     rescue EOFError
+      p :send_EOFError
       if reopen_registry_socket == true
         retry_count+=1 
         if retry_count > @retry_count_limit
@@ -197,7 +206,7 @@ p first_bytes
         return  send_request_failed(command,request_hash) 
       end
       rescue Exception=>e
-        p "Exception"
+        p "send_Exception"
         p e.to_s
         p e.backtrace.to_s
       if reopen_registry_socket == true
@@ -222,8 +231,8 @@ p first_bytes
     return result_hash
     
     rescue  Timeout::Error 
-    @last_error="Timeout waiting for reply"
-    return send_request_failed(command,request_hash) 
+        @last_error="Timeout waiting for reply"
+        return send_request_failed(command,request_hash) 
    
   end
 
