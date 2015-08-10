@@ -124,6 +124,8 @@ class SystemRegistry
   #returns nil on failure
   
   def  list_providers_in_use
+    res = send_request("list_providers_in_use",nil)
+    p res.to_s
     test_result(send_request("list_providers_in_use",nil))
   end
 
