@@ -1,3 +1,13 @@
+public 
+def get_engine_nonpersistant_services(params)      
+  test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
+end
+def get_engine_persistant_services(params)      
+  test_registry_result(@system_registry.get_engine_persistant_services(params))
+    end
+
+    private
+
 def test_registry_result(result)
   clear_last_error
   if result == nil
@@ -23,12 +33,6 @@ def reparent_orphan(params)
   test_registry_result(@system_registry.reparent_orphan(params))
  end
 
-def get_engine_nonpersistant_services(params)      
-  test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
-end
-def get_engine_persistant_services(params)      
-  test_registry_result(@system_registry.get_engine_persistant_services(params))
-    end
     
 
 def service_is_registered?(service_hash)      
