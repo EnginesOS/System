@@ -9,7 +9,7 @@ require 'timeout'
   def initialize(core_api)
     @retry_count_limit=5
   @core_api = core_api
-  server_ip = server
+  server_ip = registry_server_ip
   @port=SysConfig.RegistryPort
   @registry_socket = open_socket(server_ip,@port)    
     
@@ -21,7 +21,7 @@ require 'timeout'
     
   end
 
- def server
+ def registry_server_ip
    @core_api.get_registry_ip
   # return "192.168.208.101"
  end 
@@ -118,10 +118,11 @@ require 'timeout'
     mesg_str = build_mesg(request_yaml)
     
     begin
-      #Check if open Will chuck an error if not and read nothing if is 
+   
       if  @registry_socket.is_a?(String)
         p :REGSOCKER_OS_TRIOGN
         p @registry_socket
+          reopen_registry_socket
       end
       status = Timeout::timeout(5) {
     
@@ -230,14 +231,14 @@ require 'timeout'
 #    end
     p :reopen_socket
       begin
-        @registry_socket = open_socket(@server,@port)
-        if registry_socket.is_a?(String)
+        @registry_socket = open_socket(registry_server_ip,@port)
+        if @registry_socket.is_a?(String)
           
           return force_registry_start
         end
         return true
       rescue Exception=>e
-        @last_error="Failed to Reopen Connection to " + @server.to_s + ":" + @port.to_s + e.to_s
+        @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + e.to_s
         return false
       end   
      
