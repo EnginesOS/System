@@ -17,8 +17,7 @@ require 'timeout'
       p @registry_socket.to_s
       return nil
     end
- 
-    
+     
   end
 
  def registry_server_ip
@@ -53,18 +52,11 @@ def process_first_chunk(mesg_data)
   end
   
   def wait_for_reply(socket)
-  
+    response_hash =  nil
     begin
       first_bytes = true
       mesg_data = socket.read_nonblock(32768)
-#
-#      end_tag_indx = first_bytes.index(',')
-#      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-#
-#      mesg_len =  mesg_lng_str.to_i
-#      total_length = first_bytes.size
-#      end_byte =  total_length - end_tag_indx
-#      message_response = first_bytes.slice(end_tag_indx+1,end_byte+1)
+
       if first_bytes == true
         message_response, mesg_len = process_first_chunk(mesg_data)
         first_bytes= false
@@ -96,20 +88,16 @@ def process_first_chunk(mesg_data)
     end
 
     response_hash = YAML::load(message_response)
-#    p :response_as_yaml
-#    p response_hash
-    if response_hash[:object] == nil
-      return nil
+    if response_hash[:object] != nil
+      response_hash[:object] = YAML::load(response_hash[:object])    
     end
-    
-    
-    return YAML::load(response_hash[:object])
+        
+    return response_hash
     rescue Exception=>e
         p "Exception"
         p e.to_s
         p e.backtrace.to_s
-    return nil
-
+    return response_hash
 
   end
 
@@ -124,6 +112,8 @@ def process_first_chunk(mesg_data)
   
     def send_request_failed(command,params)
         SystemUtils.log_error_mesg("Failed to send command " +command + " with:" + @last_error, params)
+        result_hash = Hash.new
+        
         return false
     end
     
