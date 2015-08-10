@@ -1,4 +1,4 @@
-require '/opt/engines/lib/ruby/managed_services/system_registry/NetworkSystemRegistry.rb'
+require_relative 'NetworkSystemRegistry.rb'
 
 class SystemRegistry
   attr_accessor :network_registry,
