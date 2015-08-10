@@ -14,7 +14,10 @@ class SystemRegistry
       return request_result_hash[:object]
     end
     @last_error = request_result_hash[:error]
-     return nil      
+      if   request_result_hash.has_key?(object)     
+        return request_result_hash[:object]     
+      end
+      return nil   
   end
   
   def  find_engine_services(params)
