@@ -10,11 +10,13 @@ class SystemRegistry
   end
 
   def test_result(request_result_hash)
+   
     if request_result_hash == nil
       @last_error = @network_registry.last_error
         return nil
     end
     if request_result_hash[:result]=="OK"
+      p request_result_hash[:object].class.name
       return request_result_hash[:object]
     end
     @last_error = request_result_hash[:error]
