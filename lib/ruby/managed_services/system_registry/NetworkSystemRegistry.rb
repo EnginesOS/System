@@ -56,7 +56,7 @@ def process_first_chunk(mesg_data)
     begin
       first_bytes = true
       mesg_data = socket.read_nonblock(32768)
-
+      
       if first_bytes == true
         message_response, mesg_len = process_first_chunk(mesg_data)
         first_bytes= false
@@ -86,7 +86,7 @@ def process_first_chunk(mesg_data)
     if  message_response == nil 
       return nil
     end
-
+    p "read " + message_response.size + " Bytes" 
     response_hash = YAML::load(message_response)
     if response_hash[:object] != nil
       response_hash[:object] = YAML::load(response_hash[:object])    

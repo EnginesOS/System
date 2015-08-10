@@ -125,6 +125,7 @@ class SystemRegistry
   
   def  list_providers_in_use
     res = send_request("list_providers_in_use",nil)
+    p 
     p res.to_s
     test_result(send_request("list_providers_in_use",nil))
   end
