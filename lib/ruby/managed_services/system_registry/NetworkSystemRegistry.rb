@@ -112,8 +112,7 @@ def process_first_chunk(mesg_data)
   
     def send_request_failed(command,params)
         SystemUtils.log_error_mesg("Failed to send command " +command + " with:" + @last_error, params)
-        result_hash = Hash.new
-        
+       
         return false
     end
     

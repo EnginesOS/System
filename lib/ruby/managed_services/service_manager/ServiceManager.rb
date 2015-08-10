@@ -1,30 +1,21 @@
 require 'rubytree'
 
-#require_relative 'service_manager_tree.rb'
-#include ServiceManagerTree
-#require_relative 'orphaned_services.rb'
-#include OrphanedServices
-#require_relative 'managed_engines_registry.rb'
-#include ManagedEnginesRegistry
-#require_relative 'services_registry.rb'
-#include ServicesRegistry
-#require_relative 'service_configurations.rb'
-#include ServiceConfigurations
+
 
 require_relative '../system_registry/SystemRegistry.rb'
 require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
-  #@service_tree root of the Service Registry Tree
+  
   attr_accessor     :last_error
-  #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
+  #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
-    @core_api = core_api
-    #@service_tree root of the Service Registry Tree
-    #@service_tree = initialize_tree remove_from_engine_registery
+    @core_api = core_api   
     @system_registry = SystemRegistry.new(@core_api)
   end
+  
+  
   def get_orphaned_services(params)
     @system_registry.get_orphaned_services(params)
   end
@@ -62,26 +53,16 @@ class ServiceManager
   def service_is_registered?(service_hash)
     @system_registry.service_is_registered?(service_hash)
   end
-  def update_service_configuration(config_hash)
-    @system_registry.update_service_configuration(config_hash)
-      end
+
   def get_service_configurations_hashes(service_hash)
       @system_registry.get_service_configurations_hashes(service_hash)
     end
       
-  #Find the assigned service container_name from teh service definition file
-  def get_software_service_container_name(params)
-
-    server_service =  software_service_definition(params)
-
-    if server_service == nil || server_service == false
-      log_error_mesg("Failed to load service definitions",params)
-      return nil
-    end
-    return server_service[:service_container]
-
-  end
-
+  def update_service_configuration(config_hash)
+    @system_registry.update_service_configuration(config_hash)
+      end
+      
+      
   #list the Provider namespaces as an Array of Strings
   #@return [Array]
   def list_providers_in_use
@@ -90,58 +71,6 @@ class ServiceManager
   end
 
 
- 
-
-  #@return [Array] of service hash for ObjectName matching the name  identifier
-  #@objectName [String]
-  #@identifier [String]
-  def list_attached_services_for(objectName,identifier)
-    p :services_on_objects_4
-    SystemUtils.debug_output("services_on_objects_",objectName)
-    SystemUtils.debug_output("services_on_objects_",identifier)
-
-    params = Hash.new
-
-    case objectName
-    when "ManagedEngine"
-      params[:parent_engine] = identifier
-      SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
-#      hashes = @system_registry.find_engine_services_hashes(params)
-#      SystemUtils.debug_output("hashes",hashes)
-
-      return @system_registry.find_engine_services_hashes(params)
-      #    attached_managed_engine_services(identifier)
-    when "Volume"
-      SystemUtils.debug_output(  :looking_for_volume,identifier)
-      return attached_volume_services(identifier)
-    when "Database"
-      SystemUtils.debug_output(  :looking_for_database,identifier)
-      return attached_database_services(identifier)
-    end
-    p :no_object_name_match
-    p objectName
-
-    return nil
-
-  rescue Exception=>e
-    puts e.message
-    log_exception(e)
-
-    return nil
-
-  end
-  #
-
-  #load softwwareservicedefinition for serivce in service_hash and
-  #@return boolean indicating the persistance
-  #@return nil if no software definition found
-  def software_service_persistance(service_hash)
-    service_definition = software_service_definition(service_hash)
-    if service_definition != nil && service_definition != nil
-      return service_definition[:persistant]
-    end
-    return nil
-  end
 
   #@ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
@@ -195,43 +124,7 @@ class ServiceManager
     return false
   end
 
-  def ServiceManager.set_top_level_service_params(service_hash,container_name)
-
-    if service_hash == nil
-      log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
-      return false
-    end
-    if container_name == nil
-      log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
-      return false
-    end
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    if service_def  == nil
-      SystemUtils.log_error_mesg("no service_def for",service_hash)
-      return nil
-    end
-    if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
-      handle_field_sym = service_def[:service_handle_field].to_sym
-    end
-
-    service_hash[:persistant] = service_def[:persistant]
-
-    service_hash[:parent_engine]=container_name
-
-    if service_hash.has_key?(:variables) == false
-      service_hash[:variables] = Hash.new
-    end
-    service_hash[:variables][:parent_engine]=container_name
-
-    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
-      if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
-        service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
-      else
-        service_hash[:service_handle] = container_name
-      end
-    end
-
-  end
+ 
 
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
@@ -306,7 +199,7 @@ def update_attached_service(params)
    if remove_from_managed_service(params) == true
     return add_to_managed_service(params)
    else 
-     @last_error="Filed to remove " + @last_error 
+     @last_error="Filed to remove " + @system_registry.last_error 
    end
  else
    @last_error=@system_registry.last_error 
@@ -343,42 +236,8 @@ end
    def find_engine_services_hashes(params)
      @system_registry.find_engine_services_hashes(params)
    end
-#       if  managed_engines_type_tree(params).remove!(engine_node)
-#    
-#         return  save_tree
-#       else
-#         log_error_mesg("Failed to remove engine node ",engine_node)
-#         return false
-#       end
-#       log_error_mesg("Failed remove engine",params)
-#       return true
-   
-    
-
-
-#  #@returns boolean indicating sucess
-#  #Saves service_hash in orphan registry before removing from service registry
-#  def orphan_service(service_hash)
-#    if @system_registry.save_as_orphan(service_hash)
-#      return  remove_service(service_hash)
-#    end
-#    log_error_mesg("Failed to save orphan",service_hash)
 #
-#    return false
-#  end
 
-  #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
-  def software_service_definition(params)
-
-    return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
-
-  rescue Exception=>e
-    p :error
-    p params
-
-    log_exception(e)
-    return nil
-  end
 
   def register_non_persistant_service(service_hash)
 
@@ -512,22 +371,139 @@ def remove_service service_hash
       log_error_mesg("Failed to load service to remove ",service_hash)
       return false
     end
-
     if service.is_running? == false
       log_error_mesg("Cant add to service if service is stopped ",service_hash)
       return false
     end
-
-    return service.add_consumer_to_service(service_hash)
+    result =  service.add_consumer_to_service(service_hash)
+    if result == false
+      log_error_mesg("Failed to add Consumser to Service " + service.last_error)
+    end
+    return result
+  end
+  
+  #load softwwareservicedefinition for serivce in service_hash and
+  #@return boolean indicating the persistance
+  #@return nil if no software definition found
+  def software_service_persistance(service_hash)
+    service_definition = software_service_definition(service_hash)
+    if service_definition != nil && service_definition != nil
+      return service_definition[:persistant]
+    end
+    return nil
   end
 
+  #Find the assigned service container_name from teh service definition file
+   def get_software_service_container_name(params)
+     server_service =  software_service_definition(params)
+     if server_service == nil || server_service == false
+       log_error_mesg("Failed to load service definitions",params)
+       return nil
+     end
+     return server_service[:service_container] 
+   end
+
+  
+  #@return [Array] of service hash for ObjectName matching the name  identifier
+   #@objectName [String]
+   #@identifier [String]
+   def list_attached_services_for(objectName,identifier)
+     p :services_on_objects_4
+     SystemUtils.debug_output("services_on_objects_",objectName)
+     SystemUtils.debug_output("services_on_objects_",identifier)
+ 
+     params = Hash.new
+ 
+     case objectName
+     when "ManagedEngine"
+       params[:parent_engine] = identifier
+       SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
+ #      hashes = @system_registry.find_engine_services_hashes(params)
+ #      SystemUtils.debug_output("hashes",hashes)
+ 
+       return @system_registry.find_engine_services_hashes(params)
+       #    attached_managed_engine_services(identifier)
+     when "Volume"
+       SystemUtils.debug_output(  :looking_for_volume,identifier)
+       return attached_volume_services(identifier)
+     when "Database"
+       SystemUtils.debug_output(  :looking_for_database,identifier)
+       return attached_database_services(identifier)
+     end
+     p :no_object_name_match
+     p objectName
+ 
+     return nil
+ 
+   rescue Exception=>e
+     puts e.message
+     log_exception(e)
+ 
+     return nil
+ 
+   end
+  
+  #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
+  def software_service_definition(params)
+
+    return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
+
+  rescue Exception=>e
+    p :error
+    p params
+
+    log_exception(e)
+    return nil
+  end 
+  
+  def ServiceManager.set_top_level_service_params(service_hash,container_name)
+ 
+     if service_hash == nil
+       log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
+       return false
+     end
+     if container_name == nil
+       log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
+       return false
+     end
+     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+     if service_def  == nil
+       SystemUtils.log_error_mesg("no service_def for",service_hash)
+       return nil
+     end
+     if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
+       handle_field_sym = service_def[:service_handle_field].to_sym
+     end
+ 
+     service_hash[:persistant] = service_def[:persistant]
+ 
+     service_hash[:parent_engine]=container_name
+ 
+     if service_hash.has_key?(:variables) == false
+       service_hash[:variables] = Hash.new
+     end
+     service_hash[:variables][:parent_engine]=container_name
+ 
+     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+       if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+         service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
+       else
+         service_hash[:service_handle] = container_name
+       end
+     end
+ 
+   end
+   
+   
+   
+   
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
 
-    @last_error = msg +":" + obj_str
+    @last_error += msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
 
   end
