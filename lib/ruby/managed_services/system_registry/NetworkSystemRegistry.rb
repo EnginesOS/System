@@ -90,6 +90,10 @@ def process_first_chunk(mesg_data)
     p e.backtrace.to_s
       return nil
     end
+    
+    if  message_response == nil 
+      return nil
+    end
 
     response_hash = YAML::load(message_response)
 #    p :response_as_yaml
@@ -101,7 +105,7 @@ def process_first_chunk(mesg_data)
     
     return YAML::load(response_hash[:object])
     rescue Exception=>e
-        p "Eception"
+        p "Exception"
         p e.to_s
         p e.backtrace.to_s
     return nil
