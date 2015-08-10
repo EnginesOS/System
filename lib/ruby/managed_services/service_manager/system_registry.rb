@@ -22,9 +22,7 @@ def release_orphan(params)
 def reparent_orphan(params)      
   test_registry_result(@system_registry.reparent_orphan(params))
  end
-def get_orphaned_services_tree      
-  test_registry_result(@system_registry.orphaned_services_registry)
-end
+
 def get_engine_nonpersistant_services(params)      
   test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
 end

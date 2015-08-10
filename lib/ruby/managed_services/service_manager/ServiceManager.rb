@@ -468,7 +468,10 @@ def remove_service service_hash
 #@return [Array]
 def list_providers_in_use
   test_registry_result(@system_registry.list_providers_in_use)
+end
 
+def get_orphaned_services_tree      
+  test_registry_result(@system_registry.orphaned_services_registry)
 end
 
 def managed_service_tree
