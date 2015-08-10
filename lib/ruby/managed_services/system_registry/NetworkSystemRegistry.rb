@@ -91,9 +91,9 @@ def process_first_chunk(mesg_data)
       return nil
     end
 
-    response_hash = YAML::load(messege_response)
-    p :response_as_yaml
-    p response_hash
+    response_hash = YAML::load(message_response)
+#    p :response_as_yaml
+#    p response_hash
     if response_hash[:object] == nil
       return nil
     end
