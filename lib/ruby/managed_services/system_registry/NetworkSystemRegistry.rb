@@ -40,21 +40,14 @@ require 'timeout'
   end
 
   def wait_for_reply(socket)
-    #  def process_messages(socket)
+  
     begin
-#p :getting_first_bytes
- 
-
-      first_bytes = socket.read_nonblock(32768)
-#p :first_bytes
-#p first_bytes
+     first_bytes = socket.read_nonblock(32768)
 
       end_tag_indx = first_bytes.index(',')
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
 
       mesg_len =  mesg_lng_str.to_i
-      p :mesg_len
-      p mesg_len
       total_length = first_bytes.size
       end_byte =  total_length - end_tag_indx
       messege_response = first_bytes.slice(end_tag_indx+1,end_byte+1)
@@ -64,16 +57,12 @@ require 'timeout'
           more = socket.read_nonblock(32768)
           messege_response = messege_response + more
         rescue IO::EAGAINWaitReadable
-          p :retry_in_wait_for_reply
-          retry
-          
+          retry    
         end
       end
       
     rescue EOFError
-      p :eof_first
-       
-      
+   
     rescue IO::EAGAINWaitReadable
       p :retry_first
       retry
@@ -82,6 +71,7 @@ require 'timeout'
     p "Exception"
     p e.to_s
     p e.backtrace.to_s
+      return nil
     end
 
     response_hash = YAML::load(messege_response)
@@ -97,7 +87,7 @@ require 'timeout'
         p "Eception"
         p e.to_s
         p e.backtrace.to_s
-       
+    return nil
 
 
   end
@@ -247,7 +237,17 @@ require 'timeout'
         @registry_socket = open_socket(registry_server_ip,@port)
         if @registry_socket.is_a?(String)
           
-          return force_registry_restart
+          if force_registry_restart == false
+            p :failed_forced_registry_restart
+            return false
+          end
+          
+          @registry_socket = open_socket(registry_server_ip,@port)
+          
+          if @registry_socket.is_a?(String)
+           p  :failed_connection_after_forced_registry_restart
+            return false
+          end
         end
         return true
       rescue Exception=>e
