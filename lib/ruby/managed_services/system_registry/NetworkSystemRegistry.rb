@@ -86,7 +86,7 @@ def process_first_chunk(mesg_data)
     if  message_response == nil 
       return nil
     end
-    p "read " + message_response.size + " Bytes" 
+    p "read " + message_response.size.to_s + " Bytes" 
     response_hash = YAML::load(message_response)
     if response_hash[:object] != nil
       response_hash[:object] = YAML::load(response_hash[:object])    
