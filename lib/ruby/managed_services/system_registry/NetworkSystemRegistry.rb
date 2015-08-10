@@ -70,7 +70,7 @@ p first_bytes
       
     rescue EOFError
       
-      break
+      continue 
       
     rescue IO::EAGAINWaitReadable
       retry
