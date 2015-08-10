@@ -136,7 +136,7 @@ p first_bytes
     
      @registry_socket.read_nonblock(0)
     
-      @registry_socket.send(mesg_str,0)
+      @registry_socket.write(mesg_str)#,0)
       }
       p :Sent
       p "Message:" + mesg_str.to_s
