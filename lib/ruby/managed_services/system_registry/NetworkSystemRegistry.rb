@@ -39,23 +39,41 @@ require 'timeout'
     }
   end
 
+  
+def process_first_chunk(mesg_data)
+
+    total_length = mesg_data.size
+    end_tag_indx = mesg_data.index(',')
+    mesg_lng_str = mesg_data.slice(0,end_tag_indx)
+    mesg_len =  mesg_lng_str.to_i
+    end_byte =  total_length - end_tag_indx
+    message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
+
+    return message_request , mesg_len
+  end
+  
   def wait_for_reply(socket)
   
     begin
-     first_bytes = socket.read_nonblock(32768)
-
-      end_tag_indx = first_bytes.index(',')
-      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-
-      mesg_len =  mesg_lng_str.to_i
-      total_length = first_bytes.size
-      end_byte =  total_length - end_tag_indx
-      messege_response = first_bytes.slice(end_tag_indx+1,end_byte+1)
-
-      while messege_response.size < mesg_len
+      frist_bytes= false
+      mesg_data = socket.read_nonblock(32768)
+#
+#      end_tag_indx = first_bytes.index(',')
+#      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
+#
+#      mesg_len =  mesg_lng_str.to_i
+#      total_length = first_bytes.size
+#      end_byte =  total_length - end_tag_indx
+#      message_response = first_bytes.slice(end_tag_indx+1,end_byte+1)
+      if first_bytes == true
+        message_response, mesg_len = process_first_chunk(mesg_data)
+        first_bytes= false
+      end
+      
+      while message_response.size < mesg_len
         begin
-          more = socket.read_nonblock(32768)
-          messege_response = messege_response + more
+          mesg_data = socket.read_nonblock(32768)
+          message_response = message_response + mesg_data
         rescue IO::EAGAINWaitReadable
           retry    
         end
@@ -63,8 +81,7 @@ require 'timeout'
       
     rescue EOFError
    
-    rescue IO::EAGAINWaitReadable
-     
+    rescue IO::EAGAINWaitReadable     
       retry
         
   rescue Exception=>e
@@ -115,8 +132,8 @@ require 'timeout'
     begin
    
       if  @registry_socket.is_a?(String)
-        p :send_reopening_socker
-        p @registry_socket
+#        p :send_reopening_socker
+#        p @registry_socket
           if reopen_registry_socket  == false
             @last_error="Failed to reopen registry connection"
             return send_request_failed(command,request_hash) 
@@ -128,8 +145,8 @@ require 'timeout'
     
       @registry_socket.send(mesg_str,0)
       }
-      p :Sent
-      p "Message:" + mesg_str.to_s
+#      p :Sent
+#      p "Message:" + mesg_str.to_s
      
       
     rescue Errno::EIO
@@ -217,7 +234,7 @@ require 'timeout'
     end
     result_hash = false
     status = Timeout::timeout(15) {
-      p :waiting_for_reply
+#      p :waiting_for_reply
     result_hash = wait_for_reply(@registry_socket)
     }
     
@@ -232,7 +249,7 @@ require 'timeout'
 #    if @registry_socket.is_open?
 #      @registry_socket.close
 #    end
-    p :reopen_socket
+#    p :reopen_socket
       begin
         @registry_socket = open_socket(registry_server_ip,@port)
         if @registry_socket.is_a?(String)
