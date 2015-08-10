@@ -64,7 +64,7 @@ require 'timeout'
     rescue EOFError
    
     rescue IO::EAGAINWaitReadable
-      p :retry_first
+     
       retry
         
   rescue Exception=>e
