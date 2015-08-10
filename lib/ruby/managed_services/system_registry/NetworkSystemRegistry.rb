@@ -228,7 +228,7 @@ def process_first_chunk(mesg_data)
     return result_hash
     
     rescue  Timeout::Error 
-        @last_error="Timeout waiting for reply"
+        @last_error="Timeout waiting for reply.. retried  " + retry_count.to_s + " Times"
         return send_request_failed(command,request_hash)    
   end
 
