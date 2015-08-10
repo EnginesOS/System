@@ -44,9 +44,10 @@ require 'timeout'
     begin
 
       first_bytes = socket.read_nonblock(32768)
+p :first_bytes
+p first_bytes
 
       end_tag_indx = first_bytes.index(',')
-
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
 
       mesg_len =  mesg_lng_str.to_i
@@ -68,7 +69,8 @@ require 'timeout'
       end
       
     rescue EOFError
-      return nil
+      
+      break
       
     rescue IO::EAGAINWaitReadable
       retry
