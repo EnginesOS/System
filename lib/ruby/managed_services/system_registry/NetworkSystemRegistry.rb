@@ -55,7 +55,7 @@ def process_first_chunk(mesg_data)
   def wait_for_reply(socket)
   
     begin
-      frist_bytes= false
+      first_bytes = true
       mesg_data = socket.read_nonblock(32768)
 #
 #      end_tag_indx = first_bytes.index(',')
@@ -153,7 +153,7 @@ def process_first_chunk(mesg_data)
       retry_count+=1
       p :send_EIO
       if retry_count > @retry_count_limit
-        @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+        @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
         p   @last_error
         return send_request_failed(command,request_hash) 
       end
@@ -162,7 +162,7 @@ def process_first_chunk(mesg_data)
       p :send_EAGAINWaitWritable
       retry_count+=1
       if retry_count > @retry_count_limit
-        @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+        @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
         p   @last_error
         return send_request_failed(command,request_hash) 
       end
@@ -171,7 +171,7 @@ def process_first_chunk(mesg_data)
         p :send_Error_to
       retry_count+=1
             if retry_count > @retry_count_limit
-              @last_error="Timeout on Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+              @last_error="Timeout on Connection to " +  registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
               p   @last_error
               return send_request_failed(command,request_hash) 
             end
@@ -181,7 +181,7 @@ def process_first_chunk(mesg_data)
       if reopen_registry_socket == true
         retry_count+=1
         if retry_count > @retry_count_limit
-          @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+          @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
           p   @last_error
           return send_request_failed(command,request_hash) 
         end
@@ -194,7 +194,7 @@ def process_first_chunk(mesg_data)
       if reopen_registry_socket == true
         retry_count+=1
         if retry_count > @retry_count_limit
-          @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+          @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
           p   @last_error
           return send_request_failed(command,request_hash) 
         end
@@ -207,7 +207,7 @@ def process_first_chunk(mesg_data)
       if reopen_registry_socket == true
         retry_count+=1 
         if retry_count > @retry_count_limit
-           @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+           @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
            p   @last_error
            return send_request_failed(command,request_hash) 
          end
@@ -222,7 +222,7 @@ def process_first_chunk(mesg_data)
       if reopen_registry_socket == true
               retry_count+=1 
               if retry_count > @retry_count_limit
-                 @last_error="Failed to Reopen Connection to " + @host.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
+                 @last_error="Failed to Reopen Connection to " + registry_server_ip.to_s + ":" + @port.to_s + "After " + retry_count.to_s + " Attempts"
                  p   @last_error
                  return send_request_failed(command,request_hash) 
                end
