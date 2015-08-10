@@ -464,63 +464,123 @@ def remove_service service_hash
  
    end
    
+#test the result and carry last_error from @system_registry if result nil
+#@return result  
+def test_registry_result(result)
+  clear_last_error
+  if result == nil
+    @last_error=@system_registry.last_error      
+  end
+  return result
+end
+
+
+#test the result and carry last_error from @system_registry if nil
+#freeze result object if not nil
+#@return result
+def test_and_lock_registry_result(result)
+  if test_registry_result(result) != nil
+    result.freeze
+  end
+end
+
+def update_service_configuration(config_hash)      
+  test_registry_result(@system_registry.update_service_configuration(config_hash))
+    end
+
+###READERS 
+
 #list the Provider namespaces as an Array of Strings
 #@return [Array]
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
 def list_providers_in_use
-  test_registry_result(@system_registry.list_providers_in_use)
+  test_and_lock_registry_result(@system_registry.list_providers_in_use)
 end
 
+#@return [Tree::TreeNode] representing the orphaned services tree as dettached and frozen from the parent Tree
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
 def get_orphaned_services_tree      
-  test_registry_result(@system_registry.orphaned_services_registry)
+  test_and_lock_registry_result(@system_registry.orphaned_services_registry)
 end
 
+#@return [Tree::TreeNode] representing the managed services tree as dettached and frozen from the parent Tree
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
 def managed_service_tree
-  test_registry_result(@system_registry.services_registry)      
+  test_and_lock_registry_result(@system_registry.services_registry)      
 end
+
+#@return [Tree::TreeNode] representing the managed engines tree as dettached and frozen from the parent Tree
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
 def get_managed_engine_tree      
-  test_registry_result(@system_registry.managed_engines_registry)
+  test_and_lock_registry_result(@system_registry.managed_engines_registry)
  end
+ 
+#@return [Tree::TreeNode] representing the services configuration tree as dettached and frozen from the parent Tree
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
 def service_configurations_tree      
-  test_registry_result(@system_registry.service_configurations_registry)
+  test_and_lock_registry_result(@system_registry.service_configurations_registry)
 end
   
+#@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
+# required keys
+# :publisher_namespace
+# optional 
+#:path_type 
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+#on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method 
 def get_orphaned_services(params)    
-  test_registry_result(@system_registry.get_orphaned_services(params))
+  test_and_lock_registry_result(@system_registry.get_orphaned_services(params))
 end 
 
-def service_is_registered?(service_hash)      
-  test_registry_result(@system_registry.service_is_registered?(service_hash))
-end
-
-def get_service_configurations_hashes(service_hash)      
-  test_registry_result(@system_registry.get_service_configurations_hashes(service_hash))
-  end
-    
-
+#@return [Array] of all service_hashs marked persistance false for :engine_name
+# required keys
+# :engine_name
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method   
+#on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method 
 def get_engine_nonpersistant_services(params)      
   test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
 end
+
+#@return [Array] of all service_hashs marked persistance true for :engine_name
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
+#on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method 
 def get_engine_persistant_services(params)      
   test_registry_result(@system_registry.get_engine_persistant_services(params))
 end 
-   
-  #Sets @last_error to msg + object.to_s (truncated to 256 chars)
+ 
+#@Returns an Array of Configuration hashes resgistered against the service [String] service_name
+#@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method 
+def get_service_configurations_hashes(service_name)      
+  test_registry_result(@system_registry.get_service_configurations_hashes(service_name))
+end
+
+#Test whether a service hash is registered
+#@return's false on failure with error (if applicable) accessible from this object's  [ServiceManager] last_error method 
+def service_is_registered?(service_hash)      
+    result = test_registry_result(@system_registry.service_is_registered?(service_hash))
+      if result == nil
+        return false
+      end
+      return result      
+end
+  
+  #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
   def log_error_mesg(msg,object)
-    obj_str = object.to_s.slice(0,256)
-
-    @last_error += msg +":" + obj_str
+    obj_str = object.to_s.slice(0,256)    
+    @last_error = @last_error.to_s + ":" + msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
-
   end
  
+  #@Resets last_error to nil
   def    clear_last_error
     @last_error=nil
   end
   
+  #@Log Exception and add exception to last_error
   def log_exception(e)
-    @last_error = e.to_s.slice(0,256)
+    @last_error = @last_error.to_s + ":" + e.to_s.slice(0,256)
     SystemUtils.log_exception(e)
   end
 end

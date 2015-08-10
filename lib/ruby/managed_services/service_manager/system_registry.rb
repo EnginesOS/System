@@ -2,14 +2,6 @@
 
 
 
-def test_registry_result(result)
-  clear_last_error
-  if result == nil
-    @last_error=@system_registry.last_error      
-  end
-  return result
-end
-
 
 def orphan_service(params)      
   test_registry_result(@system_registry.orphan_service(params))
@@ -26,9 +18,7 @@ def reparent_orphan(params)
  end
 
 
-def update_service_configuration(config_hash)      
-  test_registry_result(@system_registry.update_service_configuration(config_hash))
-    end
+
     
     
 
