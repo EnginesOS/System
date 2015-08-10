@@ -72,7 +72,7 @@ p first_bytes
       
     rescue EOFError
       p :eof_first
-      continue 
+       
       
     rescue IO::EAGAINWaitReadable
       p :retry_first
