@@ -350,6 +350,19 @@ class EnginesCore
     return @service_manager
   end
 
+  def force_registry_restart
+    
+    registry_service.stop
+    registry_service.start
+    while registry_service.is_startup_complete? == false
+      sleep 1
+      wait=wait+1
+        if wait >5
+          break
+        end
+    end
+
+  end
   def get_registry_ip
     registry_service = @system_api.loadSystemService("registry")
     case registry_service.read_state

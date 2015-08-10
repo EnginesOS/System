@@ -127,7 +127,10 @@ p first_bytes
       if  @registry_socket.is_a?(String)
         p :send_reopening_socker
         p @registry_socket
-          reopen_registry_socket
+          if reopen_registry_socket  == false
+            @last_error="Failed to reopen registry connection"
+            return send_request_failed(command,request_hash) 
+          end
       end
       status = Timeout::timeout(5) {
     
@@ -232,8 +235,7 @@ p first_bytes
     
     rescue  Timeout::Error 
         @last_error="Timeout waiting for reply"
-        return send_request_failed(command,request_hash) 
-   
+        return send_request_failed(command,request_hash)    
   end
 
   def reopen_registry_socket
@@ -245,7 +247,7 @@ p first_bytes
         @registry_socket = open_socket(registry_server_ip,@port)
         if @registry_socket.is_a?(String)
           
-          return force_registry_start
+          return force_registry_restart
         end
         return true
       rescue Exception=>e
@@ -255,7 +257,8 @@ p first_bytes
      
   end
 
-  def force_registry_start
+  def force_registry_restart
+    @core_api.force_registry_restart
   end
   
   def open_socket(host,port)
