@@ -122,13 +122,11 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",service_hash)
          return false
        end
-    if @cont_userid == nil || @cont_userid == false
-        @cont_userid = running_user
-          if @cont_userid == nil || @cont_userid == false      
+    if check_cont_uid == false      
               log_error_mesg("service missing cont_userid ",service_hash)
-             return false
-          end
+             return false         
      end
+     
   cmd = "docker exec -u " + @cont_userid.to_s + " " + @container_name.to_s  + " /home/add_service.sh " + SystemUtils.service_hash_variables_as_str(service_hash) 
     result = SystemUtils.execute_command(cmd)
       if result[:result] == 0 
@@ -139,15 +137,29 @@ class ManagedService < ManagedContainer
     #return  SystemUtils.run_system(cmd)
   end
   
+  
+  def check_cont_uid
+    if @cont_userid == nil || @cont_userid == false
+            @cont_userid = running_user
+              if @cont_userid == nil || @cont_userid == false      
+                  log_error_mesg("service missing cont_userid ",@container_name)
+                 return false
+              end
+         end
+         return true
+  end
+  
   def   rm_consumer_from_service(service_hash) 
     if is_running? == false
          log_error_mesg("service not running ",configurator_params)
          return false
        end
-    if @cont_userid == nil || @cont_userid == false
-       log_error_mesg("service missing cont_userid ",configurator_params)
-             return false
-     end
+       
+       if check_cont_uid == false
+         log_error_mesg("No uid service not running ",configurator_params)
+                  return false
+         end
+      
    cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/rm_service.sh \"" + SystemUtils.service_hash_variables_as_str(service_hash) + "\""
     result = SystemUtils.execute_command(cmd)
        if result[:result] == 0 
@@ -163,7 +175,7 @@ class ManagedService < ManagedContainer
          log_error_mesg("service not running ",configurator_params)
          return false
        end
-    if @cont_userid == nil
+    if check_cont_uid == false
       log_error_mesg("service missing cont_userid ",configurator_params)
             return false
     end
@@ -179,12 +191,9 @@ class ManagedService < ManagedContainer
       return false
     end
     
-    if @cont_userid == nil || @cont_userid == false
-      set_running_user
-      if @cont_userid == nil || @cont_userid == false
+    if check_cont_uid == false
         log_error_mesg("service missing cont_userid ",configurator_params)
-            return false
-      end
+            return false      
     end
     
     cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
@@ -246,7 +255,7 @@ class ManagedService < ManagedContainer
     stop_container
     destroy_container
     
-    return create_container  #start as service or will end up in a loop getting configurations and consumers  
+    return create_container  #start as engine/container or will end up in a loop getting configurations and consumers  
   end
   
   def create_service()
