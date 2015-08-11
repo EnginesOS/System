@@ -574,7 +574,12 @@ class EnginesCore
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
       sm = loadServiceManager()
-      check_sm_result(sm.update_service_configuration(service_param))
+     if check_sm_result(sm.update_service_configuration(service_param)) == false
+       
+       p sm.last_error
+       @last_error = sm.last_error
+       return false
+     end
       
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
