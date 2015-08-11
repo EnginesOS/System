@@ -53,9 +53,12 @@ def process_first_chunk(mesg_data)
   
   def wait_for_reply(socket)
     response_hash =  nil
-
-    first_bytes = true
-    mesg_data = socket.read_nonblock(32768)
+    first_bytes = true 
+    begin
+      mesg_data = socket.read_nonblock(32768)
+      rescue IO::EAGAINWaitReadable     
+        retry
+    end
 
     if first_bytes == true
       message_response, mesg_len = process_first_chunk(mesg_data)
@@ -74,8 +77,6 @@ def process_first_chunk(mesg_data)
 
       rescue EOFError
         break
-      rescue IO::EAGAINWaitReadable     
-        retry
 
       rescue Exception=>e
         p "Exception"
@@ -95,6 +96,8 @@ def process_first_chunk(mesg_data)
     end
 
     return response_hash
+    
+    
   rescue Exception=>e
     p "Exception"
     p e.to_s
