@@ -489,7 +489,7 @@ def update_service_configuration(config_hash)
   #load service definition and from configurators definition and if saveable save
   service_definition = software_service_definition(config_hash)
    if service_definition.is_a?(Hash) == false
-     @last_error= "Missing Service definition file"
+     @last_error= "Missing Service definition file " + config_hash.to_s
      return false
    end
    if  configurator_definition.has_key?(:configurator_name)  == false
