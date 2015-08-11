@@ -1,6 +1,6 @@
 class NetworkSystemRegistry
 require 'yaml'
-require 'timeout'
+  require 'timeout'
 #  require 'json'
  attr_accessor  :port,
                 :retry_count_limit,
@@ -53,39 +53,38 @@ def process_first_chunk(mesg_data)
   
   def wait_for_reply(socket)
     response_hash =  nil
-    begin
-      first_bytes = true
-      mesg_data = socket.read_nonblock(32768)
-      
-      if first_bytes == true
-        message_response, mesg_len = process_first_chunk(mesg_data)
-        first_bytes= false
-      end
-      
-      p "got " + message_response.size.to_s + " of " + mesg_len.to_s
-      
-      while message_response.size < mesg_len
-        begin
-          mesg_data = socket.read_nonblock(32768)
-          message_response = message_response + mesg_data
-          p "got " + message_response.size.to_s + " of " + mesg_len.to_s  
-        rescue IO::EAGAINWaitReadable
-          retry    
-        end
-      end
-      
-    rescue EOFError
-   
-    rescue IO::EAGAINWaitReadable     
-      retry
-        
-  rescue Exception=>e
-    p "Exception"
-    p e.to_s
-    p e.backtrace.to_s
-      return nil
+
+    first_bytes = true
+    mesg_data = socket.read_nonblock(32768)
+
+    if first_bytes == true
+      message_response, mesg_len = process_first_chunk(mesg_data)
+      first_bytes= false
     end
-    
+
+    p "got " + message_response.size.to_s + " of " + mesg_len.to_s
+
+    while message_response.size < mesg_len
+      begin
+        mesg_data = socket.read_nonblock(32768)
+        message_response = message_response + mesg_data
+        p "got " + message_response.size.to_s + " of " + mesg_len.to_s  
+      rescue IO::EAGAINWaitReadable
+        retry    
+
+      rescue EOFError
+        break
+      rescue IO::EAGAINWaitReadable     
+        retry
+
+      rescue Exception=>e
+        p "Exception"
+        p e.to_s
+        p e.backtrace.to_s
+        return nil
+      end
+    end
+
     if  message_response == nil 
       return nil
     end
@@ -94,12 +93,12 @@ def process_first_chunk(mesg_data)
     if response_hash[:object] != nil
       response_hash[:object] = YAML::load(response_hash[:object])    
     end
-        
+
     return response_hash
-    rescue Exception=>e
-        p "Exception"
-        p e.to_s
-        p e.backtrace.to_s
+  rescue Exception=>e
+    p "Exception"
+    p e.to_s
+    p e.backtrace.to_s
     return response_hash
 
   end
