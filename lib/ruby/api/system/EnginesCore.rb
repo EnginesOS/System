@@ -24,7 +24,7 @@ class EnginesCore
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     clear_error
-    sm = loadServiceManagerclear_error
+    sm = loadServiceManager()
     return check_sm_result(sm.get_registered_against_service(params))
   end
 
@@ -1245,7 +1245,7 @@ def check_sm_result(result)
    end
    return result 
  end    
- 
+
   protected
 
   def get_volbuild_volmaps container
