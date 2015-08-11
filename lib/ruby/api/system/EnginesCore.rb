@@ -576,7 +576,7 @@ class EnginesCore
       sm = loadServiceManager()
     
       service_param[:publisher_namespace] = service.publisher_namespace.to_s
-                                                 
+      service_param[:type_path] = service.type_path.to_s                                      
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
         if retval == false
