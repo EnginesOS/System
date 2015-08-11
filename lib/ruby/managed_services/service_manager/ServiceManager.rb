@@ -331,7 +331,7 @@ def remove_service service_hash
  def remove_orphaned_service(service_hash)
    clear_last_error
       if remove_from_managed_service(service_hash) == false
-         log_error_mesg("failed to remove managed service",service_hash)
+         log_error_mesg("failed to remove managed service:" +  @system_registry.last_error,service_hash)
          return false
        end
    return release_orphan(service_hash)
@@ -345,7 +345,7 @@ def remove_service service_hash
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
-      log_error_mesg("Failed to load service to remove ",service_hash)
+      log_error_mesg("Failed to load service to remove :" +  @system_registry.last_error,service_hash)
       return false
     end
     if service.is_running? == false
@@ -354,7 +354,7 @@ def remove_service service_hash
     end
     result =  service.add_consumer_to_service(service_hash)
     if result == false
-      log_error_mesg("Failed to add Consumser to Service " + service.last_error)
+      log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error + service.last_error)
     end
     return result
   end

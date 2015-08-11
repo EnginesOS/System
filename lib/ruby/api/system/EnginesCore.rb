@@ -16,38 +16,46 @@ class EnginesCore
   attr_reader :last_error
 
   def software_service_definition(params)
+    clear_error
     sm = loadServiceManager
-    return sm.software_service_definition(params)
+    return check_sm_result(sm.software_service_definition(params))
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
-    sm = loadServiceManager
-    return sm.get_registered_against_service(params)
+    clear_error
+    sm = loadServiceManagerclear_error
+    return check_sm_result(sm.get_registered_against_service(params))
   end
 
   def update_attached_service(params)
+    clear_error
     sm = loadServiceManager()
-    return sm.update_attached_service(params)
+    return check_sm_result(sm.update_attached_service(params))
   end 
   def add_domain(params)
+    clear_error
     return  @system_api.add_domain(params)
   end
 
   def remove_domain(params)
+    clear_error
     return @system_api.rm_domain(params[:domain_name],@system_api)
   end
 
   def update_domain(old_domain,params)
+    clear_error
     return @system_api.update_domain(old_domain,params,@system_api)
   end
 
   def signal_service_process(pid,sig,name)
+    clear_error
     container = loadManagedService(name)
     return @docker_api.signal_container_process(pid,sig,container)
   end
 
   def start_container(container)
+    clear_error
     if container.dependant_on.is_a?(Array)
         start_dependancies(container)
     end
@@ -55,14 +63,17 @@ class EnginesCore
   end
 
   def inspect_container(container)
+    clear_error
     return  @docker_api.inspect_container(container)
   end
 
   def stop_container(container)
+    clear_error
     return @docker_api.stop_container(container)
   end
 
   def pause_container(container)
+    clear_error
     return  @docker_api.pause_container(container)
   end
 
@@ -149,7 +160,7 @@ class EnginesCore
 
   def list_attached_services_for(objectName,identifier)
     sm = loadServiceManager()
-    return sm.list_attached_services_for(objectName,identifier)
+    return check_sm_result(sm.list_attached_services_for(objectName,identifier))
   rescue Exception=>e
     SystemUtils.log_exception e
 
@@ -177,12 +188,13 @@ class EnginesCore
     sm = loadServiceManager()
     #    p :load_software_service
     #    p params
-    service_container =  sm.get_software_service_container_name(params)
+    service_container =  check_sm_result(sm.get_software_service_container_name(params))
     params[:service_container_name] = service_container
     #    p :service_container_name
     #    p service_container
     service = loadManagedService(service_container)
     if service == nil
+     
       return nil
     end
 
@@ -308,7 +320,7 @@ class EnginesCore
 
     sm = loadServiceManager()
     if sm.add_service(service_hash)
-      return sm.register_service_hash_with_service(service_hash)
+      return check_sm_result(sm.register_service_hash_with_service(service_hash))
     else
       log_error_mesg("register failed",  service_hash)
     end
@@ -319,18 +331,16 @@ class EnginesCore
 
   def remove_orphaned_service(params)
     sm = loadServiceManager()
-    return sm.remove_orphaned_service(params)
+     check_sm_result(sm.remove_orphaned_service(params))
+ 
+
   rescue Exception=>e
     SystemUtils.log_exception e
   end
 
   def dettach_service(params)
     sm = loadServiceManager()
-    return sm.delete_service(params)
-    #    if service !=nil && service != false
-    #      return service.remove_consumer(params)
-    #    end
-    #    @last_error = "Failed to dettach Service: " + @last_error
+    check_sm_result(sm.delete_service(params))
 
   rescue Exception=>e
     SystemUtils.log_exception e
@@ -339,7 +349,7 @@ class EnginesCore
 
   def list_providers_in_use
     sm = loadServiceManager()
-    return sm.list_providers_in_use
+    return check_sm_result(sm.list_providers_in_use)
   end
 
   def loadServiceManager()
@@ -396,37 +406,33 @@ class EnginesCore
   
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
-
-    if sm.retrieve_orphan(service_hash) == false
-      return false
-    end
-    return true
+    check_sm_result( sm.retrieve_orphan(service_hash) )
   end
 
   #returns
   def find_service_consumers(params)
     sm = loadServiceManager()
-    return sm.find_service_consumers(params)
+    return check_sm_result(sm.find_service_consumers(params))
   end
 
   def  service_is_registered?(service_hash)
     sm = loadServiceManager()
-    return sm.service_is_registered?(service_hash)
+    return check_sm_result(sm.service_is_registered?(service_hash))
   end
 
   def get_engine_persistant_services(params)
     sm = loadServiceManager()
-    return sm.get_engine_persistant_services(params)
+    return check_sm_result(sm.get_engine_persistant_services(params))
   end
 
   def managed_service_tree
     sm = loadServiceManager()
-    return sm.managed_service_tree
+    return check_sm_result(sm.managed_service_tree)
   end
 
   def get_managed_engine_tree
     sm = loadServiceManager()
-    return sm.get_managed_engine_tree
+    return check_sm_result(sm.get_managed_engine_tree)
   end
 
   def web_sites_for(container)
@@ -462,13 +468,13 @@ class EnginesCore
   
   def find_engine_services(params)
     sm = loadServiceManager()
-    return sm.find_engine_services_hashes(params)
+    return check_sm_result(sm.find_engine_services_hashes(params))
     #return sm.find_engine_services(params)
   end
 
   def get_configurations_tree
     sm = loadServiceManager()
-        return sm.service_configurations_tree
+        return check_sm_result(sm.service_configurations_tree)
   end
   
   def load_service_definition(filename)
@@ -570,7 +576,7 @@ class EnginesCore
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
       sm = loadServiceManager()
-      sm.update_service_configuration(service_param)
+      check_sm_result(sm.update_service_configuration(service_param))
       
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
@@ -597,7 +603,7 @@ def engine_persistant_services(container_name)
   params = Hash.new()
   params[:parent_engine] = container_name
   params[:persistant] = true 
-     return sm.find_engine_services_hashes(params)
+     return check_sm_result(sm.find_engine_services_hashes(params))
    rescue Exception=>e
      SystemUtils.log_exception e
 end
@@ -888,7 +894,7 @@ end
   # They are removed from the tree if delete is sucessful
   def delete_engine_persistant_services(params)
     sm = loadServiceManager()
-    services = sm.get_engine_persistant_services(params)
+    services = check_sm_result(sm.get_engine_persistant_services(params))
 
     services.each do |service_hash|
       service_hash[:remove_all_data]  = params[:remove_all_data]
@@ -1133,26 +1139,26 @@ def load_and_attach_shared_services(container)
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
 
-    @last_error = msg +":" + obj_str
+    @last_error = @last_error + ":" + msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
 
   end
   def register_non_persistant_service(service_hash)
     sm = loadServiceManager()
-       return sm.register_non_persistant_service(service_hash)
+       return check_sm_result(sm.register_non_persistant_service(service_hash))
      end
 def deregister_non_persistant_service(service_hash)
   sm = loadServiceManager()
-     return sm.deregister_non_persistant_service(service_hash)
+     return check_sm_result(sm.deregister_non_persistant_service(service_hash))
    end
   def register_non_persistant_services(engine)
     sm = loadServiceManager()
-    return sm.register_non_persistant_services(engine)
+    return check_sm_result(sm.register_non_persistant_services(engine))
   end
 
   def deregister_non_persistant_services(engine)
     sm = loadServiceManager()
-    return sm.deregister_non_persistant_services(engine)
+    return check_sm_result(sm.deregister_non_persistant_services(engine))
   end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
@@ -1227,7 +1233,20 @@ def deregister_non_persistant_service(service_hash)
     return File.exist?(completed_flag_file)
    
  end
-       
+ 
+ def check_system_api_result(result)
+   if result == nil || result == false
+     last_error = @system_api.last_error
+   end
+   return result
+ end
+def check_sm_result(result)
+   if result == nil || result == false
+     last_error = @system_api.last_error
+   end
+   return result 
+ end    
+ 
   protected
 
   def get_volbuild_volmaps container
