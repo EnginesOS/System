@@ -492,12 +492,21 @@ def update_service_configuration(config_hash)
      @last_error= "Missing Service definition file " + config_hash.to_s
      return false
    end
-   if  configurator_definition.has_key?(:configurator_name)  == false
-     @last_error= "Missing Configurator name"
+   
+   if service_definition.has_key?(:configurators) == false
+     @last_error= "Missing Configurators in service definition"
+             return false
+   end
+   
+   configurators = service_definition[:configurators]
+  
+   if  configurators.has_key?(config_hash[:configurator_name].to_sym)  == false
+     @last_error= "Missing Configurator " + config_hash[:configurator_name]
          return false
        end
-       
-    configurator_definition = service_definition[:configurators][config_hash[:configurator_name].to_sym]
+     
+  configurator_definition = configurators[config_hash[:configurator_name].to_sym]  
+    
     
     if configurator_definition.has_key?(:no_save) == false ||  configurator_definition[:no_save] == false
       return test_registry_result(@system_registry.update_service_configuration(config_hash))
