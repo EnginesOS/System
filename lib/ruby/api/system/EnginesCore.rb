@@ -1234,14 +1234,14 @@ def deregister_non_persistant_service(service_hash)
  
  def check_system_api_result(result)
    if result == nil || result == false
-     last_error = @system_api.last_error
+     @last_error = @system_api.last_error
    end
    return result
  end
 def check_sm_result(result)
    if result == nil || result.is_a?(FalseClass)
      sm = loadServiceManager()
-     last_error = sm.last_error
+     @last_error = sm.last_error
    end
    return result 
  end    
