@@ -30,15 +30,7 @@ class ManagedService < ManagedContainer
     @persistant=false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
   end
   attr_reader :persistant,:type_path,:publisher_namespace
-  
-  #@return Hash of consumers 
-  #creates fresh hash in instance @consumers is nil
-#  def consumers
-#    if @consumers == nil
-#      @consumers = Hash.new
-#    end
-#    return @consumers
-#  end
+
 
   
   def get_service_hash(service_hash)
@@ -50,21 +42,7 @@ class ManagedService < ManagedContainer
     return service_hash
  end
      
-#    #Kludge suring service_hash cut over
-#    if service_hash.has_key?(:service_handle) == false
-#      service_hash[:service_handle] = service_hash[:variables][:name]
-#    end
-#    if service_hash[:variables].has_key?(:parent_engine) == false
-#      service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
-#    elsif service_hash.has_key?(:parent_engine) == false
-#      service_hash[:parent_engine] = service_hash[:variables][:parent_engine]
-#
-#    end
-   
 
-#  def fetch_consumer name
-#    return @consumers.fetch(name)
-#  end
 
   def add_consumer(object)
   
@@ -82,20 +60,6 @@ class ManagedService < ManagedContainer
         else
       result = add_consumer_to_service(service_hash)
         end
-        
-        #Service manage is what calls this, this was trying to add twice
-#      if result == true
-#        service_hash[:fresh] = false
-#        p :adding_consumer_to_Sm
-#        p service_hash
-#        sm =  service_manager
-#        if sm != false
-#          result = sm.add_service(service_hash)
-#        else
-#          log_error_mesg("add consumer no ServiceManager ","")
-#          return false
-#        end
-#      end
     end
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
@@ -103,15 +67,7 @@ class ManagedService < ManagedContainer
     if result != true
       return result
     end
-#
-#    if @consumers == nil
-#      @consumers = Hash.new
-#    end
-#
-#    #      if @consumers.has_key?(service_hash[:name]) == true     # only add if doesnt exists but allow register above
-#    @consumers.store(service_hash[:service_handle], service_hash)
 
-    # end
     save_state
     return result
   end
@@ -151,12 +107,12 @@ class ManagedService < ManagedContainer
   
   def   rm_consumer_from_service(service_hash) 
     if is_running? == false
-         log_error_mesg("service not running ",configurator_params)
+         log_error_mesg("service not running ",service_hash)
          return false
        end
        
        if check_cont_uid == false
-         log_error_mesg("No uid service not running ",configurator_params)
+         log_error_mesg("No uid service not running ",service_hash)
                   return false
          end
       
@@ -220,7 +176,10 @@ class ManagedService < ManagedContainer
       log_error_mesg("Cannot remove consumer if Service is not running ",service_hash)
       return false
     end
-    
+    if check_cont_uid == false
+            log_error_mesg("service missing cont_userid ",service_hash)
+                return false      
+        end
     if @persistant == true    
      if  service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data] == true 
       p :removing_consumer
@@ -239,9 +198,7 @@ class ManagedService < ManagedContainer
       
     end
     
-#    if @consumers !=  nil
-#      @consumers.delete(service_hash[:service_handle]) { |el|  log_error_mesg("Failed to find " + el.to_s + "to del ",service_hash)  }
-#    end
+
     save_state
     return result
   end
@@ -292,6 +249,8 @@ class ManagedService < ManagedContainer
     @setState="running"
     if create_container() == true
       #start with configurations
+      #save haere are below call inspect
+      save_state()
       
       service_configurations = service_manager.get_service_configurations_hashes(@container_name)
         if service_configurations.is_a?(Array)
@@ -299,7 +258,7 @@ class ManagedService < ManagedContainer
             run_configurator(configuration)
           end
         end
-      @cont_userid = running_user
+    
       register_with_dns()
      
       p :service_non_persis
@@ -309,10 +268,11 @@ class ManagedService < ManagedContainer
       @core_api.register_non_persistant_services(self)
             
       reregister_consumers()
-      save_state()
+     
       return true
     else
       save_state()
+      
       log_error_mesg("Failed to create service",self)
       return false
     end

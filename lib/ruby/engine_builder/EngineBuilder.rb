@@ -21,9 +21,6 @@ class EngineBuilder
   
   require_relative '../templater/Templater.rb'
 
-
-  
-  
   @repoName=nil
   @hostname=nil
   @domain_name=nil
@@ -85,7 +82,7 @@ class EngineBuilder
     @cron_job_list = Array.new
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
-    @webPort=8000
+    @webPort=SysConfig.default_webport
     @vols=Array.new
     @first_build = true
 
@@ -108,15 +105,6 @@ class EngineBuilder
     else
       #      env_array = custom_env.fall
       custom_env_hash = custom_env
-      #      env_array.each do |env_hash|
-      #        p :env_hash
-      #        p env_hash
-      #
-      #        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
-      #          env_hash[:name] = env_hash[:name].sub(/_/,"")
-      #          custom_env_hash.store(env_hash[:name],env_hash[:value])
-      #        end
-      #      end
       p :Merged_custom_env
       p custom_env_hash
       @set_environments =  custom_env_hash
@@ -791,6 +779,7 @@ class EngineBuilder
       p :LOOKING_FOR_
       p service_hash
       if  @core_api.match_orphan_service(service_hash) == true
+       p :attaching_orphan
               service_hash[:fresh]=false
               @first_build = false
               new_service_hash  = reattach_service(service_hash)
@@ -835,8 +824,6 @@ class EngineBuilder
     sm = @core_api.loadServiceManager()
     sm.release_orphan(service_hash)
   end
-
-
 
   def tail_of_build_log
     retval = String.new
