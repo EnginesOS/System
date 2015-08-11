@@ -62,10 +62,13 @@ def process_first_chunk(mesg_data)
         first_bytes= false
       end
       
+      p "got " + message_response.size.to_s + " of " + mesg_len.to_s
+      
       while message_response.size < mesg_len
         begin
           mesg_data = socket.read_nonblock(32768)
           message_response = message_response + mesg_data
+          p "got " + message_response.size.to_s + " of " + mesg_len.to_s  
         rescue IO::EAGAINWaitReadable
           retry    
         end
