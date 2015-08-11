@@ -487,7 +487,7 @@ end
 
 def update_service_configuration(config_hash)      
   #load service definition and from configurators definition and if saveable save
-  service_definition = software_service_definition(service_hash)
+  service_definition = software_service_definition(config_hash)
    if service_definition.is_a?(Hash) == false
      @last_error= "Missing Service definition file"
      return false
@@ -585,19 +585,21 @@ def service_is_registered?(service_hash)
 end
   
 
-def orphan_service(params)      
-  test_registry_result(@system_registry.orphan_service(params))
+def orphanate_service(params)      
+  test_registry_result(@system_registry.orphanate_service(params))
 end
 
 def retrieve_orphan(params)      
   test_registry_result(@system_registry.retrieve_orphan(params))
 end
-def release_orphan(params)      
-  test_registry_result(@system_registry.release_orphan(params))
-  end
-def reparent_orphan(params)      
-  test_registry_result(@system_registry.reparent_orphan(params))
- end
+
+def rebirth_orphan(params)      
+  test_registry_result(@system_registry.rebirth_orphan(params))
+end
+  
+#def reparent_orphan(params)      
+#  test_registry_result(@system_registry.reparent_orphan(params))
+# end
 
  
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
