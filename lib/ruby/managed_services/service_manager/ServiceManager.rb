@@ -294,7 +294,7 @@ end
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
         p service_hash
-        test_registry_result(@system_registry.remove_from_services_registry(service_hash))
+        return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
         @last_error= @system_registry.last_error
         p @last_error
@@ -500,7 +500,7 @@ def update_service_configuration(config_hash)
     configurator_definition = service_definition[:configurators][config_hash[:configurator_name].to_sym]
     
     if configurator_definition.has_key?(:no_save) == false ||  configurator_definition[:no_save] == false
-    test_registry_result(@system_registry.update_service_configuration(config_hash))
+      return test_registry_result(@system_registry.update_service_configuration(config_hash))
     else
       return true
     end
@@ -620,5 +620,6 @@ end
   def log_exception(e)
     @last_error = @last_error.to_s + ":" + e.to_s.slice(0,256)
     SystemUtils.log_exception(e)
+    return false
   end
 end
