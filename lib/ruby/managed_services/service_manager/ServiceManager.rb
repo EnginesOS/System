@@ -486,7 +486,26 @@ def test_and_lock_registry_result(result)
 end
 
 def update_service_configuration(config_hash)      
-  test_registry_result(@system_registry.update_service_configuration(config_hash))
+  #load service definition and from configurators definition and if saveable save
+  service_definition = software_service_definition(service_hash)
+   if service_definition.is_a?(Hash) == false
+     @last_error= "Missing Service definition file"
+     return false
+   end
+   if  configurator_definition.has_key?(:configurator_name)  == false
+     @last_error= "Missing Configurator name"
+         return false
+       end
+       
+    configurator_definition = service_definition[:configurators][config_hash[:configurator_name].to_sym]
+    
+    if configurator_definition.has_key?(:no_save) == false ||  configurator_definition[:no_save] == false
+    test_registry_result(@system_registry.update_service_configuration(config_hash))
+    else
+      return true
+    end
+rescue Exception=>e
+  log_exception(e)  
     end
 
 ###READERS 
