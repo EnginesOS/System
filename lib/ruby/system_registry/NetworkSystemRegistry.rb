@@ -13,7 +13,7 @@ require 'timeout'
   @port=SysConfig.RegistryPort
   @registry_socket = open_socket(server_ip,@port)    
     
-    if @registry_socket.is_a?(String) == true
+    if @registry_socket.is_a?(TCPSocket) == false
       p @registry_socket.to_s
       return nil
     end
@@ -105,7 +105,7 @@ def process_first_chunk(mesg_data)
   end
 
   def build_mesg(mesg_str)
-    header = mesg_str.to_s.length
+    header = mesg_str.to_s.size
     return header.to_s + "," + mesg_str.to_s
   end
 
