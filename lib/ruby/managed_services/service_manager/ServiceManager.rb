@@ -188,7 +188,7 @@ end
              return false
            end
          else
-           if orphan_service(service) == false
+           if orphanate_service(service) == false
              log_error_mesg("Failed to orphan service ",service)
              return false
            end
