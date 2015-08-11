@@ -352,8 +352,8 @@ class EnginesCore
 
   def force_registry_restart
     
-    registry_service.stop
-    registry_service.start
+    registry_service.stop_container
+    registry_service.start_container
     while registry_service.is_startup_complete? == false
       sleep 1
       wait=wait+1

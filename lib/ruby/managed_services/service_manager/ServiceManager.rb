@@ -7,7 +7,7 @@ require_relative '../../templater/Templater.rb'
 require_relative '../../system/SystemAccess.rb'
 class ServiceManager
 
-  require_relative 'system_registry.rb'
+
   
   attr_accessor     :last_error
   #@ call initialise Service Registry Tree which conects to the registry server
@@ -564,6 +564,22 @@ def service_is_registered?(service_hash)
       return result      
 end
   
+
+def orphan_service(params)      
+  test_registry_result(@system_registry.orphan_service(params))
+end
+
+def retrieve_orphan(params)      
+  test_registry_result(@system_registry.retrieve_orphan(params))
+end
+def release_orphan(params)      
+  test_registry_result(@system_registry.release_orphan(params))
+  end
+def reparent_orphan(params)      
+  test_registry_result(@system_registry.reparent_orphan(params))
+ end
+
+ 
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
