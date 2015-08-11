@@ -298,7 +298,12 @@ class DockerApi
      e_option =String.new
      if(container.environments && container.environments != nil)
        container.environments.each do |environment|
-         if environment != nil && environment.name != nil  && environment.value != nil && environment.has_changed == true
+         if environment != nil \
+           && environment.name != nil \
+           && environment.value != nil \
+           && environment.has_changed == true\
+           && environment.build_time_only == false
+           
            environment.value.gsub!(/ /,"\\ ")
            e_option = e_option + " -e \"" + environment.name + "="  + environment.value + "\""
          end
