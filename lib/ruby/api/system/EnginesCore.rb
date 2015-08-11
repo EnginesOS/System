@@ -331,9 +331,7 @@ class EnginesCore
 
   def remove_orphaned_service(params)
     sm = loadServiceManager()
-     check_sm_result(sm.remove_orphaned_service(params))
- 
-
+     check_sm_result(sm.remove_orphaned_service(params)) 
   rescue Exception=>e
     SystemUtils.log_exception e
   end

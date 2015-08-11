@@ -268,7 +268,7 @@ module ServicesModule
     if @core_api.remove_orphaned_service(params) == true
       return success(params[:service_handle],"Delete Service")    
      else
-      SystemUtils.log_error_mesg("Delete Orphan Service",params)
+      SystemUtils.log_error_mesg("Delete Orphan Service " + @core_api.last_error.to_s ,params)
       return failed(params[:service_handle],@core_api.last_error,"Delete Orphan Service")
     end
    

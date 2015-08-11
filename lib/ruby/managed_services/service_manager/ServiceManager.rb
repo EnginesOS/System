@@ -297,6 +297,7 @@ end
         test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
         @last_error= @system_registry.last_error
+        p @last_error
         return false
       end
     elsif service.persistant == true
