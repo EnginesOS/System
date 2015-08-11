@@ -238,7 +238,7 @@ class ManagedService < ManagedContainer
     return @core_api.loadServiceManager()
   end
   
-  def  forced_recreate
+  def  forced_recreate #move elsewhere are this is registry service only
     unpause_container
     stop_container
     destroy_container
