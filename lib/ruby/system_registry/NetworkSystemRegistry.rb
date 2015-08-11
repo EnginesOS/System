@@ -237,6 +237,9 @@ def process_first_chunk(mesg_data)
 #    end
 #    p :reopen_socket
       begin
+        if @registry_socket.is_a?(TCPSocket) == true
+          @registry_socket.close
+        end
         @registry_socket = open_socket(registry_server_ip,@port)
         if @registry_socket.is_a?(String)
           
