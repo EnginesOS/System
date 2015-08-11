@@ -498,7 +498,7 @@ def update_service_configuration(config_hash)
        end
        
     configurator_definition = service_definition[:configurators][config_hash[:configurator_name].to_sym]
-test_registry_result(@system_registry.update_service_configuration(config_hash))
+return test_registry_result(@system_registry.update_service_configuration(config_hash))
     if configurator_definition.has_key?(:no_save) == false ||  configurator_definition[:no_save] == false
       return test_registry_result(@system_registry.update_service_configuration(config_hash))
     else
