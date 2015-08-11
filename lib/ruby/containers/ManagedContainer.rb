@@ -322,7 +322,7 @@ p @last_result
       ret_val = false
     else
       set_container_id
-      @cont_userid = running_user
+     
       register_with_dns
       if @deployment_type  == "web"
         add_nginx_service
@@ -332,7 +332,7 @@ p @last_result
 
     clear_error(ret_val)
     save_state()
-    
+    @cont_userid = running_user
 
     return ret_val
   end
