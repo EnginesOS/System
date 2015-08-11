@@ -19,6 +19,7 @@ configurators:
   description:  Engines Login Password  for engines user
   params:
    console_pass:
+    no_save: true
     name: console_pass
     regex_invalid_message: "wrong go back and try again"
     label: Password for engines user
@@ -30,6 +31,7 @@ configurators:
     mandatory: true
     comment: ""    
  ssh_master_key:
+  no_save: true  
   name: ssh_master_key
   label: Engines access key
   description:  Engines access key 

@@ -27,6 +27,7 @@ configurators:
   params:
    db_master_pass:
     name: db_master_pass
+    no_save: true
     regex_invalid_message: "wrong go back and try again"
     label: root passwowd for PgSQL 
     regex_validator: ".*"
