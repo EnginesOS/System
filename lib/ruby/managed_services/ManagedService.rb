@@ -239,10 +239,11 @@ class ManagedService < ManagedContainer
   end
   
   def  forced_recreate
-    unpause
-    stop
-    destroy
-    return create    
+    unpause_container
+    stop_container
+    destroy_container
+    
+    return create_container  #start as service or will end up in a loop getting configurations and consumers  
   end
   
   def create_service()
