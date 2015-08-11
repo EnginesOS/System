@@ -335,7 +335,7 @@ def remove_service service_hash
          log_error_mesg("failed to remove managed service:" +  @system_registry.last_error,service_hash)
          return false
        end
-   return test_regsitry_result(@system_registry.release_orphan(service_hash))
+   return test_registry_result(@system_registry.release_orphan(service_hash))
  end
 
  
