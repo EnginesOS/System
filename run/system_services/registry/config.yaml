@@ -5,7 +5,7 @@ persistant: false
 publisher_namespace: EnginesSystem
 type_path: registry
 last_error: 
-memory: '32'
+memory: '96'
 hostname: registry
 domain_name: 
 environments: []
