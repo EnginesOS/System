@@ -10,6 +10,9 @@ class SysConfig
   @@engines_system_version="0.0"
   
   @@RegistryPort=21027
+  
+  @@default_webport=8000
+  
   @@DBHost="mysql.engines.internal"
   @@RunDir="/opt/engines/run/"
   @@CidDir="/opt/engines/run/cid/"
@@ -94,6 +97,10 @@ class SysConfig
   
   @@EnginesInternalCA="/opt/engines/etc/ssl/ca/certs/system_CA.pem"
   #/opt/engines/etc/ca/engines_internal_ca.crt"
+  
+  def SysConfig.default_webport
+    return @@default_webport
+  end
   
   def SysConfig.RunDir
     return @@RunDir
