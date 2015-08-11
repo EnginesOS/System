@@ -167,7 +167,7 @@ class ManagedService < ManagedContainer
       log_error_mesg("service missing cont_userid ",configurator_params)
             return false
     end
-    cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params) + "\""
+    cmd = "docker exec -u " + @cont_userid.to_s + " " +  @container_name.to_s + " /home/configurators/set_" + configurator_params[:configurator_name].to_s + ".sh \"" + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + "\""
      result = SystemUtils.execute_command(cmd)
      
     return result 
@@ -179,9 +179,12 @@ class ManagedService < ManagedContainer
       return false
     end
     
-    if @cont_userid == nil
-      log_error_mesg("service missing cont_userid ",configurator_params)
+    if @cont_userid == nil || @cont_userid == false
+      set_running_user
+      if @cont_userid == nil || @cont_userid == false
+        log_error_mesg("service missing cont_userid ",configurator_params)
             return false
+      end
     end
     
     cmd = "docker exec -u " + @cont_userid + " " +  @container_name + " /home/configurators/read_" + configurator_params[:configurator_name].to_s + ".sh "
