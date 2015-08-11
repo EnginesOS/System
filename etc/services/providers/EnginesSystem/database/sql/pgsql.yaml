@@ -22,12 +22,12 @@ setup_params:
 configurators:
  db_master_pass:
   name: db_master_pass
+  no_save: true
   label: PgSQL Master Password
   description:  PgSQL Master Password for root user
   params:
    db_master_pass:
     name: db_master_pass
-    no_save: true
     regex_invalid_message: "wrong go back and try again"
     label: root passwowd for PgSQL 
     regex_validator: ".*"

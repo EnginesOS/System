@@ -15,11 +15,11 @@ attach_requires_restart: false
 configurators:
  console_pass:
   name: console_pass
+  no_save: true
   label: Engines Console Login Password
   description:  Engines Login Password  for engines user
   params:
    console_pass:
-    no_save: true
     name: console_pass
     regex_invalid_message: "wrong go back and try again"
     label: Password for engines user

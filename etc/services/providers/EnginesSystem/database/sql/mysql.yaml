@@ -22,11 +22,11 @@ setup_params:
 configurators:
  db_master_pass:
   name: db_master_pass
+  no_save: true
   label: MySQL Master Password
   description:  MySQL Master Password for root user
   params:
    db_master_pass:
-    no_save: true
     name: db_master_pass
     regex_invalid_message: "wrong go back and try again"
     label: root passwowd for MySQL 
