@@ -1241,7 +1241,7 @@ def deregister_non_persistant_service(service_hash)
    return result
  end
 def check_sm_result(result)
-   if result == nil || result.is_a?(False)
+   if result == nil || result.is_a?(Boolean)
      last_error = @system_api.last_error
    end
    return result 
