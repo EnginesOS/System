@@ -115,7 +115,10 @@ class SystemRegistry
     test_result(send_request("get_registered_against_service",params))
   end
 
-  #
+
+  def  get_service_entry(service_hash)
+     test_result( send_request("get_service_entry",service_hash))
+   end
   #
   def  get_service_configurations_hashes(service_hash)
     test_result( send_request("get_service_configurations_hashes",service_hash))
