@@ -20,7 +20,7 @@ class SystemRegistry
       return request_result_hash[:object]
     end
     @last_error = request_result_hash[:error] + ":"+@network_registry.last_error
-      if   request_result_hash.has_key?(object)     
+      if   request_result_hash.has_key?(:object)     
         return request_result_hash[:object]     
       end
       return nil   
