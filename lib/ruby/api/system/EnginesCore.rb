@@ -363,19 +363,27 @@ class EnginesCore
   restart_thread = Thread.new {    
     registry_service.stop_container
     registry_service.start_container
-  }
-  
-    restart_thread.join
-    
     while registry_service.is_startup_complete? == false
-      sleep 1
-      wait=wait+1
-        if wait >5
-          break
-        end
-    end
-
+        sleep 1
+        wait=wait+1
+          if wait >60
+            force_registry_recreate
+          end
+      end
+  }
+    restart_thread.join          
   end
+  
+  def force_registry_recreate
+    
+    registry_service = @system_api.loadSystemService("registry")
+    
+    if registry_service.forced_recreate == false
+           @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
+           return nil
+         end
+  end
+  
   def get_registry_ip
     registry_service = @system_api.loadSystemService("registry")
     case registry_service.read_state
@@ -396,7 +404,7 @@ class EnginesCore
     while registry_service.is_startup_complete? == false
       sleep 1
       wait=wait+1
-        if wait >5
+        if wait >60
           break
         end
     end
