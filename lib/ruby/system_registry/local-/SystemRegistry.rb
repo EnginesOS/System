@@ -15,6 +15,7 @@ class SystemRegistry < Registry
      @services_registry = ServicesRegistry.new(services_registry)
      @managed_engines_registry = ManagedEnginesRegistry.new( managed_engines_registry)
      @orphan_server_registry = OrphanServicesRegistry.new( orphaned_services_registry)
+       
      
    end
    
@@ -230,6 +231,7 @@ class SystemRegistry < Registry
     #@return service_tree [TreeNode]
     def tree_from_yaml()
       begin
+        
         if File.exist?(SysConfig.ServiceTreeFile)
           tree_data = File.read(SysConfig.ServiceTreeFile)
         elsif  File.exist?(SysConfig.ServiceTreeFile + ".bak")
@@ -400,6 +402,7 @@ def orphaned_services_registry
          log_exception(e)
          return false
   end
-  
-  
+
 end
+
+  

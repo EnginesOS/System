@@ -15,6 +15,7 @@ attach_requires_restart: false
 configurators:
  console_pass:
   name: console_pass
+  no_save: true
   label: Engines Console Login Password
   description:  Engines Login Password  for engines user
   params:
@@ -30,6 +31,7 @@ configurators:
     mandatory: true
     comment: ""    
  ssh_master_key:
+  no_save: true  
   name: ssh_master_key
   label: Engines access key
   description:  Engines access key 

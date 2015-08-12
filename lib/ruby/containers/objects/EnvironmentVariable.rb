@@ -8,7 +8,7 @@ class EnvironmentVariable
     @mandatory = mandatory
     @label = label
     @immutable = immutable
-    @has_changed = false
+    @has_changed = true
   end
   def setatrun
     return @ask_at_build_time

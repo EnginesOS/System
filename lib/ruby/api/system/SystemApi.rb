@@ -499,8 +499,8 @@ class SystemApi
     end
   end
 
-  def build_running_service(service_name)
-    config_template_file_name = SysConfig.RunDir + "/services/" + service_name + "/config.yaml"
+  def build_running_service(service_name,service_type_dir)
+    config_template_file_name = service_type_dir + service_name + "/config.yaml"
 
     if File.exists?(config_template_file_name) == false
       return false
@@ -510,7 +510,7 @@ class SystemApi
     templator = Templater.new(system_access,nil)
     running_config = templator.process_templated_string(config_template)
 
-    yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
+    yam1_file_name =service_type_dir + service_name + "/running.yaml"
     yaml_file = File.new(yam1_file_name,"w+")
     yaml_file.write(running_config)
     yaml_file.close
@@ -519,16 +519,24 @@ class SystemApi
 
   end
 
-  def loadManagedService(service_name)
+  def loadSystemService(service_name)
+    return _loadManagedService(service_name,SysConfig.RunDir + "/system_services/")
+  end
+  
+  def  loadManagedService(service_name)
+    return _loadManagedService(service_name,SysConfig.RunDir + "/services/")
+  end
+  
+  def _loadManagedService(service_name,service_type_dir)
     begin
       if service_name == nil || service_name.length ==0
         last_error="No Service Name"
         return false
       end
-      yam1_file_name = SysConfig.RunDir + "/services/" + service_name + "/running.yaml"
+      yam1_file_name = service_type_dir + service_name + "/running.yaml"
 
       if File.exists?(yam1_file_name) == false
-        if  build_running_service(service_name) == false
+        if  build_running_service(service_name,service_type_dir) == false
           return false # return failed(yam_file_name,"No such configuration:","Load Service")
         end
       end

@@ -44,7 +44,7 @@ class ManagedContainer < Container
   end
   
   
-  #@returns [Boolena]
+  #@returns [Boolean]
   # whether pulled or no false if no new image 
   def pull_image
      #if has repo field prepend repo
@@ -322,7 +322,7 @@ p @last_result
       ret_val = false
     else
       set_container_id
-      @cont_userid = running_user
+     
       register_with_dns
       if @deployment_type  == "web"
         add_nginx_service
@@ -332,7 +332,7 @@ p @last_result
 
     clear_error(ret_val)
     save_state()
-    
+    @cont_userid = running_user
 
     return ret_val
   end
@@ -417,7 +417,7 @@ p @last_result
     state = read_state()
     @setState="running"
     if state == "stopped"
-      
+   
       ret_val = @core_api.start_container self
       
       @docker_info = nil
@@ -663,26 +663,7 @@ p @last_result
       return false
     end
   end
-#
-#  def enable_https_only
-#    @protocol=:https_only
-#    p :enable_https_only
-#    save_state
-#  end
-#
-#  def enable_http_only
-#    p :enable_http_only
-#    @protocol=:http_only
-#    save_state
-#  end
-#
-#  def enable_http_and_https
-#    p :disable_httpsonly
-#    deregister_site
-#    @protocol=:http_and_https
-#    register_site
-#    save_state
-#  end
+
 
   protected
 

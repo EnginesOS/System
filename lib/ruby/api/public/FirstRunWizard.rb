@@ -9,7 +9,8 @@ class FirstRunWizard
 
   def apply(api)
   @api = api
-  
+  p :applyin
+  p @first_run_params 
     if mysql_password_configurator(@first_run_params[:mysql_password]) == false
       log_error("Fail to setup mysql password " + api.last_error())
       return false
@@ -26,7 +27,7 @@ class FirstRunWizard
       return false
     end
    domain_hash = Hash.new()
-    domain_hash[:domain_name]=params[:default_domain]
+    domain_hash[:domain_name]=@first_run_params[:default_domain]
     if api.set_default_domain(domain_hash)  == false
       log_error("Fail to set default domain " + api.last_error() + " " + domain_hash.to_s)
       return false
@@ -56,6 +57,7 @@ class FirstRunWizard
     domain_hash = Hash.new()
  
     domain_hash[:default_domain]=params[:default_domain]
+    domain_hash[:domain_name]=params[:default_domain]
     domain_hash[:self_hosted] = params[:default_domain_self_hosted]
     domain_hash[:internal_only] = params[:default_domain_internal_only]
     #self host

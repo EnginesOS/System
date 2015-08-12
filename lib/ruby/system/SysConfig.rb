@@ -9,6 +9,10 @@ class SysConfig
   @@api_version="0.0"
   @@engines_system_version="0.0"
   
+  @@RegistryPort=21027
+  
+  @@default_webport=8000
+  
   @@DBHost="mysql.engines.internal"
   @@RunDir="/opt/engines/run/"
   @@CidDir="/opt/engines/run/cid/"
@@ -79,6 +83,9 @@ class SysConfig
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
   
+  def SysConfig.RegistryPort
+    return @@RegistryPort
+  end
   def SysConfig.api_version
     return @@api_version
   end
@@ -90,6 +97,10 @@ class SysConfig
   
   @@EnginesInternalCA="/opt/engines/etc/ssl/ca/certs/system_CA.pem"
   #/opt/engines/etc/ca/engines_internal_ca.crt"
+  
+  def SysConfig.default_webport
+    return @@default_webport
+  end
   
   def SysConfig.RunDir
     return @@RunDir

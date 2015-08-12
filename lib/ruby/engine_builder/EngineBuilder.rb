@@ -21,14 +21,11 @@ class EngineBuilder
   
   require_relative '../templater/Templater.rb'
 
-
-  
-  
   @repoName=nil
   @hostname=nil
   @domain_name=nil
   @build_name=nil
-  @web_protocol="HTTPS and HTTP"
+  @http_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,
     :templater,
@@ -85,7 +82,7 @@ class EngineBuilder
     @cron_job_list = Array.new
     @build_name = File.basename(@repoName).sub(/\.git$/,"")
     @workerPorts=Array.new
-    @webPort=8000
+    @webPort=SysConfig.default_webport
     @vols=Array.new
     @first_build = true
 
@@ -108,15 +105,6 @@ class EngineBuilder
     else
       #      env_array = custom_env.fall
       custom_env_hash = custom_env
-      #      env_array.each do |env_hash|
-      #        p :env_hash
-      #        p env_hash
-      #
-      #        if env_hash != nil && env_hash[:name] !=nil && env_hash[:value] != nil
-      #          env_hash[:name] = env_hash[:name].sub(/_/,"")
-      #          custom_env_hash.store(env_hash[:name],env_hash[:value])
-      #        end
-      #      end
       p :Merged_custom_env
       p custom_env_hash
       @set_environments =  custom_env_hash
@@ -138,7 +126,8 @@ class EngineBuilder
 
   def close_all
     if @log_file.closed? == false
-      log_build_output("Build Finished")
+      log_build_output("Build Result:Comming Soon")   
+      log_build_output("Build Finished")      
       @log_file.close()
     end
     if@err_file.closed? == false
@@ -790,6 +779,7 @@ class EngineBuilder
       p :LOOKING_FOR_
       p service_hash
       if  @core_api.match_orphan_service(service_hash) == true
+       p :attaching_orphan
               service_hash[:fresh]=false
               @first_build = false
               new_service_hash  = reattach_service(service_hash)
@@ -834,8 +824,6 @@ class EngineBuilder
     sm = @core_api.loadServiceManager()
     sm.release_orphan(service_hash)
   end
-
-
 
   def tail_of_build_log
     retval = String.new
@@ -929,11 +917,9 @@ class EngineBuilder
     @blueprint_reader.deployment_type
     )
 
-#    p :set_cron_job_list
-#    p @cron_job_list
-#    mc.set_cron_job_list(@cron_job_list)
+
     #:http_protocol=>"HTTPS and HTTP"
-    mc.set_protocol(@protocol)
+    mc.set_protocol(@http_protocol)
    
     mc.conf_self_start= (true)
     mc.save_state # no running.yaml throws a no such container so save so others can use
@@ -942,7 +928,7 @@ class EngineBuilder
     end
 
     bp = mc.load_blueprint
-    p  bp
+  
     log_build_output("Launching")
     #this will fail as no api at this stage
     if mc.core_api != nil
@@ -966,12 +952,8 @@ end
 
   def fill_service_environment_variables(service_hash)
     p :fill_service_environment_variables
-#    services =@attached_services #@blueprint_reader.services
-#   
-#    services.each do |service_hash|
      service_envs = SoftwareServiceDefinition.service_environments(service_hash)
       @blueprint_reader.environments.concat(service_envs)
-#    end
   end
   
 

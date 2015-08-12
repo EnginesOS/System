@@ -130,14 +130,20 @@ module ServicesModule
       #nothing is written to the service registry
       #effectivitly activating non persistant services
    def register_attached_service(service_hash)
+     if register_attached_service(service_hash)
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
+     end
+     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
    end
   #@ return [EnginesOSapiResult]
     #@params service_hash
     #this method is called to deregister the service hash from service
     #nothing is written to the service resgitry   
    def deregister_attached_service(service_hash)
+     if  deregister_attached_service(service_hash).was_success
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
+     end
+     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
    end
   #@ return [EnginesOSapiResult]
       #@params service_hash
@@ -146,9 +152,13 @@ module ServicesModule
       #nothing is written to the service resgitry   
    def reregister_attached_service(service_hash)
     if  deregister_attached_service(service_hash).was_success
-      return register_attached_service(service_hash)
-    end
+      if register_attached_service(service_hash).was_success    
      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
+      else
+        return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in register_attached_service")
+      end      
+    end
+     return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in deregister_attached_service")
    end
       
     def get_managed_engine_tree
@@ -254,11 +264,15 @@ module ServicesModule
     
   
   def delete_orphaned_service(params)
-    
+    p :delete_orphaned_service
+    p params
+    p params.class.name
+    p :as_h
+    p params.to_h.to_s
     if @core_api.remove_orphaned_service(params) == true
       return success(params[:service_handle],"Delete Service")    
      else
-      SystemUtils.log_error_mesg("Delete Orphan Service",params)
+      SystemUtils.log_error_mesg("Delete Orphan Service " + @core_api.last_error.to_s ,params)
       return failed(params[:service_handle],@core_api.last_error,"Delete Orphan Service")
     end
    
@@ -340,7 +354,7 @@ module ServicesModule
       if @core_api.update_attached_service(params) == true     
       return success(params[:service_handle],"update attached Service")
       end
-      return failed(service_param[:service_handle],@core_api.last_error,"update_attached_service")
+      return failed(params[:service_handle],@core_api.last_error,"update_attached_service")
     end
    
    def update_service_configuration(service_param)
