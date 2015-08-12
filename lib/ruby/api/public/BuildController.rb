@@ -10,23 +10,7 @@ class BuildController
   
   attr_accessor :last_error
     
-  def get_engine_builder(params)
-    builder = EngineBuilder.new(params, @core_api)
  
-    return builder  
-  end
-  
- def close_streams
-   @build_log_stream = nil
-      @build_error_stream = nil
- end
- 
-  def get_engine_builder_bfr(repository,host,domain_name,environment)
-    builder = EngineBuilder.new(repository,host,domain_name,environment)
-    @build_log_stream = builder.get_build_log_stream
-      @build_error_stream = builder.get_build_err_stream
-      return builder  
-  end
   
   def build_engine(params)
   p :builder_params
@@ -79,8 +63,30 @@ class BuildController
         @last_error= @last_error.to_s + ":Exception:" + e.to_s + ":" + e.backtrace.to_s
       return false
     end
+  
     
- 
+  private 
+    
+  def get_engine_builder(params)
+     builder = EngineBuilder.new(params, @core_api)
+     @build_log_stream = builder.get_build_log_stream
+           @build_error_stream = builder.get_build_err_stream
+     return builder  
+   end
+   
+
+  
+  def close_streams
+    @build_log_stream = nil
+       @build_error_stream = nil
+  end
+  
+   def get_engine_builder_bfr(repository,host,domain_name,environment)
+     builder = EngineBuilder.new(repository,host,domain_name,environment)
+     @build_log_stream = builder.get_build_log_stream
+       @build_error_stream = builder.get_build_err_stream
+       return builder  
+   end
 
   
 end
