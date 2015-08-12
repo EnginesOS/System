@@ -295,9 +295,7 @@ class EnginesOSapi
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Pause")
     end
-
     retval = engine.pause_container
-
     if retval == false
       return failed(engine_name,engine.last_error,"Pause")
     end
@@ -335,8 +333,6 @@ class EnginesOSapi
   end
 
   def deleteEngineImage(params)
-
-    #
     if params.has_key?(:engine_name) == false || params[:engine_name] == nil
       return failed(params.to_s,"no Engine name","Delete")
     end
@@ -345,9 +341,7 @@ class EnginesOSapi
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(params[:engine_name],"no Engine","Delete")
     end
-
     params[:container_type] = "container"
-
     if  @core_api.delete_image_dependancies(params) == true
       if engine.delete_image() == true
         return success(params[:engine_name],"Delete")
@@ -356,13 +350,10 @@ class EnginesOSapi
       SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
       return failed(params[:engine_name],last_api_error, "Delete Image Dependancies")
     end
-
     SystemUtils.log_error_mesg("failed to delete image ",params)
     return  failed(params[:engine_name],last_api_error, "Delete Image")
-
   rescue Exception=>e
     return log_exception_and_fail("Delete",e)
-
   end
 
   def reinstall_engine(engine_name)
@@ -411,21 +402,20 @@ class EnginesOSapi
     return log_exception_and_fail("Restart",e)
   end
 
-  def registerEngineWebSite engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","Register Engine Web Site")
-    end
-    retval =  engine.register_site()
-    if retval != true
-      return failed(engine_name,retval,"Register Engine Web Site")
-    end
-    return success(engine_name,"Register Engine Web Site")
-  end
+#  def registerEngineWebSite engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","Register Engine Web Site")
+#    end
+#    retval =  engine.register_site()
+#    if retval != true
+#      return failed(engine_name,retval,"Register Engine Web Site")
+#    end
+#    return success(engine_name,"Register Engine Web Site")
+#  end
 
   def restart_system
     if @core_api.restart_system == true
-      p :Restarting
       return success("System","System Restarting")
     else
       return failed("System","not permitted","System Restarting")
@@ -450,23 +440,21 @@ class EnginesOSapi
     end
   end
 
-  def deregisterEngineWebSite engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name,"no Engine","DeRegister Engine Web Site")
-    end
-    retval =   engine.deregister_site()
-    if retval != true
-      return failed(engine_name,retval,"DeRegister Engine Web Site")
-    end
-    return success(engine_name,"DeRegister Engine Web Site")
-  rescue Exception=>e
-    return log_exception_and_fail("DeRegister Engine Web Site",e)
-  end
+#  def deregisterEngineWebSite engine_name
+#    engine = loadManagedEngine engine_name
+#    if  engine.is_a?(EnginesOSapiResult)
+#      return failed(engine_name,"no Engine","DeRegister Engine Web Site")
+#    end
+#    retval =   engine.deregister_site()
+#    if retval != true
+#      return failed(engine_name,retval,"DeRegister Engine Web Site")
+#    end
+#    return success(engine_name,"DeRegister Engine Web Site")
+#  rescue Exception=>e
+#    return log_exception_and_fail("DeRegister Engine Web Site",e)
+#  end
 
   def get_engine_blueprint engine_name
-    #    p :get_blueprint_for
-    #    p engine_name
     engine = loadManagedEngine engine_name
     if  engine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Load Engine Blueprint")
@@ -532,33 +520,30 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("get_container_network_metrics",e)
   end
-
-  def get_volumes
-
-    vol_service = EnginesOSapi.loadManagedService("volmanager",@core_api)
-    if vol_service == nil
-      return failed("volmanager","No Such Service","get_volumes")
-    end
-
-    return vol_service.consumers
-  rescue Exception=>e
-    return log_exception_and_fail("get_volumes",e)
-  end
-
-  def get_databases
-    db_service = EnginesOSapi.loadManagedService("mysql_server",@core_api)
-    if db_service == nil
-      return failed("mysql_server","No Such Service","get_databases")
-    end
-    return db_service.consumers
-  end
+#
+#  def get_volumes
+#    vol_service = EnginesOSapi.loadManagedService("volmanager",@core_api)
+#    if vol_service == nil
+#      return failed("volmanager","No Such Service","get_volumes")
+#    end
+#    return vol_service.consumers
+#  rescue Exception=>e
+#    return log_exception_and_fail("get_volumes",e)
+#  end
+#
+#  def get_databases
+#    db_service = EnginesOSapi.loadManagedService("mysql_server",@core_api)
+#    if db_service == nil
+#      return failed("mysql_server","No Such Service","get_databases")
+#    end
+#    return db_service.consumers
+#  end
 
 
   def set_engine_runtime_properties(params)
     if @core_api.set_engine_runtime_properties(params) ==true
       return success(params[:engine_name],"update engine runtime params")
     end
-    p :failed
     return  failed(params[:engine_name], @core_api.last_error,"update engine runtime params")
   rescue Exception=>e
     return log_exception_and_fail("set_engine_runtime params ",e)
@@ -597,7 +582,6 @@ class EnginesOSapi
 #  end
 
   def update_domain(params)
-
     if @core_api.update_domain(params) == false
       return  failed(params[:domain_name],last_api_error, "update  domain")
     else
@@ -606,7 +590,6 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("update self hosted domain " + params.to_s,e)
   end
-
 
   def add_domain params
     if @core_api.add_domain(params) == false
@@ -618,15 +601,12 @@ class EnginesOSapi
     return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
   end
 
-
-
   def remove_domain params
     if @core_api.remove_domain(params) == false
       return  failed(params[:domain_name],last_api_error, "Add  domain")
     else
       return success(params[:domain_name], "Add domain")
     end
-
   rescue Exception=>e
     return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
   end
@@ -637,6 +617,7 @@ class EnginesOSapi
     return log_exception_and_fail("list domains ",e)
   end
 
+  #private ?
   #protected if protected static cant call
   def success(item_name ,cmd)
     return EnginesOSapiResult.success(item_name ,cmd)
@@ -647,9 +628,7 @@ class EnginesOSapi
     p item_name
     p mesg
     p cmd
-
-    #    result = EnginesOSapiResult.failed(item_name,mesg ,cmd)
-    #    return EnginesOSapi.APIException.new(result)
+    mesg = mesg.to_s + ":" + last_api_error.to_s 
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
@@ -658,7 +637,6 @@ class EnginesOSapi
     p item_name
     p mesg
     p cmd
-
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
@@ -668,9 +646,7 @@ class EnginesOSapi
     if res == true
       return success("Engines ssh key regen", res)
     end
-
     return failed("Update System SSH key",@core_api.last_error ,"Update System SSH key")
-
   end
 
   #calls api to run system update
@@ -681,6 +657,5 @@ class EnginesOSapi
       return failed("System Update",@core_api.last_error ,"Update")
     end
     return success("System Update", res)
-  end
-
+  end  
 end
