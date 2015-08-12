@@ -359,18 +359,33 @@ class EnginesCore
   end
 
   def force_registry_restart
-    
+    #start in thread in case timeout clobbers
+  restart_thread = Thread.new {    
     registry_service.stop_container
     registry_service.start_container
     while registry_service.is_startup_complete? == false
-      sleep 1
-      wait=wait+1
-        if wait >5
-          break
-        end
-    end
-
+        sleep 1
+        wait=wait+1
+          if wait >60
+            return force_registry_recreate
+          end
+      end
+  }
+    restart_thread.join    
+    return true      
   end
+  
+  def force_registry_recreate
+    
+    registry_service = @system_api.loadSystemService("registry")
+    
+    if registry_service.forced_recreate == false
+           @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
+           return false
+         end
+         return true
+  end
+  
   def get_registry_ip
     registry_service = @system_api.loadSystemService("registry")
     case registry_service.read_state
@@ -391,7 +406,7 @@ class EnginesCore
     while registry_service.is_startup_complete? == false
       sleep 1
       wait=wait+1
-        if wait >5
+        if wait >60
           break
         end
     end
@@ -1021,6 +1036,7 @@ end
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
+         @docker_api.pull_image(container.image) #only pulls if has repo and not local image       
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)
         end

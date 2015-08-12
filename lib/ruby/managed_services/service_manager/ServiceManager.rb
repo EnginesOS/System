@@ -350,7 +350,7 @@ def remove_service service_hash
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
   #@param service_hash [Hash]
-  def add_to_managed_service(service_query_hash)
+  def add_to_managed_service(service_hash)
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
