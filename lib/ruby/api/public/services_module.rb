@@ -264,7 +264,10 @@ module ServicesModule
     
   
   def delete_orphaned_service(params)
-    
+    p :delete_orphaned_service
+    p params
+    p :as_h
+    p params.to_h.to_s
     if @core_api.remove_orphaned_service(params.to_h) == true
       return success(params[:service_handle],"Delete Service")    
      else
