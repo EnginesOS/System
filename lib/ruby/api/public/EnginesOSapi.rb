@@ -20,7 +20,7 @@ require_relative "FirstRunWizard.rb"
 #include BuildApi
 
 class EnginesOSapi
-  require_relative "BuildCntroller.rb"
+  require_relative "BuildController.rb"
   
   require_relative "engines_controller.rb"
   include EnginesController
