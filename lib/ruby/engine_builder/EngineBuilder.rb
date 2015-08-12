@@ -25,7 +25,7 @@ class EngineBuilder
   @hostname=nil
   @domain_name=nil
   @build_name=nil
-  @web_protocol="HTTPS and HTTP"
+  @http_protocol="HTTPS and HTTP"
 
   attr_reader :last_error,
     :templater,
@@ -917,11 +917,9 @@ class EngineBuilder
     @blueprint_reader.deployment_type
     )
 
-#    p :set_cron_job_list
-#    p @cron_job_list
-#    mc.set_cron_job_list(@cron_job_list)
+
     #:http_protocol=>"HTTPS and HTTP"
-    mc.set_protocol(@protocol)
+    mc.set_protocol(@http_protocol)
    
     mc.conf_self_start= (true)
     mc.save_state # no running.yaml throws a no such container so save so others can use
@@ -930,7 +928,7 @@ class EngineBuilder
     end
 
     bp = mc.load_blueprint
-    p  bp
+  
     log_build_output("Launching")
     #this will fail as no api at this stage
     if mc.core_api != nil
@@ -954,12 +952,8 @@ end
 
   def fill_service_environment_variables(service_hash)
     p :fill_service_environment_variables
-#    services =@attached_services #@blueprint_reader.services
-#   
-#    services.each do |service_hash|
      service_envs = SoftwareServiceDefinition.service_environments(service_hash)
       @blueprint_reader.environments.concat(service_envs)
-#    end
   end
   
 
