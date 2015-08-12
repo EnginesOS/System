@@ -329,8 +329,13 @@ def remove_service service_hash
 
  #@ removes underly service and remove entry from orphaned services
  #@returns boolean indicating success
- def remove_orphaned_service(service_hash)
+ def remove_orphaned_service(service_query_hash)
    clear_last_error
+   service_hash = retrieve_orphan(service_query_hash)
+   if service_hash == nil
+     log_error_mesg("failed to retrieve orphan service:" +  @last_error,service_hash)
+              return false
+   end
       if remove_from_managed_service(service_hash) == false
          log_error_mesg("failed to remove managed service:" +  @system_registry.last_error,service_hash)
          return false
