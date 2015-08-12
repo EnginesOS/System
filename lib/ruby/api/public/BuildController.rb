@@ -12,8 +12,7 @@ class BuildController
     
   def get_engine_builder(params)
     builder = EngineBuilder.new(params, @core_api)
-    @build_log_stream = builder.get_build_log_stream
-    @build_error_stream = engine_builder.get_build_err_strea
+ 
     return builder  
   end
   
@@ -25,7 +24,7 @@ class BuildController
   def get_engine_builder(_bfrrepository,host,domain_name,environment)
     builder = EngineBuilder.new(repository,host,domain_name,environment)
     @build_log_stream = builder.get_build_log_stream
-      @build_error_stream = engine_builder.get_build_err_stream
+      @build_error_stream = builder.get_build_err_stream
       return builder  
   end
   

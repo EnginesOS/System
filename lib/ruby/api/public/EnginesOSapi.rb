@@ -49,7 +49,10 @@ class EnginesOSapi
   ##Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
+    p :building_with
+    p params
     engine = build_controller.build_engine(params)
+    p :Built
     if engine == false
       failed("Build Engine:",build_controller.last_error)
     end
@@ -122,9 +125,7 @@ class EnginesOSapi
 
   def get_system_ca
     ca_string= File.read(SysConfig.EnginesInternalCA)
-
-    return ca_string
-
+   return ca_string
   rescue Exception=>e
     return  failed("Failed to load CA",e.to_s)
 
