@@ -332,6 +332,8 @@ def remove_service service_hash
  #@returns boolean indicating success
  def remove_orphaned_service(service_query_hash)
    clear_last_error
+   p :remove_orphaned_service
+   p service_query_hash
    service_hash = retrieve_orphan(service_query_hash)
    if service_hash == nil || service_hash == false
      log_error_mesg("failed to retrieve orphan service:" +  @last_error,service_hash)
