@@ -169,8 +169,7 @@ def process_templated_string(template)
          SystemUtils.log_error_mesg("nil or empty engines variables " + template.to_s,@builder_public.engine_environment.to_s)
       end
     end
-   
-   
+      
    return template
    
  rescue Exception=>e
