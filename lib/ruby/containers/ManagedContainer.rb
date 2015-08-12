@@ -263,7 +263,7 @@ p @last_result
 
     state = read_state
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
-    p :set_state_in_destroy
+
     @container_id="-1"
     p @setState
     if is_active? == false      
@@ -461,13 +461,11 @@ p @last_result
   #@ return false on inspect container error
   def get_ip_str
     @docker_info = nil
-    p :read_ip
     if inspect_container == false
       return false
     end
     output = JSON.parse(@last_result)
     ip_str=output[0]['NetworkSettings']['IPAddress']
-    #    puts container_name + ":" + ip_str
     return ip_str
   rescue
     return nil
@@ -553,8 +551,6 @@ p @last_result
        end
        output = JSON.parse(@last_result)
        user=output[0]['Config']['User']
-         p :got_user
-       p user
        return user
      rescue
        return false
@@ -620,9 +616,7 @@ p @last_result
     if state == "running"
       return true
     end
-
     return false
-
   end
 
   def is_startup_complete?
@@ -642,9 +636,10 @@ p @last_result
   def is_error?
     state = read_state
     if @setState != state
+      p "state " + state + " does not match set state " + @setState
       return true
     end
-    p "state " + state + " does not match set state " + @setState
+   
     return false
   end
   
