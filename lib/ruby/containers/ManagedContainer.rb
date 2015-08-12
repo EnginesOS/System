@@ -111,6 +111,11 @@ class ManagedContainer < Container
   end
 
   #to support Gui's wierd convention on names
+  
+  def repo
+    return @repository
+  end
+  
   def containerName
     return @container_names
   end
