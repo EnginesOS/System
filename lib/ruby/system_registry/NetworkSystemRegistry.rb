@@ -59,7 +59,8 @@ def process_first_chunk(mesg_data)
       rescue IO::EAGAINWaitReadable     
         retry
     rescue EOFError
-      reopen_registry_socket       
+      reopen_registry_socket    
+      retry   
     end
 
     if first_bytes == true
