@@ -786,7 +786,7 @@ end
   
  #@returns [Boolena]
  # whether pulled or no false if no new image 
- def pull_image 
+ def pull_image (image_name)  
     return @docker_api.pull_image(image_name)   
   end
   
