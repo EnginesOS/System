@@ -21,7 +21,7 @@ require_relative "FirstRunWizard.rb"
 
 class EnginesOSapi
   require_relative "build_controller.rb"
-  include BuildController
+  
   require_relative "engines_controller.rb"
   include EnginesController
   require_relative "services_module.rb"
@@ -46,6 +46,68 @@ class EnginesOSapi
     return FirstRunWizard.required?
   end
 
+  
+  
+  ##Build stuff
+  def build_engine(params)
+    build_controller = BuildController.new(@core_api)
+    engine = build_controller.build_engine(params)
+    if engine == false
+      failed("Build Engine:",build_controller.last_error)
+    end
+    if engine.is_active? == false
+      return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
+    end
+    return success(params[:engine_name],"Build Engine")
+  end
+  
+  def buildEngine(repository,host,domain_name,environment)
+    build_controller = BuildController.new(@core_api)
+       engine = build_controller.buildEngine(repository,host,domain_name,environment)
+       if engine == false
+         failed("Build Engine:",build_controller.last_error)
+       end
+       if engine.is_active? == false
+         return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
+       end
+       return success(params[:engine_name],"Build Engine")
+  end
+   
+  def rebuild_engine_container engine_name
+      engine = loadManagedEngine engine_name
+      if  engine.is_a?(EnginesOSapiResult)
+        return failed(engine_name,"no Engine","Load Engine Blueprint")
+      end
+      state = engine.read_state
+      if state == "running" || state == "paused"
+        return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
+      end
+      retval = engine.rebuild_container
+      if retval.is_a?(ManagedEngine)
+        success(engine_name,"Rebuild Engine Image")
+      else
+        puts "rebuild error"
+        p engine.last_error
+        return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
+  
+      end
+    rescue Exception=>e
+      return log_exception_and_fail("Rebuild Engine",e)
+    end
+  
+    def build_engine_from_docker_image(params)
+    p params
+      return success(engine_name,"Build Engine from Docker Image")
+  
+    rescue Exception=>e
+      return log_exception_and_fail("Build Engine from dockerimage",e)
+    end
+    
+    
+  def get_engine_build_report(engine_name)
+    return   @core_api.get_build_report(engine_name)
+  end
+  
   def generate_private_key
     key = String.new()
     key = "-----BEGIN RSA PRIVATE KEY-----77La9gRav1qSbDAi9NNIbTH3GQ3vg7uLKGSOTFoyJ/TwQvwccJTFAoGBAMkKu/immL9ZMsheOQq1XlSglnbMk9wS4KphsQKBCou5lZdE9pWPHvYWuhRK9LW8g4HSS7RIQkm5B5H5b5A9RyJZ40bHy59S0R/lI4VTFi6lmpTr9d3ScVCAi/YdPkdeFS8RM5Q7F1OPg9I84zP1XmBPOvG5M86tAnCLa0PS7fCvAoGAOnJUeEkPoym4itA6fIq0OuM8+qtZ5wNVUvDD3QmfOIIsNiuNA69UtAYocwuQKwZDUb7PkOvWoIGtwA90QJDnr2UFDCAxaOuqzkL6p7xt2tn9llGYzeuyrO2rWeCIZ4UMokLonqnnLwP+0lV7eJys2HQ9MIIEoQIBAAKCAQEAsn9KZsQrePI+gxAxAizmDzXdsP0xw//f9rbfxZQNjI7kJsDx61UPJg/uDQ0VvQclll06UgN4+3YhbCInbDgv4T9SSOg7YD6fKnQiEuhLJxOCfoVo+NUebeEJz+NpCdcTyUdJGwjnbTNe6Jo/CgG0eyraDo4yPWzD4Zvt8R1G1WpQ5mOP9U2gd+9ThMm5ng1U9iWEtV/hq7Cn0UEJzOvKmKSvGEGBrRgSkwXmB1U4Yvs5BJoLtF6xyMn3uc+pZA4xZYH5scyplEatIEJlQZCnFeAbvfCl3QRUOipOmwDgv4A5VygK+IKdgmraKA+wyPZjp2bt4Gu+fPH4YRnTUM9iqwIBIwKCAQBbzG9oDR2r6kwI48Fu1UMdw+5bBd8UV7UCie9s7Q5ISXymN1fYHR27za2gT99LRYELgGci3TbnuRiAwRuWvc97J+EszzR6o9zUATYYWjVHS9y2GLmkitxzBgUL1AoiUVqiB2ds/UPRwqXWtboFJXLDABhfQdCx4Co5g2RtX4ODsii/gV0+lYU4tV3SdlmOJL2YuatqKiY5S0or9YuBfoq+0+kOP7Pj8/cPCUtCcGIr1C/A0kzyNXgpUZ5EBxbGPzs778Aas6h2N00GKTJSPrQfW8g90wWNIMVQ7BqrfygSDycpIYNlYX7bVJnrPTG3IF9wwATSTUWhmdaEnbmCkdDbAoGBAONK1rdVA+xM6hvUcatwvOUB7SQoloJiS9DEwM1eTr9Pj31UB/Hiuy3fDxS7MKdRPq+tJzOVJjdNo7IDNd6lTBveMBK2FXuUe8zLleGj5BozS/M9Uj0/RRJGljM4NHNMGmmq0x1BhVcCgYEAvY3HLEVOMMHQy4wJ5YZu4hPBEOzF7MFXfBL3WiHlXytSh0+mqkUdMSte/TC61zy2gbemdsfJeLXFTx5h38S/aYfzi+DzL9G93D5x8rwNmbIVZ9cppULCnFvxrYlJWTtzDx7Y3De26GK+Hf7k2TfOAwjfzffDIfOUlf/LiRdVX0UCgYAlc3Fbf3jh26jl/VDlvgPgzpv4I21pFCNKDDMjDAKdc46vEylIOTX98BMFRK2XPadZ6Z3dmo7u9rVA68NK03PJhfQLG63y/H8EJMeBrMYAaCQpNzdn//+DHClZhoF5ZGhuClzUjaVbreaxdsJ63Q2fNI23a5EOAeZucGplR5Vk8Q==\-----END RSA PRIVATE KEY-----"
