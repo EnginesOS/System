@@ -467,7 +467,7 @@ class EngineBuilder
       end
       
      if @core_api.pull_image(base_image_name) == false
-       log_build_errors("Failed Pull Image DockerHub")
+       log_build_errors("Failed Pull Image:" +base_image_name + " from  DockerHub")
                        @last_error =  " " + tail_of_build_log
                        post_failed_build_clean_up
                        return false
