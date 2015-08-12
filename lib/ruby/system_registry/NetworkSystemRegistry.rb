@@ -51,13 +51,15 @@ def process_first_chunk(mesg_data)
     return message_request , mesg_len
   end
   
-  def wait_for_reply(socket)
+  def wait_for_reply()
     response_hash =  nil
     first_bytes = true 
     begin
-      mesg_data = socket.read_nonblock(32768)
+      mesg_data = @registry_socket.read_nonblock(32768)
       rescue IO::EAGAINWaitReadable     
         retry
+    rescue EOFError
+      reopen_registry_socket       
     end
 
     if first_bytes == true
@@ -69,7 +71,7 @@ def process_first_chunk(mesg_data)
 
     while message_response.size < mesg_len
       begin
-        mesg_data = socket.read_nonblock(32768)
+        mesg_data = @registry_socket.read_nonblock(32768)
         message_response = message_response + mesg_data
         p "got " + message_response.size.to_s + " of " + mesg_len.to_s  
       rescue IO::EAGAINWaitReadable
@@ -226,7 +228,7 @@ def process_first_chunk(mesg_data)
     result_hash = false
     status = Timeout::timeout(15) {
 #      p :waiting_for_reply
-    result_hash = wait_for_reply(@registry_socket)
+    result_hash = wait_for_reply()
     }
     
     return result_hash
