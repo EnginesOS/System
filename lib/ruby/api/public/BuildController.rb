@@ -21,7 +21,7 @@ class BuildController
       @build_error_stream = nil
  end
  
-  def get_engine_builder(_bfrrepository,host,domain_name,environment)
+  def get_engine_builder_bfr(repository,host,domain_name,environment)
     builder = EngineBuilder.new(repository,host,domain_name,environment)
     @build_log_stream = builder.get_build_log_stream
       @build_error_stream = builder.get_build_err_stream
@@ -45,7 +45,7 @@ class BuildController
     return false
 
   rescue Exception=>e
-      if engine_builder.is_a?(EngineBuilder) 
+      if engine_builder != nil &&  engine_builder.is_a?(EngineBuilder) 
           @last_error = engine_builder.last_error
       end
       @last_error= @last_error.to_s + ":Exception:" + e.to_s + ":" + e.backtrace.to_s
