@@ -58,7 +58,7 @@ class DockerApi
           end
      if  result[:stdout].include?("Status: Image is up to date for " + image_name) == true
            @last_error = "No Change"
-          return false
+          return true
          else
            @last_error = result[:stderr]
          end
