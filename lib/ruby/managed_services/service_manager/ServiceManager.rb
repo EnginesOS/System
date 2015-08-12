@@ -150,6 +150,7 @@ class ServiceManager
 #@return false
 def delete_service service_hash
   clear_last_error
+  
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
     return false
@@ -286,7 +287,7 @@ end
   def remove_from_managed_service(service_hash)
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
-    if service == nil
+    if service == nil || service == false
       log_error_mesg("Failed to load service to remove + " + @core_api.last_error,service_hash)
       return false
     end
@@ -332,7 +333,7 @@ def remove_service service_hash
  def remove_orphaned_service(service_query_hash)
    clear_last_error
    service_hash = retrieve_orphan(service_query_hash)
-   if service_hash == nil
+   if service_hash == nil || service_hash == false
      log_error_mesg("failed to retrieve orphan service:" +  @last_error,service_hash)
               return false
    end
@@ -347,7 +348,7 @@ def remove_service service_hash
   #Calls on service on the service_container to add the service associated by the hash
   #@return result boolean
   #@param service_hash [Hash]
-  def add_to_managed_service(service_hash)
+  def add_to_managed_service(service_query_hash)
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
@@ -615,6 +616,7 @@ end
 #  test_registry_result(@system_registry.reparent_orphan(params))
 # end
 
+ private
  
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
