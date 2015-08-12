@@ -20,7 +20,7 @@ class ManagedContainer < Container
     @databases = databases
     @setState = setState
     @port = port
-    @repo = repo
+    @repository = repo
     @last_error = last_error
     @memory = mem
     @container_name = name
@@ -51,8 +51,10 @@ class ManagedContainer < Container
      #if has no / then local image
      # return false 
      #
-    if image.include?("/")
-     return @core_api.pull_image(image_name)
+    if @repository != nil
+     return @core_api.pull_image(@repository + "/" +image)
+    elsif image.include?("/")
+      return @core_api.pull_image(image)
     end
     return false     
    end
@@ -62,9 +64,7 @@ class ManagedContainer < Container
       @container_id = set_container_id
       if @container_id == false || @container_id == nil
         @container_id == "-1"
-      end
-   
-    p @container_id
+      end      
     return @container_id
   end
 
@@ -72,7 +72,7 @@ class ManagedContainer < Container
   :runtime,\
   :databases,\
   :port,\
-  :repo,\
+  :repository,\
   :data_uid,\
   :data_gid,\
   :cont_userid,\

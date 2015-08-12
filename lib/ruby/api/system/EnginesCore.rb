@@ -1036,7 +1036,9 @@ end
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
-        @docker_api.pull_image(container.image)
+        if container. != nil
+          @docker_api.pull_image(container.image)
+        end
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)
         end
