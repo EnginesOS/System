@@ -80,8 +80,8 @@ class SystemRegistry
   end
 
   #
-  def orphanate_service(service_hash)
-    test_result(send_request("orphanate_service",service_hash))
+  def orphanate_service(service_query_hash)
+    test_result(send_request("orphanate_service",service_query_hash))
   end
 
   #
