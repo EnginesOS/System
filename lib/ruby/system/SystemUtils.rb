@@ -245,10 +245,8 @@ def SystemUtils.execute_command(cmd)
     service_hash[:service_container_name]='dns'  
     service_hash[:parent_engine]=engine.container_name
     service_hash[:container_type]=engine.ctype
-    service_hash[:service_handle]=service_hash[:variables][:name]
-    service_hash[:container_type]=engine.ctype
-          
-    service_hash[:variables] = Hash.new
+    service_hash[:service_handle] =engine.container_name
+    service_hash[:variables] = Hash.new    
     service_hash[:variables][:parent_engine]= engine.container_name
 
     if engine.ctype == "service"
@@ -282,7 +280,7 @@ def SystemUtils.execute_command(cmd)
     #    p proto
 
     service_hash = Hash.new()
-    service_hash[:variables] = Hash.new
+
     service_hash[:persistant] = false
     service_hash[:service_container_name]='nginx'
     service_hash[:type_path] = 'nginx'
@@ -290,7 +288,7 @@ def SystemUtils.execute_command(cmd)
     service_hash[:service_handle] =  engine.fqdn          
     service_hash[:parent_engine]=engine.container_name
     service_hash[:container_type]=engine.ctype
-      
+    service_hash[:variables] = Hash.new 
     service_hash[:variables][:parent_engine]=engine.container_name
     service_hash[:variables][:name]=engine.container_name  
     service_hash[:variables][:fqdn]=engine.fqdn
