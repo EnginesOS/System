@@ -166,7 +166,7 @@ def process_templated_string(template)
        if @builder_public.engine_environment != nil && @builder_public.engine_environment.count >0
           template = apply_engines_variables(template)
        else
-         SystemUtils.log_error_mesg("nil or empty engines variables " + template,@builder_public.engine_environment)
+         SystemUtils.log_error_mesg("nil or empty engines variables " + template.to_s,@builder_public.engine_environment.to_s)
       end
     end
    
