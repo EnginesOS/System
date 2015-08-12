@@ -302,7 +302,7 @@ def SystemUtils.execute_command(cmd)
   end
   
   def SystemUtils.cgroup_mem_dir(container_id_str)
-    return "/sys/fs/cgroup/systemd/system.slice/docker-" + container_id_str + "/scope"         
+    return "/sys/fs/cgroup/systemd/system.slice/docker-" + container_id_str + ".scope"         
   end
   
 def SystemUtils.service_hash_variables_as_str(service_hash)
