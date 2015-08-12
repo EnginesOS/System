@@ -82,7 +82,10 @@ class SysConfig
   @@engines_ssh_private_keyfile="/home/engines/.ssh/sshaccess"
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
-  
+  @@EnginesSystemUpdatedFlag="/opt/engines/run/system/flags/update_engines_run"
+  def SysConfig.EnginesSystemUpdatedFlag
+    return   @@EnginesSystemUpdatedFlag
+  end
   def SysConfig.RegistryPort
     return @@RegistryPort
   end

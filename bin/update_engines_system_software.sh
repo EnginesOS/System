@@ -1,9 +1,13 @@
 #!/bin/sh
 
-sudo /opt/engines/scripts/_update_engines_system_software.sh
+date >> /var/log/engines/engines_system_updates.log
 
-eservice stop mgmt
+sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/engines_system_updates.log
 
-eservice start mgmt
+/opt/engines/bin/eservice stop mgmt
+
+/opt/engines/eservice start mgmt
+
+touch /opt/engines/run/system/flags/update_engines_run
 
 /opt/engines/bin/follow_start.sh

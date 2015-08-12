@@ -714,13 +714,9 @@ class EnginesOSapi
      rescue Exception=>e
        return EnginesOSapi.log_exception_and_fail("LoadMangedService",e)
      end
-     
-  EnginesOSapi
    
-    def getManagedService(service_name)
-   
-       managed_service = @core_api.loadManagedService(service_name)
-       
+    def getManagedService(service_name)   
+       managed_service = @core_api.loadManagedService(service_name)       
          if managed_service == nil
           return failed(service_name,"Fail to Load configuration:","Load Service")
        end
