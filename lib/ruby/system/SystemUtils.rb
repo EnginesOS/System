@@ -241,6 +241,8 @@ def SystemUtils.execute_command(cmd)
 
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:type_path] = 'dns'
+    service_hash[:persistance] = false
+    service_hash[:service_container_name]='dns'  
     service_hash[:parent_engine]=engine.container_name
     service_hash[:container_type]=engine.ctype
     service_hash[:variables] = Hash.new
@@ -279,6 +281,8 @@ def SystemUtils.execute_command(cmd)
 
     service_hash = Hash.new()
     service_hash[:variables] = Hash.new
+    service_hash[:persistance] = false
+    service_hash[:service_container_name]='nginx'
     service_hash[:parent_engine]=engine.container_name
     service_hash[:variables][:parent_engine]=engine.container_name
     service_hash[:variables][:name]=engine.container_name
