@@ -359,9 +359,14 @@ class EnginesCore
   end
 
   def force_registry_restart
-    
+    #start in thread in case timeout clobbers
+  restart_thread = Thread.new {    
     registry_service.stop_container
     registry_service.start_container
+  }
+  
+    restart_thread.join
+    
     while registry_service.is_startup_complete? == false
       sleep 1
       wait=wait+1
