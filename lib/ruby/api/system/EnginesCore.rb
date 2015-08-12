@@ -1036,9 +1036,7 @@ end
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
-        if container. != nil
-          @docker_api.pull_image(container.image)
-        end
+         @docker_api.pull_image(container.image) #only pulls if has repo and not local image       
         if  @docker_api.create_container(container) == true
           return @system_api.create_container(container)
         end
