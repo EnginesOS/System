@@ -456,11 +456,6 @@ class EngineBuilder
       env_file.close
 
       setup_framework_logging
-
-      #      log_build_output("Creating db Services")
-      #      @blueprint_reader.databases.each() do |db|
-      #        create_database_service db
-      #      end
       
       base_image_name = read_base_image_from_dockerfile()
       if base_image_name == nil
