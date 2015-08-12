@@ -36,8 +36,8 @@ class ManagedService < ManagedContainer
   def get_service_hash(service_hash)
     
     if service_hash.is_a?(Hash) == false
-      log_error_mesg("Get service hash on ",service_hash)
-      service_hash = create_service_hash(service_hash)
+      log_error_mesg("Get service hash  recevied a " + service_hash.class.name,service_hash.to_s)
+      service_hash = create_service_hash(service_hash) #WTF
     end
     return service_hash
  end
@@ -48,8 +48,7 @@ class ManagedService < ManagedContainer
   
     service_hash = get_service_hash(object)
     if service_hash == nil
-      log_error_mesg("add consumer passed nil service_hash ","")
-      p "nil site hash"
+      log_error_mesg("add consumer passed nil service_hash ","")     
       return false
     end
     service_hash[:persistant] =@persistant

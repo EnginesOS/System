@@ -241,10 +241,13 @@ def SystemUtils.execute_command(cmd)
 
     service_hash[:publisher_namespace] = "EnginesSystem"
     service_hash[:type_path] = 'dns'
-    service_hash[:persistance] = false
+    service_hash[:persistant] = false
     service_hash[:service_container_name]='dns'  
     service_hash[:parent_engine]=engine.container_name
     service_hash[:container_type]=engine.ctype
+    service_hash[:service_handle]=service_hash[:variables][:name]
+    service_hash[:container_type]=engine.ctype
+          
     service_hash[:variables] = Hash.new
     service_hash[:variables][:parent_engine]= engine.container_name
 
@@ -254,9 +257,8 @@ def SystemUtils.execute_command(cmd)
       service_hash[:variables][:hostname]=engine.container_name
     end
     service_hash[:variables][:name]=service_hash[:variables][:hostname]
-    service_hash[:container_type]=engine.ctype
     service_hash[:variables][:ip]=engine.get_ip_str.to_s
-    service_hash[:service_handle]=service_hash[:variables][:name]
+
     p :created_dns_service_hash
     p service_hash
     return service_hash
@@ -281,18 +283,20 @@ def SystemUtils.execute_command(cmd)
 
     service_hash = Hash.new()
     service_hash[:variables] = Hash.new
-    service_hash[:persistance] = false
+    service_hash[:persistant] = false
     service_hash[:service_container_name]='nginx'
+    service_hash[:type_path] = 'nginx'
+    service_hash[:publisher_namespace] = "EnginesSystem"
+    service_hash[:service_handle] =  engine.fqdn          
     service_hash[:parent_engine]=engine.container_name
-    service_hash[:variables][:parent_engine]=engine.container_name
-    service_hash[:variables][:name]=engine.container_name
-    service_hash[:service_handle] =  engine.fqdn
     service_hash[:container_type]=engine.ctype
+      
+    service_hash[:variables][:parent_engine]=engine.container_name
+    service_hash[:variables][:name]=engine.container_name  
     service_hash[:variables][:fqdn]=engine.fqdn
     service_hash[:variables][:port]=engine.port.to_s
     service_hash[:variables][:proto]= proto
-    service_hash[:type_path] = 'nginx'
-    service_hash[:publisher_namespace] = "EnginesSystem"
+
     SystemUtils.debug_output("create nginx Hash",service_hash)
     return service_hash
 
