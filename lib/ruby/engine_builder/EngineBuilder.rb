@@ -461,7 +461,23 @@ class EngineBuilder
       #      @blueprint_reader.databases.each() do |db|
       #        create_database_service db
       #      end
-
+      
+      base_image_name = read_base_image_from_dockerfile()
+      if base_image_name == nil
+        p :From_image_not_found_inD
+        log_build_errors("Failed to Read Image from Dockerfile")
+                @last_error =  " " + tail_of_build_log
+                post_failed_build_clean_up
+                return false
+      end
+      
+     if @core_api.pull_image(base_image_name) == false
+       log_build_errors("Failed Pull Image DockerHub")
+                       @last_error =  " " + tail_of_build_log
+                       post_failed_build_clean_up
+                       return false
+     end  
+      
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
@@ -1028,6 +1044,18 @@ end
       return true
     end
 
+  end
+
+  def read_base_image_from_dockerfile
+     
+     dockerfile = File.open(get_basedir + "/Dockerfile",'r')
+     
+     from_line= dockerfile.gets
+     from_parts=from_line.split(":")
+     return from_parts[1]
+    rescue Exception=>e
+    log_build_errors(e)
+    return nil
   end
 
   def get_basedir
