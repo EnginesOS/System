@@ -41,7 +41,8 @@ class EngineBuilder
   :http_protocol,
   :blueprint,
   :first_build,
-  :memory
+  :memory,
+  :result_mesg
   
   attr_accessor :app_is_persistant
   
@@ -62,7 +63,7 @@ class EngineBuilder
       #fixme
       @engine_public = nil
       
-      
+    @result_mesg="Aborted Due to Errors"
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -126,7 +127,7 @@ class EngineBuilder
 
   def close_all
     if @log_file.closed? == false
-      log_build_output("Build Result:Comming Soon")   
+      log_build_output("Build Result:"+@result_mesg)   
       log_build_output("Build Finished")      
       @log_file.close()
     end
@@ -173,7 +174,7 @@ class EngineBuilder
     @err_file.puts(line)
     @err_file.flush
     log_build_output("ERROR:" + line)
-
+    @result_mesg="Aborted Due to:" + line
     #    @error_pipe_wr.puts(line)
   end
 
@@ -497,7 +498,7 @@ class EngineBuilder
            return false
         end
       end
-      
+       @result_mesg="Build Successful"
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
       @core_api.save_build_report(mc,build_report)
@@ -526,6 +527,7 @@ class EngineBuilder
   
   if mc.is_running? == false
     log_build_output("Engine Stopped")
+    @result_mesg="Engine Stopped!"
   end
   
       
@@ -554,6 +556,7 @@ class EngineBuilder
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
     end
+    @result_mesg= @result_mesg.to_s + " Roll Back Complete"
     close_all
   end
 
