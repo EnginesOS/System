@@ -1042,12 +1042,12 @@ end
   end
 
   def read_base_image_from_dockerfile
-     
+   #FROM  engines/php:_Engines_System(release)
      dockerfile = File.open(get_basedir + "/Dockerfile",'r')
      
      from_line= dockerfile.gets
-     from_parts=from_line.split(":")
-     return from_parts[1]
+     from_part=from_line.gsub(/FROM[ ].*/,"")
+     return from_part
     rescue Exception=>e
     log_build_errors(e)
     return nil
