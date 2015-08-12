@@ -44,6 +44,16 @@ class EnginesOSapi
     return FirstRunWizard.required?
   end
   
+  def has_updated?
+    if File.exists?(SysConfig.EnginesSystemUpdatedFlag)
+      File.delete(SysConfig.EnginesSystemUpdatedFlag)
+      return true
+    end
+    return false
+  end
+  
+  
+  
   ##Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
