@@ -6,7 +6,6 @@ class EnginesCore
   require "/opt/engines/lib/ruby/system/SysConfig.rb"
   require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
   require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
-  require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
   require "/opt/engines/lib/ruby/ManagedServices.rb"
   require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
   
