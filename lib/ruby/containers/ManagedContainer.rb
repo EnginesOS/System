@@ -629,10 +629,11 @@ p @last_result
   end
 
   def has_container?
-    if read_state == "nocontainer"
-      return false
-    end
-    return true
+#    if read_state == "nocontainer"
+#      return false
+#    end
+#    return true
+    return @core_api.image_exist?(image)
   end
 
   def is_error?
