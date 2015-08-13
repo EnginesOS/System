@@ -1,4 +1,4 @@
-class EnginesCore
+
 
   require "/opt/engines/lib/ruby/system/SysConfig.rb"
   require "/opt/engines/lib/ruby/system/SystemUtils.rb"
@@ -18,7 +18,7 @@ class EnginesCore
   
   require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
 
- 
+class EnginesCore
 
   
   require_relative 'DockerApi.rb'
