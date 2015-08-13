@@ -68,7 +68,7 @@ class DockerApi
    end
    
   def image_exist?(image_name)
-    image_name.gusb!(/:$/,"")
+    image_name.gsub!(/:$/,"")
     cmd= "docker images -q " + image_name
       
          result = SystemUtils.execute_command(cmd)
