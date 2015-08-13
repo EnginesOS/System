@@ -4,3 +4,5 @@ apt-get -y update
 apt-get -y upgrade 
 apt-get -y upgrade lxc-docker
 apt-get -y autoremove
+sudo apt-get clean
+

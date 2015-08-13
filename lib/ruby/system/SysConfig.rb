@@ -83,6 +83,12 @@ class SysConfig
   @@generate_ssh_private_keyfile="/opt/engines/bin/new_engines_user_key.sh"
   @@SMTPHost="smtp.engines.internal"
   @@EnginesSystemUpdatedFlag="/opt/engines/run/system/flags/update_engines_run"
+  @@EnginesSystemRebootNeededFlag="/opt/engines/run/system/flags/reboot_required"
+  
+  def SysConfig.EnginesSystemRebootNeededFlag
+    return @@EnginesSystemRebootNeededFlag
+  end
+  
   def SysConfig.EnginesSystemUpdatedFlag
     return   @@EnginesSystemUpdatedFlag
   end
