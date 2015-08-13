@@ -26,8 +26,8 @@ class SysConfig
 
   @@timeZone_fileMapping=" -v /etc/localtime:/etc/localtime:ro "
 
-  @@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/add_backup.sh "
-  @@rmBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/rm_backup.sh "
+  #@@addBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/add_backup.sh "
+  #@@rmBackupCmd = "ssh -i  /opt/engines/etc/keys/backup   -o UserKnownHostsFile=/dev/null -o \"StrictHostKeyChecking no\"   rma@backup.engines.internal sudo sh /home/rm_backup.sh "
 
   @@SystemLogRoot ="/var/log/engines/"
 
@@ -59,10 +59,10 @@ class SysConfig
 #  @@DNSZoneDir="/opt/engines/etc/dns/config/zones/"
 #  @@DNSConfDir="/opt/engines/etc/dns/config/conf/"
  # @@HostedDomainsFile="/opt/engines/etc/hosted_domains"
-  @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
+#  @@DNSHostedList="/opt/engines/etc/dns/config/conf/domains.hosted"
 
   #Cron
-  @@CronDir = "/opt/engines/etc/cron/tabs"
+#  @@CronDir = "/opt/engines/etc/cron/tabs"
 
   @@PreStartScript="/home/engines/scripts/pre-runnning.sh"
   @@InstallScript="/home/engines/scripts/custom_install.sh"
@@ -73,7 +73,8 @@ class SysConfig
   @@CustomApacheConfFile="/home/engines/configs/apache2/extra.conf"
 
   #service Manager
-  @@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
+ 
+  #@@ServiceTreeFile = "/opt/engines/run/service_manager/services.yaml"
   @@ServiceMapTemplateDir="/opt/engines/etc/services/mapping/"
   @@ServiceTemplateDir="/opt/engines/etc/services/providers/"
   @@SetupParamsScript="/bin/bash /home/setup_params.sh"
@@ -177,17 +178,17 @@ class SysConfig
     return @@ServiceMapTemplateDir
   end
 
-  def SysConfig.ServiceTreeFile
-    return @@ServiceTreeFile
-  end
+#  def SysConfig.ServiceTreeFile
+#    return @@ServiceTreeFile
+#  end
 
   def SysConfig.ServiceTemplateDir
     return @@ServiceTemplateDir
   end
-
-  def SysConfig.CronDir
-    return @@CronDir
-  end
+#
+#  def SysConfig.CronDir
+#    return @@CronDir
+#  end
 
   def SysConfig.DomainsFile
     return @@DomainsFile
@@ -197,53 +198,53 @@ class SysConfig
     return @@FirstRunRan
   end
 
-  def SysConfig.DNSHostedList
-    return @@DNSHostedList
-  end
+#  def SysConfig.DNSHostedList
+#    return @@DNSHostedList
+#  end
+#
+#  def SysConfig.NginxPIDFile
+#    return @@NamedPIDFile
+#  end
 
-  def SysConfig.NginxPIDFile
-    return @@NamedPIDFile
-  end
+#  def SysConfig.NamedPIDFile
+#    return @@NamedPIDFile
+#  end
+#
+#  def SysConfig.DNSConfDir
+#    return @@DNSConfDir
+#  end
+#
+#  def SysConfig.DNSZoneDir
+#    return @@DNSZoneDir
+#  end
+#
+#  def SysConfig.SelfHostedDNStemplate
+#    return @@SelfHostedDNStemplate
+#  end
 
-  def SysConfig.NamedPIDFile
-    return @@NamedPIDFile
-  end
+#  def SysConfig.NginxDefaultCert
+#    return @@NginxDefaultCert
+#  end
+#
+#  def SysConfig.NginxCertDir
+#    return @@NginxCertDir
+#  end
+#
+#  def SysConfig.NginxSiteDir
+#    return @@NginxSiteDir
+#  end
 
-  def SysConfig.DNSConfDir
-    return @@DNSConfDir
-  end
-
-  def SysConfig.DNSZoneDir
-    return @@DNSZoneDir
-  end
-
-  def SysConfig.SelfHostedDNStemplate
-    return @@SelfHostedDNStemplate
-  end
-
-  def SysConfig.NginxDefaultCert
-    return @@NginxDefaultCert
-  end
-
-  def SysConfig.NginxCertDir
-    return @@NginxCertDir
-  end
-
-  def SysConfig.NginxSiteDir
-    return @@NginxSiteDir
-  end
-
-  def SysConfig.HttpNginxTemplate
-    return @@HttpNginxTemplate
-  end
-
-  def SysConfig.HttpsNginxTemplate
-    return @@HttpsNginxTemplate
-  end
-
-  def SysConfig.HttpHttpsNginxTemplate
-    return @@HttpHttpsNginxTemplate
-  end
+#  def SysConfig.HttpNginxTemplate
+#    return @@HttpNginxTemplate
+#  end
+#
+#  def SysConfig.HttpsNginxTemplate
+#    return @@HttpsNginxTemplate
+#  end
+#
+#  def SysConfig.HttpHttpsNginxTemplate
+#    return @@HttpHttpsNginxTemplate
+#  end
 
 #  def SysConfig.HostedDomainsFile
 #    return @@HostedDomainsFile
@@ -253,13 +254,13 @@ class SysConfig
     return @@SystemLogRoot
   end
 
-  def SysConfig.addBackupCmd
-    return @@addBackupCmd
-  end
-
-  def SysConfig.rmBackupCmd
-    return @@rmBackupCmd
-  end
+#  def SysConfig.addBackupCmd
+#    return @@addBackupCmd
+#  end
+#
+#  def SysConfig.rmBackupCmd
+#    return @@rmBackupCmd
+#  end
 
   def SysConfig.timeZone_fileMapping
     return @@timeZone_fileMapping
@@ -273,9 +274,9 @@ class SysConfig
     return @@internalDomain
   end
 
-  def SysConfig.ddnsKey
-    return @@ddnsKey
-  end
+#  def SysConfig.ddnsKey
+#    return @@ddnsKey
+#  end
 
   def SysConfig.galleriesDir
     return @@galleriesDir
@@ -305,21 +306,21 @@ class SysConfig
     return @@DeploymentTemplates
   end
 
-  def SysConfig.addSiteCmd
-    return @@addSiteCmd
-  end
-
-  def SysConfig.rmSiteCmd
-    return @@rmSiteCmd
-  end
-
-  def SysConfig.addSiteMonitorCmd
-    return @@addSiteMonitorCmd
-  end
-
-  def SysConfig.rmSiteMonitorCmd
-    return @@rmSiteMonitorCmd
-  end
+#  def SysConfig.addSiteCmd
+#    return @@addSiteCmd
+#  end
+#
+#  def SysConfig.rmSiteCmd
+#    return @@rmSiteCmd
+#  end
+#
+#  def SysConfig.addSiteMonitorCmd
+#    return @@addSiteMonitorCmd
+#  end
+#
+#  def SysConfig.rmSiteMonitorCmd
+#    return @@rmSiteMonitorCmd
+#  end
 
   def SysConfig.CidDir
     return @@CidDir
