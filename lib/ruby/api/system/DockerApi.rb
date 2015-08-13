@@ -2,8 +2,7 @@ class DockerApi
    attr_reader :last_error
    def create_container container
      clear_error
-     begin
-       
+     begin       
        commandargs = container_commandline_args(container)
        commandargs = "docker run  -d " + commandargs
        SystemUtils.debug_output("create cont",commandargs)
@@ -221,78 +220,7 @@ class DockerApi
      return  execute_docker_cmd(run_args,container)
    end
    
-#   def run_docker (args,container)
-#     clear_error
-#     require 'open3'
-#     SystemUtils.debug_output("Run docker",args)
-#     res = String.new
-#     error_mesg = String.new
-#     begin
-#       container.last_result=(  "")
-#       Open3.popen3("docker " + args ) do |stdin, stdout, stderr, th|
-#         oline = String.new
-#         stderr_is_open=true
-#         begin
-#           stdout.each do |line|
-#             line = line.gsub(/\\\"/,"")
-#             oline = line
-#             res += line.chop  #
-#             if stderr_is_open
-#               error_mesg += stderr.read_nonblock(256)
-#             end
-#           end
-#           
-#         rescue Errno::EIO
-#           res += oline.chop
-#           SystemUtils.debug_output("read stderr",oline)
-#           error_mesg += stderr.read_nonblock(256)
-#         rescue  IO::WaitReadable
-#           retry
-#         rescue EOFError
-#           if stdout.closed? == false
-#             stderr_is_open = false
-#             retry
-#           elsif stderr.closed? == false
-#             error_mesg += stderr.read_nonblock(1000)
-#             container.last_result=(  res)
-#             container.last_error=( error_mesgs)
-#           else
-#             container.last_result=(  res)
-#             container.last_error=( error_mesgs)
-#           end
-#         end
-#         @last_error=error_mesg
-#         if error_mesg.include?("Error")
-#           container.last_error=(error_mesg)
-#
-#           return false
-#         else
-#           container.last_error=("")
-#         end
-#         #
-#         #          if res.start_with?("[") == true
-#         #            res = res +"]"
-#         #          end
-#         if res != nil && res.end_with?(']') == false
-#           res+=']'
-#         end
-#
-#         container.last_result=(res)
-#         if th.value != 0
-#           return false
-#         end
-#         return true
-#       end
-#     rescue Exception=>e
-#       @last_error=error_mesg + e.to_s
-#       container.last_result=(res)
-#       container.last_error=(error_mesg + e.to_s)
-#       SystemUtils.log_exception(e)
-#       return false
-#     end
-#
-#     return true
-#   end
+
 
    def get_environment_options(container)
      e_option =String.new

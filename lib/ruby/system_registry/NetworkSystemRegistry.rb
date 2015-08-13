@@ -97,6 +97,9 @@ def process_first_chunk(mesg_data)
     if response_hash[:object] != nil
       response_hash[:object] = YAML::load(response_hash[:object])    
     end
+    if response_hash.has_key?(:last_error) == true
+      @last_error=response_hash[:last_error]
+    end
 
     return response_hash
     

@@ -112,6 +112,10 @@ class EnginesCore
     return @system_api.get_build_report(engine_name)
   end
   
+  def needs_reboot?
+    return File.exist?(SysConfig.EnginesSystemRebootNeededFlag)
+  end
+  
   def restart_system 
     return test_system_api_result(@system_api.restart_system)
   end
