@@ -1,6 +1,6 @@
 
 require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
-
+require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
 require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
 
 #require "/opt/engines/lib/ruby/managed_services/system_services/DNSService.rb"
