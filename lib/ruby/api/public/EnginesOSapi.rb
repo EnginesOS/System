@@ -6,21 +6,9 @@ require 'objspace'
 require_relative "EnginesOSapiResult.rb"
 require_relative "FirstRunWizard.rb"
 
-#
-#require_relative "services_api.rb"
-#include ServicesApi
-#
-#require_relative "engines_api.rb"
-#include EnginesApi
-#
-#require_relative "build_api.rb"
-#include BuildApi
 
 class EnginesOSapi
   require_relative "BuildController.rb"
-#  
-#  require_relative "services_module.rb"
-#  include ServicesModule
 
   require_relative "engines_api_version.rb"
   include EngOSapiVersion

@@ -1,6 +1,6 @@
 --- !ruby/object:SystemService
 container_name: registry
-ctype: service
+ctype: system_service
 persistant: false
 publisher_namespace: EnginesSystem
 type_path: registry

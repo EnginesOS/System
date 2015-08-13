@@ -52,10 +52,10 @@ class EnginesCore
     sm = loadServiceManager()
     return check_sm_result(sm.update_attached_service(params))
   end 
-  def add_domain(params)
-    clear_error
-    return  test_system_api_result(@system_api.add_domain(params))
-  end
+#  def add_domain(params)
+#    clear_error
+#    return  test_system_api_result(@system_api.add_domain(params))
+#  end
 
   def remove_domain(params)
     clear_error
