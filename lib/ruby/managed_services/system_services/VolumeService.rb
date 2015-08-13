@@ -1,4 +1,4 @@
-require_relative  "../ManagedService.rb"
+#require_relative  "../ManagedService.rb"
 
 class VolumeService < ManagedService
   def add_consumer_to_service(service_hash)
