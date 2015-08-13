@@ -56,7 +56,7 @@ class FirstRunWizard
   def get_domain_params(params)
     domain_hash = Hash.new()
  
-    domain_hash[:default_domain]=params[:default_domain]
+ #   domain_hash[:default_domain]=params[:default_domain] breaks gui latter
     domain_hash[:domain_name]=params[:default_domain]
     domain_hash[:self_hosted] = params[:default_domain_self_hosted]
     domain_hash[:internal_only] = params[:default_domain_internal_only]

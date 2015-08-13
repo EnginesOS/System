@@ -41,7 +41,8 @@ class EngineBuilder
   :http_protocol,
   :blueprint,
   :first_build,
-  :memory
+  :memory,
+  :result_mesg
   
   attr_accessor :app_is_persistant
   
@@ -62,7 +63,7 @@ class EngineBuilder
       #fixme
       @engine_public = nil
       
-      
+    @result_mesg="Aborted Due to Errors"
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
       if @container_name == nil || @container_name == ""
@@ -126,7 +127,7 @@ class EngineBuilder
 
   def close_all
     if @log_file.closed? == false
-      log_build_output("Build Result:Comming Soon")   
+      log_build_output("Build Result:"+@result_mesg)   
       log_build_output("Build Finished")      
       @log_file.close()
     end
@@ -173,7 +174,7 @@ class EngineBuilder
     @err_file.puts(line)
     @err_file.flush
     log_build_output("ERROR:" + line)
-
+    @result_mesg="Aborted Due to:" + line
     #    @error_pipe_wr.puts(line)
   end
 
@@ -456,12 +457,23 @@ class EngineBuilder
       env_file.close
 
       setup_framework_logging
-
-      #      log_build_output("Creating db Services")
-      #      @blueprint_reader.databases.each() do |db|
-      #        create_database_service db
-      #      end
-
+      
+      base_image_name = read_base_image_from_dockerfile()
+      if base_image_name == nil
+        p :From_image_not_found_inD
+        log_build_errors("Failed to Read Image from Dockerfile")
+                @last_error =  " " + tail_of_build_log
+                post_failed_build_clean_up
+                return false
+      end
+      
+     if @core_api.pull_image(base_image_name) == false
+       log_build_errors("Failed Pull Image:" +base_image_name + " from  DockerHub")
+                       @last_error =  " " + tail_of_build_log
+                       post_failed_build_clean_up
+                       return false
+     end  
+      
       if  build_init == false
         log_build_errors("Error Build Image failed")
         @last_error =  " " + tail_of_build_log
@@ -486,7 +498,7 @@ class EngineBuilder
            return false
         end
       end
-      
+       @result_mesg="Build Successful"
       log_build_output("Build Successful")
       build_report = generate_build_report(@blueprint)
       @core_api.save_build_report(mc,build_report)
@@ -515,6 +527,7 @@ class EngineBuilder
   
   if mc.is_running? == false
     log_build_output("Engine Stopped")
+    @result_mesg="Engine Stopped!"
   end
   
       
@@ -543,6 +556,7 @@ class EngineBuilder
         @core_api.dettach_service(service_hash) #true is delete persistant
       end
     end
+    @result_mesg= @result_mesg.to_s + " Roll Back Complete"
     close_all
   end
 
@@ -1028,6 +1042,20 @@ end
       return true
     end
 
+  end
+
+  def read_base_image_from_dockerfile
+   #FROM  engines/php:_Engines_System(release)
+     dockerfile = File.open(get_basedir + "/Dockerfile",'r')
+     
+     from_line= dockerfile.gets("\n",100)
+     from_part=from_line.gsub(/FROM[ ]./,"")
+     p from_line
+     p from_part
+     return from_part
+    rescue Exception=>e
+    log_build_errors(e)
+    return nil
   end
 
   def get_basedir

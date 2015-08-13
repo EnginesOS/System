@@ -4,12 +4,11 @@ module ServicesModule
       service =getManagedService(service_name)
       if service == nil
         return  failed(service_name,service.last_error,"Create Service")
-      end
-  
+      end 
       if service.is_a?(EnginesOSapiResult)
         return service
-      end
-  
+      end  
+      
       retval =   service.create_service()
       if retval == false
         return failed(service_name,service.last_error,"Create Service")
@@ -23,8 +22,7 @@ module ServicesModule
       service =getManagedService(service_name)
       if service == nil
         return failed(service_name,"No Such Service","Recreate Service")
-      end
-  
+      end  
       if service.is_a?(EnginesOSapiResult)
         return service
       end
@@ -89,9 +87,7 @@ module ServicesModule
   #@returns [EnginesOSapiResult]
   #expects a service_hash as @params
   def attach_service(params)
-    if params.has_key?(:service_handle) == false
-      params[:service_handle] = params[:variables][:name]
-    end
+
     if  @core_api.attach_service(params) == true
       success(params[:parent_engine],"attach service")
     else
@@ -417,7 +413,7 @@ module ServicesModule
              return log_exception_and_fail("set_engine_hostname_details ",e)
     end
  
-    def get_managed_service_details_for(service_function)
+    def get_managed_service_details_for(service_function) #WTF
       service = Hash.new
       if service_function == "http_router"        
         service[:provider_namespace] = "EnginesSystem"

@@ -35,23 +35,23 @@ class EnginesCore
   end 
   def add_domain(params)
     clear_error
-    return  @system_api.add_domain(params)
+    return  test_system_api_result(@system_api.add_domain(params))
   end
 
   def remove_domain(params)
     clear_error
-    return @system_api.rm_domain(params[:domain_name],@system_api)
+    return test_system_api_result(@system_api.rm_domain(params[:domain_name],@system_api))
   end
 
   def update_domain(old_domain,params)
     clear_error
-    return @system_api.update_domain(old_domain,params,@system_api)
+    return test_system_api_result(@system_api.update_domain(old_domain,params,@system_api))
   end
 
   def signal_service_process(pid,sig,name)
     clear_error
     container = loadManagedService(name)
-    return @docker_api.signal_container_process(pid,sig,container)
+    return test_docker_api_result(@docker_api.signal_container_process(pid,sig,container))
   end
 
   def start_container(container)
@@ -59,34 +59,34 @@ class EnginesCore
     if container.dependant_on.is_a?(Array)
         start_dependancies(container)
     end
-    return  @docker_api.start_container(container)
+    return  test_docker_api_result(@docker_api.start_container(container))
   end
 
   def inspect_container(container)
     clear_error
-    return  @docker_api.inspect_container(container)
+    return  test_docker_api_result(@docker_api.inspect_container(container))
   end
 
   def stop_container(container)
     clear_error
-    return @docker_api.stop_container(container)
+    return test_docker_api_result(@docker_api.stop_container(container))
   end
 
   def pause_container(container)
     clear_error
-    return  @docker_api.pause_container(container)
+    return  test_docker_api_result(@docker_api.pause_container(container))
   end
 
   def  unpause_container(container)
-    return   @docker_api.unpause_container(container)
+    return   test_docker_api_result(@docker_api.unpause_container(container))
   end
 
   def  ps_container(container)
-    return  @docker_api.ps_container(container)
+    return  test_docker_api_result(@docker_api.ps_container(container))
   end
 
   def  logs_container(container)
-    return  @docker_api.logs_container(container)
+    return  test_docker_api_result(@docker_api.logs_container(container))
   end
 
   def get_build_report(engine_name)
@@ -94,36 +94,36 @@ class EnginesCore
   end
   
   def restart_system 
-    return @system_api.restart_system
+    return test_system_api_result(@system_api.restart_system)
   end
   def update_engines_system_software
-    @system_api.update_engines_system_software
+    test_system_api_result(@system_api.update_engines_system_software)
   end 
   def update_system    
-    @system_api.update_system
+    test_system_api_result(@system_api.update_system)
   end
   def save_build_report(container,build_report)
-    return @system_api.save_build_report(container,build_report)
+    return test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
   def save_container(container)
-    return @system_api.save_container(container)
+    return test_system_api_result(@system_api.save_container(container))
   end
 
   def save_blueprint(blueprint,container)
-    return @system_api.save_blueprint(blueprint,container)
+    return test_system_api_result(@system_api.save_blueprint(blueprint,container))
   end
 
   def load_blueprint(container)
-    return @system_api.load_blueprint(container)
+    return test_system_api_result(@system_api.load_blueprint(container))
   end
 
   def add_volume(site_hash)
-    return @system_api.add_volume(site_hash)
+    return test_system_api_result(@system_api.add_volume(site_hash))
   end
 
   def rm_volume(site_hash)
-    return @system_api.rm_volume(site_hash)
+    return test_system_api_result(@system_api.rm_volume(site_hash))
   end
 #
 #  def remove_self_hosted_domain(domain_name)
@@ -143,7 +143,7 @@ class EnginesCore
 #  end
 
   def get_container_memory_stats(container)
-    return @system_api.get_container_memory_stats(container)
+    return test_system_api_result(@system_api.get_container_memory_stats(container))
   end
 
   #  def set_engine_hostname_details(container,params)
@@ -152,7 +152,7 @@ class EnginesCore
 
   def image_exists?(container_name)
     imageName = container_name
-    return @docker_api.image_exists?(imageName)
+    return test_docker_api_result(@docker_api.image_exists?(imageName))
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
@@ -377,7 +377,7 @@ class EnginesCore
   
   def force_registry_recreate
     
-    registry_service = @system_api.loadSystemService("registry")
+    registry_service = test_system_api_result(@system_api.loadSystemService("registry"))
     
     if registry_service.forced_recreate == false
            @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
@@ -387,7 +387,7 @@ class EnginesCore
   end
   
   def get_registry_ip
-    registry_service = @system_api.loadSystemService("registry")
+    registry_service = test_system_api_result(@system_api.loadSystemService("registry"))
     case registry_service.read_state
     when "nocontainer"
       registry_service.create_service
@@ -784,30 +784,43 @@ end
       return false
   end
   
- #@returns [Boolena]
+  def test_docker_api_result(result)
+    if result == nil || result == false
+      @last_error =  @docker_api.last_error
+    end
+    return result
+  end
+  
+def test_system_api_result(result)
+  if result == nil || result == false
+    @last_error =  @system_api.last_error
+  end
+  return result
+end
+ #@returns [Boolean]
  # whether pulled or no false if no new image 
- def pull_image 
-    return @docker_api.pull_image(image_name)   
+ def pull_image (image_name)  
+    return test_docker_api_result(@docker_api.pull_image(image_name))  
   end
   
   def set_engine_network_properties (engine, params)
-    return @system_api.set_engine_network_properties(engine,params)
+    return test_system_api_result(@system_api.set_engine_network_properties(engine,params))
   end
 
   def get_system_load_info
-    return @system_api.get_system_load_info
+    return test_system_api_result(@system_api.get_system_load_info)
   end
 
   def get_system_memory_info
-    return @system_api.get_system_memory_info
+    return test_system_api_result(@system_api.get_system_memory_info)
   end
 
   def getManagedEngines
-    return @system_api.getManagedEngines
+    return test_system_api_result(@system_api.getManagedEngines)
   end
 
   def loadManagedEngine(engine_name)
-    return @system_api.loadManagedEngine(engine_name)
+    return test_system_api_result(@system_api.loadManagedEngine(engine_name))
   end
 
   def get_orphaned_services_tree
@@ -815,46 +828,46 @@ end
   end
 
   def loadManagedService(service_name)
-    return @system_api.loadManagedService(service_name)
+    return test_system_api_result(@system_api.loadManagedService(service_name))
   end
 
   
   def getManagedServices
-    return @system_api.getManagedServices
+    return test_system_api_result(@system_api.getManagedServices)
   end
 
    def add_domain(params)
-     return @system_api.add_domain(params)
+     return test_system_api_result(@system_api.add_domain(params))
    end
 def update_domain(params)
-  return @system_api.update_domain(params)
+  return test_system_api_result(@system_api.update_domain(params))
 end 
  def remove_domain(params)
-   return @system_api.remove_domain(params)
+   return test_system_api_result(@system_api.remove_domain(params))
  end 
  
   def list_domains
-    return @system_api.list_domains
+    return test_system_api_result(@system_api.list_domains)
   end
 
   def list_managed_engines
-    return @system_api.list_managed_engines
+    return test_system_api_result(@system_api.list_managed_engines)
   end
 
   def list_managed_services
-    return @system_api.list_managed_services
+    return test_system_api_result(@system_api.list_managed_services)
   end
 
   def destroy_container(container)
     clear_error
     begin
       if container.has_container? == true
-        ret_val = @docker_api.destroy_container(container)
+        ret_val = test_docker_api_result(@docker_api.destroy_container(container))
       else
         retval = true
       end
       if ret_val == true
-        ret_val = @system_api.destroy_container(container)  #removes cid file
+        ret_val = test_docker_api_result(@system_api.destroy_container(container))  #removes cid file
       end
 
       return ret_val
@@ -869,31 +882,31 @@ end
   end
 
   def generate_engines_user_ssh_key
-    return @system_api.regen_system_ssh_key
+    return test_system_api_result(@system_api.regen_system_ssh_key)
   end
   def update_public_key(key)
-    return @system_api.update_public_key(key)
+    return test_system_api_result(@system_api.update_public_key(key))
   end
 def generate_engines_user_ssh_key
-  return @system_api.generate_engines_user_ssh_key
+  return test_system_api_result(@system_api.generate_engines_user_ssh_key)
 end
 
   def system_update
-    return @system_api.system_update
+    return test_system_api_result(@system_api.system_update)
   end
 
   def delete_image(container)
     begin
       clear_error
 
-      if @docker_api.delete_image(container) == true
+      if test_docker_api_result(@docker_api.delete_image(container)) == true
         #only delete if del all otherwise backup
-        return  @system_api.delete_container_configs(container)
+        return  test_system_api_result(@system_api.delete_container_configs(container))
       end
 
       #NO Image well delete the rest
-      if @docker_api.image_exists?(container.image) == false
-        return  @system_api.delete_container_configs(container)
+      if test_docker_api_result(@docker_api.image_exists?(container.image)) == false
+        return test_system_api_result( @system_api.delete_container_configs(container))
       end
 
       return false
@@ -1031,14 +1044,14 @@ end
         container.last_error="Failed To create container exists by the same name"
         return false
       end
-      if @system_api.clear_cid_file(container) != false
-        @system_api.clear_container_var_run(container)
+      if test_system_api_result(@system_api.clear_cid_file(container)) != false
+        test_system_api_result(@system_api.clear_container_var_run(container))
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
-         @docker_api.pull_image(container.image) #only pulls if has repo and not local image       
-        if  @docker_api.create_container(container) == true
-          return @system_api.create_container(container)
+        test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image       
+        if  test_docker_api_result(@docker_api.create_container(container)) == true
+          return test_system_api_result(@system_api.create_container(container))
         end
       else
         return false
@@ -1068,7 +1081,7 @@ def load_and_attach_shared_services(container)
   end
 
   def get_container_services_dir(container)
-    return @system_api.container_state_dir(container) +"/services/"
+    return test_system_api_result(@system_api.container_state_dir(container)) +"/services/"
   end
 
   #install from fresh copy of blueprint in repository
@@ -1148,7 +1161,7 @@ def load_and_attach_shared_services(container)
   def is_startup_complete container
     clear_error
     begin
-      return @system_api.is_startup_complete(container)
+      return test_system_api_result(@system_api.is_startup_complete(container))
     rescue  Exception=>e
       SystemUtils.log_exception(e)
       return false
@@ -1187,7 +1200,7 @@ def deregister_non_persistant_service(service_hash)
   end
 
   def clean_up_dangling_images
-    @docker_api.clean_up_dangling_images
+    test_docker_api_result(@docker_api.clean_up_dangling_images)
   end
 
   #@ return [Boolean] indicating sucess

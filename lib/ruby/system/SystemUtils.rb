@@ -262,6 +262,7 @@ def SystemUtils.execute_command(cmd)
     return service_hash
   end
 
+  
   #@return [Hash] completed nginx service_hash for engine on for the default website configured for
   #@param engine [ManagedContainer]
   def SystemUtils.create_nginx_service_hash(engine)
@@ -300,6 +301,9 @@ def SystemUtils.execute_command(cmd)
 
   end
   
+  def SystemUtils.cgroup_mem_dir(container_id_str)
+    return "/sys/fs/cgroup/memory/system.slice/docker-" + container_id_str + ".scope"         
+  end
   
 def SystemUtils.service_hash_variables_as_str(service_hash)
    argument = String.new
