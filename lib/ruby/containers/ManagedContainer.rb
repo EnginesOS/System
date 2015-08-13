@@ -623,19 +623,24 @@ p @last_result
 
   def is_startup_complete?
     return false  if has_api? == false
-
     ret_val = @core_api.is_startup_complete(self)
     return ret_val
   end
 
   def has_container?
-#    if read_state == "nocontainer"
-#      return false
-#    end
-#    return true
-    return @core_api.image_exist?(image)
+    if has_image? == false
+      return false
+    end
+    if read_state == "nocontainer"
+      return false
+    end
+    return true
   end
-
+  
+def has_image?
+  return @core_api.image_exist?(image)
+end
+  
   def is_error?
     state = read_state
     if @setState != state
