@@ -182,9 +182,6 @@ class ManagedContainer < Container
 
   def read_state()
 
-    #    p :read_state
-    # p   caller_locations(1,1)[0].label
-   
     begin
       inspect_container
       if inspect_container == false

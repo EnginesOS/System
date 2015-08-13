@@ -1138,6 +1138,9 @@ def load_and_attach_shared_services(container)
     end
   end
 
+  def image_exist?(image_name)
+    test_docker_api_result(@docker_api.image_exist?(image_name))  
+  end
   #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin

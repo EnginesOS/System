@@ -67,6 +67,28 @@ class DockerApi
                  return false
    end
    
+  def image_exist?(image_name)
+    image_name.gusb!(/:$/,"")
+    cmd= "docker images -q " + image_name
+      
+         result = SystemUtils.execute_command(cmd)
+         if  result[:result] != 0
+           @last_error = result[:stderr]
+                      return false
+         end
+    if  result[:stdout].size()>2
+          @last_error = ""
+         return true
+        else
+          @last_error = result[:stderr]
+        end
+
+         rescue  Exception=>e
+                SystemUtils.log_exception(e)
+                return false
+  end
+   
+   
    def   image_exists? (image_name)
      cmd= "docker images -q " + image_name
      SystemUtils.debug_output( "image_exists",cmd)
