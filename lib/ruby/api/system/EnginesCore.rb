@@ -1063,7 +1063,7 @@ end
   def create_container(container)
     clear_error
     begin
-      ifcontainer.ctype != "system_service" && container.has_container? == true
+      if container.ctype != "system_service" && container.has_container? == true
         container.last_error="Failed To create container exists by the same name"
         return false
       end
