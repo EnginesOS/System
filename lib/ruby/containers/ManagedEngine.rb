@@ -1,8 +1,5 @@
-
-
 class ManagedEngine < ManagedContainer
-
-  
+ 
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid,deployment_type)
                             
                  @last_error="None"                 

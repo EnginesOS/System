@@ -1,8 +1,8 @@
-require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
-require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
-require "/opt/engines/lib/ruby/ManagedServices.rb"
-require "/opt/engines/lib/ruby/system/SysConfig.rb"
+#require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+#require "/opt/engines/lib/ruby/containers/ManagedContainerObjects.rb"
+#require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
+#require "/opt/engines/lib/ruby/ManagedServices.rb"
+#require "/opt/engines/lib/ruby/system/SysConfig.rb"
 require "rubygems"
 require "git"
 require 'fileutils'

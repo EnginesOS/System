@@ -14,7 +14,7 @@ docker stop registry
 docker start registry
 sleep 15
 
-/opt/engines/eservice start mgmt
+/opt/engines/bin/eservice start mgmt
 
 touch /opt/engines/run/system/flags/update_engines_run
 

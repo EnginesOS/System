@@ -546,6 +546,8 @@ class SystemApi
       # managed_service = YAML::load( yaml_file)
       managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
       if managed_service == nil
+        p :load_managed_servic_failed
+        log_error("load_managed_servic_failed loading:" + yam1_file_name.to_s + " service name: " + service_name.to_s )
         return false # return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
       end
 
@@ -553,7 +555,7 @@ class SystemApi
     rescue Exception=>e
       if service_name != nil
         if managed_service !=nil
-          managed_service.last_error=( "Failed To get Managed Engine " +  service_name + " " + e.to_s)
+          managed_service.last_error=( "Failed To get Managed Engine " +  service_name.to_s + " " + e.to_s)
           log_error(managed_service.last_error)
         end
       else
@@ -658,9 +660,8 @@ class SystemApi
     return SysConfig.RunDir + "/"  + container.ctype + "s/" + container.container_name
   end
 
-  def system_update
-
-    res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh")
+  def system_update_status
+    res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/deb_update_status engines@172.17.42.1 /opt/engines/bin/deb_update_status.sh")
   end
 
   def restart_system
@@ -676,7 +677,6 @@ class SystemApi
   end
 
   def  update_system
-
     res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh") }
     #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     if res.status == "run"
