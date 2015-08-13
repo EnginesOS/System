@@ -3,14 +3,23 @@ class EnginesCore
   require "/opt/engines/lib/ruby/system/SysConfig.rb"
   require "/opt/engines/lib/ruby/system/SystemUtils.rb"
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
+  
   require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
-  require "/opt/engines/lib/ruby/managed_services/ManagedEngine.rb"
+  require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
+  
   require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
-  require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
-  require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
-  require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
-  require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
   require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
+  
+  require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
+  
+  require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
+  
+  require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
+  
+  require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
+
+ 
+
   
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'
