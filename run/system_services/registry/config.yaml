@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:SystemService
 container_name: registry
 ctype: service
 persistant: false

@@ -2,7 +2,7 @@ require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
 require 'objspace'
 
 class ManagedService < ManagedContainer
-  @ctype="service"
+  @ctype="system_service"
 #  @consumers=Hash.new
   @conf_register_site=false
   def ctype
@@ -206,13 +206,7 @@ class ManagedService < ManagedContainer
     return @core_api.loadServiceManager()
   end
   
-  def  forced_recreate #move elsewhere are this is registry service only
-    unpause_container
-    stop_container
-    destroy_container
-    
-    return create_container  #start as engine/container or will end up in a loop getting configurations and consumers  
-  end
+  
   
   def create_service()
 #    if Dir.exists?("/opt/engines/ssh/keys/services/" + container_name) == false    || Dir.exists?("/opt/engines/run/services/" + container_name + "/run")
