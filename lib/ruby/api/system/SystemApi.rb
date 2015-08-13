@@ -555,7 +555,7 @@ class SystemApi
     rescue Exception=>e
       if service_name != nil
         if managed_service !=nil
-          managed_service.last_error=( "Failed To get Managed Engine " +  service_name + " " + e.to_s)
+          managed_service.last_error=( "Failed To get Managed Engine " +  service_name.to_s + " " + e.to_s)
           log_error(managed_service.last_error)
         end
       else
