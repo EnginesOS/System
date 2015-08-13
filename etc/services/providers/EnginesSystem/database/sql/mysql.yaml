@@ -10,7 +10,7 @@ description: "MYSQL Database "
 publisher_namespace: EnginesSystem
 type_path: database/sql/mysql
 service_container: mysql_server
-immutable: true
+immutable: false
 attach_post_build: false
 attach_requires_restart: false
 dedicated: false

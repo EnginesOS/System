@@ -10,6 +10,7 @@ description: "Resolves names to to IP address"
 type_path: dns
 service_container: dns
 publisher_namespace: EnginesSystem
+immutable: false
 dedicated: false
 persistant: false
 service_handle_field: hostname
@@ -29,6 +30,7 @@ consumer_params:
   mandatory: true
   value: " "
   comment: " "
+  immutable: true
  ip:
   name: ip
   label: IP Address
@@ -40,6 +42,7 @@ consumer_params:
   mandatory: true
   value: " "
   comment: " "
+  immutable: true
 system_consumer_params:
  self_host:
   label: "Self Hosted Domains"
