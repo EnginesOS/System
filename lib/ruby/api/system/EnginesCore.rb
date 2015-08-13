@@ -5,11 +5,11 @@
   require "/opt/engines/lib/ruby/system/DNSHosting.rb"
   
   require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
+require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
   require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
   
-  require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
 
+  require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
   
   require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
   
