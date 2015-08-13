@@ -1049,7 +1049,7 @@ end
      dockerfile = File.open(get_basedir + "/Dockerfile",'r')
      
      from_line= dockerfile.gets("\n",100)
-     from_part=from_line.gsub(/FROM[ ].*/,"")
+     from_part=from_line.gsub(/FROM[ ]./,"")
      p from_line
      p from_part
      return from_part
