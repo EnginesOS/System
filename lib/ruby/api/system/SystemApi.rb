@@ -205,6 +205,10 @@ class SystemApi
       container.last_error = last_error
 
       stateDir = container_state_dir(container)
+      if Dir.exist?(stateDir) == false
+        FileUtils.mkdir_p(stateDir)
+      end
+        
 
       statefile=stateDir + "/running.yaml"
       # BACKUP Current file with rename
