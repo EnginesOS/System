@@ -12,7 +12,7 @@ service_container: volmanager
 publisher_namespace: EnginesSystem
 persistant: true
 dedicated: false
-immutable: true
+immutable: false
 attach_post_build: true
 attach_requires_restart: true
 service_handle_field: name
@@ -20,6 +20,7 @@ setup_params:
 consumer_params:
  name:
   name: name
+  immutable: true
   label: service tag name
   regex_validator: ".*"
   tooltip: "service tag name"
@@ -31,6 +32,7 @@ consumer_params:
   comment: " "
   regex_invalid_message: "wrong go back and try again"
  volume_src:
+  immutable: true
   name: volume_src
   label: volume src path
   regex_validator: ".*"
@@ -42,6 +44,7 @@ consumer_params:
   value: " "
   comment: " "
  permissions:
+  immutable: false
   name: permissions
   label: permissions
   regex_validator: ".*"
@@ -58,6 +61,7 @@ consumer_params:
     "ro"
   comment: " "
  engine_path:
+  immutable: false
   name: engine_path
   label: engine_path
   regex_validator: ".*"
