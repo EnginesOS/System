@@ -1067,15 +1067,14 @@ end
         container.last_error="Failed To create container exists by the same name"
         return false
       end
-      if test_system_api_result(@system_api.clear_cid_file(container)) != false
+       test_system_api_result(@system_api.clear_cid_file(container)) 
         test_system_api_result(@system_api.clear_container_var_run(container))
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
         test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image       
         if  test_docker_api_result(@docker_api.create_container(container)) == true
-          return test_system_api_result(@system_api.create_container(container))
-        end
+          return test_system_api_result(@system_api.create_container(container))        
       else
         return false
       end
