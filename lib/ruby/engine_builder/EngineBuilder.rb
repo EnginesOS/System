@@ -1050,8 +1050,7 @@ end
      
      from_line= dockerfile.gets("\n",100)
      from_part=from_line.gsub(/FROM[ ]./,"")
-     p from_line
-     p from_part
+    from_part.strip!
      return from_part
     rescue Exception=>e
     log_build_errors(e)
