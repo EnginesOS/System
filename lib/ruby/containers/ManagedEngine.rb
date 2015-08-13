@@ -1,4 +1,4 @@
-require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+
 
 class ManagedEngine < ManagedContainer
 

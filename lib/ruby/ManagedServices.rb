@@ -1,8 +1,10 @@
 
 require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
-require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
-require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
 
+require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
 #require "/opt/engines/lib/ruby/managed_services/system_services/DNSService.rb"
 require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
 #require "/opt/engines/lib/ruby/managed_services/system_services/NginxService.rb"
