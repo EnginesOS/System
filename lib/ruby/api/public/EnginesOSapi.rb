@@ -24,7 +24,9 @@ class EnginesOSapi
     e_str = SystemUtils.log_exception(e)
     return failed("Exception",e_str,cmd)
   end
-
+  def needs_reboot?
+    @core_api.needs_reboot?
+  end
   def first_run_required?
     return FirstRunWizard.required?
   end
