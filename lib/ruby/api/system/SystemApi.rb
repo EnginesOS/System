@@ -546,6 +546,8 @@ class SystemApi
       # managed_service = YAML::load( yaml_file)
       managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
       if managed_service == nil
+        p :load_managed_servic_failed
+        log_error("load_managed_servic_failed loading:" + yam1_file_name.to_s + " service name: " + service_name.to_s )
         return false # return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
       end
 
