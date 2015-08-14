@@ -42,14 +42,14 @@ class EnginesOSapi
      return File.exists?(SysConfig.EnginesSystemUpdatingFlag)
    end
    
-  def system_has_updated?
+  def base_system_has_updated?
      if File.exists?(SysConfig.SystemUpdatedFlag)
        File.delete(SysConfig.SystemUpdatedFlag)
        return true
      end
      return false
    end
-   def is_system_updating?
+   def is_base_system_updating?
       return File.exists?(SysConfig.SystemUpdatingFlag)     
    end
   
