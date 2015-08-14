@@ -67,29 +67,31 @@ class DockerApi
                  return false
    end
    
-  def image_exist?(image_name)
-    image_name.gsub!(/:.*$/,"")
-    cmd= "docker images -q " + image_name
-      
-         result = SystemUtils.execute_command(cmd)
-         if  result[:result] != 0
-           @last_error = result[:stderr]
-                      return false
-         end
-    if  result[:stdout].size()>2
-          @last_error = ""
-         return true
-        else
-          @last_error = result[:stderr]
-        end
-
-         rescue  Exception=>e
-                SystemUtils.log_exception(e)
-                return false
-  end
-   
-   
-   def   image_exists? (image_name)
+#  def image_exist?(image_name)
+#    image_name.gsub!(/:.*$/,"")
+#    cmd= "docker images -q " + image_name
+#      
+#         result = SystemUtils.execute_command(cmd)
+#         if  result[:result] != 0
+#           @last_error = result[:stderr]
+#                      return false
+#         end
+#    if  result[:stdout].size()>2
+#          @last_error = ""
+#         return true
+#        else
+#          @last_error = result[:stderr]
+#        end
+#
+#         rescue  Exception=>e
+#                SystemUtils.log_exception(e)
+#                return false
+#  end
+#   
+#   
+   def   image_exist? (imagename)
+     
+     image_name = imagename.gsub(/:.*$/,"")
      cmd= "docker images -q " + image_name
      SystemUtils.debug_output( "image_exists",cmd)
      result = SystemUtils.execute_command(cmd)
@@ -206,7 +208,7 @@ class DockerApi
        if execute_docker_cmd(commandargs,container) != true
 
          log_error_mesg(container.last_error,container)
-         if image_exists?(container.image) == true
+         if image_exist?(container.image) == true
           return false
          end
        end

@@ -173,9 +173,9 @@ class EnginesCore
   #    return @system_api.set_engine_hostname_details(container,params)
   #  end
 
-  def image_exists?(container_name)
+  def image_exist?(container_name)
     imageName = container_name
-    return test_docker_api_result(@docker_api.image_exists?(imageName))
+    return test_docker_api_result(@docker_api.image_exist?(imageName))
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
@@ -928,7 +928,7 @@ end
       end
 
       #NO Image well delete the rest
-      if test_docker_api_result(@docker_api.image_exists?(container.image)) == false
+      if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
         return test_system_api_result( @system_api.delete_container_configs(container))
       end
 
@@ -1137,9 +1137,9 @@ def load_and_attach_shared_services(container)
     end
   end
 
-  def image_exist?(image_name)
-    test_docker_api_result(@docker_api.image_exist?(image_name))  
-  end
+#  def image_exist?(image_name)
+#    test_docker_api_result(@docker_api.image_exist?(image_name))  
+#  end
   #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
