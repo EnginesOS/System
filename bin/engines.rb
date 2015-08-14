@@ -255,7 +255,7 @@ end
     if c_type == "container"
       eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
     state = engines_api.read_state(eng)
     if eng.setState != state
