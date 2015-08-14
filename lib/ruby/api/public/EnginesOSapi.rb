@@ -31,13 +31,29 @@ class EnginesOSapi
     return FirstRunWizard.required?
   end
   
-  def has_updated?
+  def engine_has_updated?
     if File.exists?(SysConfig.EnginesSystemUpdatedFlag)
       File.delete(SysConfig.EnginesSystemUpdatedFlag)
       return true
     end
     return false
   end
+  def is_engines_updating?
+     return File.exists?(SysConfig.EnginesSystemUpdatingFlag)
+   end
+   
+  def system_has_updated?
+     if File.exists?(SysConfig.SystemUpdatedFlag)
+       File.delete(SysConfig.SystemUpdatedFlag)
+       return true
+     end
+     return false
+   end
+   def is_system_updating?
+      return File.exists?(SysConfig.SystemUpdatingFlag)     
+   end
+  
+  
   
   
   
