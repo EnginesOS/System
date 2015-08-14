@@ -1,18 +1,16 @@
 require_relative 'NetworkSystemRegistry.rb'
 
 class SystemRegistry
-  attr_accessor :network_registry,
-  :last_error
+  attr_accessor  :last_error
+  
   def initialize(core_api)
-
     @network_registry = NetworkSystemRegistry.new( core_api)
-
   end
 
   def test_result(request_result_hash)
    clear_error
     if request_result_hash == nil ||  request_result_hash == false
-      @last_error = @network_registry.last_error
+      @last_error = @network_registry.last_error      
         return request_result_hash
     end
     if request_result_hash[:result]=="OK"
@@ -134,7 +132,6 @@ class SystemRegistry
   
   def  list_providers_in_use
     res = send_request("list_providers_in_use",nil)
-    p 
     p res.to_s
     test_result(send_request("list_providers_in_use",nil))
   end
@@ -166,14 +163,14 @@ class SystemRegistry
   end
 
   def clear_error
-    @last_error = nil
+    @last_error = ""
   end
   
   private
 
   def send_request(command,params)
     request_result = @network_registry.send_request(command,params)
-    @last_error = network_registry.last_error
+    @last_error = @network_registry.last_error
     return request_result
   end
 end
