@@ -9,6 +9,6 @@ variables:
  db_flavor: "mysql2"
  collation: "utf8_general_ci"
  parent_engine: "_Engines_Builder(engine_name)"
-
+ full_access: grant
 
 

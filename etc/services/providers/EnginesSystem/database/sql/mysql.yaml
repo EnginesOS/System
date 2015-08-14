@@ -48,6 +48,7 @@ consumer_params:
   select_collection:
     - true
     - false
+    - grant
   placeholder: "true|false"
   mandatory: true
   value: false
