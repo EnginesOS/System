@@ -548,7 +548,11 @@ class SystemApi
 
       yaml_file = File.open(yam1_file_name)
       # managed_service = YAML::load( yaml_file)
-      managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
+      if service_type_dir == "/sytem_services/"
+        managed_service = SystemService.from_yaml(yaml_file,@engines_api)
+      else
+        managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
+      end
       if managed_service == nil
         p :load_managed_servic_failed
         log_error("load_managed_servic_failed loading:" + yam1_file_name.to_s + " service name: " + service_name.to_s )

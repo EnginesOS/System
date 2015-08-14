@@ -166,10 +166,10 @@ def update_attached_service(params)
    if remove_from_managed_service(params) == true
     return add_to_managed_service(params)
    else 
-     @last_error="Filed to remove " + @system_registry.last_error 
+     @last_error="Filed to remove " + @system_registry.last_error.to_s 
    end
  else
-   @last_error=@system_registry.last_error 
+   @last_error=@system_registry.last_error.to_s 
  end
  return false
  
@@ -288,7 +288,7 @@ end
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
-      log_error_mesg("Failed to load service to remove + " + @core_api.last_error,service_hash)
+      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
       return false
     end
 
@@ -336,11 +336,11 @@ def remove_service service_hash
    p service_query_hash
    service_hash = retrieve_orphan(service_query_hash)
    if service_hash == nil || service_hash == false
-     log_error_mesg("failed to retrieve orphan service:" +  @last_error,service_hash)
+     log_error_mesg("failed to retrieve orphan service:" +  @last_error.to_s,service_hash)
               return false
    end
       if remove_from_managed_service(service_hash) == false
-         log_error_mesg("failed to remove managed service:" +  @system_registry.last_error,service_hash)
+         log_error_mesg("failed to remove managed service:" +  @system_registry.last_error.to_s,service_hash)
          return false
        end
    return test_registry_result(@system_registry.release_orphan(service_hash))
@@ -354,7 +354,7 @@ def remove_service service_hash
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
-      log_error_mesg("Failed to load service to remove :" +  @system_registry.last_error,service_hash)
+      log_error_mesg("Failed to load service to remove :" +  @system_registry.last_error.to_s,service_hash)
       return false
     end
     if service.is_running? == false
@@ -363,7 +363,7 @@ def remove_service service_hash
     end
     result =  service.add_consumer_to_service(service_hash)
     if result == false
-      log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error + service.last_error)
+      log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error.to_s + ":" + service.last_error.to_s,service_hash)
     end
     return result
   end

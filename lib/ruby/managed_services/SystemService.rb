@@ -3,7 +3,8 @@
 #require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
 class SystemService < ManagedService
   
-  def  forced_recreate #move elsewhere are this is registry service only
+  def  forced_recreate 
+    
       unpause_container
       stop_container
       destroy_container
@@ -13,10 +14,13 @@ class SystemService < ManagedService
     
   def inspect_container
     return false  if has_api? == false
-
+   
     if @docker_info == nil || @docker_info == false
       @docker_info = @core_api.inspect_container(self)
       if  @docker_info == false
+        if has_image? == false
+             pull_image
+           end
         @core_api.create_container(self)  
         @docker_info = @core_api.inspect_container(self)
         if @docker_info == false

@@ -481,7 +481,7 @@ class EngineBuilder
         return false
       else
 
-        if @core_api.image_exists?(@container_name) == false
+        if @core_api.image_exist?(@container_name) == false
           p :image_not_found
           @last_error = " " + tail_of_build_log
           post_failed_build_clean_up

@@ -182,9 +182,6 @@ class ManagedContainer < Container
 
   def read_state()
 
-    #    p :read_state
-    # p   caller_locations(1,1)[0].label
-   
     begin
       inspect_container
       if inspect_container == false
@@ -626,18 +623,24 @@ p @last_result
 
   def is_startup_complete?
     return false  if has_api? == false
-
     ret_val = @core_api.is_startup_complete(self)
     return ret_val
   end
 
   def has_container?
+    if has_image? == false
+      return false
+    end
     if read_state == "nocontainer"
       return false
     end
     return true
   end
-
+  
+def has_image?
+  return @core_api.image_exist?(image)
+end
+  
   def is_error?
     state = read_state
     if @setState != state

@@ -173,9 +173,9 @@ class EnginesCore
   #    return @system_api.set_engine_hostname_details(container,params)
   #  end
 
-  def image_exists?(container_name)
+  def image_exist?(container_name)
     imageName = container_name
-    return test_docker_api_result(@docker_api.image_exists?(imageName))
+    return test_docker_api_result(@docker_api.image_exist?(imageName))
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
@@ -413,7 +413,7 @@ class EnginesCore
     registry_service = test_system_api_result(@system_api.loadSystemService("registry"))
     case registry_service.read_state
     when "nocontainer"
-      registry_service.create_service
+      registry_service.create_container
     when "paused"
       registry_service.unpause_container
     when "stopped"   
@@ -928,7 +928,7 @@ end
       end
 
       #NO Image well delete the rest
-      if test_docker_api_result(@docker_api.image_exists?(container.image)) == false
+      if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
         return test_system_api_result( @system_api.delete_container_configs(container))
       end
 
@@ -1063,19 +1063,18 @@ end
   def create_container(container)
     clear_error
     begin
-      if container.has_container? == true
+      if container.ctype != "system_service" && container.has_container? == true
         container.last_error="Failed To create container exists by the same name"
         return false
       end
-      if test_system_api_result(@system_api.clear_cid_file(container)) != false
+       test_system_api_result(@system_api.clear_cid_file(container)) 
         test_system_api_result(@system_api.clear_container_var_run(container))
         if container.dependant_on.is_a?(Array)
                 start_dependancies(container)
             end
         test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image       
         if  test_docker_api_result(@docker_api.create_container(container)) == true
-          return test_system_api_result(@system_api.create_container(container))
-        end
+          return test_system_api_result(@system_api.create_container(container))        
       else
         return false
       end
@@ -1138,6 +1137,9 @@ def load_and_attach_shared_services(container)
     end
   end
 
+#  def image_exist?(image_name)
+#    test_docker_api_result(@docker_api.image_exist?(image_name))  
+#  end
   #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
