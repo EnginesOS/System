@@ -621,7 +621,7 @@ class EnginesCore
           @last_error = "Service not running"
           return false
         end
-        if retval[:result] == 0
+        if retval[:result] == 0 || retval[:stderr].start_with?("Warning") == true
           if check_sm_result(sm.update_service_configuration(service_param)) == false                
                 p sm.last_error
                 @last_error = sm.last_error
