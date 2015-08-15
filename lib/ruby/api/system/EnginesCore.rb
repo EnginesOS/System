@@ -442,7 +442,11 @@ class EnginesCore
   
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
-    check_sm_result( sm.retrieve_orphan(service_hash) )
+    res =  check_sm_result( sm.retrieve_orphan(service_hash) )
+     if res != nil && res != false
+       return true
+     end
+     return false
   end
 
   #returns
