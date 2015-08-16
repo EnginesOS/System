@@ -154,6 +154,16 @@ def delete_service service_hash
   clear_last_error  
   p :delete_service
   p service_hash
+  
+  ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+  service_hash = @system_registry.find_engine_service_hash(service_hash)
+
+  
+   if service_hash == false
+     log_error_mesg("Failed to retrieve hash",service_hash)
+     return false
+   end
+   
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
     return false
@@ -292,18 +302,7 @@ end
     clear_last_error
     p :remove_from_managed_service
     p service_hash
-    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
-    service_hashes = @system_registry.find_engine_services_hashes(service_hash)
-    if service_hashes.is_a?(Array) == false || service_hashes.size ==0
-      log_error_mesg("Failed to retrieve hash",service_hash)
-            return false
-          end
-    service_hash = service_hashes[0]
-    
-     if service_hash == false
-       log_error_mesg("Failed to retrieve hash",service_hash)
-       return false
-     end
+
     service =  @core_api.load_software_service(service_hash)
     if service.is_a?(ManagedService) == false
       log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
