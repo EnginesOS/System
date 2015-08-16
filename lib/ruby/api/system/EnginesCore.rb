@@ -332,9 +332,9 @@ class EnginesCore
       return false
     end
   
-    if service_hash.has_key?(:container_type) == false
-      service_hash[:container_type] = container_type(container_name)
-    end
+#    if service_hash.has_key?(:container_type) == false
+#      service_hash[:container_type] = container_type(service_hash[:parent_engine])
+#    end set now by service manager
     sm = loadServiceManager()
     if sm.add_service(service_hash)
       return check_sm_result(sm.add_service(service_hash))
