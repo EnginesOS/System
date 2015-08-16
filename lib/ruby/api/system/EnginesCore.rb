@@ -994,16 +994,13 @@ end
   end
 
   def delete_image_dependancies(params)
-
     sm = loadServiceManager()
     params[:parent_engine] = params[:engine_name]
     if sm.rm_remove_engine(params) == false
       log_error_mesg("Failed to remove deleted Service",params)
       return false
     end
-
     return true
-
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
