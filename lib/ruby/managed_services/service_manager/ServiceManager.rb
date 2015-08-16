@@ -150,6 +150,8 @@ class ServiceManager
 #@return false
 def delete_service service_hash
   clear_last_error  
+  p :delete_service
+  p service_hash
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
     return false
@@ -291,12 +293,12 @@ end
       return false
     end
 
-    if service.is_running? == true || service.persistant == false
+    if service.persistant == false #service.is_running? == true ||  
       if service.rm_consumer_from_service(service_hash) == true
         p service_hash
         return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
-        @last_error= @system_registry.last_error
+        @last_error= "rm from managed_service_" +@system_registry.last_error
         p @last_error
         return false
       end
