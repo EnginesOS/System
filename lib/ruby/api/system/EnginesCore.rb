@@ -970,7 +970,6 @@ end
         return false
       end
       if service.remove_consumer(service_hash) == false
-
         log_error_mesg("Failed to remove service ",service_hash)
         return false
       end

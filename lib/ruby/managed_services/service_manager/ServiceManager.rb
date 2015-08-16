@@ -149,8 +149,7 @@ class ServiceManager
 #remove service matching the service_hash from both the managed_engine registry and the service registry
 #@return false
 def delete_service service_hash
-  clear_last_error
-  
+  clear_last_error  
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
     return false
@@ -311,22 +310,22 @@ end
   end
 
 
-def remove_service service_hash
-  clear_last_error
-   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
-     log_error_mesg("failed to remove from service registry",service_hash)
-     return false
-   end
-   SystemUtils.debug_output(  :remove_service, service_hash)
-   return true
-
- rescue Exception=>e
-   if service_hash != nil
-     p service_hash
-   end
-   log_exception(e)
-   return false
- end
+#def remove_service service_hash
+#  clear_last_error
+#   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
+#     log_error_mesg("failed to remove from service registry",service_hash)
+#     return false
+#   end
+#   SystemUtils.debug_output(  :remove_service, service_hash)
+#   return true
+#
+# rescue Exception=>e
+#   if service_hash != nil
+#     p service_hash
+#   end
+#   log_exception(e)
+#   return false
+# end
 
  #@ removes underly service and remove entry from orphaned services
  #@returns boolean indicating success
