@@ -64,6 +64,8 @@ class ServiceManager
         log_error_mesg("Failed to add service to managed service registry",service_hash)
         return false
       end
+    else
+      register_service_hash_with_service(service_hash)
     end
 
     return true
@@ -74,20 +76,7 @@ class ServiceManager
     return false
   end
 
-  def register_service_hash_with_service(service_hash)
-    clear_last_error
-    p :register_service_hash_with_service
-    p service_hash
-    if service_hash.has_key?(:service_container_name) == false
-      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
-    end
-    service = @core_api.loadManagedService( service_hash[:service_container_name])
-    if service != nil && service != false
-      return service.add_consumer_to_service(service_hash)
-    end
-    return false
-  end
-
+  
  
 
   #@returns boolean
@@ -624,7 +613,20 @@ def reparent_orphan(params)
  end
 
  private
- 
+def register_service_hash_with_service(service_hash)
+    clear_last_error
+    p :register_service_hash_with_service
+    p service_hash
+    if service_hash.has_key?(:service_container_name) == false
+      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
+    end
+    service = @core_api.loadManagedService( service_hash[:service_container_name])
+    if service != nil && service != false
+      return service.add_consumer_to_service(service_hash)
+    end
+    return false
+  end
+
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
