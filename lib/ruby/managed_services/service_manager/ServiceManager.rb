@@ -294,7 +294,7 @@ end
     p service_hash
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     service_hashes = @system_registry.find_engine_services_hashes(service_hash)
-    if service_hashes.is_a(Array) == false || service_hashes.size ==0
+    if service_hashes.is_a?(Array) == false || service_hashes.size ==0
       log_error_mesg("Failed to retrieve hash",service_hash)
             return false
           end
