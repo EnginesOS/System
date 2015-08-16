@@ -343,7 +343,7 @@ class EnginesCore
       log_error_mesg("Attached Service passed no variables",service_hash)
       return false
     end
-
+  
     sm = loadServiceManager()
     if sm.add_service(service_hash)
       return check_sm_result(sm.add_service(service_hash))

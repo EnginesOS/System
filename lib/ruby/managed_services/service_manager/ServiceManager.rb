@@ -368,7 +368,7 @@ end
      server_service =  software_service_definition(params)
      if server_service == nil || server_service == false
        log_error_mesg("Failed to load service definitions",params)
-       return nil
+       return false
      end
      return server_service[:service_container] 
    end
@@ -619,11 +619,16 @@ def register_service_hash_with_service(service_hash)
     p service_hash
     if service_hash.has_key?(:service_container_name) == false
       service_hash[:service_container_name] = get_software_service_container_name(service_hash)
+        if service_hash[:service_container_name] == false
+          log_error_mesg("no service_container_name ",service_hash)
+          return false
+        end
     end
     service = @core_api.loadManagedService( service_hash[:service_container_name])
     if service != nil && service != false
       return service.add_consumer_to_service(service_hash)
     end
+    log_error_mesg("no service_container_loaded  ",service_hash)
     return false
   end
 
