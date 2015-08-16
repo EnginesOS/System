@@ -836,7 +836,7 @@ class EngineBuilder
 
   def release_orphan(service_hash)
     sm = @core_api.loadServiceManager()
-    sm.release_orphan(service_hash)
+    sm.remove_orphaned_service(service_hash)
   end
 
   def tail_of_build_log
