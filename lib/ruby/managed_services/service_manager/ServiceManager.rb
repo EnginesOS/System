@@ -357,7 +357,7 @@ end
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
-      log_error_mesg("Failed to load service to remove :" +  @system_registry.last_error.to_s,service_hash)
+      log_error_mesg("Failed to load service to add :" +  @system_registry.last_error.to_s,service_hash)
       return false
     end
     if service.is_running? == false
@@ -642,7 +642,7 @@ def register_service_hash_with_service(service_hash)
   #@return none
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)    
-    @last_error = @last_error.to_s + ":" + msg +":" + obj_str
+    @last_error = @last_error.to_s + ":" + msg.to_s + ":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
   end
  
