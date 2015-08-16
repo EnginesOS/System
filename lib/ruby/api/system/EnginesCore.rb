@@ -83,8 +83,12 @@ class EnginesCore
 
   def inspect_container(container)
     clear_error
-    return  test_docker_api_result(@docker_api.inspect_container(container))
+    if  test_docker_api_result(@docker_api.image_exist?(container_name)) == true
+      return  test_docker_api_result(@docker_api.inspect_container(container))
+    end
+    return false
   end
+  
 
   def stop_container(container)
     clear_error
