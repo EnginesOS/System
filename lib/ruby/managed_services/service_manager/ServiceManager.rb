@@ -489,7 +489,7 @@ end
          service_hash[:service_handle] = container_name
        end
        
-       return service_hash
+      
      end
      
 service_hash[:service_container_name] = service_def[:service_container] 
@@ -501,7 +501,7 @@ service_hash[:service_container_name] = service_def[:service_container]
    service_hash[:variables] = Hash.new
  end
  service_hash[:variables][:parent_engine]=container_name
- 
+return service_hash
    end
    
 #test the result and carry last_error from @system_registry if result nil
