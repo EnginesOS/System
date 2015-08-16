@@ -52,7 +52,17 @@ class ServiceManager
     if service_hash[:variables].has_key?(:parent_engine) == false
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
-
+    
+    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    
+#    if service_hash.has_key?(:service_container_name) == false
+#      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
+#        if service_hash[:service_container_name] == false
+#          log_error_mesg("no service_container_name ",service_hash)
+#          return false
+#        end
+#    end
+    
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
 
     if is_service_persistant?(service_hash) == true
@@ -65,7 +75,8 @@ class ServiceManager
         return false
       end
     else
-      register_service_hash_with_service(service_hash)
+      add_to_managed_service(service_hash)
+      #register_service_hash_with_service(service_hash)
     end
 
     return true
@@ -445,7 +456,7 @@ end
      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
        handle_field_sym = service_def[:service_handle_field].to_sym
      end
- 
+    service_hash[:service_container_name] = service_def[:service_container] 
      service_hash[:persistant] = service_def[:persistant]
  
      service_hash[:parent_engine]=container_name
@@ -617,13 +628,7 @@ def register_service_hash_with_service(service_hash)
     clear_last_error
     p :register_service_hash_with_service
     p service_hash
-    if service_hash.has_key?(:service_container_name) == false
-      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
-        if service_hash[:service_container_name] == false
-          log_error_mesg("no service_container_name ",service_hash)
-          return false
-        end
-    end
+
     service = @core_api.loadManagedService( service_hash[:service_container_name])
     if service != nil && service != false
       return service.add_consumer_to_service(service_hash)
