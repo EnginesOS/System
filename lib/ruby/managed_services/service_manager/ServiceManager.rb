@@ -451,11 +451,15 @@ end
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
      if service_def  == nil
        SystemUtils.log_error_mesg("no service_def for",service_hash)
-       return nil
+       return false
      end
      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
        handle_field_sym = service_def[:service_handle_field].to_sym
-     end
+         else
+       SystemUtils.log_error_mesg("no service_handle for",service_hash)
+       return false
+      end 
+             
     service_hash[:service_container_name] = service_def[:service_container] 
      service_hash[:persistant] = service_def[:persistant]
  
