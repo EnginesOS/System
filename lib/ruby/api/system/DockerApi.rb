@@ -93,7 +93,7 @@ class DockerApi
      
      image_name = imagename.gsub(/:.*$/,"")
      cmd= "docker images -q " + image_name
-     SystemUtils.debug_output( "image_exists",cmd)
+     #SystemUtils.debug_output( "image_exists",cmd)
      result = SystemUtils.execute_command(cmd)
      if  result[:result] != 0
        @last_error = result[:stderr]
