@@ -462,23 +462,28 @@ end
        return false
       end 
              
-    service_hash[:service_container_name] = service_def[:service_container] 
-     service_hash[:persistant] = service_def[:persistant]
+
  
-     service_hash[:parent_engine]=container_name
- 
-     if service_hash.has_key?(:variables) == false
-       service_hash[:variables] = Hash.new
-     end
-     service_hash[:variables][:parent_engine]=container_name
- 
-     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil || service_hash[:service_handle] ==""
+     if service_hash.has_key?(:service_handle) == false\
+       || service_hash[:service_handle] == nil \
+       || service_hash[:service_handle] ==""
+         
        if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
          service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
        else
          service_hash[:service_handle] = container_name
        end
      end
+     
+service_hash[:service_container_name] = service_def[:service_container] 
+ service_hash[:persistant] = service_def[:persistant]
+
+ service_hash[:parent_engine]=container_name
+
+ if service_hash.has_key?(:variables) == false
+   service_hash[:variables] = Hash.new
+ end
+ service_hash[:variables][:parent_engine]=container_name
  
    end
    
