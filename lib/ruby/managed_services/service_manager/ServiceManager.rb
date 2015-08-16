@@ -165,6 +165,7 @@ def update_attached_service(params)
   clear_last_error
   p :update_attach_service_params
   p params
+  ServiceManager.set_top_level_service_params(params,params[:parent_engine])
  if test_registry_result(@system_registry.update_attached_service(params)) == true   
    if remove_from_managed_service(params) == true
     return add_to_managed_service(params)
