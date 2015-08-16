@@ -697,7 +697,7 @@ class SystemApi
 
   def update_engines_system_software
     SystemUtils.execute_command("sudo /opt/engines/scripts/_update_engines_system_software.sh ")
-    res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh") }
+    res = Thread.new { SystemUtils.execute_command("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh") }
     #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     if res.status == "run"
       return true
