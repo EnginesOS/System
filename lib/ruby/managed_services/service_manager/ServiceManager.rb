@@ -52,9 +52,11 @@ class ServiceManager
     if service_hash[:variables].has_key?(:parent_engine) == false
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
-    
+    p :pre_set_top_level
+      p service_hash
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
-    
+    p :post_set_top_level
+      p service_hash
 #    if service_hash.has_key?(:service_container_name) == false
 #      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
 #        if service_hash[:service_container_name] == false

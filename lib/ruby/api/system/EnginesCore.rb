@@ -325,25 +325,27 @@ class EnginesCore
       log_error_mesg("Attached Service passed a non Hash",service_hash)
       return false
     end
-
-    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
-      service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
-        if service_handle_field == nil || service_handle_field == ""
-          log_error_mesg("No service handle found",service_hash)
-          return false
-        end
-      service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
-    end
-
-    if service_hash.has_key?(:container_type) == false
-      service_hash[:container_type] = container_type(service_hash[:parent_engine])
-    end
+#
+#    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+#      service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
+#        if service_handle_field == nil || service_handle_field == ""
+#          log_error_mesg("No service handle found",service_hash)
+#          return false
+#        end
+#      service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
+#    end
+#
+#    if service_hash.has_key?(:container_type) == false
+#      service_hash[:container_type] = container_type(service_hash[:parent_engine])
+#    end
 
     if service_hash.has_key?(:variables) == false
       log_error_mesg("Attached Service passed no variables",service_hash)
       return false
     end
   
+    
+    
     sm = loadServiceManager()
     if sm.add_service(service_hash)
       return check_sm_result(sm.add_service(service_hash))
