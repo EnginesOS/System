@@ -52,7 +52,19 @@ class ServiceManager
     if service_hash[:variables].has_key?(:parent_engine) == false
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
     end
-
+    p :pre_set_top_level
+      p service_hash
+    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    p :post_set_top_level
+      p service_hash
+#    if service_hash.has_key?(:service_container_name) == false
+#      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
+#        if service_hash[:service_container_name] == false
+#          log_error_mesg("no service_container_name ",service_hash)
+#          return false
+#        end
+#    end
+    
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
 
     if is_service_persistant?(service_hash) == true
@@ -64,6 +76,9 @@ class ServiceManager
         log_error_mesg("Failed to add service to managed service registry",service_hash)
         return false
       end
+    else
+      add_to_managed_service(service_hash)
+      #register_service_hash_with_service(service_hash)
     end
 
     return true
@@ -74,20 +89,7 @@ class ServiceManager
     return false
   end
 
-  def register_service_hash_with_service(service_hash)
-    clear_last_error
-    p :register_service_hash_with_service
-    p service_hash
-    if service_hash.has_key?(:service_container_name) == false
-      service_hash[:service_container_name] = get_software_service_container_name(service_hash)
-    end
-    service = @core_api.loadManagedService( service_hash[:service_container_name])
-    if service != nil && service != false
-      return service.add_consumer_to_service(service_hash)
-    end
-    return false
-  end
-
+  
  
 
   #@returns boolean
@@ -149,19 +151,34 @@ class ServiceManager
 #remove service matching the service_hash from both the managed_engine registry and the service registry
 #@return false
 def delete_service service_hash
-  clear_last_error
+  clear_last_error  
+  p :delete_service
+  p service_hash
   
+  service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+  if service_hash == false
+     log_error_mesg("Failed to to set top level params hash",service_hash)
+     return false
+   end
+  service_hash = @system_registry.find_engine_service_hash(service_hash)
+ 
+   if service_hash == false
+     log_error_mesg("Failed to retrieve hash",service_hash)
+     return false
+   end
+   
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
     return false
   end
-  return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
+  return true #test_registry_result(@system_registry.remove_from_services_registry(service_hash))
 end
 
 def update_attached_service(params)
   clear_last_error
   p :update_attach_service_params
   p params
+  ServiceManager.set_top_level_service_params(params,params[:parent_engine])
  if test_registry_result(@system_registry.update_attached_service(params)) == true   
    if remove_from_managed_service(params) == true
     return add_to_managed_service(params)
@@ -195,7 +212,7 @@ end
            end
          end
        end
-   return test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
+   return true
   end
   
 #def find_engine_services(params)
@@ -286,9 +303,12 @@ end
   #remove persistant services only if service is up
   def remove_from_managed_service(service_hash)
     clear_last_error
+    p :remove_from_managed_service
+    p service_hash
+
     service =  @core_api.load_software_service(service_hash)
-    if service == nil || service == false
-      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
+    if service.is_a?(ManagedService) == false
+      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
       return false
     end
 
@@ -297,7 +317,7 @@ end
         p service_hash
         return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
-        @last_error= @system_registry.last_error
+        @last_error= "rm from managed_service_" +@system_registry.last_error
         p @last_error
         return false
       end
@@ -311,22 +331,22 @@ end
   end
 
 
-def remove_service service_hash
-  clear_last_error
-   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
-     log_error_mesg("failed to remove from service registry",service_hash)
-     return false
-   end
-   SystemUtils.debug_output(  :remove_service, service_hash)
-   return true
-
- rescue Exception=>e
-   if service_hash != nil
-     p service_hash
-   end
-   log_exception(e)
-   return false
- end
+#def remove_service service_hash
+#  clear_last_error
+#   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
+#     log_error_mesg("failed to remove from service registry",service_hash)
+#     return false
+#   end
+#   SystemUtils.debug_output(  :remove_service, service_hash)
+#   return true
+#
+# rescue Exception=>e
+#   if service_hash != nil
+#     p service_hash
+#   end
+#   log_exception(e)
+#   return false
+# end
 
  #@ removes underly service and remove entry from orphaned services
  #@returns boolean indicating success
@@ -339,10 +359,10 @@ def remove_service service_hash
      log_error_mesg("failed to retrieve orphan service:" +  @last_error.to_s,service_hash)
               return false
    end
-      if remove_from_managed_service(service_hash) == false
-         log_error_mesg("failed to remove managed service:" +  @system_registry.last_error.to_s,service_hash)
-         return false
-       end
+#      if remove_from_managed_service(service_hash) == false
+#         log_error_mesg("failed to remove managed service:" +  @system_registry.last_error.to_s,service_hash)
+#         return false
+#       end
    return test_registry_result(@system_registry.release_orphan(service_hash))
  end
 
@@ -354,7 +374,7 @@ def remove_service service_hash
     clear_last_error
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
-      log_error_mesg("Failed to load service to remove :" +  @system_registry.last_error.to_s,service_hash)
+      log_error_mesg("Failed to load service to add :" +  @system_registry.last_error.to_s,service_hash)
       return false
     end
     if service.is_running? == false
@@ -376,7 +396,7 @@ def remove_service service_hash
      server_service =  software_service_definition(params)
      if server_service == nil || server_service == false
        log_error_mesg("Failed to load service definitions",params)
-       return nil
+       return false
      end
      return server_service[:service_container] 
    end
@@ -448,29 +468,40 @@ def remove_service service_hash
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
      if service_def  == nil
        SystemUtils.log_error_mesg("no service_def for",service_hash)
-       return nil
+       return false
      end
      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
        handle_field_sym = service_def[:service_handle_field].to_sym
-     end
+         else
+       SystemUtils.log_error_mesg("no service_handle for",service_hash)
+       return false
+      end 
+             
+
  
-     service_hash[:persistant] = service_def[:persistant]
- 
-     service_hash[:parent_engine]=container_name
- 
-     if service_hash.has_key?(:variables) == false
-       service_hash[:variables] = Hash.new
-     end
-     service_hash[:variables][:parent_engine]=container_name
- 
-     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
+     if service_hash.has_key?(:service_handle) == false\
+       || service_hash[:service_handle] == nil \
+       || service_hash[:service_handle] ==""
+         
        if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
          service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
        else
          service_hash[:service_handle] = container_name
        end
+       
+      
      end
- 
+     
+service_hash[:service_container_name] = service_def[:service_container] 
+ service_hash[:persistant] = service_def[:persistant]
+
+ service_hash[:parent_engine]=container_name
+
+ if service_hash.has_key?(:variables) == false
+   service_hash[:variables] = Hash.new
+ end
+ service_hash[:variables][:parent_engine]=container_name
+return service_hash
    end
    
 #test the result and carry last_error from @system_registry if result nil
@@ -614,18 +645,32 @@ def rebirth_orphan(params)
   test_registry_result(@system_registry.rebirth_orphan(params))
 end
   
-#def reparent_orphan(params)      
-#  test_registry_result(@system_registry.reparent_orphan(params))
-# end
+#@returns [Hash] suitable for use  to attach as a service 
+#nothing written to the tree
+def reparent_orphan(params)      
+  test_registry_result(@system_registry.reparent_orphan(params))
+ end
 
  private
- 
+def register_service_hash_with_service(service_hash)
+    clear_last_error
+    p :register_service_hash_with_service
+    p service_hash
+
+    service = @core_api.loadManagedService( service_hash[:service_container_name])
+    if service != nil && service != false
+      return service.add_consumer_to_service(service_hash)
+    end
+    log_error_mesg("no service_container_loaded  ",service_hash)
+    return false
+  end
+
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)    
-    @last_error = @last_error.to_s + ":" + msg +":" + obj_str
+    @last_error = @last_error.to_s + ":" + msg.to_s + ":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
   end
  

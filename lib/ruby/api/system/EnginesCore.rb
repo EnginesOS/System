@@ -326,24 +326,18 @@ class EnginesCore
       return false
     end
 
-    if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
-      service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
-
-      service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
-    end
-
-    if service_hash.has_key?(:container_type) == false
-      service_hash[:container_type] = container_type(service_hash[:parent_engine])
-    end
 
     if service_hash.has_key?(:variables) == false
       log_error_mesg("Attached Service passed no variables",service_hash)
       return false
     end
-
+  
+    if service_hash.has_key?(:container_type) == false
+      service_hash[:container_type] = container_type(container_name)
+    end
     sm = loadServiceManager()
     if sm.add_service(service_hash)
-      return check_sm_result(sm.register_service_hash_with_service(service_hash))
+      return check_sm_result(sm.add_service(service_hash))
     else
       log_error_mesg("register failed",  service_hash)
     end
@@ -442,7 +436,11 @@ class EnginesCore
   
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
-    check_sm_result( sm.retrieve_orphan(service_hash) )
+    res =  check_sm_result( sm.retrieve_orphan(service_hash) )
+     if res != nil && res != false
+       return true
+     end
+     return false
   end
 
   #returns
@@ -621,7 +619,7 @@ class EnginesCore
           @last_error = "Service not running"
           return false
         end
-        if retval[:result] == 0
+        if retval[:result] == 0 || retval[:stderr].start_with?("Warning") == true
           if check_sm_result(sm.update_service_configuration(service_param)) == false                
                 p sm.last_error
                 @last_error = sm.last_error
@@ -966,7 +964,6 @@ end
         return false
       end
       if service.remove_consumer(service_hash) == false
-
         log_error_mesg("Failed to remove service ",service_hash)
         return false
       end
@@ -991,16 +988,13 @@ end
   end
 
   def delete_image_dependancies(params)
-
     sm = loadServiceManager()
     params[:parent_engine] = params[:engine_name]
     if sm.rm_remove_engine(params) == false
       log_error_mesg("Failed to remove deleted Service",params)
       return false
     end
-
     return true
-
   rescue Exception=>e
     SystemUtils.log_exception(e)
     return false
@@ -1038,7 +1032,7 @@ end
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=4m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      command = "docker run --name volbuilder --memory=8m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output("Run volume builder",command)
       run_system(command)
 

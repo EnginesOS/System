@@ -88,7 +88,11 @@ class SysConfig
   @@SystemUpdatedFlag="/opt/engines/run/system/flags/update_run"
   @@SystemUpdatinFlag="/opt/engines/run/system/flags/update_running"
   @@EnginesSystemRebootNeededFlag="/opt/engines/run/system/flags/reboot_required"
+  @@SystemRebootingFlag="/opt/engines/run/system/flags/engines_rebooting"
   
+  def SysConfig.SystemRebootingFlag
+    return @@SystemRebootingFlag
+  end 
   def SysConfig.EnginesSystemRebootNeededFlag
     return @@EnginesSystemRebootNeededFlag
   end

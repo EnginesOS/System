@@ -52,8 +52,10 @@ class EnginesOSapi
    def is_base_system_updating?
       return File.exists?(SysConfig.SystemUpdatingFlag)     
    end
-  
-  
+   
+  def is_rebooting?
+    File.exists?(SysConfig.SystemRebootingFlag)
+  end
   
   
   

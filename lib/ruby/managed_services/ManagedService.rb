@@ -183,22 +183,22 @@ class ManagedService < ManagedContainer
      if  service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data] == true 
       p :removing_consumer
       result = rm_consumer_from_service(service_hash)
-      if result == true
-        sm =  service_manager
-        if sm != false
-          SystemUtils.debug_output( :remove_consumer  , service_hash)
-          result =  sm.remove_service(service_hash)
-        else
-          log_error_mesg("rm consumer no ServiceManager ","")
-          return false
-        end
-      end      
+#      if result == true
+#        sm =  service_manager
+#        if sm != false
+#          SystemUtils.debug_output( :remove_consumer  , service_hash)
+#          result =  sm.remove_service(service_hash)
+#        else
+#          log_error_mesg("rm consumer no ServiceManager ","")
+#          return false
+#        end
+#      end      
      end
       
     end
-    
-
-    save_state
+#    
+#
+#    save_state
     return result
   end
 

@@ -23,11 +23,15 @@ class SystemRegistry
       end
       return nil   
   end
+#  
+#  def  find_engine_services(params)
+#    test_result(send_request("find_engine_services",params))
+#  end
   
-  def  find_engine_services(params)
-    test_result(send_request("find_engine_services",params))
-  end
-
+  def find_engine_service_hash(params)
+    test_result(send_request("find_engine_service_hash",params))
+    end
+    
   def  find_engine_services_hashes(params)
     test_result(send_request("find_engine_services_hashes",params))
   end

@@ -44,7 +44,7 @@ fcnt=`expr $fcnt + 1`
         
          echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
-         sql="delete from users where use_count=0 and  userid = '$username';"  
+         sql="delete from users where use_count<=0 and  userid = '$username';"  
          echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
         
         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
