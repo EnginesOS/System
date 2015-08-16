@@ -468,7 +468,7 @@ end
      end
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
      if service_def  == nil
-       SystemUtils.log_error_mesg("no service_def for",service_hash)
+       SystemUtils.log_error_mesg("NO Service Definition File Found for:",service_hash)
        return false
      end
      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
@@ -478,8 +478,6 @@ end
        return false
       end 
              
-
- 
      if service_hash.has_key?(:service_handle) == false\
        || service_hash[:service_handle] == nil \
        || service_hash[:service_handle] ==""
@@ -488,16 +486,17 @@ end
          service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
        else
          service_hash[:service_handle] = container_name
-       end
-       
-      
+       end            
      end
      
-service_hash[:service_container_name] = service_def[:service_container] 
+ service_hash[:service_container_name] = service_def[:service_container] 
  service_hash[:persistant] = service_def[:persistant]
-
  service_hash[:parent_engine]=container_name
-
+   
+  if service_hash.has_key?(:container_type) == false
+    service_hash[:container_type] = "container"
+  end
+  
  if service_hash.has_key?(:variables) == false
    service_hash[:variables] = Hash.new
  end
