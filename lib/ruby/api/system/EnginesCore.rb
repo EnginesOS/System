@@ -328,7 +328,10 @@ class EnginesCore
 
     if service_hash.has_key?(:service_handle) == false || service_hash[:service_handle] == nil
       service_handle_field = SoftwareServiceDefinition.service_handle_field(service_hash)
-
+        if service_handle_field == nil || service_handle_field == ""
+          log_error_mesg("No service handle found",service_hash)
+          return false
+        end
       service_hash[:service_handle] = service_hash[:variables][service_handle_field.to_sym]
     end
 
