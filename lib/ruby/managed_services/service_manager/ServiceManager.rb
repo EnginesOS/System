@@ -299,8 +299,8 @@ end
        return false
      end
     service =  @core_api.load_software_service(service_hash)
-    if service == nil || service == false
-      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
+    if service.is_a?(ManagedService) == false
+      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
       return false
     end
 
