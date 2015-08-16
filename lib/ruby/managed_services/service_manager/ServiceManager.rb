@@ -287,13 +287,15 @@ end
   #remove persistant services only if service is up
   def remove_from_managed_service(service_hash)
     clear_last_error
+    p :remove_from_managed_service
+    p service_hash
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
       log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
       return false
     end
 
-    if service.persistant == false #service.is_running? == true ||  
+    if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
         p service_hash
         return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
