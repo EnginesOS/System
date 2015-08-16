@@ -343,7 +343,7 @@ class EnginesCore
 
     sm = loadServiceManager()
     if sm.add_service(service_hash)
-      return check_sm_result(sm.register_service_hash_with_service(service_hash))
+      return check_sm_result(sm.add_service(service_hash))
     else
       log_error_mesg("register failed",  service_hash)
     end
