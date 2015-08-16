@@ -1,4 +1,5 @@
 #!/bin/bash
 
 cd /opt/engines
-git pull >>$1
+git pull
+
