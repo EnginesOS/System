@@ -1,6 +1,6 @@
 class SystemUtils
-  @@debug=true
-  @@level=5
+  @@debug=false
+  @@level=0
 
   attr_reader :debug,:level,:last_error
   def SystemUtils.debug_output(label,object)
@@ -140,6 +140,7 @@ rescue Exception=>e
       SystemUtils.log_exception(e)
       
   end
+  
 #Execute @param cmd [String]
     #@return hash
     #:result_code = command exit/result code
