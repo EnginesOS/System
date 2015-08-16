@@ -194,7 +194,7 @@ end
            end
          end
        end
-   return test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
+   return true
   end
   
 #def find_engine_services(params)
