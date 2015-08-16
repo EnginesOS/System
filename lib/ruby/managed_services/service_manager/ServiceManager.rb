@@ -155,10 +155,13 @@ def delete_service service_hash
   p :delete_service
   p service_hash
   
-  ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+  service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+  if service_hash == false
+     log_error_mesg("Failed to to set top level params hash",service_hash)
+     return false
+   end
   service_hash = @system_registry.find_engine_service_hash(service_hash)
-
-  
+ 
    if service_hash == false
      log_error_mesg("Failed to retrieve hash",service_hash)
      return false
@@ -168,7 +171,7 @@ def delete_service service_hash
     log_error_mesg("failed to remove managed service",service_hash)
     return false
   end
-  return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
+  return true #test_registry_result(@system_registry.remove_from_services_registry(service_hash))
 end
 
 def update_attached_service(params)
@@ -485,6 +488,8 @@ end
        else
          service_hash[:service_handle] = container_name
        end
+       
+       return service_hash
      end
      
 service_hash[:service_container_name] = service_def[:service_container] 
