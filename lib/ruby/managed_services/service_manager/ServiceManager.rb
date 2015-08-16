@@ -293,6 +293,11 @@ end
     p :remove_from_managed_service
     p service_hash
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    service_hash = @system_registry.find_engine_services(service_hash)
+     if service_hash == false
+       log_error_mesg("Failed to retrieve hash",service_hash)
+       return false
+     end
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
       log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
