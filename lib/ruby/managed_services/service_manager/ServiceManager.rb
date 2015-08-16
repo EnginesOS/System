@@ -226,6 +226,7 @@ end
 
 
   def register_non_persistant_service(service_hash)
+    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     clear_last_error
     if add_to_managed_service(service_hash) == false
       log_error_mesg("Failed to create persistant service ",service_hash)
