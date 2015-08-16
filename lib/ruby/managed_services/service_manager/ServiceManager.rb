@@ -292,6 +292,7 @@ end
     clear_last_error
     p :remove_from_managed_service
     p service_hash
+    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     service =  @core_api.load_software_service(service_hash)
     if service == nil || service == false
       log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s,service_hash)
