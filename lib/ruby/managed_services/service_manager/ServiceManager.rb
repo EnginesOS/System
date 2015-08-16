@@ -617,9 +617,11 @@ def rebirth_orphan(params)
   test_registry_result(@system_registry.rebirth_orphan(params))
 end
   
-#def reparent_orphan(params)      
-#  test_registry_result(@system_registry.reparent_orphan(params))
-# end
+#@returns [Hash] suitable for use  to attach as a service 
+#nothing written to the tree
+def reparent_orphan(params)      
+  test_registry_result(@system_registry.reparent_orphan(params))
+ end
 
  private
  
