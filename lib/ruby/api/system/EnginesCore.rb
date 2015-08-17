@@ -1097,7 +1097,7 @@ class EnginesCore
     return result
   end
 
-  private 
+
 def delete_image(container)
   begin
     clear_error
@@ -1116,6 +1116,7 @@ def delete_image(container)
     return false
   end
 end
+private 
 def delete_engine_persistant_services(params)
     sm = loadServiceManager()
     services = check_sm_result(sm.get_engine_persistant_services(params))
