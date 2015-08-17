@@ -415,9 +415,11 @@ class ServiceManager
     service_hash[:service_container_name] = service_def[:service_container]
     service_hash[:persistant] = service_def[:persistant]
     service_hash[:parent_engine]=container_name
+      
     if service_hash.has_key?(:container_type) == false
-         service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
+         service_hash[:container_type] = "container"
     end
+    
     if service_hash.has_key?(:variables) == false
       service_hash[:variables] = Hash.new
     end
