@@ -1,5 +1,5 @@
 #!/bin/sh
-
+touch /opt/engines/run/system/flags/update_engines_running 
 
 ts=`date +%d-%m-%Y-%H:%M`
 touch /var/log/engines/engines_system_update_$ts.log
@@ -8,7 +8,8 @@ touch /var/log/engines/engines_system_update_$ts.log
 echo "Restarting"
 sleep 5
 
-touch /opt/engines/run/system/flags/update_engines_running 
+
+
 /opt/engines/bin/eservice stop mgmt >> /var/log/engines/engines_system_update_$ts.log 
 
 docker stop registry >> /var/log/engines/engines_system_update_$ts.log
