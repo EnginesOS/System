@@ -563,8 +563,8 @@ class EnginesOSapi
     p item_name
 
     p cmd
-    mesg = mesg.to_s + ":" + last_api_error.to_s
-    p mesg
+    m = mesg.to_s + ":" + last_api_error.to_s
+    p m
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
