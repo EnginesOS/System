@@ -78,11 +78,12 @@ class ServiceManager
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
+      service_hash[:container_type] = container.ctype
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
         ServiceManager.set_top_level_service_params(service_hash,container.container_name)
-        if service_hash.has_key?(:container_type) == false
-          service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
-        end
+#        if service_hash.has_key?(:container_type) == false
+#          service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
+#        end
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
         SystemUtils.debug_output(  :templated_service_hash, service_hash)
@@ -415,7 +416,7 @@ class ServiceManager
     service_hash[:persistant] = service_def[:persistant]
     service_hash[:parent_engine]=container_name
     if service_hash.has_key?(:container_type) == false
-      service_hash[:container_type] = "container"
+         service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
     end
     if service_hash.has_key?(:variables) == false
       service_hash[:variables] = Hash.new
