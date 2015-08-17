@@ -160,12 +160,13 @@ def delete_service service_hash
      log_error_mesg("Failed to to set top level params hash",service_hash)
      return false
    end
-  service_hash = @system_registry.find_engine_service_hash(service_hash)
- 
-   if service_hash == false
-     log_error_mesg("Failed to retrieve hash",service_hash)
-     return false
-   end
+   #no need to retrieve as that
+#  service_hash = @system_registry.find_engine_service_hash(service_hash)
+# 
+#   if service_hash == false
+#     log_error_mesg("Failed to retrieve hash",service_hash)
+#     return false
+#   end
    
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
@@ -315,6 +316,7 @@ end
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
+        p :removed
         p service_hash
         return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
