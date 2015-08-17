@@ -150,7 +150,7 @@ class EnginesCore
     imageName = container_name
     return test_docker_api_result(@docker_api.image_exist?(imageName))
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
@@ -158,7 +158,7 @@ class EnginesCore
     sm = loadServiceManager()
     return check_sm_result(sm.list_attached_services_for(objectName,identifier))
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
 
   end
 
@@ -171,7 +171,7 @@ class EnginesCore
     retval[:subservices] = subservices
     return retval
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def load_software_service(params)
@@ -184,7 +184,7 @@ class EnginesCore
     end
     return service
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def set_engines_ssh_pw(params)
@@ -259,21 +259,21 @@ class EnginesCore
     end
     return false
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def remove_orphaned_service(params)
     sm = loadServiceManager()
     check_sm_result(sm.remove_orphaned_service(params))
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def dettach_service(params)
     sm = loadServiceManager()
     check_sm_result(sm.delete_service(params))
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
     return  false
   end
 
@@ -344,7 +344,7 @@ class EnginesCore
     return registry_service.get_ip_str
   rescue Exception=>e
     @last_error= "Fatal Unable to Start Registry Service: " + e.to_s
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def match_orphan_service(service_hash)
@@ -428,7 +428,7 @@ class EnginesCore
   rescue Exception=>e
     p :filename
     p filename
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def fillin_template_for_service_def(service_hash)
@@ -444,7 +444,7 @@ class EnginesCore
   rescue Exception=>e
     p service_hash
     p service_def
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def load_avail_services_for_type(typename)
@@ -468,7 +468,7 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          SystemUtils.log_exception e
+          log_exception e
           puts  dir.to_s + "/" + service_dir_entry
           next
         end
@@ -476,7 +476,7 @@ class EnginesCore
     end
     return retval
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def retrieve_service_configuration(service_param)
@@ -532,7 +532,7 @@ class EnginesCore
     params[:persistant] = true
     return check_sm_result(sm.find_engine_services_hashes(params))
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def engine_attached_services(container_name)
@@ -541,7 +541,7 @@ class EnginesCore
     params[:parent_engine] = container_name
     return sm.find_engine_services_hashes(params)
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def attach_subservice(params)
@@ -577,14 +577,14 @@ class EnginesCore
             end
           end
         rescue Exception=>e
-          SystemUtils.log_exception e
+          log_exception e
           next
         end
       end
     end
     return retval
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
   end
 
   def load_avail_component_services_for(engine)
@@ -605,7 +605,7 @@ class EnginesCore
     end
     return retval
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
     return nil
   end
 
@@ -661,7 +661,7 @@ class EnginesCore
     end
     return true
   rescue Exception=>e
-    SystemUtils.log_exception e
+    log_exception e
     return false
   end
 
@@ -755,7 +755,7 @@ class EnginesCore
       return ret_val
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -816,7 +816,7 @@ class EnginesCore
     end
     return true
   rescue Exception=>e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 
@@ -836,7 +836,7 @@ class EnginesCore
         return false
       end
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return ret_val
     end
   end
@@ -852,9 +852,17 @@ class EnginesCore
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=8m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      command = "docker run --name volbuilder --memory=12m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output("Run volume builder",command)
-      run_system(command)
+      p command
+      #run_system(command)
+      result = SystemUtils.execute_command(command)
+      if result[:result] != 0
+        p result[:stdout]
+          @last_error="Volbuilder: " + command + "->" + result[:stdout].to_s + " err:" + result[:stderr].to_s
+            p @last_error
+          return false
+      end
       #Note no -d so process will not return until setup.sh completes
       command = "docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
@@ -867,7 +875,7 @@ class EnginesCore
       end
       return true
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -892,7 +900,7 @@ class EnginesCore
       end
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -924,7 +932,8 @@ class EnginesCore
     clear_error
     EngineBuilder.re_install_engine(engine,self)
   rescue  Exception=>e
-    SystemUtils.log_exception(e)
+    log_exception(e)
+    @last_error=e.to_s
     return false
   end
 
@@ -945,7 +954,7 @@ class EnginesCore
       builder = EngineBuilder.new(params, self)
       return  builder.rebuild_managed_container(container)
     rescue  Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
@@ -986,7 +995,7 @@ class EnginesCore
         return ret_val
       end
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return   error_result
     end
   end
@@ -996,15 +1005,21 @@ class EnginesCore
     begin
       return test_system_api_result(@system_api.is_startup_complete(container))
     rescue  Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end
 
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
-    @last_error = @last_error + ":" + msg +":" + obj_str
+    @last_error = @last_error.to_s + ":" + msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
+  end
+  
+  def log_exception(e)
+    @last_error = @last_error.to_s + e.to_s
+    p @last_error + e.backtrace.to_s
+    return false
   end
 
   def register_non_persistant_service(service_hash)
@@ -1114,7 +1129,7 @@ def delete_image(container)
     return true
   rescue Exception=>e
     @last_error=( "Failed To Delete " + e.to_s)
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return false
   end
 end
@@ -1155,7 +1170,7 @@ private
 #    return true
 #  rescue Exception=>e
 #    @last_error=( "Failed To Delete " + e.to_s)
-#    SystemUtils.log_exception(e)
+#    log_exception(e)
 #    return false
 #  end
 
@@ -1177,7 +1192,7 @@ private
       volume_option += " --volumes-from " + container.container_name
       return volume_option
     rescue Exception=>e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return false
     end
   end

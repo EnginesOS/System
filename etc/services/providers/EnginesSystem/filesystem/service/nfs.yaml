@@ -47,7 +47,7 @@ consumer_params:
   placeholder: " "
   tooltip: " "
   mandatory: true
-  comment: " 
+  comment: " "
  volume:
   name: volume
   label: volume

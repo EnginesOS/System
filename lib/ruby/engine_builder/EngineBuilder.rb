@@ -857,22 +857,23 @@ class EngineBuilder
     builder = EngineBuilder.new(params,core)
     engine = builder.build_from_blue_print
     if engine == false
-      builder.post_failed_build_clean_up
+#      builder.post_failed_build_clean_up Donnt do this as a reinstall should not delete on failure
       return  builder.failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active? == false
         close_all
-        return builder.failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
+        return EnginesOSapiResult.failed(params[:engine_name],"Failed to start  " + last_api_error ,"Reinstall Engine")
       end
       return engine
     end
     builder.post_failed_build_clean_up
-    return failed(engine.container_name,builder.last_error,"build_engine")
+    return EnginesOSapiResult.failed(engine.container_name,builder.last_error,"build_engine")
 
   rescue Exception=>e
-    builder.post_failed_build_clean_up
-    return log_exception_and_fail("build_engine",e)
+ 
+   
+    return EnginesOSapiResult.failed(engine.container_name,builder.last_error,"build_engine")
   end
 
   def rebuild_managed_container  engine
