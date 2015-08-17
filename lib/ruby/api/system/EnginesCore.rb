@@ -852,9 +852,17 @@ class EnginesCore
         File.delete(SysConfig.CidDir + "/volbuilder.cid")
       end
       mapped_vols = get_volbuild_volmaps container
-      command = "docker run --name volbuilder --memory=8m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
+      command = "docker run --name volbuilder --memory=12m -e fw_user=" + username + " -e data_gid=" + container.data_gid + "   --cidfile " +SysConfig.CidDir + "volbuilder.cid " + mapped_vols + " -t engines/volbuilder:" + SystemUtils.system_release + " /bin/sh /home/setup_vols.sh "
       SystemUtils.debug_output("Run volume builder",command)
-      run_system(command)
+      p command
+      #run_system(command)
+      result = SystemUtils.execute_command(command)
+      if result[:result] != 0
+        p result[:stdout]
+          @last_error="Volbuilder: " + command + "->" + result[:stdout].to_s + " err:" + result[:stderr].to_s
+            p @last_error
+          return false
+      end
       #Note no -d so process will not return until setup.sh completes
       command = "docker rm volbuilder"
       if File.exists?(SysConfig.CidDir + "/volbuilder.cid") == true
