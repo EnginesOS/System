@@ -402,6 +402,12 @@ class ServiceManager
       SystemUtils.log_error_mesg("no service_handle for",service_hash)
       return false
     end
+    if service_def.has_key?(:priority) == true
+      service_hash[:priority] = service_def[:priority]
+    else
+      service_hash[:priority] = 0
+    end
+        
     if service_hash.has_key?(:service_handle) == false\
     || service_hash[:service_handle] == nil \
     || service_hash[:service_handle] ==""
