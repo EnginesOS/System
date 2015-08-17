@@ -148,30 +148,11 @@ class EnginesCore
   def rm_volume(site_hash)
     return test_system_api_result(@system_api.rm_volume(site_hash))
   end
-#
-#  def remove_self_hosted_domain(domain_name)
-#    return @system_api.remove_self_hosted_domain(domain_name)
-#  end
-#
-#  def add_self_hosted_domain(params)
-#    return @system_api.add_self_hosted_domain(params)
-#  end
-#
-#  def list_self_hosted_domains()
-#    return @system_api.list_self_hosted_domains()
-#  end
-#
-#  def  update_self_hosted_domain(old_domain_name, params)
-#    @system_api.update_self_hosted_domain(old_domain_name, params)
-#  end
 
   def get_container_memory_stats(container)
     return test_system_api_result(@system_api.get_container_memory_stats(container))
   end
 
-  #  def set_engine_hostname_details(container,params)
-  #    return @system_api.set_engine_hostname_details(container,params)
-  #  end
 
   def image_exist?(container_name)
     imageName = container_name
@@ -226,17 +207,7 @@ class EnginesCore
     SystemUtils.log_exception e
   end
 
-#  def setup_email_params(params)
-#
-#    arg="smarthost_hostname=" + params[:smarthost_hostname] \
-#    + ":smarthost_username=" + params[:smarthost_username]\
-#    + ":smarthost_password=" + params[:smarthost_password]\
-#    + ":mail_name=smtp."  + params[:default_domain]
-#    container=loadManagedService("smtp")
-#    return @docker_api.docker_exec(container,SysConfig.SetupParamsScript,arg)
-#  rescue   Exception=>e
-#    SystemUtils.log_exception(e)
-#  end
+
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
@@ -283,22 +254,6 @@ class EnginesCore
     #    p @system_preferences.get_default_domain
     @system_preferences.get_default_domain
   end
-
-#  def set_database_password(container_name,params)
-#    arg = "mysql_password=" + params[:mysql_password] +":" \
-#    + "server=" + container_name + ":" \
-#    +  "psql_password=" + params[:psql_password] #Need two args
-#    if container_name
-#      server_container = loadManagedService(container_name)
-#      return @docker_api.docker_exec(server_container,SysConfig.SetupParamsScript,arg)
-#    end
-#
-#    return true
-#
-#  rescue Exception=>e
-#    SystemUtils.log_exception(e)
-#    return false
-#  end
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false
@@ -731,14 +686,7 @@ end
     return nil
   end
 
-#  def reload_dns
-#    dns_pid = File.read(SysConfig.NamedPIDFile)
-#    dns_service = loadManagedService("dns")
-#    return @docker_api.signal_container_process(dns_pid.to_s,'HUP',dns_service)
-#  rescue  Exception=>e
-#    SystemUtils.log_exception(e)
-#    return false
-#  end
+
 
   def set_engine_runtime_properties(params)
 
@@ -927,11 +875,13 @@ end
 
       #NO Image well delete the rest
       if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
-        return test_system_api_result( @system_api.delete_container_configs(container))
-      end
-
-      return false
-
+         test_system_api_result( @system_api.delete_container_configs(container))
+#        sm = loadServiceManager()
+#         if sm.rm_remove_engine(service_hash) == false
+#           @last_error = sm.last_error
+#           return false
+         end
+         return true                    
     rescue Exception=>e
       @last_error=( "Failed To Delete " + e.to_s)
       SystemUtils.log_exception(e)
@@ -1145,12 +1095,10 @@ def load_and_attach_shared_services(container)
         ret_val[:out]="n/a"
         return ret_val
       end
-
       commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
       result = SystemUtils.execute_command(commandargs)
       p result
       if result[:result] != 0
-
         ret_val = error_result
       else
         res = result[:stdout]
@@ -1172,10 +1120,9 @@ def load_and_attach_shared_services(container)
       end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-
       return   error_result
-    end
-  end
+ end
+end
 
   def is_startup_complete container
     clear_error
@@ -1201,8 +1148,8 @@ def load_and_attach_shared_services(container)
 def deregister_non_persistant_service(service_hash)
   sm = loadServiceManager()
      return check_sm_result(sm.deregister_non_persistant_service(service_hash))
-   end
-  def register_non_persistant_services(engine)
+end
+def register_non_persistant_services(engine)
     sm = loadServiceManager()
     return check_sm_result(sm.register_non_persistant_services(engine))
   end
@@ -1229,11 +1176,11 @@ def deregister_non_persistant_service(service_hash)
 #    return sm.remove_from_services_registry(service_hash)
 #  end
 
-  def delete_service_from_engine_registry(service_hash)
-    sm = loadServiceManager()
-    return sm.rm_remove_engine(service_hash)
-  end
-  
+#  def delete_service_from_engine_registry(service_hash)
+#    sm = loadServiceManager()
+#    return sm.rm_remove_engine(service_hash)
+#  end
+#  
  def  start_dependancies(container)
    container.dependant_on.each do |service_name|
      service = loadManagedService(service_name)
@@ -1257,8 +1204,6 @@ def deregister_non_persistant_service(service_hash)
         return false
        end
      end
-  
-   
    retries=0
    
    while  has_service_started?(service_name) == false
@@ -1270,8 +1215,7 @@ def deregister_non_persistant_service(service_hash)
         return false
       end
    end
- end
-   
+ end   
    return true
  end
   
@@ -1290,7 +1234,8 @@ def deregister_non_persistant_service(service_hash)
      @last_error = @system_api.last_error.to_s[0,128]
    end
    return result
- end
+end
+ 
 def check_sm_result(result)
    if result == nil || result.is_a?(FalseClass)
      sm = loadServiceManager()
@@ -1331,6 +1276,5 @@ def check_sm_result(result)
   def get_active_persistant_services(params)
     return loadServiceManager.get_active_persistant_services(params)
   end
-
 end
 

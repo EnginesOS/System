@@ -89,8 +89,6 @@ class ServiceManager
     return false
   end
 
-  
- 
 
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
