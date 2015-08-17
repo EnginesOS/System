@@ -139,13 +139,12 @@ class DockerApi
    
    def execute_docker_cmd(cmdline,container)
      clear_error
-     p cmdline
+     
     if cmdline.include?("docker exec") == true
-     docker_exec="docker exec -u " + container.cont_userid + " "
-       p cmdline
+     docker_exec="docker exec -u " + container.cont_userid + " "     
      cmdline.gsub!(/docker exec/,docker_exec)
-     p cmdline
     end
+    
      result = SystemUtils.execute_command(cmdline)
             container.last_result = result[:stdout]
             if container.last_result.start_with?("[") == true && (container.last_result.end_with?("]")  == false || container.last_result.end_with?("]") ==false)
