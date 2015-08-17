@@ -776,8 +776,6 @@ class EnginesCore
     return test_system_api_result(@system_api.system_update)
   end
 
-
-
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
   #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
@@ -789,7 +787,7 @@ class EnginesCore
            return false
     end
     engine_name = params[:engine_name]
-    engine = LoadManagedEngine(engine_name)
+    engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
       log_error_mesg("Failed to  find Engine",params)
           return false
