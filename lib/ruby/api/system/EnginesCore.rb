@@ -782,10 +782,12 @@ class EnginesCore
   # They are removed from the tree if delete is sucessful
   
   def delete_engine(params)    
+    params[:container_type]="container"
+      
     if delete_image_dependancies(params) == false
       log_error_mesg("Failed to remove engine Services",params)
            return false
-    end
+    end 
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
