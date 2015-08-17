@@ -3,7 +3,7 @@
 
 ts=`date +%d-%m-%Y-%H:%M`
 touch /var/log/engines/engines_system_update_$ts.log
-sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/engines_system_update_$ts.log
+#sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/engines_system_update_$ts.log
 
 echo "Restarting"
 sleep 5

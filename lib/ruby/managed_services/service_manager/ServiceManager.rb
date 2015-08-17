@@ -89,8 +89,6 @@ class ServiceManager
     return false
   end
 
-  
- 
 
   #@returns boolean
   #load persistant and non persistant service definitions off disk and registers them
@@ -160,12 +158,13 @@ def delete_service service_hash
      log_error_mesg("Failed to to set top level params hash",service_hash)
      return false
    end
-  service_hash = @system_registry.find_engine_service_hash(service_hash)
- 
-   if service_hash == false
-     log_error_mesg("Failed to retrieve hash",service_hash)
-     return false
-   end
+   #no need to retrieve as that
+#  service_hash = @system_registry.find_engine_service_hash(service_hash)
+# 
+#   if service_hash == false
+#     log_error_mesg("Failed to retrieve hash",service_hash)
+#     return false
+#   end
    
   if remove_from_managed_service(service_hash) == false
     log_error_mesg("failed to remove managed service",service_hash)
@@ -226,6 +225,7 @@ end
 
 
   def register_non_persistant_service(service_hash)
+    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     clear_last_error
     if add_to_managed_service(service_hash) == false
       log_error_mesg("Failed to create persistant service ",service_hash)
@@ -314,6 +314,7 @@ end
 
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
+        p :removed
         p service_hash
         return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       else
@@ -467,7 +468,7 @@ end
      end
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
      if service_def  == nil
-       SystemUtils.log_error_mesg("no service_def for",service_hash)
+       SystemUtils.log_error_mesg("NO Service Definition File Found for:",service_hash)
        return false
      end
      if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
@@ -477,8 +478,6 @@ end
        return false
       end 
              
-
- 
      if service_hash.has_key?(:service_handle) == false\
        || service_hash[:service_handle] == nil \
        || service_hash[:service_handle] ==""
@@ -487,16 +486,17 @@ end
          service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
        else
          service_hash[:service_handle] = container_name
-       end
-       
-      
+       end            
      end
      
-service_hash[:service_container_name] = service_def[:service_container] 
+ service_hash[:service_container_name] = service_def[:service_container] 
  service_hash[:persistant] = service_def[:persistant]
-
  service_hash[:parent_engine]=container_name
-
+   
+  if service_hash.has_key?(:container_type) == false
+    service_hash[:container_type] = "container"
+  end
+  
  if service_hash.has_key?(:variables) == false
    service_hash[:variables] = Hash.new
  end

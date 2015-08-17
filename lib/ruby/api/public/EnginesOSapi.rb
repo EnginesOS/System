@@ -354,7 +354,7 @@ class EnginesOSapi
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(params[:engine_name],"no Engine","Delete")
     end
-    params[:container_type] = "container"
+#    params[:container_type] = "container"
     if  @core_api.delete_image_dependancies(params) == true
       if engine.delete_image() == true
         return success(params[:engine_name],"Delete")
