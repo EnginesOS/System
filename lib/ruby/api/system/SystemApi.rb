@@ -627,10 +627,19 @@ class SystemApi
   end
 
   def update_engines_system_software
-    SystemUtils.execute_command("sudo /opt/engines/scripts/_update_engines_system_software.sh ")
+    result = SystemUtils.execute_command("sudo /opt/engines/scripts/_update_engines_system_software.sh ")
+    if result[:result] == -1
+      @last_error=result[:stderr]
+            return false
+   end
+    if result[:stdout].include?("Already up-to-date")
+      @last_error=result[:stdout]
+      return false
+    end
     res = Thread.new { SystemUtils.execute_command("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh") }
     #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     if res.status == "run"
+      @last_error=result[:stdout]
       return true
     end
     return false

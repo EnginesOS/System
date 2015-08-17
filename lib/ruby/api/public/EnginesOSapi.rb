@@ -408,9 +408,9 @@ class EnginesOSapi
 
   def update_engines_system_software
     if @core_api.update_engines_system_software == true
-      return success("System","Engines System Updating")
+      return success("System", @core_api.last_error)
     else
-      return failed("System","not permitted","Engines System Updating")
+      return failed("System",@core_api.last_error,"Engines System Updating")
     end
   end
 
