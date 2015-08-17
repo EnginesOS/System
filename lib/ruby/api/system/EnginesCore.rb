@@ -1,30 +1,20 @@
-
-
-  require "/opt/engines/lib/ruby/system/SysConfig.rb"
-  require "/opt/engines/lib/ruby/system/SystemUtils.rb"
-  require "/opt/engines/lib/ruby/system/DNSHosting.rb"
-  
-  require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
-  require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
-  
-  require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
-  require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
-  
-  require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
-  
-  require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
-  
-  require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
-  
-  require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
+require "/opt/engines/lib/ruby/system/SysConfig.rb"
+require "/opt/engines/lib/ruby/system/SystemUtils.rb"
+require "/opt/engines/lib/ruby/system/DNSHosting.rb"
+require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
+require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
+require "/opt/engines/lib/ruby/managed_services/SystemService.rb"
+require "/opt/engines/lib/ruby/managed_services/system_services/VolumeService.rb"
+require "/opt/engines/lib/ruby/managed_services/software_services/SoftwareServiceDefinition.rb"
+require "/opt/engines/lib/ruby/managed_services/service_manager/ServiceManager.rb"
+require "/opt/engines/lib/ruby/engine_builder/EngineBuilder.rb"
 
 class EnginesCore
 
-  
   require_relative 'DockerApi.rb'
   require_relative 'SystemApi.rb'
   require_relative 'SystemPreferences.rb'
-
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
@@ -51,11 +41,11 @@ class EnginesCore
     clear_error
     sm = loadServiceManager()
     return check_sm_result(sm.update_attached_service(params))
-  end 
-#  def add_domain(params)
-#    clear_error
-#    return  test_system_api_result(@system_api.add_domain(params))
-#  end
+  end
+  #  def add_domain(params)
+  #    clear_error
+  #    return  test_system_api_result(@system_api.add_domain(params))
+  #  end
 
   def remove_domain(params)
     clear_error
@@ -76,7 +66,7 @@ class EnginesCore
   def start_container(container)
     clear_error
     if container.dependant_on.is_a?(Array)
-        start_dependancies(container)
+      start_dependancies(container)
     end
     return  test_docker_api_result(@docker_api.start_container(container))
   end
@@ -111,20 +101,23 @@ class EnginesCore
   def get_build_report(engine_name)
     return @system_api.get_build_report(engine_name)
   end
-  
+
   def needs_reboot?
     return File.exist?(SysConfig.EnginesSystemRebootNeededFlag)
   end
-  
-  def restart_system 
+
+  def restart_system
     return test_system_api_result(@system_api.restart_system)
   end
+
   def update_engines_system_software
     test_system_api_result(@system_api.update_engines_system_software)
-  end 
-  def update_system    
+  end
+
+  def update_system
     test_system_api_result(@system_api.update_system)
   end
+
   def save_build_report(container,build_report)
     return test_system_api_result(@system_api.save_build_report(container,build_report))
   end
@@ -152,7 +145,6 @@ class EnginesCore
   def get_container_memory_stats(container)
     return test_system_api_result(@system_api.get_container_memory_stats(container))
   end
-
 
   def image_exist?(container_name)
     imageName = container_name
@@ -198,7 +190,7 @@ class EnginesCore
     #    p service_container
     service = loadManagedService(service_container)
     if service == nil
-     
+
       return nil
     end
 
@@ -206,8 +198,6 @@ class EnginesCore
   rescue Exception=>e
     SystemUtils.log_exception e
   end
-
-
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
@@ -224,29 +214,29 @@ class EnginesCore
   def set_default_site(params)
     service_param = Hash.new
     service_param[:service_name] = "nginx"
-          service_param[:configurator_name] = "default_site"
+    service_param[:configurator_name] = "default_site"
     service_param[:vaiables] = Hash.new
     service_param[:vaiables][:default_site_url] = params[:default_site_url]
-         config_params = update_service_configuration(service_param)
+    config_params = update_service_configuration(service_param)
 
   end
 
   def get_default_site()
-    
+
     service_param = Hash.new
-      service_param[:service_name] = "nginx"
-      service_param[:configurator_name] = "default_site"
-     config_params = retrieve_service_configuration(service_param)
-     p config_params
-     if config_params.is_a?(Hash) == true && config_params.has_key?(:variables) == true
-        vars = config_params[:variables]
-          if vars.has_key?(:default_site_url)
-            p :DEFAUL_SITE
-            p vars[:default_site_url]
-            return vars[:default_site_url]
-          end
-     end
-     return ""
+    service_param[:service_name] = "nginx"
+    service_param[:configurator_name] = "default_site"
+    config_params = retrieve_service_configuration(service_param)
+    p config_params
+    if config_params.is_a?(Hash) == true && config_params.has_key?(:variables) == true
+      vars = config_params[:variables]
+      if vars.has_key?(:default_site_url)
+        p :DEFAUL_SITE
+        p vars[:default_site_url]
+        return vars[:default_site_url]
+      end
+    end
+    return ""
   end
 
   def get_default_domain()
@@ -281,15 +271,14 @@ class EnginesCore
       return false
     end
 
-
     if service_hash.has_key?(:variables) == false
       log_error_mesg("Attached Service passed no variables",service_hash)
       return false
     end
-  
-#    if service_hash.has_key?(:container_type) == false
-#      service_hash[:container_type] = container_type(service_hash[:parent_engine])
-#    end set now by service manager
+
+    #    if service_hash.has_key?(:container_type) == false
+    #      service_hash[:container_type] = container_type(service_hash[:parent_engine])
+    #    end set now by service manager
     sm = loadServiceManager()
     if sm.add_service(service_hash)
       return check_sm_result(sm.add_service(service_hash))
@@ -303,7 +292,7 @@ class EnginesCore
 
   def remove_orphaned_service(params)
     sm = loadServiceManager()
-     check_sm_result(sm.remove_orphaned_service(params)) 
+    check_sm_result(sm.remove_orphaned_service(params))
   rescue Exception=>e
     SystemUtils.log_exception e
   end
@@ -332,32 +321,32 @@ class EnginesCore
 
   def force_registry_restart
     #start in thread in case timeout clobbers
-  restart_thread = Thread.new {    
-    registry_service.stop_container
-    registry_service.start_container
-    while registry_service.is_startup_complete? == false
+    restart_thread = Thread.new {
+      registry_service.stop_container
+      registry_service.start_container
+      while registry_service.is_startup_complete? == false
         sleep 1
         wait=wait+1
-          if wait >60
-            return force_registry_recreate
-          end
+        if wait >60
+          return force_registry_recreate
+        end
       end
-  }
-    restart_thread.join    
-    return true      
+    }
+    restart_thread.join
+    return true
   end
-  
+
   def force_registry_recreate
-    
+
     registry_service = test_system_api_result(@system_api.loadSystemService("registry"))
-    
+
     if registry_service.forced_recreate == false
-           @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
-           return false
-         end
-         return true
+      @last_error= "Fatal Unable to Start Registry Service: " + registry_service.last_error
+      return false
+    end
+    return true
   end
-  
+
   def get_registry_ip
     registry_service = test_system_api_result(@system_api.loadSystemService("registry"))
     case registry_service.read_state
@@ -365,7 +354,7 @@ class EnginesCore
       registry_service.create_container
     when "paused"
       registry_service.unpause_container
-    when "stopped"   
+    when "stopped"
       registry_service.start_container
     end
     if registry_service.read_state != "running"
@@ -374,28 +363,28 @@ class EnginesCore
         return nil
       end
     end
-    wait = 0  
+    wait = 0
     while registry_service.is_startup_complete? == false
       sleep 1
       wait=wait+1
-        if wait >60
-          break
-        end
+      if wait >60
+        break
+      end
     end
 
     return registry_service.get_ip_str
-    rescue Exception=>e
+  rescue Exception=>e
     @last_error= "Fatal Unable to Start Registry Service: " + e.to_s
-       SystemUtils.log_exception e
+    SystemUtils.log_exception e
   end
-  
+
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
     res =  check_sm_result( sm.retrieve_orphan(service_hash) )
-     if res != nil && res != false
-       return true
-     end
-     return false
+    if res != nil && res != false
+      return true
+    end
+    return false
   end
 
   #returns
@@ -428,33 +417,31 @@ class EnginesCore
     urls = Array.new
     params = Hash.new()
     params[:parent_engine] = container.container_name
-      if container.ctype == "container"
-          params[:container_type] = "container"
+    if container.ctype == "container"
+      params[:container_type] = "container"
+    else
+      params[:container_type] = "service"
+    end
+    params[:publisher_namespace]="EnginesSystem"
+    params[:type_path]="nginx"
+    sites = find_engine_services(params)
+    if sites.is_a?(Array) == false
+      return urls
+    end
+    sites.each do |site|
+      p :Site
+      p site
+      if site[:variables][:proto] ==     "http_https"
+        protocol="https"
       else
-        params[:container_type] = "service"
+        protocol=site[:variables][:proto]
       end
-      params[:publisher_namespace]="EnginesSystem"
-      params[:type_path]="nginx"
-        
-      sites = find_engine_services(params)
-      if sites.is_a?(Array) == false
-        return urls
-      end
-        sites.each do |site|
-          p :Site
-          p site
-       if site[:variables][:proto] ==     "http_https"              
-          protocol="https"
-       else
-         protocol=site[:variables][:proto]
-        end
-        url= protocol + "://" + site[:variables][:fqdn]
-         urls.push(url)
-        end
-        
-        return urls
+      url= protocol + "://" + site[:variables][:fqdn]
+      urls.push(url)
+    end
+    return urls
   end
-  
+
   def find_engine_services(params)
     sm = loadServiceManager()
     return check_sm_result(sm.find_engine_services_hashes(params))
@@ -463,16 +450,14 @@ class EnginesCore
 
   def get_configurations_tree
     sm = loadServiceManager()
-        return check_sm_result(sm.service_configurations_tree)
+    return check_sm_result(sm.service_configurations_tree)
   end
-  
-  def load_service_definition(filename)
 
+  def load_service_definition(filename)
     yaml_file = File.open(filename)
     p :open
     p filename
     return  SoftwareServiceDefinition.from_yaml(yaml_file)
-
   rescue Exception=>e
     p :filename
     p filename
@@ -480,12 +465,11 @@ class EnginesCore
   end
 
   def fillin_template_for_service_def(service_hash)
-
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
-      if container == false
-        log_error_mesg("container load error",service_hash)
-      end
+    if container == false
+      log_error_mesg("container load error",service_hash)
+    end
     templater =  Templater.new(SystemAccess.new,container)
     templater.fill_in_service_def_values(service_def)
     return service_def
@@ -502,25 +486,15 @@ class EnginesCore
     retval = Array.new
 
     dir = SysConfig.ServiceMapTemplateDir + "/" + typename
-    #    p :dir
-    #    p dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
           if service_dir_entry.start_with?(".")   == true
             next
           end
-          #          p :service_dir_entry
-          #          p service_dir_entry
           if service_dir_entry.end_with?(".yaml")
             service = load_service_definition(dir + "/" + service_dir_entry)
             if service != nil
-              #              p :service_as_serivce
-              #              p service
-              #              p :as_hash
-              #              p service.to_h
-              #              p :as_yaml
-              #              p service.to_yaml()
               if service.is_a?(String)
                 log_error_mesg("service yaml load error",service)
               else
@@ -535,8 +509,6 @@ class EnginesCore
         end
       end
     end
-    #    p typename
-    #    p retval
     return retval
   rescue Exception=>e
     SystemUtils.log_exception e
@@ -545,12 +517,12 @@ class EnginesCore
   def retrieve_service_configuration(service_param)
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
-        
+
       if service != false && service != nil
         retval =  service.retrieve_configurator(service_param)
-          if retval.is_a?(Hash) == false
-            return false
-          end
+        if retval.is_a?(Hash) == false
+          return false
+        end
       else
         @last_error = "No Service"
         return false
@@ -565,9 +537,9 @@ class EnginesCore
     if service_param.has_key?(:service_name)
       service = loadManagedService(service_param[:service_name])
       sm = loadServiceManager()
-    
+
       service_param[:publisher_namespace] = service.publisher_namespace.to_s
-      service_param[:type_path] = service.type_path.to_s                                      
+      service_param[:type_path] = service.type_path.to_s
       if service != false && service != nil
         retval =  service.run_configurator(service_param)
         if retval == false
@@ -575,11 +547,11 @@ class EnginesCore
           return false
         end
         if retval[:result] == 0 || retval[:stderr].start_with?("Warning") == true
-          if check_sm_result(sm.update_service_configuration(service_param)) == false                
-                p sm.last_error
-                @last_error = sm.last_error
-                return false
-              end
+          if check_sm_result(sm.update_service_configuration(service_param)) == false
+            p sm.last_error
+            @last_error = sm.last_error
+            return false
+          end
           return true
         else
           @last_error = "stderr" + retval[:stderr] +  "  " + retval[:result].to_s
@@ -590,25 +562,24 @@ class EnginesCore
     end
     return false
   end
-  
 
-def engine_persistant_services(container_name)
-  sm = loadServiceManager()
-  params = Hash.new()
-  params[:parent_engine] = container_name
-  params[:persistant] = true 
-     return check_sm_result(sm.find_engine_services_hashes(params))
-   rescue Exception=>e
-     SystemUtils.log_exception e
-end
+  def engine_persistant_services(container_name)
+    sm = loadServiceManager()
+    params = Hash.new()
+    params[:parent_engine] = container_name
+    params[:persistant] = true
+    return check_sm_result(sm.find_engine_services_hashes(params))
+  rescue Exception=>e
+    SystemUtils.log_exception e
+  end
 
   def engine_attached_services(container_name)
     sm = loadServiceManager()
     params = Hash.new()
     params[:parent_engine] = container_name
-       return sm.find_engine_services_hashes(params)
-     rescue Exception=>e
-       SystemUtils.log_exception e
+    return sm.find_engine_services_hashes(params)
+  rescue Exception=>e
+    SystemUtils.log_exception e
   end
 
   def attach_subservice(params)
@@ -686,42 +657,34 @@ end
     return nil
   end
 
-
-
   def set_engine_runtime_properties(params)
-
     engine_name = params[:engine_name]
-
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(EnginesOSapiResult) == true
       @last_error = engine.result_mesg
       return false
     end
-
     if engine.is_active? == true
       @last_error="Container is active"
       return false
     end
-
     if params.has_key?(:memory)
       if params[:memory] == engine.memory
         @last_error="No Change in Memory Value"
         return false
       end
-
       if engine.update_memory(params[:memory]) == false
         @last_error= engine.last_error
         return false
       end
     end
-
     if params.has_key?(:environment_variables)
       new_variables = params[:environment_variables]
       #update_environment(engine,params[:environment_variables])
-        p :new_varables
+      p :new_varables
       p new_variables
       engine.environments.each do |env|
-       # new_variables.each do |new_env|
+        # new_variables.each do |new_env|
         new_variables.each_pair  do | new_env_name, new_env_value |
           if  env.name == new_env_name
             if env.immutable == true
@@ -730,48 +693,46 @@ end
             end
             env.value =  new_env_value
           end
-        # end
+          # end
         end
       end
     end
-
     if engine.has_container? == true
       if destroy_container(engine)  == false
         @last_error= engine.last_error
         return false
       end
     end
-
     if  engine.create_container == false
       @last_error= engine.last_error
       return false
     end
-
     return true
-    rescue Exception=>e
-      SystemUtils.log_exception e
-      return false
+  rescue Exception=>e
+    SystemUtils.log_exception e
+    return false
   end
-  
+
   def test_docker_api_result(result)
     if result == nil || result == false
       @last_error =  @docker_api.last_error
     end
     return result
   end
-  
-def test_system_api_result(result)
-  if result == nil || result == false
-    @last_error =  @system_api.last_error
+
+  def test_system_api_result(result)
+    if result == nil || result == false
+      @last_error =  @system_api.last_error
+    end
+    return result
   end
-  return result
-end
- #@returns [Boolean]
- # whether pulled or no false if no new image 
- def pull_image (image_name)  
-    return test_docker_api_result(@docker_api.pull_image(image_name))  
+
+  #@returns [Boolean]
+  # whether pulled or no false if no new image
+  def pull_image (image_name)
+    return test_docker_api_result(@docker_api.pull_image(image_name))
   end
-  
+
   def set_engine_network_properties (engine, params)
     return test_system_api_result(@system_api.set_engine_network_properties(engine,params))
   end
@@ -800,21 +761,22 @@ end
     return test_system_api_result(@system_api.loadManagedService(service_name))
   end
 
-  
   def getManagedServices
     return test_system_api_result(@system_api.getManagedServices)
   end
 
-   def add_domain(params)
-     return test_system_api_result(@system_api.add_domain(params))
-   end
-def update_domain(params)
-  return test_system_api_result(@system_api.update_domain(params))
-end 
- def remove_domain(params)
-   return test_system_api_result(@system_api.remove_domain(params))
- end 
- 
+  def add_domain(params)
+    return test_system_api_result(@system_api.add_domain(params))
+  end
+
+  def update_domain(params)
+    return test_system_api_result(@system_api.update_domain(params))
+  end
+
+  def remove_domain(params)
+    return test_system_api_result(@system_api.remove_domain(params))
+  end
+
   def list_domains
     return test_system_api_result(@system_api.list_domains)
   end
@@ -838,27 +800,26 @@ end
       if ret_val == true
         ret_val = test_docker_api_result(@system_api.destroy_container(container))  #removes cid file
       end
-
       return ret_val
-
     rescue Exception=>e
       container.last_error=( "Failed To Destroy " + e.to_s)
       SystemUtils.log_exception(e)
 
       return false
-
     end
   end
 
   def generate_engines_user_ssh_key
     return test_system_api_result(@system_api.regen_system_ssh_key)
   end
+
   def update_public_key(key)
     return test_system_api_result(@system_api.update_public_key(key))
   end
-def generate_engines_user_ssh_key
-  return test_system_api_result(@system_api.generate_engines_user_ssh_key)
-end
+
+  def generate_engines_user_ssh_key
+    return test_system_api_result(@system_api.generate_engines_user_ssh_key)
+  end
 
   def system_update
     return test_system_api_result(@system_api.system_update)
@@ -867,26 +828,23 @@ end
   def delete_image(container)
     begin
       clear_error
-
       if test_docker_api_result(@docker_api.delete_image(container)) == true
         #only delete if del all otherwise backup
         return  test_system_api_result(@system_api.delete_container_configs(container))
       end
-
       #NO Image well delete the rest
       if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
-         test_system_api_result( @system_api.delete_container_configs(container))
-#        sm = loadServiceManager()
-#         if sm.rm_remove_engine(service_hash) == false
-#           @last_error = sm.last_error
-#           return false
-         end
-         return true                    
+        test_system_api_result( @system_api.delete_container_configs(container))
+        #        sm = loadServiceManager()
+        #         if sm.rm_remove_engine(service_hash) == false
+        #           @last_error = sm.last_error
+        #           return false
+      end
+      return true
     rescue Exception=>e
       @last_error=( "Failed To Delete " + e.to_s)
       SystemUtils.log_exception(e)
       return false
-
     end
   end
 
@@ -897,7 +855,6 @@ end
   def delete_engine_persistant_services(params)
     sm = loadServiceManager()
     services = check_sm_result(sm.get_engine_persistant_services(params))
-
     services.each do |service_hash|
       service_hash[:remove_all_data]  = params[:remove_all_data]
       if service_hash.has_key?(:service_container_name) == false
@@ -929,12 +886,10 @@ end
       end
     end
     return true
-
   rescue Exception=>e
     @last_error=( "Failed To Delete " + e.to_s)
     SystemUtils.log_exception(e)
     return false
-
   end
 
   def delete_image_dependancies(params)
@@ -1011,14 +966,14 @@ end
         container.last_error="Failed To create container exists by the same name"
         return false
       end
-       test_system_api_result(@system_api.clear_cid_file(container)) 
-        test_system_api_result(@system_api.clear_container_var_run(container))
-        if container.dependant_on.is_a?(Array)
-                start_dependancies(container)
-            end
-        test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image       
-        if  test_docker_api_result(@docker_api.create_container(container)) == true
-          return test_system_api_result(@system_api.create_container(container))        
+      test_system_api_result(@system_api.clear_cid_file(container))
+      test_system_api_result(@system_api.clear_container_var_run(container))
+      if container.dependant_on.is_a?(Array)
+        start_dependancies(container)
+      end
+      test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image
+      if  test_docker_api_result(@docker_api.create_container(container)) == true
+        return test_system_api_result(@system_api.create_container(container))
       else
         return false
       end
@@ -1035,11 +990,13 @@ end
     sm = loadServiceManager()
     return sm.load_and_attach_services(dirname,container )
   end
-def load_and_attach_shared_services(container)
-   dirname = get_container_services_dir(container) + "/shared/"
-   sm = loadServiceManager()
-   return sm.load_and_attach_services(dirname,container)
- end
+
+  def load_and_attach_shared_services(container)
+    dirname = get_container_services_dir(container) + "/shared/"
+    sm = loadServiceManager()
+    return sm.load_and_attach_services(dirname,container)
+  end
+
   def load_and_attach_nonpersistant_services(container)
     dirname = get_container_services_dir(container) + "/post/"
     sm = loadServiceManager()
@@ -1081,9 +1038,9 @@ def load_and_attach_shared_services(container)
     end
   end
 
-#  def image_exist?(image_name)
-#    test_docker_api_result(@docker_api.image_exist?(image_name))  
-#  end
+  #  def image_exist?(image_name)
+  #    test_docker_api_result(@docker_api.image_exist?(image_name))
+  #  end
   #FIXME Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     begin
@@ -1121,8 +1078,8 @@ def load_and_attach_shared_services(container)
     rescue Exception=>e
       SystemUtils.log_exception(e)
       return   error_result
- end
-end
+    end
+  end
 
   def is_startup_complete container
     clear_error
@@ -1136,20 +1093,21 @@ end
 
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
-
     @last_error = @last_error + ":" + msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
-
   end
+
   def register_non_persistant_service(service_hash)
     sm = loadServiceManager()
-       return check_sm_result(sm.register_non_persistant_service(service_hash))
-     end
-def deregister_non_persistant_service(service_hash)
-  sm = loadServiceManager()
-     return check_sm_result(sm.deregister_non_persistant_service(service_hash))
-end
-def register_non_persistant_services(engine)
+    return check_sm_result(sm.register_non_persistant_service(service_hash))
+  end
+
+  def deregister_non_persistant_service(service_hash)
+    sm = loadServiceManager()
+    return check_sm_result(sm.deregister_non_persistant_service(service_hash))
+  end
+
+  def register_non_persistant_services(engine)
     sm = loadServiceManager()
     return check_sm_result(sm.register_non_persistant_services(engine))
   end
@@ -1171,78 +1129,78 @@ def register_non_persistant_services(engine)
 
   #@ return [Boolean] indicating sucess
   #For Maintanence ONLY
-#  def delete_service_from_service_registry(service_hash)
-#    sm = loadServiceManager()
-#    return sm.remove_from_services_registry(service_hash)
-#  end
+  #  def delete_service_from_service_registry(service_hash)
+  #    sm = loadServiceManager()
+  #    return sm.remove_from_services_registry(service_hash)
+  #  end
 
-#  def delete_service_from_engine_registry(service_hash)
-#    sm = loadServiceManager()
-#    return sm.rm_remove_engine(service_hash)
-#  end
-#  
- def  start_dependancies(container)
-   container.dependant_on.each do |service_name|
-     service = loadManagedService(service_name)
-     if service == false
-       @last_error = "Failed to load " + service_name
-       return false
-     end
-     if service.is_running? != true
-       if service.has_container? == true
-         if service.is_active? == true
-           if service.unpause_container == false
-             @last_error = "Failed to unpause " + service_name
-             return false
-            end
-         elsif service.start_container == false
-             @last_error = "Failed to start " + service_name
-             return false            
-         end
-     elsif service.create_container == false
-       @last_error = "Failed to create " + service_name
-        return false
-       end
-     end
-   retries=0
-   
-   while  has_service_started?(service_name) == false
-     sleep 10
-     retries+=1
-      if retries >3
-        log_error_mesg("Time out in waiting for Service Dependancy " + service_name + " to start ",service_name)
-          
+  #  def delete_service_from_engine_registry(service_hash)
+  #    sm = loadServiceManager()
+  #    return sm.rm_remove_engine(service_hash)
+  #  end
+  #
+  def  start_dependancies(container)
+    container.dependant_on.each do |service_name|
+      service = loadManagedService(service_name)
+      if service == false
+        @last_error = "Failed to load " + service_name
         return false
       end
-   end
- end   
-   return true
- end
-  
- def has_container_started?(container_name)
-   completed_flag_file= SysConfig.RunDir + "/containers/" + container_name + "/run/flags/startup_complete"
-      return File.exist?(completed_flag_file)
- end
- def has_service_started?(service_name)
-   completed_flag_file= SysConfig.RunDir + "/services/" + service_name + "/run/flags/startup_complete"
+      if service.is_running? != true
+        if service.has_container? == true
+          if service.is_active? == true
+            if service.unpause_container == false
+              @last_error = "Failed to unpause " + service_name
+              return false
+            end
+          elsif service.start_container == false
+            @last_error = "Failed to start " + service_name
+            return false
+          end
+        elsif service.create_container == false
+          @last_error = "Failed to create " + service_name
+          return false
+        end
+      end
+      retries=0
+
+      while  has_service_started?(service_name) == false
+        sleep 10
+        retries+=1
+        if retries >3
+          log_error_mesg("Time out in waiting for Service Dependancy " + service_name + " to start ",service_name)
+
+          return false
+        end
+      end
+    end
+    return true
+  end
+
+  def has_container_started?(container_name)
+    completed_flag_file= SysConfig.RunDir + "/containers/" + container_name + "/run/flags/startup_complete"
     return File.exist?(completed_flag_file)
-   
- end
- 
- def check_system_api_result(result)
-   if result == nil || result == false
-     @last_error = @system_api.last_error.to_s[0,128]
-   end
-   return result
-end
- 
-def check_sm_result(result)
-   if result == nil || result.is_a?(FalseClass)
-     sm = loadServiceManager()
-     @last_error = sm.last_error
-   end
-   return result 
- end    
+  end
+
+  def has_service_started?(service_name)
+    completed_flag_file= SysConfig.RunDir + "/services/" + service_name + "/run/flags/startup_complete"
+    return File.exist?(completed_flag_file)
+  end
+
+  def check_system_api_result(result)
+    if result == nil || result == false
+      @last_error = @system_api.last_error.to_s[0,128]
+    end
+    return result
+  end
+
+  def check_sm_result(result)
+    if result == nil || result.is_a?(FalseClass)
+      sm = loadServiceManager()
+      @last_error = sm.last_error
+    end
+    return result
+  end
 
   protected
 
