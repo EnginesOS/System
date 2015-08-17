@@ -86,7 +86,7 @@ class SysConfig
   @@EnginesSystemUpdatedFlag="/opt/engines/run/system/flags/update_engines_run"
   @@EnginesSystemUpdatingFlag="/opt/engines/run/system/flags/update_engines_running"
   @@SystemUpdatedFlag="/opt/engines/run/system/flags/update_run"
-  @@SystemUpdatinFlag="/opt/engines/run/system/flags/update_running"
+  @@SystemUpdatingFlag="/opt/engines/run/system/flags/update_running"
   @@EnginesSystemRebootNeededFlag="/opt/engines/run/system/flags/reboot_required"
   @@SystemRebootingFlag="/opt/engines/run/system/flags/engines_rebooting"
   
