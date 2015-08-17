@@ -27,6 +27,9 @@ class SystemRegistry
 #  def  find_engine_services(params)
 #    test_result(send_request("find_engine_services",params))
 #  end
+  def  remove_from_managed_engines_registry(params)
+    test_result(send_request("remove_from_managed_engines_registry",params))
+  end
   
   def find_engine_service_hash(params)
     test_result(send_request("find_engine_service_hash",params))

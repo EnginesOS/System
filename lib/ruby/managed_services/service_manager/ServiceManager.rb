@@ -160,6 +160,7 @@ class ServiceManager
           log_error_mesg("Failed to remove service ",service)
           return false
         end
+        @system_registry.remove_from_managed_engines_registry(service)
       else
         if orphanate_service(service) == false
           log_error_mesg("Failed to orphan service ",service)
@@ -169,7 +170,11 @@ class ServiceManager
     end
     return true
   end
-
+  
+  def rm_remove_engine(params)
+    test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
+  end
+  
   #def find_engine_services(params)
   #  @system_registry.find_engine_services(params)
   #end

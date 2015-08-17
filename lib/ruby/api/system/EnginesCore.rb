@@ -795,9 +795,8 @@ class EnginesCore
           return false
     end    
     if engine.delete_image == true
-      sm = loadServiceManager
-      
-      if sm.() == true
+      sm = loadServiceManager      
+      if sm.rm_remove_engine(params) == true
       return true
       else
         log_error_mesg("Failed to remove Engine from engines registry "+sm.last_error.to_s,params)
