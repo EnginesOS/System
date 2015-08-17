@@ -9,9 +9,7 @@ class SystemApi
     begin
       cid = read_container_id(container)
       container.container_id=(cid)
-
       stateDir = container_state_dir(container)
-      #=SysConfig.CidDir + "/"  + container.ctype + "s/" + container.container_name
       if File.directory?(stateDir) ==false
         Dir.mkdir(stateDir)
         if  Dir.exists?(stateDir + "/run") == false
@@ -21,14 +19,12 @@ class SystemApi
         FileUtils.chown_R(nil,"containers",stateDir + "/run")
         FileUtils.chmod_R("u+r",stateDir + "/run")
       end
-
       log_dir = container_log_dir(container)
       if File.directory?(log_dir) ==false
-        p :log_dir
+        p :mk_log_dir
         p log_dir
         Dir.mkdir(log_dir)
       end
-
       if container.is_service?
         if File.directory?(stateDir + "/configurations") ==false
           Dir.mkdir(stateDir + "/configurations/")
@@ -37,13 +33,10 @@ class SystemApi
           Dir.mkdir(stateDir + "/configurations/default")
         end
       end
-
       return save_container(container)
-
     rescue Exception=>e
       container.last_error=("Failed To Create " + e.to_s)
       SystemUtils.log_exception(e)
-
       return false
     end
   end
@@ -79,7 +72,6 @@ class SystemApi
     rescue Exception=>e
       container.last_error="Failed To remove cid file" + e.to_s
       SystemUtils.log_exception(e)
-
       return false
     end
   end
@@ -109,16 +101,12 @@ class SystemApi
     rescue Exception=>e
       container.last_error=( "Failed To delete cid " + e.to_s)
       SystemUtils.log_exception(e)
-
       return false
     end
   end
 
   def delete_container_configs(container)
     clear_error
-
-    #       stateDir = container_state_dir(container) + "/running.yaml"
-    #       File.delete(stateDir)
     cidfile  = SysConfig.CidDir + "/" + container.container_name + ".cid"
     if File.exists?(cidfile)
       File.delete(cidfile)
@@ -126,22 +114,17 @@ class SystemApi
     cmd = "docker rm volbuilder"
     retval =  SystemUtils.run_system(cmd)
     cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/" + container.container_name + "/:/client/state:rw  -v /var/log/engines/containers/" + container.container_name + ":/client/log:rw    -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh state logs"
-    p :cleanup_cmd
-    p cmd
     retval =  SystemUtils.run_system(cmd)
     cmd = "docker rm volbuilder"
     retval =  SystemUtils.run_system(cmd)
-
     if retval == true
       FileUtils.rm_rf(container_state_dir(container))
       return true
     else
       container.last_error=("Failed to Delete state and logs:" + retval.to_s)
-
       SystemUtils.log_error_mesg("Failed to Delete state and logs:" + retval.to_s ,container)
       return false
     end
-
   rescue Exception=>e
     container.last_error=( "Failed To Delete " )
     SystemUtils.log_exception(e)
@@ -158,7 +141,6 @@ class SystemApi
 
   def get_build_report(engine_name)
     clear_error
-
     stateDir=SysConfig.RunDir + "/containers/" + engine_name
     if File.exists?(stateDir  + "/buildreport.txt")
       return File.read(stateDir  + "/buildreport.txt")
@@ -189,27 +171,19 @@ class SystemApi
       #FIXME
       api = container.core_api
       container.core_api = nil
-
       last_result = container.last_result
       last_error = container.last_error
-
       #   save_last_result_and_error(container)
-
       container.last_result=""
       container.last_error=""
-
       serialized_object = YAML::dump(container)
-
       container.core_api = api
       container.last_result = last_result
       container.last_error = last_error
-
       stateDir = container_state_dir(container)
       if Dir.exist?(stateDir) == false
         FileUtils.mkdir_p(stateDir)
-      end
-        
-
+      end        
       statefile=stateDir + "/running.yaml"
       # BACKUP Current file with rename
       if File.exists?(statefile)
@@ -295,7 +269,6 @@ class SystemApi
           ret_val.store(:limit ,  "No Container")
         end
       end
-
       return ret_val
     rescue  Exception=>e
       SystemUtils.log_exception(e)
@@ -316,7 +289,6 @@ class SystemApi
 
   def set_engine_web_protocol_properties(engine, params)
     clear_error
-
     begin
       engine_name = params[:engine_name]
       protocol = params[:http_protocol]
@@ -324,7 +296,6 @@ class SystemApi
         p params
         return false
       end
-
       SystemUtils.debug_output("Changing protocol to _",  protocol )
       if protocol.include?("HTTPS only")
         engine.enable_https_only
@@ -333,7 +304,6 @@ class SystemApi
       elsif protocol.include?("HTTPS and HTTP")
         engine.enable_http_and_https
       end
-
       return true
     rescue  Exception=>e
       SystemUtils.log_exception(e)
@@ -347,10 +317,7 @@ class SystemApi
       engine_name = params[:engine_name]
       hostname = params[:host_name]
       domain_name = params[:domain_name]
-
       SystemUtils.debug_output("Changing Domainame to " , domain_name)
-
-      #      if container.hostname != hostname || container.domain_name != domain_name
       saved_hostName = container.hostname
       saved_domainName =  container.domain_name
       SystemUtils.debug_output("Changing Domainame to " , domain_name)
@@ -358,18 +325,6 @@ class SystemApi
       container.set_hostname_details(hostname,domain_name)
       save_container(container)
       container.add_nginx_service
-      #          nginx_service =  EnginesOSapi::ServicesModule.loadManagedService("nginx",self)
-      #          nginx_service.remove_consumer(container)
-      #
-      #          dns_service = EnginesOSapi::ServicesModule.loadManagedService("dns",self)
-      #          dns_service.remove_consumer(container)
-      #
-      #          dns_service.add_consumer(container)
-      #          nginx_service.add_consumer(container)
-      #          save_container(container)
-
-      #        return true
-      #      end
       return true
     rescue  Exception=>e
       SystemUtils.log_exception(e)
@@ -421,7 +376,6 @@ class SystemApi
   def get_system_load_info
     clear_error
     ret_val = Hash.new
-
     begin
       loadavg_info = File.read("/proc/loadavg")
       values = loadavg_info.split(" ")
@@ -439,7 +393,6 @@ class SystemApi
       ret_val[:running] = -1
       ret_val[:idle] = -1
       return ret_val
-
     rescue Exception=>e
       SystemUtils.log_exception(e)
       return false
@@ -474,22 +427,17 @@ class SystemApi
     end
     begin
       yam_file_name = SysConfig.RunDir + "/containers/" + engine_name + "/running.yaml"
-
       if File.exists?(yam_file_name) == false
-
         log_error("no such file " + yam_file_name )
         return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
-
       yaml_file = File.open(yam_file_name)
       managed_engine = ManagedEngine.from_yaml( yaml_file,@engines_api)
-
       if(managed_engine == nil || managed_engine == false)
         p :from_yaml_returned_nil
         return false # failed(yam_file_name,"Failed to Load configuration:","Load Engine")
       end
       return managed_engine
-
     rescue Exception=>e
       if engine_name != nil
         if managed_engine !=nil
@@ -506,7 +454,6 @@ class SystemApi
 
   def build_running_service(service_name,service_type_dir)
     config_template_file_name = service_type_dir + service_name + "/config.yaml"
-
     if File.exists?(config_template_file_name) == false
       return false
     end
@@ -514,14 +461,11 @@ class SystemApi
     system_access = SystemAccess.new
     templator = Templater.new(system_access,nil)
     running_config = templator.process_templated_string(config_template)
-
     yam1_file_name =service_type_dir + service_name + "/running.yaml"
     yaml_file = File.new(yam1_file_name,"w+")
     yaml_file.write(running_config)
     yaml_file.close
-
     return true
-
   end
 
   def loadSystemService(service_name)
@@ -539,13 +483,11 @@ class SystemApi
         return false
       end
       yam1_file_name = service_type_dir + service_name + "/running.yaml"
-
       if File.exists?(yam1_file_name) == false
         if  build_running_service(service_name,service_type_dir) == false
           return false # return failed(yam_file_name,"No such configuration:","Load Service")
         end
       end
-
       yaml_file = File.open(yam1_file_name)
       # managed_service = YAML::load( yaml_file)
       if service_type_dir == "/sytem_services/"
@@ -558,7 +500,6 @@ class SystemApi
         log_error("load_managed_servic_failed loading:" + yam1_file_name.to_s + " service name: " + service_name.to_s )
         return false # return EnginsOSapiResult.failed(yam_file_name,"Fail to Load configuration:","Load Service")
       end
-
       return managed_service
     rescue Exception=>e
       if service_name != nil
@@ -632,15 +573,10 @@ class SystemApi
     clear_error
     begin
       dir = container_state_dir(container)
-      #
-      #remove startup only
-      #latter have function to reset subs and other flags
-
       if File.exists?(dir + "/startup_complete")
         File.unlink(dir + "/startup_complete")
       end
       return true
-
     rescue Exception=>e
       SystemUtils.log_exception(e)
       return false
@@ -661,7 +597,6 @@ class SystemApi
 
   def update_public_key(key)
     res =  SystemUtils.execute_command("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/update_access_system_pub.sh " + key)
-
   end
 
   def container_state_dir(container)
@@ -673,13 +608,11 @@ class SystemApi
   end
 
   def restart_system
-
     res = Thread.new { system("ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@172.17.42.1 /opt/engines/bin/restart_system.sh") }
     #FIXME check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     if res.status == "run"
       return true
     end
-
     return false
 
   end
@@ -690,9 +623,7 @@ class SystemApi
     if res.status == "run"
       return true
     end
-
     return false
-
   end
 
   def update_engines_system_software
@@ -702,9 +633,7 @@ class SystemApi
     if res.status == "run"
       return true
     end
-
     return false
-
   end
 
   def update_domain(params)
@@ -712,11 +641,9 @@ class SystemApi
     if  DNSHosting.update_domain(old_domain_name,params) == false
       return  false
     end
-
     if params[:self_hosted] == false
       return true
     end
-
     service_hash = Hash.new
     service_hash[:parent_engine]="system"
     service_hash[:variables] = Hash.new
@@ -740,14 +667,10 @@ class SystemApi
       @engines_api.register_non_persistant_service(service_hash)
       return true
     end
-
     return false
-
   rescue Exception=>e
-
     log_exception_and_fail("Update self hosted domain ",e)
     return false
-
   end
 
   def add_domain params
@@ -757,7 +680,6 @@ class SystemApi
     if params[:self_hosted] == false
       return true
     end
-
     service_hash = Hash.new
     service_hash[:parent_engine]="system"
     service_hash[:variables] = Hash.new
@@ -784,10 +706,7 @@ class SystemApi
     return false
   end
 
-  #
-  #    def reload_dns
-  #    return @core_api.reload_dns
-  #  end
+ 
 
   def remove_domain params
     if DNSHosting.rm_domain(params) == false
@@ -805,7 +724,6 @@ class SystemApi
     service_hash[:container_type]="system"
     service_hash[:publisher_namespace]="EnginesSystem"
     service_hash[:type_path]="dns"
-
     if  @engines_api.dettach_service(service_hash) == true
       @engines_api.deregister_non_persistant_service(service_hash)
       @engines_api.delete_service_from_engine_registry(service_hash)
@@ -816,12 +734,6 @@ class SystemApi
     log_exception(e)
     return false
   end
-
-  #  def list_self_hosted_domains
-  #    return DNSHosting.list_self_hosted_domains( )
-  #  rescue Exception=>e
-  #    return log_exception_and_fail("list self hosted domain ",e)
-  #  end
 
   def list_domains
     return DNSHosting.list_domains( )
@@ -845,7 +757,6 @@ class SystemApi
       cmd = cmd + " 2>&1"
       res= %x<#{cmd}>
       SystemUtils.debug_output("run System", res)
-
       #FIXME should be case insensitive The last one is a pure kludge
       #really need to get stderr and stdout separately
       if $? == 0 && res.downcase.include?("error") == false && res.downcase.include?("fail") == false && res.downcase.include?("could not resolve hostname") == false && res.downcase.include?("unsuccessful") == false

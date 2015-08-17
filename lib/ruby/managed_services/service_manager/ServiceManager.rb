@@ -151,7 +151,7 @@ class ServiceManager
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
-  def rm_remove_engine(params)
+  def rm_remove_engine_services(params)
     clear_last_error
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
     services.each do | service |

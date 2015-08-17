@@ -345,16 +345,11 @@ class EnginesOSapi
       return failed(params[:engine_name],"no Engine","Delete")
     end
     #    params[:container_type] = "container"
-    if  @core_api.delete_image_dependancies(params) == true
-      if engine.delete_image() == true
+    if  @core_api.delete_engine(params) == true
         return success(params[:engine_name],"Delete")
-      end
-    else
-      SystemUtils.log_error_mesg("failed to delete image dependancies ",params)
-      return failed(params[:engine_name],last_api_error, "Delete Image Dependancies")
-    end
-    SystemUtils.log_error_mesg("failed to delete image ",params)
-    return  failed(params[:engine_name],last_api_error, "Delete Image")
+      end    
+      SystemUtils.log_error_mesg("failed to delete image  ",params)
+      return failed(params[:engine_name],last_api_error, "Delete Image ")
   rescue Exception=>e
     return log_exception_and_fail("Delete",e)
   end
