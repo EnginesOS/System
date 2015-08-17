@@ -549,6 +549,8 @@ class ServiceManager
   end
 
   def orphanate_service(params)
+    p :oprhanicate
+    p  params
     test_registry_result(@system_registry.orphanate_service(params))
   end
 
