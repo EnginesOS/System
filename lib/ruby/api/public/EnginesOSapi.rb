@@ -363,11 +363,11 @@ class EnginesOSapi
       engine.destroy_container
     end
     #      p "reinstalling " + engine_name
-    if @core_api.reinstall_engine(engine) == false
-      return  failed(engine_name,last_api_error, "Reinstall Image")
-    end
-    return success(engine_name,"Reinstall")
-
+#    if @core_api.reinstall_engine(engine) == false
+#      return  failed(engine_name,last_api_error, "Reinstall Image")
+#    end
+#    return success(engine_name,"Reinstall")
+    @core_api.reinstall_engine(engine) 
   end
 
   def createEngine engine_name
