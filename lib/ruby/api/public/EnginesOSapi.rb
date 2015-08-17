@@ -1,11 +1,8 @@
-
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
-
 require 'objspace'
 
 require_relative "EnginesOSapiResult.rb"
 require_relative "FirstRunWizard.rb"
-
 
 class EnginesOSapi
   require_relative "BuildController.rb"
@@ -24,13 +21,15 @@ class EnginesOSapi
     e_str = SystemUtils.log_exception(e)
     return failed("Exception",e_str,cmd)
   end
+
   def needs_reboot?
     @core_api.needs_reboot?
   end
+
   def first_run_required?
     return FirstRunWizard.required?
   end
-  
+
   def engines_system_has_updated?
     if File.exists?(SysConfig.EnginesSystemUpdatedFlag)
       File.delete(SysConfig.EnginesSystemUpdatedFlag)
@@ -38,34 +37,33 @@ class EnginesOSapi
     end
     return false
   end
+
   def is_engines_system_updating?
-     return File.exists?(SysConfig.EnginesSystemUpdatingFlag)
-   end
-   
+    return File.exists?(SysConfig.EnginesSystemUpdatingFlag)
+  end
+
   def base_system_has_updated?
-     if File.exists?(SysConfig.SystemUpdatedFlag)
-       File.delete(SysConfig.SystemUpdatedFlag)
-       return true
-     end
-     return false
-   end
-   def is_base_system_updating?
-      return File.exists?(SysConfig.SystemUpdatingFlag)     
-   end
-   
+    if File.exists?(SysConfig.SystemUpdatedFlag)
+      File.delete(SysConfig.SystemUpdatedFlag)
+      return true
+    end
+    return false
+  end
+
+  def is_base_system_updating?
+    return File.exists?(SysConfig.SystemUpdatingFlag)
+  end
+
   def is_rebooting?
     File.exists?(SysConfig.SystemRebootingFlag)
   end
-  
-  
-  
+
   ##Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
     p :building_with
     p params
     engine = build_controller.build_engine(params)
-    p :Built
     if engine == false
       failed("Build Engine:",build_controller.last_error)
     end
@@ -74,54 +72,51 @@ class EnginesOSapi
     end
     return success(params[:engine_name],"Build Engine")
   end
-  
+
   def buildEngine(repository,host,domain_name,environment)
     build_controller = BuildController.new(@core_api)
-       engine = build_controller.buildEngine(repository,host,domain_name,environment)
-       if engine == false
-         failed("Build Engine:",build_controller.last_error)
-       end
-       if engine.is_active? == false
-         return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
-       end
-       return success(params[:engine_name],"Build Engine")
+    engine = build_controller.buildEngine(repository,host,domain_name,environment)
+    if engine == false
+      failed("Build Engine:",build_controller.last_error)
+    end
+    if engine.is_active? == false
+      return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
+    end
+    return success(params[:engine_name],"Build Engine")
   end
-   
+
   def rebuild_engine_container engine_name
-      engine = loadManagedEngine engine_name
-      if  engine.is_a?(EnginesOSapiResult)
-        return failed(engine_name,"no Engine","Load Engine Blueprint")
-      end
-      state = engine.read_state
-      if state == "running" || state == "paused"
-        return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
-      end
-      retval = engine.rebuild_container
-      if retval.is_a?(ManagedEngine)
-        success(engine_name,"Rebuild Engine Image")
-      else
-        puts "rebuild error"
-        p engine.last_error
-        return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
-  
-      end
-    rescue Exception=>e
-      return log_exception_and_fail("Rebuild Engine",e)
+    engine = loadManagedEngine engine_name
+    if  engine.is_a?(EnginesOSapiResult)
+      return failed(engine_name,"no Engine","Load Engine Blueprint")
     end
-  
-    def build_engine_from_docker_image(params)
+    state = engine.read_state
+    if state == "running" || state == "paused"
+      return failed(engine_name,"Cannot rebuild a container in State:" + state,"Rebuild Engine")
+    end
+    retval = engine.rebuild_container
+    if retval.is_a?(ManagedEngine)
+      success(engine_name,"Rebuild Engine Image")
+    else
+      puts "rebuild error"
+      p engine.last_error
+      return failed(engine_name,"Cannot rebuild Image:" + engine.last_error,"Rebuild Engine")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("Rebuild Engine",e)
+  end
+
+  def build_engine_from_docker_image(params)
     p params
-      return success(engine_name,"Build Engine from Docker Image")
-  
-    rescue Exception=>e
-      return log_exception_and_fail("Build Engine from dockerimage",e)
-    end
-    
-    
+    return success(engine_name,"Build Engine from Docker Image")
+  rescue Exception=>e
+    return log_exception_and_fail("Build Engine from dockerimage",e)
+  end
+
   def get_engine_build_report(engine_name)
     return   @core_api.get_build_report(engine_name)
   end
-  
+
   def generate_private_key
     key = String.new()
     key = "-----BEGIN RSA PRIVATE KEY-----77La9gRav1qSbDAi9NNIbTH3GQ3vg7uLKGSOTFoyJ/TwQvwccJTFAoGBAMkKu/immL9ZMsheOQq1XlSglnbMk9wS4KphsQKBCou5lZdE9pWPHvYWuhRK9LW8g4HSS7RIQkm5B5H5b5A9RyJZ40bHy59S0R/lI4VTFi6lmpTr9d3ScVCAi/YdPkdeFS8RM5Q7F1OPg9I84zP1XmBPOvG5M86tAnCLa0PS7fCvAoGAOnJUeEkPoym4itA6fIq0OuM8+qtZ5wNVUvDD3QmfOIIsNiuNA69UtAYocwuQKwZDUb7PkOvWoIGtwA90QJDnr2UFDCAxaOuqzkL6p7xt2tn9llGYzeuyrO2rWeCIZ4UMokLonqnnLwP+0lV7eJys2HQ9MIIEoQIBAAKCAQEAsn9KZsQrePI+gxAxAizmDzXdsP0xw//f9rbfxZQNjI7kJsDx61UPJg/uDQ0VvQclll06UgN4+3YhbCInbDgv4T9SSOg7YD6fKnQiEuhLJxOCfoVo+NUebeEJz+NpCdcTyUdJGwjnbTNe6Jo/CgG0eyraDo4yPWzD4Zvt8R1G1WpQ5mOP9U2gd+9ThMm5ng1U9iWEtV/hq7Cn0UEJzOvKmKSvGEGBrRgSkwXmB1U4Yvs5BJoLtF6xyMn3uc+pZA4xZYH5scyplEatIEJlQZCnFeAbvfCl3QRUOipOmwDgv4A5VygK+IKdgmraKA+wyPZjp2bt4Gu+fPH4YRnTUM9iqwIBIwKCAQBbzG9oDR2r6kwI48Fu1UMdw+5bBd8UV7UCie9s7Q5ISXymN1fYHR27za2gT99LRYELgGci3TbnuRiAwRuWvc97J+EszzR6o9zUATYYWjVHS9y2GLmkitxzBgUL1AoiUVqiB2ds/UPRwqXWtboFJXLDABhfQdCx4Co5g2RtX4ODsii/gV0+lYU4tV3SdlmOJL2YuatqKiY5S0or9YuBfoq+0+kOP7Pj8/cPCUtCcGIr1C/A0kzyNXgpUZ5EBxbGPzs778Aas6h2N00GKTJSPrQfW8g90wWNIMVQ7BqrfygSDycpIYNlYX7bVJnrPTG3IF9wwATSTUWhmdaEnbmCkdDbAoGBAONK1rdVA+xM6hvUcatwvOUB7SQoloJiS9DEwM1eTr9Pj31UB/Hiuy3fDxS7MKdRPq+tJzOVJjdNo7IDNd6lTBveMBK2FXuUe8zLleGj5BozS/M9Uj0/RRJGljM4NHNMGmmq0x1BhVcCgYEAvY3HLEVOMMHQy4wJ5YZu4hPBEOzF7MFXfBL3WiHlXytSh0+mqkUdMSte/TC61zy2gbemdsfJeLXFTx5h38S/aYfzi+DzL9G93D5x8rwNmbIVZ9cppULCnFvxrYlJWTtzDx7Y3De26GK+Hf7k2TfOAwjfzffDIfOUlf/LiRdVX0UCgYAlc3Fbf3jh26jl/VDlvgPgzpv4I21pFCNKDDMjDAKdc46vEylIOTX98BMFRK2XPadZ6Z3dmo7u9rVA68NK03PJhfQLG63y/H8EJMeBrMYAaCQpNzdn//+DHClZhoF5ZGhuClzUjaVbreaxdsJ63Q2fNI23a5EOAeZucGplR5Vk8Q==\-----END RSA PRIVATE KEY-----"
@@ -138,7 +133,7 @@ class EnginesOSapi
 
   def get_system_ca
     ca_string= File.read(SysConfig.EnginesInternalCA)
-   return ca_string
+    return ca_string
   rescue Exception=>e
     return  failed("Failed to load CA",e.to_s)
 
@@ -187,7 +182,6 @@ class EnginesOSapi
   end
 
   def set_first_run_parameters params_from_gui
-
     params =params_from_gui.dup
     p params
     first_run = FirstRunWizard.new(params)
@@ -199,12 +193,9 @@ class EnginesOSapi
       p first_run.error.to_s
       return failed("Gui","First Run",first_run.error.to_s)
     end
-
   rescue Exception=>e
     SystemUtils.log_exception(e)
-
     return failed("Gui","First Run","failed")
-
   end
 
   def last_api_error
@@ -218,7 +209,6 @@ class EnginesOSapi
   end
 
   def list_apps()
-
     return @core_api.list_managed_engines
   rescue Exception=>e
     return log_exception_and_fail("list_apps",e)
@@ -354,7 +344,7 @@ class EnginesOSapi
       SystemUtils.log_error_mesg("no Engine to delete",params)
       return failed(params[:engine_name],"no Engine","Delete")
     end
-#    params[:container_type] = "container"
+    #    params[:container_type] = "container"
     if  @core_api.delete_image_dependancies(params) == true
       if engine.delete_image() == true
         return success(params[:engine_name],"Delete")
@@ -392,8 +382,6 @@ class EnginesOSapi
     end
     retval =   engine.create_container()
     if retval == false
-      #      p failed(engine_name,engine.last_error,"Create")
-
       return failed(engine_name,engine.last_error,"Create")
     end
     return success(engine_name,"Create")
@@ -415,18 +403,6 @@ class EnginesOSapi
     return log_exception_and_fail("Restart",e)
   end
 
-#  def registerEngineWebSite engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","Register Engine Web Site")
-#    end
-#    retval =  engine.register_site()
-#    if retval != true
-#      return failed(engine_name,retval,"Register Engine Web Site")
-#    end
-#    return success(engine_name,"Register Engine Web Site")
-#  end
-
   def restart_system
     if @core_api.restart_system == true
       return success("System","System Restarting")
@@ -437,7 +413,6 @@ class EnginesOSapi
 
   def update_engines_system_software
     if @core_api.update_engines_system_software == true
-      p :update_engines_system_software
       return success("System","Engines System Updating")
     else
       return failed("System","not permitted","Engines System Updating")
@@ -446,26 +421,11 @@ class EnginesOSapi
 
   def update_system
     if @core_api.update_system == true
-      p :update_system
       return success("System","System Updating")
     else
       return failed("System","not permitted","Updating")
     end
   end
-
-#  def deregisterEngineWebSite engine_name
-#    engine = loadManagedEngine engine_name
-#    if  engine.is_a?(EnginesOSapiResult)
-#      return failed(engine_name,"no Engine","DeRegister Engine Web Site")
-#    end
-#    retval =   engine.deregister_site()
-#    if retval != true
-#      return failed(engine_name,retval,"DeRegister Engine Web Site")
-#    end
-#    return success(engine_name,"DeRegister Engine Web Site")
-#  rescue Exception=>e
-#    return log_exception_and_fail("DeRegister Engine Web Site",e)
-#  end
 
   def get_engine_blueprint engine_name
     engine = loadManagedEngine engine_name
@@ -483,12 +443,7 @@ class EnginesOSapi
 
   #not needed as inherited ???
   def read_state container
-
     retval =   container.read_state()
-    # if retval == false
-    #  return failed(container.container_name,"Failed to ReadState","read state")
-    #end
-    #return success(container.container_name,"read state")
     retval
   rescue Exception=>e
     return log_exception_and_fail("read_start",e)
@@ -533,25 +488,6 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("get_container_network_metrics",e)
   end
-#
-#  def get_volumes
-#    vol_service = EnginesOSapi.loadManagedService("volmanager",@core_api)
-#    if vol_service == nil
-#      return failed("volmanager","No Such Service","get_volumes")
-#    end
-#    return vol_service.consumers
-#  rescue Exception=>e
-#    return log_exception_and_fail("get_volumes",e)
-#  end
-#
-#  def get_databases
-#    db_service = EnginesOSapi.loadManagedService("mysql_server",@core_api)
-#    if db_service == nil
-#      return failed("mysql_server","No Such Service","get_databases")
-#    end
-#    return db_service.consumers
-#  end
-
 
   def set_engine_runtime_properties(params)
     if @core_api.set_engine_runtime_properties(params) ==true
@@ -569,8 +505,6 @@ class EnginesOSapi
   end
 
   def set_engine_network_properties(params)
-    p :set_engine_network_properties
-    p params
     engine = loadManagedEngine(params[:engine_name])
     if engine == nil || engine.instance_of?(EnginesOSapiResult)
       if engine == nil
@@ -586,13 +520,6 @@ class EnginesOSapi
       return failed("set_engine_network_details",last_api_error,"set_engine_network_details")
     end
   end
-
-#  def create_ssl_certificate(params)
-#    p params
-#    #params[:default_cert]
-#    #""default_domain"=>"engines.demo", "ssl_person_name"=>"test", "ssl_organisation_name"=>"test", "ssl_city"=>"test", "ssl_state"=>"test", "ssl_country"=>"AU"}
-#    return success(params[:domain_name], "Add self hosted ssl cert domain")
-#  end
 
   def update_domain(params)
     if @core_api.update_domain(params) == false
@@ -623,7 +550,7 @@ class EnginesOSapi
   rescue Exception=>e
     return log_exception_and_fail("Add self hosted domain " + params.to_s,e)
   end
-  
+
   def list_domains
     return @core_api.list_domains( )
   rescue Exception=>e
@@ -639,16 +566,17 @@ class EnginesOSapi
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name
-    p mesg
+
     p cmd
-    mesg = mesg.to_s + ":" + last_api_error.to_s 
+    mesg = mesg.to_s + ":" + last_api_error.to_s
+    p mesg
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
   def  self.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
     p item_name
-    p mesg
+    p mesg + ":" + last_api_error.to_s
     p cmd
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
@@ -670,429 +598,385 @@ class EnginesOSapi
       return failed("System Update",@core_api.last_error ,"Update")
     end
     return success("System Update", res)
-  end  
-  
+  end
+
   def createService service_name
-        service =getManagedService(service_name)
-        if service == nil
-          return  failed(service_name,service.last_error,"Create Service")
-        end 
-        if service.is_a?(EnginesOSapiResult)
-          return service
-        end  
-        
-        retval =   service.create_service()
-        if retval == false
-          return failed(service_name,service.last_error,"Create Service")
-        end
-        return success(service_name,"Create Service")
-      rescue Exception=>e
-        return log_exception_and_fail("Create Service",e)
-      end
-    
-      def recreateService service_name
-        service =getManagedService(service_name)
-        if service == nil
-          return failed(service_name,"No Such Service","Recreate Service")
-        end  
-        if service.is_a?(EnginesOSapiResult)
-          return service
-        end
-    
-        retval =   service.recreate()
-        if retval == false
-          return failed(service_name,service.last_error,"Recreate Service")
-        end
-        return success(service_name,"Recreate Service")
-      rescue Exception=>e
-        return log_exception_and_fail("Recreate Service",e)
-      end
-      
-    def list_services()
-      return @core_api.list_managed_services
-    rescue Exception=>e
-      return log_exception_and_fail("list_services",e)
+    service =getManagedService(service_name)
+    if service == nil
+      return  failed(service_name,service.last_error,"Create Service")
     end
-    
-    def getManagedServices()
-      return @core_api.getManagedServices()
-    rescue Exception=>e
-      return log_exception_and_fail("getManagedServices",e)
+    if service.is_a?(EnginesOSapiResult)
+      return service
     end
-    
-    def self.loadManagedService(service_name,core_api)
-       service = core_api.loadManagedService(service_name)
-       if service == false
-         return EnginesOSapi.failed(service_name,core_api.last_error ,"Load Service")
-       end
-       return service
-     rescue Exception=>e
-       return EnginesOSapi.log_exception_and_fail("LoadMangedService",e)
-     end
-   
-    def getManagedService(service_name)   
-       managed_service = @core_api.loadManagedService(service_name)       
-         if managed_service == nil
-          return failed(service_name,"Fail to Load configuration:","Load Service")
-       end
-       return managed_service
-     rescue Exception=>e
-       return log_exception_and_fail("getManagedService",e)
-     end
-     
-    def list_avail_services_for(object)
-      return @core_api.list_avail_services_for(object)
+    retval =   service.create_service()
+    if retval == false
+      return failed(service_name,service.last_error,"Create Service")
     end
-    
-    
-    def find_service_consumers(params)
-      p params
-      return @core_api.find_service_consumers(params)
+    return success(service_name,"Create Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Create Service",e)
+  end
+
+  def recreateService service_name
+    service =getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","Recreate Service")
     end
-    
-    def get_engine_persistant_services(params)
-      return @core_api.get_engine_persistant_services(params)
+    if service.is_a?(EnginesOSapiResult)
+      return service
     end
-    
-    #@returns [EnginesOSapiResult]
-    #expects a service_hash as @params
-    def attach_service(params)
-  
-      if  @core_api.attach_service(params) == true
-        success(params[:parent_engine],"attach service")
+    retval =   service.recreate()
+    if retval == false
+      return failed(service_name,service.last_error,"Recreate Service")
+    end
+    return success(service_name,"Recreate Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Recreate Service",e)
+  end
+
+  def list_services()
+    return @core_api.list_managed_services
+  rescue Exception=>e
+    return log_exception_and_fail("list_services",e)
+  end
+
+  def getManagedServices()
+    return @core_api.getManagedServices()
+  rescue Exception=>e
+    return log_exception_and_fail("getManagedServices",e)
+  end
+
+  def self.loadManagedService(service_name,core_api)
+    service = core_api.loadManagedService(service_name)
+    if service == false
+      return EnginesOSapi.failed(service_name,core_api.last_error ,"Load Service")
+    end
+    return service
+  rescue Exception=>e
+    return EnginesOSapi.log_exception_and_fail("LoadMangedService",e)
+  end
+
+  def getManagedService(service_name)
+    managed_service = @core_api.loadManagedService(service_name)
+    if managed_service == nil
+      return failed(service_name,"Fail to Load configuration:","Load Service")
+    end
+    return managed_service
+  rescue Exception=>e
+    return log_exception_and_fail("getManagedService",e)
+  end
+
+  def list_avail_services_for(object)
+    return @core_api.list_avail_services_for(object)
+  end
+
+  def find_service_consumers(params)
+    return @core_api.find_service_consumers(params)
+  end
+
+  def get_engine_persistant_services(params)
+    return @core_api.get_engine_persistant_services(params)
+  end
+
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
+  def attach_service(params)
+    if  @core_api.attach_service(params) == true
+      success(params[:parent_engine],"attach service")
+    else
+      return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
+    end
+  end
+
+  #@ retruns [SoftwareServiceDefinition]
+  #for type_path [String] and service_provider[String]
+  def get_service_definition(type_path,service_provider)
+    #Fixme ignoring service_provider
+    return SoftwareServiceDefinition.find(type_path,service_provider)
+  end
+
+  #@ returns [SoftwareServiceDefinition] with TEmplating evaluated
+  #requires keys :type_path and "publisher_namespace :parent_engine
+  def get_resolved_service_definition(service_hash)
+    return  @core_api.fillin_template_for_service_def(service_hash)
+  end
+
+  #@returns [EnginesOSapiResult]
+  #expects a service_hash as @params
+  def dettach_service(params)
+    if   @core_api.dettach_service(params)== true
+      success(params[:parent_engine].to_s,"detach service")
+    else
+      return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
+    end
+  end
+
+  #@ return [EnginesOSapiResult]
+  #@params service_hash
+  #this method is called to register the service hash with service
+  #nothing is written to the service registry
+  #effectivitly activating non persistant services
+  def register_attached_service(service_hash)
+    if register_attached_service(service_hash)
+      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
+    end
+    return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
+  end
+
+  #@ return [EnginesOSapiResult]
+  #@params service_hash
+  #this method is called to deregister the service hash from service
+  #nothing is written to the service resgitry
+  def deregister_attached_service(service_hash)
+    if  deregister_attached_service(service_hash).was_success
+      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
+    end
+    return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
+  end
+
+  #@ return [EnginesOSapiResult]
+  #@params service_hash
+  #this method is called to deregister the service hash from service
+  # and then to register the service_hash with the service
+  #nothing is written to the service resgitry
+  def reregister_attached_service(service_hash)
+    if  deregister_attached_service(service_hash).was_success
+      if register_attached_service(service_hash).was_success
+        return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
       else
-        return failed(params[:parent_engine],core_api.last_error ,params[:parent_engine])
+        return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in register_attached_service")
       end
     end
-    
-    #@ retruns [SoftwareServiceDefinition] 
-    #for type_path [String] and service_provider[String]
-    def get_service_definition(type_path,service_provider)
-        #Fixme ignoring service_provider
-        
-        return SoftwareServiceDefinition.find(type_path,service_provider)
-      end
-      
-      
-    #@ returns [SoftwareServiceDefinition] with TEmplating evaluated 
-    #requires keys :type_path and "publisher_namespace :parent_engine
-    def get_resolved_service_definition(service_hash)           
-        
-     return  @core_api.fillin_template_for_service_def(service_hash)  
-       end
-    #@returns [EnginesOSapiResult]
-    #expects a service_hash as @params
-      def dettach_service(params)
-        if   @core_api.dettach_service(params)== true
-          success(params[:parent_engine].to_s,"detach service")
-        else
-          return failed(params[:parent_engine].to_s,core_api.last_error ,params[:parent_engine].to_s)
-        end
-        end
-        
-      #@ return [EnginesOSapiResult]
-        #@params service_hash
-        #this method is called to register the service hash with service
-        #nothing is written to the service registry
-        #effectivitly activating non persistant services
-     def register_attached_service(service_hash)
-       if register_attached_service(service_hash)
-       return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
-       end
-       return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
-     end
-    #@ return [EnginesOSapiResult]
-      #@params service_hash
-      #this method is called to deregister the service hash from service
-      #nothing is written to the service resgitry   
-     def deregister_attached_service(service_hash)
-       if  deregister_attached_service(service_hash).was_success
-       return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
-       end
-       return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
-     end
-    #@ return [EnginesOSapiResult]
-        #@params service_hash
-        #this method is called to deregister the service hash from service
-       # and then to register the service_hash with the service
-        #nothing is written to the service resgitry   
-     def reregister_attached_service(service_hash)
-      if  deregister_attached_service(service_hash).was_success
-        if register_attached_service(service_hash).was_success    
-       return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
-        else
-          return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in register_attached_service")
-        end      
-      end
-       return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in deregister_attached_service")
-     end
-        
-      def get_managed_engine_tree
-        return @core_api.get_managed_engine_tree  
-      end
-    
-      def get_configurations_tree
-          return @core_api.get_configurations_tree
-      end
-      
-      def managed_service_tree
-        return fetch_managed_service_tree
-      end  
-      def fetch_managed_service_tree
-        p :managed_service_tree
-        return @core_api.managed_service_tree
-      end
-      
-    def get_orphaned_services_tree
+    return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in deregister_attached_service")
+  end
+
+  def get_managed_engine_tree
+    return @core_api.get_managed_engine_tree
+  end
+
+  def get_configurations_tree
+    return @core_api.get_configurations_tree
+  end
+
+  def managed_service_tree
+    return fetch_managed_service_tree
+  end
+
+  def fetch_managed_service_tree
+    p :managed_service_tree
+    return @core_api.managed_service_tree
+  end
+
+  def get_orphaned_services_tree
     return @core_api.get_orphaned_services_tree
+  end
+
+  #@return  an [Array] of service_hashes regsitered against the Service named service name
+  #wrapper for gui programs calls get_registered_against_service(params)
+  def registered_engines_on_service(service_name)
+    service = getManagedService(service_name)
+    if service == nil || service.is_a?(EnginesOSapiResult)
+      return failed(service_name,"No Such Service","list registered Service")
     end
-    
-    #@return  an [Array] of service_hashes regsitered against the Service named service name
-    #wrapper for gui programs calls get_registered_against_service(params)
-    def registered_engines_on_service(service_name)
-      service = getManagedService(service_name)
-      if service == nil || service.is_a?(EnginesOSapiResult)
-        return failed(service_name,"No Such Service","list registered Service")
-      end
-      params =  Hash.new
-      params[:type_path]= service.type_path
-        params[:publisher_namespace]= service.publisher_namespace
-      return @core_api.get_registered_against_service(params)
-      
-    end  
-      
-    #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-      def get_registered_against_service(params)
-        return @core_api.get_registered_against_service(params)
-      end
-  
-      #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
-      #:path_type :publisher_namespace    
-      def get_active_persistant_services(params)
-        return @core_api.get_active_persistant_services(params)
-      end
-      
-    #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
-    #:path_type :publisher_namespace      
-      def get_orphaned_services(params)
-        return @core_api.get_orphaned_services(params)
-      end
-      
-    #@ retruns [SoftwareServiceDefinition] 
-     #for params :type_path :publisher_namespace
-      def software_service_definition(params)
-        retval = @core_api.software_service_definition(params)
-        if retval != nil
-          return retval
-        end 
-        p :error_software_service_definition 
-        p params
-         return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
-      end
-      
-     def templated_software_service_definition(params)
-      # ret_val = software_service_definition(params)
-       p :pre_template
-       p params
-       ret_val =   @core_api.fillin_template_for_service_def(params)
-       p "post_template"
-       p ret_val
-       return ret_val
-     end
-  
-      def list_services_for(object)
-        return @core_api.list_services_for(object)
-      end    
-      
-    #service params and component objectname / and component name and parent name    
-      def attach_subservice(params)
-        p :attach_subservice
-        p params
-        
-        if @core_api.attach_subservice(params) == true
-          return success(params[:service_handle],"attach subservice")    
-         else
-          SystemUtils.log_error_mesg("attach subservice",params)
-                return failed(params[:service_handle],@core_api.last_error,"attach subservice")
-        end     
-      end
-      
-      def dettach_subservice(params)
-        p :dettach_subservice
-             p params
-        if @core_api.dettach_subservice(params) == true
-               return success(params[:service_handle],"attach subservice")    
-              else
-               SystemUtils.log_error_mesg("attach subservice",params)
-                     return failed(params[:service_handle],@core_api.last_error,"attach subservice")
-             end
-      end
-      
-    
-    def delete_orphaned_service(params)
-      p :delete_orphaned_service
-      p params
-      p params.class.name
-      p :as_h
-      p params.to_h.to_s
-      if @core_api.remove_orphaned_service(params) == true
-        return success(params[:service_handle],"Delete Service")    
-       else
-        SystemUtils.log_error_mesg("Delete Orphan Service " + @core_api.last_error.to_s ,params)
-        return failed(params[:service_handle],@core_api.last_error,"Delete Orphan Service")
-      end
-     
-      rescue Exception=>e
-         return log_exception_and_fail("Orphan",e)
-     
+    params =  Hash.new
+    params[:type_path]= service.type_path
+    params[:publisher_namespace]= service.publisher_namespace
+    return @core_api.get_registered_against_service(params)
+
+  end
+
+  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  def get_registered_against_service(params)
+    return @core_api.get_registered_against_service(params)
+  end
+
+  #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  #:path_type :publisher_namespace
+  def get_active_persistant_services(params)
+    return @core_api.get_active_persistant_services(params)
+  end
+
+  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  #:path_type :publisher_namespace
+  def get_orphaned_services(params)
+    return @core_api.get_orphaned_services(params)
+  end
+
+  #@ retruns [SoftwareServiceDefinition]
+  #for params :type_path :publisher_namespace
+  def software_service_definition(params)
+    retval = @core_api.software_service_definition(params)
+    if retval != nil
+      return retval
     end
-    
-      def load_avail_services_for_type(typename)
-        return  @core_api.load_avail_services_for_type(typename)
-        
-      end
-      def list_attached_services_for(object_name,identifier)
-        SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
-        attached = @core_api.list_attached_services_for(object_name,identifier)
-  #      p :found_attached
-       # p attached
-         return @core_api.list_attached_services_for(object_name,identifier)
-       end
-  
-    def startService service_name
-       service = getManagedService(service_name)
-       if service == nil
-         return failed(service_name,"No Such Service","Start Service")
-       end
-   
-       if service.is_a?(EnginesOSapiResult)
-         return service
-       end
-   
-       retval = service.start_container()
-       if retval == false
-         return failed(service_name,service.last_error,"Start Service")
-       end
-       return success(service_name,"Start Service")
-     rescue Exception=>e
-       return log_exception_and_fail("Start Service",e)
-     end
-   
-     def  pauseService service_name
-       service = getManagedService(service_name)
-       if service == nil
-         return failed(service_name,"No Such Service","Pause Service")
-       end
-   
-       if service.is_a?(EnginesOSapiResult)
-         return service
-       end
-   
-       retval = service.pause_container()
-       if retval == false
-         return failed(service_name,service.last_error,"Pause Service")
-       end
-       return success(service_name,"Pause Service")
-     rescue Exception=>e
-       return log_exception_and_fail("Pause Service",e)
-     end
-   
-     def  unpauseService service_name
-       service = getManagedService(service_name)
-       if service == nil
-         return failed(service_name,"No Such Service","Unpause Service")
-       end
-   
-       if service.is_a?(EnginesOSapiResult)
-         return service
-       end
-   
-       retval = service.unpause_container()
-       if retval == false
-         return failed(service_name,service.last_error,"Unpause Service")
-       end
-       return success(service_name,"Unpause Service")
-     rescue Exception=>e
-       return log_exception_and_fail("Unpause Service",e)
-     end
-   
-      def update_attached_service (params)
-        if @core_api.update_attached_service(params) == true     
-        return success(params[:service_handle],"update attached Service")
-        end
-        return failed(params[:service_handle],@core_api.last_error,"update_attached_service")
-      end
-     
-     def update_service_configuration(service_param)
-       p :update_service_configuration
-       p service_param
-       
-       if @core_api.update_service_configuration(service_param) == true      
-         return success(service_param[:service_name],service_param[:configurator_name])
-       else
-         return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
-       end
-  
-     end
-    def retrieve_service_configuration(service_param)
-         p :retrieve_service_configuration
-         p service_param
-         result = @core_api.retrieve_service_configuration(service_param)
-         if  result != nil && result != false
-           p :configurators_at_public_api
-           p  result       
-           return result
-         else
-           return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
-         end
-    
-       end
-  
-  
-    def get_available_services_for(item)
-       res = @core_api.get_available_services_for(item)
-        if res != nil
-          return res
-             else
-               return failed("get avaiable services ",last_api_error,"get avaiable services")
-             end
+    return failed(params[:type_path] + ":" + params[:publisher_namespace] ,@core_api.last_error,"get software_service_definition")
+  end
+
+  def templated_software_service_definition(params)
+    # ret_val = software_service_definition(params)
+    ret_val =   @core_api.fillin_template_for_service_def(params)
+    return ret_val
+  end
+
+  def list_services_for(object)
+    return @core_api.list_services_for(object)
+  end
+
+  #service params and component objectname / and component name and parent name
+  def attach_subservice(params)
+    if @core_api.attach_subservice(params) == true
+      return success(params[:service_handle],"attach subservice")
+    else
+      SystemUtils.log_error_mesg("attach subservice",params)
+      return failed(params[:service_handle],@core_api.last_error,"attach subservice")
     end
-     
-    def stopService service_name
-        service = getManagedService(service_name)
-        if service == nil
-          return failed(service_name,"No Such Service","Stop Service")
-        end
-    
-        if service.is_a?(EnginesOSapiResult)
-          return service
-        end
-    
-        retval =   service.stop_container()
-        if retval == false
-          return failed(service_name,service.last_error,"Stop Service")
-        end
-        return success(service_name,"Stop Service")
-      rescue Exception=>e
-        return log_exception_and_fail("Stop Service",e)
-      end
-      
-    def set_service_hostname_properties(params)
-        return success(params[:engine_name],"update service hostname params")
-           rescue Exception=>e
-               return log_exception_and_fail("set_engine_hostname_details ",e)
-      end
-   
-      def get_managed_service_details_for(service_function) #WTF
-        service = Hash.new
-        if service_function == "http_router"        
-          service[:provider_namespace] = "EnginesSystem"
-          service[:type_path] = "nginx"
-        end
-       return service
-      end
-      
-       
-  
-  
+  end
+
+  def dettach_subservice(params)
+    if @core_api.dettach_subservice(params) == true
+      return success(params[:service_handle],"attach subservice")
+    else
+      SystemUtils.log_error_mesg("attach subservice",params)
+      return failed(params[:service_handle],@core_api.last_error,"attach subservice")
+    end
+  end
+
+  def delete_orphaned_service(params)
+    if @core_api.remove_orphaned_service(params) == true
+      return success(params[:service_handle],"Delete Service")
+    else
+      SystemUtils.log_error_mesg("Delete Orphan Service " + @core_api.last_error.to_s ,params)
+      return failed(params[:service_handle],@core_api.last_error,"Delete Orphan Service")
+    end
+  rescue Exception=>e
+    return log_exception_and_fail("Orphan",e)
+  end
+
+  def load_avail_services_for_type(typename)
+    return  @core_api.load_avail_services_for_type(typename)
+
+  end
+
+  def list_attached_services_for(object_name,identifier)
+    SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
+    attached = @core_api.list_attached_services_for(object_name,identifier)
+    return @core_api.list_attached_services_for(object_name,identifier)
+  end
+
+  def startService service_name
+    service = getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","Start Service")
+    end
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    retval = service.start_container()
+    if retval == false
+      return failed(service_name,service.last_error,"Start Service")
+    end
+    return success(service_name,"Start Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Start Service",e)
+  end
+
+  def  pauseService service_name
+    service = getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","Pause Service")
+    end
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    retval = service.pause_container()
+    if retval == false
+      return failed(service_name,service.last_error,"Pause Service")
+    end
+    return success(service_name,"Pause Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Pause Service",e)
+  end
+
+  def  unpauseService service_name
+    service = getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","Unpause Service")
+    end
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    retval = service.unpause_container()
+    if retval == false
+      return failed(service_name,service.last_error,"Unpause Service")
+    end
+    return success(service_name,"Unpause Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Unpause Service",e)
+  end
+
+  def update_attached_service (params)
+    if @core_api.update_attached_service(params) == true
+      return success(params[:service_handle],"update attached Service")
+    end
+    return failed(params[:service_handle],@core_api.last_error,"update_attached_service")
+  end
+
+  def update_service_configuration(service_param)
+    if @core_api.update_service_configuration(service_param) == true
+      return success(service_param[:service_name],service_param[:configurator_name])
+    else
+      return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
+    end
+  end
+
+  def retrieve_service_configuration(service_param)
+    result = @core_api.retrieve_service_configuration(service_param)
+    if  result != nil && result != false
+      return result
+    else
+      return failed(service_param[:service_name],@core_api.last_error,"update_service_configuration")
+    end
+  end
+
+  def get_available_services_for(item)
+    res = @core_api.get_available_services_for(item)
+    if res != nil
+      return res
+    else
+      return failed("get avaiable services ",last_api_error,"get avaiable services")
+    end
+  end
+
+  def stopService service_name
+    service = getManagedService(service_name)
+    if service == nil
+      return failed(service_name,"No Such Service","Stop Service")
+    end
+    if service.is_a?(EnginesOSapiResult)
+      return service
+    end
+    retval =   service.stop_container()
+    if retval == false
+      return failed(service_name,service.last_error,"Stop Service")
+    end
+    return success(service_name,"Stop Service")
+  rescue Exception=>e
+    return log_exception_and_fail("Stop Service",e)
+  end
+
+  def set_service_hostname_properties(params)
+    return success(params[:engine_name],"update service hostname params")
+  rescue Exception=>e
+    return log_exception_and_fail("set_engine_hostname_details ",e)
+  end
+
+  def get_managed_service_details_for(service_function) #WTF
+    service = Hash.new
+    if service_function == "http_router"
+      service[:provider_namespace] = "EnginesSystem"
+      service[:type_path] = "nginx"
+    end
+    return service
+  end
+
 end

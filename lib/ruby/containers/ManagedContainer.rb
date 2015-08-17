@@ -38,33 +38,31 @@ class ManagedContainer < Container
     @cont_userid=-1
     @protocol=:http_and_https
   end
-  
+
   def web_sites
     @core_api.web_sites_for(self)
   end
-  
-  
+
   #@returns [Boolean]
-  # whether pulled or no false if no new image 
+  # whether pulled or no false if no new image
   def pull_image
-     #if has repo field prepend repo
-     #if has no / then local image
-     # return false 
-     #
+    #if has repo field prepend repo
+    #if has no / then local image
+    # return false
+    #
     if @repository != nil
-     return @core_api.pull_image(@repository + "/" +image)
+      return @core_api.pull_image(@repository + "/" +image)
     elsif image.include?("/")
       return @core_api.pull_image(image)
     end
-    return false     
-   end
-   
-  def container_id
+    return false
+  end
 
-      @container_id = set_container_id
-      if @container_id == false || @container_id == nil
-        @container_id == "-1"
-      end      
+  def container_id
+    @container_id = set_container_id
+    if @container_id == false || @container_id == nil
+      @container_id == "-1"
+    end
     return @container_id
   end
 
@@ -93,12 +91,11 @@ class ManagedContainer < Container
   def engine_environment
     return environments
   end
-  
+
   def is_service?
     if @ctype && @ctype != nil && @ctype == "service"
       return true
     end
-
     return false
   end
 
@@ -111,20 +108,20 @@ class ManagedContainer < Container
   end
 
   #to support Gui's wierd convention on names
-  
-  def repo
+
+  def repo #CAN REMOVE
     return @repository
   end
-  
-  def containerName
+
+  def containerName #CAN REMOVE
     return @container_names
   end
 
-  def domainName
+  def domainName #CAN REMOVE
     return @domain_name
   end
 
-  def hostName
+  def hostName #CAN REMOVE
     return @hostname
   end
 
@@ -151,22 +148,21 @@ class ManagedContainer < Container
       enable_https_only
     end
   end
-  
+
   def enable_http_and_https
     @protocol = :http_and_https
   end
-  
+
   def enable_https_only
     @protocol = :https_only
   end
-   
+
   def enable_http_only
     @protocol = :http_only
   end
 
   def ManagedContainer.from_yaml( yaml, core_api )
     managedContainer = YAML::load( yaml )
-    
     managedContainer.core_api = core_api
     managedContainer.docker_info = nil
     managedContainer.set_running_user
@@ -188,8 +184,7 @@ class ManagedContainer < Container
         @last_error="failed to inspect container"
         state="nocontainer"
       else
-#        @res= last_result
-     
+        #        @res= last_result
         output = JSON.parse(@last_result)
         if output.is_a?(Array) == false || output.empty? == true
           @last_error = "Failed to get container status"
@@ -216,16 +211,12 @@ class ManagedContainer < Container
         if    @last_error == nil
           @last_error=" "
         end
-
         @last_error =  @last_error + " Warning State Mismatch set to " + @setState + " but in " + state + " state"
       end
       return state
-
     rescue Exception=>e
-      
       p :json_Str
-p @last_result
-#      p @res
+      p @last_result
       SystemUtils.log_exception(e)
       return "nocontainer"
     end
@@ -233,20 +224,16 @@ p @last_result
 
   def logs_container
     return false  if has_api? == false
-
-    return @core_api.logs_container(self)
+    @core_api.logs_container(self)
   end
 
   def ps_container
     return false  if has_api? == false
-
-    return @core_api.ps_container(self)
-
+    @core_api.ps_container(self)
   end
 
   def delete_image()
     return false  if has_api? == false
-
     ret_val=false
     state = read_state()
     if  has_container? == false
@@ -260,61 +247,47 @@ p @last_result
 
   def destroy_container
     return false  if has_api? == false
-
     ret_val=false
-
     state = read_state
     @setState="nocontainer" #this represents the state we want and not necessarily the one we get
-
     @container_id="-1"
     p @setState
-    if is_active? == false      
-        ret_val = @core_api.destroy_container self
+    if is_active? == false
+      ret_val = @core_api.destroy_container self
       @docker_info = nil
-    else 
-        @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"
+    else
+      @last_error ="Cannot Destroy a container that is not stopped\nPlease stop first"
     end
-
-      clear_error(ret_val)
-
-      @setState="nocontainer"#this represents the state we want and not necessarily the one we get
-      save_state()
-      p @setState
-      return ret_val
-    
+    clear_error(ret_val)
+    @setState="nocontainer"#this represents the state we want and not necessarily the one we get
+    save_state()
+    return ret_val
   end
 
   def setup_container
     return false  if has_api? == false
-
     ret_val =false
     state = read_state()
     @setState="stopped"
     if state == "nocontainer"
       ret_val = @core_api.setup_container self
       @docker_info = nil
-
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
-
     clear_error(ret_val)
     save_state()
-
     return ret_val
   end
 
   def create_container
     return false  if has_api? == false
-
     ret_val =false
     @docker_info = nil
     state = read_state()
     @setState="running"
-    
     if state == "nocontainer"
-      ret_val = @core_api.create_container self       
-
+      ret_val = @core_api.create_container self
     else
       @last_error ="Cannot create container if container by the same name exists"
     end
@@ -324,18 +297,15 @@ p @last_result
       ret_val = false
     else
       set_container_id
-     
       register_with_dns
       if @deployment_type  == "web"
         add_nginx_service
       end
       @core_api.register_non_persistant_services(self)
     end
-
     clear_error(ret_val)
     save_state()
     @cont_userid = running_user
-
     return ret_val
   end
 
@@ -351,33 +321,28 @@ p @last_result
 
   def unpause_container
     return false  if has_api? == false
-
     state = read_state()
     @setState="running"
     ret_val = false
     if state == "paused"
-     
       ret_val= @core_api.unpause_container self
       @docker_info = nil
     else
       @last_error ="Can't unpause Container as " + state
     end
-    register_with_dns      
+    register_with_dns
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state()
     return ret_val
-
   end
 
   def pause_container
     return false  if has_api? == false
-
     state = read_state()
     @setState="paused"
     ret_val = false
     if state == "running"
-     
       ret_val = @core_api.pause_container self
       @docker_info = nil
     else
@@ -399,14 +364,12 @@ p @last_result
       ret_val = @core_api.stop_container   self
       @core_api.deregister_non_persistant_services(self)
       @docker_info = nil
-      
     else
       @last_error ="Can't stop Container as " + state
       if state != "paused" #force deregister if stopped or no container etc
         @core_api.deregister_non_persistant_services(self)
       end
     end
-
     clear_error(ret_val)
     save_state()
     return  ret_val
@@ -414,24 +377,19 @@ p @last_result
 
   def start_container
     return false  if has_api? == false
-
     ret_val=false
     state = read_state()
     @setState="running"
     if state == "stopped"
-   
       ret_val = @core_api.start_container self
-      
       @docker_info = nil
     else
       @last_error ="Can't Start Container as " + state
     end
     register_with_dns
     @core_api.register_non_persistant_services(self)
-
     clear_error(ret_val)
     save_state()
-   
     return ret_val
   end
 
@@ -441,12 +399,10 @@ p @last_result
   #
   def register_with_dns
     return false  if has_api? == false
-
     service_hash = SystemUtils.create_dns_service_hash(self)
     if service_hash == nil
       return false
     end
-
     return  @core_api.attach_service(service_hash)
   end
 
@@ -488,7 +444,6 @@ p @last_result
   #@return boolean indicating sucess
   def add_nginx_service
     return false  if has_api? == false
-
     service_hash =  SystemUtils.create_nginx_service_hash(self)
     return @core_api.attach_service(service_hash)
   end
@@ -497,38 +452,31 @@ p @last_result
   #@return boolean indicating sucess
   def remove_nginx_service
     return false  if has_api? == false
-
     service_hash =  SystemUtils.create_nginx_service_hash(self)
     return @core_api.dettach_service(service_hash)
   end
 
   def stats
-
     if inspect_container() == false
       return false
     end
-    p :read_stats
     output = JSON.parse(last_result)
     started = output[0]["State"]["StartedAt"]
     stopped = output[0]["State"]["FinishedAt"]
     state = read_state()
-
     ps_container()
     pcnt=-1
     rss=0
     vss=0
     h=m=s=0
-
     @last_result.each_line.each do |line|
       if pcnt >0 #skip the fist line with is a header
-
         fields =  line.split()  #  [6]rss [10] time
         if fields != nil
           rss += fields[7].to_i
           vss += fields[6].to_i
           time_f = fields[11]
           c_HMS = time_f.split(':')
-
           if c_HMS.length == 3
             h+= c_HMS[0].to_i
             m+=c_HMS[1].to_i
@@ -538,7 +486,6 @@ p @last_result
             s+=c_HMS[1].to_i
           end
         end
-
       end
       pcnt=pcnt+1
     end
@@ -546,27 +493,26 @@ p @last_result
     statistics = ContainerStatistics.new(state,pcnt,started,stopped,rss,vss,cpu)
     return statistics
   end
-  
+
   def running_user
     if inspect_container == false
-         return false
-       end
-       output = JSON.parse(@last_result)
-       user=output[0]['Config']['User']
-       return user
-     rescue
-       return false
+      return false
+    end
+    output = JSON.parse(@last_result)
+    user=output[0]['Config']['User']
+    return user
+  rescue
+    return false
   end
- 
+
   def set_running_user
-        if  @cont_userid == nil || @cont_userid == -1
-          @cont_userid =  running_user
-        end 
+    if  @cont_userid == nil || @cont_userid == -1
+      @cont_userid =  running_user
+    end
   end
 
   def inspect_container
     return false  if has_api? == false
-
     if @docker_info == nil || @docker_info == false
       @docker_info = @core_api.inspect_container self
     end
@@ -575,7 +521,6 @@ p @last_result
 
   def save_state()
     return false  if has_api? == false
-
     @docker_info = nil
     ret_val = @core_api.save_container self
     return ret_val
@@ -583,21 +528,18 @@ p @last_result
 
   def save_blueprint blueprint
     return false  if has_api? == false
-
     ret_val = @core_api.save_blueprint(blueprint, self)
     return ret_val
   end
 
   def load_blueprint
     return false  if has_api? == false
-
     ret_val = @core_api.load_blueprint(self)
     return ret_val
   end
 
   def rebuild_container
     return false  if has_api? == false
-
     ret_val = @core_api.rebuild_image(self)
     @docker_info = nil
     if ret_val == true
@@ -606,7 +548,6 @@ p @last_result
         add_nginx_service
       end
       @core_api.register_non_persistant_services(self)
-     
     end
     @setState="running"
     save_state()
@@ -636,24 +577,20 @@ p @last_result
     end
     return true
   end
-  
-def has_image?
-  return @core_api.image_exist?(image)
-end
-  
+
+  def has_image?
+    return @core_api.image_exist?(image)
+  end
+
   def is_error?
     state = read_state
     if @setState != state
       p "state " + state + " does not match set state " + @setState
       return true
     end
-   
     return false
   end
-  
-#  def is_active
-#    return is_active?
-#  end
+
 
   def is_active?
     state = read_state
@@ -666,7 +603,6 @@ end
       return false
     end
   end
-
 
   protected
 
@@ -685,21 +621,16 @@ end
   end
 
   def set_container_id
-    
     if @docker_info == nil || @docker_info == false  || @docker_info.is_a?(Array) == false ||  @docker_info.empty? == true
       return "-1"
     end
-
     return @docker_info[0]["Id"]
-
   end
 
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
-
     @last_error = msg +":" + obj_str
     SystemUtils.log_error_mesg(msg,object)
-
   end
 
 end
