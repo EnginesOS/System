@@ -5,24 +5,24 @@ title: "NFS access to external Volumes"
 description: "Provides NFS Access for File Storage"
 type_path: filesystem/remote/nfs
 publisher_namespace: EnginesSystem
+service_container: nfs
 dedicated: false
 persistant: true
 service_handle_field: name
 setup_params:
 consumer_params:
- dropbox_address:
-  name: dropbox_address
-  label: dropbox_address
+ host:
+  name: host
+  label: host 
   regex_validator: ".*"
   tooltip: " "
-  field_type: text_field
   placeholder: " "
+  field_type: text_field
   hint: " "
   mandatory: true
-  regex_invalid_message: "wrong go back and try again"
  username:
   name: username
-  label: Drop Box Account login
+  label: Account login
   regex_validator: ".*"
   tooltip: " "
   placeholder: " "
@@ -31,7 +31,7 @@ consumer_params:
   mandatory: true
  password:
   name: password
-  label:  Drop Box Account Password
+  label:   Account Password
   regex_validator: ".*"
   placeholder: " "
   hint: " "
