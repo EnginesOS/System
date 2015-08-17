@@ -584,8 +584,7 @@ class ManagedContainer < Container
 
   def is_error?
     state = read_state
-    if @setState != state
-      p "state " + state + " does not match set state " + @setState
+    if @setState != state     
       return true
     end
     return false

@@ -776,8 +776,6 @@ class EnginesCore
     return test_system_api_result(@system_api.system_update)
   end
 
-
-
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
   #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
@@ -789,15 +787,14 @@ class EnginesCore
            return false
     end
     engine_name = params[:engine_name]
-    engine = LoadManagedEngine(engine_name)
+    engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
       log_error_mesg("Failed to  find Engine",params)
           return false
     end    
     if engine.delete_image == true
-      sm = loadServiceManager
-      
-      if sm.() == true
+      sm = loadServiceManager      
+      if sm.rm_remove_engine(params) == true
       return true
       else
         log_error_mesg("Failed to remove Engine from engines registry "+sm.last_error.to_s,params)
@@ -1100,7 +1097,7 @@ class EnginesCore
     return result
   end
 
-  private 
+
 def delete_image(container)
   begin
     clear_error
@@ -1119,6 +1116,7 @@ def delete_image(container)
     return false
   end
 end
+private 
 def delete_engine_persistant_services(params)
     sm = loadServiceManager()
     services = check_sm_result(sm.get_engine_persistant_services(params))
