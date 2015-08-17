@@ -561,10 +561,8 @@ class EnginesOSapi
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name
-
     p cmd
-    m = mesg.to_s + ":" + last_api_error.to_s
-    p m
+    p mesg.to_s + ":" + last_api_error.to_s
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
