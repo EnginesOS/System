@@ -92,6 +92,7 @@ class SoftwareServiceDefinition
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
     p :no_such_service_definitition_file
+    p dir.to_s + "/" + service_type.to_s
     return nil
   rescue Exception=>e
     SystemUtils.log_exception(e)

@@ -782,10 +782,12 @@ class EnginesCore
   # They are removed from the tree if delete is sucessful
   
   def delete_engine(params)    
+    params[:container_type]="container"
+      
     if delete_image_dependancies(params) == false
       log_error_mesg("Failed to remove engine Services",params)
            return false
-    end
+    end 
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
@@ -1117,45 +1119,45 @@ def delete_image(container)
   end
 end
 private 
-def delete_engine_persistant_services(params)
-    sm = loadServiceManager()
-    services = check_sm_result(sm.get_engine_persistant_services(params))
-    services.each do |service_hash|
-      service_hash[:remove_all_data]  = params[:remove_all_data]
-      if service_hash.has_key?(:service_container_name) == false
-        log_error_mesg("Missing :service_container_name in service_hash",service_hash)
-        return false
-      end
-      service = loadManagedService(service_hash[:service_container_name])
-      if service == nil
-        log_error_mesg("Failed to load container name keyed by :service_container_name ",service_hash)
-        return false
-      end
-      if service.is_running? == false
-        log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
-        return false
-      end
-      if service.remove_consumer(service_hash) == false
-        log_error_mesg("Failed to remove service ",service_hash)
-        return false
-      end
-      #REMOVE THE SERVICE HERE AND NOW
-      if sm.remove_from_engine_registry(service_hash) ==true
-        if sm.remove_from_services_registry(service_hash) == false
-          log_error_mesg("Cannot remove from Service Registry",service_hash)
-          return false
-        end
-      else
-        log_error_mesg("Cannot remove from Engine Registry",service_hash)
-        return false
-      end
-    end
-    return true
-  rescue Exception=>e
-    @last_error=( "Failed To Delete " + e.to_s)
-    SystemUtils.log_exception(e)
-    return false
-  end
+#def delete_engine_persistant_services(params)
+#    sm = loadServiceManager()
+#    services = check_sm_result(sm.get_engine_persistant_services(params))
+#    services.each do |service_hash|
+#      service_hash[:remove_all_data]  = params[:remove_all_data]
+#      if service_hash.has_key?(:service_container_name) == false
+#        log_error_mesg("Missing :service_container_name in service_hash",service_hash)
+#        return false
+#      end
+#      service = loadManagedService(service_hash[:service_container_name])
+#      if service == nil
+#        log_error_mesg("Failed to load container name keyed by :service_container_name ",service_hash)
+#        return false
+#      end
+#      if service.is_running? == false
+#        log_error_mesg("Cannot remove service consumer if service is not running ",service_hash)
+#        return false
+#      end
+#      if service.remove_consumer(service_hash) == false
+#        log_error_mesg("Failed to remove service ",service_hash)
+#        return false
+#      end
+#      #REMOVE THE SERVICE HERE AND NOW
+#      if sm.remove_from_engine_registry(service_hash) ==true
+#        if sm.remove_from_services_registry(service_hash) == false
+#          log_error_mesg("Cannot remove from Service Registry",service_hash)
+#          return false
+#        end
+#      else
+#        log_error_mesg("Cannot remove from Engine Registry",service_hash)
+#        return false
+#      end
+#    end
+#    return true
+#  rescue Exception=>e
+#    @last_error=( "Failed To Delete " + e.to_s)
+#    SystemUtils.log_exception(e)
+#    return false
+#  end
 
   protected
 

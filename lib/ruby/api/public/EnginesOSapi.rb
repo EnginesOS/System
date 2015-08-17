@@ -408,9 +408,9 @@ class EnginesOSapi
 
   def update_engines_system_software
     if @core_api.update_engines_system_software == true
-      return success("System","Engines System Updating")
+      return success("System", @core_api.last_error)
     else
-      return failed("System","not permitted","Engines System Updating")
+      return failed("System",@core_api.last_error,"Engines System Updating")
     end
   end
 
@@ -561,10 +561,8 @@ class EnginesOSapi
   def failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on
     p item_name
-
     p cmd
-    mesg = mesg.to_s + ":" + last_api_error.to_s
-    p mesg
+    p mesg.to_s + ":" + last_api_error.to_s
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
 
