@@ -731,7 +731,7 @@ class EngineBuilder
       if service_def[:persistant] == true
         next
       end
-      set_top_level_service_params(service_hash)
+      service_hash = set_top_level_service_params(service_hash)
       log_build_output("Attaching Non Persistant Service " + service_hash[:service_label].to_s)
 
       p :adding_service
@@ -774,17 +774,9 @@ class EngineBuilder
         service_hash[:persistant] =true
       end
 
-      set_top_level_service_params(service_hash)
+      service_hash = set_top_level_service_params(service_hash)
       free_orphan = false
-
       p :adding_service
-
-#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-#      p service_hash
-#      puts "+=++=++=++=++=++=++=++=++=++=++=++=++=++=++=++"
-#      p :target_envs
-#      p service_def[:target_environment_variables]
-
       #FIXME need to unify filesystem creation with attach_service
       if service_hash[:servicetype_name] == "filesystem"
         add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
