@@ -530,6 +530,7 @@ class EnginesCore
     params = Hash.new()
     params[:parent_engine] = container_name
     params[:persistant] = true
+    params[:container_type] ="container"
     return check_sm_result(sm.find_engine_services_hashes(params))
   rescue Exception=>e
     log_exception e
@@ -539,6 +540,7 @@ class EnginesCore
     sm = loadServiceManager()
     params = Hash.new()
     params[:parent_engine] = container_name
+    params[:container_type] ="container"
     return sm.find_engine_services_hashes(params)
   rescue Exception=>e
     log_exception e
@@ -810,6 +812,7 @@ class EnginesCore
   def delete_image_dependancies(params)
     sm = loadServiceManager()
     params[:parent_engine] = params[:engine_name]
+    params[:container_type]="container"
     if sm.rm_remove_engine_services(params) == false
       log_error_mesg("Failed to remove deleted Service",params)
       return false
