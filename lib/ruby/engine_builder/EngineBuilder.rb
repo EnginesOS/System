@@ -855,10 +855,13 @@ class EngineBuilder
     params[:repository_url]  = engine.repo
 
     builder = EngineBuilder.new(params,core)
+      if builder.is_a?(EngineBuilder) == false
+        return  EnginesOSapiResult.failed(params[:engine_name],"NO Builder","build_engine")
+           end
     engine = builder.build_from_blue_print
     if engine == false
 #      builder.post_failed_build_clean_up Donnt do this as a reinstall should not delete on failure
-      return  builder.failed(params[:engine_name],builder.last_error,"build_engine")
+      return  EnginesOSapiResult.failed(params[:engine_name],builder.last_error,"build_engine")
     end
     if engine != nil
       if engine.is_active? == false
