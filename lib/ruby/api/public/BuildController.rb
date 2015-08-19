@@ -16,7 +16,7 @@ class BuildController
   def build_engine(params)
   p :builder_params
     p params
-    SystemStatus..build_starting(params)
+    SystemStatus.build_starting(params)
     
     engine_builder = get_engine_builder(params)
     engine = engine_builder.build_from_blue_print
