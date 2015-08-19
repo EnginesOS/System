@@ -99,7 +99,7 @@ class SystemRegistry
   #
   def orphanate_service(service_query_hash)
     p :get_orphaned_services
-    p params
+    p service_query_hash
     test_result(send_request("orphanate_service",service_query_hash))
   end
 
