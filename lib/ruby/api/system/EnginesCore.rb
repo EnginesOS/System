@@ -793,6 +793,9 @@ class EnginesCore
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
+      if sm.rm_remove_engine(params) == true #used in roll back and only works if no engine do mess with this logic
+           return true
+      end
       log_error_mesg("Failed to  find Engine",params)
           return false
     end    
