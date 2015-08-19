@@ -102,9 +102,7 @@ class EnginesCore
     return @system_api.get_build_report(engine_name)
   end
 
-  def needs_reboot?
-    return File.exist?(SysConfig.EnginesSystemRebootNeededFlag)
-  end
+ 
 
   def restart_system
     return test_system_api_result(@system_api.restart_system)
@@ -530,6 +528,7 @@ class EnginesCore
     params = Hash.new()
     params[:parent_engine] = container_name
     params[:persistant] = true
+    params[:container_type] ="container"
     return check_sm_result(sm.find_engine_services_hashes(params))
   rescue Exception=>e
     log_exception e
@@ -539,6 +538,7 @@ class EnginesCore
     sm = loadServiceManager()
     params = Hash.new()
     params[:parent_engine] = container_name
+    params[:container_type] ="container"
     return sm.find_engine_services_hashes(params)
   rescue Exception=>e
     log_exception e
@@ -791,6 +791,9 @@ class EnginesCore
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
+      if sm.rm_remove_engine(params) == true #used in roll back and only works if no engine do mess with this logic
+           return true
+      end
       log_error_mesg("Failed to  find Engine",params)
           return false
     end    
@@ -810,6 +813,7 @@ class EnginesCore
   def delete_image_dependancies(params)
     sm = loadServiceManager()
     params[:parent_engine] = params[:engine_name]
+    params[:container_type]="container"
     if sm.rm_remove_engine_services(params) == false
       log_error_mesg("Failed to remove deleted Service",params)
       return false

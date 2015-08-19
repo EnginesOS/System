@@ -57,35 +57,49 @@ class SystemRegistry
 
   #
   def save_as_orphan(params)
+    p :save_as_orphan
+    p params
     test_result(send_request("save_as_orphan",params))
   end
 
   def release_orphan(params)
+    p :release_orphan
+    p params
     test_result(send_request("release_orphan",params))
   end
 
   #
   def reparent_orphan(params)
+    p :reparent_orphan
+    p params
     test_result(send_request("reparent_orphan",params))
   end
 
   #
   def retrieve_orphan(params)
+    p :retrieve_orphan
+    p params
     test_result(send_request("retrieve_orphan",params))
   end
 
   #
   def get_orphaned_services(params)
+    p :get_orphaned_services
+    p params
     test_result(send_request("get_orphaned_services",params))
   end
 
   #
   def find_orphan_consumers(params)
+    p :get_orphaned_services
+    p params
     test_result(send_request("find_orphan_consumers",params))
   end
 
   #
   def orphanate_service(service_query_hash)
+    p :get_orphaned_services
+    p params
     test_result(send_request("orphanate_service",service_query_hash))
   end
 

@@ -22,41 +22,13 @@ class EnginesOSapi
     return failed("Exception",e_str,cmd)
   end
 
-  def needs_reboot?
-    @core_api.needs_reboot?
-  end
 
   def first_run_required?
     return FirstRunWizard.required?
   end
 
-  def engines_system_has_updated?
-    if File.exists?(SysConfig.EnginesSystemUpdatedFlag)
-      File.delete(SysConfig.EnginesSystemUpdatedFlag)
-      return true
-    end
-    return false
-  end
 
-  def is_engines_system_updating?
-    return File.exists?(SysConfig.EnginesSystemUpdatingFlag)
-  end
-
-  def base_system_has_updated?
-    if File.exists?(SysConfig.SystemUpdatedFlag)
-      File.delete(SysConfig.SystemUpdatedFlag)
-      return true
-    end
-    return false
-  end
-
-  def is_base_system_updating?
-    return File.exists?(SysConfig.SystemUpdatingFlag)
-  end
-
-  def is_rebooting?
-    File.exists?(SysConfig.SystemRebootingFlag)
-  end
+ 
 
   ##Build stuff
   def build_engine(params)
@@ -972,4 +944,29 @@ class EnginesOSapi
     return service
   end
 
+
+   def system_status
+     return SystemStatus.system_status
+   end
+   
+  def is_base_system_updating? 
+    SystemStatus.is_base_system_updating?
+   end 
+   def is_rebooting?
+     SystemStatus.is_rebooting?
+   end  
+  def needs_reboot?
+    SystemStatus.needs_reboot?
+   end  
+  def engines_system_has_updated
+  SystemStatus.engines_system_has_updated?   
+  end  
+  def is_engines_system_updating?
+   SystemStatus.is_engines_system_updating?
+  end
+  def base_system_has_updated?
+   SystemStatus.base_system_has_updated?   
+  end
+
+  
 end
