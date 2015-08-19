@@ -45,21 +45,7 @@ class SystemApi
     container.container_id=(-1)
   end
 
-  def is_startup_complete container
-    clear_error
-    begin
-      runDir=container_state_dir(container)
-      if File.exists?(runDir + "/run/flags/startup_complete")
-        return true
-      else
-        return false
-      end
-    rescue  Exception=>e
-      SystemUtils.log_exception(e)
-      return false
-    end
-  end
-
+ 
   def clear_cid_file container
     clear_error
     begin

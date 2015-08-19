@@ -1013,7 +1013,14 @@ class EnginesCore
       return false
     end
   end
-
+  
+  def build_failed(params)
+    
+  end
+def build_complete(params)
+end
+def build_starting(params)
+end
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
     @last_error = @last_error.to_s + ":" + msg +":" + obj_str

@@ -41,7 +41,6 @@ class SystemStatus
     result[:needs_reboot]  = SystemStatus.needs_reboot?
       
     return result
-    
   end
    
   
