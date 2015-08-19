@@ -199,7 +199,6 @@ class DockerFileBuilder
         path.chomp!("/")
         @docker_file.puts("")
         @docker_file.puts("RUN  \\")
-        dirname.gsub!(/\/home\/fs/,"")
         dirname = File.dirname(path)
         @docker_file.puts("mkdir -p $CONTFSVolHome/$VOLDIR/" + dirname + ";\\")
         @docker_file.puts("if [ ! -d /home/" + path + " ];\\")
