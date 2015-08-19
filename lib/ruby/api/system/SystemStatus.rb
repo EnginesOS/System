@@ -111,7 +111,7 @@ end
   
   
   def SystemStatus.get_system_memory_info
-    clear_error
+ 
     ret_val = Hash.new
     begin
       proc_mem_info_file = File.open("/proc/meminfo")
