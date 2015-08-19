@@ -95,15 +95,15 @@ class SysConfig
   @@SysConfig.BuildFailedFile="/opt/engines/run/system/flags/last_build_fail"
   
   def SysConfig.BuildBuiltFile
-    return  @@SysConfig.BuildBuiltFile
+    return  @@BuildBuiltFile
   end
   
   def SysConfig.BuildRunningParamsFile
-    return @@SysConfig.BuildRunningParamsFile
+    return @@BuildRunningParamsFile
   end
   
   def SysConfig.BuildFailedFile
-    return @@SysConfig.BuildFailedFile
+    return @@BuildFailedFile
   end
   def SysConfig.SystemRebootingFlag
     return @@SystemRebootingFlag
