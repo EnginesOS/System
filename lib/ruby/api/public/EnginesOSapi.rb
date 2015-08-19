@@ -1,6 +1,8 @@
 require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
 require 'objspace'
 
+require '/opt/engines/lib/ruby/api/system/SystemStatus.rb'
+
 require_relative "EnginesOSapiResult.rb"
 require_relative "FirstRunWizard.rb"
 
