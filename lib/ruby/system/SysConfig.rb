@@ -90,9 +90,9 @@ class SysConfig
   @@EnginesSystemRebootNeededFlag="/opt/engines/run/system/flags/reboot_required"
   @@SystemRebootingFlag="/opt/engines/run/system/flags/engines_rebooting"
   
-  @@SysConfig.BuildBuiltFile="/opt/engines/run/system/flags/last_build_params"
-  @@SysConfig.BuildRunningParamsFile="/opt/engines/run/system/flags/building_params"
-  @@SysConfig.BuildFailedFile="/opt/engines/run/system/flags/last_build_fail"
+  @@BuildBuiltFile="/opt/engines/run/system/flags/last_build_params"
+  @@BuildRunningParamsFile="/opt/engines/run/system/flags/building_params"
+  @@BuildFailedFile="/opt/engines/run/system/flags/last_build_fail"
   
   def SysConfig.BuildBuiltFile
     return  @@BuildBuiltFile
