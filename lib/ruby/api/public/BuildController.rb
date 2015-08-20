@@ -10,9 +10,7 @@ class BuildController
   end
   
   attr_accessor :last_error
-    
  
-  
   def build_engine(params)
   p :builder_params
     p params
