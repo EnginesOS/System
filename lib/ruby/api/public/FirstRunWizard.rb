@@ -49,10 +49,27 @@ class FirstRunWizard
     #@api.install_refresh_ca
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
+    
+    set_default_email_domain(domain_hash)
+    
     @sucess=true
     mark_as_run
   end
 
+  def set_default_email_domain(domain_hash)
+   
+    service_param = Hash.new
+      service_param[:service_name] = "smtp"
+      service_param[:configurator_name] = "default_domain"
+      service_param[:variables] = Hash.new
+      service_param[:variables][:domain_name] =  domain_hash[:domain_name]
+    if  @api.update_service_configuration(service_param) == true
+         return true
+       else
+         log_error("smtp default domain configurator " + @api.last_error.to_s)
+         return false
+       end
+  end
   def get_domain_params(params)
     domain_hash = Hash.new()
  
