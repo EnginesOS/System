@@ -198,18 +198,33 @@ class ServiceManager
     return true
   end
   
-  def force_reregister_attached_service(service_hash)
-    service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+  def force_reregister_attached_service(service_query)
+    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+    service_hash = find_engine_service_hash(complete_service_query)
+     if service_hash.is_a?(Hash) == false
+       log_error( "no matching service found")
+       return false
+     end
     p service_hash
     return  add_to_managed_service(service_hash)
    end
- def force_deregister_attached_service(service_hash)
-   service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+ def force_deregister_attached_service(service_query)
+   complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+   service_hash= find_engine_service_hash(complete_service_query)
+   if service_hash.is_a?(Hash) == false
+     log_error( "no matching service found")
+     return false
+   end
    p service_hash
   return  remove_from_managed_service(service_hash)   
  end
- def force_register_attached_service(service_hash)
-   service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+ def force_register_attached_service(service_query)
+   complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+   service_hash = find_engine_service_hash(complete_service_query)
+   if service_hash.is_a?(Hash) == false
+     log_error( "no matching service found")
+     return false
+   end
      p service_hash
   if remove_from_managed_service(service_hash)
    return add_to_managed_service(service_hash)
