@@ -693,7 +693,7 @@ class EnginesOSapi
   def register_attached_service(request_hash)
     service_query = get_service_query_from_request(request_hash)
     p :register_attached_service
-    p service_hash
+    p service_query
     if @core_api.force_register_attached_service(service_query)  == true
       return success(service_query[:parent_engine].to_s + " " +service_query[:service_handle].to_s ,"Register Service")
     end
