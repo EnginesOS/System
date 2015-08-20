@@ -689,13 +689,6 @@ class EnginesCore
     return test_system_api_result(@system_api.set_engine_network_properties(engine,params))
   end
 
-  def get_system_load_info
-    return test_system_api_result(@system_api.get_system_load_info)
-  end
-
-  def get_system_memory_info
-    return test_system_api_result(@system_api.get_system_memory_info)
-  end
 
   def getManagedEngines
     return test_system_api_result(@system_api.getManagedEngines)

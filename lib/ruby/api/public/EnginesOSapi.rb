@@ -419,13 +419,13 @@ class EnginesOSapi
   end
 
   def get_system_memory_info
-    return @core_api.get_system_memory_info
+    return SystemStatus.get_system_memory_info
   rescue Exception=>e
     return log_exception_and_fail("get_system_memory_info",e)
   end
 
   def get_system_load_info
-    return @core_api.get_system_load_info
+    return SystemStatus.get_system_load_info
   rescue Exception=>e
     return log_exception_and_fail("get_system_load_info",e)
   end
@@ -969,6 +969,17 @@ class EnginesOSapi
   def base_system_has_updated?
    SystemStatus.base_system_has_updated?   
   end
-
+  def build_status
+    return SystemStatus.build_status
+  end
+  def last_build_params
+    return SystemStatus.last_build_params
+  end
+  def last_build_failure_params
+    return SystemStatus.last_build_failure_params
+  end
+  def current_build_params
+     return SystemStatus.last_build_params
+   end
   
 end
