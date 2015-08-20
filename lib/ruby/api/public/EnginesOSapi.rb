@@ -966,6 +966,14 @@ class EnginesOSapi
   def is_engines_system_updating?
    SystemStatus.is_engines_system_updating?
   end
+  def is_engines_system_upto_date?
+    result = SystemStatus.is_engines_system_upto_date?()
+    if result[:result] ==0
+      return sucess("System Up to Date","Update Status")
+    else 
+      return failed("Updates pending",result[:stdio],"Update Status")
+    end
+  end
   def base_system_has_updated?
    SystemStatus.base_system_has_updated?   
   end
