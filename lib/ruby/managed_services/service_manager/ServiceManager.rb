@@ -378,11 +378,11 @@ class ServiceManager
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
     if service_hash == nil
-      log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
+      SystemUtils.log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
       return false
     end
     if container_name == nil
-      log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
+      SystemUtils.log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
       return false
     end
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
