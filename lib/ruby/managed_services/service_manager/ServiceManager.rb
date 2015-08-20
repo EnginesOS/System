@@ -200,14 +200,17 @@ class ServiceManager
   
   def force_reregister_attached_service(service_hash)
     service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    p service_hash
     add_to_managed_service(service_hash)
    end
  def force_deregister_attached_service(service_hash)
    service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+   p service_hash
    remove_from_managed_service(service_hash)   
  end
  def force_register_attached_service(service_hash)
    service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+     p service_hash
   if remove_from_managed_service(service_hash)
    return add_to_managed_service(service_hash)
   end  
