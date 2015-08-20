@@ -45,7 +45,9 @@ class SystemStatus
     return File.exists?(SysConfig.BuildBuiltFile)
   end
 def SystemStatus.build_failed(params)
-  File.delete(SysConfig.BuildRunningParamsFile)
+    if File.exists?(SysConfig.BuildRunningParamsFile)
+      File.delete(SysConfig.BuildRunningParamsFile)
+    end
   param_file = File.new(SysConfig.BuildFailedFile,"w")
   param_file.puts(params.to_yaml)
   param_file.close
@@ -54,14 +56,20 @@ def SystemStatus.build_complete(params)
   param_file = File.new(SysConfig.BuildBuiltFile,"w")
    param_file.puts(params.to_yaml)
    param_file.close
-  File.delete(SysConfig.BuildRunningParamsFile)
+  if File.exists?(SysConfig.BuildRunningParamsFile)
+    File.delete(SysConfig.BuildRunningParamsFile)
+  end
 end
 def SystemStatus.build_starting(params)
   param_file = File.new(SysConfig.BuildRunningParamsFile,"w")
   param_file.puts(params.to_yaml)
   param_file.close
-  File.delete(SysConfig.BuildFailedFile)
-  File.delete(SysConfig.BuildBuiltFile)
+  if File.exists?(SysConfig.BuildFailedFile)
+    File.delete(SysConfig.BuildFailedFile)
+  end
+  if  File.exists?(SysConfig.BuildBuiltFile)
+    File.delete(SysConfig.BuildBuiltFile)
+  end
 end
 
 def SystemStatus.build_status
