@@ -679,12 +679,19 @@ class EnginesOSapi
     end
   end
 
+  def get_service_hash_from_request(request_hash)
+    #{:application_name=>\"frontaccounting\", :application_service=>{:type_path=>\"nginx\", :publisher_namespace=>\"EnginesSystem\", :service_handle=>\"frontaccounting.engines.demo\", :container_type=>nil, :service_container_name=>nil}})"
+    service_hash =request_hash[:application_service]
+    service_hash[:parent_engine] = request_hash[:application_name]
+    return service_hash
+  end
   #@ return [EnginesOSapiResult]
   #@params service_hash
   #this method is called to register the service hash with service
   #nothing is written to the service registry
   #effectivitly activating non persistant services
-  def register_attached_service(service_hash)
+  def register_attached_service(request_hash)
+    service_hash = get_service_hash_from_request(request_hash)
     p register_attached_service
     p service_hash
     if @core_api.force_register_attached_service(service_hash)  == true
@@ -697,7 +704,8 @@ class EnginesOSapi
   #@params service_hash
   #this method is called to deregister the service hash from service
   #nothing is written to the service resgitry
-  def deregister_attached_service(service_hash)
+  def deregister_attached_service(request_hash)
+    service_hash = get_service_hash_from_request(request_hash)
     p deregister_attached_service
     p service_hash
     if  @core_api.force_deregister_attached_service(service_hash)  == true
@@ -711,7 +719,8 @@ class EnginesOSapi
   #this method is called to deregister the service hash from service
   # and then to register the service_hash with the service
   #nothing is written to the service resgitry
-  def reregister_attached_service(service_hash)
+  def reregister_attached_service(request_hash)
+    service_hash = get_service_hash_from_request(request_hash)
     p reregister_attached_service
        p service_hash
     if  @core_api.force_reregister_attached_service(service_hash) == true
