@@ -602,7 +602,11 @@ private
 #    log_error_mesg("no service_container_loaded  ",service_hash)
 #    return false
 #  end
-
+def log_error_mesg(msg,object)
+  obj_str = object.to_s.slice(0,256)
+  @last_error = @last_error.to_s + ":" + msg +":" + obj_str
+  SystemUtils.log_error_mesg(msg,object)
+end
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
   #@return none
