@@ -58,7 +58,13 @@ class ServiceManager
         return false
       end
     else
-      add_to_managed_service(service_hash)
+      if  add_to_managed_service(service_hash) == false
+        log_error_mesg("Failed to create non persistant service ",service_hash)
+        return false
+      else
+       return test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
+      end
+      
     end
     return true
   rescue Exception=>e
