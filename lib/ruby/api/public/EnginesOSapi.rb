@@ -684,7 +684,7 @@ class EnginesOSapi
   #nothing is written to the service registry
   #effectivitly activating non persistant services
   def register_attached_service(service_hash)
-    if @core_api.force_register_attached_service(service_hash)
+    if @core_api.force_register_attached_service(service_hash)  == true
       return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
     end
     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
@@ -695,7 +695,7 @@ class EnginesOSapi
   #this method is called to deregister the service hash from service
   #nothing is written to the service resgitry
   def deregister_attached_service(service_hash)
-    if  @core_api.force_deregister_attached_service(service_hash).was_success
+    if  @core_api.force_deregister_attached_service(service_hash)  == true
       return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
     end
     return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
@@ -707,7 +707,7 @@ class EnginesOSapi
   # and then to register the service_hash with the service
   #nothing is written to the service resgitry
   def reregister_attached_service(service_hash)
-    if  @core_api.force_reregister_attached_service(service_hash).was_success
+    if  @core_api.force_reregister_attached_service(service_hash) == true
         return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
       end
       return failed(service_hash.to_s,@last_error,"reregister_attached_service failed ")
