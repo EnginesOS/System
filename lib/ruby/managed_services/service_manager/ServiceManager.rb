@@ -124,12 +124,11 @@ class ServiceManager
       log_error_mesg("Failed to to set top level params hash",service_hash)
       return false
     end
-
     if remove_from_managed_service(service_hash) == false
       log_error_mesg("failed to remove managed service",service_hash)
       return false
-    end
-    return true #test_registry_result(@system_registry.remove_from_services_registry(service_hash))
+    end    
+    return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
   end
 
   def update_attached_service(params)
@@ -137,7 +136,7 @@ class ServiceManager
     ServiceManager.set_top_level_service_params(params,params[:parent_engine])
     if test_registry_result(@system_registry.update_attached_service(params)) == true
       if remove_from_managed_service(params) == true
-        return add_service(params) # this calls add_to_managed_service(params) plus adds to reg
+        return add_to_managed_service(params) # this calls add_to_managed_service(params) plus adds to reg
       else
         @last_error="Filed to remove " + @system_registry.last_error.to_s
       end
@@ -145,7 +144,6 @@ class ServiceManager
       @last_error=@system_registry.last_error.to_s
     end
     return false
-
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
@@ -262,10 +260,8 @@ class ServiceManager
     end
     if service.is_running? == true || service.persistant == false
       if service.rm_consumer_from_service(service_hash) == true
-        return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
+        return true 
       else
-        @last_error= "rm from managed_service_" +@system_registry.last_error
-        p @last_error
         return false
       end
     elsif service.persistant == true
@@ -555,7 +551,7 @@ class ServiceManager
     test_registry_result(@system_registry.reparent_orphan(params))
   end
 
-  private
+  
 
 #Calls on service on the service_container to add the service associated by the hash
  #@return result boolean
@@ -577,7 +573,7 @@ class ServiceManager
    end
    return result
  end
- 
+private
   def register_service_hash_with_service(service_hash)
     clear_last_error
     service = @core_api.loadManagedService( service_hash[:service_container_name])

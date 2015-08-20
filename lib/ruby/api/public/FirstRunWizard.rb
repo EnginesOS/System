@@ -4,7 +4,6 @@ class FirstRunWizard
     @sucess = false
     @error = "None"
     @first_run_params = params
-
   end
 
   def apply(api)
@@ -38,9 +37,7 @@ class FirstRunWizard
         log_error("Fail to setup ssh key " + api.last_error())
         return false
       end
-    end
-    
-    
+    end       
         create_ca(@first_run_params)
     #
         create_default_cert(@first_run_params)
@@ -50,14 +47,16 @@ class FirstRunWizard
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
     
-    set_default_email_domain(domain_hash)
+    if set_default_email_domain(domain_hash)== false
+      log_error("Fail to setup set_default_email_domain " + api.last_error())
+      return false
+    end
     
     @sucess=true
     mark_as_run
   end
 
-  def set_default_email_domain(domain_hash)
-   
+  def set_default_email_domain(domain_hash)   
     service_param = Hash.new
       service_param[:service_name] = "smtp"
       service_param[:configurator_name] = "default_domain"
@@ -110,7 +109,6 @@ class FirstRunWizard
       return false
     end
 end
-
   
   def log_error(err)
     p "Error with first run " +err
@@ -168,7 +166,6 @@ end
       log_error("create_ca " + @api.last_error.to_s)
       return false
     end
-
   end
 
   def create_default_cert (params)
