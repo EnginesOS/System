@@ -652,7 +652,43 @@ class SystemApi
     return false
   end
 
- 
+  #FIXME Kludge should read from network namespace /proc ?
+  def get_container_network_metrics(container_name)
+    begin
+      ret_val = Hash.new
+      clear_error
+      def error_result
+        ret_val = Hash.new
+        ret_val[:in]="n/a"
+        ret_val[:out]="n/a"
+        return ret_val
+      end
+      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
+      result = SystemUtils.execute_command(commandargs)
+      if result[:result] != 0
+        ret_val = error_result
+      else
+        res = result[:stdout]
+        vals = res.split("bytes:")
+        p res
+        p vals
+        if vals.count > 2
+          if vals[1] != nil && vals[2] != nil
+            ret_val[:in] = vals[1].chop
+            ret_val[:out] = vals[2].chop
+          else
+            ret_val = error_result
+          end
+        else
+          ret_val = error_result
+        end
+        return ret_val
+      end
+    rescue Exception=>e
+      log_exception(e)
+      return   error_result
+    end
+  end
 
   def remove_domain params
     if DNSHosting.rm_domain(params) == false

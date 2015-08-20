@@ -62,9 +62,11 @@ class ServiceManager
         log_error_mesg("Failed to create non persistant service ",service_hash)
         return false
       else #if runninh  ?
-       return test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
-      end
-      
+        if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
+               log_error_mesg("Failed to add service to managed service registry",service_hash)
+               return false
+             end
+      end     
     end
     return true
   rescue Exception=>e
@@ -85,11 +87,8 @@ class ServiceManager
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
-      if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
-        ServiceManager.set_top_level_service_params(service_hash,container.container_name)
-#        if service_hash.has_key?(:container_type) == false
-#          service_hash[:container_type] = @core_api.container_type(service_hash[:parent_engine])
-#        end
+      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+      if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false      
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
         SystemUtils.debug_output(  :templated_service_hash, service_hash)
@@ -123,7 +122,7 @@ class ServiceManager
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
-  def delete_service service_query
+  def delete_service(service_query)
     clear_last_error
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
       service_hash = @system_registry.find_engine_service_hash(complete_service_query)
@@ -178,9 +177,7 @@ class ServiceManager
   end
  
    
-  def rm_remove_engine(params)
-    test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
-  end
+
   
   #def find_engine_services(params)
   #  @system_registry.find_engine_services(params)
@@ -215,6 +212,7 @@ class ServiceManager
     p service_hash
     return  add_to_managed_service(service_hash)
    end
+   
  def force_deregister_attached_service(service_query)
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
    service_hash= @system_registry.find_engine_service_hash(complete_service_query)
@@ -225,6 +223,7 @@ class ServiceManager
    p service_hash
   return  remove_from_managed_service(service_hash)   
  end
+ 
  def force_register_attached_service(service_query)
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
    service_hash = @system_registry.find_engine_service_hash(complete_service_query)
@@ -289,32 +288,7 @@ class ServiceManager
 
   end
 
-  #Calls remove service on the service_container to remove the service associated by the hash
-  #@return result boolean
-  #@param service_hash [Hash]
-  #remove persistant services only if service is up
-  def remove_from_managed_service(service_hash)
-    clear_last_error
-    service =  @core_api.load_software_service(service_hash)
-    if service.is_a?(ManagedService) == false
-      log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
-      return false
-    end
-    if service.is_running? == true || service.persistant == false
-      if service.rm_consumer_from_service(service_hash) == true
-        return true 
-      else
-        return false
-      end
-    elsif service.persistant == true
-      log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
-      return false
-    else
-      return true
-    end
-
-  end
-
+ 
   #def remove_service service_hash
   #  clear_last_error
   #   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
@@ -390,16 +364,7 @@ class ServiceManager
     return nil
   end
 
-  #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
-  def software_service_definition(params)
-    clear_last_error
-    return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
-  rescue Exception=>e
-    p :error
-    p params
-    log_exception(e)
-    return nil
-  end
+
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
     if service_hash == nil
@@ -452,25 +417,7 @@ class ServiceManager
     return service_hash
   end
 
-  #test the result and carry last_error from @system_registry if result nil
-  #@return result
-  def test_registry_result(result)
-    clear_last_error
-    if result == nil
-      @last_error=@system_registry.last_error
-    end
-    return result
-  end
-
-  #test the result and carry last_error from @system_registry if nil
-  #freeze result object if not nil
-  #@return result
-  def test_and_lock_registry_result(result)
-    if test_registry_result(result) != nil
-      result.freeze
-    end
-  end
-
+  
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
     service_definition = software_service_definition(config_hash)
@@ -496,6 +443,8 @@ class ServiceManager
   rescue Exception=>e
     log_exception(e)
   end
+  
+
 
   ###READERS
 
@@ -573,27 +522,33 @@ class ServiceManager
     return result
   end
 
-  def orphanate_service(params)
-    p :oprhanicate
-    p  params
-    test_registry_result(@system_registry.orphanate_service(params))
+#@returns [Hash] suitable for use  to attach as a service
+  #nothing written to the tree
+  def reparent_orphan(params)
+    test_registry_result(@system_registry.reparent_orphan(params))
   end
+ 
 
   def retrieve_orphan(params)
     test_registry_result(@system_registry.retrieve_orphan(params))
   end
 
-  def rebirth_orphan(params)
-    test_registry_result(@system_registry.rebirth_orphan(params))
-  end
+def remove_engine_from_managed_engines_registry(params)
+  test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
+end
 
-  #@returns [Hash] suitable for use  to attach as a service
-  #nothing written to the tree
-  def reparent_orphan(params)
-    test_registry_result(@system_registry.reparent_orphan(params))
-  end
+ 
+private
 
-  
+
+
+def orphanate_service(params)
+   test_registry_result(@system_registry.orphanate_service(params))
+ end
+
+def rebirth_orphan(params)
+  test_registry_result(@system_registry.rebirth_orphan(params))
+end
 
 #Calls on service on the service_container to add the service associated by the hash
  #@return result boolean
@@ -615,18 +570,65 @@ class ServiceManager
    end
    return result
  end
+
+#Calls remove service on the service_container to remove the service associated by the hash
+ #@return result boolean
+ #@param service_hash [Hash]
+ #remove persistant services only if service is up
+ def remove_from_managed_service(service_hash)
+   clear_last_error
+   service =  @core_api.load_software_service(service_hash)
+   if service.is_a?(ManagedService) == false
+     log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
+     return false
+   end
+   if service.is_running? == true || service.persistant == false
+     if service.rm_consumer_from_service(service_hash) == true
+       return true 
+     else
+       return false
+     end
+   elsif service.persistant == true
+     log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
+     return false
+   else
+     return true
+   end
+ end
+
+
+
+#@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
+def software_service_definition(params)
+  clear_last_error
+  return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
+rescue Exception=>e
+  p :error
+  p params
+  log_exception(e)
+  return nil
+end
+
+#test the result and carry last_error from @system_registry if result nil
+  #@return result
+  def test_registry_result(result)
+    clear_last_error
+    if result == nil
+      @last_error=@system_registry.last_error
+    end
+    return result
+  end
+
+  #test the result and carry last_error from @system_registry if nil
+  #freeze result object if not nil
+  #@return result
+  def test_and_lock_registry_result(result)
+    if test_registry_result(result) != nil
+      result.freeze
+    end
+  end
+
  
- 
-private
-#  def register_service_hash_with_service(service_hash)
-#    clear_last_error
-#    service = @core_api.loadManagedService( service_hash[:service_container_name])
-#    if service != nil && service != false
-#      return service.add_consumer_to_service(service_hash)
-#    end
-#    log_error_mesg("no service_container_loaded  ",service_hash)
-#    return false
-#  end
 def log_error_mesg(msg,object)
   obj_str = object.to_s.slice(0,256)
   @last_error = @last_error.to_s + ":" + msg +":" + obj_str
