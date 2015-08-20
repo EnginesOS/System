@@ -1030,28 +1030,28 @@ def force_deregister_attached_service(service_hash)
 end
 def force_register_attached_service(service_hash)
   sm = loadServiceManager()
-  return check_sm_result(sm.sm.force_deregister_attached_service(service_hash))
+  return check_sm_result(sm.force_register_attached_service(service_hash))
 end
 
-  def register_non_persistant_service(service_hash)
-    sm = loadServiceManager()
-    return check_sm_result(sm.register_non_persistant_service(service_hash))
-  end
-
-  def deregister_non_persistant_service(service_hash)
-    sm = loadServiceManager()
-    return check_sm_result(sm.deregister_non_persistant_service(service_hash))
-  end
-
-  def register_non_persistant_services(engine)
-    sm = loadServiceManager()
-    return check_sm_result(sm.register_non_persistant_services(engine))
-  end
-
-  def deregister_non_persistant_services(engine)
-    sm = loadServiceManager()
-    return check_sm_result(sm.deregister_non_persistant_services(engine))
-  end
+#  def register_non_persistant_service(service_hash)
+#    sm = loadServiceManager()
+#    return check_sm_result(sm.register_non_persistant_service(service_hash))
+#  end
+#
+#  def deregister_non_persistant_service(service_hash)
+#    sm = loadServiceManager()
+#    return check_sm_result(sm.deregister_non_persistant_service(service_hash))
+#  end
+#
+#  def register_non_persistant_services(engine)
+#    sm = loadServiceManager()
+#    return check_sm_result(sm.register_non_persistant_services(engine))
+#  end
+#
+#  def deregister_non_persistant_services(engine)
+#    sm = loadServiceManager()
+#    return check_sm_result(sm.deregister_non_persistant_services(engine))
+#  end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
