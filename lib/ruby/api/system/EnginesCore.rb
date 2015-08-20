@@ -143,7 +143,10 @@ class EnginesCore
   def get_container_memory_stats(container)
     return test_system_api_result(@system_api.get_container_memory_stats(container))
   end
-
+  def get_container_network_metrics(container)
+      return test_system_api_result(@system_api.get_container_network_metrics(container))
+    end
+  
   def image_exist?(container_name)
     imageName = container_name
     return test_docker_api_result(@docker_api.image_exist?(imageName))
@@ -274,7 +277,7 @@ class EnginesCore
     log_exception e
     return  false
   end
-
+  
   def list_providers_in_use
     sm = loadServiceManager()
     return check_sm_result(sm.list_providers_in_use)
@@ -784,7 +787,7 @@ class EnginesCore
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
-      if sm.rm_remove_engine(params) == true #used in roll back and only works if no engine do mess with this logic
+      if sm.remove_engine_from_managed_engines_registry(params) == true #used in roll back and only works if no engine do mess with this logic
            return true
       end
       log_error_mesg("Failed to  find Engine",params)
@@ -792,7 +795,7 @@ class EnginesCore
     end    
     if engine.delete_image == true
       sm = loadServiceManager      
-      if sm.rm_remove_engine(params) == true
+      if sm.remove_engine_from_managed_engines_registry(params) == true
       return true
       else
         log_error_mesg("Failed to remove Engine from engines registry "+sm.last_error.to_s,params)
@@ -959,43 +962,7 @@ class EnginesCore
   #  def image_exist?(image_name)
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
   #  end
-  #FIXME Kludge should read from network namespace /proc ?
-  def get_container_network_metrics(container_name)
-    begin
-      ret_val = Hash.new
-      clear_error
-      def error_result
-        ret_val = Hash.new
-        ret_val[:in]="n/a"
-        ret_val[:out]="n/a"
-        return ret_val
-      end
-      commandargs="docker exec " + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
-      result = SystemUtils.execute_command(commandargs)
-      if result[:result] != 0
-        ret_val = error_result
-      else
-        res = result[:stdout]
-        vals = res.split("bytes:")
-        p res
-        p vals
-        if vals.count > 2
-          if vals[1] != nil && vals[2] != nil
-            ret_val[:in] = vals[1].chop
-            ret_val[:out] = vals[2].chop
-          else
-            ret_val = error_result
-          end
-        else
-          ret_val = error_result
-        end
-        return ret_val
-      end
-    rescue Exception=>e
-      log_exception(e)
-      return   error_result
-    end
-  end
+
 
   def is_startup_complete container
     clear_error
@@ -1019,21 +986,40 @@ class EnginesCore
     return false
   end
 
+  
+  def force_reregister_attached_service(service_query)
+    sm = loadServiceManager()
+    return check_sm_result(sm.force_reregister_attached_service(service_query))
+  end
+def force_deregister_attached_service(service_query)
+  sm = loadServiceManager()
+  return check_sm_result(sm.force_deregister_attached_service(service_query))
+end
+def force_register_attached_service(service_query)
+  sm = loadServiceManager()
+  return check_sm_result(sm.force_register_attached_service(service_query))
+end
+
+
+#Called by Managed Containers
   def register_non_persistant_service(service_hash)
     sm = loadServiceManager()
     return check_sm_result(sm.register_non_persistant_service(service_hash))
   end
 
+#Called by Managed Containers
   def deregister_non_persistant_service(service_hash)
     sm = loadServiceManager()
     return check_sm_result(sm.deregister_non_persistant_service(service_hash))
   end
 
+#Called by Managed Containers
   def register_non_persistant_services(engine)
     sm = loadServiceManager()
     return check_sm_result(sm.register_non_persistant_services(engine))
   end
 
+#Called by Managed Containers
   def deregister_non_persistant_services(engine)
     sm = loadServiceManager()
     return check_sm_result(sm.deregister_non_persistant_services(engine))

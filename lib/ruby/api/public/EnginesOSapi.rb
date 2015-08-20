@@ -671,6 +671,7 @@ class EnginesOSapi
   #@returns [EnginesOSapiResult]
   #expects a service_hash as @params
   def dettach_service(params)
+    
     if   @core_api.dettach_service(params)== true
       success(params[:parent_engine].to_s,"detach service")
     else
@@ -678,27 +679,39 @@ class EnginesOSapi
     end
   end
 
+  def get_service_query_from_request(request_hash)
+    #{:application_name=>\"frontaccounting\", :application_service=>{:type_path=>\"nginx\", :publisher_namespace=>\"EnginesSystem\", :service_handle=>\"frontaccounting.engines.demo\", :container_type=>nil, :service_container_name=>nil}})"
+    service_query =request_hash[:application_service]
+    service_query[:parent_engine] = request_hash[:application_name]
+    return service_query
+  end
   #@ return [EnginesOSapiResult]
   #@params service_hash
   #this method is called to register the service hash with service
   #nothing is written to the service registry
   #effectivitly activating non persistant services
-  def register_attached_service(service_hash)
-    if register_attached_service(service_hash)
-      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Register Service")
+  def register_attached_service(request_hash)
+    service_query = get_service_query_from_request(request_hash)
+    p :register_attached_service
+    p service_query
+    if @core_api.force_register_attached_service(service_query)  == true
+      return success(service_query[:parent_engine].to_s + " " +service_query[:service_handle].to_s ,"Register Service")
     end
-    return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
+    return failed(service_query.to_s,@last_error,"deregister_attached_service failed ")
   end
 
   #@ return [EnginesOSapiResult]
   #@params service_hash
   #this method is called to deregister the service hash from service
   #nothing is written to the service resgitry
-  def deregister_attached_service(service_hash)
-    if  deregister_attached_service(service_hash).was_success
-      return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"Deregister Service")
+  def deregister_attached_service(request_hash)
+    service_query = get_service_query_from_request(request_hash)
+    p :deregister_attached_service
+    p service_query
+    if  @core_api.force_deregister_attached_service(service_query)  == true
+      return success(service_query[:parent_engine].to_s + " " +service_query[:service_handle].to_s ,"Deregister Service")
     end
-    return failed(service_hash.to_s,@last_error,"deregister_attached_service failed ")
+    return failed(service_query.to_s,@last_error,"deregister_attached_service failed ")
   end
 
   #@ return [EnginesOSapiResult]
@@ -706,16 +719,15 @@ class EnginesOSapi
   #this method is called to deregister the service hash from service
   # and then to register the service_hash with the service
   #nothing is written to the service resgitry
-  def reregister_attached_service(service_hash)
-    if  deregister_attached_service(service_hash).was_success
-      if register_attached_service(service_hash).was_success
-        return success(service_hash[:parent_engine].to_s + " " +service_hash[:service_handle].to_s ,"reregister Service")
-      else
-        return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in register_attached_service")
+  def reregister_attached_service(request_hash)
+    service_query = get_service_query_from_request(request_hash)
+    p :reregister_attached_service
+       p service_query
+    if  @core_api.force_reregister_attached_service(service_query) == true
+        return success(service_query[:parent_engine].to_s + " " +service_query[:service_handle].to_s ,"reregister Service")
       end
-    end
-    return failed(service_hash.to_s,@last_error,"reregister_attached_service failed in deregister_attached_service")
-  end
+      return failed(service_query.to_s,@last_error,"reregister_attached_service failed ")
+  end 
 
   def get_managed_engine_tree
     return @core_api.get_managed_engine_tree
@@ -965,6 +977,14 @@ class EnginesOSapi
   end  
   def is_engines_system_updating?
    SystemStatus.is_engines_system_updating?
+  end
+  def is_engines_system_upto_date?
+    result = SystemStatus.is_engines_system_upto_date?()
+    if result[:result] ==0
+      return sucess("System Up to Date","Update Status")
+    else 
+      return failed("Updates pending",result[:stdio],"Update Status")
+    end
   end
   def base_system_has_updated?
    SystemStatus.base_system_has_updated?   
