@@ -200,7 +200,7 @@ class ServiceManager
   
   def force_reregister_attached_service(service_query)
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
-    service_hash = find_engine_service_hash(complete_service_query)
+    service_hash = @system_registry.find_engine_services_hash(complete_service_query)
      if service_hash.is_a?(Hash) == false
        log_error( "no matching service found")
        return false
@@ -210,7 +210,7 @@ class ServiceManager
    end
  def force_deregister_attached_service(service_query)
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
-   service_hash= find_engine_service_hash(complete_service_query)
+   service_hash= @system_registry.find_engine_services_hash(complete_service_query)
    if service_hash.is_a?(Hash) == false
      log_error( "no matching service found")
      return false
@@ -220,7 +220,7 @@ class ServiceManager
  end
  def force_register_attached_service(service_query)
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
-   service_hash = find_engine_service_hash(complete_service_query)
+   service_hash = @system_registry.find_engine_services_hash(complete_service_query)
    if service_hash.is_a?(Hash) == false
      log_error( "no matching service found")
      return false
