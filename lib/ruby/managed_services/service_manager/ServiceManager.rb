@@ -41,7 +41,7 @@ class ServiceManager
   #if persisttant it is added to the Service Registry Tree
   #@ All are added to the ManagesEngine/Service Tree
   #@ return true if successful or false if failed
-  def add_service service_hash
+  def add_service(service_hash)
     clear_last_error
     if service_hash[:variables].has_key?(:parent_engine) == false
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine]
@@ -137,7 +137,7 @@ class ServiceManager
     ServiceManager.set_top_level_service_params(params,params[:parent_engine])
     if test_registry_result(@system_registry.update_attached_service(params)) == true
       if remove_from_managed_service(params) == true
-        return add_to_managed_service(params)
+        return add_service(params) # this calls add_to_managed_service(params) plus adds to reg
       else
         @last_error="Filed to remove " + @system_registry.last_error.to_s
       end
@@ -306,26 +306,7 @@ class ServiceManager
     return test_registry_result(@system_registry.release_orphan(service_hash))
   end
 
-  #Calls on service on the service_container to add the service associated by the hash
-  #@return result boolean
-  #@param service_hash [Hash]
-  def add_to_managed_service(service_hash)
-    clear_last_error
-    service =  @core_api.load_software_service(service_hash)
-    if service == nil || service == false
-      log_error_mesg("Failed to load service to add :" +  @system_registry.last_error.to_s,service_hash)
-      return false
-    end
-    if service.is_running? == false
-      log_error_mesg("Cant add to service if service is stopped ",service_hash)
-      return false
-    end
-    result =  service.add_consumer_to_service(service_hash)
-    if result == false
-      log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error.to_s + ":" + service.last_error.to_s,service_hash)
-    end
-    return result
-  end
+ 
 
   #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
@@ -576,6 +557,27 @@ class ServiceManager
 
   private
 
+#Calls on service on the service_container to add the service associated by the hash
+ #@return result boolean
+ #@param service_hash [Hash]
+ def add_to_managed_service(service_hash)
+   clear_last_error
+   service =  @core_api.load_software_service(service_hash)
+   if service == nil || service == false
+     log_error_mesg("Failed to load service to add :" +  @system_registry.last_error.to_s,service_hash)
+     return false
+   end
+   if service.is_running? == false
+     log_error_mesg("Cant add to service if service is stopped ",service_hash)
+     return false
+   end
+   result =  service.add_consumer_to_service(service_hash)
+   if result == false
+     log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error.to_s + ":" + service.last_error.to_s,service_hash)
+   end
+   return result
+ end
+ 
   def register_service_hash_with_service(service_hash)
     clear_last_error
     service = @core_api.loadManagedService( service_hash[:service_container_name])
