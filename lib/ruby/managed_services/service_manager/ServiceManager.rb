@@ -202,11 +202,13 @@ class ServiceManager
     add_to_managed_service(service_hash)
    end
  def force_deregister_attached_service(service_hash)
-   rm_from_managed_service(service_hash)   
+   remove_from_managed_service(service_hash)   
  end
  def force_register_attached_service(service_hash)
-   rm_from_managed_service(service_hash)
-   add_to_managed_service(service_hash)
+  if remove_from_managed_service(service_hash)
+   return add_to_managed_service(service_hash)
+  end  
+  return false    
  end
  
   def deregister_non_persistant_service(service_hash)
