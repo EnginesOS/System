@@ -787,7 +787,7 @@ class EnginesCore
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(ManagedEngine) == false
-      if sm.rm_remove_engine(params) == true #used in roll back and only works if no engine do mess with this logic
+      if sm.remove_engine_from_managed_engines_registry(params) == true #used in roll back and only works if no engine do mess with this logic
            return true
       end
       log_error_mesg("Failed to  find Engine",params)
@@ -795,7 +795,7 @@ class EnginesCore
     end    
     if engine.delete_image == true
       sm = loadServiceManager      
-      if sm.rm_remove_engine(params) == true
+      if sm.remove_engine_from_managed_engines_registry(params) == true
       return true
       else
         log_error_mesg("Failed to remove Engine from engines registry "+sm.last_error.to_s,params)
