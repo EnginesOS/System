@@ -169,7 +169,8 @@ class ServiceManager
     end
     return true
   end
-  
+ 
+   
   def rm_remove_engine(params)
     test_registry_result(@system_registry.remove_from_managed_engines_registry(params))
   end
@@ -197,6 +198,17 @@ class ServiceManager
     return true
   end
 
+  def force_reregister_attached_service(service_hash)
+    add_to_managed_service(service_hash)
+   end
+ def force_deregister_attached_service(service_hash)
+   rm_from_managed_service(service_hash)   
+ end
+ def force_register_attached_service(service_hash)
+   rm_from_managed_service(service_hash)
+   add_to_managed_service(service_hash)
+ end
+ 
   def deregister_non_persistant_service(service_hash)
     clear_last_error
     if remove_from_managed_service(service_hash) == false
@@ -560,7 +572,7 @@ class ServiceManager
    clear_last_error
    service =  @core_api.load_software_service(service_hash)
    if service == nil || service == false
-     log_error_mesg("Failed to load service to add :" +  @system_registry.last_error.to_s,service_hash)
+     log_error_mesg("Failed to load service to add :" +  @core_api.last_error.to_s,service_hash)
      return false
    end
    if service.is_running? == false
@@ -569,20 +581,22 @@ class ServiceManager
    end
    result =  service.add_consumer_to_service(service_hash)
    if result == false
-     log_error_mesg("Failed to add Consumser to Service :" +  @system_registry.last_error.to_s + ":" + service.last_error.to_s,service_hash)
+     log_error_mesg("Failed to add Consumser to Service :" +  @core_api.last_error.to_s + ":" + service.last_error.to_s,service_hash)
    end
    return result
  end
+ 
+ 
 private
-  def register_service_hash_with_service(service_hash)
-    clear_last_error
-    service = @core_api.loadManagedService( service_hash[:service_container_name])
-    if service != nil && service != false
-      return service.add_consumer_to_service(service_hash)
-    end
-    log_error_mesg("no service_container_loaded  ",service_hash)
-    return false
-  end
+#  def register_service_hash_with_service(service_hash)
+#    clear_last_error
+#    service = @core_api.loadManagedService( service_hash[:service_container_name])
+#    if service != nil && service != false
+#      return service.add_consumer_to_service(service_hash)
+#    end
+#    log_error_mesg("no service_container_loaded  ",service_hash)
+#    return false
+#  end
 
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
   #Calls SystemUtils.log_error_msg(msg,object) to log the error

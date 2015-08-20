@@ -1019,6 +1019,20 @@ class EnginesCore
     return false
   end
 
+  
+  def force_reregister_attached_service(service_hash)
+    sm = loadServiceManager()
+    return check_sm_result(sm.force_reregister_attached_service(service_hash))
+  end
+def force_deregister_attached_service(service_hash)
+  sm = loadServiceManager()
+  return check_sm_result(sm.force_deregister_attached_service(service_hash))
+end
+def force_register_attached_service(service_hash)
+  sm = loadServiceManager()
+  return check_sm_result(sm.sm.force_deregister_attached_service(service_hash))
+end
+
   def register_non_persistant_service(service_hash)
     sm = loadServiceManager()
     return check_sm_result(sm.register_non_persistant_service(service_hash))
