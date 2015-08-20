@@ -419,7 +419,7 @@ class ServiceManager
     service_hash[:persistant] = service_def[:persistant]
     service_hash[:parent_engine]=container_name
       
-    if service_hash.has_key?(:container_type) == false
+    if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
          service_hash[:container_type] = "container"
     end
     
