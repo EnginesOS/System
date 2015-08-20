@@ -117,9 +117,10 @@ class ServiceManager
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   #@return false
-  def delete_service service_hash
+  def delete_service service_query
     clear_last_error
-    service_hash = ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+      service_hash = @system_registry.find_engine_service_hash(complete_service_query)
     if service_hash == false
       log_error_mesg("Failed to to set top level params hash",service_hash)
       return false
