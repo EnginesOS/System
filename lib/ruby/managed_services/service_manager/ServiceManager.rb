@@ -564,7 +564,7 @@ end
      log_error_mesg("Cant add to service if service is stopped ",service_hash)
      return false
    end
-   result =  service.add_consumer_to_service(service_hash)
+   result =  service.add_consumer(service_hash)
    if result == false
      log_error_mesg("Failed to add Consumser to Service :" +  @core_api.last_error.to_s + ":" + service.last_error.to_s,service_hash)
    end
@@ -583,7 +583,7 @@ end
      return false
    end
    if service.is_running? == true || service.persistant == false
-     if service.rm_consumer_from_service(service_hash) == true
+     if service.remove_consumer(service_hash) == true
        return true 
      else
        return false
