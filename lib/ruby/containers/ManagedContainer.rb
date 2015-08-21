@@ -431,7 +431,7 @@ class ManagedContainer < Container
 
   def set_deployment_type(deployment_type)
     #remove existing service mapping
-    if @deployment_type && @deployment_type == "web"
+    if @deployment_type && @deployment_type != "web"
       return remove_nginx_service
     end
     @deployment_type = deployment_type
