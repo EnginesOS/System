@@ -26,8 +26,14 @@ class EnginesCore
 
   def software_service_definition(params)
     clear_error
-    sm = loadServiceManager
-    return check_sm_result(sm.software_service_definition(params))
+  return    SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
+    rescue Exception=>e
+      p :error
+      p params
+      log_exception(e)
+      return nil
+#    sm = loadServiceManager
+#    return check_sm_result(sm.software_service_definition(params))
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]

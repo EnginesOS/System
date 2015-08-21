@@ -19,12 +19,10 @@ class SoftwareServiceDefinition
     begin
       # p yaml.path
       serviceDefinition = YAML::load( yaml )
-
       return serviceDefinition
     rescue Exception=>e
-      puts e.message + " with " + yaml.to_s
+      SystemUtils.log_error_mesg("Problem loading Yaml",yaml)
       SystemUtils.log_exception(e)
-
     end
   end
 
@@ -53,48 +51,36 @@ class SoftwareServiceDefinition
   
   end
   def SoftwareServiceDefinition.find(service_type,provider)
-
     if service_type == nil  || provider == nil
-
       return nil
     end
-
     dir = SysConfig.ServiceTemplateDir + "/" + provider
-
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
-        p :error_got_nil_service_type
-        p service_type
-        p :from
-        p dir
+        SystemUtils.log_error_mesg("Nil Service type",provider.to_s + "/" + service_type.to_s )
         return nil
       end
-
       return service_def.to_h
     end
+    SystemUtils.log_error_mesg("No Dir",dir)
+    return nil
   rescue Exception=>e
-    p :service_type
-    p service_type.to_s
-    p :provider
-    p provider.to_s
+    SystemUtils.log_error_mesg("Error " ,provider.to_s + "/" + service_type.to_s )
     SystemUtils.log_exception(e)
-
     return nil
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
     filename=dir + "/" + service_type + ".yaml"
-
     if File.exist?(filename)
       yaml = File.read(filename)
-
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    p :no_such_service_definitition_file
-    p dir.to_s + "/" + service_type.to_s
+    SystemUtils.log_error_mesg("No Such Definitions File",dir.to_s + "/" + service_type.to_s)
     return nil
   rescue Exception=>e
+    SystemUtils.log_error_mesg("Error With",dir.to_s + "/" + service_type.to_s)
     SystemUtils.log_exception(e)
   end
 
@@ -116,7 +102,6 @@ class SoftwareServiceDefinition
       end
     end
   rescue Exception=>e
-
     SystemUtils.log_exception(e)
   end
 
@@ -139,14 +124,11 @@ class SoftwareServiceDefinition
   def to_h
     hash = {}
     instance_variables.each {|var|
-      symbol = var.to_s.delete("@").to_sym
-     
+      symbol = var.to_s.delete("@").to_sym     
       hash[symbol] = instance_variable_get(var) }
-
     return SystemUtils.symbolize_keys(hash)
-
   rescue Exception=>e
-
+    SystemUtils.log_error_mesg("Exception With to h",self)
     SystemUtils.log_exception(e)
   end
 end
