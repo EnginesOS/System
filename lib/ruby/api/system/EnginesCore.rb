@@ -26,7 +26,7 @@ class EnginesCore
 
   def software_service_definition(params)
     clear_error
-  return   SoftwareServiceDefinition.find(params[:type_path],params[:provider_namespace])
+  return    SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
 #    sm = loadServiceManager
 #    return check_sm_result(sm.software_service_definition(params))
   end
