@@ -47,7 +47,7 @@ class FirstRunWizard
     #@api.install_default_cert
     #  happens above  restart_ssl_dependant_services
     
-    if set_default_email_domain(domain_hash)== false
+    if set_default_email_domain(@first_run_params[:default_domain])== false
       log_error("Fail to setup set_default_email_domain " + api.last_error())
       return false
     end
@@ -56,12 +56,12 @@ class FirstRunWizard
     mark_as_run
   end
 
-  def set_default_email_domain(domain_hash)   
+  def set_default_email_domain(domain_name)   
     service_param = Hash.new
       service_param[:service_name] = "smtp"
       service_param[:configurator_name] = "default_domain"
       service_param[:variables] = Hash.new
-      service_param[:variables][:domain_name] =  domain_hash[:domain_name]
+      service_param[:variables][:domain_name] = domain_name
     if  @api.update_service_configuration(service_param) == true
          return true
        else
