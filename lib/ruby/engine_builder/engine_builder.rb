@@ -12,14 +12,14 @@ require 'json'
 
 class EngineBuilder
   require_relative 'builder_public.rb'
-  require_relative 'BluePrintReader.rb'
-  require_relative 'DockerFileBuilder.rb'
+  require_relative 'blue_print_reader.rb'
+  require_relative 'docker_file_builder.rb'
 
   
   require_relative 'build_report.rb'
   include BuildReport
   
-  require_relative '../templater/Templater.rb'
+  require_relative '../templater/templater.rb'
 
   @repoName=nil
   @hostname=nil
