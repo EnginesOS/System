@@ -1,9 +1,9 @@
 #!/home/engines/.rbenv/shims/ruby
-require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
-require "/opt/engines/lib/ruby/system/SysConfig.rb"
-require "/opt/engines/lib/ruby/containers/ManagedEngine.rb"
-require "/opt/engines/lib/ruby/api/public/EnginesOSapi.rb"
-require "/opt/engines/lib/ruby/api/public/EnginesOSapiResult.rb"
+require "/opt/engines/lib/ruby/containers/managed_container.rb"
+require "/opt/engines/lib/ruby/system/system_config.rb"
+require "/opt/engines/lib/ruby/containers/managed_engine.rb"
+require "/opt/engines/lib/ruby/api/public/engines_osapi.rb"
+require "/opt/engines/lib/ruby/api/public/engines_osapi_result.rb"
 
 def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")
