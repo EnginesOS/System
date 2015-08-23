@@ -86,7 +86,7 @@ class BuildController
             @last_error = engine_builder.last_error
           params[:error] =  engine_builder.last_error
         end
-        @last_error= @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
+        @last_error = @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
    
    SystemStatus.build_failed(params)
       return false

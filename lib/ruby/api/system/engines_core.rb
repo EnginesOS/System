@@ -514,7 +514,7 @@ class EnginesCore
       service_param[:type_path] = service.type_path.to_s
       if service != false && service != nil
         configurator_result =  service.run_configurator(service_param)
-        if configurator_result.is_a?(Hash) == false
+        if configurator_result == false
           @last_error = 'Service configurator error ' + service.last_error.to_s
           return false
         end

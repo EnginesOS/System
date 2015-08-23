@@ -13,7 +13,7 @@ class SystemUtils
   def SystemUtils.log_output(object, level)
     if SystemUtils.level < level
       p :Error
-      p object.to_s
+      p object.to_s      
     end
   end
 
@@ -81,6 +81,7 @@ class SystemUtils
     @@last_error = e_str
     p e_str
     SystemUtils.log_output(e_str, 10)
+    return false
   end
 
   def SystemUtils.last_error

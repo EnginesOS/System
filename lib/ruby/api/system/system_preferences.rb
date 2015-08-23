@@ -25,7 +25,7 @@ def get_default_domain()
   if @preferences.has_key?(:default_domain) == false
    return 'unset'
   end
-    
+    p @preferences[:default_domain]
   return @preferences[:default_domain]
   rescue Exception=>e
    SystemUtils.log_exception(e)

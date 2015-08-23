@@ -351,13 +351,12 @@ class SystemApi
       return ret_val
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      return false
     end
   end
 
   def loadManagedEngine(engine_name)
     if engine_name == nil || engine_name.length ==0
-      @last_error='No Engine Name'
+      @last_error = 'No Engine Name'
       return false
     end
     begin
@@ -419,22 +418,19 @@ class SystemApi
         return false
       end
       yam1_file_name = service_type_dir + service_name + '/running.yaml'
-       p yam1_file_name
+      
       if File.exists?(yam1_file_name) == false
         if  build_running_service(service_name,service_type_dir) == false
           log_error('No build_running_service file ' + service_type_dir + '/'+ service_name.to_s)
           return false # return failed(yam_file_name,'No such configuration:','Load Service')
         end
       end
-      yaml_file = File.read(yam1_file_name)
-      p yaml_file
+      yaml_file = File.read(yam1_file_name)     
       # managed_service = YAML::load( yaml_file)
       if service_type_dir == '/sytem_services/'
         managed_service = SystemService.from_yaml(yaml_file,@engines_api)
       else
         managed_service = ManagedService.from_yaml(yaml_file,@engines_api)
-        p :got
-        p managed_service
       end
       if managed_service == nil
         p :load_managed_servic_failed
@@ -445,14 +441,13 @@ class SystemApi
     rescue Exception=>e
       if service_name != nil
         if managed_service !=nil
-          managed_service.last_error=( 'Failed To get Managed Engine ' +  service_name.to_s + ' ' + e.to_s)
+          managed_service.last_error = ('Failed To get Managed Engine ' +  service_name.to_s + ' ' + e.to_s)
           log_error(managed_service.last_error)
         end
       else
         log_error('nil Service Name')
       end
       SystemUtils.log_exception(e)
-      return false
     end
   end
 
@@ -771,6 +766,7 @@ class SystemApi
   def  log_error(e_str)
     @last_error = e_str
     SystemUtils.log_output(e_str,10)
+    return false
   end
 
 end #END of SystemApi
