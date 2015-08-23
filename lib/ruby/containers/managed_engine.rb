@@ -1,6 +1,6 @@
 class ManagedEngine < ManagedContainer
   def initialize(name,memory,hostname,domain_name,image,volumes,port,eports,repo,dbs,environments,framework,runtime,core_api,data_uid,data_gid,deployment_type)
-    @last_error="None"
+    @last_error='None'
     @container_name=name
     @memory=memory
     @hostname=hostname
@@ -11,14 +11,14 @@ class ManagedEngine < ManagedContainer
     @volumes=volumes
     @port=port
     @repository=repo
-    @last_result=""
-    @setState="nocontainer"
+    @last_result=''
+    @setState='nocontainer'
     @databases=dbs
     @framework=framework
     @runtime=runtime
     @core_api= core_api
     @deployment_type = deployment_type
-    @ctype ="container"
+    @ctype ='container'
     @conf_self_start=false
     @data_uid=data_uid
     @data_gid=data_gid
@@ -28,7 +28,7 @@ class ManagedEngine < ManagedContainer
   attr_reader :ctype, :plugins_path, :extract_plugins
 
   def plugins_path
-    return  "/plugins/"
+    return '/plugins/'
   end
 
   def extract_plugins
@@ -37,10 +37,10 @@ class ManagedEngine < ManagedContainer
 
   def engine_persistant_services
     services = @core_api.engine_persistant_services(@container_name)
-    retval = String.new
+    retval = ''
     if services.is_a?(Array)
       services.each do |service|
-        retval += " " + SystemUtils.service_hash_variables_as_str(service)
+        retval += ' ' + SystemUtils.service_hash_variables_as_str(service)
       end
     elsif services.is_a?(Hash)
       retval = SystemUtils.service_hash_variables_as_str(services)

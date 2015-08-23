@@ -42,11 +42,11 @@ module DNSHosting
 
   def DNSHosting.get_local_ip
     #case of management app in container cannot run here from within container
-#    if File.exists?("/opt/engines/etc/net/ip") == false
-#     res =  SystemUtils.execute_command( "/opt/engines/bin/set_ip.sh")
+#    if File.exists?('/opt/engines/etc/net/ip') == false
+#     res =  SystemUtils.execute_command( '/opt/engines/bin/set_ip.sh')
 #    end
-    if File.exists?("/opt/engines/etc/net/ip")
-      ip = File.read("/opt/engines/etc/net/ip")
+    if File.exists?('/opt/engines/etc/net/ip')
+      ip = File.read('/opt/engines/etc/net/ip')
       return ip
     end
     
@@ -66,10 +66,10 @@ module DNSHosting
 #  def DNSHosting.write_zone_file(domain,ip)
 #    dns_template = File.read(SystemConfig.SelfHostedDNStemplate)
 #
-#    dns_template.gsub!("IP",ip)
-#    dns_template.gsub!("DOMAIN",domain)
+#    dns_template.gsub!('IP',ip)
+#    dns_template.gsub!('DOMAIN',domain)
 #
-#    dns_file = File.open(SystemConfig.DNSZoneDir + "/" + domain,"w")
+#    dns_file = File.open(SystemConfig.DNSZoneDir + '/' + domain,'w')
 #    dns_file.write(dns_template)
 #    dns_file.close
 #    return true
@@ -80,10 +80,10 @@ module DNSHosting
 
 #  def DNSHosting.write_config(domain,conf_file)
 #
-#    conf_file.puts( "zone \"" + domain +"\" {")
-#    conf_file.puts("type master;")
-#    conf_file.puts("file \"/etc/bind/engines/zones/" + domain + "\";") #FIXME and put /etc... in config
-#    conf_file.puts("};")
+#    conf_file.puts( 'zone \'' + domain +'\' {')
+#    conf_file.puts('type master;')
+#    conf_file.puts('file \'/etc/bind/engines/zones/' + domain + '\';') #FIXME and put /etc... in config
+#    conf_file.puts('};')
 #
 #    return true
 #  rescue Exception=>e
@@ -94,7 +94,7 @@ module DNSHosting
 #  def DNSHosting.rm_local_domain_files domain_name
 #    ret_val=false
 #
-#    dns_zone_filename = SystemConfig.DNSZoneDir + "/" + domain_name
+#    dns_zone_filename = SystemConfig.DNSZoneDir + '/' + domain_name
 #    if File.exists?(dns_zone_filename)
 #      File.delete(dns_zone_filename)
 #      ret_val=true
@@ -119,7 +119,7 @@ module DNSHosting
 #   
 #    p :failed_to_find_domain
 #       p  domain
-#       p "in " + domains.to_s
+#       p 'in ' + domains.to_s
 #       return true
 #    end
 #    
@@ -132,11 +132,11 @@ module DNSHosting
 #  def DNSHosting.load_self_hosted_domains
 #    begin
 #      if File.exists?(SystemConfig.HostedDomainsFile) == false
-#        self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,"w")
+#        self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,'w')
 #        self_hosted_domain_file.close
 #        return Hash.new
 #      else
-#        self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,"r")
+#        self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,'r')
 #      end
 #      self_hosted_domains = YAML::load( self_hosted_domain_file )
 #      self_hosted_domain_file.close
@@ -153,10 +153,10 @@ module DNSHosting
 #
 #  def DNSHosting.save_self_hosted_domains(domains)
 #    begin
-#      self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,"w")
+#      self_hosted_domain_file = File.open(SystemConfig.HostedDomainsFile,'w')
 #      self_hosted_domain_file.write(domains.to_yaml())
 #      self_hosted_domain_file.close
-#      conf_file = File.open(SystemConfig.DNSHostedList,"w")
+#      conf_file = File.open(SystemConfig.DNSHostedList,'w')
 #      p domains
 #      p :domains
 #      domains.each_key do |domain|
@@ -177,7 +177,7 @@ module DNSHosting
   def  DNSHosting.save_domains(domains)
 
     begin
-      domain_file = File.open(SystemConfig.DomainsFile,"w")
+      domain_file = File.open(SystemConfig.DomainsFile,'w')
       domain_file.write(domains.to_yaml())
       domain_file.close
       return true
@@ -192,11 +192,11 @@ module DNSHosting
     begin
       if File.exists?(SystemConfig.DomainsFile) == false
         #         p :creating_new_domain_list
-        domains_file = File.open(SystemConfig.DomainsFile,"w")
+        domains_file = File.open(SystemConfig.DomainsFile,'w')
         domains_file.close
         return Hash.new
       else
-        domains_file = File.open(SystemConfig.DomainsFile,"r")
+        domains_file = File.open(SystemConfig.DomainsFile,'r')
       end
       domains = YAML::load( domains_file )
       domains_file.close
@@ -207,7 +207,7 @@ module DNSHosting
       return domains
     rescue Exception=>e
       domains = Hash.new
-      p "failed_to_load_domains"
+      p 'failed_to_load_domains'
       SystemUtils.log_exception(e)
       return domains
     end
@@ -251,7 +251,7 @@ module DNSHosting
   
       p :failed_to_find_domain
          p  domain
-         p "in " + domains.to_s
+         p 'in ' + domains.to_s
     end
 
   end

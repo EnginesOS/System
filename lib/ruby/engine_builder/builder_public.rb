@@ -17,8 +17,8 @@ require 'securerandom'
 #   @volumes = vols
 #   @environments = environs
 #   @conf_self_start=false
-#   @last_error=""
-#   @last_result=""
+#   @last_error=''
+#   @last_result=''
 #   @data_uid=data_uid
 #   @data_gid=data_gid
 #   @cont_userid=-1
@@ -35,7 +35,7 @@ end
    @builder.domain_name
  end
   def fqdn
-    @builder.hostname + "." + @builder.domain_name
+    @builder.hostname + '.' + @builder.domain_name
   end
  def hostname 
    @builder.hostname
@@ -43,12 +43,12 @@ end
  
  def http_protocol  
    if @builder.http_protocol == nil
-     return ""
+     return ''
    end
-   if @builder.http_protocol.include?("https")
-     return "https"     
+   if @builder.http_protocol.include?('https')
+     return 'https'     
    end
-   return "http"
+   return 'http'
  end
  
  def repoName

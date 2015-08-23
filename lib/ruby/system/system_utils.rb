@@ -1,16 +1,16 @@
 class SystemUtils
   @@debug=true
-  @@level=9
+  @@level=-1
 
   attr_reader :debug,:level,:last_error
-  def SystemUtils.debug_output(label,object)
+  def SystemUtils.debug_output(label, object)
     if SystemUtils.debug == true
       p label.to_sym
       p object
     end
   end
 
-  def SystemUtils.log_output(object,level)
+  def SystemUtils.log_output(object, level)
     if SystemUtils.level < level
       p :Error
       p object.to_s
@@ -21,17 +21,17 @@ class SystemUtils
   #Logs are written to apache/error.log
   # error mesg is truncated to 512 bytes
   # returns nothing
-  def SystemUtils.log_error_mesg(msg,object)
-    obj_str = object.to_s.slice(0,512)
-    SystemUtils.log_output(msg + ":->:" + obj_str ,10)
+  def SystemUtils.log_error_mesg(msg, object)
+    obj_str = object.to_s.slice(0, 512)
+    SystemUtils.log_output(msg + ':->:' + obj_str ,10)
   end
 
   def SystemUtils.log_error(object)
-    SystemUtils.log_output(object,10)
+    SystemUtils.log_output(object, 10)
   end
   
-  def SystemUtils.get_service_pubkey(service,cmd)
-    cmd_line = "docker exec " + service + " /home/get_pubkey.sh " + cmd     
+  def SystemUtils.get_service_pubkey(service, cmd)
+    cmd_line = 'docker exec ' + service + ' /home/get_pubkey.sh ' + cmd     
     key = SystemUtils.run_command(cmd_line)
     p key
     return key
@@ -39,14 +39,14 @@ class SystemUtils
   
   def SystemUtils.system_release
     if File.exists?(SystemConfig.ReleaseFile) == false
-         return "current"
+         return 'current'
        end
-       release =  File.read(SystemConfig.ReleaseFile)
+       release = File.read(SystemConfig.ReleaseFile)
        return release.strip    
   end
   
   def SystemUtils.version
-     return SystemUtils.system_release + "." + SystemConfig.api_version + "." + SystemConfig.engines_system_version
+     return SystemUtils.system_release + '.' + SystemConfig.api_version + '.' + SystemConfig.engines_system_version
    end
    
   def SystemUtils.symbolize_keys(hash)
@@ -58,7 +58,7 @@ class SystemUtils
       new_value = case value
       when Hash then symbolize_keys(value)
       when Array   then
-        newval=Array.new
+        newval = []
         value.each do |array_val|
           if array_val.is_a?(Hash)
             array_val = SystemUtils.symbolize_keys(array_val)
@@ -76,11 +76,11 @@ class SystemUtils
   def SystemUtils.log_exception(e)
     e_str = e.to_s()
     e.backtrace.each do |bt |
-      e_str += bt + " \n"
+      e_str += bt + ' \n'
     end
     @@last_error = e_str
     p e_str
-    SystemUtils.log_output(e_str,10)
+    SystemUtils.log_output(e_str, 10)
   end
 
   def SystemUtils.last_error
@@ -100,45 +100,42 @@ class SystemUtils
   #else
   #@return stdout and stderr from cmd
   def SystemUtils.run_system(cmd)
-    @@last_error=""
+    @@last_error = ''
     begin
-      cmd = cmd + " 2>&1"
+      cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
-      SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
+      SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       if $?.to_i == 0
         p :run_system_success
         return true
       else
-        SystemUtils.log_error_mesg("Error Code:" + $?.to_s + " in run " + cmd + " Output:", res)
+        SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
         return res
       end
     rescue Exception=>e
       SystemUtils.log_exception(e)
-      SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): ",cmd)
-      return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
+      SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
+      return 'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
     end
   end
   def SystemUtils.hash_string_to_hash(hash_string)
-    retval = Hash.new
-    
-    hash_pairs = hash_string.split(":")
+    retval = {}    
+    hash_pairs = hash_string.split(':')
       hash_pairs.each do |hash_pair|
-        pair = hash_pair.split("=")
+        pair = hash_pair.split('=')
         if pair.length > 1
           val = pair[1]
           else
           val = nil
         end
           
-        if pair != nil && pair[0] != nil
+        if pair.nil? == false && pair[0].nil? == false
           retval[pair[0].to_sym] = val
         end        
      end
-
     return retval
 rescue Exception=>e
-      SystemUtils.log_exception(e)
-      
+      SystemUtils.log_exception(e)      
   end
   
 #Execute @param cmd [String]
@@ -147,22 +144,21 @@ rescue Exception=>e
     #:stdout = what was written to standard out
     #:stderr = wahat was written to standard err
 def SystemUtils.execute_command(cmd)
-     @@last_error=""    
+     @@last_error = ''    
   require 'open3'
-   SystemUtils.debug_output("exec command ",cmd)
-   retval = Hash.new
-   retval[:stdout] = String.new
-   retval[:stderr] = String.new
+   SystemUtils.debug_output('exec command ',cmd)
+   retval = []
+   retval[:stdout] = ''
+   retval[:stderr] = ''
    retval[:result] = -1
-
      Open3.popen3(cmd)  do |stdin, stdout, stderr, th|
        oline = String.new
        stderr_is_open=true
        begin
          stdout.each do |line|
-           line = line.gsub(/\\\"/,"")
+           line = line.gsub(/\\\'/,'')
            oline = line
-           retval[:stdout]+= line.chop
+           retval[:stdout] += line.chop
            if stderr_is_open
              retval[:stderr] += stderr.read_nonblock(256)
            end
@@ -171,16 +167,16 @@ def SystemUtils.execute_command(cmd)
        rescue Errno::EIO
          retval[:stdout] += oline.chop
          retval[:stdout] += stdin.read_nonblock(256) 
-         SystemUtils.debug_output("read stderr",oline)
-         retval[:stderr]  += stderr.read_nonblock(256)
-       rescue  IO::WaitReadable
+         SystemUtils.debug_output('read stderr',oline)
+         retval[:stderr] += stderr.read_nonblock(256)
+       rescue IO::WaitReadable
          retry
        rescue EOFError         
          if stdout.closed? == false
            stderr_is_open = false
            retry
          elsif stderr.closed? == false
-           retval[:stderr]  += stderr.read_nonblock(1000)
+           retval[:stderr] += stderr.read_nonblock(1000)
          end         
        end        
          return retval
@@ -188,29 +184,26 @@ def SystemUtils.execute_command(cmd)
      return retval
      rescue Exception=>e
        SystemUtils.log_exception(e)
-       SystemUtils.log_error_mesg("Exception Error in SystemUtils.execute_command(+ " + cmd +"): ",retval)
-       retval[:stderr] += "Exception Error in SystemUtils.run_system(" + cmd + "): " +e.to_s
-       retval[:result] =-99
+       SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ' ,retval)
+       retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' +e.to_s
+       retval[:result] = -99
        return retval
-   end
-  
+   end  
   
    #Execute @param cmd [String]
     #@return stdout and stderr from cmd
     #No indication of success
     def SystemUtils.run_command(cmd)
-      @@last_error=""
+      @@last_error = ''
       begin
-        cmd = cmd + " 2>&1"
+        cmd = cmd + ' 2>&1'
         res= %x<#{cmd}>
-        SystemUtils.debug_output("Run " + cmd + " ResultCode:" + $?.to_s + " Output:", res)
-       
+        SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)       
         return res
-
       rescue Exception=>e
         SystemUtils.log_exception(e)
-        SystemUtils.log_error_mesg("Exception Error in SystemUtils.run_system(cmd): ",cmd)
-        return "Exception Error in SystemUtils.run_system(cmd): " +e.to_s
+        SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
+        return 'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
       end
     end
 
@@ -219,103 +212,91 @@ def SystemUtils.execute_command(cmd)
 #      domain = File.read(SystemConfig.DefaultDomainnameFile)
 #      return domain.strip
 #    else
-#      return "engines"
+#      return 'engines'
 #    end
 #  end
 
   #@return [Hash] completed dns service_hash for engine on the engines.internal dns for
   #@param engine [ManagedContainer]
   def SystemUtils.create_dns_service_hash(engine)
-    service_hash = Hash.new
-
-    service_hash[:publisher_namespace] = "EnginesSystem"
+    service_hash = {}
+    service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
     service_hash[:persistant] = false
-    service_hash[:service_container_name]='dns'  
-    service_hash[:parent_engine]=engine.container_name
-    service_hash[:container_type]=engine.ctype
-    service_hash[:service_handle] =engine.container_name
-    service_hash[:variables] = Hash.new    
-    service_hash[:variables][:parent_engine]= engine.container_name
-
-    if engine.ctype == "service"
-      service_hash[:variables][:hostname]=engine.hostname
+    service_hash[:service_container_name] = 'dns'  
+    service_hash[:parent_engine] = engine.container_name
+    service_hash[:container_type] = engine.ctype
+    service_hash[:service_handle] = engine.container_name
+    service_hash[:variables] ={}
+    service_hash[:variables][:parent_engine] = engine.container_name
+    if engine.ctype == 'service'
+      service_hash[:variables][:hostname] = engine.hostname
     else
-      service_hash[:variables][:hostname]=engine.container_name
+      service_hash[:variables][:hostname] = engine.container_name
     end
-    service_hash[:variables][:name]=service_hash[:variables][:hostname]
-    service_hash[:variables][:ip]=engine.get_ip_str.to_s
-
+    service_hash[:variables][:name] = service_hash[:variables][:hostname]
+    service_hash[:variables][:ip] = engine.get_ip_str.to_s
     p :created_dns_service_hash
     p service_hash
     return service_hash
   end
 
-  
   #@return [Hash] completed nginx service_hash for engine on for the default website configured for
   #@param engine [ManagedContainer]
   def SystemUtils.create_nginx_service_hash(engine)
-
-    proto ="http_https"
+    proto =  'http_https'
     case engine.protocol
     when :https_only
-      proto="https"
+      proto = 'https'
     when :http_and_https
-      proto ="http_https"
+      proto = 'http_https'
     when :http_only
-      proto="http"
+      proto = 'http'
     end
     #
     #    p :proto
     #    p proto
-
-    service_hash = Hash.new()
-
+    service_hash = {}
     service_hash[:persistant] = false
-    service_hash[:service_container_name]='nginx'
+    service_hash[:service_container_name] = 'nginx'
     service_hash[:type_path] = 'nginx'
-    service_hash[:publisher_namespace] = "EnginesSystem"
+    service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:service_handle] =  engine.fqdn          
-    service_hash[:parent_engine]=engine.container_name
-    service_hash[:container_type]=engine.ctype
-    service_hash[:variables] = Hash.new 
-    service_hash[:variables][:parent_engine]=engine.container_name
-    service_hash[:variables][:name]=engine.container_name  
-    service_hash[:variables][:fqdn]=engine.fqdn
-    service_hash[:variables][:port]=engine.port.to_s
-    service_hash[:variables][:proto]= proto
-
-    SystemUtils.debug_output("create nginx Hash",service_hash)
+    service_hash[:parent_engine] = engine.container_name
+    service_hash[:container_type] = engine.ctype
+    service_hash[:variables] = {}
+    service_hash[:variables][:parent_engine] = engine.container_name
+    service_hash[:variables][:name] = engine.container_name  
+    service_hash[:variables][:fqdn] = engine.fqdn
+    service_hash[:variables][:port] = engine.port.to_s
+    service_hash[:variables][:proto] = proto
+    SystemUtils.debug_output('create nginx Hash',service_hash)
     return service_hash
-
   end
   
   def SystemUtils.cgroup_mem_dir(container_id_str)
-    return "/sys/fs/cgroup/memory/system.slice/docker-" + container_id_str + ".scope"         
+    return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'         
   end
   
 def SystemUtils.service_hash_variables_as_str(service_hash)
    argument = String.new
    if service_hash.has_key?(:publisher_namespace) 
-     argument = "publisher_namespace=" + service_hash[:publisher_namespace] +":type_path="+service_hash[:type_path]+":"
+     argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
    end
-   service_variables =  service_hash[:variables]
-     sources = ""
-     if service_variables == nil
+   service_variables = service_hash[:variables]
+     sources = ''
+     if service_variables.nil? == true
        return argument
      end
    service_variables.each_pair do |key,value|
      if key == :sources
        sources = value
        next 
-     end
-          
-     argument+= key.to_s + "=\"" + value.to_s + "\":"      
+     end         
+     argument+= key.to_s + '=\'' + value.to_s + '\':'      
    end
    
-  argument += " " + sources
-   
+  argument += ' ' + sources   
    return argument
  end
- 
 end

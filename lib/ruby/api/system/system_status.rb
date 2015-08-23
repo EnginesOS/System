@@ -48,12 +48,12 @@ def SystemStatus.build_failed(params)
     if File.exists?(SystemConfig.BuildRunningParamsFile)
       File.delete(SystemConfig.BuildRunningParamsFile)
     end
-  param_file = File.new(SystemConfig.BuildFailedFile,"w")
+  param_file = File.new(SystemConfig.BuildFailedFile,'w')
   param_file.puts(params.to_yaml)
   param_file.close
 end
 def SystemStatus.build_complete(params)
-  param_file = File.new(SystemConfig.BuildBuiltFile,"w")
+  param_file = File.new(SystemConfig.BuildBuiltFile,'w')
    param_file.puts(params.to_yaml)
    param_file.close
   if File.exists?(SystemConfig.BuildRunningParamsFile)
@@ -61,7 +61,7 @@ def SystemStatus.build_complete(params)
   end
 end
 def SystemStatus.build_starting(params)
-  param_file = File.new(SystemConfig.BuildRunningParamsFile,"w")
+  param_file = File.new(SystemConfig.BuildRunningParamsFile,'w')
   param_file.puts(params.to_yaml)
   param_file.close
   if File.exists?(SystemConfig.BuildFailedFile)
@@ -122,25 +122,25 @@ end
  
     ret_val = Hash.new
     begin
-      proc_mem_info_file = File.open("/proc/meminfo")
+      proc_mem_info_file = File.open('/proc/meminfo')
       proc_mem_info_file.each_line  do |line|
-        values=line.split(" ")
+        values=line.split(' ')
         case values[0]
-        when "MemTotal:"
+        when 'MemTotal:'
           ret_val[:total] = values[1]
-        when "MemFree:"
+        when 'MemFree:'
           ret_val[:free]= values[1]
-        when "Buffers:"
+        when 'Buffers:'
           ret_val[:buffers]= values[1]
-        when "Cached:"
+        when 'Cached:'
           ret_val[:file_cache]= values[1]
-        when "Active:"
+        when 'Active:'
           ret_val[:active]= values[1]
-        when "Inactive:"
+        when 'Inactive:'
           ret_val[:inactive]= values[1]
-        when "SwapTotal:"
+        when 'SwapTotal:'
           ret_val[:swap_total]= values[1]
-        when "SwapFree:"
+        when 'SwapFree:'
           ret_val[:swap_free] = values[1]
         end
       end
@@ -162,12 +162,12 @@ end
   def SystemStatus.get_system_load_info
     ret_val = Hash.new
     begin
-      loadavg_info = File.read("/proc/loadavg")
-      values = loadavg_info.split(" ")
+      loadavg_info = File.read('/proc/loadavg')
+      values = loadavg_info.split(' ')
       ret_val[:one] = values[0]
       ret_val[:five] = values[1]
       ret_val[:fithteen] = values[2]
-      run_idle = values[3].split("/")
+      run_idle = values[3].split('/')
       ret_val[:running] = run_idle[0]
       ret_val[:idle] = run_idle[1]
     rescue Exception=>e
@@ -184,7 +184,7 @@ end
     end
   end
   def  SystemStatus.is_engines_system_upto_date?()
-    result = SystemUtils.execute_command("/opt/engines/bin/engines_system_update_status.sh")
+    result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
     return result      
   end
 end

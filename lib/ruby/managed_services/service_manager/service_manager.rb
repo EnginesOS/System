@@ -17,7 +17,7 @@ class ServiceManager
     if service_hash.has_key?(:persistant) == false
       persist = software_service_persistance(service_hash)
       if persist == nil
-        log_error_mesg("Failed to get persistance status for ",service_hash)
+        log_error_mesg('Failed to get persistance status for ',service_hash)
         return false
       end
       service_hash[:persistant] = persist
@@ -50,20 +50,20 @@ class ServiceManager
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
     if is_service_persistant?(service_hash) == true
       if add_to_managed_service(service_hash) == false
-        log_error_mesg("Failed to create persistant service ",service_hash)
+        log_error_mesg('Failed to create persistant service ',service_hash)
         return false
       end
       if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
-        log_error_mesg("Failed to add service to managed service registry",service_hash)
+        log_error_mesg('Failed to add service to managed service registry',service_hash)
         return false
       end
     else
       if  add_to_managed_service(service_hash) == false
-        log_error_mesg("Failed to create non persistant service ",service_hash)
+        log_error_mesg('Failed to create non persistant service ',service_hash)
         return false
       else #if runninh  ?
         if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
-               log_error_mesg("Failed to add service to managed service registry",service_hash)
+               log_error_mesg('Failed to add service to managed service registry',service_hash)
                return false
              end
       end     
@@ -81,7 +81,7 @@ class ServiceManager
     clear_last_error
     envs = Array.new
     curr_service_file = String.new
-    Dir.glob(dirname + "/*.yaml").each do |service_file|
+    Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
@@ -103,19 +103,19 @@ class ServiceManager
       if service_hash.is_a?(Hash)
         SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-        p "new_envs"
+        p 'new_envs'
         p new_envs.to_s
         if new_envs != nil
           envs.concat(new_envs)
         end
       else
-        log_error_mesg("failed to get service entry from " ,service_hash)
+        log_error_mesg('failed to get service entry from ' ,service_hash)
       end
     end
     return envs
   rescue Exception=>e
     puts e.message
-    log_error_mesg("Parse error on " + curr_service_file,container)
+    log_error_mesg('Parse error on ' + curr_service_file,container)
     log_exception(e)
     return false
   end
@@ -127,11 +127,11 @@ class ServiceManager
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
       service_hash = @system_registry.find_engine_service_hash(complete_service_query)
     if service_hash == false
-      log_error_mesg("Failed to to set top level params hash",service_hash)
+      log_error_mesg('Failed to to set top level params hash',service_hash)
       return false
     end
     if remove_from_managed_service(service_hash) == false
-      log_error_mesg("failed to remove managed service",service_hash)
+      log_error_mesg('failed to remove managed service',service_hash)
       return false
     end    
     return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
@@ -144,7 +144,7 @@ class ServiceManager
       if remove_from_managed_service(params) == true
         return add_to_managed_service(params) # this calls add_to_managed_service(params) plus adds to reg
       else
-        @last_error="Filed to remove " + @system_registry.last_error.to_s
+        @last_error='Filed to remove ' + @system_registry.last_error.to_s
       end
     else
       @last_error=@system_registry.last_error.to_s
@@ -162,13 +162,13 @@ class ServiceManager
     services.each do | service |
       if params[:remove_all_data] == true
         if delete_service(service) == false
-          log_error_mesg("Failed to remove service ",service)
+          log_error_mesg('Failed to remove service ',service)
           return false
         end
         @system_registry.remove_from_managed_engines_registry(service)
       else
         if orphanate_service(service) == false
-          log_error_mesg("Failed to orphan service ",service)
+          log_error_mesg('Failed to orphan service ',service)
           return false
         end
       end
@@ -192,11 +192,11 @@ class ServiceManager
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     clear_last_error
     if add_to_managed_service(service_hash) == false
-      log_error_mesg("Failed to create persistant service ",service_hash)
+      log_error_mesg('Failed to create persistant service ',service_hash)
       return false
     end
     if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
-      log_error_mesg("Failed to add service to managed service registry",service_hash)
+      log_error_mesg('Failed to add service to managed service registry',service_hash)
       return false
     end
     return true
@@ -206,7 +206,7 @@ class ServiceManager
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = @system_registry.find_engine_service_hash(complete_service_query)
      if service_hash.is_a?(Hash) == false
-       log_error_mesg( "force_reregister no matching service found",service_query)
+       log_error_mesg( 'force_reregister no matching service found',service_query)
        return false
      end
     p service_hash
@@ -217,7 +217,7 @@ class ServiceManager
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
    service_hash= @system_registry.find_engine_service_hash(complete_service_query)
    if service_hash.is_a?(Hash) == false
-     log_error_mesg( "force_deregister_ no matching service found",service_query)
+     log_error_mesg( 'force_deregister_ no matching service found',service_query)
      return false
    end
    p service_hash
@@ -228,7 +228,7 @@ class ServiceManager
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
    service_hash = @system_registry.find_engine_service_hash(complete_service_query)
    if service_hash.is_a?(Hash) == false
-     log_error_mesg( "force_register no matching service found",service_query)
+     log_error_mesg( 'force_register no matching service found',service_query)
      return false
    end
      p service_hash
@@ -241,11 +241,11 @@ class ServiceManager
   def deregister_non_persistant_service(service_hash)
     clear_last_error
     if remove_from_managed_service(service_hash) == false
-      log_error_mesg("Failed to create persistant service ",service_hash)
+      log_error_mesg('Failed to create persistant service ',service_hash)
       return false
     end
     if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
-      log_error_mesg("Failed to deregsiter service from managed service registry",service_hash)
+      log_error_mesg('Failed to deregsiter service from managed service registry',service_hash)
       return false
     end
     return true
@@ -292,7 +292,7 @@ class ServiceManager
   #def remove_service service_hash
   #  clear_last_error
   #   if test_registry_result(@system_registry.remove_from_services_registry(service_hash)) == false
-  #     log_error_mesg("failed to remove from service registry",service_hash)
+  #     log_error_mesg('failed to remove from service registry',service_hash)
   #     return false
   #   end
   #   SystemUtils.debug_output(  :remove_service, service_hash)
@@ -312,7 +312,7 @@ class ServiceManager
     clear_last_error
     service_hash = retrieve_orphan(service_query_hash)
     if service_hash == nil || service_hash == false
-      log_error_mesg("failed to retrieve orphan service:" +  @last_error.to_s,service_hash)
+      log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)
       return false
     end
     return test_registry_result(@system_registry.release_orphan(service_hash))
@@ -325,7 +325,7 @@ class ServiceManager
     clear_last_error
     server_service =  software_service_definition(params)
     if server_service == nil || server_service == false
-      log_error_mesg("Failed to load service definitions",params)
+      log_error_mesg('Failed to load service definitions',params)
       return false
     end
     return server_service[:service_container]
@@ -336,22 +336,22 @@ class ServiceManager
   #@identifier [String]
   def list_attached_services_for(objectName,identifier)
     clear_last_error
-    SystemUtils.debug_output("services_on_objects_",objectName)
-    SystemUtils.debug_output("services_on_objects_",identifier)
+    SystemUtils.debug_output('services_on_objects_',objectName)
+    SystemUtils.debug_output('services_on_objects_',identifier)
     params = Hash.new
     case objectName
-    when "ManagedEngine"
+    when 'ManagedEngine'
       params[:parent_engine] = identifier
-      SystemUtils.debug_output(  :get_engine_service_hashes,"ManagedEngine")
+      SystemUtils.debug_output(  :get_engine_service_hashes,'ManagedEngine')
       #      hashes = @system_registry.find_engine_services_hashes(params)
-      #      SystemUtils.debug_output("hashes",hashes)
+      #      SystemUtils.debug_output('hashes',hashes)
 
       return test_registry_result(@system_registry.find_engine_services_hashes(params))
       #    attached_managed_engine_services(identifier)
-    when "Volume"
+    when 'Volume'
       SystemUtils.debug_output(  :looking_for_volume,identifier)
       return attached_volume_services(identifier)
-    when "Database"
+    when 'Database'
       SystemUtils.debug_output(  :looking_for_database,identifier)
       return attached_database_services(identifier)
     end
@@ -368,22 +368,22 @@ class ServiceManager
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
     if service_hash == nil
-      SystemUtils.log_error_mesg("no set_top_level_service_params_nil_service_hash container_name:",container_name)
+      SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name)
       return false
     end
     if container_name == nil
-      SystemUtils.log_error_mesg("no set_top_level_service_params_nil_container_name service_hash:",service_hash)
+      SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)
       return false
     end
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     if service_def  == nil
-      SystemUtils.log_error_mesg("NO Service Definition File Found for:",service_hash)
+      SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash)
       return false
     end
     if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field] !=nil
       handle_field_sym = service_def[:service_handle_field].to_sym
     else
-      SystemUtils.log_error_mesg("no service_handle for",service_hash)
+      SystemUtils.log_error_mesg('no service_handle for',service_hash)
       return false
     end
     if service_def.has_key?(:priority) == true
@@ -394,7 +394,7 @@ class ServiceManager
         
     if service_hash.has_key?(:service_handle) == false\
     || service_hash[:service_handle] == nil \
-    || service_hash[:service_handle] ==""
+    || service_hash[:service_handle] ==''
 
       if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
         service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
@@ -407,7 +407,7 @@ class ServiceManager
     service_hash[:parent_engine]=container_name
       
     if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
-         service_hash[:container_type] = "container"
+         service_hash[:container_type] = 'container'
     end
     
     if service_hash.has_key?(:variables) == false
@@ -422,16 +422,16 @@ class ServiceManager
     #load service definition and from configurators definition and if saveable save
     service_definition = software_service_definition(config_hash)
     if service_definition.is_a?(Hash) == false
-      @last_error= "Missing Service definition file " + config_hash.to_s
+      @last_error= 'Missing Service definition file ' + config_hash.to_s
       return false
     end
     if service_definition.has_key?(:configurators) == false
-      @last_error= "Missing Configurators in service definition"
+      @last_error= 'Missing Configurators in service definition'
       return false
     end
     configurators = service_definition[:configurators]
     if  configurators.has_key?(config_hash[:configurator_name].to_sym)  == false
-      @last_error= "Missing Configurator " + config_hash[:configurator_name]
+      @last_error= 'Missing Configurator ' + config_hash[:configurator_name]
       return false
     end
     configurator_definition = configurators[config_hash[:configurator_name].to_sym]
@@ -557,16 +557,16 @@ end
    clear_last_error
    service =  @core_api.load_software_service(service_hash)
    if service == nil || service == false
-     log_error_mesg("Failed to load service to add :" +  @core_api.last_error.to_s,service_hash)
+     log_error_mesg('Failed to load service to add :' +  @core_api.last_error.to_s,service_hash)
      return false
    end
    if service.is_running? == false
-     log_error_mesg("Cant add to service if service is stopped ",service_hash)
+     log_error_mesg('Cant add to service if service is stopped ',service_hash)
      return false
    end
    result =  service.add_consumer(service_hash)
    if result == false
-     log_error_mesg("Failed to add Consumser to Service :" +  @core_api.last_error.to_s + ":" + service.last_error.to_s,service_hash)
+     log_error_mesg('Failed to add Consumser to Service :' +  @core_api.last_error.to_s + ':' + service.last_error.to_s,service_hash)
    end
    return result
  end
@@ -579,7 +579,7 @@ end
    clear_last_error
    service =  @core_api.load_software_service(service_hash)
    if service.is_a?(ManagedService) == false
-     log_error_mesg("Failed to load service to remove + " + @core_api.last_error.to_s + " :service " + service.to_s,service_hash)
+     log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s,service_hash)
      return false
    end
    if service.is_running? == true || service.persistant == false
@@ -589,7 +589,7 @@ end
        return false
      end
    elsif service.persistant == true
-     log_error_mesg("Cant remove persistant service if service is stopped ",service_hash)
+     log_error_mesg('Cant remove persistant service if service is stopped ',service_hash)
      return false
    else
      return true
@@ -631,7 +631,7 @@ end
  
 def log_error_mesg(msg,object)
   obj_str = object.to_s.slice(0,256)
-  @last_error = @last_error.to_s + ":" + msg +":" + obj_str
+  @last_error = @last_error.to_s + ':' + msg +':' + obj_str
   SystemUtils.log_error_mesg(msg,object)
 end
   #Appends msg + object.to_s (truncated to 256 chars) to @last_log
@@ -639,7 +639,7 @@ end
   #@return none
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,256)
-    @last_error = @last_error.to_s + ":" + msg.to_s + ":" + obj_str
+    @last_error = @last_error.to_s + ':' + msg.to_s + ':' + obj_str
     SystemUtils.log_error_mesg(msg,object)
   end
 
@@ -650,7 +650,7 @@ end
 
   #@Log Exception and add exception to last_error
   def log_exception(e)
-    @last_error = @last_error.to_s + ":" + e.to_s.slice(0,256)
+    @last_error = @last_error.to_s + ':' + e.to_s.slice(0,256)
     SystemUtils.log_exception(e)
     return false
   end

@@ -23,18 +23,18 @@ end
 def get_default_domain()
   p :get_default_domain   
   if @preferences.has_key?(:default_domain) == false
-   return "unset"
+   return 'unset'
   end
     
   return @preferences[:default_domain]
   rescue Exception=>e
    SystemUtils.log_exception(e)
-   return "err"
+   return 'err'
  end  
     
 def save_preferences
   if File.exists?(SystemConfig.SystemPreferencesFile) == true
-    File.rename( SystemConfig.SystemPreferencesFile,   SystemConfig.SystemPreferencesFile + ".bak")
+    File.rename( SystemConfig.SystemPreferencesFile,   SystemConfig.SystemPreferencesFile + '.bak')
   end
   serialized_object = YAML::dump(@preferences)
   f = File.new(SystemConfig.SystemPreferencesFile,File::CREAT|File::TRUNC|File::RDWR, 0644)

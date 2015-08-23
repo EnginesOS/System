@@ -1,4 +1,4 @@
-#require_relative  "../ManagedService.rb"
+#require_relative  '../ManagedService.rb'
 
 class VolumeService < ManagedService
   def add_consumer_to_service(service_hash)
@@ -17,7 +17,7 @@ class VolumeService < ManagedService
 
     begin
 
-      dest = SystemConfig.LocalFSVolHome() + "/" + service_hash[:parent_engine] + "/" + service_hash[:service_handle]
+      dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] + '/' + service_hash[:service_handle]
       if Dir.exists?( dest) == false
         p dest
         FileUtils.mkdir_p(dest)
@@ -34,17 +34,17 @@ class VolumeService < ManagedService
   def rm_volume(service_hash)
 
     begin
-      cmd = "docker run  --name volbuilder --memory=20m -e fw_user=www-data    -v /var/lib/engines/fs/" + service_hash[:parent_engine] + ":/dest/fs:rw   -t engines/volbuilder:" + SystemUtils.system_release + " /home/remove_container.sh fs"  
+      cmd = 'docker run  --name volbuilder --memory=20m -e fw_user=www-data    -v /var/lib/engines/fs/' + service_hash[:parent_engine] + ':/dest/fs:rw   -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh fs'  
       retval =  SystemUtils.run_system(cmd)
-      cmd = "docker rm volbuilder"
+      cmd = 'docker rm volbuilder'
       retval =  SystemUtils.run_system(cmd)
       
       if retval == true
-        FileUtils.rm_rf( SystemConfig.LocalFSVolHome() + "/" + service_hash[:parent_engine])
+        FileUtils.rm_rf( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine])
           return true 
       else
-        SystemUtils.log_error_mesg("Failed to Delete FS:" + retval.to_s ,service_hash)
-        @last_error="Failed to Delete FS:" + retval.to_s
+        SystemUtils.log_error_mesg('Failed to Delete FS:' + retval.to_s ,service_hash)
+        @last_error='Failed to Delete FS:' + retval.to_s
         return false        
       end
     
@@ -60,7 +60,7 @@ class VolumeService < ManagedService
   ##
   ##        service_hash = Hash.new()
   ##        service_hash[:parent_engine] = volume.parent_engine
-  ##        service_hash[:publisher_namespace] = "EnginesSystem"
+  ##        service_hash[:publisher_namespace] = 'EnginesSystem'
   ##        service_hash[:name]=volume.name
   ##        service_hash[:localpath]=volume.localpath
   ##        service_hash[:remotepath]=volume.remotepath

@@ -3,15 +3,15 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
  
   def initialize(name)
    @name = name
-   @serviceType="fs"
+   @serviceType='fs'
    @localpath=SystemConfig.LocalFSVolHome
    @remotepath=SystemConfig.CONTFSVolHome
-   @mapping_permissions="rw"
+   @mapping_permissions='rw'
    @vol_permissions=nil
   end
   
   def initialize(name,localpath,remotepath,mapping_permissions,vol_permissions)
-    @serviceType="fs"
+    @serviceType='fs'
     @name = name
            if remotepath !=nil        
              @remotepath=remotepath
@@ -22,7 +22,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
              @localpath=localpath  
              #FIXME SHOULD NOT ACCEPT nil
            else
-             @localpath=SystemConfig.LocalFSVolHome + "/name"
+             @localpath=SystemConfig.LocalFSVolHome + '/name'
            end
     @mapping_permissions= mapping_permissions
     @vol_permissions=vol_permissions
@@ -39,7 +39,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
   end
   
   def add_backup_src_to_hash backup_hash
-    backup_hash[:source_type] = "fs"
+    backup_hash[:source_type] = 'fs'
     backup_hash[:source_name] = @name  
   end
   

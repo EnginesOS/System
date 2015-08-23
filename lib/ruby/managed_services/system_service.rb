@@ -1,6 +1,6 @@
-#require "/opt/engines/lib/ruby/containers/ManagedContainer.rb"
+#require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 
-#require "/opt/engines/lib/ruby/managed_services/ManagedService.rb"
+#require '/opt/engines/lib/ruby/managed_services/ManagedService.rb'
 class SystemService < ManagedService
   
   def  forced_recreate 
@@ -19,12 +19,12 @@ class SystemService < ManagedService
       @docker_info = @core_api.inspect_container(self)
       if  @docker_info == false
         if has_image? == false
-          SystemUtils.log_output("pulling system service" + container_name.to_s,10)
+          SystemUtils.log_output('pulling system service' + container_name.to_s,10)
              pull_image
            end
-        SystemUtils.log_output("creating system service" + container_name.to_s,10)
+        SystemUtils.log_output('creating system service' + container_name.to_s,10)
         @core_api.create_container(self)  
-        SystemUtils.log_output("created system service" + container_name.to_s,10)
+        SystemUtils.log_output('created system service' + container_name.to_s,10)
         @docker_info = @core_api.inspect_container(self)
         if @docker_info == false
           p :panic

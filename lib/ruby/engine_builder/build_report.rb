@@ -11,14 +11,14 @@ module BuildReport
         return template
     end
   rescue
-    return " Template load error "
+    return ' Template load error '
   end
   
   def get_default_build_report_template
     return File.read(SystemConfig.DefaultBuildReportTemplateFile)
     rescue Exception=>e
       p e
-    return " No Default Template"
+    return ' No Default Template'
   end
   
   
@@ -27,7 +27,7 @@ module BuildReport
     report = @templater.process_templated_string(report_template)
    return report
     rescue
-        return " Template generation error "
+        return ' Template generation error '
   end
   
 end

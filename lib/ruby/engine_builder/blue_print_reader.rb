@@ -3,8 +3,8 @@ class BluePrintReader
   def initialize(build_name,contname,blue_print,builder)
      @build_name = build_name
 
-     @data_uid="11111"
-     @data_gid="11111"
+     @data_uid='11111'
+     @data_gid='11111'
      @builder=builder
      @container_name = contname
      @blueprint = blue_print
@@ -53,18 +53,18 @@ class BluePrintReader
    end
 
    def clean_path(path)
-     #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any " " or ";" or "&" or "|" etc
+     #FIXME remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any ' ' or ';' or '&' or '|' etc
      return path
    end
 
    def get_basedir
-     return SystemConfig.DeploymentDir + "/" + @build_name
+     return SystemConfig.DeploymentDir + '/' + @build_name
    end
 
  
    def process_blueprint
      begin
-       log_build_output("Process BluePrint")
+       log_build_output('Process BluePrint')
        read_services
        read_environment_variables
       
@@ -108,7 +108,7 @@ class BluePrintReader
 
    def read_persistant_dirs
      begin
-       log_build_output("Read Persistant Dirs")
+       log_build_output('Read Persistant Dirs')
 
        @persistant_dirs = Array.new
 
@@ -130,7 +130,7 @@ class BluePrintReader
 
    def read_persistant_files
      begin
-       log_build_output("Read Persistant Files")
+       log_build_output('Read Persistant Files')
 
        @persistant_files = Hash.new
        src_paths = Array.new
@@ -143,7 +143,7 @@ class BluePrintReader
 #       files= String.new
        pfs.each do |file|
          path = clean_path(file[:path])
-         #link_src = path.sub(/app/,"")
+         #link_src = path.sub(/app/,'')
          src_paths.push(path)
        end
        p :src_paths
@@ -162,7 +162,7 @@ class BluePrintReader
    def read_rake_list
      begin
        @rake_actions = Array.new
-       log_build_output("Read Rake List")
+       log_build_output('Read Rake List')
        rake_cmds = @blueprint[:software][:rake_tasks]
        if rake_cmds.is_a?(Array) == false
                      return true #not an error just nada
@@ -184,14 +184,14 @@ class BluePrintReader
      @volumes=Hash.new
 
      
-     log_build_output("Read Services")
+     log_build_output('Read Services')
      services=@blueprint[:software][:service_configurations]
      if services.is_a?(Array) == false
                    return true #not an error just nada
             end
      services.each do |service|
        if service.has_key?(:publisher_namespace) == false || service[:publisher_namespace] == nil
-         service[:publisher_namespace] = "EnginesSystem"  
+         service[:publisher_namespace] = 'EnginesSystem'  
        end
        service[:service_type]=service[:type_path]          
        p :service_provider
@@ -207,7 +207,7 @@ class BluePrintReader
      p :add_service
      p service_hash
      @builder.templater.fill_in_dynamic_vars(service_hash)
-     if service_hash[:type_path] == "filesystem/local/filesystem"
+     if service_hash[:type_path] == 'filesystem/local/filesystem'
        add_file_service(service_hash[:variables][:name],service_hash[:variables][:engine_path])
      end
      @services.push(service_hash)
@@ -215,24 +215,24 @@ class BluePrintReader
 
    def add_file_service(name,dest) #FIXME and put me in coreapi
      begin
-       log_build_output("Add File Service " + name)
-       if dest == nil || dest == ""
+       log_build_output('Add File Service ' + name)
+       if dest == nil || dest == ''
          dest=name
        end
-       if(dest.start_with?("/home/app/") == false )
-         if(dest.start_with?("/home/fs/") == false)
-           if dest != "/home/app"
+       if(dest.start_with?('/home/app/') == false )
+         if(dest.start_with?('/home/fs/') == false)
+           if dest != '/home/app'
              p :dest
-             p "_" + dest + "_"
-             dest="/home/fs/" + dest
+             p '_' + dest + '_'
+             dest='/home/fs/' + dest
            end
          end
-       elsif dest== "/home/app/" ||  dest== "/home/app"
+       elsif dest== '/home/app/' ||  dest== '/home/app'
          @builder.app_is_persistant=true
-         p "PERSISTANT APP"
+         p 'PERSISTANT APP'
        end
-       permissions = PermissionRights.new(@container_name,"","")
-       vol=Volume.new(name,SystemConfig.LocalFSVolHome + "/" + @container_name + "/" + name,dest,"rw",permissions)
+       permissions = PermissionRights.new(@container_name,'','')
+       vol=Volume.new(name,SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name,dest,'rw',permissions)
        @volumes[name]=vol
 
      rescue Exception=>e
@@ -248,7 +248,7 @@ class BluePrintReader
    def read_os_packages
      begin
      
-       log_build_output("Read OS Packages")
+       log_build_output('Read OS Packages')
        ospackages = @blueprint[:software][:system_packages]
          
        if ospackages.is_a?(Array) == false
@@ -266,7 +266,7 @@ class BluePrintReader
    end
 
    def read_lang_fw_values
-     log_build_output("Read Framework Settings")
+     log_build_output('Read Framework Settings')
      begin
        @framework = @blueprint[:software][:framework]
        p @framework
@@ -283,21 +283,21 @@ class BluePrintReader
 #     begin
 #       @pear_modules = Array.new
 #
-#       log_build_output("Read Pear List")
+#       log_build_output('Read Pear List')
 #       pear_mods = @blueprint[:software][:pear_modules]
 #       
 #         if pear_mods == nil || pear_mods.length == 0
-#           log_build_output("no pear")
+#           log_build_output('no pear')
 #         return
 #         end
-#           log_build_output(pear_mods.length.to_s + "Pears")
+#           log_build_output(pear_mods.length.to_s + 'Pears')
 #         pear_mods.each do |pear_mod|
 #           p :Pear_mod
 #           p pear_mod
 #           log_build_output(pear_mod.to_s)
 #           mod =  pear_mod[:module]
 #         os_package = pear_mod[:os_package]
-#                if os_package != nil && os_package != ""
+#                if os_package != nil && os_package != ''
 #                @os_packages.push(os_package)
 #                end
 #           if mod !=nil
@@ -326,26 +326,26 @@ class BluePrintReader
             end
          pkg_modules.each do |pkg_module |
            os_package = pkg_module[:os_package]
-                   if os_package != nil && os_package != ""
+                   if os_package != nil && os_package != ''
                     @os_packages.push(os_package)
                    end
                pkg_module_type =  pkg_module[:module_type]
                  if    pkg_module_type == nil
-                   @last_error="pkg Module missing module_type"
+                   @last_error='pkg Module missing module_type'
                    return false
                  end
                  modname = pkg_module[:module_name]
                    
-               if   pkg_module_type == "pear"
+               if   pkg_module_type == 'pear'
                  @pear_modules.push(modname)
-               elsif pkg_module_type == "pecl"
+               elsif pkg_module_type == 'pecl'
                  @pecl_modules.push(modname)
-               elsif pkg_module_type == "php"
+               elsif pkg_module_type == 'php'
                    @php_modules.push(modname)
-               elsif pkg_module_type == "apache"
+               elsif pkg_module_type == 'apache'
                  @apache_modules.push(modname)
                else
-                  @last_error="pkg module_type " + pkg_module_type + " Unknown for " +  modname 
+                  @last_error='pkg module_type ' + pkg_module_type + ' Unknown for ' +  modname 
                   return false
                end
          end
@@ -354,7 +354,7 @@ class BluePrintReader
 
 #   def read_apache_modules
 #     @apache_modules = Array.new
-#     log_build_output("Read Apache Modules List")
+#     log_build_output('Read Apache Modules List')
 #     mods =  @blueprint[:software][:apache_modules]
 #     if mods == nil
 #       p :no_apache_modules
@@ -363,7 +363,7 @@ class BluePrintReader
 #     mods.each do |ap_module|
 #       mod = ap_module[:module]
 #       os_package = ap_module[:os_package]
-#         if os_package != nil && os_package != ""
+#         if os_package != nil && os_package != ''
 #         @os_packages.push(os_package)
 #         end
 #       if mod != nil
@@ -387,10 +387,10 @@ class BluePrintReader
 
    def read_app_packages
      begin
-       log_build_output("Read App Packages ")
+       log_build_output('Read App Packages ')
        @archives_details = Array.new
 
-       log_build_output("Configuring install Environment")
+       log_build_output('Configuring install Environment')
        archives = @blueprint[:software][:installed_packages]
        
        if archives.is_a?(Array) == false
@@ -406,9 +406,9 @@ class BluePrintReader
          arc_extract=clean_path(archive[:extraction_command])
          arc_dir=clean_path(archive[:path_to_extracted])
 
-         if arc_loc == "./"
-           arc_loc=""
-         elsif arc_loc.end_with?("/")
+         if arc_loc == './'
+           arc_loc=''
+         elsif arc_loc.end_with?('/')
            arc_loc = arc_loc.chop() #note not String#chop
          end
          archive_details[:source_url]=arc_src
@@ -429,9 +429,9 @@ class BluePrintReader
 
    def read_write_permissions_recursive
      begin
-       log_build_output("Read Recursive Write Permissions")
+       log_build_output('Read Recursive Write Permissions')
        @recursive_chmods = Array.new
-       log_build_output("set permissions recussive")
+       log_build_output('set permissions recussive')
        chmods = @blueprint[:software][:file_write_permissions]
        p :Single_Chmods
        if chmods.is_a?(Array) == false
@@ -455,9 +455,9 @@ class BluePrintReader
 
    def read_write_permissions_single
      begin
-       log_build_output("Read Non-Recursive Write Permissions")
+       log_build_output('Read Non-Recursive Write Permissions')
        @single_chmods =Array.new
-       log_build_output("set permissions  single")
+       log_build_output('set permissions  single')
        chmods = @blueprint[:software][:file_write_permissions]
        p :Recursive_Chmods
        if chmods.is_a?(Array) == false
@@ -483,7 +483,7 @@ class BluePrintReader
    def read_worker_commands
      begin
 
-       log_build_output("Read Workers")
+       log_build_output('Read Workers')
        @worker_commands = Array.new
        workers =@blueprint[:software][:workers]
        if workers.is_a?(Array) == false
@@ -502,14 +502,14 @@ class BluePrintReader
 
    def read_sed_strings
      begin
-       log_build_output("Read Sed Strings")
+       log_build_output('Read Sed Strings')
        @sed_strings = Hash.new
        @sed_strings[:src_file] = Array.new
        @sed_strings[:dest_file] = Array.new
        @sed_strings[:sed_str] = Array.new
        @sed_strings[:tmp_file] = Array.new
 
-       log_build_output("set sed strings")
+       log_build_output('set sed strings')
        seds=@blueprint[:software][:replacement_strings]
        if seds.is_a?(Array) == false
                     return true #not an error just nada
@@ -520,20 +520,20 @@ class BluePrintReader
 
          file = clean_path(sed[:file])
          dest = clean_path(sed[:destination])
-         tmp_file = "/tmp/" + File.basename(file) + "." + n.to_s
+         tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
          if file.match(/^_TEMPLATES.*/) != nil
-           template_file = file.gsub(/^_TEMPLATES/,"")
+           template_file = file.gsub(/^_TEMPLATES/,'')
          else
            template_file = nil
          end
 
          if  template_file != nil
-           src_file = "/home/engines/templates/" +  template_file
+           src_file = '/home/engines/templates/' +  template_file
 
          else
-           src_file = "/home/app/" +  file
+           src_file = '/home/app/' +  file
          end
-         dest_file = "/home/app/" +  dest
+         dest_file = '/home/app/' +  dest
          sedstr = sed[:replacement_string]
          @sed_strings[:src_file].push(src_file)
          @sed_strings[:dest_file].push(dest_file)
@@ -552,9 +552,9 @@ class BluePrintReader
    def read_work_ports
      begin
        @workerPorts = Array.new
-       log_build_output("Read Work Ports")
+       log_build_output('Read Work Ports')
        ports =  @blueprint[:software][:worker_ports]
-       puts("Ports Json" + ports.to_s)
+       puts('Ports Json' + ports.to_s)
        if ports.is_a?(Array) == false
                      return true #not an error just nada
               end
@@ -567,7 +567,7 @@ class BluePrintReader
              type='tcp'
            end
            #FIX ME when public ports supported
-           puts "Port " + portnum.to_s + ":" + external.to_s
+           puts 'Port ' + portnum.to_s + ':' + external.to_s
            @workerPorts.push(WorkPort.new(name,portnum,external,false,type))
          end
 
@@ -579,7 +579,7 @@ class BluePrintReader
    end
 
    def read_environment_variables
-     log_build_output("Read Environment Variables")
+     log_build_output('Read Environment Variables')
      @environments = Array.new
      p :set_environment_variables
      p @builder.set_environments
@@ -609,7 +609,7 @@ class BluePrintReader
               end
            end
          end
-         name.sub!(/ /,"_")
+         name.sub!(/ /,'_')
          p :name_and_value
          p name
          p value

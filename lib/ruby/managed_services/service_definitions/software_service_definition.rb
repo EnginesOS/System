@@ -21,7 +21,7 @@ class SoftwareServiceDefinition
       serviceDefinition = YAML::load( yaml )
       return serviceDefinition
     rescue Exception=>e
-      SystemUtils.log_error_mesg("Problem loading Yaml",yaml)
+      SystemUtils.log_error_mesg('Problem loading Yaml',yaml)
       SystemUtils.log_exception(e)
     end
   end
@@ -45,7 +45,7 @@ class SoftwareServiceDefinition
              end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
         end
   else
-    SystemUtils.log_error_mesg("Failed to load service definition",service_hash)
+    SystemUtils.log_error_mesg('Failed to load service definition',service_hash)
   end
      return retval
   
@@ -54,33 +54,33 @@ class SoftwareServiceDefinition
     if service_type == nil  || provider == nil
       return nil
     end
-    dir = SystemConfig.ServiceTemplateDir + "/" + provider
+    dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
-        SystemUtils.log_error_mesg("Nil Service type",provider.to_s + "/" + service_type.to_s )
+        SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
         return nil
       end
       return service_def.to_h
     end
-    SystemUtils.log_error_mesg("No Dir",dir)
+    SystemUtils.log_error_mesg('No Dir',dir)
     return nil
   rescue Exception=>e
-    SystemUtils.log_error_mesg("Error " ,provider.to_s + "/" + service_type.to_s )
+    SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
     SystemUtils.log_exception(e)
     return nil
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
-    filename=dir + "/" + service_type + ".yaml"
+    filename=dir + '/' + service_type + '.yaml'
     if File.exist?(filename)
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    SystemUtils.log_error_mesg("No Such Definitions File",dir.to_s + "/" + service_type.to_s)
+    SystemUtils.log_error_mesg('No Such Definitions File',dir.to_s + '/' + service_type.to_s)
     return nil
   rescue Exception=>e
-    SystemUtils.log_error_mesg("Error With",dir.to_s + "/" + service_type.to_s)
+    SystemUtils.log_error_mesg('Error With',dir.to_s + '/' + service_type.to_s)
     SystemUtils.log_exception(e)
   end
 
@@ -92,10 +92,10 @@ class SoftwareServiceDefinition
     root = dir
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
-        if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?(".") ==false
-          search_dir(root + "/" + service_dir_entry,service_type)
+        if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?('.') ==false
+          search_dir(root + '/' + service_dir_entry,service_type)
         else
-          if File.exist?(root + "/" + service_dir_entry + "/" + service_type + ".yaml" )
+          if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '.yaml' )
             return load(dir,service_type)
           end
         end
@@ -124,11 +124,11 @@ class SoftwareServiceDefinition
   def to_h
     hash = {}
     instance_variables.each {|var|
-      symbol = var.to_s.delete("@").to_sym     
+      symbol = var.to_s.delete('@').to_sym     
       hash[symbol] = instance_variable_get(var) }
     return SystemUtils.symbolize_keys(hash)
   rescue Exception=>e
-    SystemUtils.log_error_mesg("Exception With to h",self)
+    SystemUtils.log_error_mesg('Exception With to h',self)
     SystemUtils.log_exception(e)
   end
 end

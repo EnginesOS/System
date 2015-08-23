@@ -44,7 +44,7 @@ class BuildController
       if engine_builder != nil &&  engine_builder.is_a?(EngineBuilder) 
           @last_error = engine_builder.last_error
       end
-      @last_error= @last_error.to_s + ":Exception:" + e.to_s + ":" + e.backtrace.to_s
+      @last_error= @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
       p @last_error
     params[:error] =  engine_builder.last_error
     SystemStatus.build_failed(params)
@@ -86,7 +86,7 @@ class BuildController
             @last_error = engine_builder.last_error
           params[:error] =  engine_builder.last_error
         end
-        @last_error= @last_error.to_s + ":Exception:" + e.to_s + ":" + e.backtrace.to_s
+        @last_error= @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
    
    SystemStatus.build_failed(params)
       return false

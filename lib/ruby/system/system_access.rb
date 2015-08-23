@@ -7,7 +7,7 @@ class SystemAccess
     return SystemUtils.system_release   
   end
   def pgsql_host
-    return "pgsql.engines.internal"
+    return 'pgsql.engines.internal'
   end 
   
   def mysql_host
@@ -18,10 +18,10 @@ class SystemAccess
     return SystemConfig.SMTPHost
   end
   def timezone_country_city
-    return "Australia/Sydney"
+    return 'Australia/Sydney'
 end
   def hrs_from_gmt
-    return "+10"
+    return '+10'
   end
   def default_domain
     prefs = SystemPreferences.new()
@@ -32,7 +32,7 @@ end
     args = type.split('_')
       engine = args[0]
       cmd = args[1]
-      cmd.gsub!(/\)/,"")
+      cmd.gsub!(/\)/,'')
     return  SystemUtils.get_service_pubkey(engine,cmd)      
   end
   
