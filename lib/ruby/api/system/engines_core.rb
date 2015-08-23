@@ -9,7 +9,7 @@ require "/opt/engines/lib/ruby/managed_services/system_services/volume_service.r
 require "/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb"
 require "/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb"
 require "/opt/engines/lib/ruby/engine_builder/engine_builder.rb"
-require "/opt/engines/lib/ruby/api/pub/engines_osapi_result.rb"
+require "/opt/engines/lib/ruby/api/public/engines_osapi_result.rb"
 class EnginesCore
 
   require_relative 'docker_api.rb'
