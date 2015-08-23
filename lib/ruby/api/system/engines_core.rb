@@ -1,6 +1,6 @@
 require "/opt/engines/lib/ruby/system/system_config.rb"
 require "/opt/engines/lib/ruby/system/system_utils.rb"
-require "/opt/engines/lib/ruby/system/dns_hosting.rb"
+require "/opt/engines/lib/ruby/system/dnshosting.rb"
 require "/opt/engines/lib/ruby/containers/managed_container.rb"
 require "/opt/engines/lib/ruby/containers/managed_engine.rb"
 require "/opt/engines/lib/ruby/managed_services/managed_service.rb"
