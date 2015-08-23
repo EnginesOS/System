@@ -982,7 +982,7 @@ end
     log_build_output("Running " + cmd)
 
     res = String.new
-    line = String.new
+    oline = String.new
     error_mesg = String.new
     begin
       Open3.popen3( cmd ) do |stdin, stdout, stderr, th|
@@ -1003,7 +1003,7 @@ end
             end
           }
         rescue Errno::EIO
-          res += line.chop
+          res += oline.chop
           log_build_output(oline)
           if stderr_is_open
             err  = stderr.read_nonblock(1000)

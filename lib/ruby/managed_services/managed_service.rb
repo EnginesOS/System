@@ -290,6 +290,6 @@ class ManagedService < ManagedContainer
   #@return none
   def self.log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,512)
-    SystemUtils.log_error_msg(msg,object)
+    SystemUtils.log_error_mesg(msg,object)
   end
 end
