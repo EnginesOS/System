@@ -632,7 +632,7 @@ class EnginesOSapi
 
   def getManagedService(service_name)
     managed_service = @core_api.loadManagedService(service_name)
-    if managed_service == nil
+    if managed_service.is_a?(FalseClass) 
       return failed(service_name,"Fail to Load configuration:","Load Service")
     end
     return managed_service
