@@ -419,6 +419,7 @@ class SystemApi
         return false
       end
       yam1_file_name = service_type_dir + service_name + "/running.yaml"
+       p yam1_file_name
       if File.exists?(yam1_file_name) == false
         if  build_running_service(service_name,service_type_dir) == false
           log_error("No build_running_service file " + service_type_dir + "/"+ service_name.to_s)
