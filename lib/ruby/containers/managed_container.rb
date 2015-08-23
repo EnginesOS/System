@@ -167,7 +167,7 @@ class ManagedContainer < Container
     managedContainer.core_api = core_api
     managedContainer.docker_info = nil
     managedContainer.set_running_user
-    managedContainer
+    return managedContainer
   rescue Exception=> e
     @last_error="Exception " + e.to_s
     p e.to_s
