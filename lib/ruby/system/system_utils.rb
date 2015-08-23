@@ -147,7 +147,7 @@ def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
    SystemUtils.debug_output('exec command ',cmd)
-   retval = []
+  retval = {}
    retval[:stdout] = ''
    retval[:stderr] = ''
    retval[:result] = -1
