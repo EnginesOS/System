@@ -238,8 +238,7 @@ class DockerApi
    end
 
    def docker_exec(container,command,args)
-     run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args
-     
+     run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args     
      return  execute_docker_cmd(run_args,container)
    end
    
@@ -397,7 +396,6 @@ class DockerApi
    end
 
    def clean_up_dangling_images
-   
   cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
       SystemUtils.execute_command(cmd)
      return true # often warning not error
@@ -419,10 +417,8 @@ class DockerApi
 
   def log_error_mesg(msg,object)
       obj_str = object.to_s.slice(0,256)
-  
       @last_error = msg +':' + obj_str
       SystemUtils.log_error_mesg(msg,object)
-  
     end
    
    

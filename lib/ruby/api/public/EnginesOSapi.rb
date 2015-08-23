@@ -54,6 +54,11 @@ class EnginesOSapi
   end
 
   def buildEngine(repository,host,domain_name,environment)
+    p :buildEngine
+    p repository.to_s
+  p  host.to_s
+  p  domain_name.to_s
+  p  environment.to_s
     build_controller = BuildController.new(@core_api)
     engine = build_controller.buildEngine(repository,host,domain_name,environment)
     if engine == false
