@@ -366,7 +366,7 @@ class SystemApi
         log_error("no such file " + yam_file_name )
         return false # return failed(yam_file_name,"No such configuration:","Load Engine")
       end
-      yaml_file = File.open(yam_file_name)
+      yaml_file = File.read(yam_file_name)
       managed_engine = ManagedEngine.from_yaml( yaml_file,@engines_api)
       if(managed_engine == nil || managed_engine == false)
         p :from_yaml_returned_nil
@@ -426,7 +426,7 @@ class SystemApi
           return false # return failed(yam_file_name,"No such configuration:","Load Service")
         end
       end
-      yaml_file = File.open(yam1_file_name)
+      yaml_file = File.read(yam1_file_name)
       # managed_service = YAML::load( yaml_file)
       if service_type_dir == "/sytem_services/"
         managed_service = SystemService.from_yaml(yaml_file,@engines_api)
