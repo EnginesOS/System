@@ -5,7 +5,7 @@
 #require "/opt/engines/lib/ruby/system/SysConfig.rb"
 
 #require_relative "ContainerStatistics.rb"
-#require_relative "ManagedContainerObjects.rb"
+require_relative "ManagedContainerObjects.rb"
 require_relative "container.rb"
 
 require 'objspace'
