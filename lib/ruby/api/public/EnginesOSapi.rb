@@ -1,16 +1,17 @@
-require "/opt/engines/lib/ruby/api/system/EnginesCore.rb"
+require "/opt/engines/lib/ruby/api/system/engines_core.rb"
 require 'objspace'
 
-require '/opt/engines/lib/ruby/api/system/SystemStatus.rb'
+require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
-require_relative "EnginesOSapiResult.rb"
-require_relative "FirstRunWizard.rb"
+require_relative "Engines_osapi_result.rb"
+require_relative "first_run_wizard.rb"
 
 class EnginesOSapi
-  require_relative "BuildController.rb"
+  require_relative "build_controller.rb"
 
   require_relative "engines_api_version.rb"
   include EngOSapiVersion
+  
   def initialize()
     @core_api = EnginesCore.new
   end
@@ -20,6 +21,11 @@ class EnginesOSapi
   end
 
   def log_exception_and_fail(cmd,e)
+    e_str = SystemUtils.log_exception(e)
+    return failed("Exception",e_str,cmd)
+  end
+
+  def self.log_exception_and_fail(cmd,e)
     e_str = SystemUtils.log_exception(e)
     return failed("Exception",e_str,cmd)
   end
@@ -39,7 +45,7 @@ class EnginesOSapi
     p params
     engine = build_controller.build_engine(params)
     if engine == false
-      failed("Build Engine:",build_controller.last_error)
+      failed("Build Engine:",build_controller.last_error,params.to_s)
     end
     if engine.is_active? == false
       return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
@@ -51,12 +57,12 @@ class EnginesOSapi
     build_controller = BuildController.new(@core_api)
     engine = build_controller.buildEngine(repository,host,domain_name,environment)
     if engine == false
-      failed("Build Engine:",build_controller.last_error)
+      failed("Build Engine:",build_controller.last_error,host.to_s)
     end
     if engine.is_active? == false
-      return failed(params[:engine_name],"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
+      return failed(host.to_s,"Failed to start  " + build_controller.last_error.to_s ,"build_engine")
     end
-    return success(params[:engine_name],"Build Engine")
+    return success(host.to_s+"."+domain_name.to_s,"Build Engine")
   end
 
   def rebuild_engine_container engine_name
@@ -81,8 +87,8 @@ class EnginesOSapi
   end
 
   def build_engine_from_docker_image(params)
-    p params
-    return success(engine_name,"Build Engine from Docker Image")
+    p params[:host_name]
+    return success(params[:host_name],"Build Engine from Docker Image")
   rescue Exception=>e
     return log_exception_and_fail("Build Engine from dockerimage",e)
   end
@@ -98,25 +104,25 @@ class EnginesOSapi
   end
 
   def update_public_key(key)
-    if @core_ap.update_public_key(key) == false
+    if @core_api.update_public_key(key) == false
       return success("Access","update public key")
     else
-      return failed("Failed update key ",@core_api.last_error)
+      return failed("Failed update key ",@core_api.last_error,key.to)
     end
   end
 
   def get_system_ca
-    ca_string= File.read(SysConfig.EnginesInternalCA)
+    ca_string= File.read(SystemConfig.EnginesInternalCA)
     return ca_string
   rescue Exception=>e
-    return  failed("Failed to load CA",e.to_s)
+    return  failed("Failed to load CA",e.to_s,"system ca")
 
   end
 
   def upload_ssl_certifcate (params)
-    if param.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
+    if params.has_key?(:certificate) == false ||  params.has_key?(:domain_name) == false
       p "errorexpect keys  :certificate :domain_name with optional :use_as_default"
-      return  failed("error expect keys  :certificate :domain_name with optional :use_as_default", params)
+      return  failed("error expect keys  :certificate :domain_name with optional :use_as_default","uploads cert", params.to_s)
     end
     return success("Access","upload Cert" + params[:domain_name])
 
@@ -204,24 +210,24 @@ class EnginesOSapi
     return log_exception_and_fail("loadManagedEngine",e)
   end
 
-  def get_system_preferences
-    return @core_api.load_system_preferences
-  rescue Exception=>e
-    return log_exception_and_fail("get_system_preferences",e)
-  end
-
-  def save_system_preferences preferences
-    #preferences is a hash
-    # :default_domain need to set on mail server
-    # :elsewhere ssl cert for mgmt?
-
-    #default web_site
-    #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}}
-
-    return @core_api.save_system_preferences(preferences)
-  rescue Exception=>e
-    return log_exception_and_fail("save_system_preferences",e)
-  end
+#  def get_system_preferences
+#    return @core_api.load_system_preferences
+#  rescue Exception=>e
+#    return log_exception_and_fail("get_system_preferences",e)
+#  end
+#
+#  def save_system_preferences preferences
+#    #preferences is a hash
+#    # :default_domain need to set on mail server
+#    # :elsewhere ssl cert for mgmt?
+#
+#    #default web_site
+#    #{..... email=>{smart_host=> X , smart_host_type=>y, smart_host_username=>z, smart_host_password=>xxx}}
+#
+#    return @core_api.save_system_preferences(preferences)
+#  rescue Exception=>e
+#    return log_exception_and_fail("save_system_preferences",e)
+#  end
 
   def recreateEngine engine_name
     engine = loadManagedEngine engine_name
@@ -431,22 +437,22 @@ class EnginesOSapi
   end
 
   def get_engine_memory_statistics  engine_name
-    engine = loadManagedEngine engine_name
-    if  engine.is_a?(EnginesOSapiResult)
+    mengine = loadManagedEngine(engine_name)
+    if  mengine.is_a?(EnginesOSapiResult)
       return failed(engine_name,"no Engine","Get Engine Memory Statistics")
     end
-    retval = engine.get_container_memory_stats(@core_api)
+    retval = mengine.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
     return log_exception_and_fail("Get Engine Memory Statistics",e)
   end
 
   def get_service_memory_statistics  service_name
-    service = getManagedService(service_name)
-    if  service.is_a?(EnginesOSapiResult)
+    mservice = getManagedService(service_name)
+    if  mservice.is_a?(EnginesOSapiResult)
       return failed(service_name,"no Engine","Get Service Memory Statistics")
     end
-    retval = service.get_container_memory_stats(@core_api)
+    retval = mservice.get_container_memory_stats(@core_api)
     return retval
   rescue Exception=>e
     return log_exception_and_fail("Get Service Memory Statistics",e)
@@ -543,10 +549,11 @@ class EnginesOSapi
   def  self.failed(item_name,mesg ,cmd)
     p :engines_os_api_fail_on_static
     p item_name
-    p mesg + ":" + last_api_error.to_s
+    p mesg + ":" 
     p cmd
     return EnginesOSapiResult.failed(item_name,mesg ,cmd)
   end
+
 
   #@returns EnginesOSapiResult on sucess with private ssh key in repsonse messages
   def generate_engines_user_ssh_key
@@ -568,16 +575,16 @@ class EnginesOSapi
   end
 
   def createService service_name
-    service =getManagedService(service_name)
-    if service == nil
-      return  failed(service_name,service.last_error,"Create Service")
+    n_service = getManagedService(service_name)
+    if n_service == nil
+      return  failed(service_name,n_service.last_error,"Create Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if n_service.is_a?(EnginesOSapiResult)
+      return n_service
     end
-    retval =   service.create_service()
+    retval =   n_service.create_service()
     if retval == false
-      return failed(service_name,service.last_error,"Create Service")
+      return failed(service_name,n_service.last_error,"Create Service")
     end
     return success(service_name,"Create Service")
   rescue Exception=>e
@@ -585,16 +592,16 @@ class EnginesOSapi
   end
 
   def recreateService service_name
-    service =getManagedService(service_name)
-    if service == nil
+    rc_service =getManagedService(service_name)
+    if rc_service == nil
       return failed(service_name,"No Such Service","Recreate Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if rc_service.is_a?(EnginesOSapiResult)
+      return rc_service
     end
-    retval =   service.recreate()
+    retval =   rc_service.recreate()
     if retval == false
-      return failed(service_name,service.last_error,"Recreate Service")
+      return failed(service_name,rc_service.last_error,"Recreate Service")
     end
     return success(service_name,"Recreate Service")
   rescue Exception=>e
@@ -614,11 +621,11 @@ class EnginesOSapi
   end
 
   def self.loadManagedService(service_name,core_api)
-    service = core_api.loadManagedService(service_name)
-    if service == false
+    l_service = core_api.loadManagedService(service_name)
+    if l_service == false
       return EnginesOSapi.failed(service_name,core_api.last_error ,"Load Service")
     end
-    return service
+    return l_service
   rescue Exception=>e
     return EnginesOSapi.log_exception_and_fail("LoadMangedService",e)
   end
@@ -753,13 +760,13 @@ class EnginesOSapi
   #@return  an [Array] of service_hashes regsitered against the Service named service name
   #wrapper for gui programs calls get_registered_against_service(params)
   def registered_engines_on_service(service_name)
-    service = getManagedService(service_name)
-    if service == nil || service.is_a?(EnginesOSapiResult)
+    r_service = getManagedService(service_name)
+    if r_service == nil || r_service.is_a?(EnginesOSapiResult)
       return failed(service_name,"No Such Service","list registered Service")
     end
     params =  Hash.new
-    params[:type_path]= service.type_path
-    params[:publisher_namespace]= service.publisher_namespace
+    params[:type_path]= r_service.type_path
+    params[:publisher_namespace]= r_service.publisher_namespace
     return @core_api.get_registered_against_service(params)
 
   end
@@ -796,10 +803,10 @@ class EnginesOSapi
     ret_val =   @core_api.fillin_template_for_service_def(params)
     return ret_val
   end
-
-  def list_services_for(object)
-    return @core_api.list_services_for(object)
-  end
+#
+#  def list_services_for(object)
+#    return @core_api.list_services_for(object)
+#  end
 
   #service params and component objectname / and component name and parent name
   def attach_subservice(params)
@@ -838,21 +845,21 @@ class EnginesOSapi
 
   def list_attached_services_for(object_name,identifier)
     SystemUtils.debug_output("list_attached_services_for",object_name + " " + identifier)
-    attached = @core_api.list_attached_services_for(object_name,identifier)
+#    attached = @core_api.list_attached_services_for(object_name,identifier)
     return @core_api.list_attached_services_for(object_name,identifier)
   end
 
   def startService service_name
-    service = getManagedService(service_name)
-    if service == nil
+    s_service = getManagedService(service_name)
+    if s_service == nil
       return failed(service_name,"No Such Service","Start Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if s_service.is_a?(EnginesOSapiResult)
+      return s_service
     end
-    retval = service.start_container()
+    retval = s_service.start_container()
     if retval == false
-      return failed(service_name,service.last_error,"Start Service")
+      return failed(service_name,s_service.last_error,"Start Service")
     end
     return success(service_name,"Start Service")
   rescue Exception=>e
@@ -860,16 +867,16 @@ class EnginesOSapi
   end
 
   def  pauseService service_name
-    service = getManagedService(service_name)
-    if service == nil
+    p_service = getManagedService(service_name)
+    if p_service == nil
       return failed(service_name,"No Such Service","Pause Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if p_service.is_a?(EnginesOSapiResult)
+      return p_service
     end
-    retval = service.pause_container()
+    retval = p_service.pause_container()
     if retval == false
-      return failed(service_name,service.last_error,"Pause Service")
+      return failed(service_name,p_service.last_error,"Pause Service")
     end
     return success(service_name,"Pause Service")
   rescue Exception=>e
@@ -877,16 +884,16 @@ class EnginesOSapi
   end
 
   def  unpauseService service_name
-    service = getManagedService(service_name)
-    if service == nil
+    u_service = getManagedService(service_name)
+    if u_service == nil
       return failed(service_name,"No Such Service","Unpause Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if u_service.is_a?(EnginesOSapiResult)
+      return u_service
     end
-    retval = service.unpause_container()
+    retval = u_service.unpause_container()
     if retval == false
-      return failed(service_name,service.last_error,"Unpause Service")
+      return failed(service_name,u_service.last_error,"Unpause Service")
     end
     return success(service_name,"Unpause Service")
   rescue Exception=>e
@@ -917,26 +924,26 @@ class EnginesOSapi
     end
   end
 
-  def get_available_services_for(item)
-    res = @core_api.get_available_services_for(item)
-    if res != nil
-      return res
-    else
-      return failed("get avaiable services ",last_api_error,"get avaiable services")
-    end
-  end
+#  def get_available_services_for(item)
+#    res = @core_api.get_available_services_for(item)
+#    if res != nil
+#      return res
+#    else
+#      return failed("get avaiable services ",last_api_error,"get avaiable services")
+#    end
+#  end
 
   def stopService service_name
-    service = getManagedService(service_name)
-    if service == nil
+    s_service = getManagedService(service_name)
+    if s_service == nil
       return failed(service_name,"No Such Service","Stop Service")
     end
-    if service.is_a?(EnginesOSapiResult)
-      return service
+    if s_service.is_a?(EnginesOSapiResult)
+      return s_service
     end
-    retval =   service.stop_container()
+    retval =   s_service.stop_container()
     if retval == false
-      return failed(service_name,service.last_error,"Stop Service")
+      return failed(service_name,s_service.last_error,"Stop Service")
     end
     return success(service_name,"Stop Service")
   rescue Exception=>e
@@ -981,7 +988,7 @@ class EnginesOSapi
   def is_engines_system_upto_date?
     result = SystemStatus.is_engines_system_upto_date?()
     if result[:result] ==0
-      return sucess("System Up to Date","Update Status")
+      return success("System Up to Date","Update Status")
     else 
       return failed("Updates pending",result[:stdio],"Update Status")
     end

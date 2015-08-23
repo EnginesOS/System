@@ -1,4 +1,4 @@
-require_relative '../service_definitions/SoftwareServiceDefinition.rb'
+require_relative '../service_definitions/software_service_definition.rb'
 
 #require 'json'
 #

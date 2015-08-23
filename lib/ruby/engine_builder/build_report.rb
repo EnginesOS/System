@@ -1,6 +1,6 @@
 module BuildReport
   
-
+ 
 
  
   def get_build_report_template(blueprint)
@@ -15,7 +15,7 @@ module BuildReport
   end
   
   def get_default_build_report_template
-    return File.read(SysConfig.DefaultBuildReportTemplateFile)
+    return File.read(SystemConfig.DefaultBuildReportTemplateFile)
     rescue Exception=>e
       p e
     return " No Default Template"
