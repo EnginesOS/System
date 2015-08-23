@@ -170,6 +170,8 @@ class ManagedContainer < Container
     managedContainer
   rescue Exception=> e
     @last_error="Exception " + e.to_s
+    p e.to_s
+    p e.backtrace.to_s
     return false
   end
 
