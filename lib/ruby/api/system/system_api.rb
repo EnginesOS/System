@@ -390,6 +390,7 @@ class SystemApi
   def build_running_service(service_name,service_type_dir)
     config_template_file_name = service_type_dir + service_name + "/config.yaml"
     if File.exists?(config_template_file_name) == false
+      log_error("Running exits")
       return false
     end
     config_template = File.read(config_template_file_name)
@@ -420,6 +421,7 @@ class SystemApi
       yam1_file_name = service_type_dir + service_name + "/running.yaml"
       if File.exists?(yam1_file_name) == false
         if  build_running_service(service_name,service_type_dir) == false
+          log_error("No build_running_service file " + service_type_dir + "/"+ service_name.to_s)
           return false # return failed(yam_file_name,"No such configuration:","Load Service")
         end
       end
