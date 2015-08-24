@@ -1,10 +1,8 @@
-require_relative 'objects/WorkPort.rb'
-require_relative 'objects/EnvironmentVariable.rb'
-require_relative 'objects/Volume.rb'
-require_relative 'objects/StaticService.rb'
-require_relative 'objects/DatabaseService.rb'
-
-require_relative 'objects/PermissionRights.rb'
+require_relative 'objects/work_port.rb'
+require_relative 'objects/environment_variable.rb'
+require_relative 'objects/volume.rb'
+require_relative 'objects/static_service.rb'
+require_relative 'objects/permission_rights.rb'
 
 
 
