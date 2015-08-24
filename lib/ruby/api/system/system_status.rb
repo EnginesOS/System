@@ -162,7 +162,7 @@ class SystemStatus
       when 'Cached:'
         ret_val[:file_cache] = values[1]
       when 'Active:'
-        ret_val[:active ] = values[1]
+        ret_val[:active] = values[1]
       when 'Inactive:'
         ret_val[:inactive] = values[1]
       when 'SwapTotal:'
@@ -172,7 +172,7 @@ class SystemStatus
       end
     end
     return ret_val
-  rescue   Exception=>e
+  rescue   Exception => e
     SystemUtils.log_exception(e)
     ret_val[:total] = e.to_s
     ret_val[:free] = -1
