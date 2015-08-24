@@ -799,7 +799,7 @@ class EngineBuilder
                             @container_name,
                             @blueprint_reader.volumes,
                             @web_port,
-                            @blueprint_reader.workerPorts,
+                            @blueprint_reader.worker_ports,
                             @repo_name,
                             @blueprint_reader.databases,
                             @blueprint_reader.environments,
@@ -913,13 +913,19 @@ class EngineBuilder
   end
 
   def read_base_image_from_dockerfile
+    p :read_base_image_from_dockerfile
     # FROM  engines/php:_Engines_System(release)
     dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
-    from_line = dockerfile.gets('\n', 100)
+    from_line = dockerfile.gets("\n", 100)
+    p from_line
     from_part = from_line.gsub(/FROM[ ]./, '')
-    from_part.strip!
+#    p from_part
+#    froms = from_part.split("\n")
+#    p :froms
+#    p froms.to_s
+#    p froms[0]
     return from_part
-  rescue Exception => e
+rescue Exception => e
     log_build_errors(e)
     return nil
   end
