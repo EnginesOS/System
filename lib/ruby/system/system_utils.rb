@@ -167,7 +167,7 @@ def SystemUtils.execute_command(cmd)
        rescue Errno::EIO
          retval[:stdout] += oline.chop
          retval[:stdout] += stdin.read_nonblock(256) 
-         SystemUtils.debug_output('read stderr',oline)
+         SystemUtils.debug_output('read stderr', oline)
          retval[:stderr] += stderr.read_nonblock(256)
        rescue IO::WaitReadable
          retry
