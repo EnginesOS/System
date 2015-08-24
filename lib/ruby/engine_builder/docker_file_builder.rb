@@ -339,7 +339,7 @@ class DockerFileBuilder
       end
     end
     if packages.length > 1
-      @docker_file.puts('\nRUN apt-get install -y ' + packages)
+      @docker_file.puts('RUN apt-get install -y ' + packages)
       count_layer
     end
     # FIXME: Wrong spot
