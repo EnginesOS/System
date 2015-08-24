@@ -46,7 +46,7 @@ class ManagedContainer < Container
     # if has no / then local image
     # return false
     #
-    if @repository.nil? == false
+    if @repository.nil? == false 
       return @core_api.pull_image(@repository + '/' +image)
     elsif image.include?('/')
       return @core_api.pull_image(image)
