@@ -63,6 +63,10 @@ class SystemConfig
   @@BuildRunningParamsFile='/opt/engines/run/system/flags/building_params'
   @@BuildFailedFile='/opt/engines/run/system/flags/last_build_fail'
   
+  def self.registry_connect_timeout
+    return 20
+  end
+  
   def SystemConfig.generate_ssh_private_keyfile
     return  @@generate_ssh_private_keyfile
   end

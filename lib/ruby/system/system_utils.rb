@@ -2,7 +2,7 @@ class SystemUtils
   @@debug=true
   @@level=-1
 
-  attr_reader :debug,:level,:last_error
+  attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
     if SystemUtils.debug == true
       p label.to_sym
@@ -128,8 +128,7 @@ class SystemUtils
           val = pair[1]
           else
           val = nil
-        end
-          
+        end          
         if pair.nil? == false && pair[0].nil? == false
           retval[pair[0].to_sym] = val
         end        
@@ -147,12 +146,12 @@ rescue Exception=>e
 def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
-   SystemUtils.debug_output('exec command ',cmd)
+   SystemUtils.debug_output('exec command ', cmd)
   retval = {}
    retval[:stdout] = ''
    retval[:stderr] = ''
    retval[:result] = -1
-     Open3.popen3(cmd)  do |stdin, stdout, stderr, th|
+     Open3.popen3(cmd)  do |_stdin, stdout, stderr, _th|
        oline = String.new
        stderr_is_open=true
        begin
@@ -185,7 +184,7 @@ def SystemUtils.execute_command(cmd)
      return retval
      rescue Exception=>e
        SystemUtils.log_exception(e)
-       SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ' ,retval)
+       SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ', retval)
        retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' +e.to_s
        retval[:result] = -99
        return retval
@@ -203,7 +202,7 @@ def SystemUtils.execute_command(cmd)
         return res
       rescue Exception=>e
         SystemUtils.log_exception(e)
-        SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
+        SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ', cmd)
         return 'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
       end
     end
@@ -228,7 +227,7 @@ def SystemUtils.execute_command(cmd)
     service_hash[:parent_engine] = engine.container_name
     service_hash[:container_type] = engine.ctype
     service_hash[:service_handle] = engine.container_name
-    service_hash[:variables] ={}
+    service_hash[:variables] = {}
     service_hash[:variables][:parent_engine] = engine.container_name
     if engine.ctype == 'service'
       service_hash[:variables][:hostname] = engine.hostname
@@ -295,8 +294,7 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
        next 
      end         
      argument+= key.to_s + '=\'' + value.to_s + '\':'      
-   end
-   
+   end   
   argument += ' ' + sources   
    return argument
  end
