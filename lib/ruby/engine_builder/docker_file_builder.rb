@@ -105,9 +105,8 @@ class DockerFileBuilder
   end
 
   def write_apache_modules
-    if @blueprint_reader.apache_modules.count < 1
-      return
-    end
+    return false if @blueprint_reader.apache_modules.count < 1
+
     @docker_file.puts('#Apache Modules')
     ap_modules_str = ''
     @blueprint_reader.apache_modules.each do |ap_module|

@@ -799,7 +799,7 @@ class EngineBuilder
                             @container_name,
                             @blueprint_reader.volumes,
                             @web_port,
-                            @blueprint_reader.workerPorts,
+                            @blueprint_reader.worker_ports,
                             @repo_name,
                             @blueprint_reader.databases,
                             @blueprint_reader.environments,
