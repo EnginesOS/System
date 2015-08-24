@@ -23,7 +23,6 @@ class EngineBuilder
               :templater,
               :repoName,
               :hostname,
-              :domain_name,
               :build_name,
               :set_environments,
               :container_name,
@@ -323,7 +322,7 @@ class EngineBuilder
   def build_container
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
-    if @blueprint.nil? == false || @blueprint == false
+    if @blueprint.nil? == true || @blueprint == false
       close_all
       return false
     end
