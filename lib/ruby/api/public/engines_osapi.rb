@@ -1,8 +1,8 @@
 require '/opt/engines/lib/ruby/api/system/engines_core.rb'
-require 'objspace'
+#require 'objspace'
 
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
-
+require '/opt/engines/lib/ruby/api/system/system_config.rb'
 require_relative 'engines_osapi_result.rb'
 require_relative 'first_run_wizard.rb'
 
@@ -1000,18 +1000,23 @@ class EnginesOSapi
       return failed('Updates pending',result[:stdout],'Update Status')
     end
   end
+  
   def base_system_has_updated?
    SystemStatus.base_system_has_updated?   
   end
+  
   def build_status
     return SystemStatus.build_status
   end
+  
   def last_build_params
     return SystemStatus.last_build_params
   end
+  
   def last_build_failure_params
     return SystemStatus.last_build_failure_params
   end
+  
   def current_build_params
      return SystemStatus.last_build_params
    end
