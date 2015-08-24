@@ -151,7 +151,7 @@ def SystemUtils.execute_command(cmd)
    retval[:stdout] = ''
    retval[:stderr] = ''
    retval[:result] = -1
-     Open3.popen3(cmd)  do |_stdin, stdout, stderr, _th|
+     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
        oline = String.new
        stderr_is_open=true
        begin
