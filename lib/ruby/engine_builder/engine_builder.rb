@@ -918,6 +918,7 @@ class EngineBuilder
     from_line = dockerfile.gets('\n', 100)
     from_part = from_line.gsub(/FROM[ ]./, '')
     froms = from_part.split('\n')
+    p froms[0]
     return froms[0]
   rescue Exception => e
     log_build_errors(e)
