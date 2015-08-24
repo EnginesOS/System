@@ -604,7 +604,7 @@ class SystemApi
     service_hash[:type_path]='dns'
     @engines_api.dettach_service(service_hash)
     #@engines_api.deregister_non_persistant_service(service_hash)
-    @engines_api.delete_service_from_engine_registry(service_hash)
+    #@engines_api.delete_service_from_engine_registry(service_hash)
     service_hash[:variables][:domainname] = params[:domain_name]
     service_hash[:service_handle]=params[:domain_name] + '_dns'
     if(params[:internal_only])

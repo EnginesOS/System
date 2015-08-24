@@ -291,10 +291,7 @@ class EnginesCore
   end
 
   def loadServiceManager()
-    if @service_manager == nil
-      @service_manager = ServiceManager.new(self)
-      return @service_manager
-    end
+    @service_manager = ServiceManager.new(self) if @service_manager == nil
     return @service_manager
   end
 
@@ -360,9 +357,7 @@ class EnginesCore
   def match_orphan_service(service_hash)
     sm = loadServiceManager()
     res =  check_sm_result( sm.retrieve_orphan(service_hash) )
-    if res != nil && res != false
-      return true
-    end
+    return true if res.nil? == false && res != false
     return false
   end
 

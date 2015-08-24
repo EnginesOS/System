@@ -12,31 +12,15 @@ class BuildController
     p :builder_params
     p params
     SystemStatus.build_starting(params)
-    p params
     engine_builder = get_engine_builder(params)
-    p params
     engine = engine_builder.build_from_blue_print
-    p params
-    if engine == false
-      @last_error = engine_builder.last_error
-      p engine_builder.last_error
-      params[:error] = engine_builder.last_error
-      SystemStatus.build_failed(params)
-      return false
-    end
-    if engine.nil? == false
-      SystemStatus.build_complete(params)
-      return engine
-    end
+    SystemStatus.build_failed(params) if engine.nil? || engine == false
+    SystemStatus.build_complete(params) if engine.is_a?(ManagedEngine)
     @last_error = engine_builder.last_error
-    p engine_builder.last_error
     params[:error] = engine_builder.last_error
-    SystemStatus.build_failed(params)
-    return false
+    return engine
   rescue StandardError => e
-    if engine_builder.nil? == false && engine_builder.is_a?(EngineBuilder)
-      @last_error = engine_builder.last_error
-    end
+    @last_error = engine_builder.last_error if engine_builder.nil? == false && engine_builder.is_a?(EngineBuilder)
     @last_error = @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
     p @last_error
     params[:error] = engine_builder.last_error
@@ -72,11 +56,9 @@ class BuildController
     SystemStatus.build_failed(params)
     return false
   rescue StandardError => e
-    if engine_builder.is_a?(EngineBuilder)
-      @last_error = engine_builder.last_error
-      params[:error] = engine_builder.last_error
-    end
+    @last_error = engine_builder.last_error if engine_builder.is_a?(EngineBuilder)
     @last_error = @last_error.to_s + ':Exception:' + e.to_s + ':' + e.backtrace.to_s
+    params[:error] = @last_error
     SystemStatus.build_failed(params)
     return false
   end
