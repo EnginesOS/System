@@ -891,27 +891,23 @@ class EnginesCore
 
   def create_container(container)
     clear_error
-    begin
       if container.ctype != 'system_service' && container.has_container? == true
-        container.last_error='Failed To create container exists by the same name'
+        container.last_error = 'Failed To create container exists by the same name'
         return false
       end
       test_system_api_result(@system_api.clear_cid_file(container))
       test_system_api_result(@system_api.clear_container_var_run(container))
-      if container.dependant_on.is_a?(Array)
-        start_dependancies(container)
-      end
-      test_docker_api_result(@docker_api.pull_image(container.image)) #only pulls if has repo and not local image
+      start_dependancies(container) if container.dependant_on.is_a?(Array)
+      test_docker_api_result(@docker_api.pull_image(container.image)) if @ctype != 'container' 
       if  test_docker_api_result(@docker_api.create_container(container)) == true
         return test_system_api_result(@system_api.create_container(container))
       else
         return false
       end
-    rescue Exception=>e
-      container.last_error=('Failed To Create ' + e.to_s)
+    rescue Exception => e
+      container.last_error = ('Failed To Create ' + e.to_s)
       log_exception(e)
       return false
-    end
   end
 
   def load_and_attach_persistant_services(container)
