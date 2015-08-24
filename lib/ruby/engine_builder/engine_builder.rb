@@ -27,6 +27,7 @@ class EngineBuilder
               :set_environments,
               :container_name,
               :environments,
+              :domain_name,
               :runtime,
               :web_port,
               :http_protocol,
