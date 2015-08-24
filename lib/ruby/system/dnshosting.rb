@@ -7,8 +7,7 @@ require 'open-uri'
 module DNSHosting
   def self.get_local_ip
     if File.exist?('/opt/engines/etc/net/ip')
-      File.read('/opt/engines/etc/net/ip', 'r')
-      return ip
+    return File.read('/opt/engines/etc/net/ip')
     end
     # devel/lachlan case
     Socket.ip_address_list.each do |addr|
@@ -65,7 +64,6 @@ module DNSHosting
     return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def self.rm_domain(params)
@@ -86,7 +84,6 @@ module DNSHosting
     domains.delete(old_domain_name)
     domains[params[:domain_name]] = params
     save_domains(domains)
-    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return false

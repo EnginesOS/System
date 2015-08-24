@@ -1,5 +1,3 @@
-
-
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 require_relative 'container.rb'
@@ -7,10 +5,10 @@ require_relative 'container.rb'
 require 'objspace'
 
 class ManagedContainer < Container
-  @conf_self_start=false
+  @conf_self_start = false
 #  @http_and_https=true
-#  @https_only=false
-  def initialize(mem,name,host,domain,image,e_ports,vols,environs,framework,runtime,databases,setState,port,repo,data_uid,data_gid) #used for test only
+#  @https_only=false 
+  def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
     @framework = framework
     @runtime = runtime
     @databases = databases
@@ -42,16 +40,7 @@ class ManagedContainer < Container
   # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image
-    # if has repo field prepend repo
-    # if has no / then local image
-    # return false
-    #
-    if @repository.nil? == false 
-      return @core_api.pull_image(@repository + '/' +image)
-    elsif image.include?('/')
-      return @core_api.pull_image(image)
-    end
-    return false
+    return true
   end
 
   def container_id
@@ -103,24 +92,6 @@ class ManagedContainer < Container
   def engine_environment
     return @environments
   end
-
-#  #to support Gui's wierd convention on names
-#
-#  def repo #CAN REMOVE
-#    return @repository
-#  end
-#
-#  def containerName #CAN REMOVE
-#    return @container_name
-#  end
-#
-#  def domainName #CAN REMOVE
-#    return @domain_name
-#  end
-#
-#  def hostName #CAN REMOVE
-#    return @hostname
-#  end
 
   def http_protocol
     case @protocol
@@ -176,12 +147,10 @@ class ManagedContainer < Container
   end
 
   def read_state()
-
-    begin
       inspect_container
       if inspect_container == false
-        @last_error='failed to inspect container'
-        state='nocontainer'
+        @last_error = 'failed to inspect container'
+        state = 'nocontainer'
       else
         #        @res= last_result
         output = JSON.parse(@last_result)
@@ -198,7 +167,7 @@ class ManagedContainer < Container
           elsif output[0]['State']['Running'] == false
             state = 'stopped'
           else
-            state='nocontainer'
+            state = 'nocontainer'
           end
         end
       end
@@ -215,22 +184,21 @@ class ManagedContainer < Container
       p @last_result
       SystemUtils.log_exception(e)
       return 'nocontainer'
-    end
   end
 
   def logs_container
-    return false  if has_api? == false
+    return false if has_api? == false
     @core_api.logs_container(self)
   end
 
   def ps_container
-    return false  if has_api? == false
+    return false if has_api? == false
     @core_api.ps_container(self)
   end
 
   def delete_image()
-    return false  if has_api? == false
-    ret_val=false
+    return false if has_api? == false
+    ret_val = false
     state = read_state()
     if has_container? == false
       ret_val = @core_api.delete_image(self)
@@ -242,31 +210,31 @@ class ManagedContainer < Container
   end
 
   def destroy_container
-    return false  if has_api? == false
-    ret_val=false
+    return false if has_api? == false
+    ret_val = false
     state = read_state
-    @setState='nocontainer' #this represents the state we want and not necessarily the one we get
-    @container_id='-1'
+    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
+    @container_id = '-1'
     p @setState
     if is_active? == false
-      ret_val = @core_api.destroy_container self
+      ret_val = @core_api.destroy_container(self)
       @docker_info = nil
     else
-      @last_error ='Cannot Destroy a container that is not stopped\nPlease stop first'
+      @last_error = 'Cannot Destroy a container that is not stopped\nPlease stop first'
     end
     clear_error(ret_val)
-    @setState='nocontainer'#this represents the state we want and not necessarily the one we get
+    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     save_state()
     return ret_val
   end
 
   def setup_container
-    return false  if has_api? == false
+    return false if has_api? == false
     ret_val = false
     state = read_state 
     @setState = 'stopped'
     if state == 'nocontainer'
-      ret_val = @core_api.setup_container self
+      ret_val = @core_api.setup_container(self)
       @docker_info = nil
     else
       @last_error = 'Cannot create container if container by the same name exists'
@@ -276,13 +244,13 @@ class ManagedContainer < Container
   end
 
   def create_container
-    return false  if has_api? == false
+    return false if has_api? == false
     ret_val = false
     @docker_info = nil
     state = read_state
     @setState = 'running'
     if state == 'nocontainer'
-      ret_val = @core_api.create_container self
+      ret_val = @core_api.create_container(self)
     else
       @last_error = 'Cannot create container if container by the same name exists'
     end
@@ -293,9 +261,7 @@ class ManagedContainer < Container
     else
       set_container_id
       register_with_dns
-      if @deployment_type  == 'web'
-        add_nginx_service
-      end
+      add_nginx_service if @deployment_type == 'web'
       @core_api.register_non_persistant_services(self)
     end
     clear_error(ret_val)   
@@ -305,20 +271,20 @@ class ManagedContainer < Container
 
   def recreate_container
     ret_val = false
-    if destroy_container() == true
-      ret_val = create_container()
+    if destroy_container == true
+      ret_val = create_container
     end
     @setState = 'running'
     save_state
   end
 
   def unpause_container
-    return false  if has_api? == false
+    return false if has_api? == false
     state = read_state
     @setState = 'running'
     ret_val = false
     if state == 'paused'
-      ret_val = @core_api.unpause_container self
+      ret_val = @core_api.unpause_container(self)
       @docker_info = nil
     else
       @last_error = 'Can\'t unpause Container as ' + state
@@ -330,12 +296,12 @@ class ManagedContainer < Container
   end
 
   def pause_container
-    return false  if has_api? == false
-    state = read_state()
+    return false if has_api? == false
+    state = read_state
     @setState = 'paused'
     ret_val = false
     if state == 'running'
-      ret_val = @core_api.pause_container self
+      ret_val = @core_api.pause_container(self)
       @docker_info = nil
     else
       @last_error = 'Can\'t pause Container as ' + state
@@ -346,18 +312,18 @@ class ManagedContainer < Container
   end
 
   def stop_container
-    return false  if has_api? == false
+    return false if has_api? == false
 #    web_sites
     ret_val = false
     state = read_state
     @setState = 'stopped'
     if state == 'running'
-      ret_val = @core_api.stop_container   self
+      ret_val = @core_api.stop_container(self)
       @core_api.deregister_non_persistant_services(self)
       @docker_info = nil
     else
       @last_error = 'Can\'t stop Container as ' + state
-      if state != 'paused' # f orce deregister if stopped or no container etc
+      if state != 'paused' # force deregister if stopped or no container etc
         @core_api.deregister_non_persistant_services(self)
       end
     end
@@ -366,12 +332,12 @@ class ManagedContainer < Container
   end
 
   def start_container
-    return false  if has_api? == false
+    return false if has_api? == false
     ret_val = false
     state = read_state
     @setState = 'running'
     if state == 'stopped'
-      ret_val = @core_api.start_container self
+      ret_val = @core_api.start_container(self)
       @docker_info = nil
     else
       @last_error = 'Can\'t Start Container as ' + state
@@ -387,19 +353,15 @@ class ManagedContainer < Container
   # would be better if it check a pre exisiting record will throw error on recreate
   #
   def register_with_dns
-    return false  if has_api? == false
+    return false if has_api? == false
     service_hash = SystemUtils.create_dns_service_hash(self)
-    if service_hash.is_a?(Hash) == false
-      return false
-    end
-    return  @core_api.attach_service(service_hash)
+    return false if service_hash.is_a?(Hash) == false
+    return @core_api.attach_service(service_hash)
   end
 
   def restart_container
     ret_val = false
-    if stop_container == true
-      ret_val = start_container
-    end
+    ret_val = start_container if stop_container 
     return ret_val
   end
 
@@ -408,9 +370,7 @@ class ManagedContainer < Container
   # @ return false on inspect container error
   def get_ip_str
     @docker_info = nil
-    if inspect_container == false
-      return false
-    end
+    return false if inspect_container == false
     output = JSON.parse(@last_result)
     ip_str = output[0]['NetworkSettings']['IPAddress']
     return ip_str
@@ -418,21 +378,16 @@ class ManagedContainer < Container
     return nil
   end
 
-  def set_deployment_type(deployment_type)
-    # remove existing service mapping
-    if @deployment_type && @deployment_type != 'web'
-      return remove_nginx_service
-    end
-    @deployment_type = deployment_type
-    if @deployment_type == 'web'
-      return add_nginx_service
-    end
+  def set_deployment_type(deployment_type)    
+    @deployment_type = deployment_type    
+    return remove_nginx_service if @deployment_type && @deployment_type != 'web'
+    return add_nginx_service if @deployment_type == 'web'
   end
 
   # create nginx service_hash for container and register with nginx
   # @return boolean indicating sucess
   def add_nginx_service
-    return false  if has_api? == false
+    return false if has_api? == false
     service_hash = SystemUtils.create_nginx_service_hash(self)
     return @core_api.attach_service(service_hash)
   end
@@ -440,20 +395,19 @@ class ManagedContainer < Container
   # create nginx service_hash for container deregister with nginx
   # @return boolean indicating sucess
   def remove_nginx_service
-    return false  if has_api? == false
+    return false if has_api? == false
     service_hash = SystemUtils.create_nginx_service_hash(self)
     return @core_api.dettach_service(service_hash)
   end
 
   def stats
-    if inspect_container() == false
-      return false
-    end
+    return false if inspect_container == false
+
     output = JSON.parse(last_result)
     started = output[0]['State']['StartedAt']
     stopped = output[0]['State']['FinishedAt']
-    state = read_state()
-    ps_container()
+    state = read_state
+    ps_container
     pcnt = -1
     rss = 0
     vss = 0
@@ -476,17 +430,15 @@ class ManagedContainer < Container
           end
         end
       end
-      pcnt = pcnt+1
+      pcnt += 1
     end
     cpu = 3600 * h + 60 * m + s
-    statistics = ContainerStatistics.new(state,pcnt,started,stopped,rss,vss,cpu)
+    statistics = ContainerStatistics.new(state, pcnt, started, stopped, rss, vss, cpu)
     return statistics
   end
 
   def running_user
-    if inspect_container == false
-      return false
-    end
+    return false if inspect_container == false      
     output = JSON.parse(@last_result)
     user = output[0]['Config']['User']
     return user
@@ -495,46 +447,40 @@ class ManagedContainer < Container
   end
 
   def set_running_user
-    if  @cont_userid == nil || @cont_userid == -1
-      @cont_userid = running_user
-    end
+    @cont_userid = running_user if  @cont_userid == nil || @cont_userid == -1
   end
 
   def inspect_container
-    return false  if has_api? == false
-    if @docker_info.is_a?(Hash) == false || @docker_info.is_a?(FalseClass) 
-      @docker_info = @core_api.inspect_container self
-    end
+    return false if has_api? == false
+    @docker_info = @core_api.inspect_container(self) if @docker_info.is_a?(Hash) == false
     return @docker_info
   end
 
   def save_state()
-    return false  if has_api? == false
+    return false if has_api? == false
     @docker_info = nil
-    ret_val = @core_api.save_container self
+    ret_val = @core_api.save_container(self)
     return ret_val
   end
 
   def save_blueprint blueprint
-    return false  if has_api? == false
+    return false if has_api? == false
     ret_val = @core_api.save_blueprint(blueprint, self)
     return ret_val
   end
 
   def load_blueprint
-    return false  if has_api? == false
+    return false if has_api? == false
  @core_api.load_blueprint(self)
   end
 
   def rebuild_container
-    return false  if has_api? == false
+    return false if has_api? == false
     ret_val = @core_api.rebuild_image(self)
     @docker_info = nil
     if ret_val == true
       register_with_dns
-      if @deployment_type  == 'web'
-        add_nginx_service
-      end
+      add_nginx_service if @deployment_type  == 'web'
       @core_api.register_non_persistant_services(self)
     end
     @setState = 'running'
@@ -543,24 +489,18 @@ class ManagedContainer < Container
 
   def is_running?
     state = read_state
-    if state == 'running'
-      return true
-    end
+    return true if state == 'running'
     return false
   end
 
   def is_startup_complete?
-    return false  if has_api? == false
+    return false if has_api? == false
     @core_api.is_startup_complete(self)
   end
 
   def has_container?
-    if has_image? == false
-      return false
-    end
-    if read_state == 'nocontainer'
-      return false
-    end
+    return false if has_image? == false
+    return false if read_state == 'nocontainer'
     return true
   end
 
@@ -570,9 +510,7 @@ class ManagedContainer < Container
 
   def is_error?
     state = read_state
-    if @setState != state     
-      return true
-    end
+    return true  if @setState != state     
     return false
   end
 
@@ -598,16 +536,12 @@ class ManagedContainer < Container
     return true
   end
 
-  def clear_error ret_val
-    if ret_val == true
-      @last_error = nil
-    end
+  def clear_error(ret_val)
+    @last_error = nil if ret_val == true
   end
 
   def set_container_id    
-    if @docker_info.is_a?(Array) == true && @docker_info[0].is_a?(Hash)
-    return @docker_info[0]['Id']
-  end
+    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) == true && @docker_info[0].is_a?(Hash)
   return -1
   end
 

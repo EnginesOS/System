@@ -62,6 +62,18 @@ class ManagedService < ManagedContainer
     return result
   end
 
+  def pull_image
+    # if has repo field prepend repo
+    # if has no / then local image
+    # return false
+    #
+    if @repository.nil? == false 
+      return @core_api.pull_image(@repository + '/' + image)
+    elsif image.include?('/')
+      return @core_api.pull_image(image)
+    end
+    return false
+  end
   
   def run_configurator(configurator_params)
     if is_running? == false
@@ -74,10 +86,11 @@ class ManagedService < ManagedContainer
     end
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
-    if result[:result] == 0
-      return true
-    end
-    return false
+#    if result[:result] == 0
+#      return true
+#    end
+#    return false
+    return result
   end
 
   def retrieve_configurator(configurator_params)

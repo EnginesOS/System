@@ -1,6 +1,6 @@
 class Container
   
-  def initialize(mem,name,host,domain,image,e_ports,vols,environs) # for test only
+  def initialize(mem, name, host, domain, image, e_ports, vols, environs) # for test only
     @memory = mem
     @container_name = name
     @hostname = host
@@ -10,7 +10,7 @@ class Container
     @volumes = vols
     @environments = environs
     @container_id = -1
-    @docker_info=nil
+    @docker_info = nil
   end
   
   attr_reader :docker_info,\
@@ -29,9 +29,7 @@ class Container
   end
          
   def fqdn
-    if @domain_name.nil? == true
-      return 'N/A'
-    end
+    return 'N/A' if @domain_name.nil? == true
     return @hostname.to_s + '.' + @domain_name.to_s
   end
    
