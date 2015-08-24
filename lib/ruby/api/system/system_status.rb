@@ -106,6 +106,10 @@ class SystemStatus
   end
 
   def self.current_build_params
+    if File.exist?(SystemConfig.BuildRunningParamsFile) == false
+        SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
+         return {}
+       end
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
     param_raw = param_file.read
     params = YAML::load(param_raw)
@@ -116,7 +120,11 @@ class SystemStatus
   end
 
   def self.last_build_params
-    param_file = File.new(SystemConfig.BuildBuiltFile)
+    if File.exist?(SystemConfig.BuildBuiltFile) == false
+      SystemUtils.log_error_mesg("No ", SystemConfig.BuildBuiltFile)
+      return {}
+    end
+    param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
     params = YAML::load(param_raw)
     return params
@@ -126,7 +134,11 @@ class SystemStatus
   end
 
   def self.last_build_failure_params
-    param_file = File.new(SystemConfig.BuildFailedFile)
+    if File.exist?(SystemConfig.BuildFailedFile) == false
+      SystemUtils.log_error_mesg("No ", SystemConfig.BuildFailedFile)
+          return {}
+        end
+    param_file = File.new(SystemConfig.BuildFailedFile, 'r')
     param_raw = param_file.read
     params = YAML::load(param_raw)
     return params
