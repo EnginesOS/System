@@ -1018,7 +1018,7 @@ class EnginesOSapi
   end
   
   def current_build_params
-     return SystemStatus.last_build_params
+     return SystemStatus.current_build_params
    end
   
 end
