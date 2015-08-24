@@ -6,6 +6,7 @@ class SystemAccess
   def release
     return SystemUtils.system_release   
   end
+  
   def pgsql_host
     return 'pgsql.engines.internal'
   end 
@@ -17,12 +18,17 @@ class SystemAccess
   def smtp_host
     return SystemConfig.SMTPHost
   end
+  
   def timezone_country_city
+    # FIXME: Needs to be real
     return 'Australia/Sydney'
 end
+
   def hrs_from_gmt
+    # FIXME: Needs to be real
     return '+10'
   end
+  
   def default_domain
     prefs = SystemPreferences.new()
     return  prefs.get_default_domain   
@@ -35,8 +41,6 @@ end
       cmd.gsub!(/\)/,'')
     return  SystemUtils.get_service_pubkey(engine,cmd)      
   end
-  
-
   
   def random cnt
     len = cnt.to_i
