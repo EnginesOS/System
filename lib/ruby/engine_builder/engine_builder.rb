@@ -913,11 +913,16 @@ class EngineBuilder
   end
 
   def read_base_image_from_dockerfile
+    p :read_base_image_from_dockerfile
     # FROM  engines/php:_Engines_System(release)
     dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
     from_line = dockerfile.gets('\n', 100)
+    p from_line
     from_part = from_line.gsub(/FROM[ ]./, '')
+    p from_part
     froms = from_part.split('\n')
+    p :froms
+    p froms.to_s
     p froms[0]
     return froms[0]
   rescue Exception => e
