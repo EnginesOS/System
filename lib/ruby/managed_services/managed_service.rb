@@ -62,6 +62,18 @@ class ManagedService < ManagedContainer
     return result
   end
 
+  def pull_image
+    # if has repo field prepend repo
+    # if has no / then local image
+    # return false
+    #
+    if @repository.nil? == false 
+      return @core_api.pull_image(@repository + '/' + image)
+    elsif image.include?('/')
+      return @core_api.pull_image(image)
+    end
+    return false
+  end
   
   def run_configurator(configurator_params)
     if is_running? == false

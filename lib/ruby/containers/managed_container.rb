@@ -40,16 +40,7 @@ class ManagedContainer < Container
   # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image
-    # if has repo field prepend repo
-    # if has no / then local image
-    # return false
-    #
-    if @repository.nil? == false 
-      return @core_api.pull_image(@repository + '/' + image)
-    elsif image.include?('/')
-      return @core_api.pull_image(image)
-    end
-    return false
+    return true
   end
 
   def container_id
@@ -364,17 +355,13 @@ class ManagedContainer < Container
   def register_with_dns
     return false if has_api? == false
     service_hash = SystemUtils.create_dns_service_hash(self)
-    if service_hash.is_a?(Hash) == false
-      return false
-    end
-    return  @core_api.attach_service(service_hash)
+    return false if service_hash.is_a?(Hash) == false
+    return @core_api.attach_service(service_hash)
   end
 
   def restart_container
     ret_val = false
-    if stop_container == true
-      ret_val = start_container
-    end
+    ret_val = start_container if stop_container 
     return ret_val
   end
 
@@ -383,9 +370,7 @@ class ManagedContainer < Container
   # @ return false on inspect container error
   def get_ip_str
     @docker_info = nil
-    if inspect_container == false
-      return false
-    end
+    return false if inspect_container == false
     output = JSON.parse(@last_result)
     ip_str = output[0]['NetworkSettings']['IPAddress']
     return ip_str
@@ -416,9 +401,8 @@ class ManagedContainer < Container
   end
 
   def stats
-    if inspect_container == false
-      return false
-    end
+    return false if inspect_container == false
+
     output = JSON.parse(last_result)
     started = output[0]['State']['StartedAt']
     stopped = output[0]['State']['FinishedAt']
@@ -454,9 +438,7 @@ class ManagedContainer < Container
   end
 
   def running_user
-    if inspect_container == false
-      return false
-    end
+    return false if inspect_container == false      
     output = JSON.parse(@last_result)
     user = output[0]['Config']['User']
     return user
@@ -465,16 +447,12 @@ class ManagedContainer < Container
   end
 
   def set_running_user
-    if  @cont_userid == nil || @cont_userid == -1
-      @cont_userid = running_user
-    end
+    @cont_userid = running_user if  @cont_userid == nil || @cont_userid == -1
   end
 
   def inspect_container
     return false if has_api? == false
-    if @docker_info.is_a?(Hash) == false || @docker_info.is_a?(FalseClass) 
-      @docker_info = @core_api.inspect_container(self)
-    end
+    @docker_info = @core_api.inspect_container(self) if @docker_info.is_a?(Hash) == false
     return @docker_info
   end
 
@@ -521,12 +499,8 @@ class ManagedContainer < Container
   end
 
   def has_container?
-    if has_image? == false
-      return false
-    end
-    if read_state == 'nocontainer'
-      return false
-    end
+    return false if has_image? == false
+    return false if read_state == 'nocontainer'
     return true
   end
 
@@ -536,9 +510,7 @@ class ManagedContainer < Container
 
   def is_error?
     state = read_state
-    if @setState != state     
-      return true
-    end
+    return true  if @setState != state     
     return false
   end
 
@@ -564,16 +536,12 @@ class ManagedContainer < Container
     return true
   end
 
-  def clear_error ret_val
-    if ret_val == true
-      @last_error = nil
-    end
+  def clear_error(ret_val)
+    @last_error = nil if ret_val == true
   end
 
   def set_container_id    
-    if @docker_info.is_a?(Array) == true && @docker_info[0].is_a?(Hash)
-    return @docker_info[0]['Id']
-  end
+    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) == true && @docker_info[0].is_a?(Hash)
   return -1
   end
 
