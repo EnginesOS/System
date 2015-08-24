@@ -7,7 +7,7 @@ require 'open-uri'
 module DNSHosting
   def self.get_local_ip
     if File.exist?('/opt/engines/etc/net/ip')
-      File.read('/opt/engines/etc/net/ip', 'r')
+    ip =  File.read('/opt/engines/etc/net/ip', 'r')
       return ip
     end
     # devel/lachlan case
