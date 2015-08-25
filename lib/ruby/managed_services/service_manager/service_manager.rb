@@ -303,7 +303,7 @@ class ServiceManager
     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)  if container_name.nil?
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     return SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash) if service_def.nil?
-    return SystemUtils.log_error_mesg('no service_handle for',service_hash) if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field].nil
+    return SystemUtils.log_error_mesg('no service_handle for', service_hash) if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field].nil?
     handle_field_sym = service_def[:service_handle_field].to_sym    
     if service_def.has_key?(:priority) == true
       service_hash[:priority] = service_def[:priority]
