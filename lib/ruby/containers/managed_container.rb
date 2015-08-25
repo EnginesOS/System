@@ -71,8 +71,12 @@ class ManagedContainer < Container
   :core_api,\
   :conf_self_start,\
   :last_result,\
-  :last_error,
-  :docker_info
+  :last_error
+  
+  def docker_info
+    info = @docker_info.dup
+    return info.freeze
+  end
 
   def engine_environment
     return environments
@@ -192,6 +196,7 @@ class ManagedContainer < Container
   end
 
   def ps_container
+    expire_docker_info
     return false if has_api? == false
     @core_api.ps_container(self)
   end
@@ -218,7 +223,7 @@ class ManagedContainer < Container
     p @setState
     if is_active? == false
       ret_val = @core_api.destroy_container(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Cannot Destroy a container that is not stopped\nPlease stop first'
     end
@@ -235,7 +240,7 @@ class ManagedContainer < Container
     @setState = 'stopped'
     if state == 'nocontainer'
       ret_val = @core_api.setup_container(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Cannot create container if container by the same name exists'
     end
@@ -246,7 +251,7 @@ class ManagedContainer < Container
   def create_container
     return false if has_api? == false
     ret_val = false
-    @docker_info = nil
+    expire_engine_info
     state = read_state
     @setState = 'running'
     if state == 'nocontainer'
@@ -254,7 +259,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Cannot create container if container by the same name exists'
     end
-    @docker_info = nil
+    expire_engine_info
     if read_state != 'running'
       @last_error = 'Did not start'
       ret_val = false
@@ -285,7 +290,7 @@ class ManagedContainer < Container
     ret_val = false
     if state == 'paused'
       ret_val = @core_api.unpause_container(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Can\'t unpause Container as ' + state
     end
@@ -302,7 +307,7 @@ class ManagedContainer < Container
     ret_val = false
     if state == 'running'
       ret_val = @core_api.pause_container(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Can\'t pause Container as ' + state
     end
@@ -320,7 +325,7 @@ class ManagedContainer < Container
     if state == 'running'
       ret_val = @core_api.stop_container(self)
       @core_api.deregister_non_persistant_services(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Can\'t stop Container as ' + state
       if state != 'paused' # force deregister if stopped or no container etc
@@ -338,7 +343,7 @@ class ManagedContainer < Container
     @setState = 'running'
     if state == 'stopped'
       ret_val = @core_api.start_container(self)
-      @docker_info = nil
+      expire_engine_info
     else
       @last_error = 'Can\'t Start Container as ' + state
     end
@@ -369,7 +374,7 @@ class ManagedContainer < Container
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-    @docker_info = nil
+    expire_engine_info
     return false if inspect_container == false
     output = JSON.parse(@last_result)
     ip_str = output[0]['NetworkSettings']['IPAddress']
@@ -401,6 +406,7 @@ class ManagedContainer < Container
   end
 
   def stats
+    expire_engine_info
     return false if inspect_container == false
     output = JSON.parse(last_result)
     started = output[0]['State']['StartedAt']
@@ -412,8 +418,8 @@ class ManagedContainer < Container
     vss = 0
     h = m = s = 0
     @last_result.each_line.each do |line|
-      if pcnt > 0 #skip the fist line with is a header
-        fields = line.split()  #  [6]rss [10] time
+      if pcnt > 0 # skip the fist line with is a header
+        fields = line.split  #  [6]rss [10] time
         if fields.nil? == false
           rss += fields[7].to_i
           vss += fields[6].to_i
@@ -441,8 +447,8 @@ class ManagedContainer < Container
     output = JSON.parse(@last_result)
     user = output[0]['Config']['User']
     return user
-  rescue
-    return false
+  rescue StandardError => e
+    return log_exception(e)
   end
 
   def set_running_user
@@ -454,11 +460,7 @@ class ManagedContainer < Container
     return false if has_api? == false
     @docker_info = @core_api.inspect_container(self) if @docker_info.nil?
       Thread.new { sleep 2 ; expire_engine_info }    
-    return @docker_info
-  end
-
-  def expire_engine_info
-    @docker_info = nil
+    return docker_info
   end
   
   def save_state()
@@ -484,7 +486,7 @@ class ManagedContainer < Container
   def rebuild_container
     return false if has_api? == false
     ret_val = @core_api.rebuild_image(self)
-    @docker_info = nil
+    expire_docker_info
     if ret_val == true
       register_with_dns
       add_nginx_service if @deployment_type  == 'web'
@@ -532,14 +534,17 @@ class ManagedContainer < Container
       return false
     end
   end
+  
+  private
+
+def expire_engine_info
+  @docker_info = nil
+end
 
   protected
 
   def has_api?
-    if @core_api == nil
-      @last_error = 'No connection to Engines OS System'
-      return false
-    end
+   return log_error_message('No connection to Engines OS System',nil) if @core_api.nil?
     return true
   end
 
@@ -548,7 +553,7 @@ class ManagedContainer < Container
   end
 
   def set_container_id    
-    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) == true && @docker_info[0].is_a?(Hash)
+    return docker_info[0]['Id'] if docker_info.is_a?(Array) == true && docker_info[0].is_a?(Hash)
   return -1
   end
 
