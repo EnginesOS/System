@@ -133,7 +133,7 @@ class ManagedContainer < Container
     @protocol = :http_only
   end
 
-  def ManagedContainer.from_yaml(yaml, core_api)
+  def self.from_yaml(yaml, core_api)
     managedContainer = YAML::load(yaml)
     managedContainer.core_api = core_api
     managedContainer.expire_docker_info
@@ -536,11 +536,13 @@ class ManagedContainer < Container
     end
   end
   
-  private
-
 def expire_engine_info
   @docker_info = nil
 end
+
+  private
+
+
 
   protected
 
