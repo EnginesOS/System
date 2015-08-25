@@ -459,6 +459,8 @@ class ManagedContainer < Container
   def save_state()
     return false if has_api? == false
     @docker_info = nil
+     p :saveStat
+    p caller[0][/`([^']*)'/, 1]
     ret_val = @core_api.save_container(self)
     return ret_val
   end
