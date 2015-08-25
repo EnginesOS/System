@@ -457,7 +457,6 @@ class ManagedContainer < Container
   end
 
   def inspect_container
-    p caller[0][/`([^']*)'/, 1]
     return false if has_api? == false
      result = @core_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
