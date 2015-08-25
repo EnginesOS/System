@@ -459,7 +459,7 @@ class ManagedContainer < Container
   def inspect_container
     p caller[0][/`([^']*)'/, 1]
     return false if has_api? == false
-     result @core_api.inspect_container(self) if @docker_info.nil?
+     result = @core_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
      @docker_info = @last_result  
      Thread.new { sleep 2 ; expire_engine_info }    
