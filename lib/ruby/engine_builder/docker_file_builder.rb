@@ -303,7 +303,7 @@ class DockerFileBuilder
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
       @docker_file.puts('')
-      @docker_file.puts('RUN cat ' + src_file + ' | sed \'' + sed_str + '\' > ' + tmp_file + ' ;\\')
+      @docker_file.puts('RUN cat ' + src_file + ' | sed \"' + sed_str + '\" > ' + tmp_file + ' ;\\')
       @docker_file.puts('     cp ' + tmp_file + ' ' + dest_file)
       count_layer
       n += 1
