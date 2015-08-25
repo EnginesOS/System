@@ -136,7 +136,7 @@ class ManagedContainer < Container
   def self.from_yaml(yaml, core_api)
     managedContainer = YAML::load(yaml)
     managedContainer.core_api = core_api
-    managedContainer.expire_docker_info
+    managedContainer.expire_engine_info
     managedContainer.set_running_user
     
     return managedContainer
@@ -539,10 +539,6 @@ class ManagedContainer < Container
 def expire_engine_info
   @docker_info = nil
 end
-
-  private
-
-
 
   protected
 
