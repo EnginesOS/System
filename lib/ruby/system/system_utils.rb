@@ -4,7 +4,7 @@ class SystemUtils
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
-    p label.to_sym + ":" + object.to_s  if SystemUtils.debug == true
+    p label.to_s + ":" + object.to_s  if SystemUtils.debug == true
   end
 
   def SystemUtils.log_output(object, level)
