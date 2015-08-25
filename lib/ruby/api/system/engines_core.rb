@@ -79,6 +79,7 @@ class EnginesCore
 
   def inspect_container(container)
     clear_error
+    p caller[0][/`([^']*)'/, 1]
     test_docker_api_result(@docker_api.inspect_container(container))
   end
 
