@@ -4,17 +4,12 @@ class SystemUtils
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
-    if SystemUtils.debug == true
-      p label.to_sym
-      p object
-    end
+    p label.to_sym + ":" + object.to_s  if SystemUtils.debug == true
   end
 
   def SystemUtils.log_output(object, level)
-    if SystemUtils.level < level
-      p :Error
-      p object.to_s      
-    end
+    p 'Error ' + object.to_s if SystemUtils.level < level
+    return false
   end
 
   #@Logs to passeenger std out the @msg followed by @object.to_s
@@ -38,9 +33,7 @@ class SystemUtils
   end
   
   def SystemUtils.system_release
-    if File.exists?(SystemConfig.ReleaseFile) == false
-         return 'current'
-       end
+    return 'current' if File.exists?(SystemConfig.ReleaseFile) == false
        release = File.read(SystemConfig.ReleaseFile)
        return release.strip    
   end
@@ -81,7 +74,6 @@ class SystemUtils
     @@last_error = e_str
     p e_str
     SystemUtils.log_output(e_str, 10)
-    return false
   end
 
   def SystemUtils.last_error
@@ -106,13 +98,9 @@ class SystemUtils
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
       SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
-      if $?.to_i == 0
-        p :run_system_success
-        return true
-      else
-        SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
-        return res
-      end
+      return true if $?.to_i == 0
+       SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
+       return res
     rescue Exception=>e
       SystemUtils.log_exception(e)
       SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
@@ -129,9 +117,7 @@ class SystemUtils
           else
           val = nil
         end          
-        if pair.nil? == false && pair[0].nil? == false
-          retval[pair[0].to_sym] = val
-        end        
+       retval[pair[0].to_sym] = val if pair.nil? == false && pair[0].nil? == false     
      end
     return retval
 rescue Exception=>e
@@ -152,16 +138,14 @@ def SystemUtils.execute_command(cmd)
    retval[:stderr] = ''
    retval[:result] = -1
      Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
-       oline = String.new
-       stderr_is_open=true
+       oline = ''
+       stderr_is_open = true
        begin
          stdout.each do |line|
            line = line.gsub(/\\\'/,'')
            oline = line
            retval[:stdout] += line.chop
-           if stderr_is_open
-             retval[:stderr] += stderr.read_nonblock(256)
-           end
+           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
          end         
          retval[:result] = th.value.exitstatus          
        rescue Errno::EIO
@@ -280,14 +264,12 @@ def SystemUtils.execute_command(cmd)
   
 def SystemUtils.service_hash_variables_as_str(service_hash)
    argument = String.new
-   if service_hash.has_key?(:publisher_namespace) 
+   if service_hash.key?(:publisher_namespace) 
      argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
    end
    service_variables = service_hash[:variables]
      sources = ''
-     if service_variables.nil? == true
-       return argument
-     end
+  return argument if service_variables.nil? == true
    service_variables.each_pair do |key,value|
      if key == :sources
        sources = value

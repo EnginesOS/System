@@ -271,11 +271,11 @@ class ManagedContainer < Container
 
   def recreate_container
     ret_val = false
-    if destroy_container == true
-      ret_val = create_container
-    end
+    destroy_container
+    ret_val = create_container
     @setState = 'running'
     save_state
+    return ret_val
   end
 
   def unpause_container
@@ -289,7 +289,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Can\'t unpause Container as ' + state
     end
-    register_with_dns
+  #  register_with_dns
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state
@@ -342,7 +342,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Can\'t Start Container as ' + state
     end
-    register_with_dns
+   # register_with_dns
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state
@@ -402,7 +402,6 @@ class ManagedContainer < Container
 
   def stats
     return false if inspect_container == false
-
     output = JSON.parse(last_result)
     started = output[0]['State']['StartedAt']
     stopped = output[0]['State']['FinishedAt']
@@ -413,8 +412,8 @@ class ManagedContainer < Container
     vss = 0
     h = m = s = 0
     @last_result.each_line.each do |line|
-      if pcnt >0 #skip the fist line with is a header
-        fields =  line.split()  #  [6]rss [10] time
+      if pcnt > 0 #skip the fist line with is a header
+        fields = line.split()  #  [6]rss [10] time
         if fields.nil? == false
           rss += fields[7].to_i
           vss += fields[6].to_i
