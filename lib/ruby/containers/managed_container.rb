@@ -134,9 +134,11 @@ class ManagedContainer < Container
   end
 
   def ManagedContainer.from_yaml(yaml, core_api)
-    managedContainer = YAML::load( yaml )
+    managedContainer = YAML::load(yaml)
     managedContainer.core_api = core_api
+    managedContainer.expire_docker_info
     managedContainer.set_running_user
+    
     return managedContainer
   rescue Exception=> e
     @last_error='Exception ' + e.to_s
@@ -149,7 +151,7 @@ class ManagedContainer < Container
     '#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n'
   end
 
-  def read_state()
+  def read_state
       inspect_container
       if inspect_container == false
         @last_error = 'failed to inspect container'
