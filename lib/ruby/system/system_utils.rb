@@ -67,8 +67,8 @@ class SystemUtils
   end
 
   def SystemUtils.log_exception(e)
-    e_str = e.to_s()
-    e.backtrace.each do |bt |
+    e_str = e.to_s
+    e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
     @@last_error = e_str
