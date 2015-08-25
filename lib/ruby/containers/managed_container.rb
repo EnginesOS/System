@@ -197,7 +197,7 @@ class ManagedContainer < Container
   end
 
   def ps_container
-    expire_docker_info
+    expire_engine_info
     return false if has_api? == false
     @core_api.ps_container(self)
   end
@@ -468,7 +468,7 @@ class ManagedContainer < Container
   
   def save_state()
     return false if has_api? == false
-    expire_docker_info 
+    expire_engine_info 
      p :saveStat
     p caller[0][/`([^']*)'/, 1]
     ret_val = @core_api.save_container(self)
@@ -489,7 +489,7 @@ class ManagedContainer < Container
   def rebuild_container
     return false if has_api? == false
     ret_val = @core_api.rebuild_image(self)
-    expire_docker_info
+    expire_engine_info
     if ret_val == true
       register_with_dns
       add_nginx_service if @deployment_type  == 'web'
