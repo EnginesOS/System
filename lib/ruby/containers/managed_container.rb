@@ -136,7 +136,6 @@ class ManagedContainer < Container
   def ManagedContainer.from_yaml( yaml, core_api )
     managedContainer = YAML::load( yaml )
     managedContainer.core_api = core_api
-    managedContainer.docker_info = nil
     managedContainer.set_running_user
     return managedContainer
   rescue Exception=> e
