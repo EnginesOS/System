@@ -44,9 +44,7 @@ class SystemStatus
   end
 
   def self.build_failed(params)
-    if File.exist?(SystemConfig.BuildRunningParamsFile)
-      File.delete(SystemConfig.BuildRunningParamsFile)
-    end
+    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
     param_file = File.new(SystemConfig.BuildFailedFile, 'w')
     param_file.puts(params.to_yaml)
     param_file.close
@@ -59,9 +57,7 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildBuiltFile, 'w')
     param_file.puts(params.to_yaml)
     param_file.close
-    if File.exist?(SystemConfig.BuildRunningParamsFile)
-      File.delete(SystemConfig.BuildRunningParamsFile)
-    end
+    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return {}
@@ -71,12 +67,8 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'w')
     param_file.puts(params.to_yaml)
     param_file.close
-    if File.exist?(SystemConfig.BuildFailedFile)
-      File.delete(SystemConfig.BuildFailedFile)
-    end
-    if File.exist?(SystemConfig.BuildBuiltFile)
-      File.delete(SystemConfig.BuildBuiltFile)
-    end
+    File.delete(SystemConfig.BuildFailedFile) if File.exist?(SystemConfig.BuildFailedFile)
+    File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return {}
