@@ -444,7 +444,8 @@ class ManagedContainer < Container
   end
 
   def running_user
-    return false if inspect_container == false      
+    return false if inspect_container == false  
+    return -1 if !is_running?      
     output = JSON.parse(@last_result)
     user = output[0]['Config']['User']
     return user
