@@ -147,6 +147,7 @@ class DockerApi
 
   def inspect_container(container)
     clear_error
+    p caller[0][/`([^']*)'/, 1]
     commandargs = ' docker inspect ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
