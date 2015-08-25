@@ -453,12 +453,17 @@ class ManagedContainer < Container
     p caller[0][/`([^']*)'/, 1]
     return false if has_api? == false
     @docker_info = @core_api.inspect_container(self) if @docker_info.nil?
+      Thread.new { sleep 2 ; expire_engine_info }    
     return @docker_info
   end
 
+  def expire_engine_info
+    @docker_info = nil
+  end
+  
   def save_state()
     return false if has_api? == false
-    @docker_info = nil
+    expire_docker_info 
      p :saveStat
     p caller[0][/`([^']*)'/, 1]
     ret_val = @core_api.save_container(self)
