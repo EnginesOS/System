@@ -133,7 +133,7 @@ class ManagedContainer < Container
     @protocol = :http_only
   end
 
-  def ManagedContainer.from_yaml( yaml, core_api )
+  def ManagedContainer.from_yaml(yaml, core_api)
     managedContainer = YAML::load( yaml )
     managedContainer.core_api = core_api
     managedContainer.set_running_user
