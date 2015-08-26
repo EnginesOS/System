@@ -331,7 +331,7 @@ class EnginesOSapi
     if mservice.is_a?(EnginesOSapiResult)
       return failed(service_name, 'no Engine', 'Get Service Memory Statistics')
     end
-    retval = mservice.get_container_memory_stats(@core_api)
+    retval = mservice.get_container_memory_stats
     return retval
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
