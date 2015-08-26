@@ -1,10 +1,10 @@
-class NetworkSystemRegistry
+class NetworkSystemRegistry < ErrorsApi
   require 'yaml'
   require 'timeout'
 
   attr_accessor :port,
-                :retry_count_limit,
-                :last_error
+                :retry_count_limit
+
 
   def initialize(core_api)
     @retry_count_limit = 5
@@ -69,26 +69,20 @@ class NetworkSystemRegistry
       rescue EOFError
         break
       rescue StandardError => e
-        p 'Exception'
-        p e.to_s
-        p e.backtrace.to_s
+      log_exception(e)  
         return nil
       end
     end
-    return nil if message_response.nil? == true
+    return nil if message_response.nil?
    # p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML::load(message_response)
-    if response_hash[:object].nil? == false
+    if !response_hash[:object].nil?
       response_hash[:object] = YAML::load(response_hash[:object])
     end
-    if response_hash.key?(:last_error) == true
-      @last_error = response_hash[:last_error]
-    end
+    log_error_mesg(response_hash[:last_error], response_hash) if response_hash.key?(:last_error)
     return response_hash
   rescue StandardError => e
-    p 'Exception'
-    p e.to_s
-    p e.backtrace.to_s
+    log_exception(e)
     return response_hash
   end
 
@@ -101,9 +95,7 @@ class NetworkSystemRegistry
     retry_count = 0
     def send_request_failed(command, params)
       SystemUtils.log_error_mesg('Failed to send command ' + command + ' with:' + @last_error, params)
-      return false
     end
-
     request_hash = {}
     request_hash[:value] = params
     request_hash[:command] = command
@@ -112,8 +104,8 @@ class NetworkSystemRegistry
 
     begin
       if @registry_socket.is_a?(String)
-        if reopen_registry_socket == false
-          @last_error = 'Failed to reopen registry connection'
+        if !reopen_registry_socket
+          log_error_mesg('Failed to reopen registry connection',@registry_socket)
           return send_request_failed(command, request_hash)
         end
       end
@@ -125,8 +117,7 @@ class NetworkSystemRegistry
       retry_count += 1
       p :send_EIO
       if retry_count > @retry_count_limit
-        @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-        p @last_error
+        log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
         return send_request_failed(command, request_hash)
       end
       retry
@@ -134,8 +125,7 @@ class NetworkSystemRegistry
       p :send_EAGAINWaitWritable
       retry_count += 1
       if retry_count > @retry_count_limit
-        @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-        p @last_error
+        log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
         return send_request_failed(command, request_hash)
       end
       retry
@@ -143,8 +133,7 @@ class NetworkSystemRegistry
       p :send_Error_to
       retry_count += 1
       if retry_count > @retry_count_limit
-        @last_error = 'Timeout on Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-        p @last_error
+        log_error_mesg(@last_error = 'Timeout on Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
         return send_request_failed(command, request_hash)
       end
       retry
@@ -153,8 +142,7 @@ class NetworkSystemRegistry
       if reopen_registry_socket == true
         retry_count += 1
         if retry_count > @retry_count_limit
-          @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-          p @last_error
+          log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
           return send_request_failed(command, request_hash)
         end
         retry
@@ -166,8 +154,7 @@ class NetworkSystemRegistry
       if reopen_registry_socket == true
         retry_count += 1
         if retry_count > @retry_count_limit
-          @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-          p @last_error
+          log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
           return send_request_failed(command, request_hash)
         end
         retry
@@ -176,11 +163,10 @@ class NetworkSystemRegistry
       end
     rescue EOFError
       p :send_EOFError
-      if reopen_registry_socket == true
+      if reopen_registry_socket
         retry_count += 1
         if retry_count > @retry_count_limit
-          @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-          p @last_error
+          log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
           return send_request_failed(command, request_hash)
         end
         retry
@@ -191,11 +177,10 @@ class NetworkSystemRegistry
       p 'send_Exception'
       p e.to_s
       p e.backtrace.to_s
-      if reopen_registry_socket == true
+      if !reopen_registry_socket
         retry_count += 1
         if retry_count > @retry_count_limit
-          @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts'
-          p @last_error
+          log_error_mesg('Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + 'After ' + retry_count.to_s + ' Attempts', request_hash)
           return send_request_failed(command, request_hash)
         end
         retry
@@ -210,27 +195,21 @@ class NetworkSystemRegistry
     }
     return result_hash
   rescue Timeout::Error
-    @last_error = 'Timeout waiting for reply.. retried  ' + retry_count.to_s + ' Times'
+    log_error_mesg('Timeout waiting for reply.. retried  ' + retry_count.to_s + ' Times', request_hash)
     return send_request_failed(command, request_hash)
   end
 
   def reopen_registry_socket
-    @registry_socket.close if @registry_socket.is_a?(TCPSocket) == true
+    @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
       if @registry_socket.is_a?(String)
-        if force_registry_restart == false
-          p :failed_forced_registry_restart
-          return false
-        end
+        return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
         @registry_socket = open_socket(registry_server_ip, @port)
-        if @registry_socket.is_a?(String)
-          p :failed_connection_after_forced_registry_restart
-          return false
-        end
+        return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
       end
       return true
     rescue StandardError => e
-      @last_error = 'Failed to Reopen Connection to ' + registry_server_ip.to_s + ':' + @port.to_s + e.to_s
+     log_exception(e)
       return false
   end
 
@@ -245,8 +224,7 @@ class NetworkSystemRegistry
       socket = TCPSocket.new(host, port)
       return socket
     rescue StandardError => e
-      @last_error = 'Failed to open Connection to ' + host.to_s + ':' + port.to_s + e.to_s
-      p @last_error
+      log_exception(e)
     end
   end
 end

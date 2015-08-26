@@ -1,6 +1,5 @@
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
-require '/opt/engines/lib/ruby/system/dnshosting.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
@@ -8,12 +7,13 @@ require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
-require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
-require_relative 'api_base.rb'
+require_relative 'errors_api.rb'
 
-class EnginesCore < ApiBase
-  
+class EnginesCore < ErrorsApi
+  require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
+  require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
+  require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'container_api.rb'
   require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
@@ -22,14 +22,22 @@ class EnginesCore < ApiBase
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @system_preferences = SystemPreferences.new
-    @last_error = ''
+    @system_preferences = SystemPreferences.new    
+    @registry_handler.start
   end
 
-  attr_reader :last_error, :container_api, :service_api
-
+  attr_reader  :container_api, :service_api
+  
+  def get_registry_ip
+    @registry_handler.get_registry_ip
+  end
+  def force_registry_restart
+    @registry_handler.force_registry_restart
+  end
+  
   def software_service_definition(params)
     clear_error
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
@@ -222,59 +230,7 @@ class EnginesCore < ApiBase
     return @service_manager
   end
 
-  def force_registry_restart
-    # start in thread in case timeout clobbers
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    # FIXME: need to panic if cannot load
-    restart_thread = Thread.new {
-      registry_service.stop_container
-      registry_service.start_container
-      while registry_service.is_startup_complete? == false
-        sleep 1
-        wait += 1
-        return force_registry_recreate if wait > 120
-      end
-    }
-    restart_thread.join
-    return true
-  end
-
-  def force_registry_recreate
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    if registry_service.forced_recreate == false
-      @last_error = 'Fatal Unable to Start Registry Service: ' + registry_service.last_error
-      return false
-    end
-    return true
-  end
-
-  def get_registry_ip
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    case registry_service.read_state
-    when 'nocontainer'
-      registry_service.create_container
-    when 'paused'
-      registry_service.unpause_container
-    when 'stopped'
-      registry_service.start_container
-    end
-    if registry_service.read_state != 'running'
-      if registry_service.forced_recreate == false
-        @last_error = 'Fatal Unable to Start Registry Service: ' + registry_service.last_error
-        return nil
-      end
-    end
-    wait = 0
-    while registry_service.is_startup_complete? == false
-      sleep 1
-      wait += 1
-      break if wait > 120
-    end
-    return registry_service.get_ip_str
-  rescue StandardError => e
-    @last_error= 'Fatal Unable to Start Registry Service: ' + e.to_s
-    log_exception(e)
-  end
+  
 
   def match_orphan_service(service_hash)
     res =  check_sm_result(service_manager.retrieve_orphan(service_hash))

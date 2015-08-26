@@ -1,19 +1,19 @@
 require_relative 'network_system_registry.rb'
 
-class SystemRegistry
-  attr_accessor :last_error
+class SystemRegistry < ErrorsApi
+
   def initialize(core_api)
     @network_registry = NetworkSystemRegistry.new(core_api)
   end
 
   def test_result(request_result_hash)
     clear_error
-    if request_result_hash.nil? == true || request_result_hash == false
+    if request_result_hash.nil? || !request_result_hash
       @last_error = @network_registry.last_error
       return request_result_hash
     end
     if request_result_hash[:result] == 'OK'
-      p request_result_hash[:object].class.name
+      # p request_result_hash[:object].class.name
       return request_result_hash[:object]
     end
     @last_error = request_result_hash[:error].to_s + ':' + @network_registry.last_error.to_s
@@ -137,7 +137,6 @@ class SystemRegistry
   # returns nil on failure
   def list_providers_in_use
     res = send_request('list_providers_in_use', nil)
-    p res.to_s
     test_result(send_request('list_providers_in_use', nil))
   end
 
@@ -160,10 +159,6 @@ class SystemRegistry
 
   def managed_engines_registry
     test_result(send_request('managed_engines_registry', nil))
-  end
-
-  def clear_error
-    @last_error = ''
   end
 
   private

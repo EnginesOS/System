@@ -1,4 +1,4 @@
-class DockerApi < ApiBase
+class DockerApi < ErrorsApi
 
   def create_container(container)
     clear_error

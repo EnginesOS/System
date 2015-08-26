@@ -1,4 +1,4 @@
-class ContainerApi < ApiBase
+class ContainerApi < ErrorsApi
   def initialize(docker_api,system_api,engines_core)
    @docker_api = docker_api
    @system_api = system_api
@@ -153,10 +153,10 @@ class ContainerApi < ApiBase
         if !service.is_running?
           if service.has_container?
             if service.is_active? 
-              return log_err_mesg('Failed to unpause ', service_name) if !service.unpause_container
-              return log_err_mesg('Failed to start ', service_name) if !service.start_container
+              return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
+              return log_error_mesg('Failed to start ', service_name) if !service.start_container
             end
-            return log_err_mesg('Failed to create ', service_name) if !service.create_container
+            return log_error_mesg('Failed to create ', service_name) if !service.create_container
             @last_error = 'Failed to create ' + service_name
           end
         end

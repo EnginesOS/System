@@ -1,5 +1,5 @@
-class SystemApi < ApiBase
-  attr_reader :last_error
+class SystemApi < ErrorsApi
+
   def initialize(api)
     @engines_api = api
   end
