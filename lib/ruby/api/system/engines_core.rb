@@ -803,15 +803,15 @@ class EnginesCore < ApiBase
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-  #Called by Managed Containers
-  def register_non_persistant_service(service_hash)
-    check_sm_result(service_manager.register_non_persistant_service(service_hash))
-  end
-
-  #Called by Managed Containers
-  def deregister_non_persistant_service(service_hash)
-    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
-  end
+#  #Called by Managed Containers
+#  def register_non_persistant_service(service_hash)
+#    check_sm_result(service_manager.register_non_persistant_service(service_hash))
+#  end
+#
+#  #Called by Managed Containers
+#  def deregister_non_persistant_service(service_hash)
+#    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
+#  end
 
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]

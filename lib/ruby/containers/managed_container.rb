@@ -346,7 +346,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Can\'t Start Container as ' + state
     end
-    register_with_dns
+    #register_with_dns
     @container_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state
@@ -441,9 +441,8 @@ class ManagedContainer < Container
     return statistics
   end
 
-  def running_user
-    return -1 if !is_running?  
-    return false if inspect_container == false      
+  def running_user    
+    return -1 if inspect_container == false      
     output = JSON.parse(@last_result)
     user = output[0]['Config']['User']
     return user
@@ -489,7 +488,7 @@ class ManagedContainer < Container
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
-      register_with_dns
+      #register_with_dns
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
