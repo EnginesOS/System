@@ -22,11 +22,12 @@ class EnginesCore < ApiBase
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
+    @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @system_preferences = SystemPreferences.new
     @last_error = ''
   end
 
-  attr_reader :last_error, :container_api
+  attr_reader :last_error, :container_api, :service_api
 
   def software_service_definition(params)
     clear_error
