@@ -548,6 +548,14 @@ def expire_engine_info
   @docker_info = nil
 end
 
+def get_container_memory_stats()
+return @container_api.get_container_memory_stats(self)
+end
+
+def get_container_network_metrics()
+    @container_api.get_container_network_metrics(self)
+  end
+  
   protected
 
   def has_api?
