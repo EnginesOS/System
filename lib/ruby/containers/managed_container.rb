@@ -416,6 +416,7 @@ class ManagedContainer < Container
     expire_engine_info
     return false if inspect_container == false
     output = JSON.parse(last_result)
+    return false if !output.is_a?(Array) || !output[0].is_a?(Hash)
     started = output[0]['State']['StartedAt']
     stopped = output[0]['State']['FinishedAt']
     state = read_state
