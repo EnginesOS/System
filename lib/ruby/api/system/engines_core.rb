@@ -184,6 +184,11 @@ class EnginesCore < ApiBase
       return 'container' #FIXME poor assumption
     end
   end
+  
+  def get_container_services_dir(container)
+      test_system_api_result(@system_api.container_state_dir(container)) + '/services/'
+    end
+
 
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
@@ -738,25 +743,6 @@ class EnginesCore < ApiBase
   end
 
 
-
-  def load_and_attach_persistant_services(container)
-    dirname = get_container_services_dir(container) + '/pre/'
-    service_manager.load_and_attach_services(dirname, container )
-  end
-
-  def load_and_attach_shared_services(container)
-    dirname = get_container_services_dir(container) + '/shared/'
-    service_manager.load_and_attach_services(dirname, container)
-  end
-
-  def load_and_attach_nonpersistant_services(container)
-    dirname = get_container_services_dir(container) + '/post/'
-    service_manager.load_and_attach_services(dirname, container)
-  end
-
-  def get_container_services_dir(container)
-    test_system_api_result(@system_api.container_state_dir(container)) + '/services/'
-  end
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
