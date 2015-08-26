@@ -73,8 +73,6 @@ class EnginesCore < ApiBase
   end
 
 
-
-
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
   end
@@ -194,23 +192,11 @@ class EnginesCore < ApiBase
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    if service_hash.nil?
-      log_error_mesg('Attach Service passed a nil','')
-      return false
-    elsif service_hash.is_a?(Hash) == false
-      log_error_mesg('Attached Service passed a non Hash', service_hash)
-      return false
-    end
-    if service_hash.key?(:variables) == false
-      log_error_mesg('Attached Service passed no variables', service_hash)
-      return false
-    end
-    if service_manager.add_service(service_hash)
-      return check_sm_result(service_manager.add_service(service_hash))
-    else
-      log_error_mesg('register failed', service_hash)
-    end
-    return false
+   return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
+   return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
+   return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
+   return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
+   return true
   rescue StandardError => e
     log_exception(e)
   end
@@ -412,16 +398,12 @@ class EnginesCore < ApiBase
       service = loadManagedService(service_param[:service_name])
       if service.nil? == false && service != false
         retval =  service.retrieve_configurator(service_param)
-        if retval.is_a?(Hash) == false
-          return false
-        end
+        return false if !retval.is_a?(Hash)
       else
-        @last_error = 'No Service'
-        return false
+        return log_error_mesg('No Service',service_param)
       end
     end
-    @last_error = retval[:stderr]
-    return retval
+    return false
   end
 
   def update_service_configuration(service_param)
@@ -487,14 +469,10 @@ class EnginesCore < ApiBase
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-          if service_dir_entry.start_with?('.')
-            next
-          end
+          next if service_dir_entry.start_with?('.')          
           if service_dir_entry.end_with?('.yaml')
             service = load_service_definition(dir + '/' + service_dir_entry)
-            if service.nil? == false
-              avail_services.push(service.to_h)
-            end
+            avail_services.push(service.to_h) if !service.nil?
           end
         rescue StandardError => e
           log_exception(e)
@@ -558,17 +536,14 @@ class EnginesCore < ApiBase
         # new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
           if  env.name == new_env_name
-            if env.immutable == true
-              @last_error = 'Cannot Change Value of ' + env.name
-              return false
-            end
+             return log_error_mesg('Cannot Change Value of',env) if env.immutable
             env.value = new_env_value
           end
           # end
         end
       end
     end
-    if engine.has_container? == true
+    if engine.has_container?
       return log_error_mesg(engine.last_error,engine) if engine.destroy_container == false      
     end
     return log_error_mesg(engine.last_error,engine) if engine.create_container == false
@@ -648,8 +623,6 @@ class EnginesCore < ApiBase
   def list_managed_services
     test_system_api_result(@system_api.list_managed_services)
   end
-
-
 
   def generate_engines_user_ssh_key
     test_system_api_result(@system_api.regen_system_ssh_key)
