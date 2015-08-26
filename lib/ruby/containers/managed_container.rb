@@ -462,7 +462,7 @@ class ManagedContainer < Container
      result = @core_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
      @docker_info = @last_result  
-     Thread.new { sleep 2 ; expire_engine_info }    
+     Thread.new { sleep 3 ; expire_engine_info }    
     return docker_info
   end
   
