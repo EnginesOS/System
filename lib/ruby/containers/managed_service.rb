@@ -38,7 +38,7 @@ class ManagedService < ManagedContainer
     service_hash = get_service_hash(object)
    return log_error_mesg('add consumer passed nil service_hash ','') if service_hash.nil?
     service_hash[:persistant] = @persistant
-    if is_running? == true || @persistant == true
+    if @persistant == true || is_running? 
       if service_hash[:fresh] == false
         result = true
       else
@@ -57,8 +57,8 @@ class ManagedService < ManagedContainer
     # if has no / then local image
     # return false
     #   
-    return @core_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
-    return @core_api.pull_image(image) if image.include?('/')
+    return @container_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
+    return @container_api.pull_image(image) if image.include?('/')
     return false
   end
   
@@ -91,20 +91,20 @@ class ManagedService < ManagedContainer
   def remove_consumer(service_hash)
     service_hash = get_service_hash(service_hash)
     return log_error_mesg('remove consumer nil service hash ', '') if service_hash == nil
-    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) if is_running? != true
+    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) if !is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
-    return rm_consumer_from_service(service_hash) if @persistant == true && service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data] == true
+    return rm_consumer_from_service(service_hash) if @persistant && service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
     return false
   end
 
   def service_manager
-    return @core_api.loadServiceManager()
+    return @container_api.service_manager
   end
 
   def create_service()
     SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' +container_name)
-    envs = @core_api.load_and_attach_persistant_services(self)
-    shared_envs = @core_api.load_and_attach_shared_services(self)
+    envs = @container_api.load_and_attach_persistant_services(self)
+    shared_envs = @container_api.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
       if envs.is_a?(Array) == false
         envs = shared_envs
@@ -112,8 +112,8 @@ class ManagedService < ManagedContainer
         envs.concat(shared_envs)
       end
     end
-    if envs.is_a?(Array) == true
-      if@environments.is_a?(Array) == true
+    if envs.is_a?(Array)
+      if@environments.is_a?(Array)
         SystemUtils.debug_output( :envs, @environments)
         @environments.concat(envs)
         @environments.uniq! #FIXME as new values dont replace old only duplicates values
@@ -122,7 +122,7 @@ class ManagedService < ManagedContainer
       end
     end
     @setState='running'
-    if create_container() == true
+    if create_container
       #start with configurations
       #save haere are below call inspect
       save_state()
@@ -132,12 +132,12 @@ class ManagedService < ManagedContainer
           run_configurator(configuration)
         end
       end
-      register_with_dns()
+      register_with_dns
       p :service_non_persis
-      @core_api.load_and_attach_nonpersistant_services(self)
+      @container_api.load_and_attach_nonpersistant_services(self)
       p :register_non_persis
-      @core_api.register_non_persistant_services(self)
-      reregister_consumers()
+      @container_api.register_non_persistant_services(self)
+      reregister_consumers
       return true
     else
       save_state()
@@ -147,8 +147,8 @@ class ManagedService < ManagedContainer
 
   def recreate
     @setState = 'running'
-    if  destroy_container() == true
-      return true if create_service() == true
+    if  destroy_container
+      return true if create_service
       save_state()
       return log_error_mesg('Failed to create service in recreate',self)
     else
@@ -161,7 +161,7 @@ class ManagedService < ManagedContainer
     params = {}
     params[:publisher_namespace] = @publisher_namespace
     params[:type_path] = @type_path
-    @core_api.get_registered_against_service(params)
+    @container_api.get_registered_against_service(params)
   end
 
   def reregister_consumers
@@ -219,19 +219,13 @@ class ManagedService < ManagedContainer
       return true
     end
   
-    def   rm_consumer_from_service(service_hash)
-      if is_running? == false
-        log_error_mesg('service not running ',service_hash)
-        return false
-      end
-      if check_cont_uid == false
-        log_error_mesg('No uid service not running ',service_hash)
-        return false
-      end
-      cmd = 'docker exec -u ' + @cont_userid + ' ' +  @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
+    def rm_consumer_from_service(service_hash)
+     # no need as checl_cont_id also check so save a sec return log_error_mesg('service not running ', service_hash) if is_running? == false
+      return log_error_mesg('No uid service not running ', service_hash) if check_cont_uid == false
+      cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
       result = SystemUtils.execute_command(cmd)
       return true  if result[:result] == 0
-      log_error_mesg('Failed rm_consumer_from_service',result)
+      log_error_mesg('Failed rm_consumer_from_service', result)
       #return  SystemUtils.run_system(cmd)
     end
 

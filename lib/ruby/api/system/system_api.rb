@@ -1,4 +1,4 @@
-class SystemApi
+class SystemApi < ApiBase
   attr_reader :last_error
   def initialize(api)
     @engines_api = api
@@ -86,11 +86,11 @@ class SystemApi
       return true
     else
       container.last_error = 'Failed to Delete state and logs:' + retval.to_s
-      SystemUtils.log_error_mesg('Failed to Delete state and logs:' + retval.to_s, container)
+      log_error_mesg('Failed to Delete state and logs:' + retval.to_s, container)
     end
   rescue StandardError => e
     container.last_error = 'Failed To Delete '
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   #  def get_cert_name(fqdn)
@@ -124,15 +124,15 @@ class SystemApi
   def save_container(container)
     clear_error
     # FIXME:
-    api = container.core_api
-    container.core_api = nil
+    api = container.container_api
+    container.container_api = nil
     last_result = container.last_result
     last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
     container.last_error = ''
     serialized_object = YAML::dump(container)
-    container.core_api = api
+    container.container_api = api
     container.last_result = last_result
     container.last_error = last_error
     stateDir = container_state_dir(container)
@@ -272,7 +272,7 @@ class SystemApi
         if managed_engine.is_a?(ManagedEngine)
           ret_val.push(managed_engine)
         else
-          log_error('failed to load ' + yfn)
+          log_error_mesg('failed to load ', yfn)
         end
       end
     end
@@ -288,29 +288,29 @@ class SystemApi
     end
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     if File.exist?(yam_file_name) == false
-      log_error('no such file ' + yam_file_name)
+      log_error_mesg('no such file ', yam_file_name)
       return false # return failed(yam_file_name,'No such configuration:','Load Engine')
     end
     yaml_file = File.read(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
     return managed_engine
   rescue StandardError => e
     if engine_name.nil? == false
       if managed_engine.nil? == false
         managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
-        log_error(managed_engine.last_error)
+        log_error_mesg(managed_engine.last_error,e)
       end
     else
-      log_error('nil Engine Name')
+      log_error_mesg('nil Engine Name',engine_name)
     end
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def build_running_service(service_name, service_type_dir)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
     if File.exist?(config_template_file_name) == false
-      log_error('Running exits')
+      log_error_mesg('Running exits',service_name)
       return false
     end
     config_template = File.read(config_template_file_name)
@@ -340,20 +340,20 @@ class SystemApi
     yam1_file_name = service_type_dir + service_name + '/running.yaml'
     if File.exist?(yam1_file_name) == false
       if build_running_service(service_name, service_type_dir) == false
-        log_error('No build_running_service file ' + service_type_dir + '/' + service_name.to_s)
+        log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s)
         return false # return failed(yam_file_name,'No such configuration:','Load Service')
       end
     end
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
     if service_type_dir == '/sytem_services/'
-      managed_service = SystemService.from_yaml(yaml_file, @engines_api)
+      managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api)
     else
-      managed_service = ManagedService.from_yaml(yaml_file, @engines_api)
+      managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     end
     if managed_service.nil?
       p :load_managed_servic_failed
-      log_error('load_managed_servic_failed loading:' + yam1_file_name.to_s + ' service name: ' + service_name.to_s)
+      log_error_mesg('load_managed_servic_failed loading:', yam1_file_name.to_s + ' service name: ' + service_name.to_s)
       return false # return EnginsOSapiResult.failed(yam_file_name,'Fail to Load configuration:','Load Service')
     end
     return managed_service
@@ -361,12 +361,12 @@ class SystemApi
     if service_name.nil? == false
       if managed_service.nil? == false
         managed_service.last_error = ('Failed To get Managed Engine ' + service_name.to_s + ' ' + e.to_s)
-        log_error(managed_service.last_error)
+        log_exception(e)
       end
     else
-      log_error('nil Service Name')
+      log_error_mesg('nil Service Name',service_name)
     end
-    SystemUtils.log_exception(e)
+   log_exception(e)
   end
 
   def getManagedServices
@@ -381,7 +381,7 @@ class SystemApi
       end
       return ret_val
     rescue StandardError => e
-      SystemUtils.log_exception(e)
+      log_exception(e)
     end
   end
 
@@ -394,7 +394,7 @@ class SystemApi
         ret_val.push(contdir) if File.exist?(yfn) == true
       end
     rescue StandardError => e
-      SystemUtils.log_exception(e)
+      log_exception(e)
       return ret_val
     end
     return ret_val
@@ -409,13 +409,13 @@ class SystemApi
     end
     return ret_val
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return ret_val
   end
 
   def clear_container_var_run(container)
     clear_error
-    File.unlink(dir + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
+    File.unlink(container_state_dir(container) + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -533,7 +533,7 @@ class SystemApi
     return @engines_api.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash) == true
     return false
   rescue StandardError => e
-    log_error('Add self hosted domain exception' + params.to_s)
+    log_error_mesg('Add self hosted domain exception', params.to_s)
     log_exception(e)
   end
 
@@ -626,17 +626,6 @@ class SystemApi
     end
   end
 
-  def clear_error
-    @last_error = ''
-  end
 
-  def log_exception(e)
-    @last_error = e.to_s + e.backtrace.to_s
-  end
 
-  def log_error(e_str)
-    @last_error = e_str
-    SystemUtils.log_output(e_str, 10)
-    return false
-  end
 end

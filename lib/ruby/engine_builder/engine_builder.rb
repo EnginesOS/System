@@ -656,7 +656,7 @@ class EngineBuilder
     @blueprint_reader.services.each do |service_hash|
       #   service_hash[:parent_engine]=@container_name # do I need this?
       service_def = get_service_def(service_hash)
-      if service_def.nil? == true
+      if service_def.nil?
         p :failed_to_load_service_definition
         p service_hash
         return false
@@ -704,9 +704,7 @@ class EngineBuilder
       # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) == true
         @attached_services.push(service_hash)
-        if free_orphan == true
-          release_orphan(service_hash)
-        end
+        release_orphan(service_hash) if free_orphan == true
       end
       service_cnt += 1
     end
@@ -806,7 +804,7 @@ class EngineBuilder
                             @blueprint_reader.environments,
                             @blueprint_reader.framework,
                             @blueprint_reader.runtime,
-                            @core_api,
+                            @core_api.container_api,
                             @blueprint_reader.data_uid,
                             @blueprint_reader.data_gid,
                             @blueprint_reader.deployment_type
@@ -821,7 +819,7 @@ class EngineBuilder
     #    bp = mc.load_blueprint
     log_build_output('Launching')
     # this will fail as no api at this stage
-    if mc.core_api.nil? == false
+    if mc.container_api.nil? == false
       if launch_deploy(mc) == false
         log_build_errors('Error Failed to Launch')
       end
@@ -934,7 +932,6 @@ rescue Exception => e
   def get_basedir
     return SystemConfig.DeploymentDir + '/' + @build_name
   end
-end
 
 def log_exception_and_fail(cmd, e)
   SystemUtils.log_exception(e)
@@ -947,4 +944,5 @@ def log_exception(e)
   @last_error = @last_error.to_s + e.to_s
 ensure
   SystemUtils.log_exception(e)
+end
 end

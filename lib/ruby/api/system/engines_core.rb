@@ -3,27 +3,32 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 require '/opt/engines/lib/ruby/system/dnshosting.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
-require '/opt/engines/lib/ruby/managed_services/managed_service.rb'
-require '/opt/engines/lib/ruby/managed_services/system_service.rb'
+require '/opt/engines/lib/ruby/containers/managed_service.rb'
+require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
+require_relative 'api_base.rb'
 
-class EnginesCore
-
+class EnginesCore < ApiBase
+  
+  require_relative 'container_api.rb'
+  require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'system_preferences.rb'
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @container_api = ContainerApi.new(@docker_api, @system_api, self)
+    @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @system_preferences = SystemPreferences.new
     @last_error = ''
   end
 
-  attr_reader :last_error
+  attr_reader :last_error, :container_api, :service_api
 
   def software_service_definition(params)
     clear_error
@@ -67,40 +72,8 @@ class EnginesCore
     test_docker_api_result(@docker_api.signal_container_process(pid, sig, container))
   end
 
-  def start_container(container)
-    clear_error
-    start_dependancies(container) if container.dependant_on.is_a?(Array)
-    test_docker_api_result(@docker_api.start_container(container))
-  end
 
-  def inspect_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.inspect_container(container))
-  end
 
-  def stop_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.stop_container(container))
-  end
-
-  def pause_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.pause_container(container))
-  end
-
-  def unpause_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.unpause_container(container))
-  end
-
-  def ps_container(container)
-    test_docker_api_result(@docker_api.ps_container(container))
-  end
-
-  def logs_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.logs_container(container))
-  end
 
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
@@ -122,17 +95,7 @@ class EnginesCore
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-  def save_container(container)
-    test_system_api_result(@system_api.save_container(container))
-  end
 
-  def save_blueprint(blueprint,container)
-    test_system_api_result(@system_api.save_blueprint(blueprint,container))
-  end
-
-  def load_blueprint(container)
-    test_system_api_result(@system_api.load_blueprint(container))
-  end
 
   #  def add_volume(site_hash)
   #    return test_system_api_result(@system_api.add_volume(site_hash))
@@ -142,13 +105,7 @@ class EnginesCore
   #    return test_system_api_result(@system_api.rm_volume(site_hash))
   #  end
 
-  def get_container_memory_stats(container)
-    test_system_api_result(@system_api.get_container_memory_stats(container))
-  end
 
-  def get_container_network_metrics(container)
-    test_system_api_result(@system_api.get_container_network_metrics(container))
-  end
 
   def image_exist?(container_name)
     test_docker_api_result(@docker_api.image_exist?(container_name))
@@ -227,6 +184,11 @@ class EnginesCore
       return 'container' #FIXME poor assumption
     end
   end
+  
+  def container_state_dir(container)
+      test_system_api_result(@system_api.container_state_dir(container))
+    end
+
 
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
@@ -356,6 +318,7 @@ class EnginesCore
   end
 
   def web_sites_for(container)
+    clear_error
     urls = []
     params = {}
     params[:parent_engine] = container.container_name
@@ -524,7 +487,7 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-          if service_dir_entry.start_with?('.') == true
+          if service_dir_entry.start_with?('.')
             next
           end
           if service_dir_entry.end_with?('.yaml')
@@ -568,7 +531,7 @@ class EnginesCore
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(EnginesOSapiResult) == true
+    if engine.is_a?(EnginesOSapiResult)
       @last_error = engine.result_mesg
       return false
     end
@@ -606,7 +569,7 @@ class EnginesCore
       end
     end
     if engine.has_container? == true
-      return log_error_mesg(engine.last_error,engine) if destroy_container(engine) == false      
+      return log_error_mesg(engine.last_error,engine) if engine.destroy_container == false      
     end
     return log_error_mesg(engine.last_error,engine) if engine.create_container == false
     return true
@@ -638,6 +601,14 @@ class EnginesCore
     test_system_api_result(@system_api.getManagedEngines)
   end
 
+  def get_container_network_metrics(engine_name)
+    engine = test_system_api_result(@system_api.loadManagedEngine(engine_name))
+      return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
+    engine = test_system_api_result(@system_api.loadManagedService(engine_name))
+    return engine.get_container_network_metrics if engine.is_a?(ManagedService)
+    log_error_mesg("Failed to load network stats",engine_name)            
+  end
+  
   def loadManagedEngine(engine_name)
     test_system_api_result(@system_api.loadManagedEngine(engine_name))
   end
@@ -678,21 +649,7 @@ class EnginesCore
     test_system_api_result(@system_api.list_managed_services)
   end
 
-  def destroy_container(container)
-    clear_error
-    if container.has_container? == true
-      ret_val = test_docker_api_result(@docker_api.destroy_container(container))
-    else
-      ret_val = true
-    end
-    if ret_val == true
-      ret_val = test_docker_api_result(@system_api.destroy_container(container))  #removes cid file
-    end
-    return ret_val
-  rescue StandardError => e
-    container.last_error = 'Failed To Destroy ' + e.to_s
-    log_exception(e)
-  end
+
 
   def generate_engines_user_ssh_key
     test_system_api_result(@system_api.regen_system_ssh_key)
@@ -785,38 +742,7 @@ class EnginesCore
     log_exception(e)
   end
 
-  def create_container(container)
-    clear_error
-    return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
-    test_system_api_result(@system_api.clear_cid_file(container))
-    test_system_api_result(@system_api.clear_container_var_run(container))
-    start_dependancies(container) if container.dependant_on.is_a?(Array)
-    container.pull_image if @ctype != 'container'
-    return test_system_api_result(@system_api.create_container(container)) if test_docker_api_result(@docker_api.create_container(container))
-    return false
-  rescue Exception => e
-    container.last_error = ('Failed To Create ' + e.to_s)
-    log_exception(e)
-  end
 
-  def load_and_attach_persistant_services(container)
-    dirname = get_container_services_dir(container) + '/pre/'
-    service_manager.load_and_attach_services(dirname, container )
-  end
-
-  def load_and_attach_shared_services(container)
-    dirname = get_container_services_dir(container) + '/shared/'
-    service_manager.load_and_attach_services(dirname, container)
-  end
-
-  def load_and_attach_nonpersistant_services(container)
-    dirname = get_container_services_dir(container) + '/post/'
-    service_manager.load_and_attach_services(dirname, container)
-  end
-
-  def get_container_services_dir(container)
-    test_system_api_result(@system_api.container_state_dir(container)) + '/services/'
-  end
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -850,24 +776,7 @@ class EnginesCore
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
   #  end
 
-  def is_startup_complete(container)
-    clear_error
-    return test_system_api_result(@system_api.is_startup_complete(container))
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-  def log_error_mesg(msg,object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = @last_error.to_s + ':' + msg +':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-  end
-
-  def log_exception(e)
-    @last_error = @last_error.to_s + e.to_s
-    p @last_error + e.backtrace.to_s
-    return false
-  end
+ 
 
   def force_reregister_attached_service(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
@@ -881,25 +790,16 @@ class EnginesCore
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-  #Called by Managed Containers
-  def register_non_persistant_service(service_hash)
-    check_sm_result(service_manager.register_non_persistant_service(service_hash))
-  end
+#  #Called by Managed Containers
+#  def register_non_persistant_service(service_hash)
+#    check_sm_result(service_manager.register_non_persistant_service(service_hash))
+#  end
+#
+#  #Called by Managed Containers
+#  def deregister_non_persistant_service(service_hash)
+#    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
+#  end
 
-  #Called by Managed Containers
-  def deregister_non_persistant_service(service_hash)
-    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
-  end
-
-  #Called by Managed Containers
-  def register_non_persistant_services(engine)
-    check_sm_result(service_manager.register_non_persistant_services(engine))
-  end
-
-  #Called by Managed Containers
-  def deregister_non_persistant_services(engine)
-    check_sm_result(service_manager.deregister_non_persistant_services(engine))
-  end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
@@ -954,25 +854,9 @@ class EnginesCore
     File.exist?(completed_flag_file)
   end
 
-  def check_system_api_result(result)
-    @last_error = @system_api.last_error.to_s[0, 128] if result.nil? || result == false
-    return result
-  end
-
   def check_sm_result(result)
-    @last_error += service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
+    @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
-  end
-
-  def delete_image(container)
-    clear_error
-    return  test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.delete_image(container)) == true
-    # only delete if del all otherwise backup
-    #N O Image well delete the rest
-    test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
-    return true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   protected
@@ -995,9 +879,7 @@ class EnginesCore
     log_exception(e)
   end
 
-  def clear_error
-    @last_error = ''
-  end
+
 
   # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
   # :path_type :publisher_namespace

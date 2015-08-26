@@ -8,7 +8,7 @@ require_relative 'first_run_wizard.rb'
 class EnginesOSapi
   require_relative 'build_controller.rb'
 
-  attr_reader :core_api
+  attr_reader :core_api, :last_error
 
   require_relative 'engines_api_version.rb'
   include EngOSapiVersion
@@ -320,7 +320,7 @@ class EnginesOSapi
     if mengine.is_a?(EnginesOSapiResult)
       return failed(engine_name, 'no Engine', 'Get Engine Memory Statistics')
     end
-    retval = mengine.get_container_memory_stats(@core_api)
+    retval = mengine.get_container_memory_stats
     return retval
   rescue StandardError => e
     return log_exception_and_fail('Get Engine Memory Statistics', e)
@@ -331,7 +331,7 @@ class EnginesOSapi
     if mservice.is_a?(EnginesOSapiResult)
       return failed(service_name, 'no Engine', 'Get Service Memory Statistics')
     end
-    retval = mservice.get_container_memory_stats(@core_api)
+    retval = mservice.get_container_memory_stats
     return retval
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)

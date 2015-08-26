@@ -303,7 +303,8 @@ class DockerFileBuilder
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
       @docker_file.puts('')
-      @docker_file.puts('RUN cat ' + src_file + ' | sed \'' + sed_str + '\' > ' + tmp_file + ' ;\\')
+      @docker_file.puts('RUN cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + ' ;\\')
+      
       @docker_file.puts('     cp ' + tmp_file + ' ' + dest_file)
       count_layer
       n += 1
@@ -495,18 +496,18 @@ class DockerFileBuilder
       if directory.nil? == false
         @docker_file.puts('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
         @docker_file.puts('    then \\')
-        @docker_file.puts('    dest=`ls -la /home/app/' + directory + ' |cut -f2 -d\'>\'`;\\')
+        @docker_file.puts('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
         @docker_file.puts('    chmod -R gu+rw $dest;\\')
         @docker_file.puts('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
         @docker_file.puts('    then \\')
-        @docker_file.puts('       mkdir  -p \'/home/app/' + directory + '\';\\')
-        @docker_file.puts( '      chown $data_uid  \'/home/app/' + directory + '\';\\')
-        @docker_file.puts('       chmod -R gu+rw \'/home/app/' + directory + '\';\\')
+        @docker_file.puts("       mkdir  -p \'/home/app/" + directory + "\';\\")
+        @docker_file.puts("      chown $data_uid  \'/home/app/" + directory + "\';\\")
+        @docker_file.puts("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
         @docker_file.puts('  else\\')
-        @docker_file.puts('   chmod -R gu+rw \'/home/app/' + directory + '\';\\')
+        @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\';\\")
         @docker_file.puts('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
         @docker_file.puts('       do\\')
-        @docker_file.puts('           adir=`echo $dir | sed \'/ /s//_+_/\' |grep -v _+_` ;\\')
+        @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
         @docker_file.puts('            if test -n $adir;\\')
         @docker_file.puts('                then\\')
         @docker_file.puts('                      dirs=`echo $dirs $adir`;\\')

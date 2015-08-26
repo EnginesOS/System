@@ -58,12 +58,12 @@ class NetworkSystemRegistry
       message_response, mesg_len = process_first_chunk(mesg_data)
       first_bytes = false
     end
-    p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
+   # p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
     while message_response.size < mesg_len
       begin
         mesg_data = @registry_socket.read_nonblock(32768)
         message_response += mesg_data
-        p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
+     #   p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
       rescue IO::EAGAINWaitReadable
         retry
       rescue EOFError
@@ -76,7 +76,7 @@ class NetworkSystemRegistry
       end
     end
     return nil if message_response.nil? == true
-    p 'read ' + message_response.size.to_s + ' Bytes'
+   # p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML::load(message_response)
     if response_hash[:object].nil? == false
       response_hash[:object] = YAML::load(response_hash[:object])

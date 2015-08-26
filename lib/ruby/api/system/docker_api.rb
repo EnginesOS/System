@@ -1,5 +1,5 @@
-class DockerApi
-  attr_reader :last_error
+class DockerApi < ApiBase
+
   def create_container(container)
     clear_error
     commandargs = container_commandline_args(container)
@@ -8,7 +8,7 @@ class DockerApi
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def start_container(container)
@@ -16,7 +16,7 @@ class DockerApi
     commandargs = 'docker start ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def stop_container(container)
@@ -24,7 +24,7 @@ class DockerApi
     commandargs = 'docker stop ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def pause_container(container)
@@ -32,7 +32,7 @@ class DockerApi
     commandargs = 'docker pause ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def pull_image(image_name)
@@ -49,7 +49,7 @@ class DockerApi
     @last_error += ':' + result[:stderr].to_s
     return true
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   #  def image_exist?(image_name)
@@ -69,7 +69,7 @@ class DockerApi
   #        end
   #
   #         rescue  StandardError => e
-  #                SystemUtils.log_exception(e)
+  #                log_exception(e)
   #                return false
   #  end
   #
@@ -83,7 +83,7 @@ class DockerApi
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def unpause_container(container)
@@ -91,7 +91,7 @@ class DockerApi
     commandargs = 'docker unpause ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def ps_container(container)
@@ -100,7 +100,7 @@ class DockerApi
     return result[:stdout] if result[:result] == 0
     return false
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def execute_docker_cmd(cmdline, container)
@@ -119,11 +119,11 @@ class DockerApi
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
       return true
     else
-      SystemUtils.log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
+      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
       return false
     end
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def signal_container_process(pid, signal, container)
@@ -131,7 +131,7 @@ class DockerApi
     commandargs = 'docker exec ' + container.container_name + ' kill -' + signal + ' ' + pid.to_s
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def logs_container(container)
@@ -141,7 +141,7 @@ class DockerApi
     return result[:stdout] if result[:result] == 0
     return false
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return 'error'
   end
 
@@ -150,7 +150,7 @@ class DockerApi
     commandargs = ' docker inspect ' + container.container_name
     return execute_docker_cmd(commandargs, container)
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def destroy_container(container)
@@ -164,7 +164,7 @@ class DockerApi
     return true
   rescue StandardError => e
     container.last_error = 'Failed To Destroy ' + e.to_s
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def delete_image(container)
@@ -175,7 +175,7 @@ class DockerApi
     return ret_val
   rescue StandardError => e
     container.last_error = ('Failed To Delete ' + e.to_s)
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def docker_exec(container, command, args)
@@ -199,7 +199,7 @@ class DockerApi
     end
     return e_option
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return e.to_s
   end
 
@@ -220,7 +220,7 @@ class DockerApi
     end
     return eportoption
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return e.to_s
   end
 
@@ -248,7 +248,7 @@ class DockerApi
     start_cmd
     return commandargs
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
     return e.to_s
   end
 
@@ -283,7 +283,7 @@ class DockerApi
     end
     return volume_option
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def service_sshkey_local_dir(container)
@@ -313,12 +313,12 @@ class DockerApi
     end
     return container_logdetails
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+    log_exception(e)
   end
 
   def clean_up_dangling_images
     cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
-    SystemUtils.execute_command(cmd)
+    Thread.new { SystemUtils.execute_command(cmd) }
     return true # often warning not error
   end
 
@@ -332,13 +332,4 @@ class DockerApi
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
 
-  def clear_error
-    @last_error = ''
-  end
-
-  def log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-  end
 end
