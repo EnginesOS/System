@@ -6,6 +6,10 @@ class ContainerApi
     
  end
  
+  def web_sites(container)
+    @engines_core.web_sites_for(container)
+  end
+  
    def get_container_memory_stats(container)
      test_system_api_result(@system_api.get_container_memory_stats(container))
    end
