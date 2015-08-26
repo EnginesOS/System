@@ -821,7 +821,7 @@ class EngineBuilder
     #    bp = mc.load_blueprint
     log_build_output('Launching')
     # this will fail as no api at this stage
-    if mc.core_api.nil? == false
+    if mc.container_api.nil? == false
       if launch_deploy(mc) == false
         log_build_errors('Error Failed to Launch')
       end
