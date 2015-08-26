@@ -320,7 +320,7 @@ class EnginesOSapi
     if mengine.is_a?(EnginesOSapiResult)
       return failed(engine_name, 'no Engine', 'Get Engine Memory Statistics')
     end
-    retval = mengine.get_container_memory_stats(@core_api)
+    retval = mengine.get_container_memory_stats
     return retval
   rescue StandardError => e
     return log_exception_and_fail('Get Engine Memory Statistics', e)

@@ -15,7 +15,7 @@ class ContainerApi < ApiBase
    end
  
    def get_container_network_metrics(container)
-     test_system_api_result(@system_api.get_container_network_metrics(container))
+     test_system_api_result(@system_api.get_container_network_metrics(container.container_name))
    end
    
    def unpause_container(container)
