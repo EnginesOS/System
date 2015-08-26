@@ -10,6 +10,7 @@ require '/opt/engines/lib/ruby/managed_services/service_definitions/software_ser
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
+require_relative 'api_base.rb'
 
 class EnginesCore < ApiBase
   
