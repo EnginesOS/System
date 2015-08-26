@@ -544,21 +544,21 @@ class EnginesCore < ApiBase
       end
     end
     if engine.has_container?
-      return log_error_mesg(engine.last_error,engine) if engine.destroy_container == false      
+      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container      
     end
-    return log_error_mesg(engine.last_error,engine) if engine.create_container == false
+    return log_error_mesg(engine.last_error,engine) if !engine.create_container
     return true
   rescue StandardError => e
     log_exception(e)
   end
 
   def test_docker_api_result(result)
-    @last_error = @docker_api.last_error if result.nil? || result == false
+    @last_error = @docker_api.last_error if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
   def test_system_api_result(result)
-    @last_error = @system_api.last_error.to_s if result.nil? || result == false
+    @last_error = @system_api.last_error.to_s if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
@@ -647,10 +647,10 @@ class EnginesCore < ApiBase
 
   def delete_engine(params)
     params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove engine Services',params) if delete_image_dependancies(params) == false
+    return log_error_mesg('Failed to remove engine Services',params) if !delete_image_dependancies(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(ManagedEngine) == false
+    if !engine.is_a?(ManagedEngine)
       return true if service_manager.remove_engine_from_managed_engines_registry(params) # used in roll back and only works if no engine do mess with this logic
       log_error_mesg('Failed to  find Engine',params)
     end
@@ -677,7 +677,7 @@ class EnginesCore < ApiBase
     SystemUtils.debug_output('run system',res)
     #FIXME should be case insensitive The last one is a pure kludge
     #really need to get stderr and stdout separately
-    return true if $? == 0 && res.downcase.include?('error') == false && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
+    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
     log_error_mesg(cmd.to_s + 'run system result', res.to_s)
   rescue StandardError => e
     log_exception(e)
@@ -685,7 +685,7 @@ class EnginesCore < ApiBase
 
   def run_volume_builder(container,username)
     clear_error
-    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid') == true
+    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
       command = 'docker stop volbuilder'
       run_system(command)
       command = 'docker rm volbuilder'
@@ -706,9 +706,9 @@ class EnginesCore < ApiBase
     end
     #Note no -d so process will not return until setup.sh completes
     command = 'docker rm volbuilder'
-    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid') == true
+    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
     res = run_system(command)
-    SystemUtils.log_error(res) if res != true
+    SystemUtils.log_error(res) if res.is_a?(FalseClass)
     # don't return false as
     return true
   rescue StandardError => e
@@ -784,38 +784,6 @@ class EnginesCore < ApiBase
     test_docker_api_result(@docker_api.clean_up_dangling_images)
   end
 
-  def start_dependancies(container)
-    container.dependant_on.each do |service_name|
-      service = loadManagedService(service_name)
-      return log_error_mesg('Failed to load ', service_name) if service == false
-      if service.is_running? != true
-        if service.has_container? == true
-          if service.is_active? == true
-            if service.unpause_container == false
-              @last_error = 'Failed to unpause ' + service_name
-              return false
-            end
-          elsif service.start_container == false
-            @last_error = 'Failed to start ' + service_name
-            return false
-          end
-        elsif service.create_container == false
-          @last_error = 'Failed to create ' + service_name
-          return false
-        end
-      end
-      retries = 0
-      while has_service_started?(service_name) == false
-        sleep 10
-        retries += 1
-        if retries > 3
-          log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ',service_name)
-          return false
-        end
-      end
-    end
-    return true
-  end
 
   def has_container_started?(container_name)
     completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
@@ -840,7 +808,7 @@ class EnginesCore < ApiBase
     log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
     volume_option = ' -v ' + state_dir + ':/client/state:rw '
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
-    if container.volumes.nil? == false
+    if !container.volumes.nil?
       container.volumes.each_value do |vol|
         SystemUtils.debug_output('build vol maps', vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'
