@@ -6,7 +6,6 @@ require_relative '../../system/system_access.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
 
-  attr_accessor     :last_error
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
     @core_api = core_api
@@ -319,7 +318,7 @@ class ServiceManager  < ErrorsApi
     || service_hash[:service_handle].nil? \
     || service_hash[:service_handle] ==''
 
-      if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
+      if !handle_field_sym.nil? && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
         service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
       else
         service_hash[:service_handle] = container_name
@@ -339,21 +338,12 @@ class ServiceManager  < ErrorsApi
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
     service_definition = software_service_definition(config_hash)
-    if service_definition.is_a?(Hash) == false
-      @last_error= 'Missing Service definition file ' + config_hash.to_s
-      return false
-    end
-    if service_definition.has_key?(:configurators) == false
-      @last_error= 'Missing Configurators in service definition'
-      return false
-    end
+    return log_error_mesg('Missing Service definition file ', config_hash.to_s) if !service_definition.is_a?(Hash)
+    return log_error_mesg('Missing Configurators in service definition', config_hash.to_s) if !service_definition.key?(:configurators)
     configurators = service_definition[:configurators]
-    if  configurators.has_key?(config_hash[:configurator_name].to_sym)  == false
-      @last_error= 'Missing Configurator ' + config_hash[:configurator_name]
-      return false
-    end
+    return log_error_mesg('Missing Configurator ', config_hash[:configurator_name]) if !configurators.key?(config_hash[:configurator_name].to_sym)
     configurator_definition = configurators[config_hash[:configurator_name].to_sym]
-    if configurator_definition.has_key?(:no_save) == false ||  configurator_definition[:no_save] == false
+    if !configurator_definition.key?(:no_save) || !configurator_definition[:no_save]
       return test_registry_result(@system_registry.update_service_configuration(config_hash))
     else
       return true
@@ -455,8 +445,6 @@ end
 
  
 private
-
-
 
 def orphanate_service(params)
    test_registry_result(@system_registry.orphanate_service(params))
