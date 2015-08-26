@@ -883,8 +883,6 @@ class EnginesCore
     return result
   end
 
-
-
   protected
 
   def get_volbuild_volmaps(container)

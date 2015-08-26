@@ -490,7 +490,7 @@ class ManagedContainer < Container
     expire_engine_info
     if ret_val == true
       register_with_dns
-      add_nginx_service if @deployment_type  == 'web'
+      add_nginx_service if @deployment_type == 'web'
       @core_api.register_non_persistant_services(self)
     end
     @setState = 'running'
@@ -521,7 +521,7 @@ class ManagedContainer < Container
 
   def is_error?
     state = read_state
-    return true  if @setState != state     
+    return true if @setState != state     
     return false
   end
 
