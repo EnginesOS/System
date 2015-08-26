@@ -35,8 +35,8 @@ class ManagedEngine < ManagedContainer
     false
   end
   
-  def get_container_network_metrics(container)
-      @container_api.get_container_network_metrics(container)
+  def get_container_network_metrics()
+      @container_api.get_container_network_metrics(self)
     end
     
   def engine_persistant_services
