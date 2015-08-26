@@ -85,8 +85,8 @@ class Templater
     var_method = @builder_public.method(name.to_sym)
     var_method.call
   rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return ''
+    #SystemUtils.log_exception(e)
+    return 'no match for ' + name.to_s
   end
 
   def resolve_engines_variable(match)
