@@ -11,7 +11,7 @@ require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.
 require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
-class EnginesCore
+class EnginesCore < ApiBase
   
   require_relative 'container_api.rb'
   require_relative 'docker_api.rb'
@@ -788,18 +788,6 @@ class EnginesCore
 
  
 
-  def log_error_mesg(msg,object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = @last_error.to_s + ':' + msg +':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-  end
-
-  def log_exception(e)
-    @last_error = @last_error.to_s + e.to_s
-    p @last_error + e.backtrace.to_s
-    return false
-  end
-
   def force_reregister_attached_service(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
@@ -903,9 +891,7 @@ class EnginesCore
     log_exception(e)
   end
 
-  def clear_error
-    @last_error = ''
-  end
+
 
   # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
   # :path_type :publisher_namespace

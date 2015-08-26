@@ -8,7 +8,7 @@ require_relative 'first_run_wizard.rb'
 class EnginesOSapi
   require_relative 'build_controller.rb'
 
-  attr_reader :core_api
+  attr_reader :core_api, :last_error
 
   require_relative 'engines_api_version.rb'
   include EngOSapiVersion

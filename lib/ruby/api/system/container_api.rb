@@ -1,4 +1,4 @@
-class ContainerApi
+class ContainerApi < ApiBase
   def initialize(docker_api,system_api,engines_core)
    @docker_api = docker_api
    @system_api = system_api
@@ -139,10 +139,7 @@ class ContainerApi
   end
   
    private
-  def clear_error
-      @last_error = ''
-    end
-    
+ 
 
   def check_sm_result(result)
     @last_error += @docker_api.service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
@@ -150,17 +147,7 @@ class ContainerApi
   end
 
   
-  def log_error_mesg(msg,object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = @last_error.to_s + ':' + msg +':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-  end
-
-  def log_exception(e)
-    @last_error = @last_error.to_s + e.to_s
-    p @last_error + e.backtrace.to_s
-    return false
-  end
+  
 
   def test_system_api_result(result)
     @last_error = @system_api.last_error.to_s if result.nil? || result == false
