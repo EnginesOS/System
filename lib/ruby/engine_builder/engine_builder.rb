@@ -806,7 +806,7 @@ class EngineBuilder
                             @blueprint_reader.environments,
                             @blueprint_reader.framework,
                             @blueprint_reader.runtime,
-                            @core_api,
+                            @core_api.container_api,
                             @blueprint_reader.data_uid,
                             @blueprint_reader.data_gid,
                             @blueprint_reader.deployment_type

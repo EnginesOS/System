@@ -16,7 +16,7 @@ class ManagedEngine < ManagedContainer
     @databases = dbs
     @framework = framework
     @runtime = runtime
-    @core_api = core_api
+    @container_api = core_api
     @deployment_type = deployment_type
     @ctype = 'container'
     @conf_self_start = false
