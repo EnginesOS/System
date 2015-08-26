@@ -295,7 +295,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Can\'t unpause Container as ' + state
     end
-  #  register_with_dns
+    register_with_dns
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state
@@ -328,10 +328,8 @@ class ManagedContainer < Container
       @core_api.deregister_non_persistant_services(self)
       expire_engine_info
     else
-      @last_error = 'Can\'t stop Container as ' + state
-      if state != 'paused' # force deregister if stopped or no container etc
-        @core_api.deregister_non_persistant_services(self)
-      end
+      @last_error = 'Can\'t stop Container as ' + state  
+       @core_api.deregister_non_persistant_services(self)      
     end
     clear_error(ret_val)
     save_state
@@ -348,7 +346,7 @@ class ManagedContainer < Container
     else
       @last_error = 'Can\'t Start Container as ' + state
     end
-   # register_with_dns
+    register_with_dns
     @core_api.register_non_persistant_services(self)
     clear_error(ret_val)
     save_state

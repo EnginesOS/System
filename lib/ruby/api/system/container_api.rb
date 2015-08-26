@@ -120,7 +120,19 @@ class ContainerApi
     test_system_api_result(@system_api.load_blueprint(container))
   end
 
-   
+  def attach_service(service_hash)
+    @engines_core.attach_service(service_hash)
+  end
+  
+  #Called by Managed Containers
+  def register_non_persistant_services(engine)
+    check_sm_result(@engines_core.service_manager.register_non_persistant_services(engine))
+  end
+
+  #Called by Managed Containers
+  def deregister_non_persistant_services(engine)
+    check_sm_result(@engines_core.service_manager.deregister_non_persistant_services(engine))
+  end
    
    private
   def clear_error
@@ -128,6 +140,12 @@ class ContainerApi
     end
     
 
+  def check_sm_result(result)
+    @last_error += @docker_api.service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
+    return result
+  end
+
+  
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0, 256)
     @last_error = @last_error.to_s + ':' + msg +':' + obj_str
