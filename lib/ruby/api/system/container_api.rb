@@ -140,7 +140,12 @@ class ContainerApi < ApiBase
     @last_error += @engines_core.service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
-
+  
+  def has_service_started?(service_name)
+      completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'
+      File.exist?(completed_flag_file)
+    end
+    
   def start_dependancies(container)
       container.dependant_on.each do |service_name|
         service = @engines_core.loadManagedService(service_name)

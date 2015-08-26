@@ -790,10 +790,7 @@ class EnginesCore < ApiBase
     File.exist?(completed_flag_file)
   end
 
-  def has_service_started?(service_name)
-    completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'
-    File.exist?(completed_flag_file)
-  end
+  
 
   def check_sm_result(result)
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
