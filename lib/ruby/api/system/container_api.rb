@@ -1,4 +1,4 @@
-class ContainerApi < ApiBase
+class ContainerApi < ErrorsApi
   def initialize(docker_api,system_api,engines_core)
    @docker_api = docker_api
    @system_api = system_api
@@ -49,7 +49,7 @@ class ContainerApi < ApiBase
    
    def start_container(container)
      clear_error
-     @engines_core.start_dependancies(container) if container.dependant_on.is_a?(Array)
+    start_dependancies(container) if container.dependant_on.is_a?(Array)
      test_docker_api_result(@docker_api.start_container(container))
    end
     
@@ -76,14 +76,9 @@ class ContainerApi < ApiBase
    
    def destroy_container(container)
      clear_error
-     if container.has_container?
-       ret_val = test_docker_api_result(@docker_api.destroy_container(container))
-     else
-       ret_val = true
-     end
-     if ret_val
-       ret_val = test_docker_api_result(@system_api.destroy_container(container))  #removes cid file
-     end
+     ret_val = true
+     ret_val = test_docker_api_result(@docker_api.destroy_container(container)) if container.has_container?
+     ret_val = test_docker_api_result(@system_api.destroy_container(container))  if ret_val
      return ret_val
    rescue StandardError => e
      container.last_error = 'Failed To Destroy ' + e.to_s
@@ -102,7 +97,7 @@ class ContainerApi < ApiBase
      return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
      test_system_api_result(@system_api.clear_cid_file(container))
      test_system_api_result(@system_api.clear_container_var_run(container))
-     @engines_core.start_dependancies(container) if container.dependant_on.is_a?(Array)
+     start_dependancies(container) if container.dependant_on.is_a?(Array)
      container.pull_image if container.ctype != 'container'
      return test_system_api_result(@system_api.create_container(container)) if test_docker_api_result(@docker_api.create_container(container))
      return false
@@ -142,13 +137,39 @@ class ContainerApi < ApiBase
  
 
   def check_sm_result(result)
-    @last_error += @docker_api.service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
+    @last_error += @engines_core.service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
-
   
+  def has_service_started?(service_name)
+      completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'
+      File.exist?(completed_flag_file)
+    end
+    
+  def start_dependancies(container)
+      container.dependant_on.each do |service_name|
+        service = @engines_core.loadManagedService(service_name)
+        return log_error_mesg('Failed to load ', service_name) if service == false
+        if !service.is_running?
+          if service.has_container?
+            if service.is_active? 
+              return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
+              return log_error_mesg('Failed to start ', service_name) if !service.start_container
+            end
+            return log_error_mesg('Failed to create ', service_name) if !service.create_container
+            @last_error = 'Failed to create ' + service_name
+          end
+        end
+        retries = 0
+        while !has_service_started?(service_name) 
+          sleep 10
+          retries += 1
+          return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ',service_name) if retries > 3
+        end
+      end
+      return true
+    end
   
-
   def test_system_api_result(result)
     @last_error = @system_api.last_error.to_s if result.nil? || result == false
     return result

@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
-require '/opt/engines/lib/ruby/system/dnshosting.rb'
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
@@ -8,12 +8,13 @@ require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
-require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
-require_relative 'api_base.rb'
 
-class EnginesCore < ApiBase
-  
+
+class EnginesCore < ErrorsApi
+  require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
+  require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
+  require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'container_api.rb'
   require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
@@ -22,14 +23,22 @@ class EnginesCore < ApiBase
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @system_preferences = SystemPreferences.new
-    @last_error = ''
+    @system_preferences = SystemPreferences.new    
+    @registry_handler.start
   end
 
-  attr_reader :last_error, :container_api, :service_api
-
+  attr_reader  :container_api, :service_api
+  
+  def get_registry_ip
+    @registry_handler.get_registry_ip
+  end
+  def force_registry_restart
+    @registry_handler.force_registry_restart
+  end
+  
   def software_service_definition(params)
     clear_error
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
@@ -71,8 +80,6 @@ class EnginesCore < ApiBase
     container = loadManagedService(name)
     test_docker_api_result(@docker_api.signal_container_process(pid, sig, container))
   end
-
-
 
 
   def get_build_report(engine_name)
@@ -194,23 +201,11 @@ class EnginesCore < ApiBase
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    if service_hash.nil?
-      log_error_mesg('Attach Service passed a nil','')
-      return false
-    elsif service_hash.is_a?(Hash) == false
-      log_error_mesg('Attached Service passed a non Hash', service_hash)
-      return false
-    end
-    if service_hash.key?(:variables) == false
-      log_error_mesg('Attached Service passed no variables', service_hash)
-      return false
-    end
-    if service_manager.add_service(service_hash)
-      return check_sm_result(service_manager.add_service(service_hash))
-    else
-      log_error_mesg('register failed', service_hash)
-    end
-    return false
+   return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
+   return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
+   return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
+   return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
+   return true
   rescue StandardError => e
     log_exception(e)
   end
@@ -236,59 +231,7 @@ class EnginesCore < ApiBase
     return @service_manager
   end
 
-  def force_registry_restart
-    # start in thread in case timeout clobbers
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    # FIXME: need to panic if cannot load
-    restart_thread = Thread.new {
-      registry_service.stop_container
-      registry_service.start_container
-      while registry_service.is_startup_complete? == false
-        sleep 1
-        wait += 1
-        return force_registry_recreate if wait > 120
-      end
-    }
-    restart_thread.join
-    return true
-  end
-
-  def force_registry_recreate
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    if registry_service.forced_recreate == false
-      @last_error = 'Fatal Unable to Start Registry Service: ' + registry_service.last_error
-      return false
-    end
-    return true
-  end
-
-  def get_registry_ip
-    registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-    case registry_service.read_state
-    when 'nocontainer'
-      registry_service.create_container
-    when 'paused'
-      registry_service.unpause_container
-    when 'stopped'
-      registry_service.start_container
-    end
-    if registry_service.read_state != 'running'
-      if registry_service.forced_recreate == false
-        @last_error = 'Fatal Unable to Start Registry Service: ' + registry_service.last_error
-        return nil
-      end
-    end
-    wait = 0
-    while registry_service.is_startup_complete? == false
-      sleep 1
-      wait += 1
-      break if wait > 120
-    end
-    return registry_service.get_ip_str
-  rescue StandardError => e
-    @last_error= 'Fatal Unable to Start Registry Service: ' + e.to_s
-    log_exception(e)
-  end
+  
 
   def match_orphan_service(service_hash)
     res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
@@ -412,16 +355,12 @@ class EnginesCore < ApiBase
       service = loadManagedService(service_param[:service_name])
       if service.nil? == false && service != false
         retval =  service.retrieve_configurator(service_param)
-        if retval.is_a?(Hash) == false
-          return false
-        end
+        return false if !retval.is_a?(Hash)
       else
-        @last_error = 'No Service'
-        return false
+        return log_error_mesg('No Service',service_param)
       end
     end
-    @last_error = retval[:stderr]
-    return retval
+    return false
   end
 
   def update_service_configuration(service_param)
@@ -487,14 +426,10 @@ class EnginesCore < ApiBase
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-          if service_dir_entry.start_with?('.')
-            next
-          end
+          next if service_dir_entry.start_with?('.')          
           if service_dir_entry.end_with?('.yaml')
             service = load_service_definition(dir + '/' + service_dir_entry)
-            if service.nil? == false
-              avail_services.push(service.to_h)
-            end
+            avail_services.push(service.to_h) if !service.nil?
           end
         rescue StandardError => e
           log_exception(e)
@@ -558,32 +493,29 @@ class EnginesCore < ApiBase
         # new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
           if  env.name == new_env_name
-            if env.immutable == true
-              @last_error = 'Cannot Change Value of ' + env.name
-              return false
-            end
+             return log_error_mesg('Cannot Change Value of',env) if env.immutable
             env.value = new_env_value
           end
           # end
         end
       end
     end
-    if engine.has_container? == true
-      return log_error_mesg(engine.last_error,engine) if engine.destroy_container == false      
+    if engine.has_container?
+      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container      
     end
-    return log_error_mesg(engine.last_error,engine) if engine.create_container == false
+    return log_error_mesg(engine.last_error,engine) if !engine.create_container
     return true
   rescue StandardError => e
     log_exception(e)
   end
 
   def test_docker_api_result(result)
-    @last_error = @docker_api.last_error if result.nil? || result == false
+    @last_error = @docker_api.last_error if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
   def test_system_api_result(result)
-    @last_error = @system_api.last_error.to_s if result.nil? || result == false
+    @last_error = @system_api.last_error.to_s if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
@@ -649,8 +581,6 @@ class EnginesCore < ApiBase
     test_system_api_result(@system_api.list_managed_services)
   end
 
-
-
   def generate_engines_user_ssh_key
     test_system_api_result(@system_api.regen_system_ssh_key)
   end
@@ -674,10 +604,10 @@ class EnginesCore < ApiBase
 
   def delete_engine(params)
     params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove engine Services',params) if delete_image_dependancies(params) == false
+    return log_error_mesg('Failed to remove engine Services',params) if !delete_image_dependancies(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(ManagedEngine) == false
+    if !engine.is_a?(ManagedEngine)
       return true if service_manager.remove_engine_from_managed_engines_registry(params) # used in roll back and only works if no engine do mess with this logic
       log_error_mesg('Failed to  find Engine',params)
     end
@@ -704,7 +634,7 @@ class EnginesCore < ApiBase
     SystemUtils.debug_output('run system',res)
     #FIXME should be case insensitive The last one is a pure kludge
     #really need to get stderr and stdout separately
-    return true if $? == 0 && res.downcase.include?('error') == false && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
+    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
     log_error_mesg(cmd.to_s + 'run system result', res.to_s)
   rescue StandardError => e
     log_exception(e)
@@ -712,7 +642,7 @@ class EnginesCore < ApiBase
 
   def run_volume_builder(container,username)
     clear_error
-    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid') == true
+    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
       command = 'docker stop volbuilder'
       run_system(command)
       command = 'docker rm volbuilder'
@@ -733,9 +663,9 @@ class EnginesCore < ApiBase
     end
     #Note no -d so process will not return until setup.sh completes
     command = 'docker rm volbuilder'
-    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid') == true
+    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
     res = run_system(command)
-    SystemUtils.log_error(res) if res != true
+    SystemUtils.log_error(res) if res.is_a?(FalseClass)
     # don't return false as
     return true
   rescue StandardError => e
@@ -811,48 +741,13 @@ class EnginesCore < ApiBase
     test_docker_api_result(@docker_api.clean_up_dangling_images)
   end
 
-  def start_dependancies(container)
-    container.dependant_on.each do |service_name|
-      service = loadManagedService(service_name)
-      return log_error_mesg('Failed to load ', service_name) if service == false
-      if service.is_running? != true
-        if service.has_container? == true
-          if service.is_active? == true
-            if service.unpause_container == false
-              @last_error = 'Failed to unpause ' + service_name
-              return false
-            end
-          elsif service.start_container == false
-            @last_error = 'Failed to start ' + service_name
-            return false
-          end
-        elsif service.create_container == false
-          @last_error = 'Failed to create ' + service_name
-          return false
-        end
-      end
-      retries = 0
-      while has_service_started?(service_name) == false
-        sleep 10
-        retries += 1
-        if retries > 3
-          log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ',service_name)
-          return false
-        end
-      end
-    end
-    return true
-  end
 
   def has_container_started?(container_name)
     completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
     File.exist?(completed_flag_file)
   end
 
-  def has_service_started?(service_name)
-    completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'
-    File.exist?(completed_flag_file)
-  end
+  
 
   def check_sm_result(result)
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
@@ -867,7 +762,7 @@ class EnginesCore < ApiBase
     log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
     volume_option = ' -v ' + state_dir + ':/client/state:rw '
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
-    if container.volumes.nil? == false
+    if !container.volumes.nil?
       container.volumes.each_value do |vol|
         SystemUtils.debug_output('build vol maps', vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'
