@@ -97,7 +97,7 @@ class ContainerApi < ApiBase
      return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
      test_system_api_result(@system_api.clear_cid_file(container))
      test_system_api_result(@system_api.clear_container_var_run(container))
-     @engines_core.start_dependancies(container) if container.dependant_on.is_a?(Array)
+     start_dependancies(container) if container.dependant_on.is_a?(Array)
      container.pull_image if container.ctype != 'container'
      return test_system_api_result(@system_api.create_container(container)) if test_docker_api_result(@docker_api.create_container(container))
      return false
