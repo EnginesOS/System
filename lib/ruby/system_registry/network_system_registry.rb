@@ -1,3 +1,4 @@
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class NetworkSystemRegistry < ErrorsApi
   require 'yaml'
   require 'timeout'
