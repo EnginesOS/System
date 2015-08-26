@@ -34,7 +34,11 @@ class ManagedEngine < ManagedContainer
   def extract_plugins
     false
   end
-
+  
+  def get_container_network_metrics(container)
+      @container_api.get_container_network_metrics(container)
+    end
+    
   def engine_persistant_services
     services = @container_api.engine_persistant_services(@container_name)
     retval = ''
