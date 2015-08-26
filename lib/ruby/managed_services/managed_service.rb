@@ -220,7 +220,7 @@ class ManagedService < ManagedContainer
     end
   
     def rm_consumer_from_service(service_hash)
-      return log_error_mesg('service not running ', service_hash) if is_running? == false
+     # no need as checl_cont_id also check so save a sec return log_error_mesg('service not running ', service_hash) if is_running? == false
       return log_error_mesg('No uid service not running ', service_hash) if check_cont_uid == false
       cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
       result = SystemUtils.execute_command(cmd)
