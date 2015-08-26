@@ -347,9 +347,9 @@ class SystemApi < ApiBase
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
     if service_type_dir == '/sytem_services/'
-      managed_service = SystemService.from_yaml(yaml_file, @engines_api.container_api)
+      managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api)
     else
-      managed_service = ManagedService.from_yaml(yaml_file, @engines_api.container_api)
+      managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     end
     if managed_service.nil?
       p :load_managed_servic_failed
