@@ -33,6 +33,14 @@ class ManagedContainer < Container
     @protocol = :http_and_https
   end
 
+  def fqdn
+    @hostname.to_s + "." +@domain_name.to_s
+  end
+  
+  def repo
+    @repository
+  end
+  
   def web_sites
     @container_api.web_sites_for(self)
   end
