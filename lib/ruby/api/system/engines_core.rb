@@ -970,6 +970,7 @@ class EnginesCore
     # only delete if del all otherwise backup
     #N O Image well delete the rest
     test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
+      p 'delete_imatge'
     return true
   rescue StandardError => e
     log_exception(e)
