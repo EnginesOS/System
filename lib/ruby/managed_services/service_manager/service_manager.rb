@@ -486,7 +486,7 @@ end
      log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s,service_hash)
      return false
    end
-   if service.is_running? == true || service.persistant == false
+   if service.persistant == false || service.is_running? 
      return true  if service.remove_consumer(service_hash)
      return false
    elsif service.persistant == true
