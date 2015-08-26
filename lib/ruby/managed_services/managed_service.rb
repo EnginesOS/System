@@ -57,8 +57,8 @@ class ManagedService < ManagedContainer
     # if has no / then local image
     # return false
     #   
-    return @core_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
-    return @core_api.pull_image(image) if image.include?('/')
+    return @container_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
+    return @container_api.pull_image(image) if image.include?('/')
     return false
   end
   
@@ -98,13 +98,13 @@ class ManagedService < ManagedContainer
   end
 
   def service_manager
-    return @core_api.service_manager
+    return @container_api.service_manager
   end
 
   def create_service()
     SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' +container_name)
-    envs = @core_api.load_and_attach_persistant_services(self)
-    shared_envs = @core_api.load_and_attach_shared_services(self)
+    envs = @container_api.load_and_attach_persistant_services(self)
+    shared_envs = @container_api.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
       if envs.is_a?(Array) == false
         envs = shared_envs
@@ -134,9 +134,9 @@ class ManagedService < ManagedContainer
       end
       register_with_dns
       p :service_non_persis
-      @core_api.load_and_attach_nonpersistant_services(self)
+      @container_api.load_and_attach_nonpersistant_services(self)
       p :register_non_persis
-      @core_api.register_non_persistant_services(self)
+      @container_api.register_non_persistant_services(self)
       reregister_consumers
       return true
     else
@@ -161,7 +161,7 @@ class ManagedService < ManagedContainer
     params = {}
     params[:publisher_namespace] = @publisher_namespace
     params[:type_path] = @type_path
-    @core_api.get_registered_against_service(params)
+    @container_api.get_registered_against_service(params)
   end
 
   def reregister_consumers

@@ -36,7 +36,7 @@ class ManagedEngine < ManagedContainer
   end
 
   def engine_persistant_services
-    services = @core_api.engine_persistant_services(@container_name)
+    services = @container_api.engine_persistant_services(@container_name)
     retval = ''
     if services.is_a?(Array)
       services.each do |service|
@@ -49,6 +49,6 @@ class ManagedEngine < ManagedContainer
   end
 
   def engine_attached_services
-    return @core_api.engine_attached_services(@container_name)
+    return @container_api.engine_attached_services(@container_name)
   end
 end

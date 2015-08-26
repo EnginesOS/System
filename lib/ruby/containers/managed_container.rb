@@ -452,7 +452,7 @@ class ManagedContainer < Container
   end
 
   def set_running_user
-    @cont_userid = running_user if  @cont_userid == nil || @cont_userid == -1
+    @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
   end
 
   def inspect_container
