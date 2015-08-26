@@ -656,7 +656,7 @@ class EngineBuilder
     @blueprint_reader.services.each do |service_hash|
       #   service_hash[:parent_engine]=@container_name # do I need this?
       service_def = get_service_def(service_hash)
-      if service_def.nil? == true
+      if service_def.nil?
         p :failed_to_load_service_definition
         p service_hash
         return false
@@ -704,9 +704,7 @@ class EngineBuilder
       # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) == true
         @attached_services.push(service_hash)
-        if free_orphan == true
-          release_orphan(service_hash)
-        end
+        release_orphan(service_hash) if free_orphan == true
       end
       service_cnt += 1
     end

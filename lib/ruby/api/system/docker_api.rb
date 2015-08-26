@@ -318,7 +318,7 @@ class DockerApi < ApiBase
 
   def clean_up_dangling_images
     cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
-    SystemUtils.execute_command(cmd)
+    Thread.new { SystemUtils.execute_command(cmd) }
     return true # often warning not error
   end
 
