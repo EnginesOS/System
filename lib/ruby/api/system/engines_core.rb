@@ -15,6 +15,7 @@ require_relative 'api_base.rb'
 class EnginesCore < ApiBase
   
   require_relative 'container_api.rb'
+  require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'system_preferences.rb'
