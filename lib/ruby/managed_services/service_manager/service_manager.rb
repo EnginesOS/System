@@ -41,7 +41,7 @@ class ServiceManager
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] if service_hash[:variables].has_key?(:parent_engine) == false
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
-    if is_service_persistant?(service_hash) == true
+    if is_service_persistant?(service_hash)
       return log_error_mesg('Failed to create persistant service ',service_hash) if add_to_managed_service(service_hash) == false
       return log_error_mesg('Failed to add service to managed service registry',service_hash) if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
     else
@@ -85,7 +85,7 @@ class ServiceManager
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
         p 'new_envs'
         p new_envs.to_s
-        envs.concat(new_envs) if new_envs != nil
+        envs.concat(new_envs) if !new_envs.nil?
       else
         log_error_mesg('failed to get service entry from ' ,service_hash)
       end
@@ -112,8 +112,8 @@ class ServiceManager
   def update_attached_service(params)
     clear_last_error
     ServiceManager.set_top_level_service_params(params,params[:parent_engine])
-    if test_registry_result(@system_registry.update_attached_service(params)) == true
-      return add_to_managed_service(params)  if remove_from_managed_service(params) == true
+    if test_registry_result(@system_registry.update_attached_service(params))
+      return add_to_managed_service(params)  if remove_from_managed_service(params)
          # this calls add_to_managed_service(params) plus adds to reg
         @last_error='Filed to remove ' + @system_registry.last_error.to_s
     else
@@ -270,10 +270,14 @@ class ServiceManager
     clear_last_error
     SystemUtils.debug_output('services_on_objects_',objectName)
     SystemUtils.debug_output('services_on_objects_',identifier)
-    params = Hash.new
+    params = {}
     case objectName
     when 'ManagedEngine'
+      # FIXME: get from Object
       params[:parent_engine] = identifier
+      params[:container_type] = 'container'
+      
+        
       SystemUtils.debug_output(  :get_engine_service_hashes,'ManagedEngine')
       #      hashes = @system_registry.find_engine_services_hashes(params)
       #      SystemUtils.debug_output('hashes',hashes)
@@ -305,14 +309,14 @@ class ServiceManager
     return SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash) if service_def.nil?
     return SystemUtils.log_error_mesg('no service_handle for', service_hash) if service_def.has_key?(:service_handle_field) && service_def[:service_handle_field].nil?
     handle_field_sym = service_def[:service_handle_field].to_sym    
-    if service_def.has_key?(:priority) == true
+    if service_def.has_key?(:priority)
       service_hash[:priority] = service_def[:priority]
     else
       service_hash[:priority] = 0
     end
         
     if service_hash.has_key?(:service_handle) == false\
-    || service_hash[:service_handle] == nil \
+    || service_hash[:service_handle].nil? \
     || service_hash[:service_handle] ==''
 
       if handle_field_sym != nil && service_hash[:variables].has_key?(handle_field_sym) == true  && service_hash[:variables][handle_field_sym] != nil
