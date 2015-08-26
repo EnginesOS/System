@@ -124,15 +124,15 @@ class SystemApi < ApiBase
   def save_container(container)
     clear_error
     # FIXME:
-    api = container.core_api
-    container.core_api = nil
+    api = container.container_api
+    container.container_api = nil
     last_result = container.last_result
     last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
     container.last_error = ''
     serialized_object = YAML::dump(container)
-    container.core_api = api
+    container.container_api = api
     container.last_result = last_result
     container.last_error = last_error
     stateDir = container_state_dir(container)
