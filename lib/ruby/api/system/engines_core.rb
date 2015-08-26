@@ -12,18 +12,20 @@ require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore
-
+  
+  require_relative 'container_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'system_preferences.rb'
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @system_preferences = SystemPreferences.new
     @last_error = ''
   end
 
-  attr_reader :last_error
+  attr_reader :last_error, :container_api
 
   def software_service_definition(params)
     clear_error
@@ -67,40 +69,8 @@ class EnginesCore
     test_docker_api_result(@docker_api.signal_container_process(pid, sig, container))
   end
 
-  def start_container(container)
-    clear_error
-    start_dependancies(container) if container.dependant_on.is_a?(Array)
-    test_docker_api_result(@docker_api.start_container(container))
-  end
 
-  def inspect_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.inspect_container(container))
-  end
 
-  def stop_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.stop_container(container))
-  end
-
-  def pause_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.pause_container(container))
-  end
-
-  def unpause_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.unpause_container(container))
-  end
-
-  def ps_container(container)
-    test_docker_api_result(@docker_api.ps_container(container))
-  end
-
-  def logs_container(container)
-    clear_error
-    test_docker_api_result(@docker_api.logs_container(container))
-  end
 
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
@@ -122,9 +92,7 @@ class EnginesCore
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-  def save_container(container)
-    test_system_api_result(@system_api.save_container(container))
-  end
+
 
   def save_blueprint(blueprint,container)
     test_system_api_result(@system_api.save_blueprint(blueprint,container))
@@ -142,13 +110,7 @@ class EnginesCore
   #    return test_system_api_result(@system_api.rm_volume(site_hash))
   #  end
 
-  def get_container_memory_stats(container)
-    test_system_api_result(@system_api.get_container_memory_stats(container))
-  end
 
-  def get_container_network_metrics(container)
-    test_system_api_result(@system_api.get_container_network_metrics(container))
-  end
 
   def image_exist?(container_name)
     test_docker_api_result(@docker_api.image_exist?(container_name))
@@ -524,7 +486,7 @@ class EnginesCore
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-          if service_dir_entry.start_with?('.') == true
+          if service_dir_entry.start_with?('.')
             next
           end
           if service_dir_entry.end_with?('.yaml')
@@ -568,7 +530,7 @@ class EnginesCore
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(EnginesOSapiResult) == true
+    if engine.is_a?(EnginesOSapiResult)
       @last_error = engine.result_mesg
       return false
     end
@@ -606,7 +568,7 @@ class EnginesCore
       end
     end
     if engine.has_container? == true
-      return log_error_mesg(engine.last_error,engine) if destroy_container(engine) == false      
+      return log_error_mesg(engine.last_error,engine) if engine.destroy_container == false      
     end
     return log_error_mesg(engine.last_error,engine) if engine.create_container == false
     return true
@@ -638,6 +600,14 @@ class EnginesCore
     test_system_api_result(@system_api.getManagedEngines)
   end
 
+  def get_container_network_metrics(engine_name)
+    engine = test_system_api_result(@system_api.loadManagedEngine(engine_name))
+      return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
+    engine = test_system_api_result(@system_api.loadManagedService(engine_name))
+    return engine.get_container_network_metrics if engine.is_a?(ManagedService)
+    log_error_mesg("Failed to load network stats",engine_name)            
+  end
+  
   def loadManagedEngine(engine_name)
     test_system_api_result(@system_api.loadManagedEngine(engine_name))
   end
@@ -678,21 +648,7 @@ class EnginesCore
     test_system_api_result(@system_api.list_managed_services)
   end
 
-  def destroy_container(container)
-    clear_error
-    if container.has_container? == true
-      ret_val = test_docker_api_result(@docker_api.destroy_container(container))
-    else
-      ret_val = true
-    end
-    if ret_val == true
-      ret_val = test_docker_api_result(@system_api.destroy_container(container))  #removes cid file
-    end
-    return ret_val
-  rescue StandardError => e
-    container.last_error = 'Failed To Destroy ' + e.to_s
-    log_exception(e)
-  end
+
 
   def generate_engines_user_ssh_key
     test_system_api_result(@system_api.regen_system_ssh_key)
@@ -785,19 +741,7 @@ class EnginesCore
     log_exception(e)
   end
 
-  def create_container(container)
-    clear_error
-    return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
-    test_system_api_result(@system_api.clear_cid_file(container))
-    test_system_api_result(@system_api.clear_container_var_run(container))
-    start_dependancies(container) if container.dependant_on.is_a?(Array)
-    container.pull_image if @ctype != 'container'
-    return test_system_api_result(@system_api.create_container(container)) if test_docker_api_result(@docker_api.create_container(container))
-    return false
-  rescue Exception => e
-    container.last_error = ('Failed To Create ' + e.to_s)
-    log_exception(e)
-  end
+
 
   def load_and_attach_persistant_services(container)
     dirname = get_container_services_dir(container) + '/pre/'
@@ -850,12 +794,7 @@ class EnginesCore
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
   #  end
 
-  def is_startup_complete(container)
-    clear_error
-    return test_system_api_result(@system_api.is_startup_complete(container))
-  rescue StandardError => e
-    log_exception(e)
-  end
+ 
 
   def log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0, 256)
@@ -954,27 +893,14 @@ class EnginesCore
     File.exist?(completed_flag_file)
   end
 
-  def check_system_api_result(result)
-    @last_error = @system_api.last_error.to_s[0, 128] if result.nil? || result == false
-    return result
-  end
+
 
   def check_sm_result(result)
     @last_error += service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
-  def delete_image(container)
-    clear_error
-    return  test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.delete_image(container)) == true
-    # only delete if del all otherwise backup
-    #N O Image well delete the rest
-    test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.image_exist?(container.image)) == false
-      p 'delete_imatge'
-    return true
-  rescue StandardError => e
-    log_exception(e)
-  end
+
 
   protected
 

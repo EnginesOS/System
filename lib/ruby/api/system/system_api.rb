@@ -292,7 +292,7 @@ class SystemApi
       return false # return failed(yam_file_name,'No such configuration:','Load Engine')
     end
     yaml_file = File.read(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
     return managed_engine
   rescue StandardError => e
@@ -347,9 +347,9 @@ class SystemApi
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
     if service_type_dir == '/sytem_services/'
-      managed_service = SystemService.from_yaml(yaml_file, @engines_api)
+      managed_service = SystemService.from_yaml(yaml_file, @engines_api.container_api)
     else
-      managed_service = ManagedService.from_yaml(yaml_file, @engines_api)
+      managed_service = ManagedService.from_yaml(yaml_file, @engines_api.container_api)
     end
     if managed_service.nil?
       p :load_managed_servic_failed
@@ -415,7 +415,7 @@ class SystemApi
 
   def clear_container_var_run(container)
     clear_error
-    File.unlink(dir + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
+    File.unlink(container_state_dir(container) + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)

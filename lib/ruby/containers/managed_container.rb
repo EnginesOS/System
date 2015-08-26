@@ -564,4 +564,10 @@ end
     @last_error = msg + ':' + obj_str
     SystemUtils.log_error_mesg(msg, object)
   end
+  
+def log_exception(e)
+   @last_error = @last_error.to_s + e.to_s
+   p @last_error + e.backtrace.to_s
+   return false
+ end
 end

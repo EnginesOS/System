@@ -934,7 +934,6 @@ rescue Exception => e
   def get_basedir
     return SystemConfig.DeploymentDir + '/' + @build_name
   end
-end
 
 def log_exception_and_fail(cmd, e)
   SystemUtils.log_exception(e)
@@ -947,4 +946,5 @@ def log_exception(e)
   @last_error = @last_error.to_s + e.to_s
 ensure
   SystemUtils.log_exception(e)
+end
 end

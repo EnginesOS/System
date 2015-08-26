@@ -150,7 +150,7 @@ def SystemUtils.execute_command(cmd)
          retval[:result] = th.value.exitstatus          
        rescue Errno::EIO
          retval[:stdout] += oline.chop
-         retval[:stdout] += stdin.read_nonblock(256) 
+         retval[:stdout] += stdout.read_nonblock(256) 
          SystemUtils.debug_output('read stderr', oline)
          retval[:stderr] += stderr.read_nonblock(256)
        rescue IO::WaitReadable
