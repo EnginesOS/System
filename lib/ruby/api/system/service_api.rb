@@ -12,6 +12,12 @@ class ServiceApi < ContainerApi
     @engines_core.load_and_attach_persistant_services(service)
   end 
   
+  #@returns [Boolean]
+   # whether pulled or no false if no new image
+   def pull_image(engines_core)
+     @engines_core.pull_image(image_name)
+   end
+  
   def load_and_attach_shared_services(service)
     @engines_core.load_and_attach_shared_services(service)  
   end
