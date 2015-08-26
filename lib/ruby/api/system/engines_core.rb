@@ -8,7 +8,7 @@ require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.r
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
-require_relative 'errors_api.rb'
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
