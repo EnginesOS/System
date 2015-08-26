@@ -6,7 +6,7 @@ class ContainerApi
     
  end
  
-  def web_sites(container)
+  def web_sites_for(container)
     @engines_core.web_sites_for(container)
   end
   
