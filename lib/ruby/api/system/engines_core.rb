@@ -313,6 +313,7 @@ class EnginesCore < ApiBase
   end
 
   def web_sites_for(container)
+    clear_error
     urls = []
     params = {}
     params[:parent_engine] = container.container_name
@@ -870,7 +871,7 @@ class EnginesCore < ApiBase
 
 
   def check_sm_result(result)
-    @last_error += service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
+    @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
