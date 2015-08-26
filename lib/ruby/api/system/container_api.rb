@@ -107,6 +107,17 @@ class ContainerApi
      log_exception(e)
    end
    
+
+  def save_blueprint(blueprint,container)
+    test_system_api_result(@system_api.save_blueprint(blueprint,container))
+  end
+
+  def load_blueprint(container)
+    test_system_api_result(@system_api.load_blueprint(container))
+  end
+
+   
+   
    private
   def clear_error
       @last_error = ''

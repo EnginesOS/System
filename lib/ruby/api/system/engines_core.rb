@@ -94,14 +94,6 @@ class EnginesCore
 
 
 
-  def save_blueprint(blueprint,container)
-    test_system_api_result(@system_api.save_blueprint(blueprint,container))
-  end
-
-  def load_blueprint(container)
-    test_system_api_result(@system_api.load_blueprint(container))
-  end
-
   #  def add_volume(site_hash)
   #    return test_system_api_result(@system_api.add_volume(site_hash))
   #  end
