@@ -185,7 +185,7 @@ class EnginesCore < ApiBase
     end
   end
   
-  def get_container_services_dir(container)
+  def container_services_dir(container)
       test_system_api_result(@system_api.container_state_dir(container)) + '/services/'
     end
 
