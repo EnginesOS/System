@@ -443,9 +443,9 @@ class ManagedContainer < Container
 
   def running_user    
     return -1 if inspect_container == false      
-    output = JSON.parse(@last_result)
-    user = output[0]['Config']['User']
-    return user
+   output = JSON.parse(@last_result)
+   return -1 if output.nil?
+   return  output[0]['Config']['User'] if output.is_a?(Array) && output[0].is_a?(Hash)
   rescue StandardError => e
     return log_exception(e)
   end
