@@ -53,7 +53,7 @@ class EngineBuilder
     @http_protocol = params[:http_protocol]
     @memory = params[:memory]
     @repo_name = params[:repository_url]
-    if @container_name.nil? == true || @container_name == ''
+    if @container_name.nil? || @container_name == ''
       @last_error = ' empty container name'
       return false
     end
@@ -67,16 +67,11 @@ class EngineBuilder
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true
     @attached_services = []
-
-    create_templater
-
-    process_supplied_envs(custom_env)
-
+    return "error" unless create_templater
+    return "error" unless process_supplied_envs(params[:variables])
     @runtime =  ''
-
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-
   rescue StandardError => e
     log_exception(e)
   end
@@ -794,26 +789,28 @@ class EngineBuilder
   end
 
   private
-  
-def process_supplied_envs(custom_env)
-custom_env = params[:variables]
-p :custom_env
-p custom_env
-if custom_env.nil?
-  @set_environments = {}
-  @environments = []
-elsif custom_env.instance_of?(Array)
-  @environments = custom_env # happens on rebuild as custom env is saved in env on disk
-  # FIXME: need to vet all environment variables
-  @set_environments = {}
-else
-  custom_env_hash = custom_env
-  p :Merged_custom_env
-  p custom_env_hash
-  @set_environments = custom_env_hash
-  @environments = []
-end
-end
+
+  def process_supplied_envs(custom_env)    
+    p :custom_env
+    p custom_env
+    if custom_env.nil?
+      @set_environments = {}
+      @environments = []
+    elsif custom_env.instance_of?(Array)
+      @environments = custom_env # happens on rebuild as custom env is saved in env on disk
+      # FIXME: need to vet all environment variables
+      @set_environments = {}
+    else
+      custom_env_hash = custom_env
+      p :Merged_custom_env
+      p custom_env_hash
+      @set_environments = custom_env_hash
+      @environments = []
+    end
+    return true
+  rescue StandardError => e
+    log_exception(e)
+  end
 
   def create_build_dir
     FileUtils.mkdir_p(get_basedir)
@@ -852,6 +849,8 @@ end
     builder_public = BuilderPublic.new(self)
     system_access = SystemAccess.new
     @templater = Templater.new(system_access, builder_public)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   protected
