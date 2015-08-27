@@ -273,7 +273,7 @@ class ManagedContainer < Container
       ret_val = false
     else
       set_container_id
-      register_with_dns
+      register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
@@ -302,7 +302,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Can\'t Start upayse as ', state)
     end
-   # register_with_dns
+   register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
     clear_error
     save_state
@@ -353,7 +353,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Can\'t Start Container as ', state)
     end
-    #register_with_dns
+    register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
     clear_error
     save_state
@@ -363,7 +363,7 @@ class ManagedContainer < Container
   # bootsrap service dns into ManagedService registry
   # would be better if it check a pre exisiting record will throw error on recreate
   #
-  def register_with_dns
+  def register_with_dns # MUst register each time as IP Changes
     return false if has_api? == false
     service_hash = SystemUtils.create_dns_service_hash(self)
     return false if service_hash.is_a?(Hash) == false
@@ -483,7 +483,7 @@ class ManagedContainer < Container
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
-      #register_with_dns
+      register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
