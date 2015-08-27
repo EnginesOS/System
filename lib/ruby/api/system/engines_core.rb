@@ -37,6 +37,7 @@ class EnginesCore < ErrorsApi
   end
 
   def force_registry_restart
+    log_err_mesg("Forcing registry restart ", nil)
     @registry_handler.force_registry_restart
   end
 
