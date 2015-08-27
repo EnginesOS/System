@@ -70,23 +70,7 @@ class EngineBuilder
 
     create_templater
 
-    custom_env = params[:variables]
-    p :custom_env
-    p custom_env
-    if custom_env.nil? == true
-      @set_environments = {}
-      @environments = []
-    elsif custom_env.instance_of?(Array) == true
-      @environments = custom_env # happens on rebuild as custom env is saved in env on disk
-      # FIXME: need to vet all environment variables
-      @set_environments = {}
-    else
-      custom_env_hash = custom_env
-      p :Merged_custom_env
-      p custom_env_hash
-      @set_environments = custom_env_hash
-      @environments = []
-    end
+    process_supplied_envs(custom_env)
 
     @runtime =  ''
 
@@ -810,6 +794,26 @@ class EngineBuilder
   end
 
   private
+  
+def process_supplied_envs(custom_env)
+custom_env = params[:variables]
+p :custom_env
+p custom_env
+if custom_env.nil?
+  @set_environments = {}
+  @environments = []
+elsif custom_env.instance_of?(Array)
+  @environments = custom_env # happens on rebuild as custom env is saved in env on disk
+  # FIXME: need to vet all environment variables
+  @set_environments = {}
+else
+  custom_env_hash = custom_env
+  p :Merged_custom_env
+  p custom_env_hash
+  @set_environments = custom_env_hash
+  @environments = []
+end
+end
 
   def create_build_dir
     FileUtils.mkdir_p(get_basedir)
