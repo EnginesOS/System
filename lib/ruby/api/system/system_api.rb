@@ -530,7 +530,7 @@ class SystemApi < ErrorsApi
       ip = open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
     end
     service_hash[:variables][:ip] = ip
-    return @engines_api.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash) == true
+    return @engines_api.service_manager.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash) == true
     return false
   rescue StandardError => e
     log_error_mesg('Add self hosted domain exception', params.to_s)
