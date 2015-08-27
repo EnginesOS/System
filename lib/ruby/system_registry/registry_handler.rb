@@ -11,6 +11,7 @@ class RegistryHandler < ErrorsApi
    
   def force_registry_restart
       # start in thread in case timeout clobbers
+    log_error_mesg("Forcing registry restart",nil)
       registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
       # FIXME: need to panic if cannot load
       restart_thread = Thread.new {
@@ -65,6 +66,7 @@ class RegistryHandler < ErrorsApi
     private
     
   def force_recreate
+    log_error_mesg("Forcing registry recreate", nil)
      registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
      return log_error_mesg('Fatal Unable to Start Registry Service: ',registry_service.last_error ) if !registry_service.forced_recreate
      return true
