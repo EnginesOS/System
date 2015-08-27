@@ -371,9 +371,7 @@ class ManagedContainer < Container
   end
 
   def restart_container
-    ret_val = false
     ret_val = start_container if stop_container 
-    return ret_val
   end
 
   # @return a containers ip address as a [String]
