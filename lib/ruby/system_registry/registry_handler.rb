@@ -20,7 +20,7 @@ class RegistryHandler < ErrorsApi
         while registry_service.is_startup_complete? == false
           sleep 1
           wait += 1
-          return force_recreate if wait > 60
+          return force_recreate if wait > 120
         end
       }
       restart_thread.join
@@ -50,7 +50,7 @@ class RegistryHandler < ErrorsApi
       while !registry_service.is_startup_complete?
         sleep 1
         wait += 1
-        break if wait > 60
+        break if wait > 120
       end
       return registry_service.get_ip_str
     rescue StandardError => e
