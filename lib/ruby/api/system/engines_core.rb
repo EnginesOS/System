@@ -10,7 +10,6 @@ require '/opt/engines/lib/ruby/managed_services/service_definitions/software_ser
 require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
-
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
   require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
@@ -20,25 +19,27 @@ class EnginesCore < ErrorsApi
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'system_preferences.rb'
+
   def initialize
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @system_preferences = SystemPreferences.new    
+    @system_preferences = SystemPreferences.new
     @registry_handler.start
   end
 
   attr_reader  :container_api, :service_api
-  
+
   def get_registry_ip
     @registry_handler.get_registry_ip
   end
+
   def force_registry_restart
     @registry_handler.force_registry_restart
   end
-  
+
   def software_service_definition(params)
     clear_error
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
@@ -81,7 +82,6 @@ class EnginesCore < ErrorsApi
     test_docker_api_result(@docker_api.signal_container_process(pid, sig, container))
   end
 
-
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
   end
@@ -102,8 +102,6 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-
-
   #  def add_volume(site_hash)
   #    return test_system_api_result(@system_api.add_volume(site_hash))
   #  end
@@ -111,8 +109,6 @@ class EnginesCore < ErrorsApi
   #  def rm_volume(site_hash)
   #    return test_system_api_result(@system_api.rm_volume(site_hash))
   #  end
-
-
 
   def image_exist?(container_name)
     test_docker_api_result(@docker_api.image_exist?(container_name))
@@ -191,21 +187,20 @@ class EnginesCore < ErrorsApi
       return 'container' #FIXME poor assumption
     end
   end
-  
-  def container_state_dir(container)
-      test_system_api_result(@system_api.container_state_dir(container))
-    end
 
+  def container_state_dir(container)
+    test_system_api_result(@system_api.container_state_dir(container))
+  end
 
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-   return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
-   return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
-   return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
-   return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
-   return true
+    return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
+    return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
+    return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
+    return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
+    return true
   rescue StandardError => e
     log_exception(e)
   end
@@ -230,8 +225,6 @@ class EnginesCore < ErrorsApi
     @service_manager = ServiceManager.new(self) if @service_manager == nil
     return @service_manager
   end
-
-  
 
   def match_orphan_service(service_hash)
     res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
@@ -426,7 +419,7 @@ class EnginesCore < ErrorsApi
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
-          next if service_dir_entry.start_with?('.')          
+          next if service_dir_entry.start_with?('.')
           if service_dir_entry.end_with?('.yaml')
             service = load_service_definition(dir + '/' + service_dir_entry)
             avail_services.push(service.to_h) if !service.nil?
@@ -470,7 +463,7 @@ class EnginesCore < ErrorsApi
       @last_error = engine.result_mesg
       return false
     end
-    if engine.is_active? == true
+    if engine.is_active?
       @last_error = 'Container is active'
       return false
     end
@@ -493,7 +486,7 @@ class EnginesCore < ErrorsApi
         # new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
           if  env.name == new_env_name
-             return log_error_mesg('Cannot Change Value of',env) if env.immutable
+            return log_error_mesg('Cannot Change Value of',env) if env.immutable
             env.value = new_env_value
           end
           # end
@@ -501,7 +494,7 @@ class EnginesCore < ErrorsApi
       end
     end
     if engine.has_container?
-      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container      
+      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container
     end
     return log_error_mesg(engine.last_error,engine) if !engine.create_container
     return true
@@ -535,12 +528,12 @@ class EnginesCore < ErrorsApi
 
   def get_container_network_metrics(engine_name)
     engine = test_system_api_result(@system_api.loadManagedEngine(engine_name))
-      return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
+    return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
     engine = test_system_api_result(@system_api.loadManagedService(engine_name))
     return engine.get_container_network_metrics if engine.is_a?(ManagedService)
-    log_error_mesg("Failed to load network stats",engine_name)            
+    log_error_mesg("Failed to load network stats",engine_name)
   end
-  
+
   def loadManagedEngine(engine_name)
     test_system_api_result(@system_api.loadManagedEngine(engine_name))
   end
@@ -672,8 +665,6 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-
-
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
@@ -706,8 +697,6 @@ class EnginesCore < ErrorsApi
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
   #  end
 
- 
-
   def force_reregister_attached_service(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
@@ -720,16 +709,15 @@ class EnginesCore < ErrorsApi
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-#  #Called by Managed Containers
-#  def register_non_persistant_service(service_hash)
-#    check_sm_result(service_manager.register_non_persistant_service(service_hash))
-#  end
-#
-#  #Called by Managed Containers
-#  def deregister_non_persistant_service(service_hash)
-#    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
-#  end
-
+  #  #Called by Managed Containers
+  #  def register_non_persistant_service(service_hash)
+  #    check_sm_result(service_manager.register_non_persistant_service(service_hash))
+  #  end
+  #
+  #  #Called by Managed Containers
+  #  def deregister_non_persistant_service(service_hash)
+  #    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
+  #  end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
@@ -741,13 +729,10 @@ class EnginesCore < ErrorsApi
     test_docker_api_result(@docker_api.clean_up_dangling_images)
   end
 
-
   def has_container_started?(container_name)
     completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
     File.exist?(completed_flag_file)
   end
-
-  
 
   def check_sm_result(result)
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
@@ -773,8 +758,6 @@ class EnginesCore < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
-
 
   # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
   # :path_type :publisher_namespace

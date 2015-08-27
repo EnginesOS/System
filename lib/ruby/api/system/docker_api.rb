@@ -1,5 +1,4 @@
 class DockerApi < ErrorsApi
-
   def create_container(container)
     clear_error
     commandargs = container_commandline_args(container)
@@ -52,28 +51,6 @@ class DockerApi < ErrorsApi
     log_exception(e)
   end
 
-  #  def image_exist?(image_name)
-  #    image_name.gsub!(/:.*$/,'')
-  #    cmd= 'docker images -q ' + image_name
-  #
-  #         result = SystemUtils.execute_command(cmd)
-  #         if  result[:result] != 0
-  #           @last_error = result[:stderr]
-  #                      return false
-  #         end
-  #    if  result[:stdout].size()>2
-  #          @last_error = ''
-  #         return true
-  #        else
-  #          @last_error = result[:stderr]
-  #        end
-  #
-  #         rescue  StandardError => e
-  #                log_exception(e)
-  #                return false
-  #  end
-  #
-  #
   def image_exist?(imagename)
     image_name = imagename.gsub(/:.*$/, '')
     cmd = 'docker images -q ' + image_name
@@ -105,13 +82,13 @@ class DockerApi < ErrorsApi
 
   def execute_docker_cmd(cmdline, container)
     clear_error
-    if cmdline.include?('docker exec') == true
+    if cmdline.include?('docker exec')
       docker_exec = 'docker exec -u ' + container.cont_userid + ' '
       cmdline.gsub!(/docker exec/, docker_exec)
     end
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
-    if container.last_result.start_with?('[') == true && (container.last_result.end_with?(']') == false || container.last_result.end_with?(']') == false)
+    if container.last_result.start_with?('[') && !(container.last_result.end_with?(']') == false || container.last_result.end_with?(']') == false)
       container.last_result += ']'
     end
     container.last_error = result[:stderr]

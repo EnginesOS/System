@@ -1,7 +1,7 @@
 class DockerFileBuilder
   def initialize(reader, _containername, hostname, domain_name, webport, builder)
     @hostname = hostname
-    #    @container_name = containername
+    # @container_name = containername
     @domain_name = domain_name
     @web_port = webport
     @blueprint_reader = reader
@@ -101,7 +101,6 @@ class DockerFileBuilder
 
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_apache_modules
@@ -150,7 +149,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_persistant_dirs
@@ -174,7 +172,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_data_permissions
@@ -206,9 +203,8 @@ class DockerFileBuilder
     log_build_output('set setup_env')
     src_paths = @blueprint_reader.persistant_files[:src_paths]
     #      dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
-    if src_paths.nil? == true
-      return
-    end
+    return if src_paths.nil?
+
     src_paths.each do |path|
       #          path = dest_paths[n]
       p :path
@@ -235,7 +231,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_file_service
@@ -252,7 +247,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   #  def write_services
@@ -311,7 +305,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_rake_list
@@ -328,7 +321,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_os_packages
@@ -351,7 +343,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def deploy_dir
@@ -371,7 +362,6 @@ class DockerFileBuilder
     count_layer
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def chown_home_app
@@ -386,7 +376,6 @@ class DockerFileBuilder
     count_layer
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_worker_commands
@@ -413,7 +402,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   #    def write_cron_jobs
@@ -482,7 +470,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_write_permissions_recursive
@@ -523,7 +510,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_app_archives
@@ -639,7 +625,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_container_user
@@ -652,7 +637,6 @@ class DockerFileBuilder
     count_layer
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_stack_env
@@ -693,7 +677,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_pear_modules
@@ -716,7 +699,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def write_pecl_modules
@@ -739,7 +721,6 @@ class DockerFileBuilder
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def set_user(user)
