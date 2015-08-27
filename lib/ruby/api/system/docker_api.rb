@@ -88,7 +88,7 @@ class DockerApi < ErrorsApi
     end
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
-    if container.last_result.start_with?('[') && !(container.last_result.end_with?(']') == false || container.last_result.end_with?(']') == false)
+    if container.last_result.start_with?('[') && !container.last_result.end_with?(']')  # || container.last_result.end_with?(']') )
       container.last_result += ']'
     end
     container.last_error = result[:stderr]
