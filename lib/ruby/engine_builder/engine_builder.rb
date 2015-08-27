@@ -20,21 +20,21 @@ class EngineBuilder
   @http_protocol = 'HTTPS and HTTP'
 
   attr_reader :last_error,
-              :templater,
-              :repoName,
-              :hostname,
-              :build_name,
-              :set_environments,
-              :container_name,
-              :environments,
-              :domain_name,
-              :runtime,
-              :web_port,
-              :http_protocol,
-              :blueprint,
-              :first_build,
-              :memory,
-              :result_mesg
+  :templater,
+  :repoName,
+  :hostname,
+  :build_name,
+  :set_environments,
+  :container_name,
+  :environments,
+  :domain_name,
+  :runtime,
+  :web_port,
+  :http_protocol,
+  :blueprint,
+  :first_build,
+  :memory,
+  :result_mesg
 
   attr_accessor :app_is_persistant
   class BuildError < StandardError
@@ -45,36 +45,32 @@ class EngineBuilder
   end
 
   def initialize(params, core_api)
-    #   {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
+    # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
+    @core_api = core_api
     @container_name = params[:engine_name]
-    @app_is_persistant = false
-    #      @engine_public = nil
-    @result_mesg = 'Aborted Due to Errors'
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
+    @http_protocol = params[:http_protocol]
+    @memory = params[:memory]
+    @repo_name = params[:repository_url]
     if @container_name.nil? == true || @container_name == ''
       @last_error = ' empty container name'
       return false
     end
-    #  @container_name.gsub!(/ /,'_')
+
     @container_name.gsub!(/ /, '_')
     @container_name.freeze
-    custom_env = params[:variables]
-    #   custom_env=params
-    @core_api = core_api
-    @http_protocol = params[:http_protocol]
-    p params
-    @memory = params[:memory]
-    @repo_name = params[:repository_url]
+
     @build_name = File.basename(@repo_name).sub(/\.git$/, '')
-    #    @workerPorts=Array.new
     @web_port = SystemConfig.default_webport
-    #    @vols=Array.new
+    @app_is_persistant = false
+    @result_mesg = 'Aborted Due to Errors'
     @first_build = true
     @attached_services = []
-    builder_public = BuilderPublic.new(self)
-    system_access = SystemAccess.new
-    @templater = Templater.new(system_access, builder_public)
+
+    create_templater
+
+    custom_env = params[:variables]
     p :custom_env
     p custom_env
     if custom_env.nil? == true
@@ -85,41 +81,20 @@ class EngineBuilder
       # FIXME: need to vet all environment variables
       @set_environments = {}
     else
-      #      env_array = custom_env.fall
       custom_env_hash = custom_env
       p :Merged_custom_env
       p custom_env_hash
       @set_environments = custom_env_hash
       @environments = []
     end
-    @runtime =  ''
-    #    @databases= Array.new
-    begin
-      FileUtils.mkdir_p(get_basedir)
-      @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
-      @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
-      @log_pipe_rd, @log_pipe_wr = IO.pipe
-      @error_pipe_rd, @error_pipe_wr = IO.pipe
-    rescue Exception => e
-      log_exception(e)
-    end
-  end
 
-  def close_all
-    if @log_file.closed? == false
-      log_build_output('Build Result:' + @result_mesg)
-      log_build_output('Build Finished')
-      @log_file.close
-    end
-    if@err_file.closed? == false
-      @err_file.close
-    end
-    if @log_pipe_wr.closed? == false
-      @log_pipe_wr.close
-    end
-    if @error_pipe_wr.closed? == false
-      @error_pipe_wr.close
-    end
+    @runtime =  ''
+
+    return "error" unless create_build_dir
+    return "error" unless setup_log_output
+
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def get_build_log_stream
@@ -167,7 +142,7 @@ class EngineBuilder
       Dir.mkdir(local_log_dir)
     end
     return ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -181,10 +156,10 @@ class EngineBuilder
       end
       FileUtils.mv(dir, backup)
     end
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
-    # throw BuildException.new(e,'backup_lastbuild')
+    # throw BuildStandardError.new(e,'backup_lastbuild')
   end
 
   def load_blueprint
@@ -197,7 +172,7 @@ class EngineBuilder
     p :symbolized_hash
     hash = SystemUtils.symbolize_keys(json_hash)
     return hash
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -205,7 +180,7 @@ class EngineBuilder
   def clone_repo
     log_build_output('Clone Blueprint Repository')
     g = Git.clone(@repo_name, @build_name, :path => SystemConfig.DeploymentDir)
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -231,7 +206,7 @@ class EngineBuilder
       return res
     end
     return true
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -244,7 +219,7 @@ class EngineBuilder
       log_build_errors('Failed to Launch')
     end
     return retval
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -253,7 +228,7 @@ class EngineBuilder
     log_build_output('Setup global defaults')
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/global/* ' + get_basedir
     system cmd
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -262,7 +237,7 @@ class EngineBuilder
     log_build_output('Copy in default templates')
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/* ' + get_basedir
     system cmd
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -296,9 +271,9 @@ class EngineBuilder
       p @web_port
       puts(@web_port)
     end
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
-    #      throw BuildException.new(e,'setting web port')
+    #      throw BuildStandardError.new(e,'setting web port')
     return false
   end
 
@@ -311,7 +286,7 @@ class EngineBuilder
         @web_user = i[1].strip
       end
     end
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -452,7 +427,7 @@ class EngineBuilder
     end
     close_all
     return mc
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
     close_all
@@ -591,7 +566,7 @@ class EngineBuilder
     content = @templater.process_templated_string(content)
     out_file.puts(content)
     out_file.close
-  rescue Exception => e
+  rescue StandardError => e
     if out_file
       if content.nil? == false
         out_file.puts(content)
@@ -759,7 +734,7 @@ class EngineBuilder
     end
     builder.post_failed_build_clean_up
     return EnginesOSapiResult.failed(engine.container_name, builder.last_error, 'build_engine')
-  rescue Exception => e
+  rescue StandardError => e
     return EnginesOSapiResult.failed(engine.container_name, builder.last_error, 'build_engine')
   end
 
@@ -776,39 +751,38 @@ class EngineBuilder
   end
 
   def setup_rebuild
-      log_build_output('Setting up rebuild')
-      FileUtils.mkdir_p(get_basedir)
-      blueprint = @core_api.load_blueprint(@engine)
-      statefile = get_basedir + '/blueprint.json'
-      f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-      f.write(blueprint.to_json)
-      f.close
-    rescue Exception => e
-      log_exception(e)
-      close_all
-      return false
+    log_build_output('Setting up rebuild')
+    FileUtils.mkdir_p(get_basedir)
+    blueprint = @core_api.load_blueprint(@engine)
+    statefile = get_basedir + '/blueprint.json'
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f.write(blueprint.to_json)
+    f.close
+  rescue StandardError => e
+    log_exception(e)
+    close_all
   end
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
     mc = ManagedEngine.new(@container_name,
-                            @memory,
-                            @hostname,
-                            @domain_name,
-                            @container_name,
-                            @blueprint_reader.volumes,
-                            @web_port,
-                            @blueprint_reader.worker_ports,
-                            @repo_name,
-                            @blueprint_reader.databases,
-                            @blueprint_reader.environments,
-                            @blueprint_reader.framework,
-                            @blueprint_reader.runtime,
-                            @core_api.container_api,
-                            @blueprint_reader.data_uid,
-                            @blueprint_reader.data_gid,
-                            @blueprint_reader.deployment_type
-                            )
+    @memory,
+    @hostname,
+    @domain_name,
+    @container_name,
+    @blueprint_reader.volumes,
+    @web_port,
+    @blueprint_reader.worker_ports,
+    @repo_name,
+    @blueprint_reader.databases,
+    @blueprint_reader.environments,
+    @blueprint_reader.framework,
+    @blueprint_reader.runtime,
+    @core_api.container_api,
+    @blueprint_reader.data_uid,
+    @blueprint_reader.data_gid,
+    @blueprint_reader.deployment_type
+    )
     # :http_protocol=>'HTTPS and HTTP'
     mc.set_protocol(@http_protocol)
     mc.conf_self_start = true
@@ -833,6 +807,47 @@ class EngineBuilder
 
   def engine_environment
     return @blueprint_reader.environments
+  end
+
+  private
+
+  def create_build_dir
+    FileUtils.mkdir_p(get_basedir)
+  rescue StandardError => e
+    log_exception(e)
+  end
+
+  def setup_log_output
+    @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    @log_pipe_rd, @log_pipe_wr = IO.pipe
+    @error_pipe_rd, @error_pipe_wr = IO.pipe
+  rescue StandardError => e
+    log_exception(e)
+  end
+
+  def close_all
+    if @log_file.closed? == false
+      log_build_output('Build Result:' + @result_mesg)
+      log_build_output('Build Finished')
+      @log_file.close
+    end
+    if@err_file.closed? == false
+      @err_file.close
+    end
+    if @log_pipe_wr.closed? == false
+      @log_pipe_wr.close
+    end
+    if @error_pipe_wr.closed? == false
+      @error_pipe_wr.close
+    end
+    return false
+  end
+
+  def create_templater
+    builder_public = BuilderPublic.new(self)
+    system_access = SystemAccess.new
+    @templater = Templater.new(system_access, builder_public)
   end
 
   protected
@@ -918,13 +933,13 @@ class EngineBuilder
     from_line = dockerfile.gets("\n", 100)
     p from_line
     from_part = from_line.gsub(/FROM[ ]./, '')
-#    p from_part
-#    froms = from_part.split("\n")
-#    p :froms
-#    p froms.to_s
-#    p froms[0]
+    #    p from_part
+    #    froms = from_part.split("\n")
+    #    p :froms
+    #    p froms.to_s
+    #    p froms[0]
     return from_part
-rescue Exception => e
+  rescue StandardError => e
     log_build_errors(e)
     return nil
   end
@@ -933,16 +948,16 @@ rescue Exception => e
     return SystemConfig.DeploymentDir + '/' + @build_name
   end
 
-def log_exception_and_fail(cmd, e)
-  SystemUtils.log_exception(e)
-  @last_error = cmd.to_s + ':' + @last_error.to_s
-  return false
-end
+  def log_exception_and_fail(cmd, e)
+    SystemUtils.log_exception(e)
+    @last_error = cmd.to_s + ':' + @last_error.to_s
+    return false
+  end
 
-def log_exception(e)
-  log_build_errors(e.to_s)
-  @last_error = @last_error.to_s + e.to_s
-ensure
-  SystemUtils.log_exception(e)
-end
+  def log_exception(e)
+    log_build_errors(e.to_s)
+    @last_error = @last_error.to_s + e.to_s
+  ensure
+    SystemUtils.log_exception(e)
+  end
 end

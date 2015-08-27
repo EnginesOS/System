@@ -56,11 +56,6 @@ class ContainerApi < ErrorsApi
     test_system_api_result(@system_api.save_container(container))
   end
 
-  def test_docker_api_result(result)
-    @last_error = @docker_api.last_error if result.nil? || result == false
-    return result
-  end
-
   def delete_image(container)
     clear_error
     return  test_system_api_result(@system_api.delete_container_configs(container)) if test_docker_api_result(@docker_api.delete_image(container))
@@ -134,7 +129,7 @@ class ContainerApi < ErrorsApi
   private
 
   def check_sm_result(result)
-    @last_error += @engines_core.service_manager.last_error.to_s if result.nil? ||result.is_a?(FalseClass)
+    log_error_mesg(@engines_core.service_manager.last_error.to_s, result) if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
@@ -166,13 +161,14 @@ class ContainerApi < ErrorsApi
     return true
   end
 
-  def test_system_api_result(result)
-    @last_error = @system_api.last_error.to_s if result.nil? || result.is_a?(FalseClass)
+  def test_docker_api_result(result)
+    log_error_mesg(@docker_api.last_error, result) if result.nil? || result == false
     return result
   end
 
-  def check_system_api_result(result)
-    @last_error = @system_api.last_error.to_s[0, 128] if result.nil? || result.is_a?(FalseClass)
+  def test_system_api_result(result)
+    log_error_mesg(@system_api.last_error.to_s, result) if result.nil? || result.is_a?(FalseClass)
     return result
   end
+
 end
