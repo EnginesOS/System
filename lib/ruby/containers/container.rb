@@ -24,6 +24,7 @@ class Container < ErrorsApi
                :eports,\
                :volumes,\
                :environments
+  attr_accessor :last_error
   
   def update_memory(new_memory)
     @memory = new_memory
