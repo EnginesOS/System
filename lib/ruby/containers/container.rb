@@ -1,4 +1,4 @@
-class Container
+class Container < ErrorsApi
   
   def initialize(mem, name, host, domain, image, e_ports, vols, environs) # for test only
     @memory = mem
