@@ -80,7 +80,7 @@ class NetworkSystemRegistry < ErrorsApi
     if !response_hash[:object].nil?
       response_hash[:object] = YAML::load(response_hash[:object])
     end
-    log_error_mesg(response_hash[:last_error], response_hash) if response_hash.key?(:last_error)
+    log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
     return response_hash
   rescue StandardError => e
     log_exception(e)
@@ -191,7 +191,6 @@ class NetworkSystemRegistry < ErrorsApi
     end
     result_hash = false
     Timeout::timeout(SystemConfig.registry_connect_timeout) {
-      #      p :waiting_for_reply
       result_hash = wait_for_reply
     }
     return result_hash
@@ -201,6 +200,7 @@ class NetworkSystemRegistry < ErrorsApi
   end
 
   def reopen_registry_socket
+    log_error_mesg("Registry reopen",self)
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
       if @registry_socket.is_a?(String)
