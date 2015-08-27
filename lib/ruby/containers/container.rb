@@ -1,3 +1,4 @@
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
   
   def initialize(mem, name, host, domain, image, e_ports, vols, environs) # for test only
