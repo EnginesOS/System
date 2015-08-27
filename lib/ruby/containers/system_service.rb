@@ -5,8 +5,8 @@ class SystemService < ManagedService
   
   def  forced_recreate 
     
-      log_error_mesg("Forced recreate  resgitroy",nil)
-    
+      #log_error_mesg('Forced recreate  resgitroy',nil)
+    p 'Forced recreate  resgitroy'
       unpause_container
       stop_container
       destroy_container
