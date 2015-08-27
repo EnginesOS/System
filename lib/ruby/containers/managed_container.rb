@@ -302,7 +302,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Can\'t Start upayse as ', state)
     end
-    register_with_dns
+   # register_with_dns
     @container_api.register_non_persistant_services(self)
     clear_error
     save_state
@@ -395,21 +395,7 @@ class ManagedContainer < Container
     return add_nginx_service if @deployment_type == 'web'
   end
 
-  # create nginx service_hash for container and register with nginx
-  # @return boolean indicating sucess
-  def add_nginx_service
-    return false if has_api? == false
-    service_hash = SystemUtils.create_nginx_service_hash(self)
-    return @container_api.attach_service(service_hash)
-  end
-
-  # create nginx service_hash for container deregister with nginx
-  # @return boolean indicating sucess
-  def remove_nginx_service
-    return false if has_api? == false
-    service_hash = SystemUtils.create_nginx_service_hash(self)
-    return @container_api.dettach_service(service_hash)
-  end
+ 
 
   def stats
     expire_engine_info
@@ -557,9 +543,24 @@ def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
   end
   
-  protected
+  
+protected
+  
+# create nginx service_hash for container and register with nginx
+ # @return boolean indicating sucess
+ def add_nginx_service
+   return false if has_api? == false
+   service_hash = SystemUtils.create_nginx_service_hash(self)
+   return @container_api.attach_service(service_hash)
+ end
 
-
+ # create nginx service_hash for container deregister with nginx
+ # @return boolean indicating sucess
+ def remove_nginx_service
+   return false if has_api? == false
+   service_hash = SystemUtils.create_nginx_service_hash(self)
+   return @container_api.dettach_service(service_hash)
+ end
 
   def has_api?
    return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
