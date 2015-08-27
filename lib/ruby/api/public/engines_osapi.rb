@@ -515,21 +515,20 @@ class EnginesOSapi
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
     failed(params[:parent_engine].to_s, core_api.last_error, params[:parent_engine].to_s)
   end
-
-  def get_service_query_from_request(request_hash)
-    # {:application_name=>\'frontaccounting\', :application_service=>{:type_path=>\'nginx\', :publisher_namespace=>\'EnginesSystem\', :service_handle=>\'frontaccounting.engines.demo\', :container_type=>nil, :service_container_name=>nil}})'
-    service_query = request_hash[:application_service]
-    service_query[:parent_engine] = request_hash[:application_name]
-    service_query
-  end
+#
+#  def get_service_query_from_request(request_hash)
+#    # {:application_name=>\'frontaccounting\', :application_service=>{:type_path=>\'nginx\', :publisher_namespace=>\'EnginesSystem\', :service_handle=>\'frontaccounting.engines.demo\', :container_type=>nil, :service_container_name=>nil}})'
+#    service_query = request_hash[:application_service]
+#    service_query[:parent_engine] = request_hash[:application_name]
+#    service_query
+#  end
 
   # @ return [EnginesOSapiResult]
   # @params service_hash
   # this method is called to register the service hash with service
   # nothing is written to the service registry
   # effectivitly activating non persistant services
-  def register_attached_service(request_hash)
-    service_query = get_service_query_from_request(request_hash)
+  def register_attached_service(service_query)
     p :register_attached_service
     p service_query
     return success(service_query[:parent_engine].to_s + ' ' + service_query[:service_handle].to_s, 'Register Service') if @core_api.force_register_attached_service(service_query)
@@ -540,8 +539,7 @@ class EnginesOSapi
   # @params service_hash
   # this method is called to deregister the service hash from service
   # nothing is written to the service resgitry
-  def deregister_attached_service(request_hash)
-    service_query = get_service_query_from_request(request_hash)
+  def deregister_attached_service(service_query)   
     p :deregister_attached_service
     p service_query
     return success(service_query[:parent_engine].to_s + ' ' + service_query[:service_handle].to_s, 'Deregister Service') if @core_api.force_deregister_attached_service(service_query)
@@ -553,8 +551,7 @@ class EnginesOSapi
   # this method is called to deregister the service hash from service
   # and then to register the service_hash with the service
   # nothing is written to the service resgitry
-  def reregister_attached_service(request_hash)
-    service_query = get_service_query_from_request(request_hash)
+  def reregister_attached_service(service_query)
     p :reregister_attached_service
     p service_query
     return success(service_query[:parent_engine].to_s + ' ' +service_query[:service_handle].to_s, 'reregister Service') if @core_api.force_reregister_attached_service(service_query)
