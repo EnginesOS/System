@@ -270,11 +270,12 @@ class EnginesCore < ErrorsApi
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
       if site[:variables][:proto] == 'http_https'
-        protocol='https'
+        protocol = 'https'
       else
-        protocol=site[:variables][:proto]
+        protocol = site[:variables][:proto]
+        protocol = 'http' if protocol.nil?
       end
-      url= protocol + '://' + site[:variables][:fqdn]
+      url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
       urls.push(url)
     end
     return urls
