@@ -78,8 +78,7 @@ class ManagedContainer < Container
   attr_accessor :container_id,\
   :container_api,\
   :conf_self_start,\
-  :last_result,\
-  :last_error
+  :last_result
   
   def docker_info
     info = @docker_info.dup
@@ -234,7 +233,7 @@ class ManagedContainer < Container
       ret_val = @container_api.destroy_container(self)
       expire_engine_info
     else
-      @last_error = 'Cannot Destroy a container that is not stopped\nPlease stop first'
+      log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first',state)
     end
     clear_error(ret_val)
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
@@ -251,7 +250,7 @@ class ManagedContainer < Container
       ret_val = @container_api.setup_container(self)
       expire_engine_info
     else
-      @last_error = 'Cannot create container if container by the same name exists'
+      log_error_mesg('Cannot create container as container exists ',state) 
     end
     clear_error(ret_val)
     save_state
@@ -266,7 +265,7 @@ class ManagedContainer < Container
     if state == 'nocontainer'
       ret_val = @container_api.create_container(self)
     else
-      @last_error = 'Cannot create container if container by the same name exists'
+      log_error_mesg('Cannot create container as container exists ',state) 
     end
     expire_engine_info
     if read_state != 'running'
@@ -301,7 +300,7 @@ class ManagedContainer < Container
       ret_val = @container_api.unpause_container(self)
       expire_engine_info
     else
-      @last_error = 'Can\'t unpause Container as ' + state
+      log_error_mesg('Can\'t Start upayse as ', state)
     end
     register_with_dns
     @container_api.register_non_persistant_services(self)
@@ -318,7 +317,7 @@ class ManagedContainer < Container
       ret_val = @container_api.pause_container(self)
       expire_engine_info
     else
-      @last_error = 'Can\'t pause Container as ' + state
+      log_error_mesg('Can\'t Pause Container as ', state)
     end
     @container_api.deregister_non_persistant_services(self)
     clear_error(ret_val)
@@ -336,7 +335,7 @@ class ManagedContainer < Container
       @container_api.deregister_non_persistant_services(self)
       expire_engine_info
     else
-      @last_error = 'Can\'t stop Container as ' + state  
+      log_error_mesg('Can\'t Stop Container as ', state)
        @container_api.deregister_non_persistant_services(self)      
     end
     clear_error(ret_val)
@@ -352,7 +351,7 @@ class ManagedContainer < Container
       ret_val = @container_api.start_container(self)
       expire_engine_info
     else
-      @last_error = 'Can\'t Start Container as ' + state
+      log_error_mesg('Can\'t Start Container as ', state)
     end
     #register_with_dns
     @container_api.register_non_persistant_services(self)
@@ -565,24 +564,10 @@ def get_container_network_metrics()
     return true
   end
 
-  def clear_error(ret_val)
-    @last_error = nil if ret_val == true
-  end
 
   def set_container_id    
     return docker_info[0]['Id'] if docker_info.is_a?(Array) == true && docker_info[0].is_a?(Hash)
   return -1
   end
 
-  def log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-  end
-  
-def log_exception(e)
-   @last_error = @last_error.to_s + e.to_s
-   p @last_error + e.backtrace.to_s
-   return false
- end
 end

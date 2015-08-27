@@ -34,8 +34,6 @@ class ManagedEngine < ManagedContainer
   def extract_plugins
     false
   end
-  
-
     
   def engine_persistant_services
     services = @container_api.engine_persistant_services(@container_name)
