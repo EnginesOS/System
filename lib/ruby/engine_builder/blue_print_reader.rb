@@ -41,7 +41,7 @@ class BluePrintReader
               :deployment_type,
               :database_seed
 
-  def  log_build_output(line)
+  def log_build_output(line)
     @builder.log_build_output(line)
   end
 
@@ -102,15 +102,12 @@ class BluePrintReader
     log_build_output('Read Persistant Dirs')
     @persistant_dirs = []
     pds = @blueprint[:software][:persistent_directories]
-    if pds.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !pds.is_a?(Array) # not an error just nada
     pds.each do |dir|
       @persistant_dirs.push(dir[:path])
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_persistant_files
@@ -119,9 +116,7 @@ class BluePrintReader
     src_paths = []
     dest_paths = []
     pfs = @blueprint[:software][:persistent_files]
-    if pfs.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !pfs.is_a?(Array) # not an error just nada
     pfs.each do |file|
       path = clean_path(file[:path])
       src_paths.push(path)
@@ -133,22 +128,18 @@ class BluePrintReader
     @persistant_files[:src_paths] = src_paths
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_rake_list
     @rake_actions = []
     log_build_output('Read Rake List')
     rake_cmds = @blueprint[:software][:rake_tasks]
-    if rake_cmds.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if rake_cmds.is_a?(Array) # not an error just nada
     rake_cmds.each do |rake_cmd|
       @rake_actions.push(rake_cmd)
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_services
@@ -156,9 +147,7 @@ class BluePrintReader
     @volumes = {}
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
-    if services.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !services.is_a?(Array) # not an error just nada
     services.each do |service|
       if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil? == true
         service[:publisher_namespace] = 'EnginesSystem'
@@ -184,9 +173,7 @@ class BluePrintReader
 
   def add_file_service(name, dest) # FIXME: and put me in coreapi
     log_build_output('Add File Service ' + name)
-    if dest.nil? == true || dest == ''
-      dest = name
-    end
+    dest = name if dest.nil? || dest == ''
     if dest.start_with?('/home/app/') == false
       if dest.start_with?('/home/fs/') == false
         if dest != '/home/app'
@@ -207,21 +194,17 @@ class BluePrintReader
     p dest
     p @container_name
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_os_packages
     log_build_output('Read OS Packages')
     ospackages = @blueprint[:software][:system_packages]
-    if ospackages.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if ospackages.is_a?(Array) # not an error just nada
     ospackages.each do |package|
       @os_packages.push(package[:package])
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_lang_fw_values
@@ -232,42 +215,9 @@ class BluePrintReader
     @memory = @blueprint[:software][:required_memory]
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
-  #   def read_pear_list
-  #     begin
-  #       @pear_modules = Array.new
-  #
-  #       log_build_output('Read Pear List')
-  #       pear_mods = @blueprint[:software][:pear_modules]
-  #
-  #         if pear_mods == nil || pear_mods.length == 0
-  #           log_build_output('no pear')
-  #         return
-  #         end
-  #           log_build_output(pear_mods.length.to_s + 'Pears')
-  #         pear_mods.each do |pear_mod|
-  #           p :Pear_mod
-  #           p pear_mod
-  #           log_build_output(pear_mod.to_s)
-  #           mod =  pear_mod[:module]
-  #         os_package = pear_mod[:os_package]
-  #                if os_package != nil && os_package != ''
-  #                @os_packages.push(os_package)
-  #                end
-  #           if mod !=nil
-  #             @pear_modules.push(mod)
-  #             p :added_pear
-  #             p mod
-  #           end
-  #       end
-  #   end
-  #     rescue Exception => e
-  #     SystemUtils.log_exception(e)
-  #       return false
-  #   end
-  #
+  
   def read_pkg_modules
     @apache_modules = []
     @pear_modules = []
@@ -275,9 +225,7 @@ class BluePrintReader
     @pecl_modules = []
 
     pkg_modules = @blueprint[:software][:modules]
-    if pkg_modules.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
       os_package = pkg_module[:os_package]
       if os_package.nil? == false && os_package != ''
@@ -305,37 +253,9 @@ class BluePrintReader
     return true
   end
 
-  #   def read_apache_modules
-  #     @apache_modules = Array.new
-  #     log_build_output('Read Apache Modules List')
-  #     mods =  @blueprint[:software][:apache_modules]
-  #     if mods == nil
-  #       p :no_apache_modules
-  #       return true
-  #     end
-  #     mods.each do |ap_module|
-  #       mod = ap_module[:module]
-  #       os_package = ap_module[:os_package]
-  #         if os_package != nil && os_package != ''
-  #         @os_packages.push(os_package)
-  #         end
-  #       if mod != nil
-  #         @apache_modules.push(mod)
-  #         p :Add_apache
-  #         p mod
-  #       end
-  #     end
-  #     return true
-  #   rescue Exception => e
-  # SystemUtils.log_exception(e)
-  #     return false
-  #   end
-
   def read_sql_seed
     database_seed_file = @blueprint[:software][:database_seed_file]
-    if database_seed_file.nil? == false
-      @database_seed = database_seed_file
-    end
+    @database_seed = database_seed_file if !database_seed_file.nil?
   end
 
   def read_app_packages
@@ -343,9 +263,7 @@ class BluePrintReader
     @archives_details = []
     log_build_output('Configuring install Environment')
     archives = @blueprint[:software][:installed_packages]
-    if archives.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true  if !archives.is_a?(Array) # not an error just nada
     archives.each do |archive|
       archive_details = {}
       arc_src = clean_path(archive[:source_url])
@@ -369,7 +287,6 @@ class BluePrintReader
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_write_permissions_recursive
@@ -378,9 +295,7 @@ class BluePrintReader
     log_build_output('set permissions recussive')
     chmods = @blueprint[:software][:file_write_permissions]
     p :Single_Chmods
-    if chmods.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       p chmod
       if chmod[:recursive] == true
@@ -393,7 +308,6 @@ class BluePrintReader
     return true
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_write_permissions_single
@@ -402,9 +316,7 @@ class BluePrintReader
     log_build_output('set permissions  single')
     chmods = @blueprint[:software][:file_write_permissions]
     p :Recursive_Chmods
-    if chmods.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       p chmod
       if chmod[:recursive] == false
@@ -416,22 +328,19 @@ class BluePrintReader
     return true
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_worker_commands
     log_build_output('Read Workers')
     @worker_commands = []
     workers =@blueprint[:software][:workers]
-    if workers.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !workers.is_a?(Array) # not an error just nada
+
     workers.each do |worker|
       @worker_commands.push(worker[:command])
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_sed_strings
@@ -443,9 +352,7 @@ class BluePrintReader
     @sed_strings[:tmp_file] = []
     log_build_output('set sed strings')
     seds = @blueprint[:software][:replacement_strings]
-    if seds.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !seds.is_a?(Array) # not an error just nada
     n = 0
     seds.each do |sed|
       file = clean_path(sed[:file])
@@ -471,7 +378,6 @@ class BluePrintReader
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_work_ports
@@ -479,9 +385,7 @@ class BluePrintReader
     log_build_output('Read Work Ports')
     ports = @blueprint[:software][:worker_ports]
     puts('Ports Json' + ports.to_s)
-    if ports.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !ports.is_a?(Array) # not an error just nada
     ports.each do |port|
       portnum = port[:port]
       name = port[:name]
@@ -497,7 +401,6 @@ class BluePrintReader
     return true
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 
   def read_environment_variables
@@ -506,9 +409,7 @@ class BluePrintReader
     p :set_environment_variables
     p @builder.set_environments
     envs = @blueprint[:software][:variables]
-    if envs.is_a?(Array) == false
-      return true # not an error just nada
-    end
+    return true if !envs.is_a?(Array) # not an error just nada
     envs.each do |env|
       p env
       name = env[:name]
@@ -522,7 +423,7 @@ class BluePrintReader
       if @builder.set_environments.nil? == false
         p :looking_for_
         p name
-        if ask == true && @builder.set_environments.key?(name) == true
+        if ask && @builder.set_environments.key?(name)
           entered_value = @builder.set_environments[name]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
             value = entered_value
@@ -539,6 +440,5 @@ class BluePrintReader
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
-    return false
   end
 end
