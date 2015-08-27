@@ -7,7 +7,6 @@ class EngineBuilder
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder.rb'
-
   require_relative 'build_report.rb'
   include BuildReport
 

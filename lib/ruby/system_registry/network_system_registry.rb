@@ -211,10 +211,10 @@ class NetworkSystemRegistry < ErrorsApi
       return true
     rescue StandardError => e
      log_exception(e)
-      return false
   end
 
   def force_registry_restart
+    log_error_mesg("FORCE REGISTRY RESTART",self)
     @core_api.force_registry_restart
   end
 
