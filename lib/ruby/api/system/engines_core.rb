@@ -270,11 +270,12 @@ class EnginesCore < ErrorsApi
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
       if site[:variables][:proto] == 'http_https'
-        protocol='https'
+        protocol = 'https'
       else
-        protocol=site[:variables][:proto]
+        protocol = site[:variables][:proto]
+        protocol = 'http' if protocol.nil?
       end
-      url= protocol + '://' + site[:variables][:fqdn]
+      url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
       urls.push(url)
     end
     return urls
@@ -710,15 +711,6 @@ class EnginesCore < ErrorsApi
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-  #  #Called by Managed Containers
-  #  def register_non_persistant_service(service_hash)
-  #    check_sm_result(service_manager.register_non_persistant_service(service_hash))
-  #  end
-  #
-  #  #Called by Managed Containers
-  #  def deregister_non_persistant_service(service_hash)
-  #    check_sm_result(service_manager.deregister_non_persistant_service(service_hash))
-  #  end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
