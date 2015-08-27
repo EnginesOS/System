@@ -218,7 +218,7 @@ class ManagedContainer < Container
     else
       @last_error ='Cannot Delete the Image while container exists. Please stop/destroy first'
     end
-    clear_error(ret_val)
+    clear_error
     return ret_val
   end
 
@@ -235,7 +235,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first',state)
     end
-    clear_error(ret_val)
+    clear_error
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     save_state()
     return ret_val
@@ -252,7 +252,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Cannot create container as container exists ',state) 
     end
-    clear_error(ret_val)
+    clear_error
     save_state
   end
 
@@ -277,7 +277,7 @@ class ManagedContainer < Container
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
-    clear_error(ret_val)   
+    clear_error   
     @cont_userid = running_user
     save_state
   end
@@ -304,7 +304,7 @@ class ManagedContainer < Container
     end
     register_with_dns
     @container_api.register_non_persistant_services(self)
-    clear_error(ret_val)
+    clear_error
     save_state
   end
 
@@ -320,7 +320,7 @@ class ManagedContainer < Container
       log_error_mesg('Can\'t Pause Container as ', state)
     end
     @container_api.deregister_non_persistant_services(self)
-    clear_error(ret_val)
+    clear_error
     save_state
   end
 
@@ -338,7 +338,7 @@ class ManagedContainer < Container
       log_error_mesg('Can\'t Stop Container as ', state)
        @container_api.deregister_non_persistant_services(self)      
     end
-    clear_error(ret_val)
+    clear_error
     save_state
   end
 
@@ -355,7 +355,7 @@ class ManagedContainer < Container
     end
     #register_with_dns
     @container_api.register_non_persistant_services(self)
-    clear_error(ret_val)
+    clear_error
     save_state
   end
 
@@ -558,6 +558,8 @@ def get_container_network_metrics()
   end
   
   protected
+
+
 
   def has_api?
    return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
