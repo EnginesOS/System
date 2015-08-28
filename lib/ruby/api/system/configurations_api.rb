@@ -11,7 +11,7 @@ class ConfigurationsApi <ErrorsApi
           configurator_result =  service.run_configurator(service_param)
           return log_error_mesg('Service configurator error incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)             
         return log_error_mesg('Service configurator error ', service.last_error.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
-      return false
+      return true
     end
     
   def retrieve_service_configuration(service_param)
