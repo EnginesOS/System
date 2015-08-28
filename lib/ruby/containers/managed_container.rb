@@ -159,8 +159,7 @@ class ManagedContainer < Container
   end
 
   def read_state
-    p caller_locations(1,1)[0].label
-      inspect_container
+    p "read state caller " + caller_locations(1,1)[0].label
       if inspect_container == false
         @last_error = 'failed to inspect container'
         state = 'nocontainer'
@@ -450,12 +449,12 @@ class ManagedContainer < Container
 
   def inspect_container
     return false if has_api? == false
-   p caller_locations(1,1)[0].label
+   p "inspect " + caller_locations(1,1)[0].label
      result = @container_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
      @docker_info = @last_result  
      Thread.new { sleep 3 ; expire_engine_info }    
-    return docker_info
+    return result
   end
   
   def save_state()
