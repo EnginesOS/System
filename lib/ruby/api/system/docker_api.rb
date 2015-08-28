@@ -58,6 +58,7 @@ class DockerApi < ErrorsApi
     @last_error = result[:stderr].to_s
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
+    return false # Otherwise returnsresult[:stdout] 
   rescue StandardError => e
     log_exception(e)
   end
