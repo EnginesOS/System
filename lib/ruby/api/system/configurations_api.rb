@@ -5,7 +5,7 @@ class ConfigurationsApi <ErrorsApi
   def update_service_configuration(service_param)
       return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
         service = @core_api.loadManagedService(service_param[:service_name])
-        service_param[:publisher_namespace] = service.publisher_namespace.to_s
+        service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
         service_param[:type_path] = service.type_path.to_s        
         return log_error_mesg('Service Load error ', last_error.to_s) unless service.is_a?(ManagedService)
           configurator_result =  service.run_configurator(service_param)

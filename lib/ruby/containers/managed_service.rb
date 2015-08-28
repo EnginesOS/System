@@ -68,25 +68,11 @@ class ManagedService < ManagedContainer
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
     @last_error = result[:stderr] # Dont log just set
-#    if result[:result] == 0
-#      return true
-#    end
-#    return false
     return result
   end
 
   def retrieve_configurator(configurator_params)
-    return log_error_mesg('service not running ',configurator_params) if is_running? == false
-    return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
-    cmd = 'docker exec -u ' + @cont_userid + ' ' +  @container_name + ' /home/configurators/read_' + configurator_params[:configurator_name].to_s + '.sh '
-    result = SystemUtils.execute_command(cmd)
-    if result[:result] == 0
-      variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      configurator_params[:variables] = variables
-      return configurator_params
-    end
-    log_error_mesg('Failed retrieve_configurator',result)
-    return {}
+    @container_api.retrieve_configurator(self, configurator_params)
   end
 
   def remove_consumer(service_hash)
