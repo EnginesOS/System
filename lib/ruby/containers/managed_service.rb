@@ -47,7 +47,7 @@ class ManagedService < ManagedContainer
     end
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
-    return result  if result != true
+    return result unless result
     save_state
     return result
   end

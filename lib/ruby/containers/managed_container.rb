@@ -172,9 +172,9 @@ class ManagedContainer < Container
           return 'nocontainer'
         end
         if output[0]['State']
-          if output[0]['State']['Running'] == true
+          if output[0]['State']['Running']
             state = 'running'
-            if output[0]['State']['Paused'] == true
+            if output[0]['State']['Paused']
               state= 'paused'
             end
           elsif output[0]['State']['Running'] == false
@@ -184,7 +184,7 @@ class ManagedContainer < Container
           end
         end
       end
-      if state == nil #Kludge
+      if state.nil? #Kludge
         state = 'nocontainer'
         @last_error = 'state nil'
       end
