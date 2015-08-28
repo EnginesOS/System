@@ -2,6 +2,8 @@ class BlueprintApi < ErrorsApi
   
   def save_blueprint(blueprint, container)
     clear_error
+    p :Blueprint_isa
+    p blueprint.class.name
     return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)     
     puts blueprint.to_s
     state_dir = ContainerStateFiles.container_state_dir(container)
