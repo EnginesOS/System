@@ -17,6 +17,7 @@ class NetworkSystemRegistry < ErrorsApi
       p @registry_socket.to_s
       return nil
     end
+    p :new_netwrok_system_reg
   end
 
   def registry_server_ip
@@ -201,6 +202,7 @@ class NetworkSystemRegistry < ErrorsApi
 
   def reopen_registry_socket
     log_error_mesg("Registry reopen",self)
+    p :REopen_socket
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
       if @registry_socket.is_a?(String)
@@ -223,6 +225,7 @@ class NetworkSystemRegistry < ErrorsApi
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
+      p :opened + socket.to_s
       return socket
     rescue StandardError => e
       log_exception(e)
