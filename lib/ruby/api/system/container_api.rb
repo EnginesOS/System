@@ -10,8 +10,8 @@ class ContainerApi < ErrorsApi
     @engines_core.web_sites_for(container)
   end
   
-  def image_exist?(container)
-    @docker_api.image_exist?(container.container_name)
+  def image_exist?(container_name)
+    @docker_api.image_exist?(container_name)
   end
   
   def get_container_memory_stats(container)
