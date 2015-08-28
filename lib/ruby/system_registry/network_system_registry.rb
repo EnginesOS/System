@@ -225,7 +225,8 @@ class NetworkSystemRegistry < ErrorsApi
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
-      p :opened + socket.to_s
+      p :opened 
+      p socket.to_s
       return socket
     rescue StandardError => e
       log_exception(e)
