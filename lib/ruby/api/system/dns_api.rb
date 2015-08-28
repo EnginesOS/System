@@ -15,7 +15,7 @@ end
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.attach_service(service_hash)
+     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
      return false
    rescue StandardError => e
      log_error_mesg('Add self hosted domain exception', params.to_s)
@@ -40,7 +40,7 @@ end
      service_hash[:variables][:domainname] = params[:domain_name]
      service_hash[:service_handle] = params[:domain_name] + '_dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.attach_service(service_hash)
+     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
      return false
    rescue StandardError => e
      SystemUtils.log_exception(e)
@@ -57,7 +57,7 @@ end
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-    if @service_manager.dettach_service(service_hash) == true
+    if @service_manager.delete_service(service_hash) == true
       @service_manager.deregister_non_persistant_service(service_hash)
       @service_manager.delete_service_from_engine_registry(service_hash)
       return true
