@@ -112,11 +112,11 @@ class EnginesCore < ErrorsApi
   #    return test_system_api_result(@system_api.rm_volume(site_hash))
   #  end
 
-  def image_exist?(container_name)
-    test_docker_api_result(@docker_api.image_exist?(container_name))
-  rescue StandardError => e
-    log_exception(e)
-  end
+#  def image_exist?(container_name)
+#    test_docker_api_result(@docker_api.image_exist?(container_name))
+#  rescue StandardError => e
+#    log_exception(e)
+#  end
 
   def list_attached_services_for(objectName, identifier)
     check_sm_result(service_manager.list_attached_services_for(objectName, identifier))

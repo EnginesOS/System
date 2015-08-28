@@ -123,7 +123,7 @@ class ContainerApi < ErrorsApi
   end
 
   def image_exist?(image)
-    @engines_core.image_exist?(image)
+    @docker_api.image_exist?(image)
   end
 
   private
