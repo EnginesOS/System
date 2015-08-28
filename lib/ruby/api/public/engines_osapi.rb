@@ -33,24 +33,17 @@ class EnginesOSapi
   # Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
-    p :building_with
-    p params
     engine = build_controller.build_engine(params)
-    return failed('Build Engine:', build_controller.last_error, params.to_s) if engine == false
-    return failed(params[:engine_name], 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') if engine.is_active? == false
+    return failed('Build Engine:', build_controller.last_error, params.to_s) unless engine
+    return failed(params[:engine_name], 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
     success(params[:engine_name], 'Build Engine')
   end
 
   def buildEngine(repository, host, domain_name, environment)
-    p :buildEngine
-    p repository.to_s
-    p host.to_s
-    p domain_name.to_s
-    p environment.to_s
     build_controller = BuildController.new(@core_api)
     engine = build_controller.buildEngine(repository, host, domain_name, environment)
-    return failed('Build Engine:', build_controller.last_error, host.to_s) if engine == false
-    return failed(host.to_s, 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') if engine.is_active? == false
+    return failed('Build Engine:', build_controller.last_error, host.to_s) unless engine
+    return failed(host.to_s, 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
     success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
 
@@ -61,8 +54,6 @@ class EnginesOSapi
     return failed(engine_name, 'Cannot rebuild a container in State:' + state, 'Rebuild Engine') if state == 'running' || state == 'paused'
     retval = engine.rebuild_container
     return success(engine_name, 'Rebuild Engine Image') if retval.is_a?(ManagedEngine)
-    puts 'rebuild error'
-    p engine.last_error
     failed(engine_name, 'Cannot rebuild Image:' + engine.last_error, 'Rebuild Engine')
   rescue StandardError => e
     log_exception_and_fail('Rebuild Engine', e)
@@ -80,9 +71,7 @@ class EnginesOSapi
   end
 
   def generate_private_key
-    key = ''
-    key = '-----BEGIN RSA PRIVATE KEY-----77La9gRav1qSbDAi9NNIbTH3GQ3vg7uLKGSOTFoyJ/TwQvwccJTFAoGBAMkKu/immL9ZMsheOQq1XlSglnbMk9wS4KphsQKBCou5lZdE9pWPHvYWuhRK9LW8g4HSS7RIQkm5B5H5b5A9RyJZ40bHy59S0R/lI4VTFi6lmpTr9d3ScVCAi/YdPkdeFS8RM5Q7F1OPg9I84zP1XmBPOvG5M86tAnCLa0PS7fCvAoGAOnJUeEkPoym4itA6fIq0OuM8+qtZ5wNVUvDD3QmfOIIsNiuNA69UtAYocwuQKwZDUb7PkOvWoIGtwA90QJDnr2UFDCAxaOuqzkL6p7xt2tn9llGYzeuyrO2rWeCIZ4UMokLonqnnLwP+0lV7eJys2HQ9MIIEoQIBAAKCAQEAsn9KZsQrePI+gxAxAizmDzXdsP0xw//f9rbfxZQNjI7kJsDx61UPJg/uDQ0VvQclll06UgN4+3YhbCInbDgv4T9SSOg7YD6fKnQiEuhLJxOCfoVo+NUebeEJz+NpCdcTyUdJGwjnbTNe6Jo/CgG0eyraDo4yPWzD4Zvt8R1G1WpQ5mOP9U2gd+9ThMm5ng1U9iWEtV/hq7Cn0UEJzOvKmKSvGEGBrRgSkwXmB1U4Yvs5BJoLtF6xyMn3uc+pZA4xZYH5scyplEatIEJlQZCnFeAbvfCl3QRUOipOmwDgv4A5VygK+IKdgmraKA+wyPZjp2bt4Gu+fPH4YRnTUM9iqwIBIwKCAQBbzG9oDR2r6kwI48Fu1UMdw+5bBd8UV7UCie9s7Q5ISXymN1fYHR27za2gT99LRYELgGci3TbnuRiAwRuWvc97J+EszzR6o9zUATYYWjVHS9y2GLmkitxzBgUL1AoiUVqiB2ds/UPRwqXWtboFJXLDABhfQdCx4Co5g2RtX4ODsii/gV0+lYU4tV3SdlmOJL2YuatqKiY5S0or9YuBfoq+0+kOP7Pj8/cPCUtCcGIr1C/A0kzyNXgpUZ5EBxbGPzs778Aas6h2N00GKTJSPrQfW8g90wWNIMVQ7BqrfygSDycpIYNlYX7bVJnrPTG3IF9wwATSTUWhmdaEnbmCkdDbAoGBAONK1rdVA+xM6hvUcatwvOUB7SQoloJiS9DEwM1eTr9Pj31UB/Hiuy3fDxS7MKdRPq+tJzOVJjdNo7IDNd6lTBveMBK2FXuUe8zLleGj5BozS/M9Uj0/RRJGljM4NHNMGmmq0x1BhVcCgYEAvY3HLEVOMMHQy4wJ5YZu4hPBEOzF7MFXfBL3WiHlXytSh0+mqkUdMSte/TC61zy2gbemdsfJeLXFTx5h38S/aYfzi+DzL9G93D5x8rwNmbIVZ9cppULCnFvxrYlJWTtzDx7Y3De26GK+Hf7k2TfOAwjfzffDIfOUlf/LiRdVX0UCgYAlc3Fbf3jh26jl/VDlvgPgzpv4I21pFCNKDDMjDAKdc46vEylIOTX98BMFRK2XPadZ6Z3dmo7u9rVA68NK03PJhfQLG63y/H8EJMeBrMYAaCQpNzdn//+DHClZhoF5ZGhuClzUjaVbreaxdsJ63Q2fNI23a5EOAeZucGplR5Vk8Q==\-----END RSA PRIVATE KEY-----'
-    @core_api.generate_engines_user_ssh_key
+      @core_api.generate_engines_user_ssh_key
   end
 
   def update_public_key(key)
@@ -97,8 +86,7 @@ class EnginesOSapi
   end
 
   def upload_ssl_certifcate(params)
-    if params.has_key?(:certificate) == false || params.key?(:domain_name) == false
-      p 'errorexpect keys  :certificate :domain_name with optional :use_as_default'
+    unless params.has_key?(:certificate) || params.key?(:domain_name)
       return failed('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
     success('Access', 'upload Cert' + params[:domain_name])
@@ -137,8 +125,6 @@ class EnginesOSapi
     first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
     return success('Gui', 'First Run') if first_run.sucess
-    p :first_run_error
-    p first_run.error.to_s
     failed('Gui', 'First Run', first_run.error.to_s)
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -231,7 +217,6 @@ class EnginesOSapi
     engine = loadManagedEngine(params[:engine_name])
     return failed(params[:engine_name], 'no Engine', 'Delete') if engine.is_a?(EnginesOSapiResult)
     return success(params[:engine_name], 'Delete') if @core_api.delete_engine(params)
-    SystemUtils.log_error_mesg('failed to delete image  ', params)
     failed(params[:engine_name], last_api_error, 'Delete Image ')
   rescue StandardError => e
     log_exception_and_fail('Delete', e)
@@ -241,11 +226,6 @@ class EnginesOSapi
     engine = loadManagedEngine(engine_name)
     return engine if engine.is_a?(EnginesOSapiResult)
     engine.destroy_container if engine.has_container?
-    #      p 'reinstalling ' + engine_name
-    #    if @core_api.reinstall_engine(engine) == false
-    #      return  failed(engine_name,last_api_error, 'Reinstall Image')
-    #    end
-    #    return success(engine_name,'Reinstall')
     @core_api.reinstall_engine(engine)
   end
 
@@ -264,7 +244,7 @@ class EnginesOSapi
     return success(engine_name, 'Restart') if engine.restart_container
     failed(engine_name, engine.last_error, 'Restart')
   rescue StandardError => e
-    return log_exception_and_fail('Restart', e)
+    log_exception_and_fail('Restart', e)
   end
 
   def restart_system
@@ -278,7 +258,7 @@ class EnginesOSapi
   end
 
   def update_system
-    return success('System', 'System Updating') if @core_api.update_system == true
+    return success('System', 'System Updating') if @core_api.update_system
     failed('System', 'not permitted', 'Updating')
   end
 
@@ -323,7 +303,7 @@ class EnginesOSapi
     retval = mengine.get_container_memory_stats
     return retval
   rescue StandardError => e
-    return log_exception_and_fail('Get Engine Memory Statistics', e)
+    log_exception_and_fail('Get Engine Memory Statistics', e)
   end
 
   def get_service_memory_statistics(service_name)
@@ -355,7 +335,7 @@ class EnginesOSapi
   def set_service_runtime_properties(params)
     return success(params[:engine_name], 'update service runtime params')
   rescue StandardError => e
-    return log_exception_and_fail('update service runtime params ', e)
+    log_exception_and_fail('update service runtime params ', e)
   end
 
   def set_engine_network_properties(params)
@@ -462,7 +442,7 @@ class EnginesOSapi
 
   def self.loadManagedService(service_name, core_api)
     l_service = core_api.loadManagedService(service_name)
-    return EnginesOSapi.failed(service_name, core_api.last_error, 'Load Service') if l_service == false
+    return EnginesOSapi.failed(service_name, core_api.last_error, 'Load Service') unless l_service
     return l_service
   rescue StandardError => e
     EnginesOSapi.log_exception_and_fail('LoadMangedService', e)
@@ -515,13 +495,6 @@ class EnginesOSapi
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
     failed(params[:parent_engine].to_s, core_api.last_error, params[:parent_engine].to_s)
   end
-#
-#  def get_service_query_from_request(request_hash)
-#    # {:application_name=>\'frontaccounting\', :application_service=>{:type_path=>\'nginx\', :publisher_namespace=>\'EnginesSystem\', :service_handle=>\'frontaccounting.engines.demo\', :container_type=>nil, :service_container_name=>nil}})'
-#    service_query = request_hash[:application_service]
-#    service_query[:parent_engine] = request_hash[:application_name]
-#    service_query
-#  end
 
   # @ return [EnginesOSapiResult]
   # @params service_hash

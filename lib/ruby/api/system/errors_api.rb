@@ -4,8 +4,8 @@ class ErrorsApi
   @last_error = ''
 
   def log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = @last_error.to_s + ':' + msg + ':' + obj_str
+    caller = caller_locations(1,1)[0].label
+    @last_error = @last_error.to_s + ':' +  caller.to_s + ":" + msg.to_s + ':' + object.to_s.slice(0, 256)
     SystemUtils.log_error_mesg(msg, object)
   end
 
