@@ -31,8 +31,11 @@ class RegistryHandler < ErrorsApi
     end
   
     def get_registry_ip
-      registry_service = test_system_api_result(@system_api.loadSystemService('registry'))
-      case registry_service.read_state
+      registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
+      state = registry_service.read_state      
+        return registry_service.get_ip_str if state == "running"
+        log_error_mesg("registry down: " + state.to_s, registry_service)
+      case state
       when 'nocontainer'
         registry_service.create_container
       when 'paused'
