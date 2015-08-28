@@ -664,14 +664,12 @@ class EngineBuilder
   end
 
   def reattach_service(service_hash)
-    sm = @core_api.loadServiceManager
-    resuse_service_hash = sm.reparent_orphan(service_hash)
+    resuse_service_hash = @core_api.service_manager.reparent_orphan(service_hash)
     return resuse_service_hash
   end
 
   def release_orphan(service_hash)
-    sm = @core_api.loadServiceManager
-    sm.remove_orphaned_service(service_hash)
+    @core_api.service_manager.remove_orphaned_service(service_hash)
   end
 
   def tail_of_build_log
