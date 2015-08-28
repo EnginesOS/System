@@ -67,6 +67,7 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
+    @last_error = result[:stderr] # Dont log just set
 #    if result[:result] == 0
 #      return true
 #    end
