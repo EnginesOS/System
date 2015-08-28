@@ -109,8 +109,9 @@ class ContainerApi < ErrorsApi
   end
 
   def load_blueprint(container)
-    blueprint = BlueprintApi.new
-    log_error_mesg('failed to save blueprint', blueprint.last_error) unless blueprint.load_blueprint(container).is_a?(Array)
+    blueprint_r = BlueprintApi.new
+    blueprint = blueprint_r.load_blueprint(container)
+    log_error_mesg('failed to save blueprint', blueprint_r.last_error) unless blueprint.is_a?(Array)
     return blueprint      
   end
 
