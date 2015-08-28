@@ -62,21 +62,6 @@ class EnginesCore < ErrorsApi
     clear_error
     check_sm_result(service_manager.update_attached_service(params))
   end
-  #  def add_domain(params)
-  #    clear_error
-  #    return  test_system_api_result(@system_api.add_domain(params))
-  #  end
-
-#  def remove_domain(params)
-#    clear_error
-#    test_system_api_result(@system_api.remove_domain(params[:domain_name]))
-#  end
-#
-#  def update_domain(old_domain, params)
-#    clear_error
-#    params[:original_domain_name] = old_domain
-#    test_system_api_result(@system_api.update_domain(params))
-#  end
 
   def signal_service_process(pid, sig, name)
     clear_error
@@ -104,19 +89,11 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-  #  def add_volume(site_hash)
-  #    return test_system_api_result(@system_api.add_volume(site_hash))
-  #  end
-  #
-  #  def rm_volume(site_hash)
-  #    return test_system_api_result(@system_api.rm_volume(site_hash))
-  #  end
-
-#  def image_exist?(container_name)
-#    test_docker_api_result(@docker_api.image_exist?(container_name))
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
+  def image_exist?(container_name)
+    test_docker_api_result(@docker_api.image_exist?(container_name))
+  rescue StandardError => e
+    log_exception(e)
+  end
 
   def list_attached_services_for(objectName, identifier)
     check_sm_result(service_manager.list_attached_services_for(objectName, identifier))

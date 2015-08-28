@@ -84,8 +84,7 @@ class Templater
     #      p name.to_sym
     var_method = @builder_public.method(name.to_sym)
     var_method.call
-  rescue StandardError => e
-    #SystemUtils.log_exception(e)
+  rescue StandardError
     return 'no match for ' + name.to_s
   end
 

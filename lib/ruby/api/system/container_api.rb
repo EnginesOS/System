@@ -122,10 +122,6 @@ class ContainerApi < ErrorsApi
     check_sm_result(@engines_core.service_manager.deregister_non_persistant_services(engine))
   end
 
-  def image_exist?(image)
-    @docker_api.image_exist?(image)
-  end
-
   private
 
   def check_sm_result(result)
