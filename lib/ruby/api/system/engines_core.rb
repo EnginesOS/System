@@ -323,12 +323,12 @@ class EnginesCore < ErrorsApi
   end
 
     def retrieve_service_configuration(service_param)  
-      configurator = ConfigurationApi.new(self)
+      configurator = ConfigurationsApi.new(self)
        return log_error_mesg('Configration failed', configurator.last_error) unless retrieve_service_configuration(service_param).is_a?(Hash)
       end
 
   def update_service_configuration(service_param)    
-  configurator = ConfigurationApi.new(self)
+  configurator = ConfigurationsApi.new(self)
    return log_error_mesg('Configration failed', configurator.last_error) unless update_service_configuration(service_param)
    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
   end
