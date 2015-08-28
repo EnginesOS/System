@@ -324,8 +324,8 @@ class EnginesCore < ErrorsApi
 
     def retrieve_service_configuration(config)  
       c = ConfigurationsApi.new(self)
-      r = c.retrieve_service_configuration(config).is_a?(Hash)
-       return log_error_mesg('Configration failed ' +  c.last_error, r) unless r
+       r = c.retrieve_service_configuration(config)
+       return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
        return r
       end
 
