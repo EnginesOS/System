@@ -70,7 +70,7 @@ end
   def self.list_domains
     return DNSHosting.list_domains
   rescue StandardError => e
-    SystemUtil.log_exception(e)
+    SystemUtils.log_exception(e)
   end
   
 def get_ip_for_hosted_dns(internal)

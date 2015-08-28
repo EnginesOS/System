@@ -51,7 +51,6 @@ class ServiceManager  < ErrorsApi
   rescue Exception=>e
     puts e.message
     log_exception(e)
-    return false
   end
 
   #@returns boolean
@@ -94,7 +93,6 @@ class ServiceManager  < ErrorsApi
     puts e.message
     log_error_mesg('Parse error on ' + curr_service_file,container)
     log_exception(e)
-    return false
   end
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
@@ -251,7 +249,6 @@ class ServiceManager  < ErrorsApi
     return test_registry_result(@system_registry.release_orphan(service_hash))
   end
 
- 
 
   #Find the assigned service container_name from teh service definition file
   def get_software_service_container_name(params)
@@ -298,7 +295,6 @@ class ServiceManager  < ErrorsApi
     log_exception(e)
     return nil
   end
-
 
 
   def ServiceManager.set_top_level_service_params(service_hash,container_name)
@@ -352,7 +348,6 @@ class ServiceManager  < ErrorsApi
     log_exception(e)
   end
   
-
 
   ###READERS
 

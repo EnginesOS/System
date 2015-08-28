@@ -4,9 +4,7 @@ class SystemApi < ErrorsApi
   end
 
 
-  def clear_cid(container)
-    container.container_id = -1
-  end
+  
 
   def is_startup_complete(container)
     clear_error
@@ -286,13 +284,10 @@ class SystemApi < ErrorsApi
     return ret_val
   end
 
-  def container_cid_file(container)
-      SystemConfig.CidDir + '/' + container.container_name + '.cid'
-    end
   
   def read_container_id(container)
      clear_error
-     cidfile = container_cid_file(container)
+     cidfile = ContainerStateFiles.container_cid_file(container)
      return File.read(cidfile) if File.exist?(cidfile)
    rescue StandardError => e
      SystemUtils.log_exception(e)
