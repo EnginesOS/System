@@ -27,9 +27,9 @@ class EnginesCore < ErrorsApi
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
-    @registry_handler.start
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)   
+    @registry_handler.start
   end
 
   attr_reader :container_api, :service_api
