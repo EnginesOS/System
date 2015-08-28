@@ -94,7 +94,7 @@ class ContainerApi < ErrorsApi
     return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
     ContainerStateFiles.clear_cid_file(container)
    ContainerStateFiles.clear_container_var_run(container)
-    start_dependancies(container) if container.dependant_on.is_a?(Array)
+    start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     return ContainerStateFiles.create_container_dirs(container) if test_docker_api_result(@docker_api.create_container(container))
     return false
@@ -111,7 +111,7 @@ class ContainerApi < ErrorsApi
   def load_blueprint(container)
     blueprint_r = BlueprintApi.new
     blueprint = blueprint_r.load_blueprint(container)
-    log_error_mesg('failed to save blueprint', blueprint_r.last_error) unless blueprint.is_a?(Array)
+    log_error_mesg('failed to save blueprint', blueprint_r.last_error) unless blueprint.is_a?(Hash)
     return blueprint      
   end
 
