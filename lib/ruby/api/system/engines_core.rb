@@ -19,6 +19,8 @@ class EnginesCore < ErrorsApi
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
+  require_relative 'configurations_api.rb'
+  require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
 
   def initialize

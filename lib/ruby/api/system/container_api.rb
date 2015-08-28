@@ -104,11 +104,13 @@ class ContainerApi < ErrorsApi
   end
 
   def save_blueprint(blueprint, container)
-    test_system_api_result(@system_api.save_blueprint(blueprint, container))
+   blueprint = BlueprintApi.new
+   log_error_mesg('failed to save blueprint', blueprint.last_error) unless blueprint.save_blueprint(blueprint, container)  
   end
 
   def load_blueprint(container)
-    test_system_api_result(@system_api.load_blueprint(container))
+    blueprint = BlueprintApi.new
+    log_error_mesg('failed to save blueprint', blueprint.last_error) unless blueprint.load_blueprint(container).is_a?(Hash)      
   end
 
   def attach_service(service_hash)

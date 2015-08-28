@@ -11,12 +11,12 @@ class BuildController
     SystemStatus.build_starting(params)
     engine_builder = get_engine_builder(params)
     engine = engine_builder.build_from_blue_print
-    build_failed(params, engine_builder.last_error) if engine.nil? || engine == false
-    build_failed(params, engine_builder.last_error) unless engine.is_a?(ManagedEngine)
+    BuildController.build_failed(params, engine_builder.last_error) if engine.nil? || engine == false
+    BuildController.build_failed(params, engine_builder.last_error) unless engine.is_a?(ManagedEngine)
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    build_failed(params, engine_builder.last_error)
+    BuildController.build_failed(params, engine_builder.last_error)
   end
 
   def get_engine_builder_streams
@@ -31,12 +31,12 @@ class BuildController
     SystemStatus.build_starting(params)
     engine_builder = get_engine_builder_bfr(repository, host, domain_name, environment)
     engine = engine_builder.build_from_blue_print
-    return build_failed(params, engine_builder.last_error)  unless engine.is_a(ManagedEngine)
+    return BuildController.build_failed(params, engine_builder.last_error)  unless engine.is_a(ManagedEngine)
     engine.save_state
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    build_failed(params, e)
+    BuildController.build_failed(params, e)
   end
 
   def self.re_install_engine(engine, core)
@@ -50,14 +50,14 @@ class BuildController
     params[:repository_url] = engine.repo
     SystemStatus.build_starting(params)
     builder = EngineBuilder.new(params, core)
-    return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
+    return BuildController.build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
     engine = builder.build_from_blue_print
-    return build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
-    return build_failed(params, builder.last_error) unless engine.is_active?
+    return BuildController.build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
+    return BuildController.build_failed(params, builder.last_error) unless engine.is_active?
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    build_failed(params, e)
+    BuildController.build_failed(params, e)
   end
 
   private
@@ -88,7 +88,7 @@ class BuildController
 
   def self.build_failed(params,err)
     params[:error] = err.to_s
-    SystemStatus.build_failed(params)
+    SystemStatus.BuildController.build_failed(params)
     EnginesOSapiResult.failed(params[:engine_name], builder.last_error, caller_locations(1,1)[0].label)
   end
 end
