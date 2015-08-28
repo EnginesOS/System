@@ -320,45 +320,15 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def retrieve_service_configuration(service_param)
-    if service_param.key?(:service_name)
-      service = loadManagedService(service_param[:service_name])
-      if service.nil? == false && service != false
-        retval =  service.retrieve_configurator(service_param)
-        return false if !retval.is_a?(Hash)
-      else
-        return log_error_mesg('No Service',service_param)
+    def retrieve_service_configuration(service_param)  
+      configurator = ConfigurationApi.new(self)
+       return log_error_mesg('Configration failed', configurator.last_error) unless retrieve_service_configuration(service_param).is_a?(Hash)
       end
-    end
-    return false
-  end
 
-  def update_service_configuration(service_param)
-    if service_param.key?(:service_name)
-      service = loadManagedService(service_param[:service_name])
-      service_param[:publisher_namespace] = service.publisher_namespace.to_s
-      service_param[:type_path] = service.type_path.to_s
-      if service.nil? == false && service != false
-        configurator_result =  service.run_configurator(service_param)
-        if configurator_result == false
-          @last_error = 'Service configurator error ' + service.last_error.to_s
-          return false
-        end
-        if configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning') == true
-          if check_sm_result(service_manager.update_service_configuration(service_param)) == false
-            p service_manager.last_error
-            @last_error = service_manager.last_error
-            return false
-          end
-          return true
-        else
-          @last_error = 'stderr' + configurator_result[:stderr] +  '  ' + configurator_result[:result].to_s
-        end
-      else
-        @last_error = 'no Service'
-      end
-    end
-    return false
+  def update_service_configuration(service_param)    
+  configurator = ConfigurationApi.new(self)
+   return log_error_mesg('Configration failed', configurator.last_error) unless update_service_configuration(service_param)
+   return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
   end
 
   def engine_persistant_services(container_name)
@@ -374,7 +344,7 @@ class EnginesCore < ErrorsApi
   def engine_attached_services(container_name)
     params = {}
     params[:parent_engine] = container_name
-    params[:container_type] ='container'
+    params[:container_type] = 'container'
     return service_manager.find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e)
