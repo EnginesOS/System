@@ -272,6 +272,8 @@ class EnginesOSapi
     if retval == false
       return failed(engine_name, engine.last_error, 'Load Engine Blueprint')
     end
+    p :Blueprint_ia
+    p retval.class.name
     return retval
   rescue StandardError => e
     log_exception_and_fail('Load Engine Blueprint', e)
