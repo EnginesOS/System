@@ -389,23 +389,4 @@ class SystemApi < ErrorsApi
     log_exception(e)
     return error_result
   end
-#  protected
-#
-#
-#
-#  def run_system(cmd)
-#    clear_error
-#    begin
-#      cmd += ' 2>&1'
-#      res = (%x<#{cmd}>)
-#      SystemUtils.debug_output('run System', res)
-#      # FIXME: should be case insensitive The last one is a pure kludge
-#      # really need to get stderr and stdout separately
-#      return true if $CHILD_STATUS == 0 && res.downcase.include?('error') == false && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
-#      return res
-#    rescue StandardError => e
-#      log_exception(e)
-#      return res
-#    end
-#  end
 end

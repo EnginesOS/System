@@ -251,7 +251,7 @@ class ContainerApi < ErrorsApi
    end
   
   def read_container_id(container)
-    return @system_api.read_container_id(container)
+   @system_api.read_container_id(container)
    end
    
   def container_cid_file(container)
@@ -266,7 +266,7 @@ class ContainerApi < ErrorsApi
      clear_error
      cidfile = container_cid_file(container)
      File.delete(cidfile) if File.exist?(cidfile)
-     clear_cid(container)
+    @system_api.clear_cid(container)
      return true
    rescue StandardError => e
      container.last_error = 'Failed To remove cid file' + e.to_s
@@ -275,6 +275,5 @@ class ContainerApi < ErrorsApi
    
   def container_state_dir(container)
       SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
-    end 
-    
+    end     
 end
