@@ -17,7 +17,7 @@ class NetworkSystemRegistry < ErrorsApi
       p @registry_socket.to_s
       return nil
     end
-    p :new_netwrok_system_reg
+    p :new_network_system_reg
   end
 
   def registry_server_ip
@@ -216,7 +216,7 @@ class NetworkSystemRegistry < ErrorsApi
   end
 
   def force_registry_restart
-    log_error_mesg("FORCE REGISTRY RESTART",self)
+    log_error_mesg("FORCE REGISTRY RESTART", self)
     @core_api.force_registry_restart
   end
 

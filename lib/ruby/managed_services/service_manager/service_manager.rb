@@ -10,6 +10,7 @@ class ServiceManager  < ErrorsApi
   def initialize(core_api)
     @core_api = core_api
     @system_registry = SystemRegistry.new(@core_api)
+    p :New_SERVICE_MANAGER
   end
 
   def is_service_persistant?(service_hash)
