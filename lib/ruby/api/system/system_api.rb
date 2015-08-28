@@ -437,49 +437,6 @@ class SystemApi < ErrorsApi
     return false
   end
 
-  def update_domain(params)
-    old_domain_name = params[:original_domain_name]
-    return false unless DNSHosting.update_domain(old_domain_name, params)
-    return true unless params[:self_hosted]
-    service_hash =  {}
-    service_hash[:parent_engine] = 'system'
-    service_hash[:variables] = {}
-    service_hash[:variables][:domainname] = params[:original_domain_name]
-    service_hash[:service_handle] = params[:original_domain_name] + '_dns'
-    service_hash[:container_type] = 'system'
-    service_hash[:publisher_namespace] = 'EnginesSystem'
-    service_hash[:type_path] = 'dns'
-    @engines_api.dettach_service(service_hash)
-    # @engines_api.deregister_non_persistant_service(service_hash)
-    # @engines_api.delete_service_from_engine_registry(service_hash)
-    service_hash[:variables][:domainname] = params[:domain_name]
-    service_hash[:service_handle] = params[:domain_name] + '_dns'
-    service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-    return @engines_api.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash)
-    return false
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-  end
-
-  def add_domain(params)
-    return false unless DNSHosting.add_domain(params)
-    return true unless params[:self_hosted]
-    service_hash = {}
-    service_hash[:parent_engine] = 'system'
-    service_hash[:variables] = {}
-    service_hash[:variables][:domainname] = params[:domain_name]
-    service_hash[:service_handle] = params[:domain_name] + '_dns'
-    service_hash[:container_type] = 'system'
-    service_hash[:publisher_namespace] = 'EnginesSystem'
-    service_hash[:type_path] = 'dns'
-    service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-    return @engines_api.service_manager.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash)
-    return false
-  rescue StandardError => e
-    log_error_mesg('Add self hosted domain exception', params.to_s)
-    log_exception(e)
-  end
-
   # FIXME: Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     ret_val = {}
@@ -515,39 +472,7 @@ class SystemApi < ErrorsApi
     return error_result
   end
 
-  def remove_domain(params)
-    return false if DNSHosting.rm_domain(params) == false
-    return true if params[:self_hosted] == false
-    service_hash = {}
-    service_hash[:parent_engine] = 'system'
-    service_hash[:variables] = {}
-    service_hash[:variables][:domainname] = params[:domain_name]
-    service_hash[:service_handle] = params[:domain_name] + '_dns'
-    service_hash[:container_type] = 'system'
-    service_hash[:publisher_namespace] = 'EnginesSystem'
-    service_hash[:type_path] = 'dns'
-    if @engines_api.dettach_service(service_hash) == true
-      @engines_api.deregister_non_persistant_service(service_hash)
-      @engines_api.delete_service_from_engine_registry(service_hash)
-      return true
-    end
-    return false
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-  def list_domains
-    return DNSHosting.list_domains
-  rescue StandardError => e
-    log_exception(e)
-  end
-
   protected
-
-  def get_ip_for_hosted_dns(internal)
-    return DNSHosting.get_local_ip if internal
-    open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
-  end
 
   def container_cid_file(container)
     SystemConfig.CidDir + '/' + container.container_name + '.cid'

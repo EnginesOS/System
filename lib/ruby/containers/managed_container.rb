@@ -33,6 +33,19 @@ class ManagedContainer < Container
     @protocol = :http_and_https
   end
 
+   attr_accessor :current_operation
+   
+   def current_operation=(operation)
+     @current_operation = operation
+#     save_operation
+#     lock_state     
+   end
+   
+   def operation_completed
+     @current_operation = nil
+#     unlock_state
+   end     
+   
   def fqdn
     @hostname.to_s + "." +@domain_name.to_s
   end
@@ -199,18 +212,18 @@ class ManagedContainer < Container
   end
 
   def logs_container
-    return false if has_api? == false
+    return false unless has_api?
     @container_api.logs_container(self)
   end
 
   def ps_container
     expire_engine_info
-    return false if has_api? == false
+    return false unless has_api?
     @container_api.ps_container(self)
   end
 
   def delete_image()
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = false
     state = read_state()
     if has_container? == false
@@ -223,7 +236,7 @@ class ManagedContainer < Container
   end
 
   def destroy_container
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = false
     state = read_state
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
@@ -242,7 +255,7 @@ class ManagedContainer < Container
   end
 
   def setup_container
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = false
     state = read_state 
     @setState = 'stopped'
@@ -257,7 +270,7 @@ class ManagedContainer < Container
   end
 
   def create_container
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = false
     expire_engine_info
     state = read_state
@@ -292,7 +305,7 @@ class ManagedContainer < Container
   end
 
   def unpause_container
-    return false if has_api? == false
+    return false unless has_api?
     state = read_state
     @setState = 'running'
     ret_val = false
@@ -309,7 +322,7 @@ class ManagedContainer < Container
   end
 
   def pause_container
-    return false if has_api? == false
+    return false unless has_api?
     state = read_state
     @setState = 'paused'
     ret_val = false
@@ -325,7 +338,7 @@ class ManagedContainer < Container
   end
 
   def stop_container
-    return false if has_api? == false
+    return false unless has_api?
 #    web_sites
     ret_val = false
     state = read_state
@@ -343,7 +356,7 @@ class ManagedContainer < Container
   end
 
   def start_container
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = false
     state = read_state
     @setState = 'running'
@@ -364,7 +377,7 @@ class ManagedContainer < Container
   # would be better if it check a pre exisiting record will throw error on recreate
   #
   def register_with_dns # MUst register each time as IP Changes
-    return false if has_api? == false
+    return false unless has_api?
     service_hash = SystemUtils.create_dns_service_hash(self)
     return false if service_hash.is_a?(Hash) == false
     return @container_api.attach_service(service_hash)
@@ -448,8 +461,8 @@ class ManagedContainer < Container
   end
 
   def inspect_container
-    return false if has_api? == false
-   p "inspect " + caller_locations(1,1)[0].label
+    return false unless has_api?
+   p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
      result = @container_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
      @docker_info = @last_result  
@@ -458,7 +471,7 @@ class ManagedContainer < Container
   end
   
   def save_state()
-    return false if has_api? == false
+    return false unless has_api?
     expire_engine_info 
      p :saveStat
     p caller[0][/`([^']*)'/, 1]
@@ -467,18 +480,18 @@ class ManagedContainer < Container
   end
 
   def save_blueprint blueprint
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = @container_api.save_blueprint(blueprint, self)
     return ret_val
   end
 
   def load_blueprint
-    return false if has_api? == false
+    return false unless has_api?
  @container_api.load_blueprint(self)
   end
 
   def rebuild_container
-    return false if has_api? == false
+    return false unless has_api?
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -498,7 +511,7 @@ class ManagedContainer < Container
   end
 
   def is_startup_complete?
-    return false if has_api? == false
+    return false unless has_api?
     @container_api.is_startup_complete(self)
   end
 
@@ -540,15 +553,14 @@ end
 
 def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
-  end
-  
+  end  
   
 protected
   
 # create nginx service_hash for container and register with nginx
  # @return boolean indicating sucess
  def add_nginx_service
-   return false if has_api? == false
+   return false unless has_api?
    service_hash = SystemUtils.create_nginx_service_hash(self)
    return @container_api.attach_service(service_hash)
  end
@@ -556,7 +568,7 @@ protected
  # create nginx service_hash for container deregister with nginx
  # @return boolean indicating sucess
  def remove_nginx_service
-   return false if has_api? == false
+   return false unless has_api?
    service_hash = SystemUtils.create_nginx_service_hash(self)
    return @container_api.dettach_service(service_hash)
  end
@@ -566,9 +578,8 @@ protected
     return true
   end
 
-
   def set_container_id    
-    return docker_info[0]['Id'] if docker_info.is_a?(Array) == true && docker_info[0].is_a?(Hash)
+    return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
   return -1
   end
 

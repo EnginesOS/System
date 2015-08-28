@@ -18,6 +18,7 @@ class EnginesCore < ErrorsApi
   require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
+  require_relative 'dns_api.rb'
   require_relative 'system_preferences.rb'
 
   def initialize
@@ -66,16 +67,16 @@ class EnginesCore < ErrorsApi
   #    return  test_system_api_result(@system_api.add_domain(params))
   #  end
 
-  def remove_domain(params)
-    clear_error
-    test_system_api_result(@system_api.remove_domain(params[:domain_name]))
-  end
-
-  def update_domain(old_domain, params)
-    clear_error
-    params[:original_domain_name] = old_domain
-    test_system_api_result(@system_api.update_domain(params))
-  end
+#  def remove_domain(params)
+#    clear_error
+#    test_system_api_result(@system_api.remove_domain(params[:domain_name]))
+#  end
+#
+#  def update_domain(old_domain, params)
+#    clear_error
+#    params[:original_domain_name] = old_domain
+#    test_system_api_result(@system_api.update_domain(params))
+#  end
 
   def signal_service_process(pid, sig, name)
     clear_error
@@ -553,19 +554,27 @@ class EnginesCore < ErrorsApi
   end
 
   def add_domain(params)
-    test_system_api_result(@system_api.add_domain(params))
+    dns_api = DNSapi.new(service_manager)
+    return true if dns_api.add_domain(params)
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def update_domain(params)
-    test_system_api_result(@system_api.update_domain(params))
+    dns_api = DNSapi.new(service_manager)
+    return true if dns_api.update_domain(params) 
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def remove_domain(params)
-    test_system_api_result(@system_api.remove_domain(params))
+    dns_api = DNSapi.new(service_manager)
+    return true if dns_api.remove_domain(params) 
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def list_domains
-    test_system_api_result(@system_api.list_domains)
+    res = DNSapi.list_domains
+    return res if res.is_a?(Hash)
+    log_error_mesg(res, '')    
   end
 
   def list_managed_engines
