@@ -159,6 +159,7 @@ class ManagedContainer < Container
   end
 
   def read_state
+    p caller_locations(1,1)[0].label
       inspect_container
       if inspect_container == false
         @last_error = 'failed to inspect container'
@@ -188,7 +189,7 @@ class ManagedContainer < Container
         @last_error = 'state nil'
       end
       if  @setState && state != @setState
-        @last_error =  @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
+        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
       end
       return state
     rescue Exception=>e
