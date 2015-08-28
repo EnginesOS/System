@@ -4,8 +4,8 @@ class BlueprintApi < ErrorsApi
     clear_error
     p :Blueprint_isa
     p blueprint.class.name
-    return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)     
-    puts blueprint.to_s
+   # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)     
+    puts blueprint.class.name
     state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
