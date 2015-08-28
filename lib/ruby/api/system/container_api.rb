@@ -110,7 +110,8 @@ class ContainerApi < ErrorsApi
 
   def load_blueprint(container)
     blueprint = BlueprintApi.new
-    log_error_mesg('failed to save blueprint', blueprint.last_error) unless blueprint.load_blueprint(container).is_a?(Hash)      
+    log_error_mesg('failed to save blueprint', blueprint.last_error) unless blueprint.load_blueprint(container).is_a?(Hash)
+    return blueprint      
   end
 
   def attach_service(service_hash)
