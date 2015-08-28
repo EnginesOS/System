@@ -135,7 +135,7 @@ class DockerApi < ErrorsApi
     commandargs = 'docker  rm ' + container.container_name
     if execute_docker_cmd(commandargs, container) != true
       log_error_mesg(container.last_error, container)
-      return false if image_exist?(container.image) == true
+      return false if image_exist?(container.image)
     end
     clean_up_dangling_images
     return true
