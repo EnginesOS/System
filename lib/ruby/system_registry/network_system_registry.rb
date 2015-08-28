@@ -17,6 +17,7 @@ class NetworkSystemRegistry < ErrorsApi
       p @registry_socket.to_s
       return nil
     end
+    p :new_network_system_reg
   end
 
   def registry_server_ip
@@ -80,7 +81,7 @@ class NetworkSystemRegistry < ErrorsApi
     if !response_hash[:object].nil?
       response_hash[:object] = YAML::load(response_hash[:object])
     end
-    log_error_mesg(response_hash[:last_error], response_hash) if response_hash.key?(:last_error)
+    log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
     return response_hash
   rescue StandardError => e
     log_exception(e)
@@ -191,7 +192,6 @@ class NetworkSystemRegistry < ErrorsApi
     end
     result_hash = false
     Timeout::timeout(SystemConfig.registry_connect_timeout) {
-      #      p :waiting_for_reply
       result_hash = wait_for_reply
     }
     return result_hash
@@ -201,6 +201,8 @@ class NetworkSystemRegistry < ErrorsApi
   end
 
   def reopen_registry_socket
+    log_error_mesg("Registry reopen",self)
+    p :REopen_socket
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
       if @registry_socket.is_a?(String)
@@ -214,7 +216,7 @@ class NetworkSystemRegistry < ErrorsApi
   end
 
   def force_registry_restart
-    log_error_mesg("FORCE REGISTRY RESTART",self)
+    log_error_mesg("FORCE REGISTRY RESTART", self)
     @core_api.force_registry_restart
   end
 
@@ -223,6 +225,8 @@ class NetworkSystemRegistry < ErrorsApi
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
+      p :opened 
+      p socket.to_s
       return socket
     rescue StandardError => e
       log_exception(e)

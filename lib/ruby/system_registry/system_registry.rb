@@ -4,6 +4,7 @@ class SystemRegistry < ErrorsApi
 
   def initialize(core_api)
     @network_registry = NetworkSystemRegistry.new(core_api)
+    p :NEW_SYSTEM_REG
   end
 
   def test_result(request_result_hash)

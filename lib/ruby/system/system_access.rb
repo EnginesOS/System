@@ -38,8 +38,8 @@ end
     args = type.split('_')
       engine = args[0]
       cmd = args[1]
-      cmd.gsub!(/\)/,'')
-    return  SystemUtils.get_service_pubkey(engine,cmd)      
+      cmd.gsub!(/\)/, '')
+    return  SystemUtils.get_service_pubkey(engine, cmd)      
   end
   
   def random cnt

@@ -29,10 +29,7 @@ class DockerFileBuilder
     @docker_file.puts('')
     write_environment_variables
     write_stack_env
-    # write_services
     write_file_service
-    # write_db_service
-    # write_cron_jobs
     write_os_packages
     write_user_local = true
     if write_user_local == true
@@ -491,7 +488,7 @@ class DockerFileBuilder
         @docker_file.puts("      chown $data_uid  \'/home/app/" + directory + "\';\\")
         @docker_file.puts("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
         @docker_file.puts('  else\\')
-        @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\';\\")
+        @docker_file.puts("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
         @docker_file.puts('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
         @docker_file.puts('       do\\')
         @docker_file.puts("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")

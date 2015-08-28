@@ -4,7 +4,7 @@ class DockerApi < ErrorsApi
     commandargs = container_commandline_args(container)
     commandargs = 'docker run  -d ' + commandargs
     SystemUtils.debug_output('create cont', commandargs)
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
     log_exception(e)
@@ -13,7 +13,7 @@ class DockerApi < ErrorsApi
   def start_container(container)
     clear_error
     commandargs = 'docker start ' + container.container_name
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -21,7 +21,7 @@ class DockerApi < ErrorsApi
   def stop_container(container)
     clear_error
     commandargs = 'docker stop ' + container.container_name
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -29,7 +29,7 @@ class DockerApi < ErrorsApi
   def pause_container(container)
     clear_error
     commandargs = 'docker pause ' + container.container_name
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -54,11 +54,11 @@ class DockerApi < ErrorsApi
   def image_exist?(imagename)
     image_name = imagename.gsub(/:.*$/, '')
     cmd = 'docker images -q ' + image_name
-    # SystemUtils.debug_output( 'image_exists',cmd)
     result = SystemUtils.execute_command(cmd)
     @last_error = result[:stderr].to_s
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
+    return false # Otherwise returnsresult[:stdout] 
   rescue StandardError => e
     log_exception(e)
   end
@@ -66,7 +66,7 @@ class DockerApi < ErrorsApi
   def unpause_container(container)
     clear_error
     commandargs = 'docker unpause ' + container.container_name
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -106,7 +106,7 @@ class DockerApi < ErrorsApi
   def signal_container_process(pid, signal, container)
     clear_error
     commandargs = 'docker exec ' + container.container_name + ' kill -' + signal + ' ' + pid.to_s
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -125,7 +125,7 @@ class DockerApi < ErrorsApi
   def inspect_container(container)
     clear_error
     commandargs = ' docker inspect ' + container.container_name
-    return execute_docker_cmd(commandargs, container)
+    execute_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -135,7 +135,7 @@ class DockerApi < ErrorsApi
     commandargs = 'docker  rm ' + container.container_name
     if execute_docker_cmd(commandargs, container) != true
       log_error_mesg(container.last_error, container)
-      return false if image_exist?(container.image) == true
+      return false if image_exist?(container.image)
     end
     clean_up_dangling_images
     return true
@@ -184,7 +184,7 @@ class DockerApi < ErrorsApi
     eportoption = ''
     if container.eports
       container.eports.each do |eport|
-        if eport.nil? == false
+        unless eport.nil?
           if eport.external.nil? == false && eport.external > 0
             eportoption += ' -p '
             eportoption += eport.external.to_s + ':'
@@ -206,20 +206,15 @@ class DockerApi < ErrorsApi
     environment_options = get_environment_options(container)
     port_options = get_port_options(container)
     volume_option = get_volume_option(container)
-    if volume_option == false || environment_options == false || port_options == false
-      return false
-    end
-    if container.conf_self_start == false
-      start_cmd = ' /bin/bash /home/init.sh'
-    else
-      start_cmd = ' '
-    end
+    return false if volume_option == false || environment_options == false || port_options == false
+    start_cmd = ' '
+    start_cmd = ' /bin/bash /home/init.sh' unless container.conf_self_start
     commandargs = '-h ' + container.hostname + \
     environment_options + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
     port_options + \
-    ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' +\
+    ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' + \
     '--name ' + container.container_name + \
     '  -t ' + container.image + ' ' + \
     start_cmd
@@ -231,28 +226,17 @@ class DockerApi < ErrorsApi
 
   def get_volume_option(container)
     clear_error
-    # System
     volume_option = SystemConfig.timeZone_fileMapping # latter this will be customised
     volume_option += ' -v ' + container_state_dir(container) + '/run:/engines/var/run:rw '
-    # if container.ctype == 'service'
-    #  volume_option += ' -v ' + container_log_dir(container) + ':/var/log:rw '
     incontainer_logdir = get_container_logdir(container)
     volume_option += ' -v ' + container_log_dir(container) + ':/' + incontainer_logdir + ':rw '
-    if incontainer_logdir != '/var/log' && incontainer_logdir != '/var/log/'
-      volume_option += ' -v ' + container_log_dir(container) + '/vlog:/var/log/:rw'
-    end
-    if container.is_service?
-      volume_option += ' -v ' + service_sshkey_local_dir(container) + ':' + service_sshkey_container_dir(container) + ':rw'
-    end
-    if container.no_ca_map != true
-      volume_option += ' -v ' + SystemConfig.EnginesInternalCA + ':/usr/local/share/ca-certificates/engines_internal_ca.crt:ro '
-    end
-    # end
-    # container specificvolume_option +=' -v ' + SystemConfig.EnginesInternalCA + ':ro '
+    volume_option += ' -v ' + container_log_dir(container) + '/vlog:/var/log/:rw' if incontainer_logdir != '/var/log' && incontainer_logdir != '/var/log/'
+    volume_option += ' -v ' + service_sshkey_local_dir(container) + ':' + service_sshkey_container_dir(container) + ':rw' if container.is_service?
+    volume_option += ' -v ' + SystemConfig.EnginesInternalCA + ':/usr/local/share/ca-certificates/engines_internal_ca.crt:ro ' unless container.no_ca_map
     if container.volumes
       container.volumes.each_value do |volume|
-        if volume.nil? == false
-          if volume.localpath.nil? == false
+        unless volume.nil?
+          unless volume.localpath.nil?
             volume_option = volume_option.to_s + ' -v ' + volume.localpath.to_s + ':/' + volume.remotepath.to_s + ':' + volume.mapping_permissions.to_s
           end
         end
@@ -308,5 +292,4 @@ class DockerApi < ErrorsApi
   def container_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
-
 end

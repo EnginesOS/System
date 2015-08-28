@@ -20,20 +20,22 @@ class SystemService < ManagedService
     if @docker_info == nil || @docker_info == false
       @docker_info = @container_api.inspect_container(self)
       if  @docker_info == false
-        if has_image? == false
+       unless has_image?
           SystemUtils.log_output('pulling system service' + container_name.to_s,10)
              pull_image
            end
         SystemUtils.log_output('creating system service' + container_name.to_s,10)
         @container_api.create_container(self)  
         SystemUtils.log_output('created system service' + container_name.to_s,10)
-        @docker_info = @container_api.inspect_container(self)
+        return false unless @container_api.inspect_container(self)
+        @docker_info = @last_result  
         if @docker_info == false
           p :panic
           exit
         end
       end
     end
+    Thread.new { sleep 3 ; @docker_info = nil }    
     return @docker_info
   end
   

@@ -18,6 +18,9 @@ class EnginesCore < ErrorsApi
   require_relative 'service_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
+  require_relative 'dns_api.rb'
+  require_relative 'configurations_api.rb'
+  require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
 
   def initialize
@@ -25,12 +28,11 @@ class EnginesCore < ErrorsApi
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
-    @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @system_preferences = SystemPreferences.new
+    @service_api = ServiceApi.new(@docker_api, @system_api, self)   
     @registry_handler.start
   end
 
-  attr_reader  :container_api, :service_api
+  attr_reader :container_api, :service_api
 
   def get_registry_ip
     @registry_handler.get_registry_ip
@@ -61,21 +63,6 @@ class EnginesCore < ErrorsApi
     clear_error
     check_sm_result(service_manager.update_attached_service(params))
   end
-  #  def add_domain(params)
-  #    clear_error
-  #    return  test_system_api_result(@system_api.add_domain(params))
-  #  end
-
-  def remove_domain(params)
-    clear_error
-    test_system_api_result(@system_api.remove_domain(params[:domain_name]))
-  end
-
-  def update_domain(old_domain, params)
-    clear_error
-    params[:original_domain_name] = old_domain
-    test_system_api_result(@system_api.update_domain(params))
-  end
 
   def signal_service_process(pid, sig, name)
     clear_error
@@ -102,14 +89,6 @@ class EnginesCore < ErrorsApi
   def save_build_report(container,build_report)
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
-
-  #  def add_volume(site_hash)
-  #    return test_system_api_result(@system_api.add_volume(site_hash))
-  #  end
-  #
-  #  def rm_volume(site_hash)
-  #    return test_system_api_result(@system_api.rm_volume(site_hash))
-  #  end
 
   def image_exist?(container_name)
     test_docker_api_result(@docker_api.image_exist?(container_name))
@@ -151,7 +130,8 @@ class EnginesCore < ErrorsApi
   end
 
   def set_default_domain(params)
-    @system_preferences.set_default_domain(params)
+    preferences = SystemPreferences.new
+    preferences.set_default_domain(params)
   end
 
   def set_default_site(params)
@@ -175,8 +155,9 @@ class EnginesCore < ErrorsApi
     return ''
   end
 
-  def get_default_domain()
-    @system_preferences.get_default_domain
+  def get_default_domain()  
+    preferences = SystemPreferences.new
+    preferences.get_default_domain
   end
 
   def container_type(container_name)
@@ -187,10 +168,6 @@ class EnginesCore < ErrorsApi
     else
       return 'container' #FIXME poor assumption
     end
-  end
-
-  def container_state_dir(container)
-    test_system_api_result(@system_api.container_state_dir(container))
   end
 
   #Attach the service defined in service_hash [Hash]
@@ -223,7 +200,7 @@ class EnginesCore < ErrorsApi
   end
 
   def service_manager
-    @service_manager = ServiceManager.new(self) if @service_manager == nil
+    @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
     return @service_manager
   end
 
@@ -345,45 +322,15 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def retrieve_service_configuration(service_param)
-    if service_param.key?(:service_name)
-      service = loadManagedService(service_param[:service_name])
-      if service.nil? == false && service != false
-        retval =  service.retrieve_configurator(service_param)
-        return false if !retval.is_a?(Hash)
-      else
-        return log_error_mesg('No Service',service_param)
+    def retrieve_service_configuration(service_param)  
+      configurator = ConfigurationsApi.new(self)
+       return log_error_mesg('Configration failed', configurator.last_error) unless configurator.retrieve_service_configuration(service_param).is_a?(Hash)
       end
-    end
-    return false
-  end
 
-  def update_service_configuration(service_param)
-    if service_param.key?(:service_name)
-      service = loadManagedService(service_param[:service_name])
-      service_param[:publisher_namespace] = service.publisher_namespace.to_s
-      service_param[:type_path] = service.type_path.to_s
-      if service.nil? == false && service != false
-        configurator_result =  service.run_configurator(service_param)
-        if configurator_result == false
-          @last_error = 'Service configurator error ' + service.last_error.to_s
-          return false
-        end
-        if configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning') == true
-          if check_sm_result(service_manager.update_service_configuration(service_param)) == false
-            p service_manager.last_error
-            @last_error = service_manager.last_error
-            return false
-          end
-          return true
-        else
-          @last_error = 'stderr' + configurator_result[:stderr] +  '  ' + configurator_result[:result].to_s
-        end
-      else
-        @last_error = 'no Service'
-      end
-    end
-    return false
+  def update_service_configuration(service_param)    
+  configurator = ConfigurationsApi.new(self)
+   return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
+   return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
   end
 
   def engine_persistant_services(container_name)
@@ -399,7 +346,7 @@ class EnginesCore < ErrorsApi
   def engine_attached_services(container_name)
     params = {}
     params[:parent_engine] = container_name
-    params[:container_type] ='container'
+    params[:container_type] = 'container'
     return service_manager.find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e)
@@ -553,19 +500,27 @@ class EnginesCore < ErrorsApi
   end
 
   def add_domain(params)
-    test_system_api_result(@system_api.add_domain(params))
+    dns_api = DNSApi.new(service_manager)
+    return true if dns_api.add_domain(params)
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def update_domain(params)
-    test_system_api_result(@system_api.update_domain(params))
+    dns_api = DNSApi.new(service_manager)
+    return true if dns_api.update_domain(params) 
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def remove_domain(params)
-    test_system_api_result(@system_api.remove_domain(params))
+    dns_api = DNSApi.new(service_manager)
+    return true if dns_api.remove_domain(params) 
+    log_error_mesg(dns_api.last_error, params)    
   end
 
   def list_domains
-    test_system_api_result(@system_api.list_domains)
+    res = DNSApi.list_domains
+    return res if res.is_a?(Hash)
+    log_error_mesg(res, '')    
   end
 
   def list_managed_engines
@@ -669,8 +624,8 @@ class EnginesCore < ErrorsApi
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    clear_error
-    EngineBuilder.re_install_engine(engine, self)
+    clear_error    
+    BuildController.re_install_engine(engine, self)
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
@@ -710,7 +665,7 @@ class EnginesCore < ErrorsApi
   def force_register_attached_service(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
-
+  
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace

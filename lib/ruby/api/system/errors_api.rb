@@ -1,10 +1,11 @@
+# @All class that report errors children of this
 class ErrorsApi
   attr_reader :last_error
   @last_error = ''
 
   def log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = @last_error.to_s + ':' + msg + ':' + obj_str
+    caller = caller_locations(1,3)
+    @last_error = @last_error.to_s + ':' +  caller.to_s + ":" + msg.to_s + ':' + object.to_s.slice(0, 256)
     SystemUtils.log_error_mesg(msg, object)
   end
 
