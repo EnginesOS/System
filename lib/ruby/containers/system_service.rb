@@ -20,7 +20,7 @@ class SystemService < ManagedService
     if @docker_info == nil || @docker_info == false
       @docker_info = @container_api.inspect_container(self)
       if  @docker_info == false
-        if has_image? == false
+       unless has_image?
           SystemUtils.log_output('pulling system service' + container_name.to_s,10)
              pull_image
            end
@@ -34,7 +34,8 @@ class SystemService < ManagedService
         end
       end
     end
-    return @docker_info
+    Thread.new { sleep 3 ; @docker_info = nil }    
+    return @docker_info.dup
   end
   
 end
