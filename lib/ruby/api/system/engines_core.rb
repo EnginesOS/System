@@ -554,25 +554,25 @@ class EnginesCore < ErrorsApi
   end
 
   def add_domain(params)
-    dns_api = DNSapi.new(service_manager)
+    dns_api = DNSApi.new(service_manager)
     return true if dns_api.add_domain(params)
     log_error_mesg(dns_api.last_error, params)    
   end
 
   def update_domain(params)
-    dns_api = DNSapi.new(service_manager)
+    dns_api = DNSApi.new(service_manager)
     return true if dns_api.update_domain(params) 
     log_error_mesg(dns_api.last_error, params)    
   end
 
   def remove_domain(params)
-    dns_api = DNSapi.new(service_manager)
+    dns_api = DNSApi.new(service_manager)
     return true if dns_api.remove_domain(params) 
     log_error_mesg(dns_api.last_error, params)    
   end
 
   def list_domains
-    res = DNSapi.list_domains
+    res = DNSApi.list_domains
     return res if res.is_a?(Hash)
     log_error_mesg(res, '')    
   end
