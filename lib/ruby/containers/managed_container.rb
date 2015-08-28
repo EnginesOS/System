@@ -522,7 +522,7 @@ class ManagedContainer < Container
   end
 
   def has_image?
-    @container_api.image_exist?(@image)
+    @container_api.has_image?(@image)
   end
 
   def is_error?
