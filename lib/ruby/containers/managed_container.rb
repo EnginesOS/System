@@ -488,7 +488,7 @@ class ManagedContainer < Container
 
   def load_blueprint
     return false unless has_api?
- @container_api.load_blueprint(self)
+    @container_api.load_blueprint(self)
   end
 
   def rebuild_container
