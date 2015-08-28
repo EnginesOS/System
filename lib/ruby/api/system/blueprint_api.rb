@@ -24,7 +24,6 @@ class BlueprintApi < ErrorsApi
       f = File.new(statefile, 'r')
       blueprint = JSON.parse(f.read)
       f.close
-      p 'loaded ' + blueprint.to_s + ' from ' + statefile.to_s
     return blueprint
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', blueprint)
