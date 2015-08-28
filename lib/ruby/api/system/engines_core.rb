@@ -190,10 +190,6 @@ class EnginesCore < ErrorsApi
     end
   end
 
-  def container_state_dir(container)
-    test_system_api_result(@system_api.container_state_dir(container))
-  end
-
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def attach_service(service_hash)

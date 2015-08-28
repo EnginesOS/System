@@ -1,14 +1,11 @@
 class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
-  end
-
-
-  
+  end  
 
   def is_startup_complete(container)
     clear_error
-    return File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
+    return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -24,7 +21,7 @@ class SystemApi < ErrorsApi
 
   def save_build_report(container, build_report)
     clear_error
-    state_dir = container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(container)
     f = File.new(state_dir  + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(build_report)
     f.close
@@ -47,7 +44,7 @@ class SystemApi < ErrorsApi
     container.container_api = api
     container.last_result = last_result
     container.last_error = last_error
-    state_dir = container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
@@ -69,7 +66,7 @@ class SystemApi < ErrorsApi
     clear_error
     return false if blueprint.nil?
     puts blueprint.to_s
-    state_dir = container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
@@ -81,7 +78,7 @@ class SystemApi < ErrorsApi
 
   def load_blueprint(container)
     clear_error
-    state_dir = container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(container)
     return false unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'
     if File.exist?(statefile)
@@ -310,9 +307,6 @@ class SystemApi < ErrorsApi
     SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
   end
 
-  def container_state_dir(container)
-    SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
-  end
 
   def system_update_status
     SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/deb_update_status engines@172.17.42.1 /opt/engines/bin/deb_update_status.sh')
