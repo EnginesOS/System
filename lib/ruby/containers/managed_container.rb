@@ -449,6 +449,7 @@ class ManagedContainer < Container
 
   def inspect_container
     return false if has_api? == false
+   p caller_locations(1,1)[0].label
      result = @container_api.inspect_container(self) if @docker_info.nil?
      return nil if result == false
      @docker_info = @last_result  
