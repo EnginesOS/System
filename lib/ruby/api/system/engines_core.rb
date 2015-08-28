@@ -322,9 +322,11 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-    def retrieve_service_configuration(service_param)  
-      configurator = ConfigurationsApi.new(self)
-       return log_error_mesg('Configration failed', configurator.last_error) unless configurator.retrieve_service_configuration(service_param).is_a?(Hash)
+    def retrieve_service_configuration(config)  
+      c = ConfigurationsApi.new(self)
+      r = c.retrieve_service_configuration(config).is_a?(Hash)
+       return log_error_mesg('Configration failed ' +  c.last_error, r) unless r
+       return r
       end
 
   def update_service_configuration(service_param)    
