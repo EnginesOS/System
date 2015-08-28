@@ -683,37 +683,6 @@ class EngineBuilder
     return retval
   end
 
-  def self.re_install_engine(engine, core)
-    params = {}
-    params[:engine_name] = engine.container_name
-    params[:domain_name] = engine.domain_name
-    params[:host_name] = engine.hostname
-    params[:software_environment_variables] = engine.environments
-    params[:http_protocol] = engine.protocol
-    params[:memory] = engine.memory
-    params[:repository_url] = engine.repo
-    builder = EngineBuilder.new(params, core)
-    if builder.is_a?(EngineBuilder) == false
-      return  EnginesOSapiResult.failed(params[:engine_name], 'NO Builder', 'build_engine')
-    end
-    engine = builder.build_from_blue_print
-    if engine == false
-      #      builder.post_failed_build_clean_up Donnt do this as a reinstall should not delete on failure
-      return  EnginesOSapiResult.failed(params[:engine_name], builder.last_error, 'build_engine')
-    end
-    if engine.nil? == false
-      if engine.is_active? == false
-        builder.close_all
-        return EnginesOSapiResult.failed(params[:engine_name], 'Failed to start  ' + builder.last_error, 'Reinstall Engine')
-      end
-      return engine
-    end
-    builder.post_failed_build_clean_up
-    return EnginesOSapiResult.failed(engine.container_name, builder.last_error, 'build_engine')
-  rescue StandardError => e
-    return EnginesOSapiResult.failed(engine.container_name, builder.last_error, 'build_engine')
-  end
-
   def rebuild_managed_container(engine)
     @engine = engine
     log_build_output('Starting Rebuild')
