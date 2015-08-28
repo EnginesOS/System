@@ -13,7 +13,7 @@ class ServiceManager  < ErrorsApi
   end
 
   def is_service_persistant?(service_hash)
-    if service_hash.key?(:persistant) == false
+    unless service_hash.key?(:persistant)
       persist = software_service_persistance(service_hash)
      return log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
       service_hash[:persistant] = persist
@@ -27,7 +27,7 @@ class ServiceManager  < ErrorsApi
   def software_service_persistance(service_hash)
     clear_error
     service_definition = software_service_definition(service_hash)
-    return service_definition[:persistant] if service_definition.nil? == false              
+    return service_definition[:persistant] unless service_definition.nil?              
     return nil
   end
 
@@ -37,15 +37,15 @@ class ServiceManager  < ErrorsApi
   #@ return true if successful or false if failed
   def add_service(service_hash)
     clear_error
-    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] if service_hash[:variables].has_key?(:parent_engine) == false
+    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
     if is_service_persistant?(service_hash)
-      return log_error_mesg('Failed to create persistant service ',service_hash) if add_to_managed_service(service_hash) == false
-      return log_error_mesg('Failed to add service to managed service registry',service_hash) if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false
+      return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
+      return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
     else
-      return log_error_mesg('Failed to create non persistant service ',service_hash) if add_to_managed_service(service_hash) == false
-      return log_error_mesg('Failed to add service to managed service registry',service_hash) if test_registry_result(@system_registry.add_to_services_registry(service_hash)) == false    
+      return log_error_mesg('Failed to create non persistant service ',service_hash) unless add_to_managed_service(service_hash)
+      return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))    
     end
     return true
   rescue Exception=>e
@@ -101,8 +101,8 @@ class ServiceManager  < ErrorsApi
     clear_error
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = @system_registry.find_engine_service_hash(complete_service_query)
-    return log_error_mesg('Failed to to set top level params hash',service_hash) if service_hash == false
-    return  log_error_mesg('failed to remove managed service',service_hash) if remove_from_managed_service(service_hash) == false  
+    return log_error_mesg('Failed to to set top level params hash',service_hash) unless service_hash
+    return  log_error_mesg('failed to remove managed service',service_hash) unless remove_from_managed_service(service_hash)  
     return test_registry_result(@system_registry.remove_from_services_registry(service_hash))
   end
 
@@ -128,10 +128,10 @@ class ServiceManager  < ErrorsApi
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
     services.each do | service |
       if params[:remove_all_data]
-        return  log_error_mesg('Failed to remove service ',service) if delete_service(service) == false
+        return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)
         @system_registry.remove_from_managed_engines_registry(service)
       else
-        return log_error_mesg('Failed to orphan service ',service) if orphanate_service(service) == false
+        return log_error_mesg('Failed to orphan service ',service) unless orphanate_service(service)
       end
     end
     return true

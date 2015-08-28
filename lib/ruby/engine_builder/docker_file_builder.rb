@@ -29,10 +29,7 @@ class DockerFileBuilder
     @docker_file.puts('')
     write_environment_variables
     write_stack_env
-    # write_services
     write_file_service
-    # write_db_service
-    # write_cron_jobs
     write_os_packages
     write_user_local = true
     if write_user_local == true

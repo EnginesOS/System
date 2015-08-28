@@ -27,9 +27,7 @@ class SystemUtils
   
   def SystemUtils.get_service_pubkey(service, cmd)
     cmd_line = 'docker exec ' + service + ' /home/get_pubkey.sh ' + cmd     
-    key = SystemUtils.run_command(cmd_line)
-    p key
-    return key
+   SystemUtils.run_command(cmd_line)
   end
   
   def SystemUtils.system_release
@@ -269,7 +267,7 @@ def SystemUtils.service_hash_variables_as_str(service_hash)
    end
    service_variables = service_hash[:variables]
      sources = ''
-  return argument if service_variables.nil? == true
+  return argument if service_variables.nil?
    service_variables.each_pair do |key,value|
      if key == :sources
        sources = value
