@@ -1,8 +1,7 @@
-class FirstRunWizard
+class FirstRunWizard <ErrorsApi
   attr_reader  :error, :sucess
   def initialize(params)
     @sucess = false
-    @error = 'None'
     @first_run_params = params
   end
 
@@ -10,41 +9,21 @@ class FirstRunWizard
     @api = api
     p :applyin
     p @first_run_params
-    if mysql_password_configurator(@first_run_params[:mysql_password]) == false
-      log_error('Fail to setup mysql password ' + api.last_error())
-      return false
-    end
-
-    if console_password_configurator(@first_run_params[:console_password]) == false
-      log_error('Fail to setup console password ' + api.last_error())
-      return false
-    end
-
+    return log_error_mesg('Fail to setup mysql password ', api.last_error) unless mysql_password_configurator(@first_run_params[:mysql_password])
+    return log_error_mesg('Fail to setup console password ', api.last_error) unless console_password_configurator(@first_run_params[:console_password])
     domain_hash = get_domain_params(@first_run_params)
-    if api.add_domain(domain_hash) == false
-      log_error('Fail to add domain ' + api.last_error() + ' ' + domain_hash.to_s)
-      return false
-    end
+    return log_error_mesg('Fail to add domain ' + api.last_error, domain_hash) unless api.add_domain(domain_hash)
     domain_hash = {}
     domain_hash[:default_domain] = @first_run_params[:default_domain]
-    if api.set_default_domain(domain_hash) == false
-      log_error('Fail to set default domain ' + api.last_error() + ' ' + domain_hash.to_s)
-      return false
-    end
-    if @first_run_params.has_key?(:ssh_key) == true
-      if ssh_key_configurator(@first_run_params[:ssh_key]) == false
-        log_error('Fail to setup ssh key ' + api.last_error())
-        return false
-      end
+    return log_error_mesg('Fail to set default domain ' + api.last_error, domain_hash.to_s) unless api.set_default_domain(domain_hash)
+    if @first_run_params.key?(:ssh_key) == true
+      return log_error_mesg('Fail to setup ssh key ', api.last_error) unless ssh_key_configurator(@first_run_params[:ssh_key])
     end
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
     SystemUtils.execute_command('/opt/engines/bin/install_ca.sh')
     SystemUtils.execute_command('/opt/engines/bin/install_cert.sh engines')
-    if set_default_email_domain(@first_run_params[:default_domain]) == false
-      log_error('Fail to setup set_default_email_domain ' + api.last_error())
-      return false
-    end
+    return log_error_mesg('Fail to setup set_default_email_domain ', api.last_error) unless set_default_email_domain(@first_run_params[:default_domain])
     @sucess = true
     mark_as_run
   end
@@ -55,12 +34,8 @@ class FirstRunWizard
     service_param[:configurator_name] = 'default_domain'
     service_param[:variables] = {}
     service_param[:variables][:domain_name] = domain_name
-    if  @api.update_service_configuration(service_param) == true
-      return true
-    else
-      log_error('smtp default domain configurator ' + @api.last_error.to_s)
-      return false
-    end
+    return true if @api.update_service_configuration(service_param)
+    return log_error_mesg('smtp default domain configurator ', service_param)
   end
 
   def get_domain_params(params)
@@ -77,12 +52,8 @@ class FirstRunWizard
     service_param[:configurator_name] = 'db_master_pass'
     service_param[:variables] = {}
     service_param[:variables][:db_master_pass] = password
-    if  @api.update_service_configuration(service_param) == true
-      return true
-    else
-      log_error('mysql_password_configurator ' + @api.last_error.to_s)
-      return false
-    end
+    return true if @api.update_service_configuration(service_param)
+    return log_error_mesg('mysql_password_configurator ', @api.last_error)
   end
 
   def console_password_configurator(password)
@@ -91,17 +62,8 @@ class FirstRunWizard
     service_param[:configurator_name] = 'console_pass'
     service_param[:variables] = Hash.new
     service_param[:variables][:console_password] = password
-    if @api.update_service_configuration(service_param) == true
-      return true
-    else
-      log_error('console_password_configurator ' + @api.last_error.to_s)
-      return false
-    end
-  end
-
-  def log_error(err)
-    p 'Error with first run ' + err
-    @error = err
+    return true if @api.update_service_configuration(service_param)
+    return log_error_mesg('console_password_configurator ', @api.last_error)
   end
 
   def ssh_key_configurator(key)
@@ -110,12 +72,8 @@ class FirstRunWizard
     service_param[:configurator_name] = 'ssh_master_key'
     service_param[:variables] = {}
     service_param[:variables][:ssh_master_key] = key
-    if @api.update_service_configuration(service_param) == true
-      return true
-    else
-      log_error('ssh_key_configurator ' + @api.last_error.to_s)
-      return false
-    end
+    return true if @api.update_service_configuration(service_param)
+    return log_error_mesg('ssh_key_configurator ', @api.last_error)
   end
 
   def mark_as_run
@@ -126,9 +84,7 @@ class FirstRunWizard
   end
 
   def FirstRunWizard.required?
-    if File.exists?(SystemConfig.FirstRunRan) ==false
-      return true
-    end
+    return true if File.exist?(SystemConfig.FirstRunRan) == false
     return false
   end
   # FIXME: and put in it's own class or even service
@@ -144,12 +100,8 @@ class FirstRunWizard
     config_param[:variables][:organisation] = ca_params[:ssl_organisation_name]
     config_param[:variables][:person] = ca_params[:ssl_person_name]
     config_param[:variables][:domainname] = ca_params[:default_domain]
-    if  @api.update_service_configuration(config_param) == true
-      return true
-    else
-      log_error('create_ca ' + @api.last_error.to_s)
-      return false
-    end
+    return true if @api.update_service_configuration(config_param)
+    return log_error_mesg('create_ca ', @api.last_error)
   end
 
   def create_default_cert (params)
@@ -170,11 +122,7 @@ class FirstRunWizard
     service_param[:variables][:person] = params[:ssl_person_name]
     service_param[:variables][:domainname] = params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
-    if @api.attach_service(service_param) == true
-      return true
-    else
-      log_error('create_default_cert ' + @api.last_error.to_s)
-      return false
-    end
+    return true if @api.attach_service(service_param)
+    return  log_error_mesg('create_default_cert ', @api.last_error)
   end
 end

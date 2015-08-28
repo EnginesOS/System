@@ -159,7 +159,7 @@ class ServiceManager  < ErrorsApi
     return true
   end
   
-  def force_reregister_attached_service(service_query)
+  def force_register_attached_service(service_query)
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = @system_registry.find_engine_service_hash(complete_service_query)
     return  log_error_mesg( 'force_reregister no matching service found',service_query) if service_hash.is_a?(Hash) == false
@@ -173,7 +173,7 @@ class ServiceManager  < ErrorsApi
   return  remove_from_managed_service(service_hash)   
  end
  
- def force_register_attached_service(service_query)
+ def force_reregister_attached_service(service_query)
    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
    service_hash = @system_registry.find_engine_service_hash(complete_service_query)
    return log_error_mesg( 'force_register no matching service found',service_query)  if service_hash.is_a?(Hash) == false
@@ -460,7 +460,7 @@ end
  def add_to_managed_service(service_hash)
    clear_error
    service =  @core_api.load_software_service(service_hash)
-  return log_error_mesg('Failed to load service to add :' +  @core_api.last_error.to_s,service_hash) if service == nil || service == false
+  return log_error_mesg('Failed to load service to add :' +  @core_api.last_error.to_s,service_hash) if service.nil? || service.is_a?(FalseClass)
   return log_error_mesg('Cant add to service if service is stopped ',service_hash) if service.is_running? == false
    result =  service.add_consumer(service_hash)
   return  log_error_mesg('Failed to add Consumser to Service :' +  @core_api.last_error.to_s + ':' + service.last_error.to_s,service_hash) if result == false
@@ -479,16 +479,14 @@ end
      return false
    end
    if service.persistant == false || service.is_running? 
-     return true  if service.remove_consumer(service_hash)
+     return true if service.remove_consumer(service_hash)
      return false
-   elsif service.persistant == true
+   elsif service.persistant
      return log_error_mesg('Cant remove persistant service if service is stopped ',service_hash)
    else
      return true
    end
  end
-
-
 
 #@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
 def software_service_definition(params)
@@ -517,30 +515,4 @@ end
       result.freeze
     end
   end
-
- 
-#def log_error_mesg(msg,object)
-#  obj_str = object.to_s.slice(0,256)
-#  @last_error = @last_error.to_s + ':' + msg +':' + obj_str
-#  SystemUtils.log_error_mesg(msg,object)
-#end
-#  #Appends msg + object.to_s (truncated to 256 chars) to @last_log
-#  #Calls SystemUtils.log_error_msg(msg,object) to log the error
-#  #@return none
-#  def log_error_mesg(msg,object)
-#    obj_str = object.to_s.slice(0,256)
-#    @last_error = @last_error.to_s + ':' + msg.to_s + ':' + obj_str
-#    SystemUtils.log_error_mesg(msg,object)
-#  end
-#
-#  #@Resets last_error to nil
-#  def clear_error
-#    @last_error = nil
-#  end
-#
-#  #@Log Exception and add exception to last_error
-#  def log_exception(e)
-#    @last_error = @last_error.to_s + ':' + e.to_s.slice(0,256)
-#    SystemUtils.log_exception(e)
-#  end
 end

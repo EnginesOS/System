@@ -1,5 +1,4 @@
 class SystemApi < ErrorsApi
-
   def initialize(api)
     @engines_api = api
   end
@@ -8,21 +7,21 @@ class SystemApi < ErrorsApi
     clear_error
     cid = read_container_id(container)
     container.container_id = cid
-    stateDir = container_state_dir(container)
-    if File.directory?(stateDir) == false
-      Dir.mkdir(stateDir)
-      if Dir.exist?(stateDir + '/run') == false
-        Dir.mkdir(stateDir + '/run')
-        Dir.mkdir(stateDir + '/run/flags')
+    state_dir = container_state_dir(container)
+    unless File.directory?(state_dir)
+      Dir.mkdir(state_dir)
+      unless Dir.exist?(state_dir + '/run')
+        Dir.mkdir(state_dir + '/run')
+        Dir.mkdir(state_dir + '/run/flags')
       end
-      FileUtils.chown_R(nil, 'containers', stateDir + '/run')
-      FileUtils.chmod_R('u+r', stateDir + '/run')
+      FileUtils.chown_R(nil, 'containers', state_dir + '/run')
+      FileUtils.chmod_R('u+r', state_dir + '/run')
     end
     log_dir = container_log_dir(container)
-    Dir.mkdir(log_dir) if File.directory?(log_dir) == false
+    Dir.mkdir(log_dir) unless File.directory?(log_dir)
     if container.is_service?
-      Dir.mkdir(stateDir + '/configurations/') if File.directory?(stateDir + '/configurations') == false
-      Dir.mkdir(stateDir + '/configurations/default') if File.directory?(stateDir + '/configurations/default') == false
+      Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
+      Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end
     return save_container(container)
   rescue StandardError => e
@@ -93,18 +92,10 @@ class SystemApi < ErrorsApi
     log_exception(e)
   end
 
-  #  def get_cert_name(fqdn)
-  #    if File.exists?(SystemConfig.NginxCertDir + '/' + fqdn + '.crt')
-  #      return  fqdn
-  #    else
-  #      return SystemConfig.NginxDefaultCert
-  #    end
-  #  end
-
   def get_build_report(engine_name)
     clear_error
-    stateDir = SystemConfig.RunDir + '/containers/' + engine_name
-    return File.read(stateDir + '/buildreport.txt') if File.exist?(stateDir + '/buildreport.txt')
+    state_dir = SystemConfig.RunDir + '/containers/' + engine_name
+    return File.read(state_dir + '/buildreport.txt') if File.exist?(state_dir + '/buildreport.txt')
     return 'Build Not Successful'
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -112,8 +103,8 @@ class SystemApi < ErrorsApi
 
   def save_build_report(container, build_report)
     clear_error
-    stateDir = container_state_dir(container)
-    f = File.new(stateDir  + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    state_dir = container_state_dir(container)
+    f = File.new(state_dir  + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(build_report)
     f.close
     return true
@@ -131,13 +122,13 @@ class SystemApi < ErrorsApi
     # save_last_result_and_error(container)
     container.last_result = ''
     container.last_error = ''
-    serialized_object = YAML::dump(container)
+    serialized_object = YAML.dump(container)
     container.container_api = api
     container.last_result = last_result
     container.last_error = last_error
-    stateDir = container_state_dir(container)
-    FileUtils.mkdir_p(stateDir)  if Dir.exist?(stateDir) == false
-    statefile = stateDir + '/running.yaml'
+    state_dir = container_state_dir(container)
+    FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
+    statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
@@ -155,14 +146,11 @@ class SystemApi < ErrorsApi
 
   def save_blueprint(blueprint, container)
     clear_error
-    if blueprint.nil? == false
-      puts blueprint.to_s
-    else
-      return false
-    end
-    stateDir = container_state_dir(container)
-    Dir.mkdir(stateDir) if File.directory?(stateDir) == false
-    statefile = stateDir + '/blueprint.json'
+    return false if blueprint.nil?
+    puts blueprint.to_s
+    state_dir = container_state_dir(container)
+    Dir.mkdir(state_dir) if File.directory?(state_dir) == false
+    statefile = state_dir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
@@ -172,9 +160,9 @@ class SystemApi < ErrorsApi
 
   def load_blueprint(container)
     clear_error
-    stateDir = container_state_dir(container)
-    return false if File.directory?(stateDir) == false
-    statefile = stateDir + '/blueprint.json'
+    state_dir = container_state_dir(container)
+    return false unless File.directory?(state_dir)
+    statefile = state_dir + '/blueprint.json'
     if File.exist?(statefile)
       f = File.new(statefile, 'r')
       blueprint = JSON.parse(f.read)
@@ -202,8 +190,7 @@ class SystemApi < ErrorsApi
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes'))
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
       else
-        p :no_cgroup_file
-        p path
+        log_error_mesg('no_cgroup_file for ' + container.container_name, path)
         ret_val.store(:maximum, 'No Container')
         ret_val.store(:current, 'No Container')
         ret_val.store(:limit, 'No Container')
@@ -228,10 +215,7 @@ class SystemApi < ErrorsApi
     clear_error
     #      engine_name = params[:engine_name]
     protocol = params[:http_protocol]
-    if protocol.nil?
-      p params
-      return false
-    end
+    return false if protocol.nil?
     SystemUtils.debug_output('Changing protocol to _', protocol)
     if protocol.include?('HTTPS only')
       engine.enable_https_only
@@ -240,7 +224,6 @@ class SystemApi < ErrorsApi
     elsif protocol.include?('HTTPS and HTTP')
       engine.enable_http_and_https
     end
-    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -267,7 +250,7 @@ class SystemApi < ErrorsApi
     ret_val = []
     Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
       yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
-      if File.exist?(yfn) == true
+      if File.exist?(yfn)
         managed_engine = loadManagedEngine(contdir)
         if managed_engine.is_a?(ManagedEngine)
           ret_val.push(managed_engine)
@@ -282,46 +265,35 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
-    if engine_name.nil? || engine_name.length == 0
-      @last_error = 'No Engine Name'
-      return false
-    end
+    return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
-    if File.exist?(yam_file_name) == false
-      log_error_mesg('no such file ', yam_file_name)
-      return false # return failed(yam_file_name,'No such configuration:','Load Engine')
-    end
+    return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
     yaml_file = File.read(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
     return managed_engine
   rescue StandardError => e
-    if engine_name.nil? == false
-      if managed_engine.nil? == false
+    unless engine_name.nil?
+      unless managed_engine.nil?
         managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
-        log_error_mesg(managed_engine.last_error,e)
+        log_error_mesg(managed_engine.last_error, e)
       end
     else
-      log_error_mesg('nil Engine Name',engine_name)
+      log_error_mesg('nil Engine Name', engine_name)
     end
     log_exception(e)
   end
 
   def build_running_service(service_name, service_type_dir)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
-    if File.exist?(config_template_file_name) == false
-      log_error_mesg('Running exits',service_name)
-      return false
-    end
+    return log_error_mesg('Running exits', service_name) unless File.exist?(config_template_file_name)
     config_template = File.read(config_template_file_name)
-    system_access = SystemAccess.new
-    templator = Templater.new(system_access, nil)
+    templator = Templater.new(SystemAccess.new, nil)
     running_config = templator.process_templated_string(config_template)
     yam1_file_name = service_type_dir + service_name + '/running.yaml'
     yaml_file = File.new(yam1_file_name, 'w+')
     yaml_file.write(running_config)
     yaml_file.close
-    return true
   end
 
   def loadSystemService(service_name)
@@ -338,35 +310,25 @@ class SystemApi < ErrorsApi
       return false
     end
     yam1_file_name = service_type_dir + service_name + '/running.yaml'
-    if File.exist?(yam1_file_name) == false
-      if build_running_service(service_name, service_type_dir) == false
-        log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s)
-        return false # return failed(yam_file_name,'No such configuration:','Load Service')
-      end
+    unless File.exist?(yam1_file_name)
+      return log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s) unless build_running_service(service_name, service_type_dir)
     end
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
-    if service_type_dir == '/sytem_services/'
-      managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api)
-    else
-      managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
-    end
-    if managed_service.nil?
-      p :load_managed_servic_failed
-      log_error_mesg('load_managed_servic_failed loading:', yam1_file_name.to_s + ' service name: ' + service_name.to_s)
-      return false # return EnginsOSapiResult.failed(yam_file_name,'Fail to Load configuration:','Load Service')
-    end
-    return managed_service
+    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
+    managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
+    return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
+    managed_service
   rescue StandardError => e
     if service_name.nil? == false
-      if managed_service.nil? == false
+      unless managed_service.nil?
         managed_service.last_error = ('Failed To get Managed Engine ' + service_name.to_s + ' ' + e.to_s)
         log_exception(e)
       end
     else
-      log_error_mesg('nil Service Name',service_name)
+      log_error_mesg('nil Service Name', service_name)
     end
-   log_exception(e)
+    log_exception(e)
   end
 
   def getManagedServices
@@ -388,15 +350,13 @@ class SystemApi < ErrorsApi
   def list_managed_engines
     clear_error
     ret_val = []
-    begin
-      Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
-        yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
-        ret_val.push(contdir) if File.exist?(yfn) == true
-      end
-    rescue StandardError => e
-      log_exception(e)
-      return ret_val
+    Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
+      yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
+      ret_val.push(contdir) if File.exist?(yfn)
     end
+    return ret_val
+  rescue StandardError => e
+    log_exception(e)
     return ret_val
   end
 
@@ -405,7 +365,7 @@ class SystemApi < ErrorsApi
     ret_val = []
     Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
-      ret_val.push(contdir) if File.exist?(yfn) == true
+      ret_val.push(contdir) if File.exist?(yfn)
     end
     return ret_val
   rescue StandardError => e
@@ -423,10 +383,7 @@ class SystemApi < ErrorsApi
 
   def generate_engines_user_ssh_key
     newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
-    if newkey.start_with?('-----BEGIN RSA PRIVATE KEY-----') == false
-      @last_error = newkey
-      return false
-    end
+    return log_error_mesg("Not an RSA key",newkey) unless newkey.start_with?('-----BEGIN RSA PRIVATE KEY-----')
     return newkey
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -459,7 +416,6 @@ class SystemApi < ErrorsApi
     res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
-    return false
   end
 
   def update_engines_system_software
@@ -483,8 +439,8 @@ class SystemApi < ErrorsApi
 
   def update_domain(params)
     old_domain_name = params[:original_domain_name]
-    return false if DNSHosting.update_domain(old_domain_name, params) == false
-    return true if params[:self_hosted] == false
+    return false unless DNSHosting.update_domain(old_domain_name, params)
+    return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
     service_hash[:variables] = {}
@@ -498,24 +454,16 @@ class SystemApi < ErrorsApi
     # @engines_api.delete_service_from_engine_registry(service_hash)
     service_hash[:variables][:domainname] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
-    if  params[:internal_only]
-      ip = DNSHosting.get_local_ip
-    else
-      ip = open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
-    end
-    service_hash[:variables][:ip] = ip
-    if @engines_api.attach_service(service_hash) == true
-      @engines_api.register_non_persistant_service(service_hash)
-      return true
-    end
+    service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
+    return @engines_api.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash)
     return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
   def add_domain(params)
-    return false if DNSHosting.add_domain(params) == false
-    return true if params[:self_hosted] == false
+    return false unless DNSHosting.add_domain(params)
+    return true unless params[:self_hosted]
     service_hash = {}
     service_hash[:parent_engine] = 'system'
     service_hash[:variables] = {}
@@ -524,13 +472,8 @@ class SystemApi < ErrorsApi
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-    if params[:internal_only]
-      ip = DNSHosting.get_local_ip
-    else
-      ip = open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
-    end
-    service_hash[:variables][:ip] = ip
-    return @engines_api.service_manager.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash) == true
+    service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
+    return @engines_api.service_manager.register_non_persistant_service(service_hash) if @engines_api.attach_service(service_hash)
     return false
   rescue StandardError => e
     log_error_mesg('Add self hosted domain exception', params.to_s)
@@ -591,16 +534,20 @@ class SystemApi < ErrorsApi
     return false
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def list_domains
     return DNSHosting.list_domains
   rescue StandardError => e
-    return log_exception(e)
+    log_exception(e)
   end
 
   protected
+
+  def get_ip_for_hosted_dns(internal)
+    return DNSHosting.get_local_ip if internal
+    open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
+  end
 
   def container_cid_file(container)
     SystemConfig.CidDir + '/' + container.container_name + '.cid'
@@ -625,7 +572,4 @@ class SystemApi < ErrorsApi
       return res
     end
   end
-
-
-
 end

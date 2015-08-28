@@ -12,10 +12,7 @@ class SystemStatus
   end
 
   def self.engines_system_has_updated?
-    if File.exist?(SystemConfig.EnginesSystemUpdatedFlag)
-      File.delete(SystemConfig.EnginesSystemUpdatedFlag)
-      return true
-    end
+    return File.delete(SystemConfig.EnginesSystemUpdatedFlag) if File.exist?(SystemConfig.EnginesSystemUpdatedFlag)
     return false
   end
 
@@ -24,10 +21,7 @@ class SystemStatus
   end
 
   def self.base_system_has_updated?
-    if File.exist?(SystemConfig.SystemUpdatedFlag)
-      File.delete(SystemConfig.SystemUpdatedFlag)
-      return true
-    end
+    return File.delete(SystemConfig.SystemUpdatedFlag) if File.exist?(SystemConfig.SystemUpdatedFlag)
     return false
   end
 
@@ -98,13 +92,13 @@ class SystemStatus
   end
 
   def self.current_build_params
-    if File.exist?(SystemConfig.BuildRunningParamsFile) == false
-        SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
-         return {}
-       end
+    unless File.exist?(SystemConfig.BuildRunningParamsFile)
+      SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
+      return {}
+    end
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
     param_raw = param_file.read
-    params = YAML::load(param_raw)
+    params = YAML.load(param_raw)
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -112,27 +106,27 @@ class SystemStatus
   end
 
   def self.last_build_params
-    if File.exist?(SystemConfig.BuildBuiltFile) == false
-      SystemUtils.log_error_mesg("No ", SystemConfig.BuildBuiltFile)
+    unless File.exist?(SystemConfig.BuildBuiltFile)
+      SystemUtils.log_error_mesg('No  last_build_params', SystemConfig.BuildBuiltFile)
       return {}
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
-    params = YAML::load(param_raw)
+    params = YAML.load(param_raw)
     return params
   rescue StandardError => e
-    SystemUtils.log_exception(e)    
+    SystemUtils.log_exception(e)
     return {}
   end
 
   def self.last_build_failure_params
-    if File.exist?(SystemConfig.BuildFailedFile) == false
-      SystemUtils.log_error_mesg("No ", SystemConfig.BuildFailedFile)
-          return {}
-        end
+    unless File.exist?(SystemConfig.BuildFailedFile)
+      SystemUtils.log_error_mesg('No last_build_failure_params ', SystemConfig.BuildFailedFile)
+      return {}
+    end
     param_file = File.new(SystemConfig.BuildFailedFile, 'r')
     param_raw = param_file.read
-    params = YAML::load(param_raw)
+    params = YAML.load(param_raw)
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -143,7 +137,7 @@ class SystemStatus
     ret_val = {}
     proc_mem_info_file = File.open('/proc/meminfo')
     proc_mem_info_file.each_line do |line|
-      values=line.split(' ')
+      values = line.split(' ')
       case values[0]
       when 'MemTotal:'
         ret_val[:total] = values[1]
@@ -164,7 +158,7 @@ class SystemStatus
       end
     end
     return ret_val
-  rescue   Exception => e
+  rescue   StandardError => e
     SystemUtils.log_exception(e)
     ret_val[:total] = e.to_s
     ret_val[:free] = -1
@@ -187,7 +181,7 @@ class SystemStatus
     run_idle = values[3].split('/')
     ret_val[:running] = run_idle[0]
     ret_val[:idle] = run_idle[1]
-  rescue Exception=>e
+  rescue StandardError => e
     SystemUtils.log_exception(e)
     ret_val[:one] = -1
     ret_val[:five] = -1
@@ -195,18 +189,16 @@ class SystemStatus
     ret_val[:running] = -1
     ret_val[:idle] = -1
     return ret_val
-  rescue Exception=>e
-    SystemUtils.log_exception(e)
-    return false
+  rescue StandardError => e
+    SystemUtils.log_exception(e)  
   end
 
-  def self.is_engines_system_upto_date?()
+  def self.is_engines_system_upto_date?
     result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
     return result[:stdout]
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    if result.nil? == false
-      return result[:stderr]
-    end
+    return result[:stderr] unless result.nil? 
+      return false
   end
 end

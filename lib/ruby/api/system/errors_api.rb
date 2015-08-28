@@ -1,3 +1,4 @@
+# @All class that report errors children of this
 class ErrorsApi
   attr_reader :last_error
   @last_error = ''

@@ -710,7 +710,7 @@ class EnginesCore < ErrorsApi
   def force_register_attached_service(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
-
+  
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
