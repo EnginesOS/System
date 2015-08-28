@@ -27,11 +27,10 @@ class EnginesCore < ErrorsApi
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @system_preferences = SystemPreferences.new
     @registry_handler.start
   end
 
-  attr_reader  :container_api, :service_api
+  attr_reader :container_api, :service_api
 
   def get_registry_ip
     @registry_handler.get_registry_ip
@@ -129,7 +128,8 @@ class EnginesCore < ErrorsApi
   end
 
   def set_default_domain(params)
-    @system_preferences.set_default_domain(params)
+    preferences = SystemPreferences.new
+    preferences.set_default_domain(params)
   end
 
   def set_default_site(params)
@@ -153,8 +153,9 @@ class EnginesCore < ErrorsApi
     return ''
   end
 
-  def get_default_domain()
-    @system_preferences.get_default_domain
+  def get_default_domain()  
+    preferences = SystemPreferences.new
+    preferences.get_default_domain
   end
 
   def container_type(container_name)
@@ -651,8 +652,8 @@ class EnginesCore < ErrorsApi
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    clear_error
-    EngineBuilder.re_install_engine(engine, self)
+    clear_error    
+    BuildController.re_install_engine(engine, self)
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
