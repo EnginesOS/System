@@ -18,12 +18,13 @@ class BlueprintApi < ErrorsApi
   def load_blueprint(container)
     clear_error
     state_dir = ContainerStateFiles.container_state_dir(container)
-    return log_error_mesg('No Statdir', container) unless File.directory?(state_dir)
+    return log_error_mesg('No Statedir', container) unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'
    return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
       f = File.new(statefile, 'r')
       blueprint = JSON.parse(f.read)
       f.close
+      p 'loaded ' + blueprint.to_s + ' from ' + statefile.to_s
     return blueprint
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', blueprint)
