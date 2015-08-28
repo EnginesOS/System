@@ -76,7 +76,6 @@ class ContainerApi < ErrorsApi
     clear_error
     ret_val = true
     ret_val = test_docker_api_result(@docker_api.destroy_container(container)) if container.has_container?
-    ret_val = destroy_container(container) if ret_val
     return ret_val
   rescue StandardError => e
     container.last_error = 'Failed To Destroy ' + e.to_s
@@ -94,7 +93,7 @@ class ContainerApi < ErrorsApi
     clear_error
     return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
     ContainerStateFiles.clear_cid_file(container)
-    ContainerStateFiles.clear_container_var_run(container)
+   ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     container.pull_image if container.ctype != 'container'
     return ContainerStateFiles.create_container_dirs(container) if test_docker_api_result(@docker_api.create_container(container))

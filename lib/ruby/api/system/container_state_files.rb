@@ -20,10 +20,8 @@ class ContainerStateFiles
     state_dir = ContainerStateFiles.container_state_dir(container)
     unless File.directory?(state_dir)
       Dir.mkdir(state_dir)
-      unless Dir.exist?(state_dir + '/run')
-        Dir.mkdir(state_dir + '/run')
-        Dir.mkdir(state_dir + '/run/flags')
-      end
+      Dir.mkdir(state_dir + '/run') unless Dir.exist?(state_dir + '/run')       
+      Dir.mkdir(state_dir + '/run/flags') unless Dir.exist?(state_dir + '/run/flags')
       FileUtils.chown_R(nil, 'containers', state_dir + '/run')
       FileUtils.chmod_R('u+r', state_dir + '/run')
     end
@@ -33,6 +31,7 @@ class ContainerStateFiles
       Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
       Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end   
+    return true 
   rescue StandardError => e
     container.last_error = 'Failed To Create ' + e.to_s
     SystemUtils.log_exception(e)

@@ -237,24 +237,25 @@ class ManagedContainer < Container
 
   def destroy_container
     return false unless has_api?
+    clear_error
     ret_val = false
     state = read_state
-    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
-    @container_id = '-1'
+    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get   
     p @setState
     if is_active? == false
       ret_val = @container_api.destroy_container(self)
+      @container_id = '-1'
       expire_engine_info
     else
       log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first',state)
     end
-    clear_error
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     save_state()
     return ret_val
   end
 
   def setup_container
+    clear_error
     return false unless has_api?
     ret_val = false
     state = read_state 
@@ -265,11 +266,11 @@ class ManagedContainer < Container
     else
       log_error_mesg('Cannot create container as container exists ',state) 
     end
-    clear_error
     save_state
   end
 
   def create_container
+    clear_error   
     return false unless has_api?
     ret_val = false
     expire_engine_info
@@ -290,7 +291,7 @@ class ManagedContainer < Container
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
-    clear_error   
+   
     @cont_userid = running_user
     save_state
   end
