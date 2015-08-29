@@ -7,7 +7,6 @@ class SystemService < ManagedService
   def lock_values      
     @ctype = 'system_service' if @ctype.nil?
          super.lock_values
-       end
   end       
   
   def  forced_recreate 
@@ -15,8 +14,7 @@ class SystemService < ManagedService
     p 'Forced recreate  resgitroy'
       unpause_container
       stop_container
-      destroy_container
-      
+      destroy_container      
       return  @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers  
     end
     

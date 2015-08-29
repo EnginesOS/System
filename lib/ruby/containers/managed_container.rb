@@ -565,6 +565,8 @@ def lock_values
     @repository.freeze
     @runtime.freeze
     @framework.freeze
+rescue StandardError => e
+  log_exception(e)
   end
   
 protected

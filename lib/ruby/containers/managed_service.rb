@@ -6,9 +6,8 @@ class ManagedService < ManagedContainer
 
   def lock_values
      super.lock_values
-    if @ctype.nil? @ctype = 'service' 
+    @ctype = 'service' if @ctype.nil? 
      @ctype.freeze
-   end
   end
    
   def ctype
