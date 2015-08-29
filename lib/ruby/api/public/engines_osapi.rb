@@ -226,7 +226,7 @@ class EnginesOSapi
     engine = loadManagedEngine(engine_name)
     return engine if engine.is_a?(EnginesOSapiResult)
     engine.destroy_container if engine.has_container?
-    return success(engine_name, 'Re Installed') if @core_api.reinstall_engine(engine).is_a?(MananagedEngine)
+    return success(engine_name, 'Re Installed') if @core_api.reinstall_engine(engine).is_a?(ManagedEngine)
     failed(engine_name, @core_api.last_error, 'Reinstall Engine Failed')
   end
   
