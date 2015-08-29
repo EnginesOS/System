@@ -88,6 +88,7 @@ class ManagedContainer < Container
   attr_reader :container_id, :conf_self_start
   
   def docker_info
+    return nil if @docker_info.nil?
     info = @docker_info.dup
     return info.freeze
   end
