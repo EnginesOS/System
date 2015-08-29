@@ -2,6 +2,7 @@
 container_name: registry
 ctype: system_service
 persistant: false
+conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: registry
 last_error: 
