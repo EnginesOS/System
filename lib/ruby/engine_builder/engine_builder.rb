@@ -159,9 +159,11 @@ class EngineBuilder < ErrorsApi
     log_build_output('Building Image')
     # cmd='cd ' + get_basedir + '; docker build  -t ' + @hostname + '/init .'
     cmd = '/usr/bin/docker build --force-rm=true --tag=' + @container_name + ' ' + get_basedir
-    puts cmd
+    p :EXEC
+    p cmd
     res = SystemUtils.execute_command(cmd)
     return true if res[:result] == 0
+      p res.to_s
     log_error_mesg('build init failed ', res)
   rescue StandardError => e
     log_exception(e)
@@ -419,19 +421,7 @@ ensure
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
       write_software_file(SystemConfig.InstallScript, content)
-      #      install_script_file = File.open(get_basedir + SystemConfig.InstallScript,'wb', :crlf_newline => false)
-      #      install_script_file.puts(content)
-      #      install_script_file.close
       p :create_install_script
-      #      p get_basedir + SystemConfig.InstallScript
-      #      p @blueprint[:software][:custom_install_script]
-      #        t = @blueprint[:software][:custom_install_script]
-      #        t.gsub!(/\r/, '')
-      #        p t
-      #        p 'no_bang'
-      #        t =  @blueprint[:software][:custom_install_script]
-      #      t = t.gsub(/\r/, '')
-      #    p t#
       File.chmod(0755, get_basedir + SystemConfig.InstallScript)
     end
   end
