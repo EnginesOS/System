@@ -5,7 +5,7 @@ class SystemService < ManagedService
   @ctype = 'system_service'
   def lock_values
     @ctype = 'system_service' if @ctype.nil?
-    super.lock_values
+    super
   end
 
   def  forced_recreate

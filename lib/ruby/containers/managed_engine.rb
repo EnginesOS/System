@@ -30,6 +30,7 @@ class ManagedEngine < ManagedContainer
   def lock_values
     @ctype = 'container' if @ctype.nil?
     @ctype.freeze
+    super
   end
   
   def plugins_path

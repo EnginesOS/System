@@ -5,7 +5,7 @@ class ManagedService < ManagedContainer
   @ctype='service'
 
   def lock_values
-     super.lock_values
+     super
     @ctype = 'service' if @ctype.nil? 
      @ctype.freeze
   end
