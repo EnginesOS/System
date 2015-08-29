@@ -23,6 +23,7 @@ class ManagedEngine < ManagedContainer
     @data_uid = data_uid
     @data_gid = data_gid
     save_state # no running.yaml throws a no such container so save so others can use
+    @conf_self_start = true
   end
 
   attr_reader :ctype, :plugins_path, :extract_plugins
