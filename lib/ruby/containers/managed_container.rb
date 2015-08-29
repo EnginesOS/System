@@ -558,8 +558,6 @@ def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
   end  
   
-protected
-  
 def lock_values
     @conf_self_start.freeze
     @container_name.freeze
@@ -570,7 +568,9 @@ def lock_values
     @runtime.freeze
     @framework.freeze
   end
-
+  
+protected
+  
 # create nginx service_hash for container and register with nginx
  # @return boolean indicating sucess
  def add_nginx_service
