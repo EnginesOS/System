@@ -37,7 +37,7 @@ class ServiceApi < ContainerApi
   end
 
   def container_services_dir(container)
-    @engines_core.container_state_dir(container) + '/services/'
+    ContainerStateFiles.container_state_dir(container) + '/services/'
   end
   
   def retrieve_configurator(c, params)    
