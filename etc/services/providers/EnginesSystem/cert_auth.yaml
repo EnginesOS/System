@@ -100,7 +100,7 @@ consumer_params:
   regex_invalid_message: "wrong go back and try again"    
 configurators:
  system_ca:
-  name: System CA
+  name: system_ca
   label: Root Certificate Authority
   description: Public Cert for key used to signed all Certificates issued by the engines host
   params:
