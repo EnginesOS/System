@@ -558,7 +558,7 @@ def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
   end  
   
-def lock_immutable
+def lock_values
     @conf_self_start.freeze
     @container_name.freeze
     @data_uid.freeze
