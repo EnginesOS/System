@@ -586,6 +586,7 @@ protected
   end
 
   def set_container_id    
+    inspect_container if docker_info.nil?
     return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
   return -1
   end
