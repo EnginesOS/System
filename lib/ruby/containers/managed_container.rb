@@ -285,6 +285,8 @@ class ManagedContainer < Container
     @cont_userid = running_user
     save_state
     return ret_val
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def recreate_container
