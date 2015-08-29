@@ -157,20 +157,18 @@ class ManagedContainer < Container
 
   def self.from_yaml(yaml, container_api)
     managedContainer = YAML::load(yaml)
+    return log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
     managedContainer.container_api = container_api
     managedContainer.expire_engine_info
     managedContainer.set_running_user
     managedContainer.lock_values
     return managedContainer
-  rescue Exception=> e
-    @last_error='Exception ' + e.to_s
-    p e.to_s
-    p e.backtrace.to_s
-    return false
+  rescue Exception => e
+   log_exception(e)
   end
 
   def to_s
-    '#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n'
+    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
   end
 
   def read_state
