@@ -11,6 +11,7 @@ class ContainerStateFiles
     yaml_file = File.new(yam1_file_name, 'w+')
     yaml_file.write(running_config)
     yaml_file.close
+    return true
     rescue StandardError => e
        SystemUtils.log_exception(e)
   end
