@@ -5,7 +5,7 @@ class SystemService < ManagedService
   @ctype = 'system_service'
   
   def lock_values      
-         if @ctype.nil? @ctype = 'system_service'
+    @ctype = 'system_service' if @ctype.nil?
          super.lock_values
        end
   end       
