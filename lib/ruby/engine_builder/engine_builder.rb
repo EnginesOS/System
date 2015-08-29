@@ -250,7 +250,7 @@ class EngineBuilder < ErrorsApi
   def build_container
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
-   return close_all if @blueprint.nil? || if @blueprint == false
+   return close_all if @blueprint.nil? || @blueprint == false
     @blueprint_reader = BluePrintReader.new(@build_name, @container_name, @blueprint, self)
     return close_all if @blueprint_reader.process_blueprint == false
     return close_all if setup_default_files == false
