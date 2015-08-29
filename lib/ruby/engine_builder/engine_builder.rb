@@ -161,8 +161,8 @@ class EngineBuilder < ErrorsApi
     cmd = '/usr/bin/docker build --force-rm=true --tag=' + @container_name + ' ' + get_basedir
     puts cmd
     res = SystemUtils.execute_command(cmd)
-    return true if result[:result] == 0
-    log_error_mesg('build init failed ', result)
+    return true if res[:result] == 0
+    log_error_mesg('build init failed ', res)
   rescue StandardError => e
     log_exception(e)
   end
@@ -835,7 +835,7 @@ ensure
   end
 
   def log_exception(e)
-    log_build_errors(from_line)
+    log_build_errors(e)
     super
   end
 end
