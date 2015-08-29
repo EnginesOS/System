@@ -66,14 +66,6 @@ class ManagedContainer < Container
     return true
   end
 
-  def container_id
-    @container_id = set_container_id
-    if @container_id == false || @container_id.nil? == true
-      @container_id == '-1'
-    end
-    return @container_id
-  end
-
   attr_reader :framework,\
   :runtime,\
   :databases,\

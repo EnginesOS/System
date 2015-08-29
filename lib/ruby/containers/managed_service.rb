@@ -115,8 +115,6 @@ class ManagedService < ManagedContainer
     end
     @setState='running'
     if create_container
-      #start with configurations
-      #save haere are below call inspect
       save_state()
       service_configurations = service_manager.get_service_configurations_hashes(@container_name)
       if service_configurations.is_a?(Array)
