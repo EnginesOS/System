@@ -27,6 +27,10 @@ class ManagedEngine < ManagedContainer
 
   attr_reader :ctype, :plugins_path, :extract_plugins
 
+  def lock_values
+    super
+    @ctype.freeze
+  end
   def plugins_path
     return '/plugins/'
   end

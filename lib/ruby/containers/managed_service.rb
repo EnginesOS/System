@@ -5,6 +5,11 @@ class ManagedService < ManagedContainer
   @ctype='service'
   #  @consumers=Hash.new
 
+  def lock_values
+     super
+     @ctype.freeze
+   end
+   
   def ctype
     return @ctype
   end
