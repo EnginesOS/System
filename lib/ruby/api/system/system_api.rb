@@ -340,4 +340,8 @@ class SystemApi < ErrorsApi
     log_exception(e)
     return error_result
   end
+  
+  def api_shutdown
+    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist(SystemConfig.BuildRunningParamsFile)
+  end
 end

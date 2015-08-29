@@ -24,6 +24,8 @@ class EnginesCore < ErrorsApi
   require_relative 'system_preferences.rb'
 
   def initialize
+    Signal.trap('HUP', proc { api_shutdown })    
+    Signal.trap('TERM', proc { api_shutdown })      
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  #will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
@@ -692,6 +694,11 @@ class EnginesCore < ErrorsApi
   end
 
   protected
+  
+  def shutdown
+   # FIXME: @registry_handler.api_dissconnect
+    @system_api.api_shutdown
+  end
 
   def get_volbuild_volmaps(container)
     clear_error
