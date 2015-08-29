@@ -286,7 +286,7 @@ class DockerApi < ErrorsApi
   protected
 
   def container_state_dir(container)
-    SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
+    ContainerStateFiles.container_state_dir(container)
   end
 
   def container_log_dir(container)

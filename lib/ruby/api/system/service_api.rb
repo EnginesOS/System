@@ -37,6 +37,21 @@ class ServiceApi < ContainerApi
   end
 
   def container_services_dir(container)
-    @engines_core.container_state_dir(container) + '/services/'
+    ContainerStateFiles.container_state_dir(container) + '/services/'
   end
+  
+  def retrieve_configurator(c, params)    
+     return log_error_mesg('service not running ',params) if c.is_running? == false
+     return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
+     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
+     result = SystemUtils.execute_command(cmd)
+     if result[:result] == 0
+       variables = SystemUtils.hash_string_to_hash(result[:stdout])
+       params[:variables] = variables
+       return params
+     end
+     log_error_mesg('Failed retrieve_configurator',result)
+     return {}
+   end
+   
 end

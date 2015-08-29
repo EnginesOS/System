@@ -67,25 +67,12 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
-#    if result[:result] == 0
-#      return true
-#    end
-#    return false
+    @last_error = result[:stderr] # Dont log just set
     return result
   end
 
   def retrieve_configurator(configurator_params)
-    return log_error_mesg('service not running ',configurator_params) if is_running? == false
-    return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
-    cmd = 'docker exec -u ' + @cont_userid + ' ' +  @container_name + ' /home/configurators/read_' + configurator_params[:configurator_name].to_s + '.sh '
-    result = SystemUtils.execute_command(cmd)
-    if result[:result] == 0
-      variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      configurator_params[:variables] = variables
-      return configurator_params
-    end
-    log_error_mesg('Failed retrieve_configurator',result)
-    return {}
+    @container_api.retrieve_configurator(self, configurator_params)
   end
 
   def remove_consumer(service_hash)
@@ -184,7 +171,16 @@ class ManagedService < ManagedContainer
     # noop never do  this as need buildimage again or only for expert
   end
 
- 
+  def check_cont_uid
+    if @cont_userid == nil || @cont_userid == false
+      @cont_userid = running_user
+      if @cont_userid == nil || @cont_userid == false
+        log_error_mesg('service missing cont_userid ',@container_name)
+        return false
+      end
+    end
+    return true
+  end
   
   private 
   def set_container_pid
@@ -208,16 +204,7 @@ class ManagedService < ManagedContainer
       #return  SystemUtils.run_system(cmd)
     end
   
-    def check_cont_uid
-      if @cont_userid == nil || @cont_userid == false
-        @cont_userid = running_user
-        if @cont_userid == nil || @cont_userid == false
-          log_error_mesg('service missing cont_userid ',@container_name)
-          return false
-        end
-      end
-      return true
-    end
+
   
     def rm_consumer_from_service(service_hash)
      # no need as checl_cont_id also check so save a sec return log_error_mesg('service not running ', service_hash) if is_running? == false
