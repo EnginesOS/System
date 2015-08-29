@@ -562,9 +562,8 @@ def lock_values
     @data_uid.freeze
     @data_gid.freeze
     @image.freeze
-    @repository.freeze
-    @runtime.freeze
-    @framework.freeze
+    @repository = '' if @repository.nil? 
+    @repository.freeze 
 rescue StandardError => e
   log_exception(e)
   end
