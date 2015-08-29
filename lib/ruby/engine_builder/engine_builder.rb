@@ -161,8 +161,8 @@ class EngineBuilder < ErrorsApi
     cmd = '/usr/bin/docker build --force-rm=true --tag=' + @container_name + ' ' + get_basedir
     p :EXEC
     p cmd
-    res = SystemUtils.execute_command(cmd)
-    return true if res[:result] == 0
+    res = run_system(cmd)
+    return true if res
       p res.to_s
     log_error_mesg('build init failed ', res)
   rescue StandardError => e
@@ -756,6 +756,69 @@ ensure
     return nil
   end
 
+
+require 'open3'
+
+  def run_system(cmd)
+    log_build_output('Running ' + cmd)
+    res = ''
+    oline = ''
+    error_mesg = ''
+    begin
+      Open3.popen3(cmd) do |_stdin, stdout, stderr, _th|
+        oline = ''
+        stderr_is_open = true
+        begin
+          stdout.each { |line|
+            #  print line
+            line = line.gsub(/\\\'/, '')
+            res += line.chop
+            oline = line
+            log_build_output(line)
+            if stderr_is_open
+              err = stderr.read_nonblock(1000)
+              error_mesg += err
+              log_build_errors(err)
+            end
+          }
+        rescue Errno::EIO
+          res += oline.chop
+          log_build_output(oline)
+          if stderr_is_open
+            err = stderr.read_nonblock(1000)
+            error_mesg += err
+            log_build_errors(err)
+            p :EIO_retry
+            retry
+          end
+        rescue IO::WaitReadable
+          # p :wait_readable_retrt
+          retry
+        rescue EOFError
+          if stdout.closed? == false
+            stderr_is_open = false
+            p :EOF_retry
+            retry
+          elsif stderr.closed? == true
+            # log_build_errors(error_mesg)
+            return true
+          else
+            err = stderr.read_nonblock(1000)
+            error_mesg += err
+            log_build_errors(err)
+          end
+        end
+      end
+      if error_mesg.length > 2 # error_mesg.include?('Error:') || error_mesg.include?('FATA')
+        log_build_errors(error_mesg)
+        p 'docker_cmd error ' + error_mesg
+        @last_error = error_mesg
+        return false
+      end
+      p :build_suceeded
+      return true
+    end
+  end
   def get_basedir
     return SystemConfig.DeploymentDir + '/' + @build_name
   end
