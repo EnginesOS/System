@@ -31,6 +31,7 @@ class ManagedEngine < ManagedContainer
     super
     @ctype.freeze
   end
+  
   def plugins_path
     return '/plugins/'
   end

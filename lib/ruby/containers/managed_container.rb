@@ -160,7 +160,7 @@ class ManagedContainer < Container
     managedContainer.container_api = container_api
     managedContainer.expire_engine_info
     managedContainer.set_running_user
-    lock_values
+    managedContainer.lock_values
     return managedContainer
   rescue Exception=> e
     @last_error='Exception ' + e.to_s
@@ -558,7 +558,7 @@ def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
   end  
   
-def lock_values
+def lock_immutable
     @conf_self_start.freeze
     @container_name.freeze
     @data_uid.freeze
