@@ -3,10 +3,9 @@ require 'objspace'
 
 class ManagedService < ManagedContainer
   @ctype='service'
-  #  @consumers=Hash.new
 
   def lock_values
-     super
+     super.lock_values
      @ctype.freeze
    end
    
