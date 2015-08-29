@@ -10,7 +10,6 @@ class ServiceManager  < ErrorsApi
   def initialize(core_api)
     @core_api = core_api
     @system_registry = SystemRegistry.new(@core_api)
-    p :New_SERVICE_MANAGER
   end
 
   def is_service_persistant?(service_hash)
@@ -333,12 +332,12 @@ class ServiceManager  < ErrorsApi
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
     service_definition = software_service_definition(config_hash)
-    return log_error_mesg('Missing Service definition file ', config_hash.to_s) if !service_definition.is_a?(Hash)
-    return log_error_mesg('Missing Configurators in service definition', config_hash.to_s) if !service_definition.key?(:configurators)
+    return log_error_mesg('Missing Service definition file ', config_hash.to_s)  unless service_definition.is_a?(Hash)
+    return log_error_mesg('Missing Configurators in service definition', config_hash.to_s) unless service_definition.key?(:configurators)
     configurators = service_definition[:configurators]
-    return log_error_mesg('Missing Configurator ', config_hash[:configurator_name]) if !configurators.key?(config_hash[:configurator_name].to_sym)
+    return log_error_mesg('Missing Configurator ', config_hash[:configurator_name]) unless configurators.key?(config_hash[:configurator_name].to_sym)
     configurator_definition = configurators[config_hash[:configurator_name].to_sym]
-    if !configurator_definition.key?(:no_save) || !configurator_definition[:no_save]
+    unless configurator_definition.key?(:no_save) && configurator_definition[:no_save]
       return test_registry_result(@system_registry.update_service_configuration(config_hash))
     else
       return true
@@ -497,7 +496,7 @@ end
   #@return result
   def test_registry_result(result)
     clear_error
-    @last_error = @system_registry.last_error if result.nil?
+    log_error_mesg(@system_registry.last_error, result) if result.nil?
     return result
   end
 

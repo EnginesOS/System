@@ -333,6 +333,8 @@ class EnginesCore < ErrorsApi
   configurator = ConfigurationsApi.new(self)
    return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
+     p :update_sucessfule
+     return true
   end
 
   def engine_persistant_services(container_name)
