@@ -6,7 +6,12 @@
  		eservice start mgmt >/dev/null
  	fi
  
- 
+ if ! test `docker inspect -f='{{.State.Running}}' mgmt` = 'true'
+  then
+  	echo "Panic failed to start mgmt "
+  	exit
+ fi
+  	
 docker logs -f mgmt &
 
 pid=$!
