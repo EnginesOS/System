@@ -93,7 +93,6 @@ class ContainerStateFiles
   def self.clear_cid_file(container)
      cidfile = container_cid_file(container)
      File.delete(cidfile) if File.exist?(cidfile)
-        container.container_id = -1
      return true
    rescue StandardError => e
      container.last_error = 'Failed To remove cid file' + e.to_s
