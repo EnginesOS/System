@@ -34,6 +34,8 @@ class ManagedContainer < Container
   end
 
    attr_accessor :current_operation
+
+  
    
    def current_operation=(operation)
      @current_operation = operation
@@ -158,7 +160,7 @@ class ManagedContainer < Container
     managedContainer.container_api = container_api
     managedContainer.expire_engine_info
     managedContainer.set_running_user
-    
+    lock_values
     return managedContainer
   rescue Exception=> e
     @last_error='Exception ' + e.to_s
@@ -558,6 +560,17 @@ def get_container_network_metrics()
   
 protected
   
+def lock_values
+    @conf_self_start.freeze
+    @container_name.freeze
+    @data_uid.freeze
+    @data_gid.freeze
+    @image.freeze
+    @repository.freeze
+    @runtime.freeze
+    @framework.freeze
+  end
+
 # create nginx service_hash for container and register with nginx
  # @return boolean indicating sucess
  def add_nginx_service

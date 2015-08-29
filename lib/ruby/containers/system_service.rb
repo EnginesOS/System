@@ -2,7 +2,7 @@
 
 #require '/opt/engines/lib/ruby/managed_services/ManagedService.rb'
 class SystemService < ManagedService
-  
+  @ctype='system_service'
   def  forced_recreate 
     
       #log_error_mesg('Forced recreate  resgitroy',nil)

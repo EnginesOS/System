@@ -1,6 +1,7 @@
 --- !ruby/object:ManagedService
 container_name: cron
 ctype: service
+conf_self_start: true
 persistant: false
 publisher_namespace: EnginesSystem
 type_path: cron

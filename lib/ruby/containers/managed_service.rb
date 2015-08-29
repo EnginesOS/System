@@ -2,9 +2,14 @@
 require 'objspace'
 
 class ManagedService < ManagedContainer
-  @ctype='system_service'
+  @ctype='service'
   #  @consumers=Hash.new
 
+  def lock_values
+     super
+     @ctype.freeze
+   end
+   
   def ctype
     return @ctype
   end
@@ -119,7 +124,7 @@ class ManagedService < ManagedContainer
           run_configurator(configuration)
         end
       end
-      register_with_dns
+      #register_with_dns
       p :service_non_persis
       @container_api.load_and_attach_nonpersistant_services(self)
       p :register_non_persis
