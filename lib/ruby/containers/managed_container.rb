@@ -90,10 +90,10 @@ class ManagedContainer < Container
   :no_ca_map,\
   :ctype
 
-  attr_accessor :container_id,\
-  :container_api,\
-  :conf_self_start,\
-  :last_result
+  attr_accessor   :container_api,\
+                   :last_result
+  
+  attr_reader :container_id, :conf_self_start
   
   def docker_info
     info = @docker_info.dup
@@ -105,9 +105,7 @@ class ManagedContainer < Container
   end
 
   def is_service?
-    if @ctype && @ctype.nil? == false && @ctype == 'service'
-      return true
-    end
+    return true if @ctype == 'service'
     return false
   end
 
@@ -174,13 +172,13 @@ class ManagedContainer < Container
   def read_state
     p "read state caller " + caller_locations(1,1)[0].label
       if inspect_container == false
-        @last_error = 'failed to inspect container'
+        log_error_mesg('Failed to inspect container', self)
         state = 'nocontainer'
       else
         #        @res= last_result
         output = JSON.parse(@last_result)
         if output.is_a?(Array) == false || output.empty? == true
-          @last_error = 'Failed to get container status'
+          log_error_mesg('Failed to get container status', self)
           return 'nocontainer'
         end
         if output[0]['State']
@@ -200,7 +198,7 @@ class ManagedContainer < Container
         state = 'nocontainer'
         @last_error = 'state nil'
       end
-      if  @setState && state != @setState
+      if state != @setState
         @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
       end
       return state
@@ -283,17 +281,18 @@ class ManagedContainer < Container
     end
     expire_engine_info
     if read_state != 'running'
-      @last_error = 'Did not start'
-      ret_val = false
+      @container_id = set_container_id
+      return log_err_mesg('Did not start',self)
     else
       set_container_id
       register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
-    end
-   
+    end    
+    @container_id = set_container_id
     @cont_userid = running_user
     save_state
+    return ret_val
   end
 
   def recreate_container

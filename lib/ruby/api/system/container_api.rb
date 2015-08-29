@@ -174,9 +174,6 @@ class ContainerApi < ErrorsApi
     return result
   end
   
-  def read_container_id(container)
-     @system_api.read_container_id(container)
-     end
      
     def container_cid_file(container)
       @system_api.container_cid_file(container)   

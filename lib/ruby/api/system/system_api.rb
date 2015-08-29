@@ -252,15 +252,6 @@ class SystemApi < ErrorsApi
     return ret_val
   end
 
-  
-  def read_container_id(container)
-     clear_error
-     cidfile = ContainerStateFiles.container_cid_file(container)
-     return File.read(cidfile) if File.exist?(cidfile)
-   rescue StandardError => e
-     SystemUtils.log_exception(e)
-     return '-1'
-   end
 
   def generate_engines_user_ssh_key
     newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
