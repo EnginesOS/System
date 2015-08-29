@@ -164,7 +164,7 @@ class ManagedContainer < Container
     managedContainer.lock_values
     return managedContainer
   rescue Exception => e
-   log_exception(e)
+   SystemUtils.log_exception(e)
   end
 
   def to_s
