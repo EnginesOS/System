@@ -18,7 +18,8 @@ class SystemService < ManagedService
     return false  if has_api? == false
    
     if @docker_info == nil || @docker_info == false
-      @docker_info = @container_api.inspect_container(self)
+      @container_api.inspect_container(self)
+      @docker_info = @last_result
       if  @docker_info == false
        unless has_image?
           SystemUtils.log_output('pulling system service' + container_name.to_s,10)
