@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rm /opt/engines/run/system/flags/building_params
+rm -f /opt/engines/run/system/flags/building_params
