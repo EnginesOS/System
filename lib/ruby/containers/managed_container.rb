@@ -6,8 +6,8 @@ require 'objspace'
 
 class ManagedContainer < Container
   @conf_self_start = false
-#  @http_and_https=true
-#  @https_only=false 
+  #  @http_and_https=true
+  #  @https_only=false
   def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
     @framework = framework
     @runtime = runtime
@@ -33,29 +33,27 @@ class ManagedContainer < Container
     @protocol = :http_and_https
   end
 
-   attr_accessor :current_operation
+  attr_accessor :current_operation
 
-  
-   
-   def current_operation=(operation)
-     @current_operation = operation
-#     save_operation
-#     lock_state     
-   end
-   
-   def operation_completed
-     @current_operation = nil
-#     unlock_state
-   end     
-   
+  def current_operation=(operation)
+    @current_operation = operation
+    #     save_operation
+    #     lock_state
+  end
+
+  def operation_completed
+    @current_operation = nil
+    #     unlock_state
+  end
+
   def fqdn
     @hostname.to_s + "." +@domain_name.to_s
   end
-  
+
   def repo
     @repository
   end
-  
+
   def web_sites
     @container_api.web_sites_for(self)
   end
@@ -83,10 +81,10 @@ class ManagedContainer < Container
   :ctype
 
   attr_accessor   :container_api,\
-                   :last_result
-  
+  :last_result
+
   attr_reader :container_id, :conf_self_start
-  
+
   def docker_info
     return nil if @docker_info.nil?
     info = @docker_info.dup
@@ -94,7 +92,7 @@ class ManagedContainer < Container
   end
 
   def engine_environment
-    return environments
+    @environments
   end
 
   def is_service?
@@ -155,7 +153,7 @@ class ManagedContainer < Container
     managedContainer.lock_values
     return managedContainer
   rescue Exception => e
-   SystemUtils.log_exception(e)
+    SystemUtils.log_exception(e)
   end
 
   def to_s
@@ -164,42 +162,42 @@ class ManagedContainer < Container
 
   def read_state
     p "read state caller " + caller_locations(1,1)[0].label
-      if inspect_container == false
-        log_error_mesg('Failed to inspect container', self)
-        state = 'nocontainer'
-      else
-        #        @res= last_result
-        output = JSON.parse(@last_result)
-        if output.is_a?(Array) == false || output.empty? == true
-          log_error_mesg('Failed to get container status', self)
-          return 'nocontainer'
-        end
-        if output[0]['State']
-          if output[0]['State']['Running']
-            state = 'running'
-            if output[0]['State']['Paused']
-              state= 'paused'
-            end
-          elsif output[0]['State']['Running'] == false
-            state = 'stopped'
-          else
-            state = 'nocontainer'
+    if inspect_container == false
+      log_error_mesg('Failed to inspect container', self)
+      state = 'nocontainer'
+    else
+      #        @res= last_result
+      output = JSON.parse(@last_result)
+      if output.is_a?(Array) == false || output.empty? == true
+        log_error_mesg('Failed to get container status', self)
+        return 'nocontainer'
+      end
+      if output[0]['State']
+        if output[0]['State']['Running']
+          state = 'running'
+          if output[0]['State']['Paused']
+            state= 'paused'
           end
+        elsif output[0]['State']['Running'] == false
+          state = 'stopped'
+        else
+          state = 'nocontainer'
         end
       end
-      if state.nil? #Kludge
-        state = 'nocontainer'
-        @last_error = 'state nil'
-      end
-      if state != @setState
-        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
-      end
-      return state
-    rescue Exception=>e
-      p :json_Str
-      p @last_result
-      SystemUtils.log_exception(e)
-      return 'nocontainer'
+    end
+    if state.nil? #Kludge
+      state = 'nocontainer'
+      @last_error = 'state nil'
+    end
+    if state != @setState
+      @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
+    end
+    return state
+  rescue Exception=>e
+    p :json_Str
+    p @last_result
+    SystemUtils.log_exception(e)
+    return 'nocontainer'
   end
 
   def logs_container
@@ -231,7 +229,7 @@ class ManagedContainer < Container
     clear_error
     ret_val = false
     state = read_state
-    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get   
+    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     p @setState
     if is_active? == false
       ret_val = @container_api.destroy_container(self)
@@ -249,19 +247,19 @@ class ManagedContainer < Container
     clear_error
     return false unless has_api?
     ret_val = false
-    state = read_state 
+    state = read_state
     @setState = 'stopped'
     if state == 'nocontainer'
       ret_val = @container_api.setup_container(self)
       expire_engine_info
     else
-      log_error_mesg('Cannot create container as container exists ',state) 
+      log_error_mesg('Cannot create container as container exists ',state)
     end
     save_state
   end
 
   def create_container
-    clear_error   
+    clear_error
     return false unless has_api?
     ret_val = false
     expire_engine_info
@@ -270,7 +268,7 @@ class ManagedContainer < Container
     if state == 'nocontainer'
       ret_val = @container_api.create_container(self)
     else
-      log_error_mesg('Cannot create container as container exists ', state) 
+      log_error_mesg('Cannot create container as container exists ', state)
     end
     expire_engine_info
     if read_state != 'running'
@@ -281,7 +279,7 @@ class ManagedContainer < Container
       register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
-    end    
+    end
     @container_id = set_container_id
     @cont_userid = running_user
     save_state
@@ -310,7 +308,7 @@ class ManagedContainer < Container
     else
       log_error_mesg('Can\'t Start upayse as ', state)
     end
-   register_with_dns # MUst register each time as IP Changes
+    register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
     clear_error
     save_state
@@ -334,7 +332,7 @@ class ManagedContainer < Container
 
   def stop_container
     return false unless has_api?
-#    web_sites
+    #    web_sites
     ret_val = false
     state = read_state
     @setState = 'stopped'
@@ -344,7 +342,7 @@ class ManagedContainer < Container
       expire_engine_info
     else
       log_error_mesg('Can\'t Stop Container as ', state)
-       @container_api.deregister_non_persistant_services(self)      
+      @container_api.deregister_non_persistant_services(self)
     end
     clear_error
     save_state
@@ -379,7 +377,7 @@ class ManagedContainer < Container
   end
 
   def restart_container
-    ret_val = start_container if stop_container 
+    ret_val = start_container if stop_container
   end
 
   # @return a containers ip address as a [String]
@@ -395,13 +393,11 @@ class ManagedContainer < Container
     return nil
   end
 
-  def set_deployment_type(deployment_type)    
-    @deployment_type = deployment_type    
+  def set_deployment_type(deployment_type)
+    @deployment_type = deployment_type
     return remove_nginx_service if @deployment_type && @deployment_type != 'web'
-    return add_nginx_service if @deployment_type == 'web'
+    add_nginx_service if @deployment_type == 'web'
   end
-
- 
 
   def stats
     expire_engine_info
@@ -439,14 +435,14 @@ class ManagedContainer < Container
     end
     cpu = 3600 * h + 60 * m + s
     statistics = ContainerStatistics.new(state, pcnt, started, stopped, rss, vss, cpu)
-    return statistics
+    statistics
   end
 
-  def running_user    
-    return -1 if inspect_container == false      
-   output = JSON.parse(@last_result)
-   return -1 if output.nil?
-   return  output[0]['Config']['User'] if output.is_a?(Array) && output[0].is_a?(Hash)
+  def running_user
+    return -1 if inspect_container == false
+    output = JSON.parse(@last_result)
+    return -1 if output.nil?
+    return  output[0]['Config']['User'] if output.is_a?(Array) && output[0].is_a?(Hash)
   rescue StandardError => e
     return log_exception(e)
   end
@@ -457,27 +453,25 @@ class ManagedContainer < Container
 
   def inspect_container
     return false unless has_api?
-   p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
-     result = @container_api.inspect_container(self) if @docker_info.nil?
-     return nil if result == false
-     @docker_info = @last_result  
-     Thread.new { sleep 3 ; expire_engine_info }    
+    p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
+    result = @container_api.inspect_container(self) if @docker_info.nil?
+    return nil if result == false
+    @docker_info = @last_result
+    Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
-  
+
   def save_state()
     return false unless has_api?
-    expire_engine_info 
-     p :saveStat
-    p caller[0][/`([^']*)'/, 1]
-    ret_val = @container_api.save_container(self)
-    return ret_val
+    expire_engine_info
+#    p :saveStat
+#    p caller[0][/`([^']*)'/, 1]
+    @container_api.save_container(self)
   end
 
   def save_blueprint blueprint
     return false unless has_api?
-    ret_val = @container_api.save_blueprint(blueprint, self)
-    return ret_val
+    @container_api.save_blueprint(blueprint, self)
   end
 
   def load_blueprint
@@ -491,7 +485,7 @@ class ManagedContainer < Container
     expire_engine_info
     if ret_val == true
       register_with_dns # MUst register each time as IP Changes
-      add_nginx_service if @deployment_type == 'web'
+      #add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
     @setState = 'running'
@@ -522,7 +516,7 @@ class ManagedContainer < Container
 
   def is_error?
     state = read_state
-    return true if @setState != state     
+    return true if @setState != state
     return false
   end
 
@@ -537,58 +531,57 @@ class ManagedContainer < Container
       return false
     end
   end
-  
-def expire_engine_info
-  @docker_info = nil
-end
 
-def get_container_memory_stats()
-return @container_api.get_container_memory_stats(self)
-end
+  def expire_engine_info
+    @docker_info = nil
+  end
 
-def get_container_network_metrics()
+  def get_container_memory_stats()
+    @container_api.get_container_memory_stats(self)
+  end
+
+  def get_container_network_metrics()
     @container_api.get_container_network_metrics(self)
-  end  
-  
-def lock_values
+  end
+
+  def lock_values
     @conf_self_start.freeze
     @container_name.freeze
     @data_uid.freeze
     @data_gid.freeze
     @image.freeze
-    @repository = '' if @repository.nil? 
-    @repository.freeze 
-rescue StandardError => e
-  log_exception(e)
+    @repository = '' if @repository.nil?
+    @repository.freeze
+  rescue StandardError => e
+    log_exception(e)
   end
-  
-protected
-  
-# create nginx service_hash for container and register with nginx
- # @return boolean indicating sucess
- def add_nginx_service
-   return false unless has_api?
-   service_hash = SystemUtils.create_nginx_service_hash(self)
-   return @container_api.attach_service(service_hash)
- end
 
- # create nginx service_hash for container deregister with nginx
- # @return boolean indicating sucess
- def remove_nginx_service
-   return false unless has_api?
-   service_hash = SystemUtils.create_nginx_service_hash(self)
-   return @container_api.dettach_service(service_hash)
- end
+  protected
+
+  # create nginx service_hash for container and register with nginx
+  # @return boolean indicating sucess
+  def add_nginx_service
+    return false unless has_api?
+    service_hash = SystemUtils.create_nginx_service_hash(self)
+    return @container_api.attach_service(service_hash)
+  end
+
+  # create nginx service_hash for container deregister with nginx
+  # @return boolean indicating sucess
+  def remove_nginx_service
+    return false unless has_api?
+    service_hash = SystemUtils.create_nginx_service_hash(self)
+    @container_api.dettach_service(service_hash)
+  end
 
   def has_api?
-   return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
+    return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
     return true
   end
 
-  def set_container_id    
+  def set_container_id
     inspect_container if docker_info.nil?
     return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
-  return -1
+    return -1
   end
-
 end

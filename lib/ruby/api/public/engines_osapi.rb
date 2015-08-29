@@ -671,7 +671,8 @@ class EnginesOSapi
   def retrieve_service_configuration(service_param)
     result = @core_api.retrieve_service_configuration(service_param)
     return result if result.is_a?(Hash)
-    failed(service_param[:service_name], @core_api.last_error, 'update_service_configuration')
+    # FIXME: Gui spats at this failed(service_param[:service_name], @core_api.last_error, 'update_service_configuration')
+    return {}
   end
 
   def stopService(service_name)

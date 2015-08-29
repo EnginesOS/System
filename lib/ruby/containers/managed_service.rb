@@ -34,10 +34,10 @@ class ManagedService < ManagedContainer
   end
   attr_reader :persistant, :type_path, :publisher_namespace
 
-  def get_service_hash(service_hash)
-    return log_error_mesg('Get service hash recevied a ' + service_hash.class.name,service_hash.to_s) if service_hash.is_a?(Hash) == false
-    return service_hash
-  end
+#  def get_service_hash(service_hash)
+#    return log_error_mesg('Get service hash recevied a ' + service_hash.class.name,service_hash.to_s) if service_hash.is_a?(Hash) == false
+#    return service_hash
+#  end
 
   def add_consumer(object)
     service_hash = get_service_hash(object)
@@ -58,10 +58,6 @@ class ManagedService < ManagedContainer
   end
 
   def pull_image
-    # if has repo field prepend repo
-    # if has no / then local image
-    # return false
-    #   
     return @container_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
     return @container_api.pull_image(image) if image.include?('/')
     return false
@@ -113,7 +109,7 @@ class ManagedService < ManagedContainer
         @environments = envs
       end
     end
-    @setState='running'
+    @setState = 'running'
     if create_container
       save_state()
       service_configurations = service_manager.get_service_configurations_hashes(@container_name)
