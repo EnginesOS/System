@@ -3,8 +3,14 @@
 #require '/opt/engines/lib/ruby/managed_services/ManagedService.rb'
 class SystemService < ManagedService
   @ctype = 'system_service'
+  
+  def lock_values      
+         if @ctype.nil? @ctype = 'system_service'
+         super.lock_values
+       end
+  end       
+  
   def  forced_recreate 
-    
       #log_error_mesg('Forced recreate  resgitroy',nil)
     p 'Forced recreate  resgitroy'
       unpause_container
