@@ -4,6 +4,7 @@ require 'fileutils'
 require 'json'
 
 class EngineBuilder < ErrorsApi
+  require '/opt/engines/lib/ruby/api/system/errors_api.rb'
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder.rb'
@@ -18,8 +19,7 @@ class EngineBuilder < ErrorsApi
   @build_name = nil
   @http_protocol = 'HTTPS and HTTP'
 
-  attr_reader :last_error,
-  :templater,
+  attr_reader   :templater,
   :repoName,
   :hostname,
   :build_name,
@@ -295,7 +295,9 @@ class EngineBuilder < ErrorsApi
     end
     env_file.close
     setup_framework_logging
+    
     base_image_name = read_base_image_from_dockerfile
+    
     if base_image_name.nil? == true
       p :From_image_not_found_inD
       log_build_errors('Failed to Read Image from Dockerfile')
@@ -740,69 +742,6 @@ ensure
     p fld
   end
 
-  require 'open3'
-
-#  def run_system(cmd)
-#    log_build_output('Running ' + cmd)
-#    res = ''
-#    oline = ''
-#    error_mesg = ''
-#    begin
-#      Open3.popen3(cmd) do |_stdin, stdout, stderr, _th|
-#        oline = ''
-#        stderr_is_open = true
-#        begin
-#          stdout.each { |line|
-#            #  print line
-#            line = line.gsub(/\\\'/, '')
-#            res += line.chop
-#            oline = line
-#            log_build_output(line)
-#            if stderr_is_open
-#              err = stderr.read_nonblock(1000)
-#              error_mesg += err
-#              log_build_errors(err)
-#            end
-#          }
-#        rescue Errno::EIO
-#          res += oline.chop
-#          log_build_output(oline)
-#          if stderr_is_open
-#            err = stderr.read_nonblock(1000)
-#            error_mesg += err
-#            log_build_errors(err)
-#            p :EIO_retry
-#            retry
-#          end
-#        rescue IO::WaitReadable
-#          # p :wait_readable_retrt
-#          retry
-#        rescue EOFError
-#          if stdout.closed? == false
-#            stderr_is_open = false
-#            p :EOF_retry
-#            retry
-#          elsif stderr.closed? == true
-#            # log_build_errors(error_mesg)
-#            return true
-#          else
-#            err = stderr.read_nonblock(1000)
-#            error_mesg += err
-#            log_build_errors(err)
-#          end
-#        end
-#      end
-#      if error_mesg.length > 2 # error_mesg.include?('Error:') || error_mesg.include?('FATA')
-#        log_build_errors(error_mesg)
-#        p 'docker_cmd error ' + error_mesg
-#        @last_error = error_mesg
-#        return false
-#      end
-#      p :build_suceeded
-#      return true
-#    end
-#  end
-
   def read_base_image_from_dockerfile
     p :read_base_image_from_dockerfile
     # FROM  engines/php:_Engines_System(release)
@@ -810,11 +749,6 @@ ensure
     from_line = dockerfile.gets("\n", 100)
     p from_line
     from_part = from_line.gsub(/FROM[ ]./, '')
-    #    p from_part
-    #    froms = from_part.split("\n")
-    #    p :froms
-    #    p froms.to_s
-    #    p froms[0]
     return from_part
   rescue StandardError => e
     log_build_errors(e)
