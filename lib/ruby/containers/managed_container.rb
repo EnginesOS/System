@@ -269,7 +269,7 @@ class ManagedContainer < Container
     if state == 'nocontainer'
       ret_val = @container_api.create_container(self)
     else
-      log_error_mesg('Cannot create container as container exists ',state) 
+      log_error_mesg('Cannot create container as container exists ', state) 
     end
     expire_engine_info
     if read_state != 'running'
