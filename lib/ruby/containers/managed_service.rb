@@ -4,10 +4,10 @@ require 'objspace'
 class ManagedService < ManagedContainer
   @ctype='service'
 
-  def lock_values
-     super.lock_values
-     @ctype.freeze
-   end
+#  def lock_values
+#     super.lock_values
+#     @ctype.freeze
+#   end
    
   def ctype
     return @ctype
