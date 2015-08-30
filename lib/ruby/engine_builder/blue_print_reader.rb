@@ -162,6 +162,8 @@ class BluePrintReader
         result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
           @services.push(service_hash) if result
           return result
+    else
+      @services.push(service_hash)
     end
     return true
   end
