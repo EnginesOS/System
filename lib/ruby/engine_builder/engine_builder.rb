@@ -95,6 +95,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_build_errors(line)
+    line = '' if line.nil?
     @err_file.puts(line.to_s)
     @err_file.flush
     log_build_output('ERROR:' + line.to_s)
