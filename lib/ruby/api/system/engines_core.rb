@@ -636,7 +636,7 @@ class EnginesCore < ErrorsApi
   def reinstall_engine(engine)
     clear_error    
     builder =  BuildController.new(self)
-    BuildController.re_install_engine(engine) 
+    builder.reinstall_engine(engine) 
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
