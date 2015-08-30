@@ -89,7 +89,7 @@ class BuildController
 
   def build_failed(params,err)
     params[:error] = err.to_s
-      log_error_mesg(err.to_s,params)      
+      SystemUtils.log_error_mesg(err.to_s,params)      
     SystemStatus.build_failed(params)
     EnginesOSapiResult.failed(params[:engine_name], err, caller_locations(1,1)[0].label)
   end
