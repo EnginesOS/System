@@ -11,12 +11,12 @@ class BuildController
     SystemStatus.build_starting(params)
     engine_builder = get_engine_builder(params)
     engine = engine_builder.build_from_blue_print
-    BuildController.build_failed(params, engine_builder.last_error) if engine.nil? || engine == false
-    BuildController.build_failed(params, engine_builder.last_error) unless engine.is_a?(ManagedEngine)
+    build_failed(params, engine_builder.last_error) if engine.nil? || engine == false
+    build_failed(params, engine_builder.last_error) unless engine.is_a?(ManagedEngine)
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    BuildController.build_failed(params, engine_builder.last_error)
+    build_failed(params, engine_builder.last_error)
   end
 
   def get_engine_builder_streams
@@ -49,7 +49,7 @@ class BuildController
     params[:memory] = engine.memory
     params[:repository_url] = engine.repo
     SystemStatus.build_starting(params)
-    builder = EngineBuilder.new(params, @core_api)
+    builder = get_engine_builder(params)
     return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
     engine = build_from_blue_print
     return build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
@@ -81,10 +81,7 @@ class BuildController
     params[:host_name] = host
     params[:domain_name] = domain_name
     params[:environment] = environment
-    builder = EngineBuilder.new(params, @core_api)
-    @build_log_stream = builder.get_build_log_stream
-    @build_error_stream = builder.get_build_err_stream
-    return builder
+    get_engine_builder(params)
   end
 
   def build_failed(params,err)
