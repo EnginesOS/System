@@ -161,6 +161,7 @@ class ManagedContainer < Container
   end
 
   def read_state
+    return 'nocontainer' unless has_image?
     p "read state caller " + caller_locations(1,1)[0].label
     if inspect_container == false
       log_error_mesg('Failed to inspect container', self)
@@ -453,7 +454,6 @@ class ManagedContainer < Container
 
   def inspect_container
     return false unless has_api?
-    return false unless has_image?
     p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
     result = @container_api.inspect_container(self) if @docker_info.nil?
     return nil if result == false
