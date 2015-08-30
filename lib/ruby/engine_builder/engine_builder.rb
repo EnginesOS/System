@@ -371,6 +371,8 @@ ensure
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
+    # FIXME: need to re orphan here if using an orphan
+    # FIXME: don't delete shared service
     p :Clean_up_Failed_build
     @blueprint_reader.services.each do |service_hash|
       if service_hash[:fresh] == true

@@ -34,14 +34,9 @@ class ManagedService < ManagedContainer
   end
   attr_reader :persistant, :type_path, :publisher_namespace
 
-#  def get_service_hash(service_hash)
-#    return log_error_mesg('Get service hash recevied a ' + service_hash.class.name,service_hash.to_s) if service_hash.is_a?(Hash) == false
-#    return service_hash
-#  end
 
-  def add_consumer(object)
-    service_hash = get_service_hash(object)
-   return log_error_mesg('add consumer passed nil service_hash ','') if service_hash.nil?
+  def add_consumer(service_hash)
+   return log_error_mesg('add consumer passed nil service_hash ','') unless service_hash.is_a?(Hash)
     service_hash[:persistant] = @persistant
     if @persistant == true || is_running? 
       if service_hash[:fresh] == false
@@ -58,13 +53,13 @@ class ManagedService < ManagedContainer
   end
 
   def pull_image
-    return @container_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
+    return @container_api.pull_image(@repository + '/' + image) unless @repository.nil? 
     return @container_api.pull_image(image) if image.include?('/')
     return false
   end
   
   def run_configurator(configurator_params)
-   return log_error_mesg('service not running ',configurator_params) if is_running? == false
+   return log_error_mesg('service not running ',configurator_params) unless is_running?
     return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
@@ -78,8 +73,8 @@ class ManagedService < ManagedContainer
 
   def remove_consumer(service_hash)
     service_hash = get_service_hash(service_hash)
-    return log_error_mesg('remove consumer nil service hash ', '') if service_hash == nil
-    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) if !is_running?
+    return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
+    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
     return rm_consumer_from_service(service_hash) if @persistant && service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
     return false
