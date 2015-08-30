@@ -144,10 +144,6 @@ class BluePrintReader
     services.each do |service|
       service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
       service[:service_type] = service[:type_path]
-#      p :service_provider
-#      p service[:publisher_namespace]
-#      p :servicetype_name
-#      p service[:type_path]
       add_service(service)
     end
   end 
