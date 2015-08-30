@@ -176,6 +176,8 @@ class EnginesCore < ErrorsApi
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
+    p :atta
+    p service_hash
     return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
     return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
     return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)

@@ -578,6 +578,8 @@ ensure
       p service_hash
       @templater.fill_in_dynamic_vars(service_hash)
       fill_service_environment_variables(service_hash)
+      p :with_env
+      p service_hash
       # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) == true
         @attached_services.push(service_hash)
