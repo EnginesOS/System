@@ -635,7 +635,6 @@ ensure
     @web_port,
     @blueprint_reader.worker_ports,
     @repo_name,
-    @blueprint_reader.databases,
     @blueprint_reader.environments,
     @blueprint_reader.framework,
     @blueprint_reader.runtime,

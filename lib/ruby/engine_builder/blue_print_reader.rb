@@ -32,7 +32,6 @@ class BluePrintReader
               :cron_jobs,
               :sed_strings,
               :volumes,
-              :databases,
               :data_uid,
               :data_gid,
               :cron_job_list,
@@ -138,7 +137,6 @@ class BluePrintReader
   end
 
   def read_services
-    @databases = []
     @volumes = {}
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
@@ -150,9 +148,9 @@ class BluePrintReader
 #      p service[:publisher_namespace]
 #      p :servicetype_name
 #      p service[:type_path]
-#      add_service(service)
+      add_service(service)
     end
-  end # FIXME:
+  end 
 
   def add_service(service_hash)
     p :add_service

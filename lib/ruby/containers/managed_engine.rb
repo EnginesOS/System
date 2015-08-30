@@ -1,5 +1,5 @@
 class ManagedEngine < ManagedContainer
-  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, repo, dbs, environments, framework, runtime, core_api, data_uid, data_gid, deployment_type)
+  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, repo, environments, framework, runtime, core_api, data_uid, data_gid, deployment_type)
     @last_error = 'None'
     @container_name = name
     @memory = memory
@@ -13,7 +13,6 @@ class ManagedEngine < ManagedContainer
     @repository = repo
     @last_result = ''
     @setState = 'nocontainer'
-    @databases = dbs
     @framework = framework
     @runtime = runtime
     @container_api = core_api
