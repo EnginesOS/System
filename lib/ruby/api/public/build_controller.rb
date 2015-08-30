@@ -51,7 +51,7 @@ class BuildController
     SystemStatus.build_starting(params)
     builder = get_engine_builder(params)
     return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
-    engine = build_from_blue_print
+    engine = builder.build_from_blue_print
     return build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
     return build_failed(params, builder.last_error) unless engine.is_active?
     SystemStatus.build_complete(params)
