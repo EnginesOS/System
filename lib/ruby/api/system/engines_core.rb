@@ -568,6 +568,10 @@ class EnginesCore < ErrorsApi
   
   def remove_engine(engine_name)
     engine = loadManagedEngine(engine_name)
+    params = {}
+    params[:engine_name] = engine_name
+    params[:container_type] = 'container' # Force This
+      
        unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
          return true if service_manager.remove_engine_from_managed_engines_registry(params) 
          return log_error_mesg('Failed to find Engine',params)
