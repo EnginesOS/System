@@ -31,15 +31,15 @@ class BuildController
     SystemStatus.build_starting(params)
     engine_builder = get_engine_builder_bfr(repository, host, domain_name, environment)
     engine = engine_builder.build_from_blue_print
-    return BuildController.build_failed(params, engine_builder.last_error)  unless engine.is_a(ManagedEngine)
+    return build_failed(params, engine_builder.last_error)  unless engine.is_a(ManagedEngine)
     engine.save_state
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    BuildController.build_failed(params, e)
+    build_failed(params, e)
   end
 
-  def self.re_install_engine(engine, core)
+  def re_install_engine(engine, core)
     params = {}
     params[:engine_name] = engine.container_name
     params[:domain_name] = engine.domain_name
@@ -50,14 +50,15 @@ class BuildController
     params[:repository_url] = engine.repo
     SystemStatus.build_starting(params)
     builder = EngineBuilder.new(params, core)
-    return BuildController.build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
-    engine = builder.build_from_blue_print
-    return BuildController.build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
-    return BuildController.build_failed(params, builder.last_error) unless engine.is_active?
+    return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
+    engine = build_from_blue_print
+    return build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)
+    return build_failed(params, builder.last_error) unless engine.is_active?
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    BuildController.build_failed(params, e)
+    build_failed(params, e)
+    log_exception(e)
   end
 
   private
@@ -86,8 +87,9 @@ class BuildController
     return builder
   end
 
-  def self.build_failed(params,err)
+  def build_failed(params,err)
     params[:error] = err.to_s
+      log_error_mesg(err.to_s,params)      
     SystemStatus.build_failed(params)
     EnginesOSapiResult.failed(params[:engine_name], err, caller_locations(1,1)[0].label)
   end
