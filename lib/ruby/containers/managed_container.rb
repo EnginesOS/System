@@ -230,6 +230,7 @@ class ManagedContainer < Container
     clear_error
     ret_val = false
     state = read_state
+    p :destroy_container
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     p @setState
     if is_active? == false
@@ -237,7 +238,7 @@ class ManagedContainer < Container
       @container_id = '-1'
       expire_engine_info
     else
-      log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first',state)
+      log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', state)
     end
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     save_state()
@@ -273,7 +274,7 @@ class ManagedContainer < Container
     end
     expire_engine_info
     if read_state != 'running'
-      @container_id = set_container_id
+      @container_id = -1
       return log_err_mesg('Did not start',self)
     else
       set_container_id
@@ -581,8 +582,8 @@ class ManagedContainer < Container
   end
 
   def set_container_id
-    inspect_container if docker_info.nil?
-    return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
+    inspect_container if @docker_info.nil?
+    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) && @docker_info[0].is_a?(Hash)
     return -1
   end
 end
