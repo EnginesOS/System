@@ -39,7 +39,7 @@ class BuildController
     build_failed(params, e)
   end
 
-  def re_install_engine(engine)
+  def reinstall_engine(engine)
     params = {}
     params[:engine_name] = engine.container_name
     params[:domain_name] = engine.domain_name
