@@ -453,6 +453,7 @@ class ManagedContainer < Container
 
   def inspect_container
     return false unless has_api?
+    return false unless has_image?
     p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
     result = @container_api.inspect_container(self) if @docker_info.nil?
     return nil if result == false
