@@ -95,10 +95,10 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_build_errors(line)
-    @err_file.puts(line)
+    @err_file.puts(line.to_s)
     @err_file.flush
-    log_build_output('ERROR:' + line)
-    @result_mesg = 'Aborted Due to:' + line
+    log_build_output('ERROR:' + line.to_s)
+    @result_mesg = 'Aborted Due to:' + line.to_s
     return false
   end
 
@@ -826,7 +826,7 @@ require 'open3'
   end
 
   def log_exception(e)
-    log_build_errors(e)
+    log_build_errors(e.to_s)
     super
   end
 end
