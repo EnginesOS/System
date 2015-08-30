@@ -114,17 +114,12 @@ class BluePrintReader
     log_build_output('Read Persistant Files')
     @persistant_files = {}
     src_paths = []
-    dest_paths = []
     pfs = @blueprint[:software][:persistent_files]
     return true unless pfs.is_a?(Array) # not an error just nada
     pfs.each do |file|
       path = clean_path(file[:path])
       src_paths.push(path)
     end
-    p :src_paths
-    p src_paths
-    p :dest_paths
-    p dest_paths
     @persistant_files[:src_paths] = src_paths
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -149,15 +144,13 @@ class BluePrintReader
     services = @blueprint[:software][:service_configurations]
     return true unless services.is_a?(Array) # not an error just nada
     services.each do |service|
-      if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil? == true
-        service[:publisher_namespace] = 'EnginesSystem'
-      end
+      service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
       service[:service_type] = service[:type_path]
-      p :service_provider
-      p service[:publisher_namespace]
-      p :servicetype_name
-      p service[:type_path]
-      add_service(service)
+#      p :service_provider
+#      p service[:publisher_namespace]
+#      p :servicetype_name
+#      p service[:type_path]
+#      add_service(service)
     end
   end # FIXME:
 
@@ -166,33 +159,26 @@ class BluePrintReader
     p service_hash
     @builder.templater.fill_in_dynamic_vars(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
-      add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
+        result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
+          @services.push(service_hash) if result
+          return result
     end
-    @services.push(service_hash)
+    return true
   end
 
   def add_file_service(name, dest) # FIXME: and put me in coreapi
     log_build_output('Add File Service ' + name)
     dest = name if dest.nil? || dest == ''
-    if dest.start_with?('/home/app/') == false
-      if dest.start_with?('/home/fs/') == false
-        if dest != '/home/app'
-          p :dest
-          p '_' + dest + '_'
-          dest = '/home/fs/' + dest
-        end
-      end
-    elsif dest == '/home/app/' || dest == '/home/app'
-      @builder.app_is_persistant = true
-      p 'PERSISTANT APP'
+    if dest.start_with?('/home/app/')
+      @builder.app_is_persistant = true     
+    else
+      dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
     end
     permissions = PermissionRights.new(@container_name, '', '')
     vol = Volume.new(name, SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name, dest, 'rw', permissions)
     @volumes[name] = vol
+    return true
   rescue StandardError => e
-    p name
-    p dest
-    p @container_name
     SystemUtils.log_exception(e)
   end
 
@@ -390,9 +376,7 @@ class BluePrintReader
       name = port[:name]
       external = port['external']
       type = port['protocol']
-      if type.is_a?(String) == false || type.size == 0
-        type = 'tcp'
-      end
+      type = 'tcp' if type.is_a?(String) == false || type.size == 0
       # FIXME: when public ports supported
       puts 'Port ' + portnum.to_s + ':' + external.to_s
       @worker_ports.push(WorkPort.new(name, portnum, external, false, type))

@@ -27,7 +27,7 @@ class EnginesCore < ErrorsApi
     Signal.trap('HUP', proc { api_shutdown })    
     Signal.trap('TERM', proc { api_shutdown })      
     @docker_api = DockerApi.new
-    @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @system_api = SystemApi.new(self)  # will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)   
@@ -635,7 +635,7 @@ class EnginesCore < ErrorsApi
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error    
-    builder =  BuildController.new(self)
+    builder = BuildController.new(self)
     builder.reinstall_engine(engine) 
   rescue  StandardError => e
     @last_error = e.to_s
@@ -711,7 +711,7 @@ class EnginesCore < ErrorsApi
     log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
     volume_option = ' -v ' + state_dir + ':/client/state:rw '
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
-    if !container.volumes.nil?
+    unless container.volumes.nil?
       container.volumes.each_value do |vol|
         SystemUtils.debug_output('build vol maps', vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'

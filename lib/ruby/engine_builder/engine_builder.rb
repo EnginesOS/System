@@ -157,13 +157,9 @@ class EngineBuilder < ErrorsApi
 
   def build_init
     log_build_output('Building Image')
-    # cmd='cd ' + get_basedir + '; docker build  -t ' + @hostname + '/init .'
     cmd = '/usr/bin/docker build --force-rm=true --tag=' + @container_name + ' ' + get_basedir
-    p :EXEC
-    p cmd
     res = run_system(cmd)
     return true if res
-      p res.to_s
     log_error_mesg('build init failed ', res)
   rescue StandardError => e
     log_exception(e)
@@ -298,7 +294,7 @@ class EngineBuilder < ErrorsApi
     
     base_image_name = read_base_image_from_dockerfile
     
-    if base_image_name.nil? == true
+    if base_image_name.nil? 
       p :From_image_not_found_inD
       log_build_errors('Failed to Read Image from Dockerfile')
       @last_error = ' ' + tail_of_build_log
@@ -337,7 +333,7 @@ class EngineBuilder < ErrorsApi
     cnt = 0
     lcnt = 5
     log_build_output('Starting Engine')
-    while mc.is_startup_complete? == false && mc.is_running? == true
+    while mc.is_startup_complete? == false && mc.is_running?
       cnt += 1
       if cnt == 120
         log_build_output('') # force EOL to end the ...
@@ -371,11 +367,11 @@ ensure
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
-    # FIXME: need to re orphan here if using an orphan
+    # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
     p :Clean_up_Failed_build
     @blueprint_reader.services.each do |service_hash|
-      if service_hash[:fresh] == true
+      if service_hash[:fresh]
         service_hash[:remove_all_data] = true
         @core_api.dettach_service(service_hash) # true is delete persistant
       end
@@ -660,7 +656,6 @@ ensure
   def engine_environment
     return @blueprint_reader.environments
   end
-
   
  def log_error_mesg(m,o)
    log_build_errors(m.to_s + o.to_s)
