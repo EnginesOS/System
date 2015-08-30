@@ -559,23 +559,24 @@ class EnginesCore < ErrorsApi
   # They are removed from the tree if delete is sucessful
 
   def delete_engine(params)
-    params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove engine Services',params) if !delete_image_dependancies(params)
+    params[:container_type] = 'container' # Force This
+    return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
     remove_engine(engine_name)    
+    return true
   end
   
   def remove_engine(engine_name)
     engine = loadManagedEngine(engine_name)
-       if !engine.is_a?(ManagedEngine)
-         return true if service_manager.remove_engine_from_managed_engines_registry(params) # used in roll back and only works if no engine do mess with this logic
-         log_error_mesg('Failed to  find Engine',params)
+       unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
+         return true if service_manager.remove_engine_from_managed_engines_registry(params) 
+         return log_error_mesg('Failed to find Engine',params)
        end
-       if engine.delete_image == true
+       if engine.delete_image
          return true  if service_manager.remove_engine_from_managed_engines_registry(params)
          return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
        end
-       log_error_mesg('Failed to remove Engine',params)
+       log_error_mesg('Failed to delete image',params)
   end
 
   def delete_image_dependancies(params)
@@ -587,26 +588,26 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def run_system(cmd)
-    clear_error
-    cmd = cmd + ' 2>&1'
-    res= %x<#{cmd}>
-    SystemUtils.debug_output('run system',res)
-    #FIXME should be case insensitive The last one is a pure kludge
-    #really need to get stderr and stdout separately
-    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
-    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
-  rescue StandardError => e
-    log_exception(e)
-  end
+#  def run_system(cmd)
+#    clear_error
+#    cmd = cmd + ' 2>&1'
+#    res= %x<#{cmd}>
+#    SystemUtils.debug_output('run system',res)
+#    #FIXME should be case insensitive The last one is a pure kludge
+#    #really need to get stderr and stdout separately
+#    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
+#    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
+#  rescue StandardError => e
+#    log_exception(e)
+#  end
 
   def run_volume_builder(container,username)
     clear_error
     if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
       command = 'docker stop volbuilder'
-      run_system(command)
+      SystemUtils.run_system(command)
       command = 'docker rm volbuilder'
-      run_system(command)
+      SystemUtils.run_system(command)
       File.delete(SystemConfig.CidDir + '/volbuilder.cid')
     end
     mapped_vols = get_volbuild_volmaps container
@@ -624,7 +625,7 @@ class EnginesCore < ErrorsApi
     #Note no -d so process will not return until setup.sh completes
     command = 'docker rm volbuilder'
     File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-    res = run_system(command)
+    res = SystemUtils.run_system(command)
     SystemUtils.log_error(res) if res.is_a?(FalseClass)
     # don't return false as
     return true
