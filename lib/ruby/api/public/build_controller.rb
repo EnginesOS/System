@@ -39,7 +39,7 @@ class BuildController
     build_failed(params, e)
   end
 
-  def re_install_engine(engine, core)
+  def re_install_engine(engine)
     params = {}
     params[:engine_name] = engine.container_name
     params[:domain_name] = engine.domain_name
@@ -49,7 +49,7 @@ class BuildController
     params[:memory] = engine.memory
     params[:repository_url] = engine.repo
     SystemStatus.build_starting(params)
-    builder = EngineBuilder.new(params, core)
+    builder = EngineBuilder.new(params, @core_api)
     return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
     engine = build_from_blue_print
     return build_failed(params, builder.last_error) unless engine.is_a?(ManagedEngine)

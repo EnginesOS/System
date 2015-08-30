@@ -635,8 +635,8 @@ class EnginesCore < ErrorsApi
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error    
-    builder =  BuildController.new
-    BuildController.re_install_engine(engine, self)
+    builder =  BuildController.new(self)
+    BuildController.re_install_engine(engine) 
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
