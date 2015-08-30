@@ -58,7 +58,7 @@ class BuildController
     return engine
   rescue StandardError => e
     build_failed(params, e)
-    log_exception(e)
+    SystemUtils.log_exception(e)
   end
 
   private
