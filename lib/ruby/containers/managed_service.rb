@@ -72,7 +72,6 @@ class ManagedService < ManagedContainer
   end
 
   def remove_consumer(service_hash)
-    service_hash = get_service_hash(service_hash)
     return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
     return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
@@ -177,37 +176,23 @@ class ManagedService < ManagedContainer
   end
   
   private 
-  def set_container_pid
-     @pid ='-1'
-   end
-   
+
   def  add_consumer_to_service(service_hash)
-      if is_running? == false
-        log_error_mesg('service not running ',service_hash)
-        return false
-      end
-      if check_cont_uid == false
-        log_error_mesg('service missing cont_userid ',service_hash)
-        return false
-      end
+    return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
+      return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
       cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
       result = SystemUtils.execute_command(cmd)
       return true if result[:result] == 0
       log_error_mesg('Failed add_consumer_to_service',result)
-      return false
-      #return  SystemUtils.run_system(cmd)
     end
-  
 
-  
     def rm_consumer_from_service(service_hash)
-     # no need as checl_cont_id also check so save a sec return log_error_mesg('service not running ', service_hash) if is_running? == false
-      return log_error_mesg('No uid service not running ', service_hash) if check_cont_uid == false
+      return log_error_mesg('No uid service not running ', service_hash) unless check_cont_uid
+      return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
       cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
       result = SystemUtils.execute_command(cmd)
       return true  if result[:result] == 0
       log_error_mesg('Failed rm_consumer_from_service', result)
-      #return  SystemUtils.run_system(cmd)
     end
 
 
@@ -217,6 +202,5 @@ class ManagedService < ManagedContainer
   def self.log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,512)
     SystemUtils.log_error_mesg(msg,object)
-    return false
   end
 end
