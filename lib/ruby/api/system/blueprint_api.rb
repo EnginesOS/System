@@ -12,6 +12,7 @@ class BlueprintApi < ErrorsApi
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
+    return true
   rescue StandardError => e
     log_error_mesg('Blueprint save Failure', container)
     log_exception(e)
