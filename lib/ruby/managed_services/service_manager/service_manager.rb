@@ -496,7 +496,7 @@ end
   #@return result
   def test_registry_result(result)
     clear_error
-    log_error_mesg(@system_registry.last_error, result) if result.nil?
+    log_error_mesg(@system_registry.last_error, result) if result == false
     return result
   end
 
