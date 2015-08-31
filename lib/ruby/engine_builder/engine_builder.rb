@@ -819,7 +819,7 @@ require 'open3'
     end
   end
   def get_basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name
+    return SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   def log_exception(e)

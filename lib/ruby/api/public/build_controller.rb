@@ -38,6 +38,23 @@ class BuildController
   rescue StandardError => e
     build_failed(params, e)
   end
+  
+#  @core_api = core_api
+#    params[:engine_name].gsub!(/ /, '_')
+#    @container_name = params[:engine_name]
+#    @domain_name = params[:domain_name]
+#    @hostname = params[:host_name]
+#    @http_protocol = params[:http_protocol]
+#    @memory = params[:memory]
+#    @repo_name = params[:repository_url]
+#    return log_error_mesg('empty container name', params) if @container_name.nil? || @container_name == ''    
+#    @container_name.freeze
+#    @build_name = File.basename(@repo_name).sub(/\.git$/, '')
+#    @web_port = SystemConfig.default_webport
+#    @app_is_persistant = false
+#    @result_mesg = 'Aborted Due to Errors'
+#    @first_build = true
+#    @attached_services = []
 
   def reinstall_engine(engine)
     params = {}
@@ -47,7 +64,7 @@ class BuildController
     params[:software_environment_variables] = engine.environments
     params[:http_protocol] = engine.protocol
     params[:memory] = engine.memory
-    params[:repository_url] = engine.repo
+    params[:repository_url] = engine.repository
     SystemStatus.build_starting(params)
     builder = get_engine_builder(params)
     return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)

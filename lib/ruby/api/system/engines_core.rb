@@ -24,13 +24,13 @@ class EnginesCore < ErrorsApi
   require_relative 'system_preferences.rb'
 
   def initialize
-    Signal.trap('HUP', proc { api_shutdown })    
-    Signal.trap('TERM', proc { api_shutdown })      
+    Signal.trap('HUP', proc { api_shutdown })
+    Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  # will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
-    @service_api = ServiceApi.new(@docker_api, @system_api, self)   
+    @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
   end
 
