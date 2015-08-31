@@ -582,7 +582,12 @@ rescue StandardError => e
 
   def set_container_id
     inspect_container if @docker_info.nil?
+    p @docker_info[0]['Id'].to_s
+      
     return @docker_info[0]['Id'] if @docker_info.is_a?(Array) && @docker_info[0].is_a?(Hash)
-    return -1
+    
+      return -1
+rescue StandardError => e
+   log_exception(e)
   end
 end
