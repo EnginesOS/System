@@ -76,7 +76,7 @@ class ManagedService < ManagedContainer
     return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
     return rm_consumer_from_service(service_hash) if @persistant && service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
-    return false
+    log_error_mesg('Not persitant of service hash missing remove data',service_hash)
   end
 
   def service_manager
