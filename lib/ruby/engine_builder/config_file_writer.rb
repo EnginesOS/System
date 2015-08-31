@@ -8,16 +8,17 @@ class ConfigFileWriter
     return true
   end
   
-  def self.write_software_file(templater, container_filename_path, content)
+  def self.write_templated_file(templater, filename, content)
       content.gsub!(/\r/, '')
-      dir = File.dirname(get_basedir + container_filename_path)
+      dir = File.dirname(filename)
       FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-      out_file  = File.open(get_basedir + container_filename_path, 'wb', :crlf_newline => false)
+      out_file  = File.open(filename, 'wb', :crlf_newline => false)
       content = templater.process_templated_string(content)
       out_file.puts(content)
       out_file.close
       return true
     rescue StandardError => e
+      SystemUtils.log_error("Exception with " + filename.to_s )
       SystemUtils.log_exception(e)
     end
   

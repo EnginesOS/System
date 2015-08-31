@@ -389,7 +389,7 @@ ensure
   def create_template_files
     if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
       @blueprint[:software][:template_files].each do |template_hash|
-        ConfigFileWriter.write_software_file(@templater, '/home/engines/templates/' + template_hash[:path], template_hash[:content])
+        write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
   end
@@ -397,7 +397,7 @@ ensure
   def create_httaccess
     if @blueprint[:software].key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files].nil? == false
       @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
-        ConfigFileWriter.write_software_file(@templater, '/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
+        write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
       end
     end
   end
@@ -414,7 +414,7 @@ ensure
     && @blueprint[:software][:custom_start_script].nil? == false\
     && @blueprint[:software][:custom_start_script].length > 0
       content = @blueprint[:software][:custom_start_script].gsub(/\r/, '')
-      ConfigFileWriter.write_software_file(@templater, SystemConfig.StartScript, content)
+      write_software_file(SystemConfig.StartScript, content)
       File.chmod(0755, get_basedir + SystemConfig.StartScript)
     end
   end
@@ -424,7 +424,7 @@ ensure
     && @blueprint[:software][:custom_install_script].nil? == false\
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-      ConfigFileWriter.write_software_file(@templater, SystemConfig.InstallScript, content)
+      write_software_file(SystemConfig.InstallScript, content)
       p :create_install_script
       File.chmod(0755, get_basedir + SystemConfig.InstallScript)
     end
@@ -435,7 +435,7 @@ ensure
     && @blueprint[:software][:custom_post_install_script].nil? == false \
     && @blueprint[:software][:custom_post_install_script].length > 0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
-      ConfigFileWriter.write_software_file(@templater, SystemConfig.PostInstallScript, content)
+      write_software_file(SystemConfig.PostInstallScript, content)
       #        post_install_script_file = File.open(get_basedir + SystemConfig.PostInstallScript,'wb', :crlf_newline => false)
       #      post_install_script_file.puts(content)
       #      post_install_script_file.close
@@ -453,7 +453,7 @@ ensure
         content = php_ini_hash[:content].gsub(/\r/, '')
         contents = contents + '\n' + content
       end
-      ConfigFileWriter.write_software_file(@templater, SystemConfig.CustomPHPiniFile, contents)
+      write_software_file(SystemConfig.CustomPHPiniFile, contents)
     end
   end
 
@@ -471,7 +471,7 @@ ensure
         p :apache
         p contents
       end
-      ConfigFileWriter.write_software_file(@templater, SystemConfig.CustomApacheConfFile, contents)
+      write_software_file(SystemConfig.CustomApacheConfFile, contents)
     end
   end
 
@@ -782,6 +782,10 @@ require 'open3'
       p :build_suceeded
       return true
     end
+  end
+  
+  def write_software_file(filename, content)
+    ConfigFileWriter.write_templated_file(@templater, get_basedir + '/' + filename, content)
   end
   
   def get_basedir
