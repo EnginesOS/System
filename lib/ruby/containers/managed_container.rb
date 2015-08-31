@@ -162,7 +162,6 @@ class ManagedContainer < Container
 
   def read_state
     return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
-    p "read state caller " + caller_locations(1,1)[0].label
     if inspect_container == false
       log_error_mesg('Failed to inspect container', self)
       state = 'nocontainer'
@@ -454,8 +453,7 @@ class ManagedContainer < Container
   end
 
   def inspect_container
-    return false unless has_api?
-    p "inspect:" + container_name + ":" + caller_locations(1,1)[0].label
+    return false unless has_api?  
     result = @container_api.inspect_container(self) if @docker_info.nil?
     return nil if result == false
     @docker_info = @last_result
