@@ -273,13 +273,14 @@ class ManagedContainer < Container
     if read_state != 'running'
       @container_id = -1
       return log_err_mesg('Did not start',self)
-    else
-      set_container_id
+    else     
       register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
     @container_id = set_container_id
+     p :conid
+     p @container_id 
     @cont_userid = running_user
     save_state
     return ret_val
