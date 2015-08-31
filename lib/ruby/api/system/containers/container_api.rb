@@ -1,5 +1,5 @@
 class ContainerApi < ErrorsApi
-  require_relative 'container_state_files.rb'
+  require_relative '../container_state_files.rb'
   def initialize(docker_api, system_api, engines_core)
     @docker_api = docker_api
     @system_api = system_api
