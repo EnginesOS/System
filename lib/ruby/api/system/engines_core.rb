@@ -7,15 +7,15 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
-require '/opt/engines/lib/ruby/managed_services/service_manager/service_manager.rb'
+require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
   require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
-  require_relative 'container_api.rb'
-  require_relative 'service_api.rb'
+  require_relative 'containers/container_api.rb'
+  require_relative 'containers/service_api.rb'
   require_relative 'docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
@@ -24,11 +24,13 @@ class EnginesCore < ErrorsApi
   require_relative 'system_preferences.rb'
 
   def initialize
+    Signal.trap('HUP', proc { api_shutdown })
+    Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new
-    @system_api = SystemApi.new(self)  #will change to to docker_api and not self
+    @system_api = SystemApi.new(self)  # will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
-    @service_api = ServiceApi.new(@docker_api, @system_api, self)   
+    @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
   end
 
@@ -333,7 +335,6 @@ class EnginesCore < ErrorsApi
   configurator = ConfigurationsApi.new(self)
    return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
-     p :update_sucessfule
      return true
   end
 
@@ -408,7 +409,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
     return nil
   end
-
+  
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
@@ -432,9 +433,6 @@ class EnginesCore < ErrorsApi
     end
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
-      #update_environment(engine,params[:environment_variables])
-      p :new_varables
-      p new_variables
       engine.environments.each do |env|
         # new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
@@ -461,7 +459,7 @@ class EnginesCore < ErrorsApi
   end
 
   def test_system_api_result(result)
-    @last_error = @system_api.last_error.to_s if result.nil? || result.is_a?(FalseClass)
+    @last_error = @system_api.last_error.to_s if result.is_a?(FalseClass)
     return result
   end
 
@@ -557,50 +555,59 @@ class EnginesCore < ErrorsApi
   # They are removed from the tree if delete is sucessful
 
   def delete_engine(params)
-    params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove engine Services',params) if !delete_image_dependancies(params)
+    params[:container_type] = 'container' # Force This
+    return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
+    remove_engine(engine_name)    
+    return true
+  end
+  
+  def remove_engine(engine_name)
     engine = loadManagedEngine(engine_name)
-    if !engine.is_a?(ManagedEngine)
-      return true if service_manager.remove_engine_from_managed_engines_registry(params) # used in roll back and only works if no engine do mess with this logic
-      log_error_mesg('Failed to  find Engine',params)
-    end
-    if engine.delete_image == true
-      return true  if service_manager.remove_engine_from_managed_engines_registry(params)
-      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-    end
-    log_error_mesg('Failed to remove Engine',params)
+    params = {}
+    params[:engine_name] = engine_name
+    params[:container_type] = 'container' # Force This
+    params[:parent_engine] = params[:engine_name]
+       unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
+         return true if service_manager.remove_engine_from_managed_engines_registry(params) 
+         return log_error_mesg('Failed to find Engine',params)
+       end
+       if engine.delete_image || engine.has_image? == false
+         return true if service_manager.remove_engine_from_managed_engines_registry(params)
+         return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+       end
+       log_error_mesg('Failed to delete image',params)
   end
 
   def delete_image_dependancies(params)
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove deleted Service',params) if service_manager.rm_remove_engine_services(params) == false
+    return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
     return true
   rescue StandardError => e
     log_exception(e)
   end
 
-  def run_system(cmd)
-    clear_error
-    cmd = cmd + ' 2>&1'
-    res= %x<#{cmd}>
-    SystemUtils.debug_output('run system',res)
-    #FIXME should be case insensitive The last one is a pure kludge
-    #really need to get stderr and stdout separately
-    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
-    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
-  rescue StandardError => e
-    log_exception(e)
-  end
+#  def run_system(cmd)
+#    clear_error
+#    cmd = cmd + ' 2>&1'
+#    res= %x<#{cmd}>
+#    SystemUtils.debug_output('run system',res)
+#    #FIXME should be case insensitive The last one is a pure kludge
+#    #really need to get stderr and stdout separately
+#    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
+#    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
+#  rescue StandardError => e
+#    log_exception(e)
+#  end
 
   def run_volume_builder(container,username)
     clear_error
     if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
       command = 'docker stop volbuilder'
-      run_system(command)
+      SystemUtils.run_system(command)
       command = 'docker rm volbuilder'
-      run_system(command)
+      SystemUtils.run_system(command)
       File.delete(SystemConfig.CidDir + '/volbuilder.cid')
     end
     mapped_vols = get_volbuild_volmaps container
@@ -618,7 +625,7 @@ class EnginesCore < ErrorsApi
     #Note no -d so process will not return until setup.sh completes
     command = 'docker rm volbuilder'
     File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-    res = run_system(command)
+    res = SystemUtils.run_system(command)
     SystemUtils.log_error(res) if res.is_a?(FalseClass)
     # don't return false as
     return true
@@ -629,7 +636,8 @@ class EnginesCore < ErrorsApi
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error    
-    BuildController.re_install_engine(engine, self)
+    builder = BuildController.new(self)
+    builder.reinstall_engine(engine) 
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
@@ -692,6 +700,11 @@ class EnginesCore < ErrorsApi
   end
 
   protected
+  
+  def shutdown
+   # FIXME: @registry_handler.api_dissconnect
+    @system_api.api_shutdown
+  end
 
   def get_volbuild_volmaps(container)
     clear_error
@@ -699,7 +712,7 @@ class EnginesCore < ErrorsApi
     log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
     volume_option = ' -v ' + state_dir + ':/client/state:rw '
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
-    if !container.volumes.nil?
+    unless container.volumes.nil?
       container.volumes.each_value do |vol|
         SystemUtils.debug_output('build vol maps', vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'

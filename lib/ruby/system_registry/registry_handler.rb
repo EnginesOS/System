@@ -57,8 +57,9 @@ class RegistryHandler < ErrorsApi
     rescue StandardError => e
       log_exception(e)
     end   
+   
     
-    private
+    private    
     
   def force_recreate
     log_error_mesg("Forcing registry recreate", nil)

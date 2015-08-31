@@ -14,87 +14,177 @@ attach_post_build: true
 attach_requires_restart: false
 setup_params:
 consumer_params:
- cert_name:
-  name: cert_name
-  label: cert name name
-  regex_validator: ".*"
-  tooltip: "Cert name usually domainname"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"
- country:
-  name: country
-  label: Country
-  regex_validator: ".2"
-  tooltip: "2 Character Country Code"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again" 
- state:
-  name: state
-  label: State
-  regex_validator: ".*"
-  tooltip: "State"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"   
- city:
-  name: city
-  label: city
-  regex_validator: ".*"
-  tooltip: "City/Location"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"   
- organisation:
-  name: organisation
-  label: organisation
-  regex_validator: ".*"
-  tooltip: "Organisation"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"   
- person:
-  name: person
-  label: person
-  regex_validator: ".*"
-  tooltip: "person/OU"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again" 
- domainname:
-  name: domainname
-  label: domainname
-  regex_validator: ".*"
-  tooltip: "domainname or CN"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"   
+ cert_name:                                               
+  name: cert_name                                         
+  label: cert name name                                   
+  regex_validator: ".*"                                   
+  tooltip: "Cert name usually domainname"                 
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ country:                                                 
+  name: country                                           
+  label: Country                                          
+  regex_validator: ".2"                                   
+  tooltip: "2 Character Country Code"                     
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ state:                                                   
+  name: state                                             
+  label: State                                            
+  regex_validator: ".*"                                   
+  tooltip: "State"                                        
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ city:                                                    
+  name: city                                              
+  label: city                                             
+  regex_validator: ".*"                                   
+  tooltip: "City/Location"                                
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ organisation:                                            
+  name: organisation                                      
+  label: organisation                                     
+  regex_validator: ".*"                                   
+  tooltip: "Organisation"                                 
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ person:                                                  
+  name: person                                            
+  label: person                                           
+  regex_validator: ".*"                                   
+  tooltip: "person/OU"                                    
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+ domainname:                                              
+  name: domainname                                        
+  label: domainname                                       
+  regex_validator: ".*"                                   
+  tooltip: "domainname or CN"                             
+  field_type: "text_field"                                
+  hint: " "                                               
+  placeholder: " "                                        
+  mandatory: true                                         
+  value: ""                                               
+  comment: " "                                            
+  regex_invalid_message: "wrong go back and try again"    
+configurators:
+ system_ca:
+  name: system_ca
+  label: Root Certificate Authority
+  description: Public Cert for key used to signed all Certificates issued by the engines host
+  params:
+   cert_name:
+    name: cert_name
+    label: cert name name
+    regex_validator: ".*"
+    tooltip: "Cert name usually domainname"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"
+   country:
+    name: country
+    label: Country
+    regex_validator: ".2"
+    tooltip: "2 Character Country Code"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again" 
+   state:
+    name: state
+    label: State
+    regex_validator: ".*"
+    tooltip: "State"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"   
+   city:
+    name: city
+    label: city
+    regex_validator: ".*"
+    tooltip: "City/Location"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"   
+   organisation:
+    name: organisation
+    label: organisation
+    regex_validator: ".*"
+    tooltip: "Organisation"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"   
+   person:
+    name: person
+    label: person
+    regex_validator: ".*"
+    tooltip: "person/OU"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again" 
+   domainname:
+    name: domainname
+    label: domainname
+    regex_validator: ".*"
+    tooltip: "domainname or CN"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"   

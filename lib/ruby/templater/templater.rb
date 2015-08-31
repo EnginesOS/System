@@ -8,26 +8,16 @@ class Templater
   end
 
   def resolve_system_variable(match)
-    # $config['db_dsnw'] = 'mysql://_Engines(dbuser):_Engines(dbpasswd)@_System(mysql_host)'/_Engines(dbname)';
+ 
     name = match.sub!(/_Engines_System\(/, '')
-    #      p :matching
-    #      # "mysql_host)'/_Engines(dbname)"
-    #      p match
     name.sub!(/[\)]/, '')
-    #      p :getting_system_value_for
-    #      p name
-    # mysql_host'/_Engines(dbname)
     var_method = @system_access.method(name.to_sym)
     val = var_method.call
-    #      p :got_val
-    #      p val
     return val
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return ''
   end
-  # _Blueprint(software,license_name)
-  # _Blueprint(software,rake_tasks,name)
 
   def apply_blueprint_variables(template)
     template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
@@ -65,11 +55,6 @@ class Templater
       args = cmd[1]
       args.sub!(/\)/, '')
     end
-    # p  :getting_system_function_for
-    #     p name.to_sym
-    #     p :with_args
-    #     p args
-    #
     var_method = @system_access.method(name.to_sym)
     var_method.call(args)
   rescue StandardError => e
@@ -80,8 +65,6 @@ class Templater
   def resolve_build_variable(match)
     name = match.sub!(/_Engines_Builder\(/, '')
     name.sub!(/[\)]/, '')
-    #      p :getting_builder_value_for
-    #      p name.to_sym
     var_method = @builder_public.method(name.to_sym)
     var_method.call
   rescue StandardError
@@ -91,21 +74,13 @@ class Templater
   def resolve_engines_variable(match)
     name = match.sub!(/_Engines_Environment\(/, '')
     name.sub!(/[\)]/, '')
-    #      p :getting_engines_value_for
-    #      p name.to_sym
     @builder_public.engine_environment.each do |environment|
-      #        p :checking_env
-      #        p :looking_at
-      #        p environment.name
-      #          p :to_match
-      #          p name
       if environment.name == name
         return environment.value
       end
     end
     return ''
   rescue StandardError => e
-    p engine_environment
     SystemUtils.log_exception(e)
     return ''
   end
@@ -120,7 +95,7 @@ class Templater
     else
       SystemUtils.log_error_mesg('nil system access', template)
     end
-    if @builder_public.nil? == false
+    unless @builder_public.nil?
       template = apply_build_variables(template)
       if @builder_public.respond_to?('blueprint')\
       && @builder_public.blueprint.nil? == false
@@ -177,8 +152,6 @@ class Templater
     service_hash[:variables].each do |variable|
       p variable
       if variable[1].nil? == false && variable[1].is_a?(String) && variable[1].include?('_Engines')
-        # variable[1].sub!(/\$/,"")
-        #  result = evaluate_function(variable[1])
         p :processing
         p variable[1]
         result = process_templated_string(variable[1])
@@ -204,13 +177,7 @@ class Templater
     return service_def
   end
 
-  def engine_environment
-    return nil
-  end
-
   def proccess_templated_service_hash(service_hash)
-    #    p :processing_service_hash_
-    #    p service_hash
     fill_in_dynamic_vars(service_hash)
   end
 end

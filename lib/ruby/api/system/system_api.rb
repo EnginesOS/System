@@ -68,7 +68,7 @@ class SystemApi < ErrorsApi
     clear_error
     ret_val = {}
     if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = read_container_id(container)
+      container_id = ContainerStateFiles.read_container_id(container)
       container.container_id = container_id
     end
     if container && container.container_id.nil? == false && container.container_id != '-1'
@@ -190,7 +190,7 @@ class SystemApi < ErrorsApi
     end
     yam1_file_name = service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
-      return log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s) unless build_running_service(service_name, service_type_dir)
+      return log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
     end
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
@@ -252,15 +252,6 @@ class SystemApi < ErrorsApi
     return ret_val
   end
 
-  
-  def read_container_id(container)
-     clear_error
-     cidfile = ContainerStateFiles.container_cid_file(container)
-     return File.read(cidfile) if File.exist?(cidfile)
-   rescue StandardError => e
-     SystemUtils.log_exception(e)
-     return '-1'
-   end
 
   def generate_engines_user_ssh_key
     newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
@@ -348,5 +339,9 @@ class SystemApi < ErrorsApi
   rescue StandardError => e
     log_exception(e)
     return error_result
+  end
+  
+  def api_shutdown
+    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 end

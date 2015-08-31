@@ -1,5 +1,5 @@
 class ContainerApi < ErrorsApi
-  require_relative 'container_state_files.rb'
+  require_relative '../container_state_files.rb'
   def initialize(docker_api, system_api, engines_core)
     @docker_api = docker_api
     @system_api = system_api
@@ -73,10 +73,10 @@ class ContainerApi < ErrorsApi
   end
 
   def destroy_container(container)
-    clear_error
-    ret_val = true
-    ret_val = test_docker_api_result(@docker_api.destroy_container(container)) if container.has_container?
-    return ret_val
+    clear_error 
+    return true if @docker_api.destroy_container(container) 
+    return true unless container.has_container?
+    return false
   rescue StandardError => e
     container.last_error = 'Failed To Destroy ' + e.to_s
     log_exception(e)
@@ -93,7 +93,7 @@ class ContainerApi < ErrorsApi
     clear_error
     return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
     ContainerStateFiles.clear_cid_file(container)
-   ContainerStateFiles.clear_container_var_run(container)
+    ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     return ContainerStateFiles.create_container_dirs(container) if test_docker_api_result(@docker_api.create_container(container))
@@ -105,7 +105,8 @@ class ContainerApi < ErrorsApi
 
   def save_blueprint(blueprint, container)
    blueprint_r = BlueprintApi.new
-   log_error_mesg('failed to save blueprint', blueprint_r.last_error) unless blueprint_r.save_blueprint(blueprint, container)  
+   log_error_mesg('failed to save blueprint', blueprint_r.last_error) unless blueprint_r.save_blueprint(blueprint, container)
+   return true
   end
 
   def load_blueprint(container)
@@ -165,18 +166,15 @@ class ContainerApi < ErrorsApi
   end
 
   def test_docker_api_result(result)
-    log_error_mesg(@docker_api.last_error, result) if result.nil? || result == false
+    log_error_mesg(@docker_api.last_error, result) if result == false
     return result
   end
 
   def test_system_api_result(result)
-    log_error_mesg(@system_api.last_error.to_s, result) if result.nil? || result.is_a?(FalseClass)
+    log_error_mesg(@system_api.last_error.to_s, result) if result == false
     return result
   end
   
-  def read_container_id(container)
-     @system_api.read_container_id(container)
-     end
      
     def container_cid_file(container)
       @system_api.container_cid_file(container)   

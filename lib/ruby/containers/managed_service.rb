@@ -3,12 +3,12 @@ require 'objspace'
 
 class ManagedService < ManagedContainer
   @ctype='service'
-  #  @consumers=Hash.new
 
   def lock_values
      super
+    @ctype = 'service' if @ctype.nil? 
      @ctype.freeze
-   end
+  end
    
   def ctype
     return @ctype
@@ -34,14 +34,9 @@ class ManagedService < ManagedContainer
   end
   attr_reader :persistant, :type_path, :publisher_namespace
 
-  def get_service_hash(service_hash)
-    return log_error_mesg('Get service hash recevied a ' + service_hash.class.name,service_hash.to_s) if service_hash.is_a?(Hash) == false
-    return service_hash
-  end
 
-  def add_consumer(object)
-    service_hash = get_service_hash(object)
-   return log_error_mesg('add consumer passed nil service_hash ','') if service_hash.nil?
+  def add_consumer(service_hash)
+   return log_error_mesg('add consumer passed nil service_hash ','') unless service_hash.is_a?(Hash)
     service_hash[:persistant] = @persistant
     if @persistant == true || is_running? 
       if service_hash[:fresh] == false
@@ -58,17 +53,13 @@ class ManagedService < ManagedContainer
   end
 
   def pull_image
-    # if has repo field prepend repo
-    # if has no / then local image
-    # return false
-    #   
-    return @container_api.pull_image(@repository + '/' + image) if @repository.nil? == false 
+    return @container_api.pull_image(@repository + '/' + image) unless @repository.nil? 
     return @container_api.pull_image(image) if image.include?('/')
     return false
   end
   
   def run_configurator(configurator_params)
-   return log_error_mesg('service not running ',configurator_params) if is_running? == false
+   return log_error_mesg('service not running ',configurator_params) unless is_running?
     return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = SystemUtils.execute_command(cmd)
@@ -81,12 +72,11 @@ class ManagedService < ManagedContainer
   end
 
   def remove_consumer(service_hash)
-    service_hash = get_service_hash(service_hash)
-    return log_error_mesg('remove consumer nil service hash ', '') if service_hash == nil
-    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) if !is_running?
+    return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
+    return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
     return rm_consumer_from_service(service_hash) if @persistant && service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
-    return false
+    log_error_mesg('Not persitant of service hash missing remove data',service_hash)
   end
 
   def service_manager
@@ -113,10 +103,8 @@ class ManagedService < ManagedContainer
         @environments = envs
       end
     end
-    @setState='running'
+    @setState = 'running'
     if create_container
-      #start with configurations
-      #save haere are below call inspect
       save_state()
       service_configurations = service_manager.get_service_configurations_hashes(@container_name)
       if service_configurations.is_a?(Array)
@@ -124,10 +112,8 @@ class ManagedService < ManagedContainer
           run_configurator(configuration)
         end
       end
-      #register_with_dns
-      p :service_non_persis
+      register_with_dns
       @container_api.load_and_attach_nonpersistant_services(self)
-      p :register_non_persis
       @container_api.register_non_persistant_services(self)
       reregister_consumers
       return true
@@ -188,37 +174,23 @@ class ManagedService < ManagedContainer
   end
   
   private 
-  def set_container_pid
-     @pid ='-1'
-   end
-   
+
   def  add_consumer_to_service(service_hash)
-      if is_running? == false
-        log_error_mesg('service not running ',service_hash)
-        return false
-      end
-      if check_cont_uid == false
-        log_error_mesg('service missing cont_userid ',service_hash)
-        return false
-      end
+    return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
+      return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
       cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
       result = SystemUtils.execute_command(cmd)
       return true if result[:result] == 0
       log_error_mesg('Failed add_consumer_to_service',result)
-      return false
-      #return  SystemUtils.run_system(cmd)
     end
-  
 
-  
     def rm_consumer_from_service(service_hash)
-     # no need as checl_cont_id also check so save a sec return log_error_mesg('service not running ', service_hash) if is_running? == false
-      return log_error_mesg('No uid service not running ', service_hash) if check_cont_uid == false
+      return log_error_mesg('No uid service not running ', service_hash) unless check_cont_uid
+      return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
       cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
       result = SystemUtils.execute_command(cmd)
       return true  if result[:result] == 0
       log_error_mesg('Failed rm_consumer_from_service', result)
-      #return  SystemUtils.run_system(cmd)
     end
 
 
@@ -228,6 +200,5 @@ class ManagedService < ManagedContainer
   def self.log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,512)
     SystemUtils.log_error_mesg(msg,object)
-    return false
   end
 end

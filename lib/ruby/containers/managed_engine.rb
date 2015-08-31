@@ -1,5 +1,5 @@
 class ManagedEngine < ManagedContainer
-  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, repo, dbs, environments, framework, runtime, core_api, data_uid, data_gid, deployment_type)
+  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, repo, environments, framework, runtime, core_api, data_uid, data_gid, deployment_type)
     @last_error = 'None'
     @container_name = name
     @memory = memory
@@ -13,7 +13,6 @@ class ManagedEngine < ManagedContainer
     @repository = repo
     @last_result = ''
     @setState = 'nocontainer'
-    @databases = dbs
     @framework = framework
     @runtime = runtime
     @container_api = core_api
@@ -23,14 +22,17 @@ class ManagedEngine < ManagedContainer
     @data_uid = data_uid
     @data_gid = data_gid
     save_state # no running.yaml throws a no such container so save so others can use
+    @conf_self_start = true
   end
 
   attr_reader :ctype, :plugins_path, :extract_plugins
 
   def lock_values
-    super
+    @ctype = 'container' if @ctype.nil?
     @ctype.freeze
+    super
   end
+  
   def plugins_path
     return '/plugins/'
   end

@@ -85,6 +85,7 @@ class DockerFileBuilder
     count_layer
     write_clear_env_variables
     @docker_file.close
+    return true
   end
 
   def write_clear_env_variables

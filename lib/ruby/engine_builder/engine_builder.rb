@@ -3,7 +3,8 @@ require 'git'
 require 'fileutils'
 require 'json'
 
-class EngineBuilder
+class EngineBuilder < ErrorsApi
+  require '/opt/engines/lib/ruby/api/system/errors_api.rb'
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder.rb'
@@ -18,8 +19,7 @@ class EngineBuilder
   @build_name = nil
   @http_protocol = 'HTTPS and HTTP'
 
-  attr_reader :last_error,
-  :templater,
+  attr_reader   :templater,
   :repoName,
   :hostname,
   :build_name,
@@ -46,20 +46,15 @@ class EngineBuilder
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
     @core_api = core_api
+   # params[:engine_name].gsub!(/ /, '_')
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
     @http_protocol = params[:http_protocol]
     @memory = params[:memory]
     @repo_name = params[:repository_url]
-    if @container_name.nil? || @container_name == ''
-      @last_error = ' empty container name'
-      return false
-    end
-
-    @container_name.gsub!(/ /, '_')
+    return log_error_mesg('empty container name', params) if @container_name.nil? || @container_name == ''    
     @container_name.freeze
-
     @build_name = File.basename(@repo_name).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @app_is_persistant = false
@@ -100,11 +95,12 @@ class EngineBuilder
   end
 
   def log_build_errors(line)
-    @err_file.puts(line)
-    @err_file.flush
-    log_build_output('ERROR:' + line)
-    @result_mesg = 'Aborted Due to:' + line
-    #    @error_pipe_wr.puts(line)
+    line = '' if line.nil?
+    @err_file.puts(line.to_s) unless @err_file.nil?
+    log_build_output('ERROR:' + line.to_s)
+    @result_mesg = 'Aborted Due to:' + line.to_s
+    
+    return false
   end
 
   def setup_framework_logging
@@ -116,28 +112,20 @@ class EngineBuilder
       rmt_log_dir = '/var/log'
     end
     local_log_dir = SystemConfig.SystemLogRoot + '/containers/' + @container_name
-    if Dir.exist?(local_log_dir) == false
-      Dir.mkdir(local_log_dir)
-    end
+    Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)     
     return ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def backup_lastbuild
-    dir = get_basedir
-    if Dir.exist?(dir)
-      backup = dir + '.backup'
-      if Dir.exist?(backup)
-        FileUtils.rm_rf backup
-      end
-      FileUtils.mv(dir, backup)
-    end
+    dir = get_basedir   
+    backup = dir + '.backup'
+    FileUtils.rm_rf(backup) if Dir.exist?(backup)
+    FileUtils.mv(dir, backup) if Dir.exist?(dir)  
+    return true
   rescue StandardError => e
     log_exception(e)
-    return false
-    # throw BuildStandardError.new(e,'backup_lastbuild')
   end
 
   def load_blueprint
@@ -152,54 +140,38 @@ class EngineBuilder
     return hash
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def clone_repo
     log_build_output('Clone Blueprint Repository')
     g = Git.clone(@repo_name, @build_name, :path => SystemConfig.DeploymentDir)
   rescue StandardError => e
+    log_error_mesg('Problem cloning Git', g)
     log_exception(e)
-    return false
   end
 
   def setup_default_files
     log_build_output('Setup Default Files')
-    if setup_global_defaults == false
-      return false
-    else
-      return setup_framework_defaults
-    end
+    log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
+    return setup_framework_defaults
   end
 
   def build_init
     log_build_output('Building Image')
-    # cmd='cd ' + get_basedir + '; docker build  -t ' + @hostname + '/init .'
     cmd = '/usr/bin/docker build --force-rm=true --tag=' + @container_name + ' ' + get_basedir
-    puts cmd
     res = run_system(cmd)
-    if res == false
-      puts 'build init failed ' + res.to_s
-      log_build_errors('build init failed ' + res.to_s)
-      return res
-    end
-    return true
+    return true if res
+    log_error_mesg('build init failed ', res)
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
-    retval = managed_container.create_container
-    if retval == false
-      puts 'Failed to Start Container ' + managed_container.last_error
-      log_build_errors('Failed to Launch')
-    end
-    return retval
+    return true if managed_container.create_container
+    log_build_errors('Failed to Launch')
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def setup_global_defaults
@@ -208,7 +180,6 @@ class EngineBuilder
     system cmd
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def setup_framework_defaults
@@ -217,23 +188,18 @@ class EngineBuilder
     system cmd
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def get_blueprint_from_repo
     log_build_output('Backup last build')
-    if backup_lastbuild == false
-      return false
-    end
-    puts('Cloning Blueprint')
-    return clone_repo
+    return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
+    log_build_output('Cloning Blueprint')
+    clone_repo
   end
 
   def build_from_blue_print
-    if get_blueprint_from_repo == false
-      return false
-    end
-    return build_container
+    return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
+    build_container
   end
 
   def read_web_port
@@ -252,7 +218,6 @@ class EngineBuilder
   rescue StandardError => e
     log_exception(e)
     #      throw BuildStandardError.new(e,'setting web port')
-    return false
   end
 
   def read_web_user
@@ -266,43 +231,35 @@ class EngineBuilder
     end
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def data_gid
     return @blueprint_reader.data_gid
   end
 
+  def rebuild_managed_container(engine)
+     @engine = engine
+     log_build_output('Starting Rebuild')
+    return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
+    return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
+    return build_container
+   end
+   
   def build_container
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
-    if @blueprint.nil? == true || @blueprint == false
-      close_all
-      return false
-    end
+   return close_all if @blueprint.nil? || @blueprint == false
     @blueprint_reader = BluePrintReader.new(@build_name, @container_name, @blueprint, self)
-    if @blueprint_reader.process_blueprint == false
-      close_all
-      return false
-    end
-    if setup_default_files == false
-      close_all
-      return false
-    end
-    if compile_base_docker_files == false
-      close_all
-      return false
-    end
+    return close_all if @blueprint_reader.process_blueprint == false
+    return close_all if setup_default_files == false
+    return close_all if compile_base_docker_files == false
     if @blueprint_reader.web_port.nil? == false
       @web_port = @blueprint_reader.web_port
     else
       read_web_port
     end
     read_web_user
-    if create_persistant_services == false
-      post_failed_build_clean_up
-      return false
-    end
+    return post_failed_build_clean_up unless create_persistant_services
     @blueprint_reader.environments.each do |env|
       p :env_before
       p env.value
@@ -322,56 +279,50 @@ class EngineBuilder
       index += 1
     end
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @container_name, @hostname, @domain_name, @web_port, self)
-    if dockerfile_builder.write_files_for_docker == false
-      post_failed_build_clean_up
-      return false
-    end
-
+    return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
+  log_build_output('Seting up Environments')
     env_file = File.new(get_basedir + '/home/app.env', 'a')
     env_file.puts('')
     @blueprint_reader.environments.each do |env|
-      if env.build_time_only != true
-        env_file.puts(env.name)
-      end
+      env_file.puts(env.name) unless env.build_time_only
     end
     @set_environments.each do |env|
       env_file.puts(env[0])
     end
     env_file.close
+    log_build_output('Setingup logging')
     setup_framework_logging
+    
     base_image_name = read_base_image_from_dockerfile
-    if base_image_name.nil? == true
+    
+    if base_image_name.nil? 
       p :From_image_not_found_inD
       log_build_errors('Failed to Read Image from Dockerfile')
       @last_error = ' ' + tail_of_build_log
-      post_failed_build_clean_up
-      return false
+      return post_failed_build_clean_up
     end
+    log_build_output('Pull base Image')
     if @core_api.pull_image(base_image_name) == false
       log_build_errors('Failed Pull Image:' + base_image_name + ' from  DockerHub')
       @last_error = ' ' + tail_of_build_log
-      post_failed_build_clean_up
-      return false
+      return post_failed_build_clean_up
     end
     if build_init == false
       log_build_errors('Error Build Image failed')
       @last_error = ' ' + tail_of_build_log
-      post_failed_build_clean_up
-      return false
+      return post_failed_build_clean_up
     else
       if @core_api.image_exist?(@container_name) == false
         p :image_not_found
         @last_error = ' ' + tail_of_build_log
-        post_failed_build_clean_up
-        return false
+        return post_failed_build_clean_up
       end
       log_build_output('Creating Deploy Image')
       mc = create_managed_container
       if mc.nil? == false
         create_non_persistant_services
       else
-        post_failed_build_clean_up
-        return false
+        return post_failed_build_clean_up
       end
     end
     @result_mesg = 'Build Successful'
@@ -383,7 +334,7 @@ class EngineBuilder
     cnt = 0
     lcnt = 5
     log_build_output('Starting Engine')
-    while mc.is_startup_complete? == false && mc.is_running? == true
+    while mc.is_startup_complete? == false && mc.is_running?
       cnt += 1
       if cnt == 120
         log_build_output('') # force EOL to end the ...
@@ -409,23 +360,27 @@ class EngineBuilder
     log_exception(e)
     post_failed_build_clean_up
     close_all
-    return false
+ensure
+  File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
   def post_failed_build_clean_up
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
+    # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
+    # FIXME: don't delete shared service
     p :Clean_up_Failed_build
     @blueprint_reader.services.each do |service_hash|
-      if service_hash[:fresh] == true
+      if service_hash[:fresh]
         service_hash[:remove_all_data] = true
         @core_api.dettach_service(service_hash) # true is delete persistant
       end
     end
-    params = {}
-    params[:engine_name] = @build_name
-    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
+    return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_name)
+#    params = {}
+#    params[:engine_name] = @build_name
+#    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     close_all
   end
@@ -469,19 +424,7 @@ class EngineBuilder
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
       write_software_file(SystemConfig.InstallScript, content)
-      #      install_script_file = File.open(get_basedir + SystemConfig.InstallScript,'wb', :crlf_newline => false)
-      #      install_script_file.puts(content)
-      #      install_script_file.close
       p :create_install_script
-      #      p get_basedir + SystemConfig.InstallScript
-      #      p @blueprint[:software][:custom_install_script]
-      #        t = @blueprint[:software][:custom_install_script]
-      #        t.gsub!(/\r/, '')
-      #        p t
-      #        p 'no_bang'
-      #        t =  @blueprint[:software][:custom_install_script]
-      #      t = t.gsub(/\r/, '')
-      #    p t#
       File.chmod(0755, get_basedir + SystemConfig.InstallScript)
     end
   end
@@ -528,7 +471,6 @@ class EngineBuilder
         p contents
       end
       write_software_file(SystemConfig.CustomApacheConfFile, contents)
-
     end
   end
 
@@ -537,20 +479,12 @@ class EngineBuilder
     dir = File.dirname(get_basedir + container_filename_path)
     p :dir_for_write_software_file
     p dir
-    if Dir.exist?(dir) == false
-      FileUtils.mkdir_p(dir)
-    end
+    FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
     out_file  = File.open(get_basedir + container_filename_path, 'wb', :crlf_newline => false)
     content = @templater.process_templated_string(content)
     out_file.puts(content)
     out_file.close
   rescue StandardError => e
-    if out_file
-      if content.nil? == false
-        out_file.puts(content)
-      end
-      out_file.close
-    end
     log_exception(e)
   end
 
@@ -575,22 +509,12 @@ class EngineBuilder
   def create_non_persistant_services
     @blueprint_reader.services.each do |service_hash|
       service_def = get_service_def(service_hash)
-      if service_def.nil? == true
-        p :failed_to_load_service_definition
-        p service_hash[:type_path]
-        p service_hash[:publisher_namespace]
-        return false
-      end
-      if service_def[:persistant] == true
-        next
-      end
+      return log_error_mesg('Failed to load service definition for ', service_hash) if service_def.nil?
+      next if service_def[:persistant]
       service_hash = set_top_level_service_params(service_hash)
       log_build_output('Attaching Non Persistant Service ' + service_hash[:service_label].to_s)
-      p :adding_service
-      p service_hash
-      if @core_api.attach_service(service_hash) == true
-        @attached_services.push(service_hash)
-      end
+      return log_error_mesg('Failed to Attach ', service_hash) unless @core_api.attach_service(service_hash)
+       @attached_services.push(service_hash)
     end
   end
 
@@ -654,6 +578,8 @@ class EngineBuilder
       p service_hash
       @templater.fill_in_dynamic_vars(service_hash)
       fill_service_environment_variables(service_hash)
+      p :with_env
+      p service_hash
       # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
       if @core_api.attach_service(service_hash) == true
         @attached_services.push(service_hash)
@@ -683,17 +609,7 @@ class EngineBuilder
     return retval
   end
 
-  def rebuild_managed_container(engine)
-    @engine = engine
-    log_build_output('Starting Rebuild')
-    if backup_lastbuild == false
-      return false
-    elsif setup_rebuild == false
-      return false
-    else
-      return build_container
-    end
-  end
+ 
 
   def setup_rebuild
     log_build_output('Setting up rebuild')
@@ -719,7 +635,6 @@ class EngineBuilder
     @web_port,
     @blueprint_reader.worker_ports,
     @repo_name,
-    @blueprint_reader.databases,
     @blueprint_reader.environments,
     @blueprint_reader.framework,
     @blueprint_reader.runtime,
@@ -730,30 +645,25 @@ class EngineBuilder
     )
     # :http_protocol=>'HTTPS and HTTP'
     mc.set_protocol(@http_protocol)
-    mc.conf_self_start = true
+    #mc.conf_self_start = true
     mc.save_state # no running.yaml throws a no such container so save so others can use
-    if mc.save_blueprint(@blueprint) == false
-      log_build_errors('Failed to save blueprint ' + @blueprint.to_s)
-    end
-    #    bp = mc.load_blueprint
+    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless mc.save_blueprint(@blueprint)
     log_build_output('Launching')
-    # this will fail as no api at this stage
-    if mc.container_api.nil? == false
-      if launch_deploy(mc) == false
-        log_build_errors('Error Failed to Launch')
-      end
-      log_build_output('Applying Volume settings and Log Permissions')
-      # FIXME: need to check results from following
-      @core_api.run_volume_builder(mc, @web_user)
-      #  mc.start_container
-    end
+    return log_build_errors('Error Failed to Launch') unless launch_deploy(mc)
+    log_build_output('Applying Volume settings and Log Permissions')
+    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(mc, @web_user)
     return mc
   end
 
   def engine_environment
     return @blueprint_reader.environments
   end
-
+  
+ def log_error_mesg(m,o)
+   log_build_errors(m.to_s + o.to_s)
+   super
+ end
+ 
   private
 
   def process_supplied_envs(custom_env)    
@@ -832,7 +742,21 @@ class EngineBuilder
     p fld
   end
 
-  require 'open3'
+  def read_base_image_from_dockerfile
+    p :read_base_image_from_dockerfile
+    # FROM  engines/php:_Engines_System(release)
+    dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
+    from_line = dockerfile.gets("\n", 100)
+    p from_line
+    from_part = from_line.gsub(/FROM[ ]./, '')
+    return from_part
+  rescue StandardError => e
+    log_build_errors(e)
+    return nil
+  end
+
+
+require 'open3'
 
   def run_system(cmd)
     log_build_output('Running ' + cmd)
@@ -894,39 +818,12 @@ class EngineBuilder
       return true
     end
   end
-
-  def read_base_image_from_dockerfile
-    p :read_base_image_from_dockerfile
-    # FROM  engines/php:_Engines_System(release)
-    dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
-    from_line = dockerfile.gets("\n", 100)
-    p from_line
-    from_part = from_line.gsub(/FROM[ ]./, '')
-    #    p from_part
-    #    froms = from_part.split("\n")
-    #    p :froms
-    #    p froms.to_s
-    #    p froms[0]
-    return from_part
-  rescue StandardError => e
-    log_build_errors(e)
-    return nil
-  end
-
   def get_basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name
-  end
-
-  def log_exception_and_fail(cmd, e)
-    SystemUtils.log_exception(e)
-    @last_error = cmd.to_s + ':' + @last_error.to_s
-    return false
+    return SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   def log_exception(e)
     log_build_errors(e.to_s)
-    @last_error = @last_error.to_s + e.to_s
-  ensure
-    SystemUtils.log_exception(e)
+    super
   end
 end
