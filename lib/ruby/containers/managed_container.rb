@@ -403,7 +403,7 @@ rescue StandardError => e
   def stats
     expire_engine_info
     return false if inspect_container == false
-    output = JSON.parse(last_result)
+    output = JSON.parse(@last_result)
     return false if !output.is_a?(Array)
     return false if !output[0].is_a?(Hash)
     started = output[0]['State']['StartedAt']
