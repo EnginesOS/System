@@ -137,6 +137,7 @@ class ServiceManager  < ErrorsApi
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
     services.each do | service |
       if params[:remove_all_data]
+        service[:remove_all_data] = params[:remove_all_data]
         return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)
         @system_registry.remove_from_managed_engines_registry(service)
       else
