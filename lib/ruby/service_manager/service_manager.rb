@@ -502,23 +502,23 @@ end
      log_exception(e)
  end
 
-#Calls remove service on the service_container to remove the service associated by the hash
- #@return result boolean
- #@param service_hash [Hash]
- #remove persistant services only if service is up
+# Calls remove service on the service_container to remove the service associated by the hash
+ # @return result boolean
+ # @param service_hash [Hash]
+ # remove persistant services only if service is up
  def remove_from_managed_service(service_hash)
    clear_error
    service =  @core_api.load_software_service(service_hash)
    unless service.is_a?(ManagedService)
-     log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s, service_hash)
-     return false   
+     return log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s, service_hash)  
    end
+   p :ready_to_rm
    if service.persistant == false || service.is_running? 
      p :ready_to_rm
      return true if service.remove_consumer(service_hash)
-     return log_error_mesg('Failed to remove persistant service as consumer service ',service_hash)
+     return log_error_mesg('Failed to remove persistant service as consumer service ', service_hash)
    elsif service.persistant
-     return log_error_mesg('Cant remove persistant service if service is stopped ',service_hash)
+     return log_error_mesg('Cant remove persistant service if service is stopped ', service_hash)
    else
      return true
    end   
@@ -526,10 +526,10 @@ end
      log_exception(e)
  end
 
-#@return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
+# @return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
 def software_service_definition(params)
   clear_error
-  return  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
+  return  SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
 rescue Exception=>e
   p :error
   p params
