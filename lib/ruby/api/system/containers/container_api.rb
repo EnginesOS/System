@@ -73,8 +73,7 @@ class ContainerApi < ErrorsApi
   end
 
   def destroy_container(container)
-    clear_error
-    p :c_aoi_destroy_container    
+    clear_error 
     return true if @docker_api.destroy_container(container) 
     return true unless container.has_container?
     return false

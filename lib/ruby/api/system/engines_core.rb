@@ -176,8 +176,6 @@ class EnginesCore < ErrorsApi
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    p :atta
-    p service_hash
     return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
     return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
     return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
@@ -337,7 +335,6 @@ class EnginesCore < ErrorsApi
   configurator = ConfigurationsApi.new(self)
    return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
-     p :update_sucessfule
      return true
   end
 
@@ -436,9 +433,6 @@ class EnginesCore < ErrorsApi
     end
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
-      #update_environment(engine,params[:environment_variables])
-      p :new_varables
-      p new_variables
       engine.environments.each do |env|
         # new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|

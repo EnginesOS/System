@@ -112,10 +112,8 @@ class ManagedService < ManagedContainer
           run_configurator(configuration)
         end
       end
-      #register_with_dns
-      p :service_non_persis
+      register_with_dns
       @container_api.load_and_attach_nonpersistant_services(self)
-      p :register_non_persis
       @container_api.register_non_persistant_services(self)
       reregister_consumers
       return true

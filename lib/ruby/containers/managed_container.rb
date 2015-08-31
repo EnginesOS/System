@@ -229,9 +229,7 @@ class ManagedContainer < Container
     clear_error
     ret_val = false
     state = read_state
-    p :destroy_container
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
-    p @setState
     if is_active? == false
       ret_val = @container_api.destroy_container(self)
       @container_id = '-1'
