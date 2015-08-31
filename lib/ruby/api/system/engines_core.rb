@@ -579,7 +579,7 @@ class EnginesCore < ErrorsApi
          return log_error_mesg('Failed to find Engine',params)
        end
        if engine.delete_image || engine.has_image? == false
-         return true  if service_manager.remove_engine_from_managed_engines_registry(params)
+         return true if service_manager.remove_engine_from_managed_engines_registry(params)
          return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
        end
        log_error_mesg('Failed to delete image',params)
