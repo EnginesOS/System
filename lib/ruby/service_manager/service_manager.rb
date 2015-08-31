@@ -105,7 +105,7 @@ class ServiceManager  < ErrorsApi
     clear_error
     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = @system_registry.find_engine_service_hash(complete_service_query)
-    complete_service_query[:remove_all_data] = service_query[:remove_all_data]
+    service_hash[:remove_all_data] = service_query[:remove_all_data]
     return log_error_mesg('Failed to to set top level params hash',service_hash) unless service_hash
     return log_error_mesg('failed to remove managed service',service_hash) unless remove_from_managed_service(service_hash)  
     return true 
