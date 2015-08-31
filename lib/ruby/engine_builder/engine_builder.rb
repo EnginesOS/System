@@ -9,6 +9,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder.rb'
   require_relative 'build_report.rb'
+  require_relative 'config_file_writer.rb'
   include BuildReport
 
   require_relative '../templater/templater.rb'
