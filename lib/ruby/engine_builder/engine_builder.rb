@@ -377,7 +377,7 @@ ensure
         @core_api.dettach_service(service_hash) # true is delete persistant
       end
     end
-    return log_error_mesg("Failed to remove", @last_error,self) unless @core_api.remove_engine(@build_name)
+    return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_name)
 #    params = {}
 #    params[:engine_name] = @build_name
 #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)

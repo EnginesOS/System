@@ -16,13 +16,13 @@ class ContainerStateFiles
        SystemUtils.log_exception(e)
   end
  
-#  def self.read_container_id(container)
-#     cidfile = ContainerStateFiles.container_cid_file(container)
-#     return File.read(cidfile) if File.exist?(cidfile)
-#   rescue StandardError => e
-#     SystemUtils.log_exception(e)
-#     return '-1'
-#   end
+  def self.read_container_id(container)
+     cidfile = ContainerStateFiles.container_cid_file(container)
+     return File.read(cidfile) if File.exist?(cidfile)
+   rescue StandardError => e
+     SystemUtils.log_exception(e)
+     return '-1'
+   end
 
   def self.create_container_dirs(container)
     state_dir = ContainerStateFiles.container_state_dir(container)

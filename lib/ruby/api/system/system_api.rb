@@ -68,7 +68,7 @@ class SystemApi < ErrorsApi
     clear_error
     ret_val = {}
     if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = read_container_id(container)
+      container_id = ContainerStateFiles.read_container_id(container)
       container.container_id = container_id
     end
     if container && container.container_id.nil? == false && container.container_id != '-1'
@@ -342,6 +342,6 @@ class SystemApi < ErrorsApi
   end
   
   def api_shutdown
-    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist(SystemConfig.BuildRunningParamsFile)
+    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 end
