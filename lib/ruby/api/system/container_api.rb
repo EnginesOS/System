@@ -167,12 +167,12 @@ class ContainerApi < ErrorsApi
   end
 
   def test_docker_api_result(result)
-    log_error_mesg(@docker_api.last_error, result) if result.nil? || result == false
+    log_error_mesg(@docker_api.last_error, result) if result == false
     return result
   end
 
   def test_system_api_result(result)
-    log_error_mesg(@system_api.last_error.to_s, result) if result.nil? || result.is_a?(FalseClass)
+    log_error_mesg(@system_api.last_error.to_s, result) if result.nil  == false
     return result
   end
   

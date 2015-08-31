@@ -291,7 +291,7 @@ class ServiceManager  < ErrorsApi
   rescue Exception=>e
     puts e.message
     log_exception(e)
-    return nil
+    return params
   end
 
 
@@ -504,8 +504,9 @@ end
   #freeze result object if not nil
   #@return result
   def test_and_lock_registry_result(result)
-    unless test_registry_result(result).nil?
+    if test_registry_result(result)
       result.freeze
     end
+    return result
   end
 end

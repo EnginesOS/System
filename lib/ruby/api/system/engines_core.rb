@@ -465,7 +465,7 @@ class EnginesCore < ErrorsApi
   end
 
   def test_system_api_result(result)
-    @last_error = @system_api.last_error.to_s if result.nil? || result.is_a?(FalseClass)
+    @last_error = @system_api.last_error.to_s if result == false
     return result
   end
 
