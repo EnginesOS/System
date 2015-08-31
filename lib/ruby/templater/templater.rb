@@ -81,7 +81,6 @@ class Templater
     end
     return ''
   rescue StandardError => e
-    p engine_environment
     SystemUtils.log_exception(e)
     return ''
   end
@@ -176,10 +175,6 @@ class Templater
       end
     end
     return service_def
-  end
-
-  def engine_environment
-    return nil
   end
 
   def proccess_templated_service_hash(service_hash)
