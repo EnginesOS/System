@@ -252,7 +252,7 @@ class EngineBuilder < ErrorsApi
     @blueprint_reader = BluePrintReader.new(@build_name, @container_name, @blueprint, self)
     return close_all if @blueprint_reader.process_blueprint == false
     return close_all if setup_default_files == false
-    return close_all if compile_base_docker_files == false
+    return close_all if ConfigFileWriter.compile_base_docker_files(@templater, get_basedir) == false
     if @blueprint_reader.web_port.nil? == false
       @web_port = @blueprint_reader.web_port
     else
@@ -388,7 +388,7 @@ ensure
   def create_template_files
     if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
       @blueprint[:software][:template_files].each do |template_hash|
-        write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
+        ConfigFileWriter.write_software_file(@templater, '/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
   end
@@ -396,7 +396,7 @@ ensure
   def create_httaccess
     if @blueprint[:software].key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files].nil? == false
       @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
-        write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
+        ConfigFileWriter.write_software_file(@templater, '/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
       end
     end
   end
@@ -413,7 +413,7 @@ ensure
     && @blueprint[:software][:custom_start_script].nil? == false\
     && @blueprint[:software][:custom_start_script].length > 0
       content = @blueprint[:software][:custom_start_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.StartScript, content)
+      ConfigFileWriter.write_software_file(@templater, SystemConfig.StartScript, content)
       File.chmod(0755, get_basedir + SystemConfig.StartScript)
     end
   end
@@ -423,7 +423,7 @@ ensure
     && @blueprint[:software][:custom_install_script].nil? == false\
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.InstallScript, content)
+      ConfigFileWriter.write_software_file(@templater, SystemConfig.InstallScript, content)
       p :create_install_script
       File.chmod(0755, get_basedir + SystemConfig.InstallScript)
     end
@@ -434,7 +434,7 @@ ensure
     && @blueprint[:software][:custom_post_install_script].nil? == false \
     && @blueprint[:software][:custom_post_install_script].length > 0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.PostInstallScript, content)
+      ConfigFileWriter.write_software_file(@templater, SystemConfig.PostInstallScript, content)
       #        post_install_script_file = File.open(get_basedir + SystemConfig.PostInstallScript,'wb', :crlf_newline => false)
       #      post_install_script_file.puts(content)
       #      post_install_script_file.close
@@ -452,7 +452,7 @@ ensure
         content = php_ini_hash[:content].gsub(/\r/, '')
         contents = contents + '\n' + content
       end
-      write_software_file(SystemConfig.CustomPHPiniFile, contents)
+      ConfigFileWriter.write_software_file(@templater, SystemConfig.CustomPHPiniFile, contents)
     end
   end
 
@@ -470,39 +470,7 @@ ensure
         p :apache
         p contents
       end
-      write_software_file(SystemConfig.CustomApacheConfFile, contents)
-    end
-  end
-
-  def write_software_file(container_filename_path, content)
-    content.gsub!(/\r/, '')
-    dir = File.dirname(get_basedir + container_filename_path)
-    p :dir_for_write_software_file
-    p dir
-    FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-    out_file  = File.open(get_basedir + container_filename_path, 'wb', :crlf_newline => false)
-    content = @templater.process_templated_string(content)
-    out_file.puts(content)
-    out_file.close
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-  def process_dockerfile_tmpl(filename)
-    p :dockerfile_template_processing
-    p filename
-    template = File.read(filename)
-    template = @templater.process_templated_string(template)
-    output_filename = filename.sub(/.tmpl/, '')
-    out_file = File.new(output_filename, 'wb')
-    out_file.write(template)
-    out_file.close
-  end
-
-  def compile_base_docker_files
-    file_list = Dir.glob(@blueprint_reader.get_basedir + '/Dockerfile*.tmpl')
-    file_list.each do |file|
-      process_dockerfile_tmpl(file)
+      ConfigFileWriter.write_software_file(@templater, SystemConfig.CustomApacheConfFile, contents)
     end
   end
 
@@ -743,11 +711,9 @@ ensure
   end
 
   def read_base_image_from_dockerfile
-    p :read_base_image_from_dockerfile
-    # FROM  engines/php:_Engines_System(release)
+    # FROM  engines/php:release
     dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
     from_line = dockerfile.gets("\n", 100)
-    p from_line
     from_part = from_line.gsub(/FROM[ ]./, '')
     return from_part
   rescue StandardError => e
@@ -810,20 +776,20 @@ require 'open3'
       end
       if error_mesg.length > 2 # error_mesg.include?('Error:') || error_mesg.include?('FATA')
         log_build_errors(error_mesg)
-        p 'docker_cmd error ' + error_mesg
-        @last_error = error_mesg
-        return false
+        log_error_mesg(error_mesg, self)
       end
       p :build_suceeded
       return true
     end
   end
+  
   def get_basedir
     return SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   def log_exception(e)
     log_build_errors(e.to_s)
+    close_all
     super
   end
 end
