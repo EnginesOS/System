@@ -172,7 +172,7 @@ class ContainerApi < ErrorsApi
   end
 
   def test_system_api_result(result)
-    log_error_mesg(@system_api.last_error.to_s, result) if result.nil  == false
+    log_error_mesg(@system_api.last_error.to_s, result) if result == false
     return result
   end
   
