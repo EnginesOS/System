@@ -145,8 +145,8 @@ class ManagedContainer < Container
   end
 
   def self.from_yaml(yaml, container_api)
-    managedContainer = YAML::load(yaml)
-    return log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
+    managedContainer = YAML.load(yaml)
+    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
     managedContainer.container_api = container_api
     managedContainer.expire_engine_info
     managedContainer.set_running_user
@@ -392,6 +392,8 @@ class ManagedContainer < Container
     return ip_str
   rescue
     return nil
+rescue StandardError => e
+  log_exception(e)
   end
 
   def set_deployment_type(deployment_type)
