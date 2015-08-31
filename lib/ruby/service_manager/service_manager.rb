@@ -1,8 +1,8 @@
 require 'rubytree'
 
-require_relative '../../system_registry/system_registry.rb'
-require_relative '../../templater/templater.rb'
-require_relative '../../system/system_access.rb'
+require_relative '../system_registry/system_registry.rb'
+require_relative '../templater/templater.rb'
+require_relative '../system/system_access.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
 
@@ -529,7 +529,7 @@ end
 # @return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
 def software_service_definition(params)
   clear_error
-  return  SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
+  SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
 rescue Exception=>e
   p :error
   p params
