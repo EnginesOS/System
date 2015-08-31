@@ -514,7 +514,7 @@ end
      return false   
    end
    if service.persistant == false || service.is_running? 
-     p :read_to_rm
+     p :ready_to_rm
      return true if service.remove_consumer(service_hash)
      return log_error_mesg('Failed to remove persistant service as consumer service ',service_hash)
    elsif service.persistant
