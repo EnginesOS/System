@@ -46,7 +46,7 @@ class EngineBuilder < ErrorsApi
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
     @core_api = core_api
-    params[:engine_name].gsub!(/ /, '_')
+   # params[:engine_name].gsub!(/ /, '_')
     @container_name = params[:engine_name]
     @domain_name = params[:domain_name]
     @hostname = params[:host_name]
