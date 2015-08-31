@@ -510,10 +510,11 @@ end
    clear_error
    service =  @core_api.load_software_service(service_hash)
    unless service.is_a?(ManagedService)
-     log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s,service_hash)
+     log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s, service_hash)
      return false   
    end
    if service.persistant == false || service.is_running? 
+     p :read_to_rm
      return true if service.remove_consumer(service_hash)
      return log_error_mesg('Failed to remove persistant service as consumer service ',service_hash)
    elsif service.persistant
@@ -540,7 +541,7 @@ end
   #@return result
   def test_registry_result(result)
     clear_error
-    log_error_mesg(@system_registry.last_error, result) if result == false
+    log_error_mesg(@system_registry.last_error, result) if result.is_a(FalseClass)
     return result   
     rescue StandardError => e
       log_exception(e)
