@@ -280,7 +280,7 @@ class EngineBuilder < ErrorsApi
     end
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @container_name, @hostname, @domain_name, @web_port, self)
     return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
-  log_build_output('Setingup Environments')
+  log_build_output('Seting up Environments')
     env_file = File.new(get_basedir + '/home/app.env', 'a')
     env_file.puts('')
     @blueprint_reader.environments.each do |env|

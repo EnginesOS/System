@@ -65,6 +65,7 @@ class BuildController
     params[:http_protocol] = engine.protocol
     params[:memory] = engine.memory
     params[:repository_url] = engine.repository
+    params[:variables]  = engine.environments
     SystemStatus.build_starting(params)
     builder = get_engine_builder(params)
     return build_failed(params, 'NO Builder') unless builder.is_a?(EngineBuilder)
