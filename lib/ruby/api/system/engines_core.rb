@@ -588,7 +588,7 @@ class EnginesCore < ErrorsApi
   def delete_image_dependancies(params)
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
-    return log_error_mesg('Failed to remove deleted Service',params) if service_manager.rm_remove_engine_services(params) == false
+    return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
     return true
   rescue StandardError => e
     log_exception(e)
