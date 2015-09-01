@@ -461,6 +461,12 @@ class ServiceManager  < ErrorsApi
       log_exception(e)
   end
  
+  
+def match_orphan_service(service_hash)
+  res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
+  return true if res.nil? == false && res != false
+  return false
+end
 
   def retrieve_orphan(params)
     test_registry_result(@system_registry.retrieve_orphan(params))   

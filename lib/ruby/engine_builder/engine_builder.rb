@@ -10,6 +10,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'docker_file_builder.rb'
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
+  require_relative 'service_builder.rb'
   include BuildReport
 
   require_relative '../templater/templater.rb'
@@ -60,13 +61,15 @@ class EngineBuilder < ErrorsApi
     @web_port = SystemConfig.default_webport
     @app_is_persistant = false
     @result_mesg = 'Aborted Due to Errors'
-    @first_build = true
+    @first_build = true 
+   
     @attached_services = []
     return "error" unless create_templater
     return "error" unless process_supplied_envs(params[:variables])
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
+    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater)
   rescue StandardError => e
     log_exception(e)
   end
@@ -105,6 +108,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_framework_logging
+    log_build_output('Seting up logging')
     rmt_log_dir_var_fname = get_basedir + '/home/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
@@ -131,14 +135,7 @@ class EngineBuilder < ErrorsApi
 
   def load_blueprint
     log_build_output('Reading Blueprint')
-    blueprint_file_name = get_basedir + '/blueprint.json'
-    blueprint_file = File.open(blueprint_file_name, 'r')
-    blueprint_json_str = blueprint_file.read
-    blueprint_file.close
-    json_hash = JSON.parse(blueprint_json_str)
-    p :symbolized_hash
-    hash = SystemUtils.symbolize_keys(json_hash)
-    return hash
+    BlueprintApi.load_blueprint_file(get_basedir + '/blueprint.json')
   rescue StandardError => e
     log_exception(e)
   end
@@ -251,24 +248,17 @@ class EngineBuilder < ErrorsApi
     @blueprint = load_blueprint
    return close_all if @blueprint.nil? || @blueprint == false
     @blueprint_reader = BluePrintReader.new(@build_name, @container_name, @blueprint, self)
-    return close_all if @blueprint_reader.process_blueprint == false
-    return close_all if setup_default_files == false
-    return close_all if ConfigFileWriter.compile_base_docker_files(@templater, get_basedir) == false
-    if @blueprint_reader.web_port.nil? == false
+    return close_all unless @blueprint_reader.process_blueprint
+    return close_all unless setup_default_files
+    return close_all unless ConfigFileWriter.compile_base_docker_files(@templater, get_basedir)
+    unless @blueprint_reader.web_port.nil?
       @web_port = @blueprint_reader.web_port
     else
       read_web_port
     end
     read_web_user
-    return post_failed_build_clean_up unless create_persistant_services
-    @blueprint_reader.environments.each do |env|
-      p :env_before
-      p env.value
-      env.value = @templater.process_templated_string(env.value)
-      p :env_after
-      p env.value
-    end
-    # fill_service_environment_variables
+    return post_failed_build_clean_up unless @service_builder.create_persistant_services(@blueprint_reader.services, @container_name, @blueprint_reader.environments)    
+    apply_templates_to_environments
     create_template_files
     create_php_ini
     create_apache_config
@@ -281,17 +271,9 @@ class EngineBuilder < ErrorsApi
     end
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @container_name, @hostname, @domain_name, @web_port, self)
     return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
-  log_build_output('Seting up Environments')
-    env_file = File.new(get_basedir + '/home/app.env', 'a')
-    env_file.puts('')
-    @blueprint_reader.environments.each do |env|
-      env_file.puts(env.name) unless env.build_time_only
-    end
-    @set_environments.each do |env|
-      env_file.puts(env[0])
-    end
-    env_file.close
-    log_build_output('Setingup logging')
+  
+    write_env_file
+
     setup_framework_logging
     
     base_image_name = read_base_image_from_dockerfile
@@ -320,15 +302,15 @@ class EngineBuilder < ErrorsApi
       end
       log_build_output('Creating Deploy Image')
       mc = create_managed_container
-      if mc.nil? == false
-        create_non_persistant_services
+      unless mc.nil?
+        @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services, @container_name)
       else
         return post_failed_build_clean_up
       end
     end
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
-    build_report = generate_build_report(@blueprint)
+    build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(mc, build_report)
     #      p :build_report
     #      p build_report
@@ -360,9 +342,15 @@ class EngineBuilder < ErrorsApi
   rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
-    close_all
 ensure
   File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
+    post_failed_build_clean_up
+  end
+  
+  def apply_templates_to_environments
+    @blueprint_reader.environments.each do |env|
+      env.value = @templater.process_templated_string(env.value)
+      end
   end
 
   def post_failed_build_clean_up
@@ -372,11 +360,14 @@ ensure
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
     p :Clean_up_Failed_build
-    @blueprint_reader.services.each do |service_hash|
+    @attached_services.each do |service_hash|
       if service_hash[:fresh]
         service_hash[:remove_all_data] = true
-        @core_api.dettach_service(service_hash) # true is delete persistant
+        @core_api.service_manager.delete_service(service_hash) # true is delete persistant
+      elsif service_hash[:freed_orphan] = true
+        @core_api.service_manager.orphanate_service(service_hash)
       end
+       
     end
     return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_name)
 #    params = {}
@@ -436,9 +427,6 @@ ensure
     && @blueprint[:software][:custom_post_install_script].length > 0
       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
       write_software_file(SystemConfig.PostInstallScript, content)
-      #        post_install_script_file = File.open(get_basedir + SystemConfig.PostInstallScript,'wb', :crlf_newline => false)
-      #      post_install_script_file.puts(content)
-      #      post_install_script_file.close
       File.chmod(0755, get_basedir + SystemConfig.PostInstallScript)
     end
   end
@@ -475,98 +463,6 @@ ensure
     end
   end
 
-  def create_non_persistant_services
-    @blueprint_reader.services.each do |service_hash|
-      service_def = get_service_def(service_hash)
-      return log_error_mesg('Failed to load service definition for ', service_hash) if service_def.nil?
-      next if service_def[:persistant]
-      service_hash = set_top_level_service_params(service_hash)
-      log_build_output('Attaching Non Persistant Service ' + service_hash[:service_label].to_s)
-      return log_error_mesg('Failed to Attach ', service_hash) unless @core_api.attach_service(service_hash)
-       @attached_services.push(service_hash)
-    end
-  end
-
-  def get_service_def(service_hash)
-    p service_hash[:type_path]
-    p service_hash[:publisher_namespace]
-    return SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-  end
-
-  def set_top_level_service_params(service_hash)
-    return ServiceManager.set_top_level_service_params(service_hash, @container_name)
-  end
-
-  def create_persistant_services
-    service_cnt = 0
-    @blueprint_reader.services.each do |service_hash|
-      #   service_hash[:parent_engine]=@container_name # do I need this?
-      service_def = get_service_def(service_hash)
-      if service_def.nil?
-        p :failed_to_load_service_definition
-        p service_hash
-        return false
-      end
-      if service_def[:persistant] == false
-        service_cnt += 1
-        next
-      else
-        service_hash[:persistant] = true
-      end
-      service_hash = set_top_level_service_params(service_hash)
-      free_orphan = false
-      p :adding_service
-      # FIXME: need to unify filesystem creation with attach_service
-      if service_hash[:servicetype_name] == 'filesystem'
-        add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path])
-      end
-      log_build_output('Attaching Persistant Service ' + service_hash[:service_handle].to_s)
-      p :LOOKING_FOR_
-      p service_hash
-      if  @core_api.match_orphan_service(service_hash) == true
-        p :attaching_orphan
-        service_hash[:fresh] = false
-        @first_build = false
-        new_service_hash = reattach_service(service_hash)
-        if new_service_hash.nil? == false
-          service_hash = new_service_hash
-          service_hash[:fresh] = false
-          # @blueprint_reader.re_set_service(service_cnt,service_hash)#services[service_cnt]=service_hash
-          free_orphan = true
-          log_build_output('Reattached Service ' + service_hash[:service_handle].to_s)
-        end
-      elsif @core_api.service_is_registered?(service_hash) == false
-        @first_build = true
-        service_hash[:fresh] = true
-        log_build_output('Creating New Service ' + service_hash[:service_handle].to_s)
-      else # elseif over attach to existing true attached to existing
-        service_hash[:fresh] = false
-        log_build_output('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' No Service Found')
-      end
-      p :attach_service
-      p service_hash
-      @templater.fill_in_dynamic_vars(service_hash)
-      fill_service_environment_variables(service_hash)
-      p :with_env
-      p service_hash
-      # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-      if @core_api.attach_service(service_hash) == true
-        @attached_services.push(service_hash)
-        release_orphan(service_hash) if free_orphan == true
-      end
-      service_cnt += 1
-    end
-  end
-
-  def reattach_service(service_hash)
-    resuse_service_hash = @core_api.service_manager.reparent_orphan(service_hash)
-    return resuse_service_hash
-  end
-
-  def release_orphan(service_hash)
-    @core_api.service_manager.remove_orphaned_service(service_hash)
-  end
-
   def tail_of_build_log
     retval = ''
     lines = File.readlines(SystemConfig.DeploymentDir + '/build.out')
@@ -577,8 +473,6 @@ ensure
     end
     return retval
   end
-
- 
 
   def setup_rebuild
     log_build_output('Setting up rebuild')
@@ -699,12 +593,12 @@ ensure
   end
 
   protected
-
-  def fill_service_environment_variables(service_hash)
-    p :fill_service_environment_variables
-    service_envs = SoftwareServiceDefinition.service_environments(service_hash)
-    @blueprint_reader.environments.concat(service_envs)
-  end
+#
+#  def fill_service_environment_variables(service_hash)
+#    p :fill_service_environment_variables
+#    service_envs = SoftwareServiceDefinition.service_environments(service_hash)
+#    @blueprint_reader.environments.concat(service_envs)
+#  end
 
   def debug(fld)
     puts 'ERROR: '
@@ -715,13 +609,11 @@ ensure
     # FROM  engines/php:release
     dockerfile = File.open(get_basedir + '/Dockerfile', 'r')
     from_line = dockerfile.gets("\n", 100)
-    from_part = from_line.gsub(/FROM[ ]./, '')
-    return from_part
+    from_line.gsub(/FROM[ ]./, '')
   rescue StandardError => e
     log_build_errors(e)
     return nil
   end
-
 
 require 'open3'
 
@@ -784,6 +676,19 @@ require 'open3'
     end
   end
   
+  def write_env_file
+    log_build_output('Setting up Environments')
+    env_file = File.new(get_basedir + '/home/app.env', 'a')
+    env_file.puts('')
+    @blueprint_reader.environments.each do |env|
+      env_file.puts(env.name) unless env.build_time_only
+    end
+    @set_environments.each do |env|
+      env_file.puts(env[0])
+    end
+    env_file.close
+end
+
   def write_software_file(filename, content)
     ConfigFileWriter.write_templated_file(@templater, get_basedir + '/' + filename, content)
   end

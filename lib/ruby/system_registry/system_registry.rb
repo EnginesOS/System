@@ -19,7 +19,7 @@ class SystemRegistry < ErrorsApi
     end
     @last_error = request_result_hash[:error].to_s + ':' + @network_registry.last_error.to_s
     return request_result_hash[:object] if request_result_hash.key?(:object)
-    return nil
+    return false
   end
 
   #

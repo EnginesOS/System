@@ -206,11 +206,7 @@ class EnginesCore < ErrorsApi
     return @service_manager
   end
 
-  def match_orphan_service(service_hash)
-    res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
-    return true if res.nil? == false && res != false
-    return false
-  end
+
 
   #returns
   def find_service_consumers(params)
