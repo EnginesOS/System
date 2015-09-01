@@ -548,6 +548,14 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
+def get_build_log_stream
+    @log_pipe_rd
+  end
+
+  def get_build_err_stream
+    @error_pipe_rd
+  end
+  
   protected
 #
 #  def fill_service_environment_variables(service_hash)
@@ -662,13 +670,7 @@ def setup_log_output
     log_exception(e)
   end
   
-def get_build_log_stream
-    @log_pipe_rd
-  end
 
-  def get_build_err_stream
-    @error_pipe_rd
-  end
 
   def add_to_build_output(word)
     @log_file.write(word)
@@ -690,8 +692,7 @@ def get_build_log_stream
     line = '' if line.nil?
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Aborted Due to:' + line.to_s
-   
+    @result_mesg = 'Aborted Due to:' + line.to_s   
     return false
   end
 
