@@ -1,6 +1,5 @@
 class BluePrintReader
-  def initialize(build_name, contname, blue_print, builder)
-    @build_name = build_name
+  def initialize(contname, blue_print, builder)
     @data_uid = '11111'
     @data_gid = '11111'
     @builder = builder
@@ -53,9 +52,6 @@ class BluePrintReader
     return path
   end
 
-  def get_basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name
-  end
 
   def process_blueprint
     log_build_output('Process BluePrint')
