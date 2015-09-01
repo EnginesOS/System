@@ -2,9 +2,10 @@ require 'rubygems'
 require 'git'
 require 'fileutils'
 require 'json'
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 class EngineBuilder < ErrorsApi
-  require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+  
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder.rb'
@@ -696,7 +697,7 @@ def get_build_log_stream
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Aborted Due to:' + line.to_s
-    
+   
     return false
   end
 
