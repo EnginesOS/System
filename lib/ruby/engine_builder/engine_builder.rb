@@ -498,6 +498,30 @@ def get_build_log_stream
     @error_pipe_rd
   end
  
+
+def add_to_build_output(word)
+  @log_file.write(word)
+  @log_file.flush
+  # @log_pipe_wr.puts(line)
+rescue
+  return
+end
+
+def log_build_output(line)
+  @log_file.puts(line)
+  @log_file.flush
+  # @log_pipe_wr.puts(line)
+rescue
+  return
+end
+
+def log_build_errors(line)
+  line = '' if line.nil?
+  @err_file.puts(line.to_s) unless @err_file.nil?
+  log_build_output('ERROR:' + line.to_s)
+  @result_mesg = 'Aborted Due to:' + line.to_s   
+  return false
+end
   private
 
   def process_supplied_envs(custom_env)    
@@ -674,29 +698,6 @@ def setup_log_output
   
 
 
-  def add_to_build_output(word)
-    @log_file.write(word)
-    @log_file.flush
-    # @log_pipe_wr.puts(line)
-  rescue
-    return
-  end
-
-  def log_build_output(line)
-    @log_file.puts(line)
-    @log_file.flush
-    # @log_pipe_wr.puts(line)
-  rescue
-    return
-  end
-
-  def log_build_errors(line)
-    line = '' if line.nil?
-    @err_file.puts(line.to_s) unless @err_file.nil?
-    log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Aborted Due to:' + line.to_s   
-    return false
-  end
 
   def log_exception(e)
     log_build_errors(e.to_s)
