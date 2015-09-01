@@ -135,7 +135,8 @@ class EngineBuilder < ErrorsApi
 
   def load_blueprint
     log_build_output('Reading Blueprint')
-    BlueprintApi.load_blueprint_file(get_basedir + '/blueprint.json')
+    json_hash = BlueprintApi.load_blueprint_file(get_basedir + '/blueprint.json')
+    return SystemUtils.symbolize_keys(json_hash)
   rescue StandardError => e
     log_exception(e)
   end
