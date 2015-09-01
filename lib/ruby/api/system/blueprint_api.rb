@@ -24,7 +24,7 @@ class BlueprintApi < ErrorsApi
     json_hash = JSON.parse(blueprint_file.read)
     blueprint_file.close
     p json_hash
-    SystemUtils.symbolize_keys(json_hash)
+   return SystemUtils.symbolize_keys(json_hash)
   end
   
   def load_blueprint(container)
@@ -33,7 +33,7 @@ class BlueprintApi < ErrorsApi
     return log_error_mesg('No Statedir', container) unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'
    return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
-    BlueprintApi.load_blueprint_file(statefile)
+    return BlueprintApi.load_blueprint_file(statefile)
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', blueprint)
     log_exception(e)

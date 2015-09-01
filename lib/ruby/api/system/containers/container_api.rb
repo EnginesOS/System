@@ -112,6 +112,9 @@ class ContainerApi < ErrorsApi
   def load_blueprint(container)
     blueprint_r = BlueprintApi.new
     blueprint = blueprint_r.load_blueprint(container)
+    p :BLUPRINT_is_a 
+    p blueprint.class.name
+    p blueprint.to_s
     log_error_mesg('failed to load blueprint', blueprint_r.last_error) unless blueprint.is_a?(Hash)
     return blueprint      
   end
