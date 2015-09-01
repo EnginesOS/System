@@ -455,7 +455,7 @@ class EngineBuilder < ErrorsApi
     mc = ManagedEngine.new(@build_params[:engine_name],
     @build_params[:memory],
     @build_params[:host_name],
-    @build_params[:domain_name_name],
+    @build_params[:domain_name],
     @build_params[:engine_name],
     @blueprint_reader.volumes,
     @web_port,
