@@ -294,7 +294,7 @@ end
   end
 
   def build_dir
-    @blueprint_reader.get_basedir
+    @builder.basedir
   end
 
   def insert_framework_frag_in_dockerfile(frag_name)
@@ -323,7 +323,7 @@ end
   def write_worker_commands
     write_line('#Worker Commands')
     log_build_output('Dockerfile:Worker Commands')
-    scripts_path = @blueprint_reader.get_basedir + '/home/engines/scripts/'
+    scripts_path = @builder.basedir + '/home/engines/scripts/'
     if Dir.exist?(scripts_path) == false
       FileUtils.mkdir_p(scripts_path)
     end
