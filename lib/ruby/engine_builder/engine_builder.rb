@@ -16,12 +16,6 @@ class EngineBuilder < ErrorsApi
 
   require_relative '../templater/templater.rb'
 
-  @build_params[:repository_url] = nil
-  @build_params[:host_name] = nil
-  @build_params[:domain_name_name] = nil
-  @build_name = nil
-  @build_params[:http_protocol] = 'HTTPS and HTTP'
-
   attr_reader   :templater,
   :repoName,
   :hostname,
