@@ -490,6 +490,14 @@ class EngineBuilder < ErrorsApi
    super
  end
  
+def get_build_log_stream
+    @log_pipe_rd
+  end
+
+  def get_build_err_stream
+    @error_pipe_rd
+  end
+ 
   private
 
   def process_supplied_envs(custom_env)    
@@ -548,13 +556,7 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-def get_build_log_stream
-    @log_pipe_rd
-  end
 
-  def get_build_err_stream
-    @error_pipe_rd
-  end
   
   protected
 #
