@@ -1,4 +1,5 @@
 class BuildController
+  require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
   def initialize(api)
     @core_api = api
     @build_log_stream = nil
