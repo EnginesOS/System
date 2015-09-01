@@ -6,7 +6,7 @@ class DockerFileBuilder
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder
-    @docker_file = File.open(@blueprint_reader.get_basedir + '/Dockerfile', 'a')
+    @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
   end
 

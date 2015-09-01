@@ -521,6 +521,11 @@ def log_build_errors(line)
   @result_mesg = 'Aborted Due to:' + line.to_s   
   return false
 end
+
+  def basedir
+      return SystemConfig.DeploymentDir + '/' + @build_name.to_s
+    end
+
   private
 
   def process_supplied_envs(custom_env)    
@@ -682,10 +687,7 @@ end
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
   
-  def basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name.to_s
-  end
-
+  
 def setup_log_output
     @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
     @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
