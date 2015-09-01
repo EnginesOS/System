@@ -463,7 +463,7 @@ class ServiceManager  < ErrorsApi
  
   
 def match_orphan_service(service_hash)
-  res =  check_sm_result(retrieve_orphan(service_hash))
+  res =  retrieve_orphan(service_hash)
   return true if res.nil? == false && res != false
   return false
 end
