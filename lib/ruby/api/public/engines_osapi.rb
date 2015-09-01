@@ -269,6 +269,8 @@ class EnginesOSapi
       return failed(engine_name, 'no Engine', 'Load Engine Blueprint')
     end
     retval = engine.load_blueprint
+    p :Loaaed
+    p retval
     if retval == false
       return failed(engine_name, engine.last_error, 'Load Engine Blueprint')
     end
