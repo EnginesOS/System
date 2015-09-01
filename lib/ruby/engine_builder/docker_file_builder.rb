@@ -575,7 +575,7 @@ end
 
   def write_line(line)
     @docker_file.puts(line)
-    count_layer unless line.begin_with?('#') || line.end_with('\\') # or whitespace only    
+    count_layer unless line.start_with?('#') || line.end_with('\\') # or whitespace only    
   end
   
   def set_user(user)
