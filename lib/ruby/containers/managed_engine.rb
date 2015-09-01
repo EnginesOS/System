@@ -33,6 +33,11 @@ class ManagedEngine < ManagedContainer
     super
   end
   
+    def load_blueprint
+      return false unless has_api?
+      @container_api.load_blueprint(self)
+    end
+  
   def plugins_path
     return '/plugins/'
   end
