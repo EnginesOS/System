@@ -23,8 +23,8 @@ class BlueprintApi < ErrorsApi
     blueprint_file = File.open(blueprint_file_name, 'r')
     json_hash = JSON.parse(blueprint_file.read)
     blueprint_file.close
+    p json_hash
     SystemUtils.symbolize_keys(json_hash)
-    return json_hash
   end
   
   def load_blueprint(container)
