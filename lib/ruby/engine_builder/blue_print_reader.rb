@@ -74,6 +74,7 @@ class BluePrintReader
     read_persistant_files
     read_persistant_dirs
     read_web_port_overide
+    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -158,7 +159,7 @@ class BluePrintReader
     return true
   end
 
-  def add_file_service(name, dest) # FIXME: and put me in coreapi
+  def add_file_service(name, dest) 
     log_build_output('Add File Service ' + name)
     dest = name if dest.nil? || dest == ''
     if dest.start_with?('/home/app/')

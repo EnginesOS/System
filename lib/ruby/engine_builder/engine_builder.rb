@@ -496,8 +496,7 @@ def get_build_log_stream
 
   def get_build_err_stream
     @error_pipe_rd
-  end
- 
+  end 
 
 def add_to_build_output(word)
   @log_file.write(word)
