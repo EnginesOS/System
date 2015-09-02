@@ -166,10 +166,10 @@ class ManagedContainer < Container
       log_error_mesg('Failed to inspect container', self)
       state = 'nocontainer'
     else
-      if docker_info.is_a?(Array) == false || docker_info.empty? == true
-        log_error_mesg('Failed to get container status', docker_info)
-        return 'nocontainer'
-      end
+#      if docker_info.is_a?(Array) == false || docker_info.empty? == true
+#        log_error_mesg('Failed to get container status', docker_info)
+#        return 'nocontainer'
+#      end
       if docker_info[0]['State']
         if docker_info[0]['State']['Running']
           state = 'running'
@@ -387,7 +387,7 @@ class ManagedContainer < Container
     expire_engine_info
     return false if inspect_container == false
     p :git_IP
-    p docker_info.to_s
+    p docker_info.class.name
     ip_str = docker_info[0]['NetworkSettings']['IPAddress']
     return ip_str
   rescue
@@ -457,7 +457,7 @@ rescue StandardError => e
     return false if result == false
     @docker_info = JSON.parse(@last_result)
     p :set_docker_info
-    p @docker_info.to_s
+    p @docker_info.class.name
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
