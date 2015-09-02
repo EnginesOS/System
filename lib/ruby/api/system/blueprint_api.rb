@@ -33,7 +33,7 @@ class BlueprintApi < ErrorsApi
    return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)  
   rescue StandardError => e
-    log_error_mesg('Blueprint Parse Failure', blueprint)
+    log_error_mesg('Blueprint Parse Failure', statefile)
     log_exception(e)
   end  
 end

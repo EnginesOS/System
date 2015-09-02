@@ -484,10 +484,6 @@ rescue StandardError => e
     end
   end
 
-  def expire_engine_info
-    @docker_info = false
-  end
-
   def get_container_memory_stats()
     @container_api.get_container_memory_stats(self)
   end
