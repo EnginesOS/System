@@ -87,7 +87,7 @@ class ManagedContainer < Container
 
   
   def docker_info
-    return @docker_info #.dup.freeze unless @docker_info.is_a?(FalseClass)
+    return JSON.parse(@docker_info) 
 #    return false
   end
 
@@ -161,7 +161,7 @@ class ManagedContainer < Container
   end
 
   def read_state
-    return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
+  #  return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
     if inspect_container == false
       log_error_mesg('Failed to inspect container', self)
       state = 'nocontainer'
@@ -386,11 +386,7 @@ class ManagedContainer < Container
   def get_ip_str
     expire_engine_info
     return false if inspect_container == false
-    p :git_IP
-    p docker_info.class.name
-    info = JSON.parse(@docker_info)
-    p info.class.name
-    ip_str = info[0]['NetworkSettings']['IPAddress']
+    ip_str = docker_info[0]['NetworkSettings']['IPAddress']
     return ip_str
   rescue
     return nil
@@ -457,7 +453,7 @@ rescue StandardError => e
     return false unless has_api?  
     result = @container_api.inspect_container(self) if @docker_info.is_a?(falseClass)
     return false if result == false
-    @docker_info = JSON.parse(@last_result)
+    @docker_info = @last_result
     p :set_docker_info
     p @docker_info.class.name
     Thread.new { sleep 3 ; expire_engine_info }
@@ -581,10 +577,10 @@ rescue StandardError => e
 
   def read_container_id
     inspect_container if @docker_info.is_a?(FalseClass)
-    p @docker_info[0]['Id'].to_s
-      p @docker_info[0].to_s
+    p docker_info[0]['Id'].to_s
+      p docker_info[0].to_s
       p @last_result.to_s
-    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) && @docker_info[0].is_a?(Hash)    
+    return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)    
       return -1
 rescue StandardError => e
    log_exception(e)
