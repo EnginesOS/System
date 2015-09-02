@@ -167,7 +167,7 @@ class ManagedContainer < Container
       state = 'nocontainer'
     else
       if docker_info.is_a?(Array) == false || docker_info.empty? == true
-        log_error_mesg('Failed to get container status', self)
+        log_error_mesg('Failed to get container status', docker_info)
         return 'nocontainer'
       end
       if docker_info[0]['State']
@@ -270,7 +270,7 @@ class ManagedContainer < Container
     expire_engine_info
     if read_state != 'running'
       @container_id = -1
-      return log_err_mesg('Did not start',self)
+      return log_error_mesg('Did not start',self)
     else     
       register_with_dns # MUst register each time as IP Changes
       add_nginx_service if @deployment_type == 'web'
@@ -386,6 +386,8 @@ class ManagedContainer < Container
   def get_ip_str
     expire_engine_info
     return false if inspect_container == false
+    p :git_IP
+    p docker_info.to_s
     ip_str = docker_info[0]['NetworkSettings']['IPAddress']
     return ip_str
   rescue
@@ -454,6 +456,8 @@ rescue StandardError => e
     result = @container_api.inspect_container(self) if @docker_info.is_a?(falseClass)
     return false if result == false
     @docker_info = JSON.parse(@last_result)
+    p :set_docker_info
+    p @docker_info.to_s
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
