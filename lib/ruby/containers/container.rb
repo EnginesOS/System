@@ -38,6 +38,10 @@ class Container < ErrorsApi
                 :container_api,
                 :last_result
   
+  def expire_engine_info
+    @docker_info = false
+  end
+  
   def update_memory(new_memory)
     @memory = new_memory
   end
