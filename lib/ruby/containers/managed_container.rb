@@ -199,14 +199,11 @@ class ManagedContainer < Container
     return false unless has_api?
     clear_error
     ret_val = false
+    return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', state) if is_active?
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
-    if is_active? == false
-      ret_val = @container_api.destroy_container(self)
-      @container_id = '-1'
-      expire_engine_info
-    else
-      log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', state)
-    end
+    ret_val = @container_api.destroy_container(self)
+    @container_id = '-1'
+    expire_engine_info
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     save_state()
     return ret_val
@@ -232,28 +229,16 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     expire_engine_info
-    state = read_state
     @setState = 'running'
-    if state == 'nocontainer'
+    return log_error_mesg('Cannot create container as container exists ', self) if has_container?
       ret_val = @container_api.create_container(self)
-    else
-      log_error_mesg('Cannot create container as container exists ', state)
-    end
     expire_engine_info
-    if read_state != 'running'
-      @container_id = -1
-      return log_error_mesg('Did not start',self)
-    else     
-      register_with_dns # MUst register each time as IP Changes
-      add_nginx_service if @deployment_type == 'web'
-      @container_api.register_non_persistant_services(self)
-    end
+    return log_error_mesg('Did not start',self) unless is_running?
+    register_with_dns # MUst register each time as IP Changes
+    add_nginx_service if @deployment_type == 'web'
+    @container_api.register_non_persistant_services(self)
     @container_id = read_container_id
-     p :conid
-     p @container_id 
     @cont_userid = running_user
-    p :run
-    p @cont_userid
     save_state
     return ret_val
   rescue StandardError => e
@@ -271,15 +256,11 @@ class ManagedContainer < Container
 
   def unpause_container
     return false unless has_api?
-    state = read_state
     @setState = 'running'
     ret_val = false
-    if state == 'paused'
-      ret_val = @container_api.unpause_container(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Start upayse as ', state)
-    end
+    return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
+    ret_val = @container_api.unpause_container(self)
+    expire_engine_info
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
     clear_error
@@ -288,18 +269,15 @@ class ManagedContainer < Container
 
   def pause_container
     return false unless has_api?
-    state = read_state
     @setState = 'paused'
     ret_val = false
-    if state == 'running'
-      ret_val = @container_api.pause_container(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Pause Container as ', state)
-    end
+    return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
+    ret_val = @container_api.pause_container(self)
+    expire_engine_info
     @container_api.deregister_non_persistant_services(self)
     clear_error
     save_state
+    return true
   end
 
   def stop_container
@@ -352,18 +330,7 @@ class ManagedContainer < Container
     ret_val = start_container if stop_container
   end
 
-  # @return a containers ip address as a [String]
-  # @return nil if exception
-  # @ return false on inspect container error
-  def get_ip_str
-    expire_engine_info
-    return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
-    return false
-  rescue
-    return nil
-rescue StandardError => e
-  log_exception(e)
-  end
+
 
   def set_deployment_type(deployment_type)
     @deployment_type = deployment_type
@@ -371,42 +338,7 @@ rescue StandardError => e
     add_nginx_service if @deployment_type == 'web'
   end
 
-  def stats
-    expire_engine_info
-    return false if docker_info.is_a?(FalseClass)
-    started = docker_info[0]['State']['StartedAt']
-    stopped = docker_info[0]['State']['FinishedAt']
-    state = read_state
-    ps_container
-    pcnt = -1
-    rss = 0
-    vss = 0
-    h = m = s = 0
-    @last_result.each_line.each do |line|
-      if pcnt > 0 # skip the fist line with is a header
-        fields = line.split  #  [6]rss [10] time
-        if fields.nil? == false
-          rss += fields[7].to_i
-          vss += fields[6].to_i
-          time_f = fields[11]
-          c_HMS = time_f.split(':')
-          if c_HMS.length == 3
-            h += c_HMS[0].to_i
-            m += c_HMS[1].to_i
-            s += c_HMS[2].to_i
-          else
-            m += c_HMS[0].to_i
-            s += c_HMS[1].to_i
-          end
-        end
-      end
-      pcnt += 1
-    end
-    cpu = 3600 * h + 60 * m + s
-    statistics = ContainerStatistics.new(state, pcnt, started, stopped, rss, vss, cpu)
-    statistics
-  end
-
+  
   def running_user
     return -1 if docker_info.is_a?(FalseClass)
     return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
@@ -419,7 +351,6 @@ rescue StandardError => e
   end
 
   
-
   def save_state()
     return false unless has_api?
     expire_engine_info
@@ -444,26 +375,11 @@ rescue StandardError => e
     save_state
   end
 
-  def is_running?
-    expire_engine_info
-    state = read_state
-    return true if state == 'running'
-    return false
-  end
+ 
 
   def is_startup_complete?
     return false unless has_api?
     @container_api.is_startup_complete(self)
-  end
-
-  def has_container?
-   # return false if has_image? == false NO Cached
-    return false if read_state == 'nocontainer'
-    return true
-  end
-
-  def has_image?
-    @container_api.image_exist?(@image)
   end
 
   def is_error?
@@ -472,25 +388,6 @@ rescue StandardError => e
     return false
   end
 
-  def is_active?
-    state = read_state
-    case state
-    when 'running'
-      return true
-    when 'paused'
-      return true
-    else
-      return false
-    end
-  end
-
-  def get_container_memory_stats()
-    @container_api.get_container_memory_stats(self)
-  end
-
-  def get_container_network_metrics()
-    @container_api.get_container_network_metrics(self)
-  end
 
   def lock_values
     @conf_self_start.freeze

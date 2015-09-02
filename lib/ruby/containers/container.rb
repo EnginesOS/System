@@ -64,14 +64,6 @@ class Container < ErrorsApi
            return state
   end
          
-  def collect_docker_info
-      return false unless has_api?  
-      result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
-      return false if result == false
-      @docker_info = @last_result
-      Thread.new { sleep 3 ; expire_engine_info }
-      return result
-    end
    
   def docker_info
      collect_docker_info if @docker_info.is_a?(FalseClass)     
@@ -85,4 +77,104 @@ def has_api?
    return true
  end
  
+ protected
+ 
+def collect_docker_info
+     return false unless has_api?  
+     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
+     return false if result == false
+     @docker_info = @last_result
+     Thread.new { sleep 3 ; expire_engine_info }
+     return result
+   end
+def is_active?
+  state = read_state
+  case state
+  when 'running'
+    return true
+  when 'paused'
+    return true
+  else
+    return false
+  end
+end
+
+# @return a containers ip address as a [String]
+# @return nil if exception
+# @ return false on inspect container error
+def get_ip_str
+  expire_engine_info
+  return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+  return false
+rescue
+  return nil
+rescue StandardError => e
+log_exception(e)
+end
+
+def is_paused?
+  state = read_state
+  return true if state == 'running'
+    return false
+  end
+  
+def stats
+    expire_engine_info
+    return false if docker_info.is_a?(FalseClass)
+    started = docker_info[0]['State']['StartedAt']
+    stopped = docker_info[0]['State']['FinishedAt']
+    ps_container
+    pcnt = -1
+    rss = 0
+    vss = 0
+    h = m = s = 0
+    @last_result.each_line.each do |line|
+      if pcnt > 0 # skip the fist line with is a header
+        fields = line.split  #  [6]rss [10] time
+        if fields.nil? == false
+          rss += fields[7].to_i
+          vss += fields[6].to_i
+          time_f = fields[11]
+          c_HMS = time_f.split(':')
+          if c_HMS.length == 3
+            h += c_HMS[0].to_i
+            m += c_HMS[1].to_i
+            s += c_HMS[2].to_i
+          else
+            m += c_HMS[0].to_i
+            s += c_HMS[1].to_i
+          end
+        end
+      end
+      pcnt += 1
+    end
+    cpu = 3600 * h + 60 * m + s
+    statistics = ContainerStatistics.new(state, pcnt, started, stopped, rss, vss, cpu)
+    statistics
+  end
+
+def is_running?
+   expire_engine_info
+   state = read_state
+   return true if state == 'running'
+   return false
+ end
+ 
+def has_container?
+ # return false if has_image? == false NO Cached
+  return false if read_state == 'nocontainer'
+  return true
+end
+
+def has_image?
+  @container_api.image_exist?(@image)
+end
+
+def get_container_memory_stats()
+  @container_api.get_container_memory_stats(self)
+end
+
+def get_container_network_metrics()
+  @container_api.get_container_network_metrics(self)
+end
 end
