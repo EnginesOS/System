@@ -457,15 +457,13 @@ class EngineBuilder < ErrorsApi
   def memory
     @build_params[:memory]
   end
-  def host_name
+  def hostname
     @build_params[:host_name]
   end
   def domain_name
     @build_params[:domain_name]
   end
-     def engine_name 
-    @build_params[:engine_name]
-     end
+  
      def repo_name
     @build_params[:repository_url]
      end
