@@ -87,8 +87,8 @@ class ManagedContainer < Container
 
   
   def docker_info
-    return @docker_info.dup.freeze unless @docker_info.nil? || @docker_info == false
-    return false
+    return @docker_info #.dup.freeze unless @docker_info.is_a?(FalseClass)
+#    return false
   end
 
   def engine_environment
@@ -452,7 +452,7 @@ rescue StandardError => e
   def inspect_container
     return false unless has_api?  
     result = @container_api.inspect_container(self) if @docker_info.is_a?(falseClass)
-    return nil if result == false
+    return false if result == false
     @docker_info = JSON.parse(@last_result)
     Thread.new { sleep 3 ; expire_engine_info }
     return result
