@@ -166,19 +166,17 @@ class ManagedContainer < Container
       log_error_mesg('Failed to inspect container', self)
       state = 'nocontainer'
     else
-      #        @res= last_result
-      output = JSON.parse(@last_result)
-      if output.is_a?(Array) == false || output.empty? == true
+      if docker_info.is_a?(Array) == false || docker_info.empty? == true
         log_error_mesg('Failed to get container status', self)
         return 'nocontainer'
       end
-      if output[0]['State']
-        if output[0]['State']['Running']
+      if docker_info[0]['State']
+        if docker_info[0]['State']['Running']
           state = 'running'
-          if output[0]['State']['Paused']
+          if docker_info[0]['State']['Paused']
             state= 'paused'
           end
-        elsif output[0]['State']['Running'] == false
+        elsif docker_info[0]['State']['Running'] == false
           state = 'stopped'
         else
           state = 'nocontainer'
@@ -388,8 +386,7 @@ class ManagedContainer < Container
   def get_ip_str
     expire_engine_info
     return false if inspect_container == false
-    output = JSON.parse(@last_result)
-    ip_str = output[0]['NetworkSettings']['IPAddress']
+    ip_str = docker_info[0]['NetworkSettings']['IPAddress']
     return ip_str
   rescue
     return nil
@@ -406,11 +403,10 @@ rescue StandardError => e
   def stats
     expire_engine_info
     return false if inspect_container == false
-    output = JSON.parse(@last_result)
-    return false if !output.is_a?(Array)
-    return false if !output[0].is_a?(Hash)
-    started = output[0]['State']['StartedAt']
-    stopped = output[0]['State']['FinishedAt']
+    return false if !docker_info.is_a?(Array)
+    return false if !docker_info[0].is_a?(Hash)
+    started = docker_info[0]['State']['StartedAt']
+    stopped = docker_info[0]['State']['FinishedAt']
     state = read_state
     ps_container
     pcnt = -1
@@ -444,9 +440,7 @@ rescue StandardError => e
 
   def running_user
     return -1 if inspect_container == false
-    output = JSON.parse(@last_result)
-    return -1 if output.nil?
-    return  output[0]['Config']['User'] if output.is_a?(Array) && output[0].is_a?(Hash)
+    return  docker_info[0]['Config']['User'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
   rescue StandardError => e
     return log_exception(e)
   end
