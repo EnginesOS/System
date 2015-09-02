@@ -87,8 +87,10 @@ class ManagedContainer < Container
 
   
   def docker_info
+    inspect_container if @docker_info.is_a?(FalseClass)     
     return JSON.parse(@docker_info) 
-#    return false
+  rescue
+    return false
   end
 
   def engine_environment
@@ -161,8 +163,8 @@ class ManagedContainer < Container
   end
 
   def read_state
-  #  return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
-    if inspect_container == false
+    return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
+    if docker_info.is_a?(FalseClass)
       log_error_mesg('Failed to inspect container', self)
       state = 'nocontainer'
     else
@@ -385,9 +387,8 @@ class ManagedContainer < Container
   # @ return false on inspect container error
   def get_ip_str
     expire_engine_info
-    return false if inspect_container == false
-    ip_str = docker_info[0]['NetworkSettings']['IPAddress']
-    return ip_str
+    return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+    return false
   rescue
     return nil
 rescue StandardError => e
@@ -402,9 +403,7 @@ rescue StandardError => e
 
   def stats
     expire_engine_info
-    return false if inspect_container == false
-    return false if !docker_info.is_a?(Array)
-    return false if !docker_info[0].is_a?(Hash)
+    return false if docker_info.is_a?(FalseClass)
     started = docker_info[0]['State']['StartedAt']
     stopped = docker_info[0]['State']['FinishedAt']
     state = read_state
@@ -439,7 +438,7 @@ rescue StandardError => e
   end
 
   def running_user
-    return -1 if inspect_container == false
+    return -1 if docker_info.is_a?(FalseClass)
     return  docker_info[0]['Config']['User'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
   rescue StandardError => e
     return log_exception(e)
@@ -454,8 +453,6 @@ rescue StandardError => e
     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
     return false if result == false
     @docker_info = @last_result
-    p :set_docker_info
-    p @docker_info.class.name
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
@@ -463,8 +460,6 @@ rescue StandardError => e
   def save_state()
     return false unless has_api?
     expire_engine_info
-#    p :saveStat
-#    p caller[0][/`([^']*)'/, 1]
     @container_api.save_container(self)
   end
 
@@ -472,8 +467,6 @@ rescue StandardError => e
     return false unless has_api?
     @container_api.save_blueprint(blueprint, self)
   end
-
-
 
   def rebuild_container
     return false unless has_api?
@@ -576,13 +569,11 @@ rescue StandardError => e
   end
 
   def read_container_id
-    inspect_container if @docker_info.is_a?(FalseClass)
-    p docker_info[0]['Id'].to_s
-      p docker_info[0].to_s
-      p @last_result.to_s
-    return docker_info[0]['Id'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)    
+    return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
       return -1
 rescue StandardError => e
    log_exception(e)
   end
+  
+
 end
