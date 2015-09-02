@@ -449,6 +449,26 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
     close_all
   end
+  
+  # Build public interface
+  def engine_name
+    @build_params[:engine_name]
+  end
+  def memory
+    @build_params[:memory]
+  end
+  def host_name
+    @build_params[:host_name]
+  end
+  def domain_name
+    @build_params[:domain_name]
+  end
+     def engine_name 
+    @build_params[:engine_name]
+     end
+     def repo_name
+    @build_params[:repository_url]
+     end
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
