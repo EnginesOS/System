@@ -78,12 +78,10 @@ class ManagedContainer < Container
   :deployment_type,\
   :dependant_on,\
   :no_ca_map,\
-  :ctype
-
- 
-
-  attr_reader :container_id, :conf_self_start
-
+  :hostname,\
+  :domain_name,\
+  :ctype,
+  :conf_self_start
   
   def read_state
       return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
@@ -188,7 +186,6 @@ class ManagedContainer < Container
   def delete_image()
     return false unless has_api?
     ret_val = false
-    state = read_state()
     if has_container? == false
       ret_val = @container_api.delete_image(self)
     else
@@ -202,7 +199,6 @@ class ManagedContainer < Container
     return false unless has_api?
     clear_error
     ret_val = false
-    state = read_state
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     if is_active? == false
       ret_val = @container_api.destroy_container(self)
@@ -222,7 +218,7 @@ class ManagedContainer < Container
     ret_val = false
     state = read_state
     @setState = 'stopped'
-    if state == 'nocontainer'
+    unless has_container?
       ret_val = @container_api.setup_container(self)
       expire_engine_info
     else
@@ -461,7 +457,7 @@ rescue StandardError => e
   end
 
   def has_container?
-    return false if has_image? == false
+   # return false if has_image? == false NO Cached
     return false if read_state == 'nocontainer'
     return true
   end
@@ -530,10 +526,6 @@ rescue StandardError => e
     @container_api.dettach_service(service_hash)
   end
 
-  def has_api?
-    return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
-    return true
-  end
 
   def read_container_id
     return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    

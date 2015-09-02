@@ -30,8 +30,6 @@ class Container < ErrorsApi
                :container_id,\
                :memory,\
                :container_name,\
-               :hostname,\
-               :domain_name,\
                :image,\
                :eports,\
                :volumes,\
@@ -78,5 +76,9 @@ class Container < ErrorsApi
      return false
    end
  
-  
+def has_api?
+   return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
+   return true
+ end
+ 
 end
