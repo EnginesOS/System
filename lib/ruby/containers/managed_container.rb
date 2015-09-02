@@ -388,7 +388,9 @@ class ManagedContainer < Container
     return false if inspect_container == false
     p :git_IP
     p docker_info.class.name
-    ip_str = docker_info[0]['NetworkSettings']['IPAddress']
+    info = JSON.parse(@docker_info)
+    p info.class.name
+    ip_str = info[0]['NetworkSettings']['IPAddress']
     return ip_str
   rescue
     return nil
