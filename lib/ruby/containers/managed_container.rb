@@ -451,7 +451,7 @@ rescue StandardError => e
 
   def inspect_container
     return false unless has_api?  
-    result = @container_api.inspect_container(self) if @docker_info.is_a?(falseClass)
+    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
     return false if result == false
     @docker_info = @last_result
     p :set_docker_info
