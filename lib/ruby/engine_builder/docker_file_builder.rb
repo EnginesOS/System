@@ -59,9 +59,9 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
-    write_data_permissions
     setup_persitant_app if @builder.app_is_persistant
     prepare_persitant_source 
+    write_data_permissions
     finalise_docker_file
     return true
   end
@@ -187,7 +187,7 @@ end
 
   def write_database_seed
     if @blueprint_reader.database_seed.nil? == false
-      seed_file = File.new(@blueprint_reader.get_basedir + '/home/database_seed', 'w')
+      seed_file = File.new(@blueprint_reader.basedir + '/home/database_seed', 'w')
       seed_file.write(@blueprint_reader.database_seed)
       seed_file.close
     end
