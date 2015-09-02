@@ -77,16 +77,7 @@ def has_api?
    return true
  end
  
- protected
- 
-def collect_docker_info
-     return false unless has_api?  
-     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
-     return false if result == false
-     @docker_info = @last_result
-     Thread.new { sleep 3 ; expire_engine_info }
-     return result
-   end
+
 def is_active?
   state = read_state
   case state
@@ -177,4 +168,15 @@ end
 def get_container_network_metrics()
   @container_api.get_container_network_metrics(self)
 end
+
+protected
+
+def collect_docker_info
+    return false unless has_api?  
+    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
+    return false if result == false
+    @docker_info = @last_result
+    Thread.new { sleep 3 ; expire_engine_info }
+    return result
+  end
 end
