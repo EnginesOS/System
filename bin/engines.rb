@@ -438,7 +438,7 @@ if c_type == "container"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
     if eng.instance_of?(EnginesOSapiResult)
       res = "Error: No such Container:" + container_name
@@ -505,7 +505,7 @@ if c_type == "container"
     backup_name= container_name
     res = engines_api.stop_backup(backup_name)
   when "register_consumers"
-    eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
+    eng = EnginesOSapi.loadManagedService(container_name,core_api)
     eng.reregister_consumers
 
   else
