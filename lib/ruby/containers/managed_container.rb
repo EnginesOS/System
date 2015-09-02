@@ -3,7 +3,6 @@ require_relative 'ManagedContainerObjects.rb'
 require_relative 'container.rb'
 
 require 'objspace'
-
 class ManagedContainer < Container
   @conf_self_start = false
   #  @http_and_https=true
@@ -31,6 +30,7 @@ class ManagedContainer < Container
     @data_gid = data_gid
     @cont_userid = -1
     @protocol = :http_and_https
+    @docker_info = false
   end
 
   attr_accessor :current_operation
@@ -85,10 +85,10 @@ class ManagedContainer < Container
 
   attr_reader :container_id, :conf_self_start
 
+  
   def docker_info
-    return nil if @docker_info.nil?
-    info = @docker_info.dup
-    return info.freeze
+    return @docker_info.dup.freeze unless @docker_info.nil? || @docker_info == false
+    return false
   end
 
   def engine_environment
@@ -278,10 +278,12 @@ class ManagedContainer < Container
       add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
-    @container_id = set_container_id
+    @container_id = read_container_id
      p :conid
      p @container_id 
     @cont_userid = running_user
+    p :run
+    p @cont_userid
     save_state
     return ret_val
   rescue StandardError => e
@@ -455,9 +457,9 @@ rescue StandardError => e
 
   def inspect_container
     return false unless has_api?  
-    result = @container_api.inspect_container(self) if @docker_info.nil?
+    result = @container_api.inspect_container(self) if @docker_info.is_a?(falseClass)
     return nil if result == false
-    @docker_info = @last_result
+    @docker_info = JSON.parse(@last_result)
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
@@ -531,7 +533,7 @@ rescue StandardError => e
   end
 
   def expire_engine_info
-    @docker_info = nil
+    @docker_info = false
   end
 
   def get_container_memory_stats()
@@ -577,12 +579,12 @@ rescue StandardError => e
     return true
   end
 
-  def set_container_id
-    inspect_container if @docker_info.nil?
+  def read_container_id
+    inspect_container if @docker_info.is_a?(FalseClass)
     p @docker_info[0]['Id'].to_s
       p @docker_info[0].to_s
-    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) && @docker_info[0].is_a?(Hash)
-    
+      p @last_result.to_s
+    return @docker_info[0]['Id'] if @docker_info.is_a?(Array) && @docker_info[0].is_a?(Hash)    
       return -1
 rescue StandardError => e
    log_exception(e)
