@@ -1,18 +1,6 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
   
-#  def initialize(mem, name, host, domain, image, e_ports, vols, environs) # for test only
-#    @memory = mem
-#    @container_name = name
-#    @hostname = host
-#    @domain_name = domain
-#    @image = image
-#    @eports = e_ports
-#    @volumes = vols
-#    @environments = environs
-#    @container_id = -1
-#    @docker_info = nil
-#  end
   
   def self.from_yaml(yaml, container_api)
     managedContainer = YAML.load(yaml)
