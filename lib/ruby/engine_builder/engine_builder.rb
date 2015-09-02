@@ -58,7 +58,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater)
+    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name])
   rescue StandardError => e
     log_exception(e)
   end
@@ -85,7 +85,7 @@ class EngineBuilder < ErrorsApi
         read_web_port
       end
       read_web_user
-      return post_failed_build_clean_up unless @service_builder.create_persistant_services(@blueprint_reader.services, @build_params[:engine_name], @blueprint_reader.environments)    
+      return post_failed_build_clean_up unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments)    
       apply_templates_to_environments
       create_engines_config_files
       index = 0
@@ -94,7 +94,7 @@ class EngineBuilder < ErrorsApi
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index += 1
       end
-      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params[:engine_name], @build_params[:host_name], @build_params[:domain_name_name], @web_port, self)
+      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params[:engine_name], @build_params[:host_name], @build_params[:domain_name], @web_port, self)
       return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
     
       write_env_file
@@ -126,7 +126,7 @@ class EngineBuilder < ErrorsApi
         log_build_output('Creating Deploy Image')
         mc = create_managed_container
         unless mc.nil?
-          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services, @build_params[:engine_name])
+          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)
         else
           return post_failed_build_clean_up
         end

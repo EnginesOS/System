@@ -1,24 +1,25 @@
 class ServiceBuilder < ErrorsApi
   
-  def initialize(service_manager, templater)
+  def initialize(service_manager, templater, engine_name)
+    @engine_name = engine_name
     @service_manager = service_manager
     @templater = templater
     @attached_services = []
   end
     
-  def create_non_persistant_services(services, build_name)  
+  def create_non_persistant_services(services)  
   services.each do |service_hash|
     service_def = get_service_def(service_hash)
     return log_error_mesg('Failed to load service definition for ', service_hash) if service_def.nil?
     next if service_def[:persistant]
-    service_hash = set_top_level_service_params(service_hash, build_name)
+    service_hash = set_top_level_service_params(service_hash, @engine_name)
     return log_error_mesg('Failed to Attach ', service_hash) unless @service_manager.add_service(service_hash)
     @attached_services.push(service_hash)
   end
   return @attached_services
 end
 
-def create_persistant_services(services, build_name, environ)
+def create_persistant_services(services,  environ)
    service_cnt = 0
  
    services.each do |service_hash|
@@ -26,7 +27,7 @@ def create_persistant_services(services, build_name, environ)
      return false if service_def.nil?
      if service_def[:persistant]    
        service_hash[:persistant] = true
-       service_hash = set_top_level_service_params(service_hash, build_name)
+       service_hash = set_top_level_service_params(service_hash, @engine_name)
        free_orphan = false
      if @service_manager.match_orphan_service(service_hash) == true
        service_hash = use_orphan(service_hash)
