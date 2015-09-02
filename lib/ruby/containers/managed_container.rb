@@ -375,8 +375,6 @@ class ManagedContainer < Container
     save_state
   end
 
- 
-
   def is_startup_complete?
     return false unless has_api?
     @container_api.is_startup_complete(self)
@@ -387,7 +385,6 @@ class ManagedContainer < Container
     return true if @setState != state
     return false
   end
-
 
   def lock_values
     @conf_self_start.freeze
