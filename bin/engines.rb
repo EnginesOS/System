@@ -457,7 +457,7 @@ if c_type == "container"
     if c_type == "container"
       eng = engines_api.loadManagedEngine(container_name)
     else
-      eng = EnginesOSapi::ServicesModule.loadManagedService(container_name,core_api)
+      eng = EnginesOSapi.loadManagedService(container_name,core_api)
     end
 
     res =  eng.last_error
