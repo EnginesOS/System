@@ -87,7 +87,7 @@ class ManagedContainer < Container
 
   
   def docker_info
-    inspect_container if @docker_info.is_a?(FalseClass)     
+    collect_docker_info if @docker_info.is_a?(FalseClass)     
     return JSON.parse(@docker_info) 
   rescue
     return false
@@ -172,13 +172,14 @@ class ManagedContainer < Container
 #        log_error_mesg('Failed to get container status', docker_info)
 #        return 'nocontainer'
 #      end
-      if docker_info[0]['State']
-        if docker_info[0]['State']['Running']
+      info = docker_info
+      if info[0]['State']
+        if info[0]['State']['Running']
           state = 'running'
-          if docker_info[0]['State']['Paused']
+          if info[0]['State']['Paused']
             state= 'paused'
           end
-        elsif docker_info[0]['State']['Running'] == false
+        elsif info[0]['State']['Running'] == false
           state = 'stopped'
         else
           state = 'nocontainer'
@@ -439,7 +440,7 @@ rescue StandardError => e
 
   def running_user
     return -1 if docker_info.is_a?(FalseClass)
-    return  docker_info[0]['Config']['User'] if docker_info.is_a?(Array) && docker_info[0].is_a?(Hash)
+    return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
   rescue StandardError => e
     return log_exception(e)
   end
@@ -448,7 +449,7 @@ rescue StandardError => e
     @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
   end
 
-  def inspect_container
+  def collect_docker_info
     return false unless has_api?  
     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
     return false if result == false
