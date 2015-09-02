@@ -46,9 +46,7 @@ class ManagedContainer < Container
     #     unlock_state
   end
 
-  def fqdn
-    @hostname.to_s + "." +@domain_name.to_s
-  end
+  
 
   def repo
     @repository
@@ -80,22 +78,33 @@ class ManagedContainer < Container
   :no_ca_map,\
   :ctype
 
-  attr_accessor   :container_api,\
-  :last_result
+ 
 
   attr_reader :container_id, :conf_self_start
 
   
-  def docker_info
-    collect_docker_info if @docker_info.is_a?(FalseClass)     
-    return JSON.parse(@docker_info) 
-  rescue
-    return false
-  end
-
-  def engine_environment
-    @environments
-  end
+  def read_state
+      return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
+      if docker_info.is_a?(FalseClass)
+        log_error_mesg('Failed to inspect container', self)
+        state = 'nocontainer'
+      else
+        state = super             
+      if state.nil? #Kludge
+        state = 'nocontainer'
+        @last_error = 'state nil'
+      end
+      end
+      if state != @setState
+        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
+      end
+      return state
+    rescue Exception=>e
+      p @last_result
+      log_exception(e)
+      return 'nocontainer'
+    end
+    
 
   def is_service?
     return true if @ctype == 'service'
@@ -146,60 +155,22 @@ class ManagedContainer < Container
     @protocol = :http_only
   end
 
-  def self.from_yaml(yaml, container_api)
-    managedContainer = YAML.load(yaml)
-    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
-    managedContainer.container_api = container_api
-    managedContainer.expire_engine_info
-    managedContainer.set_running_user
-    managedContainer.lock_values
-    return managedContainer
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
+
 
   def to_s
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
   end
 
-  def read_state
-    return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
-    if docker_info.is_a?(FalseClass)
-      log_error_mesg('Failed to inspect container', self)
-      state = 'nocontainer'
-    else
-#      if docker_info.is_a?(Array) == false || docker_info.empty? == true
-#        log_error_mesg('Failed to get container status', docker_info)
-#        return 'nocontainer'
-#      end
-      info = docker_info
-      if info[0]['State']
-        if info[0]['State']['Running']
-          state = 'running'
-          if info[0]['State']['Paused']
-            state= 'paused'
-          end
-        elsif info[0]['State']['Running'] == false
-          state = 'stopped'
-        else
-          state = 'nocontainer'
-        end
-      end
-    end
-    if state.nil? #Kludge
-      state = 'nocontainer'
-      @last_error = 'state nil'
-    end
-    if state != @setState
-      @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
-    end
-    return state
-  rescue Exception=>e
-    p :json_Str
-    p @last_result
-    SystemUtils.log_exception(e)
-    return 'nocontainer'
+  def fqdn
+    return 'N/A' if @domain_name.nil? == true
+    return @hostname.to_s + '.' + @domain_name.to_s
   end
+   
+   def set_hostname_details(host_name, domain_name)
+     @hostname = host_name
+     @domain_name = domain_name
+     return true
+   end
 
   def logs_container
     return false unless has_api?
@@ -449,14 +420,7 @@ rescue StandardError => e
     @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
   end
 
-  def collect_docker_info
-    return false unless has_api?  
-    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
-    return false if result == false
-    @docker_info = @last_result
-    Thread.new { sleep 3 ; expire_engine_info }
-    return result
-  end
+  
 
   def save_state()
     return false unless has_api?
