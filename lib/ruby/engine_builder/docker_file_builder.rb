@@ -175,8 +175,8 @@ end
     write_line('#Data Permissions')
     write_line('')
     write_line('RUN /usr/sbin/usermod -u $data_uid data-user;\\')
-    write_line('chown -R $data_uid.$data_gid /home/app /home/fs ;\\')
-    write_line('chmod -R 770 /home/fs')    
+    write_line('chown -R $data_uid.$data_gid /home/app /home/fs_src ;\\')
+    write_line('chmod -R 770 /home/fs_src')    
   end
 
   def write_run_install_script
