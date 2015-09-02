@@ -55,11 +55,11 @@ class DockerFileBuilder
     write_line('')
     write_line('run mkdir -p /home/fs/local/')    
     write_line('')
-    set_user('0')
-    write_data_permissions
+    set_user('0')   
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
+    write_data_permissions
     setup_persitant_app if @builder.app_is_persistant
     prepare_persitant_source 
     finalise_docker_file
