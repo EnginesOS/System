@@ -46,7 +46,9 @@ class ManagedContainer < Container
     #     unlock_state
   end
 
-  
+  def fqdn
+     @hostname + '.' + @domain_name
+   end
 
   def repo
     @repository
