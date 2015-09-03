@@ -164,7 +164,7 @@ class EngineBuilder < ErrorsApi
       post_failed_build_clean_up
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
-      post_failed_build_clean_up
+      close_all
     end
     
     
