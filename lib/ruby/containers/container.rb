@@ -1,45 +1,180 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
   
-  def initialize(mem, name, host, domain, image, e_ports, vols, environs) # for test only
-    @memory = mem
-    @container_name = name
-    @hostname = host
-    @domain_name = domain
-    @image = image
-    @eports = e_ports
-    @volumes = vols
-    @environments = environs
-    @container_id = -1
-    @docker_info = nil
+  
+  def self.from_yaml(yaml, container_api)
+    managedContainer = YAML.load(yaml)
+    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
+    managedContainer.container_api = container_api
+    managedContainer.expire_engine_info
+    managedContainer.set_running_user
+    managedContainer.lock_values
+    return managedContainer
+  rescue Exception => e
+    SystemUtils.log_exception(e)
   end
   
   attr_reader :docker_info,\
                :container_id,\
                :memory,\
                :container_name,\
-               :hostname,\
-               :domain_name,\
                :image,\
                :eports,\
                :volumes,\
                :environments
-  attr_accessor :last_error
+  attr_accessor :last_error,\
+                :container_api,
+                :last_result
+  
+  def expire_engine_info
+    @docker_info = false
+  end
   
   def update_memory(new_memory)
     @memory = new_memory
   end
-         
-  def fqdn
-    return 'N/A' if @domain_name.nil? == true
-    return @hostname.to_s + '.' + @domain_name.to_s
-  end
-   
-   def set_hostname_details(host_name, domain_name)
-     @hostname = host_name
-     @domain_name = domain_name
-     return true
-   end
-   
   
+  def read_state
+    info = docker_info
+    state = nil
+            if info[0]['State']
+              if info[0]['State']['Running']
+                state = 'running'
+                if info[0]['State']['Paused']
+                  state= 'paused'
+                end
+              elsif info[0]['State']['Running'] == false
+                state = 'stopped'
+              else
+                state = 'nocontainer'
+              end
+            end
+           return state
+  end
+         
+   
+  def docker_info
+     collect_docker_info if @docker_info.is_a?(FalseClass)     
+     return JSON.parse(@docker_info) 
+   rescue
+     return false
+   end
+ 
+def has_api?
+   return log_error_mesg('No connection to Engines OS System',nil) if @container_api.nil?
+   return true
+ end
+ 
+def logs_container
+  return false unless has_api?
+  @container_api.logs_container(self)
+end
+
+def ps_container
+  expire_engine_info
+  return false unless has_api?
+  @container_api.ps_container(self)
+end
+
+def is_active?
+  state = read_state
+  case state
+  when 'running'
+    return true
+  when 'paused'
+    return true
+  else
+    return false
+  end
+end
+
+# @return a containers ip address as a [String]
+# @return nil if exception
+# @ return false on inspect container error
+def get_ip_str
+  expire_engine_info
+  return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+  return false
+rescue
+  return nil
+rescue StandardError => e
+log_exception(e)
+end
+
+def is_paused?
+  state = read_state
+  return true if state == 'running'
+    return false
+  end
+  
+def stats
+    expire_engine_info
+    return false if docker_info.is_a?(FalseClass)
+    started = docker_info[0]['State']['StartedAt']
+    stopped = docker_info[0]['State']['FinishedAt']
+    ps_container
+    pcnt = -1
+    rss = 0
+    vss = 0
+    h = m = s = 0
+    @last_result.each_line.each do |line|
+      if pcnt > 0 # skip the fist line with is a header
+        fields = line.split  #  [6]rss [10] time
+        if fields.nil? == false
+          rss += fields[7].to_i
+          vss += fields[6].to_i
+          time_f = fields[11]
+          c_HMS = time_f.split(':')
+          if c_HMS.length == 3
+            h += c_HMS[0].to_i
+            m += c_HMS[1].to_i
+            s += c_HMS[2].to_i
+          else
+            m += c_HMS[0].to_i
+            s += c_HMS[1].to_i
+          end
+        end
+      end
+      pcnt += 1
+    end
+    cpu = 3600 * h + 60 * m + s
+    statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
+    statistics
+  end
+
+def is_running?
+   expire_engine_info
+   state = read_state
+   return true if state == 'running'
+   return false
+ end
+ 
+def has_container?
+ # return false if has_image? == false NO Cached
+  return false if read_state == 'nocontainer'
+  return true
+end
+
+def has_image?
+  @container_api.image_exist?(@image)
+end
+
+def get_container_memory_stats()
+  @container_api.get_container_memory_stats(self)
+end
+
+def get_container_network_metrics()
+  @container_api.get_container_network_metrics(self)
+end
+
+protected
+
+def collect_docker_info
+    return false unless has_api?  
+    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
+    return false if result == false
+    @docker_info = @last_result
+    Thread.new { sleep 3 ; expire_engine_info }
+    return result
+  end
 end

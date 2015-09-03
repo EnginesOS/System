@@ -12,7 +12,7 @@ require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
-  require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
+  require '/opt/engines/lib/ruby/api/public/build_controller.rb'
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'containers/container_api.rb'
   require_relative 'containers/service_api.rb'
@@ -206,11 +206,7 @@ class EnginesCore < ErrorsApi
     return @service_manager
   end
 
-  def match_orphan_service(service_hash)
-    res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
-    return true if res.nil? == false && res != false
-    return false
-  end
+
 
   #returns
   def find_service_consumers(params)
