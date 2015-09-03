@@ -339,7 +339,11 @@ class ManagedContainer < Container
   
   def save_state()
     return false unless has_api?    
+    info = @docker_info
+    expire_engine_info
     @container_api.save_container(self)
+    @docker_info = info
+    
   end
 
   def save_blueprint blueprint
