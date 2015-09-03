@@ -22,13 +22,14 @@ class BuilderPublic
   end
 
   def http_protocol
-    if @builder.http_protocol.nil?
-      return ''
-    end
-    if @builder.http_protocol.include?('https')
-      return 'https'
-    end
-    return 'http'
+    case @build_params[:http_protocol]
+    when 'HTTPS and HTTP'
+        @build_params[:http_protocol] = 'http_https'
+    when 'HTTPS only'
+        @build_params[:http_protocol] = 'https'
+    when 'HTTP'
+        @build_params[:http_protocol] = 'http'
+  end
   end
 
   def repository
