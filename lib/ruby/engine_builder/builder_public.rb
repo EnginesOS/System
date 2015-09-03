@@ -31,7 +31,7 @@ class BuilderPublic
        end
        
     def http_protocol
-      @builder.http_protocol # 'http' 'https' 'http_https'
+      @builder.build_params[:http_protocol] # 'http' 'https' 'http_https'
     end
 
   def fqdn

@@ -118,16 +118,8 @@ class ManagedContainer < Container
   end
 
   def http_protocol
-    case @protocol
-    when :http_and_https
-      return 'HTTPS and HTTP'
-    when :http_only
-      return 'HTTP only'
-    when :https_only
-      return 'HTTPS only'
-    end
-    p 'no web protocol err'
-    return 'HTTP only'
+   @protocol
+   
   end
 
   def set_protocol(proto)
