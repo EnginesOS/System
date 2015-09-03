@@ -1,4 +1,4 @@
-require 'securerandom' 
+require 'securerandom'
 
 class BuilderPublic
   def initialize(builder)
@@ -6,41 +6,40 @@ class BuilderPublic
   end
 
   # Build public interface
-    def  http_protocol
-      @builder.build_params[:http_protocol]
+  def  http_protocol
+    @builder.build_params[:http_protocol]
+  end
+
+  def engine_name
+    @builder.build_params[:engine_name]
+  end
+
+  def memory
+    @builder.build_params[:memory]
+  end
+
+  def hostname
+    @builder.build_params[:host_name]
+  end
+
+  def domain_name
+    @builder.build_params[:domain_name]
+  end
+
+  def repository
+    @builder.build_params[:repository_url]
+  end
+
+  def http_protocol
+    if @builder.build_params[:http_protocol] == ' http_https'
+      return 'https'
     end
-    
-    def engine_name
-      @builder.build_params[:engine_name]
-    end
-    
-    def memory
-      @builder.build_params[:memory]
-    end
-    
-    def hostname
-      @builder.build_params[:host_name]
-    end
-    
-    def domain_name
-      @builder.build_params[:domain_name]
-    end
-       
-    def repository
-      @builder.build_params[:repository_url]
-       end
-       
-    def http_protocol
-      if @builder.build_params[:http_protocol] == ' http_https'
-        return 'https'
-      end
-      return @builder.build_params[:http_protocol]
-    end
+    return @builder.build_params[:http_protocol]
+  end
 
   def fqdn
     hostname + '.' + domain_name
   end
-
 
   def web_port
     @builder.web_port

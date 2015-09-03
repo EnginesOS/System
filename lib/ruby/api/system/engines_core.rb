@@ -632,6 +632,8 @@ class EnginesCore < ErrorsApi
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error    
+    engine.destroy_container if engine.has_container?
+    delete_engine(params)
     builder = BuildController.new(self)
     builder.reinstall_engine(engine) 
   rescue  StandardError => e
@@ -639,24 +641,24 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  #rebuilds image from current blueprint
-  def rebuild_image(container)
-    clear_error
-    params = {}
-    params[:engine_name] = container.container_name
-    params[:domain_name] = container.domain_name
-    params[:host_name] = container.hostname
-    params[:env_variables] = container.environments
-    params[:http_protocol] = container.protocol
-    params[:repository_url] = container.repo
-    params[:software_environment_variables] = container.environments
-    #   custom_env=params
-    #  @http_protocol = params[:http_protocol] = container.
-    builder = EngineBuilder.new(params, self)
-    return builder.rebuild_managed_container(container)
-  rescue StandardError => e
-    log_exception(e)
-  end
+#  #rebuilds image from current blueprint
+#  def rebuild_image(container)
+#    clear_error
+#    params = {}
+#    params[:engine_name] = container.container_name
+#    params[:domain_name] = container.domain_name
+#    params[:host_name] = container.hostname
+#    params[:env_variables] = container.environments
+#    params[:http_protocol] = container.protocol
+#    params[:repository_url] = container.repo
+#    params[:software_environment_variables] = container.environments
+#    #   custom_env=params
+#    #  @http_protocol = params[:http_protocol] = container.
+#    builder = EngineBuilder.new(params, self)
+#    return builder.rebuild_managed_container(container)
+#  rescue StandardError => e
+#    log_exception(e)
+#  end
 
   #  def image_exist?(image_name)
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
