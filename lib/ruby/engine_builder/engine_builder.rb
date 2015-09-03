@@ -18,18 +18,16 @@ class EngineBuilder < ErrorsApi
 
   attr_reader   :templater,
   :repoName,
-  :hostname,
   :build_name,
   :set_environments,
   :environments,
-  :domain_name,
   :runtime,
   :web_port,
-  :http_protocol,
   :blueprint,
   :first_build,
   :memory,
-  :result_mesg
+  :result_mesg,
+  :build_params
 
   attr_accessor :app_is_persistant
   class BuildError < StandardError
@@ -44,13 +42,12 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @build_params = params   
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''    
-    @build_params[:engine_name].freeze
+    @build_params[:engine_name].freeze      
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @app_is_persistant = false
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true 
-   
     @attached_services = []
     return "error" unless create_templater
     return "error" unless process_supplied_envs(params[:variables])
@@ -166,7 +163,7 @@ class EngineBuilder < ErrorsApi
       post_failed_build_clean_up
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
-      post_failed_build_clean_up
+      close_all
     end
     
     
@@ -449,23 +446,7 @@ class EngineBuilder < ErrorsApi
     close_all
   end
   
-  # Build public interface
-  def engine_name
-    @build_params[:engine_name]
-  end
-  def memory
-    @build_params[:memory]
-  end
-  def hostname
-    @build_params[:host_name]
-  end
-  def domain_name
-    @build_params[:domain_name]
-  end
   
-     def repo_name
-    @build_params[:repository_url]
-     end
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
@@ -573,8 +554,6 @@ end
     log_exception(e)
   end
 
-  
-
   def close_all
     if @log_file.closed? == false
       log_build_output('Build Result:' + @result_mesg)
@@ -600,17 +579,9 @@ end
   rescue StandardError => e
     log_exception(e)
   end
-
-
   
   protected
 #
-#  def fill_service_environment_variables(service_hash)
-#    p :fill_service_environment_variables
-#    service_envs = SoftwareServiceDefinition.service_environments(service_hash)
-#    @blueprint_reader.environments.concat(service_envs)
-#  end
-
   def debug(fld)
     puts 'ERROR: '
     p fld
@@ -702,8 +673,7 @@ end
 
   def write_software_file(filename, content)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
-  end
-  
+  end  
   
 def setup_log_output
     @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
@@ -713,9 +683,6 @@ def setup_log_output
   rescue StandardError => e
     log_exception(e)
   end
-  
-
-
 
   def log_exception(e)
     log_build_errors(e.to_s)

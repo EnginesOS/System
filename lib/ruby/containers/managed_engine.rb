@@ -9,7 +9,7 @@ class ManagedEngine < ManagedContainer
     @eports = eports
     @environments = environments
     @volumes = volumes
-    @port = port
+    @web_port = port
     @repository = repo
     @last_result = ''
     @setState = 'nocontainer'

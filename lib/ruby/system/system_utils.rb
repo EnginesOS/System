@@ -250,7 +250,7 @@ def SystemUtils.execute_command(cmd)
     service_hash[:variables][:parent_engine] = engine.container_name
     service_hash[:variables][:name] = engine.container_name  
     service_hash[:variables][:fqdn] = engine.fqdn
-    service_hash[:variables][:port] = engine.port.to_s
+    service_hash[:variables][:port] = engine.web_port.to_s
     service_hash[:variables][:proto] = proto
     SystemUtils.debug_output('create nginx Hash',service_hash)
     return service_hash

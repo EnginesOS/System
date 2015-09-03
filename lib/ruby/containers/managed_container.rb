@@ -12,7 +12,7 @@ class ManagedContainer < Container
     @runtime = runtime
     @databases = databases
     @setState = setState
-    @port = port
+    @web_port = port
     @repository = repo
     @last_error = last_error
     @memory = mem
@@ -66,8 +66,6 @@ class ManagedContainer < Container
 
   attr_reader :framework,\
   :runtime,\
-  :databases,\
-  :port,\
   :repository,\
   :data_uid,\
   :data_gid,\
@@ -120,16 +118,8 @@ class ManagedContainer < Container
   end
 
   def http_protocol
-    case @protocol
-    when :http_and_https
-      return 'HTTPS and HTTP'
-    when :http_only
-      return 'HTTP only'
-    when :https_only
-      return 'HTTPS only'
-    end
-    p 'no web protocol err'
-    return 'HTTP only'
+   @protocol
+   
   end
 
   def set_protocol(proto)
@@ -158,7 +148,7 @@ class ManagedContainer < Container
 
 
   def to_s
-    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@port}, #{@eports}  \n"
+    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@eports}  \n"
   end
 
   def fqdn
