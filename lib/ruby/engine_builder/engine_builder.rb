@@ -18,14 +18,11 @@ class EngineBuilder < ErrorsApi
 
   attr_reader   :templater,
   :repoName,
-  :hostname,
   :build_name,
   :set_environments,
   :environments,
-  :domain_name,
   :runtime,
   :web_port,
-  :http_protocol,
   :blueprint,
   :first_build,
   :memory,
@@ -45,12 +42,13 @@ class EngineBuilder < ErrorsApi
     @build_params = params   
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''    
     @build_params[:engine_name].freeze
+      
+
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @app_is_persistant = false
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true 
-   
     @attached_services = []
     return "error" unless create_templater
     return "error" unless process_supplied_envs(params[:variables])
@@ -450,6 +448,9 @@ class EngineBuilder < ErrorsApi
   end
   
   # Build public interface
+  def  http_protocol
+    @build_params[:http_protocol]
+  end
   def engine_name
     @build_params[:engine_name]
   end

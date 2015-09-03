@@ -31,7 +31,7 @@ class BuilderPublic
     return 'http'
   end
 
-  def repo_name
+  def repository
     @builder.repo_name
   end
 
