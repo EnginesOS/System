@@ -633,6 +633,8 @@ class EnginesCore < ErrorsApi
   def reinstall_engine(engine)
     clear_error    
     engine.destroy_container if engine.has_container?
+    params = {}
+    params[:engine_name] = engine.container_name
     delete_engine(params)
     builder = BuildController.new(self)
     builder.reinstall_engine(engine) 
