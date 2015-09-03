@@ -121,11 +121,8 @@ class EngineBuilder < ErrorsApi
         end
         log_build_output('Creating Deploy Image')
         mc = create_managed_container
-        unless mc.nil?
-          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)
-        else
-          return post_failed_build_clean_up
-        end
+        return post_failed_build_clean_up if mc == false
+          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')
@@ -477,6 +474,8 @@ class EngineBuilder < ErrorsApi
     log_build_output('Applying Volume settings and Log Permissions')
     return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(mc, @web_user)
     return mc
+    rescue StandardError => e
+       log_exception(e)       
   end
 
   def engine_environment
