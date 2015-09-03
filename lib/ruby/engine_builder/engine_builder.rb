@@ -21,7 +21,6 @@ class EngineBuilder < ErrorsApi
   :hostname,
   :build_name,
   :set_environments,
-  :container_name,
   :environments,
   :domain_name,
   :runtime,

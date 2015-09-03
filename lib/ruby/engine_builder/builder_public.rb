@@ -6,7 +6,7 @@ class BuilderPublic
   end
 
   def engine_name
-    @builder.container_name
+    @builder.engine_name
   end
 
   def domain_name

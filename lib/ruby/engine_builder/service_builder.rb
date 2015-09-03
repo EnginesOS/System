@@ -5,6 +5,7 @@ class ServiceBuilder < ErrorsApi
     @service_manager = service_manager
     @templater = templater
     @attached_services = []
+      p @engine_name 
   end
     
   def create_non_persistant_services(services)  
