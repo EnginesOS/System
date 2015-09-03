@@ -30,6 +30,7 @@ class BuilderPublic
     when 'HTTP'
         @build_params[:http_protocol] = 'http'
   end
+    return @build_params
   end
 
   def repository
