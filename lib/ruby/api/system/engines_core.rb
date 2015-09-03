@@ -157,7 +157,7 @@ class EnginesCore < ErrorsApi
     return ''
   end
 
-  def get_default_domain()  
+  def get_default_domain()
     preferences = SystemPreferences.new
     preferences.get_default_domain
   end
@@ -205,8 +205,6 @@ class EnginesCore < ErrorsApi
     @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
     return @service_manager
   end
-
-
 
   #returns
   def find_service_consumers(params)
@@ -320,18 +318,18 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-    def retrieve_service_configuration(config)  
-      c = ConfigurationsApi.new(self)
-       r = c.retrieve_service_configuration(config)
-       return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
-       return r
-      end
+  def retrieve_service_configuration(config)
+    c = ConfigurationsApi.new(self)
+    r = c.retrieve_service_configuration(config)
+    return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
+    return r
+  end
 
-  def update_service_configuration(service_param)    
-  configurator = ConfigurationsApi.new(self)
-   return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
-   return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
-     return true
+  def update_service_configuration(service_param)
+    configurator = ConfigurationsApi.new(self)
+    return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
+    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
+    return true
   end
 
   def engine_persistant_services(container_name)
@@ -405,7 +403,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
     return nil
   end
-  
+
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
@@ -500,25 +498,25 @@ class EnginesCore < ErrorsApi
   def add_domain(params)
     dns_api = DNSApi.new(service_manager)
     return true if dns_api.add_domain(params)
-    log_error_mesg(dns_api.last_error, params)    
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def update_domain(params)
     dns_api = DNSApi.new(service_manager)
-    return true if dns_api.update_domain(params) 
-    log_error_mesg(dns_api.last_error, params)    
+    return true if dns_api.update_domain(params)
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def remove_domain(params)
     dns_api = DNSApi.new(service_manager)
-    return true if dns_api.remove_domain(params) 
-    log_error_mesg(dns_api.last_error, params)    
+    return true if dns_api.remove_domain(params)
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def list_domains
     res = DNSApi.list_domains
     return res if res.is_a?(Hash)
-    log_error_mesg(res, '')    
+    log_error_mesg(res, '')
   end
 
   def list_managed_engines
@@ -554,25 +552,25 @@ class EnginesCore < ErrorsApi
     params[:container_type] = 'container' # Force This
     return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
-    remove_engine(engine_name)    
+    remove_engine(engine_name)
     return true
   end
-  
+
   def remove_engine(engine_name)
     engine = loadManagedEngine(engine_name)
     params = {}
     params[:engine_name] = engine_name
     params[:container_type] = 'container' # Force This
     params[:parent_engine] = params[:engine_name]
-       unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
-         return true if service_manager.remove_engine_from_managed_engines_registry(params) 
-         return log_error_mesg('Failed to find Engine',params)
-       end
-       if engine.delete_image || engine.has_image? == false
-         return true if service_manager.remove_engine_from_managed_engines_registry(params)
-         return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-       end
-       log_error_mesg('Failed to delete image',params)
+    unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
+      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      return log_error_mesg('Failed to find Engine',params)
+    end
+    if engine.delete_image || engine.has_image? == false
+      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    end
+    log_error_mesg('Failed to delete image',params)
   end
 
   def delete_image_dependancies(params)
@@ -583,19 +581,6 @@ class EnginesCore < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
-#  def run_system(cmd)
-#    clear_error
-#    cmd = cmd + ' 2>&1'
-#    res= %x<#{cmd}>
-#    SystemUtils.debug_output('run system',res)
-#    #FIXME should be case insensitive The last one is a pure kludge
-#    #really need to get stderr and stdout separately
-#    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
-#    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
 
   def run_volume_builder(container,username)
     clear_error
@@ -631,36 +616,36 @@ class EnginesCore < ErrorsApi
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    clear_error    
+    clear_error
     engine.destroy_container if engine.has_container?
     params = {}
     params[:engine_name] = engine.container_name
     delete_engine(params)
     builder = BuildController.new(self)
-    builder.reinstall_engine(engine) 
+    builder.reinstall_engine(engine)
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
   end
 
-#  #rebuilds image from current blueprint
-#  def rebuild_image(container)
-#    clear_error
-#    params = {}
-#    params[:engine_name] = container.container_name
-#    params[:domain_name] = container.domain_name
-#    params[:host_name] = container.hostname
-#    params[:env_variables] = container.environments
-#    params[:http_protocol] = container.protocol
-#    params[:repository_url] = container.repo
-#    params[:software_environment_variables] = container.environments
-#    #   custom_env=params
-#    #  @http_protocol = params[:http_protocol] = container.
-#    builder = EngineBuilder.new(params, self)
-#    return builder.rebuild_managed_container(container)
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
+  #  #rebuilds image from current blueprint
+  #  def rebuild_image(container)
+  #    clear_error
+  #    params = {}
+  #    params[:engine_name] = container.container_name
+  #    params[:domain_name] = container.domain_name
+  #    params[:host_name] = container.hostname
+  #    params[:env_variables] = container.environments
+  #    params[:http_protocol] = container.protocol
+  #    params[:repository_url] = container.repo
+  #    params[:software_environment_variables] = container.environments
+  #    #   custom_env=params
+  #    #  @http_protocol = params[:http_protocol] = container.
+  #    builder = EngineBuilder.new(params, self)
+  #    return builder.rebuild_managed_container(container)
+  #  rescue StandardError => e
+  #    log_exception(e)
+  #  end
 
   #  def image_exist?(image_name)
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
@@ -677,7 +662,6 @@ class EnginesCore < ErrorsApi
   def force_register_attached_service(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
-  
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
@@ -700,9 +684,9 @@ class EnginesCore < ErrorsApi
   end
 
   protected
-  
+
   def shutdown
-   # FIXME: @registry_handler.api_dissconnect
+    # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown
   end
 

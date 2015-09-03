@@ -40,10 +40,13 @@ class SystemApi < ErrorsApi
     # save_last_result_and_error(container)
     container.last_result = ''
     container.last_error = ''
+    info = container.docker_info
+    container.docker_info = nil
     serialized_object = YAML.dump(container)
     container.container_api = api
     container.last_result = last_result
     container.last_error = last_error
+    container.docker_info = info
     state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
