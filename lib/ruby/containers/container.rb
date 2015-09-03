@@ -20,6 +20,7 @@ class Container < ErrorsApi
                :container_name,\
                :image,\
                :eports,\
+               :web_port,\
                :volumes,\
                :environments
   attr_accessor :last_error,\

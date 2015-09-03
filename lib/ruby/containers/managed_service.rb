@@ -14,7 +14,7 @@ class ManagedService < ManagedContainer
     return @ctype
   end
 
-  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, dbs, environments, framework, runtime)
+  def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
     @last_error = 'None'
     @container_name = name
     @memory = memory
@@ -24,7 +24,7 @@ class ManagedService < ManagedContainer
     @eports = eports
     @environments = environments
     @volumes = volumes
-    @port = port
+    @web_port = port
     @last_result = ''
     @setState = 'nocontainer'
     @databases = dbs    
