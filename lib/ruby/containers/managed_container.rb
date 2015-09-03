@@ -135,6 +135,8 @@ class ManagedContainer < Container
       enable_http_only
     when 'HTTPS only'
       enable_https_only
+    else
+      @protocol = proto.to_sym
     end
   end
 
