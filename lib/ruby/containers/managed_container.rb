@@ -43,6 +43,7 @@ class ManagedContainer < Container
   
   def desired_state=(state)
     @setState = state
+    
   end
 
   def operation_completed
