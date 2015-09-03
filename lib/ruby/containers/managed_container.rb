@@ -172,16 +172,7 @@ class ManagedContainer < Container
      return true
    end
 
-  def logs_container
-    return false unless has_api?
-    @container_api.logs_container(self)
-  end
 
-  def ps_container
-    expire_engine_info
-    return false unless has_api?
-    @container_api.ps_container(self)
-  end
 
   def delete_image()
     return false unless has_api?
@@ -199,7 +190,7 @@ class ManagedContainer < Container
     return false unless has_api?
     clear_error
     ret_val = false
-    return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', state) if is_active?
+    return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
     @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
     ret_val = @container_api.destroy_container(self)
     @container_id = '-1'

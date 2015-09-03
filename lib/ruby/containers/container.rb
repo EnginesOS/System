@@ -65,6 +65,16 @@ def has_api?
    return true
  end
  
+def logs_container
+  return false unless has_api?
+  @container_api.logs_container(self)
+end
+
+def ps_container
+  expire_engine_info
+  return false unless has_api?
+  @container_api.ps_container(self)
+end
 
 def is_active?
   state = read_state
@@ -128,7 +138,7 @@ def stats
       pcnt += 1
     end
     cpu = 3600 * h + 60 * m + s
-    statistics = ContainerStatistics.new(state, pcnt, started, stopped, rss, vss, cpu)
+    statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
     statistics
   end
 
