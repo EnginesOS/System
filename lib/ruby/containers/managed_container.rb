@@ -152,8 +152,6 @@ class ManagedContainer < Container
     @protocol = :http_only
   end
 
-
-
   def to_s
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@eports}  \n"
   end
@@ -168,7 +166,6 @@ class ManagedContainer < Container
      @domain_name = domain_name
      return true
    end
-
 
   def delete_image()
     return false unless has_api?
@@ -242,7 +239,6 @@ class ManagedContainer < Container
     return false unless has_api?
     #    web_sites
     ret_val = false
-    state = read_state
     desired_state=('stopped')      
     @container_api.deregister_non_persistant_services(self)
     return false unless super
@@ -252,7 +248,6 @@ class ManagedContainer < Container
     clear_error
     return false unless has_api?
     ret_val = false
-    state = read_state
     desired_state=('running')
     return false unless super
     register_with_dns # MUst register each time as IP Changes
@@ -282,7 +277,6 @@ class ManagedContainer < Container
     add_nginx_service if @deployment_type == 'web'
   end
 
-  
   def running_user
     return -1 if docker_info.is_a?(FalseClass)
     return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
@@ -293,7 +287,6 @@ class ManagedContainer < Container
   def set_running_user
     @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
   end
-
   
   def save_state()
     return false unless has_api?    

@@ -169,29 +169,31 @@ def get_container_network_metrics()
 end
 
 def delete_image
-  log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?
   expire_engine_info
+  log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?  
   @container_api.delete_image(self)
 end
 
 def destroy_container
-  return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
   expire_engine_info
+  return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
   return false unless @container_api.destroy_container(self)  
-  @container_id = '-1'  
+  @container_id = '-1'
+  expire_engine_info  
   return true
 end
 
 def unpause_container
+  expire_engine_info  
   return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
-  expire_engine_info
-  @container_api.unpause_container(self)     
+  @container_api.unpause_container(self)   
 end
 
 def create_container   
-  return log_error_mesg('Cannot create container as container exists ', self) if has_container?
   expire_engine_info  
+  return log_error_mesg('Cannot create container as container exists ', self) if has_container?
       if @container_api.create_container(self)
+        expire_engine_info
         @container_id = read_container_id
         @cont_userid = running_user
         return true
@@ -199,25 +201,27 @@ def create_container
         @container_id = -1
         @cont_userid = ''
         return true
-      end      
+      end  
 end
 
 def start_container
-  return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
   expire_engine_info
-    ret_val = @container_api.start_container(self)   
+  return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
+    ret_val = @container_api.start_container(self)
+  expire_engine_info   
 end
 def stop_container
-  return log_error_mesg('Can\'t Stop Container as ', state) unless read_state == 'running'
   expire_engine_info
+  return log_error_mesg('Can\'t Stop Container as ', state) unless read_state == 'running'  
    @container_api.stop_container(self)
+  expire_engine_info
 end
 
 def pause_container
-  return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
   expire_engine_info
-  @container_api.pause_container(self)
-  
+  return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
+  @container_api.pause_container(self)  
+  expire_engine_info
 end
 
 protected
