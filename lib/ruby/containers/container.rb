@@ -168,6 +168,58 @@ def get_container_network_metrics()
   @container_api.get_container_network_metrics(self)
 end
 
+def delete_image
+  log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?
+  expire_engine_info
+  @container_api.delete_image(self)
+end
+
+def destroy_container
+  return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
+  expire_engine_info
+  return false unless @container_api.destroy_container(self)  
+  @container_id = '-1'  
+  return true
+end
+
+def unpause_container
+  return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
+  expire_engine_info
+  @container_api.unpause_container(self)     
+end
+
+def create_container   
+  return log_error_mesg('Cannot create container as container exists ', self) if has_container?
+  expire_engine_info  
+      if @container_api.create_container(self)
+        @container_id = read_container_id
+        @cont_userid = running_user
+        return true
+      else
+        @container_id = -1
+        @cont_userid = ''
+        return true
+      end      
+end
+
+def start_container
+  return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
+  expire_engine_info
+    ret_val = @container_api.start_container(self)   
+end
+def stop_container
+  return log_error_mesg('Can\'t Stop Container as ', state) unless read_state == 'running'
+  expire_engine_info
+   @container_api.stop_container(self)
+end
+
+def pause_container
+  return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
+  expire_engine_info
+  @container_api.pause_container(self)
+  
+end
+
 protected
 
 def collect_docker_info

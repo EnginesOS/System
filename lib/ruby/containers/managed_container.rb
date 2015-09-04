@@ -43,7 +43,7 @@ class ManagedContainer < Container
   
   def desired_state=(state)
     @setState = state
-    
+    save_state
   end
 
   def operation_completed
@@ -170,31 +170,19 @@ class ManagedContainer < Container
    end
 
 
-
   def delete_image()
     return false unless has_api?
     ret_val = false
-    desired_state=('noimage')
-    if has_container? == false
-      ret_val = @container_api.delete_image(self)
-    else
-      @last_error ='Cannot Delete the Image while container exists. Please stop/destroy first'
-    end
     clear_error
-    return ret_val
+    desired_state=('noimage')
+    super
   end
 
   def destroy_container
     return false unless has_api?
     clear_error
-    ret_val = false
-    return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
     desired_state=('nocontainer') # this represents the state we want and not necessarily the one we get
-    ret_val = @container_api.destroy_container(self)
-    @container_id = '-1'
-    expire_engine_info  
-    save_state()
-    return ret_val
+    super 
   end
 
   def setup_container
@@ -209,26 +197,17 @@ class ManagedContainer < Container
     else
       log_error_mesg('Cannot create container as container exists ',state)
     end
-    save_state
   end
 
   def create_container
     clear_error
     return false unless has_api?
-    ret_val = false
-    expire_engine_info
     desired_state=('running')
-    return log_error_mesg('Cannot create container as container exists ', self) if has_container?
-      ret_val = @container_api.create_container(self)
-    expire_engine_info
+    return false unless super
     return log_error_mesg('Did not start',self) unless is_running?
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
-    @container_id = read_container_id
-    @cont_userid = running_user
-    save_state
-    return ret_val
   rescue StandardError => e
     log_exception(e)
   end
@@ -237,70 +216,47 @@ class ManagedContainer < Container
     ret_val = false
     desired_state=('running')
     destroy_container
-    ret_val = create_container
-    save_state
-    return ret_val
+    create_container
   end
 
   def unpause_container
+    clear_error
     return false unless has_api?
     desired_state=('running')
     ret_val = false
-    return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
-    ret_val = @container_api.unpause_container(self)
-    expire_engine_info
+   return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    clear_error
-    save_state
   end
 
   def pause_container
+    clear_error
     return false unless has_api?
     desired_state=('paused')
-    ret_val = false
-    return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
-    ret_val = @container_api.pause_container(self)
-    expire_engine_info
-    @container_api.deregister_non_persistant_services(self)
-    clear_error
-    save_state
-    return true
+    return false unless super
+    @container_api.deregister_non_persistant_services(self)  
   end
 
   def stop_container
+    clear_error
     return false unless has_api?
     #    web_sites
     ret_val = false
     state = read_state
-    desired_state=('stopped')
-    if state == 'running'
-      ret_val = @container_api.stop_container(self)
-      @container_api.deregister_non_persistant_services(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Stop Container as ', state)
-      @container_api.deregister_non_persistant_services(self)
-    end
-    clear_error
-    save_state
+    desired_state=('stopped')      
+    @container_api.deregister_non_persistant_services(self)
+    return false unless super
   end
 
   def start_container
+    clear_error
     return false unless has_api?
     ret_val = false
     state = read_state
     desired_state=('running')
-    if state == 'stopped'
-      ret_val = @container_api.start_container(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Start Container as ', state)
-    end
+    return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    clear_error
-    save_state
   end
 
   # Register the dns
