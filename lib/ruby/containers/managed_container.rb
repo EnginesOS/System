@@ -201,6 +201,7 @@ class ManagedContainer < Container
     return false unless has_api?
     desired_state=('running')
     return false unless super
+    sleep 10
     return log_error_mesg('Did not start',self) unless is_running?
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
