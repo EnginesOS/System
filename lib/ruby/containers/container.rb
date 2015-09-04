@@ -29,6 +29,7 @@ class Container < ErrorsApi
   
   def expire_engine_info
     @docker_info = false
+    return true
   end
   
   def update_memory(new_memory)
@@ -170,8 +171,9 @@ end
 
 def delete_image
   expire_engine_info
-  log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?  
-  @container_api.delete_image(self)
+  return log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?  
+  return false unless @container_api.delete_image(self)
+  expire_engine_info
 end
 
 def destroy_container
@@ -180,13 +182,13 @@ def destroy_container
   return false unless @container_api.destroy_container(self)  
   @container_id = '-1'
   expire_engine_info  
-  return true
 end
 
 def unpause_container
   expire_engine_info  
   return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
-  @container_api.unpause_container(self)   
+  return false unless @container_api.unpause_container(self)
+  expire_engine_info
 end
 
 def create_container   
@@ -197,30 +199,29 @@ def create_container
         @container_id = read_container_id
         @cont_userid = running_user
         return true
-      else
+      end      
         @container_id = -1
         @cont_userid = ''
-        return true
-      end  
+        return false      
 end
 
 def start_container
   expire_engine_info
   return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
-    ret_val = @container_api.start_container(self)
+  return false unless @container_api.start_container(self)
   expire_engine_info   
 end
 def stop_container
   expire_engine_info
-  return log_error_mesg('Can\'t Stop Container as ', state) unless read_state == 'running'  
-   @container_api.stop_container(self)
+  return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'  
+  return false unless @container_api.stop_container(self)
   expire_engine_info
 end
 
 def pause_container
   expire_engine_info
   return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
-  @container_api.pause_container(self)  
+  return false unless @container_api.pause_container(self)  
   expire_engine_info
 end
 
@@ -229,7 +230,7 @@ protected
 def collect_docker_info
     return false unless has_api?  
     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
-    return false if result == false
+    return false unless result
     @docker_info = @last_result
     Thread.new { sleep 3 ; expire_engine_info }
     return result
