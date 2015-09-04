@@ -128,8 +128,6 @@ class EngineBuilder < ErrorsApi
       log_build_output('Build Successful')
       build_report = generate_build_report(@templater, @blueprint)
       @core_api.save_build_report(mc, build_report)
-      #      p :build_report
-      #      p build_report
       cnt = 0
       lcnt = 5
       log_build_output('Starting Engine')

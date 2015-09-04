@@ -97,7 +97,7 @@ class ContainerApi < ErrorsApi
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     return ContainerStateFiles.create_container_dirs(container) if test_docker_api_result(@docker_api.create_container(container))
-    return false
+    return log_error_mesg('failed to create ' + @docker_api.last_error, self) 
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)
