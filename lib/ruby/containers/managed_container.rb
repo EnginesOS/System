@@ -278,16 +278,9 @@ class ManagedContainer < Container
     add_nginx_service if @deployment_type == 'web'
   end
 
-  def running_user
-    return -1 if docker_info.is_a?(FalseClass)
-    return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
-  rescue StandardError => e
-    return log_exception(e)
-  end
 
-  def set_running_user
-    @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
-  end
+
+
   
   def save_state()
     return false unless has_api?    
@@ -358,12 +351,7 @@ class ManagedContainer < Container
   end
 
 
-  def read_container_id
-    return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
-      return -1
-rescue StandardError => e
-   log_exception(e)
-  end
+
   
 
 end

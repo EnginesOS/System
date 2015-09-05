@@ -52,14 +52,16 @@ class Container < ErrorsApi
               end
             end
            return state
+rescue StandardError => e
+ log_exception(e)
   end
          
    
   def docker_info
      collect_docker_info if @docker_info.is_a?(FalseClass)     
-     return JSON.parse(@docker_info) 
-   rescue
-     return false
+     return JSON.parse(@docker_info)
+   rescue StandardError => e
+    log_exception(e)
    end
  
 def has_api?
@@ -142,6 +144,8 @@ def stats
     cpu = 3600 * h + 60 * m + s
     statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
     statistics
+rescue => e
+log_exception(e)
   end
 
 def is_running?
@@ -191,6 +195,10 @@ def unpause_container
   expire_engine_info
 end
 
+def set_running_user
+  @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
+end
+
 def create_container   
   expire_engine_info  
   return log_error_mesg('Cannot create container as container exists ', self) if has_container?
@@ -203,6 +211,22 @@ def create_container
         @container_id = -1
         @cont_userid = ''
         return false      
+  rescue => e
+  log_exception(e)
+end
+
+def read_container_id
+  return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
+    return -1
+rescue StandardError => e
+ log_exception(e)
+end
+
+def running_user
+  return -1 if docker_info.is_a?(FalseClass)
+  return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
+rescue StandardError => e
+  return log_exception(e)
 end
 
 def start_container
