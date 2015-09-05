@@ -205,6 +205,7 @@ def create_container
   return log_error_mesg('Cannot create container as container exists ', self) if has_container?
       if @container_api.create_container(self)
         expire_engine_info
+        sleep 10
         @container_id = read_container_id
         @cont_userid = running_user
         return true
