@@ -59,6 +59,7 @@ rescue StandardError => e
    
   def docker_info
      collect_docker_info if @docker_info.is_a?(FalseClass)     
+     return false if @docker_info.is_a?(FalseClass)
      return JSON.parse(@docker_info)
    rescue StandardError => e
     log_exception(e)
