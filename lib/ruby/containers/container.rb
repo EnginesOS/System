@@ -217,6 +217,7 @@ def create_container
 end
 
 def read_container_id
+  p :read_conid
   return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
     return -1
 rescue StandardError => e
