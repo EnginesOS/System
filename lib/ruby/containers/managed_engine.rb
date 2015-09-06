@@ -19,7 +19,8 @@ class ManagedEngine < ManagedContainer
     @deployment_type = runtime_params.deployment_type
       
     @web_port = build_params[:web_port]
-    
+    p :volumes
+      p runtime_params.volumes
     @last_result = ''
        @setState = 'nocontainer'
     @container_api = core_api
