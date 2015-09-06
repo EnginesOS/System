@@ -264,7 +264,7 @@ def collect_docker_info
     return false unless result
     @docker_info_cache = @last_result
     p "got_infi"
-    Thread.new { sleep 3 ; expire_engine_info }
+    #Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
 end
