@@ -14,8 +14,7 @@ class Container < ErrorsApi
     SystemUtils.log_exception(e)
   end
   
-  attr_reader :docker_info,\
-               :container_id,\
+  attr_reader :container_id,\
                :memory,\
                :container_name,\
                :image,\
@@ -258,6 +257,7 @@ def collect_docker_info
     result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
     return false unless result
     @docker_info = @last_result
+    p "got_infi"
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
