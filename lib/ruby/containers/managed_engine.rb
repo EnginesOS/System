@@ -27,7 +27,7 @@ class ManagedEngine < ManagedContainer
  
     @ctype = 'container'
     @conf_self_start = true
-
+    expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
  
   end
