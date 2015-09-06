@@ -234,7 +234,7 @@ class DockerApi < ErrorsApi
     volume_option += ' -v ' + container_log_dir(container) + '/vlog:/var/log/:rw' if incontainer_logdir != '/var/log' && incontainer_logdir != '/var/log/'
     volume_option += ' -v ' + service_sshkey_local_dir(container) + ':' + service_sshkey_container_dir(container) + ':rw' if container.is_service?
     volume_option += ' -v ' + SystemConfig.EnginesInternalCA + ':/usr/local/share/ca-certificates/engines_internal_ca.crt:ro ' unless container.no_ca_map
-    if container.volumes
+    if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
         unless volume.nil?
           unless volume.localpath.nil?
@@ -242,6 +242,9 @@ class DockerApi < ErrorsApi
           end
         end
       end
+    else
+      p :panic_vols_not_a_hash_but
+      p container.volumes.class.name
     end
     return volume_option
   rescue StandardError => e

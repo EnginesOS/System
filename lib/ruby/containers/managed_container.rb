@@ -74,7 +74,6 @@ class ManagedContainer < Container
   :cont_userid,\
   :setState,\
   :protocol,\
-  :volumes,\
   :deployment_type,\
   :dependant_on,\
   :no_ca_map,\
