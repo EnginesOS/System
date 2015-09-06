@@ -1,6 +1,6 @@
 class ManagedEngine < ManagedContainer
-  def initialize(engines_params, runtime_params , core_api)
-    @memory = engines_params[:memory]
+  def initialize(build_params, runtime_params , core_api)
+    @memory = build_params[:memory]
     @hostname = build_params[:host_name]
     @domain_name = build_params[:domain_name]
     @container_name = build_params[:engine_name]

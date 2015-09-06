@@ -7,31 +7,31 @@ class ManagedContainer < Container
   @conf_self_start = false
   #  @http_and_https=true
   #  @https_only=false
-  def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
-    @framework = framework
-    @runtime = runtime
-    @databases = databases
-    @setState = setState
-    @web_port = port
-    @repository = repo
-    @last_error = last_error
-    @memory = mem
-    @container_name = name
-    @hostname = host
-    @domain_name = domain
-    @image = image
-    @eports = e_ports
-    @volumes = vols
-    @environments = environs
-    @conf_self_start = false
-    @last_error = ''
-    @last_result = ''
-    @data_uid = data_uid
-    @data_gid = data_gid
-    @cont_userid = -1
-    @protocol = :http_and_https
-    @docker_info = false
-  end
+#  def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
+#    @framework = framework
+#    @runtime = runtime
+#    @databases = databases
+#    @setState = setState
+#    @web_port = port
+#    @repository = repo
+#    @last_error = last_error
+#    @memory = mem
+#    @container_name = name
+#    @hostname = host
+#    @domain_name = domain
+#    @image = image
+#    @eports = e_ports
+#    @volumes = vols
+#    @environments = environs
+#    @conf_self_start = false
+#    @last_error = ''
+#    @last_result = ''
+#    @data_uid = data_uid
+#    @data_gid = data_gid
+#    @cont_userid = -1
+#    @protocol = :http_and_https
+#    @docker_info = false
+#  end
 
   attr_accessor :current_operation
 
