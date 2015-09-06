@@ -38,6 +38,7 @@ class Container < ErrorsApi
   def read_state
     info = docker_info
     state = nil
+    p info[0]['State']
             if info[0]['State']
               if info[0]['State']['Running']
                 state = 'running'
