@@ -38,6 +38,7 @@ class Container < ErrorsApi
   def read_state
     info = docker_info
     state = nil
+    p :STATE_______________STATE___________
     p info[0]['State']
             if info[0]['State']
               if info[0]['State']['Running']
@@ -58,7 +59,8 @@ rescue StandardError => e
          
    
   def docker_info
-     collect_docker_info if @docker_info.is_a?(FalseClass)     
+     collect_docker_info if @docker_info.is_a?(FalseClass)    
+     p  @docker_info.class.name
      return false if @docker_info.is_a?(FalseClass)
      return JSON.parse(@docker_info)
    rescue StandardError => e
