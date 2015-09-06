@@ -27,7 +27,7 @@ class Container < ErrorsApi
                 :last_result
   
   def expire_engine_info
-    @docker_info = false
+    @docker_info_cache = false
     return true
   end
   
@@ -59,10 +59,10 @@ rescue StandardError => e
          
    
   def docker_info
-     collect_docker_info if @docker_info.is_a?(FalseClass)    
-     p  @docker_info.class.name
-     return false if @docker_info.is_a?(FalseClass)
-     return JSON.parse(@docker_info)
+     collect_docker_info if @docker_info_cache.is_a?(FalseClass)    
+     p  @docker_info_cache.class.name
+     return false if @docker_info_cache.is_a?(FalseClass)
+     return JSON.parse(@docker_info_cache)
    rescue StandardError => e
     log_exception(e)
    end
@@ -221,15 +221,17 @@ end
 
 def read_container_id
   p :read_conid
-  return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
+  info = docker_info
+  return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
     return -1
 rescue StandardError => e
  log_exception(e)
 end
 
 def running_user
-  return -1 if docker_info.is_a?(FalseClass)
-  return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
+  info = docker_info
+  return -1 if info.is_a?(FalseClass)
+  return  info[0]['Config']['User'] unless info.is_a?(FalseClass)
 rescue StandardError => e
   return log_exception(e)
 end
@@ -258,9 +260,9 @@ protected
 
 def collect_docker_info
     return false unless has_api?  
-    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
+    result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
     return false unless result
-    @docker_info = @last_result
+    @docker_info_cache = @last_result
     p "got_infi"
     Thread.new { sleep 3 ; expire_engine_info }
     return result
