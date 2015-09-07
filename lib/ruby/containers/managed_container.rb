@@ -5,40 +5,18 @@ require_relative 'container.rb'
 require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
-  #  @http_and_https=true
-  #  @https_only=false
-  def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
-    @framework = framework
-    @runtime = runtime
-    @databases = databases
-    @setState = setState
-    @web_port = port
-    @repository = repo
-    @last_error = last_error
-    @memory = mem
-    @container_name = name
-    @hostname = host
-    @domain_name = domain
-    @image = image
-    @eports = e_ports
-    @volumes = vols
-    @environments = environs
-    @conf_self_start = false
-    @last_error = ''
-    @last_result = ''
-    @data_uid = data_uid
-    @data_gid = data_gid
-    @cont_userid = -1
-    @protocol = :http_and_https
-    @docker_info = false
-  end
 
-  attr_accessor :current_operation
+  
 
   def current_operation=(operation)
     @current_operation = operation
     #     save_operation
     #     lock_state
+  end
+  
+  def desired_state(state)
+    @setState = state
+    save_state
   end
 
   def operation_completed
@@ -46,9 +24,6 @@ class ManagedContainer < Container
     #     unlock_state
   end
 
-  def fqdn
-     @hostname + '.' + @domain_name
-   end
 
   def repo
     @repository
@@ -72,7 +47,6 @@ class ManagedContainer < Container
   :cont_userid,\
   :setState,\
   :protocol,\
-  :volumes,\
   :deployment_type,\
   :dependant_on,\
   :no_ca_map,\
@@ -118,18 +92,22 @@ class ManagedContainer < Container
   end
 
   def http_protocol
-   @protocol
-   
+    if @protocol == :http_https
+          return 'http'
+        end
+        return @protocol.to_s
   end
 
   def set_protocol(proto)
     case proto
-    when 'HTTPS and HTTP'
+    when 'HTTP and HTTPS'
       enable_http_and_https
     when 'HTTP only'
       enable_http_only
     when 'HTTPS only'
       enable_https_only
+    else
+      @protocol = proto.to_sym
     end
   end
 
@@ -144,8 +122,6 @@ class ManagedContainer < Container
   def enable_http_only
     @protocol = :http_only
   end
-
-
 
   def to_s
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@eports}  \n"
@@ -162,32 +138,19 @@ class ManagedContainer < Container
      return true
    end
 
-
-
   def delete_image()
     return false unless has_api?
     ret_val = false
-    if has_container? == false
-      ret_val = @container_api.delete_image(self)
-    else
-      @last_error ='Cannot Delete the Image while container exists. Please stop/destroy first'
-    end
     clear_error
-    return ret_val
+    desired_state('noimage')
+    super
   end
 
   def destroy_container
     return false unless has_api?
     clear_error
-    ret_val = false
-    return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
-    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
-    ret_val = @container_api.destroy_container(self)
-    @container_id = '-1'
-    expire_engine_info
-    @setState = 'nocontainer' # this represents the state we want and not necessarily the one we get
-    save_state()
-    return ret_val
+    desired_state('nocontainer') # this represents the state we want and not necessarily the one we get
+    super 
   end
 
   def setup_container
@@ -195,105 +158,71 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     state = read_state
-    @setState = 'stopped'
+    desired_state('stopped')
     unless has_container?
       ret_val = @container_api.setup_container(self)
       expire_engine_info
     else
       log_error_mesg('Cannot create container as container exists ',state)
     end
-    save_state
   end
 
   def create_container
     clear_error
     return false unless has_api?
-    ret_val = false
-    expire_engine_info
-    @setState = 'running'
-    return log_error_mesg('Cannot create container as container exists ', self) if has_container?
-      ret_val = @container_api.create_container(self)
-    expire_engine_info
-    return log_error_mesg('Did not start',self) unless is_running?
+    desired_state('running')
+    return false unless super
+    state = read_state
+    return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
-    @container_id = read_container_id
-    @cont_userid = running_user
-    save_state
-    return ret_val
   rescue StandardError => e
     log_exception(e)
   end
 
   def recreate_container
     ret_val = false
+    desired_state('running')
     destroy_container
-    ret_val = create_container
-    @setState = 'running'
-    save_state
-    return ret_val
+    create_container
   end
 
   def unpause_container
+    clear_error
     return false unless has_api?
-    @setState = 'running'
+    desired_state('running')
     ret_val = false
-    return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
-    ret_val = @container_api.unpause_container(self)
-    expire_engine_info
+   return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    clear_error
-    save_state
   end
 
   def pause_container
-    return false unless has_api?
-    @setState = 'paused'
-    ret_val = false
-    return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
-    ret_val = @container_api.pause_container(self)
-    expire_engine_info
-    @container_api.deregister_non_persistant_services(self)
     clear_error
-    save_state
-    return true
+    return false unless has_api?
+    desired_state('paused')
+    return false unless super
+    @container_api.deregister_non_persistant_services(self)  
   end
 
   def stop_container
-    return false unless has_api?
-    #    web_sites
-    ret_val = false
-    state = read_state
-    @setState = 'stopped'
-    if state == 'running'
-      ret_val = @container_api.stop_container(self)
-      @container_api.deregister_non_persistant_services(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Stop Container as ', state)
-      @container_api.deregister_non_persistant_services(self)
-    end
     clear_error
-    save_state
+    return false unless has_api?
+    desired_state('stopped')   
+    @container_api.deregister_non_persistant_services(self)
+    return false unless super
+    return true
   end
 
   def start_container
+    clear_error
     return false unless has_api?
     ret_val = false
-    state = read_state
-    @setState = 'running'
-    if state == 'stopped'
-      ret_val = @container_api.start_container(self)
-      expire_engine_info
-    else
-      log_error_mesg('Can\'t Start Container as ', state)
-    end
+    desired_state('running')
+    return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    clear_error
-    save_state
   end
 
   # Register the dns
@@ -319,23 +248,17 @@ class ManagedContainer < Container
     add_nginx_service if @deployment_type == 'web'
   end
 
-  
-  def running_user
-    return -1 if docker_info.is_a?(FalseClass)
-    return  docker_info[0]['Config']['User'] unless docker_info.is_a?(FalseClass)
-  rescue StandardError => e
-    return log_exception(e)
-  end
 
-  def set_running_user
-    @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
-  end
+
 
   
   def save_state()
-    return false unless has_api?
+    return false unless has_api?    
+    info = @docker_info
     expire_engine_info
     @container_api.save_container(self)
+    @docker_info = info
+    
   end
 
   def save_blueprint blueprint
@@ -345,14 +268,14 @@ class ManagedContainer < Container
 
   def rebuild_container
     return false unless has_api?
+    desired_state('running')
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
       register_with_dns # MUst register each time as IP Changes
       #add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
-    end
-    @setState = 'running'
+    end    
     save_state
   end
 
@@ -364,6 +287,7 @@ class ManagedContainer < Container
   def is_error?
     state = read_state
     return true if @setState != state
+    p "is_Error got" + state.to_s + ":" + @setState.to_s
     return false
   end
 
@@ -396,14 +320,4 @@ class ManagedContainer < Container
     service_hash = SystemUtils.create_nginx_service_hash(self)
     @container_api.dettach_service(service_hash)
   end
-
-
-  def read_container_id
-    return docker_info[0]['Id'] unless docker_info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
-      return -1
-rescue StandardError => e
-   log_exception(e)
-  end
-  
-
 end

@@ -1,31 +1,35 @@
 class ManagedEngine < ManagedContainer
-  def initialize(name, memory, hostname, domain_name, image, volumes, port, eports, repo, environments, framework, runtime, core_api, data_uid, data_gid, deployment_type)
-    @last_error = 'None'
-    @container_name = name
-    @memory = memory
-    @hostname = hostname
-    @domain_name = domain_name
-    @image = image
-    @eports = eports
-    @environments = environments
-    @volumes = volumes
-    @web_port = port
-    @repository = repo
-    @last_result = ''
-    @setState = 'nocontainer'
-    @framework = framework
-    @runtime = runtime
+  def initialize(build_params, runtime_params , core_api)
+    @memory = build_params[:memory]
+    @hostname = build_params[:host_name]
+    @domain_name = build_params[:domain_name]
+    @container_name = build_params[:engine_name]
+    @repository  = build_params[:repository_url]
+    @image  = build_params[:image]   
+    @last_error = 'None'   
+    @protocol = build_params[:http_protocol]
+    @volumes = runtime_params.volumes
+    @eports = runtime_params.worker_ports
+    @environments = runtime_params.environments
+    @framework = runtime_params.framework
+    @runtime = runtime_params.runtime
+     
+    @data_uid = runtime_params.data_uid
+    @data_gid =  runtime_params.data_gid
+    @deployment_type = runtime_params.deployment_type
+      
+    @web_port = build_params[:web_port]
+    @last_result = ''    
     @container_api = core_api
-    @deployment_type = deployment_type
+    @setState = 'running'
     @ctype = 'container'
-    @conf_self_start = false
-    @data_uid = data_uid
-    @data_gid = data_gid
-    save_state # no running.yaml throws a no such container so save so others can use
     @conf_self_start = true
+    expire_engine_info
+    save_state # no running.yaml throws a no such container so save so others can use
+ 
   end
 
-  attr_reader :ctype, :plugins_path, :extract_plugins
+  attr_reader :plugins_path, :extract_plugins
 
   def lock_values
     @ctype = 'container' if @ctype.nil?

@@ -40,6 +40,7 @@ class EngineBuilder < ErrorsApi
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
     @core_api = core_api
+    @mc = nil # Used in clean up only
     @build_params = params   
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''    
     @build_params[:engine_name].freeze      
@@ -121,18 +122,13 @@ class EngineBuilder < ErrorsApi
         end
         log_build_output('Creating Deploy Image')
         mc = create_managed_container
-        unless mc.nil?
-          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)
-        else
-          return post_failed_build_clean_up
-        end
+        return post_failed_build_clean_up if mc == false
+          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')
       build_report = generate_build_report(@templater, @blueprint)
       @core_api.save_build_report(mc, build_report)
-      #      p :build_report
-      #      p build_report
       cnt = 0
       lcnt = 5
       log_build_output('Starting Engine')
@@ -156,6 +152,7 @@ class EngineBuilder < ErrorsApi
         log_build_output('Engine Stopped')
         @result_mesg = 'Engine Stopped!'
       end
+  
       close_all
       return mc
     rescue StandardError => e
@@ -166,8 +163,8 @@ class EngineBuilder < ErrorsApi
       close_all
     end
     
+      
     
-  
   def setup_framework_logging
     log_build_output('Seting up logging')
     rmt_log_dir_var_fname = basedir + '/home/LOG_DIR'
@@ -311,6 +308,13 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
     p :Clean_up_Failed_build
+    # FIXME: Stop it if started (ie vol builder failure)
+    # FIXME: REmove container if created
+    unless @mc.nil?
+      mc.stop
+      mc.destroy_container      
+    end
+    # FIXME: Remove image if created  
     @attached_services.each do |service_hash|
       if service_hash[:fresh]
         service_hash[:remove_all_data] = true
@@ -450,33 +454,18 @@ class EngineBuilder < ErrorsApi
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
-    mc = ManagedEngine.new(@build_params[:engine_name],
-    @build_params[:memory],
-    @build_params[:host_name],
-    @build_params[:domain_name],
-    @build_params[:engine_name],
-    @blueprint_reader.volumes,
-    @web_port,
-    @blueprint_reader.worker_ports,
-    @build_params[:repository_url],
-    @blueprint_reader.environments,
-    @blueprint_reader.framework,
-    @blueprint_reader.runtime,
-    @core_api.container_api,
-    @blueprint_reader.data_uid,
-    @blueprint_reader.data_gid,
-    @blueprint_reader.deployment_type
-    )
-    # :http_protocol=>'HTTPS and HTTP'
-    mc.set_protocol(@build_params[:http_protocol])
-    #mc.conf_self_start = true
-    mc.save_state # no running.yaml throws a no such container so save so others can use
-    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless mc.save_blueprint(@blueprint)
+    @build_params[:web_port] = @web_port
+    @build_params[:image] = @build_params[:engine_name]
+    @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
+    @mc.save_state # no running.yaml throws a no such container so save so others can use
+    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
     log_build_output('Launching')
-    return log_build_errors('Error Failed to Launch') unless launch_deploy(mc)
+    return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions')
-    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(mc, @web_user)
-    return mc
+    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
+    return @mc
+    rescue StandardError => e
+       log_exception(e)       
   end
 
   def engine_environment

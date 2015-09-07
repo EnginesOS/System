@@ -14,8 +14,7 @@ class Container < ErrorsApi
     SystemUtils.log_exception(e)
   end
   
-  attr_reader :docker_info,\
-               :container_id,\
+  attr_reader :container_id,\
                :memory,\
                :container_name,\
                :image,\
@@ -28,7 +27,8 @@ class Container < ErrorsApi
                 :last_result
   
   def expire_engine_info
-    @docker_info = false
+    @docker_info_cache = false
+    return true
   end
   
   def update_memory(new_memory)
@@ -51,14 +51,17 @@ class Container < ErrorsApi
               end
             end
            return state
+rescue StandardError => e
+ log_exception(e)
   end
          
    
   def docker_info
-     collect_docker_info if @docker_info.is_a?(FalseClass)     
-     return JSON.parse(@docker_info) 
-   rescue
-     return false
+     collect_docker_info if @docker_info_cache.is_a?(FalseClass)    
+     return false if @docker_info_cache.is_a?(FalseClass)
+     return JSON.parse(@docker_info_cache)
+   rescue StandardError => e
+    log_exception(e)
    end
  
 def has_api?
@@ -141,6 +144,8 @@ def stats
     cpu = 3600 * h + 60 * m + s
     statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
     statistics
+rescue => e
+log_exception(e)
   end
 
 def is_running?
@@ -168,13 +173,94 @@ def get_container_network_metrics()
   @container_api.get_container_network_metrics(self)
 end
 
+def delete_image
+  expire_engine_info
+  return log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?  
+  return false unless @container_api.delete_image(self)
+  expire_engine_info
+end
+
+def destroy_container
+  expire_engine_info
+  return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
+  return false unless @container_api.destroy_container(self)  
+  @container_id = '-1'
+  expire_engine_info  
+end
+
+def unpause_container
+  expire_engine_info  
+  return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
+  return false unless @container_api.unpause_container(self)
+  expire_engine_info
+end
+
+def set_running_user
+  @cont_userid = running_user if @cont_userid.nil? || @cont_userid == -1
+end
+
+def create_container   
+  expire_engine_info  
+  return log_error_mesg('Cannot create container as container exists ', self) if has_container?
+      if @container_api.create_container(self)
+        expire_engine_info
+        @container_id = read_container_id
+         p @container_id
+        @cont_userid = running_user
+        p @cont_userid
+        return true
+      end      
+        @container_id = -1
+        @cont_userid = ''
+        return false      
+  rescue => e
+  log_exception(e)
+end
+#   /#<[a-z,A-Z]:0x[0-9][a-f]>/
+
+def read_container_id
+  info = docker_info
+  return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
+    return -1
+rescue StandardError => e
+ log_exception(e)
+end
+
+def running_user
+  info = docker_info
+  return -1 if info.is_a?(FalseClass)
+  return  info[0]['Config']['User'] unless info.is_a?(FalseClass)
+rescue StandardError => e
+  return log_exception(e)
+end
+
+def start_container
+  expire_engine_info
+  return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
+  return false unless @container_api.start_container(self)
+  expire_engine_info   
+end
+def stop_container
+  expire_engine_info
+  return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'  
+  return log_error_mesg('Api failure to stop container' + @container_api.last_error.to_s, self) unless @container_api.stop_container(self)
+  expire_engine_info
+end
+
+def pause_container
+  expire_engine_info
+  return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
+  return false unless @container_api.pause_container(self)  
+  expire_engine_info
+end
+
 protected
 
 def collect_docker_info
     return false unless has_api?  
-    result = @container_api.inspect_container(self) if @docker_info.is_a?(FalseClass)
-    return false if result == false
-    @docker_info = @last_result
+    result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
+    return false unless result
+    @docker_info_cache = @last_result
     Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
