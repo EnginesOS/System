@@ -107,7 +107,7 @@ end
 
 def is_paused?
   state = read_state
-  return true if state == 'running'
+  return true if state == 'paused'
     return false
   end
   
@@ -190,7 +190,7 @@ end
 
 def unpause_container
   expire_engine_info  
-  return log_error_mesg('Can\'t Start unpause as no paused', self) unless is_paused?
+  return log_error_mesg('Can\'t  unpause as no paused', self) unless is_paused?
   return false unless @container_api.unpause_container(self)
   expire_engine_info
 end
