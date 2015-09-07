@@ -198,7 +198,7 @@ class ManagedContainer < Container
     desired_state=('running')
     return false unless super
     state = read_state
-    return log_error_mesg('No longer running ' + state, self) unless state == 'running'
+    return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
