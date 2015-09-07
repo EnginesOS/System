@@ -209,8 +209,6 @@ class ManagedContainer < Container
   def stop_container
     clear_error
     return false unless has_api?
-    #    web_sites
-    ret_val = false
     desired_state='stopped'     
     @container_api.deregister_non_persistant_services(self)
     return false unless super
