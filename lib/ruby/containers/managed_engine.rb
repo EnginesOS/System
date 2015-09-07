@@ -8,14 +8,14 @@ class ManagedEngine < ManagedContainer
     @image  = build_params[:image]   
     @last_error = 'None'   
     @protocol = build_params[:http_protocol]
-    @volumes = runtime_params.volumes,
-    @eports = runtime_params.worker_ports,
-    @environments = runtime_params.environments,
-    @framework = runtime_params.framework,
-    @runtime = runtime_params.runtime,
+    @volumes = runtime_params.volumes
+    @eports = runtime_params.worker_ports
+    @environments = runtime_params.environments
+    @framework = runtime_params.framework
+    @runtime = runtime_params.runtime
      
-    @data_uid = runtime_params.data_uid,
-    @data_gid =  runtime_params.data_gid,
+    @data_uid = runtime_params.data_uid
+    @data_gid =  runtime_params.data_gid
     @deployment_type = runtime_params.deployment_type
       
     @web_port = build_params[:web_port]
