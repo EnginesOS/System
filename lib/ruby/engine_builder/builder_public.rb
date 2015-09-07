@@ -5,10 +5,6 @@ class BuilderPublic
     @builder = builder
   end
 
-  # Build public interface
-  def  http_protocol
-    @builder.build_params[:http_protocol]
-  end
 
   def engine_name
     @builder.build_params[:engine_name]
@@ -31,8 +27,8 @@ class BuilderPublic
   end
 
   def http_protocol
-    if @builder.build_params[:http_protocol] == ' http_https'
-      return 'https'
+    if @builder.build_params[:http_protocol] == 'http_https'
+      return 'http'
     end
     return @builder.build_params[:http_protocol]
   end

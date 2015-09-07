@@ -92,13 +92,15 @@ class ManagedContainer < Container
   end
 
   def http_protocol
-   @protocol
-   
+    if @protocol == :http_https
+          return 'http'
+        end
+        return @protocol.to_s
   end
 
   def set_protocol(proto)
     case proto
-    when 'HTTPS and HTTP'
+    when 'HTTP and HTTPS'
       enable_http_and_https
     when 'HTTP only'
       enable_http_only
