@@ -152,7 +152,7 @@ class EngineBuilder < ErrorsApi
         log_build_output('Engine Stopped')
         @result_mesg = 'Engine Stopped!'
       end
-      release_orphans
+  
       close_all
       return mc
     rescue StandardError => e
@@ -163,14 +163,7 @@ class EngineBuilder < ErrorsApi
       close_all
     end
     
-    
-    def release_orphans
-      @attached_services.each do |service_hash|
-        if service_hash.key?[:ex_orphan] && service_hash[:ex_orphan]
-          @service_builder.release_orphan(service_hash)
-        end
-      end
-    end  
+      
     
   def setup_framework_logging
     log_build_output('Seting up logging')

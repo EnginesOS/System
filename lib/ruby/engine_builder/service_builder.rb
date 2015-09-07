@@ -24,6 +24,7 @@ def create_persistant_services(services,  environ)
    service_cnt = 0
  
    services.each do |service_hash|
+     free_orphan = false
      service_def = get_service_def(service_hash)
      return false if service_def.nil?
      if service_def[:persistant]    
@@ -32,7 +33,7 @@ def create_persistant_services(services,  environ)
      if @service_manager.match_orphan_service(service_hash) == true
        service_hash = use_orphan(service_hash)
        @first_build = false
-       service_hash[:ex_orphan] = true
+       free_orphan = true
      elsif @service_manager.service_is_registered?(service_hash) == false
        @first_build = true
        service_hash[:fresh] = true
@@ -48,7 +49,8 @@ def create_persistant_services(services,  environ)
      p service_hash
      # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
      if @service_manager.add_service(service_hash)
-       @attached_services.push(service_hash)     
+       @attached_services.push(service_hash)    
+       release_orphan(service_hash) if free_orphan
      end
      end
      service_cnt += 1
