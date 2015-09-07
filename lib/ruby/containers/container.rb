@@ -243,7 +243,7 @@ end
 def stop_container
   expire_engine_info
   return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'  
-  return false unless @container_api.stop_container(self)
+  return log_error_mesg('Api failure to stop container' + @container_api.last_error.to_s, self) unless @container_api.stop_container(self)
   expire_engine_info
 end
 
