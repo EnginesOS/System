@@ -133,7 +133,6 @@ class DockerApi < ErrorsApi
   def destroy_container(container)
     clear_error
     commandargs = 'docker  rm ' + container.container_name
-    p commandargs
     unless execute_docker_cmd(commandargs, container)
       log_error_mesg(container.last_error, container)
       return false if image_exist?(container.image)

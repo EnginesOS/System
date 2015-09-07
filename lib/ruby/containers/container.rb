@@ -204,7 +204,6 @@ def create_container
   return log_error_mesg('Cannot create container as container exists ', self) if has_container?
       if @container_api.create_container(self)
         expire_engine_info
-        sleep 10
         @container_id = read_container_id
          p @container_id
         @cont_userid = running_user
@@ -262,8 +261,7 @@ def collect_docker_info
     result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
     return false unless result
     @docker_info_cache = @last_result
-    p "got_infi"
-    #Thread.new { sleep 3 ; expire_engine_info }
+    Thread.new { sleep 3 ; expire_engine_info }
     return result
   end
 end
