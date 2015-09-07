@@ -24,7 +24,7 @@ class ManagedEngine < ManagedContainer
     @last_result = ''
        @setState = 'nocontainer'
     @container_api = core_api
- 
+    @setState = 'running'
     @ctype = 'container'
     @conf_self_start = true
     expire_engine_info
