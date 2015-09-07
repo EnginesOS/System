@@ -6,7 +6,7 @@ require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
 
-  attr_accessor :current_operation
+  
 
   def current_operation=(operation)
     @current_operation = operation
@@ -142,14 +142,14 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     clear_error
-    desired_state='noimage'
+    desired_state=('noimage')
     super
   end
 
   def destroy_container
     return false unless has_api?
     clear_error
-    desired_state='nocontainer' # this represents the state we want and not necessarily the one we get
+    desired_state=('nocontainer') # this represents the state we want and not necessarily the one we get
     super 
   end
 
@@ -158,7 +158,7 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     state = read_state
-    desired_state='stopped'
+    desired_state=('stopped')
     unless has_container?
       ret_val = @container_api.setup_container(self)
       expire_engine_info
@@ -170,7 +170,7 @@ class ManagedContainer < Container
   def create_container
     clear_error
     return false unless has_api?
-    desired_state='running'
+    desired_state=('running')
     return false unless super
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
@@ -183,7 +183,7 @@ class ManagedContainer < Container
 
   def recreate_container
     ret_val = false
-    desired_state='running'
+    desired_state=('running')
     destroy_container
     create_container
   end
@@ -191,7 +191,7 @@ class ManagedContainer < Container
   def unpause_container
     clear_error
     return false unless has_api?
-    desired_state='running'
+    desired_state=('running')
     ret_val = false
    return false unless super
     register_with_dns # MUst register each time as IP Changes
@@ -201,7 +201,7 @@ class ManagedContainer < Container
   def pause_container
     clear_error
     return false unless has_api?
-    desired_state='paused'
+    desired_state=('paused')
     return false unless super
     @container_api.deregister_non_persistant_services(self)  
   end
@@ -209,7 +209,7 @@ class ManagedContainer < Container
   def stop_container
     clear_error
     return false unless has_api?
-    desired_state='stopped'     
+    desired_state=('stopped')   
     @container_api.deregister_non_persistant_services(self)
     return false unless super
     return true
@@ -219,7 +219,7 @@ class ManagedContainer < Container
     clear_error
     return false unless has_api?
     ret_val = false
-    desired_state='running'
+    desired_state=('running')
     return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
@@ -268,7 +268,7 @@ class ManagedContainer < Container
 
   def rebuild_container
     return false unless has_api?
-    desired_state='running'
+    desired_state=('running')
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
