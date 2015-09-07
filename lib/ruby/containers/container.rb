@@ -209,7 +209,9 @@ def create_container
         expire_engine_info
         sleep 10
         @container_id = read_container_id
+         p @container_id
         @cont_userid = running_user
+        p @cont_userid
         return true
       end      
         @container_id = -1
@@ -218,11 +220,11 @@ def create_container
   rescue => e
   log_exception(e)
 end
+#   /#<[a-z,A-Z]:0x[0-9][a-f]>/
 
 def read_container_id
   p :read_conid
   info = docker_info
-  p info[0]
   return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)    
     return -1
 rescue StandardError => e
