@@ -214,6 +214,7 @@ class ManagedContainer < Container
     desired_state='stopped'     
     @container_api.deregister_non_persistant_services(self)
     return false unless super
+    return true
   end
 
   def start_container
