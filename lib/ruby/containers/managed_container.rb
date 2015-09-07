@@ -5,33 +5,6 @@ require_relative 'container.rb'
 require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
-  #  @http_and_https=true
-  #  @https_only=false
-#  def initialize(mem, name, host, domain, image, e_ports, vols, environs, framework, runtime, databases, setState, port, repo, data_uid, data_gid) # used for test only
-#    @framework = framework
-#    @runtime = runtime
-#    @databases = databases
-#    @setState = setState
-#    @web_port = port
-#    @repository = repo
-#    @last_error = last_error
-#    @memory = mem
-#    @container_name = name
-#    @hostname = host
-#    @domain_name = domain
-#    @image = image
-#    @eports = e_ports
-#    @volumes = vols
-#    @environments = environs
-#    @conf_self_start = false
-#    @last_error = ''
-#    @last_result = ''
-#    @data_uid = data_uid
-#    @data_gid = data_gid
-#    @cont_userid = -1
-#    @protocol = :http_and_https
-#    @docker_info = false
-#  end
 
   attr_accessor :current_operation
 
@@ -167,14 +140,14 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     clear_error
-    desired_state=('noimage')
+    desired_state='noimage'
     super
   end
 
   def destroy_container
     return false unless has_api?
     clear_error
-    desired_state=('nocontainer') # this represents the state we want and not necessarily the one we get
+    desired_state='nocontainer' # this represents the state we want and not necessarily the one we get
     super 
   end
 
@@ -183,7 +156,7 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     state = read_state
-    desired_state=('stopped')
+    desired_state='stopped'
     unless has_container?
       ret_val = @container_api.setup_container(self)
       expire_engine_info
@@ -195,7 +168,7 @@ class ManagedContainer < Container
   def create_container
     clear_error
     return false unless has_api?
-    desired_state=('running')
+    desired_state='running'
     return false unless super
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
@@ -208,7 +181,7 @@ class ManagedContainer < Container
 
   def recreate_container
     ret_val = false
-    desired_state=('running')
+    desired_state='running'
     destroy_container
     create_container
   end
@@ -216,7 +189,7 @@ class ManagedContainer < Container
   def unpause_container
     clear_error
     return false unless has_api?
-    desired_state=('running')
+    desired_state='running'
     ret_val = false
    return false unless super
     register_with_dns # MUst register each time as IP Changes
@@ -226,7 +199,7 @@ class ManagedContainer < Container
   def pause_container
     clear_error
     return false unless has_api?
-    desired_state=('paused')
+    desired_state='paused'
     return false unless super
     @container_api.deregister_non_persistant_services(self)  
   end
@@ -236,7 +209,7 @@ class ManagedContainer < Container
     return false unless has_api?
     #    web_sites
     ret_val = false
-    desired_state=('stopped')      
+    desired_state='stopped'     
     @container_api.deregister_non_persistant_services(self)
     return false unless super
   end
@@ -245,7 +218,7 @@ class ManagedContainer < Container
     clear_error
     return false unless has_api?
     ret_val = false
-    desired_state=('running')
+    desired_state='running'
     return false unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
@@ -294,7 +267,7 @@ class ManagedContainer < Container
 
   def rebuild_container
     return false unless has_api?
-    desired_state=('running')
+    desired_state='running'
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -345,9 +318,4 @@ class ManagedContainer < Container
     service_hash = SystemUtils.create_nginx_service_hash(self)
     @container_api.dettach_service(service_hash)
   end
-
-
-
-  
-
 end

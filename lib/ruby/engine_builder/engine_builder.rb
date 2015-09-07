@@ -306,6 +306,9 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
     p :Clean_up_Failed_build
+    # FIXME: Stop it if started (ie vol builder failure)
+    # FIXME: REmove container if created
+    # FIXME: Remove image if created  
     @attached_services.each do |service_hash|
       if service_hash[:fresh]
         service_hash[:remove_all_data] = true
