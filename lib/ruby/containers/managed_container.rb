@@ -287,6 +287,7 @@ class ManagedContainer < Container
   def is_error?
     state = read_state
     return true if @setState != state
+    p "is_Error got" + state.to_s + ":" + @setState.to_s
     return false
   end
 
