@@ -34,7 +34,7 @@ class ManagedContainer < Container
   when :build
     desired_state('running') 
   when :delete
-    @setState = state    
+    @setState = 'nocontainer'    
   #  desired_state('noimage')
     when :destroy
     desired_state('nocontainer')
@@ -108,7 +108,7 @@ class ManagedContainer < Container
       end
       end
       if state != @setState
-        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
+        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
       end
       return state
     rescue Exception=>e
