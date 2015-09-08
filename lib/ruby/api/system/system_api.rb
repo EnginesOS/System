@@ -154,6 +154,8 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
+    p :load_me
+    p engine_name
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
@@ -184,6 +186,8 @@ class SystemApi < ErrorsApi
   end
 
   def _loadManagedService(service_name, service_type_dir)
+    p :load_ms
+        p engine_name
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
