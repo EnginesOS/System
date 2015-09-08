@@ -185,15 +185,14 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedService(service_name)
-    _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    s = engine_from_cache('/services/' + service_name)
+            return s unless s.nil?
+   s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    cache_engine('/services/' + service_name, s)
   end
 
   def _loadManagedService(service_name, service_type_dir)
-    p :load_ms
-        p service_name
-        s = engine_from_cache(service_type_dir + '/' + service_name)
-        return s unless s.nil?
-        
+  
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
@@ -207,7 +206,7 @@ class SystemApi < ErrorsApi
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
-    cache_engine(service_type_dir + '/' + service_name, managed_service)
+    
     managed_service
   rescue StandardError => e
     if service_name.nil? == false
