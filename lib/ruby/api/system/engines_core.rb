@@ -16,7 +16,7 @@ class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'containers/container_api.rb'
   require_relative 'containers/service_api.rb'
-  require_relative 'docker_api.rb'
+  require_relative 'docker/docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
   require_relative 'configurations_api.rb'
