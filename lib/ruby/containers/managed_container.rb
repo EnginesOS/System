@@ -181,8 +181,10 @@ class ManagedContainer < Container
     ret_val = false
     clear_error
     in_progress(:delete)
-    return task_complete if super
-    task_failed('delete')
+    r =  super
+    @last_task =  @task_at_hand 
+    @task_at_hand = nil
+    return r
   end
 
   def destroy_container
