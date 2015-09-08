@@ -1,6 +1,7 @@
 class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
+    @engines_conf_cache = {}
   end  
 
   def is_startup_complete(container)
@@ -186,6 +187,8 @@ class SystemApi < ErrorsApi
   def _loadManagedService(service_name, service_type_dir)
     p :load_ms
         p service_name
+        s = engine_from_cache(service_type_dir + '/' + service_name)
+        
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
@@ -199,6 +202,7 @@ class SystemApi < ErrorsApi
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
+    cache_engine(service_type_dir + '/' + service_name, managed_service)
     managed_service
   rescue StandardError => e
     if service_name.nil? == false
@@ -211,7 +215,18 @@ class SystemApi < ErrorsApi
     end
     log_exception(e)
   end
-
+  
+  def engine_from_cache(ident)
+    return  @engines_conf_cache[ident.to_sym] if @engines.key?(ident.to_sym)
+    return nil
+  end
+  
+  def cache_engine(ident, engine)
+    @engines_conf_cache[ident.to_sym] = engine 
+  end
+  
+ 
+  
   def getManagedServices
     begin
       ret_val = []
