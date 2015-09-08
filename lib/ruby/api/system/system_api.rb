@@ -1,6 +1,7 @@
 class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
+    @engines_conf_cache = {}
   end  
 
   def is_startup_complete(container)
@@ -154,12 +155,18 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
+    p :load_me
+    p engine_name
+    e = engine_from_cache(engine_name)
+    return e unless e.nil?
+           
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
     yaml_file = File.read(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)    
     return false if managed_engine.nil? || managed_engine == false
+    cache_engine(engine_name,managed_engine)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?
@@ -173,17 +180,20 @@ class SystemApi < ErrorsApi
     log_exception(e)
   end
 
-
-
   def loadSystemService(service_name)
     _loadManagedService(service_name, SystemConfig.RunDir + '/system_services/')
   end
 
   def loadManagedService(service_name)
-    _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    s = engine_from_cache('/services/' + service_name)
+            return s unless s.nil?
+   s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    cache_engine('/services/' + service_name, s)
+    return s
   end
 
   def _loadManagedService(service_name, service_type_dir)
+  
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
@@ -197,6 +207,7 @@ class SystemApi < ErrorsApi
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
+    
     managed_service
   rescue StandardError => e
     if service_name.nil? == false
@@ -209,7 +220,24 @@ class SystemApi < ErrorsApi
     end
     log_exception(e)
   end
-
+  
+  def engine_from_cache(ident)
+    
+    return  @engines_conf_cache[ident.to_sym] if @engines_conf_cache.key?(ident.to_sym)
+    return nil
+  end
+  
+  def delete_engine(engine_name)
+    @engines_conf_cache.delete(engine_name.to_sym)
+  end
+  
+  def cache_engine(ident, engine)
+    @engines_conf_cache[ident.to_sym] = engine 
+Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
+  end
+  
+ 
+  
   def getManagedServices
     begin
       ret_val = []

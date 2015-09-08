@@ -6,25 +6,65 @@ require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
 
-  
-
-  def current_operation=(operation)
-    @current_operation = operation
-    #     save_operation
-    #     lock_state
-  end
-  
   def desired_state(state)
-    @setState = state
+    @setState = state    
     save_state
   end
 
-  def operation_completed
-    @current_operation = nil
-    #     unlock_state
+  def in_progress(state)
+    @task_at_hand = state
+  
+  case state
+  when :create
+    desired_state('running') 
+  when :stop
+    desired_state('stopped')
+  when :start
+    desired_state('running') 
+  when :pause
+    desired_state('paused') 
+  when :restart
+    desired_state('running') 
+  when :unpause
+    desired_state('running') 
+  when :recreate
+    desired_state('running') 
+  when :rebuild
+    desired_state('running')     
+  when :build
+    desired_state('running') 
+  when :delete
+    @setState = 'nocontainer'    
+  #  desired_state('noimage')
+    when :destroy
+    desired_state('nocontainer')
+  end  
   end
-
-
+  
+ def log_error_mesg(msg, e_object)
+   task_failed(msg)
+   super  
+ end
+ 
+ def post_load
+   @last_task =  @task_at_hand = nil
+   super
+ end
+ 
+ def task_failed(msg)
+   p :task_failed
+   p msg.to_s
+   task_complete
+   return false
+ end
+ 
+  def task_complete    
+    @last_task =  @task_at_hand 
+    @task_at_hand = nil
+    save_state
+    return true
+  end
+  
   def repo
     @repository
   end
@@ -68,7 +108,7 @@ class ManagedContainer < Container
       end
       end
       if state != @setState
-        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState + ' but in ' + state + ' state'
+        @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
       end
       return state
     rescue Exception=>e
@@ -77,7 +117,6 @@ class ManagedContainer < Container
       return 'nocontainer'
     end
     
-
   def is_service?
     return true if @ctype == 'service'
     return false
@@ -142,15 +181,19 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     clear_error
-    desired_state('noimage')
-    super
+    in_progress(:delete)
+    r =  super
+    @last_task =  @task_at_hand 
+    @task_at_hand = nil
+    return r
   end
 
   def destroy_container
     return false unless has_api?
     clear_error
-    desired_state('nocontainer') # this represents the state we want and not necessarily the one we get
-    super 
+    in_progress(:destroy) # this represents the state we want and not necessarily the one we get
+    return task_complete if super
+    task_failed('destroy')
   end
 
   def setup_container
@@ -158,32 +201,36 @@ class ManagedContainer < Container
     return false unless has_api?
     ret_val = false
     state = read_state
-    desired_state('stopped')
+    in_progress(:stop)
     unless has_container?
       ret_val = @container_api.setup_container(self)
       expire_engine_info
     else
+      task_failed('setup')
       log_error_mesg('Cannot create container as container exists ',state)
     end
+    return task_complete if ret_val
+    task_failed('setup')
   end
 
   def create_container
     clear_error
     return false unless has_api?
-    desired_state('running')
+    in_progress(:create)
     return false unless super
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
+    task_complete
   rescue StandardError => e
     log_exception(e)
   end
 
   def recreate_container
     ret_val = false
-    desired_state('running')
+    in_progress(:recreate)
     destroy_container
     create_container
   end
@@ -191,38 +238,40 @@ class ManagedContainer < Container
   def unpause_container
     clear_error
     return false unless has_api?
-    desired_state('running')
+    in_progress(:unpause)
     ret_val = false
-   return false unless super
+   return task_failed('unpause') unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
+    task_complete
   end
 
   def pause_container
     clear_error
     return false unless has_api?
-    desired_state('paused')
-    return false unless super
-    @container_api.deregister_non_persistant_services(self)  
+    in_progress(:pause)
+    return task_failed('pause') unless super
+    @container_api.deregister_non_persistant_services(self)
+    task_complete
   end
 
   def stop_container
     clear_error
     return false unless has_api?
-    desired_state('stopped')   
+    in_progress(:stop)   
     @container_api.deregister_non_persistant_services(self)
-    return false unless super
-    return true
+    return task_failed('stop') unless super
+    task_complete
   end
 
   def start_container
     clear_error
     return false unless has_api?
-    ret_val = false
-    desired_state('running')
-    return false unless super
+    in_progress(:start)
+    return task_failed('start') unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
+    task_complete
   end
 
   # Register the dns
@@ -237,9 +286,12 @@ class ManagedContainer < Container
   end
 
   def restart_container
-    ret_val = start_container if stop_container
+    
+  in_progress(:restart)    
+    return task_failed('restart/stop') unless stop_container
+    return task_failed('restart/start') unless start_container 
+    task_complete    
   end
-
 
 
   def set_deployment_type(deployment_type)
@@ -249,16 +301,11 @@ class ManagedContainer < Container
   end
 
 
-
-
-  
   def save_state()
     return false unless has_api?    
-    info = @docker_info
-    expire_engine_info
+    info = @docker_info_cache
     @container_api.save_container(self)
-    @docker_info = info
-    
+    @docker_info_cache = info    
   end
 
   def save_blueprint blueprint
@@ -268,7 +315,7 @@ class ManagedContainer < Container
 
   def rebuild_container
     return false unless has_api?
-    desired_state('running')
+    in_progress(:rebuild)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -276,7 +323,8 @@ class ManagedContainer < Container
       #add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end    
-    save_state
+    return task_complete if ret_val
+    task_failed('rebuild')
   end
 
   def is_startup_complete?
@@ -284,10 +332,10 @@ class ManagedContainer < Container
     @container_api.is_startup_complete(self)
   end
 
-  def is_error?
+  def is_error?   
+    return false unless @task_at_hand.nil?
     state = read_state
-    return true if @setState != state
-    p "is_Error got" + state.to_s + ":" + @setState.to_s
+    return true if @setState != state  
     return false
   end
 

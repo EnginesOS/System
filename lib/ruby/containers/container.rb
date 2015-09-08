@@ -6,9 +6,7 @@ class Container < ErrorsApi
     managedContainer = YAML.load(yaml)
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
     managedContainer.container_api = container_api
-    managedContainer.expire_engine_info
-    managedContainer.set_running_user
-    managedContainer.lock_values
+    managedContainer.post_load
     return managedContainer
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -26,6 +24,11 @@ class Container < ErrorsApi
                 :container_api,
                 :last_result
   
+  def post_load
+   expire_engine_info
+        set_running_user
+        lock_values
+  end
   def expire_engine_info
     @docker_info_cache = false
     return true
@@ -149,7 +152,6 @@ log_exception(e)
   end
 
 def is_running?
-   expire_engine_info
    state = read_state
    return true if state == 'running'
    return false
@@ -258,10 +260,11 @@ protected
 
 def collect_docker_info
     return false unless has_api?  
+    result = true
     result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
     return false unless result
     @docker_info_cache = @last_result
-    Thread.new { sleep 3 ; expire_engine_info }
+    Thread.new { sleep 6 ; expire_engine_info }
     return result
   end
 end

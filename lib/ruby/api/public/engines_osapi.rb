@@ -34,16 +34,16 @@ class EnginesOSapi
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
     engine = build_controller.build_engine(params)
-    return failed('Build Engine:', build_controller.last_error, params.to_s) unless engine
-    return failed(params[:engine_name], 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
+    return engine if engine.is_a?(EnginesOSapiResult)
+    return failed(params[:engine_name], 'Failed to start  ' + engine.last_error, 'build_engine') unless engine.is_active?
     success(params[:engine_name], 'Build Engine')
   end
 
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
     engine = build_controller.buildEngine(repository, host, domain_name, environment)
-    return failed('Build Engine:', build_controller.last_error, host.to_s) unless engine
-    return failed(host.to_s, 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
+    return engine if engine.is_a?(EnginesOSapiResult)
+    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
     success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
 
