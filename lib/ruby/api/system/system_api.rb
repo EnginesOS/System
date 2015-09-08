@@ -228,7 +228,7 @@ class SystemApi < ErrorsApi
   end
   
   def delete_engine(engine_name)
-    @engines_conf_cache.remove(engine_name.to_sym)
+    @engines_conf_cache.delete(engine_name.to_sym)
   end
   
   def cache_engine(ident, engine)
