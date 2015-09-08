@@ -175,8 +175,6 @@ class SystemApi < ErrorsApi
     log_exception(e)
   end
 
-
-
   def loadSystemService(service_name)
     _loadManagedService(service_name, SystemConfig.RunDir + '/system_services/')
   end
@@ -187,7 +185,7 @@ class SystemApi < ErrorsApi
 
   def _loadManagedService(service_name, service_type_dir)
     p :load_ms
-        p engine_name
+        p service_name
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
