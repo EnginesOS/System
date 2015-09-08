@@ -221,7 +221,8 @@ class SystemApi < ErrorsApi
   end
   
   def engine_from_cache(ident)
-    return  @engines_conf_cache[ident.to_sym] if @engines.key?(ident.to_sym)
+    
+    return  @engines_conf_cache[ident.to_sym] if @engines_conf_cache.key?(ident.to_sym)
     return nil
   end
   
