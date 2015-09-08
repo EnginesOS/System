@@ -226,6 +226,10 @@ class SystemApi < ErrorsApi
     return nil
   end
   
+  def delete_engine(engine_name)
+    @engines_conf_cache.remove(engine_name.to_sym)
+  end
+  
   def cache_engine(ident, engine)
     @engines_conf_cache[ident.to_sym] = engine 
 Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
