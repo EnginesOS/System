@@ -34,7 +34,8 @@ class ManagedContainer < Container
   when :build
     desired_state('running') 
   when :delete
-    desired_state('noimage')
+    @setState = state    
+  #  desired_state('noimage')
     when :destroy
     desired_state('nocontainer')
   end  
