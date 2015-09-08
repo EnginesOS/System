@@ -157,12 +157,16 @@ class SystemApi < ErrorsApi
   def loadManagedEngine(engine_name)
     p :load_me
     p engine_name
+    e = engine_from_cache(engine_name)
+    return e unless e.nil?
+           
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
     yaml_file = File.read(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)    
     return false if managed_engine.nil? || managed_engine == false
+    cache_engine(engine_name,managed_engine)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?
@@ -188,6 +192,7 @@ class SystemApi < ErrorsApi
     p :load_ms
         p service_name
         s = engine_from_cache(service_type_dir + '/' + service_name)
+        return s unless s.nil?
         
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
