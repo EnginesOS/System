@@ -17,7 +17,7 @@ class BuildController
     SystemStatus.build_complete(params)
     return engine
   rescue StandardError => e
-    build_failed(params, engine_builder.last_error)
+    build_failed(params, e.to_s)
   end
 
   def get_engine_builder_streams
