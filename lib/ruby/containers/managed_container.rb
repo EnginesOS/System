@@ -45,6 +45,11 @@ class ManagedContainer < Container
    super  
  end
  
+ def post_load
+   @last_task =  @task_at_hand = nil
+   super
+ end
+ 
  def task_failed(msg)
    p :task_failed
    p msg.to_s
@@ -324,7 +329,8 @@ class ManagedContainer < Container
     @container_api.is_startup_complete(self)
   end
 
-  def is_error?
+  def is_error?   
+    return false unless @task_at_hand.nil?
     state = read_state
     return true if @setState != state  
     return false
