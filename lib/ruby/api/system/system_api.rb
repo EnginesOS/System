@@ -189,6 +189,7 @@ class SystemApi < ErrorsApi
             return s unless s.nil?
    s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
     cache_engine('/services/' + service_name, s)
+    return s
   end
 
   def _loadManagedService(service_name, service_type_dir)
