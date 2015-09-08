@@ -53,13 +53,14 @@ class ManagedContainer < Container
  def task_failed(msg)
    p :task_failed
    p msg.to_s
-   task_complete  
+   task_complete
    return false
  end
  
   def task_complete    
     @last_task =  @task_at_hand 
     @task_at_hand = nil
+    save_state
     return true
   end
   
@@ -299,10 +300,9 @@ class ManagedContainer < Container
 
   def save_state()
     return false unless has_api?    
-    info = @docker_info
-    expire_engine_info
+    info = @docker_info_cache
     @container_api.save_container(self)
-    @docker_info = info    
+    @docker_info_cache = info    
   end
 
   def save_blueprint blueprint
