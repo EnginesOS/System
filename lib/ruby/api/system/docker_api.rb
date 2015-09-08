@@ -4,7 +4,7 @@ class DockerApi < ErrorsApi
     commandargs = container_commandline_args(container)
     commandargs = 'docker run  -d ' + commandargs
     SystemUtils.debug_output('create cont', commandargs)
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
     log_exception(e)
@@ -13,7 +13,7 @@ class DockerApi < ErrorsApi
   def start_container(container)
     clear_error
     commandargs = 'docker start ' + container.container_name
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     log_exception(e)
   end
@@ -21,7 +21,7 @@ class DockerApi < ErrorsApi
   def stop_container(container)
     clear_error
     commandargs = 'docker stop ' + container.container_name
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     log_exception(e)
   end
@@ -29,7 +29,7 @@ class DockerApi < ErrorsApi
   def pause_container(container)
     clear_error
     commandargs = 'docker pause ' + container.container_name
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     log_exception(e)
   end
@@ -66,7 +66,7 @@ class DockerApi < ErrorsApi
   def unpause_container(container)
     clear_error
     commandargs = 'docker unpause ' + container.container_name
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     log_exception(e)
   end
@@ -85,7 +85,12 @@ class DockerApi < ErrorsApi
     if cmdline.include?('docker exec')
       docker_exec = 'docker exec -u ' + container.cont_userid + ' '
       cmdline.gsub!(/docker exec/, docker_exec)
-    end
+    end    
+    run_docker_cmd(cmdline)
+  end
+  
+    def run_docker_cmd(cmdline)
+    
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
     if container.last_result.start_with?('[') && !container.last_result.end_with?(']')  # || container.last_result.end_with?(']') )
@@ -96,7 +101,7 @@ class DockerApi < ErrorsApi
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
       return true
     else
-      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
+     # log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
       return false
     end
   rescue StandardError => e
@@ -125,7 +130,7 @@ class DockerApi < ErrorsApi
   def inspect_container(container)
     clear_error
     commandargs = ' docker inspect ' + container.container_name
-    execute_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs)
   rescue StandardError => e
     log_exception(e)
   end
@@ -133,7 +138,7 @@ class DockerApi < ErrorsApi
   def destroy_container(container)
     clear_error
     commandargs = 'docker  rm ' + container.container_name
-    unless execute_docker_cmd(commandargs, container)
+    unless run_docker_cmd(commandargs)
       log_error_mesg(container.last_error, container)
       return false if image_exist?(container.image)
     end
@@ -147,7 +152,7 @@ class DockerApi < ErrorsApi
   def delete_image(container)
     clear_error
     commandargs = 'docker rmi -f ' + container.image
-    ret_val = execute_docker_cmd(commandargs, container)
+    ret_val =  run_docker_cmd(commandargs)
     clean_up_dangling_images if ret_val == true
     return ret_val
   rescue StandardError => e
@@ -155,10 +160,10 @@ class DockerApi < ErrorsApi
     log_exception(e)
   end
 
-  def docker_exec(container, command, args)
-    run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args
-    execute_docker_cmd(run_args, container)
-  end
+#  def docker_exec(container, command, args)
+#    run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args
+#    execute_docker_cmd(run_args, container)
+#  end
 
   def get_environment_options(container)
     e_option = ''
