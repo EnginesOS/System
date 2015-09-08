@@ -223,6 +223,7 @@ class SystemApi < ErrorsApi
   
   def cache_engine(ident, engine)
     @engines_conf_cache[ident.to_sym] = engine 
+Thread.new { sleep 2; @engines_conf_cache[ident.to_sym] = nil }
   end
   
  
