@@ -14,7 +14,7 @@ volumes:
  config: !ruby/object:Volume
   name: weblogs
   remotepath: "/var/log/www/"
-  localpath: "/var/log/engines/servicers/nginx/"
+  localpath: "/var/log/engines/services/nginx/"
   mapping_permissions: ro
 port: 
 eports:
