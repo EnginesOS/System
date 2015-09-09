@@ -17,6 +17,10 @@ class ServiceApi < ContainerApi
     @engines_core.pull_image(image_name)
   end
 
+  def create
+    SystemUtils.execute_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
+    super
+  end
   #  def load_and_attach_shared_services(service)
   #    @engines_core.load_and_attach_shared_services(service)
   #  end

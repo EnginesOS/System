@@ -20,6 +20,11 @@ class NetworkSystemRegistry < ErrorsApi
     p :new_network_system_reg
   end
 
+  def api_shutdown
+    @registry_socket.shutdown
+    @registry_socket.close
+    p "Closed Socket"
+  end
   def registry_server_ip
     @core_api.get_registry_ip
   end

@@ -1,0 +1,30 @@
+--- !ruby/object:ManagedService
+container_name: wwwstats
+publisher_namespace: EnginesSystem
+type_path: wwwstats
+ctype: service
+persistant: true
+last_error: 
+memory: '16'
+hostname: wwwstats
+domain_name: 
+environments: []
+image: engines/wwwstats:_Engines_System(release)
+volumes:
+ config: !ruby/object:Volume
+  name: weblogs
+  remotepath: "/var/log/www/"
+  localpath: "/var/log/engines/services/nginx/"
+  mapping_permissions: ro
+port: 
+eports:
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"
+- "nginx"

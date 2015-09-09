@@ -55,7 +55,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name])
+    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
   end
@@ -66,6 +66,12 @@ class EngineBuilder < ErrorsApi
       return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
       return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
       return build_container
+     end
+     
+     def build_failed(errmesg)
+       log_build_errors(errmesg)
+       @result_mesg = errmesg
+       post_failed_build_clean_up
      end
      
     def build_container
@@ -82,7 +88,7 @@ class EngineBuilder < ErrorsApi
         read_web_port
       end
       read_web_user
-      return post_failed_build_clean_up unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments)    
+      return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments)    
       apply_templates_to_environments
       create_engines_config_files
       index = 0
@@ -123,7 +129,7 @@ class EngineBuilder < ErrorsApi
         log_build_output('Creating Deploy Image')
         mc = create_managed_container
         return post_failed_build_clean_up if mc == false
-          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)          
+            @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')

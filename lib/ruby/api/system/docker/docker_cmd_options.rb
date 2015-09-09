@@ -7,8 +7,8 @@ module DockerCmdOptions
     return false if volume_option == false || environment_options == false || port_options == false
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/init.sh' unless container.conf_self_start
-    commandargs = '-h ' + container.hostname + \
-    environment_options + \
+    commandargs = '-h ' + container.hostname +  ' --dns-search=' + SystemConfig.internal_domain + ' ' \
+    + environment_options + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
     port_options + \
