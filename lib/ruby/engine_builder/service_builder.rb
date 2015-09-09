@@ -1,10 +1,10 @@
 class ServiceBuilder < ErrorsApi
   
-  def initialize(service_manager, templater, engine_name)
+  def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
     @templater = templater
-    @attached_services = []
+    @attached_services =  attached_services 
       p @engine_name 
   end
     
@@ -17,7 +17,7 @@ class ServiceBuilder < ErrorsApi
     return log_error_mesg('Failed to Attach ', service_hash) unless @service_manager.add_service(service_hash)
     @attached_services.push(service_hash)
   end
-  return @attached_services
+  return true
 end
 
 def create_persistant_services(services,  environ)
@@ -51,11 +51,13 @@ def create_persistant_services(services,  environ)
      if @service_manager.add_service(service_hash)
        @attached_services.push(service_hash)    
        release_orphan(service_hash) if free_orphan
+     else
+       return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
      end
      end
      service_cnt += 1
    end
-  return @attached_services
+  return true
  end
 
  def use_orphan(service_hash)
