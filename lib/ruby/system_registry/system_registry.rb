@@ -7,6 +7,10 @@ class SystemRegistry < ErrorsApi
     p :NEW_SYSTEM_REG
   end
 
+  def api_shutdown
+    @network_registry.api_shutdown
+  end
+  
   def test_result(request_result_hash)
     clear_error
     if request_result_hash.nil? || !request_result_hash

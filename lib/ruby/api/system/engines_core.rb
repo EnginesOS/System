@@ -36,6 +36,10 @@ class EnginesCore < ErrorsApi
 
   attr_reader :container_api, :service_api
 
+  def api_shutdown
+    @registry_handler.api_shutdown
+  end
+  
   def get_registry_ip
     @registry_handler.get_registry_ip
   end
