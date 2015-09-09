@@ -68,6 +68,12 @@ class EngineBuilder < ErrorsApi
       return build_container
      end
      
+     def build_failed(errmesg)
+       log_build_errors(errmesg)
+       @result_mesg = errmesg
+       post_failed_build_clean_up
+     end
+     
     def build_container
       log_build_output('Reading Blueprint')
       @blueprint = load_blueprint
@@ -82,7 +88,7 @@ class EngineBuilder < ErrorsApi
         read_web_port
       end
       read_web_user
-      return post_failed_build_clean_up unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments)    
+      return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments)    
       apply_templates_to_environments
       create_engines_config_files
       index = 0
