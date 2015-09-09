@@ -123,7 +123,7 @@ class EngineBuilder < ErrorsApi
         log_build_output('Creating Deploy Image')
         mc = create_managed_container
         return post_failed_build_clean_up if mc == false
-          @attached_services =  @service_builder.create_non_persistant_services(@blueprint_reader.services)          
+            @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')
