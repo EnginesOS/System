@@ -338,7 +338,7 @@ class ManagedContainer < Container
     state = read_state
     p 'read ' + state.to_s + " for " + @setState
     return true if @setState != state
-    p :no_error
+    p :no_error_
     p @container_name  
     return false
   end
