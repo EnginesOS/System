@@ -53,6 +53,7 @@ class Container < ErrorsApi
                 state = 'nocontainer'
               end
             end
+            p state + " for " + container_name
            return state
 rescue StandardError => e
  log_exception(e)
