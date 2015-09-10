@@ -14,6 +14,9 @@ class ManagedService < ManagedContainer
     return @ctype
   end
 
+  def state
+    read_state  
+  end
   def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
     @last_error = 'None'
     @container_name = name
