@@ -40,7 +40,7 @@ class Container < ErrorsApi
   
   def read_state
     info = docker_info
-    state = nil
+    state = 'nocontainer'
             if info[0]['State']
               if info[0]['State']['Running']
                 state = 'running'
@@ -53,7 +53,7 @@ class Container < ErrorsApi
                 state = 'nocontainer'
               end
             end
-            p state + " for " + container_name
+            p state.to_s + " for " + container_name
            return state
 rescue StandardError => e
  log_exception(e)
