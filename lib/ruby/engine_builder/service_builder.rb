@@ -29,7 +29,7 @@ def create_persistant_services(services, environ, existing)
      return log_error_mesg('no matching service definition',self) if service_def.nil?
      if service_def[:persistant]    
        service_hash[:persistant] = true
-         process_persistant_service(service_hash)       
+         process_persistant_service(service_hash, environ, use_existing)       
      end
      service_cnt += 1
    end
