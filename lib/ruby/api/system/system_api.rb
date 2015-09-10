@@ -70,7 +70,7 @@ class SystemApi < ErrorsApi
     ret_val = {}
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
-      container.container_id = container_id
+     
     end
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
