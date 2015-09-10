@@ -186,9 +186,12 @@ class SystemApi < ErrorsApi
 
   def loadManagedService(service_name)
     s = engine_from_cache('/services/' + service_name)
+    p :service_from_cache unless s.nil?
             return s unless s.nil?
    s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
     cache_engine('/services/' + service_name, s)
+    p :loaded_service
+    p service_name
     return s
   end
 
