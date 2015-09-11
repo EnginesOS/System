@@ -1,10 +1,11 @@
 class ServiceBuilder < ErrorsApi
   
-  def initialize(service_manager, templater, engine_name, attached_services)
+  def initialize(builder,service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
     @templater = templater
     @attached_services =  attached_services 
+    @builder = builder
       p @engine_name 
   end
     
@@ -36,11 +37,11 @@ def create_persistant_services(services, environ, use_existing)
  end
 
  def process_persistant_service(service_hash, environ, use_existing)
-   free_orphan = false
+   free_orphan = false   
    service_hash = set_top_level_service_params(service_hash, @engine_name)
-          s = match_service_to_existing(service_hash, use_existing) unless use_existing.nil?
-        if s != false
-          service_hash = s
+        existing = match_service_to_existing(service_hash, use_existing) 
+        if existing != false
+          service_hash = existing
           @first_build = false
           free_orphan = true if @service_manager.match_orphan_service(service_hash) == true
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
@@ -49,16 +50,17 @@ def create_persistant_services(services, environ, use_existing)
           free_orphan = true
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
-          if service_hash[:type_path] == 'filesystem/local/filesystem'
-              result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
-                return log_error_mesg('failed to create fs',self) unless result
-                return result
-          end
+
           service_hash[:fresh] = true
         else # elseif over attach to existing true attached to existing
           service_hash[:fresh] = false
           return log_error_mesg('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self)
         end
+       
+   if service_hash[:type_path] == 'filesystem/local/filesystem'
+       result = add_file_service(service_hash)
+         return log_error_mesg('failed to create fs',self) unless result                
+   end 
         p :attach_service
         p service_hash
         @templater.fill_in_dynamic_vars(service_hash)
@@ -75,6 +77,7 @@ def create_persistant_services(services, environ, use_existing)
  end
  
  def match_service_to_existing(service_hash, use_existing)
+   return false if use_existing.nil?
    use_existing.each do |existing_service|
      return false if existing_service[:create_type] == 'new'
      if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
@@ -124,16 +127,17 @@ def create_persistant_services(services, environ, use_existing)
   end
 
   def add_file_service(name, dest) 
+    
     #log_build_output('Add File Service ' + name)
-    dest = name if dest.nil? || dest == ''
+    dest = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if dest.start_with?('/home/app/')
       @builder.app_is_persistant = true     
     else
       dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
     end
     permissions = PermissionRights.new(@container_name, '', '')
-    vol = Volume.new(name, SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name, dest, 'rw', permissions)
-    @volumes[name] = vol
+    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
+    @volumes[service_hash[:variables][:name]] = vol
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
