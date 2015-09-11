@@ -229,7 +229,7 @@ end
   def write_file_service
     write_line('#File Service')
     write_line('#FS Env')
-    @builder.volumes.each do |vol|
+    @builder.volumes.each_value do |vol|
       dest = File.basename(vol.remotepath)         
       write_line('RUN mkdir -p $CONTFSVolHome/' + dest)      
     end
