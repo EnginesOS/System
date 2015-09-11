@@ -126,7 +126,7 @@ def create_persistant_services(services, environ, use_existing)
     return ServiceManager.set_top_level_service_params(service_hash, container_name)
   end
 
-  def add_file_service(name, dest) 
+  def add_file_service(service_hash) 
     
     #log_build_output('Add File Service ' + name)
     dest = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
@@ -135,9 +135,9 @@ def create_persistant_services(services, environ, use_existing)
     else
       dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
     end
-    permissions = PermissionRights.new(@container_name, '', '')
-    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
-    @volumes[service_hash[:variables][:name]] = vol
+    permissions = PermissionRights.new(@engine_name , '', '')
+    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @engine_name  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
+    builder.volumes[service_hash[:variables][:name]] = vol
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
