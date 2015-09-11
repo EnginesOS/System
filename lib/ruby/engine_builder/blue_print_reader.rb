@@ -147,7 +147,7 @@ class BluePrintReader
   def add_service(service_hash)
     p :add_service
     p service_hash
-   # @builder.templater.fill_in_dynamic_vars(service_hash)
+    @builder.templater.fill_in_dynamic_vars(service_hash)
     @services.push(service_hash)   
     return true
   end
