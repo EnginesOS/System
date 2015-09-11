@@ -135,7 +135,7 @@ def create_persistant_services(services, environ, use_existing)
     if service_hash[:variables][:engine_path].start_with?('/home/app/')
       @builder.app_is_persistant = true     
     else
-      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless dest.start_with?('/home/fs/')
+      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/')
     end
     permissions = PermissionRights.new(@engine_name , '', '')
     vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @engine_name  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)

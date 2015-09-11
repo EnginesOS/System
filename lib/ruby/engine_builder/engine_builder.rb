@@ -321,7 +321,7 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @mc.nil?
-      @mc.stop
+      @mc.stop_container
       @mc.destroy_container      
     end
     # FIXME: Remove image if created  
