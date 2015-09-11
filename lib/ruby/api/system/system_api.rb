@@ -40,7 +40,7 @@ class SystemApi < ErrorsApi
     last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
-    container.last_error = ''
+  
     serialized_object = YAML.dump(container)
     container.container_api = api
     container.last_result = last_result
@@ -70,7 +70,7 @@ class SystemApi < ErrorsApi
     ret_val = {}
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
-      container.container_id = container_id
+     
     end
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
@@ -186,9 +186,12 @@ class SystemApi < ErrorsApi
 
   def loadManagedService(service_name)
     s = engine_from_cache('/services/' + service_name)
-            return s unless s.nil?
+    p :service_from_cache unless s.nil?
+            return s unless s.nil?            
    s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
     cache_engine('/services/' + service_name, s)
+    p :loaded_service
+    p service_name
     return s
   end
 

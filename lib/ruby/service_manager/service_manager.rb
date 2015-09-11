@@ -12,6 +12,10 @@ class ServiceManager  < ErrorsApi
     @system_registry = SystemRegistry.new(@core_api)
   end
 
+  def get_service_entry(service_hash)
+     test_registry_result(@system_registry.get_service_entry(service_hash))
+   end
+   
   def is_service_persistant?(service_hash)
     unless service_hash.key?(:persistant)
       persist = software_service_persistance(service_hash)
@@ -44,6 +48,7 @@ class ServiceManager  < ErrorsApi
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
+      return true if service_hash.key?(:shared) && service_hash[:shared]
     if is_service_persistant?(service_hash)
       return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
@@ -128,6 +133,7 @@ class ServiceManager  < ErrorsApi
       log_exception(e)
   end
 
+ 
   #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistant services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
@@ -135,14 +141,14 @@ class ServiceManager  < ErrorsApi
   def rm_remove_engine_services(params)
     clear_error
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
-    services.each do | service |
-      if params[:remove_all_data]
+    services.each do | service |      
+      if params[:remove_all_data] && service.key?(:shared) && service[:shared]
         service[:remove_all_data] = params[:remove_all_data]
-        return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)
-        @system_registry.remove_from_managed_engines_registry(service)
+        return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)        
       else
         return log_error_mesg('Failed to orphan service ',service) unless orphanate_service(service)
       end
+      @system_registry.remove_from_managed_engines_registry(service)      
     end
     return true 
     rescue StandardError => e

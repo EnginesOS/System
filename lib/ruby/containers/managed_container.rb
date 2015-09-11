@@ -6,6 +6,8 @@ require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
 
+  attr_accessor :task_at_hand
+  
   def desired_state(state)
     @setState = state    
     save_state
@@ -96,7 +98,7 @@ class ManagedContainer < Container
   :conf_self_start
   
   def read_state
-      return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
+      #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
       if docker_info.is_a?(FalseClass)
         log_error_mesg('Failed to inspect container', self)
         state = 'nocontainer'
@@ -304,6 +306,7 @@ class ManagedContainer < Container
   def save_state()
     return false unless has_api?    
     info = @docker_info_cache
+    @docker_info_cache = false
     @container_api.save_container(self)
     @docker_info_cache = info    
   end
@@ -335,7 +338,10 @@ class ManagedContainer < Container
   def is_error?   
     return false unless @task_at_hand.nil?
     state = read_state
-    return true if @setState != state  
+    p 'read ' + state.to_s + " for " + @setState
+    return true if @setState != state
+    p :no_error_
+    p @container_name  
     return false
   end
 

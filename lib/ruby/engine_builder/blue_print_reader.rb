@@ -149,31 +149,10 @@ class BluePrintReader
     p :add_service
     p service_hash
     @builder.templater.fill_in_dynamic_vars(service_hash)
-    if service_hash[:type_path] == 'filesystem/local/filesystem'
-        result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
-          @services.push(service_hash) if result
-          return result
-    else
-      @services.push(service_hash)
-    end
+      @services.push(service_hash)   
     return true
   end
 
-  def add_file_service(name, dest) 
-    log_build_output('Add File Service ' + name)
-    dest = name if dest.nil? || dest == ''
-    if dest.start_with?('/home/app/')
-      @builder.app_is_persistant = true     
-    else
-      dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
-    end
-    permissions = PermissionRights.new(@container_name, '', '')
-    vol = Volume.new(name, SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name, dest, 'rw', permissions)
-    @volumes[name] = vol
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-  end
 
   def read_os_packages
     log_build_output('Read OS Packages')

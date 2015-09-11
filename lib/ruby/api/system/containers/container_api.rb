@@ -146,11 +146,13 @@ class ContainerApi < ErrorsApi
 
   def start_dependancies(container)
     container.dependant_on.each do |service_name|
+      p :checking 
+      p service_name
       service = @engines_core.loadManagedService(service_name)
       return log_error_mesg('Failed to load ', service_name) unless service
       unless service.is_running?
         if service.has_container?
-          if service.is_active?
+          if service.is_active?            
             return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
             return log_error_mesg('Failed to start ', service_name) if !service.start_container
           end
