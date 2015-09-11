@@ -46,9 +46,9 @@ class EnginesCore < ErrorsApi
 
     hashes.each do |service_hash|
       p service_hash
-      sites.push(service_hash[:fqdn])
+      sites.push(service_hash[:variables][:fqdn])
     end
-    
+    return sites
     rescue StandardError => e
        log_exception(e)
   end
