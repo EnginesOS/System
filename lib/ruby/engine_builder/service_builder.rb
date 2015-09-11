@@ -44,6 +44,7 @@ def create_persistant_services(services, environ, use_existing)
         existing = match_service_to_existing(service_hash, use_existing) 
         if existing != false
           service_hash = existing
+          service_hash[:shared] = true
           @first_build = false
           free_orphan = true if @service_manager.match_orphan_service(service_hash) == true
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
@@ -137,8 +138,8 @@ def create_persistant_services(services, environ, use_existing)
     else
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/')
     end
-    permissions = PermissionRights.new(@engine_name , '', '')
-    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @engine_name  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
+    permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
+    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
     @volumes[service_hash[:variables][:name]] = vol
     return true
   rescue StandardError => e
