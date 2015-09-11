@@ -41,7 +41,7 @@ class EnginesCore < ErrorsApi
       query[:type_path]='nginx'
       query[:publisher_namespace] = "EnginesSystem"
     sites = []
-    hashes = all_engines_registered_to('nginx')
+    hashes = service_manager.all_engines_registered_to('nginx')
     hashes.each do |service_hash|
       p service_hash
       sites.push(service_hash[:fqdn])
