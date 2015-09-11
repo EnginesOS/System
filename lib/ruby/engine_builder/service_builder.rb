@@ -51,7 +51,7 @@ def create_persistant_services(services, environ, use_existing)
           @first_build = true
           if service_hash[:type_path] == 'filesystem/local/filesystem'
               result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
-                return log_err_mesg('failed to create fs',self) unless result
+                return log_error_mesg('failed to create fs',self) unless result
                 return result
           end
           service_hash[:fresh] = true
@@ -124,7 +124,7 @@ def create_persistant_services(services, environ, use_existing)
   end
 
   def add_file_service(name, dest) 
-    log_build_output('Add File Service ' + name)
+    #log_build_output('Add File Service ' + name)
     dest = name if dest.nil? || dest == ''
     if dest.start_with?('/home/app/')
       @builder.app_is_persistant = true     
