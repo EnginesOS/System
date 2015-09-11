@@ -1,5 +1,7 @@
 class ServiceBuilder < ErrorsApi
   
+  attr_reader :volumes
+  
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
