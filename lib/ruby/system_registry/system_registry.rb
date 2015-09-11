@@ -68,6 +68,10 @@ class SystemRegistry < ErrorsApi
     test_result(send_request('release_orphan', params))
   end
 
+  def all_engines_registered_to(service_type)
+    test_result(send_request('all_engines_registered_to', service_type))
+  end 
+  
   def reparent_orphan(params)
     p :reparent_orphan
     p params

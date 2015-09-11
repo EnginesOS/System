@@ -36,6 +36,21 @@ class EnginesCore < ErrorsApi
 
   attr_reader :container_api, :service_api
 
+  def  taken_hostnames
+    query= {}
+      query[:type_path]='nginx'
+      query[:publisher_namespace] = "EnginesSystem"
+    sites = []
+    hashes = all_engines_registered_to('nginx')
+    hashes.each do |service_hash|
+      p service_hash
+      sites.push(service_hash[:fqdn])
+    end
+    
+    rescue StandardError => e
+       log_exception(e)
+  end
+  
   def api_shutdown
     @registry_handler.api_shutdown
   end

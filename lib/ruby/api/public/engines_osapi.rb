@@ -29,6 +29,23 @@ class EnginesOSapi
   def first_run_required?
     FirstRunWizard.required?
   end
+  
+  def reserved_engine_names
+    names = list_apps
+    names.concat(list_services)
+    names.concat(list_system_services)
+  end
+  
+  def list_system_services
+    services = []
+    services.push('registry')
+    return services
+  end
+  
+  def reserved_hostnames
+     @core_api.taken_hostnames
+  end
+  
 
   # Build stuff
   def build_engine(params)
