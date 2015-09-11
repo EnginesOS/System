@@ -55,7 +55,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
+    @service_builder = ServiceBuilder.new(self, @core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
   end
@@ -317,8 +317,8 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @mc.nil?
-      mc.stop
-      mc.destroy_container      
+      @mc.stop
+      @mc.destroy_container      
     end
     # FIXME: Remove image if created  
     @attached_services.each do |service_hash|
@@ -461,6 +461,7 @@ class EngineBuilder < ErrorsApi
   def create_managed_container
     log_build_output('Creating ManagedEngine')
     @build_params[:web_port] = @web_port
+    @build_params[:volumes] = @service_builder.volumes
     @build_params[:image] = @build_params[:engine_name]
     @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
     @mc.save_state # no running.yaml throws a no such container so save so others can use
