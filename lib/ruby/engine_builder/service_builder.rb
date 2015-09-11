@@ -20,11 +20,10 @@ class ServiceBuilder < ErrorsApi
   return true
 end
 
-def create_persistant_services(services, environ, existing)
+def create_persistant_services(services, environ, use_existing)
    service_cnt = 0
  
    services.each do |service_hash|
-     free_orphan = false
      service_def = get_service_def(service_hash)
      return log_error_mesg('no matching service definition',self) if service_def.nil?
      if service_def[:persistant]    
@@ -37,6 +36,7 @@ def create_persistant_services(services, environ, existing)
  end
 
  def process_persistant_service(service_hash, environ, use_existing)
+   free_orphan = false
    service_hash = set_top_level_service_params(service_hash, @engine_name)
           s = match_service_to_existing(service_hash, use_existing) unless use_existing.nil?
         if s != false
@@ -80,7 +80,7 @@ def create_persistant_services(services, environ, existing)
   return false
  end
  
- def use_active_service(service_hash,existing_service )
+ def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
   s[:shared]=true
   return s
