@@ -55,7 +55,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-    @service_builder = ServiceBuilder.new(self, @core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
   end
