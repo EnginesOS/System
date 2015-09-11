@@ -49,6 +49,11 @@ def create_persistant_services(services, environ, use_existing)
           free_orphan = true
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
+          if service_hash[:type_path] == 'filesystem/local/filesystem'
+              result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
+                return log_err_mesg('failed to create fs',self) unless result
+                return result
+          end
           service_hash[:fresh] = true
         else # elseif over attach to existing true attached to existing
           service_hash[:fresh] = false
@@ -117,5 +122,20 @@ def create_persistant_services(services, environ, use_existing)
   def set_top_level_service_params(service_hash, container_name)
     return ServiceManager.set_top_level_service_params(service_hash, container_name)
   end
- 
+
+  def add_file_service(name, dest) 
+    log_build_output('Add File Service ' + name)
+    dest = name if dest.nil? || dest == ''
+    if dest.start_with?('/home/app/')
+      @builder.app_is_persistant = true     
+    else
+      dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
+    end
+    permissions = PermissionRights.new(@container_name, '', '')
+    vol = Volume.new(name, SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name, dest, 'rw', permissions)
+    @volumes[name] = vol
+    return true
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
 end
