@@ -1,0 +1,12 @@
+parent_engine: wwwstats
+publisher_namespace: EnginesSystem
+type_path: nginx
+service_handle: email_admin
+service_container_name: nginx
+container_type: service
+persistant: false
+variables:
+ proto: https
+ port: 8000
+ fqdn: wwwstats._Engines_System(default_domain)
+ internal_dir: /
