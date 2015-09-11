@@ -456,7 +456,7 @@ class ServiceManager  < ErrorsApi
   end
 
   def all_engines_registered_to(service_type)
-   test_registry_result(@system_registry.all_engines_registered_to?(service_type))  
+   test_registry_result(@system_registry.all_engines_registered_to(service_type))  
         rescue StandardError => e
           log_exception(e)
   end
