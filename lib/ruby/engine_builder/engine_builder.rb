@@ -59,6 +59,10 @@ class EngineBuilder < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def volumes
+  return @service_builder.volumes
+  end
 
   def rebuild_managed_container(engine)
        @engine = engine
