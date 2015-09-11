@@ -8,7 +8,7 @@ class ManagedEngine < ManagedContainer
     @image  = build_params[:image]   
     @last_error = 'None'   
     @protocol = build_params[:http_protocol]
-    @volumes = runtime_params.volumes
+    @volumes = build_params[:volumes]
     @eports = runtime_params.worker_ports
     @environments = runtime_params.environments
     @framework = runtime_params.framework

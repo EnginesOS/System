@@ -461,6 +461,7 @@ class EngineBuilder < ErrorsApi
   def create_managed_container
     log_build_output('Creating ManagedEngine')
     @build_params[:web_port] = @web_port
+    @build_params[:volumes] = @service_builder.volumes
     @build_params[:image] = @build_params[:engine_name]
     @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
     @mc.save_state # no running.yaml throws a no such container so save so others can use

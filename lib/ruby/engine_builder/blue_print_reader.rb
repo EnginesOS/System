@@ -30,7 +30,6 @@ class BluePrintReader
               :worker_commands,
               :cron_jobs,
               :sed_strings,
-              :volumes,
               :data_uid,
               :data_gid,
               :cron_job_list,
@@ -134,7 +133,7 @@ class BluePrintReader
   end
 
   def read_services
-    @volumes = {}
+ 
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
     return true unless services.is_a?(Array) # not an error just nada

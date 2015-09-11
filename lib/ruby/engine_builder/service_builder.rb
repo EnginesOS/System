@@ -1,11 +1,11 @@
 class ServiceBuilder < ErrorsApi
   
-  def initialize(builder,service_manager, templater, engine_name, attached_services)
+  def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
     @templater = templater
     @attached_services =  attached_services 
-    @builder = builder
+    @volumes = {}
       p @engine_name 
   end
     
@@ -127,7 +127,7 @@ def create_persistant_services(services, environ, use_existing)
   end
 
   def add_file_service(service_hash) 
-    
+    p 'Add File Service ' + service_hash[:variables][:name].to_s
     #log_build_output('Add File Service ' + name)
     dest = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if dest.start_with?('/home/app/')
@@ -137,7 +137,7 @@ def create_persistant_services(services, environ, use_existing)
     end
     permissions = PermissionRights.new(@engine_name , '', '')
     vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @engine_name  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
-    builder.volumes[service_hash[:variables][:name]] = vol
+    @volumes[service_hash[:variables][:name]] = vol
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
