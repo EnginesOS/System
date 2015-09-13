@@ -27,7 +27,9 @@ class EngineBuilder < ErrorsApi
   :first_build,
   :memory,
   :result_mesg,
-  :build_params
+  :build_params,
+  :data_uid,
+  :data_gid
 
   attr_accessor :app_is_persistant
   class BuildError < StandardError
