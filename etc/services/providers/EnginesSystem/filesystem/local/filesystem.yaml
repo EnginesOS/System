@@ -18,6 +18,32 @@ attach_requires_restart: true
 service_handle_field: name
 setup_params:
 consumer_params:
+ user:
+  name: user
+  immutable: true
+  label: user
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Engines_Builder(data_uid)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
+ group:
+  name: group
+  immutable: true
+  label: group
+  regex_validator: ".*"
+  tooltip: "service tag name"
+  field_type: "text_field"
+  hint: " "
+  placeholder: " "
+  mandatory: true
+  value: "_Engines_Builder(group_uid)"
+  comment: " "
+  regex_invalid_message: "wrong go back and try again"
  name:
   name: name
   immutable: true

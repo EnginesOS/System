@@ -55,6 +55,8 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
+    @data_uid = '11111'
+    @data_gid = '11111'
     @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
@@ -92,6 +94,7 @@ class EngineBuilder < ErrorsApi
         read_web_port
       end
       read_web_user
+      
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
       create_engines_config_files

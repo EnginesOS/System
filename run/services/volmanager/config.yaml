@@ -12,10 +12,15 @@ domain_name:
 environments: []
 image: engines/fs:_Engines_System(release)
 volumes: 
+ fs_rw: !ruby/object:Volume
+  name: fs_rw
+  remotepath: "/var/fs/local/"
+  localpath: "/var/lib/engines/fs/"
+  mapping_permissions: "rw"
 eports: []
 repo: na
 last_result:
-setState: nocontainer
+setState: running
 nginxored: false
 databases: []
 conf_register_site: false

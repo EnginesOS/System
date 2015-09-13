@@ -1,7 +1,6 @@
 class BluePrintReader
   def initialize(contname, blue_print, builder)
-    @data_uid = '11111'
-    @data_gid = '11111'
+
     @builder = builder
     @container_name = contname
     @blueprint = blue_print
