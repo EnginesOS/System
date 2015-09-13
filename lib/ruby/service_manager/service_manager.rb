@@ -488,7 +488,7 @@ def remove_engine_from_managed_engines_registry(params)
 end
 
  
-private
+
 
 def orphanate_service(params)
    test_registry_result(@system_registry.orphanate_service(params))   
