@@ -499,8 +499,8 @@ end
     write_line('#Container Data User')
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
-    write_line('ENV data_gid ' + @blueprint_reader.data_uid)    
-    write_line('ENV data_uid ' + @blueprint_reader.data_gid)    
+    write_line('ENV data_gid ' + @builder.data_uid)    
+    write_line('ENV data_uid ' + @builder.data_gid)    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
