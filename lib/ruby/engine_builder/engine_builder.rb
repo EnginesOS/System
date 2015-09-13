@@ -106,7 +106,8 @@ class EngineBuilder < ErrorsApi
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index += 1
       end
-      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params[:engine_name], @build_params[:host_name], @build_params[:domain_name], @web_port, self)
+      @build_params[:app_is_persistant] = @service_builder.app_is_persistant
+      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
       return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
     
       write_env_file
@@ -465,7 +466,7 @@ class EngineBuilder < ErrorsApi
     close_all
   end
   
-  
+#app_is_persistant
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')

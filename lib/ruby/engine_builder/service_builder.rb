@@ -1,6 +1,6 @@
 class ServiceBuilder < ErrorsApi
   
-  attr_reader :volumes
+  attr_reader :volumes,:app_is_persistant
   
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
@@ -8,6 +8,7 @@ class ServiceBuilder < ErrorsApi
     @templater = templater
     @attached_services =  attached_services 
     @volumes = {}
+    @app_is_persistant = false
       p @engine_name 
   end
     
@@ -94,7 +95,7 @@ def create_persistant_services(services, environ, use_existing)
  
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
-  s[:shared]=true
+  s[:shared] = true
   return s
  end
  
@@ -134,7 +135,7 @@ def create_persistant_services(services, environ, use_existing)
     #log_build_output('Add File Service ' + name)
     service_hash[:variables][:engine_path] = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if service_hash[:variables][:engine_path].start_with?('/home/app/')
-      @builder.app_is_persistant = true     
+      @app_is_persistant = true     
     else
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/')
     end

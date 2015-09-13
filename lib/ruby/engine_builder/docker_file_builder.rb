@@ -1,8 +1,9 @@
 class DockerFileBuilder
-  def initialize(reader, _containername, hostname, domain_name, webport, builder)
-    @hostname = hostname
+  def initialize(reader, build_params, webport, builder)
+    @build_params = build_params
+    @hostname = @build_params[:host_name]
     # @container_name = containername
-    @domain_name = domain_name
+    @domain_name = @build_params[:domain_name]
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder
@@ -59,7 +60,7 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
-    setup_persitant_app if @builder.app_is_persistant
+    setup_persitant_app if @build_params[:app_is_persistant]
     prepare_persitant_source 
     write_data_permissions
     finalise_docker_file
