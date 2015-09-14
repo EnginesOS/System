@@ -306,10 +306,6 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-  def data_gid
-    return @blueprint_reader.data_gid
-  end
-
   
   def apply_templates_to_environments
     @blueprint_reader.environments.each do |env|
