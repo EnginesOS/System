@@ -29,6 +29,23 @@ class EnginesOSapi
   def first_run_required?
     FirstRunWizard.required?
   end
+  
+  def reserved_engine_names
+    names = list_apps
+    names.concat(list_services)
+    names.concat(list_system_services)
+  end
+  
+  def list_system_services
+    services = []
+    services.push('registry')
+    return services
+  end
+  
+  def reserved_hostnames
+     @core_api.taken_hostnames
+  end
+  
 
   # Build stuff
   def build_engine(params)
@@ -459,10 +476,14 @@ class EnginesOSapi
     log_exception_and_fail('getManagedService', e)
   end
 
-  def list_avail_services_for(object)
+  # @returns list of availible 
+  def list_avail_services_for(object) 
     @core_api.list_avail_services_for(object)
   end
-
+  def load_avail_services_for_type(type) 
+    @core_api.load_avail_services_for_type(type)
+  end
+  
   def find_service_consumers(params)
     @core_api.find_service_consumers(params)
   end

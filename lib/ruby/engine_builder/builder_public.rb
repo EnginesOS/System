@@ -64,7 +64,11 @@ class BuilderPublic
   def data_gid
     @builder.data_gid
   end
-
+  
+  def data_uid
+    @builder.data_uid
+  end
+  
   def memory
     @builder.build_params[:memory]
   end

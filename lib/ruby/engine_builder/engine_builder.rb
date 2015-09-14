@@ -27,7 +27,9 @@ class EngineBuilder < ErrorsApi
   :first_build,
   :memory,
   :result_mesg,
-  :build_params
+  :build_params,
+  :data_uid,
+  :data_gid
 
   attr_accessor :app_is_persistant
   class BuildError < StandardError
@@ -55,9 +57,17 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
-    @service_builder = ServiceBuilder.new(self, @core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
+    @data_uid = '11111'
+    @data_gid = '11111'
+    @build_params[:data_uid] =  @data_uid
+    @build_params[:data_gid] = @data_gid
+    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
+  end
+  
+  def volumes
+  return @service_builder.volumes
   end
 
   def rebuild_managed_container(engine)
@@ -88,6 +98,7 @@ class EngineBuilder < ErrorsApi
         read_web_port
       end
       read_web_user
+      
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
       create_engines_config_files
@@ -97,7 +108,8 @@ class EngineBuilder < ErrorsApi
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index += 1
       end
-      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params[:engine_name], @build_params[:host_name], @build_params[:domain_name], @web_port, self)
+      @build_params[:app_is_persistant] = @service_builder.app_is_persistant
+      dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
       return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
     
       write_env_file
@@ -296,10 +308,6 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-  def data_gid
-    return @blueprint_reader.data_gid
-  end
-
   
   def apply_templates_to_environments
     @blueprint_reader.environments.each do |env|
@@ -317,12 +325,14 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @mc.nil?
-      @mc.stop
+      @mc.stop_container
       @mc.destroy_container      
     end
     # FIXME: Remove image if created  
     @attached_services.each do |service_hash|
-      if service_hash[:fresh]
+      if service_hash[:shared]
+        next
+      elsif service_hash[:fresh]
         service_hash[:remove_all_data] = true
         @core_api.service_manager.delete_service(service_hash) # true is delete persistant
       elsif service_hash[:freed_orphan] = true
@@ -456,7 +466,7 @@ class EngineBuilder < ErrorsApi
     close_all
   end
   
-  
+#app_is_persistant
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')

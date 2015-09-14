@@ -1,8 +1,9 @@
 class DockerFileBuilder
-  def initialize(reader, _containername, hostname, domain_name, webport, builder)
-    @hostname = hostname
+  def initialize(reader, build_params, webport, builder)
+    @build_params = build_params
+    @hostname = @build_params[:host_name]
     # @container_name = containername
-    @domain_name = domain_name
+    @domain_name = @build_params[:domain_name]
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder
@@ -59,7 +60,7 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
-    setup_persitant_app if @builder.app_is_persistant
+    setup_persitant_app if @build_params[:app_is_persistant]
     prepare_persitant_source 
     write_data_permissions
     finalise_docker_file
@@ -229,7 +230,7 @@ end
   def write_file_service
     write_line('#File Service')
     write_line('#FS Env')
-    @blueprint_reader.volumes.each_value do |vol|
+    @builder.volumes.each_value do |vol|
       dest = File.basename(vol.remotepath)         
       write_line('RUN mkdir -p $CONTFSVolHome/' + dest)      
     end
@@ -499,8 +500,8 @@ end
     write_line('#Container Data User')
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
-    write_line('ENV data_gid ' + @blueprint_reader.data_uid)    
-    write_line('ENV data_uid ' + @blueprint_reader.data_gid)    
+    write_line('ENV data_gid ' + @builder.data_gid.to_s)    
+    write_line('ENV data_uid ' + @builder.data_uid.to_s)    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

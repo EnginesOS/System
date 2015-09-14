@@ -56,7 +56,7 @@ class ManagedService < ManagedContainer
   end
 
   def pull_image
-    return @container_api.pull_image(@repository + '/' + image) unless @repository.nil? 
+    return @container_api.pull_image(@repository + '/' + image) unless @repository.nil? || @repository == ''
     return @container_api.pull_image(image) if image.include?('/')
     return false
   end

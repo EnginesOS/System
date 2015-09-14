@@ -14,8 +14,9 @@ class ManagedEngine < ManagedContainer
     @framework = runtime_params.framework
     @runtime = runtime_params.runtime
      
-    @data_uid = runtime_params.data_uid
-    @data_gid =  runtime_params.data_gid
+    @data_uid = build_params[:data_uid] 
+    @data_gid = build_params[:data_gid]
+    
     @deployment_type = runtime_params.deployment_type
       
     @web_port = build_params[:web_port]

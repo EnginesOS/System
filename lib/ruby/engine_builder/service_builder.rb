@@ -1,11 +1,14 @@
 class ServiceBuilder < ErrorsApi
   
+  attr_reader :volumes,:app_is_persistant
+  
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
     @templater = templater
     @attached_services =  attached_services 
     @volumes = {}
+    @app_is_persistant = false
       p @engine_name 
   end
     
@@ -42,6 +45,7 @@ def create_persistant_services(services, environ, use_existing)
         existing = match_service_to_existing(service_hash, use_existing) 
         if existing != false
           service_hash = existing
+          service_hash[:shared] = true
           @first_build = false
           free_orphan = true if @service_manager.match_orphan_service(service_hash) == true
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
@@ -91,7 +95,8 @@ def create_persistant_services(services, environ, use_existing)
  
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
-  s[:shared]=true
+  s[:fresh] = false
+  s[:shared] = true
   return s
  end
  
@@ -113,7 +118,7 @@ def create_persistant_services(services, environ, use_existing)
  end
 
  def release_orphan(service_hash)
-   @service_manager.remove_orphaned_service(service_hash)
+   @service_manager.rebirth_orphan(service_hash)
  end
  
   def get_service_def(service_hash)
@@ -129,14 +134,14 @@ def create_persistant_services(services, environ, use_existing)
   def add_file_service(service_hash) 
     p 'Add File Service ' + service_hash[:variables][:name].to_s
     #log_build_output('Add File Service ' + name)
-    dest = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
-    if dest.start_with?('/home/app/')
-      @builder.app_is_persistant = true     
+    service_hash[:variables][:engine_path] = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
+    if service_hash[:variables][:engine_path].start_with?('/home/app/') || service_hash[:variables][:engine_path]  == '/home/app' 
+      @app_is_persistant = true     
     else
-      dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
+      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') 
     end
-    permissions = PermissionRights.new(@engine_name , '', '')
-    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + @engine_name  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
+    permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
+    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
     @volumes[service_hash[:variables][:name]] = vol
     return true
   rescue StandardError => e

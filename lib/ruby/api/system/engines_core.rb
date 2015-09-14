@@ -36,6 +36,23 @@ class EnginesCore < ErrorsApi
 
   attr_reader :container_api, :service_api
 
+  def  taken_hostnames
+    query= {}
+      query[:type_path]='nginx'
+      query[:publisher_namespace] = "EnginesSystem"
+    sites = []
+    hashes = service_manager.all_engines_registered_to('nginx')
+    return sites if hashes == false
+
+    hashes.each do |service_hash|
+      p service_hash
+      sites.push(service_hash[:variables][:fqdn])
+    end
+    return sites
+    rescue StandardError => e
+       log_exception(e)
+  end
+  
   def api_shutdown
     @registry_handler.api_shutdown
   end
@@ -291,6 +308,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
+  
   def load_avail_services_for_type(typename)
     avail_services = []
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
@@ -317,6 +335,8 @@ class EnginesCore < ErrorsApi
         end
       end
     end
+    p :avail_services
+    p avail_services.to_s
     return avail_services
   rescue StandardError => e
     log_exception(e)

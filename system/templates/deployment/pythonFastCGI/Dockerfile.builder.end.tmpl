@@ -7,7 +7,7 @@ RUN groupadd -g $data_gid writegrp;\
 	chown -R  $data_uid.$data_gid  /home/app/
 
 USER www-data
-ADD home/start.bash home/start.bash
+ADD home/start.bash /home/start.bash
 WORKDIR /home/app
 
 	 
