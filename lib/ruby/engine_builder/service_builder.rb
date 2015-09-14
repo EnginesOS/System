@@ -135,10 +135,10 @@ def create_persistant_services(services, environ, use_existing)
     p 'Add File Service ' + service_hash[:variables][:name].to_s
     #log_build_output('Add File Service ' + name)
     service_hash[:variables][:engine_path] = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
-    if service_hash[:variables][:engine_path].start_with?('/home/app/')
+    if service_hash[:variables][:engine_path].start_with?('/home/app/') || service_hash[:variables][:engine_path]  == '/home/app' 
       @app_is_persistant = true     
     else
-      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/')
+      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') 
     end
     permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
     vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
