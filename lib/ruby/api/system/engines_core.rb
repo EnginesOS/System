@@ -334,6 +334,8 @@ class EnginesCore < ErrorsApi
         end
       end
     end
+    p :avail_services
+    p avail_services.to_s
     return avail_services
   rescue StandardError => e
     log_exception(e)
