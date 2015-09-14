@@ -95,6 +95,7 @@ def create_persistant_services(services, environ, use_existing)
  
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
+  s[:fresh] = false
   s[:shared] = true
   return s
  end

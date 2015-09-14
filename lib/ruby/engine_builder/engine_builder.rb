@@ -330,7 +330,9 @@ class EngineBuilder < ErrorsApi
     end
     # FIXME: Remove image if created  
     @attached_services.each do |service_hash|
-      if service_hash[:fresh]
+      if service_hash[:shared]
+        next
+      elsif service_hash[:fresh]
         service_hash[:remove_all_data] = true
         @core_api.service_manager.delete_service(service_hash) # true is delete persistant
       elsif service_hash[:freed_orphan] = true
