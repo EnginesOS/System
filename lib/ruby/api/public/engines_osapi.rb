@@ -476,10 +476,14 @@ class EnginesOSapi
     log_exception_and_fail('getManagedService', e)
   end
 
-  def list_avail_services_for(object)
+  # @returns list of availible 
+  def list_avail_services_for(object) 
     @core_api.list_avail_services_for(object)
   end
-
+  def load_avail_services_for_type(type) 
+    @core_api.load_avail_services_for_type(type)
+  end
+  
   def find_service_consumers(params)
     @core_api.find_service_consumers(params)
   end

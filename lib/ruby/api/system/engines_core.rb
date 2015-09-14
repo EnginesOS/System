@@ -308,6 +308,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
+  
   def load_avail_services_for_type(typename)
     avail_services = []
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
