@@ -118,7 +118,7 @@ def create_persistant_services(services, environ, use_existing)
  end
 
  def release_orphan(service_hash)
-   @service_manager.remove_orphaned_service(service_hash)
+   @service_manager.rebirth_orphan(service_hash)
  end
  
   def get_service_def(service_hash)
