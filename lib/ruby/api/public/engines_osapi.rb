@@ -78,6 +78,9 @@ class EnginesOSapi
 
   def build_engine_from_docker_image(params)
     p params[:host_name]
+    build_controller = BuildController.new(@core_api)
+    build_controller.build_from_docker(params)
+     
     success(params[:host_name], 'Build Engine from Docker Image')
   rescue StandardError => e
     log_exception_and_fail('Build Engine from dockerimage', e)
