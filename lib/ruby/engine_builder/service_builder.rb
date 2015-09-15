@@ -95,6 +95,7 @@ def create_persistant_services(services, environ, use_existing)
  
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
+  s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
   s[:fresh] = false
   s[:shared] = true
   return s
