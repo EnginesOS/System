@@ -63,7 +63,11 @@ class EnginesOSapi
     return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
     success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
-
+  
+  def attach_existing_service_to_engine(params_hash)
+    success("OK","OK")
+  end
+  
   def rebuild_engine_container(engine_name)
     engine = loadManagedEngine(engine_name)
     return failed(engine_name, 'no Engine', 'Load Engine Blueprint') if engine.is_a?(EnginesOSapiResult)
