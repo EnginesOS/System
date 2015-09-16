@@ -81,7 +81,7 @@ consumer_params:
   field_type: text_field
   hint: "internal_dir as in map /www.domain.com/ to /www.domain.com/internal_dir"
   placeholder: " "
-  mandatory: true
+  mandatory: false
   comment: " "
  public:
   name: public
