@@ -338,10 +338,7 @@ class ManagedContainer < Container
   def is_error?   
     return false unless @task_at_hand.nil?
     state = read_state
-    p 'read ' + state.to_s + " for " + @setState
     return true if @setState != state
-    p :no_error_
-    p @container_name  
     return false
   end
 

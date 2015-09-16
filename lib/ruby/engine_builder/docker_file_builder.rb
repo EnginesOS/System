@@ -159,13 +159,13 @@ end
       write_line('')
       write_line('RUN  \\')
       dirname = File.dirname(path)
-      write_line('mkdir -p $CONTFSVolHome/$VOLDIR/' + dirname + ';\\')
+      write_line('mkdir -p $VOLDIR/' + dirname + ';\\')
       write_line('if [ ! -d /home/' + path + ' ];\\')
       write_line('  then \\')
       write_line('    mkdir -p /home/' + path + ' ;\\')
       write_line('  fi;\\')
-      write_line('mv /home/' + path + ' $CONTFSVolHome/$VOLDIR/' + dirname + '/;\\')
-      write_line('ln -s $CONTFSVolHome/$VOLDIR/' + path + ' /home/' + path)
+      write_line('mv /home/' + path + ' $VOLDIR/' + dirname + '/;\\')
+      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
       n += 1     
     end
   rescue Exception => e
@@ -218,10 +218,10 @@ end
       write_line('    then \\')
       write_line('      touch  /home/' + path + ';\\')
       write_line('    fi;\\')
-      write_line('  mkdir -p $CONTFSVolHome/$VOLDIR/' + dir + ';\\')
+      write_line('  mkdir -p $VOLDIR/' + dir + ';\\')
       write_line('\\')
-      write_line('   mv /home/' + path + ' $CONTFSVolHome/$VOLDIR' + '/' + dir + ';\\')
-      write_line('    ln -s $CONTFSVolHome/$VOLDIR/' + path + ' /home/' + path)
+      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
+      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -232,7 +232,7 @@ end
     write_line('#FS Env')
     @builder.volumes.each_value do |vol|
       dest = File.basename(vol.remotepath)         
-      write_line('RUN mkdir -p $CONTFSVolHome/' + dest)      
+      write_line('RUN mkdir -p $VOLDIR/' + dest)      
     end
   rescue Exception => e
     SystemUtils.log_exception(e)

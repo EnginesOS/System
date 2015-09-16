@@ -86,8 +86,8 @@ def create_persistant_services(services, environ, use_existing)
      return false if existing_service[:create_type] == 'new'
      if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
        && existing_service[:type_path] == service_hash[:type_path]
-         return use_active_service(service_hash, existing_service) if existing_service[:create_type] = 'active'
-         return use_orphan(existing_service)         
+         return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
+         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'        
      end
   end
   return false
@@ -95,6 +95,7 @@ def create_persistant_services(services, environ, use_existing)
  
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
+  s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
   s[:fresh] = false
   s[:shared] = true
   return s
@@ -105,9 +106,10 @@ def create_persistant_services(services, environ, use_existing)
     service_hash[:fresh] = false
     new_service_hash = reattach_service(service_hash)
     if new_service_hash.nil? == false
-      service_hash = new_service_hash
+      new_service_hash[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
+      service_hash = new_service_hash     
       service_hash[:fresh] = false      
-      service_hash[:freed_orphan] = true    
+      service_hash[:freed_orphan] = true        
     end
       return service_hash
  end

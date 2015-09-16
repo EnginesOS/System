@@ -6,6 +6,9 @@ class BuildController
     @build_error_stream = nil
   end
 
+  def build_from_docker(params)
+  end
+  
   def build_engine(params)
     p :builder_params
     p params

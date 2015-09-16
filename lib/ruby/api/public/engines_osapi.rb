@@ -63,7 +63,11 @@ class EnginesOSapi
     return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
     success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
-
+  
+  def attach_existing_service_to_engine(params_hash)
+    success("OK","OK")
+  end
+  
   def rebuild_engine_container(engine_name)
     engine = loadManagedEngine(engine_name)
     return failed(engine_name, 'no Engine', 'Load Engine Blueprint') if engine.is_a?(EnginesOSapiResult)
@@ -78,6 +82,9 @@ class EnginesOSapi
 
   def build_engine_from_docker_image(params)
     p params[:host_name]
+    build_controller = BuildController.new(@core_api)
+    build_controller.build_from_docker(params)
+     
     success(params[:host_name], 'Build Engine from Docker Image')
   rescue StandardError => e
     log_exception_and_fail('Build Engine from dockerimage', e)
