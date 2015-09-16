@@ -308,6 +308,16 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
+    def get_resolved_string(env_value) 
+      
+      templater = Templater.new(SystemAccess.new,nil)
+         templater.fill_in_service_def_values(env_value)
+         return env_value
+       rescue StandardError => e
+         p service_hash
+         p service_def
+         log_exception(e)
+       end
   
   def load_avail_services_for_type(typename)
     avail_services = []

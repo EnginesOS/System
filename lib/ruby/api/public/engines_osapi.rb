@@ -518,6 +518,10 @@ class EnginesOSapi
     @core_api.fillin_template_for_service_def(service_hash)
   end
 
+  def get_resolved_string(env_value) 
+    return @core_api.get_resolved_string(env_value) 
+  end
+  
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def dettach_service(params)
