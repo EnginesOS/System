@@ -325,11 +325,12 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
     end
-    if result[:stdout].include?('Already up-to-date')
-      @last_error = result[:stdout]
-      FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
-      return false
-    end
+    # FIXME: The following was commented out so as to follow update cycle regardless of update status
+#    if result[:stdout].include?('Already up-to-date')
+#      @last_error = result[:stdout]
+#      FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
+#      return false
+#    end
     res = Thread.new { SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     @last_error = result[:stdout]
