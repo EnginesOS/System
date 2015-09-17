@@ -96,11 +96,11 @@ class SystemRegistry < ErrorsApi
     test_result(send_request('get_orphaned_services', params))
   end
 
-  def find_orphan_consumers(params)
-    p :get_orphaned_services
-    p params
-    test_result(send_request('find_orphan_consumers', params))
-  end
+#  def find_orphan_consumers(params)
+#    p :get_orphaned_services
+#    p params
+#    test_result(send_request('find_orphan_consumers', params))
+#  end
 
   def orphanate_service(service_query_hash)
     p :get_orphaned_services
