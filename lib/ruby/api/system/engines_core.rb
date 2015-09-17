@@ -277,7 +277,7 @@ class EnginesCore < ErrorsApi
   
     # @ returns  complete service hash matching PNS,SP,PE,SH
      def retrieve_service_hash(query_hash)
-       check_sm_result(service_manager.find_engine_service_hash(params))
+       check_sm_result(service_manager.find_engine_service_hash(query_hash))
      end
 
   def find_engine_services(params)
@@ -319,8 +319,7 @@ class EnginesCore < ErrorsApi
          templater.fill_in_service_def_values(env_value)
          return env_value
        rescue StandardError => e
-         p service_hash
-         p service_def
+
          log_exception(e)
        end
   
