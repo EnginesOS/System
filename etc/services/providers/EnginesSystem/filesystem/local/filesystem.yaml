@@ -13,7 +13,7 @@ publisher_namespace: EnginesSystem
 persistant: true
 dedicated: false
 immutable: false
-sharable: true
+shareable: true
 attach_post_build: true
 attach_requires_restart: true
 service_handle_field: name
