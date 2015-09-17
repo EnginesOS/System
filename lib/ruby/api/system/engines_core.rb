@@ -274,6 +274,11 @@ class EnginesCore < ErrorsApi
     end
     return urls
   end
+  
+    # @ returns  complete service hash matching PNS,SP,PE,SH
+     def retrieve_service_hash(query_hash)
+       check_sm_result(service_manager.find_engine_service_hash(params))
+     end
 
   def find_engine_services(params)
     check_sm_result(service_manager.find_engine_services_hashes(params))

@@ -164,6 +164,11 @@ class ServiceManager  < ErrorsApi
     test_registry_result(@system_registry.find_engine_services_hashes(params))
   end
   #
+  
+  def find_engine_service_hash(params)
+      clear_error
+      test_registry_result(@system_registry.find_engine_service_hash(params))
+    end
 
   def register_non_persistant_service(service_hash)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
