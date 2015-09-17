@@ -498,7 +498,9 @@ class EnginesOSapi
   # @ returns  complete service hash matching PNS,SP,PE,SH
   def  retrieve_service_hash(query_hash)
     p query_hash
-    return failed(query_hash[:parent_engine], core_api.last_error, query_hash.to_s) unless @core_api.retrieve_service_hash(query_hash)
+    s = @core_api.retrieve_service_hash(query_hash)
+    return failed(query_hash[:parent_engine], core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
+    return s
   end
     
   def get_engine_persistant_services(params)
