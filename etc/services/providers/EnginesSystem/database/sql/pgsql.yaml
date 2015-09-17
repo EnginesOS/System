@@ -14,7 +14,7 @@ dedicated: false
 persistant: true
 exclusive: true
 immutable: false
-sharable: true
+shareable: true
 attach_post_build: true
 attach_requires_restart: false
 image_name: engines/pssql_server
