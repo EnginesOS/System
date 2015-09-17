@@ -325,7 +325,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
     end
-    # FIXME: The following was commented out so as to follow update cycle regardless of update status
+    # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
     if Rails.env.production?
     if result[:stdout].include?('Already up-to-date')
       @last_error = result[:stdout]
