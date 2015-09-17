@@ -418,7 +418,7 @@ class EngineBuilder < ErrorsApi
       contents = ''
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
         content = php_ini_hash[:content].gsub(/\r/, '')
-        contents = contents + '\n' + content
+        contents = contents + "\n" + content
       end
       write_software_file(SystemConfig.CustomPHPiniFile, contents)
     end
@@ -434,7 +434,7 @@ class EngineBuilder < ErrorsApi
       #  @ if @blueprint[:software].key?(:apache_httpd_configurations) && @blueprint[:software][:apache_httpd_configurations]  != nil
       contents = ''
       @blueprint[:software][:apache_httpd_configurations].each do |httpd_configuration|
-        contents = contents + httpd_configuration[:httpd_configuration] + '\n'
+        contents = contents + httpd_configuration[:httpd_configuration] + "\n"
         p :apache
         p contents
       end
