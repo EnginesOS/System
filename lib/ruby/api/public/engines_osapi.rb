@@ -495,6 +495,11 @@ class EnginesOSapi
     @core_api.find_service_consumers(params)
   end
 
+  # @ returns  complete service hash matching PNS,SP,PE,SH
+  def  retrieve_service_hash(query_hash)
+    @core_api.retrieve_service_hash(query_hash)
+  end
+    
   def get_engine_persistant_services(params)
     @core_api.get_engine_persistant_services(params)
   end
