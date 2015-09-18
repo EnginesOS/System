@@ -316,7 +316,7 @@ class EnginesCore < ErrorsApi
     def get_resolved_string(env_value) 
       
       templater = Templater.new(SystemAccess.new,nil)
-         templater.fill_in_service_def_values(env_value)
+      env_value = templater.apply_system_variables(env_value)
          return env_value
        rescue StandardError => e
 
