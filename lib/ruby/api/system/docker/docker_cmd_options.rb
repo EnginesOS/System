@@ -62,8 +62,8 @@ module DockerCmdOptions
 
   def self.get_port_options(container)
     eportoption = ''
-    if container.eports
-      container.eports.each do |eport|
+    if container.mapped_ports
+      container.mapped_ports.each do |eport|
         unless eport.nil?
           if eport.external.nil? == false && eport.external > 0
             eportoption += ' -p '

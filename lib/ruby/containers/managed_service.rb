@@ -24,7 +24,7 @@ class ManagedService < ManagedContainer
     @hostname = hostname
     @domain_name = domain_name
     @image = image
-    @eports = eports
+    @mapped_ports = eports
     @environments = environments
     @volumes = volumes
     @web_port = port

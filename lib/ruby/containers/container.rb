@@ -16,9 +16,9 @@ class Container < ErrorsApi
                :memory,\
                :container_name,\
                :image,\
-               :eports,\
                :web_port,\
                :volumes,\
+               :mapped_ports,\
                :environments
   attr_accessor :last_error,\
                 :container_api,
