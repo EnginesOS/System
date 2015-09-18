@@ -13,7 +13,7 @@ class ManagedEngine < ManagedContainer
     @environments = runtime_params.environments
     @framework = runtime_params.framework
     @runtime = runtime_params.runtime
-     
+    @mapped_ports = build_params[:mapped_ports]
     @data_uid = build_params[:data_uid] 
     @data_gid = build_params[:data_gid]
     

@@ -353,7 +353,7 @@ class ServiceManager  < ErrorsApi
           else
             service_hash[:priority] = 0
           end
-    return service_hash if service_hash.key?(:service_handle) && service_hash[:service_handle].size > 2
+    return service_hash if service_hash.key?(:service_handle) && ! service_hash[:service_handle].nil?
     
     if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
     handle_field_sym = service_def[:service_handle_field].to_sym

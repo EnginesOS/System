@@ -16,9 +16,9 @@ class Container < ErrorsApi
                :memory,\
                :container_name,\
                :image,\
-               :eports,\
                :web_port,\
                :volumes,\
+               :mapped_ports,\
                :environments
   attr_accessor :last_error,\
                 :container_api,
@@ -184,7 +184,7 @@ end
 
 def destroy_container
   expire_engine_info
-  return  log_error_mesg('Cannot Destroy a container that is not stopped\nPlease stop first', self) if is_active?
+  return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
   return false unless @container_api.destroy_container(self)  
   @container_id = '-1'
   expire_engine_info  

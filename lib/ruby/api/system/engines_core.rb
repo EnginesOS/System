@@ -147,7 +147,7 @@ class EnginesCore < ErrorsApi
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
-    cmd = 'echo -e ' + pass + '\n' + pass + ' | passwd engines'
+    cmd = 'echo -e ' + pass + "\n" + pass + ' | passwd engines'
     SystemUtils.debug_output('ssh_pw', cmd)
     SystemUtils.run_system(cmd)
   end
@@ -316,7 +316,7 @@ class EnginesCore < ErrorsApi
     def get_resolved_string(env_value) 
       
       templater = Templater.new(SystemAccess.new,nil)
-         templater.fill_in_service_def_values(env_value)
+      env_value = templater.apply_system_variables(env_value)
          return env_value
        rescue StandardError => e
 

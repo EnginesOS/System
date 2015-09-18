@@ -99,6 +99,8 @@ class EngineBuilder < ErrorsApi
       end
       read_web_user
       
+      @build_params[:mapped_ports] =  @blueprint_reader.worker_ports
+      
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
       create_engines_config_files
@@ -418,7 +420,7 @@ class EngineBuilder < ErrorsApi
       contents = ''
       @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
         content = php_ini_hash[:content].gsub(/\r/, '')
-        contents = contents + '\n' + content
+        contents = contents + "\n" + content
       end
       write_software_file(SystemConfig.CustomPHPiniFile, contents)
     end
@@ -434,7 +436,7 @@ class EngineBuilder < ErrorsApi
       #  @ if @blueprint[:software].key?(:apache_httpd_configurations) && @blueprint[:software][:apache_httpd_configurations]  != nil
       contents = ''
       @blueprint[:software][:apache_httpd_configurations].each do |httpd_configuration|
-        contents = contents + httpd_configuration[:httpd_configuration] + '\n'
+        contents = contents + httpd_configuration[:httpd_configuration] + "\n"
         p :apache
         p contents
       end

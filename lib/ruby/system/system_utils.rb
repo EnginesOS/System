@@ -1,6 +1,6 @@
 class SystemUtils
   @@debug=true
-  @@level=-1
+  @@level=0
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
@@ -131,6 +131,7 @@ def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
    SystemUtils.debug_output('exec command ', cmd)
+   p cmd
   retval = {}
    retval[:stdout] = ''
    retval[:stderr] = ''
