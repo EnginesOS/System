@@ -37,34 +37,34 @@ class EnginesCore < ErrorsApi
   attr_reader :container_api, :service_api
 
   def check_hash(service_hash)
-    return log_error_mesg('Nil service Hash') if service_hash.nil?
-    return log_error_mesg('Not a Service Hash') unless service_hash.is_a?(service_hash)  
+    return log_error_mesg('Nil service Hash', service_hash) if service_hash.nil?
+    return log_error_mesg('Not a Service Hash', service_hash) unless service_hash.is_a?(service_hash)  
     return true
   end
   
   def check_service_hash(service_hash)
     return false unless check_hash(service_hash)
-    return log_error_mesg('No publisher name space') unless service_hash.key?(:publisher_namespace)
-    return log_error_mesg('No type path') unless service_hash.key?(:type_path)
+    return log_error_mesg('No publisher name space', service_hash) unless service_hash.key?(:publisher_namespace)
+    return log_error_mesg('No type path', service_hash) unless service_hash.key?(:type_path)
     return true
   end
   
   def check_engine_hash(service_hash)
     return false unless check_hash(service_hash)
-    return log_error_mesg('No parent engine') unless service_hash.key?(:parent_engine)
-    return log_error_mesg('No container type path') unless service_hash.key?(:container_type)
+    return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
+    return log_error_mesg('No container type path', service_hash) unless service_hash.key?(:container_type)
     return true
   end
   
   def check_sub_service_hash(service_hash)
     return false unless check_service_hash(service_hash)
-    return log_error_mesg('No parent service') unless service_hash.key?(:parent_service)
+    return log_error_mesg('No parent service', service_hash) unless service_hash.key?(:parent_service)
     return true
   end
   
   def check_engine_service_hash(service_hash)
       return false unless check_engine_service_query(service_hash)
-    return log_error_mesg('No  service variables') unless service_hash.key?(:variables)
+    return log_error_mesg('No  service variables', service_hash) unless service_hash.key?(:variables)
       return true
     end
     
@@ -260,9 +260,9 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def dettach_service(params)
+  def dettach_service(service_hash)
     return false unless check_service_hash(service_hash)
-    check_sm_result(service_manager.delete_service(params))
+    check_sm_result(service_manager.delete_service(service_hash))
   rescue StandardError => e
     log_exception(e)
   end
@@ -278,7 +278,7 @@ class EnginesCore < ErrorsApi
 
   #returns
   def find_service_consumers(service_query)
-    return false unless check_service_hash(service_hash)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.find_service_consumers(service_query))
   end
 
@@ -333,7 +333,7 @@ class EnginesCore < ErrorsApi
      end
 
   def find_engine_services(service_query)
-    return false unless check_engine_hash(service_hash)
+    return false unless check_engine_hash(service_query)
     check_sm_result(service_manager.find_engine_services_hashes(service_query))
     #return sm.find_engine_services(params)
   end
@@ -444,14 +444,14 @@ class EnginesCore < ErrorsApi
   end
 
   def attach_subservice(service_query)
-    return false unless check_sub_service_hash(service_hash)
+    return false unless check_sub_service_hash(service_query)
     return attach_service(service_query) # if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
     log_error_mesg('missing parrameters', service_query)
   end
 
   def dettach_subservice(service_query)
-    return false unless check_sub_service_hash(service_hash)
-    dettach_service(service_query) if service_query.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
+    return false unless check_sub_service_hash(service_query)
+    dettach_service(service_query) 
     log_error_mesg('missing parrameters', service_query)
   end
 
@@ -746,17 +746,17 @@ class EnginesCore < ErrorsApi
   #  end
 
   def force_reregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_hash)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_hash)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
-    return false unless check_engine_service_hash(service_hash)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
