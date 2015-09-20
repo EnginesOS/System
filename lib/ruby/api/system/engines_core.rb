@@ -38,7 +38,7 @@ class EnginesCore < ErrorsApi
 
   def check_hash(service_hash)
     return log_error_mesg('Nil service Hash', service_hash) if service_hash.nil?
-    return log_error_mesg('Not a Service Hash', service_hash) unless service_hash.is_a?(service_hash)  
+    return log_error_mesg('Not a Service Hash', service_hash) unless service_hash.is_a?(Hash)  
     return true
   end
   
