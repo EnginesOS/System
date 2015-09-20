@@ -23,7 +23,9 @@ class Container < ErrorsApi
   attr_accessor :last_error,\
                 :container_api,
                 :last_result
-  
+  def eports
+    @mapped_ports
+  end
   def post_load
    expire_engine_info
         set_running_user
