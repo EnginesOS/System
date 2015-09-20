@@ -16,8 +16,7 @@ class NetworkSystemRegistry < ErrorsApi
     if @registry_socket.is_a?(TCPSocket) == false
       p @registry_socket.to_s
       return nil
-    end
-    p :new_network_system_reg
+    end   
   end
 
   def api_shutdown
@@ -230,8 +229,6 @@ class NetworkSystemRegistry < ErrorsApi
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
-      p :opened 
-      p socket.to_s
       return socket
     rescue StandardError => e
       log_exception(e)
