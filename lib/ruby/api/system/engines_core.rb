@@ -36,7 +36,46 @@ class EnginesCore < ErrorsApi
 
   attr_reader :container_api, :service_api
 
-  def  taken_hostnames
+  def check_hash(service_hash)
+    return log_error_mesg('Nil service Hash') if service_hash.nil?
+    return log_error_mesg('Not a Service Hash') unless service_hash.is_a?(service_hash)  
+    return true
+  end
+  
+  def check_service_hash(service_hash)
+    return false unless check_hash(service_hash)
+    return log_error_mesg('No publisher name space') unless service_hash.key?(:publisher_namespace)
+    return log_error_mesg('No type path') unless service_hash.key?(:type_path)
+    return true
+  end
+  
+  def check_engine_hash(service_hash)
+    return false unless check_hash(service_hash)
+    return log_error_mesg('No parent engine') unless service_hash.key?(:parent_engine)
+    return log_error_mesg('No container type path') unless service_hash.key?(:container_type)
+    return true
+  end
+  
+  def check_sub_service_hash(service_hash)
+    return false unless check_service_hash(service_hash)
+    return log_error_mesg('No parent service') unless service_hash.key?(:parent_service)
+    return true
+  end
+  
+  def check_engine_service_hash(service_hash)
+      return false unless check_engine_service_query(service_hash)
+    return log_error_mesg('No  service variables') unless service_hash.key?(:variables)
+      return true
+    end
+    
+  def check_engine_service_query(service_hash)
+       return false unless check_service_hash(service_hash)
+     return false unless check_engine_hash(service_hash)  
+    return true
+     end
+      
+  
+  def taken_hostnames
     query= {}
       query[:type_path]='nginx'
       query[:publisher_namespace] = "EnginesSystem"
@@ -68,6 +107,7 @@ class EnginesCore < ErrorsApi
 
   def software_service_definition(params)
     clear_error
+    return false unless check_service_hash(params)
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
   rescue StandardError => e
     p :error
@@ -77,14 +117,16 @@ class EnginesCore < ErrorsApi
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(params)
+  def get_registered_against_service(service_hash)
     clear_error
-    check_sm_result(service_manager.get_registered_against_service(params))
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.get_registered_against_service(service_hash))
   end
 
-  def update_attached_service(params)
+  def update_attached_service(service_hash)
     clear_error
-    check_sm_result(service_manager.update_attached_service(params))
+    return false unless check_engine_service_hash(service_hash)
+    check_sm_result(service_manager.update_attached_service(service_hash))
   end
 
   def signal_service_process(pid, sig, name)
@@ -197,8 +239,7 @@ class EnginesCore < ErrorsApi
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
-    return log_error_mesg('Attached Service passed a non Hash', service_hash) unless service_hash.is_a?(Hash)
+    return false unless check_engine_service_hash(service_hash)
     return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
     return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
         if service_hash[:type_path] == 'filesystem/local/filesystem'
@@ -212,13 +253,15 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def remove_orphaned_service(params)
-    check_sm_result(service_manager.remove_orphaned_service(params))
+  def remove_orphaned_service(service_hash)
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.remove_orphaned_service(service_hash))
   rescue StandardError => e
     log_exception(e)
   end
 
   def dettach_service(params)
+    return false unless check_service_hash(service_hash)
     check_sm_result(service_manager.delete_service(params))
   rescue StandardError => e
     log_exception(e)
@@ -234,16 +277,19 @@ class EnginesCore < ErrorsApi
   end
 
   #returns
-  def find_service_consumers(params)
-    check_sm_result(service_manager.find_service_consumers(params))
+  def find_service_consumers(service_query)
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.find_service_consumers(service_query))
   end
 
   def  service_is_registered?(service_hash)
+    return false unless check_service_hash(service_hash)
     check_sm_result(service_manager.service_is_registered?(service_hash))
   end
 
-  def get_engine_persistant_services(params)
-    check_sm_result(service_manager.get_engine_persistant_services(params))
+  def get_engine_persistant_services(service_hash)
+    return false unless check_engine_hash(service_hash)
+    check_sm_result(service_manager.get_engine_persistant_services(service_hash))
   end
 
   def managed_service_tree
@@ -286,8 +332,9 @@ class EnginesCore < ErrorsApi
        check_sm_result(service_manager.find_engine_service_hash(query_hash))
      end
 
-  def find_engine_services(params)
-    check_sm_result(service_manager.find_engine_services_hashes(params))
+  def find_engine_services(service_query)
+    return false unless check_engine_hash(service_hash)
+    check_sm_result(service_manager.find_engine_services_hashes(service_query))
     #return sm.find_engine_services(params)
   end
 
@@ -305,6 +352,7 @@ class EnginesCore < ErrorsApi
   end
 
   def fillin_template_for_service_def(service_hash)
+    return false unless check_service_hash(service_hash)
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
     if container == false
@@ -395,14 +443,16 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def attach_subservice(params)
-    return attach_service(params) if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
-    log_error_mesg('missing parrameters', params)
+  def attach_subservice(service_query)
+    return false unless check_sub_service_hash(service_hash)
+    return attach_service(service_query) # if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
+    log_error_mesg('missing parrameters', service_query)
   end
 
-  def dettach_subservice(params)
-    dettach_service(params) if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
-    log_error_mesg('missing parrameters', params)
+  def dettach_subservice(service_query)
+    return false unless check_sub_service_hash(service_hash)
+    dettach_service(service_query) if service_query.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
+    log_error_mesg('missing parrameters', service_query)
   end
 
   def load_avail_services_for(typename)
@@ -696,21 +746,25 @@ class EnginesCore < ErrorsApi
   #  end
 
   def force_reregister_attached_service(service_query)
+    return false unless check_engine_service_hash(service_hash)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
+    return false unless check_engine_service_hash(service_hash)
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
+    return false unless check_engine_service_hash(service_hash)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
-  def get_orphaned_services(params)
-    service_manager.get_orphaned_services(params)
+  def get_orphaned_services(service_hash)
+    return false unless check_service_hash(service_hash)
+    service_manager.get_orphaned_services(service_hash)
   end
 
   def clean_up_dangling_images
