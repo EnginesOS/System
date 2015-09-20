@@ -27,7 +27,7 @@ volumes:
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: ftp
   port: 21

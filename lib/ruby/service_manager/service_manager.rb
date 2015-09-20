@@ -16,6 +16,8 @@ class ServiceManager  < ErrorsApi
      test_registry_result(@system_registry.get_service_entry(service_hash))
    end
    
+  
+   
   def is_service_persistant?(service_hash)
     unless service_hash.key?(:persistant)
       persist = software_service_persistance(service_hash)

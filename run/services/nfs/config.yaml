@@ -28,7 +28,7 @@ volumes:
   localpath: "/sys/fs/cgroup"
   mapping_permissions: "ro"
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: rpc
   port: 111

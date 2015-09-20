@@ -23,7 +23,7 @@ volumes:
   mapping_permissions: "rw"
 image: engines/auth:_Engines_System(release)
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running

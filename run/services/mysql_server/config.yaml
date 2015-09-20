@@ -22,7 +22,7 @@ volumes:
   localpath: "/opt/engines/run/services/mysql_server/run/mysqld"
   mapping_permissions: "rw"  
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: mysql
   port: 3306

@@ -17,7 +17,7 @@ volumes:
   localpath: "/var/lib/engines/mongo"
   mapping_permissions: "rw"
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: mongo
   port: 27017

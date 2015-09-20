@@ -19,7 +19,7 @@ volumes:
   localpath: "/var/lib/engines/cert_auth"
   mapping_permissions: rw
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running

@@ -17,7 +17,7 @@ volumes:
   localpath: "/opt/engines/etc/syslog/conf/"
   mapping_permissions: rw
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running

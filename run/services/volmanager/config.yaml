@@ -17,7 +17,7 @@ volumes:
   remotepath: "/var/fs/local/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
-eports: []
+mapped_ports: []
 repo: na
 last_result:
 setState: running

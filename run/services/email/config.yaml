@@ -21,7 +21,7 @@ environments:
  value: root
  setatrun: false
 image: engines/email:_Engines_System(release)
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: smtp
   port: 25

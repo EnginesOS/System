@@ -24,7 +24,7 @@ volumes:
   localpath: "/opt/engines/run/services/nginx/run/nginx"
   mapping_permissions: "rw" 
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: https
   port: 4430

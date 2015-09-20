@@ -500,7 +500,7 @@ class EnginesOSapi
   def  retrieve_service_hash(query_hash)
     p query_hash
     s = @core_api.retrieve_service_hash(query_hash)
-    return failed(query_hash[:parent_engine], core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
+    return failed(query_hash[:parent_engine],@core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
     return s
   end
     
@@ -512,7 +512,7 @@ class EnginesOSapi
   # expects a service_hash as @params
   def attach_service(params)
     return success(params[:parent_engine], 'attach service') if @core_api.attach_service(params)
-    failed(params[:parent_engine], core_api.last_error, params[:parent_engine])
+    failed(params[:parent_engine], @core_api.last_error, params[:parent_engine])
   end
 
   # @ retruns [SoftwareServiceDefinition]
@@ -535,7 +535,7 @@ class EnginesOSapi
   # expects a service_hash as @params
   def dettach_service(params)
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
-    failed(params[:parent_engine].to_s, core_api.last_error, params[:parent_engine].to_s)
+    failed(params[:parent_engine].to_s,@core_api.last_error, params[:parent_engine].to_s)
   end
 
   # @ return [EnginesOSapiResult]

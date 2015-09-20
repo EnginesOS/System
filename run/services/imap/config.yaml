@@ -31,7 +31,7 @@ volumes:
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/imap/ssl"
   mapping_permissions: "ro"
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: imap
   port: 10143

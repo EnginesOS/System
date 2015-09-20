@@ -22,7 +22,7 @@ volumes:
   localpath: "/opt/engines/etc/pgsql/ssl/"
   mapping_permissions: "ro"
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: pgsql
   port: 3306

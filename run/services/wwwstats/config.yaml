@@ -17,7 +17,7 @@ volumes:
   localpath: "/var/log/engines/services/nginx/nginx/"
   mapping_permissions: ro
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running
