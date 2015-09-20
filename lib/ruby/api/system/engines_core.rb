@@ -198,9 +198,15 @@ class EnginesCore < ErrorsApi
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
     return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
-    return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
-    return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
-    return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
+    return log_error_mesg('Attached Service passed a non Hash', service_hash) unless service_hash.is_a?(Hash)
+    return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
+    return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
+        if service_hash[:type_path] == 'filesystem/local/filesystem'
+        
+    engine = loadManagedEngine(service_hash[:parent_engine])
+    return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
+      engine.add_volume(service_hash)
+          end
     return true
   rescue StandardError => e
     log_exception(e)
