@@ -9,7 +9,7 @@ class ManagedEngine < ManagedContainer
     @last_error = 'None'   
     @protocol = build_params[:http_protocol]
     @volumes = build_params[:volumes]
-    @eports = runtime_params.worker_ports
+    @mapped_ports = runtime_params.worker_ports
     @environments = runtime_params.environments
     @framework = runtime_params.framework
     @runtime = runtime_params.runtime
