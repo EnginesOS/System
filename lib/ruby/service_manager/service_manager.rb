@@ -146,9 +146,15 @@ class ServiceManager  < ErrorsApi
     services.each do | service |      
       if params[:remove_all_data] && service.key?(:shared) && service[:shared]
         service[:remove_all_data] = params[:remove_all_data]
-        return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)        
+        unless delete_service(service)
+         log_error_mesg('Failed to remove service ',service)
+         next         
+        end
       else
-        return log_error_mesg('Failed to orphan service ',service) unless orphanate_service(service)
+        unless orphanate_service(service)
+        log_error_mesg('Failed to orphan service ',service)
+        next
+        end 
       end
       @system_registry.remove_from_managed_engines_registry(service)      
     end
