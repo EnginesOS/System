@@ -49,6 +49,8 @@ class ServiceManager  < ErrorsApi
     clear_error
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+      p :potst_top_level
+      p service_hash
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
       return true if service_hash.key?(:shared) && service_hash[:shared]
     if is_service_persistant?(service_hash)
