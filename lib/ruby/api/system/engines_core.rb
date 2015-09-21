@@ -45,14 +45,19 @@ class EnginesCore < ErrorsApi
   def check_service_hash(service_hash)
     return false unless check_hash(service_hash)
     return log_error_mesg('No publisher name space', service_hash) unless service_hash.key?(:publisher_namespace)
+    return log_error_mesg('nil publisher name space', service_hash) if service_hash[:publisher_namespace].nil? || service_hash[:publisher_namespace] == ''
     return log_error_mesg('No type path', service_hash) unless service_hash.key?(:type_path)
+    return log_error_mesg('nil type path', service_hash) if service_hash[:type_path].nil? || service_hash[:type_path] == ''
+    
     return true
   end
   
   def check_engine_hash(service_hash)
     return false unless check_hash(service_hash)
     return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
+    return log_error_mesg('nil parent_engine', service_hash) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
     return log_error_mesg('No container type path', service_hash) unless service_hash.key?(:container_type)
+    return log_error_mesg('nil container type path', service_hash)  if service_hash[:container_type].nil? || service_hash[:container_type] == ''
     return true
   end
   
@@ -64,7 +69,7 @@ class EnginesCore < ErrorsApi
   
   def check_engine_service_hash(service_hash)
       return false unless check_engine_service_query(service_hash)
-    return log_error_mesg('No  service variables', service_hash) unless service_hash.key?(:variables)
+    return log_error_mesg('No service variables', service_hash) unless service_hash.key?(:variables)
       return true
     end
     
@@ -237,13 +242,14 @@ class EnginesCore < ErrorsApi
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
+    p :attach_ing
+    p service_hash
     return false unless check_engine_service_hash(service_hash)
     return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
     return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
-        if service_hash[:type_path] == 'filesystem/local/filesystem'
-       
-    engine = loadManagedEngine(service_hash[:parent_engine])
-    return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
+        if service_hash[:type_path] == 'filesystem/local/filesystem'       
+        engine = loadManagedEngine(service_hash[:parent_engine])
+        return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
       engine.add_volume(service_hash)
           end
     return true

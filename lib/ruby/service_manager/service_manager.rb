@@ -369,6 +369,8 @@ class ServiceManager  < ErrorsApi
     
     if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
     handle_field_sym = service_def[:service_handle_field].to_sym
+      p :handle_symbol
+      p service_def[:service_handle_field].to_sym
       return SystemUtils.log_error_mesg('Missin Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
     else
