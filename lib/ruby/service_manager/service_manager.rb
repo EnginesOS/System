@@ -47,6 +47,8 @@ class ServiceManager  < ErrorsApi
   #@ return true if successful or false if failed
   def add_service(service_hash)
     clear_error
+    p :pre_top_level
+    p service_hash
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
       p :potst_top_level
