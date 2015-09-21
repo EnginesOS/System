@@ -69,8 +69,13 @@ module DockerCmdOptions
             eportoption += ' -p '
             eportoption += eport.external.to_s + ':'
             eportoption += eport.port.to_s
-            eport.proto_type = 'tcp' if eport.proto_type.nil?
-            eportoption += '/' + eport.proto_type + ' '
+            if eport.proto_type.nil?
+            eport.proto_type = 'tcp' 
+              elsif eport.proto_type.downcase.include?('and')            
+              eport.proto_type = 'both'
+              else
+                eportoption += '/' + eport.proto_type + ' '
+              end
           end
         end
       end
