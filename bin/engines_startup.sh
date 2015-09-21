@@ -5,6 +5,8 @@ echo Clearing Flags
 
 rm -f /opt/engines/run/system/flags/reboot_required 
 rm -f /opt/engines/run/system/flags/engines_rebooting 
+rm -f /opt/engines/run/system/flags/building_params 
+#rm -f /opt/engines/run/system/flags/
 
 /opt/engines/bin/eservices check_and_act 
 
