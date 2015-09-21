@@ -468,7 +468,7 @@ end
           write_line(' ' + arc_extract + ' \'' + arc_name + '\' ;\\') # + '\'* 2>&1 > /dev/null ')
           write_line(' rm \'' + arc_name + '\'')
         else
-          arc_dir = arc_name
+          arc_dir = arc_dir + '/' + arc_name
           write_line('echo') # step past the next shell line implied by preceeding ;
         end
         set_user('0')
