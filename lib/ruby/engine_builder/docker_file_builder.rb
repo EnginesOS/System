@@ -283,8 +283,8 @@ end
       
     end
     # FIXME: Wrong spot
-   return false if @blueprint_reader.worker_ports.nil?  
-    @blueprint_reader.worker_ports.each do |port|
+   return false if @blueprint_reader.mapped_ports.nil?  
+    @blueprint_reader.mapped_ports.each do |port|
       write_line('EXPOSE ' + port.port.to_s)      
     end
   rescue Exception => e
@@ -522,7 +522,7 @@ end
     wports = ''
     n = 0
     return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.worker_ports.each do |port|
+    @blueprint_reader.mapped_ports.each do |port|
       if n < 0
         wports += ' '
       end
