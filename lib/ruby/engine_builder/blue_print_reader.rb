@@ -12,7 +12,7 @@ class BluePrintReader
   attr_reader :persistant_files,
               :persistant_dirs,
               :last_error,
-              :worker_ports,
+              :mapped_ports,
               :environments,
               :recursive_chmods,
               :single_chmods,
@@ -65,7 +65,7 @@ class BluePrintReader
     read_worker_commands
     read_deployment_type
     read_sed_strings
-    read_work_ports
+    read_mapped_ports
     read_os_packages
     read_app_packages
     read_rake_list
@@ -335,8 +335,8 @@ class BluePrintReader
     SystemUtils.log_exception(e)
   end
 
-  def read_work_ports
-    @worker_ports = []
+  def read_mapped_ports
+    @mapped_ports = []
     log_build_output('Read Work Ports')
     ports = @blueprint[:software][:worker_ports]
     puts('Ports Json' + ports.to_s)
@@ -349,7 +349,7 @@ class BluePrintReader
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       # FIXME: when public ports supported
       puts 'Port ' + portnum.to_s + ':' + external.to_s
-      @worker_ports.push(WorkPort.new(name, portnum, external, false, type))
+      @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
     end
     return true
   rescue StandardError => e
