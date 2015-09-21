@@ -82,9 +82,7 @@ class EnginesCore < ErrorsApi
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
     return sites if hashes == false
-
-    hashes.each do |service_hash|
-      p service_hash
+    hashes.each do |service_hash|   
       sites.push(service_hash[:variables][:fqdn])
     end
     return sites
