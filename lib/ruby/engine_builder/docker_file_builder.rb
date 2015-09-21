@@ -521,7 +521,7 @@ end
     write_line('ENV PORT ' + @web_port.to_s)    
     wports = ''
     n = 0
-    return false if @blueprint_reader.worker_ports.nil?
+    return false if @blueprint_reader.mapped_ports.nil?
     @blueprint_reader.worker_ports.each do |port|
       if n < 0
         wports += ' '
