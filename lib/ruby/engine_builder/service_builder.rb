@@ -41,7 +41,8 @@ def create_persistant_services(services, environ, use_existing)
 
  def process_persistant_service(service_hash, environ, use_existing)
    free_orphan = false   
-   service_hash = set_top_level_service_params(service_hash, @engine_name)
+   service_hash = set_top_level_service_params(service_hash, @engine_name)   
+     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
         existing = match_service_to_existing(service_hash, use_existing) 
         if existing == true
           service_hash = existing
