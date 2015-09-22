@@ -43,7 +43,7 @@ def create_persistant_services(services, environ, use_existing)
    free_orphan = false   
    service_hash = set_top_level_service_params(service_hash, @engine_name)
         existing = match_service_to_existing(service_hash, use_existing) 
-        if existing != false
+        if existing == true
           service_hash = existing
           service_hash[:shared] = true
           @first_build = false
