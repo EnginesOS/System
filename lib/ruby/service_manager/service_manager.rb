@@ -54,8 +54,9 @@ class ServiceManager  < ErrorsApi
       p :potst_top_level
       p service_hash
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
-      return true if service_hash.key?(:shared) && service_hash[:shared]
+      return true if service_hash.key?(:shared) && service_hash[:shared] == true
     if is_service_persistant?(service_hash)
+      
       return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
     else
