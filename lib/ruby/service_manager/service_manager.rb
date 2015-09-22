@@ -491,7 +491,7 @@ class ServiceManager  < ErrorsApi
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
-  return true if service_hash.is_a(Hash)
+  return true if service_hash.is_a?(Hash)
   return false
 end
 
