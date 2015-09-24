@@ -16,7 +16,7 @@ immutable: false
 shareable: true
 attach_post_build: true
 attach_requires_restart: true
-service_handle_field: name
+service_handle_field: service_name
 setup_params:
 consumer_params:
  user:
@@ -45,8 +45,8 @@ consumer_params:
   value: "_Engines_Builder(group_uid)"
   comment: " "
   regex_invalid_message: "wrong go back and try again"
- name:
-  name: name
+ service_name:
+  name: service_name
   immutable: true
   label: service tag name
   regex_validator: ".*"

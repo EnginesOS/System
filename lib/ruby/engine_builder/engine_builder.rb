@@ -99,8 +99,10 @@ class EngineBuilder < ErrorsApi
       end
       read_web_user
       
-      @build_params[:mapped_ports] =  @blueprint_reader.worker_ports
-      
+      @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
+      p :ports
+      p @build_params[:mapped_ports]
+        
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
       create_engines_config_files
@@ -356,6 +358,7 @@ class EngineBuilder < ErrorsApi
        create_php_ini
        create_apache_config
        create_scripts
+       
   end
   
   def create_template_files
@@ -379,6 +382,7 @@ class EngineBuilder < ErrorsApi
     create_start_script
     create_install_script
     create_post_install_script
+    write_worker_commands
   end
 
   def create_start_script
@@ -437,8 +441,7 @@ class EngineBuilder < ErrorsApi
       contents = ''
       @blueprint[:software][:apache_httpd_configurations].each do |httpd_configuration|
         contents = contents + httpd_configuration[:httpd_configuration] + "\n"
-        p :apache
-        p contents
+ 
       end
       write_software_file(SystemConfig.CustomApacheConfFile, contents)
     end
@@ -587,7 +590,26 @@ end
   rescue StandardError => e
     log_exception(e)
   end
-  
+  def write_worker_commands
+      log_build_output('Dockerfile:Worker Commands')
+      scripts_path =  '/home/engines/scripts/'
+      if Dir.exist?(scripts_path) == false
+        FileUtils.mkdir_p(scripts_path)
+      end
+      if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0       
+        content = ""#!/bin/bash\n"
+        content += "cd /home/app\n"
+        @blueprint_reader.worker_commands.each do |command|
+          content += command + "\n"
+        end
+        cmdf.close
+        write_software_file(scripts_path + 'pre-running.sh', content)
+        File.chmod(0755, scripts_path + 'pre-running.sh')
+      end
+    rescue Exception => e
+      SystemUtils.log_exception(e)
+    end
+
   protected
 #
   def debug(fld)
@@ -605,6 +627,7 @@ end
     return nil
   end
 
+  
 require 'open3'
 
   def run_system(cmd)

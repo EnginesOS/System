@@ -41,9 +41,10 @@ def create_persistant_services(services, environ, use_existing)
 
  def process_persistant_service(service_hash, environ, use_existing)
    free_orphan = false   
-   service_hash = set_top_level_service_params(service_hash, @engine_name)
+   service_hash = set_top_level_service_params(service_hash, @engine_name)   
+     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
         existing = match_service_to_existing(service_hash, use_existing) 
-        if existing != false
+        if existing == true
           service_hash = existing
           service_hash[:shared] = true
           @first_build = false
@@ -138,15 +139,15 @@ def create_persistant_services(services, environ, use_existing)
   def add_file_service(service_hash) 
     p 'Add File Service ' + service_hash[:variables][:name].to_s
     #log_build_output('Add File Service ' + name)
-    service_hash[:variables][:engine_path] = service_hash[:variables][:name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
+    service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if service_hash[:variables][:engine_path].start_with?('/home/app/') || service_hash[:variables][:engine_path]  == '/home/app' 
       @app_is_persistant = true     
     else
-      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') 
+      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')  
     end
     permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
-    vol = Volume.new(service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
-    @volumes[service_hash[:variables][:name]] = vol
+    vol = Volume.new(service_hash[:variables][:service_name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:service_name], service_hash[:variables][:engine_path], 'rw', permissions)
+    @volumes[service_hash[:variables][:service_name]] = vol
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)

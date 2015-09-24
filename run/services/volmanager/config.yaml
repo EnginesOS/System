@@ -17,12 +17,11 @@ volumes:
   remotepath: "/var/fs/local/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
-eports: []
+mapped_ports: []
 repo: na
 last_result:
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

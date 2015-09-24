@@ -16,6 +16,8 @@ class ServiceManager  < ErrorsApi
      test_registry_result(@system_registry.get_service_entry(service_hash))
    end
    
+  
+   
   def is_service_persistant?(service_hash)
     unless service_hash.key?(:persistant)
       persist = software_service_persistance(service_hash)
@@ -45,11 +47,16 @@ class ServiceManager  < ErrorsApi
   #@ return true if successful or false if failed
   def add_service(service_hash)
     clear_error
+    p :pre_top_level
+    p service_hash
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+      p :potst_top_level
+      p service_hash
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
-      return true if service_hash.key?(:shared) && service_hash[:shared]
+      return true if service_hash.key?(:shared) && service_hash[:shared] == true
     if is_service_persistant?(service_hash)
+      
       return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
     else
@@ -144,9 +151,15 @@ class ServiceManager  < ErrorsApi
     services.each do | service |      
       if params[:remove_all_data] && service.key?(:shared) && service[:shared]
         service[:remove_all_data] = params[:remove_all_data]
-        return  log_error_mesg('Failed to remove service ',service) unless delete_service(service)        
+        unless delete_service(service)
+         log_error_mesg('Failed to remove service ',service)
+         next         
+        end
       else
-        return log_error_mesg('Failed to orphan service ',service) unless orphanate_service(service)
+        unless orphanate_service(service)
+        log_error_mesg('Failed to orphan service ',service)
+        next
+        end 
       end
       @system_registry.remove_from_managed_engines_registry(service)      
     end
@@ -357,7 +370,9 @@ class ServiceManager  < ErrorsApi
     
     if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
     handle_field_sym = service_def[:service_handle_field].to_sym
-      return SystemUtils.log_error_mesg('Missin Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
+      p :handle_symbol
+      p service_def[:service_handle_field].to_sym
+      return SystemUtils.log_error_mesg('Missing Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
     else
       service_hash[:service_handle] = container_name
@@ -476,7 +491,7 @@ class ServiceManager  < ErrorsApi
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
-  return true if res.nil? == false && res != false
+  return true if res.is_a?(Hash)
   return false
 end
 

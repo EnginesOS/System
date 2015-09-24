@@ -42,7 +42,7 @@ class DockerFileBuilder
     chown_home_app
     set_user('$ContUser')
     write_database_seed
-    write_worker_commands
+   # write_worker_commands
     write_sed_strings
     write_persistant_dirs
     write_persistant_files
@@ -283,8 +283,8 @@ end
       
     end
     # FIXME: Wrong spot
-   return false if @blueprint_reader.worker_ports.nil?  
-    @blueprint_reader.worker_ports.each do |port|
+   return false if @blueprint_reader.mapped_ports.nil?  
+    @blueprint_reader.mapped_ports.each do |port|
       write_line('EXPOSE ' + port.port.to_s)      
     end
   rescue Exception => e
@@ -322,32 +322,7 @@ end
     SystemUtils.log_exception(e)
   end
 
-  def write_worker_commands
-    write_line('#Worker Commands')
-    log_build_output('Dockerfile:Worker Commands')
-    scripts_path = @builder.basedir + '/home/engines/scripts/'
-    if Dir.exist?(scripts_path) == false
-      FileUtils.mkdir_p(scripts_path)
-    end
-    if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-      cmdf = File.open(scripts_path + 'pre-running.sh', 'w')
-      if !cmdf
-        puts('failed to open ' + scripts_path + 'pre-running.sh')
-        exit
-      end
-      cmdf.chmod(0755)
-      cmdf.puts('#!/bin/bash')
-      cmdf.puts('cd /home/app')
-      @blueprint_reader.worker_commands.each do |command|
-        cmdf.puts(command)
-      end
-      cmdf.close
-      File.chmod(0755, scripts_path + 'pre-running.sh')
-    end
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
-
+  
 
 
   def write_write_permissions_single
@@ -468,7 +443,7 @@ end
           write_line(' ' + arc_extract + ' \'' + arc_name + '\' ;\\') # + '\'* 2>&1 > /dev/null ')
           write_line(' rm \'' + arc_name + '\'')
         else
-          arc_dir = arc_name
+          arc_dir = arc_dir + '/' + arc_name
           write_line('echo') # step past the next shell line implied by preceeding ;
         end
         set_user('0')
@@ -521,8 +496,8 @@ end
     write_line('ENV PORT ' + @web_port.to_s)    
     wports = ''
     n = 0
-    return false if @blueprint_reader.worker_ports.nil?
-    @blueprint_reader.worker_ports.each do |port|
+    return false if @blueprint_reader.mapped_ports.nil?
+    @blueprint_reader.mapped_ports.each do |port|
       if n < 0
         wports += ' '
       end

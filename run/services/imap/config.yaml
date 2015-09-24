@@ -31,7 +31,7 @@ volumes:
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/imap/ssl"
   mapping_permissions: "ro"
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: imap
   port: 10143
@@ -51,7 +51,6 @@ repo: na
 last_result: 
 setState: nocontainer
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true
