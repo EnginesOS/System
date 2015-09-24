@@ -602,7 +602,6 @@ end
         @blueprint_reader.worker_commands.each do |command|
           content += command + "\n"
         end
-        cmdf.close
         write_software_file(scripts_path + 'pre-running.sh', content)
         File.chmod(0755, scripts_path + 'pre-running.sh')
       end
