@@ -603,7 +603,7 @@ end
           content += command + "\n"
         end
         write_software_file(scripts_path + 'pre-running.sh', content)
-        File.chmod(0755, scripts_path + 'pre-running.sh')
+        File.chmod(0755, basedir + scripts_path + 'pre-running.sh')
       end
     rescue Exception => e
       SystemUtils.log_exception(e)
