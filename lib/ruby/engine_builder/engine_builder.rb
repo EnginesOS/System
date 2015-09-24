@@ -441,8 +441,7 @@ class EngineBuilder < ErrorsApi
       contents = ''
       @blueprint[:software][:apache_httpd_configurations].each do |httpd_configuration|
         contents = contents + httpd_configuration[:httpd_configuration] + "\n"
-        p :apache
-        p contents
+ 
       end
       write_software_file(SystemConfig.CustomApacheConfFile, contents)
     end
@@ -592,7 +591,6 @@ end
     log_exception(e)
   end
   def write_worker_commands
-      write_line('#Worker Commands')
       log_build_output('Dockerfile:Worker Commands')
       scripts_path =  '/home/engines/scripts/'
       if Dir.exist?(scripts_path) == false
