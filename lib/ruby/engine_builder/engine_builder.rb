@@ -358,6 +358,7 @@ class EngineBuilder < ErrorsApi
        create_php_ini
        create_apache_config
        create_scripts
+       
   end
   
   def create_template_files
@@ -381,6 +382,7 @@ class EngineBuilder < ErrorsApi
     create_start_script
     create_install_script
     create_post_install_script
+    write_worker_commands
   end
 
   def create_start_script
