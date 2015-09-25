@@ -46,6 +46,7 @@ class EnginesOSapi
      @core_api.taken_hostnames
   end
   
+  
 
   # Build stuff
   def build_engine(params)
@@ -310,7 +311,7 @@ class EnginesOSapi
   end
 
   def get_system_memory_info
-    SystemStatus.get_system_memory_info
+    MemoryStatistics.get_system_memory_info
   rescue StandardError => e
     log_exception_and_fail('get_system_memory_info', e)
   end
@@ -322,23 +323,18 @@ class EnginesOSapi
   end
 
   def get_engine_memory_statistics(engine_name)
-    mengine = loadManagedEngine(engine_name)
-    if mengine.is_a?(EnginesOSapiResult)
-      return failed(engine_name, 'no Engine', 'Get Engine Memory Statistics')
-    end
-    retval = mengine.get_container_memory_stats
-    return retval
+    MemoryStatistics.container_memory_stats(engine_name)
   rescue StandardError => e
     log_exception_and_fail('Get Engine Memory Statistics', e)
   end
 
+  def get_memory_statistics
+    MemoryStatistics.total_memory_statistics(@core_api)
+  end
+ 
+  
   def get_service_memory_statistics(service_name)
-    mservice = getManagedService(service_name)
-    if mservice.is_a?(EnginesOSapiResult)
-      return failed(service_name, 'no Engine', 'Get Service Memory Statistics')
-    end
-    retval = mservice.get_container_memory_stats
-    return retval
+    MemoryStatistics.container_memory_stats(service_name)
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
   end

@@ -22,7 +22,7 @@ class EnginesCore < ErrorsApi
   require_relative 'configurations_api.rb'
   require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
-
+  require_relative 'memory_statistics.rb'
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })

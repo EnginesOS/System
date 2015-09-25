@@ -65,35 +65,7 @@ class SystemApi < ErrorsApi
 
 
 
-  def get_container_memory_stats(container)
-    clear_error
-    ret_val = {}
-    if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = ContainerStateFiles.read_container_id(container)
-     
-    end
-    if container && container.container_id.nil? == false && container.container_id != '-1'
-      # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
-      path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
-      if Dir.exist?(path)
-        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes'))
-        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes'))
-        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
-      else
-        log_error_mesg('no_cgroup_file for ' + container.container_name, path)
-        ret_val.store(:maximum, 'No Container')
-        ret_val.store(:current, 'No Container')
-        ret_val.store(:limit, 'No Container')
-      end
-    end
-    return ret_val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    ret_val.store(:maximum, e.to_s)
-    ret_val.store(:current, 'NA')
-    ret_val.store(:limit, 'NA')
-    return ret_val
-  end
+ 
 
   def set_engine_network_properties(engine, params)
     clear_error
