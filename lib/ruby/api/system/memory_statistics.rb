@@ -1,9 +1,9 @@
 module MemoryStatistics
   def self.collate_containers_mem(mem_stats)
     stats = {}
-    stats[:allocated] = mem_stats[:engines][:allocated] + mem_stats[:services][:allocated].to_i
-    stats[:in_use] = mem_stats[:engines][:in_use] + mem_stats[:services][:in_use].to_i
-    stats[:peak_sum] = mem_stats[:engines][:peak_sum] + mem_stats[:services][:peak_sum].to_i
+    stats[:allocated] = mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i
+    stats[:in_use] = mem_stats[:engines][:totals][:in_use] + mem_stats[:services][:totals][:in_use].to_i
+    stats[:peak_sum] = mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
     stats
   end
 
