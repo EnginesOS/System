@@ -1,9 +1,9 @@
 module MemoryStatistics
   def self.collate_containers_mem(mem_stats)
     stats = {}
-    stats[:allocated] = mem_stats[:engines][:allocated] + mem_stats[:services][:allocated]
-    stats[:in_use] = mem_stats[:engines][:in_use] + mem_stats[:services][:in_use]
-    stats[:peak_sum] = mem_stats[:engines][:peak_sum] + mem_stats[:services][:peak_sum]
+    stats[:allocated] = mem_stats[:engines][:allocated] + mem_stats[:services][:allocated].to_i
+    stats[:in_use] = mem_stats[:engines][:in_use] + mem_stats[:services][:in_use].to_i
+    stats[:peak_sum] = mem_stats[:engines][:peak_sum] + mem_stats[:services][:peak_sum].to_i
     stats
   end
 
@@ -28,9 +28,9 @@ module MemoryStatistics
     mem_stats[:totals][:peak_sum] = 0
     engines.each do | engine|
       mem_stats[:container_name] = self.container_memory_stats(engine)
-      mem_stats[:totals][:allocated] += mem_stats[:container_name][:limit]
-      mem_stats[:totals][:in_use] += mem_stats[:container_name][:current]
-      mem_stats[:totals][:peak_sum] += mem_stats[:container_name][:maximum]
+      mem_stats[:totals][:allocated] += mem_stats[:container_name][:limit].to_i
+      mem_stats[:totals][:in_use] += mem_stats[:container_name][:current].to_i
+      mem_stats[:totals][:peak_sum] += mem_stats[:container_name][:maximum].to_i
     end
     mem_stats
   end
