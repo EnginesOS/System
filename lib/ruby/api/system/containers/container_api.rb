@@ -15,7 +15,7 @@ class ContainerApi < ErrorsApi
   end
   
   def get_container_memory_stats(container)
-    test_system_api_result(@system_api.get_container_memory_stats(container))
+    MemoryStatistics.get_container_memory_stats(container)   
   end
 
   def get_container_network_metrics(container)

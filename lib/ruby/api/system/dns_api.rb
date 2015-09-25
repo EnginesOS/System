@@ -1,3 +1,4 @@
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class DNSApi < ErrorsApi
   
   def initialize(service_manager)

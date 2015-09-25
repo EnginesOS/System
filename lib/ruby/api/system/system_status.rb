@@ -133,44 +133,10 @@ class SystemStatus
     return {}
   end
 
-  def self.get_system_memory_info
-    ret_val = {}
-    proc_mem_info_file = File.open('/proc/meminfo')
-    proc_mem_info_file.each_line do |line|
-      values = line.split(' ')
-      case values[0]
-      when 'MemTotal:'
-        ret_val[:total] = values[1]
-      when 'MemFree:'
-        ret_val[:free] = values[1]
-      when 'Buffers:'
-        ret_val[:buffers] = values[1]
-      when 'Cached:'
-        ret_val[:file_cache] = values[1]
-      when 'Active:'
-        ret_val[:active] = values[1]
-      when 'Inactive:'
-        ret_val[:inactive] = values[1]
-      when 'SwapTotal:'
-        ret_val[:swap_total] = values[1]
-      when 'SwapFree:'
-        ret_val[:swap_free] = values[1]
-      end
-    end
-    return ret_val
-  rescue   StandardError => e
-    SystemUtils.log_exception(e)
-    ret_val[:total] = e.to_s
-    ret_val[:free] = -1
-    ret_val[:active] = -1
-    ret_val[:inactive] = -1
-    ret_val[:file_cache] = -1
-    ret_val[:buffers] = -1
-    ret_val[:swap_total] = -1
-    ret_val[:swap_free] = -1
-    return ret_val
-  end
+ 
 
+ 
+  
   def self.get_system_load_info
     ret_val = {}
     loadavg_info = File.read('/proc/loadavg')
