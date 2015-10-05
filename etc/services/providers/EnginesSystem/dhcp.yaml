@@ -8,7 +8,7 @@ publisher_namespace: EnginesSystem
 service_container: dhcp
 dedicated: false
 persistant: false
-service_handle_field: 
+service_handle_field: subnet
 immutable: false
 attach_post_build: true
 attach_requires_restart: false
@@ -30,7 +30,7 @@ configurators:
     mandatory: true
     comment: " "
     value: "Engines_System(defaul_domain)"
-  netmask:
+   netmask:
     name: netmask
     label: "netask"
     regex_validator: "[09][0-9]"
@@ -41,7 +41,7 @@ configurators:
     mandatory: true
     comment: " "
     value: ""
-  subnet:
+   subnet:
     name: subnet
     label: "Subnet"
     regex_validator: "*\.*\.*\.\*\"
