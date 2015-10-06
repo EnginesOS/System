@@ -237,7 +237,7 @@ class EngineBuilder < ErrorsApi
 
   def build_init
     log_build_output('Building Image')
-    cmd = '/usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
+    cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     res = run_system(cmd)
     return true if res
     log_error_mesg('build init failed ', res)
