@@ -1,0 +1,27 @@
+--- !ruby/object:ManagedService
+container_name: dhcp
+publisher_namespace: EnginesSystem
+type_path: dhcp
+ctype: service
+persistant: false
+conf_self_start: true
+last_error: 
+memory: '16'
+hostname: dhcp
+domain_name: 
+environments: []
+image: engines/dhcp:_Engines_System(release)
+volumes: []
+mapped_ports:
+- !ruby/object:WorkPort
+  name: dhcp
+  port: 67
+  publicFacing: true
+  proto_type: udp
+  external: 67
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
