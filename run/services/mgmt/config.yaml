@@ -71,7 +71,7 @@ volumes:
   localpath: "/var/lib/engines/cert_auth/public/"
   mapping_permissions: ro
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: web
   port: 8000
@@ -86,7 +86,6 @@ repo: na
 last_result: 
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

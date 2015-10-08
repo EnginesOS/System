@@ -17,9 +17,9 @@ module BuildReport
     return ' No Default Template'
   end
 
-  def generate_build_report(blueprint)
+  def generate_build_report(templater, blueprint)
     report_template = get_build_report_template(blueprint)
-    report = @templater.process_templated_string(report_template)
+    report = templater.process_templated_string(report_template)
     return report
   rescue
     return ' Template generation error '

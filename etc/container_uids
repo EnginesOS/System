@@ -24,6 +24,8 @@ samba	samba	22019
 dyndns	dyndns	22021
 cert_auth 	cert_auth    22022
 registry registry	22023
+wwwstats	wwwstats	22024
+dhcpd	dhcpd	22025
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672

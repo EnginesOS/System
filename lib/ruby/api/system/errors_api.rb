@@ -2,10 +2,11 @@
 class ErrorsApi
   attr_reader :last_error
   @last_error = ''
+  @debug = false
 
   def log_error_mesg(msg, object)
-    caller = caller_locations(1,3)
-    @last_error = @last_error.to_s + ':' +  caller.to_s + ":" + msg.to_s + ':' + object.to_s.slice(0, 256)
+    @last_error = @last_error.to_s  + ':' + msg.to_s + ':' + object.to_s.slice(0, 256)
+    msg.to_s += caller_locations(1,3) if @debug
     SystemUtils.log_error_mesg(msg, object)
   end
 

@@ -1,21 +1,21 @@
 --- !ruby/object:ManagedService
-container_name: syslog
+container_name: wwwstats
 publisher_namespace: EnginesSystem
-type_path: log
+type_path: wwwstats
 ctype: service
-persistant: false
+persistant: true
 last_error: 
 memory: '16'
-hostname: syslog
+hostname: wwwstats
 domain_name: 
 environments: []
-image: engines/syslog:_Engines_System(release)
+image: engines/wwwstats:_Engines_System(release)
 volumes:
  config: !ruby/object:Volume
-  name: config
-  remotepath: "/etc/syslog-ng/conf.d/"
-  localpath: "/opt/engines/etc/syslog/conf/"
-  mapping_permissions: rw
+  name: weblogs
+  remotepath: "/var/log/www/"
+  localpath: "/var/log/engines/services/nginx/nginx/"
+  mapping_permissions: ro
 port: 
 mapped_ports:
 repo: na
@@ -27,3 +27,4 @@ conf_register_dns: true
 conf_self_start: true
 dependant_on:
 - "dns"
+- "nginx"

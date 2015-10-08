@@ -1,6 +1,7 @@
 class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
+    @engines_conf_cache = {}
   end  
 
   def is_startup_complete(container)
@@ -36,14 +37,14 @@ class SystemApi < ErrorsApi
     api = container.container_api
     container.container_api = nil
     last_result = container.last_result
-    last_error = container.last_error
+  #  last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
-    container.last_error = ''
+  
     serialized_object = YAML.dump(container)
     container.container_api = api
-    container.last_result = last_result
-    container.last_error = last_error
+   # container.last_result = last_result
+    #container.last_error = last_error
     state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
@@ -64,35 +65,7 @@ class SystemApi < ErrorsApi
 
 
 
-  def get_container_memory_stats(container)
-    clear_error
-    ret_val = {}
-    if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = ContainerStateFiles.read_container_id(container)
-      container.container_id = container_id
-    end
-    if container && container.container_id.nil? == false && container.container_id != '-1'
-      # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
-      path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
-      if Dir.exist?(path)
-        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes'))
-        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes'))
-        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
-      else
-        log_error_mesg('no_cgroup_file for ' + container.container_name, path)
-        ret_val.store(:maximum, 'No Container')
-        ret_val.store(:current, 'No Container')
-        ret_val.store(:limit, 'No Container')
-      end
-    end
-    return ret_val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    ret_val.store(:maximum, e.to_s)
-    ret_val.store(:current, 'NA')
-    ret_val.store(:limit, 'NA')
-    return ret_val
-  end
+ 
 
   def set_engine_network_properties(engine, params)
     clear_error
@@ -154,12 +127,18 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
+#    p :load_me
+#    p engine_name
+    e = engine_from_cache(engine_name)
+    return e unless e.nil?
+           
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
     yaml_file = File.read(yam_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)    
     return false if managed_engine.nil? || managed_engine == false
+    cache_engine(engine_name,managed_engine)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?
@@ -173,30 +152,37 @@ class SystemApi < ErrorsApi
     log_exception(e)
   end
 
-
-
   def loadSystemService(service_name)
     _loadManagedService(service_name, SystemConfig.RunDir + '/system_services/')
   end
 
   def loadManagedService(service_name)
-    _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    s = engine_from_cache('/services/' + service_name)
+#    p :service_from_cache unless s.nil?
+            return s unless s.nil?            
+   s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+    cache_engine('/services/' + service_name, s)
+#    p :loaded_service
+#    p service_name
+    return s
   end
 
   def _loadManagedService(service_name, service_type_dir)
+  
     if service_name.nil? || service_name.length == 0
       @last_error = 'No Service Name'
       return false
     end
     yam1_file_name = service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
-      return log_error_mesg('No build_running_service file ', service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
+      return log_error_mesg('failed to create service file ', service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
     end
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
+    
     managed_service
   rescue StandardError => e
     if service_name.nil? == false
@@ -209,7 +195,24 @@ class SystemApi < ErrorsApi
     end
     log_exception(e)
   end
-
+  
+  def engine_from_cache(ident)
+    
+    return  @engines_conf_cache[ident.to_sym] if @engines_conf_cache.key?(ident.to_sym)
+    return nil
+  end
+  
+  def delete_engine(engine_name)
+    @engines_conf_cache.delete(engine_name.to_sym)
+  end
+  
+  def cache_engine(ident, engine)
+    @engines_conf_cache[ident.to_sym] = engine 
+Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
+  end
+  
+ 
+  
   def getManagedServices
     begin
       ret_val = []
@@ -294,10 +297,13 @@ class SystemApi < ErrorsApi
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
     end
+    # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
+    if Rails.env.production?
     if result[:stdout].include?('Already up-to-date')
       @last_error = result[:stdout]
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
+    end
     end
     res = Thread.new { SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@172.17.42.1 /opt/engines/bin/update_engines_system_software.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging

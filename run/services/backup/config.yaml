@@ -43,11 +43,10 @@ volumes:
   localpath: "/var/log/engines/"
   mapping_permissions: "ro"
 port: 
-repo: na
+mapped_ports: []
 last_result:
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

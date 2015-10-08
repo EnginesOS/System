@@ -22,7 +22,7 @@ volumes:
   remotepath: "/var/run/"
   localpath: "/opt/engines/run/services/dns/run/dns"
   mapping_permissions: "rw" 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: dns
   port: 53
@@ -33,6 +33,5 @@ repo: na
 last_result: 
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true

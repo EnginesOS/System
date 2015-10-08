@@ -1,38 +1,40 @@
-require 'securerandom' 
+require 'securerandom'
 
 class BuilderPublic
   def initialize(builder)
     @builder = builder
   end
 
+
   def engine_name
-    @builder.container_name
+    @builder.build_params[:engine_name]
   end
 
-  def domain_name
-    @builder.domain_name
-  end
-
-  def fqdn
-    @builder.hostname + '.' + @builder.domain_name
+  def memory
+    @builder.build_params[:memory]
   end
 
   def hostname
-    @builder.hostname
+    @builder.build_params[:host_name]
+  end
+
+  def domain_name
+    @builder.build_params[:domain_name]
+  end
+
+  def repository
+    @builder.build_params[:repository_url]
   end
 
   def http_protocol
-    if @builder.http_protocol.nil?
-      return ''
+    if @builder.build_params[:http_protocol] == 'http_https'
+      return 'http'
     end
-    if @builder.http_protocol.include?('https')
-      return 'https'
-    end
-    return 'http'
+    return @builder.build_params[:http_protocol]
   end
 
-  def repo_name
-    @builder.repo_name
+  def fqdn
+    hostname + '.' + domain_name
   end
 
   def web_port
@@ -62,8 +64,12 @@ class BuilderPublic
   def data_gid
     @builder.data_gid
   end
-
+  
+  def data_uid
+    @builder.data_uid
+  end
+  
   def memory
-    @builder.memory
+    @builder.build_params[:memory]
   end
 end

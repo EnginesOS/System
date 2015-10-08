@@ -16,6 +16,7 @@ attach_requires_restart: false
 dedicated: false
 persistant: true
 exclusive: true
+shareable: true
 service_handle_field: database_name
 image_name: engines/volmanager
 setup_params:

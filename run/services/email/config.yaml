@@ -21,7 +21,7 @@ environments:
  value: root
  setatrun: false
 image: engines/email:_Engines_System(release)
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: smtp
   port: 25
@@ -31,7 +31,6 @@ repo: na
 last_result: 
 setState: nocontainer
 nginxored: false
-databases: []
 conf_register_site: true
 conf_register_dns: true
 conf_self_start: true
