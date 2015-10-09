@@ -4,9 +4,12 @@ class SystemRegistry < ErrorsApi
 
   def initialize(core_api)
     @network_registry = NetworkSystemRegistry.new(core_api)
-    p :NEW_SYSTEM_REG
   end
 
+  def api_shutdown
+    @network_registry.api_shutdown
+  end
+  
   def test_result(request_result_hash)
     clear_error
     if request_result_hash.nil? || !request_result_hash
@@ -19,7 +22,7 @@ class SystemRegistry < ErrorsApi
     end
     @last_error = request_result_hash[:error].to_s + ':' + @network_registry.last_error.to_s
     return request_result_hash[:object] if request_result_hash.key?(:object)
-    return nil
+    return false
   end
 
   #
@@ -27,8 +30,6 @@ class SystemRegistry < ErrorsApi
   #    test_result(send_request('find_engine_services',params))
   #  end
   def remove_from_managed_engines_registry(params)
-    p :remove_from_managed_engines_registry
-    p params
     test_result(send_request('remove_from_managed_engines_registry', params))
   end
 
@@ -53,50 +54,40 @@ class SystemRegistry < ErrorsApi
   end
 
   def save_as_orphan(params)
-    p :save_as_orphan
-    p params
     test_result(send_request('save_as_orphan', params))
   end
 
   def release_orphan(params)
-    p :release_orphan
-    p params
     test_result(send_request('release_orphan', params))
   end
 
+  def all_engines_registered_to(service_type)
+    test_result(send_request('all_engines_registered_to', service_type))
+  end 
+  
   def reparent_orphan(params)
-    p :reparent_orphan
-    p params
     test_result(send_request('reparent_orphan', params))
   end
 
   def rebirth_orphan(params)
-    p :reparent_orphan
-    p params
     test_result(send_request('rebirth_orphan', params))
   end
 
   def retrieve_orphan(params)
-    p :retrieve_orphan
-    p params
     test_result(send_request('retrieve_orphan', params))
   end
 
   def get_orphaned_services(params)
-    p :get_orphaned_services
-    p params
     test_result(send_request('get_orphaned_services', params))
   end
 
-  def find_orphan_consumers(params)
-    p :get_orphaned_services
-    p params
-    test_result(send_request('find_orphan_consumers', params))
-  end
+#  def find_orphan_consumers(params)
+#    p :get_orphaned_services
+#    p params
+#    test_result(send_request('find_orphan_consumers', params))
+#  end
 
   def orphanate_service(service_query_hash)
-    p :get_orphaned_services
-    p service_query_hash
     test_result(send_request('orphanate_service', service_query_hash))
   end
 

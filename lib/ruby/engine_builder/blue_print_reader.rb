@@ -1,8 +1,6 @@
 class BluePrintReader
-  def initialize(build_name, contname, blue_print, builder)
-    @build_name = build_name
-    @data_uid = '11111'
-    @data_gid = '11111'
+  def initialize(contname, blue_print, builder)
+
     @builder = builder
     @container_name = contname
     @blueprint = blue_print
@@ -14,7 +12,7 @@ class BluePrintReader
   attr_reader :persistant_files,
               :persistant_dirs,
               :last_error,
-              :worker_ports,
+              :mapped_ports,
               :environments,
               :recursive_chmods,
               :single_chmods,
@@ -31,7 +29,6 @@ class BluePrintReader
               :worker_commands,
               :cron_jobs,
               :sed_strings,
-              :volumes,
               :data_uid,
               :data_gid,
               :cron_job_list,
@@ -53,9 +50,6 @@ class BluePrintReader
     return path
   end
 
-  def get_basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name
-  end
 
   def process_blueprint
     log_build_output('Process BluePrint')
@@ -71,13 +65,14 @@ class BluePrintReader
     read_worker_commands
     read_deployment_type
     read_sed_strings
-    read_work_ports
+    read_mapped_ports
     read_os_packages
     read_app_packages
     read_rake_list
     read_persistant_files
     read_persistant_dirs
     read_web_port_overide
+    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -137,7 +132,7 @@ class BluePrintReader
   end
 
   def read_services
-    @volumes = {}
+ 
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
     return true unless services.is_a?(Array) # not an error just nada
@@ -152,31 +147,10 @@ class BluePrintReader
     p :add_service
     p service_hash
     @builder.templater.fill_in_dynamic_vars(service_hash)
-    if service_hash[:type_path] == 'filesystem/local/filesystem'
-        result = add_file_service(service_hash[:variables][:name], service_hash[:variables][:engine_path]) 
-          @services.push(service_hash) if result
-          return result
-    else
-      @services.push(service_hash)
-    end
+    @services.push(service_hash)   
     return true
   end
 
-  def add_file_service(name, dest) # FIXME: and put me in coreapi
-    log_build_output('Add File Service ' + name)
-    dest = name if dest.nil? || dest == ''
-    if dest.start_with?('/home/app/')
-      @builder.app_is_persistant = true     
-    else
-      dest = '/home/fs/' + dest unless dest.start_with?('/home/fs/')
-    end
-    permissions = PermissionRights.new(@container_name, '', '')
-    vol = Volume.new(name, SystemConfig.LocalFSVolHome + '/' + @container_name + '/' + name, dest, 'rw', permissions)
-    @volumes[name] = vol
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-  end
 
   def read_os_packages
     log_build_output('Read OS Packages')
@@ -361,21 +335,21 @@ class BluePrintReader
     SystemUtils.log_exception(e)
   end
 
-  def read_work_ports
-    @worker_ports = []
+  def read_mapped_ports
+    @mapped_ports = []
     log_build_output('Read Work Ports')
-    ports = @blueprint[:software][:worker_ports]
+    ports = @blueprint[:software][:ports]
     puts('Ports Json' + ports.to_s)
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
       portnum = port[:port]
       name = port[:name]
-      external = port['external']
-      type = port['protocol']
+      external = port[:external]
+      type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       # FIXME: when public ports supported
       puts 'Port ' + portnum.to_s + ':' + external.to_s
-      @worker_ports.push(WorkPort.new(name, portnum, external, false, type))
+      @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
     end
     return true
   rescue StandardError => e

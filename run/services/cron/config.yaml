@@ -23,12 +23,11 @@ volumes:
   localpath: "/usr/bin/docker"
   mapping_permissions: ro
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

@@ -1,7 +1,7 @@
 --- !ruby/object:SoftwareServiceDefinition
 accepts: 
 - !ruby/object:String  
-  "Volume"
+  "filesystem/local/filesystem"
 author: Engines
 title: Editor
 description: "Editor "

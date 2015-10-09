@@ -29,24 +29,49 @@ class EnginesOSapi
   def first_run_required?
     FirstRunWizard.required?
   end
+  
+  def reserved_engine_names
+    names = list_apps
+    names.concat(list_services)
+    names.concat(list_system_services)
+  end
+  
+  def list_system_services
+    services = []
+    services.push('registry')
+    return services
+  end
+  
+  def reserved_hostnames
+     @core_api.taken_hostnames
+  end
+  
+  
 
   # Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
-    engine = build_controller.build_engine(params)
-    return failed('Build Engine:', build_controller.last_error, params.to_s) unless engine
-    return failed(params[:engine_name], 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
+  Thread.new {build_controller.build_engine(params)}
+    engine = build_controller.engine
+    return engine if engine.is_a?(EnginesOSapiResult)
+    return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless engine.is_active?
     success(params[:engine_name], 'Build Engine')
   end
 
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
-    engine = build_controller.buildEngine(repository, host, domain_name, environment)
-    return failed('Build Engine:', build_controller.last_error, host.to_s) unless engine
-    return failed(host.to_s, 'Failed to start  ' + build_controller.last_error.to_s, 'build_engine') unless engine.is_active?
+  Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
+    engine = build_controller.engine
+    return engine if engine.is_a?(EnginesOSapiResult)
+    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
     success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
-
+  
+  def attach_existing_service_to_engine(params_hash)
+    p params_hash
+    success("OK","OK")
+  end
+  
   def rebuild_engine_container(engine_name)
     engine = loadManagedEngine(engine_name)
     return failed(engine_name, 'no Engine', 'Load Engine Blueprint') if engine.is_a?(EnginesOSapiResult)
@@ -61,6 +86,9 @@ class EnginesOSapi
 
   def build_engine_from_docker_image(params)
     p params[:host_name]
+    build_controller = BuildController.new(@core_api)
+    build_controller.build_from_docker(params)
+     
     success(params[:host_name], 'Build Engine from Docker Image')
   rescue StandardError => e
     log_exception_and_fail('Build Engine from dockerimage', e)
@@ -225,7 +253,7 @@ class EnginesOSapi
   def reinstall_engine(engine_name)
     engine = loadManagedEngine(engine_name)
     return engine if engine.is_a?(EnginesOSapiResult)
-    engine.destroy_container if engine.has_container?
+    
     return success(engine_name, 'Re Installed') if @core_api.reinstall_engine(engine).is_a?(ManagedEngine)
     failed(engine_name, @core_api.last_error, 'Reinstall Engine Failed')
   end
@@ -285,7 +313,7 @@ class EnginesOSapi
   end
 
   def get_system_memory_info
-    SystemStatus.get_system_memory_info
+    MemoryStatistics.get_system_memory_info
   rescue StandardError => e
     log_exception_and_fail('get_system_memory_info', e)
   end
@@ -297,23 +325,18 @@ class EnginesOSapi
   end
 
   def get_engine_memory_statistics(engine_name)
-    mengine = loadManagedEngine(engine_name)
-    if mengine.is_a?(EnginesOSapiResult)
-      return failed(engine_name, 'no Engine', 'Get Engine Memory Statistics')
-    end
-    retval = mengine.get_container_memory_stats
-    return retval
+    MemoryStatistics.container_memory_stats(engine_name)
   rescue StandardError => e
     log_exception_and_fail('Get Engine Memory Statistics', e)
   end
 
+  def get_memory_statistics
+    MemoryStatistics.total_memory_statistics(@core_api)
+  end
+ 
+  
   def get_service_memory_statistics(service_name)
-    mservice = getManagedService(service_name)
-    if mservice.is_a?(EnginesOSapiResult)
-      return failed(service_name, 'no Engine', 'Get Service Memory Statistics')
-    end
-    retval = mservice.get_container_memory_stats
-    return retval
+    MemoryStatistics.container_memory_stats(service_name)
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
   end
@@ -459,14 +482,26 @@ class EnginesOSapi
     log_exception_and_fail('getManagedService', e)
   end
 
-  def list_avail_services_for(object)
+  # @returns list of availible 
+  def list_avail_services_for(object) 
     @core_api.list_avail_services_for(object)
   end
-
+  def load_avail_services_for_type(type) 
+    @core_api.load_avail_services_for_type(type)
+  end
+  
   def find_service_consumers(params)
     @core_api.find_service_consumers(params)
   end
 
+  # @ returns  complete service hash matching PNS,SP,PE,SH
+  def  retrieve_service_hash(query_hash)
+    p query_hash
+    s = @core_api.retrieve_service_hash(query_hash)
+    return failed(query_hash[:parent_engine],@core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
+    return s
+  end
+    
   def get_engine_persistant_services(params)
     @core_api.get_engine_persistant_services(params)
   end
@@ -475,7 +510,7 @@ class EnginesOSapi
   # expects a service_hash as @params
   def attach_service(params)
     return success(params[:parent_engine], 'attach service') if @core_api.attach_service(params)
-    failed(params[:parent_engine], core_api.last_error, params[:parent_engine])
+    failed(params[:parent_engine], @core_api.last_error, params[:parent_engine])
   end
 
   # @ retruns [SoftwareServiceDefinition]
@@ -490,11 +525,15 @@ class EnginesOSapi
     @core_api.fillin_template_for_service_def(service_hash)
   end
 
+  def get_resolved_string(env_value) 
+    return @core_api.get_resolved_string(env_value) 
+  end
+  
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def dettach_service(params)
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
-    failed(params[:parent_engine].to_s, core_api.last_error, params[:parent_engine].to_s)
+    failed(params[:parent_engine].to_s,@core_api.last_error, params[:parent_engine].to_s)
   end
 
   # @ return [EnginesOSapiResult]

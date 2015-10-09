@@ -22,7 +22,7 @@ volumes:
   localpath: "/opt/engines/etc/pgsql/ssl/"
   mapping_permissions: "ro"
 port: 
-eports:
+mapped_ports:
 - !ruby/object:WorkPort
   name: pgsql
   port: 3306
@@ -32,7 +32,6 @@ repo: na
 last_result: 
 setState: nocontainer
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

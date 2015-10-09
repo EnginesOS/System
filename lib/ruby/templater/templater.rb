@@ -20,6 +20,7 @@ class Templater
   end
 
   def apply_blueprint_variables(template)
+    return nil if template.nil?
     template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
       resolve_blueprint_variable(match)
     }

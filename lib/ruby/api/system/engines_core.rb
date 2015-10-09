@@ -12,17 +12,17 @@ require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
-  require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
+  require '/opt/engines/lib/ruby/api/public/build_controller.rb'
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'containers/container_api.rb'
   require_relative 'containers/service_api.rb'
-  require_relative 'docker_api.rb'
+  require_relative 'docker/docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
   require_relative 'configurations_api.rb'
   require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
-
+  require_relative 'memory_statistics.rb'
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
@@ -36,6 +36,69 @@ class EnginesCore < ErrorsApi
 
   attr_reader :container_api, :service_api
 
+  def check_hash(service_hash)
+    return log_error_mesg('Nil service Hash', service_hash) if service_hash.nil?
+    return log_error_mesg('Not a Service Hash', service_hash) unless service_hash.is_a?(Hash)  
+    return true
+  end
+  
+  def check_service_hash(service_hash)
+    return false unless check_hash(service_hash)
+    return log_error_mesg('No publisher name space', service_hash) unless service_hash.key?(:publisher_namespace)
+    return log_error_mesg('nil publisher name space', service_hash) if service_hash[:publisher_namespace].nil? || service_hash[:publisher_namespace] == ''
+    return log_error_mesg('No type path', service_hash) unless service_hash.key?(:type_path)
+    return log_error_mesg('nil type path', service_hash) if service_hash[:type_path].nil? || service_hash[:type_path] == ''
+    
+    return true
+  end
+  
+  def check_engine_hash(service_hash)
+    return false unless check_hash(service_hash)
+    return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
+    return log_error_mesg('nil parent_engine', service_hash) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
+    return log_error_mesg('No container type path', service_hash) unless service_hash.key?(:container_type)
+    return log_error_mesg('nil container type path', service_hash)  if service_hash[:container_type].nil? || service_hash[:container_type] == ''
+    return true
+  end
+  
+  def check_sub_service_hash(service_hash)
+    return false unless check_service_hash(service_hash)
+    return log_error_mesg('No parent service', service_hash) unless service_hash.key?(:parent_service)
+    return true
+  end
+  
+  def check_engine_service_hash(service_hash)
+      return false unless check_engine_service_query(service_hash)
+    return log_error_mesg('No service variables', service_hash) unless service_hash.key?(:variables)
+      return true
+    end
+    
+  def check_engine_service_query(service_hash)
+       return false unless check_service_hash(service_hash)
+     return false unless check_engine_hash(service_hash)  
+    return true
+     end
+      
+  
+  def taken_hostnames
+    query= {}
+      query[:type_path]='nginx'
+      query[:publisher_namespace] = "EnginesSystem"
+    sites = []
+    hashes = service_manager.all_engines_registered_to('nginx')
+    return sites if hashes == false
+    hashes.each do |service_hash|   
+      sites.push(service_hash[:variables][:fqdn])
+    end
+    return sites
+    rescue StandardError => e
+       log_exception(e)
+  end
+  
+  def api_shutdown
+    @registry_handler.api_shutdown
+  end
+  
   def get_registry_ip
     @registry_handler.get_registry_ip
   end
@@ -47,6 +110,7 @@ class EnginesCore < ErrorsApi
 
   def software_service_definition(params)
     clear_error
+    return false unless check_service_hash(params)
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
   rescue StandardError => e
     p :error
@@ -56,14 +120,16 @@ class EnginesCore < ErrorsApi
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(params)
+  def get_registered_against_service(service_hash)
     clear_error
-    check_sm_result(service_manager.get_registered_against_service(params))
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.get_registered_against_service(service_hash))
   end
 
-  def update_attached_service(params)
+  def update_attached_service(service_hash)
     clear_error
-    check_sm_result(service_manager.update_attached_service(params))
+    return false unless check_engine_service_hash(service_hash)
+    check_sm_result(service_manager.update_attached_service(service_hash))
   end
 
   def signal_service_process(pid, sig, name)
@@ -126,7 +192,7 @@ class EnginesCore < ErrorsApi
 
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
-    cmd = 'echo -e ' + pass + '\n' + pass + ' | passwd engines'
+    cmd = 'echo -e ' + pass + "\n" + pass + ' | passwd engines'
     SystemUtils.debug_output('ssh_pw', cmd)
     SystemUtils.run_system(cmd)
   end
@@ -157,7 +223,7 @@ class EnginesCore < ErrorsApi
     return ''
   end
 
-  def get_default_domain()  
+  def get_default_domain()
     preferences = SystemPreferences.new
     preferences.get_default_domain
   end
@@ -176,23 +242,31 @@ class EnginesCore < ErrorsApi
   #@return boolean indicating sucess
   def attach_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    return log_error_mesg('Attach Service passed a nil','') if service_hash.nil?
-    return log_error_mesg('Attached Service passed a non Hash', service_hash) if !service_hash.is_a?(Hash)
-    return log_error_mesg('Attached Service passed no variables', service_hash) if !service_hash.key?(:variables)
-    return log_error_mesg('register failed', service_hash) if !check_sm_result(service_manager.add_service(service_hash))
+    p :attach_ing
+    p service_hash
+    return false unless check_engine_service_hash(service_hash)
+    return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
+    return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
+        if service_hash[:type_path] == 'filesystem/local/filesystem'       
+        engine = loadManagedEngine(service_hash[:parent_engine])
+        return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
+      engine.add_volume(service_hash)
+          end
     return true
   rescue StandardError => e
     log_exception(e)
   end
 
-  def remove_orphaned_service(params)
-    check_sm_result(service_manager.remove_orphaned_service(params))
+  def remove_orphaned_service(service_hash)
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.remove_orphaned_service(service_hash))
   rescue StandardError => e
     log_exception(e)
   end
 
-  def dettach_service(params)
-    check_sm_result(service_manager.delete_service(params))
+  def dettach_service(service_hash)
+    return false unless check_service_hash(service_hash)
+    check_sm_result(service_manager.delete_service(service_hash))
   rescue StandardError => e
     log_exception(e)
   end
@@ -206,23 +280,20 @@ class EnginesCore < ErrorsApi
     return @service_manager
   end
 
-  def match_orphan_service(service_hash)
-    res =  check_sm_result(service_manager.retrieve_orphan(service_hash))
-    return true if res.nil? == false && res != false
-    return false
-  end
-
   #returns
-  def find_service_consumers(params)
-    check_sm_result(service_manager.find_service_consumers(params))
+  def find_service_consumers(service_query)
+    return false unless check_service_hash(service_query)
+    check_sm_result(service_manager.find_service_consumers(service_query))
   end
 
   def  service_is_registered?(service_hash)
+    return false unless check_service_hash(service_hash)
     check_sm_result(service_manager.service_is_registered?(service_hash))
   end
 
-  def get_engine_persistant_services(params)
-    check_sm_result(service_manager.get_engine_persistant_services(params))
+  def get_engine_persistant_services(service_hash)
+    return false unless check_engine_hash(service_hash)
+    check_sm_result(service_manager.get_engine_persistant_services(service_hash))
   end
 
   def managed_service_tree
@@ -259,9 +330,15 @@ class EnginesCore < ErrorsApi
     end
     return urls
   end
+  
+    # @ returns  complete service hash matching PNS,SP,PE,SH
+     def retrieve_service_hash(query_hash)
+       check_sm_result(service_manager.find_engine_service_hash(query_hash))
+     end
 
-  def find_engine_services(params)
-    check_sm_result(service_manager.find_engine_services_hashes(params))
+  def find_engine_services(service_query)
+    return false unless check_engine_hash(service_query)
+    check_sm_result(service_manager.find_engine_services_hashes(service_query))
     #return sm.find_engine_services(params)
   end
 
@@ -279,6 +356,7 @@ class EnginesCore < ErrorsApi
   end
 
   def fillin_template_for_service_def(service_hash)
+    return false unless check_service_hash(service_hash)
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
     if container == false
@@ -293,6 +371,16 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
+    def get_resolved_string(env_value) 
+      
+      templater = Templater.new(SystemAccess.new,nil)
+      env_value = templater.apply_system_variables(env_value)
+         return env_value
+       rescue StandardError => e
+
+         log_exception(e)
+       end
+  
   def load_avail_services_for_type(typename)
     avail_services = []
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
@@ -319,23 +407,25 @@ class EnginesCore < ErrorsApi
         end
       end
     end
+    p :avail_services
+    p avail_services.to_s
     return avail_services
   rescue StandardError => e
     log_exception(e)
   end
 
-    def retrieve_service_configuration(config)  
-      c = ConfigurationsApi.new(self)
-       r = c.retrieve_service_configuration(config)
-       return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
-       return r
-      end
+  def retrieve_service_configuration(config)
+    c = ConfigurationsApi.new(self)
+    r = c.retrieve_service_configuration(config)
+    return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
+    return r
+  end
 
-  def update_service_configuration(service_param)    
-  configurator = ConfigurationsApi.new(self)
-   return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
-   return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
-     return true
+  def update_service_configuration(service_param)
+    configurator = ConfigurationsApi.new(self)
+    return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)
+    return log_error_mesg('Failed to update configuration with', service_manager.last_error) unless check_sm_result(service_manager.update_service_configuration(service_param))
+    return true
   end
 
   def engine_persistant_services(container_name)
@@ -357,14 +447,16 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def attach_subservice(params)
-    return attach_service(params) if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
-    log_error_mesg('missing parrameters', params)
+  def attach_subservice(service_query)
+    return false unless check_sub_service_hash(service_query)
+    return attach_service(service_query) # if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
+    log_error_mesg('missing parrameters', service_query)
   end
 
-  def dettach_subservice(params)
-    dettach_service(params) if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
-    log_error_mesg('missing parrameters', params)
+  def dettach_subservice(service_query)
+    return false unless check_sub_service_hash(service_query)
+    dettach_service(service_query) 
+    log_error_mesg('missing parrameters', service_query)
   end
 
   def load_avail_services_for(typename)
@@ -409,7 +501,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
     return nil
   end
-  
+
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
@@ -504,25 +596,25 @@ class EnginesCore < ErrorsApi
   def add_domain(params)
     dns_api = DNSApi.new(service_manager)
     return true if dns_api.add_domain(params)
-    log_error_mesg(dns_api.last_error, params)    
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def update_domain(params)
     dns_api = DNSApi.new(service_manager)
-    return true if dns_api.update_domain(params) 
-    log_error_mesg(dns_api.last_error, params)    
+    return true if dns_api.update_domain(params)
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def remove_domain(params)
     dns_api = DNSApi.new(service_manager)
-    return true if dns_api.remove_domain(params) 
-    log_error_mesg(dns_api.last_error, params)    
+    return true if dns_api.remove_domain(params)
+    log_error_mesg(dns_api.last_error, params)
   end
 
   def list_domains
     res = DNSApi.list_domains
     return res if res.is_a?(Hash)
-    log_error_mesg(res, '')    
+    log_error_mesg(res, '')
   end
 
   def list_managed_engines
@@ -558,25 +650,25 @@ class EnginesCore < ErrorsApi
     params[:container_type] = 'container' # Force This
     return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
-    remove_engine(engine_name)    
+    remove_engine(engine_name)
     return true
   end
-  
+
   def remove_engine(engine_name)
     engine = loadManagedEngine(engine_name)
     params = {}
     params[:engine_name] = engine_name
     params[:container_type] = 'container' # Force This
-    params[:parent_engine] = params[:engine_name]
-       unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
-         return true if service_manager.remove_engine_from_managed_engines_registry(params) 
-         return log_error_mesg('Failed to find Engine',params)
-       end
-       if engine.delete_image || engine.has_image? == false
-         return true if service_manager.remove_engine_from_managed_engines_registry(params)
-         return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-       end
-       log_error_mesg('Failed to delete image',params)
+    params[:parent_engine] =  engine_name 
+    unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
+      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      return log_error_mesg('Failed to find Engine',params)
+    end
+    if engine.delete_image || engine.has_image? == false
+      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    end
+    log_error_mesg('Failed to delete image',params)
   end
 
   def delete_image_dependancies(params)
@@ -587,19 +679,6 @@ class EnginesCore < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
-#  def run_system(cmd)
-#    clear_error
-#    cmd = cmd + ' 2>&1'
-#    res= %x<#{cmd}>
-#    SystemUtils.debug_output('run system',res)
-#    #FIXME should be case insensitive The last one is a pure kludge
-#    #really need to get stderr and stdout separately
-#    return true if $? == 0 && !res.downcase.include?('error') && res.downcase.include?('fail') == false && res.downcase.include?('could not resolve hostname') == false && res.downcase.include?('unsuccessful') == false
-#    log_error_mesg(cmd.to_s + 'run system result', res.to_s)
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
 
   def run_volume_builder(container,username)
     clear_error
@@ -635,54 +714,61 @@ class EnginesCore < ErrorsApi
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    clear_error    
+    clear_error
+    engine.destroy_container if engine.has_container?
+    params = {}
+    params[:engine_name] = engine.container_name
+    delete_engine(params)
     builder = BuildController.new(self)
-    builder.reinstall_engine(engine) 
+    builder.reinstall_engine(engine)
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
   end
 
-  #rebuilds image from current blueprint
-  def rebuild_image(container)
-    clear_error
-    params = {}
-    params[:engine_name] = container.container_name
-    params[:domain_name] = container.domain_name
-    params[:host_name] = container.hostname
-    params[:env_variables] = container.environments
-    params[:http_protocol] = container.protocol
-    params[:repository_url] = container.repo
-    params[:software_environment_variables] = container.environments
-    #   custom_env=params
-    #  @http_protocol = params[:http_protocol] = container.
-    builder = EngineBuilder.new(params, self)
-    return builder.rebuild_managed_container(container)
-  rescue StandardError => e
-    log_exception(e)
-  end
+  #  #rebuilds image from current blueprint
+  #  def rebuild_image(container)
+  #    clear_error
+  #    params = {}
+  #    params[:engine_name] = container.container_name
+  #    params[:domain_name] = container.domain_name
+  #    params[:host_name] = container.hostname
+  #    params[:env_variables] = container.environments
+  #    params[:http_protocol] = container.protocol
+  #    params[:repository_url] = container.repo
+  #    params[:software_environment_variables] = container.environments
+  #    #   custom_env=params
+  #    #  @http_protocol = params[:http_protocol] = container.
+  #    builder = EngineBuilder.new(params, self)
+  #    return builder.rebuild_managed_container(container)
+  #  rescue StandardError => e
+  #    log_exception(e)
+  #  end
 
   #  def image_exist?(image_name)
   #    test_docker_api_result(@docker_api.image_exist?(image_name))
   #  end
 
   def force_reregister_attached_service(service_query)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
+    return false unless check_engine_service_hash(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
-  
 
   #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
   #:path_type :publisher_namespace
-  def get_orphaned_services(params)
-    service_manager.get_orphaned_services(params)
+  def get_orphaned_services(service_hash)
+    return false unless check_service_hash(service_hash)
+    service_manager.get_orphaned_services(service_hash)
   end
 
   def clean_up_dangling_images
@@ -700,9 +786,9 @@ class EnginesCore < ErrorsApi
   end
 
   protected
-  
+
   def shutdown
-   # FIXME: @registry_handler.api_dissconnect
+    # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown
   end
 

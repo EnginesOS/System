@@ -1,0 +1,130 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: []
+author: Engines
+title: DHCP server
+description: "DHCP server"
+type_path: dhcp
+publisher_namespace: EnginesSystem
+service_container: dhcp
+dedicated: false
+persistant: false
+service_handle_field: subnet
+immutable: false
+attach_post_build: true
+attach_requires_restart: false
+consumer_params:
+configurators:
+ dhcpsettings:
+  name: DHCP
+  label: DHCP Settings
+  description: Configure DHCP settings
+  params:
+   domain_name:
+    name: domain_name
+    label: "Default Domain"
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: "domain.tld"
+    placeholder: " "
+    mandatory: true
+    comment: " "
+    value: "Engines_System(defaul_domain)"
+   netmask:
+    name: netmask
+    label: "netask"
+    regex_validator: "[09][0-9]"
+    tooltip: " "
+    field_type: text_field
+    hint: "x.x.x.x/y "
+    placeholder: ""
+    mandatory: true
+    comment: " "
+    value: ""
+   subnet:
+    name: subnet
+    label: "Subnet"
+    regex_validator: "*.*.*.*"
+    tooltip: " "
+    field_type: text_field
+    hint: "x.x.x.x/y "
+    placeholder: ""
+    mandatory: true
+    comment: " "
+    value: ""
+   start:
+    name: start
+    label: "DHCP Range Start"
+    regex_validator: '.*'
+    tooltip: " "
+    field_type: text_field
+    hint: "x.x.x.x"
+    placeholder: "x.x.x.x"
+    mandatory: true
+    comment: " "
+    value: ""
+   end:
+    name: end
+    label: "end"
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: "username "
+    placeholder: "x.x.x.x"
+    mandatory: true
+    comment: " "
+   default_lease:
+    name: default_lease
+    label: "Default Lease Time"
+    regex_validator: "[0-9]."
+    tooltip: " "
+    field_type: text
+    hint: "in secs"
+    placeholder: ""
+    value: 6000
+    mandatory: true
+    comment: " " 
+   max_lease:
+    name: default_lease
+    label: "Max Lease Time"
+    regex_validator: "[0-9]."
+    tooltip: " "
+    field_type: text
+    hint: "in secs"
+    placeholder: ""
+    mandatory: true
+    value: 14800
+    comment: " " 
+   default_gateway:
+    name: default_gateway
+    label: "Default Gateway"
+    regex_validator: "*."
+    tooltip: " "
+    field_type: text
+    hint: "ip or host"
+    placeholder: "x.x.x.x"
+    mandatory: false
+    comment: " " 
+    value: Engines_System(gateway)
+   dns_server1:
+    name: dns_server1
+    label: "DNS Server 1"
+    regex_validator: "*."
+    tooltip: " "
+    value: Engines_System(engines_ip)
+    field_type: text
+    hint: "ip"
+    placeholder: "x.x.x.x"
+    mandatory: false
+    comment: " " 
+   dns_server2:
+    name: dns_server2
+    label: "DNS Server 2"
+    regex_validator: "*."
+    tooltip: " "
+    field_type: text
+    hint: "ip"
+    placeholder: "x.x.x.x"
+    mandatory: false
+    comment: " " 
+    value: Engines_System(dns2)

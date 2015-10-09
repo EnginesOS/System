@@ -15,7 +15,7 @@ class ContainerApi < ErrorsApi
   end
   
   def get_container_memory_stats(container)
-    test_system_api_result(@system_api.get_container_memory_stats(container))
+    MemoryStatistics.get_container_memory_stats(container)   
   end
 
   def get_container_network_metrics(container)
@@ -63,6 +63,7 @@ class ContainerApi < ErrorsApi
 
   def delete_image(container)
     clear_error
+    @system_api.delete_engine(container.container_name)
     return  ContainerStateFiles.delete_container_configs(container) if test_docker_api_result(@docker_api.delete_image(container))
     # only delete if del all otherwise backup
     # NO Image well delete the rest
@@ -96,8 +97,9 @@ class ContainerApi < ErrorsApi
     ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
-    return ContainerStateFiles.create_container_dirs(container) if test_docker_api_result(@docker_api.create_container(container))
-    return false
+     return log_error_mesg('Failed to Container ' + @docker_api.last_error, self) unless test_docker_api_result(@docker_api.create_container(container))
+     return true if ContainerStateFiles.create_container_dirs(container)  
+     return log_error_mesg('Failed to create state files', self) 
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)
@@ -144,11 +146,13 @@ class ContainerApi < ErrorsApi
 
   def start_dependancies(container)
     container.dependant_on.each do |service_name|
+      p :checking 
+      p service_name
       service = @engines_core.loadManagedService(service_name)
       return log_error_mesg('Failed to load ', service_name) unless service
       unless service.is_running?
         if service.has_container?
-          if service.is_active?
+          if service.is_active?            
             return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
             return log_error_mesg('Failed to start ', service_name) if !service.start_container
           end

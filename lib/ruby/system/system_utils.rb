@@ -1,6 +1,6 @@
 class SystemUtils
   @@debug=true
-  @@level=-1
+  @@level=0
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
@@ -131,6 +131,7 @@ def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
    SystemUtils.debug_output('exec command ', cmd)
+   p cmd
   retval = {}
    retval[:stdout] = ''
    retval[:stderr] = ''
@@ -250,7 +251,7 @@ def SystemUtils.execute_command(cmd)
     service_hash[:variables][:parent_engine] = engine.container_name
     service_hash[:variables][:name] = engine.container_name  
     service_hash[:variables][:fqdn] = engine.fqdn
-    service_hash[:variables][:port] = engine.port.to_s
+    service_hash[:variables][:port] = engine.web_port.to_s
     service_hash[:variables][:proto] = proto
     SystemUtils.debug_output('create nginx Hash',service_hash)
     return service_hash

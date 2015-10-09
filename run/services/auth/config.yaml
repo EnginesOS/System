@@ -23,12 +23,11 @@ volumes:
   mapping_permissions: "rw"
 image: engines/auth:_Engines_System(release)
 port: 
-eports:
+mapped_ports:
 repo: na
 last_result: 
 setState: running
 nginxored: false
-databases: []
 conf_register_site: false
 conf_register_dns: true
 dependant_on:
