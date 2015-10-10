@@ -33,7 +33,7 @@ configurators:
    netmask:
     name: netmask
     label: "netask"
-    regex_validator: "[09][0-9]"
+    regex_validator: ".*"
     tooltip: " "
     field_type: text_field
     hint: "x.x.x.x/y "
