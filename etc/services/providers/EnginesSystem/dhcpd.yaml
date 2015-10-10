@@ -3,9 +3,9 @@ accepts: []
 author: Engines
 title: DHCP server
 description: "DHCP server"
-type_path: dhcp
+type_path: dhcpd
 publisher_namespace: EnginesSystem
-service_container: dhcp
+service_container: dhcpd
 dedicated: false
 persistant: false
 service_handle_field: subnet
@@ -15,9 +15,9 @@ attach_requires_restart: false
 consumer_params:
 configurators:
  dhcpsettings:
-  name: DHCP
-  label: DHCP Settings
-  description: Configure DHCP settings
+  name: DHCPD
+  label: DHCPD Settings
+  description: Configure DHCP Server settings
   params:
    domain_name:
     name: domain_name
