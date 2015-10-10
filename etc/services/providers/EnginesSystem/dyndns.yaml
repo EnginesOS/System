@@ -45,9 +45,9 @@ configurators:
     value: ""
     comment: " "
     regex_invalid_message: "wrong go back and try again"
-   username:
+   login:
     regex_invalid_message: "wrong go back and try again"
-    name: username
+    name: login
     label: DynDns User Name
     regex_validator: ".*"
     tooltip: " "
