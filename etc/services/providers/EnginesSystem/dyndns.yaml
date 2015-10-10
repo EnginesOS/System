@@ -15,38 +15,56 @@ immutable: false
 attach_post_build: true
 attach_requires_restart: false
 setup_params:
- name:
-  name: hostname
-  label: service tag name
-  regex_validator: ".*"
-  tooltip: "service tag name"
-  field_type: "text_field"
-  hint: " "
-  placeholder: " "
-  mandatory: true
-  value: ""
-  comment: " "
-  regex_invalid_message: "wrong go back and try again"
- username:
-  regex_invalid_message: "wrong go back and try again"
-  name: username
-  label: DynDns User Name
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: "username"
-  placeholder: " "
-  mandatory: true
-  comment: " "
- password:
-  regex_invalid_message: "wrong go back and try again"
-  name: password
-  label: DynDns User password
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: ""
-  placeholder: "password"
-  mandatory: true
-  comment: " "
-consumer_params:
+configurators:
+ dyndns_settings:
+  name: dyndns_settings
+  label: settings
+  description: Configure Dynamic Dns settings
+  params:
+   provider:
+    name: provider
+    label: service tag name
+    regex_validator: ".*"
+    tooltip: "service tag name"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: "dyndns2"
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"
+   domain_name:
+    name: domain_name
+    label: service tag name
+    regex_validator: ".*"
+    tooltip: "service tag name"
+    field_type: "text_field"
+    hint: " "
+    placeholder: " "
+    mandatory: true
+    value: ""
+    comment: " "
+    regex_invalid_message: "wrong go back and try again"
+   username:
+    regex_invalid_message: "wrong go back and try again"
+    name: username
+    label: DynDns User Name
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: "username"
+    placeholder: " "
+    mandatory: true
+    comment: " "
+   password:
+    regex_invalid_message: "wrong go back and try again"
+    name: password
+    label: DynDns User password
+    regex_validator: ".*"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: "password"
+    mandatory: true
+    comment: " "
+
