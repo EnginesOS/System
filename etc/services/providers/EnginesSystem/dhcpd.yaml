@@ -14,8 +14,8 @@ attach_post_build: true
 attach_requires_restart: false
 consumer_params:
 configurators:
- dhcpsettings:
-  name: DHCPD
+ dhcpd_settings:
+  name: dhcpd_settings
   label: DHCPD Settings
   description: Configure DHCP Server settings
   params:
