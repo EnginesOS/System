@@ -1,0 +1,11 @@
+parent_engine: wwwstats
+publisher_namespace: EnginesSystem
+type_path: cron
+service_handle: www_stats_cron
+service_container_name: cron
+container_type: service
+persistant: false
+variables:
+ cron_job: "01 00 * * * /home/run_analysis.sh"
+ title: "webalise run"
+ action_type: "command"
