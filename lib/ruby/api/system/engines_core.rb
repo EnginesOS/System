@@ -487,6 +487,7 @@ class EnginesCore < ErrorsApi
       params = {}
       params[:engine_name] = engine.container_name
       persistant_services = get_engine_persistant_services(params)
+      return nil if persistant_services.is_a?(FalseClass)
       persistant_services.each do |service|
         type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
