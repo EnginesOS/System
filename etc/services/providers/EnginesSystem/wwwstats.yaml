@@ -6,7 +6,6 @@ accepts:
   "ManagedService"
 author: Engines
 title: WWW Statistics
-description: "Provides Data anaylis on web logs"
 type_path: wwwstats
 service_container: wwwstats
 publisher_namespace: EnginesSystem
