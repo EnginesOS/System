@@ -20,7 +20,7 @@ port:
 mapped_ports:
 repo: na
 last_result: 
-setState: nocontainer
+setState: running
 nginxored: false
 conf_register_site: false
 conf_register_dns: true
