@@ -20,29 +20,15 @@ attach_post_build: true
 attach_requires_restart: false
 setup_params:
 consumer_params:
- wwwstats:
-  label: "wwwstats"
-  description: "wwwstats"
-  params:
-   fqdn:
-    name: fqdn
-    label: fqdn
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: "host.domain_name"
-    placeholder: " "
-    mandatory: true
-    value: " "
-    comment: " "
-   protocols:
-    name: protocols
-    label: protocols
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: "http https or https or http"
-    placeholder: " "
-    mandatory: true
-    value: "http"
-    comment: " "
+ fqdn:
+  name: fqdn
+  label: fqdn
+  regex_validator: ".*"
+  tooltip: " "
+  description: "full hostname and domainname"
+  field_type: text_field
+  hint: "host.domain_name"
+  placeholder: " "
+  mandatory: true
+  value: " "
+  comment: " "
