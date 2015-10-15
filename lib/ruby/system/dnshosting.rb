@@ -37,6 +37,8 @@ module DNSHosting
     end
     domains = YAML::load(domains_file)
     domains_file.close
+    p :loading_domain_list
+    p domains.to_s
     return {} if domains == false
     return domains
   rescue StandardError => e
