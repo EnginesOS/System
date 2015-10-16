@@ -10,7 +10,7 @@ description: "Resolves names to to IP address"
 type_path: dns
 service_container: dns
 publisher_namespace: EnginesSystem
-immutable: false
+immutable: true
 dedicated: false
 persistant: false
 priority: 10
