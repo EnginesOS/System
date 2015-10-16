@@ -24,10 +24,9 @@ consumer_params:
   label: fqdn
   regex_validator: ".*"
   tooltip: " "
-  description: "full hostname and domainname"
+  comment: "full hostname and domainname"
   field_type: text_field
   hint: "host.domain_name"
   placeholder: " "
   mandatory: true
   value: " "
-  comment: " "
