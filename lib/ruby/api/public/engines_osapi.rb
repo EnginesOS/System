@@ -99,8 +99,9 @@ class EnginesOSapi
   end
 
   def generate_private_key
-    return success('Access', 'update public key') if @core_api.generate_engines_user_ssh_key
-    failed('Failed update key ', @core_api.last_error, key.to_s)
+    res = @core_api.generate_engines_user_ssh_key
+    return failed('Failed update key ', @core_api.last_error, key.to_s) unless res.is_a?(String)
+    return res
   end
 
   def update_public_key(key)
