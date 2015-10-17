@@ -95,11 +95,12 @@ class EnginesOSapi
   end
 
   def get_engine_build_report(engine_name)
-    @core_api.get_build_report(engine_name)
+     @core_api.get_build_report(engine_name)
   end
 
   def generate_private_key
-      @core_api.generate_engines_user_ssh_key
+    return success('Access', 'update public key') if @core_api.generate_engines_user_ssh_key
+    failed('Failed update key ', @core_api.last_error, key.to_s)
   end
 
   def update_public_key(key)
