@@ -114,6 +114,7 @@ class EnginesOSapi
   end
 
   def upload_ssl_certifcate(params)
+     return failed('invalid parameter', 'upload Cert ' + params.to_s) unless params.is_a?(Hash)
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return failed('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
