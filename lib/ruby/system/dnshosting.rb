@@ -84,6 +84,7 @@ module DNSHosting
   def self.update_domain(old_domain_name, params)
     domains = load_domains
     domains.delete(old_domain_name)
+    params.delete(:original_domain_name) if params.key?(:original_domain_name)
     domains[params[:domain_name]] = params
     save_domains(domains)
   rescue StandardError => e

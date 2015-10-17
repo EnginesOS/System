@@ -264,7 +264,7 @@ def SystemUtils.execute_command(cmd)
   
   def SystemUtils.cgroup_mem_dir(container_id_str)
   
-    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data.include('14.04')
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data.include?('14.04')
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'         
   end
   
