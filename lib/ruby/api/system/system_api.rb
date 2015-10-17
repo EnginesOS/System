@@ -257,7 +257,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
 
 
   def generate_engines_user_ssh_key
-    newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
+    newkey = regen_system_ssh_key # SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
     return log_error_mesg("Not an RSA key",newkey) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
     return newkey
   rescue StandardError => e
@@ -269,7 +269,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
   end
 
   def regen_system_ssh_key
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
+    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
   end
 
 
