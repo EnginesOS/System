@@ -27,10 +27,11 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     engines.each do | engine|
-      mem_stats[:container_name] = self.container_memory_stats(engine)
-      mem_stats[:totals][:allocated] += mem_stats[:container_name][:limit].to_i
-      mem_stats[:totals][:in_use] += mem_stats[:container_name][:current].to_i
-      mem_stats[:totals][:peak_sum] += mem_stats[:container_name][:maximum].to_i
+      container_sym = engine.container_name.to_sym
+      mem_stats[container_sym] = self.container_memory_stats(engine)
+      mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
+      mem_stats[:totals][:in_use] += mem_stats[container_sym][:current].to_i
+      mem_stats[:totals][:peak_sum] += mem_stats[container_sym][:maximum].to_i
     end
     mem_stats
   end
