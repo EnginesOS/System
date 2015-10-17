@@ -258,7 +258,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
 
   def generate_engines_user_ssh_key
     newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
-    return log_error_mesg("Not an RSA key",newkey) unless newkey.start_with?('-----BEGIN RSA PRIVATE KEY-----')
+    return log_error_mesg("Not an RSA key",newkey) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
     return newkey
   rescue StandardError => e
     SystemUtils.log_exception(e)
