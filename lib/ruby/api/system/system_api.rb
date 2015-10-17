@@ -265,11 +265,11 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
   end
 
   def update_public_key(key)
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/update_access_system_pub.sh ' + key)
+    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@172.17.42.1 /opt/engines/bin/update_system_access.sh ' + key)
   end
 
   def regen_system_ssh_key
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
+    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
   end
 
 
