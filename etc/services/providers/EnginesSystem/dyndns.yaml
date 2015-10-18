@@ -23,9 +23,9 @@ configurators:
   params:
    provider:
     name: provider
-    label: service tag name
+    label: Provider
     regex_validator: ".*"
-    tooltip: "service tag name"
+    tooltip: "dyndns2"
     field_type: "text_field"
     hint: " "
     placeholder: " "
@@ -35,9 +35,9 @@ configurators:
     regex_invalid_message: "wrong go back and try again"
    domain_name:
     name: domain_name
-    label: service tag name
+    label: "Domain name"
     regex_validator: ".*"
-    tooltip: "service tag name"
+    tooltip: "Domain name"
     field_type: "text_field"
     hint: " "
     placeholder: " "
