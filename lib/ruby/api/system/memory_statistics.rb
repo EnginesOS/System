@@ -79,21 +79,21 @@ module MemoryStatistics
       values = line.split(' ')
       case values[0]
       when 'MemTotal:'
-        ret_val[:total] = values[1].to_
+        ret_val[:total] = values[1].to_i
       when 'MemFree:'
-        ret_val[:free] = values[1].to_
+        ret_val[:free] = values[1].to_i
       when 'Buffers:'
-        ret_val[:buffers] = values[1].to_
+        ret_val[:buffers] = values[1].to_i
       when 'Cached:'
-        ret_val[:file_cache] = values[1].to_
+        ret_val[:file_cache] = values[1].to_i
       when 'Active:'
-        ret_val[:active] = values[1].to_
+        ret_val[:active] = values[1].to_i
       when 'Inactive:'
-        ret_val[:inactive] = values[1].to_
+        ret_val[:inactive] = values[1].to_i
       when 'SwapTotal:'
-        ret_val[:swap_total] = values[1].to_
+        ret_val[:swap_total] = values[1].to_i
       when 'SwapFree:'
-        ret_val[:swap_free] = values[1].to_
+        ret_val[:swap_free] = values[1].to_i
       end
     end
     return ret_val
