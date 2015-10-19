@@ -92,6 +92,8 @@ class ServiceManager  < ErrorsApi
           service_hash =  test_registry_result(@system_registry.get_service_entry(service_hash))
         end
       else
+         p :finding_service_to_share
+         p service_hash
         service_hash = test_registry_result(@system_registry.get_service_entry(service_hash))
           p :load_share_hash
           p service_hash
