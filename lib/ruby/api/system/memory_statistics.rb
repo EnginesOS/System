@@ -9,13 +9,21 @@ module MemoryStatistics
 
   def self.total_memory_statistics(api)
     engines_memory_statistics = {}
+      
     engines = api.getManagedEngines
     services = api.getManagedServices
     # system_services = api.listSystemServices
-    engines_memory_statistics[:engines] = collect_containers_memory_stats(engines)
-    engines_memory_statistics[:services] = collect_containers_memory_stats(services)
-    # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
     engines_memory_statistics[:containers] = collate_containers_mem(engines_memory_statistics)
+    engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
+    engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
+    engines_memory_statistics[:containers][:totals] = {}  
+    engines_memory_statistics[:containers][:totals][:applications] = engines_memory_statistics[:containers][:applications][:totals]
+    engines_memory_statistics[:containers][:totals][:services] = engines_memory_statistics[:containers][:services][:totals]
+    engines_memory_statistics[:containers][:applications].delete(:totals)
+    engines_memory_statistics[:containers][:services].delete(:totals)
+    # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
+    
+   
     engines_memory_statistics[:system] = self.get_system_memory_info
     engines_memory_statistics
   end
@@ -50,9 +58,9 @@ module MemoryStatistics
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
       else
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
-        ret_val.store(:maximum, 'No Container')
-        ret_val.store(:current, 'No Container')
-        ret_val.store(:limit, 'No Container')
+        ret_val.store(:maximum, 0)
+        ret_val.store(:current, 0)
+        ret_val.store(:limit, 0)
       end
     end
     return ret_val
