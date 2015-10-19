@@ -80,8 +80,10 @@ class ServiceManager  < ErrorsApi
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
-      service_hash[:container_type] = container.ctype
-      ServiceManager.set_top_level_service_params(service_hash,container.container_name)
+      service_hash[:container_type] = container.ctype 
+      container_name = container.container_name
+      container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
+      ServiceManager.set_top_level_service_params(service_hash, container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false      
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
