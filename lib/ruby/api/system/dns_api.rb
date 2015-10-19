@@ -10,7 +10,7 @@ end
      service_hash = {}
      service_hash[:parent_engine] = 'system'
      service_hash[:variables] = {}
-     service_hash[:variables][:domainname] = params[:domain_name]
+     service_hash[:variables][:domain_name] = params[:domain_name]
      service_hash[:service_handle] = params[:domain_name] + '_dns'
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
