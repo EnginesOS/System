@@ -92,7 +92,9 @@ class ServiceManager  < ErrorsApi
           service_hash =  test_registry_result(@system_registry.get_service_entry(service_hash))
         end
       else
-        service_hash =  test_registry_result(@system_registry.get_service_entry(service_hash))
+        service_hash = test_registry_result(@system_registry.get_service_entry(service_hash))
+          p :load_share_hash
+          p service_hash
       end
       if service_hash.is_a?(Hash)
         SystemUtils.debug_output(  :post_entry_service_hash, service_hash)
