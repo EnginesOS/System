@@ -34,8 +34,8 @@ end
         service_hash[:variables][:domainname] = old_domain_name
         service_hash[:service_handle] = old_domain_name+ '_dns'
        else
-         service_hash[:variables][:domainname] = params[:domainname]
-         service_hash[:domainname] = params[:domainname] + '_dns'      
+         service_hash[:variables][:domainname] = params[:domain_name]
+         service_hash[:domainname] = params[:domain_name] + '_dns'      
      end
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
