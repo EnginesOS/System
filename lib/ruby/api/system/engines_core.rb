@@ -612,11 +612,11 @@ class EnginesCore < ErrorsApi
     log_error_mesg(dns_api.last_error, params)
   end
 
-  def list_domains
-    res = DNSApi.list_domains
-    return res if res.is_a?(Hash)
-    log_error_mesg(res, '')
-  end
+#  def list_domains
+#    res = DNSApi.list_domains
+#    return res if res.is_a?(Hash)
+#    log_error_mesg(res, '')
+#  end
 
   def list_managed_engines
     test_system_api_result(@system_api.list_managed_engines)

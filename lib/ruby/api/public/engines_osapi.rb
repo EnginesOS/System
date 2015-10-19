@@ -395,7 +395,9 @@ class EnginesOSapi
   end
 
   def list_domains
-    @core_api.list_domains
+    res = DNSHosting.list_domains
+        return res if res.is_a?(Hash)
+    failed("Domains",res, 'list')
   rescue StandardError => e
     log_exception_and_fail('list domains ', e)
   end
