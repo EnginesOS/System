@@ -81,9 +81,9 @@ class ServiceManager  < ErrorsApi
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype 
-      container_name = container.container_name
-      container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
-      ServiceManager.set_top_level_service_params(service_hash, container_name)
+    
+      
+      ServiceManager.set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false      
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
@@ -357,6 +357,7 @@ class ServiceManager  < ErrorsApi
 
 
   def ServiceManager.set_top_level_service_params(service_hash, container_name)
+    container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
     container_name = service_hash[:engine_name] if container_name == nil    
     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)  if service_hash.nil?
