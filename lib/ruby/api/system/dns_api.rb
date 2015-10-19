@@ -30,8 +30,13 @@ end
      service_hash =  {}
      service_hash[:parent_engine] = 'system'
      service_hash[:variables] = {}
-     service_hash[:variables][:domainname] = params[:original_domain_name]
-     service_hash[:service_handle] = params[:original_domain_name] + '_dns'
+       if params.key?(:original_domain_name)       
+        service_hash[:variables][:domainname] = old_domain_name
+        service_hash[:service_handle] = old_domain_name+ '_dns'
+       else
+         service_hash[:variables][:domainname] = params[:domainname]
+         service_hash[:domainname] = params[:domainname] + '_dns'      
+     end
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
