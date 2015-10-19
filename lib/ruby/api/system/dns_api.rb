@@ -31,11 +31,11 @@ end
      service_hash[:parent_engine] = 'system'
      service_hash[:variables] = {}
        if params.key?(:original_domain_name)       
-        service_hash[:variables][:domainname] = old_domain_name
+        service_hash[:variables][:domain_name] = old_domain_name
         service_hash[:service_handle] = old_domain_name+ '_dns'
        else
-         service_hash[:variables][:domainname] = params[:domain_name]
-         service_hash[:domainname] = params[:domain_name] + '_dns'      
+         service_hash[:variables][:domain_name] = params[:domain_name]
+         service_hash[:service_handle] = params[:domain_name] + '_dns'      
      end
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
@@ -43,7 +43,7 @@ end
      @service_manager.dettach_service(service_hash)
      # @engines_api.deregister_non_persistant_service(service_hash)
      # @engines_api.delete_service_from_engine_registry(service_hash)
-     service_hash[:variables][:domainname] = params[:domain_name]
+     service_hash[:variables][:domain_name] = params[:domain_name]
      service_hash[:service_handle] = params[:domain_name] + '_dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
      return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
@@ -58,7 +58,7 @@ end
     service_hash = {}
     service_hash[:parent_engine] = 'system'
     service_hash[:variables] = {}
-    service_hash[:variables][:domainname] = params[:domain_name]
+    service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
