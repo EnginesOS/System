@@ -53,9 +53,9 @@ module MemoryStatistics
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
       path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
       if Dir.exist?(path)
-        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes'))
-        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes'))
-        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
+        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes').to_i)
+        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
+        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
         ret_val.store(:maximum, 0)
