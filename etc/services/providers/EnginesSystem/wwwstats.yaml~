@@ -5,69 +5,29 @@ accepts:
 - !ruby/object:String    
   "ManagedService"
 author: Engines
-title: DNS
-description: "Resolves names to to IP address"
-type_path: dns
-service_container: dns
+title: WWW Statistics
+type_path: wwwstats
+service_container: wwwstats
 publisher_namespace: EnginesSystem
 immutable: false
 dedicated: false
 persistant: false
-priority: 10
-service_handle_field: hostname
+priority: 0
+service_handle_field: fqdn
 immutable: false
 attach_post_build: true
 attach_requires_restart: false
 setup_params:
 consumer_params:
- hostname:
-  name: hostname
-  label: hostname
+ fqdn:
+  name: fqdn
+  label: fqdn
   regex_validator: ".*"
   tooltip: " "
+  comment: "full hostname and domainname"
   field_type: text_field
-  hint: "hostname"
+  hint: "host.domain_name"
   placeholder: " "
   mandatory: true
   value: " "
   comment: " "
-  immutable: true
- ip:
-  name: ip
-  label: IP Address
-  regex_validator: ".*"
-  tooltip: " "
-  field_type: text_field
-  hint: "ip address"
-  placeholder: " "
-  mandatory: true
-  value: " "
-  comment: " "
-  immutable: true
-system_consumer_params:
- self_host:
-  label: "Self Hosted Domains"
-  description: "some stuff"
-  params:
-   domain_name:
-    name: domain_name
-    label: Domain name
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: "domain_name"
-    placeholder: " "
-    mandatory: true
-    value: " "
-    comment: " "
-   ip:
-    name: ip
-    label: IP Address
-    regex_validator: ".*"
-    tooltip: " "
-    field_type: text_field
-    hint: "ip address"
-    placeholder: " "
-    mandatory: true
-    value: " "
-    comment: " "
