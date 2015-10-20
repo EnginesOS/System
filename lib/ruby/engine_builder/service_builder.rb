@@ -83,15 +83,17 @@ def create_persistant_services(services, environ, use_existing)
  
  def match_service_to_existing(service_hash, use_existing)
    return false if use_existing.nil?
+   return false if existing_service[:create_type] == 'new'
+     p :create_tpye
+   p existing_service[:create_type]
    use_existing.each do |existing_service|
-     return false if existing_service[:create_type] == 'new'
      if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
        && existing_service[:type_path] == service_hash[:type_path]
          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'        
      end
-  end
-  return false
+  end  
+   log_error_mesg('Failed to Service to attach',"Not matched", service_hash)
  end
  
  def use_active_service(service_hash, existing_service )
