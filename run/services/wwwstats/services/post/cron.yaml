@@ -7,5 +7,5 @@ container_type: service
 persistant: false
 variables:
  cron_job: "01 00 * * * /home/run_analysis.sh"
- title: "webalise run"
+ title: "webalizer_run"
  action_type: "command"
