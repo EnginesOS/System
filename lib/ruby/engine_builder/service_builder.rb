@@ -44,7 +44,7 @@ def create_persistant_services(services, environ, use_existing)
    service_hash = set_top_level_service_params(service_hash, @engine_name)   
      return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
         existing = match_service_to_existing(service_hash, use_existing) 
-        if existing == true
+        if existing.is_a?(Hash)
           service_hash = existing
           service_hash[:shared] = true
           @first_build = false
@@ -83,7 +83,7 @@ def create_persistant_services(services, environ, use_existing)
  
  def match_service_to_existing(service_hash, use_existing)
    return false if use_existing.nil?
- 
+
    
    use_existing.each do |existing_service|
      p :create_type
@@ -95,7 +95,7 @@ def create_persistant_services(services, environ, use_existing)
          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'        
      end
   end  
-   log_error_mesg('Failed to Service to attach',"Not matched", service_hash)
+   log_error_mesg('Failed to Match Service to attach',"Not matched", service_hash)
  end
  
  def use_active_service(service_hash, existing_service )
