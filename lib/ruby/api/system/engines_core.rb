@@ -33,7 +33,7 @@ class EnginesCore < ErrorsApi
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
   end
-
+  
   attr_reader :container_api, :service_api
 
   def check_hash(service_hash)
@@ -407,8 +407,8 @@ class EnginesCore < ErrorsApi
         end
       end
     end
-    p :avail_services
-    p avail_services.to_s
+    #p :avail_services
+    #p avail_services.to_s
     return avail_services
   rescue StandardError => e
     log_exception(e)
