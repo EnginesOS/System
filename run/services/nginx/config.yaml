@@ -7,7 +7,7 @@ persistant: false
 publisher_namespace: EnginesSystem
 type_path: nginx
 last_error: 
-memory: '54'
+memory: '80'
 hostname: nginx
 domain_name: 
 environments: []
