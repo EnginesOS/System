@@ -185,9 +185,9 @@ configurators:
     comment: " " 
 setup_params:
 consumer_params:
-   name:
+   backup_name:
     regex_invalid_message: "wrong go back and try again"
-    name: name
+    name: backup_name
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "
