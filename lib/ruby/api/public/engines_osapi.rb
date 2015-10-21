@@ -340,7 +340,8 @@ class EnginesOSapi
   
   def get_service_memory_statistics(service_name)
     service = loadManagedService(service_name)
-    return MemoryStatistics.container_memory_stats(service) unless service.instance_of?(EnginesOSapiResult) 
+    return MemoryStatistics.container_memory_stats(service) unless service.instance_of?(EnginesOSapiResult)
+    return [] 
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
   end
@@ -348,7 +349,7 @@ class EnginesOSapi
   def get_container_network_metrics(container_name)
     engine = loadManagedEngine(container_name)
    return @core_api.get_container_network_metrics(engine) unless engine.instance_of?(EnginesOSapiResult) 
-   return engine
+   return []
   rescue StandardError => e
     log_exception_and_fail('get_container_network_metrics', e)
   end
