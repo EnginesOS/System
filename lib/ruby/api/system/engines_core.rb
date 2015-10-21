@@ -59,6 +59,7 @@ class EnginesCore < ErrorsApi
     unless service_hash.key?(:parent_engine)
       service_hash[:parent_engine] = service_hash[:engine_name]
     end
+    service_hash[:container_type] = "container" unless service_hash.key?(:container_type) 
     # End of Kludge
     return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
     return log_error_mesg('nil parent_engine', service_hash) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
