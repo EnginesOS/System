@@ -55,7 +55,6 @@ def create_persistant_services(services, environ, use_existing)
           free_orphan = true
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
-
           service_hash[:fresh] = true
         else # elseif over attach to existing true attached to existing
           service_hash[:fresh] = false
@@ -105,10 +104,11 @@ def create_persistant_services(services, environ, use_existing)
  def use_active_service(service_hash, existing_service )
   s = @service_manager.get_service_entry(existing_service)
   p :usering_active_Serviec
-  p s 
+
   s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
   s[:fresh] = false
   s[:shared] = true
+   p s 
   return s
  end
  
@@ -153,8 +153,11 @@ def create_persistant_services(services, environ, use_existing)
     else
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')  
     end
+    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:service_name] unless service_hash[:variables].key?(:volume_src)
+    service_hash[:variables][:volume_src]  = SystemConfig.LocalFSVolHome + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].begin_with(SystemConfig.LocalFSVolHome)
+       
     permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
-    vol = Volume.new(service_hash[:variables][:service_name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:service_name], service_hash[:variables][:engine_path], 'rw', permissions)
+    vol = Volume.new(service_hash[:variables][:service_name], service_hash[:variables][:volume_src], service_hash[:variables][:engine_path], 'rw', permissions)
     @volumes[service_hash[:variables][:service_name]] = vol
     return true
   rescue StandardError => e
