@@ -433,6 +433,8 @@ class EnginesCore < ErrorsApi
     params[:parent_engine] = container_name
     params[:persistant] = true
     params[:container_type] ='container'
+      p :engine_persistant_services
+      p params
     return check_sm_result(service_manager.get_engine_persistant_services(params))
   rescue StandardError => e
     log_exception(e)
