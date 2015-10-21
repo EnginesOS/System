@@ -16,7 +16,7 @@ service_container: backup
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-service_handle_field: name
+service_handle_field: backup_name
 immutable: false
 attach_post_build: true
 attach_requires_restart: false
