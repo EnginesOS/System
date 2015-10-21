@@ -95,7 +95,7 @@ def create_persistant_services(services, environ, use_existing)
          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'        
      end
   end  
-   log_error_mesg('Failed to Match Service to attach',"Not matched", service_hash)
+   log_error_mesg('Failed to Match Service to attach', service_hash)
  end
  
  def use_active_service(service_hash, existing_service )
