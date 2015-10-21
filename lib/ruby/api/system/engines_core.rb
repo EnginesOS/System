@@ -54,6 +54,12 @@ class EnginesCore < ErrorsApi
   
   def check_engine_hash(service_hash)
     return false unless check_hash(service_hash)
+    # FIXME: Kludge
+    # Klugde to avoid gui bugss
+    unless service_hash.key?(:parent_engine)
+      service_hash[:parent_engine] = service_hash[:engine_name]
+    end
+    # End of Kludge
     return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
     return log_error_mesg('nil parent_engine', service_hash) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
     return log_error_mesg('No container type path', service_hash) unless service_hash.key?(:container_type)
