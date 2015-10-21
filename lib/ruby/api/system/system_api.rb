@@ -324,6 +324,8 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
       return ret_val
     end
     commandargs = 'docker exec ' + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \' \' $6}'  2>&1"
+      p :netstat_cmd
+      p commandargs
     result = SystemUtils.execute_command(commandargs)
     if result[:result] != 0
       ret_val = error_result
