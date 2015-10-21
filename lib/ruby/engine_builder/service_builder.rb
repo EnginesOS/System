@@ -89,8 +89,12 @@ def create_persistant_services(services, environ, use_existing)
      p :create_type
       p existing_service[:create_type]
      next if existing_service[:create_type] == 'new'
+     p existing_service[:type_path] + " and " + service_hash[:type_path]
+     p existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace]
      if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
        && existing_service[:type_path] == service_hash[:type_path]
+         p :comparing
+         
          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'        
      end
