@@ -117,6 +117,8 @@ def create_persistant_services(services, environ, use_existing)
     service_hash[:fresh] = false
     new_service_hash = reparent_orphan(service_hash)
     unless new_service_hash.nil? 
+      p :from_reparemt
+      p new_service_hash
       new_service_hash[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
       service_hash = new_service_hash     
       service_hash[:fresh] = false      
