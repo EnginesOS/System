@@ -116,7 +116,7 @@ def create_persistant_services(services, environ, use_existing)
    p :attaching_orphan
     service_hash[:fresh] = false
     new_service_hash = reattach_service(service_hash)
-    if new_service_hash.nil? == false
+    unless new_service_hash.nil? 
       new_service_hash[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
       service_hash = new_service_hash     
       service_hash[:fresh] = false      
@@ -126,6 +126,7 @@ def create_persistant_services(services, environ, use_existing)
  end
  
  def reattach_service(service_hash)
+   service_hash[:new_parent] = @engine_name
    resuse_service_hash = @service_manager.reparent_orphan(service_hash)
    return resuse_service_hash
  end
