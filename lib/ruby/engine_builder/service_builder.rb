@@ -116,6 +116,8 @@ def create_persistant_services(services, environ, use_existing)
    p :attaching_orphan
     p service_hash
    service_hash = @service_manager.retrieve_orphan(service_hash)
+   p :retrieved_orphan
+    p service_hash
     service_hash[:fresh] = false   
     reparent_orphan(service_hash)
     unless service_hash.nil? 
