@@ -147,6 +147,7 @@ class EngineBuilder < ErrorsApi
         return post_failed_build_clean_up if mc == false
             @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
+      @service_builder.release_orphans
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')
       build_report = generate_build_report(@templater, @blueprint)

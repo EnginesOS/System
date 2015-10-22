@@ -38,7 +38,7 @@ class SystemService < ManagedService
         end
       end
     end
-    Thread.new { sleep 2 ; @docker_info = nil }
+    Thread.new { sleep 3 ; @docker_info = nil }
     return @docker_info
   end
     rescue StandardError => e

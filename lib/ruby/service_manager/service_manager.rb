@@ -523,7 +523,7 @@ def orphanate_service(params)
     log_exception(e)
  end
 
-def rebirth_orphan(params)
+def release_orphan(params)
   test_registry_result(@system_registry.rebirth_orphan(params))   
   rescue StandardError => e
     log_exception(e)

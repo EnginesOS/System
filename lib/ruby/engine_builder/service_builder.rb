@@ -8,6 +8,7 @@ class ServiceBuilder < ErrorsApi
     @templater = templater
     @attached_services =  attached_services 
     @volumes = {}
+    @orphans = []
     @app_is_persistant = false
       p @engine_name 
   end
@@ -52,7 +53,6 @@ def create_persistant_services(services, environ, use_existing)
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
           service_hash = use_orphan(service_hash)
           @first_build = false
-          free_orphan = true
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
           service_hash[:fresh] = true
@@ -73,11 +73,11 @@ def create_persistant_services(services, environ, use_existing)
         p service_hash
         # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
         if @service_manager.add_service(service_hash)
-          @attached_services.push(service_hash)    
-          release_orphan(service_hash) if free_orphan
+          @attached_services.push(service_hash)              
         else
           return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
         end
+        
  end
  
  def match_service_to_existing(service_hash, use_existing)
@@ -117,6 +117,7 @@ def create_persistant_services(services, environ, use_existing)
    service_hash = @service_manager.retrieve_orphan(service_hash)
    p :retrieved_orphan
     p service_hash
+   @orphans.push(service_hash.dup) 
     service_hash[:fresh] = false   
     reparent_orphan(service_hash)
     unless service_hash.nil? 
@@ -137,8 +138,10 @@ def create_persistant_services(services, environ, use_existing)
    return service_hash
  end
 
- def release_orphan(service_hash)
-   @service_manager.rebirth_orphan(service_hash)
+ def release_orphans()
+   @orphans.each do |service_hash|
+     @service_manager.release_orphan(service_hash)
+   end
  end
  
   def get_service_def(service_hash)
