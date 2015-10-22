@@ -369,6 +369,8 @@ class EnginesCore < ErrorsApi
     if container == false
       log_error_mesg('container load error', service_hash)
     end
+    p :filling_in_template_on
+    p container
     templater = Templater.new(SystemAccess.new, container)
     templater.fill_in_service_def_values(service_def)
     return service_def
