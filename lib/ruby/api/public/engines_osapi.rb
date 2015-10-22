@@ -10,9 +10,26 @@ class EnginesOSapi
 
   attr_reader :core_api, :last_error
 
+  
+  def shutdown(why)
+    
+    p :SYSTEM_SHUTDOWN_VIA
+    p why
+  
+  end
+  
   require_relative 'engines_api_version.rb'
   include EngOSapiVersion
   def initialize
+    Signal.trap('HUP', proc {
+      shutdown("hup")
+      exit
+    })
+    
+    Signal.trap('TERM', proc {
+     shutdown("term")
+      exit
+    })
     @core_api = EnginesCore.new
   end
 
