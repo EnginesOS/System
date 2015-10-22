@@ -11,7 +11,6 @@ require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
-  require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
   require '/opt/engines/lib/ruby/api/public/build_controller.rb'
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'containers/container_api.rb'
