@@ -21,15 +21,7 @@ class EnginesOSapi
   require_relative 'engines_api_version.rb'
   include EngOSapiVersion
   def initialize
-#    Signal.trap('HUP', proc {
-#      shutdown("hup")
-#      exit
-#    })
-#    
-#    Signal.trap('TERM', proc {
-#     shutdown("term")
-#      exit
-#    })
+    
     @core_api = EnginesCore.new
   end
 

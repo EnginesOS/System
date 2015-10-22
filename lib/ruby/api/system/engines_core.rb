@@ -18,6 +18,7 @@ class EnginesCore < ErrorsApi
   require_relative 'docker/docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
+  require_relative 'registry_handler.rb'
   require_relative 'configurations_api.rb'
   require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
@@ -102,6 +103,8 @@ class EnginesCore < ErrorsApi
   end
   
   def api_shutdown
+    p :BEING_SHUTDOWN
+ 
     @registry_handler.api_shutdown
   end
   
