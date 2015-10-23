@@ -133,9 +133,11 @@ def SystemUtils.execute_command(cmd)
    SystemUtils.debug_output('exec command ', cmd)
    p cmd
   retval = {}
-   retval[:stdout] = ''
+   
+    retval[:stdout] = ''
    retval[:stderr] = ''
    retval[:result] = -1
+     
      Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
        oline = ''
        stderr_is_open = true
