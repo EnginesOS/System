@@ -804,15 +804,15 @@ class EnginesOSapi
    SystemStatus.build_status
   end
 #
-#  def last_build_params
-#    SystemStatus.last_build_params
-#  end
-#
-#  def last_build_failure_params
-#    SystemStatus.last_build_failure_params
-#  end
-#
-#  def current_build_params
-#    SystemStatus.current_build_params
-#  end
+  def last_build_params
+    SystemStatus.last_build_params
+  end
+
+  def last_build_failure_params
+    SystemStatus.last_build_failure_params
+  end
+
+ def current_build_params
+    SystemStatus.current_build_params
+  end
 end
