@@ -800,9 +800,9 @@ class EnginesOSapi
 #    SystemStatus.base_system_has_updated?
 #  end
 #
-#  def build_status
-#    SystemStatus.build_status
-#  end
+  def build_status
+   SystemStatus.build_status
+  end
 #
 #  def last_build_params
 #    SystemStatus.last_build_params
