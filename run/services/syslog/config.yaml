@@ -5,7 +5,7 @@ type_path: log
 ctype: service
 persistant: false
 last_error: 
-memory: '16'
+memory: '18'
 hostname: syslog
 domain_name: 
 environments: []
