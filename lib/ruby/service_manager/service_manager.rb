@@ -487,6 +487,7 @@ class ServiceManager  < ErrorsApi
         rescue StandardError => e
           log_exception(e)
   end
+  
 #@returns [Hash] suitable for use  to attach as a service
   #nothing written to the tree
   def reparent_orphan(params)
@@ -514,8 +515,6 @@ def remove_engine_from_managed_engines_registry(params)
     log_exception(e)
 end
 
- 
-
 
 def orphanate_service(params)
    test_registry_result(@system_registry.orphanate_service(params))   
@@ -524,7 +523,7 @@ def orphanate_service(params)
  end
 
 def release_orphan(params)
-  test_registry_result(@system_registry.rebirth_orphan(params))   
+  test_registry_result(@system_registry.release_orphan(params))   
   rescue StandardError => e
     log_exception(e)
 end
