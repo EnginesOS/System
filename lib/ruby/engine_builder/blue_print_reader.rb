@@ -274,7 +274,7 @@ class BluePrintReader
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       p chmod
-      if chmod[:recursive] == false
+      if !chmod.key(:recursive) || chmod[:recursive] == false
         p chmod[:path]
         directory = clean_path(chmod[:path])
         @single_chmods.push(directory)
