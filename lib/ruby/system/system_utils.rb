@@ -267,12 +267,13 @@ def SystemUtils.execute_command(cmd)
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1]
     end
-    #version_str = os_data_hash['VERSION_ID'].sub(/\"/,"")
-    #vers = version_str.split('.')
-    p :os_data_hash
-    p  os_data_hash
-    os_data_hash['Major Version'] = '14' # vers[0]
-    os_data_hash['Minor Version'] = '04' # vers[1]
+p :os_data_hash
+   p  os_data_hash
+    version_str = os_data_hash['VERSION_ID'].sub(/\"/,"")
+    vers = version_str.split('.')
+   
+    os_data_hash['Major Version'] =  vers[0]
+    os_data_hash['Minor Version'] = vers[1]
     return os_data_hash
   end
   
