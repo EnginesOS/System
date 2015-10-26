@@ -262,7 +262,7 @@ def SystemUtils.execute_command(cmd)
   
   def SystemUtils.get_os_release_data
     os_data_hash = {}
-    os_data = File.open('/opt/engines/etc/os-release').each do |line|    
+    os_data = File.open('/opt/engines/etc/os-release-host').each do |line|    
       line.strip!
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1].gsub(/\"/,"")
