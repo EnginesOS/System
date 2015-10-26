@@ -261,13 +261,23 @@ def SystemUtils.execute_command(cmd)
   end
   
   def SystemUtils.get_os_release_data
+    os_data_hash = {}
     os_data = File.read('/etc/os-release')    
-    return os_data
+    lines = os_data.split('\n')
+    lines.each do |line|
+      pair = line.split('=')
+      os_data_hash[pair[0]] = pair[1]
+    end
+    version_str = os_data_hash['VERSION_ID'].replace(/\"/,"")
+    vers = version_str.split('.') 
+    os_data_hash['Major Version'] = vers[0]
+    os_data_hash['Minor Version'] = vers[0]
+    return os_data_hash
   end
   
   def SystemUtils.cgroup_mem_dir(container_id_str)
   
-    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data.include?('14.04')
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'         
   end
   
