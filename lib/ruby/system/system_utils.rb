@@ -268,7 +268,7 @@ def SystemUtils.execute_command(cmd)
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1]
     end
-    version_str = os_data_hash['VERSION_ID'].replace(/\"/,"")
+    version_str = os_data_hash['VERSION_ID'].sub(/\"/,"")
     vers = version_str.split('.') 
     os_data_hash['Major Version'] = vers[0]
     os_data_hash['Minor Version'] = vers[0]
