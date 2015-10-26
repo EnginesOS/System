@@ -265,15 +265,17 @@ def SystemUtils.execute_command(cmd)
     os_data = File.open('/etc/os-release').each do |line|    
       line.strip!
       pair = line.split('=')
-      os_data_hash[pair[0]] = pair[1]
+      os_data_hash[pair[0]] = pair[1].gsub(/\"/,"")
     end
-p :os_data_hash
-   p  os_data_hash
-    version_str = os_data_hash['VERSION_ID'].sub(/\"/,"")
+
+    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"")
     vers = version_str.split('.')
    
     os_data_hash['Major Version'] =  vers[0]
     os_data_hash['Minor Version'] = vers[1]
+      # FIXME catch sub numbers as in 14.04.1
+p :os_data_hash
+   p  os_data_hash
     return os_data_hash
   end
   
