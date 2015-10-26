@@ -21,8 +21,11 @@ class BuildController
     @build_params = params
     SystemStatus.build_starting(@build_params)
     engine_builder = get_engine_builder(@build_params)
-    @build_error = engine_builder.last_error
+
     @engine = engine_builder.build_from_blue_print
+    @build_error = engine_builder.last_error
+    p :build_error
+    p self.build_error
     build_failed(params, engine_builder.last_error) if @engine.nil? || @engine == false
     build_failed(params, engine_builder.last_error) unless @engine.is_a?(ManagedEngine)
     SystemStatus.build_complete(@build_params)
@@ -93,6 +96,7 @@ class BuildController
     build_failed(params, e)
     SystemUtils.log_exception(e)
   end
+
 
   private
 
