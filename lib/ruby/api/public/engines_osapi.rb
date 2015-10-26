@@ -75,6 +75,7 @@ class EnginesOSapi
 #    engine = build_controller.engine
 #    return engine if engine.is_a?(EnginesOSapiResult)
 #    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
+   p :build_started
     success(host.to_s + '.' + domain_name.to_s, 'Build Started')
   end
   
