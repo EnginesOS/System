@@ -63,7 +63,7 @@ class EnginesOSapi
   Thread.new {build_controller.build_engine(params)}
     engine = build_controller.engine
     return engine if engine.is_a?(EnginesOSapiResult)
-    return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless engine.is_active?
+    return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless !engine.nil? && engine.is_active?
     success(params[:engine_name], 'Build Engine')
   end
 
