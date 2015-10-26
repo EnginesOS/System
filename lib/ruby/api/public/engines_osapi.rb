@@ -60,7 +60,8 @@ class EnginesOSapi
   # Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
-  Thread.new {build_controller.build_engine(params)}
+ t = Thread.new { build_controller.build_engine(params) }
+   t.join
     engine = build_controller.engine
     return engine if engine.is_a?(EnginesOSapiResult)
     return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless !engine.nil? && engine.is_active?
@@ -69,7 +70,8 @@ class EnginesOSapi
 
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
-  Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
+  t = Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
+  t.join
     engine = build_controller.engine
     return engine if engine.is_a?(EnginesOSapiResult)
     return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
