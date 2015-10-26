@@ -127,7 +127,7 @@ rescue Exception=>e
     #@return hash
     #:result_code = command exit/result code
     #:stdout = what was written to standard out
-    #:stderr = wahat was written to standard err
+    #:stderr = what was written to standard err
 def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
