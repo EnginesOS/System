@@ -299,7 +299,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
     end
     # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
     if Rails.env.production?
-    if result[:stdout].include?('Already up-to-date')
+    if result[:stdout].include?('Already up-to-date') && File.exist?('/opt/engines/run/system/flags/test_engines_update') == false
       @last_error = result[:stdout]
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
