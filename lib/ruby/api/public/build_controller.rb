@@ -1,15 +1,16 @@
 class BuildController
   require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
-  attr_reader :engine
-              :build_error
-              :build_params
+  attr_reader :engine,
+              :build_error,
+              :build_params,
               :engine
+              
   def initialize(api)
     @core_api = api
     @build_log_stream = nil
     @build_error_stream = nil
     @engine = nil
-    
+    @build_error = 'none'
   end
 
   def build_from_docker(params)
