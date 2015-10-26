@@ -262,9 +262,8 @@ def SystemUtils.execute_command(cmd)
   
   def SystemUtils.get_os_release_data
     os_data_hash = {}
-    os_data = File.read('/etc/os-release')    
-    lines = os_data.split('\n')
-    lines.each do |line|
+    os_data = File.open('/etc/os-release').each do |line|    
+      line.strip!
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1]
     end
