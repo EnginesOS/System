@@ -765,17 +765,17 @@ class EnginesCore < ErrorsApi
   #  end
 
   def force_reregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 

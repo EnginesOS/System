@@ -388,7 +388,7 @@ class ServiceManager  < ErrorsApi
       rescue StandardError => e
         SystemUtils.log_exception(e)
   end
-
+  
   
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
