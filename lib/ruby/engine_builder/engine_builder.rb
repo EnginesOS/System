@@ -278,6 +278,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_from_blue_print
+    return log_error_mesg('Failed backup last build',self) unless backup_lastbuild
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     build_container
   end
