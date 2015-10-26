@@ -9,19 +9,18 @@ class EnginesOSapi
   require_relative 'build_controller.rb'
 
   attr_reader :core_api, :last_error
-
-  
   def shutdown(why)
-    
+
     p :SYSTEM_SHUTDOWN_VIA
     p why
-  
+
   end
-  
+
   require_relative 'engines_api_version.rb'
   include EngOSapiVersion
+
   def initialize
-    
+
     @core_api = EnginesCore.new
   end
 
@@ -38,30 +37,27 @@ class EnginesOSapi
   def first_run_required?
     FirstRunWizard.required?
   end
-  
+
   def reserved_engine_names
     names = list_apps
     names.concat(list_services)
     names.concat(list_system_services)
   end
-  
+
   def list_system_services
     services = []
     services.push('registry')
     return services
   end
-  
+
   def reserved_hostnames
-     @core_api.taken_hostnames
+    @core_api.taken_hostnames
   end
-  
-  
 
   # Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
- t = Thread.new { build_controller.build_engine(params) }
-   t.join
+    Thread.new { build_controller.build_engine(params) }
     engine = build_controller.engine
     return engine if engine.is_a?(EnginesOSapiResult)
     return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless !engine.nil? && engine.is_active?
@@ -70,20 +66,18 @@ class EnginesOSapi
 
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
-   Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
-#  t.join
-#    engine = build_controller.engine
-#    return engine if engine.is_a?(EnginesOSapiResult)
-#    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
-   p :build_started
-    success(host.to_s + '.' + domain_name.to_s, 'Build Started')
+    Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
+    engine = build_controller.engine
+    return engine if engine.is_a?(EnginesOSapiResult)
+    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
+    success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
   end
-  
+
   def attach_existing_service_to_engine(params_hash)
     p params_hash
     success("OK","OK")
   end
-  
+
   def rebuild_engine_container(engine_name)
     engine = loadManagedEngine(engine_name)
     return failed(engine_name, 'no Engine', 'Load Engine Blueprint') if engine.is_a?(EnginesOSapiResult)
@@ -100,14 +94,14 @@ class EnginesOSapi
     p params[:host_name]
     build_controller = BuildController.new(@core_api)
     build_controller.build_from_docker(params)
-     
+
     success(params[:host_name], 'Build Engine from Docker Image')
   rescue StandardError => e
     log_exception_and_fail('Build Engine from dockerimage', e)
   end
 
   def get_engine_build_report(engine_name)
-     @core_api.get_build_report(engine_name)
+    @core_api.get_build_report(engine_name)
   end
 
   def generate_private_key
@@ -128,7 +122,7 @@ class EnginesOSapi
   end
 
   def upload_ssl_certificate(params)
-     return failed('invalid parameter', 'upload Cert ', params.to_s) unless params.is_a?(Hash)
+    return failed('invalid parameter', 'upload Cert ', params.to_s) unless params.is_a?(Hash)
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return failed('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
@@ -268,11 +262,11 @@ class EnginesOSapi
   def reinstall_engine(engine_name)
     engine = loadManagedEngine(engine_name)
     return engine if engine.is_a?(EnginesOSapiResult)
-    
+
     return success(engine_name, 'Re Installed') if @core_api.reinstall_engine(engine).is_a?(ManagedEngine)
     failed(engine_name, @core_api.last_error, 'Reinstall Engine Failed')
   end
-  
+
   def createEngine(engine_name)
     engine = loadManagedEngine(engine_name)
     return engine if engine.is_a?(EnginesOSapiResult)
@@ -348,17 +342,16 @@ class EnginesOSapi
   def get_memory_statistics
     MemoryStatistics.total_memory_statistics(@core_api)
   end
- 
-  
+
   def get_service_memory_statistics(service_name)
     service = LoadManagedService(service_name,self)
-    MemoryStatistics.container_memory_stats(service) 
+    MemoryStatistics.container_memory_stats(service)
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
   end
 
-  def get_container_network_metrics(container_name)  
-   @core_api.get_container_network_metrics(container_name)    
+  def get_container_network_metrics(container_name)
+    @core_api.get_container_network_metrics(container_name)
   rescue StandardError => e
     log_exception_and_fail('get_container_network_metrics', e)
   end
@@ -396,7 +389,7 @@ class EnginesOSapi
   def add_domain(params)
     return success(params[:domain_name], 'Add domain') if @core_api.add_domain(params)
     failed(params[:domain_name], last_api_error, 'Add  domain')
-      
+
   rescue StandardError => e
     log_exception_and_fail('Add self hosted domain ' + params.to_s, e)
   end
@@ -410,7 +403,7 @@ class EnginesOSapi
 
   def list_domains
     res = DNSHosting.list_domains
-        return res if res.is_a?(Hash)
+    return res if res.is_a?(Hash)
     failed("Domains",res, 'list')
   rescue StandardError => e
     log_exception_and_fail('list domains ', e)
@@ -427,7 +420,7 @@ class EnginesOSapi
     p item_name
     p cmd
     p mesg.to_s + ':' + last_api_error.to_s
-     EnginesOSapiResult.failed(item_name, mesg, cmd)
+    EnginesOSapiResult.failed(item_name, mesg, cmd)
   end
 
   def self.failed(item_name, mesg, cmd)
@@ -501,14 +494,15 @@ class EnginesOSapi
     log_exception_and_fail('getManagedService', e)
   end
 
-  # @returns list of availible 
-  def list_avail_services_for(object) 
+  # @returns list of availible
+  def list_avail_services_for(object)
     @core_api.list_avail_services_for(object)
   end
-  def load_avail_services_for_type(type) 
+
+  def load_avail_services_for_type(type)
     @core_api.load_avail_services_for_type(type)
   end
-  
+
   def find_service_consumers(params)
     @core_api.find_service_consumers(params)
   end
@@ -520,7 +514,7 @@ class EnginesOSapi
     return failed(query_hash[:parent_engine],@core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
     return s
   end
-    
+
   def get_engine_persistant_services(params)
     @core_api.get_engine_persistant_services(params)
   end
@@ -544,10 +538,10 @@ class EnginesOSapi
     @core_api.fillin_template_for_service_def(service_hash)
   end
 
-  def get_resolved_string(env_value) 
-    return @core_api.get_resolved_string(env_value) 
+  def get_resolved_string(env_value)
+    return @core_api.get_resolved_string(env_value)
   end
-  
+
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def dettach_service(params)
@@ -571,7 +565,7 @@ class EnginesOSapi
   # @params service_hash
   # this method is called to deregister the service hash from service
   # nothing is written to the service resgitry
-  def deregister_attached_service(service_query)   
+  def deregister_attached_service(service_query)
     p :deregister_attached_service
     p service_query
     return success(service_query[:parent_engine].to_s + ' ' + service_query[:service_handle].to_s, 'Deregister Service') if @core_api.force_deregister_attached_service(service_query)
@@ -660,16 +654,16 @@ class EnginesOSapi
   def attach_subservice(params)
     p :attach_subservice
     p params
-#    return success(params[:service_handle], 'attach subservice') if @core_api.attach_subservice(params)
-#    SystemUtils.log_error_mesg('attach subservice', params)
+    #    return success(params[:service_handle], 'attach subservice') if @core_api.attach_subservice(params)
+    #    SystemUtils.log_error_mesg('attach subservice', params)
     failed(params, @core_api.last_error, 'attach subservice')
   end
 
   def dettach_subservice(params)
     p :attach_subservice
-      p params
-#    return success(params[:service_handle], 'attach subservice') if @core_api.dettach_subservice(params)
-#    SystemUtils.log_error_mesg('attach subservice', params)
+    p params
+    #    return success(params[:service_handle], 'attach subservice') if @core_api.dettach_subservice(params)
+    #    SystemUtils.log_error_mesg('attach subservice', params)
     failed(params[:service_handle], @core_api.last_error, 'attach subservice')
   end
 
@@ -762,52 +756,54 @@ class EnginesOSapi
     service
   end
 
-  def restart_mgmt 
-    return success("mgmt", 'Restart Management Service') 
+  def restart_mgmt
+    return success("mgmt", 'Restart Management Service')
   end
-  
+
   def restart_registry
-    return success("registry", 'Restart Resgitry Service') 
+    return success("registry", 'Restart Resgitry Service')
   end
-  
+
   def system_status
     return SystemStatus.system_status
   end
-#
-#  def is_base_system_updating?
-#    SystemStatus.is_base_system_updating?
-#  end
-#
-#  def is_rebooting?
-#    SystemStatus.is_rebooting?
-#  end
-#
-#  def needs_reboot?
-#    SystemStatus.needs_reboot?
-#  end
-#
-#  def engines_system_has_updated
-#    SystemStatus.engines_system_has_updated?
-#  end
-#
-#  def is_engines_system_updating?
-#    SystemStatus.is_engines_system_updating?
-#  end
-#
-#  def is_engines_system_upto_date?
-#    result = SystemStatus.is_engines_system_upto_date?
-#    return success('System Up to Date', 'Update Status') if result[:result] == 0
-#    failed('Updates pending', result[:stdout], 'Update Status')
-#  end
-#
-#  def base_system_has_updated?
-#    SystemStatus.base_system_has_updated?
-#  end
-#
+
+  #
+  #  def is_base_system_updating?
+  #    SystemStatus.is_base_system_updating?
+  #  end
+  #
+  #  def is_rebooting?
+  #    SystemStatus.is_rebooting?
+  #  end
+  #
+  #  def needs_reboot?
+  #    SystemStatus.needs_reboot?
+  #  end
+  #
+  #  def engines_system_has_updated
+  #    SystemStatus.engines_system_has_updated?
+  #  end
+  #
+  #  def is_engines_system_updating?
+  #    SystemStatus.is_engines_system_updating?
+  #  end
+  #
+  #  def is_engines_system_upto_date?
+  #    result = SystemStatus.is_engines_system_upto_date?
+  #    return success('System Up to Date', 'Update Status') if result[:result] == 0
+  #    failed('Updates pending', result[:stdout], 'Update Status')
+  #  end
+  #
+  #  def base_system_has_updated?
+  #    SystemStatus.base_system_has_updated?
+  #  end
+  #
   def build_status
-   SystemStatus.build_status
+    SystemStatus.build_status
   end
-#
+
+  #
   def last_build_params
     SystemStatus.last_build_params
   end
@@ -816,7 +812,7 @@ class EnginesOSapi
     SystemStatus.last_build_failure_params
   end
 
- def current_build_params
+  def current_build_params
     SystemStatus.current_build_params
   end
 end
