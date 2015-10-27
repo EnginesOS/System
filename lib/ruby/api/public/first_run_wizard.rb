@@ -19,6 +19,9 @@ class FirstRunWizard <ErrorsApi
     if @first_run_params.key?(:ssh_key) == true
       return log_error_mesg('Fail to setup ssh key ', api.last_error) unless ssh_key_configurator(@first_run_params[:ssh_key])
     end
+    
+    apply_hostname(@first_run_params)
+    
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
     SystemUtils.execute_command('/opt/engines/bin/install_ca.sh')
@@ -28,14 +31,24 @@ class FirstRunWizard <ErrorsApi
     mark_as_run
   end
 
+  def apply_hostname(params)
+    config_hash = {}
+    config_hash[:service_name] = 'mgmt'
+    config_hash[:configurator_name] = 'set_hostname'
+    config_hash[:variables][:hostname] =  params[:hostname]
+    config_hash[:variables][:domain_name] =  params[:default_domain]      
+    return true if @api.update_service_configuration(config_hash)
+    return log_error_mesg('Hostname configurator ', config_hash)
+  end
+  
   def set_default_email_domain(domain_name)
-    service_param = {}
-    service_param[:service_name] = 'smtp'
-    service_param[:configurator_name] = 'default_domain'
-    service_param[:variables] = {}
-    service_param[:variables][:domain_name] = domain_name
-    return true if @api.update_service_configuration(service_param)
-    return log_error_mesg('smtp default domain configurator ', service_param)
+    config_hash = {}
+    config_hash[:service_name] = 'smtp'
+    config_hash[:configurator_name] = 'default_domain'
+    config_hash[:variables] = {}
+    config_hash[:variables][:domain_name] = domain_name
+    return true if @api.update_service_configuration(config_hash)
+    return log_error_mesg('smtp default domain configurator ', config_hash)
   end
 
   def get_domain_params(params)
