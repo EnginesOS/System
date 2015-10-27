@@ -74,7 +74,7 @@ class SystemUtils
     elof = File.open("/tmp/exceptions.log","a+")
     elof.write(e_str)
     elof.close
-    res = SystemUtils.execute_cmd('hostname')
+    res = SystemUtils.execute_command('hostname')
     hostname = res[:stdout] 
     error_log_hash = {}
     error_log_hash[:backtrace] = e_str
