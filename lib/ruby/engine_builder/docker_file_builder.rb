@@ -429,7 +429,7 @@ end
         set_user('$ContUser')
       else
         step_back = false
-        if arc_dir.nil? == true || arc_dir == ''
+        if arc_dir.nil? == true || arc_dir == '' || arc_dir == './' || arc_dir == '/'
           step_back = true
           write_line('RUN   mkdir /tmp/app')          
           arc_dir = '/tmp/app'
