@@ -143,15 +143,15 @@ class SystemRegistry < ErrorsApi
 
 
   def orphaned_services_registry
-    test_result(send_request('orphaned_services_registry', nil))
+    test_result(send_request('orphaned_services_registry_tree', nil))
   end
 
   def services_registry
-    test_result(send_request('services_registry', nil))
+    test_result(send_request('services_registry_tree', nil))
   end
 
   def managed_engines_registry
-    test_result(send_request('managed_engines_registry', nil))
+    test_result(send_request('managed_engines_registry_tree', nil))
   end
 
   private
