@@ -401,7 +401,7 @@ end
       arc_name = archive_details[:package_name]
       arc_loc = archive_details[:destination]
       arc_extract = archive_details[:extraction_command]
-      arc_dir = archive_details[:path_to_extracted]
+      arc_dir = archive_details[:path_to_extracted].to_s
       p '_+_+_+_+_+_+_+_+_+_+_'
       p archive_details
       p arc_src + '_'
