@@ -71,10 +71,21 @@ class SystemUtils
     end
     @@last_error = e_str    
     SystemUtils.log_output(e_str, 10)
-    elof = File.open("/var/log/exceptions.log","a+")
+    elof = File.open("/tmp/exceptions.log","a+")
     elof.write(e_str)
     elof.close
-    
+    res = SystemUtils.execute_cmd('hostname')
+    hostname = res[:stdout] 
+    error_log_hash = {}
+    error_log_hash[:backtrace] = e_str
+    error_log_hash[:request_params] = hostname
+    error_log_hash[:return_url] = 'system'
+    error_log_hash[:user_comment] = 
+    error_log_hash[:user_email] = 'backend@engines.onl'
+    require 'rest-client'
+  r =   RestClient.post('http://buglog/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
+  p "bug pos response"
+  p r.to_s
   end
   def SystemUtils.last_error
     return @@last_error
