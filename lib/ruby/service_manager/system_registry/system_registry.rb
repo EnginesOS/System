@@ -34,7 +34,7 @@ class SystemRegistry < ErrorsApi
       end
       
     def service_configurations_registry
-      test_result(send_request('service_configurations_registry-tree', nil))
+      test_result(send_request('service_configurations_registry_tree', nil))
     end
    
   # orphans Methods
