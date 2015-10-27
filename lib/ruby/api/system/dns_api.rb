@@ -16,7 +16,8 @@ end
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
+     return true if @service_manager.add_service(service_hash)
+     @last_error = @service_manager.last_error
      return false
    rescue StandardError => e
      log_error_mesg('Add self hosted domain exception', params.to_s)
