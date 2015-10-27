@@ -71,9 +71,10 @@ class SystemUtils
     end
     @@last_error = e_str    
     SystemUtils.log_output(e_str, 10)
-    elof = File.open("/tmp/exceptions.log","a+")
+    elof = File.open("/var/log/exceptions.log","a+")
     elof.write(e_str)
     elof.close
+    
   end
   def SystemUtils.last_error
     return @@last_error
