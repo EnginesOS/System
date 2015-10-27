@@ -1,7 +1,9 @@
 FROM  engines/ruby2.x:_Engines_System(release)
 
 #FROM  engines/passenger:_Engines_System(release)
-
+RUN	usr/local/rbenv/shims/gem install bundle
+  	/usr/local/rbenv/bin/rbenv rehash;\
+  	
 ADD home home
 ADD engines home/engines
 ENV CONTFSVolHome /home/fs/
