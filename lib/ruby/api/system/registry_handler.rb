@@ -13,7 +13,7 @@ class RegistryHandler < ErrorsApi
       # start in thread in case timeout clobbers
     log_error_mesg("Forcing registry restart", nil)
       registry_service = @system_api.loadSystemService('registry')
-      # FIXME: need to panic if cannot load
+     return log_error_mesg("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(SystemService)
 #      restart_thread = Thread.new {
         registry_service.stop_container
         registry_service.start_container
