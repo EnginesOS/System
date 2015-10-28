@@ -77,18 +77,18 @@ class NetworkSystemRegistry < ErrorsApi
         return nil
       end
     end
-    return nil if message_response.nil?
-   # p 'read ' + message_response.size.to_s + ' Bytes'
+    return nil if message_response.nil? 
+    p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML.load(message_response)
-    if !response_hash[:object].nil?
+    if !response_hash[:object].nil? || response_hash == ''
       response_hash[:object] = YAML.load(response_hash[:object])
     end
     log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
     return response_hash
   rescue StandardError => e
     log_exception(e)
-    p :message_response
-    p response_hash.to_s
+    p :error_with_message_response
+    p message_response.to_s
     return response_hash
   end
 
