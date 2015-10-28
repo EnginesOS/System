@@ -17,9 +17,11 @@ class RegistryHandler < ErrorsApi
       restart_thread = Thread.new {
         registry_service.stop_container
         registry_service.start_container
+        wait = 0
         while registry_service.is_startup_complete? == false
           sleep 1
           wait += 1
+          p :wait_for_start
           return force_recreate if wait > 120
         end
       }
