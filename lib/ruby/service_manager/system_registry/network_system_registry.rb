@@ -87,8 +87,8 @@ p message_response
     return nil if message_response.nil? 
     p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML.load(message_response)
-    if !response_hash[:object].nil? || response_hash == ''
-      response_hash[:object] = YAML.load(response_hash[:object])
+    if !response_hash[:reply_object].nil? || response_hash == ''
+      response_hash[:reply_object] = YAML.load(response_hash[:reply_object])
     end
     log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
     return response_hash
