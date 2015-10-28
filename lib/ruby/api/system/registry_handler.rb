@@ -14,7 +14,7 @@ class RegistryHandler < ErrorsApi
     log_error_mesg("Forcing registry restart", nil)
       registry_service = @system_api.loadSystemService('registry')
       # FIXME: need to panic if cannot load
-      restart_thread = Thread.new {
+#      restart_thread = Thread.new {
         registry_service.stop_container
         registry_service.start_container
         wait = 0
@@ -24,8 +24,9 @@ class RegistryHandler < ErrorsApi
           p :wait_for_start
           return force_recreate if wait > 120
         end
-      }
-      restart_thread.join
+        p :restarted_registry
+#      }
+#      restart_thread.join
       return true
     rescue StandardError => e
       log_exception(e)
