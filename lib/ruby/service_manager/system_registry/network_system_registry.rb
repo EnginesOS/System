@@ -77,6 +77,10 @@ class NetworkSystemRegistry < ErrorsApi
         return nil
       end
     end
+    if message_response.size > mesg_len
+      p :GOT_MORE
+      
+    end
     return nil if message_response.nil? 
     p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML.load(message_response)
