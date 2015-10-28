@@ -35,6 +35,7 @@ class FirstRunWizard <ErrorsApi
     config_hash = {}
     config_hash[:service_name] = 'mgmt'
     config_hash[:configurator_name] = 'set_hostname'
+    config_hash[:variables] = {}
     config_hash[:variables][:hostname] =  params[:hostname]
     config_hash[:variables][:domain_name] =  params[:default_domain]      
     return true if @api.update_service_configuration(config_hash)
