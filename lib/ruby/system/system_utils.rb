@@ -83,7 +83,7 @@ class SystemUtils
     error_log_hash[:user_comment] = 
     error_log_hash[:user_email] = 'backend@engines.onl'
     require 'rest-client'
-  r =   RestClient.post('http://buglog/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
+  r =   RestClient.post('http://buglog.engines.onl/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
   p :bug_pos_response
   p r.to_s
   end
