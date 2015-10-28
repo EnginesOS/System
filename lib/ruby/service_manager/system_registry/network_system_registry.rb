@@ -222,6 +222,7 @@ class NetworkSystemRegistry < ErrorsApi
 
   def force_registry_restart
     log_error_mesg("FORCE REGISTRY RESTART", self)
+     p "FORCE REGISTRY RESTART"
     @core_api.force_registry_restart
   end
 
