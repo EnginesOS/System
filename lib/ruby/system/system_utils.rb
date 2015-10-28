@@ -83,10 +83,18 @@ class SystemUtils
     error_log_hash[:return_url] = 'system'
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
-    require 'rest-client'
-  r =   RestClient.post('http://buglog.engines.onl/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
+    require "net/http"
+    require "uri"
+    
+    uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")
+    
+    # Shortcut
+    response = Net::HTTP.post_form(uri, error_log_hash)
+
+#    require 'rest-client'
+#  r =   RestClient.post('http://buglog.engines.onl/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
   p :bug_pos_response
-  p r.to_s
+  p response.to_s
   end
   def SystemUtils.last_error
     return @@last_error
