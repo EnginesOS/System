@@ -87,6 +87,8 @@ class NetworkSystemRegistry < ErrorsApi
     return response_hash
   rescue StandardError => e
     log_exception(e)
+    p :message_response
+    p response_hash.to_s
     return response_hash
   end
 
@@ -113,7 +115,7 @@ class NetworkSystemRegistry < ErrorsApi
           return send_request_failed(command, request_hash)
         end
       end
-      status = Timeout::timeout(SystemConfig.registry_connect_timeout) {
+      status = Timeouttimeout(SystemConfig.registry_connect_timeout) {
         registry_socket.read_nonblock(0)
         registry_socket.send(mesg_str, 0)
       }
