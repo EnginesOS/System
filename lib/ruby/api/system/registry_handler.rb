@@ -52,15 +52,16 @@ class RegistryHandler < ErrorsApi
       end
       wait = 0
 
-       ip_str = registry_service.get_ip_str
-       return ip_str if ip_str.is_a?(String)
-       
+#       ip_str = registry_service.get_ip_str
+#       return ip_str if ip_str.is_a?(String)
+     
       while !registry_service.is_startup_complete?
         sleep 1
         wait += 1
         p :wait_for_start_up
         break if wait > 5
       end
+      p :registry_is_up
       return registry_service.get_ip_str
     rescue StandardError => e
       log_exception(e)

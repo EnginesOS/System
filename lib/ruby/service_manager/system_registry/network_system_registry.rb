@@ -11,7 +11,7 @@ class NetworkSystemRegistry < ErrorsApi
     @retry_count_limit = 5
     @core_api = core_api
     @port = SystemConfig.RegistryPort
-    @registry_socket = false
+    @registry_socket = open_socket(registry_server_ip, @port)
   end
 
   def api_shutdown
