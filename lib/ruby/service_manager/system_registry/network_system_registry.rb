@@ -81,9 +81,9 @@ class NetworkSystemRegistry < ErrorsApi
       p :GOT_MORE
       registry_socket.ungetbyte(message_response[mesg_len, message_response.size])
     message_response = message_response[0, mesg_len]
-    p :response
-    p message_response
     end
+p :response
+p message_response
     return nil if message_response.nil? 
     p 'read ' + message_response.size.to_s + ' Bytes'
     response_hash = YAML.load(message_response)
