@@ -108,7 +108,7 @@ class NetworkSystemRegistry < ErrorsApi
 
     begin
       unless registry_socket.is_a?(TCPSocket)
-        if !reopen_registry_socket
+        unless reopen_registry_socket.is_a?(TCPSocket)
           log_error_mesg('Failed to reopen registry connection',registry_socket)
           return send_request_failed(command, request_hash)
         end
@@ -242,7 +242,7 @@ end
         sleep 2
         socket = TCPSocket.new(host, port)
         wait += 1
-        if wait > 10
+        if wait > 20
           return force_registry_restart unless socket.is_a?(TCPSocket) 
         end
       end
