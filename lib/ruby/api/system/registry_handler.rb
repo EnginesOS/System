@@ -50,7 +50,7 @@ class RegistryHandler < ErrorsApi
       wait = 0
 
        ip_str = registry_service.get_ip_str
-       return.ip_str if ip_str.is_a?(String)
+       return ip_str if ip_str.is_a?(String)
        
       while !registry_service.is_startup_complete?
         sleep 1
