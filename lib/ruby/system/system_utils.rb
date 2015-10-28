@@ -77,10 +77,11 @@ class SystemUtils
     res = SystemUtils.execute_command('hostname')
     hostname = res[:stdout] 
     error_log_hash = {}
+    error_log_hash[:message] = e.to_s
     error_log_hash[:backtrace] = e_str
-    error_log_hash[:request_params] = hostname
-    #error_log_hash[:return_url] = 'system'
-    error_log_hash[:user_comment] = 
+   # error_log_hash[:request_params] = hostname
+    error_log_hash[:return_url] = 'system'
+    error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     require 'rest-client'
   r =   RestClient.post('http://buglog.engines.onl/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
