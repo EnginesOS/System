@@ -170,10 +170,10 @@ class SystemRegistry < ErrorsApi
       end
       if request_result_hash[:result] == 'OK'
         # p request_result_hash[:object].class.name
-        return request_result_hash[:object]
+        return request_result_hash[:reply_object]
       end
       @last_error = request_result_hash[:error].to_s + ':' + @network_registry.last_error.to_s
-      return request_result_hash[:object] if request_result_hash.key?(:object)
+      return request_result_hash[:reply_object] if request_result_hash.key?(:reply_object)
       return false
     end
     
