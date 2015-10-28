@@ -115,7 +115,7 @@ class NetworkSystemRegistry < ErrorsApi
           return send_request_failed(command, request_hash)
         end
       end
-      status = Timeouttimeout(SystemConfig.registry_connect_timeout) {
+      status = Timeout.timeout(SystemConfig.registry_connect_timeout) {
         registry_socket.read_nonblock(0)
         registry_socket.send(mesg_str, 0)
       }
