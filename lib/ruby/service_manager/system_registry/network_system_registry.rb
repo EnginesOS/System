@@ -207,10 +207,10 @@ class NetworkSystemRegistry < ErrorsApi
       @registry_socket = open_socket(registry_server_ip, @port)
      unless @registry_socket.is_a?(TCPSocket)
         return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
-        @registry_socket = open_socket(registry_server_ip, @port)
+        @registry_socket = open_socket(registry_server_ip, @port)        
         return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
       end
-      return true
+      return @registry_socket
     rescue StandardError => e
      log_exception(e)
   end
