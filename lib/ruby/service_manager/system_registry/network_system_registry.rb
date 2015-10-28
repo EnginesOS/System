@@ -10,14 +10,8 @@ class NetworkSystemRegistry < ErrorsApi
   def initialize(core_api)
     @retry_count_limit = 5
     @core_api = core_api
-    server_ip = registry_server_ip
     @port = SystemConfig.RegistryPort
-    @registry_socket = open_socket(server_ip, @port)
-    if @registry_socket.is_a?(FalseClass) 
-      p @registry_socket.to_s
-      @core_api.force_registry_restart
-      @registry_socket = open_socket(server_ip, @port)
-    end   
+    @registry_socket = false
   end
 
   def api_shutdown
@@ -25,6 +19,7 @@ class NetworkSystemRegistry < ErrorsApi
     @registry_socket.close
     p "Closed Socket"
   end
+  
   def registry_server_ip
     @core_api.get_registry_ip
   end
@@ -54,7 +49,7 @@ class NetworkSystemRegistry < ErrorsApi
     response_hash = nil
     first_bytes = true
     begin
-      mesg_data = @registry_socket.read_nonblock(32_768)
+      mesg_data = registry_socket.read_nonblock(32_768)
     rescue IO::EAGAINWaitReadable
       retry
     rescue EOFError
@@ -68,7 +63,7 @@ class NetworkSystemRegistry < ErrorsApi
    # p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
     while message_response.size < mesg_len
       begin
-        mesg_data = @registry_socket.read_nonblock(32768)
+        mesg_data = registry_socket.read_nonblock(32768)
         message_response += mesg_data
      #   p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
       rescue IO::EAGAINWaitReadable
@@ -110,15 +105,15 @@ class NetworkSystemRegistry < ErrorsApi
     mesg_str = build_mesg(request_yaml)
 
     begin
-      if @registry_socket.is_a?(String)
+      if registry_socket.is_a?(String)
         if !reopen_registry_socket
-          log_error_mesg('Failed to reopen registry connection',@registry_socket)
+          log_error_mesg('Failed to reopen registry connection',registry_socket)
           return send_request_failed(command, request_hash)
         end
       end
       status = Timeout::timeout(SystemConfig.registry_connect_timeout) {
-        @registry_socket.read_nonblock(0)
-        @registry_socket.send(mesg_str, 0)
+        registry_socket.read_nonblock(0)
+        registry_socket.send(mesg_str, 0)
       }
     rescue Errno::EIO
       retry_count += 1
@@ -210,7 +205,7 @@ class NetworkSystemRegistry < ErrorsApi
     p :REopen_socket
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
-      if @registry_socket.is_a?(FalseClass)
+     unless @registry_socket.is_a?(TCPSocket)
         return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
         @registry_socket = open_socket(registry_server_ip, @port)
         return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
@@ -219,7 +214,13 @@ class NetworkSystemRegistry < ErrorsApi
     rescue StandardError => e
      log_exception(e)
   end
-
+  
+  def registry_socket
+ return @registry_socket if @registry_socket.is_a?(TCPSocket) 
+    @registry_socket = open_socket(registry_server_ip, @port)
+   return @registry_socket     
+end
+   
   def force_registry_restart
     log_error_mesg("FORCE REGISTRY RESTART", self)
      p "FORCE REGISTRY RESTART"
@@ -231,6 +232,7 @@ class NetworkSystemRegistry < ErrorsApi
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
+      @core_api.force_registry_restart unless socket.is_a?(TCPSocket) 
       return socket
     rescue StandardError => e
       log_exception(e) unless e.to_s.include?('Connection refused')
