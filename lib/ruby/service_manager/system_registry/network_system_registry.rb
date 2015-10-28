@@ -90,13 +90,15 @@ p message_response
     unless response_hash[:reply_object].nil? || response_hash == ''
       response_hash[:reply_object] = YAML.load(response_hash[:reply_object])
     end
+    p :reply_object_to_s
+    p response_hash[:reply_object].to_s
     log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
-    return response_hash
+    return response_hash[:reply_object]
   rescue StandardError => e
     log_exception(e)
     p :error_with_message_response
     p message_response.to_s
-    return response_hash[:reply_object]
+    return response_hash
   end
 
   def build_mesg(mesg_str)
