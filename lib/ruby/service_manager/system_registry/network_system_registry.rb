@@ -96,7 +96,7 @@ p message_response
     log_exception(e)
     p :error_with_message_response
     p message_response.to_s
-    return response_hash
+    return response_hash[:reply_object]
   end
 
   def build_mesg(mesg_str)
