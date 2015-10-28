@@ -79,7 +79,7 @@ class SystemUtils
     error_log_hash = {}
     error_log_hash[:backtrace] = e_str
     error_log_hash[:request_params] = hostname
-    error_log_hash[:return_url] = 'system'
+    #error_log_hash[:return_url] = 'system'
     error_log_hash[:user_comment] = 
     error_log_hash[:user_email] = 'backend@engines.onl'
     require 'rest-client'
