@@ -232,6 +232,10 @@ end
   def open_socket(host, port)
     require 'socket.rb'
     begin
+      p :userin_host
+      p host
+      p :using_port
+      p port
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
       while socket.is_a?(TCPSocket) == false do
