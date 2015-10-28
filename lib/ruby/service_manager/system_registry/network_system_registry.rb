@@ -21,7 +21,9 @@ class NetworkSystemRegistry < ErrorsApi
   end
   
   def registry_server_ip
-    @core_api.get_registry_ip
+   io =  @core_api.get_registry_ip
+   p io.to_s
+   return io
   end
 
   def symbolize_top_level_keys(hash)
@@ -206,8 +208,8 @@ class NetworkSystemRegistry < ErrorsApi
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
      unless @registry_socket.is_a?(TCPSocket)
-        return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
-        @registry_socket = open_socket(registry_server_ip, @port)        
+#        return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
+#        @registry_socket = open_socket(registry_server_ip, @port)        
         return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
       end
       return @registry_socket
@@ -232,7 +234,15 @@ end
     begin
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
-      @core_api.force_registry_restart unless socket.is_a?(TCPSocket) 
+      while socket.is_a?(TCPSocket) == false do
+        sleep 2
+        socket = TCPSocket.new(host, port)
+        wait += 1
+        if wait > 10
+          return force_registry_restart unless socket.is_a?(TCPSocket) 
+        end
+      end
+      return force_registry_restart unless socket.is_a?(TCPSocket) 
       return socket
     rescue StandardError => e
       log_exception(e) unless e.to_s.include?('Connection refused')
