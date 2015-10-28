@@ -210,7 +210,7 @@ class NetworkSystemRegistry < ErrorsApi
     p :REopen_socket
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
-      if @registry_socket.is_a?(String)
+      if @registry_socket.is_a?(FalseClass)
         return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
         @registry_socket = open_socket(registry_server_ip, @port)
         return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
