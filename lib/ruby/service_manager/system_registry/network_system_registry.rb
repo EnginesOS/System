@@ -73,7 +73,7 @@ class NetworkSystemRegistry < ErrorsApi
       rescue IO::EAGAINWaitReadable
         retry
       rescue EOFError
-        p :eof
+        p :EOF
         break
       rescue StandardError => e
       log_exception(e)  
@@ -122,7 +122,8 @@ p :reply_object_to_s
     request_hash[:command] = command
     request_yaml = request_hash.to_yaml
     mesg_str = build_mesg(request_yaml)
-
+    p :mesg_str
+ p mesg_str
     begin
       unless registry_socket.is_a?(TCPSocket)
         unless reopen_registry_socket.is_a?(TCPSocket)
