@@ -44,6 +44,8 @@ class NetworkSystemRegistry < ErrorsApi
     mesg_len = mesg_lng_str.to_i
     end_byte = total_length - end_tag_indx
     message_request = mesg_data.slice(end_tag_indx + 1, end_byte + 1)
+    p :first_chunk
+    p message_request.to_s + ':' + mesg_len.to_s
     return message_request, mesg_len
   end
 
@@ -71,6 +73,7 @@ class NetworkSystemRegistry < ErrorsApi
       rescue IO::EAGAINWaitReadable
         retry
       rescue EOFError
+        p :eof
         break
       rescue StandardError => e
       log_exception(e)  
@@ -79,6 +82,7 @@ class NetworkSystemRegistry < ErrorsApi
     end
     if message_response.size > mesg_len
       p :GOT_MORE
+      p message_response[mesg_len, message_response.size]
       registry_socket.ungetbyte(message_response[mesg_len, message_response.size])
     message_response = message_response[0, mesg_len]
     end
@@ -130,6 +134,8 @@ p :reply_object_to_s
         registry_socket.read_nonblock(0)
         registry_socket.send(mesg_str, 0)
       }
+       p :sent
+       p mesg_str
     rescue Errno::EIO
       retry_count += 1
       p :send_EIO
