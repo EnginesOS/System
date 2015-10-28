@@ -13,9 +13,10 @@ class NetworkSystemRegistry < ErrorsApi
     server_ip = registry_server_ip
     @port = SystemConfig.RegistryPort
     @registry_socket = open_socket(server_ip, @port)
-    if @registry_socket.is_a?(TCPSocket) == false
+    if @registry_socket.is_a?(FalseClass) 
       p @registry_socket.to_s
-      return nil
+      @core_api.force_registry_restart
+      @registry_socket = open_socket(server_ip, @port)
     end   
   end
 
@@ -231,7 +232,8 @@ class NetworkSystemRegistry < ErrorsApi
       socket = TCPSocket.new(host, port)
       return socket
     rescue StandardError => e
-      log_exception(e)
+      log_exception(e) unless e.to_s.include?('Connection refused')
+      return false     
     end
   end
 end
