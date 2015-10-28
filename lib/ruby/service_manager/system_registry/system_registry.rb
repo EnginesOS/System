@@ -75,6 +75,8 @@ class SystemRegistry < ErrorsApi
   end
 
   def get_engine_nonpersistant_services(params)
+    p :get_engine_nonpersistant_services
+    p params
     test_result(send_request('get_engine_nonpersistant_services', params))
   end
 
