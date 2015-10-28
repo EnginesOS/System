@@ -79,7 +79,7 @@ class NetworkSystemRegistry < ErrorsApi
     end
     if message_response.size > mesg_len
       p :GOT_MORE
-      socket.ungetbyte(message_response[mesg_len, message_response.size])
+      registry_socket.ungetbyte(message_response[mesg_len, message_response.size])
     message_response = message_response[0, mesg_len]
     end
     return nil if message_response.nil? 
