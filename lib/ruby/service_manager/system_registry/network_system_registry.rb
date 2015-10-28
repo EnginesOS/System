@@ -105,7 +105,7 @@ class NetworkSystemRegistry < ErrorsApi
     mesg_str = build_mesg(request_yaml)
 
     begin
-      if registry_socket.is_a?(String)
+      unless registry_socket.is_a?(TCPSocket)
         if !reopen_registry_socket
           log_error_mesg('Failed to reopen registry connection',registry_socket)
           return send_request_failed(command, request_hash)
