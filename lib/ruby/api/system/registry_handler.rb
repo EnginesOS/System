@@ -75,6 +75,7 @@ class RegistryHandler < ErrorsApi
     while !registry_service.is_startup_complete?
            sleep 1
            wait += 1
+           p :recreate_wait
            return false if wait > 60
          end
      return true
