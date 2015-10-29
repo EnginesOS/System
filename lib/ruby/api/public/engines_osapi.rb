@@ -477,7 +477,7 @@ class EnginesOSapi
     log_exception_and_fail('getManagedServices', e)
   end
 
-  def self.loadManagedService(service_name, core_api)
+  def EnginesOSapi.loadManagedService(service_name, core_api)
     l_service = core_api.loadManagedService(service_name)
     return EnginesOSapi.failed(service_name, core_api.last_error, 'Load Service') unless l_service
     return l_service
