@@ -345,7 +345,7 @@ class EnginesOSapi
   end
 
   def get_service_memory_statistics(service_name)
-    service = LoadManagedService(service_name,self)
+    service = loadManagedService(service_name,self)
     MemoryStatistics.container_memory_stats(service)
   rescue StandardError => e
     log_exception_and_fail('Get Service Memory Statistics', e)
