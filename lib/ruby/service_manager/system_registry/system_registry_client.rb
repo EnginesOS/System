@@ -181,12 +181,25 @@ class SystemRegistryClient < ErrorsApi
     return false if r.to_s  == 'false' 
      res = JSON.parse(r, :create_additions => true)     
      return symbolize_keys(res) if res.is_a?(Hash)
+    return symbolize_keys_array_members(res) if res.is_a?(Array)
      return res 
    rescue
      p "Failed to parse rest response _" + r.to_s + "_"
        return false
   end
   
+  def symbolize_keys_array_members(array)
+     return array if array.count == 0
+    return array unless array[0].is_a?(Hash)
+    i = 0
+    array.each do |hash|
+      next if hash.nil?
+      next unless hash.is_a?(Hash)       
+      array[1] = symbolize_keys_array_members(hash)
+      i += 1
+    end
+   end
+   
   def base_url
     'http://' + @core_api.get_registry_ip + ':4567'
   end
