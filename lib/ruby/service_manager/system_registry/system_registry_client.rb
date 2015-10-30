@@ -81,7 +81,7 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def add_to_managed_engines_registry(service_hash)
-    rest_post('/system_registry/engine/services/',params )
+    rest_post('/system_registry/engine/services/',service_hash )
   end
 
   def remove_from_managed_engines_registry(params)
