@@ -72,8 +72,6 @@ class SystemApi < ErrorsApi
 
 
 
- 
-
   def set_engine_network_properties(engine, params)
     clear_error
     return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
@@ -82,7 +80,6 @@ class SystemApi < ErrorsApi
 
   def set_engine_web_protocol_properties(engine, params)
     clear_error
-    #      engine_name = params[:engine_name]
     protocol = params[:http_protocol]
     return false if protocol.nil?
     SystemUtils.debug_output('Changing protocol to _', protocol)
@@ -99,12 +96,9 @@ class SystemApi < ErrorsApi
 
   def set_engine_hostname_details(container, params)
     clear_error
-    #      engine_name = params[:engine_name]
+
     hostname = params[:host_name]
     domain_name = params[:domain_name]
-    SystemUtils.debug_output('Changing Domainame to ', domain_name)
-    #      saved_hostName = container.hostname
-    #      saved_domainName =  container.domain_name
     SystemUtils.debug_output('Changing Domainame to ', domain_name)
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
@@ -134,8 +128,6 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
-#    p :load_me
-#    p engine_name
     e = engine_from_cache(engine_name)
     return e unless e.nil?
            
@@ -165,12 +157,9 @@ class SystemApi < ErrorsApi
 
   def loadManagedService(service_name)
     s = engine_from_cache('/services/' + service_name)
-#    p :service_from_cache unless s.nil?
             return s unless s.nil?            
    s = _loadManagedService(service_name,  '/services/')
     cache_engine('/services/' + service_name, s)
-#    p :loaded_service
-#    p service_name
     return s
   end
 
@@ -184,9 +173,7 @@ class SystemApi < ErrorsApi
     unless File.exist?(yam1_file_name)
       return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
     end
-    p service_type_dir
     yaml_file = File.read(yam1_file_name)
-    p yaml_file
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
@@ -332,8 +319,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
       return ret_val
     end
     commandargs = 'docker exec ' + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
-      p :netstat_cmd
-      p commandargs
+
     result = SystemUtils.execute_command(commandargs)
     if result[:result] != 0
       ret_val = error_result
