@@ -221,11 +221,12 @@ class SystemRegistryClient < ErrorsApi
       retval[i] = array[i]
       next if hash.nil?
       next unless hash.is_a?(Hash)       
-      retval[i] = symbolize_keys_array_members(hash)
+      retval[i] = symbolize_keys(hash)
   STDERR.puts 'Post symbolification'
   STDERR.puts retval[i].to_s
       i += 1
     end
+  
    end
    
   def base_url
