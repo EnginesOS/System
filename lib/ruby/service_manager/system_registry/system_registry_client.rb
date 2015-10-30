@@ -73,10 +73,14 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def get_engine_nonpersistant_services(params)
+    p params
+    
     rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
   end
 
   def get_engine_persistant_services(params)
+    p params
+       
     rest_get('/system_registry/engine/services/persistant/',{:params => params })
   end
 
