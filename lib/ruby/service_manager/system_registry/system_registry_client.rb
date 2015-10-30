@@ -1,4 +1,4 @@
-require_relative 'network_system_registry.rb'
+
 
 class SystemRegistryClient < ErrorsApi
 
