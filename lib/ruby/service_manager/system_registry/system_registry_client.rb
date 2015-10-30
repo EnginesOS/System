@@ -69,7 +69,7 @@ class SystemRegistryClient < ErrorsApi
     STDERR.puts params.to_s
     
    r = rest_get('/system_registry/engine/service/',{:params => params })
-     p r
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<find_engine_service_hash'
      r
   end
 
@@ -78,7 +78,7 @@ class SystemRegistryClient < ErrorsApi
    
     STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/',{:params => params })
-    STDERR.puts r.to_s +  ' -<rest'
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<find_engine_services_hashes'
     return r
   end
 
@@ -86,7 +86,7 @@ class SystemRegistryClient < ErrorsApi
     STDERR.puts ':get_engine_nonpersistant_services'
     STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
-    STDERR.puts r.to_s +  ' -<rest'
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_nonpersistant_services'
     return r
   end
 
@@ -95,7 +95,7 @@ class SystemRegistryClient < ErrorsApi
 
     STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/persistant/',{:params => params })
-    STDERR.puts r.to_s +  ' -<rest'
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_persistant_services'
     return r
   end
 
@@ -114,12 +114,14 @@ class SystemRegistryClient < ErrorsApi
   def all_engines_registered_to(service_type)
     STDERR.puts 'all_engines_registered_to'
     STDERR.puts service_type.to_s
-    rest_get('/system_registry/service/registered/engines/',{:params => service_type })
+    r = rest_get('/system_registry/service/registered/engines/',{:params => service_type })
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_persistant_services'
+      return r
   end 
   
   
   def find_service_consumers(service_query_hash)
-    rest_get('/system_registry/service/consumers/',{:params => service_query_hash })
+    rest_get('/system_registry/service/consumers/',{:params => all_engines_registered_to })
   end
 
   def update_attached_service(service_hash)
