@@ -215,13 +215,15 @@ class SystemRegistryClient < ErrorsApi
     STDERR.puts 'Symbolization of ' + array.to_s
      return array if array.count == 0
     return array unless array[0].is_a?(Hash)
+    retval = []
     i = 0
     array.each do |hash|
+      retval[i] = array[i]
       next if hash.nil?
       next unless hash.is_a?(Hash)       
-      array[1] = symbolize_keys_array_members(hash)
+      retval[i] = symbolize_keys_array_members(hash)
   STDERR.puts 'Post symbolification'
-  STDERR.puts array[1].to_s
+  STDERR.puts retval[i].to_s
       i += 1
     end
    end
