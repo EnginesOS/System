@@ -182,7 +182,7 @@ class SystemApi < ErrorsApi
     end
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
-      return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir + service_type_dir)
+      return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
     end
     p service_type_dir
     yaml_file = File.read(yam1_file_name)
