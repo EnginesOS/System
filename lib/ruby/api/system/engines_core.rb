@@ -682,6 +682,7 @@ class EnginesCore < ErrorsApi
       return log_error_mesg('Failed to find Engine',params)
     end
     if engine.delete_image || engine.has_image? == false
+      p :engine_image_deleted    
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
     end
@@ -691,6 +692,8 @@ class EnginesCore < ErrorsApi
   def delete_image_dependancies(params)
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
+      p :delete_image_dependancies
+    p params
     return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
     return true
   rescue StandardError => e
