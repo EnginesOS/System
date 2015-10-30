@@ -3,7 +3,7 @@ class Container < ErrorsApi
   
   
   def self.from_yaml(yaml, container_api)
-    container = YAML.load(yaml)
+    container = YAML::load(yaml)
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
     container.container_api = container_api
     container.post_load
