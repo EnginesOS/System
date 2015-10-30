@@ -1,6 +1,6 @@
 require_relative 'network_system_registry.rb'
 
-class SystemRegistry < ErrorsApi
+class SystemRegistryClient < ErrorsApi
 
   def initialize(core_api)
     @core_api = core_api
