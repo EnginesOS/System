@@ -153,14 +153,14 @@ class SystemApi < ErrorsApi
   end
 
   def loadSystemService(service_name)
-    _loadManagedService(service_name, SystemConfig.RunDir + '/system_services/')
+    _loadManagedService(service_name,  '/system_services/')
   end
 
   def loadManagedService(service_name)
     s = engine_from_cache('/services/' + service_name)
 #    p :service_from_cache unless s.nil?
             return s unless s.nil?            
-   s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+   s = _loadManagedService(service_name,  '/services/')
     cache_engine('/services/' + service_name, s)
 #    p :loaded_service
 #    p service_name
@@ -173,13 +173,14 @@ class SystemApi < ErrorsApi
       @last_error = 'No Service Name'
       return false
     end
-    yam1_file_name = service_type_dir + service_name + '/running.yaml'
+    yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
-      return log_error_mesg('failed to create service file ', service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
+      return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
     end
+    p service_type_dir
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
-    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == SystemConfig.RunDir + '/system_services/'
+    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
     
