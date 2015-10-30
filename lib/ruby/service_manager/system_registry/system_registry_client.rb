@@ -200,7 +200,7 @@ class SystemRegistryClient < ErrorsApi
         when Array then
           newval = []
           value.each do |array_val|
-            array_val = SystemUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
+            array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
             newval.push(array_val)
           end
           newval
