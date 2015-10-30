@@ -180,11 +180,13 @@ class SystemRegistryClient < ErrorsApi
     return true if r.to_s   == '' ||  r.to_s   == 'true'
     return false if r.to_s  == 'false' 
      res = JSON.parse(r, :create_additions => true)     
-     return symbolize_keys(res) if res.is_a?(Hash)
-    return symbolize_keys_array_members(res) if res.is_a?(Array)
-     return res 
+     r = res
+     r = symbolize_keys(res) if res.is_a?(Hash)
+    r = symbolize_keys_array_members(res) if res.is_a?(Array)
+    STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
+     return r 
    rescue
-     p "Failed to parse rest response _" + r.to_s + "_"
+     p "Failed to parse rest response _" + res.to_s + "_"
        return false
   end
   
@@ -194,7 +196,6 @@ class SystemRegistryClient < ErrorsApi
       when String then key.to_sym
       else key
       end
-      STDERR.puts 'key' + new_key.to_s + ':'+ new_key.class.name
       new_value = case value
       when Hash then symbolize_keys(value)
       when Array then
