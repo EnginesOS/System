@@ -142,7 +142,17 @@ class EnginesOSapi
     @core_api.get_default_domain
   end
 
-  #
+  
+  
+def enable_remote_exception_logging
+  return  success('System','Enable Remote Exception Logging') if @core_api.enable_remote_exception_logging
+  failed('Preferences', @core_api.last_error, 'Enable Remote Exception Logging')
+end
+def disable_remote_exception_logging
+  return  success('System','disable Remote Exception Logging') if @core_api.disable_remote_exception_logging
+  failed('System', @core_api.last_error, 'disable Remote Exception Logging')
+end
+  
   # @return boolean
   #   #set the site that unmatched host names are redirected, ie wild card host. Defaults to control panel login
   def set_default_site(params)

@@ -657,7 +657,13 @@ class EnginesCore < ErrorsApi
   def system_update
     test_system_api_result(@system_api.update_system)
   end
-
+  
+   def enable_remote_exception_logging
+     test_system_api_result(@system_api.enable_remote_exception_logging)
+   end
+    def disable_remote_exception_logging
+      test_system_api_result(@system_api.disable_remote_exception_logging)
+    end
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
   #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
