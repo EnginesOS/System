@@ -2,6 +2,9 @@
 require "/opt/engines/lib/ruby/containers/managed_container.rb"
 require "/opt/engines/lib/ruby/system/system_config.rb"
 require "/opt/engines/lib/ruby/containers/managed_engine.rb"
+require "/opt/engines/lib/ruby/containers/managed_service.rb"
+require "/opt/engines/lib/ruby/containers/managed_container.rb"
+require "/opt/engines/lib/ruby/containers/container.rb"
 require "/opt/engines/lib/ruby/api/public/engines_osapi.rb"
 require "/opt/engines/lib/ruby/api/public/engines_osapi_result.rb"
 
