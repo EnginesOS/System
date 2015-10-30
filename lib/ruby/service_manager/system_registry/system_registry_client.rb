@@ -65,12 +65,17 @@ class SystemRegistryClient < ErrorsApi
   # engines Methods 
 
   def find_engine_service_hash(params)
+    p :find_engine_service_has
+    p params
+    
    r = rest_get('/system_registry/engine/service/',{:params => params })
      p r
      r
   end
 
   def find_engine_services_hashes(params)
+    p :find_engine_services_hashes
+    p params
     r =  rest_get('/system_registry/engine/services/',{:params => params })
     p r
     r
@@ -78,13 +83,14 @@ class SystemRegistryClient < ErrorsApi
 
   def get_engine_nonpersistant_services(params)
     p params
-    
+    p :get_engine_nonpersistant_services
     r =  rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
     p r
     r
   end
 
   def get_engine_persistant_services(params)
+    p :get_engine_persistant_services
     p params
      
     r =  rest_get('/system_registry/engine/services/persistant/',{:params => params })
