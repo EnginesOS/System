@@ -78,7 +78,7 @@ class SystemRegistryClient < ErrorsApi
    
     STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/',{:params => params })
-    STDERR.puts r.to +  ' -<rest'
+    STDERR.puts r.to_s +  ' -<rest'
     r
   end
 
