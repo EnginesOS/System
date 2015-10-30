@@ -4,11 +4,11 @@ class SystemUtils
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
-    p label.to_s + ":" + object.to_s  if SystemUtils.debug == true
+    STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
   end
 
   def SystemUtils.log_output(object, level)
-    p 'Error ' + object.to_s if SystemUtils.level < level
+    STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
     return false
   end
 
@@ -87,7 +87,7 @@ class SystemUtils
     require "uri"
     
     uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")
-    
+   
     # Shortcut
     response = Net::HTTP.post_form(uri, error_log_hash)
 
