@@ -1,5 +1,3 @@
-
-
 class SystemRegistryClient < ErrorsApi
 
   def initialize(core_api)
