@@ -66,7 +66,7 @@ class SystemRegistryClient < ErrorsApi
 
   def find_engine_service_hash(params)
     p :find_engine_service_has
-    p params
+    STDERR.puts params.to_s
     
    r = rest_get('/system_registry/engine/service/',{:params => params })
      p r
@@ -75,14 +75,17 @@ class SystemRegistryClient < ErrorsApi
 
   def find_engine_services_hashes(params)
     p :find_engine_services_hashes
-    p params
+   
+    STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/',{:params => params })
     p r
     r
   end
 
   def get_engine_nonpersistant_services(params)
-    p params
+   
+    STDERR.puts params.to_s
+    
     p :get_engine_nonpersistant_services
     r =  rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
     p r
@@ -91,8 +94,8 @@ class SystemRegistryClient < ErrorsApi
 
   def get_engine_persistant_services(params)
     p :get_engine_persistant_services
-    p params
-     
+
+    STDERR.puts params.to_s
     r =  rest_get('/system_registry/engine/services/persistant/',{:params => params })
     p r
     r
@@ -111,6 +114,7 @@ class SystemRegistryClient < ErrorsApi
   # Services Methods
 
   def all_engines_registered_to(service_type)
+    STDERR.puts service_type.to_s
     rest_get('/system_registry/service/registered/engines/',{:params => service_type })
   end 
   
