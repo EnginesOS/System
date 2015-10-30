@@ -3,11 +3,11 @@ class Container < ErrorsApi
   
   
   def self.from_yaml(yaml, container_api)
-    managedContainer = YAML.load(yaml)
-    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if managedContainer.nil?
-    managedContainer.container_api = container_api
-    managedContainer.post_load
-    return managedContainer
+    container = YAML.load(yaml)
+    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
+    container.container_api = container_api
+    container.post_load
+    return container
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
