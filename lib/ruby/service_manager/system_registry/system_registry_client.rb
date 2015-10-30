@@ -194,7 +194,7 @@ class SystemRegistryClient < ErrorsApi
       when String then key.to_sym
       else key
       end
-      STDERR.puts 'key' + key.to_s + ':'+ key.class.name
+      STDERR.puts 'key' + new_key.to_s + ':'+ new_key.class.name
       new_value = case value
       when Hash then symbolize_keys(value)
       when Array then
