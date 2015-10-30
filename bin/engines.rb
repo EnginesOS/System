@@ -1,4 +1,5 @@
 #!/home/engines/.rbenv/shims/ruby
+require 'yaml'
 require "/opt/engines/lib/ruby/containers/managed_container.rb"
 require "/opt/engines/lib/ruby/system/system_config.rb"
 require "/opt/engines/lib/ruby/containers/managed_engine.rb"
@@ -7,6 +8,7 @@ require "/opt/engines/lib/ruby/containers/system_service.rb"
 require "/opt/engines/lib/ruby/containers/container.rb"
 require "/opt/engines/lib/ruby/api/public/engines_osapi.rb"
 require "/opt/engines/lib/ruby/api/public/engines_osapi_result.rb"
+
 
 def print_usage
   puts("Usage engines.rb service|engine command engine_name|service_name")
