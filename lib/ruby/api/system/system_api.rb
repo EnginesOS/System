@@ -179,7 +179,7 @@ class SystemApi < ErrorsApi
     end
     yaml_file = File.read(yam1_file_name)
     # managed_service = YAML::load( yaml_file)
-    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
+    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
     
