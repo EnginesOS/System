@@ -1,4 +1,10 @@
 class SystemApi < ErrorsApi
+  require "/opt/engines/lib/ruby/containers/managed_engine.rb"
+  require "/opt/engines/lib/ruby/containers/managed_service.rb"
+  require "/opt/engines/lib/ruby/containers/managed_container.rb"
+  require "/opt/engines/lib/ruby/containers/system_service.rb"
+  require "/opt/engines/lib/ruby/containers/container.rb"
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
