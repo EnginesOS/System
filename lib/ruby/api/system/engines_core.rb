@@ -327,7 +327,9 @@ class EnginesCore < ErrorsApi
     params[:type_path]='nginx'
     sites = find_engine_services(params)
     return urls if sites.is_a?(Array) == false
-    sites.each do |site|
+    sites.each do |site|      
+    p site.to_s unless  site.is_a?(Hash)  
+      next unless site.is_a?(Hash)      
       if site[:variables][:proto] == 'http_https'
         protocol = 'https'
       else
