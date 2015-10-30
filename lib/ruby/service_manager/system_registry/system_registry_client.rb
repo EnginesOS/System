@@ -196,6 +196,7 @@ class SystemRegistryClient < ErrorsApi
       next if hash.nil?
       next unless hash.is_a?(Hash)       
       array[1] = symbolize_keys_array_members(hash)
+  STDERR.puts array[1].to_s
       i += 1
     end
    end
