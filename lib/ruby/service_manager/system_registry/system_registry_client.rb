@@ -189,6 +189,7 @@ class SystemRegistryClient < ErrorsApi
   end
   
   def symbolize_keys_array_members(array)
+    STDERR.puts 'Symbolization of ' + array.to_s
      return array if array.count == 0
     return array unless array[0].is_a?(Hash)
     i = 0
@@ -196,6 +197,7 @@ class SystemRegistryClient < ErrorsApi
       next if hash.nil?
       next unless hash.is_a?(Hash)       
       array[1] = symbolize_keys_array_members(hash)
+  STDERR.puts 'Post symbolification'
   STDERR.puts array[1].to_s
       i += 1
     end
