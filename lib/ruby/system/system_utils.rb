@@ -93,8 +93,7 @@ class SystemUtils
 
 #    require 'rest-client'
 #  r =   RestClient.post('http://buglog.engines.onl/api/v0/contact/bug_reports', error_log_hash.to_json, :content_type => :json, :accept => :json)
-  p :bug_pos_response
-  p response.to_s
+ 
   end
   def SystemUtils.last_error
     return @@last_error
