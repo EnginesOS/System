@@ -230,7 +230,7 @@ class SystemRegistryClient < ErrorsApi
   STDERR.puts retval[i].to_s
       i += 1
     end
-  
+  return array
    end
    
   def base_url
