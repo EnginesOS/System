@@ -188,6 +188,29 @@ class SystemRegistryClient < ErrorsApi
        return false
   end
   
+  def symbolize_keys(hash)
+      
+      hash.inject({}){|result, (key, value)|
+        new_key = case key
+        when String then key.to_sym
+        else key
+        end
+        new_value = case value
+        when Hash then symbolize_keys(value)
+        when Array then
+          newval = []
+          value.each do |array_val|
+            array_val = SystemUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
+            newval.push(array_val)
+          end
+          newval
+        else value
+        end
+        result[new_key] = new_value
+        result
+      }
+    end
+    
   def symbolize_keys_array_members(array)
     STDERR.puts 'Symbolization of ' + array.to_s
      return array if array.count == 0
