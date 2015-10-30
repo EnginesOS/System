@@ -152,8 +152,11 @@ class ServiceManager  < ErrorsApi
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine_services(params)
+    p :rm_remove_engine_services
     clear_error
+    p params
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
+      p services
     services.each do | service |      
       if params[:remove_all_data] && service.key?(:shared) && service[:shared]
         service[:remove_all_data] = params[:remove_all_data]
