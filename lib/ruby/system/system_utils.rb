@@ -67,10 +67,11 @@ class SystemUtils
   def SystemUtils.log_exception(e)
     e_str = e.to_s
     e.backtrace.each do |bt|
-      e_str += bt + ' \n'
+      e_str += bt + " \n"
     end
     @@last_error = e_str    
     SystemUtils.log_output(e_str, 10)
+    e_str +="\n\n"
     elof = File.open("/tmp/exceptions.log","a+")
     elof.write(e_str)
     elof.close
