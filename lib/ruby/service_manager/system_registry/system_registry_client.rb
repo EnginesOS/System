@@ -12,7 +12,7 @@ class SystemRegistryClient < ErrorsApi
 # Configurations methods 
   
   def get_service_configurations_hashes(config_hash)
-    rest_get('/system_registry/services/configurations/',{:params => config_hash })
+    rest_get('/system_registry/service/configurations/',{:params => config_hash })
     end
   
     def get_service_configuration(config_hash)
