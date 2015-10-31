@@ -66,37 +66,26 @@ class SystemRegistryClient < ErrorsApi
 
   def find_engine_service_hash(params)
     p :find_engine_service_has
-    STDERR.puts params.to_s
-    
-   r = rest_get('/system_registry/engine/service/',{:params => params })
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<find_engine_service_hash'
-     r
+    STDERR.puts params.to_s   
+   rest_get('/system_registry/engine/service/',{:params => params })
   end
 
   def find_engine_services_hashes(params)
-    STDERR.puts  ':find_engine_services_hashes'
-   
+    STDERR.puts  ':find_engine_services_hashes'   
     STDERR.puts params.to_s
-    r =  rest_get('/system_registry/engine/services/',{:params => params })
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<find_engine_services_hashes'
-    return r
+    rest_get('/system_registry/engine/services/',{:params => params })
   end
 
   def get_engine_nonpersistant_services(params)
     STDERR.puts ':get_engine_nonpersistant_services'
     STDERR.puts params.to_s
-    r =  rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_nonpersistant_services'
-    return r
+   rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })  
   end
 
   def get_engine_persistant_services(params)
     STDERR.puts 'get_engine_persistant_services'
-
     STDERR.puts params.to_s
-    r =  rest_get('/system_registry/engine/services/persistant/',{:params => params })
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_persistant_services'
-    return r
+    rest_get('/system_registry/engine/services/persistant/',{:params => params })
   end
 
   def add_to_managed_engines_registry(service_hash)
@@ -114,9 +103,7 @@ class SystemRegistryClient < ErrorsApi
   def all_engines_registered_to(service_type)
     STDERR.puts 'all_engines_registered_to'
     STDERR.puts service_type.to_s
-    r = rest_get('/system_registry/service/registered/engines/',{:params => service_type })
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<get_engine_persistant_services'
-      return r
+    rest_get('/system_registry/service/registered/engines/',{:params => service_type })
   end 
   
   
@@ -216,7 +203,6 @@ class SystemRegistryClient < ErrorsApi
     
     
   def symbolize_keys_array_members(array)
-    STDERR.puts 'Symbolization of ' + array.to_s
      return array if array.count == 0
     return array unless array[0].is_a?(Hash)
     retval = []
@@ -226,8 +212,6 @@ class SystemRegistryClient < ErrorsApi
       next if hash.nil?
       next unless hash.is_a?(Hash)       
       retval[i] = symbolize_keys(hash)
-  STDERR.puts 'Post symbolification'
-  STDERR.puts retval[i].to_s
       i += 1
     end
   return retval
