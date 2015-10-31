@@ -107,7 +107,7 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def update_attached_service(service_hash)
-    rest_put('/v0/system_registry/service/', service_hash)
+    rest_put('/v0/system_registry/service/update', service_hash)
   end
 
   def add_to_services_registry(service_hash)
@@ -115,7 +115,7 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def remove_from_services_registry(service_hash)
-    rest_delete('/v0/system_registry/services/',{:params => service_hash })
+    rest_delete('/v0/system_registry/services/del',{:params => service_hash })
   end
 
   def service_is_registered?(service_hash)
