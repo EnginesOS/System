@@ -223,9 +223,10 @@ class SystemRegistryClient < ErrorsApi
    
    def symbolize_tree(tree)     
      nodes = tree.children
+     STDERR.puts tree.content.to_s
       nodes.each do |node|
         node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-        p node.content
+        STDERR.puts node.content.to_s
         symbolize_tree(node)
       end
       return tree
