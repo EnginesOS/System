@@ -12,27 +12,27 @@ class SystemRegistryClient < ErrorsApi
 # Configurations methods 
   
   def get_service_configurations_hashes(config_hash)
-    rest_get('/system_registry/service/configurations/',{:params => config_hash })
+    rest_get('/v0/system_registry/service/configurations/',{:params => config_hash })
     end
   
     def get_service_configuration(config_hash)
-      rest_get('/system_registry/services/configuration/',{:params => config_hash })
+      rest_get('/v0/system_registry/services/configuration/',{:params => config_hash })
       end
       
     def update_service_configuration(config_hash)
-      rest_put('/system_registry/services/configuration/',config_hash )
+      rest_put('/v0/system_registry/services/configuration/',config_hash )
     end
     
     def rm_service_configuration(config_hash)
-      rest_delete('/system_registry/services/configurations/',{:params => config_hash } )
+      rest_delete('/v0/system_registry/services/configurations/',{:params => config_hash } )
     end
     
     def add_service_configuration(config_hash)
-      rest_post('/system_registry/services/configurations/',config_hash )
+      rest_post('/v0/system_registry/services/configurations/',config_hash )
       end
       
     def service_configurations_registry
-      rest_get('/system_registry/services/configurations/tree', nil)
+      rest_get('/v0/system_registry/services/configurations/tree', nil)
     end
    
   # orphans Methods
@@ -46,46 +46,46 @@ class SystemRegistryClient < ErrorsApi
 #    end
   
     def retrieve_orphan(params)
-      rest_get('/system_registry/services/orphan/',{:params => params } )
+      rest_get('/v0/system_registry/services/orphan/',{:params => params } )
     end
   
     def get_orphaned_services(params)
-      rest_get('/system_registry/services/orphans/',{:params => params } )
+      rest_get('/v0/system_registry/services/orphans/',{:params => params } )
     end
   
     def orphanate_service(service_query_hash)
-      rest_post('/system_registry/services/',service_query_hash )
+      rest_post('/v0/system_registry/services/',service_query_hash )
     end
 
   def release_orphan(params)
-    rest_delete('/system_registry/services/orphans/',{:params => params } )
+    rest_delete('/v0/system_registry/services/orphans/',{:params => params } )
   end
   
   
   # engines Methods 
 
   def find_engine_service_hash(params)
-   rest_get('/system_registry/engine/service/',{:params => params })
+   rest_get('/v0/system_registry/engine/service/',{:params => params })
   end
 
   def find_engine_services_hashes(params)
-    rest_get('/system_registry/engine/services/',{:params => params })
+    rest_get('/v0/system_registry/engine/services/',{:params => params })
   end
 
   def get_engine_nonpersistant_services(params)
-   rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })  
+   rest_get('/v0/system_registry/engine/services/nonpersistant/',{:params => params })  
   end
 
   def get_engine_persistant_services(params)
-    rest_get('/system_registry/engine/services/persistant/',{:params => params })
+    rest_get('/v0/system_registry/engine/services/persistant/',{:params => params })
   end
 
   def add_to_managed_engines_registry(service_hash)
-    rest_post('/system_registry/engine/services/',service_hash )
+    rest_post('/v0/system_registry/engine/services/',service_hash )
   end
 
   def remove_from_managed_engines_registry(params)
-    rest_delete('/system_registry/engine/services/',{:params => params })
+    rest_delete('/v0/system_registry/engine/services/',{:params => params })
    end
 
 
@@ -93,63 +93,63 @@ class SystemRegistryClient < ErrorsApi
   # Services Methods
 
   def all_engines_registered_to(service_type)
-    rest_get('/system_registry/service/registered/engines/',{:params => service_type })
+    rest_get('/v0/system_registry/service/registered/engines/',{:params => service_type })
   end 
   
   
   def find_service_consumers(service_query_hash)
-    rest_get('/system_registry/service/consumers/',{:params => service_query_hash }) # was all_engines_registered_to
+    rest_get('/v0/system_registry/service/consumers/',{:params => service_query_hash }) # was all_engines_registered_to
   end
 
   def update_attached_service(service_hash)
-    rest_put('/system_registry/service/', service_hash)
+    rest_put('/v0/system_registry/service/', service_hash)
   end
 
   def add_to_services_registry(service_hash)
-    rest_post('/system_registry/services/',service_hash )
+    rest_post('/v0/system_registry/services/',service_hash )
   end
 
   def remove_from_services_registry(service_hash)
-    rest_delete('/system_registry/services/',{:params => service_hash })
+    rest_delete('/v0/system_registry/services/',{:params => service_hash })
   end
 
   def service_is_registered?(service_hash)
-    rest_get('/system_registry/service/is_registered',{:params => service_hash })
+    rest_get('/v0/system_registry/service/is_registered',{:params => service_hash })
   end
 
   def get_registered_against_service(params)
-    rest_get('/system_registry/service/registered/',{:params => params })
+    rest_get('/v0/system_registry/service/registered/',{:params => params })
   end
   
 
   def get_service_entry(service_hash)
-    rest_get('/system_registry/service/',{:params => service_hash })
+    rest_get('/v0/system_registry/service/',{:params => service_hash })
   end
 
   
   # @return an Array of Strings of the Provider names in use
   # returns nil on failure
   def list_providers_in_use
-    rest_get('/system_registry/services/providers/in_use/',nil)
+    rest_get('/v0/system_registry/services/providers/in_use/',nil)
   end
 
   # @ Return complete system registry tree
   def system_registry_tree
     
-    rest_get('/system_registry/tree', nil)
+    rest_get('/v0/system_registry/tree', nil)
   end
 
 
   def orphaned_services_registry
-    rest_get('/system_registry/services/orphans/tree', nil)
+    rest_get('/v0/system_registry/services/orphans/tree', nil)
   end
 
   def services_registry
-    rest_get('/system_registry/services/tree', nil)
+    rest_get('/v0/system_registry/services/tree', nil)
   end
 
   def managed_engines_registry
-    rest_get('/system_registry/engines/tree', nil)
+    rest_get('/v0/system_registry/engines/tree', nil)
   end
 
   private
