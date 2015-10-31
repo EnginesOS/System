@@ -171,7 +171,7 @@ class SystemRegistryClient < ErrorsApi
   end
   
   def boolean_if_true_false_str(r)
-    p r.to_s
+    STDERR.puts r.to_s
                    if  r == 'true'
                      return true
                    elsif r == 'false'
