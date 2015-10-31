@@ -141,7 +141,7 @@ class ServiceManager  < ErrorsApi
     else
       @last_error = @system_registry.last_error.to_s
     end
-    return false 
+    return false  
     rescue StandardError => e
       log_exception(e)
   end

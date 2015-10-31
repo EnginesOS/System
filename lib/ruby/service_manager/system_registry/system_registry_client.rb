@@ -190,12 +190,10 @@ class SystemRegistryClient < ErrorsApi
       when Hash then symbolize_keys(value)
       when Array then
         newval = []
-        value.each do |array_val|
-        if array_val.is_a?(Hash)
-            array_val = symbolize_keys(array_val)
-            array_val =  boolean_if_true_false_str(r)
+        value.each do |array_val|        
+            array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
+            array_val =  boolean_if_true_false_str(r) if array_val.is_a?(String)
           newval.push(array_val)
-        end
         end
         newval
         when String then
