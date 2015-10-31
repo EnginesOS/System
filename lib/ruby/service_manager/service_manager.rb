@@ -247,6 +247,8 @@ class ServiceManager  < ErrorsApi
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistant_services(params)
+    p :register_non_persistant_services
+    p services.to_s
     services.each do |service_hash|
       register_non_persistant_service(service_hash)
     end
@@ -264,6 +266,8 @@ class ServiceManager  < ErrorsApi
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistant_services(params)
+    p :deregister_non_persistant_services
+       p services.to_s
     services.each do |service_hash|
       test_registry_result(@system_registry.remove_from_services_registry(service_hash))
       remove_from_managed_service(service_hash)

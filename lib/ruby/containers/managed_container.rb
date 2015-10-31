@@ -15,7 +15,7 @@ class ManagedContainer < Container
 
   def in_progress(state)
     @task_at_hand = state
-  STDERR.puts state.to_s
+  STDERR.puts 'Task at Hand:' + state.to_s
   case state
   when :create
     desired_state('running') 
