@@ -161,7 +161,7 @@ class SystemRegistryClient < ErrorsApi
      r = res
      r = symbolize_keys(res) if res.is_a?(Hash)
     r = symbolize_keys_array_members(res) if res.is_a?(Array)
-    r = symbolize_tree(res) if res.is_a?(TreeNode)
+    r = symbolize_tree(res) if res.is_a?(Tree::TreeNode)
     STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
    return boolean_if_true_false_str(r) if r.is_a?(String)
               
