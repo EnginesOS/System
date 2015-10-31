@@ -77,11 +77,11 @@ class SystemUtils
     elof.close
     
   
-    log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
+    SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
 
   end
   
-  def log_exception_to_bugcatcher(e)
+  def SystemUtils.log_exception_to_bugcatcher(e)
     require "net/http"
       require "uri"      
     res = SystemUtils.execute_command('hostname')
