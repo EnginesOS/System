@@ -87,7 +87,7 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def remove_from_managed_engines_registry(params)
-    rest_delete('/v0/system_registry/engine/services/',{:params => params })
+    rest_delete('/v0/system_registry/engine/services/del/',{:params => params })
    end
 
 
