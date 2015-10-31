@@ -162,10 +162,23 @@ class SystemRegistryClient < ErrorsApi
      r = symbolize_keys(res) if res.is_a?(Hash)
     r = symbolize_keys_array_members(res) if res.is_a?(Array)
     STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
+   return boolean_if_true_false_str(r)      if r.is_a?(String)
+              
      return r 
    rescue
      p "Failed to parse rest response _" + res.to_s + "_"
        return false
+  end
+  
+  def boolean_if_true_false_str(r)
+    if r.is_a?(String)
+                   if  r == 'true'
+                     return true
+                   elsif r == 'false'
+                    return false
+                   end
+                 end
+        return r     
   end
   
   def symbolize_keys(hash)
@@ -181,6 +194,8 @@ class SystemRegistryClient < ErrorsApi
         value.each do |array_val|
           if array_val.is_a?(Hash)
             array_val = symbolize_keys(array_val)
+          elsif array_val.is_a?(String)
+            array_val =  boolean_if_true_false_str(r)
           end
           newval.push(array_val)
         end
