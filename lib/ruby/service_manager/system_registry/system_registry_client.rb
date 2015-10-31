@@ -157,18 +157,19 @@ class SystemRegistryClient < ErrorsApi
       return false if r.code > 399
     return true if r.to_s   == '' ||  r.to_s   == 'true'
     return false if r.to_s  == 'false' 
-     res = JSON.parse(r, :create_additions => true)     
-     r = res
-     r = symbolize_keys(res) if res.is_a?(Hash)
-    r = symbolize_keys_array_members(res) if res.is_a?(Array)
-    r = symbolize_tree(res) if res.is_a?(Tree::TreeNode)
-    STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
-   return boolean_if_true_false_str(r) if r.is_a?(String)
-              
-     return r 
+     res = JSON.parse(r, :create_additions => true)         
+     return deal_with_jason(res)
    rescue
      p "Failed to parse rest response _" + res.to_s + "_"
        return false
+  end
+  
+  def deal_with_jason(res)
+    return symbolize_keys(res) if res.is_a?(Hash)
+    return symbolize_keys_array_members(res) if res.is_a?(Array)
+    return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
+    return boolean_if_true_false_str(res) if res.is_a?(String)
+    return res
   end
   
   def boolean_if_true_false_str(r)
@@ -223,11 +224,8 @@ class SystemRegistryClient < ErrorsApi
    
    def symbolize_tree(tree)     
      nodes = tree.children
-     STDERR.puts tree.content.to_s
       nodes.each do |node|
-        STDERR.puts node.content.to_s
         node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-        STDERR.puts node.content.to_s
         symbolize_tree(node)
       end
       return tree
