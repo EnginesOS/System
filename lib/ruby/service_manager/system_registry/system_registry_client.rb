@@ -171,14 +171,13 @@ class SystemRegistryClient < ErrorsApi
   end
   
   def boolean_if_true_false_str(r)
-    STDERR.puts r.to_s
                    if  r == 'true'
                      return true
                    elsif r == 'false'
                     return false
                    end
         return r     
-  end
+  end  
   
   def symbolize_keys(hash)
     hash.inject({}){|result, (key, value)|
