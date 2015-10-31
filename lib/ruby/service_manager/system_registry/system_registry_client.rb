@@ -65,26 +65,18 @@ class SystemRegistryClient < ErrorsApi
   # engines Methods 
 
   def find_engine_service_hash(params)
-    p :find_engine_service_has
-    STDERR.puts params.to_s   
    rest_get('/system_registry/engine/service/',{:params => params })
   end
 
   def find_engine_services_hashes(params)
-    STDERR.puts  ':find_engine_services_hashes'   
-    STDERR.puts params.to_s
     rest_get('/system_registry/engine/services/',{:params => params })
   end
 
   def get_engine_nonpersistant_services(params)
-    STDERR.puts ':get_engine_nonpersistant_services'
-    STDERR.puts params.to_s
    rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })  
   end
 
   def get_engine_persistant_services(params)
-    STDERR.puts 'get_engine_persistant_services'
-    STDERR.puts params.to_s
     rest_get('/system_registry/engine/services/persistant/',{:params => params })
   end
 
@@ -101,8 +93,6 @@ class SystemRegistryClient < ErrorsApi
   # Services Methods
 
   def all_engines_registered_to(service_type)
-    STDERR.puts 'all_engines_registered_to'
-    STDERR.puts service_type.to_s
     rest_get('/system_registry/service/registered/engines/',{:params => service_type })
   end 
   
@@ -145,6 +135,7 @@ class SystemRegistryClient < ErrorsApi
 
   # @ Return complete system registry tree
   def system_registry_tree
+    
     rest_get('/system_registry/tree', nil)
   end
 
@@ -224,6 +215,7 @@ class SystemRegistryClient < ErrorsApi
   require 'rest-client'
   
   def rest_get(path,params)
+    STDERR.puts('Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params)) 
   end
   
