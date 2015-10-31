@@ -88,6 +88,10 @@ class SystemUtils
         hostname = res[:stdout] 
         error_log_hash = {}
         error_log_hash[:message] = e.to_s
+    e_str = e.to_s
+      e.backtrace.each do |bt|
+        e_str += bt + " \n"
+      end
         error_log_hash[:backtrace] = e_str
        # error_log_hash[:request_params] = hostname
         error_log_hash[:return_url] = 'system'
