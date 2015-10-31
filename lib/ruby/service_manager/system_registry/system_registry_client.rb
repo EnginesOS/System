@@ -205,8 +205,7 @@ class SystemRegistryClient < ErrorsApi
       result
     }
   end
-    
-    
+        
   def symbolize_keys_array_members(array)
      return array if array.count == 0
     return array unless array[0].is_a?(Hash)
