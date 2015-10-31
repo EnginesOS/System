@@ -191,14 +191,15 @@ class SystemRegistryClient < ErrorsApi
       when Array then
         newval = []
         value.each do |array_val|
-          if array_val.is_a?(Hash)
+        if array_val.is_a?(Hash)
             array_val = symbolize_keys(array_val)
-          elsif array_val.is_a?(String)
             array_val =  boolean_if_true_false_str(r)
-          end
           newval.push(array_val)
         end
+        end
         newval
+        when String then
+        boolean_if_true_false_str(value)
       else value
       end
       result[new_key] = new_value
