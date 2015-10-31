@@ -157,7 +157,8 @@ class SystemRegistryClient < ErrorsApi
       return false if r.code > 399
     return true if r.to_s   == '' ||  r.to_s   == 'true'
     return false if r.to_s  == 'false' 
-     res = JSON.parse(r, :create_additions => true)         
+     res = JSON.parse(r, :create_additions => true)       
+     STDERR.puts("res "  + deal_with_jason(res).to_s)  
      return deal_with_jason(res)
    rescue
      p "Failed to parse rest response _" + res.to_s + "_"
