@@ -161,6 +161,7 @@ class SystemRegistryClient < ErrorsApi
      r = res
      r = symbolize_keys(res) if res.is_a?(Hash)
     r = symbolize_keys_array_members(res) if res.is_a?(Array)
+    r = symbolize_tree(res) if res.is_a?(TreeNode)
     STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
    return boolean_if_true_false_str(r) if r.is_a?(String)
               
@@ -220,6 +221,15 @@ class SystemRegistryClient < ErrorsApi
   return retval
    end
    
+   def symbolize_tree(tree)     
+     nodes = tree.children
+      nodes.each do |node|
+        node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
+        symbolize_tree(node)
+      end
+      return tree
+   end
+     
   def base_url
     'http://' + @core_api.get_registry_ip + ':4567'
   end
