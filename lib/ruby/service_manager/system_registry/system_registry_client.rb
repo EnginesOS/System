@@ -247,7 +247,7 @@ class SystemRegistryClient < ErrorsApi
       retry_count = 0
     STDERR.puts('Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
-    rescue StandardException => e
+    rescue StandardError => e
       retry_count += 1
       sleep 1
       retry if  retry_count < 10
