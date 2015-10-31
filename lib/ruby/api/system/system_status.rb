@@ -137,7 +137,11 @@ class SystemStatus
 
  
 
- 
+  def self.is_remote_exception_logging?
+       return !FileUtils.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
+      rescue StandardError => e
+         SystemUtils.log_exception(e)
+     end
   
   def self.get_system_load_info
     ret_val = {}

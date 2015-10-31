@@ -25,6 +25,8 @@ class SystemApi < ErrorsApi
     rescue StandardError => e
        SystemUtils.log_exception(e)
    end
+   
+
   
   def is_startup_complete(container)
     clear_error
