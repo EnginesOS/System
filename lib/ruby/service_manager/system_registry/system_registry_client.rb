@@ -54,7 +54,7 @@ class SystemRegistryClient < ErrorsApi
     end
   
     def orphanate_service(service_query_hash)
-      rest_post('/system_registry/services/',params )
+      rest_post('/system_registry/services/',service_query_hash )
     end
 
   def release_orphan(params)
@@ -98,7 +98,7 @@ class SystemRegistryClient < ErrorsApi
   
   
   def find_service_consumers(service_query_hash)
-    rest_get('/system_registry/service/consumers/',{:params => all_engines_registered_to })
+    rest_get('/system_registry/service/consumers/',{:params => service_query_hash }) # was all_engines_registered_to
   end
 
   def update_attached_service(service_hash)
@@ -123,14 +123,14 @@ class SystemRegistryClient < ErrorsApi
   
 
   def get_service_entry(service_hash)
-    rest_get('/system_registry/service/',{:params => params })
+    rest_get('/system_registry/service/',{:params => service_hash })
   end
 
   
   # @return an Array of Strings of the Provider names in use
   # returns nil on failure
   def list_providers_in_use
-    rest_get('/system_registry/services/providers/in_use/',{:params => params })
+    rest_get('/system_registry/services/providers/in_use/',nil)
   end
 
   # @ Return complete system registry tree
