@@ -87,9 +87,12 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def remove_from_managed_engines_registry(params)
-    rest_delete('/v0/system_registry/engine/services/del/',{:params => params })
+    rest_delete('/v0/system_registry/engine/services/del',{:params => params })
    end
 
+  def update_registered_managed_engine(params)
+      rest_delete('/v0/system_registry/engine/services/update',{:params => params })
+     end
 
   
   # Services Methods
@@ -240,8 +243,15 @@ class SystemRegistryClient < ErrorsApi
   require 'rest-client'
   
   def rest_get(path,params)
+    begin
+      retry_count = 0
     STDERR.puts('Path:' + path.to_s + ' Params:' + params.to_s)
-    parse_rest_response(RestClient.get(base_url + path, params)) 
+    parse_rest_response(RestClient.get(base_url + path, params))
+    rescue StandardException => e
+      retry_count += 1
+      sleep 1
+      retry if  retry_count < 10
+    end
   end
   
   def rest_post(path,params)
@@ -257,5 +267,6 @@ class SystemRegistryClient < ErrorsApi
   end
   
   
+   
     
 end
