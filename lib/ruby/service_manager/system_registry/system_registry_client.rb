@@ -162,7 +162,7 @@ class SystemRegistryClient < ErrorsApi
      r = symbolize_keys(res) if res.is_a?(Hash)
     r = symbolize_keys_array_members(res) if res.is_a?(Array)
     STDERR.puts r.class.name + ":" + r.to_s +  ' -<parse_response'
-   return boolean_if_true_false_str(r)      if r.is_a?(String)
+   return boolean_if_true_false_str(r) if r.is_a?(String)
               
      return r 
    rescue
@@ -171,13 +171,12 @@ class SystemRegistryClient < ErrorsApi
   end
   
   def boolean_if_true_false_str(r)
-    if r.is_a?(String)
+    p r.to_s
                    if  r == 'true'
                      return true
                    elsif r == 'false'
                     return false
                    end
-                 end
         return r     
   end
   
