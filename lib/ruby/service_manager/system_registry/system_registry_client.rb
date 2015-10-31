@@ -73,10 +73,12 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def get_engine_nonpersistant_services(params)
+    params[:persistant] = false
    rest_get('/v0/system_registry/engine/services/nonpersistant/',{:params => params })  
   end
 
   def get_engine_persistant_services(params)
+    params[:persistant] = true
     rest_get('/v0/system_registry/engine/services/persistant/',{:params => params })
   end
 
@@ -98,7 +100,7 @@ class SystemRegistryClient < ErrorsApi
   
   
   def find_service_consumers(service_query_hash)
-    rest_get('/v0/system_registry/service/consumers/',{:params => service_query_hash }) # was all_engines_registered_to
+    rest_get('/v0/system_registry/service/consumers/',{:params => service_query_hash }) 
   end
 
   def update_attached_service(service_hash)
