@@ -10,13 +10,8 @@ class NetworkSystemRegistry < ErrorsApi
   def initialize(core_api)
     @retry_count_limit = 5
     @core_api = core_api
-    server_ip = registry_server_ip
     @port = SystemConfig.RegistryPort
-    @registry_socket = open_socket(server_ip, @port)
-    if @registry_socket.is_a?(TCPSocket) == false
-      p @registry_socket.to_s
-      return nil
-    end   
+    @registry_socket = open_socket(registry_server_ip, @port)
   end
 
   def api_shutdown
@@ -24,8 +19,11 @@ class NetworkSystemRegistry < ErrorsApi
     @registry_socket.close
     p "Closed Socket"
   end
+  
   def registry_server_ip
-    @core_api.get_registry_ip
+   io =  @core_api.get_registry_ip
+   p io.to_s
+   return io
   end
 
   def symbolize_top_level_keys(hash)
@@ -46,6 +44,8 @@ class NetworkSystemRegistry < ErrorsApi
     mesg_len = mesg_lng_str.to_i
     end_byte = total_length - end_tag_indx
     message_request = mesg_data.slice(end_tag_indx + 1, end_byte + 1)
+    p :first_chunk
+    p message_request.to_s + ':' + mesg_len.to_s
     return message_request, mesg_len
   end
 
@@ -53,7 +53,7 @@ class NetworkSystemRegistry < ErrorsApi
     response_hash = nil
     first_bytes = true
     begin
-      mesg_data = @registry_socket.read_nonblock(32_768)
+      mesg_data = registry_socket.read_nonblock(32_768)
     rescue IO::EAGAINWaitReadable
       retry
     rescue EOFError
@@ -67,28 +67,43 @@ class NetworkSystemRegistry < ErrorsApi
    # p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
     while message_response.size < mesg_len
       begin
-        mesg_data = @registry_socket.read_nonblock(32768)
+        mesg_data = registry_socket.read_nonblock(32768)
         message_response += mesg_data
      #   p 'got ' + message_response.size.to_s + ' of ' + mesg_len.to_s
       rescue IO::EAGAINWaitReadable
         retry
       rescue EOFError
+        p :EOF
         break
       rescue StandardError => e
       log_exception(e)  
         return nil
       end
     end
-    return nil if message_response.nil?
-   # p 'read ' + message_response.size.to_s + ' Bytes'
-    response_hash = YAML::load(message_response)
-    if !response_hash[:object].nil?
-      response_hash[:object] = YAML::load(response_hash[:object])
+    if message_response.size > mesg_len
+      p :GOT_MORE
+      p message_response[mesg_len, message_response.size]
+      registry_socket.ungetbyte(message_response[mesg_len, message_response.size])
+    message_response = message_response[0, mesg_len]
     end
+p :response
+p message_response
+    return nil if message_response.nil? 
+    p 'read ' + message_response.size.to_s + ' Bytes'
+    response_hash = YAML.load(message_response)
+    unless response_hash[:reply_object].nil? || response_hash == ''
+      response_hash[:reply_object] = YAML.load(response_hash[:reply_object])
+    end
+   p :replay_hash
+p response_hash.to_s
+p :reply_object_to_s
+    p response_hash[:reply_object].to_s
     log_error_mesg(response_hash[:last_error], response_hash) if !response_hash.key?(:result) || response_hash[:result] != 'OK'
     return response_hash
   rescue StandardError => e
     log_exception(e)
+    p :error_with_message_response
+    p message_response.to_s
     return response_hash
   end
 
@@ -107,18 +122,21 @@ class NetworkSystemRegistry < ErrorsApi
     request_hash[:command] = command
     request_yaml = request_hash.to_yaml
     mesg_str = build_mesg(request_yaml)
-
+    p :mesg_str
+ p mesg_str
     begin
-      if @registry_socket.is_a?(String)
-        if !reopen_registry_socket
-          log_error_mesg('Failed to reopen registry connection',@registry_socket)
+      unless registry_socket.is_a?(TCPSocket)
+        unless reopen_registry_socket.is_a?(TCPSocket)
+          log_error_mesg('Failed to reopen registry connection',registry_socket)
           return send_request_failed(command, request_hash)
         end
       end
-      status = Timeout::timeout(SystemConfig.registry_connect_timeout) {
-        @registry_socket.read_nonblock(0)
-        @registry_socket.send(mesg_str, 0)
+      status = Timeout.timeout(SystemConfig.registry_connect_timeout) {
+        registry_socket.read_nonblock(0)
+        registry_socket.send(mesg_str, 0)
       }
+       p :sent
+       p mesg_str
     rescue Errno::EIO
       retry_count += 1
       p :send_EIO
@@ -209,29 +227,50 @@ class NetworkSystemRegistry < ErrorsApi
     p :REopen_socket
     @registry_socket.close if @registry_socket.is_a?(TCPSocket)
       @registry_socket = open_socket(registry_server_ip, @port)
-      if @registry_socket.is_a?(String)
-        return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
-        @registry_socket = open_socket(registry_server_ip, @port)
+     unless @registry_socket.is_a?(TCPSocket)
+#        return log_error_mesg("failed_forced_registry_restart", @registry_socket) if !force_registry_restart
+#        @registry_socket = open_socket(registry_server_ip, @port)        
         return log_error_mesg("failed_connection_after_forced_registry_restart", @registry_socket) if @registry_socket.is_a?(String)
       end
-      return true
+      return @registry_socket
     rescue StandardError => e
      log_exception(e)
   end
-
+  
+  def registry_socket
+ return @registry_socket if @registry_socket.is_a?(TCPSocket) 
+    @registry_socket = open_socket(registry_server_ip, @port)
+   return @registry_socket     
+end
+   
   def force_registry_restart
     log_error_mesg("FORCE REGISTRY RESTART", self)
+     p "FORCE REGISTRY RESTART"
     @core_api.force_registry_restart
   end
 
   def open_socket(host, port)
     require 'socket.rb'
     begin
+      p :userin_host
+      p host
+      p :using_port
+      p port
       BasicSocket.do_not_reverse_lookup = true
       socket = TCPSocket.new(host, port)
+      while socket.is_a?(TCPSocket) == false do
+        sleep 2
+        socket = TCPSocket.new(host, port)
+        wait += 1
+        if wait > 20
+          return force_registry_restart unless socket.is_a?(TCPSocket) 
+        end
+      end
+      return force_registry_restart unless socket.is_a?(TCPSocket) 
       return socket
     rescue StandardError => e
-      log_exception(e)
+      log_exception(e) unless e.to_s.include?('Connection refused')
+      return false     
     end
   end
 end

@@ -110,7 +110,7 @@ class ManagedService < ManagedContainer
     @setState = 'running'
     if create_container
       save_state()
-      service_configurations = service_manager.get_service_configurations_hashes(@container_name)
+      service_configurations = service_manager.get_service_configurations_hashes({service_name: @container_name})
       if service_configurations.is_a?(Array)
         service_configurations.each do |configuration|
           run_configurator(configuration)

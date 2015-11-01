@@ -1,7 +1,7 @@
 FROM  engines/passenger:_Engines_System(release)
 
 ADD home home
-ADD engines home/engines
+
 ENV CONTFSVolHome /home/fs/
 
 RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\

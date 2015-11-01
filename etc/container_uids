@@ -14,7 +14,7 @@ bind		bind		22009
 proftpd			proftpd	22010
 courier courier			22011
 syslog		syslog			22012
-dovecot		dovecot			22013
+dovecot		imap			22013
 #vmail					22014
 backup		backup		22015
 cron		cron			22016

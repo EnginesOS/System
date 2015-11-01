@@ -1,20 +1,20 @@
 --- !ruby/object:ManagedService
-container_name: dhcp
+container_name: dhcpd
 publisher_namespace: EnginesSystem
-type_path: dhcp
+type_path: dhcpd
 ctype: service
 persistant: false
 conf_self_start: true
 last_error: 
 memory: '16'
-hostname: dhcp
+hostname: dhcpd
 domain_name: 
 environments: []
-image: engines/dhcp:_Engines_System(release)
+image: engines/dhcpd:_Engines_System(release)
 volumes: []
 mapped_ports:
 - !ruby/object:WorkPort
-  name: dhcp
+  name: dhcpd
   port: 67
   publicFacing: true
   proto_type: udp

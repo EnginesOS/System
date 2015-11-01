@@ -2,7 +2,7 @@
 /opt/engines/bin/set_ip.sh
 
 echo Clearing Flags
-
+cp /etc/os-release /opt/engines/etc/os-release-host
 rm -f /opt/engines/run/system/flags/reboot_required 
 rm -f /opt/engines/run/system/flags/engines_rebooting 
 rm -f /opt/engines/run/system/flags/building_params 

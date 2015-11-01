@@ -43,7 +43,11 @@ class SystemConfig
   @@BuildBuiltFile = '/opt/engines/run/system/flags/last_build_params'
   @@BuildRunningParamsFile = '/opt/engines/run/system/flags/building_params'
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
+  @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   
+  def self.NoRemoteExceptionLoggingFlagFile
+    return @@NoRemoteExceptionLoggingFlagFile
+  end
   def self.registry_connect_timeout
     return 20
   end

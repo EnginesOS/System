@@ -4,11 +4,11 @@ class SystemUtils
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object)
-    p label.to_s + ":" + object.to_s  if SystemUtils.debug == true
+    STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
   end
 
   def SystemUtils.log_output(object, level)
-    p 'Error ' + object.to_s if SystemUtils.level < level
+    STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
     return false
   end
 
@@ -67,13 +67,40 @@ class SystemUtils
   def SystemUtils.log_exception(e)
     e_str = e.to_s
     e.backtrace.each do |bt|
-      e_str += bt + ' \n'
+      e_str += bt + " \n"
     end
-    @@last_error = e_str
-    p e_str
+    @@last_error = e_str    
     SystemUtils.log_output(e_str, 10)
-  end
+    e_str +="\n\n"
+    elof = File.open("/tmp/exceptions.log","a+")
+    elof.write(e_str)
+    elof.close
+    
+  
+    SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
 
+  end
+  
+  def SystemUtils.log_exception_to_bugcatcher(e)
+    require "net/http"
+      require "uri"      
+    res = SystemUtils.execute_command('hostname')
+        hostname = res[:stdout] 
+        error_log_hash = {}
+        error_log_hash[:message] = e.to_s
+    e_str = e.to_s
+      e.backtrace.each do |bt|
+        e_str += bt + " \n"
+      end
+        error_log_hash[:backtrace] = e_str
+       # error_log_hash[:request_params] = hostname
+        error_log_hash[:return_url] = 'system'
+        error_log_hash[:user_comment] = ''
+        error_log_hash[:user_email] = 'backend@engines.onl'
+      uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")     
+      response = Net::HTTP.post_form(uri, error_log_hash)
+  end
+  
   def SystemUtils.last_error
     return @@last_error
   end
@@ -126,16 +153,18 @@ rescue Exception=>e
     #@return hash
     #:result_code = command exit/result code
     #:stdout = what was written to standard out
-    #:stderr = wahat was written to standard err
+    #:stderr = what was written to standard err
 def SystemUtils.execute_command(cmd)
      @@last_error = ''    
   require 'open3'
    SystemUtils.debug_output('exec command ', cmd)
    p cmd
   retval = {}
-   retval[:stdout] = ''
+   
+    retval[:stdout] = ''
    retval[:stderr] = ''
    retval[:result] = -1
+     
      Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
        oline = ''
        stderr_is_open = true
@@ -257,7 +286,30 @@ def SystemUtils.execute_command(cmd)
     return service_hash
   end
   
+  def SystemUtils.get_os_release_data
+    os_data_hash = {}
+    os_file = '/opt/engines/etc/os-release-host' 
+    os_file = '/etc/os-release' unless File.exist?(os_file)
+    os_data = File.open(os_file).each do |line|    
+      line.strip!
+      pair = line.split('=')
+      os_data_hash[pair[0]] = pair[1].gsub(/\"/,"")
+    end
+
+    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"")
+    vers = version_str.split('.')
+   
+    os_data_hash['Major Version'] =  vers[0]
+    os_data_hash['Minor Version'] = vers[1]
+      # FIXME catch sub numbers as in 14.04.1
+p :os_data_hash
+   p  os_data_hash
+    return os_data_hash
+  end
+  
   def SystemUtils.cgroup_mem_dir(container_id_str)
+  
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'         
   end
   

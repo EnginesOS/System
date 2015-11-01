@@ -62,7 +62,7 @@ class ManagedEngine < ManagedContainer
     end
     return retval
   end
-
+    
   def engine_attached_services
     return @container_api.engine_attached_services(@container_name)
   end

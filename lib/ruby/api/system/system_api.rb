@@ -1,9 +1,33 @@
 class SystemApi < ErrorsApi
+  require "/opt/engines/lib/ruby/containers/container.rb"
+  require "/opt/engines/lib/ruby/containers/managed_container.rb"
+  require "/opt/engines/lib/ruby/containers/managed_engine.rb"
+  require "/opt/engines/lib/ruby/containers/managed_service.rb"
+  require "/opt/engines/lib/ruby/containers/system_service.rb"
+
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
   end  
 
+  def enable_remote_exception_logging
+    f = SystemConfig.NoRemoteExceptionLoggingFlagFile
+    return File.delete(f) if File.exists?(f)
+    return true
+    rescue StandardError => e
+       SystemUtils.log_exception(e)
+  end
+  
+  def disable_remote_exception_logging
+     FileUtils.touch(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
+     return true
+    rescue StandardError => e
+       SystemUtils.log_exception(e)
+   end
+   
+
+  
   def is_startup_complete(container)
     clear_error
     return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
@@ -65,8 +89,6 @@ class SystemApi < ErrorsApi
 
 
 
- 
-
   def set_engine_network_properties(engine, params)
     clear_error
     return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
@@ -75,7 +97,6 @@ class SystemApi < ErrorsApi
 
   def set_engine_web_protocol_properties(engine, params)
     clear_error
-    #      engine_name = params[:engine_name]
     protocol = params[:http_protocol]
     return false if protocol.nil?
     SystemUtils.debug_output('Changing protocol to _', protocol)
@@ -92,12 +113,9 @@ class SystemApi < ErrorsApi
 
   def set_engine_hostname_details(container, params)
     clear_error
-    #      engine_name = params[:engine_name]
+
     hostname = params[:host_name]
     domain_name = params[:domain_name]
-    SystemUtils.debug_output('Changing Domainame to ', domain_name)
-    #      saved_hostName = container.hostname
-    #      saved_domainName =  container.domain_name
     SystemUtils.debug_output('Changing Domainame to ', domain_name)
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
@@ -127,8 +145,6 @@ class SystemApi < ErrorsApi
   end
 
   def loadManagedEngine(engine_name)
-#    p :load_me
-#    p engine_name
     e = engine_from_cache(engine_name)
     return e unless e.nil?
            
@@ -153,17 +169,14 @@ class SystemApi < ErrorsApi
   end
 
   def loadSystemService(service_name)
-    _loadManagedService(service_name, SystemConfig.RunDir + '/system_services/')
+    _loadManagedService(service_name,  '/system_services/')
   end
 
   def loadManagedService(service_name)
     s = engine_from_cache('/services/' + service_name)
-#    p :service_from_cache unless s.nil?
             return s unless s.nil?            
-   s = _loadManagedService(service_name, SystemConfig.RunDir + '/services/')
+   s = _loadManagedService(service_name,  '/services/')
     cache_engine('/services/' + service_name, s)
-#    p :loaded_service
-#    p service_name
     return s
   end
 
@@ -173,13 +186,12 @@ class SystemApi < ErrorsApi
       @last_error = 'No Service Name'
       return false
     end
-    yam1_file_name = service_type_dir + service_name + '/running.yaml'
+    yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
-      return log_error_mesg('failed to create service file ', service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, service_type_dir)
+      return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
     end
     yaml_file = File.read(yam1_file_name)
-    # managed_service = YAML::load( yaml_file)
-    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir == '/sytem_services/'
+    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
     
@@ -257,19 +269,19 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
 
 
   def generate_engines_user_ssh_key
-    newkey = SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
-    return log_error_mesg("Not an RSA key",newkey) unless newkey.start_with?('-----BEGIN RSA PRIVATE KEY-----')
+    newkey = regen_system_ssh_key # SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
+    return log_error_mesg("Not an RSA key",newkey) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
     return newkey
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
   def update_public_key(key)
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/update_access_system_pub.sh ' + key)
+    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@172.17.42.1 /opt/engines/bin/update_system_access.sh ' + key)
   end
 
   def regen_system_ssh_key
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_access_system_pub engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
+    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
   end
 
 
@@ -299,7 +311,7 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
     end
     # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
     if Rails.env.production?
-    if result[:stdout].include?('Already up-to-date')
+    if result[:stdout].include?('Already up-to-date') && File.exist?('/opt/engines/run/system/flags/test_engines_update') == false
       @last_error = result[:stdout]
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
       return false
@@ -323,7 +335,8 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
       ret_val[:out] = 'n/a'
       return ret_val
     end
-    commandargs = 'docker exec ' + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \' \' $6}'  2>&1"
+    commandargs = 'docker exec ' + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
+
     result = SystemUtils.execute_command(commandargs)
     if result[:result] != 0
       ret_val = error_result

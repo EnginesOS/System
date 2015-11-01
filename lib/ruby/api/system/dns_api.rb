@@ -10,13 +10,14 @@ end
      service_hash = {}
      service_hash[:parent_engine] = 'system'
      service_hash[:variables] = {}
-     service_hash[:variables][:domainname] = params[:domain_name]
+     service_hash[:variables][:domain_name] = params[:domain_name]
      service_hash[:service_handle] = params[:domain_name] + '_dns'
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-     return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
+     return true if @service_manager.add_service(service_hash)
+     @last_error = @service_manager.last_error
      return false
    rescue StandardError => e
      log_error_mesg('Add self hosted domain exception', params.to_s)
@@ -30,15 +31,19 @@ end
      service_hash =  {}
      service_hash[:parent_engine] = 'system'
      service_hash[:variables] = {}
-     service_hash[:variables][:domainname] = params[:original_domain_name]
-     service_hash[:service_handle] = params[:original_domain_name] + '_dns'
+       if params.key?(:original_domain_name)       
+        service_hash[:variables][:domain_name] = old_domain_name
+        service_hash[:service_handle] = old_domain_name + '_dns'
+       else
+         service_hash[:variables][:domain_name] = params[:domain_name]
+         service_hash[:service_handle] = params[:domain_name] + '_dns'      
+     end
      service_hash[:container_type] = 'system'
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
-     @service_manager.dettach_service(service_hash)
-     # @engines_api.deregister_non_persistant_service(service_hash)
-     # @engines_api.delete_service_from_engine_registry(service_hash)
-     service_hash[:variables][:domainname] = params[:domain_name]
+ 
+     @service_manager.deregister_non_persistant_service(service_hash)
+     service_hash[:variables][:domain_name] = params[:domain_name]
      service_hash[:service_handle] = params[:domain_name] + '_dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
      return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
@@ -53,7 +58,7 @@ end
     service_hash = {}
     service_hash[:parent_engine] = 'system'
     service_hash[:variables] = {}
-    service_hash[:variables][:domainname] = params[:domain_name]
+    service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'

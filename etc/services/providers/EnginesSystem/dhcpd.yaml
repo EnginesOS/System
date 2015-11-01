@@ -3,9 +3,9 @@ accepts: []
 author: Engines
 title: DHCP server
 description: "DHCP server"
-type_path: dhcp
+type_path: dhcpd
 publisher_namespace: EnginesSystem
-service_container: dhcp
+service_container: dhcpd
 dedicated: false
 persistant: false
 service_handle_field: subnet
@@ -14,10 +14,10 @@ attach_post_build: true
 attach_requires_restart: false
 consumer_params:
 configurators:
- dhcpsettings:
-  name: DHCP
-  label: DHCP Settings
-  description: Configure DHCP settings
+ dhcpd_settings:
+  name: dhcpd_settings
+  label: DHCPD Settings
+  description: Configure DHCP Server settings
   params:
    domain_name:
     name: domain_name
@@ -33,7 +33,7 @@ configurators:
    netmask:
     name: netmask
     label: "netask"
-    regex_validator: "[09][0-9]"
+    regex_validator: ".*"
     tooltip: " "
     field_type: text_field
     hint: "x.x.x.x/y "
@@ -44,7 +44,7 @@ configurators:
    subnet:
     name: subnet
     label: "Subnet"
-    regex_validator: "*.*.*.*"
+    regex_validator: ".*"
     tooltip: " "
     field_type: text_field
     hint: "x.x.x.x/y "
@@ -98,7 +98,7 @@ configurators:
    default_gateway:
     name: default_gateway
     label: "Default Gateway"
-    regex_validator: "*."
+    regex_validator: ".*"
     tooltip: " "
     field_type: text
     hint: "ip or host"
@@ -109,7 +109,7 @@ configurators:
    dns_server1:
     name: dns_server1
     label: "DNS Server 1"
-    regex_validator: "*."
+    regex_validator: ".*"
     tooltip: " "
     value: Engines_System(engines_ip)
     field_type: text
@@ -120,7 +120,7 @@ configurators:
    dns_server2:
     name: dns_server2
     label: "DNS Server 2"
-    regex_validator: "*."
+    regex_validator: ".*"
     tooltip: " "
     field_type: text
     hint: "ip"
