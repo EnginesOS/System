@@ -6,10 +6,10 @@ cd /home/
 					
 	
 	
-	if test -f engines/scripts/custom_install.sh 
+	if test -f /home/engines/scripts/custom_install.sh 
 	then
 		echo running custom install
-	     engines/scripts/custom_install.sh
+	     /home/engines/scripts/custom_install.sh
 	fi 
 	
 	
