@@ -3,7 +3,7 @@ class SystemUtils
   @@level=0
 
   attr_reader :debug, :level, :last_error
-  def SystemUtils.debug_output(label, object)
+  def SystemUtils.debug_output(label, object = nil)
     STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
   end
 
