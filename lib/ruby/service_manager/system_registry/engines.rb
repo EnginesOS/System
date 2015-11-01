@@ -21,7 +21,7 @@ require_relative 'rset.rb'
  end
 
  def add_to_managed_engines_registry(service_hash)
-   rest_post('/v0/system_registry/engine/services/',service_hash )
+   rest_post('/v0/system_registry/engine/services/add',service_hash )
  end
 
  def remove_from_managed_engines_registry(params)
