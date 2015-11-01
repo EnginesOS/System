@@ -248,24 +248,32 @@ class SystemRegistryClient < ErrorsApi
     STDERR.puts('Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
     rescue StandardError => e
-      retry_count += 1
       STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
-      
-#      sleep 1
-#      retry if  retry_count < 10
     end
   end
   
   def rest_post(path,params)
+    begin
     parse_rest_response(RestClient.post(base_url + path, params))
+    rescue StandardError => e
+      STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    end
   end
   
   def rest_put(path,params)
+    begin
     parse_rest_response(RestClient.put(base_url + path, params))
+    rescue StandardError => e
+      STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    end
   end
   
   def rest_delete(path,params)
+    begin
     parse_rest_response(RestClient.delete(base_url + path, params))
+    rescue StandardError => e
+      STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    end
   end
   
   
