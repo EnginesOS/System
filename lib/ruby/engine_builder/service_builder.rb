@@ -1,3 +1,4 @@
+require_relative '../service_manager/service_definitions.rb'
 class ServiceBuilder < ErrorsApi
   
   attr_reader :volumes,:app_is_persistant
@@ -151,7 +152,7 @@ def create_persistant_services(services, environ, use_existing)
   end
 
   def set_top_level_service_params(service_hash, container_name)
-    return ServiceManager.set_top_level_service_params(service_hash, container_name)
+    return ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
   end
 
   def add_file_service(service_hash) 

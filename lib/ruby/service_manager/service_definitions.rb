@@ -1,10 +1,44 @@
-module ServiceDefinitions
+class ServiceDefinitions
 
 
-  
- def is_service_persistant?(service_hash)
+
+  def ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
+     container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
+     container_name = service_hash[:engine_name] if container_name == nil    
+     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
+     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)  if service_hash.nil?
+     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+     return SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash) if service_def.nil?
+     service_hash[:service_container_name] = service_def[:service_container]
+     service_hash[:persistant] = service_def[:persistant]
+     service_hash[:parent_engine] = container_name      
+     service_hash[:container_type] = 'container' if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
+     service_hash[:variables] = {} unless service_hash.has_key?(:variables)
+     service_hash[:variables][:parent_engine] = container_name
+       if service_def.key?(:priority)
+             service_hash[:priority] = service_def[:priority]
+           else
+             service_hash[:priority] = 0
+           end
+     return service_hash if service_hash.key?(:service_handle) && ! service_hash[:service_handle].nil?
+     
+     if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
+     handle_field_sym = service_def[:service_handle_field].to_sym
+       p :handle_symbol
+       p service_def[:service_handle_field].to_sym
+       return SystemUtils.log_error_mesg('Missing Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
+       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
+     else
+       service_hash[:service_handle] = container_name
+     end    
+     return service_hash   
+       rescue StandardError => e
+         SystemUtils.log_exception(e)
+   end
+
+ def ServiceDefinitions.is_service_persistant?(service_hash)
    unless service_hash.key?(:persistant)
-     persist = software_service_persistance(service_hash)
+     persist = ServiceDefinitions.software_service_persistance(service_hash)
     return log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
      service_hash[:persistant] = persist
    end
@@ -16,7 +50,7 @@ module ServiceDefinitions
  #load softwwareservicedefinition for serivce in service_hash and
  #@return boolean indicating the persistance
  #@return nil if no software definition found
- def software_service_persistance(service_hash)
+ def ServiceDefinitions.software_service_persistance(service_hash)
    clear_error
    service_definition = software_service_definition(service_hash)
    return service_definition[:persistant] unless service_definition.nil?              
@@ -27,7 +61,7 @@ module ServiceDefinitions
  
  
  #Find the assigned service container_name from teh service definition file
- def get_software_service_container_name(params)
+ def ServiceDefinitions.get_software_service_container_name(params)
    clear_error
    server_service =  software_service_definition(params)
    return log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false

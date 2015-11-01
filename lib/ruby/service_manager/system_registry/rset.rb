@@ -77,7 +77,7 @@ def parse_rest_response(r)
        newval = []
        value.each do |array_val|        
            array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
-           array_val =  boolean_if_true_false_str(r) if array_val.is_a?(String)
+           array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
          newval.push(array_val)
        end
        newval
