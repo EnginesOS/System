@@ -1,4 +1,5 @@
 require_relative 'result_checks.rb'
+module OrphanServices
 
 def orphanate_service(params)
    test_registry_result(@system_registry.orphanate_service(params))   
@@ -32,4 +33,6 @@ end
     test_registry_result(@system_registry.retrieve_orphan(params))   
     rescue StandardError => e
       log_exception(e)
+  end
+  
   end

@@ -14,7 +14,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'orphan_services.rb'
 #  include ServiceDefinitions
   include RegistryTree
-  
+  include OrphanServices
   
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
