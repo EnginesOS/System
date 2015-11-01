@@ -40,7 +40,9 @@ ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
 
 USER $ContUser
 
-RUN  if test -f Gemfile ;\
+RUN bash /home/setup.sh
+ 
+RUN	if test -f Gemfile ;\
 	then \
 		cat /home/app/Gemfile | egrep -v "thin|puma" > /tmp/Gemfile;\
 		cp /tmp/Gemfile /home/app/Gemfile;\
