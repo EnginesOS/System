@@ -344,7 +344,7 @@ end
   end
 
   def get_engine_memory_statistics(engine_name)
-    engine = LoadManagedEngine(engine_name)
+    engine = loadManagedEngine(engine_name)
     MemoryStatistics.container_memory_stats(engine)
   rescue StandardError => e
     log_exception_and_fail('Get Engine Memory Statistics', e)

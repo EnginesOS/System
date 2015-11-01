@@ -237,6 +237,7 @@ class ServiceManager  < ErrorsApi
     services = get_engine_nonpersistant_services(params)
     p :register_non_persistant_services
     p services.to_s
+   return log_error_mesg("No Services for " + params.to_s, services)  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistant_service(service_hash)
     end
@@ -256,6 +257,7 @@ class ServiceManager  < ErrorsApi
      services = get_engine_nonpersistant_services(params)
      p :deregister_non_persistant_services
         p services.to_s
+     return false  unless services.is_a?(Array)
      services.each do |service_hash|
        test_registry_result(@system_registry.remove_from_services_registry(service_hash))
        remove_from_managed_service(service_hash)
@@ -291,19 +293,7 @@ class ServiceManager  < ErrorsApi
   #   return false
   # end
 
-  #@ removes underly service and remove entry from orphaned services
-  #@returns boolean indicating success
-  def remove_orphaned_service(service_query_hash)
-    clear_error
-    service_hash = retrieve_orphan(service_query_hash)
-    return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
-    return test_registry_result(@system_registry.release_orphan(service_hash))   
-    rescue StandardError => e
-      log_exception(e)
-  end
-
-
-
+  
 
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
