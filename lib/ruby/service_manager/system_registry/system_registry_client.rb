@@ -21,15 +21,15 @@ class SystemRegistryClient < ErrorsApi
         end
         
       def update_service_configuration(config_hash)
-        rest_put('/v0/system_registry/services/configuration/',config_hash )
+        rest_put('/v0/system_registry/services/configuration/update',config_hash )
       end
       
       def rm_service_configuration(config_hash)
-        rest_delete('/v0/system_registry/services/configurations/',{:params => config_hash } )
+        rest_delete('/v0/system_registry/services/configurations/del',{:params => config_hash } )
       end
       
       def add_service_configuration(config_hash)
-        rest_post('/v0/system_registry/services/configurations/',config_hash )
+        rest_post('/v0/system_registry/services/configurations/add',config_hash )
         end
         
       def service_configurations_registry
@@ -110,11 +110,11 @@ class SystemRegistryClient < ErrorsApi
      end
    
      def orphanate_service(service_query_hash)
-       rest_post('/v0/system_registry/services/',service_query_hash )
+       rest_post('/v0/system_registry/services/orphans/add',service_query_hash )
      end
   
    def release_orphan(params)
-     rest_delete('/v0/system_registry/services/orphans/',{:params => params } )
+     rest_delete('/v0/system_registry/services/orphans/del',{:params => params } )
    end
    
    
@@ -143,7 +143,7 @@ class SystemRegistryClient < ErrorsApi
   end
  
   def add_to_managed_engines_registry(service_hash)
-    rest_post('/v0/system_registry/engine/services/',service_hash )
+    rest_post('/v0/system_registry/engine/services/add',service_hash )
   end
  
   def remove_from_managed_engines_registry(params)
