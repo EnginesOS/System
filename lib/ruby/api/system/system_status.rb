@@ -82,7 +82,7 @@ class SystemStatus
   end
 
   def self.get_engines_system_release    
-    releease = File.read(SystemConfig.ReleaseFile)
+    release = File.read(SystemConfig.ReleaseFile)
     release.strip!
   rescue
     return 'none'
