@@ -8,6 +8,7 @@ require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
+require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
@@ -192,7 +193,7 @@ class EnginesCore < ErrorsApi
   end
 
   def load_software_service(params)
-    service_container = check_sm_result(service_manager.get_software_service_container_name(params))
+    service_container = check_sm_result(ServiceDefinitions.get_software_service_container_name(params))
     params[:service_container_name] = service_container
     loadManagedService(service_container)
   rescue StandardError => e
