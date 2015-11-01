@@ -813,6 +813,10 @@ end
   #    SystemStatus.base_system_has_updated?
   #  end
   #
+
+def get_engines_system_release
+  SystemStatus.get_engines_system_release
+end
   def build_status
     SystemStatus.build_status
   end
