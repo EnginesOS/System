@@ -29,6 +29,8 @@ class SystemStatus
     File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
+ 
+  
   def self.did_build_fail?
     File.exist?(SystemConfig.BuildFailedFile)
   end
@@ -79,6 +81,14 @@ class SystemStatus
     return {}
   end
 
+  def self.get_engines_system_release    
+    releease = File.read(SystemConfig.ReleaseFile)
+    release.strip!
+  rescue
+    return 'none'
+   end
+   
+   
   def self.system_status
     result = {}
     result[:is_rebooting] = SystemStatus.is_rebooting?
