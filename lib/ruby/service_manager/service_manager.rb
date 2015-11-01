@@ -56,7 +56,7 @@ class ServiceManager  < ErrorsApi
        log_exception(e)
    end
  
-  def ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
+  def ServiceManager.set_top_level_service_params(service_hash, container_name)
      container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
      container_name = service_hash[:engine_name] if container_name == nil    
      return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
