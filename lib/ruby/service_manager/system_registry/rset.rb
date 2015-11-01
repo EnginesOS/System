@@ -46,8 +46,9 @@ def parse_rest_response(r)
     res = JSON.parse(r, :create_additions => true)       
     STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)  
     return deal_with_jason(res)
-  rescue
-    p "Failed to parse rest response _" + res.to_s + "_"
+  rescue  StandardError => e
+    STDERR.puts e.to_s
+  STDERR.puts "Failed to parse rest response _" + res.to_s + "_"
       return false
  end
  
@@ -57,6 +58,8 @@ def parse_rest_response(r)
    return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
    return boolean_if_true_false_str(res) if res.is_a?(String)
    return res
+   rescue  StandardError => e
+       STDERR.puts e.to_s
  end
  
  def boolean_if_true_false_str(r)
@@ -66,6 +69,8 @@ def parse_rest_response(r)
                    return false
                   end
        return r     
+ rescue  StandardError => e
+   STDERR.puts e.to_s
  end  
  
  def symbolize_keys(hash)
@@ -89,8 +94,10 @@ def parse_rest_response(r)
      else value
      end
      result[new_key] = new_value
-     result••••••
-   }
+     result
+   }   
+rescue  StandardError => e
+  STDERR.puts e.to_s
  end
        
  def symbolize_keys_array_members(array)
@@ -105,7 +112,10 @@ def parse_rest_response(r)
      retval[i] = symbolize_keys(hash)
      i += 1
    end
- return retval••••••
+ return retval
+  
+rescue  StandardError => e
+  STDERR.puts e.to_s
   end
   
   def symbolize_tree(tree)     
@@ -114,11 +124,15 @@ def parse_rest_response(r)
        node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
        symbolize_tree(node)
      end
-     return tree
+     return tree   
+    rescue  StandardError => e
+      STDERR.puts e.to_s
   end
     
  def base_url
-   'http://' + @core_api.get_registry_ip + ':4567'
+   'http://' + @core_api.get_registry_ip + ':4567'   
+   rescue  StandardError => e
+     STDERR.puts e.to_s
  end
  
  
