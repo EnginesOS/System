@@ -348,7 +348,7 @@ class ServiceManager  < ErrorsApi
   
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
-    service_definition = software_service_definition(config_hash)
+    service_definition = ServiceDefinitions.software_service_definition(config_hash)
     return log_error_mesg('Missing Service definition file ', config_hash.to_s)  unless service_definition.is_a?(Hash)
     return log_error_mesg('Missing Configurators in service definition', config_hash.to_s) unless service_definition.key?(:configurators)
     configurators = service_definition[:configurators]
@@ -432,17 +432,6 @@ end
 
 
 
-
-# @return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
-def software_service_definition(params)
-  clear_error
-  SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
-rescue Exception=>e
-  p :error
-  p params
-  log_exception(e)
-  return nil
-end
 
 
 end

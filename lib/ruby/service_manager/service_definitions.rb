@@ -51,7 +51,7 @@ class ServiceDefinitions
  #@return boolean indicating the persistance
  #@return nil if no software definition found
  def ServiceDefinitions.software_service_persistance(service_hash)
-   service_definition = software_service_definition(service_hash)
+   service_definition = self.software_service_definition(service_hash)
    return service_definition[:persistant] unless service_definition.nil?              
    return nil 
    rescue StandardError => e
@@ -61,13 +61,24 @@ class ServiceDefinitions
  
  #Find the assigned service container_name from teh service definition file
  def ServiceDefinitions.get_software_service_container_name(params)
-   clear_error
-   server_service =  software_service_definition(params)
+
+   server_service =  self.software_service_definition(params)
    return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
 
    return server_service[:service_container]   
    rescue StandardError => e
    SystemUtils.log_exception(e)
  end
+ 
+  def ServiceDefinitions.software_service_definition(params)
+    SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
+  rescue Exception=>e
+    p :error
+    p params
+    SystemUtils.log_exception(e)
+    return nil
+  end
+
+ 
  
 end
