@@ -1,3 +1,4 @@
+module Engines
 require_relative 'rset.rb'
 # engines Methods 
 
@@ -34,4 +35,6 @@ require_relative 'rset.rb'
 
 def managed_engines_registry
   rest_get('/v0/system_registry/engines/tree', nil)
+end
+
 end

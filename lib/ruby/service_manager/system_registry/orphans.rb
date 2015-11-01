@@ -1,3 +1,5 @@
+module Orphans
+
 require_relative 'rset.rb'
 
 # orphans Methods
@@ -29,4 +31,5 @@ require_relative 'rset.rb'
  
 def orphaned_services_registry
   rest_get('/v0/system_registry/services/orphans/tree', nil)
+end
 end

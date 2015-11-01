@@ -1,5 +1,5 @@
 # Configurations methods 
-  
+module Configurations
 require_relative 'rset.rb'
 
   def get_service_configurations_hashes(config_hash)
@@ -25,3 +25,4 @@ require_relative 'rset.rb'
     def service_configurations_registry
       rest_get('/v0/system_registry/services/configurations/tree', nil)
     end
+end

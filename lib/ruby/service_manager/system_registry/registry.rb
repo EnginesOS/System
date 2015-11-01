@@ -1,3 +1,4 @@
+module Registry
 
 require_relative 'rset.rb'
 
@@ -6,3 +7,5 @@ require_relative 'rset.rb'
    
    rest_get('/v0/system_registry/tree', nil)
  end
+ 
+end

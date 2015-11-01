@@ -1,3 +1,5 @@
+module Services
+
 require_relative 'rset.rb'
 # Services Methods
 
@@ -45,3 +47,4 @@ require_relative 'rset.rb'
 def services_registry
    rest_get('/v0/system_registry/services/tree', nil)
  end
+end
