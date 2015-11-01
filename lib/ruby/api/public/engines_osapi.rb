@@ -767,6 +767,7 @@ end
     service
   end
 
+
   def restart_mgmt
     return success("mgmt", 'Restart Management Service')
   end
@@ -817,13 +818,62 @@ end
   #
   def last_build_params
     SystemStatus.last_build_params
+end
+  def restart_mgmt 
+    return success("mgmt", 'Restart Management Service') 
   end
-
-  def last_build_failure_params
-    SystemStatus.last_build_failure_params
+  
+  def restart_registry
+    return success("registry", 'Restart Resgitry Service') 
   end
-
-  def current_build_params
-    SystemStatus.current_build_params
+  
+  def system_status
+    return SystemStatus.system_status
   end
+#
+#  def is_base_system_updating?
+#    SystemStatus.is_base_system_updating?
+#  end
+#
+#  def is_rebooting?
+#    SystemStatus.is_rebooting?
+#  end
+#
+#  def needs_reboot?
+#    SystemStatus.needs_reboot?
+#  end
+#
+#  def engines_system_has_updated
+#    SystemStatus.engines_system_has_updated?
+#  end
+#
+#  def is_engines_system_updating?
+#    SystemStatus.is_engines_system_updating?
+#  end
+#
+#  def is_engines_system_upto_date?
+#    result = SystemStatus.is_engines_system_upto_date?
+#    return success('System Up to Date', 'Update Status') if result[:result] == 0
+#    failed('Updates pending', result[:stdout], 'Update Status')
+#  end
+#
+#  def base_system_has_updated?
+#    SystemStatus.base_system_has_updated?
+#  end
+#
+#  def build_status
+#    SystemStatus.build_status
+#  end
+#
+#  def last_build_params
+#    SystemStatus.last_build_params
+#  end
+#
+#  def last_build_failure_params
+#    SystemStatus.last_build_failure_params
+#  end
+#
+#  def current_build_params
+#    SystemStatus.current_build_params
+#  end
 end
