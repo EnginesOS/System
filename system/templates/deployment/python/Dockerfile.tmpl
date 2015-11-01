@@ -9,5 +9,5 @@ RUN apt-get update -y;\
 	then\
 		chown www-data $chowns;\
 		fi 
-		
+RUN mkdir /opt ; chown $ContUser /opt	
 CMD ["/home/start.bash"]

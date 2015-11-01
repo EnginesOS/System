@@ -35,7 +35,7 @@ require 'rest-client'
   end
   
  private 
-  
+
 def parse_rest_response(r)
      return false if r.code > 399
    return true if r.to_s   == '' ||  r.to_s   == 'true'
@@ -77,7 +77,7 @@ def parse_rest_response(r)
        newval = []
        value.each do |array_val|        
            array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
-           array_val =  boolean_if_true_false_str(r) if array_val.is_a?(String)
+           array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
          newval.push(array_val)
        end
        newval
@@ -86,7 +86,7 @@ def parse_rest_response(r)
      else value
      end
      result[new_key] = new_value
-     result
+     result••••••
    }
  end
        
@@ -102,7 +102,7 @@ def parse_rest_response(r)
      retval[i] = symbolize_keys(hash)
      i += 1
    end
- return retval
+ return retval••••••
   end
   
   def symbolize_tree(tree)     

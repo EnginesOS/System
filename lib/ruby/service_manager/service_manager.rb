@@ -3,13 +3,18 @@ require 'rubytree'
 require_relative 'system_registry/system_registry_client.rb'
 require_relative '../templater/templater.rb'
 require_relative '../system/system_access.rb'
+require_relative 'service_definitions.rb'
+require_relative 'result_checks.rb'
+
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
 
   require_relative 'service_actions.rb'
-#  require_relative 'service_definitions.rb'
+  require_relative 'registry_tree.rb'
+  require_relative 'orphan_services.rb'
 #  include ServiceDefinitions
- 
+  include RegistryTree
+  include OrphanServices
   
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
@@ -21,75 +26,8 @@ class ServiceManager  < ErrorsApi
      test_registry_result(@system_registry.get_service_entry(service_hash))
    end
    
-  def is_service_persistant?(service_hash)
-     unless service_hash.key?(:persistant)
-       persist = software_service_persistance(service_hash)
-      return log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
-       service_hash[:persistant] = persist
-     end
-     service_hash[:persistant]  
-   rescue StandardError => e
-     log_exception(e)
-   end
-  
-   #load softwwareservicedefinition for serivce in service_hash and
-   #@return boolean indicating the persistance
-   #@return nil if no software definition found
-   def software_service_persistance(service_hash)
-     clear_error
-     service_definition = software_service_definition(service_hash)
-     return service_definition[:persistant] unless service_definition.nil?              
-     return nil 
-     rescue StandardError => e
-       log_exception(e)
-   end
-   
-   
-   #Find the assigned service container_name from teh service definition file
-   def get_software_service_container_name(params)
-     clear_error
-     server_service =  software_service_definition(params)
-     return log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
-  
-     return server_service[:service_container]   
-     rescue StandardError => e
-       log_exception(e)
-   end
- 
-  def ServiceManager.set_top_level_service_params(service_hash, container_name)
-     container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
-     container_name = service_hash[:engine_name] if container_name == nil    
-     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
-     return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)  if service_hash.nil?
-     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-     return SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash) if service_def.nil?
-     service_hash[:service_container_name] = service_def[:service_container]
-     service_hash[:persistant] = service_def[:persistant]
-     service_hash[:parent_engine] = container_name      
-     service_hash[:container_type] = 'container' if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
-     service_hash[:variables] = {} unless service_hash.has_key?(:variables)
-     service_hash[:variables][:parent_engine] = container_name
-       if service_def.key?(:priority)
-             service_hash[:priority] = service_def[:priority]
-           else
-             service_hash[:priority] = 0
-           end
-     return service_hash if service_hash.key?(:service_handle) && ! service_hash[:service_handle].nil?
-     
-     if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
-     handle_field_sym = service_def[:service_handle_field].to_sym
-       p :handle_symbol
-       p service_def[:service_handle_field].to_sym
-       return SystemUtils.log_error_mesg('Missing Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
-       service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
-     else
-       service_hash[:service_handle] = container_name
-     end    
-     return service_hash   
-       rescue StandardError => e
-         SystemUtils.log_exception(e)
-   end
 
+ 
   #@ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
   #@ All are added to the ManagesEngine/Service Tree
@@ -99,12 +37,12 @@ class ServiceManager  < ErrorsApi
     p :pre_top_level
     p service_hash
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
-    ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
       p :potst_top_level
       p service_hash
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
       return true if service_hash.key?(:shared) && service_hash[:shared] == true
-    if is_service_persistant?(service_hash)      
+    if ServiceDefinitions.is_service_persistant?(service_hash)      
       return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
     else
@@ -131,7 +69,7 @@ class ServiceManager  < ErrorsApi
       service_hash[:container_type] = container.ctype 
     
       
-      ServiceManager.set_top_level_service_params(service_hash, container.container_name)
+      ServiceDefinitions.set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false      
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
@@ -169,7 +107,7 @@ class ServiceManager  < ErrorsApi
   #@return false
   def delete_service(service_query)
     clear_error
-    complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+    complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = @system_registry.find_engine_service_hash(complete_service_query)    
     return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash
     service_hash[:remove_all_data] = service_query[:remove_all_data]
@@ -182,7 +120,7 @@ class ServiceManager  < ErrorsApi
 
   def update_attached_service(params)
     clear_error
-    ServiceManager.set_top_level_service_params(params,params[:parent_engine])
+    ServiceDefinitions.set_top_level_service_params(params,params[:parent_engine])
     if test_registry_result(@system_registry.update_attached_service(params))
       return add_to_managed_service(params)  if remove_from_managed_service(params)
          # this calls add_to_managed_service(params) plus adds to reg
@@ -244,7 +182,7 @@ class ServiceManager  < ErrorsApi
 
  
   def register_non_persistant_service(service_hash)
-      ServiceManager.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+      ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
       clear_error
      return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
      return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(@system_registry.add_to_services_registry(service_hash))
@@ -254,7 +192,7 @@ class ServiceManager  < ErrorsApi
     end
     
     def force_register_attached_service(service_query)
-      complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+      complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
       service_hash = @system_registry.find_engine_service_hash(complete_service_query)
       return log_error_mesg( 'force_reregister no matching service found',service_query) unless service_hash.is_a?(Hash)
       add_to_managed_service(service_hash)     
@@ -263,14 +201,14 @@ class ServiceManager  < ErrorsApi
      end
      
    def force_deregister_attached_service(service_query)
-     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+     complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
      service_hash = @system_registry.find_engine_service_hash(complete_service_query)
     return log_error_mesg( 'force_deregister_ no matching service found',service_query) unless service_hash.is_a?(Hash)
     return remove_from_managed_service(service_hash)   
    end
    
    def force_reregister_attached_service(service_query)
-     complete_service_query = ServiceManager.set_top_level_service_params(service_query,service_query[:parent_engine])
+     complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
      service_hash = @system_registry.find_engine_service_hash(complete_service_query)
      return log_error_mesg( 'force_register no matching service found',service_query) unless service_hash.is_a?(Hash)
      return add_to_managed_service(service_hash) if remove_from_managed_service(service_hash) 
@@ -410,7 +348,7 @@ class ServiceManager  < ErrorsApi
   
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
-    service_definition = software_service_definition(config_hash)
+    service_definition = ServiceDefinitions.software_service_definition(config_hash)
     return log_error_mesg('Missing Service definition file ', config_hash.to_s)  unless service_definition.is_a?(Hash)
     return log_error_mesg('Missing Configurators in service definition', config_hash.to_s) unless service_definition.key?(:configurators)
     configurators = service_definition[:configurators]
@@ -435,29 +373,7 @@ class ServiceManager  < ErrorsApi
     test_and_lock_registry_result(@system_registry.list_providers_in_use)
   end
 
-  #@return [Tree::TreeNode] representing the orphaned services tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_orphaned_services_tree
-    test_and_lock_registry_result(@system_registry.orphaned_services_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the managed services tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def managed_service_tree
-    test_and_lock_registry_result(@system_registry.services_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the managed engines tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_managed_engine_tree
-    test_and_lock_registry_result(@system_registry.managed_engines_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the services configuration tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def service_configurations_tree
-    test_and_lock_registry_result(@system_registry.service_configurations_registry)
-  end
+ 
 
   #@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
   # required keys
@@ -505,27 +421,7 @@ class ServiceManager  < ErrorsApi
         rescue StandardError => e
           log_exception(e)
   end
-  
-#@returns [Hash] suitable for use  to attach as a service
-  #nothing written to the tree
-  def reparent_orphan(params)
-    test_registry_result(@system_registry.reparent_orphan(params))   
-    rescue StandardError => e
-      log_exception(e)
-  end
- 
-  
-def match_orphan_service(service_hash)
-  res =  retrieve_orphan(service_hash)
-  return true if res.is_a?(Hash)
-  return false
-end
 
-  def retrieve_orphan(params)
-    test_registry_result(@system_registry.retrieve_orphan(params))   
-    rescue StandardError => e
-      log_exception(e)
-  end
 
 def remove_engine_from_managed_engines_registry(params)
   r = @system_registry.remove_from_managed_engines_registry(params)
@@ -535,47 +431,4 @@ def remove_engine_from_managed_engines_registry(params)
 end
 
 
-def orphanate_service(params)
-   test_registry_result(@system_registry.orphanate_service(params))   
-  rescue StandardError => e
-    log_exception(e)
- end
-
-def release_orphan(params)
-  test_registry_result(@system_registry.release_orphan(params))   
-  rescue StandardError => e
-    log_exception(e)
-end
-
-
-# @return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace
-def software_service_definition(params)
-  clear_error
-  SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
-rescue Exception=>e
-  p :error
-  p params
-  log_exception(e)
-  return nil
-end
-
-#test the result and carry last_error from @system_registry if result nil
-  #@return result
-  def test_registry_result(result)
-    clear_error
-    log_error_mesg(@system_registry.last_error, result) if result.is_a?(FalseClass)
-    return result   
-    rescue StandardError => e
-      log_exception(e)
-  end
-
-  #test the result and carry last_error from @system_registry if nil
-  #freeze result object if not nil
-  #@return result
-  def test_and_lock_registry_result(result)
-    if test_registry_result(result)
-      result.freeze
-    end
-    return result
-  end   
 end

@@ -15,4 +15,4 @@ RUN chown 22671  /usr/share/tomcat7/webapps  `find /var /usr/share /usr/local /h
 	usermod -a -G tomcat7  www-data ;\
 	usermod -a -G data-user www-data 
 #	chmod g+w /usr/share/tomcat7/conf/tomcat-users.xml
-	
+	RUN mkdir /opt ; chown $ContUser /opt	
