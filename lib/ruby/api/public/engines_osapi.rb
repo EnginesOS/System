@@ -778,7 +778,6 @@ end
   def system_status
     return SystemStatus.system_status
   end
-
 def current_build_params
   return SystemStatus.current_build_params
 end
