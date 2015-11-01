@@ -778,12 +778,17 @@ end
   def system_status
     return SystemStatus.system_status
   end
+  
+def current_build_params
+  return SystemStatus.current_build_params
+end
 
   #
   #  def is_base_system_updating?
   #    SystemStatus.is_base_system_updating?
   #  end
   #
+  
   #  def is_rebooting?
   #    SystemStatus.is_rebooting?
   #  end
