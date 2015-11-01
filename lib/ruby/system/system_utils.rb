@@ -11,6 +11,11 @@ class SystemUtils
     STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
     return false
   end
+  
+  def SystemUtils.debug_state? 
+  return @@debug
+end
+  
 
   #@Logs to passeenger std out the @msg followed by @object.to_s
   #Logs are written to apache/error.log
