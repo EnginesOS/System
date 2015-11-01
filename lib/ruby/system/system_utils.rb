@@ -3,7 +3,7 @@ class SystemUtils
   @@level=0
 
   attr_reader :debug, :level, :last_error
-  def SystemUtils.debug_output(label, object)
+  def SystemUtils.debug_output(label, object = nil)
     STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
   end
 
@@ -11,6 +11,11 @@ class SystemUtils
     STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
     return false
   end
+  
+  def SystemUtils.debug_state? 
+  return @@debug
+end
+  
 
   #@Logs to passeenger std out the @msg followed by @object.to_s
   #Logs are written to apache/error.log
