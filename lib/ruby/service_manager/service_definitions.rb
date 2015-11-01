@@ -51,7 +51,6 @@ class ServiceDefinitions
  #@return boolean indicating the persistance
  #@return nil if no software definition found
  def ServiceDefinitions.software_service_persistance(service_hash)
-   clear_error
    service_definition = software_service_definition(service_hash)
    return service_definition[:persistant] unless service_definition.nil?              
    return nil 
