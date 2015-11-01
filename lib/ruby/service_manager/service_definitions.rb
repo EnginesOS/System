@@ -39,12 +39,12 @@ class ServiceDefinitions
  def ServiceDefinitions.is_service_persistant?(service_hash)
    unless service_hash.key?(:persistant)
      persist = ServiceDefinitions.software_service_persistance(service_hash)
-    return log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
+    return  SystemUtils.log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
      service_hash[:persistant] = persist
    end
    service_hash[:persistant]  
  rescue StandardError => e
-   log_exception(e)
+   SystemUtils.log_exception(e)
  end
 
  #load softwwareservicedefinition for serivce in service_hash and
@@ -56,7 +56,7 @@ class ServiceDefinitions
    return service_definition[:persistant] unless service_definition.nil?              
    return nil 
    rescue StandardError => e
-     log_exception(e)
+   SystemUtils.log_exception(e)
  end
  
  
@@ -64,7 +64,7 @@ class ServiceDefinitions
  def ServiceDefinitions.get_software_service_container_name(params)
    clear_error
    server_service =  software_service_definition(params)
-   return log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
+   return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
 
    return server_service[:service_container]   
    rescue StandardError => e

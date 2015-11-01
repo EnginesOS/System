@@ -4,14 +4,15 @@ require_relative 'system_registry/system_registry_client.rb'
 require_relative '../templater/templater.rb'
 require_relative '../system/system_access.rb'
 require_relative 'service_definitions.rb'
+require_relative 'result_checks.rb'
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
 
   require_relative 'service_actions.rb'
-#  require_relative 'service_definitions.rb'
+  require_relative 'registry_tree.rb'
 #  include ServiceDefinitions
- 
+  include RegistryTree
   
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
@@ -370,29 +371,7 @@ class ServiceManager  < ErrorsApi
     test_and_lock_registry_result(@system_registry.list_providers_in_use)
   end
 
-  #@return [Tree::TreeNode] representing the orphaned services tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_orphaned_services_tree
-    test_and_lock_registry_result(@system_registry.orphaned_services_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the managed services tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def managed_service_tree
-    test_and_lock_registry_result(@system_registry.services_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the managed engines tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_managed_engine_tree
-    test_and_lock_registry_result(@system_registry.managed_engines_registry)
-  end
-
-  #@return [Tree::TreeNode] representing the services configuration tree as dettached and frozen from the parent Tree
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def service_configurations_tree
-    test_and_lock_registry_result(@system_registry.service_configurations_registry)
-  end
+ 
 
   #@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
   # required keys
@@ -494,23 +473,5 @@ rescue Exception=>e
   return nil
 end
 
-#test the result and carry last_error from @system_registry if result nil
-  #@return result
-  def test_registry_result(result)
-    clear_error
-    log_error_mesg(@system_registry.last_error, result) if result.is_a?(FalseClass)
-    return result   
-    rescue StandardError => e
-      log_exception(e)
-  end
 
-  #test the result and carry last_error from @system_registry if nil
-  #freeze result object if not nil
-  #@return result
-  def test_and_lock_registry_result(result)
-    if test_registry_result(result)
-      result.freeze
-    end
-    return result
-  end   
 end
