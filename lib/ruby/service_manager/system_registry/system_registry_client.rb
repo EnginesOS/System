@@ -17,7 +17,7 @@ class SystemRegistryClient < ErrorsApi
   include Configurations
   include Services 
   include Engines
-  include Oprhans
+  include Orphans
   include Registry 
 
 end
