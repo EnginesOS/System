@@ -11,8 +11,10 @@ class ServiceManager  < ErrorsApi
 
   require_relative 'service_actions.rb'
   require_relative 'registry_tree.rb'
+  require_relative 'orphan_services.rb'
 #  include ServiceDefinitions
   include RegistryTree
+  include OrphanServices
   
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
@@ -419,27 +421,7 @@ class ServiceManager  < ErrorsApi
         rescue StandardError => e
           log_exception(e)
   end
-  
-#@returns [Hash] suitable for use  to attach as a service
-  #nothing written to the tree
-  def reparent_orphan(params)
-    test_registry_result(@system_registry.reparent_orphan(params))   
-    rescue StandardError => e
-      log_exception(e)
-  end
- 
-  
-def match_orphan_service(service_hash)
-  res =  retrieve_orphan(service_hash)
-  return true if res.is_a?(Hash)
-  return false
-end
 
-  def retrieve_orphan(params)
-    test_registry_result(@system_registry.retrieve_orphan(params))   
-    rescue StandardError => e
-      log_exception(e)
-  end
 
 def remove_engine_from_managed_engines_registry(params)
   r = @system_registry.remove_from_managed_engines_registry(params)
@@ -449,17 +431,6 @@ def remove_engine_from_managed_engines_registry(params)
 end
 
 
-def orphanate_service(params)
-   test_registry_result(@system_registry.orphanate_service(params))   
-  rescue StandardError => e
-    log_exception(e)
- end
-
-def release_orphan(params)
-  test_registry_result(@system_registry.release_orphan(params))   
-  rescue StandardError => e
-    log_exception(e)
-end
 
 
 # @return [Hash] of [SoftwareServiceDefinition] that Matches @params with keys :type_path :publisher_namespace

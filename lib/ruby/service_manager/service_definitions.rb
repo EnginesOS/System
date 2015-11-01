@@ -68,7 +68,7 @@ class ServiceDefinitions
 
    return server_service[:service_container]   
    rescue StandardError => e
-     log_exception(e)
+   SystemUtils.log_exception(e)
  end
  
 end
