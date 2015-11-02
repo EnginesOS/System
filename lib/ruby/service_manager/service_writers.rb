@@ -7,12 +7,8 @@ module ServiceWriters
   #@ return true if successful or false if failed
   def add_service(service_hash)
     clear_error
-    p :pre_top_level
-    p service_hash
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
-    p :potst_top_level
-    p service_hash
     test_registry_result(@system_registry.add_to_managed_engines_registry(service_hash))
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
     if ServiceDefinitions.is_service_persistant?(service_hash)
@@ -63,14 +59,14 @@ module ServiceWriters
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine_services(params)
-    p :rm_remove_engine_services
+    p :REMOVE_engine_services
     clear_error
     p params
     services = test_registry_result(@system_registry.get_engine_persistant_services(params))
-    p :persistant_services
+    p :persistant_services_FOR_REMOVAL
     p services
     services.each do | service |
-      if params[:remove_all_data] && service.key?(:shared) && service[:shared]
+      if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
         unless delete_service(service)
           log_error_mesg('Failed to remove service ',service)
