@@ -50,10 +50,11 @@ def create_persistant_services(services, environ, use_existing)
           service_hash = existing
           service_hash[:shared] = true
           @first_build = false
-          free_orphan = true if @service_manager.match_orphan_service(service_hash) == true
+          service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
           service_hash = use_orphan(service_hash)
           @first_build = false
+          free_orphan = true 
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
           service_hash[:fresh] = true
