@@ -23,7 +23,7 @@ end
   # returns nothing
   def SystemUtils.log_error_mesg(msg, object)
     obj_str = object.to_s.slice(0, 512)
-    SystemUtils.log_output(msg.to_s + ':->:' + obj_str ,10)
+    SystemUtils.log_output('ERROR:' + msg.to_s + ':->:' + obj_str ,10)
   end
 
   def SystemUtils.log_error(object)

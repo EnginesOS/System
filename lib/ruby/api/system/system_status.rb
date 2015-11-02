@@ -84,7 +84,8 @@ class SystemStatus
   def self.get_engines_system_release    
     release = File.read(SystemConfig.ReleaseFile)
     release.strip!
-  rescue
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
     return 'none'
    end
    
