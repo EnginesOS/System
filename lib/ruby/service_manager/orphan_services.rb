@@ -46,4 +46,15 @@ end
   end
 
   
+  #@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
+   # required keys
+   # :publisher_namespace
+   # optional
+   #:path_type
+   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
+   def get_orphaned_services(params)
+     test_and_lock_registry_result(@system_registry.get_orphaned_services(params))
+   end
+  
   end

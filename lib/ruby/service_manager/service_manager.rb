@@ -6,16 +6,20 @@ require_relative '../system/system_access.rb'
 require_relative 'service_definitions.rb'
 require_relative 'result_checks.rb'
 require_relative 'non_persistant_services.rb'
+require_relative 'engine_service_readers.rb'
+require_relative 'service_readers.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
 
-  require_relative 'service_actions.rb'
+  require_relative 'service_container_actions.rb'
   require_relative 'registry_tree.rb'
   require_relative 'orphan_services.rb'
 #  include ServiceDefinitions
   include RegistryTree
   include OrphanServices
   include NonPersistantServices
+  include EngineServiceReaders
+  include ServiceReaders
   
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
@@ -167,20 +171,7 @@ class ServiceManager  < ErrorsApi
   end
  
   
-  #def find_engine_services(params)
-  #  @system_registry.find_engine_services(params)
-  #end
-  def find_engine_services_hashes(params)
-    clear_error
-    test_registry_result(@system_registry.find_engine_services_hashes(params))
-  end
-  #
-  
-  def find_engine_service_hash(params)
-      clear_error
-      test_registry_result(@system_registry.find_engine_service_hash(params))
-    end
-
+ 
  
  
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
@@ -270,63 +261,7 @@ class ServiceManager  < ErrorsApi
   end
   
 
-  ###READERS
 
-  #list the Provider namespaces as an Array of Strings
-  #@return [Array]
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def list_providers_in_use
-    test_and_lock_registry_result(@system_registry.list_providers_in_use)
-  end
-
- 
-
-  #@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
-  # required keys
-  # :publisher_namespace
-  # optional
-  #:path_type
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_orphaned_services(params)
-    test_and_lock_registry_result(@system_registry.get_orphaned_services(params))
-  end
-
-  #@return [Array] of all service_hashs marked persistance false for :engine_name
-  # required keys
-  # :engine_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_engine_nonpersistant_services(params)
-    test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
-  end
-
-  #@return [Array] of all service_hashs marked persistance true for :engine_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_engine_persistant_services(params)
-    test_registry_result(@system_registry.get_engine_persistant_services(params))
-  end
-
-  #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_service_configurations_hashes(service_name)
-    test_registry_result(@system_registry.get_service_configurations_hashes(service_name))
-  end
-
-  #Test whether a service hash is registered
-  #@return's false on failure with error (if applicable) accessible from this object's  [ServiceManager] last_error method
-  def service_is_registered?(service_hash)
-    test_registry_result(@system_registry.service_is_registered?(service_hash))  
-    rescue StandardError => e
-      log_exception(e)
-  end
-
-  def all_engines_registered_to(service_type)
-   test_registry_result(@system_registry.all_engines_registered_to(service_type))  
-        rescue StandardError => e
-          log_exception(e)
-  end
 
 
 def remove_engine_from_managed_engines_registry(params)

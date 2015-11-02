@@ -1,5 +1,5 @@
 module NonPersistantServices
-  require_relative 'service_actions.rb'
+  require_relative 'service_container_actions.rb'
   def register_non_persistant_service(service_hash)
        ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
        clear_error
@@ -85,5 +85,17 @@ module NonPersistantServices
       rescue StandardError => e
         log_exception(e)
     end
+    
+  #@return [Array] of all service_hashs marked persistance false for :engine_name
+   # required keys
+   # :engine_name
+   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
+   def get_engine_nonpersistant_services(params)
+     test_registry_result(@system_registry.get_engine_nonpersistant_services(params))
+   end
+ 
+
+   
 
 end
