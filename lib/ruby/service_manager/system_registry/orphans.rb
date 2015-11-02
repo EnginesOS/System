@@ -21,7 +21,7 @@ require_relative 'rset.rb'
    end
  
    def orphanate_service(service_query_hash)
-     rest_post('/v0/system_registry/services/add',service_query_hash )
+     rest_post('/v0/system_registry/services/orphans/add',service_query_hash )
    end
 
  def release_orphan(params)
