@@ -68,7 +68,7 @@ class DockerFileBuilder
     return true
   end
   
-  def write_templates
+  def write_app_templates
     write_line('RUN /home/install_templates $ContUser;\\')
   end
   
