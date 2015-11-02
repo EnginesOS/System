@@ -174,13 +174,6 @@ class ServiceManager  < ErrorsApi
  
  
  
-  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(params)
-    clear_error
-    test_registry_result(@system_registry.get_registered_against_service(params))   
-    rescue StandardError => e
-      log_exception(e)
-  end
 
  
   #def remove_service service_hash
