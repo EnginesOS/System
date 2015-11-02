@@ -39,6 +39,9 @@ module ServiceReaders
       log_exception(e)
   end
 
+  def get_service_entry(service_hash)
+     test_registry_result(@system_registry.get_service_entry(service_hash))
+   end
   
   
 end
