@@ -768,13 +768,13 @@ end
   end
 
 
-  def restart_mgmt
-    return success("mgmt", 'Restart Management Service')
-  end
-
-  def restart_registry
-    return success("registry", 'Restart Resgitry Service')
-  end
+#  def restart_mgmt
+#    return success("mgmt", 'Restart Management Service')
+#  end
+#
+#  def restart_registry
+#    return success("registry", 'Restart Resgitry Service')
+#  end
 
   def system_status
     return SystemStatus.system_status

@@ -43,7 +43,7 @@ module ServiceWriters
     clear_error
     ServiceDefinitions.set_top_level_service_params(params,params[:parent_engine])
     if test_registry_result(@system_registry.update_attached_service(params))
-      return add_to_managed_service(params)  if remove_from_managed_service(params)
+      return add_to_managed_service(params) if remove_from_managed_service(params)
       # this calls add_to_managed_service(params) plus adds to reg
       @last_error='Filed to remove ' + @system_registry.last_error.to_s
     else
