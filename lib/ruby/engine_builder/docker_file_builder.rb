@@ -36,6 +36,7 @@ class DockerFileBuilder
     setup_user_local if write_user_local 
     set_user('$ContUser')
     write_app_archives
+    set_user('0')
     write_app_templates
     set_user('$ContUser')
     write_container_user
@@ -69,7 +70,7 @@ class DockerFileBuilder
   end
   
   def write_app_templates
-    write_line('RUN /home/install_templates.sh $ContUser')
+    write_line('RUN /home/install_templates.sh ')
   end
   
   def setup_user_local  
