@@ -69,7 +69,7 @@ class DockerFileBuilder
   end
   
   def write_app_templates
-    write_line('RUN /home/install_templates.sh $ContUser;\\')
+    write_line('RUN /home/install_templates.sh $ContUser')
   end
   
   def setup_user_local  
