@@ -96,6 +96,4 @@ module NonPersistantServices
    end
  
 
-   
-
 end
