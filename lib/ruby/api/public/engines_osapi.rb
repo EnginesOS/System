@@ -813,7 +813,9 @@ end
   #    SystemStatus.base_system_has_updated?
   #  end
   #
-
+def  is_remote_exception_logging?
+  SystemStatus.is_remote_exception_logging?
+ end
 def get_engines_system_release
   SystemStatus.get_engines_system_release
 end

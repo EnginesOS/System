@@ -27,6 +27,7 @@ configurators:
  email_admin_secret:
   name: email_admin_secret
   label: Admin Secret
+  no_save: true  
   description: System Email Admin Accounts 
   params:
    email_admin_secret:
