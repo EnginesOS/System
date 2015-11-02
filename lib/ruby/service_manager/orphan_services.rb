@@ -2,6 +2,7 @@ require_relative 'result_checks.rb'
 module OrphanServices
 
 def orphanate_service(params)
+  p :Orphanate
    test_registry_result(@system_registry.orphanate_service(params))   
   rescue StandardError => e
     log_exception(e)
