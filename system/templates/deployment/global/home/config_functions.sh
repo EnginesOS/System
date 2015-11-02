@@ -17,11 +17,6 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 fi
             
                  cp $file $dest_file
-                 if ! test -z  "$USER"
-                  then
-                 	chown $USER $dest_file
-                  fi
-
         done
 fi
         echo run as `whoami` in `pwd`
