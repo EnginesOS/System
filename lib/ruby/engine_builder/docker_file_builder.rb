@@ -57,8 +57,7 @@ class DockerFileBuilder
     write_permissions
     write_line('')
     write_line('run mkdir -p /home/fs/local/')    
-    write_line('')
-    set_user('0')   
+    write_line('')  
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
@@ -188,7 +187,7 @@ end
 
   def write_run_install_script
     write_line('WorkDir /home/')
-    write_line('#Setup templates and run installer')
+    write_line('#run framework and custom installer')
     write_line('RUN bash /home/setup.sh')    
   end
 
