@@ -157,22 +157,24 @@ end
 
   def write_persistant_dirs
     log_build_output('setup persistant Dirs')
-    n = 0
+    paths = ''
     write_line('#Persistant Dirs')
     @blueprint_reader.persistant_dirs.each do |path|
       path.chomp!('/')
-      write_line('')
-      write_line('RUN  \\')
-      dirname = File.dirname(path)
-      write_line('mkdir -p $VOLDIR/' + dirname + ';\\')
-      write_line('if [ ! -d /home/' + path + ' ];\\')
-      write_line('  then \\')
-      write_line('    mkdir -p /home/' + path + ' ;\\')
-      write_line('  fi;\\')
-      write_line('mv /home/' + path + ' $VOLDIR/' + dirname + '/;\\')
-      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
-      n += 1     
+      paths += path + ' '
+#      write_line('')
+#      write_line('RUN  \\')
+#      dirname = File.dirname(path)
+#      write_line('mkdir -p $VOLDIR/' + dirname + ';\\')
+#      write_line('if [ ! -d /home/' + path + ' ];\\')
+#      write_line('  then \\')
+#      write_line('    mkdir -p /home/' + path + ' ;\\')
+#      write_line('  fi;\\')
+#      write_line('mv /home/' + path + ' $VOLDIR/' + dirname + '/;\\')
+#      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
+#      n += 1     
     end
+    write_line('RUN /build_scripts/persistant_dirs.sh $ContUser ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -207,27 +209,31 @@ end
     return if src_paths.nil?
     src_paths.each do |path|
       #          path = dest_paths[n]
-      p :path
-      p path
+     
+#      p :path
+#      p path
       dir = File.dirname(path)
+      file = File.basename(path)
       p :dir
       p dir
       if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
-        dir = 'app/'
+        path = 'app/' + file
       end
-      p :dir
-      p dir
-      write_line('')
-      write_line('RUN mkdir -p /home/' + dir + ';\\')
-      write_line('  if [ ! -f /home/' + path + ' ];\\')
-      write_line('    then \\')
-      write_line('      touch  /home/' + path + ';\\')
-      write_line('    fi;\\')
-      write_line('  mkdir -p $VOLDIR/' + dir + ';\\')
-      write_line('\\')
-      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
-      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
+      paths += path + ' '
+#      p :dir
+#      p dir
+#      write_line('')
+#      write_line('RUN mkdir -p /home/' + dir + ';\\')
+#      write_line('  if [ ! -f /home/' + path + ' ];\\')
+#      write_line('    then \\')
+#      write_line('      touch  /home/' + path + ';\\')
+#      write_line('    fi;\\')
+#      write_line('  mkdir -p $VOLDIR/' + dir + ';\\')
+#      write_line('\\')
+#      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
+#      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
     end
+    write_line('RUN /build_scripts/persistant_files.sh  $VOLDIR ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -317,12 +323,13 @@ end
   def chown_home_app
     write_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
-    write_line('RUN if [ ! -d /home/app ];\\')
-    write_line('  then \\')
-    write_line('    mkdir -p /home/app ;\\')
-    write_line('  fi;\\')
-    write_line(' mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\')
-    write_line(' chown -R $ContUser /home/app /home/fs /home/fs/local')    
+    write_line('RUN /build_scripts/chown_app_dir.sh $ContUser ')
+#    write_line('RUN if [ ! -d /home/app ];\\')
+#    write_line('  then \\')
+#    write_line('    mkdir -p /home/app ;\\')
+#    write_line('  fi;\\')
+#    write_line(' mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\')
+#    write_line(' chown -R $ContUser /home/app /home/fs /home/fs/local')    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -434,9 +441,9 @@ end
       end
       if arc_extract == 'git'
         write_line('WORKDIR /tmp')        
-        write_line('RUN git clone ' + arc_src + ' --depth 1 ')        
+        write_line('RUN git clone ' + arc_src + ' --depth 1 /tmp/app')        
         set_user('0')
-        write_line('RUN mv  ' + arc_dir + ' /home/app' + arc_loc)        
+        write_line('RUN mv  ' + '/tmp/app' + ' /home/app' + arc_loc)        
         set_user('$ContUser')
       else
         step_back = false
