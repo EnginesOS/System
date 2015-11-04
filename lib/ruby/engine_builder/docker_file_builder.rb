@@ -337,17 +337,20 @@ end
     if @blueprint_reader.single_chmods.nil? == true
       return
     end
+    paths = ''
     @blueprint_reader.single_chmods.each do |path|
       if path.nil? == false
-        write_line('RUN if [ ! -f /home/app/' + path + ' ];\\')
-        write_line('   then \\')
-        write_line('   mkdir -p  `dirname /home/app/' + path + '`;\\')
-        write_line('   touch  /home/app/' + path + ';\\')
-        write_line('     fi;\\')
-        write_line('  chown $ContUser /home/app/' + path + ';\\')
-        write_line('   chmod  775 /home/app/' + path)        
+        paths += path + ' '
+#        write_line('RUN if [ ! -f /home/app/' + path + ' ];\\')
+#        write_line('   then \\')
+#        write_line('   mkdir -p  `dirname /home/app/' + path + '`;\\')
+#        write_line('   touch  /home/app/' + path + ';\\')
+#        write_line('     fi;\\')
+#        write_line('  chown $ContUser /home/app/' + path + ';\\')
+#        write_line('   chmod  775 /home/app/' + path)        
       end
     end
+    write_line('RUN /build_scripts/write_permissions.sh $ContUser ' + paths) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -360,33 +363,36 @@ end
       return
     end
     @blueprint_reader.recursive_chmods.each do |directory|
+      dirs = ''
       if directory.nil? == false
-        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
-        write_line('    then \\')
-        write_line('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
-        write_line('    chmod -R gu+rw $dest;\\')
-        write_line('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
-        write_line('    then \\')
-        write_line("       mkdir  -p \'/home/app/" + directory + "\';\\")
-        write_line("      chown $data_uid  \'/home/app/" + directory + "\';\\")
-        write_line("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
-        write_line('  else\\')
-        write_line("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
-        write_line('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
-        write_line('       do\\')
-        write_line("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
-        write_line('            if test -n $adir;\\')
-        write_line('                then\\')
-        write_line('                      dirs=`echo $dirs $adir`;\\')
-        write_line('                fi;\\')
-        write_line('       done;\\')
-        write_line(' if test -n \'$dirs\' ;\\')
-        write_line('      then\\')
-        write_line('      chmod gu+x $dirs  ;\\')
-        write_line('fi;\\')
-        write_line('fi')        
+        dirs += directory + ' '
+#        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
+#        write_line('    then \\')
+#        write_line('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
+#        write_line('    chmod -R gu+rw $dest;\\')
+#        write_line('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
+#        write_line('    then \\')
+#        write_line("       mkdir  -p \'/home/app/" + directory + "\';\\")
+#        write_line("      chown $data_uid  \'/home/app/" + directory + "\';\\")
+#        write_line("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
+#        write_line('  else\\')
+#        write_line("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
+#        write_line('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
+#        write_line('       do\\')
+#        write_line("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
+#        write_line('            if test -n $adir;\\')
+#        write_line('                then\\')
+#        write_line('                      dirs=`echo $dirs $adir`;\\')
+#        write_line('                fi;\\')
+#        write_line('       done;\\')
+#        write_line(' if test -n \'$dirs\' ;\\')
+#        write_line('      then\\')
+#        write_line('      chmod gu+x $dirs  ;\\')
+#        write_line('fi;\\')
+#        write_line('fi')        
       end
     end
+    write_line('RUN /build_scripts/recursive_write_permissions.sh $data_uid ' + dirs) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
