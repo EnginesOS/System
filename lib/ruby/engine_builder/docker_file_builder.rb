@@ -69,7 +69,7 @@ class DockerFileBuilder
   end
   
   def write_app_templates
-    write_line('RUN /home/install_templates.sh ')
+    write_line('RUN /build_scripts/install_templates.sh ')
   end
   
   def setup_user_local  
@@ -174,7 +174,7 @@ end
 #      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
 #      n += 1     
     end
-    write_line('RUN /build_scripts/persistant_dirs.sh $ContUser ' + paths)
+    write_line('RUN /build_scripts/persistant_dirs.sh  ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -233,7 +233,7 @@ end
 #      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
 #      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
     end
-    write_line('RUN /build_scripts/persistant_files.sh  $VOLDIR ' + paths)
+    write_line('RUN /build_scripts/persistant_files.sh   ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -323,7 +323,7 @@ end
   def chown_home_app
     write_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
-    write_line('RUN /build_scripts/chown_app_dir.sh $ContUser ')
+    write_line('RUN /build_scripts/chown_app_dir.sh  ')
 #    write_line('RUN if [ ! -d /home/app ];\\')
 #    write_line('  then \\')
 #    write_line('    mkdir -p /home/app ;\\')
@@ -357,7 +357,7 @@ end
 #        write_line('   chmod  775 /home/app/' + path)        
       end
     end
-    write_line('RUN /build_scripts/write_permissions.sh $ContUser  $VOLDIR ' + paths) 
+    write_line('RUN /build_scripts/write_permissions.sh ' + paths) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -400,7 +400,7 @@ end
 #        write_line('fi')        
       end
     end
-    write_line('RUN /build_scripts/recursive_write_permissions.sh $data_uid  $VOLDIR ' + dirs) 
+    write_line('RUN /build_scripts/recursive_write_permissions.sh ' + dirs) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

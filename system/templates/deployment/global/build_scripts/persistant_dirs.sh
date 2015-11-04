@@ -1,7 +1,6 @@
 #!/bin/bash
 
-VOLDIR=$1
-shift
+
 
 	#$* some/were/to/path
 	#

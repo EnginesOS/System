@@ -1,8 +1,5 @@
 #!/bin/bash
-data_uid=$1
-shift
-VOLDIR=$1
-shift
+
 
 for directory in $*
  do
