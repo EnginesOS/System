@@ -236,8 +236,6 @@ class BluePrintReader
       archive_details[:extraction_command] = arc_extract
       archive_details[:destination] = arc_loc
       archive_details[:path_to_extracted] = arc_dir
-      p :read_in_arc_details
-      p archive_details
       @archives_details.push(archive_details)
     end
   rescue StandardError => e
@@ -252,7 +250,6 @@ class BluePrintReader
     p :Single_Chmods
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
-      p chmod
       if chmod[:recursive] == true
         directory = clean_path(chmod[:path])
         p directory
@@ -273,7 +270,6 @@ class BluePrintReader
     p :Recursive_Chmods
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
-      p chmod
       if !chmod.key(:recursive) || chmod[:recursive] == false
         p chmod[:path]
         directory = clean_path(chmod[:path])
@@ -359,12 +355,9 @@ class BluePrintReader
   def read_environment_variables
     log_build_output('Read Environment Variables')
     @environments = []
-    p :set_environment_variables
-    p @builder.set_environments
     envs = @blueprint[:software][:variables]
     return true unless envs.is_a?(Array) # not an error just nada
     envs.each do |env|
-      p env
       name = env[:name]
       value = env[:value]
       ask = env[:ask_at_build_time]
@@ -384,11 +377,7 @@ class BluePrintReader
         end
       end
       name.sub!(/ /, '_')
-      p :name_and_value
-      p name
-      p value
       ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
-      p ev
       @environments.push(ev)
     end
   rescue StandardError => e
