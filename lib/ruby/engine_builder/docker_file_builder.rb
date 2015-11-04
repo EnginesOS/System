@@ -415,76 +415,93 @@ end
     #        extracts=String.new
     #        dirs=String.new
     write_line('')
+    set_user('0')
     @blueprint_reader.archives_details.each do |archive_details|
-      arc_src = archive_details[:source_url]
-      arc_name = archive_details[:package_name]
-      arc_loc = archive_details[:destination]
-      arc_extract = archive_details[:extraction_command]
-      arc_dir = archive_details[:path_to_extracted].to_s
+      source_url = archive_details[:source_url]
+      package_name = archive_details[:package_name]
+      destination = archive_details[:destination]
+      extraction_command = archive_details[:extraction_command]
+      path_to_extracted = archive_details[:path_to_extracted].to_s
       p '_+_+_+_+_+_+_+_+_+_+_'
       p archive_details
-      p arc_src + '_'
-      p arc_name + '_'
-      p arc_loc + '_'
-      p arc_extract + '_'
-      p arc_dir + '|'
-      set_user('0')
-      if arc_loc == './' || arc_loc == '.' || arc_loc == '/' || arc_loc == ''
-        arc_loc = ''
-      else
-        if arc_loc.end_with?('/')
-          arc_loc = arc_loc.chop # note not String#chop
-        end
-        if arc_loc.start_with?('/') == false
-          arc_loc = '/' + arc_loc
-        end
-        write_line('RUN mkdir -p  /home/app')        
-      end
-      if arc_extract == 'git'
-        write_line('WORKDIR /tmp')        
-        write_line('RUN git clone ' + arc_src + ' --depth 1 /tmp/app')        
-        set_user('0')
-        write_line('RUN mv  ' + '/tmp/app' + ' /home/app' + arc_loc)        
-        set_user('$ContUser')
-      else
-        step_back = false
-        if arc_dir.nil? == true || arc_dir == '' || arc_dir == './' || arc_dir == '/'
-          step_back = true
-          write_line('RUN   mkdir /tmp/app')          
-          arc_dir = '/tmp/app'
-          write_line('WORKDIR /tmp/app')         
-        else
-          write_line('WORKDIR /tmp')
-          
-        end
-        write_line('RUN   wget  -O \'' + arc_name + '\' \'' + arc_src + '\' ;\\')
-        if arc_extract.nil? == false && arc_extract != ''
-          write_line(' ' + arc_extract + ' \'' + arc_name + '\' ;\\') # + '\'* 2>&1 > /dev/null ')
-          write_line(' rm \'' + arc_name + '\'')
-        else
-          arc_dir = arc_dir + '/' + arc_name
-          write_line('echo') # step past the next shell line implied by preceeding ;
-        end
-        set_user('0')
-        if step_back == true
-          write_line('WORKDIR /tmp')         
-        end
-        if arc_loc.start_with?('/home/app') == true || arc_loc.start_with?('/home/local') == true
-          dest_prefix = ''
-        else
-          dest_prefix = '/home/app'
-        end
-        write_line('run   if test ! -d ' + arc_dir + ' ;\\')
-        write_line('       then\\')
-        write_line(' mkdir -p ' + dest_prefix + '/' + arc_loc + ' ;\\')
-        write_line(' fi;\\')
-        if dest_prefix != '' && dest_prefix != '/home/app'
-          write_line(' mkdir -p ' + dest_prefix + ' ;\\')
-        end
-        write_line(' mv ' + arc_dir + ' ' + dest_prefix + arc_loc)       
-        #          first_archive = false
-        set_user('$ContUser')
-      end
+      p source_url + '_'
+      p package_name + '_'
+      p destination + '_'
+      p extraction_command + '_'
+      p path_to_extracted + '|'
+
+      # Destination can be /opt/ /home/app /home/fs/ /home/local/
+      # If none of teh above then it is prefixed with /home/app
+      destination += '/home/app/'  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
+      destination = '/home/app' if destination == '/home/app/' 
+      
+#      source_url=$1
+#      package_name=$2
+#      extraction_command=$3
+#      destination=$4
+#      path_to_extracted=$5
+      args = ' \'' + source_url + '\' '
+      args += ' \'' + package_name + '\' '
+      args += ' \'' + extraction_command + '\' '
+      args += ' \'' + destination + '\' '
+      args += ' \'' + path_to_extracted + '\' '
+      write_line('RUN /build_scripts/package_installer.sh' + args )
+#      if arc_loc == './' || arc_loc == '.' || arc_loc == '/' || arc_loc == ''
+#        arc_loc = ''
+#      else
+#        if arc_loc.end_with?('/')
+#          arc_loc = arc_loc.chop # note not String#chop
+#        end
+#        if arc_loc.start_with?('/') == false
+#          arc_loc = '/' + arc_loc
+#        end
+#        write_line('RUN mkdir -p  /home/app')        
+#      end
+#      if arc_extract == 'git'
+#        write_line('WORKDIR /tmp')        
+#        write_line('RUN git clone ' + arc_src + ' --depth 1 /tmp/app')        
+#        set_user('0')
+#        write_line('RUN mv  ' + '/tmp/app' + ' /home/app' + arc_loc)        
+#        set_user('$ContUser')
+#      else
+#        step_back = false
+#        if arc_dir.nil? == true || arc_dir == '' || arc_dir == './' || arc_dir == '/'
+#          step_back = true
+#          write_line('RUN   mkdir /tmp/app')          
+#          arc_dir = '/tmp/app'
+#          write_line('WORKDIR /tmp/app')         
+#        else
+#          write_line('WORKDIR /tmp')
+#          
+#        end
+#        write_line('RUN   wget  -O \'' + arc_name + '\' \'' + arc_src + '\' ;\\')
+#        if arc_extract.nil? == false && arc_extract != ''
+#          write_line(' ' + arc_extract + ' \'' + arc_name + '\' ;\\') # + '\'* 2>&1 > /dev/null ')
+#          write_line(' rm \'' + arc_name + '\'')
+#        else
+#          arc_dir = arc_dir + '/' + arc_name
+#          write_line('echo') # step past the next shell line implied by preceeding ;
+#        end
+#        set_user('0')
+#        if step_back == true
+#          write_line('WORKDIR /tmp')         
+#        end
+#        if arc_loc.start_with?('/home/app') == true || arc_loc.start_with?('/home/local') == true
+#          dest_prefix = ''
+#        else
+#          dest_prefix = '/home/app'
+#        end
+#        write_line('run   if test ! -d ' + arc_dir + ' ;\\')
+#        write_line('       then\\')
+#        write_line(' mkdir -p ' + dest_prefix + '/' + arc_loc + ' ;\\')
+#        write_line(' fi;\\')
+#        if dest_prefix != '' && dest_prefix != '/home/app'
+#          write_line(' mkdir -p ' + dest_prefix + ' ;\\')
+#        end
+#        write_line(' mv ' + arc_dir + ' ' + dest_prefix + arc_loc)       
+#        #          first_archive = false
+#        set_user('$ContUser')
+ #     end
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
