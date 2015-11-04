@@ -6,7 +6,7 @@ for $path in $0
 	mkdir -p /home/$dir
 
  		if [ ! -f /home/$path
-  		   then \\')
+  		   then 
     		touch  /home/$path
     	fi
     
