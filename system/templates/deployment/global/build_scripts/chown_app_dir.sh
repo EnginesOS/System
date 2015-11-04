@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ContUser=$0
+ContUser=$1
 
 if [ ! -d /home/app ]
  then 
