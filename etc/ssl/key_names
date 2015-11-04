@@ -1,0 +1,10 @@
+set_hostname
+restart_mgmt
+restart_system
+deb_update_status
+update_system
+access_system
+update_system_access
+regen_private
+update_engines_system_software
+update_engines_console_password
