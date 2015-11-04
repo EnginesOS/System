@@ -369,8 +369,9 @@ end
     if @blueprint_reader.recursive_chmods.nil? == true
       return
     end
+    dirs = ''
     @blueprint_reader.recursive_chmods.each do |directory|
-      dirs = ''
+      
       if directory.nil? == false
         dirs += directory + ' '
 #        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
