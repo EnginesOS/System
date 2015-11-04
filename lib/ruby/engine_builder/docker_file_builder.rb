@@ -357,7 +357,7 @@ end
 #        write_line('   chmod  775 /home/app/' + path)        
       end
     end
-    write_line('RUN /build_scripts/write_permissions.sh $ContUser ' + paths) 
+    write_line('RUN /build_scripts/write_permissions.sh $ContUser  $VOLDIR ' + paths) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -400,7 +400,7 @@ end
 #        write_line('fi')        
       end
     end
-    write_line('RUN /build_scripts/recursive_write_permissions.sh $data_uid ' + dirs) 
+    write_line('RUN /build_scripts/recursive_write_permissions.sh $data_uid  $VOLDIR ' + dirs) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

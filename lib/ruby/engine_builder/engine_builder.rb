@@ -335,6 +335,7 @@ class EngineBuilder < ErrorsApi
       @mc.destroy_container      
     end
     # FIXME: Remove image if created  
+    # FIXME this needs to be moved to service builder
     @attached_services.each do |service_hash|
       if service_hash[:shared]
         next
