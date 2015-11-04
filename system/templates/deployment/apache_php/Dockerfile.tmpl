@@ -1,10 +1,11 @@
 FROM  engines/php:_Engines_System(release)
+ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
 ENV CONTFSVolHome /home/fs/
 
 ENV ContUser www-data
-RUN mkdir /opt ; chown $ContUser /opt
+RUN  chown $ContUser /opt
 
 RUN	apt-get update -y;\
 	if [ -f /home/engines/configs/php/01-custom.ini ] ;\

@@ -295,7 +295,12 @@ Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
     return true if res.status == 'run'
     return false
   end
-
+def restart_mgmt
+  res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@172.17.42.1 /opt/engines/bin/restart_mgmt.sh') }
+  # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
+  return true if res.status == 'run'
+  return false
+end
   def update_system
     res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system engines@172.17.42.1 /opt/engines/bin/update_system.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging

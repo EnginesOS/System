@@ -776,9 +776,6 @@ end
 #    return success("registry", 'Restart Resgitry Service')
 #  end
 
-  def system_status
-    return SystemStatus.system_status
-  end
 
   def current_build_params
 return SystemStatus.current_build_params
@@ -828,7 +825,8 @@ end
     SystemStatus.last_build_params
 end
   def restart_mgmt 
-    return success("mgmt", 'Restart Management Service') 
+   return success("mgmt", 'Restart Management Service') if @core_api.restart_mgmt
+    return failed("mgmt", @core_api.last_error,self)
   end
   
   def restart_registry

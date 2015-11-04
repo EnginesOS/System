@@ -22,7 +22,7 @@ class DockerFileBuilder
   def count_layer
     @layer_count += 1
     if @layer_count > 75
-       EngineBuilder.BuildError.new
+      @builder.log_build_errors("More than 75 layers!")
     end
   end
 
@@ -36,6 +36,8 @@ class DockerFileBuilder
     setup_user_local if write_user_local 
     set_user('$ContUser')
     write_app_archives
+    set_user('0')
+    write_app_templates
     set_user('$ContUser')
     write_container_user
     set_user('0')
@@ -55,8 +57,7 @@ class DockerFileBuilder
     write_permissions
     write_line('')
     write_line('run mkdir -p /home/fs/local/')    
-    write_line('')
-    set_user('0')   
+    write_line('')  
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
@@ -65,6 +66,10 @@ class DockerFileBuilder
     write_data_permissions
     finalise_docker_file
     return true
+  end
+  
+  def write_app_templates
+    write_line('RUN /home/install_templates.sh ')
   end
   
   def setup_user_local  
@@ -182,7 +187,7 @@ end
 
   def write_run_install_script
     write_line('WorkDir /home/')
-    write_line('#Setup templates and run installer')
+    write_line('#run framework and custom installer')
     write_line('RUN bash /home/setup.sh')    
   end
 
@@ -332,17 +337,20 @@ end
     if @blueprint_reader.single_chmods.nil? == true
       return
     end
+    paths = ''
     @blueprint_reader.single_chmods.each do |path|
       if path.nil? == false
-        write_line('RUN if [ ! -f /home/app/' + path + ' ];\\')
-        write_line('   then \\')
-        write_line('   mkdir -p  `dirname /home/app/' + path + '`;\\')
-        write_line('   touch  /home/app/' + path + ';\\')
-        write_line('     fi;\\')
-        write_line('  chown $ContUser /home/app/' + path + ';\\')
-        write_line('   chmod  775 /home/app/' + path)        
+        paths += path + ' '
+#        write_line('RUN if [ ! -f /home/app/' + path + ' ];\\')
+#        write_line('   then \\')
+#        write_line('   mkdir -p  `dirname /home/app/' + path + '`;\\')
+#        write_line('   touch  /home/app/' + path + ';\\')
+#        write_line('     fi;\\')
+#        write_line('  chown $ContUser /home/app/' + path + ';\\')
+#        write_line('   chmod  775 /home/app/' + path)        
       end
     end
+    write_line('RUN /build_scripts/write_permissions.sh $ContUser ' + paths) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -355,33 +363,36 @@ end
       return
     end
     @blueprint_reader.recursive_chmods.each do |directory|
+      dirs = ''
       if directory.nil? == false
-        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
-        write_line('    then \\')
-        write_line('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
-        write_line('    chmod -R gu+rw $dest;\\')
-        write_line('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
-        write_line('    then \\')
-        write_line("       mkdir  -p \'/home/app/" + directory + "\';\\")
-        write_line("      chown $data_uid  \'/home/app/" + directory + "\';\\")
-        write_line("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
-        write_line('  else\\')
-        write_line("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
-        write_line('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
-        write_line('       do\\')
-        write_line("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
-        write_line('            if test -n $adir;\\')
-        write_line('                then\\')
-        write_line('                      dirs=`echo $dirs $adir`;\\')
-        write_line('                fi;\\')
-        write_line('       done;\\')
-        write_line(' if test -n \'$dirs\' ;\\')
-        write_line('      then\\')
-        write_line('      chmod gu+x $dirs  ;\\')
-        write_line('fi;\\')
-        write_line('fi')        
+        dirs += directory + ' '
+#        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
+#        write_line('    then \\')
+#        write_line('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
+#        write_line('    chmod -R gu+rw $dest;\\')
+#        write_line('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
+#        write_line('    then \\')
+#        write_line("       mkdir  -p \'/home/app/" + directory + "\';\\")
+#        write_line("      chown $data_uid  \'/home/app/" + directory + "\';\\")
+#        write_line("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
+#        write_line('  else\\')
+#        write_line("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
+#        write_line('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
+#        write_line('       do\\')
+#        write_line("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
+#        write_line('            if test -n $adir;\\')
+#        write_line('                then\\')
+#        write_line('                      dirs=`echo $dirs $adir`;\\')
+#        write_line('                fi;\\')
+#        write_line('       done;\\')
+#        write_line(' if test -n \'$dirs\' ;\\')
+#        write_line('      then\\')
+#        write_line('      chmod gu+x $dirs  ;\\')
+#        write_line('fi;\\')
+#        write_line('fi')        
       end
     end
+    write_line('RUN /build_scripts/recursive_write_permissions.sh $data_uid ' + dirs) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

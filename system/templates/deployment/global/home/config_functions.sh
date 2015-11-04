@@ -17,7 +17,6 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                 fi
             
                  cp $file $dest_file
-
         done
 fi
         echo run as `whoami` in `pwd`
