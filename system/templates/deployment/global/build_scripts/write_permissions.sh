@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set
+
 
 ContUser=$1
 shift
