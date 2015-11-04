@@ -255,8 +255,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_global_defaults
-    log_build_output('Setup global defaults')
-    cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/global/* ' + basedir
+    log_build_output('Setup global defaults')   
+    cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
     system cmd
   rescue StandardError => e
     log_exception(e)

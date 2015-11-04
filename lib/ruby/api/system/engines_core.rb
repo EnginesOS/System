@@ -155,7 +155,11 @@ class EnginesCore < ErrorsApi
   def restart_system
     test_system_api_result(@system_api.restart_system)
   end
-
+  
+    def restart_system
+        test_system_api_result(@system_api.restart_mgmt)
+      end
+      
   def update_engines_system_software
     test_system_api_result(@system_api.update_engines_system_software)
   end
