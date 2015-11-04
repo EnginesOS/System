@@ -147,6 +147,7 @@ class EngineBuilder < ErrorsApi
         return post_failed_build_clean_up if mc == false
             @service_builder.create_non_persistant_services(@blueprint_reader.services)          
       end
+      @service_builder.release_orphans
       @result_mesg = 'Build Successful'
       log_build_output('Build Successful')
       build_report = generate_build_report(@templater, @blueprint)
@@ -254,8 +255,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_global_defaults
-    log_build_output('Setup global defaults')
-    cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/global/* ' + basedir
+    log_build_output('Setup global defaults')   
+    cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
     system cmd
   rescue StandardError => e
     log_exception(e)
@@ -277,6 +278,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_from_blue_print
+    return log_error_mesg('Failed backup last build',self) unless backup_lastbuild
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     build_container
   end

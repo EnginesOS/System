@@ -16,7 +16,7 @@ service_container: backup
 publisher_namespace: EnginesSystem
 dedicated: false
 persistant: false
-service_handle_field: name
+service_handle_field: backup_name
 immutable: false
 attach_post_build: true
 attach_requires_restart: false
@@ -185,9 +185,9 @@ configurators:
     comment: " " 
 setup_params:
 consumer_params:
-   name:
+   backup_name:
     regex_invalid_message: "wrong go back and try again"
-    name: name
+    name: backup_name
     label: Backup Name
     regex_validator: ".*"
     tooltip: " "

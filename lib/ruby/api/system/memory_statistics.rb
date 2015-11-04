@@ -9,13 +9,21 @@ module MemoryStatistics
 
   def self.total_memory_statistics(api)
     engines_memory_statistics = {}
+      
     engines = api.getManagedEngines
     services = api.getManagedServices
     # system_services = api.listSystemServices
-    engines_memory_statistics[:engines] = collect_containers_memory_stats(engines)
-    engines_memory_statistics[:services] = collect_containers_memory_stats(services)
+    engines_memory_statistics[:containers] = {}
+    engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
+    engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
+    engines_memory_statistics[:containers][:totals] = {}  
+    engines_memory_statistics[:containers][:totals][:applications] = engines_memory_statistics[:containers][:applications][:totals]
+    engines_memory_statistics[:containers][:totals][:services] = engines_memory_statistics[:containers][:services][:totals]
+    engines_memory_statistics[:containers][:applications].delete(:totals)
+    engines_memory_statistics[:containers][:services].delete(:totals)
     # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
-    engines_memory_statistics[:containers] = collate_containers_mem(engines_memory_statistics)
+    
+   
     engines_memory_statistics[:system] = self.get_system_memory_info
     engines_memory_statistics
   end
@@ -27,10 +35,11 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     engines.each do | engine|
-      mem_stats[:container_name] = self.container_memory_stats(engine)
-      mem_stats[:totals][:allocated] += mem_stats[:container_name][:limit].to_i
-      mem_stats[:totals][:in_use] += mem_stats[:container_name][:current].to_i
-      mem_stats[:totals][:peak_sum] += mem_stats[:container_name][:maximum].to_i
+      container_sym = engine.container_name.to_sym
+      mem_stats[container_sym] = self.container_memory_stats(engine)
+      mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
+      mem_stats[:totals][:in_use] += mem_stats[container_sym][:current].to_i
+      mem_stats[:totals][:peak_sum] += mem_stats[container_sym][:maximum].to_i
     end
     mem_stats
   end
@@ -44,14 +53,14 @@ module MemoryStatistics
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
       path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
       if Dir.exist?(path)
-        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes'))
-        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes'))
-        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes'))
+        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes').to_i)
+        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
+        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
-        ret_val.store(:maximum, 'No Container')
-        ret_val.store(:current, 'No Container')
-        ret_val.store(:limit, 'No Container')
+        ret_val.store(:maximum, 0)
+        ret_val.store(:current, 0)
+        ret_val.store(:limit, 0)
       end
     end
     return ret_val
@@ -70,21 +79,21 @@ module MemoryStatistics
       values = line.split(' ')
       case values[0]
       when 'MemTotal:'
-        ret_val[:total] = values[1]
+        ret_val[:total] = values[1].to_i
       when 'MemFree:'
-        ret_val[:free] = values[1]
+        ret_val[:free] = values[1].to_i
       when 'Buffers:'
-        ret_val[:buffers] = values[1]
+        ret_val[:buffers] = values[1].to_i
       when 'Cached:'
-        ret_val[:file_cache] = values[1]
+        ret_val[:file_cache] = values[1].to_i
       when 'Active:'
-        ret_val[:active] = values[1]
+        ret_val[:active] = values[1].to_i
       when 'Inactive:'
-        ret_val[:inactive] = values[1]
+        ret_val[:inactive] = values[1].to_i
       when 'SwapTotal:'
-        ret_val[:swap_total] = values[1]
+        ret_val[:swap_total] = values[1].to_i
       when 'SwapFree:'
-        ret_val[:swap_free] = values[1]
+        ret_val[:swap_free] = values[1].to_i
       end
     end
     return ret_val

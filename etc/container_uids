@@ -1,4 +1,4 @@
-#User		Group		UID
+#User		Group		UID	#informalname (used to pick up uid from contianername)
 #services
 mgmt		engines	21000
 rma			rma			22001
@@ -8,13 +8,13 @@ email		email	22003
 pmgr		pmgr		22004
 nginx		nginx		22005
 mysql		mysql		22006
-volmgr		volmgr		22007
+volmgr		volmgr		22007	volmanager
 mongo		mongo		22008
 bind		bind		22009
 proftpd			proftpd	22010
 courier courier			22011
 syslog		syslog			22012
-dovecot		dovecot			22013
+dovecot		imap			22013
 #vmail					22014
 backup		backup		22015
 cron		cron			22016

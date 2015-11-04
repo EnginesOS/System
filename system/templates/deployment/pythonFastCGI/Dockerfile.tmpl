@@ -4,3 +4,4 @@ ADD engines home/engines
 ENV CONTFSVolHome /home/fs/
 RUN chown 22671 `find /var /usr/share /usr/local /home -user www-data`;\
 	/usr/sbin/usermod -u 22671 www-data
+		RUN chown $ContUser /opt	

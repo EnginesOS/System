@@ -1,15 +1,15 @@
 #!/bin/bash
 
-cd /home/
-		source /home/config_functions.sh
-		copy_substituted_templates		
-					
 	
-	
-	if test -f engines/scripts/custom_install.sh 
+	if test -f /home/engines/scripts/custom_install.sh 
 	then
 		echo running custom install
-	     engines/scripts/custom_install.sh
+		if ! test -f /tmp/custom_install_run 
+		 then
+	       /home/engines/scripts/custom_install.sh
+	     fi
 	fi 
+	
+	touch /tmp/custom_install_run 
 	
 	

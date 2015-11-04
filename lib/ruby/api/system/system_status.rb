@@ -29,6 +29,8 @@ class SystemStatus
     File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
+ 
+  
   def self.did_build_fail?
     File.exist?(SystemConfig.BuildFailedFile)
   end
@@ -79,12 +81,23 @@ class SystemStatus
     return {}
   end
 
+  def self.get_engines_system_release    
+    release = File.read(SystemConfig.ReleaseFile)
+    release.strip!
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+    return 'none'
+   end
+   
+   
   def self.system_status
     result = {}
     result[:is_rebooting] = SystemStatus.is_rebooting?
     result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
     result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
     result[:needs_reboot] = SystemStatus.needs_reboot?
+    result[:needs_base_update] = self.is_base_system_upto_date?
+    result[:needs_engines_update] = self.is_engines_system_upto_date?
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -135,7 +148,11 @@ class SystemStatus
 
  
 
- 
+  def self.is_remote_exception_logging?
+       return !File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile) 
+      rescue StandardError => e
+         SystemUtils.log_exception(e)
+     end
   
   def self.get_system_load_info
     ret_val = {}
@@ -159,6 +176,14 @@ class SystemStatus
     SystemUtils.log_exception(e)  
   end
 
+def self.is_base_system_upto_date?
+   result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
+   return result[:stdout]
+ rescue StandardError => e
+   SystemUtils.log_exception(e)
+   return result[:stderr] unless result.nil? 
+     return false
+ end
   def self.is_engines_system_upto_date?
     result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
     return result[:stdout]

@@ -8,10 +8,10 @@ require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
+require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
 class EnginesCore < ErrorsApi
-  require '/opt/engines/lib/ruby/system_registry/registry_handler.rb'
   require '/opt/engines/lib/ruby/api/public/build_controller.rb'
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'containers/container_api.rb'
@@ -19,6 +19,7 @@ class EnginesCore < ErrorsApi
   require_relative 'docker/docker_api.rb'
   require_relative 'system_api.rb'
   require_relative 'dns_api.rb'
+  require_relative 'registry_handler.rb'
   require_relative 'configurations_api.rb'
   require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
@@ -33,7 +34,7 @@ class EnginesCore < ErrorsApi
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
   end
-
+  
   attr_reader :container_api, :service_api
 
   def check_hash(service_hash)
@@ -54,6 +55,13 @@ class EnginesCore < ErrorsApi
   
   def check_engine_hash(service_hash)
     return false unless check_hash(service_hash)
+    # FIXME: Kludge
+    # Klugde to avoid gui bugss
+    unless service_hash.key?(:parent_engine)
+      service_hash[:parent_engine] = service_hash[:engine_name]
+    end
+    service_hash[:container_type] = "container" unless service_hash.key?(:container_type) 
+    # End of Kludge
     return log_error_mesg('No parent engine', service_hash) unless service_hash.key?(:parent_engine)
     return log_error_mesg('nil parent_engine', service_hash) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
     return log_error_mesg('No container type path', service_hash) unless service_hash.key?(:container_type)
@@ -96,6 +104,8 @@ class EnginesCore < ErrorsApi
   end
   
   def api_shutdown
+    p :BEING_SHUTDOWN
+ 
     @registry_handler.api_shutdown
   end
   
@@ -145,7 +155,11 @@ class EnginesCore < ErrorsApi
   def restart_system
     test_system_api_result(@system_api.restart_system)
   end
-
+  
+    def restart_system
+        test_system_api_result(@system_api.restart_mgmt)
+      end
+      
   def update_engines_system_software
     test_system_api_result(@system_api.update_engines_system_software)
   end
@@ -183,7 +197,7 @@ class EnginesCore < ErrorsApi
   end
 
   def load_software_service(params)
-    service_container = check_sm_result(service_manager.get_software_service_container_name(params))
+    service_container = check_sm_result(ServiceDefinitions.get_software_service_container_name(params))
     params[:service_container_name] = service_container
     loadManagedService(service_container)
   rescue StandardError => e
@@ -318,7 +332,9 @@ class EnginesCore < ErrorsApi
     params[:type_path]='nginx'
     sites = find_engine_services(params)
     return urls if sites.is_a?(Array) == false
-    sites.each do |site|
+    sites.each do |site|      
+    p site.to_s unless  site.is_a?(Hash)  
+      next unless site.is_a?(Hash) && site[:variables].is_a?(Hash)
       if site[:variables][:proto] == 'http_https'
         protocol = 'https'
       else
@@ -362,6 +378,8 @@ class EnginesCore < ErrorsApi
     if container == false
       log_error_mesg('container load error', service_hash)
     end
+    p :filling_in_template_on
+    p container
     templater = Templater.new(SystemAccess.new, container)
     templater.fill_in_service_def_values(service_def)
     return service_def
@@ -407,8 +425,8 @@ class EnginesCore < ErrorsApi
         end
       end
     end
-    p :avail_services
-    p avail_services.to_s
+    #p :avail_services
+    #p avail_services.to_s
     return avail_services
   rescue StandardError => e
     log_exception(e)
@@ -433,7 +451,9 @@ class EnginesCore < ErrorsApi
     params[:parent_engine] = container_name
     params[:persistant] = true
     params[:container_type] ='container'
-    return check_sm_result(service_manager.find_engine_services_hashes(params))
+      p :engine_persistant_services
+      p params
+    return check_sm_result(service_manager.get_engine_persistant_services(params))
   rescue StandardError => e
     log_exception(e)
   end
@@ -487,6 +507,7 @@ class EnginesCore < ErrorsApi
       params = {}
       params[:engine_name] = engine.container_name
       persistant_services = get_engine_persistant_services(params)
+      return nil if persistant_services.is_a?(FalseClass)
       persistant_services.each do |service|
         type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
@@ -611,12 +632,13 @@ class EnginesCore < ErrorsApi
     log_error_mesg(dns_api.last_error, params)
   end
 
-  def list_domains
-    res = DNSApi.list_domains
-    return res if res.is_a?(Hash)
-    log_error_mesg(res, '')
-  end
+#  def list_domains
+#    res = DNSApi.list_domains
+#    return res if res.is_a?(Hash)
+#    log_error_mesg(res, '')
+#  end
 
+  
   def list_managed_engines
     test_system_api_result(@system_api.list_managed_engines)
   end
@@ -640,7 +662,13 @@ class EnginesCore < ErrorsApi
   def system_update
     test_system_api_result(@system_api.update_system)
   end
-
+  
+   def enable_remote_exception_logging
+     test_system_api_result(@system_api.enable_remote_exception_logging)
+   end
+    def disable_remote_exception_logging
+      test_system_api_result(@system_api.disable_remote_exception_logging)
+    end
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
   #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
@@ -665,7 +693,8 @@ class EnginesCore < ErrorsApi
       return log_error_mesg('Failed to find Engine',params)
     end
     if engine.delete_image || engine.has_image? == false
-      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      p :engine_image_deleted    
+      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
     end
     log_error_mesg('Failed to delete image',params)
@@ -674,6 +703,8 @@ class EnginesCore < ErrorsApi
   def delete_image_dependancies(params)
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
+      p :delete_image_dependancies
+    p params
     return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
     return true
   rescue StandardError => e
@@ -750,17 +781,17 @@ class EnginesCore < ErrorsApi
   #  end
 
   def force_reregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
-    return false unless check_engine_service_hash(service_query)
+    return false unless check_service_hash(service_query)
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 

@@ -83,6 +83,7 @@ consumer_params:
   placeholder: " "
   mandatory: false
   comment: " "
+  value: "/"
  public:
   name: public
   label: public

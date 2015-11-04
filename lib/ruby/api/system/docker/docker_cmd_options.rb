@@ -25,7 +25,7 @@ module DockerCmdOptions
   
     private
     def self.service_sshkey_local_dir(container)
-       '/opt/engines/ssh/keys/services/' + container.container_name
+       '/opt/engines/etc/ssh/keys/services/' + container.container_name
      end
    
      def self.service_sshkey_container_dir(container)
