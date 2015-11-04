@@ -1,5 +1,6 @@
 #!/bin/bash
-
+VOLDIR=$1
+shift
 for $path in $*
  do
 	dir=`dirname path`

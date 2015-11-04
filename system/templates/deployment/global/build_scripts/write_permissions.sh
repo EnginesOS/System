@@ -3,6 +3,8 @@
 
 ContUser=$1
 shift
+VOLDIR=$1
+shift
 
  for path in $*
   do
