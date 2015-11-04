@@ -186,7 +186,9 @@ def self.is_base_system_upto_date?
  end
   def self.is_engines_system_upto_date?
     result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
-    return result[:stdout]
+    
+    return true if result[:stdout].include?('Up to Date')
+      return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return result[:stderr] unless result.nil? 
