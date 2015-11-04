@@ -1,4 +1,4 @@
-#User		Group		UID	#informalname
+#User		Group		UID	#informalname (used to pick up uid from contianername)
 #services
 mgmt		engines	21000
 rma			rma			22001
@@ -8,7 +8,7 @@ email		email	22003
 pmgr		pmgr		22004
 nginx		nginx		22005
 mysql		mysql		22006
-volmgr		volmgr		22007	volumemanager
+volmgr		volmgr		22007	volmanager
 mongo		mongo		22008
 bind		bind		22009
 proftpd			proftpd	22010
