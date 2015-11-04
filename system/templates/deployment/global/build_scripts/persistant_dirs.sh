@@ -14,7 +14,7 @@ shift
 
 		dirname=`dirname "$path" `
 		mkdir -p "$VOLDIR/$dirname"
-   			if [ ! -d "/home/$path"
+   			if [ ! -d "/home/$path" ]
      			then 
        			    mkdir -p "/home/$path" 
    			fi
