@@ -7,4 +7,5 @@ if ! test -z "$2"
   hostname=${hostname}.$2
   fi
   
-  sudo hostname $hostname
+  echo sudo hostname $hostname
+   sudo hostname $hostname
