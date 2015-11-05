@@ -11,10 +11,10 @@
   fi
 if test -f $VOLDIR/.dynamic_persistance
   then
-#	if ! test -f /home/app/.dynamic_persistance_restored
-# 	then
+	if ! test -f /home/app/.dynamic_persistance_restored
+	then
  		/home/engines/scripts/restore_dynamic_persistance.sh
-# 	fi
+ 	fi
  fi
 
 if test -f /home/_init.sh
