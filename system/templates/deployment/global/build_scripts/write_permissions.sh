@@ -5,6 +5,7 @@
 
  for path in $*
   do
+   path=`echo $path | sed "/../s///g"` 
   path=`echo $path | sed "/\/$/s///"`
   if [ -h  /home/app/$path ] 
    then
