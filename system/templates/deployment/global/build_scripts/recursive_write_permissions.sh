@@ -3,6 +3,7 @@
 
 for directory in $*
  do
+ 	directory=`echo $directory | sed "/\/$/s///"`
           if [ -h  /home/app/$directory ] 
             then 
             dest=`ls -la /home/app/$directory |cut -f2 -d'>'`

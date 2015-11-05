@@ -10,7 +10,7 @@
 	#ln -s $voldir/$dirname /home/some/were/to/path
 	for path in $*
       do
-
+ path=`echo $path | sed "/\/$/s///"`
 		dirname=`dirname "$path" `
 		mkdir -p "$VOLDIR/$dirname"
    			if [ ! -d "/home/$path" ]

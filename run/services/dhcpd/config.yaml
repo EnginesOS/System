@@ -21,7 +21,7 @@ mapped_ports:
   external: 67
 repo: na
 last_result: 
-setState: running
+setState: nocontainer
 nginxored: false
 conf_register_site: false
 conf_register_dns: true
