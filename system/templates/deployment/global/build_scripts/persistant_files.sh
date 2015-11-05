@@ -6,7 +6,7 @@ for path in $*
 	dir=`dirname $path`
 	mkdir -p /home/$dir
 	echo "-p /home/$dir"
-file $path is in $dir
+echo file $path is in $dir
  
  		if [ ! -f /home/$path ]
   		   then 
