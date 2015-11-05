@@ -1,10 +1,11 @@
 #!/bin/bash
 
-/home/engines/scripts/make_persistant.sh *$
+/home/engines/scripts/make_persistant.sh $*
 
-for path in *$
+for target in $*
  do
- 	chmod ugo-w "$VOLDIR/$path" "/home/app/$path"
+ /home/engines/scripts/make_persistant.sh $target
+ 	chmod ugo-w "$VOLDIR/$target" "/home/app/$target"
  done
 
 
