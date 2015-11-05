@@ -24,7 +24,7 @@ echo Install to $destination
   else
     echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	echo su $CountUser $extraction_command $package_name
+	echo su $ContUser $extraction_command $package_name
 	su $CountUser $extraction_command $package_name
   fi
 
