@@ -21,7 +21,7 @@ echo Install to $destination
   then
    echo git clone $source_url --depth 1 "./$path_to_extracted"
   	git clone $source_url --depth 1 "./$path_to_extracted"
-  	elif ! test -n "$extraction_command" 
+  	elif  test -z "$extraction_command" 
   	 then
   	 echo wget -O $package_name $source_url
   	  path_to_extracted=$package_name 
