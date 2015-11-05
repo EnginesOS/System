@@ -20,7 +20,7 @@ for directory in $*
                   #adir=`echo $dir | sed "/ /s//_+_/g" ` 
                     if test -n $dir
                         then
-                              dirs=`echo $dirs \"$dir\" `
+                              dirs=`echo $dirs $dir `
                         fi
                done
          if test -n '$dirs' 
