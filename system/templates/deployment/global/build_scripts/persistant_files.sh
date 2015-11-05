@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for $path in $*
+for path in $*
  do
 	dir=`dirname path`
 	mkdir -p /home/$dir
