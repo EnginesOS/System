@@ -10,6 +10,10 @@
  	 done
   fi
 
+if test -f /home/app/.dynamic_persistance_restored
+ then
+ 	/home/engines/scripts/restore_dynamic_persistance.sh
+ fi
 
 if test -f /home/_init.sh
  	then

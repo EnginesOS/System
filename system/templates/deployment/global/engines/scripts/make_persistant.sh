@@ -3,7 +3,8 @@
 
 	for path in $*
       do
-      path=`echo $path | sed "/[.][.]/s///g" | sed "/[&;><]/s///g"` 
+      path=`echo $path | sed "/[.][.]/s///g" | sed "/[&;><|]/s///g"` 
+      echo $path >> $VOLDIR/.dynamic_persistance
       if test -d/home/app/$path
        then
  			path=`echo $path | sed "/\/$/s///"`
