@@ -24,8 +24,7 @@ echo Install to $destination
   else
     echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	echo su $ContUser -c \'$extraction_command $package_name\'
-	su $CountUser -c $extraction_command $package_name
+	$extraction_command $package_name
   fi
 
  if test ! -d "./$path_to_extracted"

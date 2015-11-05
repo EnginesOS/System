@@ -5,7 +5,7 @@ for path in $*
 	dir=`dirname path`
 	mkdir -p /home/$dir
 
- 		if [ ! -f /home/$path
+ 		if [ ! -f /home/$path ]
   		   then 
     		touch  /home/$path
     	fi
