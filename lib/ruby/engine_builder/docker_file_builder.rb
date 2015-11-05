@@ -204,6 +204,7 @@ end
   def write_persistant_files
     write_line('#Persistant Files')
     log_build_output('set setup_env')
+    paths = ''
     src_paths = @blueprint_reader.persistant_files[:src_paths]
     #      dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
     return if src_paths.nil?
