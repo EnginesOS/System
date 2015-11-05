@@ -1,5 +1,5 @@
-Built
-Built as
+ _Engines_Builder(engine_name) Now installed at _Engines_Builder(http_protocol)://_Engines_Builder(fqdn)/
+
 _Engines_Builder(engine_name)
 _Engines_Builder(domain_name)
 _Engines_Builder(hostname)
@@ -17,7 +17,7 @@ _Engines_Blueprint(software,softwareservices)
 
 
 
-_Engines_Builder(engine_name) Now installed at _Engines_Builder(http_protocol)://_Engines_Builder(fqdn)/
+
 
 Database host _Engines_Environment(dbhost)
 Database Name _Engines_Environment(dbname)
