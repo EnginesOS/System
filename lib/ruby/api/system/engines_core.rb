@@ -92,6 +92,8 @@ class EnginesCore < ErrorsApi
     query= {}
       query[:type_path]='nginx'
       query[:publisher_namespace] = "EnginesSystem"
+        
+      
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
     return sites if hashes == false
