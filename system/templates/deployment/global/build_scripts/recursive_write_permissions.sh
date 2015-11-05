@@ -4,6 +4,7 @@
 for directory in $*
  do
  directory=`echo $directory | sed "/../s///g"` 
+ echo $directory
  	directory=`echo $directory | sed "/\/$/s///"`
           if [ -h  /home/app/$directory ] 
             then 

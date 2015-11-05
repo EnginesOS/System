@@ -11,6 +11,7 @@
 	for path in $*
       do
       path=`echo $path | sed "/../s///g"` 
+      echo $path
  path=`echo $path | sed "/\/$/s///"`
 		dirname=`dirname "$path" `
 		mkdir -p "$VOLDIR/$dirname"
