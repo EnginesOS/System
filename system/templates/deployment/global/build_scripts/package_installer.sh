@@ -26,7 +26,9 @@ echo Install to $destination
 	wget -O $package_name $source_url
 	$extraction_command $package_name
   fi
-
+  
+ destination=`echo $destination | sed "/\/$/s///"`
+ 
  if test ! -d "./$path_to_extracted"
    then 
    		mkdir -p $destination

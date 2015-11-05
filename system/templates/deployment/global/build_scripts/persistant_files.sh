@@ -2,7 +2,8 @@
 
 for path in $*
  do
-	dir=`dirname path`
+  path=`echo $path | sed "/\/$/s///"`
+	dir=`dirname $path`
 	mkdir -p /home/$dir
 	echo "-p /home/$dir"
 file $path is in $dir
