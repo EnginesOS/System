@@ -10,7 +10,7 @@ class DockerFileBuilder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
   end
-
+  
   def log_build_output(line)
     @builder.log_build_output(line)
   end
@@ -69,7 +69,7 @@ class DockerFileBuilder
   end
   
   def write_app_templates
-    write_line('RUN /build_scripts/install_templates.sh ')
+    write_build_script('install_templates.sh ')
   end
   
   def setup_user_local  
@@ -135,7 +135,7 @@ end
     @blueprint_reader.php_modules.each do |php_module|
       php_modules_str += php_module + ' '
     end
-    write_line('RUN /build_scripts/install_php_modules.sh ' +  php_modules_str)
+    write_build_script('install_php_modules.sh ' +  php_modules_str)
 
   end
 
@@ -175,14 +175,14 @@ end
 #      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
 #      n += 1     
     end
-    write_line('RUN /build_scripts/persistant_dirs.sh  ' + paths)
+    write_build_script('persistant_dirs.sh  ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
   def write_data_permissions
     write_line('#Data Permissions')
-    write_line('RUN /build_scripts/set_data_permissions.sh')    
+    write_build_script('set_data_permissions.sh')    
 #    write_line('')
 #    write_line('RUN /usr/sbin/usermod -u $data_uid data-user;\\')
 #    write_line('chown -R $data_uid.$data_gid /home/app /home/fs_src ;\\')
@@ -236,7 +236,7 @@ end
 #      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
 #      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
     end
-    write_line('RUN /build_scripts/persistant_files.sh   ' + paths)
+    write_build_script('persistant_files.sh   ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -244,7 +244,7 @@ end
   def write_file_service
     write_line('#File Service')
     write_line('#FS Env')
-    @builder.volumes.each_value do |vol|
+    @builder.volumes.each_value do |vol|      
       dest = File.basename(vol.remotepath)         
       write_line('RUN mkdir -p $VOLDIR/' + dest)      
     end
@@ -282,7 +282,7 @@ end
                
         #write_line('RUN  /usr/local/rbenv/shims/bundle exec rake ' + rake_cmd)        
       end
-      write_line('RUN /build_scripts/run_rake_tasks.sh rakes ')
+    write_build_script('run_rake_tasks.sh rakes ')
     
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -330,7 +330,7 @@ end
   def chown_home_app
     write_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
-    write_line('RUN /build_scripts/chown_app_dir.sh  ')
+    write_build_script('chown_app_dir.sh  ')
 #    write_line('RUN if [ ! -d /home/app ];\\')
 #    write_line('  then \\')
 #    write_line('    mkdir -p /home/app ;\\')
@@ -348,66 +348,25 @@ end
     write_line('')
     write_line('#Write Permissions Non Recursive')
     log_build_output('Dockerfile:Write Permissions Non Recursive')
-    if @blueprint_reader.single_chmods.nil? == true
-      return
-    end
+    return if @blueprint_reader.single_chmods.nil? == true
     paths = ''
     @blueprint_reader.single_chmods.each do |path|
-      if path.nil? == false
-        paths += path + ' '
-#        write_line('RUN if [ ! -f /home/app/' + path + ' ];\\')
-#        write_line('   then \\')
-#        write_line('   mkdir -p  `dirname /home/app/' + path + '`;\\')
-#        write_line('   touch  /home/app/' + path + ';\\')
-#        write_line('     fi;\\')
-#        write_line('  chown $ContUser /home/app/' + path + ';\\')
-#        write_line('   chmod  775 /home/app/' + path)        
-      end
+      paths += path + ' ' unless path.nil? 
     end
-    write_line('RUN /build_scripts/write_permissions.sh ' + paths) 
+    write_build_script('write_permissions.sh ' + paths) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
   def write_write_permissions_recursive
     write_line('#Write Permissions  Recursive')
-    write_line('')
     log_build_output('Dockerfile:Write Permissions Recursive')
-    if @blueprint_reader.recursive_chmods.nil? == true
-      return
-    end
+    return if @blueprint_reader.recursive_chmods.nil? == true
     dirs = ''
-    @blueprint_reader.recursive_chmods.each do |directory|
-      
-      if directory.nil? == false
-        dirs += directory + ' '
-#        write_line('RUN if [ -h  /home/app/' + directory + ' ] ;\\')
-#        write_line('    then \\')
-#        write_line('    dest=`ls -la /home/app/' + directory + " |cut -f2 -d\'>\'`;\\")
-#        write_line('    chmod -R gu+rw $dest;\\')
-#        write_line('  elif [ ! -d /home/app/' + directory + ' ] ;\\')
-#        write_line('    then \\')
-#        write_line("       mkdir  -p \'/home/app/" + directory + "\';\\")
-#        write_line("      chown $data_uid  \'/home/app/" + directory + "\';\\")
-#        write_line("       chmod -R gu+rw \'/home/app/" + directory + "\';\\")
-#        write_line('  else\\')
-#        write_line("   chmod -R gu+rw \"/home/app/" + directory + "\";\\")
-#        write_line('     for dir in `find  /home/app/' + directory  + ' -type d  `;\\')
-#        write_line('       do\\')
-#        write_line("           adir=`echo $dir | sed \"/ /s//_+_/\" |grep -v _+_` ;\\")
-#        write_line('            if test -n $adir;\\')
-#        write_line('                then\\')
-#        write_line('                      dirs=`echo $dirs $adir`;\\')
-#        write_line('                fi;\\')
-#        write_line('       done;\\')
-#        write_line(' if test -n \'$dirs\' ;\\')
-#        write_line('      then\\')
-#        write_line('      chmod gu+x $dirs  ;\\')
-#        write_line('fi;\\')
-#        write_line('fi')        
-      end
+    @blueprint_reader.recursive_chmods.each do |directory|      
+      dirs += directory + ' ' unless directory.nil? 
     end
-    write_line('RUN /build_scripts/recursive_write_permissions.sh ' + dirs) 
+    write_build_script('recursive_write_permissions.sh ' + dirs) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -454,7 +413,7 @@ end
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_line('RUN /build_scripts/package_installer.sh' + args )
+          write_build_script('package_installer.sh' + args )
 #      if arc_loc == './' || arc_loc == '.' || arc_loc == '/' || arc_loc == ''
 #        arc_loc = ''
 #      else
@@ -573,7 +532,7 @@ end
 #          # for pecl
 #          write_line('RUN  pear install  ' + pear_mod)          
         end
-      write_line('RUN  /build_scripts/install_pear_mods.sh  ' + pear_mods)          
+      write_build_script('install_pear_mods.sh  ' + pear_mods)          
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -590,10 +549,14 @@ end
       @blueprint_reader.pecl_modules.each do |pecl_mod|
         pecl_mods += pecl_mod + ' ' if pecl_mod.nil? == false
       end
-      write_line('RUN  /build_scripts/install_pecl_mods.sh  ' + pecl_mods)    
+      write_build_script('install_pecl_mods.sh  ' + pecl_mods)    
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
+  end
+  
+  def write_build_script(cmd)
+    write_line('RUN  /build_scripts/' + cmd)
   end
 
   def write_line(line)
