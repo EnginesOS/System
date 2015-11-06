@@ -39,7 +39,7 @@ echo Install to $destination
 	wget -O $package_name $source_url
 	if test -z "$path_to_extracted"
 		then
-				$path_to_extracted = ./app
+				$path_to_extracted = app
 					mkdir app
 					cd app
 				$extraction_command ../$package_name
