@@ -5,14 +5,18 @@ require_relative 'container.rb'
 require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
-
+  @restart_required = false
   attr_accessor :task_at_hand
   
   def desired_state(state)
     @setState = state    
     save_state
   end
-
+  
+ def restart_complete_install?
+   @restart_required
+ end
+ 
   def in_progress(state)
     @task_at_hand = state
   STDERR.puts 'Task at Hand:' + state.to_s
