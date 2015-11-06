@@ -435,7 +435,7 @@ end
       # If none of teh above then it is prefixed with /home/app
       destination += '/home/app/'  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
       destination = '/home/app' if destination == '/home/app/' 
-      
+        path_to_extracted ='/' if destination.nil? || destination = ''
 #      source_url=$1
 #      package_name=$2
 #      extraction_command=$3
