@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+echo PACKAGE_INSTALLER_RUN $PACKAGE_INSTALLER_RUN
+ 
 if [ ! -d /home/app ]
  then 
    mkdir -p /home/app 
