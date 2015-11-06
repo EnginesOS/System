@@ -490,7 +490,7 @@ class EngineBuilder < ErrorsApi
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions')
     return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
-    flag_restart_required if @has_post_install == true
+    flag_restart_required(@mc) if @has_post_install == true
    
     return @mc
     rescue StandardError => e
