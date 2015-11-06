@@ -135,7 +135,8 @@ end
     @blueprint_reader.php_modules.each do |php_module|
       php_modules_str += php_module + ' '
     end
-    write_line('RUN php5enmod  ' + php_modules_str)   
+    write_line('RUN /build_scripts/install_php_modules.sh ' +  php_modules_str)
+
   end
 
   def write_environment_variables
@@ -181,10 +182,11 @@ end
 
   def write_data_permissions
     write_line('#Data Permissions')
-    write_line('')
-    write_line('RUN /usr/sbin/usermod -u $data_uid data-user;\\')
-    write_line('chown -R $data_uid.$data_gid /home/app /home/fs_src ;\\')
-    write_line('chmod -R 770 /home/fs_src')    
+    write_line('RUN /build_scripts/set_data_permissions.sh')    
+#    write_line('')
+#    write_line('RUN /usr/sbin/usermod -u $data_uid data-user;\\')
+#    write_line('chown -R $data_uid.$data_gid /home/app /home/fs_src ;\\')
+#    write_line('chmod -R 770 /home/fs_src')    
   end
 
   def write_run_install_script
@@ -269,15 +271,19 @@ end
 
   def write_rake_list
     write_line('#Rake Actions')
+    return if @blueprint_reader.rake_actions.count == 0 
+    rakes = ''
     @blueprint_reader.rake_actions.each do |rake_action|
       rake_cmd = rake_action[:action]
       if @builder.first_build == false && rake_action[:always_run] == false
         next
       end
-      if rake_cmd.nil? == false
-        write_line('RUN  /usr/local/rbenv/shims/bundle exec rake ' + rake_cmd)        
+      rakes += rake_cmd + ' ' unless rake_cmd.nil?
+               
+        #write_line('RUN  /usr/local/rbenv/shims/bundle exec rake ' + rake_cmd)        
       end
-    end
+      write_line('RUN /build_scripts/run_rake_tasks.sh rakes ')
+    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -552,20 +558,22 @@ end
   end
 
   def write_pear_modules
-    write_line('#OPear modules ')
+    write_line('#Pear modules ')
     log_build_output('Dockerfile:Pear modules ')
     if @blueprint_reader.pear_modules.count > 0
-      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
-      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
-      write_line('  php go-pear.phar')      
-      @blueprint_reader.pear_modules.each do |pear_mod|
-        if pear_mod.nil? == false
-          # for pear
-          # write_line('RUN  pear install pear_mod ' + pear_mod )
-          # for pecl
-          write_line('RUN  pear install  ' + pear_mod)          
+#      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
+#      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
+#      write_line('  php go-pear.phar')      
+#      pear_mods = ''
+     @blueprint_reader.pear_modules.each do |pear_mod|
+#        if pear_mod.nil? == false
+         pear_mods += pear_mod + ' '
+#          # for pear
+#          # write_line('RUN  pear install pear_mod ' + pear_mod )
+#          # for pecl
+#          write_line('RUN  pear install  ' + pear_mod)          
         end
-      end
+      write_line('RUN  /build_scripts/install_pear_mods.sh  ' + pear_mods)          
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -575,15 +583,14 @@ end
     write_line('#Pecl modules ')
     log_build_output('Dockerfile:Pecl modules ')
     if @blueprint_reader.pecl_modules.count > 0
-      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
-      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
-      write_line('  php go-pear.phar')
-      
+#      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
+#      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
+#      write_line('  php go-pear.phar')
+      pecl_mods = ''
       @blueprint_reader.pecl_modules.each do |pecl_mod|
-        if pecl_mod.nil? == false
-          write_line('RUN  pecl install  ' + pecl_mod)
-        end
+        pecl_mods += pecl_mod + ' ' if pecl_mod.nil? == false
       end
+      write_line('RUN  /build_scripts/install_pecl_mods.sh  ' + pecl_mods)    
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
