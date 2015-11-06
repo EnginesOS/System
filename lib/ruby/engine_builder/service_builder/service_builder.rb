@@ -6,6 +6,9 @@ class ServiceBuilder < ErrorsApi
   require_relative 'orphan_services.rb'
   include Orphans
   
+  include_relative 'roll_back.rb'
+  include RollBack
+    
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
