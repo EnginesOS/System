@@ -490,7 +490,8 @@ class EngineBuilder < ErrorsApi
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions')
     return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
-    @mc.restart_required=(true) if @has_post_install == true 
+    flag_restart_required if @has_post_install == true
+   
     return @mc
     rescue StandardError => e
        log_exception(e)       
@@ -499,7 +500,13 @@ class EngineBuilder < ErrorsApi
   def engine_environment
     return @blueprint_reader.environments
   end
-  
+  def restart_required(mc)
+    restart_reason='Restart to run post install script, as required in blueprint'
+    flag_restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
+       f = File.new(restart_flag_file,'w+')
+       f.puts(restart_reason)
+       f.close
+  end
  def log_error_mesg(m,o)
    log_build_errors(m.to_s + o.to_s)
    super

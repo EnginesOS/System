@@ -38,7 +38,7 @@ class ManagedEngine < ManagedContainer
   end
   
     def restart_complete_install?
-       @restart_required
+       restart_required?
      end
      
     def load_blueprint
