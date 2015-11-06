@@ -14,7 +14,9 @@ extraction_command=`echo $extraction_command | sed "/[;&]/s///g"`
 package_name=`echo $package_name | sed "/[.][.]/s///g"` 
 destination=`echo $destination | sed "/[.][.]/s///g"` 
 path_to_extracted=`echo $path_to_extracted | sed "/[.][.]/s///g"` 
-#   
+# 
+ 
+   
 echo Source URL $source_url 
 echo Extract with $extraction_command from  $package_name to $path_to_extracted 
 echo Install to $destination
@@ -35,7 +37,17 @@ echo Install to $destination
   else
     echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	$extraction_command $package_name
+	if -n $path_to_extracted
+		then
+			if 	$path_to_extracted == ./app
+				then
+					mkdir app
+					cd app
+				$extraction_command ../$package_name
+				cd ..
+			else
+				$extraction_command $package_name
+			fi
   fi
   
  destination=`echo $destination | sed "/\/$/s///"`
