@@ -3,6 +3,9 @@ class ServiceBuilder < ErrorsApi
   
   attr_reader :volumes,:app_is_persistant
   
+  require_relative 'orphan_services.rb'
+  include Orphans
+  
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name
     @service_manager = service_manager
@@ -19,7 +22,7 @@ class ServiceBuilder < ErrorsApi
     service_def = get_service_def(service_hash)
     return log_error_mesg('Failed to load service definition for ', service_hash) if service_def.nil?
     next if service_def[:persistant]
-    service_hash = set_top_level_service_params(service_hash, @engine_name)
+    service_hash = ServiceDefinitions.set_top_level_service_params(service_hash, @engine_name)
     return log_error_mesg('Failed to Attach ', service_hash) unless @service_manager.add_service(service_hash)
     @attached_services.push(service_hash)
   end
@@ -27,8 +30,6 @@ class ServiceBuilder < ErrorsApi
 end
 
 def create_persistant_services(services, environ, use_existing)
-   service_cnt = 0
- 
    services.each do |service_hash|
      service_def = get_service_def(service_hash)
      return log_error_mesg('no matching service definition',self) if service_def.nil?
@@ -36,25 +37,22 @@ def create_persistant_services(services, environ, use_existing)
        service_hash[:persistant] = true
          process_persistant_service(service_hash, environ, use_existing)       
      end
-     service_cnt += 1
    end
   return true
  end
 
- def process_persistant_service(service_hash, environ, use_existing)
-   free_orphan = false   
-   service_hash = set_top_level_service_params(service_hash, @engine_name)   
+ def process_persistant_service(service_hash, environ, use_existing)  
+   service_hash = ServiceDefinitions.set_top_level_service_params(service_hash, @engine_name)   
      return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
         existing = match_service_to_existing(service_hash, use_existing) 
         if existing.is_a?(Hash)
           service_hash = existing
           service_hash[:shared] = true
           @first_build = false
-          service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
+        #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
         elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
           service_hash = use_orphan(service_hash)
           @first_build = false
-          free_orphan = true 
         elsif @service_manager.service_is_registered?(service_hash) == false
           @first_build = true
           service_hash[:fresh] = true
@@ -75,7 +73,7 @@ def create_persistant_services(services, environ, use_existing)
         p service_hash
         # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
         if @service_manager.add_service(service_hash)
-          @attached_services.push(service_hash)              
+          @attached_servindces.push(service_hash)              
         else
           return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
         end
@@ -113,38 +111,7 @@ def create_persistant_services(services, environ, use_existing)
   return s
  end
  
- def use_orphan(service_hash)
-   p :attaching_orphan
-    p service_hash
-   service_hash = @service_manager.retrieve_orphan(service_hash)
-   p :retrieved_orphan
-    p service_hash
-   @orphans.push(service_hash.dup) 
-    service_hash[:fresh] = false   
-    reparent_orphan(service_hash)
-    unless service_hash.nil? 
-      p :from_reparemt
-      p service_hash
-      service_hash[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'     
-    end
-      return service_hash
- end
  
- def reparent_orphan(service_hash)
-   
-   service_hash[:old_parent] =  service_hash[:parent_engine]
-   service_hash[:parent_engine] = @engine_name
-   service_hash[:fresh] = false      
-   service_hash[:freed_orphan] = true    
-   #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
-   return service_hash
- end
-
- def release_orphans()
-   @orphans.each do |service_hash|
-     @service_manager.release_orphan(service_hash)
-   end
- end
  
   def get_service_def(service_hash)
     p service_hash[:type_path]
@@ -152,9 +119,6 @@ def create_persistant_services(services, environ, use_existing)
     return SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
   end
 
-  def set_top_level_service_params(service_hash, container_name)
-    return ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
-  end
 
   def add_file_service(service_hash) 
     p 'Add File Service ' + service_hash[:variables][:name].to_s

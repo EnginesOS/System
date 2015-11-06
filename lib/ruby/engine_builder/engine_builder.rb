@@ -11,7 +11,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'docker_file_builder.rb'
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
-  require_relative 'service_builder.rb'
+  require_relative 'service_builder/service_builder.rb'
   include BuildReport
 
   require_relative '../templater/templater.rb'
@@ -500,6 +500,7 @@ class EngineBuilder < ErrorsApi
   def engine_environment
     return @blueprint_reader.environments
   end
+  
   def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
     restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
