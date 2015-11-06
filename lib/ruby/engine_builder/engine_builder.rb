@@ -500,7 +500,7 @@ class EngineBuilder < ErrorsApi
   def engine_environment
     return @blueprint_reader.environments
   end
-  def restart_required(mc)
+  def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
     flag_restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
        f = File.new(restart_flag_file,'w+')
