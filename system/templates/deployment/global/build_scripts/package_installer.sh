@@ -20,11 +20,7 @@ path_to_extracted=`echo $path_to_extracted | sed "/[.][.][ ]/s///g"`
 echo Source URL $source_url 
 echo Extract with $extraction_command from  $package_name to $path_to_extracted 
 echo Install to $destination
- 
- if test -z "$path_to_extracted"
-  then
-  	path_to_extracted=./app
- fi
+
 
  if test "$extraction_command" = 'git'
   then
@@ -41,15 +37,15 @@ echo Install to $destination
 	if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
 		then
 				path_to_extracted=app
-				mkdir app
+				mkdir /tmp/app
 				pwd
 				echo $path_to_extracted
-				cd app
+				cd /tmp/app
 				pwd
 				echo "$extraction_command ../$package_name"
 				
 				$extraction_command ../$package_name
-				cd ..
+				cd /tmp
 				pwd
 		else
 				echo "$extraction_command $package_name"
@@ -61,6 +57,7 @@ echo Install to $destination
  
  if test ! -d "./$path_to_extracted"
    then 
+   	echo "creating destination $destination"
    		mkdir -p $destination
  	fi
  echo "./$path_to_extracted" $destination
