@@ -45,4 +45,6 @@ echo Install to $destination
    		mkdir -p $destination
  	fi
  echo "./$path_to_extracted" $destination
+ ls -la .
+ ls -la $destination
  mv "./$path_to_extracted" $destination
