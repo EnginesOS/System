@@ -41,10 +41,17 @@ echo Install to $destination
 		then
 				path_to_extracted=app
 				mkdir app
+				pwd
+				echo $path_to_extracted
 				cd app
+				pwd
+				echo "$extraction_command ../$package_name"
+				
 				$extraction_command ../$package_name
 				cd ..
+				pwd
 		else
+				echo "$extraction_command $package_name"
 				$extraction_command $package_name
 	fi	
   fi
