@@ -121,19 +121,17 @@ end
     write_line('#Apache Modules')
     ap_modules_str = ''
     @blueprint_reader.apache_modules.each do |ap_module|
-      ap_modules_str += ap_module + ' '
+      ap_modules_str += ap_module + ' ' unless ap_module.nil
     end
     write_line('RUN a2enmod ' + ap_modules_str)    
   end
 
   def write_php_modules
-    if @blueprint_reader.php_modules.count < 1
-      return
-    end
+    return if @blueprint_reader.php_modules.count < 1
     write_line('#PHP Modules')
     php_modules_str = ''
     @blueprint_reader.php_modules.each do |php_module|
-      php_modules_str += php_module + ' '
+      php_modules_str += php_module + ' ' unless php_module.nil?
     end
     write_build_script('install_php_modules.sh ' +  php_modules_str)
 
@@ -162,18 +160,7 @@ end
     write_line('#Persistant Dirs')
     @blueprint_reader.persistant_dirs.each do |path|
       path.chomp!('/')
-      paths += path + ' '
-#      write_line('')
-#      write_line('RUN  \\')
-#      dirname = File.dirname(path)
-#      write_line('mkdir -p $VOLDIR/' + dirname + ';\\')
-#      write_line('if [ ! -d /home/' + path + ' ];\\')
-#      write_line('  then \\')
-#      write_line('    mkdir -p /home/' + path + ' ;\\')
-#      write_line('  fi;\\')
-#      write_line('mv /home/' + path + ' $VOLDIR/' + dirname + '/;\\')
-#      write_line('ln -s $VOLDIR/' + path + ' /home/' + path)
-#      n += 1     
+      paths += path + ' ' unless path.nil?   
     end
     write_build_script('persistant_dirs.sh  ' + paths)
   rescue Exception => e
@@ -182,11 +169,7 @@ end
 
   def write_data_permissions
     write_line('#Data Permissions')
-    write_build_script('set_data_permissions.sh')    
-#    write_line('')
-#    write_line('RUN /usr/sbin/usermod -u $data_uid data-user;\\')
-#    write_line('chown -R $data_uid.$data_gid /home/app /home/fs_src ;\\')
-#    write_line('chmod -R 770 /home/fs_src')    
+    write_build_script('set_data_permissions.sh')       
   end
 
   def write_run_install_script
@@ -208,13 +191,8 @@ end
     log_build_output('set setup_env')
     paths = ''
     src_paths = @blueprint_reader.persistant_files[:src_paths]
-    #      dest_paths =  @blueprint_reader.persistant_files[:dest_paths]
     return if src_paths.nil?
     src_paths.each do |path|
-      #          path = dest_paths[n]
-     
-#      p :path
-#      p path
       dir = File.dirname(path)
       file = File.basename(path)
       p :dir
@@ -223,18 +201,6 @@ end
         path = 'app/' + file
       end
       paths += path + ' '
-#      p :dir
-#      p dir
-#      write_line('')
-#      write_line('RUN mkdir -p /home/' + dir + ';\\')
-#      write_line('  if [ ! -f /home/' + path + ' ];\\')
-#      write_line('    then \\')
-#      write_line('      touch  /home/' + path + ';\\')
-#      write_line('    fi;\\')
-#      write_line('  mkdir -p $VOLDIR/' + dir + ';\\')
-#      write_line('\\')
-#      write_line('   mv /home/' + path + '  $VOLDIR' + '/' + dir + ';\\')
-#      write_line('    ln -s  $VOLDIR/' + path + ' /home/' + path)
     end
     write_build_script('persistant_files.sh   ' + paths)
   rescue Exception => e
@@ -282,7 +248,7 @@ end
                
         #write_line('RUN  /usr/local/rbenv/shims/bundle exec rake ' + rake_cmd)        
       end
-    write_build_script('run_rake_tasks.sh rakes ')
+    write_build_script('run_rake_tasks.sh ' + rakes )
     
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -330,13 +296,7 @@ end
   def chown_home_app
     write_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
-    write_build_script('chown_app_dir.sh  ')
-#    write_line('RUN if [ ! -d /home/app ];\\')
-#    write_line('  then \\')
-#    write_line('    mkdir -p /home/app ;\\')
-#    write_line('  fi;\\')
-#    write_line(' mkdir -p /home/fs ; mkdir -p /home/fs/local ;\\')
-#    write_line(' chown -R $ContUser /home/app /home/fs /home/fs/local')    
+    write_build_script('chown_app_dir.sh  ')  
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -402,74 +362,14 @@ end
       destination = '/home/app' if destination == '/home/app/'  || destination == '/'  || destination == './'  
         
       
-        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
-#      source_url=$1
-#      package_name=$2
-#      extraction_command=$3
-#      destination=$4
-#      path_to_extracted=$5
+       path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
+
       args = ' \'' + source_url + '\' '
       args += ' \'' + package_name + '\' '
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
           write_build_script('package_installer.sh' + args )
-#      if arc_loc == './' || arc_loc == '.' || arc_loc == '/' || arc_loc == ''
-#        arc_loc = ''
-#      else
-#        if arc_loc.end_with?('/')
-#          arc_loc = arc_loc.chop # note not String#chop
-#        end
-#        if arc_loc.start_with?('/') == false
-#          arc_loc = '/' + arc_loc
-#        end
-#        write_line('RUN mkdir -p  /home/app')        
-#      end
-#      if arc_extract == 'git'
-#        write_line('WORKDIR /tmp')        
-#        write_line('RUN git clone ' + arc_src + ' --depth 1 /tmp/app')        
-#        set_user('0')
-#        write_line('RUN mv  ' + '/tmp/app' + ' /home/app' + arc_loc)        
-#        set_user('$ContUser')
-#      else
-#        step_back = false
-#        if arc_dir.nil? == true || arc_dir == '' || arc_dir == './' || arc_dir == '/'
-#          step_back = true
-#          write_line('RUN   mkdir /tmp/app')          
-#          arc_dir = '/tmp/app'
-#          write_line('WORKDIR /tmp/app')         
-#        else
-#          write_line('WORKDIR /tmp')
-#          
-#        end
-#        write_line('RUN   wget  -O \'' + arc_name + '\' \'' + arc_src + '\' ;\\')
-#        if arc_extract.nil? == false && arc_extract != ''
-#          write_line(' ' + arc_extract + ' \'' + arc_name + '\' ;\\') # + '\'* 2>&1 > /dev/null ')
-#          write_line(' rm \'' + arc_name + '\'')
-#        else
-#          arc_dir = arc_dir + '/' + arc_name
-#          write_line('echo') # step past the next shell line implied by preceeding ;
-#        end
-#        set_user('0')
-#        if step_back == true
-#          write_line('WORKDIR /tmp')         
-#        end
-#        if arc_loc.start_with?('/home/app') == true || arc_loc.start_with?('/home/local') == true
-#          dest_prefix = ''
-#        else
-#          dest_prefix = '/home/app'
-#        end
-#        write_line('run   if test ! -d ' + arc_dir + ' ;\\')
-#        write_line('       then\\')
-#        write_line(' mkdir -p ' + dest_prefix + '/' + arc_loc + ' ;\\')
-#        write_line(' fi;\\')
-#        if dest_prefix != '' && dest_prefix != '/home/app'
-#          write_line(' mkdir -p ' + dest_prefix + ' ;\\')
-#        end
-#        write_line(' mv ' + arc_dir + ' ' + dest_prefix + arc_loc)       
-#        #          first_archive = false
-#        set_user('$ContUser')
- #     end
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -520,17 +420,8 @@ end
     write_line('#Pear modules ')
     log_build_output('Dockerfile:Pear modules ')
     if @blueprint_reader.pear_modules.count > 0
-#      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
-#      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
-#      write_line('  php go-pear.phar')      
-#      pear_mods = ''
      @blueprint_reader.pear_modules.each do |pear_mod|
-#        if pear_mod.nil? == false
-         pear_mods += pear_mod + ' '
-#          # for pear
-#          # write_line('RUN  pear install pear_mod ' + pear_mod )
-#          # for pecl
-#          write_line('RUN  pear install  ' + pear_mod)          
+       pear_mods += pear_mod + ' ' unless pear_mod.nil      
         end
       write_build_script('install_pear_mods.sh  ' + pear_mods)          
     end
@@ -542,12 +433,9 @@ end
     write_line('#Pecl modules ')
     log_build_output('Dockerfile:Pecl modules ')
     if @blueprint_reader.pecl_modules.count > 0
-#      write_line('RUN   wget http://pear.php.net/go-pear.phar;\\')
-#      write_line('  echo suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini ;\\')
-#      write_line('  php go-pear.phar')
       pecl_mods = ''
       @blueprint_reader.pecl_modules.each do |pecl_mod|
-        pecl_mods += pecl_mod + ' ' if pecl_mod.nil? == false
+        pecl_mods += pecl_mod + ' ' unless pecl_mod.nil? 
       end
       write_build_script('install_pecl_mods.sh  ' + pecl_mods)    
     end
