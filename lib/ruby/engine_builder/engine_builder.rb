@@ -410,12 +410,14 @@ class EngineBuilder < ErrorsApi
   end
 
   def create_post_install_script
+    
     if @blueprint[:software].key?(:custom_post_install_script) \
     && @blueprint[:software][:custom_post_install_script].nil? == false \
     && @blueprint[:software][:custom_post_install_script].length > 0
-      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
+      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')       
       write_software_file(SystemConfig.PostInstallScript, content)
       File.chmod(0755, basedir + SystemConfig.PostInstallScript)
+      @has_post_install = true
     end
   end
 
@@ -488,6 +490,7 @@ class EngineBuilder < ErrorsApi
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions')
     return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
+    @mc.restart_required=(true) if @has_post_install == true 
     return @mc
     rescue StandardError => e
        log_exception(e)       

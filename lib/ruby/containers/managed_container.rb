@@ -6,17 +6,26 @@ require 'objspace'
 class ManagedContainer < Container
   @conf_self_start = false
   @restart_required = false
-  attr_accessor :task_at_hand
+  @rebuild_required = false
+  attr_accessor :task_at_hand, :restart_required, :rebuild_required
   
   def desired_state(state)
     @setState = state    
     save_state
   end
   
- def restart_complete_install?
-   @restart_required
- end
- 
+  def rebuild_required?
+       @rebuild_required 
+     end
+  
+   def rebuild_required=(set)
+     @rebuild_required = set
+   end
+
+  def restart_required=(set)
+    @restart_required = set
+  end
+  
   def in_progress(state)
     @task_at_hand = state
   STDERR.puts 'Task at Hand:' + state.to_s
@@ -275,6 +284,7 @@ class ManagedContainer < Container
     return false unless has_api?
     in_progress(:start)
     return task_failed('start') unless super
+    @restart_required = false
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
     task_complete
