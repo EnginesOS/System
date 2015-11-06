@@ -437,7 +437,7 @@ end
       destination = '/home/app' if destination == '/home/app/'  || destination == '/'  || destination == './'  
         
       
-        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted = ''
+        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
 #      source_url=$1
 #      package_name=$2
 #      extraction_command=$3
