@@ -37,18 +37,16 @@ echo Install to $destination
   else
     echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	if -n $path_to_extracted
+	if test -z "$path_to_extracted"
 		then
-			if 	$path_to_extracted == ./app
-				then
+				$path_to_extracted = ./app
 					mkdir app
 					cd app
 				$extraction_command ../$package_name
 				cd ..
-			else
+		else
 				$extraction_command $package_name
-			fi
-	fi
+	fi	
   fi
   
  destination=`echo $destination | sed "/\/$/s///"`
