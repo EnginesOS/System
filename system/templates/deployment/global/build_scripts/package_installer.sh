@@ -48,6 +48,7 @@ echo Install to $destination
 			else
 				$extraction_command $package_name
 			fi
+	fi
   fi
   
  destination=`echo $destination | sed "/\/$/s///"`
