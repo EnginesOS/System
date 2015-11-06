@@ -2,6 +2,8 @@
 
 for path in $*
  do
+ path=`echo $path | sed "/[.][.]/s///g"` 
+ echo $path
   path=`echo $path | sed "/\/$/s///"`
 	dir=`dirname $path`
 	mkdir -p /home/$dir

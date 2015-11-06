@@ -8,7 +8,8 @@ if test -f /opt/engines/run/system/flags/test_engines_update
 	exit 255
  fi
  
-status=` git remote show origin`
+release=`cat /opt/engines/release`
+status=` git remote show origin $release`
 echo $status |grep  'local out of date' >/dev/null
 if test $? -eq 0
  then

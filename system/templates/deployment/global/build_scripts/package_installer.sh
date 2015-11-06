@@ -8,6 +8,13 @@ destination=$4
 path_to_extracted=$5
 cd /tmp
 
+source_url=`echo $source_url | sed "/[;&]/s///g"` 
+package_name=`echo $package_name | sed "/[;&]/s///g"` 
+extraction_command=`echo $extraction_command | sed "/[;&]/s///g"` 
+package_name=`echo $package_name | sed "/[.][.]/s///g"` 
+destination=`echo $destination | sed "/[.][.]/s///g"` 
+path_to_extracted=`echo $path_to_extracted | sed "/[.][.]/s///g"` 
+#   
 echo Source URL $source_url 
 echo Extract with $extraction_command from  $package_name to $path_to_extracted 
 echo Install to $destination

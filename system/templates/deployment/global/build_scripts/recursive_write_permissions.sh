@@ -3,6 +3,8 @@
 
 for directory in $*
  do
+ directory=`echo $directory | sed "/[.][.]/s///g"` 
+ echo $directory
  	directory=`echo $directory | sed "/\/$/s///"`
           if [ -h  /home/app/$directory ] 
             then 
@@ -17,10 +19,10 @@ for directory in $*
           chmod -R gu+rw /home/app/$directory
              for dir in `find  /home/app/$directory -type d  `
                do
-                  adir=`echo $dir | sed "/ /s//_+_/g" |grep -v _+_` 
-                    if test -n $adir
+                  #adir=`echo $dir | sed "/ /s//_+_/g" ` 
+                    if test -n $dir
                         then
-                              dirs=`echo $dirs $adir`
+                              dirs=`echo $dirs $dir `
                         fi
                done
          if test -n '$dirs' 

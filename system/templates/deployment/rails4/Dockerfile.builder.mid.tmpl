@@ -34,7 +34,7 @@ RUN cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ Ser
 	echo "production:">> $config_dir/database.yml;\ 
 	echo "  database: $dbname ">> $config_dir/database.yml;\ 
 	echo "  <<: *login" >> $config_dir/database.yml ;\	
-	echo "wrote  $config_dir/database.yml "
+	echo "wrote  $config_dir/database.yml ";\	
 	echo in `pwd`
 	
 ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
