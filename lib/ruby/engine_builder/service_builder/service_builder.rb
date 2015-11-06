@@ -76,7 +76,7 @@ def create_persistant_services(services, environ, use_existing)
         p service_hash
         # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
         if @service_manager.add_service(service_hash)
-          @attached_servindces.push(service_hash)              
+          @attached_services.push(service_hash)              
         else
           return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
         end
