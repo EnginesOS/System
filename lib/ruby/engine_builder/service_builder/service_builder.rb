@@ -1,4 +1,4 @@
-require_relative '../service_manager/service_definitions.rb'
+require_relative '../../service_manager/service_definitions.rb'
 class ServiceBuilder < ErrorsApi
   
   attr_reader :volumes,:app_is_persistant
