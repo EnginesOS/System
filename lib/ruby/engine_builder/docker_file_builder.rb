@@ -433,9 +433,11 @@ end
 
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
-      destination += '/home/app/'  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
-      destination = '/home/app' if destination == '/home/app/' 
-        path_to_extracted ='/' if destination.nil? || destination = ''
+      destination = '/home/app/' + destination  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
+      destination = '/home/app' if destination == '/home/app/'  || destination == '/'  || destination == './'  
+        
+      
+        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted = ''
 #      source_url=$1
 #      package_name=$2
 #      extraction_command=$3
