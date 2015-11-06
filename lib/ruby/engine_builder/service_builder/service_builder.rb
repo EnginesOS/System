@@ -65,7 +65,7 @@ def create_persistant_services(services, environ, use_existing)
         end
        
    if service_hash[:type_path] == 'filesystem/local/filesystem'
-     result = add_file_service(service_hash) if service_hash[:fresh] == true 
+     result = add_file_service(service_hash) 
          return log_error_mesg('failed to create fs',self) unless result                
    end 
         p :attach_service
