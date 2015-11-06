@@ -37,6 +37,7 @@ echo Install to $destination
   else
     echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
+	echo "$path_to_extracted"
 	if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
 		then
 				path_to_extracted=app
