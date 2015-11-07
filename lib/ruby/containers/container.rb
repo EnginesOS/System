@@ -104,7 +104,7 @@ end
 # @return nil if exception
 # @ return false on inspect container error
 def get_ip_str
-  expire_engine_info
+  # expire_engine_info 
   return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
   return false
 rescue
