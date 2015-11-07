@@ -5,29 +5,13 @@ ADD home home
 
 ENV CONTFSVolHome /home/fs/
 
-RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
- /usr/sbin/usermod -u 2666 ruby
+#WTF
+#RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
+# /usr/sbin/usermod -u 2666 ruby
+#Pre bundle --standalone
 
 ENV ContUser ruby
 ENV RAILS_ENV production
-
-
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
-#Built as
-#_Engines_Builder(engine_name)
-#_Engines_Builder(domain_name)
-#_Engines_Builder(hostname)
-#_Engines_Builder(http_protocol)
-#_Engines_Builder(repoName)
-#_Engines_Builder(webPort)
-#_Engines_Builder(build_name)
-#_Engines_Builder(runtime)
-#_Engines_Builder(set_environments) 
-#_Engines_Builder(environments)
-#Licence
-#_Engines_Blueprint(software,license_name)
-#_Engines_Blueprint(software,rake_tasks)
-#_Engines_Blueprint(software,softwareservices)
-
 
 RUN chown $ContUser /opt

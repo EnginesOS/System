@@ -8,7 +8,7 @@ destination=$4
 path_to_extracted=$5
 cd /tmp
 
-export PACKAGE_INSTALLER_RUN yes
+export PACKAGE_INSTALLER_RUN=yes
 source_url=`echo $source_url | sed "/[;&]/s///g"` 
 package_name=`echo $package_name | sed "/[;&]/s///g"` 
 extraction_command=`echo $extraction_command | sed "/[;&]/s///g"` 
