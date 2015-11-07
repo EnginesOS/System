@@ -37,6 +37,10 @@ class ManagedEngine < ManagedContainer
     super
   end
   
+    def restart_complete_install?
+       restart_required?
+     end
+     
     def load_blueprint
       return false unless has_api?
       @container_api.load_blueprint(self)

@@ -14,6 +14,27 @@ class ContainerApi < ErrorsApi
     @docker_api.image_exist?(container_name)
   end
   
+ def restart_required?(container)
+   return  File.exist?(ContainerStateFiles.restart_flag_file(container))
+   
+ end
+ 
+  def rebuild_required?(container)
+    return File.exist?(ContainerStateFiles.rebuild_flag_file(container))
+  end
+  
+  def restart_reason(container)
+     return false unless File.exist?(ContainerStateFiles.restart_flag_file(container))
+       return File.read(ContainerStateFiles.restart_flag_file(container))
+     
+   end
+   
+    def rebuild_reason(container)
+      return false unless File.exist?(ContainerStateFiles.rebuild_flag_file(container))
+      return File.read(ContainerStateFiles.restart_flag_file(container))
+    end
+  
+  
   def get_container_memory_stats(container)
     if container.is_a?(String)
       p "CONTAINTEST STATIS GOT A STRIN"

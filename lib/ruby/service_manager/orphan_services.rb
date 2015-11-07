@@ -1,4 +1,5 @@
 require_relative 'result_checks.rb'
+require_relative 'service_container_actions.rb'
 module OrphanServices
 
 def orphanate_service(params)
@@ -41,7 +42,7 @@ end
     clear_error
     service_hash = retrieve_orphan(service_query_hash)
     return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
-    return test_registry_result(@system_registry.release_orphan(service_hash))   
+    return remove_from_managed_service(service_hash) if test_registry_result(@system_registry.release_orphan(service_hash))   
     rescue StandardError => e
       log_exception(e)
   end

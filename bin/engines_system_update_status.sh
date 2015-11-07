@@ -8,9 +8,10 @@ if test -f /opt/engines/run/system/flags/test_engines_update
 	exit 255
  fi
  
-status=`git status -u no`
-echo $status |grep  up-to-date >/dev/null
-if test $? -ne 0
+release=`cat /opt/engines/release`
+status=` git remote show origin $release`
+echo $status |grep  'local out of date' >/dev/null
+if test $? -eq 0
  then
 	echo "Update Pending"
 	echo $status

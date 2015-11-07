@@ -16,6 +16,18 @@ class ContainerStateFiles
        SystemUtils.log_exception(e)
   end
  
+  def self.container_flag_dir(container)
+    return self.container_state_dir(container) + '/run/flags/'
+  end
+  
+  def self.restart_flag_file(container)
+    return self.container_state_dir(container) + 'restart_required'
+  end
+  
+  def self.rebuild_flag_file(container)
+    return self.container_state_dir(container) + 'restart_required'
+   end
+   
   def self.read_container_id(container)
      cidfile = ContainerStateFiles.container_cid_file(container)
      return File.read(cidfile) if File.exist?(cidfile)

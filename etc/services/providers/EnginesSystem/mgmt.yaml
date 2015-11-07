@@ -47,3 +47,30 @@ configurators:
     placeholder: ""
     mandatory: true
     comment: ""    
+ hostname: 
+  name: hostname
+  label: Engines hostname
+  description:  Engines hostname
+  params:
+   hostname:
+    name: hostname
+    regex_invalid_message: "wrong go back and try again"
+    label: hostname
+    regex_validator: ".*"
+    tooltip: "no : or #"
+    field_type: text_field
+    hint: ""
+    placeholder: ""
+    mandatory: true
+    comment: ""
+   domain_name:
+    name: domain_name
+    regex_invalid_message: "wrong go back and try again"
+    label: domain_name
+    regex_validator: ".*"
+    tooltip: "no : or #"
+    field_type: text_field
+    hint: ""
+    placeholder: ""
+    mandatory: true
+    comment: ""    

@@ -11,7 +11,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'docker_file_builder.rb'
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
-  require_relative 'service_builder.rb'
+  require_relative 'service_builder/service_builder.rb'
   include BuildReport
 
   require_relative '../templater/templater.rb'
@@ -335,6 +335,7 @@ class EngineBuilder < ErrorsApi
       @mc.destroy_container      
     end
     # FIXME: Remove image if created  
+    # FIXME this needs to be moved to service builder
     @attached_services.each do |service_hash|
       if service_hash[:shared]
         next
@@ -409,12 +410,14 @@ class EngineBuilder < ErrorsApi
   end
 
   def create_post_install_script
+    
     if @blueprint[:software].key?(:custom_post_install_script) \
     && @blueprint[:software][:custom_post_install_script].nil? == false \
     && @blueprint[:software][:custom_post_install_script].length > 0
-      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
+      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')       
       write_software_file(SystemConfig.PostInstallScript, content)
       File.chmod(0755, basedir + SystemConfig.PostInstallScript)
+      @has_post_install = true
     end
   end
 
@@ -487,6 +490,8 @@ class EngineBuilder < ErrorsApi
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions')
     return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
+    flag_restart_required(@mc) if @has_post_install == true
+   
     return @mc
     rescue StandardError => e
        log_exception(e)       
@@ -496,6 +501,13 @@ class EngineBuilder < ErrorsApi
     return @blueprint_reader.environments
   end
   
+  def flag_restart_required(mc)
+    restart_reason='Restart to run post install script, as required in blueprint'
+    restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
+       f = File.new(restart_flag_file,'w+')
+       f.puts(restart_reason)
+       f.close
+  end
  def log_error_mesg(m,o)
    log_build_errors(m.to_s + o.to_s)
    super
