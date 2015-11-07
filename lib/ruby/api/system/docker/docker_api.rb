@@ -121,15 +121,10 @@ class DockerApi < ErrorsApi
     clear_error
     cmdline = 'docker logs ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
-     p:logs
-     p result[:stdout]
-       p :for
-       p result[:result]
-    return result[:stdout] if result[:result] == 0
-    return false
+    return result[:stderr].to_s + ' ' + result[:stdout].to_s 
   rescue StandardError => e
     log_exception(e)
-    return 'error'
+    return 'error retriving logs'
   end
 
   def inspect_container(container)
