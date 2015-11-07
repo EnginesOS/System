@@ -120,6 +120,8 @@ def is_paused?
 def stats
     expire_engine_info
     return false unless docker_info.is_a?(Array)
+    return false unless docker_info[0].is_a?(Hash)
+    return false unless docker_inf[0]['State'].is_a?(Hash)
     started = docker_info[0]['State']['StartedAt']
     stopped = docker_info[0]['State']['FinishedAt']
     ps_container
