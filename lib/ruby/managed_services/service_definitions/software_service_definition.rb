@@ -26,6 +26,17 @@ class SoftwareServiceDefinition
     end
   end
 
+  #Find the assigned service container_name from teh service definition file
+  def SoftwareServiceDefinition.get_software_service_container_name(params)
+ 
+    server_service =  self.software_service_definition(params)
+    return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
+ 
+    return server_service[:service_container]   
+    rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
+  
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
