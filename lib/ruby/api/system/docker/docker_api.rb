@@ -123,6 +123,8 @@ class DockerApi < ErrorsApi
     result = SystemUtils.execute_command(cmdline)
      p:logs
      p result[:stdout]
+       p :for
+       p result[:result]
     return result[:stdout] if result[:result] == 0
     return false
   rescue StandardError => e
