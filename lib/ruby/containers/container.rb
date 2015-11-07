@@ -272,8 +272,8 @@ def collect_docker_info
     return false unless has_api?  
     result = true
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
-    @docker_info_cache = @last_result unless result    
-    Thread.new { sleep 6 ; expire_engine_info }
+    @docker_info_cache = @last_result if result    
+    Thread.new { sleep 4 ; expire_engine_info }
     return result
   end
 end
