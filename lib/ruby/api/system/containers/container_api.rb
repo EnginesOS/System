@@ -71,9 +71,9 @@ class ContainerApi < ErrorsApi
     test_docker_api_result(@docker_api.ps_container(container))
   end
 
-  def logs_container(container)
+  def logs_container(container, count)
     clear_error
-    test_docker_api_result(@docker_api.logs_container(container))
+    test_docker_api_result(@docker_api.logs_container(container, count))
   end
 
   def start_container(container)

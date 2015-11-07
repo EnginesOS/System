@@ -117,9 +117,9 @@ class DockerApi < ErrorsApi
     log_exception(e)
   end
 
-  def logs_container(container)
+  def logs_container(container, count)
     clear_error
-    cmdline = 'docker logs ' + container.container_name
+    cmdline = 'docker logs --tail=' + count + ' ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
     return result[:stderr].to_s + ' ' + result[:stdout].to_s 
   rescue StandardError => e

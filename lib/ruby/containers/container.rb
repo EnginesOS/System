@@ -75,9 +75,9 @@ def has_api?
    return true
  end
  
-def logs_container
+def logs_container(count=100)
   return false unless has_api?
-  return @container_api.logs_container(self)
+  return @container_api.logs_container(self,count)
 end
 
 def ps_container
