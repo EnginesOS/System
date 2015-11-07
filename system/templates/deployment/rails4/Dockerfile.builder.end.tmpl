@@ -1,6 +1,5 @@
 WORKDIR /home/app
-USER 0
-RUN /build_scripts/finalise_environment.sh
+
 ADD home/start.bash /home/start.bash
 USER www-data
 VOLUME /var/log/

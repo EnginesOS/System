@@ -7,7 +7,7 @@
 
 USER 0
 
-#WTF
+#give give x access to dirs
 RUN	chmod -R g+r /home/app;\
  for dir in  `find /home/app -type d | sed "/ /s/+_+//g"` ;\
 	do\

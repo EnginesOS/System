@@ -1,13 +1,7 @@
 
 
-USER 0
-#protect source
-RUN groupadd -g $data_gid writegrp;\
-	usermod -G $data_gid node;\
-	chown -R  $data_uid.$data_gid  /home/app/ 
-
-USER node
 ADD home/start.bash /home/start.bash
+USER node
 WORKDIR /home/app
 
 	 

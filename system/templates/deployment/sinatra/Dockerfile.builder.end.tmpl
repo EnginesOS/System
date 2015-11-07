@@ -1,7 +1,7 @@
 
 
 WORKDIR /home/app
-USER 0
+
 
 RUN 	groupadd -g $data_gid writegrp;\
 	usermod -G $data_gid www-data;\
