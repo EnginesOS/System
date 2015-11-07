@@ -54,7 +54,7 @@ class SystemConfig
     return @@NoRemoteExceptionLoggingFlagFile
   end
   def self.registry_connect_timeout
-    return 20
+    return 60
   end
   
   def SystemConfig.generate_ssh_private_keyfile
