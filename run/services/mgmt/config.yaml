@@ -69,7 +69,7 @@ volumes:
   name: engines_ca
   remotepath: "/opt/engines/etc/ssl/"
   localpath: "/var/lib/engines/cert_auth/public/"
-  mapping_permissions: ro
+  mapping_permissions: rw
 port: 
 mapped_ports:
 - !ruby/object:WorkPort

@@ -11,6 +11,7 @@ module NonPersistantServices
      end
      
      def force_register_attached_service(service_query)
+       p service_query.class.name
        complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
        service_hash = @system_registry.find_engine_service_hash(complete_service_query)
        return log_error_mesg( 'force_reregister no matching service found',service_query) unless service_hash.is_a?(Hash)
@@ -20,6 +21,7 @@ module NonPersistantServices
       end
       
     def force_deregister_attached_service(service_query)
+      p service_query.class.name
       complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
       service_hash = @system_registry.find_engine_service_hash(complete_service_query)
      return log_error_mesg( 'force_deregister_ no matching service found',service_query) unless service_hash.is_a?(Hash)
@@ -27,6 +29,7 @@ module NonPersistantServices
     end
     
     def force_reregister_attached_service(service_query)
+      p service_query.class.name
       complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
       service_hash = @system_registry.find_engine_service_hash(complete_service_query)
       return log_error_mesg( 'force_register no matching service found',service_query) unless service_hash.is_a?(Hash)

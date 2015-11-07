@@ -12,6 +12,12 @@
    rescue StandardError => e
      log_exception(e)
  end
+ 
+ def is_service_running?(service_name)
+  service =  @core_api.loadManagedService(service_name)
+  return false unless service.is_a?(ManagedService)
+  return service.is_running? 
+ end
 
 # Calls remove service on the service_container to remove the service associated by the hash
  # @return result boolean

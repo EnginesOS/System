@@ -1,6 +1,19 @@
 #!/bin/sh
-
 name=$1
+
+if test -f /home/app/tmp/$name.key
+ then
+ file /home/app/tmp/$name.cert | grep PEM
+	   if test $? -ne 0
+ 	then
+		echo $name not a PEM certificate
+		exit 127
+	fi
+  mv /home/app/tmp/$name.key /opt/engines/etc/ssl/keys/${name}.key
+  mv /home/app/tmp/$name.cert /opt/engines/etc/ssl/certs/${name}.crt
+ fi
+
+
 cert=/opt/engines/etc/ssl/certs/${name}
 key=/opt/engines/etc/ssl/keys/${name}
 
@@ -9,7 +22,7 @@ key=/opt/engines/etc/ssl/keys/${name}
 	   if test $? -ne 0
  	then
 		echo $name not a PEM certificate
-		exit
+		exit 127
 	fi
 	
 	#AS DOMAIN CERT for NGINX

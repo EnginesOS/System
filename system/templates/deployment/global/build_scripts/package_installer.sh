@@ -32,24 +32,23 @@ echo Install to $destination
   	  wget -O $package_name $source_url
   	  path_to_extracted=$package_name 
   else
-    echo wget -O $package_name $source_url
+    #echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	echo "$path_to_extracted"
+	#echo "$path_to_extracted"
 	if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
 		then
 				path_to_extracted=app
 				mkdir /tmp/app
-				pwd
-				echo $path_to_extracted
+				#pwd
+				#echo $path_to_extracted
 				cd /tmp/app
-				pwd
-				echo "$extraction_command ../$package_name"
-				
+				#pwd
+				#echo "$extraction_command ../$package_name"				
 				$extraction_command ../$package_name
 				cd /tmp
-				pwd
+				#pwd
 		else
-				echo "$extraction_command $package_name"
+				#echo "$extraction_command $package_name"
 				$extraction_command $package_name
 	fi	
   fi
@@ -61,7 +60,7 @@ echo Install to $destination
    	echo "creating destination $destination"
    		mkdir -p $destination
  	fi
- echo "./$path_to_extracted" $destination
- ls -la .
- ls -la $destination
+# echo "./$path_to_extracted" $destination
+# ls -la .
+# ls -la $destination
  mv "./$path_to_extracted" $destination

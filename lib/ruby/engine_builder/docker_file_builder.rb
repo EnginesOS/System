@@ -242,15 +242,10 @@ end
     rakes = ''
     @blueprint_reader.rake_actions.each do |rake_action|
       rake_cmd = rake_action[:action]
-      if @builder.first_build == false && rake_action[:always_run] == false
-        next
+      next unless @builder.first_build == false && rake_action[:always_run] 
+      rakes += rake_cmd + ' ' unless rake_cmd.nil?      
       end
-      rakes += rake_cmd + ' ' unless rake_cmd.nil?
-               
-        #write_line('RUN  /usr/local/rbenv/shims/bundle exec rake ' + rake_cmd)        
-      end
-    write_build_script('run_rake_tasks.sh ' + rakes )
-    
+    write_build_script('run_rake_tasks.sh ' + rakes )    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

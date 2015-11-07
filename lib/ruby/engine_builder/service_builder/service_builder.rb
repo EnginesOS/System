@@ -8,6 +8,8 @@ class ServiceBuilder < ErrorsApi
   
   require_relative 'roll_back.rb'
   include RollBack
+  require_relative 'service_checks.rb'
+  include ServiceChecks
     
   def initialize(service_manager, templater, engine_name, attached_services)
     @engine_name = engine_name

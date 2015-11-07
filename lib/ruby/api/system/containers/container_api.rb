@@ -71,9 +71,9 @@ class ContainerApi < ErrorsApi
     test_docker_api_result(@docker_api.ps_container(container))
   end
 
-  def logs_container(container)
+  def logs_container(container, count)
     clear_error
-    test_docker_api_result(@docker_api.logs_container(container))
+    test_docker_api_result(@docker_api.logs_container(container, count))
   end
 
   def start_container(container)
@@ -186,7 +186,7 @@ class ContainerApi < ErrorsApi
       end
       retries = 0
       while !has_service_started?(service_name)
-        sleep 10
+        sleep 15
         retries += 1
         return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 3
       end

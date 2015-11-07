@@ -44,12 +44,17 @@ class SystemConfig
   @@BuildRunningParamsFile = '/opt/engines/run/system/flags/building_params'
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
+  @@EnginesUpdateStatusFile ='/opt/engines/run/system/flags/update_pending'
+  
+  def self.EnginesUpdateStatusFile
+    @@EnginesUpdateStatusFile
+  end
   
   def self.NoRemoteExceptionLoggingFlagFile
     return @@NoRemoteExceptionLoggingFlagFile
   end
   def self.registry_connect_timeout
-    return 20
+    return 60
   end
   
   def SystemConfig.generate_ssh_private_keyfile

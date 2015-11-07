@@ -75,10 +75,10 @@ class DockerApi < ErrorsApi
   def ps_container(container)
     cmdline = 'docker top ' + container.container_name + ' axl'
     result = SystemUtils.execute_command(cmdline)
-    return result[:stdout] if result[:result] == 0
-    return false
+    return result[:stdout].to_s + ' ' + result[:stderr].to_s
   rescue StandardError => e
     log_exception(e)
+    return "Error"
   end
 
   def execute_docker_cmd(cmdline, container)
@@ -117,15 +117,14 @@ class DockerApi < ErrorsApi
     log_exception(e)
   end
 
-  def logs_container(container)
+  def logs_container(container, count)
     clear_error
-    cmdline = 'docker logs ' + container.container_name
+    cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
-    return result[:stdout] if result[:result] == 0
-    return false
+    return result[:stderr].to_s + ' ' + result[:stdout].to_s 
   rescue StandardError => e
     log_exception(e)
-    return 'error'
+    return 'error retriving logs ' + e.to_s
   end
 
   def inspect_container(container)

@@ -103,6 +103,8 @@ class EngineBuilder < ErrorsApi
       p :ports
       p @build_params[:mapped_ports]
         
+      return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
+        
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
       create_engines_config_files
