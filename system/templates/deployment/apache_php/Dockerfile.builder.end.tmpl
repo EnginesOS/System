@@ -1,15 +1,15 @@
 
 #protect source
-RUN mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/ ;\
-	mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
+#RUN mkdir  -p /var/log/apache2/ ; chown www-data /var/log/apache2/ ;\
+	#mkdir  -p /run/apache2/ ; chown www-data /run/apache2/
  
 #ADD home/startwebapp.sh /home/app/
 #RUN rm -r /build_scripts
-
+ADD home/start.bash /home/start.bash
 USER www-data
 
 #do this after chmods and chowns
-ADD home/start.bash /home/start.bash
+
 WORKDIR /home/app
 
 	 

@@ -78,7 +78,7 @@ class DockerFileBuilder
   end
   
   def finalise_docker_file
-   write_build_script('finalise_environment.sh')
+   write_build_script('_finalise_environment.sh')
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
     write_line('VOLUME /home/fs/')    

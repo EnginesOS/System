@@ -13,3 +13,8 @@
 		usermod -G $data_gid www-data
 	fi
 	chown -R  $data_uid.$data_gid  /home/app
+	
+	if test -f /build_scripts/finalise_environment.sh
+		then	
+			/build_scripts/finalise_environment.sh
+	fi
