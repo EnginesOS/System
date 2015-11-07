@@ -190,7 +190,10 @@ class SystemApi < ErrorsApi
     key_file.write(params[:key])
     key_file.close
     
-      
+    res = SystemUtils.execute_command('/opt/engines/bin/install_cert.sh ' +   params[:domain_name])
+      return true if res[:result] == 0
+       @last_error = res[:stderr]
+         return false
     end
     
   def _loadManagedService(service_name, service_type_dir)
