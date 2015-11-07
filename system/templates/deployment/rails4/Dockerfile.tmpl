@@ -2,16 +2,13 @@ FROM  engines/passenger:_Engines_System(release)
 
 
 
-#WTF
-#RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
-# /usr/sbin/usermod -u 2666 ruby
-#Pre bundle --standalone
+ADD build_scripts /build_scripts
+ADD home home
+ENV CONTFSVolHome /home/fs/
+
 
 ENV ContUser ruby
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
 
 RUN chown $ContUser /opt
-ADD build_scripts /build_scripts
-ADD home home
-ENV CONTFSVolHome /home/fs/
