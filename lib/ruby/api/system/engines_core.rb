@@ -615,7 +615,11 @@ class EnginesCore < ErrorsApi
   def getManagedServices
     test_system_api_result(@system_api.getManagedServices)
   end
-
+  
+  def upload_ssl_certificate(params)
+     @system_api.upload_ssl_certificate(params)
+  end
+    
   def add_domain(params)
     dns_api = DNSApi.new(service_manager)
     return true if dns_api.add_domain(params)

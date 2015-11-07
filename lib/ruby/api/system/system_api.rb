@@ -180,6 +180,14 @@ class SystemApi < ErrorsApi
     return s
   end
 
+  def upload_ssl_certificate(params)
+    p :upload_cert
+      p params
+      cert_file = File.new('/home/app/tmp/new_cert','w+')
+      key_file = File.new('/home/app/tmp/new_key','w+')
+      
+    end
+    
   def _loadManagedService(service_name, service_type_dir)
   
     if service_name.nil? || service_name.length == 0
