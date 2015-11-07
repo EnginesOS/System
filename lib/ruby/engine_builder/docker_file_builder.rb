@@ -78,6 +78,7 @@ class DockerFileBuilder
   end
   
   def finalise_docker_file
+   write_build_script('finalise_environment.sh')
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
     write_line('VOLUME /home/fs/')    
@@ -334,27 +335,15 @@ end
   def write_app_archives
     write_line('#App Archives')
     log_build_output('Dockerfile:App Archives')
-    # n=0
-    #        srcs=String.new
-    #        names=String.new
-    #        locations=String.new
-    #        extracts=String.new
-    #        dirs=String.new
     write_line('')
     set_user('0')
     @blueprint_reader.archives_details.each do |archive_details|
-      source_url = archive_details[:source_url]
-      package_name = archive_details[:package_name]
-      destination = archive_details[:destination]
-      extraction_command = archive_details[:extraction_command]
+      source_url = archive_details[:source_url].to_s
+      package_name = archive_details[:package_name].to_s
+      destination = archive_details[:destination].to_s
+      extraction_command = archive_details[:extraction_command].to_s
       path_to_extracted = archive_details[:path_to_extracted].to_s
-      p '_+_+_+_+_+_+_+_+_+_+_'
-      p archive_details
-      p source_url + '_'
-      p package_name + '_'
-      p destination + '_'
-      p extraction_command + '_'
-      p path_to_extracted + '|'
+
 
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
