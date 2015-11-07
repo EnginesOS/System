@@ -83,7 +83,7 @@ def logs_container(count=100)
 end
 
 def ps_container
-  expire_engine_info
+  #expire_engine_info
   return false unless has_api?
   @container_api.ps_container(self)
 end
@@ -120,7 +120,7 @@ def is_paused?
   end
   
 def stats
-    expire_engine_info
+    #expire_engine_info
     return false unless docker_info.is_a?(Array)
     return false unless docker_info[0].is_a?(Hash)
     return false unless docker_info[0]['State'].is_a?(Hash)
