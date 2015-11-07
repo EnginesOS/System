@@ -75,10 +75,10 @@ class DockerApi < ErrorsApi
   def ps_container(container)
     cmdline = 'docker top ' + container.container_name + ' axl'
     result = SystemUtils.execute_command(cmdline)
-    return result[:stdout] if result[:result] == 0
-    return false
+    return result[:stdout].to_s + ' ' + result[:stderr].to_s
   rescue StandardError => e
     log_exception(e)
+    return "Error"
   end
 
   def execute_docker_cmd(cmdline, container)
