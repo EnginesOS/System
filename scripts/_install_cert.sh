@@ -9,8 +9,8 @@ if test -f /home/app/tmp/$name.key
 		echo $name not a PEM certificate
 		exit 127
 	fi
-  mv /home/app/tmp/$name.key /opt/engines/etc/ssl/keys/${name}
-  mv /home/app/tmp/$name.cert /opt/engines/etc/ssl/certs/${name}
+  mv /home/app/tmp/$name.key /opt/engines/etc/ssl/keys/${name}.key
+  mv /home/app/tmp/$name.cert /opt/engines/etc/ssl/certs/${name}.crt
  fi
 
 
