@@ -26,6 +26,10 @@ class SoftwareServiceDefinition
     end
   end
 
+  def self.software_service_definition(params)
+    SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
+  end
+  
   #Find the assigned service container_name from teh service definition file
   def SoftwareServiceDefinition.get_software_service_container_name(params)
  
