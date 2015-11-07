@@ -76,7 +76,8 @@ class ContainerApi < ErrorsApi
     l = @docker_api.logs_container(container)
     p :logs
     puts l.to_s
-    test_docker_api_result(l)
+    
+   return  test_docker_api_result(l)
   end
 
   def start_container(container)
