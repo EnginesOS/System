@@ -7,7 +7,7 @@ if test -f /home/app/tmp/$name.key
 	   if test $? -ne 0
  	then
 		echo $name not a PEM certificate
-		exit
+		exit 127
 	fi
   mv /home/app/tmp/$name.key /opt/engines/etc/ssl/keys/${name}
   mv /home/app/tmp/$name.cert /opt/engines/etc/ssl/certs/${name}
@@ -22,7 +22,7 @@ key=/opt/engines/etc/ssl/keys/${name}
 	   if test $? -ne 0
  	then
 		echo $name not a PEM certificate
-		exit
+		exit 127
 	fi
 	
 	#AS DOMAIN CERT for NGINX
