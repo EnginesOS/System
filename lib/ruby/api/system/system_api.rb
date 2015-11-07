@@ -183,8 +183,13 @@ class SystemApi < ErrorsApi
   def upload_ssl_certificate(params)
     p :upload_cert
       p params
-      cert_file = File.new('/home/app/tmp/new_cert','w+')
-      key_file = File.new('/home/app/tmp/new_key','w+')
+      cert_file = File.new('/home/app/tmp/' + params[:domain_name] + '.cert','w+')
+    cert_file.write(params[:certificate])
+    cert_file.close
+      key_file = File.new('/home/app/tmp/' + params[:domain_name] + '.key','w+')
+    key_file.write(params[:key])
+    key_file.close
+    
       
     end
     
