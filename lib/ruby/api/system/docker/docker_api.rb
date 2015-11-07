@@ -121,6 +121,8 @@ class DockerApi < ErrorsApi
     clear_error
     cmdline = 'docker logs ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
+     p:logs
+     p result[:stdout]
     return result[:stdout] if result[:result] == 0
     return false
   rescue StandardError => e
