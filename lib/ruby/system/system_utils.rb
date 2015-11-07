@@ -8,8 +8,12 @@ class SystemUtils
   end
 
   def SystemUtils.log_output(object, level)
-    STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
-    return false
+    if SystemUtils.level < level
+      STDERR.puts 'Error ' + object.to_s if level == 10 
+      puts 'Error ' + object.to_s
+    end 
+    
+    return false    
   end
   
   def SystemUtils.debug_state? 
