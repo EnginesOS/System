@@ -44,7 +44,7 @@ class SystemConfig
   @@BuildRunningParamsFile = '/opt/engines/run/system/flags/building_params'
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
-  @@EnginesUpdateStatusFile/ opt/engines/run/system/flags/update_pending
+  @@EnginesUpdateStatusFile ='/opt/engines/run/system/flags/update_pending'
   
   def self.EnginesUpdateStatusFile
     @@EnginesUpdateStatusFile
