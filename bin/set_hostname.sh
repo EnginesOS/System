@@ -1,6 +1,6 @@
 #/bin/bash
 
-$hostname=$1
+hostname=$1
 
 if ! test -z "$2"
  then
