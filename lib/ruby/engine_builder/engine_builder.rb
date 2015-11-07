@@ -8,7 +8,7 @@ class EngineBuilder < ErrorsApi
   
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
-  require_relative 'docker_file_builder.rb'
+  require_relative 'docker_file_builder/docker_file_builder.rb'
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
   require_relative 'service_builder/service_builder.rb'
