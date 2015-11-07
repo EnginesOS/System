@@ -67,6 +67,7 @@ rescue StandardError => e
      return false if @docker_info_cache.is_a?(FalseClass)
      return JSON.parse(@docker_info_cache)
    rescue StandardError => e
+     p @docker_info_cache.to_s
     log_exception(e)
    end
  
@@ -270,9 +271,9 @@ protected
 
 def collect_docker_info
     return false unless has_api?  
-    result = true
+    result = false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
-    @docker_info_cache = @last_result if result    
+    @docker_info_cache = @last_result if result        
     Thread.new { sleep 4 ; expire_engine_info }
     return result
   end
