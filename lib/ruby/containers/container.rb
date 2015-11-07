@@ -33,7 +33,7 @@ class Container < ErrorsApi
         lock_values
   end
   def expire_engine_info
-    @docker_info_cache = false
+    @docker_info_cache = nil
     return true
   end
   
@@ -63,7 +63,7 @@ rescue StandardError => e
          
    
   def docker_info
-     collect_docker_info if @docker_info_cache.is_a?(FalseClass)    
+     collect_docker_info if @docker_info_cache.nil?   
      return false if @docker_info_cache.is_a?(FalseClass)
      return JSON.parse(@docker_info_cache)
    rescue StandardError => e
@@ -121,7 +121,7 @@ def stats
     expire_engine_info
     return false unless docker_info.is_a?(Array)
     return false unless docker_info[0].is_a?(Hash)
-    return false unless docker_inf[0]['State'].is_a?(Hash)
+    return false unless docker_info[0]['State'].is_a?(Hash)
     started = docker_info[0]['State']['StartedAt']
     stopped = docker_info[0]['State']['FinishedAt']
     ps_container
@@ -271,9 +271,8 @@ protected
 def collect_docker_info
     return false unless has_api?  
     result = true
-    result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
-    return false unless result
-    @docker_info_cache = @last_result
+    result = @container_api.inspect_container(self) if @docker_info_cache.nil?
+    @docker_info_cache = @last_result unless result    
     Thread.new { sleep 6 ; expire_engine_info }
     return result
   end
