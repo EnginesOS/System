@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if ! test -f /tmp/.bundled
+ then
 	if test -f Gemfile 
 		then 
 			cat /home/app/Gemfile | egrep -v "thin|puma" > /tmp/Gemfile
