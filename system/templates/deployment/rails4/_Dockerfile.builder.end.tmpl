@@ -1,6 +1,5 @@
-WORKDIR /home/app
-
 ADD home/start.bash /home/start.bash
+RUN ln -s /home/app /var/www
 USER www-data
 VOLUME /var/log/
 WORKDIR /home/app
