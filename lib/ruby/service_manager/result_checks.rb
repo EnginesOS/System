@@ -7,7 +7,13 @@
     rescue StandardError => e
       log_exception(e)
   end
-
+def test_subservices_result(result)
+  clear_error
+  log_error_mesg(@subservices_registry.last_error, result) if result.is_a?(FalseClass)
+  return result   
+  rescue StandardError => e
+    log_exception(e)
+end
   #test the result and carry last_error from @system_registry if nil
   #freeze result object if not nil
   #@return result
