@@ -135,10 +135,7 @@ end
         p env.value
         env.value = env.value.sub(/ /, '\\ ')
       end
-      if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
-        write_line('ENV ' + env.name + ' ' + env.value.to_s)     
-        @env_file.puts(env.name + '=' + env.value.to_s) 
-      end
+      write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -199,9 +196,9 @@ end
 
   def write_file_service
     write_line('#File Service')
-    write_line('#FS Env')
     @builder.volumes.each_value do |vol|      
-      dest = File.basename(vol.remotepath)         
+      dest = File.basename(vol.remotepath)  
+      write_line('#FS Env')   
       write_line('RUN mkdir -p $VOLDIR/' + dest)      
     end
   rescue Exception => e
@@ -340,10 +337,8 @@ end
     write_line('#Container Data User')
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
-    write_line('ENV data_gid ' + @builder.data_gid.to_s)    
-    write_line('ENV data_uid ' + @builder.data_uid.to_s)  
-    @env_file.puts('data_gid' + '=' + @builder.data_gid.to_s) 
-    @env_file.puts('data_uid' + '=' + @builder.data_uid.to_s) 
+    write_env( @builder.data_gid, @builder.data_gid.to_s)
+    write_env( @builder.data_uid, @builder.data_uid.to_s)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -354,13 +349,20 @@ end
     # stef = File.open(get_basedir + '/home/stack.env','w')
     write_line('')
     write_line('#Stack Env')
-    write_line('ENV Memory ' + @blueprint_reader.memory.to_s)    
-    write_line('ENV Hostname ' + @hostname)    
-    write_line('ENV Domainname ' + @domain_name)    
-    write_line('ENV fqdn ' + @hostname + '.' + @domain_name)    
-    write_line('ENV FRAMEWORK ' + @blueprint_reader.framework)    
-    write_line('ENV RUNTIME ' + @blueprint_reader.runtime)    
-    write_line('ENV PORT ' + @web_port.to_s)    
+    write_env('Memory' ,@blueprint_reader.memory.to_s)
+    write_env('Hostname' ,@hostname)
+    write_env('Domainname' ,@domain_name)
+    write_env('fqdn' ,@hostname + '.' + @domain_name)
+    write_env('FRAMEWORK' ,@blueprint_reader)
+    write_env('RUNTIME' ,@blueprint_reader)
+    write_env('PORT' ,@web_port.to_s)
+#    write_line('ENV Memory ' + @blueprint_reader.memory.to_s)    
+#    write_line('ENV Hostname ' + @hostname)    
+#    write_line('ENV Domainname ' + @domain_name)    
+#    write_line('ENV fqdn ' + @hostname + '.' + @domain_name)    
+#    write_line('ENV FRAMEWORK ' + @blueprint_reader.framework)    
+#    write_line('ENV RUNTIME ' + @blueprint_reader.runtime)    
+#    write_line('ENV PORT ' + @web_port.to_s)    
     wports = ''
     n = 0
     return false if @blueprint_reader.mapped_ports.nil?
@@ -372,15 +374,17 @@ end
       wports += port.port.to_s + ' '
       n += 1
     end
-    if wports.length > 0
-      write_line('ENV WorkerPorts ' + '\'' + wports +'\'')   
-      @env_file.puts('WorkerPorts=' + '\'' + wports +'\'')
-      env.value.to_s
+    if wports.length > 0   
+      write_env('WorkerPorts', wports)
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
+  def write_env(name,value, build_only = false)
+    write_line('ENV ' + name + ' \'' + value + '\'')   
+    @env_file.puts(name + '=' + '\'' + value +'\'')  
+  end
   
   def write_build_script(cmd)
     write_line('RUN  /build_scripts/' + cmd)
