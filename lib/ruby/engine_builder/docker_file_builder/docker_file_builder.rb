@@ -1,5 +1,5 @@
 class DockerFileBuilder
-  require 'framework_modules.rb'
+  require_relative 'framework_modules.rb'
   include FrameWorkModules
   
   def initialize(reader, build_params, webport, builder)

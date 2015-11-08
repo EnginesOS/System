@@ -332,23 +332,14 @@ class EngineBuilder < ErrorsApi
     p :Clean_up_Failed_build
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
-    unless @mc.nil?
-      @mc.stop_container
-      @mc.destroy_container      
+    if @mc.is_a?(ManagedContainer)
+      @mc.stop_container if @mc.is_running?
+      @mc.destroy_container if @mc.has_container?
+      @mc.delete_image if @mc.has_image?
     end
-    # FIXME: Remove image if created  
-    # FIXME this needs to be moved to service builder
-    @attached_services.each do |service_hash|
-      if service_hash[:shared]
-        next
-      elsif service_hash[:fresh]
-        service_hash[:remove_all_data] = true
-        @core_api.service_manager.delete_service(service_hash) # true is delete persistant
-      elsif service_hash[:freed_orphan] = true
-        @core_api.service_manager.orphanate_service(service_hash)
-      end
-       
-    end
+
+    @service_builder.roll_back    
+
     return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
 #    params = {}
 #    params[:engine_name] = @build_name
