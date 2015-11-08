@@ -20,5 +20,5 @@ class SystemRegistryClient < ErrorsApi
   include Engines
   include Orphans
   include Registry 
-  include SubServices 
+  include Subservices 
 end
