@@ -40,7 +40,7 @@ def create_persistant_services(services, environ, use_existing)
      return log_error_mesg('no matching service definition',self) if service_def.nil?
      if service_def[:persistant]    
        service_hash[:persistant] = true
-         process_persistant_service(service_hash, environ, use_existing)       
+        return false unless process_persistant_service(service_hash, environ, use_existing)       
      end
    end
   return true
@@ -82,7 +82,7 @@ def create_persistant_services(services, environ, use_existing)
         else
           return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
         end
-        
+        return true
  end
  
  def match_service_to_existing(service_hash, use_existing)

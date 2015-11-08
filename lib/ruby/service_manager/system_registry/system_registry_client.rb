@@ -13,11 +13,12 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'api/engines.rb'
   require_relative 'api/registry.rb'
   require_relative 'api/orphans.rb'
+  require_relative 'api/subservices.rb'
   
   include Configurations
   include Services 
   include Engines
   include Orphans
   include Registry 
-
+  include Subservices 
 end

@@ -14,6 +14,9 @@ def release_orphan(params)
   remove_orphaned_service(params)
 end
 
+  def rollback_orphaned_service(service_hash)
+    test_registry_result(@system_registry.rollback_orphaned_service(params))   
+  end
   
 #@returns [Hash] suitable for use  to attach as a service
   #nothing written to the tree

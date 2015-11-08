@@ -11,7 +11,10 @@ require_relative 'rset.rb'
 #    def rebirth_orphan(params)
 #      t_st_result(send_request('rebirth_orphan', params))
 #    end
- 
+  def rollback_orphaned_service(params)
+    rest_post('/v0/system_registry/services/orphans/return',service_query_hash )
+  end
+  
    def retrieve_orphan(params)
      rest_get('/v0/system_registry/services/orphan/',{:params => params } )
    end

@@ -6,8 +6,9 @@ cp /etc/os-release /opt/engines/etc/os-release-host
 rm -f /opt/engines/run/system/flags/reboot_required 
 rm -f /opt/engines/run/system/flags/engines_rebooting 
 rm -f /opt/engines/run/system/flags/building_params 
+cp /etc/os-release /opt/engines/etc/os-release-host
 #rm -f /opt/engines/run/system/flags/
-
+/opt/engines/bin/eservice start dns
 /opt/engines/bin/eservices check_and_act 
 
 /opt/engines/bin/engines check_and_act 
@@ -15,5 +16,10 @@ rm -f /opt/engines/run/system/flags/building_params
 if test -f  ~/.complete_install
 then
    /opt/engines/installers/finish_install.sh
+fi 
+
+if test -f  ~/.complete_update
+then
+   /opt/engines/updaters/finish_update.sh
 fi 
 

@@ -1,4 +1,7 @@
 class DockerFileBuilder
+  require_relative 'framework_modules.rb'
+  include FrameworkModules
+  
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
@@ -9,6 +12,7 @@ class DockerFileBuilder
     @builder = builder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
+    @env_file = File.new(@builder.basedir + '/build.env','w+')
   end
   
   def log_build_output(line)
@@ -64,7 +68,7 @@ class DockerFileBuilder
     setup_persitant_app if @build_params[:app_is_persistant]
     prepare_persitant_source 
     write_data_permissions
-    finalise_docker_file
+    finalise_files
     return true
   end
   
@@ -84,6 +88,11 @@ class DockerFileBuilder
     write_line('VOLUME /home/fs/')    
     write_clear_env_variables
     @docker_file.close
+  end
+  
+  def finalise_files
+    finalise_docker_file
+    @env_file.close
   end
   
   def prepare_persitant_source
@@ -117,27 +126,6 @@ end
     SystemUtils.log_exception(e)
   end
 
-  def write_apache_modules
-    return false if @blueprint_reader.apache_modules.count < 1
-    write_line('#Apache Modules')
-    ap_modules_str = ''
-    @blueprint_reader.apache_modules.each do |ap_module|
-      ap_modules_str += ap_module + ' ' unless ap_module.nil
-    end
-    write_line('RUN a2enmod ' + ap_modules_str)    
-  end
-
-  def write_php_modules
-    return if @blueprint_reader.php_modules.count < 1
-    write_line('#PHP Modules')
-    php_modules_str = ''
-    @blueprint_reader.php_modules.each do |php_module|
-      php_modules_str += php_module + ' ' unless php_module.nil?
-    end
-    write_build_script('install_php_modules.sh ' +  php_modules_str)
-
-  end
-
   def write_environment_variables
     write_line('#Environment Variables')    
     @blueprint_reader.environments.each do |env|
@@ -148,7 +136,8 @@ end
         env.value = env.value.sub(/ /, '\\ ')
       end
       if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
-        write_line('ENV ' + env.name + ' ' + env.value.to_s)      
+        write_line('ENV ' + env.name + ' ' + env.value.to_s)     
+        @env_file.puts(env.name + '=' + env.value.to_s) 
       end
     end
   rescue Exception => e
@@ -236,19 +225,7 @@ end
     SystemUtils.log_exception(e)
   end
 
-  def write_rake_list
-    write_line('#Rake Actions')
-    return if @blueprint_reader.rake_actions.count == 0 
-    rakes = ''
-    @blueprint_reader.rake_actions.each do |rake_action|
-      rake_cmd = rake_action[:action]
-      next unless @builder.first_build == false && rake_action[:always_run] 
-      rakes += rake_cmd + ' ' unless rake_cmd.nil?      
-      end
-    write_build_script('run_rake_tasks.sh ' + rakes )    
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
+ 
 
   def write_os_packages
     packages = ''
@@ -364,7 +341,9 @@ end
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
     write_line('ENV data_gid ' + @builder.data_gid.to_s)    
-    write_line('ENV data_uid ' + @builder.data_uid.to_s)    
+    write_line('ENV data_uid ' + @builder.data_uid.to_s)  
+    @env_file.puts('data_gid' + '=' + @builder.data_gid.to_s) 
+    @env_file.puts('data_uid' + '=' + @builder.data_uid.to_s) 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -390,42 +369,18 @@ end
         wports += ' '
       end
       write_line('EXPOSE ' + port.port.to_s)      
-      wports += port.port.to_s
+      wports += port.port.to_s + ' '
       n += 1
     end
     if wports.length > 0
-      write_line('ENV WorkerPorts ' + '\'' + wports +'\'')      
+      write_line('ENV WorkerPorts ' + '\'' + wports +'\'')   
+      @env_file.puts('WorkerPorts=' + '\'' + wports +'\'')
+      env.value.to_s
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
-  def write_pear_modules
-    write_line('#Pear modules ')
-    log_build_output('Dockerfile:Pear modules ')
-    if @blueprint_reader.pear_modules.count > 0
-     @blueprint_reader.pear_modules.each do |pear_mod|
-       pear_mods += pear_mod + ' ' unless pear_mod.nil      
-        end
-      write_build_script('install_pear_mods.sh  ' + pear_mods)          
-    end
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
-
-  def write_pecl_modules
-    write_line('#Pecl modules ')
-    log_build_output('Dockerfile:Pecl modules ')
-    if @blueprint_reader.pecl_modules.count > 0
-      pecl_mods = ''
-      @blueprint_reader.pecl_modules.each do |pecl_mod|
-        pecl_mods += pecl_mod + ' ' unless pecl_mod.nil? 
-      end
-      write_build_script('install_pecl_mods.sh  ' + pecl_mods)    
-    end
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
   
   def write_build_script(cmd)
     write_line('RUN  /build_scripts/' + cmd)
