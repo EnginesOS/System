@@ -1,4 +1,4 @@
-module Subsubservices
+module Subservices
 
 require_relative 'rset.rb'
 # Services Methods
