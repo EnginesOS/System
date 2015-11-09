@@ -14,16 +14,31 @@ if test -f /opt/engines/run/system/flags/test_engines_update
 	exit 255
  fi
  
+ if ! test -f /opt/engines/run/system/flags/check_engines_update_everytime
+  then
+    if test -f /opt/engines/run/system/flags/update_pending
+     then 
+      cat /opt/engines/run/system/flags/update_pending
+      exit 127
+ 	else
+  		echo "System Up to Date"
+  		exit 0 
+  	fi
+  fi
+
+ 
 release=`cat /opt/engines/release`
 status=` git remote show origin $release`
 echo $status |grep  'local out of date' >/dev/null
 if test $? -eq 0
  then
- touch /opt/engines/run/system/flags/update_pending
+  echo $status > /opt/engines/run/system/flags/update_pending
 	echo "Update Pending"
 	echo $status
 	exit 255
+ else
+  rm -f /opt/engines/run/system/flags/update_pending
 fi
 echo "System Up to Date"
-rm /opt/engines/run/system/flags/update_pending
+rm -f /opt/engines/run/system/flags/update_pending
 exit 0
