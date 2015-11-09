@@ -384,6 +384,8 @@ class EnginesCore < ErrorsApi
     p container
     templater = Templater.new(SystemAccess.new, container)
     templater.fill_in_service_def_values(service_def)
+    #FIXME make service_handle_field unique
+    
     return service_def
   rescue StandardError => e
     p service_hash
