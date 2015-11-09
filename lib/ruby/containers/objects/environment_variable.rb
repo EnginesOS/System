@@ -34,4 +34,24 @@ class EnvironmentVariable
     retval[:changed] = @has_changed
     return retval
   end
+  # Replace any envs in dest [Array] that exist in fresh_envs [Array] and add any new
+    # the members or teh arrays are EnvironmentVariable match by EnvironmentVariable.name
+    def self.merge_envs(fresh_envs,dest)
+      
+       fresh_envs.each do |new_env|
+        r = self.find_env_in(new_env,dest)
+        dest.delete(r) unless r.nil?
+      end
+      
+      dest.fresh_envs
+    return dest
+    end
+    
+   def self.find_env_in(new_env,dest)
+     dest.each do  |env|
+       next unless env.is_a?(EnvironmentVariable)
+       return env if env.name = new_env.name
+   end
+   return nil
+   end
 end

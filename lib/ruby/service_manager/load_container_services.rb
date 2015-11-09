@@ -36,7 +36,8 @@ module LoadContainerServices
          new_envs = SoftwareServiceDefinition.service_environments(service_hash)
          p 'new_envs'
          p new_envs.to_s
-         envs.concat(new_envs) if !new_envs.nil?
+         return EnvironmentVariable.merge_envs(new_envs,envs) unless new_envs.nil?
+        # envs.concat(new_envs) if !new_envs.nil?
        else
          log_error_mesg('failed to get service entry from ' ,service_hash)
        end
@@ -47,4 +48,8 @@ module LoadContainerServices
      log_error_mesg('Parse error on ' + curr_service_file,container)
      log_exception(e)
    end
+   
+  
+   
+   
 end
