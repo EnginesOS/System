@@ -182,9 +182,10 @@ def SystemUtils.execute_command(cmd)
        stderr_is_open = true
        begin
          stdout.each do |line|
-           line = line.gsub(/\\\'/,'')
+           line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings 
            oline = line
-           retval[:stdout] += line.chop
+           line.gsub!(/\/r/,'')
+           retval[:stdout] += line
            retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
          end         
          retval[:result] = th.value.exitstatus          
