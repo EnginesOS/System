@@ -11,12 +11,6 @@ module ServiceReaders
 
 
 
-  #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def get_service_configurations_hashes(service_name)
-    test_registry_result(@system_registry.get_service_configurations_hashes(service_name))
-  end
-
   #Test whether a service hash is registered
   #@return's false on failure with error (if applicable) accessible from this object's  [ServiceManager] last_error method
   def service_is_registered?(service_hash)

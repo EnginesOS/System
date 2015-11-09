@@ -22,8 +22,9 @@ class ServiceManager  < ErrorsApi
   require_relative 'load_container_services.rb'
   require_relative 'attached_services.rb'
   require_relative 'service_writers.rb'
+  require_relative 'configurations.rb'
   #  include ServiceDefinitions
-
+  include Configurations
   include RegistryTree
   include AttachedServices
   include OrphanServices
