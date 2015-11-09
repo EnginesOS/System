@@ -1,6 +1,12 @@
 #!/bin/bash
 
 cd /opt/engines
+if test -f /opt/engines/run/system/flags/skip_engines_update_check
+ then
+	echo "System Up to Date"
+	exit 0
+ fi
+ 
 if test -f /opt/engines/run/system/flags/test_engines_update
  then
    echo "Update Pending"
