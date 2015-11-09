@@ -189,6 +189,7 @@ consumer_params:
     regex_invalid_message: "wrong go back and try again"
     name: backup_name
     label: Backup Name
+    immutable: true
     regex_validator: ".*"
     tooltip: " "
     field_type: text_field
