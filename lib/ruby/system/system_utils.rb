@@ -108,6 +108,9 @@ end
         error_log_hash[:user_email] = 'backend@engines.onl'
       uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")     
       response = Net::HTTP.post_form(uri, error_log_hash)
+      return true
+  rescue
+    return false
   end
   
   def SystemUtils.last_error
