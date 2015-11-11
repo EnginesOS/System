@@ -49,6 +49,8 @@ class EnvironmentVariable
 
   def self.find_env_in(new_env,dest)
     dest.each do  |env|
+      p env.to_s
+      
       next unless env.is_a?(EnvironmentVariable)
       return env if env.name = new_env.name
     end
