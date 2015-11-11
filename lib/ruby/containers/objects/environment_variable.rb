@@ -43,7 +43,7 @@ class EnvironmentVariable
       r = self.find_env_in(new_env,dest)
       dest.delete(r) unless r.nil?
     end
-    dest.fresh_envs
+    dest.push(fresh_envs)
     return dest
   end
 

@@ -20,6 +20,5 @@ module BuildReport
     SystemUtils.log_exception(e)
   end
 
-  
-  
+
 end
