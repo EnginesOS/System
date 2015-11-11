@@ -10,7 +10,7 @@
 	id $ContUser | grep $data_gid >/dev/null	
 	if test $? -ne 0
 	 then
-		usermod -G $data_gid $ContUser
+		usermod -G $data_gid -a $ContUser
 	fi
 	chown -R  $data_uid.$data_gid  /home/app
 	
