@@ -41,7 +41,7 @@ module Containers
 def save_container(container)
     clear_error
     # FIXME:
-    api = container.container_api
+    api = container.container_api.dup
     container.container_api = nil
     last_result = container.last_result
   #  last_error = container.last_error
