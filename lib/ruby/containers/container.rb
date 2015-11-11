@@ -66,6 +66,8 @@ rescue StandardError => e
      collect_docker_info if @docker_info_cache.nil?   
      return false if @docker_info_cache.is_a?(FalseClass)  
     return false if @docker_info_cache.nil? 
+    p @docker_info_cache.class.name
+    p @docker_info_cache.to_s
      return JSON.parse(@docker_info_cache)
    rescue StandardError => e
      p @docker_info_cache.to_s
