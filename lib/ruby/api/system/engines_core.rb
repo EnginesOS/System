@@ -17,7 +17,7 @@ class EnginesCore < ErrorsApi
   require_relative 'containers/container_api.rb'
   require_relative 'containers/service_api.rb'
   require_relative 'docker/docker_api.rb'
-  require_relative 'system_api.rb'
+  require_relative 'engines_system/engines_system.rb'
   require_relative 'dns_api.rb'
   require_relative 'registry_handler.rb'
   require_relative 'configurations_api.rb'
