@@ -10,7 +10,7 @@ module Configurations
       return log_error_mesg('Missing Configurator ', config_hash[:configurator_name]) unless configurators.key?(config_hash[:configurator_name].to_sym)
       configurator_definition = configurators[config_hash[:configurator_name].to_sym]
       unless configurator_definition.key?(:no_save) && configurator_definition[:no_save]
-        return test_registry_result(@system_registry.update_service_configuration(config_hash))
+        return test_registry_result(system_registry_client.update_service_configuration(config_hash))
       else
         return true
       end
@@ -22,11 +22,11 @@ module Configurations
 #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
 #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
 def get_service_configurations_hashes(service_name)
-  test_registry_result(@system_registry.get_service_configurations_hashes(service_name))
+  test_registry_result(system_registry_client.get_service_configurations_hashes(service_name))
 end
 
 def get_service_configuration(service_name)
-  test_registry_result(@system_registry.get_service_configuration(service_name))
+  test_registry_result(system_registry_client.get_service_configuration(service_name))
 end
 
 end
