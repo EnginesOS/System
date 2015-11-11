@@ -312,12 +312,16 @@ end
       destination = archive_details[:destination].to_s
       extraction_command = archive_details[:extraction_command].to_s
       path_to_extracted = archive_details[:path_to_extracted].to_s
-
+      if destination == './'
+        destination = ''
+      elsif destination.end_with?('/')
+        arc_loc = destination.chop # note not String#chop
+      end
 
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
-      destination = '/home/app/' + destination  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
-      destination = '/home/app' if destination == '/home/app/'  || destination == '/'  || destination == './'  
+      destination = '/home/app/' + destination.to_s  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
+      destination = '/home/app' if destination.to_s == '/home/app/'  || destination == '/'  || destination == './'  || destination == ''
         
       
        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
