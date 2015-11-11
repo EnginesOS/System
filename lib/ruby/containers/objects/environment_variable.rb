@@ -42,8 +42,8 @@ class EnvironmentVariable
     fresh_envs.each do |new_env|
       r = self.find_env_in(new_env,dest)
       dest.delete(r) unless r.nil?
+      dest.push(new_env)
     end
-    dest.push(new_env)
     return dest
   end
 
