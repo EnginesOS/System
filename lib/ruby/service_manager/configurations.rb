@@ -22,6 +22,9 @@ module Configurations
 #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
 #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
 def get_service_configurations_hashes(service_name)
+  STDERR.puts '_________________'
+   STDERR.puts system_registry_client.to_s
+   
   test_registry_result(system_registry_client.get_service_configurations_hashes(service_name))
 end
 
