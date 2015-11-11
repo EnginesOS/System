@@ -1,4 +1,4 @@
-class BuildReport
+module BuildReport
   
   def get_build_report(engine_name)
     clear_error
