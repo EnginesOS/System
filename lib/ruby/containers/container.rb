@@ -136,10 +136,11 @@ def stats
     @last_result.each_line.each do |line|
       if pcnt > 0 # skip the fist line with is a header
         fields = line.split  #  [6]rss [10] time
-        if fields.nil? == false
+        if fields.nil? == false && fields.count >11
           rss += fields[7].to_i
           vss += fields[6].to_i
           time_f = fields[11]
+          next if time_f.nil?
           c_HMS = time_f.split(':')
           if c_HMS.length == 3
             h += c_HMS[0].to_i
