@@ -26,11 +26,12 @@ def get_service_configurations_hashes(service_name)
   t = system_registry_client
   STDERR.puts t.to_s
               
-  test_registry_result( system_registry_client.get_service_configurations_hashes(service_name) )
+  test_registry_result( t.get_service_configurations_hashes(service_name) )
 end
 
 def get_service_configuration(service_name)
-  test_registry_result( system_registry_client.get_service_configuration(service_name) )
+  t = system_registry_client
+  test_registry_result( t.get_service_configuration(service_name) )
 end
 
 end
