@@ -54,7 +54,7 @@ class EnvironmentVariable
       STDERR.puts new_env.to_s
       STDERR.puts new_env.class.name
       next unless env.is_a?(EnvironmentVariable)
-      return env if env.name = new_env.name
+      return env if env.name == new_env.name
     end
     return nil
   end
