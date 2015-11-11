@@ -14,7 +14,7 @@ if test -f /opt/engines/run/system/flags/test_engines_update
 	exit 255
  fi
  
-if test `cat /op/engine/release` = current
+if test `cat /opt/engines/release` = current
   then
 	 if ! test -f /opt/engines/run/system/flags/check_engines_update_everytime
   		then
