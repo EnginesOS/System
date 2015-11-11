@@ -26,7 +26,7 @@ class ServiceManager  < ErrorsApi
  
   attr_accessor :system_registry
   
-  include ServiceDefinitions
+
   include Configurations
   include RegistryTree
   include AttachedServices
