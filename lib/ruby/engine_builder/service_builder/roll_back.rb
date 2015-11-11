@@ -1,5 +1,6 @@
 module RollBack
-  def rollback
+  
+  def roll_back
   
   @attached_services.each do |service_hash|    
        if service_hash[:shared]
