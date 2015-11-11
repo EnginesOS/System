@@ -43,7 +43,7 @@ class EnvironmentVariable
       r = self.find_env_in(new_env,dest)
       dest.delete(r) unless r.nil?
     end
-    dest.push(fresh_envs)
+    dest.push(new_env)
     return dest
   end
 
@@ -51,7 +51,8 @@ class EnvironmentVariable
     dest.each do  |env|
       STDERR.puts '+++++++++++++++++++++++++++++'
       STDERR.puts env.to_s
-      
+      STDERR.puts new_env.to_s
+      STDERR.puts new_env.class.name
       next unless env.is_a?(EnvironmentVariable)
       return env if env.name = new_env.name
     end
