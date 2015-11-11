@@ -23,7 +23,7 @@ module Configurations
 #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
 def get_service_configurations_hashes(service_name)
   STDERR.puts '_________________'
-  t = system_registry_client
+  t = @system_registry_client
   STDERR.puts t.to_s
               
   test_registry_result( t.get_service_configurations_hashes(service_name) )
