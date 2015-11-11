@@ -35,7 +35,7 @@ class ServiceManager  < ErrorsApi
     return @system_registry
   end
   
-
+ 
   include Configurations
   include RegistryTree
   include AttachedServices
