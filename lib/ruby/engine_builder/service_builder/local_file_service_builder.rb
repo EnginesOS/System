@@ -67,7 +67,8 @@ module LocalFileServiceBuilder
       unless container.volumes.nil?
         container.volumes.each_value do |vol|
           SystemUtils.debug_output('build vol maps', vol)
-          volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'
+          dest = vol.name.gsub!(/^\/home\//,'/dest/')
+          volume_option += ' -v ' + vol.localpath.to_s + ':' + dest + ':rw'
         end
       end
       volume_option += ' --volumes-from ' + container.container_name
