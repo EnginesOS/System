@@ -480,10 +480,10 @@ class EngineBuilder < ErrorsApi
     @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
     @mc.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
-    log_build_output('Launching')
+    log_build_output('Launching ' + @mc.to_s)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
-    log_build_output('Applying Volume settings and Log Permissions')
-    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
+    log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
+    return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @core_api.run_volume_builder(@mc, @web_user)
     flag_restart_required(@mc) if @has_post_install == true
    
     return @mc
