@@ -1,6 +1,13 @@
 #!/bin/sh
-name=$1
 
+if test $1 = '-d'
+ then
+  default=yes
+  shift
+ fi	
+	
+name=$1
+	
 if test -f /home/app/tmp/$name.key
  then
  file /home/app/tmp/$name.cert | grep PEM
@@ -25,6 +32,8 @@ key=/opt/engines/etc/ssl/keys/${name}
 		exit 127
 	fi
 	
+	#FIX ME and verify key
+	
 	#AS DOMAIN CERT for NGINX
 		cp -p $cert.crt   /opt/engines/etc/nginx/ssl/certs/$name.crt 
 		chown 22005 /opt/engines/etc/nginx/ssl/certs/$name.crt 
@@ -36,6 +45,8 @@ key=/opt/engines/etc/ssl/keys/${name}
 #Below here install default cert FIXME to only do so if asked and extend so individual certs can be installed per service ie imap. smtp.
 
 
+	if test  "$default" = yes
+	 then
 		cp -p $cert.crt /opt/engines/etc/ftp/ssl/engines.crt 
 		chown 22003 /opt/engines/etc/ftp/ssl/engines.crt 
 		chmod og-rw /opt/engines/etc/ftp/ssl/engines.crt 
@@ -79,4 +90,4 @@ key=/opt/engines/etc/ssl/keys/${name}
 		chown 22005 /opt/engines/etc/nginx/ssl/keys/engines.key			
 		chmod og-rw /opt/engines/etc/nginx/ssl/keys/engines.key
 
- 
+    fi

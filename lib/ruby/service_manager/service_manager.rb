@@ -22,8 +22,21 @@ class ServiceManager  < ErrorsApi
   require_relative 'load_container_services.rb'
   require_relative 'attached_services.rb'
   require_relative 'service_writers.rb'
-  #  include ServiceDefinitions
-
+  require_relative 'service_configurations.rb'
+#  attr_accessor :system_registry_client
+  #@ call initialise Service Registry Tree which conects to the registry server
+  def initialize(core_api)
+    @core_api = core_api
+    @system_registry = SystemRegistryClient.new(@core_api)
+  end
+  
+  def system_registry_client
+   @system_registry = SystemRegistryClient.new(@core_api) if @system_registry.nil?
+    return @system_registry
+  end
+  
+ 
+  include ServiceConfigurations
   include RegistryTree
   include AttachedServices
   include OrphanServices
@@ -33,11 +46,5 @@ class ServiceManager  < ErrorsApi
   include ServiceReaders
   include LoadContainerServices
   include ServiceWriters
-  #@ call initialise Service Registry Tree which conects to the registry server
-  def initialize(core_api)
-    @core_api = core_api
-    @system_registry = SystemRegistryClient.new(@core_api)
-  end
-
 
 end

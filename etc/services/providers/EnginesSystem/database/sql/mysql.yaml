@@ -61,6 +61,7 @@ consumer_params:
   tooltip: "service tag name"
   field_type: "text_field"
   hint: " "
+  immutable: true
   placeholder: " "
   mandatory: true
   value: "_Engines_Builder(engine_name)"
@@ -69,6 +70,7 @@ consumer_params:
  database_host:
   name: database_host
   label: database_host
+  immutable: true
   regex_validator: ".*"
   tooltip: "Local or the ip address/hostname of the database server"
   field_type: "text_field"
@@ -81,6 +83,7 @@ consumer_params:
  database_name:
   name: database_name
   label: "Database name"
+  immutable: true
   regex_validator: ".*"
   tooltip: " "
   field_type: "text_field"
@@ -93,6 +96,7 @@ consumer_params:
  db_username:
   name: db_username
   label: DB User Name
+  immutable: true
   regex_validator: ".*"
   tooltip: " "
   field_type: "text_field"
@@ -106,6 +110,7 @@ consumer_params:
   name: db_password
   label: DB Password
   tooltip: " "
+  immutable: true
   field_type: password_with_confirmation
   hint: " "
   placeholder: " "
@@ -121,6 +126,7 @@ consumer_params:
   field_type: "text_field"
   hint: " "
   placeholder: " "
+  immutable: true
   mandatory: true
   value: "mysql2"
   comment:  " "
@@ -131,6 +137,7 @@ consumer_params:
   label: DB collation
   tooltip: " "
   field_type: select_single
+  immutable: true
   hint: " "
   placeholder: " "
   mandatory: true

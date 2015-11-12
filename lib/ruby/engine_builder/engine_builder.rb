@@ -41,7 +41,7 @@ class EngineBuilder < ErrorsApi
 
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
-    @core_api = core_api
+    @core_api = core_api.dup  
     @mc = nil # Used in clean up only
     @build_params = params   
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''    
@@ -338,7 +338,7 @@ class EngineBuilder < ErrorsApi
       @mc.delete_image if @mc.has_image?
     end
 
-    @service_builder.roll_back    
+    @service_builder.service_roll_back    
 
     return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
 #    params = {}
@@ -479,12 +479,11 @@ class EngineBuilder < ErrorsApi
     @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
     @mc.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
-    log_build_output('Launching')
+    log_build_output('Launching ' + @mc.to_s)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
-    log_build_output('Applying Volume settings and Log Permissions')
-    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
-    flag_restart_required(@mc) if @has_post_install == true
-   
+    log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
+    return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
+    flag_restart_required(@mc) if @has_post_install == true 
     return @mc
     rescue StandardError => e
        log_exception(e)       

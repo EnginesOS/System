@@ -95,14 +95,16 @@ class ManagedService < ManagedContainer
       if envs.is_a?(Array) == false
         envs = shared_envs
       else
-        envs.concat(shared_envs)
+        #envs.concat(shared_envs)
+        envs = EnvironmentVariable.merge_envs(shared_envs,envs)
       end
     end
     if envs.is_a?(Array)
       if@environments.is_a?(Array)
         SystemUtils.debug_output( :envs, @environments)
-        @environments.concat(envs)
-        @environments.uniq! #FIXME as new values dont replace old only duplicates values
+        @environments =  EnvironmentVariable.merge_envs(envs,@environments)
+       # @environments.concat(envs)
+        #@environments.uniq! #FIXME as new values dont replace old only duplicates values
       else
         @environments = envs
       end

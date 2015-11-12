@@ -19,15 +19,15 @@ module LoadContainerServices
          templater =  Templater.new(SystemAccess.new,container)
          templater.proccess_templated_service_hash(service_hash)
          SystemUtils.debug_output(  :templated_service_hash, service_hash)
-         if service_hash[:persistant] == false || test_registry_result(@system_registry.service_is_registered?(service_hash)) == false
+         if service_hash[:persistant] == false || test_registry_result(system_registry_client.service_is_registered?(service_hash)) == false
            add_service(service_hash)
          else
-           service_hash =  test_registry_result(@system_registry.get_service_entry(service_hash))
+           service_hash =  test_registry_result(system_registry_client.get_service_entry(service_hash))
          end
        else
           p :finding_service_to_share
           p service_hash
-         service_hash = test_registry_result(@system_registry.get_service_entry(service_hash))
+         service_hash = test_registry_result(system_registry_client.get_service_entry(service_hash))
            p :load_share_hash
            p service_hash
        end
@@ -36,7 +36,8 @@ module LoadContainerServices
          new_envs = SoftwareServiceDefinition.service_environments(service_hash)
          p 'new_envs'
          p new_envs.to_s
-         envs.concat(new_envs) if !new_envs.nil?
+         return EnvironmentVariable.merge_envs(new_envs,envs) unless new_envs.nil?
+        # envs.concat(new_envs) if !new_envs.nil?
        else
          log_error_mesg('failed to get service entry from ' ,service_hash)
        end
@@ -47,4 +48,8 @@ module LoadContainerServices
      log_error_mesg('Parse error on ' + curr_service_file,container)
      log_exception(e)
    end
+   
+  
+   
+   
 end

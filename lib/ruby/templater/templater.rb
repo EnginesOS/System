@@ -104,8 +104,8 @@ class Templater
       end
       if @builder_public.engine_environment.nil? == false && @builder_public.engine_environment.count > 0
         template = apply_engines_variables(template)
-      else
-        SystemUtils.log_error_mesg('nil or empty engines variables ' + template.to_s, @builder_public.engine_environment.to_s)
+#      else
+#        SystemUtils.log_error_mesg('nil or empty engines variables ' + template.to_s, @builder_public.engine_environment.to_s)
       end
     end
     return template
@@ -159,6 +159,7 @@ class Templater
         service_hash[:variables][variable[0]] = result
       end
     end
+    return true
   end
 
   def fill_in_service_def_values(service_def)

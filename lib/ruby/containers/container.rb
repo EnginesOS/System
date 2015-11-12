@@ -66,6 +66,8 @@ rescue StandardError => e
      collect_docker_info if @docker_info_cache.nil?   
      return false if @docker_info_cache.is_a?(FalseClass)  
     return false if @docker_info_cache.nil? 
+#    p @docker_info_cache.class.name
+#    p @docker_info_cache.to_s
      return JSON.parse(@docker_info_cache)
    rescue StandardError => e
      p @docker_info_cache.to_s
@@ -134,10 +136,11 @@ def stats
     @last_result.each_line.each do |line|
       if pcnt > 0 # skip the fist line with is a header
         fields = line.split  #  [6]rss [10] time
-        if fields.nil? == false
+        if fields.nil? == false && fields.count >11
           rss += fields[7].to_i
           vss += fields[6].to_i
           time_f = fields[11]
+          next if time_f.nil?
           c_HMS = time_f.split(':')
           if c_HMS.length == 3
             h += c_HMS[0].to_i
@@ -273,9 +276,10 @@ protected
 def collect_docker_info
     return false unless has_api?  
     result = false
+  return false if @docker_info_cache == false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
     @docker_info_cache = @last_result if result        
-    Thread.new { sleep 4 ; expire_engine_info }
+    Thread.new { sleep 2 ; expire_engine_info }
     return result
   end
 end

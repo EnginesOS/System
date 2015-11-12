@@ -108,6 +108,9 @@ end
         error_log_hash[:user_email] = 'backend@engines.onl'
       uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")     
       response = Net::HTTP.post_form(uri, error_log_hash)
+      return true
+  rescue
+    return false
   end
   
   def SystemUtils.last_error
@@ -179,9 +182,10 @@ def SystemUtils.execute_command(cmd)
        stderr_is_open = true
        begin
          stdout.each do |line|
-           line = line.gsub(/\\\'/,'')
+           line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings 
            oline = line
-           retval[:stdout] += line.chop
+           line.gsub!(/\/r/,'')
+           retval[:stdout] += line
            retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
          end         
          retval[:result] = th.value.exitstatus          
