@@ -7,8 +7,8 @@ class ServiceBuilder < ErrorsApi
   include OrphansServiceBuilder
   require_relative 'local_file_service_builder.rb'
   include LocalFileServiceBuilder
-  require_relative 'roll_back.rb'
-  include RollBack
+  require_relative 'service_roll_back.rb'
+  include ServiceRollBack
   require_relative 'service_checks.rb'
   include ServiceChecks
   require_relative 'persistant_service_builder.rb'
