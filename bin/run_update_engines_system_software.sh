@@ -12,6 +12,11 @@ sleep 5
 
 sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/engines_system_update_$ts.log
 
+if test -f /opt/engines/system/updates/to_run/pre_start.sh
+ then
+  /opt/engines/system/updates/to_run/pre_start.sh >> /var/log/engines/engines_system_update_$ts.log
+  sudo /opt/engines/scripts/_mv_update_script $?
+ fi
 
 docker stop registry >> /var/log/engines/engines_system_update_$ts.log
 docker start registry >> /var/log/engines/engines_system_update_$ts.log
