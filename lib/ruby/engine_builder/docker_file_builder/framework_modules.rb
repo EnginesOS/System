@@ -45,7 +45,7 @@ module FrameworkModules
      write_line('#Apache Modules')
      ap_modules_str = ''
      @blueprint_reader.apache_modules.each do |ap_module|
-       ap_modules_str += ap_module + ' ' unless ap_module.nil
+       ap_modules_str += ap_module + ' ' unless ap_module.nil?
      end
      write_line('RUN a2enmod ' + ap_modules_str)    
    end
