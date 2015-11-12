@@ -338,7 +338,7 @@ class EngineBuilder < ErrorsApi
       @mc.delete_image if @mc.has_image?
     end
 
-    @service_builder.roll_back    
+    @service_builder.service_roll_back    
 
     return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
 #    params = {}
@@ -483,8 +483,7 @@ class EngineBuilder < ErrorsApi
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
     log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
     return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
-    flag_restart_required(@mc) if @has_post_install == true
-   
+    flag_restart_required(@mc) if @has_post_install == true 
     return @mc
     rescue StandardError => e
        log_exception(e)       
