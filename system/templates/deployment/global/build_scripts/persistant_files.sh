@@ -7,7 +7,7 @@ for path in $*
   path=`echo $path | sed "/\/$/s///"`
 	dir=`dirname $path`
 	mkdir -p /home/$dir
-	echo "-p /home/$dir"
+	echo "mkdir -p /home/$dir"
 echo file $path is in $dir
  
  		if [ ! -f /home/$path ]

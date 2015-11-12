@@ -199,7 +199,8 @@ end
     @builder.volumes.each_value do |vol|      
       dest = File.basename(vol.remotepath)  
       write_line('#FS Env')   
-      write_line('RUN mkdir -p $VOLDIR/' + dest)      
+     # write_line('RUN mkdir -p $VOLDIR/' + dest)     
+      write_line('RUN mkdir -p $CONTFSVolHome' + dest) 
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
