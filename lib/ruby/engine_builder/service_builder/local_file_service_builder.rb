@@ -41,7 +41,7 @@ module LocalFileServiceBuilder
     else
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
     end
-    service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub!(/\//,'_')
+    service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
     service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src)
 
     service_hash[:variables][:volume_src].strip!
