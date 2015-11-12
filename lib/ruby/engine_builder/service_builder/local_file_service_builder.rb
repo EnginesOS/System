@@ -34,17 +34,18 @@ module LocalFileServiceBuilder
     
     def add_file_service(service_hash) 
       p 'Add File Service ' + service_hash[:variables][:name].to_s
-      #log_build_output('Add File Service ' + name)
+      #  Default to engine
       service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
       if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app' 
         @app_is_persistant = true   
-        service_hash[:variables][:service_name]='app'
+        service_hash[:variables][:service_name]='/home/app/'
         service_hash[:variables][:engine_path] = '/home/app/'
       else
-        service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')  
+        service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
+        service_hash[:variables][:service_name]= service_hash[:variables][:engine_path] 
       end
       service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src)
-      
+  
       service_hash[:variables][:volume_src].strip!
       service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
          
