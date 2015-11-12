@@ -1,4 +1,4 @@
-module Orphans
+module OrphansServiceBuilder
 
 def use_orphan(service_hash)
    p :attaching_orphan
