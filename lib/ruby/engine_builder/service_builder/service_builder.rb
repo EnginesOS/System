@@ -73,6 +73,7 @@ def create_persistant_services(services, environ, use_existing)
         p :attach_service
         p service_hash
         @templater.fill_in_dynamic_vars(service_hash)
+        
          environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
         p :with_env
         p service_hash
