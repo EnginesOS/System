@@ -57,6 +57,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
+    @rebuild = false
     @data_uid = '11111'
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
@@ -72,6 +73,7 @@ class EngineBuilder < ErrorsApi
 
   def rebuild_managed_container(engine)
        @engine = engine
+       @rebuild = true
        log_build_output('Starting Rebuild')
       return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
       return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
@@ -324,6 +326,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def post_failed_build_clean_up
+    return close_all if @rebuild
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
