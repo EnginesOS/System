@@ -358,6 +358,7 @@ class EngineBuilder < ErrorsApi
   def create_template_files
     if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
       @blueprint[:software][:template_files].each do |template_hash|
+        template_hash[:path].sub!(/^\/home/,'')
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
