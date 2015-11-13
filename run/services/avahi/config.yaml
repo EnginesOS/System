@@ -1,0 +1,26 @@
+--- !ruby/object:ManagedService
+container_name: avahi
+publisher_namespace: EnginesSystem
+type_path: avahi
+ctype: service
+persistant: false
+conf_self_start: true
+last_error: 
+memory: '16'
+hostname: avahi
+domain_name: local
+environments: []
+image: engines/avah:_Engines_System(release)
+mapped_ports:
+- !ruby/object:WorkPort
+  name: mdns
+  port: 5353
+  publicFacing: true
+  proto_type: udp
+  external: 5353
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true

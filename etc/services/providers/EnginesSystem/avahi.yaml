@@ -1,0 +1,33 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Zero Conf
+description: "Resolves engines .local names to engines IP address"
+type_path: avahi
+service_container: avahi
+publisher_namespace: EnginesSystem
+immutable: true
+dedicated: false
+persistant: false
+priority: 10
+service_handle_field: hostname
+attach_post_build: true
+attach_requires_restart: false
+setup_params:
+consumer_params:
+ hostname:
+  name: hostname
+  label: hostname
+  regex_validator: ".*"
+  tooltip: " "
+  field_type: text_field
+  hint: "hostname"
+  placeholder: " "
+  mandatory: true
+  value: " "
+  comment: " "
+  immutable: true
