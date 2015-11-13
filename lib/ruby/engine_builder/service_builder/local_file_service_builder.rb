@@ -9,7 +9,7 @@ module LocalFileServiceBuilder
       File.delete(SystemConfig.CidDir + '/volbuilder.cid')
     end
     mapped_vols = get_volbuild_volmaps container
-    command = 'docker run --name volbuilder --memory=32m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
+    command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
     SystemUtils.debug_output('Run volume builder',command)
     p command
     #run_system(command)
