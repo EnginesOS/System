@@ -11,6 +11,7 @@ module ServiceRollBack
          roll_back_new_service(service_hash)         
        end
   end
+  return true
 end
   
   def roll_back_new_service(service_hash)

@@ -57,6 +57,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
+    @rebuild = false
     @data_uid = '11111'
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
@@ -72,6 +73,7 @@ class EngineBuilder < ErrorsApi
 
   def rebuild_managed_container(engine)
        @engine = engine
+       @rebuild = true
        log_build_output('Starting Rebuild')
       return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
       return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
@@ -324,6 +326,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def post_failed_build_clean_up
+    return close_all if @rebuild
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
@@ -337,10 +340,8 @@ class EngineBuilder < ErrorsApi
       @mc.destroy_container if @mc.has_container?
       @mc.delete_image if @mc.has_image?
     end
-
-    @service_builder.service_roll_back    
-
-    return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
+    return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back    
+    return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
 #    params = {}
 #    params[:engine_name] = @build_name
 #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
@@ -360,6 +361,7 @@ class EngineBuilder < ErrorsApi
   def create_template_files
     if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
       @blueprint[:software][:template_files].each do |template_hash|
+        template_hash[:path].sub!(/^\/home/,'')
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end

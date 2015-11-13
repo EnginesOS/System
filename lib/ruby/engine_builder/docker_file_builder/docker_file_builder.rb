@@ -196,11 +196,13 @@ end
 
   def write_file_service
     write_line('#File Service')
+    if  @builder.volumes.count >0
     @builder.volumes.each_value do |vol|      
       dest = File.basename(vol.remotepath)  
       write_line('#FS Env')   
-     # write_line('RUN mkdir -p $VOLDIR/' + dest)     
-      write_line('RUN mkdir -p $CONTFSVolHome/' + dest) 
+    # write_line('RUN mkdir -p $CONTFSVolHome/' + dest)     
+     # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' ) 
+    end
     end
   rescue Exception => e
     SystemUtils.log_exception(e)

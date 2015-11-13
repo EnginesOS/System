@@ -3,7 +3,7 @@
 for path in $*
  do
  path=`echo $path | sed "/[.][.]/s///g"` 
-# echo $path
+ echo $path
   path=`echo $path | sed "/\/$/s///"`
 	dir=`dirname $path`
 	mkdir -p /home/$dir
@@ -12,6 +12,7 @@ echo file $path is in $dir
  
  		if [ ! -f /home/$path ]
   		   then 
+  		    echo "touch  /home/$path"
     		touch  /home/$path
     	fi
     echo mkdir -p $VOLDIR/$dir
