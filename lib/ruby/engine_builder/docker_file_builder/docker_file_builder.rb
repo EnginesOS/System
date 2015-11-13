@@ -200,11 +200,9 @@ end
     @builder.volumes.each_value do |vol|      
       dest = File.basename(vol.remotepath)  
       write_line('#FS Env')   
-      write_line('RUN mkdir -p $CONTFSVolHome/' + dest)     
+    #  write_line('RUN mkdir -p $CONTFSVolHome/' + dest)     
      # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' ) 
     end
-      # $VOLDIR is the persistance dir
-      write_line('ENV VOLDIR  $CONTFSVolHome/$VOLDIR') 
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
