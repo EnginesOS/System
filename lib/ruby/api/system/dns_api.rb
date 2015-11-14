@@ -16,6 +16,11 @@ end
      service_hash[:publisher_namespace] = 'EnginesSystem'
      service_hash[:type_path] = 'dns'
      service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
+    if params[:internal_only]
+      service_hash[:variables][:ip_type] = 'lan' 
+    else
+      service_hash[:variables][:ip_type] = 'gw'
+      end
      return true if @service_manager.add_service(service_hash)
      @last_error = @service_manager.last_error
      return false
