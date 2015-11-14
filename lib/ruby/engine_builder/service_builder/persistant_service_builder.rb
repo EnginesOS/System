@@ -58,6 +58,7 @@ module PersistantServiceBuilder
       p :create_type
       p existing_service[:create_type]
       next if existing_service[:create_type] == 'new'
+      next if existing_service[:create_type].nil?
       p existing_service[:type_path] + " and " + service_hash[:type_path]
       p existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace]
       if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
@@ -68,7 +69,7 @@ module PersistantServiceBuilder
         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
       end
     end
-    log_error_mesg('Failed to Match Service to attach', service_hash)
+   return false
   end
 
   def use_active_service(service_hash, existing_service )
