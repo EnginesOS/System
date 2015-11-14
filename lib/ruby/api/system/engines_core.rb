@@ -646,7 +646,10 @@ class EnginesCore < ErrorsApi
 #    log_error_mesg(res, '')
 #  end
 
-  
+   def docker_image_free_space
+      @system_api.docker_image_free_space
+   end
+    
   def list_managed_engines
     test_system_api_result(@system_api.list_managed_engines)
   end
@@ -793,6 +796,8 @@ class EnginesCore < ErrorsApi
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
+  
+  
 
   protected
 
