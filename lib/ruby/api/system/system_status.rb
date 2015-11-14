@@ -199,4 +199,11 @@ def self.is_base_system_upto_date?
     return result[:stderr] unless result.nil? 
       return false
   end
+  
+  def self.docker_image_free_space
+    result = SystemUtils.execute_command("df -k /var/lib/docker | grep -v Ava | awk \'{print $4}\'")
+    return -1 if result[:result] != 0
+      
+    return result[:stdout].to_i
+  end
 end
