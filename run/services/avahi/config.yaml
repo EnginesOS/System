@@ -6,7 +6,7 @@ ctype: service
 persistant: false
 conf_self_start: true
 last_error: 
-memory: '32'
+memory: '16'
 hostname: avahi
 domain_name: local
 environments: []
