@@ -89,10 +89,11 @@ class EngineBuilder < ErrorsApi
     def build_container
       log_build_output('Checking Free space')     
       space = SystemStatus.docker_image_free_space
-      space /=1024
+      space /= 1024
+      p ' free space /var/lib/docker only ' + space.to_s + 'MB'
       return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000
       
-      log_build_output(space + 'MB free > 1000 required')
+      log_build_output(space.to_s + 'MB free > 1000 required')
       log_build_output('Reading Blueprint')      
       @blueprint = load_blueprint
      return close_all if @blueprint.nil? || @blueprint == false
