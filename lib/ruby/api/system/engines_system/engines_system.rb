@@ -33,11 +33,12 @@ class SystemApi < ErrorsApi
 
   
   def docker_image_free_space
-    res =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@172.17.42.1 /opt/engines/bin/free_docker_lib_space.sh') 
-    # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    return -1 if result[:result] != 0
-         
-       return result[:stdout].to_i
+    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@172.17.42.1 /opt/engines/bin/free_docker_lib_space.sh') 
+    return -1 if result[:result] != 0   
+    return result[:stdout].to_i
+  rescue StandardError => e
+    log_exception(e)
+    return -1
   end
 
  
