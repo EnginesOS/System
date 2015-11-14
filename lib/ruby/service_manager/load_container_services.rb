@@ -36,7 +36,7 @@ module LoadContainerServices
          new_envs = SoftwareServiceDefinition.service_environments(service_hash)
          p 'new_envs'
          p new_envs.to_s
-         return EnvironmentVariable.merge_envs(new_envs,envs) unless new_envs.nil?
+         envs = EnvironmentVariable.merge_envs(new_envs,envs) unless new_envs.nil?
         # envs.concat(new_envs) if !new_envs.nil?
        else
          log_error_mesg('failed to get service entry from ' ,service_hash)
