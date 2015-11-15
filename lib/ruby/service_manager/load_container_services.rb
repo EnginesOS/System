@@ -4,7 +4,8 @@ module LoadContainerServices
    #load persistant and non persistant service definitions off disk and registers them
    def load_and_attach_services(dirname,container)
      clear_error
-     envs = []
+     envs = container.environments 
+     envs = [] if envs.nil?
      curr_service_file = ''
      Dir.glob(dirname + '/*.yaml').each do |service_file|
        curr_service_file = service_file
