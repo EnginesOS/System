@@ -20,6 +20,10 @@ environments:
  name: ContUser
  value: root
  setatrun: false
+- !ruby/object:EnvironmentVariable
+ name: DEFAULT_DOMAIN
+ value: _Engines_System(default_domain)
+ setatrun: false
 image: engines/email:_Engines_System(release)
 mapped_ports:
 - !ruby/object:WorkPort
