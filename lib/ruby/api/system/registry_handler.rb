@@ -74,7 +74,8 @@ class RegistryHandler < ErrorsApi
     log_error_mesg("Forcing registry recreate", nil)
      registry_service = @system_api.loadSystemService('registry')
      return log_error_mesg('Fatal Unable to Start Registry Service: ',registry_service.last_error ) if !registry_service.forced_recreate
-    while !registry_service.is_startup_complete?
+    wait = 0
+     while !registry_service.is_startup_complete?
            sleep 1
            wait += 1
            p :recreate_wait
