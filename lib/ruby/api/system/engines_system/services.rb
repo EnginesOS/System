@@ -1,19 +1,23 @@
 module Services
   
   def getManagedServices
-      begin
+
         ret_val = []
         Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
           yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
           if File.exist?(yfn) == true
             managed_service = loadManagedService(contdir)
+            if managed_service.is_a?(ManagedService)
             ret_val.push(managed_service) if managed_service
+            else
+                log_error_mesg('failed to load ', yfn)
           end
-        end
+         end
+        end  
         return ret_val
       rescue StandardError => e
         log_exception(e)
-      end
+
     end
     
   def list_managed_services

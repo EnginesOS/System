@@ -13,7 +13,7 @@ publisher_namespace: EnginesSystem
 immutable: true
 dedicated: false
 persistant: false
-priority: 10
+priority: 1
 service_handle_field: hostname
 attach_post_build: true
 attach_requires_restart: false

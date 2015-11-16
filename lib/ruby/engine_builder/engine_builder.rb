@@ -87,7 +87,14 @@ class EngineBuilder < ErrorsApi
      end
      
     def build_container
-      log_build_output('Reading Blueprint')
+      log_build_output('Checking Free space')     
+      space = @core_api.docker_image_free_space
+      space /= 1024
+      p ' free space /var/lib/docker only ' + space.to_s + 'MB'
+     # return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
+      
+      log_build_output(space.to_s + 'MB free > 1000 required')
+      log_build_output('Reading Blueprint')      
       @blueprint = load_blueprint
      return close_all if @blueprint.nil? || @blueprint == false
       @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
@@ -347,6 +354,7 @@ class EngineBuilder < ErrorsApi
 #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     close_all
+    return false
   end
 
   

@@ -315,8 +315,7 @@ def SystemUtils.execute_command(cmd)
     os_data_hash['Major Version'] =  vers[0]
     os_data_hash['Minor Version'] = vers[1]
       # FIXME catch sub numbers as in 14.04.1
-p :os_data_hash
-   p  os_data_hash
+
     return os_data_hash
   end
   

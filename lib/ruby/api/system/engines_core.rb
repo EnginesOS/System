@@ -439,7 +439,7 @@ class EnginesCore < ErrorsApi
   def retrieve_service_configuration(config)
     c = ConfigurationsApi.new(self)
     r = c.retrieve_service_configuration(config)
-    return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
+    return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
     return r
   end
 
@@ -646,7 +646,10 @@ class EnginesCore < ErrorsApi
 #    log_error_mesg(res, '')
 #  end
 
-  
+   def docker_image_free_space
+      @system_api.docker_image_free_space
+   end
+    
   def list_managed_engines
     test_system_api_result(@system_api.list_managed_engines)
   end
@@ -793,6 +796,8 @@ class EnginesCore < ErrorsApi
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
+  
+  
 
   protected
 

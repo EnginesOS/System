@@ -67,10 +67,10 @@ class EnginesOSapi
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
     Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
-    engine = build_controller.engine
-    return engine if engine.is_a?(EnginesOSapiResult)
-    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
-    success(host.to_s + '.' + domain_name.to_s, 'Build Engine')
+#    engine = build_controller.engine
+#    return engine if engine.is_a?(EnginesOSapiResult)
+#    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
+    success(host.to_s + '.' + domain_name.to_s, 'Start of Build for Engine ' )
   end
 
   def attach_existing_service_to_engine(params_hash)

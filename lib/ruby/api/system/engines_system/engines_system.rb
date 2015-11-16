@@ -32,8 +32,16 @@ class SystemApi < ErrorsApi
   end  
 
   
+  def docker_image_free_space
+    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@172.17.42.1 /opt/engines/bin/free_docker_lib_space.sh') 
+    return -1 if result[:result] != 0   
+    return result[:stdout].to_i
+  rescue StandardError => e
+    log_exception(e)
+    return -1
+  end
 
-
+ 
  
 def restart_mgmt
   res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@172.17.42.1 /opt/engines/bin/restart_mgmt.sh') }

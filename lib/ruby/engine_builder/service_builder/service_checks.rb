@@ -12,7 +12,7 @@ def required_services_are_running?
 end
 
 def service_not_running(service_name)
-  @last_error = service_name.to_s + ' Not Running'
+  @last_error = service_name.to_s + ' Not Running please start/enable before installing this software'
     return false
 end
 end

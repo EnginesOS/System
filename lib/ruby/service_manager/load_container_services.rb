@@ -4,7 +4,7 @@ module LoadContainerServices
    #load persistant and non persistant service definitions off disk and registers them
    def load_and_attach_services(dirname,container)
      clear_error
-     envs = []
+     container.environments  = [] if container.environments .nil?
      curr_service_file = ''
      Dir.glob(dirname + '/*.yaml').each do |service_file|
        curr_service_file = service_file
@@ -36,13 +36,13 @@ module LoadContainerServices
          new_envs = SoftwareServiceDefinition.service_environments(service_hash)
          p 'new_envs'
          p new_envs.to_s
-         return EnvironmentVariable.merge_envs(new_envs,envs) unless new_envs.nil?
+         envs = EnvironmentVariable.merge_envs(new_envs,container.environments ) unless new_envs.nil?
         # envs.concat(new_envs) if !new_envs.nil?
        else
          log_error_mesg('failed to get service entry from ' ,service_hash)
        end
      end
-     return envs
+     return true
    rescue Exception=>e
      puts e.message
      log_error_mesg('Parse error on ' + curr_service_file,container)
