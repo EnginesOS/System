@@ -7,7 +7,7 @@ module Services
           yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
           if File.exist?(yfn) == true
             managed_service = loadManagedService(contdir)
-            if managed_engine.is_a?(ManagedService)
+            if managed_service.is_a?(ManagedService)
             ret_val.push(managed_service) if managed_service
             else
                 log_error_mesg('failed to load ', yfn)
