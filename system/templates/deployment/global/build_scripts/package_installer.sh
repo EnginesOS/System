@@ -54,6 +54,10 @@ echo Install to $destination
   fi
   
  destination=`echo $destination | sed "/\/$/s///"`
+ if ! test "/home/app" == $destination  -o "app" == $destination  -o "/app" == $destination
+  then
+  	mkdir -p  "/home/app"
+ fi
  
  if test ! -d "./$path_to_extracted"
    then 
