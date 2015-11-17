@@ -8,7 +8,13 @@ class ConfigurationsApi <ErrorsApi
         service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
         service_param[:type_path] = service.type_path.to_s     
         # setting stopped contianer is ok as call can know the state, used to boot strap a config
-        return true unless service.is_running?
+         unless service.is_running?
+           service_param[:pending]= true
+           return true           
+         end
+         if  service_param.key?(:pending)
+           service_param.delete(:pending)
+         end
         # set config on reunning service   
         return log_error_mesg('Service Load error ', last_error.to_s) unless service.is_a?(ManagedService)
           configurator_result =  service.run_configurator(service_param)
