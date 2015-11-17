@@ -26,7 +26,10 @@ configurators:
     label: Provider
     regex_validator: ".*"
     tooltip: "dyndns2"
-    field_type: "text_field"
+    field_type: "select"
+    select_collection:
+     - "dyn-dns"
+     - "no-ip"
     hint: " "
     placeholder: " "
     mandatory: true

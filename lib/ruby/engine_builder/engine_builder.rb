@@ -8,10 +8,10 @@ class EngineBuilder < ErrorsApi
   
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
-  require_relative 'docker_file_builder.rb'
+  require_relative 'docker_file_builder/docker_file_builder.rb'
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
-  require_relative 'service_builder.rb'
+  require_relative 'service_builder/service_builder.rb'
   include BuildReport
 
   require_relative '../templater/templater.rb'
@@ -41,7 +41,7 @@ class EngineBuilder < ErrorsApi
 
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
-    @core_api = core_api
+    @core_api = core_api.dup  
     @mc = nil # Used in clean up only
     @build_params = params   
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''    
@@ -57,6 +57,7 @@ class EngineBuilder < ErrorsApi
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
+    @rebuild = false
     @data_uid = '11111'
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
@@ -72,6 +73,7 @@ class EngineBuilder < ErrorsApi
 
   def rebuild_managed_container(engine)
        @engine = engine
+       @rebuild = true
        log_build_output('Starting Rebuild')
       return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
       return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
@@ -85,7 +87,14 @@ class EngineBuilder < ErrorsApi
      end
      
     def build_container
-      log_build_output('Reading Blueprint')
+      log_build_output('Checking Free space')     
+      space = @core_api.docker_image_free_space
+      space /= 1024
+      p ' free space /var/lib/docker only ' + space.to_s + 'MB'
+     # return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
+      
+      log_build_output(space.to_s + 'MB free > 1000 required')
+      log_build_output('Reading Blueprint')      
       @blueprint = load_blueprint
      return close_all if @blueprint.nil? || @blueprint == false
       @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
@@ -102,6 +111,8 @@ class EngineBuilder < ErrorsApi
       @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
       p :ports
       p @build_params[:mapped_ports]
+        
+      return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
         
       return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])    
       apply_templates_to_environments
@@ -322,6 +333,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def post_failed_build_clean_up
+    return close_all if @rebuild
     # remove containers
     # remove persistant services (if created/new)
     # deregister non persistant services (if created)
@@ -330,29 +342,19 @@ class EngineBuilder < ErrorsApi
     p :Clean_up_Failed_build
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
-    unless @mc.nil?
-      @mc.stop_container
-      @mc.destroy_container      
+    if @mc.is_a?(ManagedContainer)
+      @mc.stop_container if @mc.is_running?
+      @mc.destroy_container if @mc.has_container?
+      @mc.delete_image if @mc.has_image?
     end
-    # FIXME: Remove image if created  
-    # FIXME this needs to be moved to service builder
-    @attached_services.each do |service_hash|
-      if service_hash[:shared]
-        next
-      elsif service_hash[:fresh]
-        service_hash[:remove_all_data] = true
-        @core_api.service_manager.delete_service(service_hash) # true is delete persistant
-      elsif service_hash[:freed_orphan] = true
-        @core_api.service_manager.orphanate_service(service_hash)
-      end
-       
-    end
-    return log_error_mesg('Failed to remove ' + @last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
+    return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back    
+    return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
 #    params = {}
 #    params[:engine_name] = @build_name
 #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     close_all
+    return false
   end
 
   
@@ -367,6 +369,7 @@ class EngineBuilder < ErrorsApi
   def create_template_files
     if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
       @blueprint[:software][:template_files].each do |template_hash|
+        template_hash[:path].sub!(/^\/home/,'')
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
@@ -486,11 +489,11 @@ class EngineBuilder < ErrorsApi
     @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)    
     @mc.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
-    log_build_output('Launching')
+    log_build_output('Launching ' + @mc.to_s)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
-    log_build_output('Applying Volume settings and Log Permissions')
-    return log_build_errors('Error Failed to Apply FS') unless @core_api.run_volume_builder(@mc, @web_user)
-    @mc.restart_required=(true) if @has_post_install == true 
+    log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
+    return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
+    flag_restart_required(@mc) if @has_post_install == true 
     return @mc
     rescue StandardError => e
        log_exception(e)       
@@ -500,6 +503,13 @@ class EngineBuilder < ErrorsApi
     return @blueprint_reader.environments
   end
   
+  def flag_restart_required(mc)
+    restart_reason='Restart to run post install script, as required in blueprint'
+    restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
+       f = File.new(restart_flag_file,'w+')
+       f.puts(restart_reason)
+       f.close
+  end
  def log_error_mesg(m,o)
    log_build_errors(m.to_s + o.to_s)
    super

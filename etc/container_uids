@@ -2,19 +2,19 @@
 #services
 mgmt		engines	21000
 rma			rma			22001
-postgres	postgres	22002
-postfix		postfix		22003
+postgres	postgres	22002 pq_sql
+postfix		postfix		22003 smtp
 email		email	22003
-pmgr		pmgr		22004
+pmgr		pmgr		22004 
 nginx		nginx		22005
-mysql		mysql		22006
+mysql		mysql		22006 mysql_server
 volmgr		volmgr		22007	volmanager
 mongo		mongo		22008
-bind		bind		22009
-proftpd			proftpd	22010
-courier courier			22011
+bind		bind		22009 dns
+proftpd			proftpd	22010 ftp
+courier courier			22011 
 syslog		syslog			22012
-dovecot		imap			22013
+dovecot		imap			22013 imap
 #vmail					22014
 backup		backup		22015
 cron		cron			22016
@@ -26,6 +26,7 @@ cert_auth 	cert_auth    22022
 registry registry	22023
 wwwstats	wwwstats	22024
 dhcpd	dhcpd	22025
+avahi	avahi	22026
 #Frameworks
 www-data	www-data	22671
 ruby	ruby			22672

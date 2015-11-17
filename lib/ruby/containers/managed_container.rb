@@ -14,18 +14,23 @@ class ManagedContainer < Container
     save_state
   end
   
-  def rebuild_required?
-       @rebuild_required 
+  def restart_required?
+    return false unless has_api?
+    @container_api.restart_required?(self)      
      end
-  
-   def rebuild_required=(set)
-     @rebuild_required = set
+  def restart_reason
+     return false unless has_api?
+     @container_api.restart_reason(self)      
+      end
+   def rebuild_required?
+     return false unless has_api?
+     @container_api.rebuild_required?(self)
    end
-
-  def restart_required=(set)
-    @restart_required = set
-  end
-  
+  def rebuild_reason
+       return false unless has_api?
+       @container_api.rebuild_reason(self)
+     end
+     
   def in_progress(state)
     @task_at_hand = state
   STDERR.puts 'Task at Hand:' + state.to_s

@@ -19,9 +19,9 @@ class FirstRunWizard <ErrorsApi
     if @first_run_params.key?(:ssh_key) == true
       return log_error_mesg('Fail to setup ssh key ', api.last_error) unless ssh_key_configurator(@first_run_params[:ssh_key])
     end
-    
+
     apply_hostname(@first_run_params)
-    
+
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
     SystemUtils.execute_command('/opt/engines/bin/install_ca.sh')
@@ -34,14 +34,14 @@ class FirstRunWizard <ErrorsApi
   def apply_hostname(params)
     config_hash = {}
     config_hash[:service_name] = 'mgmt'
-    config_hash[:configurator_name] = 'set_hostname'
+    config_hash[:configurator_name] = 'hostname'
     config_hash[:variables] = {}
     config_hash[:variables][:hostname] =  params[:hostname]
-    config_hash[:variables][:domain_name] =  params[:default_domain]      
+    config_hash[:variables][:domain_name] =  params[:default_domain]
     return true if @api.update_service_configuration(config_hash)
     return log_error_mesg('Hostname configurator ', config_hash)
   end
-  
+
   def set_default_email_domain(domain_name)
     config_hash = {}
     config_hash[:service_name] = 'smtp'
@@ -118,7 +118,7 @@ class FirstRunWizard <ErrorsApi
     return log_error_mesg('create_ca ', @api.last_error)
   end
 
-  def create_default_cert (params)
+  def create_default_cert(params)
     service_param = {}
     service_param[:parent_engine] = 'system'
     service_param[:type_path] = 'cert_auth'
@@ -137,6 +137,6 @@ class FirstRunWizard <ErrorsApi
     service_param[:variables][:domainname] = params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
     return true if @api.attach_service(service_param)
-    return  log_error_mesg('create_default_cert ', @api.last_error)
+    return log_error_mesg('create_default_cert ', @api.last_error)
   end
 end

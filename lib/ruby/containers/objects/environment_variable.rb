@@ -10,18 +10,19 @@ class EnvironmentVariable
     @immutable = immutable
     @has_changed = true
   end
+
   def setatrun
     return @ask_at_build_time
   end
   attr_reader :ask_at_build_time,
-              :name, 
-              :build_time_only,
-              :mandatory,
-              :label,
-              :immutable,
-              :has_changed
- attr_accessor :value
- 
+  :name,
+  :build_time_only,
+  :mandatory,
+  :label,
+  :immutable,
+  :has_changed
+  attr_accessor :value
+
   def attributes
     retval = {}
     retval[:name] = @name
@@ -33,5 +34,33 @@ class EnvironmentVariable
     retval[:immutable] = @immutable
     retval[:changed] = @has_changed
     return retval
+  end
+
+  # Replace any envs in dest [Array] that exist in fresh_envs [Array] and add any new
+  # the members or teh arrays are EnvironmentVariable match by EnvironmentVariable.name
+  def self.merge_envs(fresh_envs,dest)
+    p :PRE_MERGE
+    p dest
+    fresh_envs.each do |new_env|
+      r = self.find_env_in(new_env,dest)
+      dest.delete(r) unless r.nil?
+      dest.push(new_env)
+    end
+    p :POST_MERGE
+    p dest
+      
+    return dest
+  end
+
+  def self.find_env_in(new_env,dest)
+    dest.each do  |env|
+#      STDERR.puts '+++++++++++++++++++++++++++++'
+#      STDERR.puts env.to_s
+#      STDERR.puts new_env.to_s
+#      STDERR.puts new_env.class.name
+      next unless env.is_a?(EnvironmentVariable)
+      return env if env.name == new_env.name
+    end
+    return nil
   end
 end

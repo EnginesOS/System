@@ -33,7 +33,7 @@ class Container < ErrorsApi
         lock_values
   end
   def expire_engine_info
-    @docker_info_cache = false
+    @docker_info_cache = nil
     return true
   end
   
@@ -63,10 +63,14 @@ rescue StandardError => e
          
    
   def docker_info
-     collect_docker_info if @docker_info_cache.is_a?(FalseClass)    
-     return false if @docker_info_cache.is_a?(FalseClass)
+     collect_docker_info if @docker_info_cache.nil?   
+     return false if @docker_info_cache.is_a?(FalseClass)  
+    return false if @docker_info_cache.nil? 
+#    p @docker_info_cache.class.name
+#    p @docker_info_cache.to_s
      return JSON.parse(@docker_info_cache)
    rescue StandardError => e
+     p @docker_info_cache.to_s
     log_exception(e)
    end
  
@@ -75,13 +79,13 @@ def has_api?
    return true
  end
  
-def logs_container
+def logs_container(count=100)
   return false unless has_api?
-  @container_api.logs_container(self)
+  return @container_api.logs_container(self,count)
 end
 
 def ps_container
-  expire_engine_info
+  #expire_engine_info
   return false unless has_api?
   @container_api.ps_container(self)
 end
@@ -102,7 +106,7 @@ end
 # @return nil if exception
 # @ return false on inspect container error
 def get_ip_str
-  expire_engine_info
+  # expire_engine_info 
   return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
   return false
 rescue
@@ -118,8 +122,10 @@ def is_paused?
   end
   
 def stats
-    expire_engine_info
-    return false if docker_info.is_a?(FalseClass)
+    #expire_engine_info
+    return false unless docker_info.is_a?(Array)
+    return false unless docker_info[0].is_a?(Hash)
+    return false unless docker_info[0]['State'].is_a?(Hash)
     started = docker_info[0]['State']['StartedAt']
     stopped = docker_info[0]['State']['FinishedAt']
     ps_container
@@ -130,10 +136,11 @@ def stats
     @last_result.each_line.each do |line|
       if pcnt > 0 # skip the fist line with is a header
         fields = line.split  #  [6]rss [10] time
-        if fields.nil? == false
+        if fields.nil? == false && fields.count >11
           rss += fields[7].to_i
           vss += fields[6].to_i
           time_f = fields[11]
+          next if time_f.nil?
           c_HMS = time_f.split(':')
           if c_HMS.length == 3
             h += c_HMS[0].to_i
@@ -187,6 +194,7 @@ end
 
 def destroy_container
   expire_engine_info
+  return true if read_state == 'nocontainer' 
   return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
   return false unless @container_api.destroy_container(self)  
   @container_id = '-1'
@@ -195,6 +203,7 @@ end
 
 def unpause_container
   expire_engine_info  
+  return true if read_state == 'running' 
   return log_error_mesg('Can\'t  unpause as no paused', self) unless is_paused?
   return false unless @container_api.unpause_container(self)
   expire_engine_info
@@ -241,12 +250,14 @@ end
 
 def start_container
   expire_engine_info
+  return true if read_state == 'running' 
   return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
   return false unless @container_api.start_container(self)
   expire_engine_info   
 end
 def stop_container
-  expire_engine_info
+  expire_engine_info  
+  return true if read_state == 'stopped' 
   return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'  
   return log_error_mesg('Api failure to stop container' + @container_api.last_error.to_s, self) unless @container_api.stop_container(self)
   expire_engine_info
@@ -254,6 +265,7 @@ end
 
 def pause_container
   expire_engine_info
+  return true if read_state == 'paused' 
   return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
   return false unless @container_api.pause_container(self)  
   expire_engine_info
@@ -263,11 +275,11 @@ protected
 
 def collect_docker_info
     return false unless has_api?  
-    result = true
-    result = @container_api.inspect_container(self) if @docker_info_cache.is_a?(FalseClass)
-    return false unless result
-    @docker_info_cache = @last_result
-    Thread.new { sleep 6 ; expire_engine_info }
+    result = false
+  return false if @docker_info_cache == false
+    result = @container_api.inspect_container(self) if @docker_info_cache.nil?
+    @docker_info_cache = @last_result if result        
+    Thread.new { sleep 2 ; expire_engine_info }
     return result
   end
 end

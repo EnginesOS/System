@@ -226,11 +226,6 @@ class BluePrintReader
       arc_loc = clean_path(archive[:destination])
       arc_extract = clean_path(archive[:extraction_command])
       arc_dir = clean_path(archive[:path_to_extracted])
-      if arc_loc == './'
-        arc_loc = ''
-      elsif arc_loc.end_with?('/')
-        arc_loc = arc_loc.chop # note not String#chop
-      end
       archive_details[:source_url] = arc_src
       archive_details[:package_name] = arc_name
       archive_details[:extraction_command] = arc_extract

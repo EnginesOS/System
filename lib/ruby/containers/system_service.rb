@@ -8,6 +8,22 @@ class SystemService < ManagedService
     super
   end
 
+    def create_service()
+      @container_api.create_container(self)       
+    end          
+    def   unpause_container
+      @container_api.unpause_container(self)
+    end    
+    def  stop_container
+        @container_api.stop_container(self)
+      end
+        def  destroy_container
+          @container_api.destroy_container(self)
+        end
+    def  start_container
+      @container_api.start_container(self)
+         end  
+    
   def  forced_recreate
     p 'Forced recreate  System Service ' + container_name
     unpause_container

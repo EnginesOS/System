@@ -1,0 +1,11 @@
+
+#protect source
+RUN ln -s /home/app /var/www
+ADD home/start.bash /home/start.bash	
+USER www-data
+WORKDIR /home/app
+
+	 
+
+
+

@@ -6,7 +6,7 @@ persistant: false
 publisher_namespace: EnginesSystem
 type_path: cert_auth
 last_error: 
-memory: '8'
+memory: '16'
 hostname: certs
 no_ca_map: true
 domain_name: 

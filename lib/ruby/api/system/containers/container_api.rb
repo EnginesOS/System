@@ -14,6 +14,27 @@ class ContainerApi < ErrorsApi
     @docker_api.image_exist?(container_name)
   end
   
+ def restart_required?(container)
+   return  File.exist?(ContainerStateFiles.restart_flag_file(container))
+   
+ end
+ 
+  def rebuild_required?(container)
+    return File.exist?(ContainerStateFiles.rebuild_flag_file(container))
+  end
+  
+  def restart_reason(container)
+     return false unless File.exist?(ContainerStateFiles.restart_flag_file(container))
+       return File.read(ContainerStateFiles.restart_flag_file(container))
+     
+   end
+   
+    def rebuild_reason(container)
+      return false unless File.exist?(ContainerStateFiles.rebuild_flag_file(container))
+      return File.read(ContainerStateFiles.restart_flag_file(container))
+    end
+  
+  
   def get_container_memory_stats(container)
     if container.is_a?(String)
       p "CONTAINTEST STATIS GOT A STRIN"
@@ -50,9 +71,9 @@ class ContainerApi < ErrorsApi
     test_docker_api_result(@docker_api.ps_container(container))
   end
 
-  def logs_container(container)
+  def logs_container(container, count)
     clear_error
-    test_docker_api_result(@docker_api.logs_container(container))
+    test_docker_api_result(@docker_api.logs_container(container, count))
   end
 
   def start_container(container)
@@ -139,7 +160,7 @@ class ContainerApi < ErrorsApi
   private
 
   def check_sm_result(result)
-    log_error_mesg(@engines_core.service_manager.last_error.to_s, result) if result.nil? || result.is_a?(FalseClass)
+    @last_error = @engines_core.service_manager.last_error.to_s if result.nil? || result == false
     return result
   end
 
@@ -165,7 +186,7 @@ class ContainerApi < ErrorsApi
       end
       retries = 0
       while !has_service_started?(service_name)
-        sleep 10
+        sleep 15
         retries += 1
         return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 3
       end
@@ -174,12 +195,12 @@ class ContainerApi < ErrorsApi
   end
 
   def test_docker_api_result(result)
-    log_error_mesg(@docker_api.last_error, result) if result == false
+    @last_error = @docker_api.last_error if result == false || result.nil?
     return result
   end
 
   def test_system_api_result(result)
-    log_error_mesg(@system_api.last_error.to_s, result) if result == false
+    @last_error = @system_api.last_error if result == false || result.nil?
     return result
   end
   

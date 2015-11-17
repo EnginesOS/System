@@ -8,8 +8,12 @@ class SystemUtils
   end
 
   def SystemUtils.log_output(object, level)
-    STDERR.puts 'Error ' + object.to_s if SystemUtils.level < level
-    return false
+    if SystemUtils.level < level
+      STDERR.puts 'Error ' + object.to_s if level == 10 
+      puts 'Error ' + object.to_s
+    end 
+    
+    return false    
   end
   
   def SystemUtils.debug_state? 
@@ -104,6 +108,9 @@ end
         error_log_hash[:user_email] = 'backend@engines.onl'
       uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")     
       response = Net::HTTP.post_form(uri, error_log_hash)
+      return true
+  rescue
+    return false
   end
   
   def SystemUtils.last_error
@@ -175,9 +182,10 @@ def SystemUtils.execute_command(cmd)
        stderr_is_open = true
        begin
          stdout.each do |line|
-           line = line.gsub(/\\\'/,'')
+           line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings 
            oline = line
-           retval[:stdout] += line.chop
+           line.gsub!(/\/r/,'')
+           retval[:stdout] += line
            retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
          end         
          retval[:result] = th.value.exitstatus          
@@ -307,8 +315,7 @@ def SystemUtils.execute_command(cmd)
     os_data_hash['Major Version'] =  vers[0]
     os_data_hash['Minor Version'] = vers[1]
       # FIXME catch sub numbers as in 14.04.1
-p :os_data_hash
-   p  os_data_hash
+
     return os_data_hash
   end
   

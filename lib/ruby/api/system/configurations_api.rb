@@ -21,8 +21,13 @@ class ConfigurationsApi <ErrorsApi
       return log_error_mesg('Missing service name', service_param) unless service_param.key?(:service_name)
         service = @core_api.loadManagedService(service_param[:service_name])
        return log_error_mesg('Failed to Load Service', service_param) unless service.is_a?(ManagedService)
-       ret_val = service.retrieve_configurator(service_param) 
-       return log_error_mesg('failed to retrieve configuration', ret_val) unless ret_val.is_a?(Hash)
+        if service.is_running?
+          ret_val = service.retrieve_configurator(service_param) 
+          return log_error_mesg('failed to retrieve configuration', ret_val) unless ret_val.is_a?(Hash)
+        else
+          return @core_api.service_manager.get_service_configuration(service_param) 
+        end
+       
        return ret_val
     end  
 end

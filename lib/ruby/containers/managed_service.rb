@@ -80,7 +80,7 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false   
     return rm_consumer_from_service(service_hash) unless @persistant
     return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
-    log_error_mesg('Not persitant of service hash missing remove data',service_hash)
+    log_error_mesg('Not persitant or service hash missing remove data',service_hash)
   end
 
   def service_manager
@@ -95,14 +95,16 @@ class ManagedService < ManagedContainer
       if envs.is_a?(Array) == false
         envs = shared_envs
       else
-        envs.concat(shared_envs)
+        #envs.concat(shared_envs)
+        envs = EnvironmentVariable.merge_envs(shared_envs,envs)
       end
     end
     if envs.is_a?(Array)
       if@environments.is_a?(Array)
         SystemUtils.debug_output( :envs, @environments)
-        @environments.concat(envs)
-        @environments.uniq! #FIXME as new values dont replace old only duplicates values
+        @environments =  EnvironmentVariable.merge_envs(envs,@environments)
+       # @environments.concat(envs)
+        #@environments.uniq! #FIXME as new values dont replace old only duplicates values
       else
         @environments = envs
       end
@@ -167,9 +169,9 @@ class ManagedService < ManagedContainer
   end
 
   def check_cont_uid
-    if @cont_userid == nil || @cont_userid == false
+    if @cont_userid.nil? || @cont_userid == false  || @cont_userid == ''
       @cont_userid = running_user
-      if @cont_userid == nil || @cont_userid == false
+      if @cont_userid.nil? || @cont_userid == false
         log_error_mesg('service missing cont_userid ',@container_name)
         return false
       end

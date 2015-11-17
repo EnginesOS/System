@@ -1,29 +1,16 @@
 FROM  engines/php:_Engines_System(release)
+ENV ContUser www-data
+
 ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
 ENV CONTFSVolHome /home/fs/
-
-ENV ContUser www-data
 RUN  chown $ContUser /opt
 
-RUN	apt-get update -y;\
-	if [ -f /home/engines/configs/php/01-custom.ini ] ;\
-		then		\
-			cp /home/engines/configs/php/01-custom.ini /etc/php5/apache2/conf.d/;\
-	fi;\
-	if [ -f /home/engines/configs/apache2/extra.conf ] ;\
-		then \
-			cp /home/engines/configs/apache2/extra.conf /etc/apache2/conf-enabled/;\
-	fi	;\
-	if [ -f /home/engines/configs/apache2/site.conf ] ;\
-		then\
-			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf;\
-	fi
+RUN	apt-get update -y
 
-	
 
-CMD ["/home/start.bash"]
+
 
 
 

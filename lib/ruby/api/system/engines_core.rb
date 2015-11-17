@@ -17,7 +17,7 @@ class EnginesCore < ErrorsApi
   require_relative 'containers/container_api.rb'
   require_relative 'containers/service_api.rb'
   require_relative 'docker/docker_api.rb'
-  require_relative 'system_api.rb'
+  require_relative 'engines_system/engines_system.rb'
   require_relative 'dns_api.rb'
   require_relative 'registry_handler.rb'
   require_relative 'configurations_api.rb'
@@ -384,6 +384,8 @@ class EnginesCore < ErrorsApi
     p container
     templater = Templater.new(SystemAccess.new, container)
     templater.fill_in_service_def_values(service_def)
+    #FIXME make service_handle_field unique
+    
     return service_def
   rescue StandardError => e
     p service_hash
@@ -437,7 +439,7 @@ class EnginesCore < ErrorsApi
   def retrieve_service_configuration(config)
     c = ConfigurationsApi.new(self)
     r = c.retrieve_service_configuration(config)
-    return log_error_mesg('Configration failed ' +  c.last_error, r) unless r.is_a?(Hash)
+    return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
     return r
   end
 
@@ -615,7 +617,11 @@ class EnginesCore < ErrorsApi
   def getManagedServices
     test_system_api_result(@system_api.getManagedServices)
   end
-
+  
+  def upload_ssl_certificate(params)
+     @system_api.upload_ssl_certificate(params)
+  end
+    
   def add_domain(params)
     dns_api = DNSApi.new(service_manager)
     return true if dns_api.add_domain(params)
@@ -640,7 +646,10 @@ class EnginesCore < ErrorsApi
 #    log_error_mesg(res, '')
 #  end
 
-  
+   def docker_image_free_space
+      @system_api.docker_image_free_space
+   end
+    
   def list_managed_engines
     test_system_api_result(@system_api.list_managed_engines)
   end
@@ -713,37 +722,7 @@ class EnginesCore < ErrorsApi
     log_exception(e)
   end
 
-  def run_volume_builder(container,username)
-    clear_error
-    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-      command = 'docker stop volbuilder'
-      SystemUtils.run_system(command)
-      command = 'docker rm volbuilder'
-      SystemUtils.run_system(command)
-      File.delete(SystemConfig.CidDir + '/volbuilder.cid')
-    end
-    mapped_vols = get_volbuild_volmaps container
-    command = 'docker run --name volbuilder --memory=12m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
-    SystemUtils.debug_output('Run volume builder',command)
-    p command
-    #run_system(command)
-    result = SystemUtils.execute_command(command)
-    if result[:result] != 0
-      p result[:stdout]
-      @last_error='Volbuilder: ' + command + '->' + result[:stdout].to_s + ' err:' + result[:stderr].to_s
-      p @last_error
-      return false
-    end
-    #Note no -d so process will not return until setup.sh completes
-    command = 'docker rm volbuilder'
-    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-    res = SystemUtils.run_system(command)
-    SystemUtils.log_error(res) if res.is_a?(FalseClass)
-    # don't return false as
-    return true
-  rescue StandardError => e
-    log_exception(e)
-  end
+
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -817,6 +796,8 @@ class EnginesCore < ErrorsApi
     @last_error = service_manager.last_error.to_s  if result.nil? || result.is_a?(FalseClass)
     return result
   end
+  
+  
 
   protected
 
@@ -825,23 +806,7 @@ class EnginesCore < ErrorsApi
     @system_api.api_shutdown
   end
 
-  def get_volbuild_volmaps(container)
-    clear_error
-    state_dir = SystemConfig.RunDir + '/containers/' + container.container_name + '/run/'
-    log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
-    volume_option = ' -v ' + state_dir + ':/client/state:rw '
-    volume_option += ' -v ' + log_dir + ':/client/log:rw '
-    unless container.volumes.nil?
-      container.volumes.each_value do |vol|
-        SystemUtils.debug_output('build vol maps', vol)
-        volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs:rw'
-      end
-    end
-    volume_option += ' --volumes-from ' + container.container_name
-    return volume_option
-  rescue StandardError => e
-    log_exception(e)
-  end
+  
 
   # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
   # :path_type :publisher_namespace

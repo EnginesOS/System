@@ -5,28 +5,28 @@ class ManagedEngine < ManagedContainer
     @domain_name = build_params[:domain_name]
     @container_name = build_params[:engine_name]
     @repository  = build_params[:repository_url]
-    @image  = build_params[:image]   
-    @last_error = 'None'   
+    @image  = build_params[:image]
+    @last_error = 'None'
     @protocol = build_params[:http_protocol]
     @volumes = build_params[:volumes]
     @environments = runtime_params.environments
     @framework = runtime_params.framework
     @runtime = runtime_params.runtime
     @mapped_ports = build_params[:mapped_ports]
-    @data_uid = build_params[:data_uid] 
+    @data_uid = build_params[:data_uid]
     @data_gid = build_params[:data_gid]
-    
+
     @deployment_type = runtime_params.deployment_type
-      
+
     @web_port = build_params[:web_port]
-    @last_result = ''    
+    @last_result = ''
     @container_api = core_api
     @setState = 'running'
     @ctype = 'container'
     @conf_self_start = true
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
- 
+
   end
 
   attr_reader :plugins_path, :extract_plugins
@@ -36,16 +36,16 @@ class ManagedEngine < ManagedContainer
     @ctype.freeze
     super
   end
-  
-    def restart_complete_install?
-       @restart_required
-     end
-     
-    def load_blueprint
-      return false unless has_api?
-      @container_api.load_blueprint(self)
-    end
-  
+
+  def restart_complete_install?
+    restart_required?
+  end
+
+  def load_blueprint
+    return false unless has_api?
+    @container_api.load_blueprint(self)
+  end
+
   def plugins_path
     return '/plugins/'
   end
@@ -53,7 +53,7 @@ class ManagedEngine < ManagedContainer
   def extract_plugins
     false
   end
-    
+
   def engine_persistant_services
     services = @container_api.engine_persistant_services(@container_name)
     retval = ''
@@ -66,7 +66,7 @@ class ManagedEngine < ManagedContainer
     end
     return retval
   end
-    
+
   def engine_attached_services
     return @container_api.engine_attached_services(@container_name)
   end

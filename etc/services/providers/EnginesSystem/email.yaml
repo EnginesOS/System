@@ -46,8 +46,8 @@ configurators:
   label: Default Domain
   description: Default Domain
   params:
-   defaultdomain:
-    name: defaultdomain
+   default_domain:
+    name: default_domain
     label: "Default Domain"
     regex_validator: ".*"
     tooltip: " "

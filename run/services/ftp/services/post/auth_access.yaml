@@ -8,4 +8,3 @@ variables:
  pubkey: "_Engines_System(pubkey(ftp_access))"
  service: ftp
  command: access
-

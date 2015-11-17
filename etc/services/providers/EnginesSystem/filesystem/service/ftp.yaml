@@ -18,6 +18,7 @@ consumer_params:
   volume:
     name: volume
     label: volume
+    immutable: true 
     regex_validator: ".*"
     tooltip: " "
     field_type: text_field
@@ -30,6 +31,7 @@ consumer_params:
   folder:
     name: folder
     label: folder
+    immutable: true
     regex_validator: ".*"
     tooltip: "Folder with in volume "
     field_type: text_field
@@ -41,6 +43,7 @@ consumer_params:
   username:
     name: username
     label: User Name
+    immutable: true
     regex_validator: ".*"
     tooltip: " "
     field_type: text_field
@@ -53,6 +56,7 @@ consumer_params:
   password:
     name: password
     label: password
+    immutable: true
     tooltip: " "
     field_type: password_with_confirmation
     hint: " "
@@ -64,6 +68,7 @@ consumer_params:
   access:
     name: rw_access
     label: RW Access
+    immutable: true
     regex_validator: true|false
     tooltip: "Allow ftp service to write files"
     field_type: select_single
@@ -78,6 +83,7 @@ consumer_params:
   ftp_gid:
    name: ftp_gid
    label: ftp_gid
+   immutable: true
    regex_validator: "[0-9]."
    tooltip: "auto set"
    field_type: text_field
@@ -87,18 +93,4 @@ consumer_params:
    value: _Engines_Builder(data_gid)
    immutable: true
    comment: "group access "   
-  non_secure_access:
-   name: non_secure_access
-   label: Allow non secure access
-   regex_validator: true|false
-   tooltip: "Allow ftp that passes plain text password"
-   field_type: select_single
-   hint: "true|false"
-   select_collection:
-     - true
-     - false
-   placeholder: "true|false"
-   mandatory: true
-   value: false
-   comment: "Allow ftp that passes plain text password"
  
