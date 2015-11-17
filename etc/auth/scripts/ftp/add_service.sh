@@ -37,6 +37,12 @@ fcnt=`expr $fcnt + 1`
           	access="ro"
         fi
      
+     if test $volume = '/home/app'
+      then
+      		 volume='_home_app'
+      else
+      		volume="_home_fs_"$volume
+     fi
         pass=`/bin/echo -n "$password" | openssl dgst -binary -md5 | openssl enc -base64`
         sql="insert into users (userid,passwd,gid,ftphomedir,use_count) values('$username','{md5}$pass',${ftp_gid},'/ftp/$access/$parent_engine/$volume/$folder/',0)"
         
