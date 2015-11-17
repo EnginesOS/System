@@ -6,7 +6,7 @@ conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: dyndns
 last_error: 
-memory: '10'
+memory: '20'
 hostname: dyndns
 domain_name: 
 environments: []
