@@ -32,7 +32,7 @@ module LocalFileServiceBuilder
   end
 
   def add_file_service(service_hash)
-    p 'Add File Service ' + service_hash[:variables][:name].to_s
+    p 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s
     #  Default to engine
     service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
