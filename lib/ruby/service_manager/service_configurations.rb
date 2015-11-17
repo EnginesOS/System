@@ -34,4 +34,13 @@ def get_service_configuration(service_name)
   test_registry_result( t.get_service_configuration(service_name) )
 end
 
+def get_pending_service_configurations_hashes(service_name)
+  retval = []
+  t = system_registry_client
+  hashes = t.get_service_configuration(service_name) 
+    hashes.each do |config|
+      retval.push(config) if config.key?(:pending)
+    end
+    return retval
+end
 end
