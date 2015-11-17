@@ -192,7 +192,7 @@ def self.is_base_system_upto_date?
       return true if result[:stdout].include?('Up to Date')
       return false
     else
-      return ! File.exists(SystemConfig.EnginesUpdateStatusFile)
+      return ! File.exist?(SystemConfig.EnginesUpdateStatusFile)
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
