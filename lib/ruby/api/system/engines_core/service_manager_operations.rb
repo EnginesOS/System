@@ -16,7 +16,7 @@ module ServiceManagerOperations
   end
 
   def check_sm_result(result)
-    @last_error = service_manager.last_error.to_s if result.nil? || result == false
+    @last_error = service_manager.last_error.to_s if result.nil? || result.is_a?(FalseClass)
     return result
   end
 
