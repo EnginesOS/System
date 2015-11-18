@@ -33,7 +33,7 @@ class ManagedContainer < Container
      
   def in_progress(state)
     @task_at_hand = state
-  STDERR.puts 'Task at Hand:' + state.to_s
+   current_state = @setState
   case state
   when :create
     desired_state('running') 
@@ -54,11 +54,12 @@ class ManagedContainer < Container
   when :build
     desired_state('running') 
   when :delete
-    @setState = 'nocontainer'    
+    desired_state('nocontainer') 
   #  desired_state('noimage')
     when :destroy
     desired_state('nocontainer')
   end  
+    STDERR.puts 'Task at Hand:' + state.to_s + ' Current state' + current_state.to_s + ' going for ' + @task_at_hand.to_s
   end
   
  def log_error_mesg(msg, e_object)
@@ -73,6 +74,7 @@ class ManagedContainer < Container
  
  def task_failed(msg)
    p :task_failed
+   p @task_at_hand     
    p msg.to_s
    task_complete
    return false

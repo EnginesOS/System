@@ -25,22 +25,28 @@ def get_service_configurations_hashes(service_name)
   
   t = system_registry_client    
   test_registry_result( t.get_service_configurations_hashes(service_name) )
+  rescue Exception=>e
+        log_exception(e)
 end
 
 def get_service_configuration(service_name)
   t = system_registry_client
   test_registry_result( t.get_service_configuration(service_name) )
+rescue Exception=>e
+  log_exception(e)
 end
 
 def get_pending_service_configurations_hashes(service_name)
   retval = []
   t = system_registry_client
-  hashes = t.get_service_configuration(service_name) 
+  hashes = t.get_service_configurations_hashes(service_name) 
     hashes.each do |config|
       retval.push(config) if config.key?(:pending)
       p config
     end
     p retval
     return retval
+  rescue Exception=>e
+        log_exception(e)
 end
 end

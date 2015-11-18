@@ -219,9 +219,7 @@ def create_container
       if @container_api.create_container(self)
         expire_engine_info
         @container_id = read_container_id
-         p @container_id
         @cont_userid = running_user
-        p @cont_userid
         return true
       end      
         @container_id = -1
@@ -279,7 +277,7 @@ def collect_docker_info
   return false if @docker_info_cache == false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
     @docker_info_cache = @last_result if result        
-    Thread.new { sleep 2 ; expire_engine_info }
+    Thread.new { sleep 12 ; expire_engine_info }
     return result
   end
 end

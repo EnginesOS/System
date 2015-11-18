@@ -1,4 +1,4 @@
-require '/opt/engines/lib/ruby/api/system/engines_core.rb'
+require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
 require '/opt/engines/lib/ruby/system/system_config.rb'
 
