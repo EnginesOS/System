@@ -65,6 +65,11 @@ class EnginesCore < ErrorsApi
   require_relative 'result_checks.rb'
     include ResultChecks 
     
+  require_relative 'domain_operations.rb'
+  include DomainOperations
+  
+  require_relative 'registry_trees.rb'
+    include RegistryTrees
     
   
   
