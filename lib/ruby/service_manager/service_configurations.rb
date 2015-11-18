@@ -25,11 +25,15 @@ def get_service_configurations_hashes(service_name)
   
   t = system_registry_client    
   test_registry_result( t.get_service_configurations_hashes(service_name) )
+  rescue Exception=>e
+        log_exception(e)
 end
 
 def get_service_configuration(service_name)
   t = system_registry_client
   test_registry_result( t.get_service_configuration(service_name) )
+rescue Exception=>e
+  log_exception(e)
 end
 
 def get_pending_service_configurations_hashes(service_name)
@@ -42,5 +46,7 @@ def get_pending_service_configurations_hashes(service_name)
     end
     p retval
     return retval
+  rescue Exception=>e
+        log_exception(e)
 end
 end

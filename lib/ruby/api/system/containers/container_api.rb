@@ -15,7 +15,7 @@ class ContainerApi < ErrorsApi
   end
   
  def restart_required?(container)
-   return  File.exist?(ContainerStateFiles.restart_flag_file(container))
+   return File.exist?(ContainerStateFiles.restart_flag_file(container))
    
  end
  
