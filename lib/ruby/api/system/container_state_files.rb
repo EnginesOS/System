@@ -21,11 +21,11 @@ class ContainerStateFiles
   end
   
   def self.restart_flag_file(container)
-    return self.container_state_dir(container) + 'restart_required'
+    return self.container_flag_dir(container) + 'restart_required'
   end
   
   def self.rebuild_flag_file(container)
-    return self.container_state_dir(container) + 'rebuild_required'
+    return self.container_flag_dir(container) + 'rebuild_required'
    end
    
   def self.read_container_id(container)
