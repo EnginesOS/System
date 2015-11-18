@@ -143,26 +143,24 @@ class ContainerApi < ErrorsApi
     return blueprint      
   end
 
-  def attach_service(service_hash)
-    @engines_core.service_manager.add_service(service_hash)
-  end
+  # IS this really used ?
+#  def attach_service(service_hash)
+#    @engines_core.service_manager.add_service(service_hash)
+#  end
 
   # Called by Managed Containers
   def register_non_persistant_services(engine)
-    check_sm_result(@engines_core.service_manager.register_non_persistant_services(engine))
+    @engines_core.register_non_persistant_services(engine)
   end
 
   # Called by Managed Containers
   def deregister_non_persistant_services(engine)
-    check_sm_result(@engines_core.service_manager.deregister_non_persistant_services(engine))
+    @engines_core.deregister_non_persistant_services(engine)
   end
 
   private
 
-  def check_sm_result(result)
-    @last_error = @engines_core.service_manager.last_error.to_s if result.nil? || result == false
-    return result
-  end
+ 
 
   def has_service_started?(service_name)
     completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'

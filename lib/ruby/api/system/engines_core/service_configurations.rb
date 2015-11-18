@@ -6,7 +6,15 @@ module ServiceConfigurations
      return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
      return r
    end
- 
+   
+  def get_service_configurations_hashes(service_hash)
+    service_manager.get_service_configurations_hashes(service_hash)       
+  end
+  
+  def get_pending_service_configurations_hashes(service_hash)
+    service_manager.get_pending_service_configurations_hashes(service_hash)
+  end
+  
    def update_service_configuration(service_param)
      configurator = ConfigurationsApi.new(self)
      return log_error_mesg('Configration failed', configurator.last_error) unless configurator.update_service_configuration(service_param)

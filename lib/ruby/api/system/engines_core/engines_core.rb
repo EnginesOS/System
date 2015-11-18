@@ -73,7 +73,8 @@ class EnginesCore < ErrorsApi
     
   require_relative 'engines_core_preferences.rb'
   include  EnginesCorePreferences
-  
+  require_relative 'service_manager_operations.rb'
+   include ServiceManagerOperations
   
   def initialize
     Signal.trap('HUP', proc { api_shutdown })

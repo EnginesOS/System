@@ -82,9 +82,9 @@ class ManagedService < ManagedContainer
     log_error_mesg('Not persitant or service hash missing remove data',service_hash)
   end
 
-  def service_manager
-    return @container_api.service_manager
-  end
+#  def service_manager
+#    return @container_api.service_manager
+#  end
 
   def create_service()
     SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' +container_name)
@@ -111,7 +111,7 @@ class ManagedService < ManagedContainer
     @setState = 'running'
     if create_container
       save_state()
-      service_configurations = service_manager.get_service_configurations_hashes({service_name: @container_name})
+      service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
       if service_configurations.is_a?(Array)
         service_configurations.each do |configuration|
           run_configurator(configuration)
@@ -180,7 +180,7 @@ class ManagedService < ManagedContainer
 
   def start_container
     super
-    service_configurations = service_manager.get_pending_service_configurations_hashes({service_name: @container_name})
+    service_configurations = @container_api.get_pending_service_configurations_hashes({service_name: @container_name})
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         @container_api.update_service_configuration(configuration)
