@@ -1,5 +1,24 @@
 #!/bin/bash
-
+#
+#path_to_extracted=$1
+#destination=$2
+# Real code most of this script goes package downloader
+# destination=`echo $destination | sed "/\/$/s///"`
+# if ! test "/home/app" == $destination  -o "app" == $destination  -o "/app" == $destination
+#  then
+#  	mkdir -p  "/home/app"
+# fi
+# 
+# if test ! -d "./$path_to_extracted"
+#   then 
+#   	echo "creating destination $destination"
+#   		mkdir -p $destination
+# 	fi
+## echo "./$path_to_extracted" $destination
+## ls -la .
+## ls -la $destination
+# mv "./$path_to_extracted" $destination
+#
 
 source_url=$1
 package_name=$2
