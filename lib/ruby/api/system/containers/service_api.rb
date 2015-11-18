@@ -57,5 +57,7 @@ class ServiceApi < ContainerApi
      log_error_mesg('Failed retrieve_configurator',result)
      return {}
    end
-   
+  def update_service_configuration(configuration)
+      @engines_core.update_service_configuration(configuration)
+end
 end
