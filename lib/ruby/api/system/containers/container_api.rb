@@ -142,7 +142,13 @@ class ContainerApi < ErrorsApi
     log_error_mesg('failed to load blueprint', blueprint_r.last_error) unless blueprint.is_a?(Hash)
     return blueprint      
   end
-
+  
+ def register_dns
+  service_hash = SystemUtils.create_dns_service_hash(self)
+  return false if service_hash.is_a?(Hash) == false
+  return @engines_core.attach_service(service_hash)
+ end
+  
   # IS this really used ?
 #  def attach_service(service_hash)
 #    @engines_core.service_manager.add_service(service_hash)

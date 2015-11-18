@@ -303,9 +303,8 @@ class ManagedContainer < Container
   #
   def register_with_dns # MUst register each time as IP Changes
     return false unless has_api?
-    service_hash = SystemUtils.create_dns_service_hash(self)
-    return false if service_hash.is_a?(Hash) == false
-    return @container_api.attach_service(service_hash)
+    @container_api.register_with_dns
+  
   end
 
   def restart_container
