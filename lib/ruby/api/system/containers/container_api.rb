@@ -143,8 +143,8 @@ class ContainerApi < ErrorsApi
     return blueprint      
   end
   
- def register_with_dns
-  service_hash = SystemUtils.create_dns_service_hash(self)
+ def register_with_dns(container)
+  service_hash = SystemUtils.create_dns_service_hash(container)
   return false if service_hash.is_a?(Hash) == false
   return @engines_core.attach_service(service_hash)
  end
