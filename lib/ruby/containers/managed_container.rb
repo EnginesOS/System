@@ -59,7 +59,7 @@ class ManagedContainer < Container
     when :destroy
     desired_state('nocontainer')
   end  
-    STDERR.puts 'Task at Hand:' + state.to_s + ' Current state' + current_state + ' going for ' + @task_at_hand
+    STDERR.puts 'Task at Hand:' + state.to_s + ' Current state' + current_state.to_s + ' going for ' + @task_at_hand.to_s
   end
   
  def log_error_mesg(msg, e_object)
