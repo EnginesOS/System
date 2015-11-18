@@ -23,10 +23,15 @@ class EnginesCore < ErrorsApi
   require_relative '../configurations_api.rb'
   require_relative '../blueprint_api.rb'
   require_relative '../system_preferences.rb'
+  
   require_relative '../memory_statistics.rb'
+  
+  require_relative 'container_config_loader.rb'
+  include ContainerConfigLoader
   
   require_relative 'available_services.rb'
   include AvailableServices
+  
   require_relative 'service_configurations.rb'
   include ServiceConfigurations
   
