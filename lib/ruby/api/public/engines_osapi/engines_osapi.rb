@@ -2,11 +2,11 @@ require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
 require '/opt/engines/lib/ruby/system/system_config.rb'
 
-require_relative 'engines_osapi_result.rb'
-require_relative 'first_run_wizard.rb'
+require_relative '../engines_osapi_result.rb'
+require_relative '../first_run_wizard.rb'
 
 class EnginesOSapi
-  require_relative 'build_controller.rb'
+  require_relative '../build_controller.rb'
   
   require_relative 'available_services_actions.rb'
   include AvailableServicesActions
