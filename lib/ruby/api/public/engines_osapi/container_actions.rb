@@ -1,5 +1,4 @@
 module ContainerActions
-
   def get_container_network_metrics(container_name)
     @core_api.get_container_network_metrics(container_name)
   rescue StandardError => e

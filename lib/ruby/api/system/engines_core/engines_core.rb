@@ -23,59 +23,59 @@ class EnginesCore < ErrorsApi
   require_relative '../configurations_api.rb'
   require_relative '../blueprint_api.rb'
   require_relative '../system_preferences.rb'
-  
+
   require_relative '../memory_statistics.rb'
-  
+
   require_relative 'container_config_loader.rb'
   include ContainerConfigLoader
-  
+
   require_relative 'available_services.rb'
   include AvailableServices
-  
+
   require_relative 'service_configurations.rb'
   include ServiceConfigurations
-  
+
   require_relative 'service_hash_checks.rb'
   include ServiceHashChecks
-  
-  require_relative 'engine_operations.rb'  
+
+  require_relative 'engine_operations.rb'
   include EnginesOperations
-  
-  require_relative 'engine_service_operations.rb'  
-    include EngineServiceOperations
-    
-  require_relative 'container_operations.rb'  
+
+  require_relative 'engine_service_operations.rb'
+  include EngineServiceOperations
+
+  require_relative 'container_operations.rb'
   include ContainerOperations
-  
-  require_relative 'service_operations.rb' 
+
+  require_relative 'service_operations.rb'
   include ServiceOperations
-  
+
   require_relative 'domain_operations.rb'
   include DomainOperations
-  
+
   require_relative 'subservice_operations.rb'
   include SubserviceOperations
-  
+
   require_relative 'orphan_operations.rb'
   include OrphanOperations
-  
+
   require_relative 'system_operations.rb'
   include SystemOperations
-  
+
   require_relative 'result_checks.rb'
-    include ResultChecks 
-    
+  include ResultChecks
+
   require_relative 'domain_operations.rb'
   include DomainOperations
-  
+
   require_relative 'registry_trees.rb'
   include RegistryTrees
-    
+
   require_relative 'engines_core_preferences.rb'
   include  EnginesCorePreferences
   require_relative 'service_manager_operations.rb'
-   include ServiceManagerOperations
-  
+  include ServiceManagerOperations
+
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
@@ -86,33 +86,31 @@ class EnginesCore < ErrorsApi
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
   end
-  
-  attr_reader :container_api, :service_api
 
+  attr_reader :container_api, :service_api
 
   def taken_hostnames
     query= {}
-      query[:type_path]='nginx'
-      query[:publisher_namespace] = "EnginesSystem"
-        
-      
+    query[:type_path]='nginx'
+    query[:publisher_namespace] = "EnginesSystem"
+
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
     return sites if hashes == false
-    hashes.each do |service_hash|   
+    hashes.each do |service_hash|
       sites.push(service_hash[:variables][:fqdn])
     end
     return sites
-    rescue StandardError => e
-       log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
-  
+
   def api_shutdown
     p :BEING_SHUTDOWN
- 
+
     @registry_handler.api_shutdown
   end
-  
+
   def get_registry_ip
     @registry_handler.get_registry_ip
   end
@@ -141,13 +139,10 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-
-
   def service_manager
     @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
     return @service_manager
   end
-
 
   #@returns [Boolean]
   # whether pulled or no false if no new image
@@ -155,19 +150,13 @@ class EnginesCore < ErrorsApi
     test_docker_api_result(@docker_api.pull_image(image_name))
   end
 
-
-   def docker_image_free_space
-      @system_api.docker_image_free_space
-   end
- 
+  def docker_image_free_space
+    @system_api.docker_image_free_space
+  end
 
   def clean_up_dangling_images
     test_docker_api_result(@docker_api.clean_up_dangling_images)
   end
-
-
-
-  
 
   protected
 
@@ -175,6 +164,5 @@ class EnginesCore < ErrorsApi
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown
   end
-
 
 end

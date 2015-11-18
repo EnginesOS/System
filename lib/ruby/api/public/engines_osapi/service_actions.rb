@@ -114,6 +114,6 @@ module ServiceActions
    rescue StandardError => e
      log_exception_and_fail('Get Service Memory Statistics', e)
    end
-   
+
 
 end

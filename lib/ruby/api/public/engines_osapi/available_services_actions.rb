@@ -1,5 +1,4 @@
 module AvailableServicesActions
-
   # @returns list of availible
   def list_avail_services_for(object)
     @core_api.list_avail_services_for(object)
@@ -9,15 +8,12 @@ module AvailableServicesActions
     @core_api.load_avail_services_for_type(type)
   end
 
-
   # @ retruns [SoftwareServiceDefinition]
   # for type_path [String] and service_provider[String]
   def get_service_definition(type_path, service_provider)
     SoftwareServiceDefinition.find(type_path, service_provider)
   end
 
-
- 
   # @ retruns [SoftwareServiceDefinition]
   # for params :type_path :publisher_namespace
   def software_service_definition(params)
@@ -25,7 +21,7 @@ module AvailableServicesActions
     return retval if retval.nil? == false
     failed(params[:type_path] + ':' + params[:publisher_namespace], @core_api.last_error, 'get software_service_definition')
   end
-  
+
   def load_avail_services_for_type(typename)
     @core_api.load_avail_services_for_type(typename)
   end

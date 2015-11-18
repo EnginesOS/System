@@ -7,7 +7,7 @@ require_relative '../first_run_wizard.rb'
 
 class EnginesOSapi
   require_relative '../build_controller.rb'
-  
+
   require_relative 'available_services_actions.rb'
   include AvailableServicesActions
   require_relative 'certificate_actions.rb'
@@ -48,7 +48,6 @@ class EnginesOSapi
   require_relative 'update_actions.rb'
   include UpdateActions
 
-
   attr_reader :core_api, :last_error
   def shutdown(why)
 
@@ -74,18 +73,15 @@ class EnginesOSapi
     failed('Exception', e_str, cmd)
   end
 
- 
   def reserved_engine_names
     names = list_apps
     names.concat(list_services)
     names.concat(list_system_services)
   end
 
-
   def reserved_hostnames
     @core_api.taken_hostnames
   end
-
 
   def set_first_run_parameters(params_from_gui)
     params = params_from_gui.dup
@@ -106,18 +102,13 @@ class EnginesOSapi
     log_exception_and_fail('last_api_error', e)
   end
 
- 
+  #  # not needed as inherited ???
+  #  def read_state(container)
+  #    container.read_state
+  #  rescue StandardError => e
+  #    log_exception_and_fail('read_state', e)
+  #  end
 
-#  # not needed as inherited ???
-#  def read_state(container)
-#    container.read_state
-#  rescue StandardError => e
-#    log_exception_and_fail('read_state', e)
-#  end
-
- 
-
-  
   # private ?
   # protected if protected static cant call
   def success(item_name, cmd)
@@ -140,16 +131,10 @@ class EnginesOSapi
     EnginesOSapiResult.failed(item_name, mesg, cmd)
   end
 
-
-
- 
-
-
   #
   #  def list_services_for(object)
   #    return @core_api.list_services_for(object)
   #  end
-
 
   def get_managed_service_details_for(service_function) # WTF
     service = {}
@@ -159,6 +144,5 @@ class EnginesOSapi
     end
     service
   end
-
 
 end
