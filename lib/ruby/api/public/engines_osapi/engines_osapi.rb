@@ -18,8 +18,8 @@ class EnginesOSapi
   include DomainnameActions
   require_relative 'engine_actions.rb'
   include EngineActions
-  require_relative 'engine_builder_actions.rb'
-  include EngineBuilderActions
+  require_relative 'engine_build_actions.rb'
+  include EngineBuildActions
 
   require_relative 'engines_system_info.rb'
   include EnginesSystemInfo
@@ -38,7 +38,7 @@ class EnginesOSapi
   require_relative 'subservice_actions.rb'
   include SubserviceActions
   require_relative 'system_control_actions.rb'
-  include systemControlActions
+  include SystemControlActions
   require_relative 'system_key_actions.rb'
   include SystemKeyActions
   require_relative 'system_metrics.rb'
