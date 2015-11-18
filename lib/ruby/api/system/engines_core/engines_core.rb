@@ -42,7 +42,7 @@ class EnginesCore < ErrorsApi
   include EnginesOperations
   
   require_relative 'engine_service_operations.rb'  
-    include EnginesOperations
+    include EngineServiceOperations
     
   require_relative 'container_operations.rb'  
   include ContainerOperations
