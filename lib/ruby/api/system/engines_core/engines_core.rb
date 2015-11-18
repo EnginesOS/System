@@ -71,8 +71,8 @@ class EnginesCore < ErrorsApi
   require_relative 'registry_trees.rb'
   include RegistryTrees
     
-  require_relative 'system_preferences.rb'
-  include  SystemPreferences
+  require_relative 'engines_core_preferences.rb'
+  include  EnginesCorePreferences
   
   
   def initialize
