@@ -510,6 +510,7 @@ class EngineBuilder < ErrorsApi
        f.puts(restart_reason)
        f.close
        File.chmod(0770,restart_flag_file)
+        
   end
  def log_error_mesg(m,o)
    log_build_errors(m.to_s + o.to_s)

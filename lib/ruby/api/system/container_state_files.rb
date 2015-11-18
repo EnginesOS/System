@@ -20,7 +20,7 @@ class ContainerStateFiles
     return self.container_state_dir(container) + '/run/flags/'
   end
   
-  def self.restart_flag_file(container)
+  def self.restart_flag_file(container) 
     return self.container_flag_dir(container) + 'restart_required'
   end
   
