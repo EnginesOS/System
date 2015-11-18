@@ -69,8 +69,10 @@ class EnginesCore < ErrorsApi
   include DomainOperations
   
   require_relative 'registry_trees.rb'
-    include RegistryTrees
+  include RegistryTrees
     
+  require_relative 'system_preferences.rb'
+  include  SystemPreferences
   
   
   def initialize
