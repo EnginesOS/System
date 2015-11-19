@@ -38,8 +38,11 @@ class RegistryHandler < ErrorsApi
     def get_registry_ip
       return @registry_ip unless @registry_ip.is_a?(FalseClass)
       registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
-      state = registry_service.read_state      
-        return registry_service.get_ip_str if state == "running"
+      state = registry_service.read_state
+      if state == "running"  
+         @registry_ip  = registry_service.get_ip_str 
+        return  @registry_ip 
+      end
         log_error_mesg("registry down: " + state.to_s, registry_service)
       case state
       when 'nocontainer'
