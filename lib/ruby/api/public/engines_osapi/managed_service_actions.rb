@@ -66,7 +66,7 @@ module ManagedServiceActions
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def attach_service(params)
-    return success(params[:parent_engine], 'attach service') if @core_api.attach_service(params)
+    return success(params[:parent_engine], 'attach service') if @core_api.create_and_register_service(params)
     failed(params[:parent_engine], @core_api.last_error, params[:parent_engine])
   end
 
