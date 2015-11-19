@@ -29,24 +29,17 @@ module ServiceOperations
     service_manager.get_active_persistant_services(params)
   end
 
-  def add_service(service_hash)
-    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
-    ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
-    return log_error_mesg('Service Hash missing details',service_hash) unless check_engine_service_hash(service_hash)
-       return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
-       return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
-return true
-  end
+  
   
   
   
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
-  def attach_service(service_hash)
+  def create_and_register_managed_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
     p :attach_ing
     p service_hash  
-    return log_error_mesg('register failed', service_hash) unless add_service(service_hash)
+    return log_error_mesg('register failed', service_hash) unless create_and_register_service(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       engine = loadManagedEngine(service_hash[:parent_engine])
       return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
@@ -92,6 +85,15 @@ return true
     check_sm_result(service_manager.update_attached_service(service_hash))
   end
 
+  protected
+  def create_and_register_service(service_hash)
+      service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
+      ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+      return log_error_mesg('Service Hash missing details',service_hash) unless check_engine_service_hash(service_hash)
+         return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
+         return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.create_and_register_service(service_hash))
+  return true
+    end
   
   
 end

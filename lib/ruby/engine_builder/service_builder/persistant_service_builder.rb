@@ -18,6 +18,7 @@ module PersistantServiceBuilder
     if existing.is_a?(Hash)
       service_hash = existing
       service_hash[:shared] = true
+      service_hash[:fresh] = false
       @first_build = false
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
@@ -43,7 +44,7 @@ module PersistantServiceBuilder
     p :with_env
     p service_hash
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-    if @core_api.add_service(service_hash)
+    if @core_api.create_and_register_service(service_hash)
       @attached_services.push(service_hash)
     else
       return log_error_mesg('Core Failed to attach ' + @core_api.last_error, service_hash)

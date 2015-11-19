@@ -41,7 +41,7 @@ module DomainOperations
      else
        service_hash[:variables][:ip_type] = 'gw'
        end
-      return true if @service_manager.add_service(service_hash)
+      return true if @service_manager.create_and_register_service(service_hash)
       @last_error = @service_manager.last_error
       return false
     rescue StandardError => e
@@ -71,7 +71,7 @@ module DomainOperations
       service_hash[:variables][:domain_name] = params[:domain_name]
       service_hash[:service_handle] = params[:domain_name] + '_dns'
       service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-      return @service_manager.register_non_persistant_service(service_hash) if @service_manager.add_service(service_hash)
+      return @service_manager.register_non_persistant_service(service_hash) if @service_manager.create_and_register_service(service_hash)
       return false
     rescue StandardError => e
       SystemUtils.log_exception(e)

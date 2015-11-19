@@ -13,5 +13,20 @@ module OrphanOperations
   rescue StandardError => e
     log_exception(e)
   end
-
+  def  match_orphan_service(service_hash)
+     service_manager.match_orphan_service(service_hash)
+   end
+   
+   def rollback_orphaned_service(service_hash)
+     service_manager.rollback_orphaned_service(service_hash)
+   end
+   
+ 
+   def  retrieve_orphan(service_hash)
+     service_manager.retrieve_orphan(service_hash)
+   end
+   
+   def release_orphan(service_hash)
+     service_manager.release_orphan(service_hash)
+   end
 end
