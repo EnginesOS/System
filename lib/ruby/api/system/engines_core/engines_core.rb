@@ -1,25 +1,24 @@
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
+
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service.rb'
-require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
+
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
-require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
+
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
-require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
+
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/api/public/build_controller.rb'
-  require '/opt/engines/lib/ruby/system/dnshosting.rb'
-  require_relative '../containers/container_api.rb'
-  require_relative '../containers/service_api.rb'
-  require_relative '../docker/docker_api.rb'
-  require_relative '../engines_system/engines_system.rb'
+  
+
   # require_relative '../dns_api.rb'
-  require_relative '../registry_handler.rb'
+
   require_relative '../configurations_api.rb'
   require_relative '../blueprint_api.rb'
   require_relative '../system_preferences.rb'
@@ -86,6 +85,14 @@ class EnginesCore < ErrorsApi
   require_relative 'template_operations.rb'
    include TemplateOperations
    
+  require_relative '../containers/container_api.rb'
+  require_relative '../containers/service_api.rb'
+  require_relative '../docker/docker_api.rb'
+  require_relative '../engines_system/engines_system.rb'
+  require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
+  require_relative '../registry_handler.rb'
+  
+  
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })

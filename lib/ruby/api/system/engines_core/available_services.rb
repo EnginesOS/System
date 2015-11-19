@@ -1,7 +1,7 @@
 module AvailableServices
   
   require_relative 'service_manager_access.rb'
-  
+  require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
   
   def load_service_definition(filename)
     

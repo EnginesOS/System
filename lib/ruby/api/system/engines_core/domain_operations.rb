@@ -1,4 +1,5 @@
 module DomainOperations
+  require '/opt/engines/lib/ruby/system/dnshosting.rb'
   def add_domain_service(params)
 
     return true if add_domain(params)

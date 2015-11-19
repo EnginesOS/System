@@ -1,5 +1,5 @@
 module RegistryOperations
-  
+  require_relative '../registry_handler.rb'
   def get_registry_ip
     @registry_handler.get_registry_ip
   end
