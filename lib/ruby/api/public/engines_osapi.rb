@@ -21,7 +21,7 @@ class EnginesOSapi
   require_relative 'engines_osapi/engine_build_actions.rb'
   include EngineBuildActions
 
-  require_relative 'engines_osapi/engengines_osapi/ines_system_info.rb'
+  require_relative 'engines_osapi/engines_system_info.rb'
   include EnginesSystemInfo
   require_relative 'engines_osapi/fetch_trees.rb'
   include FetchTrees
@@ -33,7 +33,7 @@ class EnginesOSapi
   include PreferenceActions
   require_relative 'engines_osapi/service_actions.rb'
   include ServiceActions
-  require_relative 'service_configuration_actions.rb'
+  require_relative 'engines_osapi/service_configuration_actions.rb'
   include ServiceConfigurationActions
   require_relative 'engines_osapi/subservice_actions.rb'
   include SubserviceActions
