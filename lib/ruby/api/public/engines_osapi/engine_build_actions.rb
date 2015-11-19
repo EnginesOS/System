@@ -7,7 +7,7 @@ module EngineBuildActions
     engine = build_controller.engine
     #return engine if engine.is_a?(EnginesOSapiResult)
     #return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless !engine.nil? && engine.is_active?
-    return success(params[:engine_name], 'Building Started') if @build_thread.alive
+    return success(params[:engine_name], 'Building Started') if @build_thread.alive?
     return failed(params[:engine_name], 'Build Failed to start')  
   end
 
@@ -17,8 +17,13 @@ module EngineBuildActions
     #    engine = build_controller.engine
     #    return engine if engine.is_a?(EnginesOSapiResult)
     #    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
-  return success(host.to_s + '.' + domain_name.to_s, 'Start of Build for Engine ' ) if @build_thread.alive
+  return success(host.to_s + '.' + domain_name.to_s, 'Start of Build for Engine ' ) if @build_thread.alive?
   return failed(params[:engine_name], 'Build Failed to start')  
+  end
+  
+  def abort_build
+    return true unless @build_thread.alive?
+    
   end
 
   def rebuild_engine_container(engine_name)
