@@ -145,7 +145,7 @@ class ContainerApi < ErrorsApi
   def register_with_dns(container)
     service_hash = SystemUtils.create_dns_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
-    return @engines_core.attach_service(service_hash)
+    return @engines_core.create_and_register_service(service_hash)
   end
 
   # IS this really used ?
@@ -170,7 +170,7 @@ class ContainerApi < ErrorsApi
 
   def add_nginx_service(container)
     service_hash = SystemUtils.create_nginx_service_hash(container)
-    @engines_core.attach_service(service_hash)
+    @engines_core.create_and_register_service(service_hash)
   end
 
   private
