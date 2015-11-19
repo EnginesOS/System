@@ -83,7 +83,9 @@ class EnginesCore < ErrorsApi
   require_relative 'registry_operations.rb'
   include RegistryOperations
   
-
+  require_relative 'template_operations.rb'
+   include TemplateOperations
+   
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
