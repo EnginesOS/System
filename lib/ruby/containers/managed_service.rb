@@ -195,6 +195,8 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
     result = SystemUtils.execute_command(cmd)
+    p :add_cons
+    p cmd
     return true if result[:result] == 0
     log_error_mesg('Failed add_consumer_to_service',result)
   end
