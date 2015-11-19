@@ -41,7 +41,7 @@ if test -f /home/_init.sh
 	
 if test -f /engines/var/run/flags/restart_required 
  then
-  rm -r /engines/var/run/flags/restart_required 
+  rm -rf /engines/var/run/flags/restart_required 
  fi
 
 #drop for custom start as if custom start no blocking then it is pre running

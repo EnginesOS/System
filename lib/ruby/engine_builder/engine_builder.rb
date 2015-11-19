@@ -501,12 +501,13 @@ class EngineBuilder < ErrorsApi
 
   def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
+    # FixME this should be elsewhere
     restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
     f = File.new(restart_flag_file,'w+')
     f.puts(restart_reason)
     f.close
-    File.chmod(0770,restart_flag_file)
-
+    File.chmod(0660,restart_flag_file)
+    FileUtils.chown(nil,'containers')
   end
 
   def log_error_mesg(m,o)
