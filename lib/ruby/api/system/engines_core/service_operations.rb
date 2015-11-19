@@ -42,8 +42,8 @@ module ServiceOperations
     return log_error_mesg('register failed', service_hash) unless create_and_register_managed_service(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       engine = loadManagedEngine(service_hash[:parent_engine])
-      return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
-      engine.add_volume(service_hash)
+      #return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
+      engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
     end
     return true
   rescue StandardError => e
