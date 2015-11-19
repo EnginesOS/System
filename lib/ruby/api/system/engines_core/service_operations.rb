@@ -29,6 +29,9 @@ module ServiceOperations
     service_manager.get_active_persistant_services(params)
   end
 
+  def add_service(service_hash)
+    attach_service(service_hash)
+  end
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def attach_service(service_hash)
