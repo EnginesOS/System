@@ -35,7 +35,7 @@ module ServiceOperations
     return log_error_mesg('Service Hash missing details',service_hash) unless check_engine_service_hash(service_hash)
        return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
        return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
-
+return true
   end
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess

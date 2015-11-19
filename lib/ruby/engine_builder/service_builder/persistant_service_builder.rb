@@ -46,7 +46,7 @@ module PersistantServiceBuilder
     if @core_api.add_service(service_hash)
       @attached_services.push(service_hash)
     else
-      return log_error_mesg('Failed to attach ' + @core_api.last_error, service_hash)
+      return log_error_mesg('Core Failed to attach ' + @core_api.last_error, service_hash)
     end
     return true
   end
