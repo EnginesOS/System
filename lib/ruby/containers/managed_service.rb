@@ -42,7 +42,10 @@ class ManagedService < ManagedContainer
     service_hash[:persistant] = @persistant
     result = false
      # add/create persistant if fresh == true on not at all or if running create for no persistant
-    if @persistant == true || is_running?
+    return log_error_mesg('service not running' ,self) unless is_running?
+    unless @persistant
+      result = add_consumer_to_service(service_hash)
+    else 
       if service_hash[:fresh] == false || ! service_hash.key?(:fresh)
         result = true
       else
@@ -50,6 +53,7 @@ class ManagedService < ManagedContainer
         result = add_consumer_to_service(service_hash)
       end
     end
+    
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
     return result unless result
