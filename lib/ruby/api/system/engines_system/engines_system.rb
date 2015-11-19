@@ -32,7 +32,7 @@ class SystemApi < ErrorsApi
   end  
 
   
-  def docker_image_free_space
+  def system_image_free_space
     result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@172.17.42.1 /opt/engines/bin/free_docker_lib_space.sh') 
     return -1 if result[:result] != 0   
     return result[:stdout].to_i

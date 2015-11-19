@@ -15,9 +15,22 @@ module ServiceManagerOperations
     service_manager.get_service_configuration(service_param)
   end
 
-  def check_sm_result(result)
-    @last_error = service_manager.last_error.to_s if result.nil? || result.is_a?(FalseClass)
-    return result
-  end
+
+  
+  def taken_hostnames
+      query= {}
+      query[:type_path]='nginx'
+      query[:publisher_namespace] = "EnginesSystem"
+  
+      sites = []
+      hashes = service_manager.all_engines_registered_to('nginx')
+      return sites if hashes == false
+      hashes.each do |service_hash|
+        sites.push(service_hash[:variables][:fqdn])
+      end
+      return sites
+    rescue StandardError => e
+      log_exception(e)
+    end
 
 end
