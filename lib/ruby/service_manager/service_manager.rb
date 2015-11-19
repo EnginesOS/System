@@ -34,7 +34,7 @@ class ServiceManager  < ErrorsApi
   
 
   
-  include RegistryClientAccess
+  include RegistryClient
   include ServiceConfigurations
   include RegistryTree
   include AttachedServices
