@@ -5,7 +5,7 @@ class ServiceApi < ContainerApi
 
   #({service_name: @container_name})
   def get_service_configurations_hashes(service_hash)
-  @engines_core.get_service_configurations_hashes
+  @engines_core.get_service_configurations_hashes(service_hash)
 end
   #
   #  def load_and_attach_persistant_services(service)
