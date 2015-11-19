@@ -101,10 +101,7 @@ class EnginesCore < ErrorsApi
   #why readers on these apis
   attr_reader :container_api, :service_api
   
-  def service_manager
-     @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
-     return @service_manager
-   end
+
    
   def api_shutdown
     p :BEING_SHUTDOWN

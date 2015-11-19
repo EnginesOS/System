@@ -1,7 +1,7 @@
 module ServiceManagerOperations
   
 
-  attr_reader :service_manager
+  require_relative 'service_manager_access.rb'
   
   def register_non_persistant_services(engine)
     service_manager.register_non_persistant_services(engine)

@@ -1,4 +1,7 @@
 module ServiceOperations
+  
+  require_relative 'service_manager_access.rb'
+  
   def signal_service_process(pid, sig, name)
     clear_error
     container = loadManagedService(name)

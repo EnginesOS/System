@@ -1,5 +1,10 @@
 module AvailableServices
+  
+  require_relative 'service_manager_access.rb'
+  
+  
   def load_service_definition(filename)
+    
     yaml_file = File.open(filename)
     SoftwareServiceDefinition.from_yaml(yaml_file)
   rescue StandardError => e
