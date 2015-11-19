@@ -507,7 +507,7 @@ class EngineBuilder < ErrorsApi
     f.puts(restart_reason)
     f.close
     File.chmod(0660,restart_flag_file)
-    FileUtils.chown(nil,'containers')
+    FileUtils.chown(nil,'containers',restart_flag_file)
   end
 
   def log_error_mesg(m,o)
