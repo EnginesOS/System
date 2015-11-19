@@ -43,6 +43,10 @@ module ServiceManagerOperations
     service_manager.release_orphan(service_hash)
   end
   
+  def get_service_entry(service_hash)
+    service_manager.get_service_entry(service_hash)
+  end
+  
   def taken_hostnames
       query= {}
       query[:type_path]='nginx'
