@@ -6,7 +6,7 @@ def required_services_are_running?
    service_name = SoftwareServiceDefinition.get_software_service_container_name(service_hash)
    p :checking_service
    p service_name.to_s
-    return service_not_running(service_name) unless @service_manager.is_service_running?(service_name)
+    return service_not_running(service_name) unless @core_api.is_service_running?(service_name)
   end
   return true
 end

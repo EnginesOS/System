@@ -16,14 +16,14 @@ end
   
   def roll_back_new_service(service_hash)
     service_hash[:remove_all_data] = true
-    @service_manager.delete_service(service_hash) 
+    @core_api.delete_service(service_hash) 
   end
   
   def roll_back_orphan(service_hash)
-    @service_manager.rollback_orphaned_service(service_hash)
+    @core_api.rollback_orphaned_service(service_hash)
   end
   
   def roll_back_shared(service_hash)
-    return
+    @core_api.roll_back_shared(service_hash)
   end
 end

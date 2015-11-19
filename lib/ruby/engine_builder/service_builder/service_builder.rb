@@ -14,9 +14,9 @@ class ServiceBuilder < ErrorsApi
   require_relative 'persistant_service_builder.rb'
   include PersistantServiceBuilder
     
-  def initialize(service_manager, templater, engine_name, attached_services)
+  def initialize(core_api, templater, engine_name, attached_services)
     @engine_name = engine_name
-    @service_manager = service_manager
+    @core_api = core_api
     @templater = templater
     @attached_services =  attached_services 
     @volumes = {}
