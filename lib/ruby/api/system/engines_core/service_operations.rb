@@ -35,11 +35,11 @@ module ServiceOperations
   
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
-  def create_and_register_managed_service(service_hash)
+  def create_and_register_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
     p :attach_ing
     p service_hash  
-    return log_error_mesg('register failed', service_hash) unless create_and_register_service(service_hash)
+    return log_error_mesg('register failed', service_hash) unless create_and_register_managed_service(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       engine = loadManagedEngine(service_hash[:parent_engine])
       return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)
@@ -86,7 +86,7 @@ module ServiceOperations
   end
 
   protected
-  def create_and_register_service(service_hash)
+  def create_and_register_managed_service(service_hash)
       service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
       ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
       return log_error_mesg('Service Hash missing details',service_hash) unless check_engine_service_hash(service_hash)
