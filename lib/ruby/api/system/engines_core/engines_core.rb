@@ -95,10 +95,17 @@ class EnginesCore < ErrorsApi
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
+    @service_manager = service_manager
   end
 
-  attr_reader :container_api, :service_api
-
+  #why readers on these apis
+  attr_reader :container_api, :service_api, :service_manager
+  
+  def service_manager
+     @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
+     return @service_manager
+   end
+   
   def api_shutdown
     p :BEING_SHUTDOWN
 
@@ -124,10 +131,6 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-  def service_manager
-    @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
-    return @service_manager
-  end
 
  
 

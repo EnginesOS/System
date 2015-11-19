@@ -1,4 +1,8 @@
 module ServiceManagerOperations
+  
+
+ 
+  
   def register_non_persistant_services(engine)
     service_manager.register_non_persistant_services(engine)
   end
