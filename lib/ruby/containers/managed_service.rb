@@ -43,7 +43,7 @@ class ManagedService < ManagedContainer
     result = false
      # add/create persistant if fresh == true on not at all or if running create for no persistant
     if @persistant == true || is_running?
-      if service_hash[:fresh] == false || service_hash.key?(:fresh)
+      if service_hash[:fresh] == false || ! service_hash.key?(:fresh)
         result = true
       else
         service_hash[:fresh] = true  if service_hash[:persistant] == true 
