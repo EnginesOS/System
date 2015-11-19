@@ -1,7 +1,7 @@
 module ServiceManagerOperations
   
 
- 
+  attr_reader :service_manager
   
   def register_non_persistant_services(engine)
     service_manager.register_non_persistant_services(engine)
@@ -18,7 +18,7 @@ module ServiceManagerOperations
   def get_service_configuration(service_param)
     service_manager.get_service_configuration(service_param)
   end
-
+  
 
   
   def taken_hostnames

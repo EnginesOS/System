@@ -99,7 +99,7 @@ class EnginesCore < ErrorsApi
   end
 
   #why readers on these apis
-  attr_reader :container_api, :service_api, :service_manager
+  attr_reader :container_api, :service_api
   
   def service_manager
      @service_manager = ServiceManager.new(self) unless @service_manager.is_a?(ServiceManager)
