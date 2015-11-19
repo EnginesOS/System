@@ -41,10 +41,12 @@ class ManagedService < ManagedContainer
     return log_error_mesg('add consumer passed nil service_hash ','') unless service_hash.is_a?(Hash)
     service_hash[:persistant] = @persistant
     result = false
+     # add/create persistant if fresh == true on not at all or if running create for no persistant
     if @persistant == true || is_running?
-      if service_hash[:fresh] == false
+      if service_hash[:fresh] == false || service_hash.key?(:fresh)
         result = true
       else
+        service_hash[:fresh] = true  if service_hash[:persistant] == true 
         result = add_consumer_to_service(service_hash)
       end
     end
