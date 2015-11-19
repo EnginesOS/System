@@ -1,4 +1,5 @@
 module EngineBuildActions
+  require_relative '../build_controller.rb'
   # Build stuff
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
