@@ -40,6 +40,7 @@ class ManagedService < ManagedContainer
   def add_consumer(service_hash)
     return log_error_mesg('add consumer passed nil service_hash ','') unless service_hash.is_a?(Hash)
     service_hash[:persistant] = @persistant
+    result = false
     if @persistant == true || is_running?
       if service_hash[:fresh] == false
         result = true
