@@ -79,8 +79,10 @@ class EnginesCore < ErrorsApi
 
   require_relative 'docker_operations.rb'
   include DockerOperations
+  
   require_relative 'registry_operations.rb'
-  include ResgistryOperations
+  include RegistryOperations
+  
 
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
