@@ -62,7 +62,7 @@ class EngineBuilder < ErrorsApi
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
-    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
   end

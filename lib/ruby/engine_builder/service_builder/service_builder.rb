@@ -31,7 +31,7 @@ class ServiceBuilder < ErrorsApi
     return log_error_mesg('Failed to load service definition for ', service_hash) if service_def.nil?
     next if service_def[:persistant]
     service_hash = ServiceDefinitions.set_top_level_service_params(service_hash, @engine_name)
-    return log_error_mesg('Failed to Attach ', service_hash) unless @service_manager.add_service(service_hash)
+    return log_error_mesg('Failed to Attach ', service_hash) unless @core_api.add_service(service_hash)
     @attached_services.push(service_hash)
   end
   return true
