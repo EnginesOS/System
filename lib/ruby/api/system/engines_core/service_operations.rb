@@ -37,6 +37,9 @@ module ServiceOperations
        return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
 return true
   end
+  
+  
+  
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def attach_service(service_hash)

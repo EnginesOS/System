@@ -16,7 +16,7 @@ end
   
   def roll_back_new_service(service_hash)
     service_hash[:remove_all_data] = true
-    @core_api.delete_service(service_hash) 
+    @core_api.dettach_service(service_hash)
   end
   
   def roll_back_orphan(service_hash)
