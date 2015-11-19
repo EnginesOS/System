@@ -7,8 +7,7 @@ module ServiceWriters
   #@ return true if successful or false if failed
   def add_service(service_hash)
     clear_error
-    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
-    ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
+   
     test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
     if ServiceDefinitions.is_service_persistant?(service_hash)
