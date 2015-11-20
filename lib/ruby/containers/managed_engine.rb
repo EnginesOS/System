@@ -17,7 +17,7 @@ class ManagedEngine < ManagedContainer
     @data_gid = build_params[:data_gid]
 
     @deployment_type = runtime_params.deployment_type
-
+    @host_network=false
     @web_port = build_params[:web_port]
     @last_result = ''
     @container_api = core_api

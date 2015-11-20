@@ -1,6 +1,7 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
   
+
   
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
@@ -11,7 +12,7 @@ class Container < ErrorsApi
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
-  
+
   attr_reader :container_id,\
                :memory,\
                :container_name,\
@@ -20,6 +21,8 @@ class Container < ErrorsApi
                :volumes,\
                :mapped_ports,\
                :environments
+               
+               
   attr_accessor :last_error,\
                 :container_api,
                 :last_result
@@ -61,7 +64,11 @@ rescue StandardError => e
  log_exception(e)
   end
          
-   
+ def on_host_net?
+  return true if @host_network.is_a?(TrueClass)
+  return false 
+ end
+ 
   def docker_info
      collect_docker_info if @docker_info_cache.nil?   
      return false if @docker_info_cache.is_a?(FalseClass)  
