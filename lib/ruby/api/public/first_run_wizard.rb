@@ -136,7 +136,7 @@ class FirstRunWizard <ErrorsApi
     service_param[:variables][:person] = params[:ssl_person_name]
     service_param[:variables][:domainname] = params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
-    return true if @api.attach_service(service_param)
+    return true if @api.create_and_register_service(service_param)
     return log_error_mesg('create_default_cert ', @api.last_error)
   end
 end
