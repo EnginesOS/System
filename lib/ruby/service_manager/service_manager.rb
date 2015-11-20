@@ -22,7 +22,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'load_container_services.rb'
   require_relative 'attached_services.rb'
   require_relative 'service_writers.rb'
-  require_relative 'service_configurations.rb'
+  require_relative 'managed_service_configurations.rb'
   require_relative 'registry_client.rb'
   
 #  attr_accessor :system_registry_client
@@ -35,7 +35,7 @@ class ServiceManager  < ErrorsApi
 
   
   include RegistryClient
-  include ServiceConfigurations
+  include ManagedServiceConfigurations
   include RegistryTree
   include AttachedServices
   include OrphanServices
