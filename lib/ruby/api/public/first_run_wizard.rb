@@ -12,7 +12,7 @@ class FirstRunWizard <ErrorsApi
     return log_error_mesg('Fail to setup mysql password ', api.last_error) unless mysql_password_configurator(@first_run_params[:mysql_password])
     return log_error_mesg('Fail to setup console password ', api.last_error) unless console_password_configurator(@first_run_params[:console_password])
     domain_hash = get_domain_params(@first_run_params)
-    return log_error_mesg('Fail to add domain ' + api.last_error, domain_hash) unless api.add_domain(domain_hash)
+    return log_error_mesg('Fail to add domain ' + api.last_error, domain_hash) unless api.add_domain_service(domain_hash)
     domain_hash = {}
     domain_hash[:default_domain] = @first_run_params[:default_domain]
     return log_error_mesg('Fail to set default domain ' + api.last_error, domain_hash.to_s) unless api.set_default_domain(domain_hash)
