@@ -9,6 +9,13 @@ rm -f /opt/engines/run/system/flags/building_params
 cp /etc/os-release /opt/engines/etc/os-release-host
 #rm -f /opt/engines/run/system/flags/
 /opt/engines/bin/eservice start dns
+
+	grep dhcp /etc/network/interfaces
+	 if test $? -eq 0
+	  then
+	 		/opt/engines/scripts/_refresh_local_hosted_domains.sh `/opt/engines/bin/get_ip.sh`
+	  fi
+
 /opt/engines/bin/eservices check_and_act 
 
 /opt/engines/bin/engines check_and_act 
