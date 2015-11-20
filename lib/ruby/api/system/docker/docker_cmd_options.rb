@@ -23,9 +23,9 @@ module DockerCmdOptions
     return e.to_s
   end
   
-    def self.get_networking_args(container)          
+    def self.get_networking_args(container)             
        return '-h ' + container.hostname +  ' --dns-search=' + SystemConfig.internal_domain + ' ' if container.on_host_net? == false
-       return ' -net=host '       
+       return ' --net=host '       
     end
     
     private
@@ -66,6 +66,7 @@ module DockerCmdOptions
   end  
 
   def self.get_port_options(container)
+   return  ' '  if container.on_host_net? == true
     eportoption = ''
     if container.mapped_ports
       container.mapped_ports.each do |eport|
