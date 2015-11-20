@@ -95,13 +95,13 @@ class EnginesOSapi
   rescue StandardError => e
     log_exception_and_fail('last_api_error', e)
   end
-
-  #  # not needed as inherited ???
-  #  def read_state(container)
-  #    container.read_state
-  #  rescue StandardError => e
-  #    log_exception_and_fail('read_state', e)
-  #  end
+  
+    # FIXME USED by Engines cmd line need to do differently in there so leave here for the moment
+    def read_state(container)
+      container.read_state
+    rescue StandardError => e
+      log_exception_and_fail('read_state', e)
+    end
 
  
 
