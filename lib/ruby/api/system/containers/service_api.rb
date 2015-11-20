@@ -3,6 +3,9 @@ class ServiceApi < ContainerApi
     @engines_core.get_registered_against_service(params)
   end
 
+  def get_pending_service_configurations_hashes(service_hash)
+    @engines_core.get_pending_service_configurations_hashes(service_hash)
+  end
   #({service_name: @container_name})
   def get_service_configurations_hashes(service_hash)
   @engines_core.get_service_configurations_hashes(service_hash)
