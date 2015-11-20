@@ -23,7 +23,7 @@ module DockerCmdOptions
     return e.to_s
   end
   
-    def get_networking_args(container)          
+    def self.get_networking_args(container)          
        return '-h ' + container.hostname +  ' --dns-search=' + SystemConfig.internal_domain + ' ' if container.on_host_net? == false
        return '-h ' + container.hostname + ' -net=host '       
     end
