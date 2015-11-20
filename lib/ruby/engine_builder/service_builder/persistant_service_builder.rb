@@ -18,12 +18,13 @@ module PersistantServiceBuilder
     if existing.is_a?(Hash)
       service_hash = existing
       service_hash[:shared] = true
+      service_hash[:fresh] = false
       @first_build = false
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
-    elsif @service_manager.match_orphan_service(service_hash) == true #auto orphan pick up
+    elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       service_hash = use_orphan(service_hash)
       @first_build = false
-    elsif @service_manager.service_is_registered?(service_hash) == false
+    elsif @core_api.service_is_registered?(service_hash) == false
       @first_build = true
       service_hash[:fresh] = true
     else # elseif over attach to existing true attached to existing
@@ -43,10 +44,10 @@ module PersistantServiceBuilder
     p :with_env
     p service_hash
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-    if @service_manager.add_service(service_hash)
+    if @core_api.create_and_register_service(service_hash)
       @attached_services.push(service_hash)
     else
-      return log_error_mesg('Failed to attach ' + @service_manager.last_error, service_hash)
+      return log_error_mesg('Core Failed to attach ' + @core_api.last_error, service_hash)
     end
     return true
   end
@@ -73,7 +74,7 @@ module PersistantServiceBuilder
   end
 
   def use_active_service(service_hash, existing_service )
-    s = @service_manager.get_service_entry(existing_service)
+    s = @core_api.get_service_entry(existing_service)
     p :usering_active_Serviec
 
     s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'

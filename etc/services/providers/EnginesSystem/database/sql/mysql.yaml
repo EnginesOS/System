@@ -18,7 +18,7 @@ persistant: true
 exclusive: true
 shareable: true
 service_handle_field: database_name
-image_name: engines/volmanager
+image_name: engines/mysql
 setup_params:
 configurators:
  db_master_pass:

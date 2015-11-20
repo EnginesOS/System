@@ -262,7 +262,7 @@ class EnginesCore < ErrorsApi
     p service_hash
     return false unless check_engine_service_hash(service_hash)
     return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
-    return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.add_service(service_hash))
+    return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.create_and_register_service(service_hash))
         if service_hash[:type_path] == 'filesystem/local/filesystem'       
         engine = loadManagedEngine(service_hash[:parent_engine])
         return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)

@@ -3,7 +3,7 @@ module OrphansServiceBuilder
 def use_orphan(service_hash)
    p :attaching_orphan
     p service_hash
-   service_hash = @service_manager.retrieve_orphan(service_hash)
+   service_hash = @core_api.retrieve_orphan(service_hash)
    p :retrieved_orphan
     p service_hash
    @orphans.push(service_hash.dup) 
@@ -28,7 +28,7 @@ def use_orphan(service_hash)
 
  def release_orphans()
    @orphans.each do |service_hash|
-     @service_manager.release_orphan(service_hash)
+     @core_api.release_orphan(service_hash)
    end
  end
 end

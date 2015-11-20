@@ -35,6 +35,8 @@ class SystemService < ManagedService
   end
 
   def inspect_container
+    p :system_service_inspect_container
+  
     return false  if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       @container_api.inspect_container(self)
@@ -55,6 +57,7 @@ class SystemService < ManagedService
       end
     end
     Thread.new { sleep 3 ; @docker_info = nil }
+    p :system_service_inspected_container
     return @docker_info
   end
     rescue StandardError => e
