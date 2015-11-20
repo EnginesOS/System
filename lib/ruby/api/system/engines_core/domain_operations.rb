@@ -1,5 +1,6 @@
 module DomainOperations
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
+  
   def add_domain_service(params)
 
     return true if add_domain(params)
@@ -24,7 +25,7 @@ module DomainOperations
     
     private 
   
-  def add_domain_service(params)
+  def add_domain(params)
       return false unless DNSHosting.add_domain(params)
       return true unless params[:self_hosted]
       service_hash = {}
