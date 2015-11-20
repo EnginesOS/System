@@ -1,7 +1,7 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
   
-
+  @conf_register_dns = true
   
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
