@@ -9,6 +9,7 @@ last_error:
 memory: '24'
 hostname: avahi
 domain_name: local
+host_network: true
 environments: []
 image: engines/avahi:_Engines_System(release)
 volumes: 
@@ -29,5 +30,5 @@ last_result:
 setState: nocontainer
 nginxored: false
 conf_register_site: false
-conf_register_dns: true
+conf_register_dns: false
 
