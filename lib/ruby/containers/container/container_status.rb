@@ -26,6 +26,7 @@ rescue StandardError => e
     return true if state == 'paused'
       return false
     end
+    
   def is_active?
     state = read_state
     case state
