@@ -1,10 +1,11 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
-require_relative 'container.rb'
+
 
 #require 'objspace' ??
 
 class ManagedContainer < Container
+require_relative 'container.rb'
   
 require_relative 'managed_container/managed_container_controls.rb'
 include ManagedContainerControls
