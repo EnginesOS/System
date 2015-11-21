@@ -36,7 +36,7 @@ module ManagedContainerControls
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
-    tasContainerk_complete
+    task_complete
   rescue StandardError => e
     log_exception(e)
   end
