@@ -77,6 +77,7 @@ module MemoryStatistics
     ret_val.store(:maximum, 0)
     ret_val.store(:current, 0)
      ret_val.store(:limit, 0)
+    return ret_val
   end
   
   
