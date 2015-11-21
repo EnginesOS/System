@@ -1,4 +1,4 @@
-module EngineStatus
+module EngineStatusFlags
   
   def restart_required?(container)
       return File.exist?(ContainerStateFiles.restart_flag_file(container))
