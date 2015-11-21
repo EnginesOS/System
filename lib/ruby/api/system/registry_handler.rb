@@ -1,16 +1,19 @@
 class RegistryHandler < ErrorsApi
   
    def initialize(system_api)
-     @system_api = system_api     
+     @system_api = system_api   
+     @registry_ip = false
    end
    
    # FIXME: take out or get_registry ip ..
    def start
+     @registry_ip = false
      get_registry_ip
    end
    
   def force_registry_restart
       # start in thread in case timeout clobbers
+    @registry_ip = false
     log_error_mesg("Forcing registry restart", nil)
       registry_service = @system_api.loadSystemService('registry')
      return log_error_mesg("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(SystemService)
@@ -33,9 +36,13 @@ class RegistryHandler < ErrorsApi
     end
   
     def get_registry_ip
+      return @registry_ip unless @registry_ip.is_a?(FalseClass)
       registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
-      state = registry_service.read_state      
-        return registry_service.get_ip_str if state == "running"
+      state = registry_service.read_state
+      if state == "running"  
+         @registry_ip  = registry_service.get_ip_str 
+        return  @registry_ip 
+      end
         log_error_mesg("registry down: " + state.to_s, registry_service)
       case state
       when 'nocontainer'
@@ -72,6 +79,7 @@ class RegistryHandler < ErrorsApi
     
   def force_recreate
     log_error_mesg("Forcing registry recreate", nil)
+    @registry_ip = false
      registry_service = @system_api.loadSystemService('registry')
      return log_error_mesg('Fatal Unable to Start Registry Service: ',registry_service.last_error ) if !registry_service.forced_recreate
     wait = 0

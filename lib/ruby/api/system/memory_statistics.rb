@@ -49,6 +49,8 @@ module MemoryStatistics
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
     end
+    return self.empty_container_result  unless container.is_active?
+
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
       path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
@@ -58,9 +60,7 @@ module MemoryStatistics
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
-        ret_val.store(:maximum, 0)
-        ret_val.store(:current, 0)
-        ret_val.store(:limit, 0)
+        ret_val  = self.empty_container_result
       end
     end
     return ret_val
@@ -72,6 +72,15 @@ module MemoryStatistics
     return ret_val
   end
 
+  def self.empty_container_result
+    ret_val = {}
+    ret_val.store(:maximum, 0)
+    ret_val.store(:current, 0)
+     ret_val.store(:limit, 0)
+    return ret_val
+  end
+  
+  
   def self.get_system_memory_info
     ret_val = {}
     proc_mem_info_file = File.open('/proc/meminfo')

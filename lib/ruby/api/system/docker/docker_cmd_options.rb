@@ -3,11 +3,11 @@ module DockerCmdOptions
   def self.container_commandline_args(container)
     environment_options = get_environment_options(container)
     port_options = get_port_options(container)
-    volume_option = get_volume_option(container)
+    volume_option = get_volume_option(container)    
     return false if volume_option == false || environment_options == false || port_options == false
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/start.bash' unless container.conf_self_start
-    commandargs = '-h ' + container.hostname +  ' --dns-search=' + SystemConfig.internal_domain + ' ' \
+    commandargs =  get_networking_args(container) \
     + environment_options + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
@@ -16,13 +16,18 @@ module DockerCmdOptions
     '--name ' + container.container_name + \
     '  -t ' + container.image + ' ' + \
     start_cmd
+    
     return commandargs
   rescue StandardError => e
       SystemUtils.log_exception(e)
     return e.to_s
   end
   
-  
+    def self.get_networking_args(container)             
+       return '-h ' + container.hostname +  ' --dns-search=' + SystemConfig.internal_domain + ' ' if container.on_host_net? == false
+       return ' --net=host '       
+    end
+    
     private
     def self.service_sshkey_local_dir(container)
        '/opt/engines/etc/ssh/keys/services/' + container.container_name
@@ -61,6 +66,7 @@ module DockerCmdOptions
   end  
 
   def self.get_port_options(container)
+   return  ' '  if container.on_host_net? == true
     eportoption = ''
     if container.mapped_ports
       container.mapped_ports.each do |eport|

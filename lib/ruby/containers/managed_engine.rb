@@ -1,5 +1,8 @@
+
 class ManagedEngine < ManagedContainer
+  require '/opt/engines/lib/ruby/containers/managed_container.rb'
   def initialize(build_params, runtime_params , core_api)
+
     @memory = build_params[:memory]
     @hostname = build_params[:host_name]
     @domain_name = build_params[:domain_name]
@@ -15,9 +18,10 @@ class ManagedEngine < ManagedContainer
     @mapped_ports = build_params[:mapped_ports]
     @data_uid = build_params[:data_uid]
     @data_gid = build_params[:data_gid]
-
+    @conf_register_dns = true
+    @conf_zero_conf = true
     @deployment_type = runtime_params.deployment_type
-
+    @host_network=false
     @web_port = build_params[:web_port]
     @last_result = ''
     @container_api = core_api

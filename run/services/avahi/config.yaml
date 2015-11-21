@@ -6,16 +6,18 @@ ctype: service
 persistant: false
 conf_self_start: true
 last_error: 
-memory: '24'
+memory: '32'
 hostname: avahi
 domain_name: local
+host_network: true
+soft_service: true
 environments: []
 image: engines/avahi:_Engines_System(release)
 volumes: 
  configuration: !ruby/object:Volume
   name: ip_file
-  remotepath: "/home/lan_ip"
-  localpath: "/opt/engines/etc/net/ip"
+  remotepath: "/home/net/"
+  localpath: "/opt/engines/etc/net/"
   mapping_permissions: "ro"
 mapped_ports:
 - !ruby/object:WorkPort
@@ -29,5 +31,5 @@ last_result:
 setState: nocontainer
 nginxored: false
 conf_register_site: false
-conf_register_dns: true
+conf_register_dns: false
 

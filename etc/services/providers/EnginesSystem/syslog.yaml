@@ -1,0 +1,40 @@
+--- !ruby/object:SoftwareServiceDefinition
+accepts: 
+- !ruby/object:String  
+  "ManagedEngine"
+- !ruby/object:String    
+  "ManagedService"
+author: Engines
+title: Syslog
+description: "Log destination for engines and services"
+publisher_namespace: EnginesSystem
+type_path: syslog
+service_container: syslog
+immutable: false
+attach_post_build: false
+attach_requires_restart: false
+dedicated: false
+persistant: true
+exclusive: true
+shareable: true
+service_handle_field: container_name
+image_name: engines/syslog
+setup_params:
+consumer_params:
+ log_level:
+  name: log_level
+  label: log_level
+  regex_validator: 
+  tooltip: "Set the level at which to log"
+  field_type: select_single
+  hint: "info|warn|error|crtical"
+  select_collection:
+    - info
+    - warn
+    - error
+    - crtical
+  placeholder: "error"
+  mandatory: true
+  value: false
+  comment: " Set the level at which to log"
+

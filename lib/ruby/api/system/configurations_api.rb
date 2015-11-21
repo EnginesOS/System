@@ -32,7 +32,7 @@ class ConfigurationsApi <ErrorsApi
           ret_val = service.retrieve_configurator(service_param) 
           return log_error_mesg('failed to retrieve configuration', ret_val) unless ret_val.is_a?(Hash)
         else
-          return @core_api.service_manager.get_service_configuration(service_param) 
+          return @core_api.get_service_configuration(service_param) 
         end
        
        return ret_val

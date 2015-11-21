@@ -62,7 +62,7 @@ class EngineBuilder < ErrorsApi
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
-    @service_builder = ServiceBuilder.new(@core_api.service_manager, @templater, @build_params[:engine_name],  @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
   rescue StandardError => e
     log_exception(e)
   end
@@ -88,7 +88,7 @@ class EngineBuilder < ErrorsApi
 
   def build_container
     log_build_output('Checking Free space')
-    space = @core_api.docker_image_free_space
+    space = @core_api.system_image_free_space
     space /= 1024
     p ' free space /var/lib/docker only ' + space.to_s + 'MB'
     # return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
@@ -501,12 +501,13 @@ class EngineBuilder < ErrorsApi
 
   def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
-    restart_flag_file = ContainerStateFiles.rebuild_flag_file(mc)
+    # FixME this should be elsewhere
+    restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
     f = File.new(restart_flag_file,'w+')
     f.puts(restart_reason)
     f.close
-    File.chmod(0770,restart_flag_file)
-
+    File.chmod(0660,restart_flag_file)
+    FileUtils.chown(nil,'containers',restart_flag_file)
   end
 
   def log_error_mesg(m,o)

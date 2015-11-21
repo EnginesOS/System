@@ -19,542 +19,686 @@
 <script src="./js/search.js"></script>
 <script src="./js/searcher.js"></script>
 <script src="./js/darkfish.js"></script>
-
-
 <body id="top" role="document" class="module">
-<nav role="navigation">
-  <div id="project-navigation">
-    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
-  <h2>
-    <a href="./index.html" rel="home">Home</a>
-  </h2>
+	<nav role="navigation">
+		<div id="project-navigation">
+			<div id="home-section" role="region" title="Quick navigation"
+				class="nav-section">
+				<h2>
+					<a href="./index.html" rel="home">Home</a>
+				</h2>
 
-  <div id="table-of-contents-navigation">
-    <a href="./table_of_contents.html#pages">Pages</a>
-    <a href="./table_of_contents.html#classes">Classes</a>
-    <a href="./table_of_contents.html#methods">Methods</a>
-  </div>
-</div>
+				<div id="table-of-contents-navigation">
+					<a href="./table_of_contents.html#pages">Pages</a> <a
+						href="./table_of_contents.html#classes">Classes</a> <a
+						href="./table_of_contents.html#methods">Methods</a>
+				</div>
+			</div>
 
-    <div id="search-section" role="search" class="project-section initially-hidden">
-  <form action="#" method="get" accept-charset="utf-8">
-    <div id="search-field-wrapper">
-      <input id="search-field" role="combobox" aria-label="Search"
-             aria-autocomplete="list" aria-controls="search-results"
-             type="text" name="search" placeholder="Search" spellcheck="false"
-             title="Type to search, Up and Down to navigate, Enter to load">
-    </div>
+			<div id="search-section" role="search"
+				class="project-section initially-hidden">
+				<form action="#" method="get" accept-charset="utf-8">
+					<div id="search-field-wrapper">
+						<input id="search-field" role="combobox" aria-label="Search"
+							aria-autocomplete="list" aria-controls="search-results"
+							type="text" name="search" placeholder="Search" spellcheck="false"
+							title="Type to search, Up and Down to navigate, Enter to load">
+					</div>
 
-    <ul id="search-results" aria-label="Search Results"
-        aria-busy="false" aria-expanded="false"
-        aria-atomic="false" class="initially-hidden"></ul>
-  </form>
-</div>
+					<ul id="search-results" aria-label="Search Results"
+						aria-busy="false" aria-expanded="false" aria-atomic="false"
+						class="initially-hidden"></ul>
+				</form>
+			</div>
 
-  </div>
+		</div>
 
-  
 
-  <div id="class-metadata">
-    
-    
-    
-    
-    <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
 
-  <ul class="link-list" role="directory">
-    
-    <li ><a href="#method-i-get_all_leafs_service_hashes">#get_all_leafs_service_hashes</a>
-    
-    <li ><a href="#method-i-get_matched_leafs">#get_matched_leafs</a>
-    
-    <li ><a href="#method-i-initialize_tree">#initialize_tree</a>
-    
-    <li ><a href="#method-i-managed_engine_tree">#managed_engine_tree</a>
-    
-    <li ><a href="#method-i-managed_service_tree">#managed_service_tree</a>
-    
-    <li ><a href="#method-i-orphaned_services_tree">#orphaned_services_tree</a>
-    
-    <li ><a href="#method-i-remove_tree_entry">#remove_tree_entry</a>
-    
-    <li ><a href="#method-i-save_tree">#save_tree</a>
-    
-    <li ><a href="#method-i-service_provider_tree">#service_provider_tree</a>
-    
-    <li ><a href="#method-i-tree_from_yaml">#tree_from_yaml</a>
-    
-  </ul>
-</div>
+		<div id="class-metadata">
 
-  </div>
-</nav>
 
-<main role="main" aria-labelledby="module-ServiceManagerTree">
-  <h1 id="module-ServiceManagerTree" class="module">
-    module ServiceManagerTree
-  </h1>
 
-  <section class="description">
-    
-  </section>
 
-  
-  
-  
-  <section id="5Buntitled-5D" class="documentation-section">
-    
+			<!-- Method Quickref -->
+			<div id="method-list-section" class="nav-section">
+				<h3>Methods</h3>
 
-    
+				<ul class="link-list" role="directory">
 
-    
+					<li><a href="#method-i-get_all_leafs_service_hashes">#get_all_leafs_service_hashes</a>
+					<li><a href="#method-i-get_matched_leafs">#get_matched_leafs</a>
+					<li><a href="#method-i-initialize_tree">#initialize_tree</a>
+					<li><a href="#method-i-managed_engine_tree">#managed_engine_tree</a>
+					<li><a href="#method-i-managed_service_tree">#managed_service_tree</a>
+					<li><a href="#method-i-orphaned_services_tree">#orphaned_services_tree</a>
+					<li><a href="#method-i-remove_tree_entry">#remove_tree_entry</a>
+					<li><a href="#method-i-save_tree">#save_tree</a>
+					<li><a href="#method-i-service_provider_tree">#service_provider_tree</a>
+					<li><a href="#method-i-tree_from_yaml">#tree_from_yaml</a>
+				</ul>
+			</div>
 
-    
+		</div>
+	</nav>
 
-    
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
+	<main role="main" aria-labelledby="module-ServiceManagerTree">
+	<h1 id="module-ServiceManagerTree" class="module">module
+		ServiceManagerTree</h1>
 
-    
-      <div id="method-i-get_all_leafs_service_hashes" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_all_leafs_service_hashes</span><span
-            class="method-args">(branch)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
+	<section class="description"></section>
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="get_all_leafs_service_hashes-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 72</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_all_leafs_service_hashes</span>(<span class="ruby-identifier">branch</span>)
-  <span class="ruby-identifier">ret_val</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-identifier">branch</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sub_branch</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
 
-        <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">debug_output</span>(<span class="ruby-string">&quot;pushed_content&quot;</span>, <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>)
-        <span class="ruby-identifier">ret_val</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>)
+
+	<section id="5Buntitled-5D" class="documentation-section">
+
+
+
+
+
+
+
+
+
+		<section id="public-instance-5Buntitled-5D-method-details"
+			class="method-section">
+			<header>
+				<h3>Public Instance Methods</h3>
+			</header>
+
+
+			<div id="method-i-get_all_leafs_service_hashes"
+				class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">get_all_leafs_service_hashes</span><span
+						class="method-args">(branch)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code"
+						id="get_all_leafs_service_hashes-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_all_leafs_service_hashes</span>(<span
+								class="ruby-identifier">branch</span>)
+  <span class="ruby-identifier">ret_val</span> = <span
+								class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">branch</span>.<span
+								class="ruby-identifier">children</span>.<span
+								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
+								class="ruby-operator">|</span><span class="ruby-identifier">sub_branch</span><span
+								class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">children</span>.<span
+								class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span
+								class="ruby-value">0</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>.<span
+								class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+
+        <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">debug_output</span>(<span
+								class="ruby-string">&quot;pushed_content&quot;</span>, <span
+								class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>)
+        <span class="ruby-identifier">ret_val</span>.<span
+								class="ruby-identifier">push</span>(<span
+								class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>)
       <span class="ruby-keyword">else</span>
-        <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">debug_output</span>(<span class="ruby-string">&quot;skipping content &quot;</span>, <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>)
+        <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">debug_output</span>(<span
+								class="ruby-string">&quot;skipping content &quot;</span>, <span
+								class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>)
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">ret_val</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">get_all_leafs_service_hashes</span>(<span class="ruby-identifier">sub_branch</span>))
+      <span class="ruby-identifier">ret_val</span>.<span
+								class="ruby-identifier">concat</span>(<span
+								class="ruby-identifier">get_all_leafs_service_hashes</span>(<span
+								class="ruby-identifier">sub_branch</span>))
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ret_val</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-get_matched_leafs" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_matched_leafs</span><span
-            class="method-args">(branch,label,value)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="get_matched_leafs-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 58</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_matched_leafs</span>(<span class="ruby-identifier">branch</span>,<span class="ruby-identifier">label</span>,<span class="ruby-identifier">value</span>)
-  <span class="ruby-identifier">ret_val</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-identifier">branch</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sub_branch</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-keyword">if</span>  <span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>[<span class="ruby-identifier">label</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">value</span>
-        <span class="ruby-identifier">ret_val</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">sub_branch</span>.<span class="ruby-identifier">content</span>)
+			</div>
+
+
+			<div id="method-i-get_matched_leafs" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">get_matched_leafs</span><span
+						class="method-args">(branch,label,value)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="get_matched_leafs-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_matched_leafs</span>(<span
+								class="ruby-identifier">branch</span>,<span
+								class="ruby-identifier">label</span>,<span
+								class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">ret_val</span> = <span
+								class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">branch</span>.<span
+								class="ruby-identifier">children</span>.<span
+								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
+								class="ruby-operator">|</span><span class="ruby-identifier">sub_branch</span><span
+								class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">children</span>.<span
+								class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span
+								class="ruby-value">0</span>
+      <span class="ruby-keyword">if</span>  <span
+								class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>[<span
+								class="ruby-identifier">label</span>] <span
+								class="ruby-operator">==</span> <span class="ruby-identifier">value</span>
+        <span class="ruby-identifier">ret_val</span>.<span
+								class="ruby-identifier">push</span>(<span
+								class="ruby-identifier">sub_branch</span>.<span
+								class="ruby-identifier">content</span>)
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">ret_val</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_matched_leafs</span>(<span class="ruby-identifier">sub_branch</span>,<span class="ruby-identifier">label</span>,<span class="ruby-identifier">value</span>)
+      <span class="ruby-identifier">ret_val</span> <span
+								class="ruby-operator">+=</span> <span class="ruby-identifier">get_matched_leafs</span>(<span
+								class="ruby-identifier">sub_branch</span>,<span
+								class="ruby-identifier">label</span>,<span
+								class="ruby-identifier">value</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ret_val</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-initialize_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">initialize_tree</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="initialize_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 101</span>
+			</div>
+
+
+			<div id="method-i-initialize_tree" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">initialize_tree</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="initialize_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_tree</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">ServiceTreeFile</span>)
-    <span class="ruby-identifier">service_tree</span> = <span class="ruby-identifier">tree_from_yaml</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">exists?</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">ServiceTreeFile</span>)
+    <span class="ruby-identifier">service_tree</span> = <span
+								class="ruby-identifier">tree_from_yaml</span>()
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">service_tree</span> = <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Service Manager&quot;</span>, <span class="ruby-string">&quot;Managed Services and Engines&quot;</span>)
-    <span class="ruby-identifier">service_tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span class="ruby-string">&quot;Engines&quot;</span>)
-    <span class="ruby-identifier">service_tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Services&quot;</span>,<span class="ruby-string">&quot;Managed Services&quot;</span>)
+    <span class="ruby-identifier">service_tree</span> = <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Service Manager&quot;</span>, <span
+								class="ruby-string">&quot;Managed Services and Engines&quot;</span>)
+    <span class="ruby-identifier">service_tree</span> <span
+								class="ruby-operator">&lt;&lt;</span> <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span
+								class="ruby-string">&quot;Engines&quot;</span>)
+    <span class="ruby-identifier">service_tree</span> <span
+								class="ruby-operator">&lt;&lt;</span> <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Services&quot;</span>,<span
+								class="ruby-string">&quot;Managed Services&quot;</span>)
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">service_tree</span>
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
-  <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+  <span class="ruby-identifier">puts</span> <span
+								class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
+  <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
 
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-managed_engine_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">managed_engine_tree</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          <p>@return the <a href="ManagedEngine.html">ManagedEngine</a> Tree Branch
-creates if does not exist</p>
-          
-          
 
-          
-          <div class="method-source-code" id="managed_engine_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 6</span>
+			</div>
+
+
+			<div id="method-i-managed_engine_tree" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">managed_engine_tree</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+					<p>
+						@return the <a href="ManagedEngine.html">ManagedEngine</a> Tree
+						Branch creates if does not exist
+					</p>
+
+
+
+
+					<div class="method-source-code" id="managed_engine_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">managed_engine_tree</span>
-  <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;ManagedEngine&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> )
-    <span class="ruby-ivar">@service_tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span class="ruby-string">&quot;ManagedEngine Service register&quot;</span>)       
+  <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@service_tree</span>[<span
+								class="ruby-string">&quot;ManagedEngine&quot;</span>] <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> )
+    <span class="ruby-ivar">@service_tree</span> <span
+								class="ruby-operator">&lt;&lt;</span> <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span
+								class="ruby-string">&quot;ManagedEngine Service register&quot;</span>)       
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;ManagedEngine&quot;</span>]
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@service_tree</span>[<span
+								class="ruby-string">&quot;ManagedEngine&quot;</span>]
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-managed_service_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">managed_service_tree</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          <p>@return the ManagedServices Tree Branch</p>
 
-<pre>creates if does not exist</pre>
-          
-          
+			</div>
 
-          
-          <div class="method-source-code" id="managed_service_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 27</span>
+
+			<div id="method-i-managed_service_tree" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">managed_service_tree</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+					<p>@return the ManagedServices Tree Branch</p>
+
+					<pre>creates if does not exist</pre>
+
+
+
+
+					<div class="method-source-code" id="managed_service_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">managed_service_tree</span>
-  <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;Services&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> )
-     <span class="ruby-ivar">@service_tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span class="ruby-string">&quot;ManagedEngine Service register&quot;</span>)       
+  <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@service_tree</span>[<span
+								class="ruby-string">&quot;Services&quot;</span>] <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> )
+     <span class="ruby-ivar">@service_tree</span> <span
+								class="ruby-operator">&lt;&lt;</span> <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;ManagedEngine&quot;</span>,<span
+								class="ruby-string">&quot;ManagedEngine Service register&quot;</span>)       
    <span class="ruby-keyword">end</span>
-   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;Services&quot;</span>]
+   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@service_tree</span>[<span
+								class="ruby-string">&quot;Services&quot;</span>]
   
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-orphaned_services_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">orphaned_services_tree</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          <p>@return The OrphanedServices Tree branch</p>
 
-<pre>create new branch if none exists</pre>
-          
-          
+			</div>
 
-          
-          <div class="method-source-code" id="orphaned_services_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 15</span>
+
+			<div id="method-i-orphaned_services_tree" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">orphaned_services_tree</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+					<p>@return The OrphanedServices Tree branch</p>
+
+					<pre>create new branch if none exists</pre>
+
+
+
+
+					<div class="method-source-code" id="orphaned_services_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">orphaned_services_tree</span>
-  <span class="ruby-identifier">orphans</span> = <span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;OphanedServices&quot;</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">orphans</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
-    <span class="ruby-ivar">@service_tree</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;OphanedServices&quot;</span>,<span class="ruby-string">&quot;Persistant Services left after Engine Deinstall&quot;</span>)
-    <span class="ruby-identifier">orphans</span> = <span class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;OphanedServices&quot;</span>]
+  <span class="ruby-identifier">orphans</span> = <span class="ruby-ivar">@service_tree</span>[<span
+								class="ruby-string">&quot;OphanedServices&quot;</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">orphans</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@service_tree</span> <span
+								class="ruby-operator">&lt;&lt;</span> <span
+								class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TreeNode</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-string">&quot;OphanedServices&quot;</span>,<span
+								class="ruby-string">&quot;Persistant Services left after Engine Deinstall&quot;</span>)
+    <span class="ruby-identifier">orphans</span> = <span
+								class="ruby-ivar">@service_tree</span>[<span class="ruby-string">&quot;OphanedServices&quot;</span>]
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">orphans</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-remove_tree_entry" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">remove_tree_entry</span><span
-            class="method-args">(tree_node)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="remove_tree_entry-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 35</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_tree_entry</span>(<span class="ruby-identifier">tree_node</span>)
+			</div>
+
+
+			<div id="method-i-remove_tree_entry" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">remove_tree_entry</span><span
+						class="method-args">(tree_node)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="remove_tree_entry-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_tree_entry</span>(<span
+								class="ruby-identifier">tree_node</span>)
   <span class="ruby-comment"># @param remove [TreeNode] from the @servicetree</span>
   <span class="ruby-comment"># If the tree_node is the last child then the parent is removed this is continued up.  </span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tree_node</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">tree_node</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Tree</span><span class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span> ) <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tree_node</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span
+								class="ruby-operator">||</span> <span class="ruby-identifier">tree_node</span>.<span
+								class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Tree</span><span
+								class="ruby-operator">::</span><span class="ruby-constant">TreeNode</span> ) <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
     <span class="ruby-identifier">p</span> <span class="ruby-value">:err_remove_tree_entry</span>
 
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tree_node</span>.<span class="ruby-identifier">parent</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tree_node</span>.<span
+								class="ruby-identifier">parent</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-identifier">parent_node</span> = <span class="ruby-identifier">tree_node</span>.<span class="ruby-identifier">parent</span>
-  <span class="ruby-identifier">parent_node</span>.<span class="ruby-identifier">remove!</span>(<span class="ruby-identifier">tree_node</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parent_node</span>.<span class="ruby-identifier">has_children?</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-    <span class="ruby-identifier">remove_tree_entry</span>(<span class="ruby-identifier">parent_node</span>)
+  <span class="ruby-identifier">parent_node</span> = <span
+								class="ruby-identifier">tree_node</span>.<span
+								class="ruby-identifier">parent</span>
+  <span class="ruby-identifier">parent_node</span>.<span
+								class="ruby-identifier">remove!</span>(<span
+								class="ruby-identifier">tree_node</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parent_node</span>.<span
+								class="ruby-identifier">has_children?</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">remove_tree_entry</span>(<span
+								class="ruby-identifier">parent_node</span>)
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-i-service_provider_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">service_provider_tree</span><span
-            class="method-args">(publisher)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="service_provider_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 117</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">service_provider_tree</span>(<span class="ruby-identifier">publisher</span>)
-  <span class="ruby-identifier">managed_service_tree</span>[<span class="ruby-identifier">publisher</span>]
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+			</div>
 
-        
 
-        
-      </div>
+			<div id="method-i-service_provider_tree" class="method-detail ">
 
-    
-      <div id="method-i-tree_from_yaml" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">tree_from_yaml</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
+				<div class="method-heading">
+					<span class="method-name">service_provider_tree</span><span
+						class="method-args">(publisher)</span> <span
+						class="method-click-advice">click to toggle source</span>
 
-        <div class="method-description">
-          
-          
-          
-          
+				</div>
 
-          
-          <div class="method-source-code" id="tree_from_yaml-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 90</span>
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="service_provider_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">service_provider_tree</span>(<span
+								class="ruby-identifier">publisher</span>)
+  <span class="ruby-identifier">managed_service_tree</span>[<span
+								class="ruby-identifier">publisher</span>]
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
+
+				</div>
+
+
+
+
+			</div>
+
+
+			<div id="method-i-tree_from_yaml" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">tree_from_yaml</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="tree_from_yaml-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tree_from_yaml</span>()
   <span class="ruby-keyword">begin</span>
-    <span class="ruby-identifier">tree_data</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">ServiceTreeFile</span>)
-    <span class="ruby-identifier">service_tree</span> =   <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>(<span class="ruby-identifier">tree_data</span>)
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">service_tree</span>
-  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; with &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tree_data</span>.<span class="ruby-identifier">to_s</span>
-    <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+    <span class="ruby-identifier">tree_data</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">ServiceTreeFile</span>)
+    <span class="ruby-identifier">service_tree</span> =   <span
+								class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span
+								class="ruby-identifier">load</span>(<span
+								class="ruby-identifier">tree_data</span>)
+    <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">service_tree</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">puts</span> <span
+								class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span> <span
+								class="ruby-operator">+</span> <span class="ruby-string">&quot; with &quot;</span> <span
+								class="ruby-operator">+</span> <span class="ruby-identifier">tree_data</span>.<span
+								class="ruby-identifier">to_s</span>
+    <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-    </section>
-  
-     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Protected Instance Methods</h3>
-       </header>
 
-    
-      <div id="method-i-save_tree" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">save_tree</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
+			</div>
 
-          
-          <div class="method-source-code" id="save_tree-source">
-            <pre><span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 123</span>
+
+		</section>
+
+		<section id="protected-instance-5Buntitled-5D-method-details"
+			class="method-section">
+			<header>
+				<h3>Protected Instance Methods</h3>
+			</header>
+
+
+			<div id="method-i-save_tree" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">save_tree</span><span class="method-args">()</span>
+
+					<span class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="save_tree-source">
+						<pre>
+							<span class="ruby-comment"># File managed_services/service_manager/service_manager_tree.rb, line 123</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_tree</span>
   <span class="ruby-comment">#  serialized_object = Marshal.dump(@service_tree)</span>
-  <span class="ruby-identifier">serialized_object</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">dump</span>(<span class="ruby-ivar">@service_tree</span>)
-  <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">ServiceTreeFile</span>,<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">CREAT</span><span class="ruby-operator">|</span><span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">TRUNC</span><span class="ruby-operator">|</span><span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">RDWR</span>, <span class="ruby-value">0644</span>)
-  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">serialized_object</span>)
+  <span class="ruby-identifier">serialized_object</span> = <span
+								class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span
+								class="ruby-identifier">dump</span>(<span class="ruby-ivar">@service_tree</span>)
+  <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">new</span>(<span class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">ServiceTreeFile</span>,<span
+								class="ruby-constant">File</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">CREAT</span><span class="ruby-operator">|</span><span
+								class="ruby-constant">File</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">TRUNC</span><span class="ruby-operator">|</span><span
+								class="ruby-constant">File</span><span class="ruby-operator">::</span><span
+								class="ruby-constant">RDWR</span>, <span class="ruby-value">0644</span>)
+  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span>(<span
+								class="ruby-identifier">serialized_object</span>)
   <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
   <span class="ruby-ivar">@last_error</span>=( <span class="ruby-string">&quot;load error&quot;</span>)
-  <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+  <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
-
-        
-      </div>
-
-    
-    </section>
-  
-  </section>
-</main>
+				</div>
 
 
-<footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
-  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
-</footer>
 
+
+			</div>
+
+
+		</section>
+
+	</section>
+	</main>
+
+
+	<footer id="validator-badges" role="contentinfo">
+		<p>
+			<a href="http://validator.w3.org/check/referer">Validate</a>
+		<p>
+			Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+		<p>
+			Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a>
+			by <a href="http://deveiate.org">Michael Granger</a>.
+	</footer>
