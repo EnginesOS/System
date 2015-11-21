@@ -6,7 +6,8 @@ require_relative 'ManagedContainerObjects.rb'
 
 class ManagedContainer < Container
 require_relative 'container.rb'
-  
+  require_relative 'managed_container/task_at_hand.rb'
+  include TaskAtHand
 require_relative 'managed_container/managed_container_controls.rb'
 include ManagedContainerControls
   require_relative 'managed_container/managed_container_dns.rb'
@@ -21,8 +22,7 @@ include ManagedContainerControls
   include ManagedContainerWebSites
   require_relative 'managed_container/managed_container_api.rb'
   include ManagedContainerApi
-  require_relative 'managed_container/task_at_hand.rb'
-  include TaskAtHand
+
   
   
   
