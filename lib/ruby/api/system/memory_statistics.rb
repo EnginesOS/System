@@ -49,7 +49,7 @@ module MemoryStatistics
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
     end
-    return self.empty_container_result  unless engine.is_active?
+    return self.empty_container_result  unless container.is_active?
 
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
