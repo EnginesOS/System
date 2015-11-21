@@ -1,4 +1,4 @@
-module ImageActions
+module EngineImageActions
   def delete_image(container)
       clear_error
       @system_api.delete_engine(container.container_name)

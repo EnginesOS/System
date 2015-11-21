@@ -20,8 +20,8 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api/engine_status_flags.rb'
   include EngineStatusFlags
 
-  require_relative 'container_api/image_actions.rb'
-  include ImageActions
+  require_relative 'container_api/engine_image_actions.rb'
+  include EngineImageActions
 
   require_relative 'container_api/engines_system.rb'
   include EnginesSystem
