@@ -85,6 +85,7 @@ class ManagedService < ManagedContainer
 
   def remove_consumer(service_hash)
     return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
+    return true if !is_running? && @soft_service
     return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false
     return rm_consumer_from_service(service_hash) unless @persistant
