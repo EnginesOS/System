@@ -1,12 +1,12 @@
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
-
+#require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
+require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
-require '/opt/engines/lib/ruby/containers/system_service.rb'
+
 
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 
@@ -14,7 +14,8 @@ require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 
 
 class EnginesCore < ErrorsApi
-  require '/opt/engines/lib/ruby/api/public/build_controller.rb'
+  require '/opt/engines/lib/ruby/containers/system_service.rb'
+
   
 
   # require_relative '../dns_api.rb'

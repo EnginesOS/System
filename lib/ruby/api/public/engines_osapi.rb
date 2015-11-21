@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
-require '/opt/engines/lib/ruby/system/system_config.rb'
+#require '/opt/engines/lib/ruby/system/system_config.rb'
 
 require_relative 'engines_osapi_result.rb'
 require_relative 'first_run_wizard.rb'

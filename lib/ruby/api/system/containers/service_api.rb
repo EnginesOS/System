@@ -54,7 +54,7 @@ class ServiceApi < ContainerApi
     return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
-    thr = Thread.new {     result = SystemUtils.execute_command(cmd) }
+    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
     thr.join
     if result[:result] == 0
       variables = SystemUtils.hash_string_to_hash(result[:stdout])
