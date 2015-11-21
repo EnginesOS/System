@@ -49,6 +49,11 @@ class ServiceApi < ContainerApi
     ContainerStateFiles.container_state_dir(container) + '/services/'
   end
 
+  def has_service_started?(service_name)
+    completed_flag_file = SystemConfig.RunDir + '/services/' + service_name + '/run/flags/startup_complete'
+    File.exist?(completed_flag_file)
+  end
+  
   def retrieve_configurator(c, params)
     return log_error_mesg('service not running ',params) if c.is_running? == false
     return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
