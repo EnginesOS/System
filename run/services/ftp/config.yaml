@@ -5,7 +5,7 @@ publisher_namespace: EnginesSystem
 type_path: filesystem/service/ftp
 persistant: true
 last_error: 
-memory: '36'
+memory: '56'
 hostname: ftp
 domain_name: 
 environments: []
