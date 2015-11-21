@@ -310,13 +310,10 @@ class ManagedContainer < Container
     return true unless @conf_register_dns
    r = @container_api.register_with_dns(self)
     return r unless @conf_zero_conf
-    return register_with_zeroconf if r
+    return @container_api.register_with_zeroconf(self) if r
     return r
   end
 
-  def register_with_zeroconf
-    @container_api.register_with_zeroconf
-  end
   
   def restart_container
 
