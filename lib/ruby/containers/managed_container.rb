@@ -308,10 +308,16 @@ class ManagedContainer < Container
   def register_with_dns # MUst register each time as IP Changes
     return false unless has_api?
     return true unless @conf_register_dns
-    @container_api.register_with_dns(self)
-
+   r = @container_api.register_with_dns(self)
+    return r unless @conf_zero_conf
+    return register_with_zeroconf if r
+    return r
   end
 
+  def register_with_zeroconf
+    @container_api.register_with_zeroconf
+  end
+  
   def restart_container
 
     in_progress(:restart)
