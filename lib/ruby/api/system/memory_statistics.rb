@@ -35,6 +35,7 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     engines.each do | engine|
+      next if engine.setState != "running"
       container_sym = engine.container_name.to_sym
       mem_stats[container_sym] = self.container_memory_stats(engine)
       mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
