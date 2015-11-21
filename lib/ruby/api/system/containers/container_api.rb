@@ -178,7 +178,7 @@ end
   end
 
   def add_nginx_service(container)
-    service_hash = SystemUtils.create_nginx_service_hash(container)
+    service_hash = create_nginx_service_hash(container)
     @engines_core.create_and_register_service(service_hash)
   end
 
