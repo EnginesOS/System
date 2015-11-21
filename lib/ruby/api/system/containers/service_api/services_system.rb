@@ -1,6 +1,4 @@
 module ServicesSystem
-  
-
   def create_container(container)
     SystemUtils.execute_command('/opt/engines/scripts/setup_service_dir.sh ' + container.container_name)
     super

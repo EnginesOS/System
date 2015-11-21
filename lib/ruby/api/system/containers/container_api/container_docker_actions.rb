@@ -1,15 +1,14 @@
 module ContainerDockerActions
-
   def destroy_container(container)
-      clear_error
-      return true if @docker_api.destroy_container(container)
-      return true unless container.has_container?
-      return false
-    rescue StandardError => e
-      container.last_error = 'Failed To Destroy ' + e.to_s
-      log_exception(e)
-    end
-    
+    clear_error
+    return true if @docker_api.destroy_container(container)
+    return true unless container.has_container?
+    return false
+  rescue StandardError => e
+    container.last_error = 'Failed To Destroy ' + e.to_s
+    log_exception(e)
+  end
+
   def unpause_container(container)
     clear_error
     test_docker_api_result(@docker_api.unpause_container(container))
@@ -23,6 +22,7 @@ module ContainerDockerActions
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
   end
+
   def inspect_container(container)
     clear_error
     test_docker_api_result(@docker_api.inspect_container(container))

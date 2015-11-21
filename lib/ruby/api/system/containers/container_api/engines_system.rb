@@ -1,12 +1,8 @@
 module EnginesSystem
-  
-
   def web_sites_for(container)
     @engines_core.web_sites_for(container)
   end
 
-
-  
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
@@ -15,12 +11,9 @@ module EnginesSystem
     test_system_api_result(@system_api.get_container_network_metrics(container.container_name))
   end
 
-
   def save_container(container)
     test_system_api_result(@system_api.save_container(container))
   end
-
-
 
   def create_container(container)
     clear_error
@@ -36,7 +29,6 @@ module EnginesSystem
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)
   end
-
 
   def container_cid_file(container)
     @system_api.container_cid_file(container)
