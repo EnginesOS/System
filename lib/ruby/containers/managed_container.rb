@@ -54,11 +54,11 @@ class ManagedContainer < Container
     when :unpause
       desired_state('running')
     when :recreate
-      desired_state('stopped')
+      desired_state('nocontainer')
     when :rebuild
-      desired_state('stopped')
+      desired_state('nocontainer')
     when :build
-      desired_state('stopped')
+      desired_state('running')
     when :delete
       desired_state('nocontainer')
       #  desired_state('noimage')
