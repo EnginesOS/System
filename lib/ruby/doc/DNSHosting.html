@@ -19,533 +19,714 @@
 <script src="./js/search.js"></script>
 <script src="./js/searcher.js"></script>
 <script src="./js/darkfish.js"></script>
-
-
 <body id="top" role="document" class="module">
-<nav role="navigation">
-  <div id="project-navigation">
-    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
-  <h2>
-    <a href="./index.html" rel="home">Home</a>
-  </h2>
+	<nav role="navigation">
+		<div id="project-navigation">
+			<div id="home-section" role="region" title="Quick navigation"
+				class="nav-section">
+				<h2>
+					<a href="./index.html" rel="home">Home</a>
+				</h2>
 
-  <div id="table-of-contents-navigation">
-    <a href="./table_of_contents.html#pages">Pages</a>
-    <a href="./table_of_contents.html#classes">Classes</a>
-    <a href="./table_of_contents.html#methods">Methods</a>
-  </div>
-</div>
+				<div id="table-of-contents-navigation">
+					<a href="./table_of_contents.html#pages">Pages</a> <a
+						href="./table_of_contents.html#classes">Classes</a> <a
+						href="./table_of_contents.html#methods">Methods</a>
+				</div>
+			</div>
 
-    <div id="search-section" role="search" class="project-section initially-hidden">
-  <form action="#" method="get" accept-charset="utf-8">
-    <div id="search-field-wrapper">
-      <input id="search-field" role="combobox" aria-label="Search"
-             aria-autocomplete="list" aria-controls="search-results"
-             type="text" name="search" placeholder="Search" spellcheck="false"
-             title="Type to search, Up and Down to navigate, Enter to load">
-    </div>
+			<div id="search-section" role="search"
+				class="project-section initially-hidden">
+				<form action="#" method="get" accept-charset="utf-8">
+					<div id="search-field-wrapper">
+						<input id="search-field" role="combobox" aria-label="Search"
+							aria-autocomplete="list" aria-controls="search-results"
+							type="text" name="search" placeholder="Search" spellcheck="false"
+							title="Type to search, Up and Down to navigate, Enter to load">
+					</div>
 
-    <ul id="search-results" aria-label="Search Results"
-        aria-busy="false" aria-expanded="false"
-        aria-atomic="false" class="initially-hidden"></ul>
-  </form>
-</div>
+					<ul id="search-results" aria-label="Search Results"
+						aria-busy="false" aria-expanded="false" aria-atomic="false"
+						class="initially-hidden"></ul>
+				</form>
+			</div>
 
-  </div>
+		</div>
 
-  
 
-  <div id="class-metadata">
-    
-    
-    
-    
-    <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
 
-  <ul class="link-list" role="directory">
-    
-    <li ><a href="#method-c-add_hosted_domain">::add_hosted_domain</a>
-    
-    <li ><a href="#method-c-get_local_ip">::get_local_ip</a>
-    
-    <li ><a href="#method-c-load_self_hosted_domains">::load_self_hosted_domains</a>
-    
-    <li ><a href="#method-c-rm_hosted_domain">::rm_hosted_domain</a>
-    
-    <li ><a href="#method-c-rm_local_domain_files">::rm_local_domain_files</a>
-    
-    <li ><a href="#method-c-save_self_hosted_domains">::save_self_hosted_domains</a>
-    
-    <li ><a href="#method-c-write_config">::write_config</a>
-    
-    <li ><a href="#method-c-write_domain_list">::write_domain_list</a>
-    
-    <li ><a href="#method-c-write_zone_file">::write_zone_file</a>
-    
-  </ul>
-</div>
+		<div id="class-metadata">
 
-  </div>
-</nav>
 
-<main role="main" aria-labelledby="module-DNSHosting">
-  <h1 id="module-DNSHosting" class="module">
-    module DNSHosting
-  </h1>
 
-  <section class="description">
-    
-  </section>
 
-  
-  
-  
-  <section id="5Buntitled-5D" class="documentation-section">
-    
+			<!-- Method Quickref -->
+			<div id="method-list-section" class="nav-section">
+				<h3>Methods</h3>
 
-    
+				<ul class="link-list" role="directory">
 
-    
+					<li><a href="#method-c-add_hosted_domain">::add_hosted_domain</a>
+					<li><a href="#method-c-get_local_ip">::get_local_ip</a>
+					<li><a href="#method-c-load_self_hosted_domains">::load_self_hosted_domains</a>
+					<li><a href="#method-c-rm_hosted_domain">::rm_hosted_domain</a>
+					<li><a href="#method-c-rm_local_domain_files">::rm_local_domain_files</a>
+					<li><a href="#method-c-save_self_hosted_domains">::save_self_hosted_domains</a>
+					<li><a href="#method-c-write_config">::write_config</a>
+					<li><a href="#method-c-write_domain_list">::write_domain_list</a>
+					<li><a href="#method-c-write_zone_file">::write_zone_file</a>
+				</ul>
+			</div>
 
-    
+		</div>
+	</nav>
 
-    
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Class Methods</h3>
-       </header>
+	<main role="main" aria-labelledby="module-DNSHosting">
+	<h1 id="module-DNSHosting" class="module">module DNSHosting</h1>
 
-    
-      <div id="method-c-add_hosted_domain" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">add_hosted_domain</span><span
-            class="method-args">(params,system_api)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
+	<section class="description"></section>
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="add_hosted_domain-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">add_hosted_domain</span>(<span class="ruby-identifier">params</span>,<span class="ruby-identifier">system_api</span>)
-  <span class="ruby-identifier">domain</span>= <span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_name</span>]
-  <span class="ruby-keyword">if</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:internal_only</span>])
-    <span class="ruby-identifier">ip</span> = <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">get_local_ip</span>
+
+
+	<section id="5Buntitled-5D" class="documentation-section">
+
+
+
+
+
+
+
+
+
+		<section id="public-class-5Buntitled-5D-method-details"
+			class="method-section">
+			<header>
+				<h3>Public Class Methods</h3>
+			</header>
+
+
+			<div id="method-c-add_hosted_domain" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">add_hosted_domain</span><span
+						class="method-args">(params,system_api)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="add_hosted_domain-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">add_hosted_domain</span>(<span
+								class="ruby-identifier">params</span>,<span
+								class="ruby-identifier">system_api</span>)
+  <span class="ruby-identifier">domain</span>= <span
+								class="ruby-identifier">params</span>[<span class="ruby-value">:domain_name</span>]
+  <span class="ruby-keyword">if</span>(<span class="ruby-identifier">params</span>[<span
+								class="ruby-value">:internal_only</span>])
+    <span class="ruby-identifier">ip</span> = <span
+								class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">get_local_ip</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">ip</span> =  <span class="ruby-identifier">open</span>( <span class="ruby-string">&#39;http://jsonip.com/ &#39;</span> ){ <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-constant">JSON</span><span class="ruby-operator">::</span><span class="ruby-identifier">parse</span>( <span class="ruby-identifier">s</span>.<span class="ruby-identifier">string</span>())[<span class="ruby-string">&#39;ip&#39;</span>] };
+    <span class="ruby-identifier">ip</span> =  <span
+								class="ruby-identifier">open</span>( <span class="ruby-string">&#39;http://jsonip.com/ &#39;</span> ){ <span
+								class="ruby-operator">|</span><span class="ruby-identifier">s</span><span
+								class="ruby-operator">|</span> <span class="ruby-constant">JSON</span><span
+								class="ruby-operator">::</span><span class="ruby-identifier">parse</span>( <span
+								class="ruby-identifier">s</span>.<span class="ruby-identifier">string</span>())[<span
+								class="ruby-string">&#39;ip&#39;</span>] };
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">write_zone_file</span>(<span class="ruby-identifier">domain</span>,<span class="ruby-identifier">ip</span>) <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-    <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">rm_local_domain_files</span> <span class="ruby-identifier">domain</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">write_zone_file</span>(<span
+								class="ruby-identifier">domain</span>,<span
+								class="ruby-identifier">ip</span>) <span class="ruby-operator">==</span> <span
+								class="ruby-keyword">false</span>
+    <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">rm_local_domain_files</span> <span
+								class="ruby-identifier">domain</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
   
-  <span class="ruby-identifier">domains</span> = <span class="ruby-identifier">load_self_hosted_domains</span>()
-  <span class="ruby-identifier">domains</span>[<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_name</span>]] = <span class="ruby-identifier">params</span> 
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">save_self_hosted_domains</span>(<span class="ruby-identifier">domains</span>)
+  <span class="ruby-identifier">domains</span> = <span
+								class="ruby-identifier">load_self_hosted_domains</span>()
+  <span class="ruby-identifier">domains</span>[<span
+								class="ruby-identifier">params</span>[<span class="ruby-value">:domain_name</span>]] = <span
+								class="ruby-identifier">params</span> 
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">save_self_hosted_domains</span>(<span
+								class="ruby-identifier">domains</span>)
     <span class="ruby-identifier">p</span> <span class="ruby-value">:REloading_dns</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">system_api</span>.<span class="ruby-identifier">reload_dns</span>
+    <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">system_api</span>.<span
+								class="ruby-identifier">reload_dns</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">p</span> <span class="ruby-value">:failed_save_hosted_domains</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
   
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-<span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+<span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-get_local_ip" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_local_ip</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="get_local_ip-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 41</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">get_local_ip</span>
+			</div>
+
+
+			<div id="method-c-get_local_ip" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">get_local_ip</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="get_local_ip-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">get_local_ip</span>
   <span class="ruby-comment">#case of management app in container</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-string">&quot;/opt/engines/.ip&quot;</span>)
-    <span class="ruby-identifier">ip</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&quot;/opt/engines/.ip&quot;</span>)
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">ip</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">exists?</span>(<span class="ruby-string">&quot;/opt/engines/.ip&quot;</span>)
+    <span class="ruby-identifier">ip</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span
+								class="ruby-string">&quot;/opt/engines/.ip&quot;</span>)
+    <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">ip</span>
   <span class="ruby-keyword">end</span>
     <span class="ruby-comment">#devel/lachlan case</span>
-  <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">ip_address_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">addr</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">addr</span>.<span class="ruby-identifier">ipv4?</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">addr</span>.<span class="ruby-identifier">ipv4_loopback?</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-identifier">addr</span>.<span class="ruby-identifier">ip_address</span>
+  <span class="ruby-constant">Socket</span>.<span
+								class="ruby-identifier">ip_address_list</span>.<span
+								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
+								class="ruby-operator">|</span><span class="ruby-identifier">addr</span><span
+								class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">addr</span>.<span
+								class="ruby-identifier">ipv4?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">addr</span>.<span
+								class="ruby-identifier">ipv4_loopback?</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">addr</span>.<span
+								class="ruby-identifier">ip_address</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-     <span class="ruby-constant">SystemUtils</span>. <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+     <span class="ruby-constant">SystemUtils</span>. <span
+								class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-load_self_hosted_domains" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">load_self_hosted_domains</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="load_self_hosted_domains-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 121</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">load_self_hosted_domains</span>
+			</div>
+
+
+			<div id="method-c-load_self_hosted_domains" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">load_self_hosted_domains</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code"
+						id="load_self_hosted_domains-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">load_self_hosted_domains</span>
   <span class="ruby-keyword">begin</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">HostedDomainsFile</span>) <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-identifier">self_hosted_domain_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">HostedDomainsFile</span>,<span class="ruby-string">&quot;w&quot;</span>)
-      <span class="ruby-identifier">self_hosted_domain_file</span>.<span class="ruby-identifier">close</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">exists?</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">HostedDomainsFile</span>) <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+      <span class="ruby-identifier">self_hosted_domain_file</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">HostedDomainsFile</span>,<span
+								class="ruby-string">&quot;w&quot;</span>)
+      <span class="ruby-identifier">self_hosted_domain_file</span>.<span
+								class="ruby-identifier">close</span>
+      <span class="ruby-keyword">return</span> <span
+								class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">self_hosted_domain_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">HostedDomainsFile</span>,<span class="ruby-string">&quot;r&quot;</span>)
+      <span class="ruby-identifier">self_hosted_domain_file</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">HostedDomainsFile</span>,<span
+								class="ruby-string">&quot;r&quot;</span>)
     <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">self_hosted_domains</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>( <span class="ruby-identifier">self_hosted_domain_file</span> )
-    <span class="ruby-identifier">self_hosted_domain_file</span>.<span class="ruby-identifier">close</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">self_hosted_domains</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">self_hosted_domains</span> = <span
+								class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span
+								class="ruby-identifier">load</span>( <span
+								class="ruby-identifier">self_hosted_domain_file</span> )
+    <span class="ruby-identifier">self_hosted_domain_file</span>.<span
+								class="ruby-identifier">close</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">self_hosted_domains</span> <span
+								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+      <span class="ruby-keyword">return</span> <span
+								class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
     <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">self_hosted_domains</span>
-  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-    <span class="ruby-identifier">self_hosted_domains</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-     <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">self_hosted_domains</span>
+    <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">self_hosted_domains</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">self_hosted_domains</span> = <span
+								class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+     <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
+    <span class="ruby-keyword">return</span> <span
+								class="ruby-identifier">self_hosted_domains</span>
   <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-rm_hosted_domain" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">rm_hosted_domain</span><span
-            class="method-args">(domain,system_api)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="rm_hosted_domain-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 104</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">rm_hosted_domain</span>(<span class="ruby-identifier">domain</span>,<span class="ruby-identifier">system_api</span>)
-  <span class="ruby-identifier">ret_val</span>=<span class="ruby-keyword">false</span>
-  <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">rm_local_domain_files</span> <span class="ruby-identifier">domain</span>
-  <span class="ruby-identifier">domains</span> = <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">load_self_hosted_domains</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">domains</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">domain</span>)
-    <span class="ruby-identifier">domains</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">domain</span>)  
-    <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">save_self_hosted_domains</span>(<span class="ruby-identifier">domains</span>) 
-    <span class="ruby-identifier">system_api</span>.<span class="ruby-identifier">reload_dns</span>
-    <span class="ruby-identifier">ret_val</span>=<span class="ruby-keyword">true</span>
+			</div>
+
+
+			<div id="method-c-rm_hosted_domain" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">rm_hosted_domain</span><span
+						class="method-args">(domain,system_api)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="rm_hosted_domain-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">rm_hosted_domain</span>(<span
+								class="ruby-identifier">domain</span>,<span
+								class="ruby-identifier">system_api</span>)
+  <span class="ruby-identifier">ret_val</span>=<span
+								class="ruby-keyword">false</span>
+  <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">rm_local_domain_files</span> <span
+								class="ruby-identifier">domain</span>
+  <span class="ruby-identifier">domains</span> = <span
+								class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">load_self_hosted_domains</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">domains</span>.<span
+								class="ruby-identifier">has_key?</span>(<span
+								class="ruby-identifier">domain</span>)
+    <span class="ruby-identifier">domains</span>.<span
+								class="ruby-identifier">delete</span>(<span
+								class="ruby-identifier">domain</span>)  
+    <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">save_self_hosted_domains</span>(<span
+								class="ruby-identifier">domains</span>) 
+    <span class="ruby-identifier">system_api</span>.<span
+								class="ruby-identifier">reload_dns</span>
+    <span class="ruby-identifier">ret_val</span>=<span
+								class="ruby-keyword">true</span>
         
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ret_val</span>
-   <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-     <span class="ruby-constant">SystemUtils</span>. <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+   <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+     <span class="ruby-constant">SystemUtils</span>. <span
+								class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-rm_local_domain_files" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">rm_local_domain_files</span><span
-            class="method-args">(domain_name)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="rm_local_domain_files-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 89</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">rm_local_domain_files</span> <span class="ruby-identifier">domain_name</span>
-  <span class="ruby-identifier">ret_val</span>=<span class="ruby-keyword">false</span>
+			</div>
 
-  <span class="ruby-identifier">dns_zone_filename</span> = <span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">DNSZoneDir</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">domain_name</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">dns_zone_filename</span>)
-    <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">dns_zone_filename</span>)
-    <span class="ruby-identifier">ret_val</span>=<span class="ruby-keyword">true</span>
+
+			<div id="method-c-rm_local_domain_files" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">rm_local_domain_files</span><span
+						class="method-args">(domain_name)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="rm_local_domain_files-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">rm_local_domain_files</span> <span
+								class="ruby-identifier">domain_name</span>
+  <span class="ruby-identifier">ret_val</span>=<span
+								class="ruby-keyword">false</span>
+
+  <span class="ruby-identifier">dns_zone_filename</span> = <span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">DNSZoneDir</span> <span
+								class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span
+								class="ruby-operator">+</span> <span class="ruby-identifier">domain_name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">exists?</span>(<span
+								class="ruby-identifier">dns_zone_filename</span>)
+    <span class="ruby-constant">File</span>.<span
+								class="ruby-identifier">delete</span>(<span
+								class="ruby-identifier">dns_zone_filename</span>)
+    <span class="ruby-identifier">ret_val</span>=<span
+								class="ruby-keyword">true</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ret_val</span>
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-  <span class="ruby-constant">SystemUtils</span>. <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+  <span class="ruby-constant">SystemUtils</span>. <span
+								class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-save_self_hosted_domains" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">save_self_hosted_domains</span><span
-            class="method-args">(domains)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="save_self_hosted_domains-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 143</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">save_self_hosted_domains</span>(<span class="ruby-identifier">domains</span>)
+			</div>
+
+
+			<div id="method-c-save_self_hosted_domains" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">save_self_hosted_domains</span><span
+						class="method-args">(domains)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code"
+						id="save_self_hosted_domains-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 143</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">save_self_hosted_domains</span>(<span
+								class="ruby-identifier">domains</span>)
     <span class="ruby-keyword">begin</span>
-      <span class="ruby-identifier">self_hosted_domain_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">HostedDomainsFile</span>,<span class="ruby-string">&quot;w&quot;</span>)
-      <span class="ruby-identifier">self_hosted_domain_file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">to_yaml</span>())
-      <span class="ruby-identifier">self_hosted_domain_file</span>.<span class="ruby-identifier">close</span>
-      <span class="ruby-identifier">conf_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">DNSHostedList</span>,<span class="ruby-string">&quot;w&quot;</span>)
-      <span class="ruby-identifier">p</span> <span class="ruby-identifier">domains</span>
+      <span class="ruby-identifier">self_hosted_domain_file</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">HostedDomainsFile</span>,<span
+								class="ruby-string">&quot;w&quot;</span>)
+      <span class="ruby-identifier">self_hosted_domain_file</span>.<span
+								class="ruby-identifier">write</span>(<span
+								class="ruby-identifier">domains</span>.<span
+								class="ruby-identifier">to_yaml</span>())
+      <span class="ruby-identifier">self_hosted_domain_file</span>.<span
+								class="ruby-identifier">close</span>
+      <span class="ruby-identifier">conf_file</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">DNSHostedList</span>,<span
+								class="ruby-string">&quot;w&quot;</span>)
+      <span class="ruby-identifier">p</span> <span
+								class="ruby-identifier">domains</span>
       <span class="ruby-identifier">p</span> <span class="ruby-value">:domains</span>
-      <span class="ruby-identifier">domains</span>.<span class="ruby-identifier">each_key</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">domain</span><span class="ruby-operator">|</span>          
+      <span class="ruby-identifier">domains</span>.<span
+								class="ruby-identifier">each_key</span> <span
+								class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+								class="ruby-identifier">domain</span><span class="ruby-operator">|</span>          
         <span class="ruby-identifier">p</span> <span class="ruby-value">:domain</span>
-        <span class="ruby-identifier">p</span> <span class="ruby-identifier">domain</span>
-        <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">write_config</span>(<span class="ruby-identifier">domain</span>,<span class="ruby-identifier">conf_file</span>)
+        <span class="ruby-identifier">p</span> <span
+								class="ruby-identifier">domain</span>
+        <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">write_config</span>(<span
+								class="ruby-identifier">domain</span>,<span
+								class="ruby-identifier">conf_file</span>)
       <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">conf_file</span>.<span class="ruby-identifier">close</span>
+      <span class="ruby-identifier">conf_file</span>.<span
+								class="ruby-identifier">close</span>
     
-      <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+      <span class="ruby-keyword">return</span> <span
+								class="ruby-keyword">true</span>
       
-    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-       <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
-      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+       <span class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
+      <span class="ruby-keyword">return</span> <span
+								class="ruby-keyword">false</span>
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+  <span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-write_config" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">write_config</span><span
-            class="method-args">(domain,conf_file)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="write_config-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 76</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">write_config</span>(<span class="ruby-identifier">domain</span>,<span class="ruby-identifier">conf_file</span>)
+			</div>
+
+
+			<div id="method-c-write_config" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">write_config</span><span
+						class="method-args">(domain,conf_file)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="write_config-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">write_config</span>(<span
+								class="ruby-identifier">domain</span>,<span
+								class="ruby-identifier">conf_file</span>)
  
-  <span class="ruby-identifier">conf_file</span>.<span class="ruby-identifier">puts</span>( <span class="ruby-string">&quot;zone \&quot;&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">domain</span> <span class="ruby-operator">+</span><span class="ruby-string">&quot;\&quot; {&quot;</span>)
-  <span class="ruby-identifier">conf_file</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;type master;&quot;</span>)
-  <span class="ruby-identifier">conf_file</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;file \&quot;/etc/bind/engines/zones/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">domain</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\&quot;;&quot;</span>) <span class="ruby-comment">#FIXME and put /etc... in config</span>
-  <span class="ruby-identifier">conf_file</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;};&quot;</span>)
+  <span class="ruby-identifier">conf_file</span>.<span
+								class="ruby-identifier">puts</span>( <span class="ruby-string">&quot;zone \&quot;&quot;</span> <span
+								class="ruby-operator">+</span> <span class="ruby-identifier">domain</span> <span
+								class="ruby-operator">+</span><span class="ruby-string">&quot;\&quot; {&quot;</span>)
+  <span class="ruby-identifier">conf_file</span>.<span
+								class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;type master;&quot;</span>)
+  <span class="ruby-identifier">conf_file</span>.<span
+								class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;file \&quot;/etc/bind/engines/zones/&quot;</span> <span
+								class="ruby-operator">+</span> <span class="ruby-identifier">domain</span> <span
+								class="ruby-operator">+</span> <span class="ruby-string">&quot;\&quot;;&quot;</span>) <span
+								class="ruby-comment">#FIXME and put /etc... in config</span>
+  <span class="ruby-identifier">conf_file</span>.<span
+								class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;};&quot;</span>)
  
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-  <span class="ruby-constant">SystemUtils</span>. <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+  <span class="ruby-constant">SystemUtils</span>. <span
+								class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-write_domain_list" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">write_domain_list</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="write_domain_list-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 36</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">write_domain_list</span>
+			</div>
+
+
+			<div id="method-c-write_domain_list" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">write_domain_list</span><span
+						class="method-args">()</span> <span class="method-click-advice">click
+						to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="write_domain_list-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">write_domain_list</span>
       
-  <span class="ruby-identifier">system_api</span>.<span class="ruby-identifier">reload_dns</span>
+  <span class="ruby-identifier">system_api</span>.<span
+								class="ruby-identifier">reload_dns</span>
 
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
+				</div>
 
-        
-      </div>
 
-    
-      <div id="method-c-write_zone_file" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">write_zone_file</span><span
-            class="method-args">(domain,ip)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
 
-        <div class="method-description">
-          
-          
-          
-          
 
-          
-          <div class="method-source-code" id="write_zone_file-source">
-            <pre><span class="ruby-comment"># File system/DNSHosting.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span class="ruby-identifier">write_zone_file</span>(<span class="ruby-identifier">domain</span>,<span class="ruby-identifier">ip</span>)
-  <span class="ruby-identifier">dns_template</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">SelfHostedDNStemplate</span>)
+			</div>
 
-  <span class="ruby-identifier">dns_template</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;IP&quot;</span>,<span class="ruby-identifier">ip</span>)
-  <span class="ruby-identifier">dns_template</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;DOMAIN&quot;</span>,<span class="ruby-identifier">domain</span>)
 
-  <span class="ruby-identifier">dns_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">SysConfig</span>.<span class="ruby-constant">DNSZoneDir</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">domain</span>,<span class="ruby-string">&quot;w&quot;</span>)
-  <span class="ruby-identifier">dns_file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">dns_template</span>)
-  <span class="ruby-identifier">dns_file</span>.<span class="ruby-identifier">close</span>
+			<div id="method-c-write_zone_file" class="method-detail ">
+
+				<div class="method-heading">
+					<span class="method-name">write_zone_file</span><span
+						class="method-args">(domain,ip)</span> <span
+						class="method-click-advice">click to toggle source</span>
+
+				</div>
+
+
+				<div class="method-description">
+
+
+
+
+
+
+					<div class="method-source-code" id="write_zone_file-source">
+						<pre>
+							<span class="ruby-comment"># File system/DNSHosting.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">DNSHosting</span>.<span
+								class="ruby-identifier">write_zone_file</span>(<span
+								class="ruby-identifier">domain</span>,<span
+								class="ruby-identifier">ip</span>)
+  <span class="ruby-identifier">dns_template</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">SelfHostedDNStemplate</span>)
+
+  <span class="ruby-identifier">dns_template</span>.<span
+								class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;IP&quot;</span>,<span
+								class="ruby-identifier">ip</span>)
+  <span class="ruby-identifier">dns_template</span>.<span
+								class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;DOMAIN&quot;</span>,<span
+								class="ruby-identifier">domain</span>)
+
+  <span class="ruby-identifier">dns_file</span> = <span
+								class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span
+								class="ruby-constant">SysConfig</span>.<span
+								class="ruby-constant">DNSZoneDir</span> <span
+								class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span
+								class="ruby-operator">+</span> <span class="ruby-identifier">domain</span>,<span
+								class="ruby-string">&quot;w&quot;</span>)
+  <span class="ruby-identifier">dns_file</span>.<span
+								class="ruby-identifier">write</span>(<span
+								class="ruby-identifier">dns_template</span>)
+  <span class="ruby-identifier">dns_file</span>.<span
+								class="ruby-identifier">close</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
-  <span class="ruby-constant">SystemUtils</span>. <span class="ruby-constant">SystemUtils</span>.<span class="ruby-identifier">log_exception</span>(<span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span>=<span
+								class="ruby-operator">&gt;</span><span class="ruby-identifier">e</span>
+  <span class="ruby-constant">SystemUtils</span>. <span
+								class="ruby-constant">SystemUtils</span>.<span
+								class="ruby-identifier">log_exception</span>(<span
+								class="ruby-identifier">e</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
+<span class="ruby-keyword">end</span>
+						</pre>
+					</div>
 
-        
-
-        
-      </div>
-
-    
-    </section>
-  
-  </section>
-</main>
+				</div>
 
 
-<footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
-  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
-</footer>
 
+
+			</div>
+
+
+		</section>
+
+	</section>
+	</main>
+
+
+	<footer id="validator-badges" role="contentinfo">
+		<p>
+			<a href="http://validator.w3.org/check/referer">Validate</a>
+		<p>
+			Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+		<p>
+			Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a>
+			by <a href="http://deveiate.org">Michael Granger</a>.
+	</footer>

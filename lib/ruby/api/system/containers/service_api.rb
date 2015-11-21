@@ -6,10 +6,11 @@ class ServiceApi < ContainerApi
   def get_pending_service_configurations_hashes(service_hash)
     @engines_core.get_pending_service_configurations_hashes(service_hash)
   end
+
   #({service_name: @container_name})
   def get_service_configurations_hashes(service_hash)
-  @engines_core.get_service_configurations_hashes(service_hash)
-end
+    @engines_core.get_service_configurations_hashes(service_hash)
+  end
   #
   #  def load_and_attach_persistant_services(service)
   #    @engines_core.load_and_attach_persistant_services(service)
@@ -47,21 +48,22 @@ end
   def container_services_dir(container)
     ContainerStateFiles.container_state_dir(container) + '/services/'
   end
-  
-  def retrieve_configurator(c, params)    
-     return log_error_mesg('service not running ',params) if c.is_running? == false
-     return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
-     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-     result = SystemUtils.execute_command(cmd)
-     if result[:result] == 0
-       variables = SystemUtils.hash_string_to_hash(result[:stdout])
-       params[:variables] = variables
-       return params
-     end
-     log_error_mesg('Failed retrieve_configurator',result)
-     return {}
-   end
+
+  def retrieve_configurator(c, params)
+    return log_error_mesg('service not running ',params) if c.is_running? == false
+    return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
+    cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
+    result = SystemUtils.execute_command(cmd)
+    if result[:result] == 0
+      variables = SystemUtils.hash_string_to_hash(result[:stdout])
+      params[:variables] = variables
+      return params
+    end
+    log_error_mesg('Failed retrieve_configurator',result)
+    return {}
+  end
+
   def update_service_configuration(configuration)
-      @engines_core.update_service_configuration(configuration)
-end
+    @engines_core.update_service_configuration(configuration)
+  end
 end
