@@ -6,6 +6,7 @@ require 'objspace'
 
 class ManagedContainer < Container
   @conf_self_start = false
+  @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
   attr_accessor :task_at_hand, :restart_required, :rebuild_required
