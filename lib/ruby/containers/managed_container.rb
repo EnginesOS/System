@@ -35,6 +35,8 @@ class ManagedContainer < Container
     @container_api.rebuild_reason(self)
   end
 
+  # Note desired state is teh next step and not the final result desired state is stepped through
+  
   def in_progress(state)
     @task_at_hand = state
     current_state = @setState
@@ -48,15 +50,15 @@ class ManagedContainer < Container
     when :pause
       desired_state('paused')
     when :restart
-      desired_state('running')
+      desired_state('stopped')
     when :unpause
       desired_state('running')
     when :recreate
-      desired_state('running')
+      desired_state('stopped')
     when :rebuild
-      desired_state('running')
+      desired_state('stopped')
     when :build
-      desired_state('running')
+      desired_state('stopped')
     when :delete
       desired_state('nocontainer')
       #  desired_state('noimage')
