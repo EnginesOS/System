@@ -1,4 +1,4 @@
-module ContainerStatistics
+module RunningContainerStatistics
   
   def stats
       #expire_engine_info

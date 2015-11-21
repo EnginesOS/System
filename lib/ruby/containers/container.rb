@@ -10,8 +10,8 @@ class Container < ErrorsApi
   include ContainerStatus
   require_relative 'container/image_controls.rb'
   include ImageControls
-  require_relative 'container/container_statistics.rb'
-  include ContainerStatistics
+  require_relative 'container/running_container_statistics.rb'
+  include RunningContainerStatistics
   require_relative 'container/engines_api_access.rb'
   include EnginesApiAccess
   @conf_register_dns = true
