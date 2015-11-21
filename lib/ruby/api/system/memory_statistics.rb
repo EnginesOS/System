@@ -60,7 +60,7 @@ module MemoryStatistics
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
-        SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
+       # SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
         ret_val  = self.empty_container_result
       end
     end
