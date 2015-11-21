@@ -1,7 +1,4 @@
 module Engines
-  
-  
-
   def list_managed_engines
     clear_error
     ret_val = []
@@ -14,8 +11,6 @@ module Engines
     log_exception(e)
     return ret_val
   end
-  
-
 
   def set_engine_network_properties(engine, params)
     clear_error
@@ -72,28 +67,27 @@ module Engines
     SystemUtils.log_exception(e)
   end
 
-  
   def loadManagedEngine(engine_name)
-     e = engine_from_cache(engine_name)
-     return e unless e.nil?
-            
-     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
-     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
-     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
-     yaml_file = File.read(yam_file_name)
-     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)    
-     return false if managed_engine.nil? || managed_engine == false
-     cache_engine(engine_name,managed_engine)
-     return managed_engine
-   rescue StandardError => e
-     unless engine_name.nil?
-       unless managed_engine.nil?
-         managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
-         log_error_mesg(managed_engine.last_error, e)
-       end
-     else
-       log_error_mesg('nil Engine Name', engine_name)
-     end
-     log_exception(e)
-   end
+    e = engine_from_cache(engine_name)
+    return e unless e.nil?
+
+    return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
+    yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
+    return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
+    yaml_file = File.read(yam_file_name)
+    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
+    return false if managed_engine.nil? || managed_engine == false
+    cache_engine(engine_name,managed_engine)
+    return managed_engine
+  rescue StandardError => e
+    unless engine_name.nil?
+      unless managed_engine.nil?
+        managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
+        log_error_mesg(managed_engine.last_error, e)
+      end
+    else
+      log_error_mesg('nil Engine Name', engine_name)
+    end
+    log_exception(e)
+  end
 end

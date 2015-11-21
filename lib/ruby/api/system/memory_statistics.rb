@@ -9,21 +9,20 @@ module MemoryStatistics
 
   def self.total_memory_statistics(api)
     engines_memory_statistics = {}
-      
+
     engines = api.getManagedEngines
     services = api.getManagedServices
     # system_services = api.listSystemServices
     engines_memory_statistics[:containers] = {}
     engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
     engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
-    engines_memory_statistics[:containers][:totals] = {}  
+    engines_memory_statistics[:containers][:totals] = {}
     engines_memory_statistics[:containers][:totals][:applications] = engines_memory_statistics[:containers][:applications][:totals]
     engines_memory_statistics[:containers][:totals][:services] = engines_memory_statistics[:containers][:services][:totals]
     engines_memory_statistics[:containers][:applications].delete(:totals)
     engines_memory_statistics[:containers][:services].delete(:totals)
     # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
-    
-   
+
     engines_memory_statistics[:system] = self.get_system_memory_info
     engines_memory_statistics
   end
@@ -50,7 +49,7 @@ module MemoryStatistics
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
     end
- #   return self.empty_container_result  unless container.is_active?
+    #   return self.empty_container_result  unless container.is_active?
 
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
@@ -60,7 +59,7 @@ module MemoryStatistics
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
-       # SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
+        # SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
         ret_val  = self.empty_container_result
       end
     end
@@ -77,11 +76,10 @@ module MemoryStatistics
     ret_val = {}
     ret_val.store(:maximum, 0)
     ret_val.store(:current, 0)
-     ret_val.store(:limit, 0)
+    ret_val.store(:limit, 0)
     return ret_val
   end
-  
-  
+
   def self.get_system_memory_info
     ret_val = {}
     proc_mem_info_file = File.open('/proc/meminfo')

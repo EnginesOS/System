@@ -1,22 +1,17 @@
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+
 #require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
-
-
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
-
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
-
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service.rb'
-
-  
 
   # require_relative '../dns_api.rb'
 
@@ -79,21 +74,20 @@ class EnginesCore < ErrorsApi
 
   require_relative 'docker_operations.rb'
   include DockerOperations
-  
+
   require_relative 'registry_operations.rb'
   include RegistryOperations
-  
+
   require_relative 'template_operations.rb'
-   include TemplateOperations
-   
+  include TemplateOperations
+
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'
   require_relative '../docker/docker_api.rb'
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
   require_relative '../registry_handler.rb'
-  
-  
+
   def initialize
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
@@ -108,9 +102,7 @@ class EnginesCore < ErrorsApi
 
   #why readers on these apis
   attr_reader :container_api, :service_api
-  
 
-   
   def api_shutdown
     p :BEING_SHUTDOWN
 
@@ -135,9 +127,6 @@ class EnginesCore < ErrorsApi
   def save_build_report(container,build_report)
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
-
-
- 
 
   protected
 

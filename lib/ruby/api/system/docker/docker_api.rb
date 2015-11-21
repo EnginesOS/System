@@ -59,7 +59,7 @@ class DockerApi < ErrorsApi
     @last_error = result[:stderr].to_s
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
-    return false # Otherwise returnsresult[:stdout] 
+    return false # Otherwise returnsresult[:stdout]
   rescue StandardError => e
     log_exception(e)
   end
@@ -86,17 +86,17 @@ class DockerApi < ErrorsApi
     if cmdline.include?('docker exec')
       docker_exec = 'docker exec -u ' + container.cont_userid + ' '
       cmdline.gsub!(/docker exec/, docker_exec)
-    end    
+    end
     run_docker_cmd(cmdline, container)
   end
-  
-    def run_docker_cmd(cmdline, container)
-    
+
+  def run_docker_cmd(cmdline, container)
+
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
-#    if container.last_result.start_with?('[') && !container.last_result.end_with?(']')  # || container.last_result.end_with?(']') )
-#      container.last_result += ']'
-#    end
+    #    if container.last_result.start_with?('[') && !container.last_result.end_with?(']')  # || container.last_result.end_with?(']') )
+    #      container.last_result += ']'
+    #    end
     container.last_error = result[:stderr]
     if result[:result] == 0
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
@@ -122,7 +122,7 @@ class DockerApi < ErrorsApi
     clear_error
     cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
-    return result[:stderr].to_s + ' ' + result[:stdout].to_s 
+    return result[:stderr].to_s + ' ' + result[:stdout].to_s
   rescue StandardError => e
     log_exception(e)
     return 'error retriving logs ' + e.to_s
@@ -161,11 +161,10 @@ class DockerApi < ErrorsApi
     log_exception(e)
   end
 
-#  def docker_exec(container, command, args)
-#    run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args
-#    execute_docker_cmd(run_args, container)
-#  end
-
+  #  def docker_exec(container, command, args)
+  #    run_args = 'docker exec ' + container.container_name + ' ' + command + ' ' + args
+  #    execute_docker_cmd(run_args, container)
+  #  end
 
   def clean_up_dangling_images
     cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'

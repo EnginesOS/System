@@ -35,31 +35,29 @@ module LocalFileServiceBuilder
     p 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s
     #  Default to engine
     @app_is_persistant = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
-    service_hash = Volume.complete_service_hash(service_hash) 
+    service_hash = Volume.complete_service_hash(service_hash)
     p :complete_service_hash
     p service_hash
-#    service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
-#    if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'     
-#      service_hash[:variables][:engine_path] = '/home/app/'
-#    else
-#      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
-#    end
-#    service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
-#    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src) && service_hash[:variables][:volume_src].to_s != ''
-#
-#    service_hash[:variables][:volume_src].strip!
-#    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
-#
-#    permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
-#    vol = Volume.new(service_hash[:variables][:service_name], service_hash[:variables][:volume_src], service_hash[:variables][:engine_path], 'rw', permissions)
+    #    service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
+    #    if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
+    #      service_hash[:variables][:engine_path] = '/home/app/'
+    #    else
+    #      service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
+    #    end
+    #    service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
+    #    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src) && service_hash[:variables][:volume_src].to_s != ''
+    #
+    #    service_hash[:variables][:volume_src].strip!
+    #    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
+    #
+    #    permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
+    #    vol = Volume.new(service_hash[:variables][:service_name], service_hash[:variables][:volume_src], service_hash[:variables][:engine_path], 'rw', permissions)
     @volumes[service_hash[:variables][:service_name]] = Volume.new(service_hash)
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
- 
-  
   protected
 
   def get_volbuild_volmaps(container)

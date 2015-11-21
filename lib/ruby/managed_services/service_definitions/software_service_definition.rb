@@ -29,42 +29,43 @@ class SoftwareServiceDefinition
   def self.software_service_definition(params)
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
   end
-  
+
   #Find the assigned service container_name from teh service definition file
   def SoftwareServiceDefinition.get_software_service_container_name(params)
- 
+
     server_service =  self.software_service_definition(params)
     return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
- 
-    return server_service[:service_container]   
-    rescue StandardError => e
+
+    return server_service[:service_container]
+  rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-  
+
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
-      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-        if  service_def != nil
-          service_environment_variables = service_def[:target_environment_variables]
-#            p service_environment_variables.to_s
-           if service_environment_variables != nil
-             service_environment_variables.values.each do |env_variable_pair|
-               env_name = env_variable_pair[:environment_name]
-               value_name = env_variable_pair[:variable_name]
-#                 p :hunting 
-#                 p env_variable_pair[:variable_name]
-               value=service_hash[:variables][value_name.to_sym]
-#               p service_hash
-#               p env_variable_pair
-             retval.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
-             end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
-        end
-  else
-    SystemUtils.log_error_mesg('Failed to load service definition',service_hash)
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    if  service_def != nil
+      service_environment_variables = service_def[:target_environment_variables]
+      #            p service_environment_variables.to_s
+      if service_environment_variables != nil
+        service_environment_variables.values.each do |env_variable_pair|
+          env_name = env_variable_pair[:environment_name]
+          value_name = env_variable_pair[:variable_name]
+          #                 p :hunting
+          #                 p env_variable_pair[:variable_name]
+          value=service_hash[:variables][value_name.to_sym]
+          #               p service_hash
+          #               p env_variable_pair
+          retval.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
+        end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+      end
+    else
+      SystemUtils.log_error_mesg('Failed to load service definition',service_hash)
+    end
+    return retval
+
   end
-     return retval
-  
-  end
+
   def SoftwareServiceDefinition.find(service_type,provider)
     if service_type == nil  || provider == nil
       return nil
@@ -139,7 +140,7 @@ class SoftwareServiceDefinition
   def to_h
     hash = {}
     instance_variables.each {|var|
-      symbol = var.to_s.delete('@').to_sym     
+      symbol = var.to_s.delete('@').to_sym
       hash[symbol] = instance_variable_get(var) }
     return SystemUtils.symbolize_keys(hash)
   rescue Exception=>e

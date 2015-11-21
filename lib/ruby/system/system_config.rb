@@ -1,7 +1,7 @@
 class SystemConfig
 
   @@api_version = '0.0'
-  @@engines_system_version = '0.0' 
+  @@engines_system_version = '0.0'
   @@RegistryPort = 21027
   @@default_webport=8000
   @@DBHost = 'mysql.engines.internal'
@@ -45,91 +45,95 @@ class SystemConfig
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@EnginesUpdateStatusFile ='/opt/engines/run/system/flags/update_pending'
-  
   def self.EnginesUpdateStatusFile
     @@EnginesUpdateStatusFile
   end
-  
+
   def self.NoRemoteExceptionLoggingFlagFile
     return @@NoRemoteExceptionLoggingFlagFile
   end
+
   def self.registry_connect_timeout
     return 60
   end
-  
+
   def SystemConfig.generate_ssh_private_keyfile
     return  @@generate_ssh_private_keyfile
   end
+
   def SystemConfig.BuildBuiltFile
     return  @@BuildBuiltFile
   end
-  
+
   def SystemConfig.BuildRunningParamsFile
     return @@BuildRunningParamsFile
   end
-  
+
   def SystemConfig.BuildFailedFile
     return @@BuildFailedFile
   end
-  
+
   def SystemConfig.SystemRebootingFlag
     return @@SystemRebootingFlag
-  end 
-  
+  end
+
   def SystemConfig.EnginesSystemRebootNeededFlag
     return @@EnginesSystemRebootNeededFlag
   end
-  
+
   def SystemConfig.EnginesSystemUpdatedFlag
     return   @@EnginesSystemUpdatedFlag
   end
-  
+
   def SystemConfig.EnginesSystemUpdatingFlag
     return   @@EnginesSystemUpdatingFlag
-  end  
-  
+  end
+
   def SystemConfig.SystemUpdatingFlag
     return   @@SystemUpdatingFlag
   end
-  
+
   def SystemConfig.SystemUpdatedFlag
-     return   @@SystemUpdatedFlag
+    return   @@SystemUpdatedFlag
   end
-     
+
   def SystemConfig.RegistryPort
     return @@RegistryPort
   end
+
   def SystemConfig.api_version
     return @@api_version
   end
   @@api_version = '0.0'
-  
+
   @@engines_system_version = '0.0'
-  
+
   def SystemConfig.engines_system_version
     return @@engines_system_version
   end
-  
+
   @@EnginesInternalCA = '/opt/engines/etc/ssl/ca/certs/system_CA.pem'
-  
+
   def SystemConfig.default_webport
     return @@default_webport
   end
-  
+
   def SystemConfig.RunDir
     return @@RunDir
   end
+
   def SystemConfig.EnginesInternalCA
     return @@EnginesInternalCA
   end
-  
+
   def SystemConfig.SystemPreferencesFile
     return @@SystemPreferencesFile
   end
+
   def SystemConfig.engines_ssh_private_keyfile
     return @@engines_ssh_private_keyfile
   end
-  
+
   def SystemConfig.DefaultBuildReportTemplateFile
     return @@DefaultBuildReportTemplateFile
   end
@@ -197,7 +201,6 @@ class SystemConfig
   def SystemConfig.timeZone_fileMapping
     return @@timeZone_fileMapping
   end
-
 
   def SystemConfig.internal_domain
     return @@internal_domain

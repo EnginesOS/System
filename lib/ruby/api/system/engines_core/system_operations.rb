@@ -51,7 +51,7 @@ module SystemOperations
   end
 
   def system_image_free_space
-     @system_api.system_image_free_space
-   end
-   
+    @system_api.system_image_free_space
+  end
+
 end

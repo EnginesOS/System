@@ -1,6 +1,6 @@
-
 class ManagedEngine < ManagedContainer
   require '/opt/engines/lib/ruby/containers/managed_container.rb'
+
   def initialize(build_params, runtime_params , core_api)
 
     @memory = build_params[:memory]

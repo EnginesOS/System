@@ -3,7 +3,6 @@ class ErrorsApi
   attr_reader :last_error
   @last_error = ''
   @debug = false
-
   def log_error_mesg(msg, object)
     @last_error = @last_error.to_s  + ':' + msg.to_s + ':' + object.to_s.slice(0, 256)
     msg.to_s += caller_locations(1,3) if @debug

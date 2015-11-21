@@ -1,6 +1,4 @@
 module ManagedContainerControls
-  
-
   def destroy_container
     return false unless has_api?
     clear_error
@@ -73,7 +71,7 @@ module ManagedContainerControls
     return false unless has_api?
     in_progress(:stop)
     @container_api.deregister_non_persistant_services(self)
-    return task_failed('stop') unless super    
+    return task_failed('stop') unless super
     task_complete
   end
 
@@ -95,7 +93,7 @@ module ManagedContainerControls
     return task_failed('restart/start') unless start_container
     task_complete
   end
-  
+
   def rebuild_container
     return false unless has_api?
     in_progress(:rebuild)
