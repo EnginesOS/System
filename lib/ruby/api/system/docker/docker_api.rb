@@ -102,7 +102,8 @@ class DockerApi < ErrorsApi
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
       return true
     else
-     # log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
+      container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
+      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
       return false
     end
   rescue StandardError => e

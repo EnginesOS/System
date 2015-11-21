@@ -74,7 +74,9 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service not running ',configurator_params) unless is_running?
     return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
-    result = SystemUtils.execute_command(cmd)
+    result = {}
+    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+    thr.join
     @last_error = result[:stderr] # Dont log just set
     return result
   end
@@ -205,9 +207,9 @@ class ManagedService < ManagedContainer
     return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
-    result = SystemUtils.execute_command(cmd)
-    p :add_cons
-    p cmd
+    result = {}
+    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+    thr.join
     return true if result[:result] == 0
     log_error_mesg('Failed add_consumer_to_service',result)
   end
@@ -216,7 +218,9 @@ class ManagedService < ManagedContainer
     return log_error_mesg('No uid service not running ', service_hash) unless check_cont_uid
     return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
     cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
-    result = SystemUtils.execute_command(cmd)
+    result = {}
+    thr = Thread.new {result = SystemUtils.execute_command(cmd) }
+    thr.join
     return true  if result[:result] == 0
     log_error_mesg('Failed rm_consumer_from_service', result)
   end
