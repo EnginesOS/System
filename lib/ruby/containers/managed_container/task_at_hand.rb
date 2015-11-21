@@ -39,6 +39,7 @@ def in_progress(state)
 def task_complete
    @last_task =  @task_at_hand
    @task_at_hand = nil
+   expire_engine_info
    save_state
    return true
  end
