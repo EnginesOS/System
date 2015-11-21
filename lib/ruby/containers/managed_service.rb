@@ -3,6 +3,7 @@ require 'objspace'
 
 class ManagedService < ManagedContainer
   @ctype='service'
+  @soft_service  = false
   def lock_values
     super
     @ctype = 'service' if @ctype.nil?
@@ -42,7 +43,9 @@ class ManagedService < ManagedContainer
     service_hash[:persistant] = @persistant
     result = false
      # add/create persistant if fresh == true on not at all or if running create for no persistant
-    return log_error_mesg('service not running' ,self) unless is_running?
+    return true if !is_running? && @soft_service
+     
+    return log_error_mesg('service not running' ,self) unless is_running? 
     unless @persistant
       result = add_consumer_to_service(service_hash)
     else 

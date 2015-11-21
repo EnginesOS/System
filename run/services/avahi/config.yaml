@@ -10,6 +10,7 @@ memory: '32'
 hostname: avahi
 domain_name: local
 host_network: true
+soft_service: true
 environments: []
 image: engines/avahi:_Engines_System(release)
 volumes: 

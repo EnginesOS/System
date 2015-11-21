@@ -16,6 +16,7 @@ class ManagedEngine < ManagedContainer
     @data_uid = build_params[:data_uid]
     @data_gid = build_params[:data_gid]
     @conf_register_dns = true
+    @conf_zero_conf = true
     @deployment_type = runtime_params.deployment_type
     @host_network=false
     @web_port = build_params[:web_port]

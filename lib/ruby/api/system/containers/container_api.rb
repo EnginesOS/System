@@ -1,5 +1,7 @@
 class ContainerApi < ErrorsApi
   require_relative '../container_state_files.rb'
+  require_relative 'service_hash_builders.rb'
+  
   def initialize(docker_api, system_api, engines_core)
     @docker_api = docker_api
     @system_api = system_api
@@ -18,6 +20,7 @@ class ContainerApi < ErrorsApi
     return File.exist?(ContainerStateFiles.restart_flag_file(container))
 
   end
+  
 
   def rebuild_required?(container)
     return File.exist?(ContainerStateFiles.rebuild_flag_file(container))
@@ -148,6 +151,12 @@ class ContainerApi < ErrorsApi
     return @engines_core.create_and_register_service(service_hash)
   end
 
+def register_with_zeroconf(container)
+  service_hash = SystemUtils.create_zeroconf_service_hash(container)
+     return false if service_hash.is_a?(Hash) == false
+  return @engines_core.create_and_register_service(service_hash)
+end
+ 
   # IS this really used ?
   #  def attach_service(service_hash)
   #    @engines_core.service_manager.add_service(service_hash)

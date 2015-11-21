@@ -3,6 +3,11 @@ module DomainOperations
   
   def add_domain_service(params)
 
+    # if domain name ends with .local check for and create if needed avahi
+    # turn on flag to add zero conf dns with dns registration
+    # cycle through engines and serices turning on zero_conf where conf_zero_conf=true
+    # also self host .local regardless so windows can point to dns and pretend to understand 
+    # bonjournoe without happing it installed and there fore bypass the cname issue with windows
     return true if add_domain(params)
     log_error_mesg(@last_error, params)
   end
