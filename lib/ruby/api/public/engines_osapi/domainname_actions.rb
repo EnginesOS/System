@@ -6,14 +6,14 @@ module DomainnameActions
   end
 
   def update_domain(params)
-    return success(params[:domain_name], 'update domain') if @core_api.update_domain(params)
+    return success(params[:domain_name], 'update domain') if @core_api.update_domain_service(params)
     failed(params[:domain_name], last_api_error, 'update  domain')
   rescue StandardError => e
     log_exception_and_fail('update self hosted domain ' + params.to_s, e)
   end
 
   def add_domain(params)
-    return success(params[:domain_name], 'Add domain') if @core_api.add_domain(params)
+    return success(params[:domain_name], 'Add domain') if @core_api.add_domain_service(params)
     failed(params[:domain_name], last_api_error, 'Add  domain')
 
   rescue StandardError => e
@@ -21,7 +21,7 @@ module DomainnameActions
   end
 
   def remove_domain(params)
-    return success(params[:domain_name], 'Add domain') if @core_api.remove_domain(params)
+    return success(params[:domain_name], 'Add domain') if @core_api.remove_domain_service(params)
     failed(params[:domain_name], last_api_error, 'Add  domain')
   rescue StandardError => e
     log_exception_and_fail('Add self hosted domain ' + params.to_s, e)
