@@ -1,18 +1,18 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class Container < ErrorsApi
-  include_relative 'container/container_setup.rb'
+  require_relative 'container/container_setup.rb'
     include ContainerSetup
-  include_relative 'container/container_controls.rb'
+  require_relative 'container/container_controls.rb'
   include ContainerControls
-  include_relative 'container/docker_info_collector.rb'
+  require_relative 'container/docker_info_collector.rb'
   include DockerInfoCollector
-  include_relative 'container/container_status.rb'
+  require_relative 'container/container_status.rb'
   include ContainerStatus
-  include_relative 'container/image_controls.rb'
+  require_relative 'container/image_controls.rb'
   include ImageControls
-  include_relative 'container/container_statistics.rb'
+  require_relative 'container/container_statistics.rb'
   include ContainerStatistics
-  include_relative 'container/engines_api_access.rb'
+  require_relative 'container/engines_api_access.rb'
   include EnginesApiAccess
   @conf_register_dns = true
   
