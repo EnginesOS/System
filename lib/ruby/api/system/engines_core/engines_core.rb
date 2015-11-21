@@ -3,7 +3,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 #require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 
-
+require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 
