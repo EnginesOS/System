@@ -26,9 +26,7 @@ def create_service()
    if envs.is_a?(Array)
      if@environments.is_a?(Array)
        SystemUtils.debug_output( :envs, @environments)
-       @environments =  EnvironmentVariable.merge_envs(envs,@environments)
-       # @environments.concat(envs)
-       #@environments.uniq! #FIXME as new values dont replace old only duplicates values
+       @environments =  EnvironmentVariable.merge_envs(envs,@environments)    
      else
        @environments = envs
      end
