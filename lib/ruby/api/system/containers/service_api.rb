@@ -1,71 +1,17 @@
 class ServiceApi < ContainerApi
-  def get_registered_against_service(params)
-    @engines_core.get_registered_against_service(params)
-  end
 
-  def get_pending_service_configurations_hashes(service_hash)
-    @engines_core.get_pending_service_configurations_hashes(service_hash)
-  end
+  require_relative 'service_api/service_image_actions.rb'
+  include ServiceImageActions
+  require_relative 'service_api/service_configurations.rb'
+  include ServiceConfigurations
 
-  #({service_name: @container_name})
-  def get_service_configurations_hashes(service_hash)
-    @engines_core.get_service_configurations_hashes(service_hash)
-  end
-  #
-  #  def load_and_attach_persistant_services(service)
-  #    @engines_core.load_and_attach_persistant_services(service)
-  #  end
+  require_relative 'service_api/service_consumers.rb'
+  include ServiceConsumers
 
-  # @returns [Boolean]
-  # whether pulled or no false if no new image
-  def pull_image(image_name)
-    @engines_core.pull_image(image_name)
-  end
+  require_relative 'service_api/service_status_flags.rb'
+  include ServiceStatusFlags
 
-  def create_container(container)
-    SystemUtils.execute_command('/opt/engines/scripts/setup_service_dir.sh ' + container.container_name)
-    super
-  end
-  #  def load_and_attach_shared_services(service)
-  #    @engines_core.load_and_attach_shared_services(service)
-  #  end
+  require_relative 'service_api/services_system.rb'
+  include ServicesSystem
 
-  def load_and_attach_persistant_services(container)
-    dirname = container_services_dir(container) + '/pre/'
-    @engines_core.load_and_attach_services(dirname, container)
-  end
-
-  def load_and_attach_shared_services(container)
-    dirname = container_services_dir(container) + '/shared/'
-    @engines_core.load_and_attach_services(dirname, container)
-  end
-
-  def load_and_attach_nonpersistant_services(container)
-    dirname = container_services_dir(container) + '/post/'
-    @engines_core.load_and_attach_services(dirname, container)
-  end
-
-  def container_services_dir(container)
-    ContainerStateFiles.container_state_dir(container) + '/services/'
-  end
-
-  def retrieve_configurator(c, params)
-    return log_error_mesg('service not running ',params) if c.is_running? == false
-    return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
-    cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-    result = {}
-    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
-    thr.join
-    if result[:result] == 0
-      variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      params[:variables] = variables
-      return params
-    end
-    log_error_mesg('Failed retrieve_configurator',result)
-    return {}
-  end
-
-  def update_service_configuration(configuration)
-    @engines_core.update_service_configuration(configuration)
-  end
 end
