@@ -1,5 +1,11 @@
 module ManagedContainerWebSites
   
+  def set_deployment_type(deployment_type)
+    @deployment_type = deployment_type
+    return remove_nginx_service if @deployment_type && @deployment_type != 'web'
+    add_nginx_service if @deployment_type == 'web'
+  end
+  
   def web_sites
     @container_api.web_sites_for(self)
   end

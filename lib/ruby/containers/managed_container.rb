@@ -77,11 +77,7 @@ include ManagedContainerControls
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
   end
 
-  def set_deployment_type(deployment_type)
-    @deployment_type = deployment_type
-    return remove_nginx_service if @deployment_type && @deployment_type != 'web'
-    add_nginx_service if @deployment_type == 'web'
-  end
+
 
   def lock_values
     @conf_self_start.freeze
