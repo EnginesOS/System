@@ -1,7 +1,7 @@
 class ContainerApi < ErrorsApi
   require_relative '../container_state_files.rb'
   require_relative 'service_hash_builders.rb'
-  
+
   require_relative 'container_api/api_result_checks.rb'
   include ApiResultChecks
 
@@ -25,8 +25,6 @@ class ContainerApi < ErrorsApi
 
   require_relative 'container_api/engines_system.rb'
   include EnginesSystem
- 
-
   def initialize(docker_api, system_api, engines_core)
     @docker_api = docker_api
     @system_api = system_api
