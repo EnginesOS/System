@@ -3,6 +3,7 @@ module ContainerStatus
   def read_state
     info = docker_info
     state = 'nocontainer'
+     p info[0]['State'].to_s
             if info[0]['State']
               if info[0]['State']['Running']
                 state = 'running'

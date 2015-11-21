@@ -38,10 +38,6 @@ class ContainerApi < ErrorsApi
   end
 
   def get_container_memory_stats(container)
-    if container.is_a?(String)
-      p "CONTAINTEST STATIS GOT A STRIN"
-      puts caller[0..2]
-    end
     MemoryStatistics.get_container_memory_stats(container)
   end
 
