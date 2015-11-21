@@ -1,5 +1,6 @@
 #!/home/engines/.rbenv/shims/ruby
 require 'yaml'
+require "/opt/engines/lib/ruby/containers/container.rb"
 require "/opt/engines/lib/ruby/containers/managed_container.rb"
 require "/opt/engines/lib/ruby/system/system_config.rb"
 require "/opt/engines/lib/ruby/containers/managed_engine.rb"
