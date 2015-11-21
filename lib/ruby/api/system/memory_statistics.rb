@@ -35,6 +35,7 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     engines.each do | engine|
+      next if engine.setState != "running"
       container_sym = engine.container_name.to_sym
       mem_stats[container_sym] = self.container_memory_stats(engine)
       mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
@@ -49,7 +50,7 @@ module MemoryStatistics
     if container && container.container_id.nil? || container.container_id == '-1'
       container_id = ContainerStateFiles.read_container_id(container)
     end
-    return self.empty_container_result  unless container.is_active?
+ #   return self.empty_container_result  unless container.is_active?
 
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
@@ -59,7 +60,7 @@ module MemoryStatistics
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
-        SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
+       # SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
         ret_val  = self.empty_container_result
       end
     end
