@@ -11,7 +11,7 @@ class ServiceApi < ContainerApi
   require_relative 'service_api/service_status_flags.rb'
   include ServiceStatusFlags
 
-  require_relative 'service_api/servics_system.rb'
+  require_relative 'service_api/services_system.rb'
   include ServicesSystem
 
 end
