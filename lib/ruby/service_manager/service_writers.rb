@@ -5,7 +5,8 @@ module ServiceWriters
   #if persisttant it is added to the Service Registry Tree
   #@ All are added to the ManagesEngine/Service Tree
   #@ return true if successful or false if failed
-  def create_and_register_service(service_hash)
+  # no_engien used by  service builder it ignore no engine error
+  def create_and_register_service(service_hash, no_engine = false)
     clear_error
    
     #register with Engine
