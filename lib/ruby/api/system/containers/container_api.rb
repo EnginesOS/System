@@ -25,10 +25,13 @@ class ContainerApi < ErrorsApi
 
   require_relative 'container_api/engines_system.rb'
   include EnginesSystem
-  def initialize(docker_api, system_api, engines_core)
-    @docker_api = docker_api
-    @system_api = system_api
-    @engines_core = engines_core
+  
+  require_relative `core_access.rb`
+  
+  def initialize(_docker_api, _system_api, _engines_core)
+    @docker_api = _docker_api
+    @system_api = _system_api
+    @engines_core =  _engines_core
   end
 
 end

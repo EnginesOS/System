@@ -1,6 +1,7 @@
 module EnginesSystem
+  include CoreAccess
   def web_sites_for(container)
-    @engines_core.web_sites_for(container)
+    engines_core.web_sites_for(container)
   end
 
   def get_container_memory_stats(container)
