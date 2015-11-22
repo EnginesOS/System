@@ -1,6 +1,7 @@
 class DockerApi < ErrorsApi
   require_relative 'docker_cmd_options'
   require_relative 'docker_event_listener.rb'
+  include DockerEventListener 
   
   def create_container(container)
     clear_error
