@@ -1,5 +1,5 @@
 module CoreApiAccess
-  def engine_core
-   return @engine_core
+  def engines_core
+   return @engines_core
   end
 end
