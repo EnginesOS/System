@@ -81,8 +81,8 @@ class EnginesCore < ErrorsApi
   require_relative 'template_operations.rb'
   include TemplateOperations
 
-  require_relative 'build_controller.rb'  
-  include BuildContoller
+  require_relative 'core_build_controller.rb'  
+  include CoreBuildContoller
   
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'

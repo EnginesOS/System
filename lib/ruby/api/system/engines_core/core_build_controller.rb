@@ -1,4 +1,4 @@
-module BuildController
+module CoreBuildController
   
   def build_started(controller)
     @current_builder = controller
