@@ -14,13 +14,13 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api/engine_api_dependancies.rb'
   include EngineApiDependancies
 
-  require_relative 'container_api/engine_service_api_registration.rb'
+  require_relative 'container_api/engine_api_service_registration.rb'
   include EngineApiServiceRegistration
 
-  require_relative 'container_api/engine_status_api_flags.rb'
+  require_relative 'container_api/engine_api_status_flags.rb'
   include EngineApiStatusFlags
 
-  require_relative 'container_api/engine_image_api_actions.rb'
+  require_relative 'container_api/engine_api_image_actions.rb'
   include EngineApiImageActions
 
   require_relative 'container_api/engines_api_system.rb'
