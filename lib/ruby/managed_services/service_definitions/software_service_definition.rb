@@ -126,8 +126,18 @@ class SoftwareServiceDefinition
     if service == nil
       return nil
     end
+    return false unless service.key?(:persistant)
     return service[:persistant]
   end
+  
+def ServiceDefinitions.is_soft_service?(service_hash)
+  service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
+  if service == nil
+    return nil
+  end
+  return false unless service.key?(:soft_service)
+  return service[:soft_service]
+end
 
   def SoftwareServiceDefinition.service_handle_field(params)
     service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])

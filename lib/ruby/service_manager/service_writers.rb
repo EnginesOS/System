@@ -9,8 +9,9 @@ module ServiceWriters
     clear_error
    
     #register with Engine
-    test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
-      
+    unless ServiceDefinitions.is_soft_service?(service_hash)
+      return log_error_mesg('Failed to add service to managed engine',service_hash) unless test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+    end
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
       # add to service and register with service
     if ServiceDefinitions.is_service_persistant?(service_hash)

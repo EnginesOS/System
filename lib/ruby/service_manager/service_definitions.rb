@@ -1,6 +1,14 @@
 class ServiceDefinitions
 
+  def ServiceDefinitions.is_soft_service?(service_hash)
 
+    soft = ServiceDefinitions.is_soft_service?(service_hash)
+       return  SystemUtils.log_error_mesg('Failed to get software status for ',service_hash)  if soft.nil?
+        service_hash[:soft_service] = soft
+      service_hash[:soft_service]  
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
+  end
 
   def ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
      container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
@@ -37,11 +45,11 @@ class ServiceDefinitions
    end
 
  def ServiceDefinitions.is_service_persistant?(service_hash)
-   unless service_hash.key?(:persistant)
+  # unless service_hash.key?(:persistant) alway s check dont trust service_hash
      persist = ServiceDefinitions.software_service_persistance(service_hash)
     return  SystemUtils.log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
      service_hash[:persistant] = persist
-   end
+   #end
    service_hash[:persistant]  
  rescue StandardError => e
    SystemUtils.log_exception(e)
