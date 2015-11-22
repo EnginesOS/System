@@ -10,7 +10,8 @@ module ServiceWriters
    
     #register with Engine
     unless ServiceDefinitions.is_soft_service?(service_hash)
-      return log_error_mesg('Failed to add service to managed engine',service_hash) unless test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+      test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+        # FIXME not checked because of builder createing services prior to engine 
     end
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
       # add to service and register with service
