@@ -1,5 +1,5 @@
 module EngineServiceRegistration
-  include CoreAccess
+ 
   def register_with_dns(container)
     service_hash = create_dns_service_hash(container)
     return false if service_hash.is_a?(Hash) == false

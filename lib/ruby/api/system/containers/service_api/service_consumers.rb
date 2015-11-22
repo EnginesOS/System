@@ -1,5 +1,5 @@
 module ServiceConsumers
-  include CoreAccess
+
   def load_and_attach_persistant_services(container)
     dirname = container_services_dir(container) + '/pre/'
     engines_core.load_and_attach_services(dirname, container)

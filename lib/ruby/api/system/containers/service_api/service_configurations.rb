@@ -1,5 +1,5 @@
 module ServiceConfigurations
- include CoreAccess
+
  
   def retrieve_configurator(c, params)
     return log_error_mesg('service not running ',params) if c.is_running? == false

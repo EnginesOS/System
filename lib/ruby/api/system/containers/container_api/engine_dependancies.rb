@@ -1,5 +1,5 @@
 module EngineDependancies
-  include CoreAccess
+
   def start_dependancies(container)
     container.dependant_on.each do |service_name|
       p :checking
