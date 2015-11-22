@@ -46,10 +46,9 @@ module Services
 
   def _loadManagedService(service_name, service_type_dir)
 
-    if service_name.nil? || service_name.length == 0
-      @last_error = 'No Service Name'
-      return false
-    end
+    return log_error_mesg('No Service Name',service_type_dir) if service_name.nil? || service_name.length == 0
+    return log_error_mesg("no System api to attach ", @engines_api.to_s) if @engines_api.service_api.nil?
+    
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
     unless File.exist?(yam1_file_name)
       return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
