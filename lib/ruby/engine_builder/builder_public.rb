@@ -63,6 +63,10 @@ class BuilderPublic
   def data_gid
     @builder.data_gid
   end
+  def  group_uid
+    @builder.data_gid
+  
+  end
 
   def data_uid
     @builder.data_uid
