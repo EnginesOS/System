@@ -310,7 +310,7 @@ class DockerFileBuilder
       destination = archive_details[:destination].to_s
       extraction_command = archive_details[:extraction_command].to_s
       path_to_extracted = archive_details[:path_to_extracted].to_s
-      if destination == './'
+      if destination == './' || destination == '/'
         destination = ''
       elsif destination.end_with?('/')
         arc_loc = destination.chop # note not String#chop
