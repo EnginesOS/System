@@ -1,4 +1,4 @@
-module ServiceConfigurations
+module ServiceApiConfigurations
 
  
   def retrieve_configurator(c, params)

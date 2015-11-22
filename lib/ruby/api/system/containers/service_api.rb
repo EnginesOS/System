@@ -2,8 +2,8 @@ class ServiceApi < ContainerApi
 
   require_relative 'service_api/service_image_actions.rb'
   include ServiceImageActions
-  require_relative 'service_api/service_configurations.rb'
-  include ServiceConfigurations
+  require_relative 'service_api/service_api_configurations.rb'
+  include ServiceApiConfigurations
 
   require_relative 'service_api/service_consumers.rb'
   include ServiceConsumers
