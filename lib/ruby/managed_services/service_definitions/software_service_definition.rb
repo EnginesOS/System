@@ -130,7 +130,7 @@ class SoftwareServiceDefinition
     return service[:persistant]
   end
   
-def ServiceDefinitions.is_soft_service?(service_hash)
+def SoftwareServiceDefinition.is_soft_service?(service_hash)
   service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
   if service == nil
     return nil
