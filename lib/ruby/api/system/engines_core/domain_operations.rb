@@ -72,13 +72,12 @@ module DomainOperations
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-
-    @service_manager.deregister_non_persistant_service(service_hash)
+    @service_manager.delete_service(service_hash)
+    #@service_manager.deregister_non_persistant_service(service_hash)
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-    return @service_manager.register_non_persistant_service(service_hash) if @service_manager.create_and_register_service(service_hash)
-    return false
+    return  @service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -94,12 +93,8 @@ module DomainOperations
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-    if @service_manager.delete_service(service_hash) == true
-      @service_manager.deregister_non_persistant_service(service_hash)
-      @service_manager.delete_service_from_engine_registry(service_hash)
-      return true
-    end
-    return false
+   return @service_manager.delete_service(service_hash) 
+
   rescue StandardError => e
     log_exception(e)
   end
