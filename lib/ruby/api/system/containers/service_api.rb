@@ -13,5 +13,5 @@ class ServiceApi < ContainerApi
 
   require_relative 'service_api/services_system.rb'
   include ServicesSystem
-
+  attr_reader :engines_core
 end
