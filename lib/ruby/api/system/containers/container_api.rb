@@ -26,7 +26,7 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api/engines_system.rb'
   include EnginesSystem
   
-  require_relative `core_access.rb`
+  require_relative `container_api/core_access.rb`
   include CoreAccess
 
   
