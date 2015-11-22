@@ -55,7 +55,7 @@ module DomainOperations
     log_exception(e)
   end
 
-  def update_domain_service(params)
+  def update_domain(params)
     old_domain_name = params[:original_domain_name]
     return false unless DNSHosting.update_domain(old_domain_name, params)
     return true unless params[:self_hosted]
@@ -83,7 +83,7 @@ module DomainOperations
     SystemUtils.log_exception(e)
   end
 
-  def remove_domain_service(params)
+  def remove_domain(params)
     return false if DNSHosting.rm_domain(params) == false
     return true if params[:self_hosted] == false
     service_hash = {}
