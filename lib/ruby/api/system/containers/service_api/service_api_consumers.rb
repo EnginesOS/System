@@ -1,4 +1,4 @@
-module ServiceConsumers
+module ServiceApiConsumers
 
   def load_and_attach_persistant_services(container)
     dirname = container_services_dir(container) + '/pre/'

@@ -1,4 +1,4 @@
-module ServiceImageActions
+module ServiceApiImageActions
  
   # @returns [Boolean]
   # whether pulled or no false if no new image
