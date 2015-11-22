@@ -1,4 +1,4 @@
-module EngineDependancies
+module EngineApiDependancies
 
   def start_dependancies(container)
     container.dependant_on.each do |service_name|

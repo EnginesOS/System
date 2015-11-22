@@ -1,4 +1,4 @@
-module EngineServiceRegistration
+module EngineApiServiceRegistration
  
   def register_with_dns(container)
     service_hash = create_dns_service_hash(container)
