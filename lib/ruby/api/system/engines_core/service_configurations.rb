@@ -1,6 +1,5 @@
 module ServiceConfigurations
   require_relative 'service_manager_access.rb'
-  
   def retrieve_service_configuration(config)
     #     c = ConfigurationsApi.new(self)
     #     r = c.

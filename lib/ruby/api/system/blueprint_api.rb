@@ -1,8 +1,7 @@
 class BlueprintApi < ErrorsApi
-  
   def save_blueprint(blueprint, container)
     clear_error
-   # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)     
+    # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     puts blueprint.class.name
     state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
@@ -22,16 +21,16 @@ class BlueprintApi < ErrorsApi
     blueprint_file.close
     return json_hash
   end
-  
+
   def load_blueprint(container)
     clear_error
     state_dir = ContainerStateFiles.container_state_dir(container)
     return log_error_mesg('No Statedir', container) unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'
-   return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
-    BlueprintApi.load_blueprint_file(statefile)  
+    return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
+    BlueprintApi.load_blueprint_file(statefile)
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', statefile)
     log_exception(e)
-  end  
+  end
 end

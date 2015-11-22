@@ -1,12 +1,12 @@
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
+
 #require '/opt/engines/lib/ruby/system/system_config.rb'
 
 require_relative 'engines_osapi_result.rb'
 require_relative 'first_run_wizard.rb'
 
 class EnginesOSapi
-
 
   require_relative 'engines_osapi/available_services_actions.rb'
   include AvailableServicesActions
@@ -49,7 +49,7 @@ class EnginesOSapi
   include UpdateActions
   require_relative 'engines_osapi/return_objects.rb'
   include ReturnObjects
-  
+
   attr_reader :core_api, :last_error
   def shutdown(why)
 
@@ -64,8 +64,6 @@ class EnginesOSapi
   def initialize
     @core_api = EnginesCore.new
   end
-
-
 
   def reserved_engine_names
     names = list_apps
@@ -95,15 +93,13 @@ class EnginesOSapi
   rescue StandardError => e
     log_exception_and_fail('last_api_error', e)
   end
-  
-    # FIXME USED by Engines cmd line need to do differently in there so leave here for the moment
-    def read_state(container)
-      container.read_state
-    rescue StandardError => e
-      log_exception_and_fail('read_state', e)
-    end
 
- 
+  # FIXME USED by Engines cmd line need to do differently in there so leave here for the moment
+  def read_state(container)
+    container.read_state
+  rescue StandardError => e
+    log_exception_and_fail('read_state', e)
+  end
 
   #
   #  def list_services_for(object)

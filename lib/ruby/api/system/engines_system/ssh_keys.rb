@@ -15,5 +15,4 @@ module SshKeys
     SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@172.17.42.1 /opt/engines/bin/regen_private.sh ')
   end
 
-  
 end

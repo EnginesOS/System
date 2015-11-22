@@ -1,5 +1,4 @@
 module BuildReport
-  
   def get_build_report(engine_name)
     clear_error
     state_dir = SystemConfig.RunDir + '/containers/' + engine_name
@@ -19,6 +18,5 @@ module BuildReport
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-
 
 end

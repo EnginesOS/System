@@ -4,7 +4,7 @@ class PermissionRights
     @ro_group = ro_group
     @rw_group = rw_group
   end
-  
+
   attr_reader :owner, :ro_group, :rw_group
-    
+
 end

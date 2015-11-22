@@ -1,6 +1,4 @@
 module ServiceActions
-  
-
   def createService(service_name)
     n_service = getManagedService(service_name)
     return failed(service_name, n_service.last_error, 'Create Service') if n_service.nil?
@@ -52,34 +50,34 @@ module ServiceActions
   end
 
   def startService(service_name)
-     s_service = getManagedService(service_name)
-     return failed(service_name, 'No Such Service', 'Start Service') if s_service.nil?
-     return s_service if s_service.is_a?(EnginesOSapiResult)
-     return success(service_name, 'Start Service') if s_service.start_container
-     failed(service_name, s_service.last_error, 'Start Service')
-   rescue StandardError => e
-     log_exception_and_fail('Start Service', e)
-   end
- 
-   def pauseService(service_name)
-     p_service = getManagedService(service_name)
-     return failed(service_name, 'No Such Service', 'Pause Service') if p_service.nil?
-     return p_service if p_service.is_a?(EnginesOSapiResult)
-     return success(service_name, 'Pause Service') if p_service.pause_container
-     failed(service_name, p_service.last_error, 'Pause Service')
-   rescue StandardError => e
-     log_exception_and_fail('Pause Service', e)
-   end
- 
-   def unpauseService(service_name)
-     u_service = getManagedService(service_name)
-     return failed(service_name, 'No Such Service', 'Unpause Service') if u_service.nil?
-     return u_service if u_service.is_a?(EnginesOSapiResult)
-     return success(service_name, 'Unpause Service') if u_service.unpause_container
-     failed(service_name, u_service.last_error, 'Unpause Service')
-   rescue StandardError => e
-     log_exception_and_fail('Unpause Service', e)
-   end
+    s_service = getManagedService(service_name)
+    return failed(service_name, 'No Such Service', 'Start Service') if s_service.nil?
+    return s_service if s_service.is_a?(EnginesOSapiResult)
+    return success(service_name, 'Start Service') if s_service.start_container
+    failed(service_name, s_service.last_error, 'Start Service')
+  rescue StandardError => e
+    log_exception_and_fail('Start Service', e)
+  end
+
+  def pauseService(service_name)
+    p_service = getManagedService(service_name)
+    return failed(service_name, 'No Such Service', 'Pause Service') if p_service.nil?
+    return p_service if p_service.is_a?(EnginesOSapiResult)
+    return success(service_name, 'Pause Service') if p_service.pause_container
+    failed(service_name, p_service.last_error, 'Pause Service')
+  rescue StandardError => e
+    log_exception_and_fail('Pause Service', e)
+  end
+
+  def unpauseService(service_name)
+    u_service = getManagedService(service_name)
+    return failed(service_name, 'No Such Service', 'Unpause Service') if u_service.nil?
+    return u_service if u_service.is_a?(EnginesOSapiResult)
+    return success(service_name, 'Unpause Service') if u_service.unpause_container
+    failed(service_name, u_service.last_error, 'Unpause Service')
+  rescue StandardError => e
+    log_exception_and_fail('Unpause Service', e)
+  end
 
   def stopService(service_name)
     s_service = getManagedService(service_name)
@@ -90,7 +88,7 @@ module ServiceActions
   rescue StandardError => e
     log_exception_and_fail('Stop Service', e)
   end
-  
+
   def list_system_services
     services = []
     services.push('registry')
@@ -102,18 +100,18 @@ module ServiceActions
   rescue StandardError => e
     log_exception_and_fail('set_engine_hostname_details ', e)
   end
-  
-  def set_service_runtime_properties(params)
-     return success(params[:engine_name], 'update service runtime params')
-   rescue StandardError => e
-     log_exception_and_fail('update service runtime params ', e)
-   end
-  def get_service_memory_statistics(service_name)
-     service = EnginesOSapi.loadManagedService(service_name,@core_api)
-     MemoryStatistics.container_memory_stats(service)
-   rescue StandardError => e
-     log_exception_and_fail('Get Service Memory Statistics', e)
-   end
 
+  def set_service_runtime_properties(params)
+    return success(params[:engine_name], 'update service runtime params')
+  rescue StandardError => e
+    log_exception_and_fail('update service runtime params ', e)
+  end
+
+  def get_service_memory_statistics(service_name)
+    service = EnginesOSapi.loadManagedService(service_name,@core_api)
+    MemoryStatistics.container_memory_stats(service)
+  rescue StandardError => e
+    log_exception_and_fail('Get Service Memory Statistics', e)
+  end
 
 end

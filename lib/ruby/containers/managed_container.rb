@@ -1,15 +1,14 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
-
 #require 'objspace' ??
 
 class ManagedContainer < Container
-require_relative 'container.rb'
+  require_relative 'container.rb'
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
-require_relative 'managed_container/managed_container_controls.rb'
-include ManagedContainerControls
+  require_relative 'managed_container/managed_container_controls.rb'
+  include ManagedContainerControls
   require_relative 'managed_container/managed_container_dns.rb'
   include ManagedContainerDns
   require_relative 'managed_container/managed_container_image_controls.rb'
@@ -23,18 +22,13 @@ include ManagedContainerControls
   require_relative 'managed_container/managed_container_api.rb'
   include ManagedContainerApi
 
-  
-  
-  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
   attr_accessor :task_at_hand, :restart_required, :rebuild_required
-  
 
   # Note desired state is teh next step and not the final result desired state is stepped through
- 
   def log_error_mesg(msg, e_object)
     #task_failed(msg)
     super
@@ -65,7 +59,6 @@ include ManagedContainerControls
   :ctype,
   :conf_self_start
 
-
   def engine_name
     @container_name
   end
@@ -77,8 +70,6 @@ include ManagedContainerControls
   def to_s
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
   end
-
-
 
   def lock_values
     @conf_self_start.freeze
@@ -92,5 +83,4 @@ include ManagedContainerControls
     log_exception(e)
   end
 
- 
 end

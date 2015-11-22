@@ -5,7 +5,6 @@ class BuilderPublic
     @builder = builder
   end
 
-
   def engine_name
     @builder.build_params[:engine_name]
   end
@@ -64,11 +63,15 @@ class BuilderPublic
   def data_gid
     @builder.data_gid
   end
+  def  group_uid
+    @builder.data_gid
   
+  end
+
   def data_uid
     @builder.data_uid
   end
-  
+
   def memory
     @builder.build_params[:memory]
   end
