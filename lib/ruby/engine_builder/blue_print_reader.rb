@@ -10,32 +10,32 @@ class BluePrintReader
   end
 
   attr_reader :persistant_files,
-              :persistant_dirs,
-              :last_error,
-              :mapped_ports,
-              :environments,
-              :recursive_chmods,
-              :single_chmods,
-              :framework,
-              :runtime,
-              :memory,
-              :rake_actions,
-              :os_packages,
-              :pear_modules,
-              :apache_modules,
-              :php_modules,
-              :pecl_modules,
-              :archives_details,
-              :worker_commands,
-              :cron_jobs,
-              :sed_strings,
-              :data_uid,
-              :data_gid,
-              :cron_job_list,
-              :web_port,
-              :services,
-              :deployment_type,
-              :database_seed
+  :persistant_dirs,
+  :last_error,
+  :mapped_ports,
+  :environments,
+  :recursive_chmods,
+  :single_chmods,
+  :framework,
+  :runtime,
+  :memory,
+  :rake_actions,
+  :os_packages,
+  :pear_modules,
+  :apache_modules,
+  :php_modules,
+  :pecl_modules,
+  :archives_details,
+  :worker_commands,
+  :cron_jobs,
+  :sed_strings,
+  :data_uid,
+  :data_gid,
+  :cron_job_list,
+  :web_port,
+  :services,
+  :deployment_type,
+  :database_seed
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -49,7 +49,6 @@ class BluePrintReader
     # FIXME: remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any ' ' or ';' or '&' or '|' etc
     return path
   end
-
 
   def process_blueprint
     log_build_output('Process BluePrint')
@@ -132,7 +131,7 @@ class BluePrintReader
   end
 
   def read_services
- 
+
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
     return true unless services.is_a?(Array) # not an error just nada
@@ -141,16 +140,15 @@ class BluePrintReader
       service[:service_type] = service[:type_path]
       add_service(service)
     end
-  end 
+  end
 
   def add_service(service_hash)
     p :add_service
     p service_hash
     @builder.templater.fill_in_dynamic_vars(service_hash)
-    @services.push(service_hash)   
+    @services.push(service_hash)
     return true
   end
-
 
   def read_os_packages
     log_build_output('Read OS Packages')

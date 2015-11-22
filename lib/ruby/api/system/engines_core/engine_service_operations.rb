@@ -1,6 +1,5 @@
 module EngineServiceOperations
   require_relative 'service_manager_access.rb'
-  
   def engine_persistant_services(container_name)
     params = {}
     params[:parent_engine] = container_name

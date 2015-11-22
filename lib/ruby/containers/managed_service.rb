@@ -2,9 +2,9 @@
 require 'objspace'
 
 class ManagedService < ManagedContainer
-  
+
   require_relative 'managed_service/managed_service_configurations.rb'
-  include    ManagedServiceConfigurations 
+  include    ManagedServiceConfigurations
   require_relative 'managed_service/managed_service_consumers.rb'
   include    ManagedServiceConsumers
   require_relative 'managed_service/managed_service_container_info.rb'
@@ -13,7 +13,6 @@ class ManagedService < ManagedContainer
   include    ManagedServiceControls
   require_relative 'managed_service/managed_service_image_controls.rb'
   include    ManagedServiceImageControls
-   
 
   @ctype='service'
   @soft_service  = false
@@ -51,16 +50,9 @@ class ManagedService < ManagedContainer
   end
   attr_reader :persistant, :type_path, :publisher_namespace
 
-  
-
-    def destroy
-       log_error_mesg('Cannot call destroy on a service',self)
-     end
-
-
- 
-
-
+  def destroy
+    log_error_mesg('Cannot call destroy on a service',self)
+  end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error

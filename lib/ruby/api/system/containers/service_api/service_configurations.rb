@@ -1,4 +1,4 @@
-module Serviceconfigurations
+module ServiceConfigurations
   def retrieve_configurator(c, params)
     return log_error_mesg('service not running ',params) if c.is_running? == false
     return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false

@@ -46,7 +46,7 @@ def create_service()
      reregister_consumers
      return true
    else
-     save_state()
+      save_state()
      return log_error_mesg('Failed to create service',self)
    end
  end

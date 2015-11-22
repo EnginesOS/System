@@ -1,6 +1,4 @@
 module Containers
-  
-
   # FIXME: Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     ret_val = {}
@@ -36,21 +34,20 @@ module Containers
     log_exception(e)
     return error_result
   end
-  
-  
-def save_container(container)
+
+  def save_container(container)
     clear_error
     # FIXME:
     api = container.container_api.dup
     container.container_api = nil
     last_result = container.last_result
-  #  last_error = container.last_error
+    #  last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
-  
+
     serialized_object = YAML.dump(container)
     container.container_api = api
-   # container.last_result = last_result
+    # container.last_result = last_result
     #container.last_error = last_error
     state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
@@ -70,12 +67,11 @@ def save_container(container)
     SystemUtils.log_exception(e)
   end
 
-def is_startup_complete(container)
-  clear_error
-  return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
-rescue StandardError => e
-  SystemUtils.log_exception(e)
-end
-
+  def is_startup_complete(container)
+    clear_error
+    return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
 
 end

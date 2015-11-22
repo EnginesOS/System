@@ -8,35 +8,39 @@ class SystemService < ManagedService
     super
   end
 
-    def create_service()
-      @container_api.create_container(self)       
-    end          
-    def   unpause_container
-      @container_api.unpause_container(self)
-    end    
-    def  stop_container
-        @container_api.stop_container(self)
-      end
-        def  destroy_container
-          @container_api.destroy_container(self)
-        end
-    def  start_container
-      @container_api.start_container(self)
-         end  
-    
+  def create_service()
+    @container_api.create_container(self)
+  end
+
+  def   unpause_container
+    @container_api.unpause_container(self)
+  end
+
+  def  stop_container
+    @container_api.stop_container(self)
+  end
+
+  def  destroy_container
+    @container_api.destroy_container(self)
+  end
+
+  def  start_container
+    @container_api.start_container(self)
+  end
+
   def  forced_recreate
     p 'Forced recreate  System Service ' + container_name
     unpause_container
     stop_container
     destroy_container
-    return  @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers  
-    rescue StandardError => e
-      log_exception(e)
+    return  @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def inspect_container
     p :system_service_inspect_container
-  
+
     return false  if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       @container_api.inspect_container(self)
@@ -60,6 +64,6 @@ class SystemService < ManagedService
     p :system_service_inspected_container
     return @docker_info
   end
-    rescue StandardError => e
-      log_exception(e)
+rescue StandardError => e
+  log_exception(e)
 end

@@ -70,7 +70,7 @@ module PersistantServiceBuilder
         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
       end
     end
-   return false
+    return false
   end
 
   def use_active_service(service_hash, existing_service )
