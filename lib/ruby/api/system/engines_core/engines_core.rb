@@ -81,6 +81,9 @@ class EnginesCore < ErrorsApi
   require_relative 'template_operations.rb'
   include TemplateOperations
 
+  require_relative 'build_controller.rb'  
+  include BuildContoller
+  
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'
   require_relative '../docker/docker_api.rb'
@@ -107,6 +110,7 @@ class EnginesCore < ErrorsApi
     p :BEING_SHUTDOWN
 
     @registry_handler.api_shutdown
+    
   end
 
   def software_service_definition(params)

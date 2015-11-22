@@ -4,24 +4,19 @@ module EngineBuildActions
   def build_engine(params)
     build_controller = BuildController.new(@core_api)
     @build_thread = Thread.new { build_controller.build_engine(params) }
-    engine = build_controller.engine
-    #return engine if engine.is_a?(EnginesOSapiResult)
-    #return failed(params[:engine_name], 'Failed to start  ' + build_controller.build_error, 'build_engine') unless !engine.nil? && engine.is_active?
     return success(params[:engine_name], 'Building Started') if @build_thread.alive?
     return failed(params[:engine_name], 'Build Failed to start')
   end
 
   def buildEngine(repository, host, domain_name, environment)
     build_controller = BuildController.new(@core_api)
-    @build_thread =  Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)}
-    #    engine = build_controller.engine
-    #    return engine if engine.is_a?(EnginesOSapiResult)
-    #    return failed(host.to_s, 'Failed to start  ' + engine.last_error.to_s, 'build_engine') unless engine.is_active?
+    @build_thread =  Thread.new {build_controller.buildEngine(repository, host, domain_name, environment)} 
     return success(host.to_s + '.' + domain_name.to_s, 'Start of Build for Engine ' ) if @build_thread.alive?
     return failed(params[:engine_name], 'Build Failed to start')
   end
 
   def abort_build
+    @core_api.abort_build()
     return true unless @build_thread.alive?
 
   end

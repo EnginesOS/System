@@ -530,6 +530,11 @@ class EngineBuilder < ErrorsApi
   rescue
     return
   end
+  
+  def abort_build
+    post_failed_build_clean_up
+    return true
+end
 
   def log_build_output(line)
     @log_file.puts(line)
