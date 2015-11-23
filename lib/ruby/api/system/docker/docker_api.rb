@@ -164,6 +164,7 @@ class DockerApi < ErrorsApi
     clear_error
     commandargs = 'docker rmi -f ' + container.image
     ret_val =  run_docker_cmd(commandargs, container)
+    wait_for_docker_event(:stop, container) if ret_val == true
     clean_up_dangling_images if ret_val == true
     return ret_val
   rescue StandardError => e

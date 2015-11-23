@@ -46,6 +46,7 @@ module TaskAtHand
   def task_failed(msg)
     p :task_failed
     p @task_at_hand
+    @last_error = @container_api.last_error
     p msg.to_s
     task_complete
     return false
