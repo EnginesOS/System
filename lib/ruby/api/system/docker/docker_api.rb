@@ -63,7 +63,7 @@ class DockerApi < ErrorsApi
     image_name = imagename.gsub(/:.*$/, '')
     cmd = 'docker images -q ' + image_name
     result = SystemUtils.execute_command(cmd)
-    @last_error = result[:stderr].to_s
+#    @last_error = result[:stderr].to_s
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
     return false # Otherwise returnsresult[:stdout]
