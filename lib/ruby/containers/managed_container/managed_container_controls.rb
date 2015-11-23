@@ -43,7 +43,7 @@ module ManagedContainerControls
     ret_val = false
     in_progress(:recreate)
     return task_failed('destroy/recreate') unless destroy_container
-    return task_failed('create/rcreate') unless create_container
+    return task_failed('create/recreate') unless create_container
     task_complete
   end
 
