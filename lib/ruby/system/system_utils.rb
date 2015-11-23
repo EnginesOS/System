@@ -12,7 +12,6 @@ class SystemUtils
       STDERR.puts 'Error ' + object.to_s if level == 10
       puts 'Error ' + object.to_s
     end
-
     return false
   end
 
@@ -83,7 +82,6 @@ class SystemUtils
     elof = File.open("/tmp/exceptions.log","a+")
     elof.write(e_str)
     elof.close
-
     SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
 
   end
@@ -232,14 +230,6 @@ class SystemUtils
     end
   end
 
-  #  def SystemUtils.get_default_domain
-  #    if File.exists?(SystemConfig.DefaultDomainnameFile)
-  #      domain = File.read(SystemConfig.DefaultDomainnameFile)
-  #      return domain.strip
-  #    else
-  #      return 'engines'
-  #    end
-  #  end
 
   def SystemUtils.get_os_release_data
     os_data_hash = {}
