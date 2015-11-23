@@ -82,8 +82,8 @@ module MemoryStatistics
 
   def self.avaiable_ram
     mem_stats = self.get_system_memory_info
-    swp == 0 
-    swp = ret_val[:swap_free] unless  ret_val[:swap_free].nil? 
+    swp = 0 
+    swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
     swp /= 2 unless swp == 0 
     mem_stats[:free] + mem_stats[:buffers]  + mem_stats[:file_cache] + swp
   end
