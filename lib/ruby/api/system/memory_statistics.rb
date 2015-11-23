@@ -25,16 +25,17 @@ module MemoryStatistics
     engines_memory_statistics
   end
 
-  def self.collect_containers_memory_stats(engines)
+  def self.collect_containers_memory_stats(containers)
     mem_stats = {}
     mem_stats[:totals] = {}
     mem_stats[:totals][:allocated] = 0
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
-    engines.each do | engine|
-      next if engine.setState != "running"
-      container_sym = engine.container_name.to_sym
-      mem_stats[container_sym] = self.container_memory_stats(engine)
+    containers.each do | container|
+      next if container.setState != "running"
+      next unless container.is_running?
+      container_sym = container.container_name.to_sym
+      mem_stats[container_sym] = self.container_memory_stats(container)
       mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
       mem_stats[:totals][:in_use] += mem_stats[container_sym][:current].to_i
       mem_stats[:totals][:peak_sum] += mem_stats[container_sym][:maximum].to_i
