@@ -85,7 +85,7 @@ module MemoryStatistics
     swp = 0 
     swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
     swp /= 2 unless swp == 0 
-    (mem_stats[:free] + mem_stats[:buffers]  + mem_stats[:file_cache] + swp ) /1024
+    (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
   end
   def self.get_system_memory_info
     ret_val = {}
