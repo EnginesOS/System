@@ -20,11 +20,6 @@ volumes:
   remotepath: "/home/app/public/system/"
   localpath: "/var/lib/engines/mgmt/public/system/"
   mapping_permissions: rw
- sys_mem_notify: !ruby/object:Volume
-  name: sys_mem_notify
-  remotepath: "/dev/mem_notify"
-  localpath: "/opt/engines/run/sys/mem_notify"
-  mapping_permissions: ro
  socket: !ruby/object:Volume
   name: socket
   remotepath: "/var/run/docker.sock"
