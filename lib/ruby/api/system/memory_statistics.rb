@@ -80,6 +80,12 @@ module MemoryStatistics
     return ret_val
   end
 
+  def self.avaiable_ram
+    mem_stats = self.get_system_memory_info
+    swp = ret_val[:swap_free] / 2 if 
+    swp /= 2 unless swp == 0 
+    mem_stats[:free] + mem_stats[:buffers]  + mem_stats[:file_cache] + swp
+  end
   def self.get_system_memory_info
     ret_val = {}
     proc_mem_info_file = File.open('/proc/meminfo')
