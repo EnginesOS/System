@@ -264,7 +264,8 @@ version_str = '15.1'
   def SystemUtils.cgroup_mem_dir(container_id_str)
 
     return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
-    return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
+   # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
 
   def SystemUtils.service_hash_variables_as_str(service_hash)
