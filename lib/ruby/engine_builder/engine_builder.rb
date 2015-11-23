@@ -82,7 +82,7 @@ class EngineBuilder < ErrorsApi
 
   def build_failed(errmesg)
     log_build_errors(errmesg)
-    @result_mesg = errmesg
+    @result_mesg = 'Error:' + errmesg
     post_failed_build_clean_up
   end
 
