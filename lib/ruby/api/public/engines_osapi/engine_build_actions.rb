@@ -16,9 +16,11 @@ module EngineBuildActions
   end
 
   def abort_build
-    @core_api.abort_build()
-    return true unless @build_thread.alive?
-
+    
+  return  @core_api.abort_build() if @build_thread.nil?
+    @build_thread.stop if @build_thread.alive?
+    return @core_api.abort_build()
+    
   end
 
   def rebuild_engine_container(engine_name)
