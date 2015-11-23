@@ -95,7 +95,7 @@ class EngineBuilder < ErrorsApi
     log_build_output(space.to_s + 'MB free > 1000 required')
     
     free_ram = MemoryStatistics.avaiable_ram
-    ram_needed = 100 + @build_params[:memory].to_i
+    ram_needed = SystemConfig.MinimumFreeRam + @build_params[:memory].to_i
     return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
     log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
      
