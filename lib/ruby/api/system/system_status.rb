@@ -3,9 +3,12 @@ class SystemStatus
     File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
-  def get_management_ip
-    return File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
-    return '172.17.42.1'
+  def get_management_ip    
+    ip  = File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
+    return '172.17.42.1' if ip.nil?
+    p :mgmt_ip
+    puts '_' + ip.to_s + '_'
+    return ip
   end
   
   def self.is_rebooting?
