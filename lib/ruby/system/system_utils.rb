@@ -91,6 +91,7 @@ class SystemUtils
   def SystemUtils.log_exception_to_bugcatcher(e)
     require "net/http"
     require "uri"
+    p :bug_catcher
     res = SystemUtils.execute_command('hostname')
     hostname = res[:stdout]
     error_log_hash = {}
