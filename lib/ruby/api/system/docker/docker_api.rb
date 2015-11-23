@@ -98,7 +98,7 @@ class DockerApi < ErrorsApi
     run_docker_cmd(cmdline, container)
   end
 
-  def run_docker_cmd(cmdline, container)
+  def run_docker_cmd(cmdline, container, log_error = true)
 
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
@@ -112,7 +112,7 @@ class DockerApi < ErrorsApi
       return true
     else
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
-      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
+      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)  if log_error     
       return false
     end
   rescue StandardError => e
@@ -140,7 +140,7 @@ class DockerApi < ErrorsApi
   def inspect_container(container)
     clear_error
     commandargs = ' docker inspect ' + container.container_name
-    run_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs, container, false)
   rescue StandardError => e
     log_exception(e)
   end
