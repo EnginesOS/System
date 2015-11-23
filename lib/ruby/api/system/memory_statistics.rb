@@ -9,7 +9,6 @@ module MemoryStatistics
 
   def self.total_memory_statistics(api)
     engines_memory_statistics = {}
-
     engines = api.getManagedEngines
     services = api.getManagedServices
     # system_services = api.listSystemServices
@@ -22,7 +21,6 @@ module MemoryStatistics
     engines_memory_statistics[:containers][:applications].delete(:totals)
     engines_memory_statistics[:containers][:services].delete(:totals)
     # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
-
     engines_memory_statistics[:system] = self.get_system_memory_info
     engines_memory_statistics
   end

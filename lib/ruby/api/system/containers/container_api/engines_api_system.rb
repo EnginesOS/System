@@ -15,6 +15,13 @@ module EnginesApiSystem
   def save_container(container)
     test_system_api_result(@system_api.save_container(container))
   end
+  
+  def have_enough_ram?(container)
+    free_ram = MemoryStatistics.avaiable_ram
+    ram_needed = SystemConfig.MinimumFreeRam + container.memory
+    return true if  free_ram > ram_needed
+    return false
+  end
 
   def create_container(container)
     clear_error
