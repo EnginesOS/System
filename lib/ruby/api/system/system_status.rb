@@ -5,7 +5,7 @@ class SystemStatus
 
   def get_management_ip
     return File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
-    return '127.0.0.1'
+    return '172.17.42.1'
   end
   
   def self.is_rebooting?
