@@ -91,7 +91,7 @@ class EngineBuilder < ErrorsApi
     space = @core_api.system_image_free_space
     space /= 1024
     p ' free space /var/lib/docker only ' + space.to_s + 'MB'
-    # return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
+     return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
 
     log_build_output(space.to_s + 'MB free > 1000 required')
     log_build_output('Reading Blueprint')
@@ -530,6 +530,11 @@ class EngineBuilder < ErrorsApi
   rescue
     return
   end
+  
+  def abort_build
+    post_failed_build_clean_up
+    return true
+end
 
   def log_build_output(line)
     @log_file.puts(line)

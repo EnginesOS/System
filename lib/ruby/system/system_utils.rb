@@ -249,8 +249,8 @@ class SystemUtils
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1].gsub(/\"/,"")
     end
-
-    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"")
+version_str = '15.1'
+    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"") unless  os_data_hash['VERSION_ID'].nil? 
     vers = version_str.split('.')
 
     os_data_hash['Major Version'] =  vers[0]
