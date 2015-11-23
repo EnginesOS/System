@@ -4,7 +4,7 @@ module EnginesSystemUpdate
   end
 
   def update_engines_system_software
-    result = SystemUtils.execute_command('sudo /opt/engines/scripts/_update_engines_system_software.sh ')
+    result = SystemUtils.execute_command('sudo /opt/engines/scripts/update_engines_system_software.sh ')
     if result[:result] == -1
       @last_error = result[:stderr]
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
