@@ -22,6 +22,7 @@ class BuildController
   def abort_build
     p :abort_build
         p  @engine_builder
+        p self
     @engine_builder.abort_build unless @engine_builder.nil?
   end
   
