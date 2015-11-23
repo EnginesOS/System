@@ -18,7 +18,9 @@ module EngineBuildActions
   def abort_build
     
   return  @core_api.abort_build() if @build_thread.nil?
+  p "Stopping Thread " if @build_thread.alive?
     @build_thread.stop if @build_thread.alive?
+    p :abut_bui
     return @core_api.abort_build()
     
   end

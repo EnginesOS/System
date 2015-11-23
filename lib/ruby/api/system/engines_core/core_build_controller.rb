@@ -1,6 +1,8 @@
 module CoreBuildController
   
   def build_started(controller)
+    p :current_builder_set
+    p controller
     @current_builder = controller
   end
   
@@ -9,6 +11,8 @@ module CoreBuildController
     end
     
   def abort_build()
+    p :abort_build
+    p  @current_builder
     @current_builder.abort_build() unless @current_builder.nil?      
   end
     

@@ -72,7 +72,6 @@ class SystemStatus
     result = {}
     result[:is_building] = SystemStatus.is_building?
     result[:did_build_fail] = SystemStatus.did_build_fail?
-    result[:did_build_complete] = SystemStatus.did_build_complete?
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -86,13 +85,26 @@ class SystemStatus
     SystemUtils.log_exception(e)
     return 'none'
   end
-
+  
+ # called by per session and post update
   def self.system_status
     result = {}
     result[:is_rebooting] = SystemStatus.is_rebooting?
     result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
     result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
+
+    return result
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+    return {}
+  end
+  
+  # called by per session and post update
+  def self.system_update_status
+    result = {}
     result[:needs_reboot] = SystemStatus.needs_reboot?
+    result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
+    result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
     result[:needs_base_update] = !self.is_base_system_upto_date?
     result[:needs_engines_update] = !self.is_engines_system_upto_date?
     return result
@@ -100,7 +112,8 @@ class SystemStatus
     SystemUtils.log_exception(e)
     return {}
   end
-
+  
+  
   def self.current_build_params
     unless File.exist?(SystemConfig.BuildRunningParamsFile)
       SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)

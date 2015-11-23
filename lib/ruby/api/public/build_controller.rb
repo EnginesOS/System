@@ -3,7 +3,8 @@ class BuildController
   attr_reader :engine,
   :build_error,
   :build_params,
-  :engine
+  :engine,
+  :engine_builder
 
   def initialize(api)
     @core_api = api
@@ -12,12 +13,16 @@ class BuildController
     @build_error_stream = nil
     @engine = nil
     @build_error = 'none'
+    @engine_builder = nil
   end
 
   def build_from_docker(params)
   end
 
   def abort_build
+    p :abort_build
+        p  @engine_builder
+        p self
     @engine_builder.abort_build unless @engine_builder.nil?
   end
   
@@ -106,10 +111,10 @@ class BuildController
   private
 
   def get_engine_builder(params)
-    builder = EngineBuilder.new(params, @core_api)
-    @build_log_stream = builder.get_build_log_stream
-    @build_error_stream = builder.get_build_err_stream
-    return builder
+    @engine_builder = EngineBuilder.new(params, @core_api)
+    @build_log_stream = @engine_builder .get_build_log_stream
+    @build_error_stream = @engine_builder .get_build_err_stream
+    return @engine_builder 
   end
 
   def close_streams
