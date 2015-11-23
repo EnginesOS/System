@@ -12,6 +12,7 @@ class BuildController
     @build_error_stream = nil
     @engine = nil
     @build_error = 'none'
+    @engine_builder = nil
   end
 
   def build_from_docker(params)
@@ -19,7 +20,7 @@ class BuildController
 
   def abort_build
     p :abort_build
-        p  @current_builder
+        p  @engine_builder
     @engine_builder.abort_build unless @engine_builder.nil?
   end
   
