@@ -33,7 +33,7 @@ module ServiceConfigurations
       service_param[:pending]= true
       return true
     end
-    if  service_param.key?(:pending)
+    if service_param.key?(:pending)
       service_param.delete(:pending)
     end
     # set config on reunning service
