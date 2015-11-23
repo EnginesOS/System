@@ -82,7 +82,7 @@ class EngineBuilder < ErrorsApi
 
   def build_failed(errmesg)
     log_build_errors(errmesg)
-    @result_mesg = 'Error:' + errmesg
+    @result_mesg = 'Error.' + errmesg
     post_failed_build_clean_up
   end
 
@@ -554,7 +554,7 @@ end
     line = '' if line.nil?
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Error: Aborted Due to:' + line.to_s
+    @result_mesg = 'Error. Aborted Due to:' + line.to_s
     return false
   end
 
