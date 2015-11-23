@@ -554,7 +554,7 @@ end
     line = '' if line.nil?
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Aborted Due to:' + line.to_s
+    @result_mesg = 'Error: Aborted Due to:' + line.to_s
     return false
   end
 
