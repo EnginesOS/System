@@ -1,13 +1,13 @@
 module ServiceConfigurations
   require_relative 'service_manager_access.rb'
-#  
-#  def retrieve_service_configuration(config)
-#    #     c = ConfigurationsApi.new(self)
-#    #     r = c.
-#    r= retrieve_configuration_from_service(config)
-#    return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
-#    return r
-#  end
+  
+  def retrieve_service_configuration(config)
+    #     c = ConfigurationsApi.new(self)
+    #     r = c.
+    r= retrieve_configuration(config)
+    return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
+    return r
+  end
 
   def get_service_configurations_hashes(service_hash)
     service_manager.get_service_configurations_hashes(service_hash)
