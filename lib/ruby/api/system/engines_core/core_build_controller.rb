@@ -1,6 +1,8 @@
 module CoreBuildController
   
   def build_started(controller)
+    p :current_builder_set
+    p controller
     @current_builder = controller
   end
   
