@@ -92,7 +92,7 @@ class EngineBuilder < ErrorsApi
     space /= 1024
     p ' free space /var/lib/docker only ' + space.to_s + 'MB'
      return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
-    log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace + ' required')
+    log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
     
     free_ram = MemoryStatistics.avaiable_ram
     ram_needed = SystemConfig.MinimumFreeRam + @build_params[:memory].to_i
