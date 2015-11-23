@@ -32,7 +32,7 @@ class SystemApi < ErrorsApi
   end
 
   def system_image_free_space
-    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@management /opt/engines/bin/free_docker_lib_space.sh')
+    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/free_docker_lib_space.sh')
     return -1 if result[:result] != 0
     return result[:stdout].to_i
   rescue StandardError => e
@@ -41,7 +41,7 @@ class SystemApi < ErrorsApi
   end
 
   def restart_mgmt
-    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@management /opt/engines/bin/restart_mgmt.sh') }
+    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
     return false

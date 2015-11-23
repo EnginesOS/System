@@ -8,11 +8,11 @@ module SshKeys
   end
 
   def update_public_key(key)
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@management /opt/engines/bin/update_system_access.sh ' + key)
+    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/update_system_access.sh ' + key)
   end
 
   def regen_system_ssh_key
-    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@management /opt/engines/bin/regen_private.sh ')
+    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/regen_private.sh ')
   end
 
 end
