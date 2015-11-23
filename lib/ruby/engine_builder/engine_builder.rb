@@ -356,6 +356,7 @@ class EngineBuilder < ErrorsApi
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
+      p 'Roll Back Complete'
     close_all
     return false
   end

@@ -5,6 +5,7 @@ module EnginesOperations
   #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
   def delete_engine(params)
+   # return log_error_mesg('Failed to remove engine as has container ',params) if 
     params[:container_type] = 'container' # Force This
     return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]

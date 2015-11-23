@@ -18,6 +18,8 @@ class BuildController
   end
 
   def abort_build
+    p :abort_build
+        p  @current_builder
     @engine_builder.abort_build unless @engine_builder.nil?
   end
   

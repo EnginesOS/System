@@ -9,6 +9,8 @@ module CoreBuildController
     end
     
   def abort_build()
+    p :abort_build
+    p  @current_builder
     @current_builder.abort_build() unless @current_builder.nil?      
   end
     
