@@ -6,12 +6,12 @@ module RunningContainerStatistics
     return false unless docker_info[0]['State'].is_a?(Hash)
     started = docker_info[0]['State']['StartedAt']
     stopped = docker_info[0]['State']['FinishedAt']
-    ps_container
+    ps_lines = ps_container
     pcnt = -1
     rss = 0
     vss = 0
     h = m = s = 0
-    @last_result.each_line.each do |line|
+    ps_lines.each_line.each do |line|
       if pcnt > 0 # skip the fist line with is a header
         fields = line.split  #  [6]rss [10] time
         if fields.nil? == false && fields.count >11
