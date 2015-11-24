@@ -63,7 +63,7 @@ class DockerApi < ErrorsApi
     image_name = imagename.gsub(/:.*$/, '')
     cmd = 'docker images -q ' + image_name
     result = SystemUtils.execute_command(cmd)
-    @last_error = result[:stderr].to_s
+#    @last_error = result[:stderr].to_s
     return false if result[:result] != 0
     return true if result[:stdout].length > 4
     return false # Otherwise returnsresult[:stdout]
@@ -98,7 +98,7 @@ class DockerApi < ErrorsApi
     run_docker_cmd(cmdline, container)
   end
 
-  def run_docker_cmd(cmdline, container)
+  def run_docker_cmd(cmdline, container, log_error = true)
 
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
@@ -112,7 +112,7 @@ class DockerApi < ErrorsApi
       return true
     else
       container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
-      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)
+      log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)  if log_error     
       return false
     end
   rescue StandardError => e
@@ -140,7 +140,7 @@ class DockerApi < ErrorsApi
   def inspect_container(container)
     clear_error
     commandargs = ' docker inspect ' + container.container_name
-    run_docker_cmd(commandargs, container)
+    run_docker_cmd(commandargs, container, false)
   rescue StandardError => e
     log_exception(e)
   end
@@ -164,6 +164,7 @@ class DockerApi < ErrorsApi
     clear_error
     commandargs = 'docker rmi -f ' + container.image
     ret_val =  run_docker_cmd(commandargs, container)
+    wait_for_docker_event(:stop, container) if ret_val == true
     clean_up_dangling_images if ret_val == true
     return ret_val
   rescue StandardError => e

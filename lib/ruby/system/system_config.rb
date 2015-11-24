@@ -45,6 +45,16 @@ class SystemConfig
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@EnginesUpdateStatusFile ='/opt/engines/run/system/flags/update_pending'
+  @@MinimumFreeRam = 64
+  @@MinimumFreeImageSpace = 2000
+  
+  def self.MinimumFreeImageSpace
+    @@MinimumFreeImageSpace
+  end 
+  def self.MinimumFreeRam
+    @@MinimumFreeRam
+  end
+  
   def self.EnginesUpdateStatusFile
     @@EnginesUpdateStatusFile
   end

@@ -9,6 +9,8 @@ class ContainerStatistics
     @cpuTime = cpu
   end
 
+  # FIXME replace fllowing with attr_readers
+  # dont dish this class more will happend here latter (maybe)
   def state
     return @state
   end

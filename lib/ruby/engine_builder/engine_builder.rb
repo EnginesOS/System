@@ -82,7 +82,7 @@ class EngineBuilder < ErrorsApi
 
   def build_failed(errmesg)
     log_build_errors(errmesg)
-    @result_mesg = errmesg
+    @result_mesg = 'Error.' + errmesg
     post_failed_build_clean_up
   end
 
@@ -91,9 +91,15 @@ class EngineBuilder < ErrorsApi
     space = @core_api.system_image_free_space
     space /= 1024
     p ' free space /var/lib/docker only ' + space.to_s + 'MB'
-    # return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < 1000 && space != -1
+     return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
+    log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
+    
+    free_ram = MemoryStatistics.avaiable_ram
+    ram_needed = SystemConfig.MinimumFreeRam + @build_params[:memory].to_i
+    return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
+    log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
+     
 
-    log_build_output(space.to_s + 'MB free > 1000 required')
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
     return close_all if @blueprint.nil? || @blueprint == false
@@ -350,6 +356,7 @@ class EngineBuilder < ErrorsApi
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
+      p 'Roll Back Complete'
     close_all
     return false
   end
@@ -530,6 +537,11 @@ class EngineBuilder < ErrorsApi
   rescue
     return
   end
+  
+  def abort_build
+    post_failed_build_clean_up
+    return true
+end
 
   def log_build_output(line)
     @log_file.puts(line)
@@ -543,7 +555,7 @@ class EngineBuilder < ErrorsApi
     line = '' if line.nil?
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Aborted Due to:' + line.to_s
+    @result_mesg = 'Error. Aborted Due to:' + line.to_s
     return false
   end
 

@@ -3,6 +3,12 @@ class SystemStatus
     File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
+  def self.get_management_ip
+    ip  = File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
+    return '172.17.42.1' if ip.nil?  
+    return ip
+  end
+
   def self.is_rebooting?
     File.exist?(SystemConfig.SystemRebootingFlag)
   end
@@ -72,7 +78,6 @@ class SystemStatus
     result = {}
     result[:is_building] = SystemStatus.is_building?
     result[:did_build_fail] = SystemStatus.did_build_fail?
-    result[:did_build_complete] = SystemStatus.did_build_complete?
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -87,12 +92,25 @@ class SystemStatus
     return 'none'
   end
 
+  # called by per session and post update
   def self.system_status
     result = {}
     result[:is_rebooting] = SystemStatus.is_rebooting?
     result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
     result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
+
+    return result
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+    return {}
+  end
+
+  # called by per session and post update
+  def self.system_update_status
+    result = {}
     result[:needs_reboot] = SystemStatus.needs_reboot?
+    result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
+    result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
     result[:needs_base_update] = !self.is_base_system_upto_date?
     result[:needs_engines_update] = !self.is_engines_system_upto_date?
     return result
