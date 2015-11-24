@@ -3,7 +3,7 @@ require 'rest-client'
 def rest_get(path,params)
   begin
     retry_count = 0
-    STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
+   # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -12,7 +12,7 @@ end
 
 def rest_post(path,params)
   begin
-    STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
+    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.post(base_url + path, params))
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -21,7 +21,7 @@ end
 
 def rest_put(path,params)
   begin
-      STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
+    #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s

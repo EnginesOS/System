@@ -12,7 +12,6 @@ class SystemUtils
       STDERR.puts 'Error ' + object.to_s if level == 10
       puts 'Error ' + object.to_s
     end
-
     return false
   end
 
@@ -83,7 +82,6 @@ class SystemUtils
     elof = File.open("/tmp/exceptions.log","a+")
     elof.write(e_str)
     elof.close
-
     SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
 
   end
@@ -232,14 +230,6 @@ class SystemUtils
     end
   end
 
-  #  def SystemUtils.get_default_domain
-  #    if File.exists?(SystemConfig.DefaultDomainnameFile)
-  #      domain = File.read(SystemConfig.DefaultDomainnameFile)
-  #      return domain.strip
-  #    else
-  #      return 'engines'
-  #    end
-  #  end
 
   def SystemUtils.get_os_release_data
     os_data_hash = {}
@@ -250,21 +240,20 @@ class SystemUtils
       pair = line.split('=')
       os_data_hash[pair[0]] = pair[1].gsub(/\"/,"")
     end
-version_str = '15.1'
-    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"") unless  os_data_hash['VERSION_ID'].nil? 
+    version_str = '15.1'
+    version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"") unless  os_data_hash['VERSION_ID'].nil?
     vers = version_str.split('.')
-
     os_data_hash['Major Version'] =  vers[0]
     os_data_hash['Minor Version'] = vers[1]
+    os_data_hash['Patch Version'] = vers[2] if vers.count > 2
     # FIXME catch sub numbers as in 14.04.1
-
     return os_data_hash
   end
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
-
     return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
-    return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
+    # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
 
   def SystemUtils.service_hash_variables_as_str(service_hash)

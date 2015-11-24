@@ -3,6 +3,12 @@ class SystemStatus
     File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
+  def self.get_management_ip
+    ip  = File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
+    return '172.17.42.1' if ip.nil?  
+    return ip
+  end
+
   def self.is_rebooting?
     File.exist?(SystemConfig.SystemRebootingFlag)
   end
@@ -85,8 +91,8 @@ class SystemStatus
     SystemUtils.log_exception(e)
     return 'none'
   end
-  
- # called by per session and post update
+
+  # called by per session and post update
   def self.system_status
     result = {}
     result[:is_rebooting] = SystemStatus.is_rebooting?
@@ -98,7 +104,7 @@ class SystemStatus
     SystemUtils.log_exception(e)
     return {}
   end
-  
+
   # called by per session and post update
   def self.system_update_status
     result = {}
@@ -112,8 +118,7 @@ class SystemStatus
     SystemUtils.log_exception(e)
     return {}
   end
-  
-  
+
   def self.current_build_params
     unless File.exist?(SystemConfig.BuildRunningParamsFile)
       SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
