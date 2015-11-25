@@ -35,7 +35,7 @@ class ServiceManager  < ErrorsApi
   include SMSubservices
   include SmServiceInfo
   include SmServiceForcedMethods
-  include SmServiceDefinitions
+
   include SmRegistryTree
   include SmOrphanServices
   include SmEngineServices
