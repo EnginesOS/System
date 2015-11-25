@@ -12,7 +12,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_service_definitions.rb'
   require_relative 'sm_service_control.rb'
   require_relative 'sm_engine_services.rb'
-  require_relative 'service_forced_methods.rb'
+  require_relative 'sm_service_forced_methods.rb'
   require_relative 'sm_registry_tree.rb'
   require_relative 'sm_orphan_services.rb'
   require_relative 'sm_subservices.rb'
