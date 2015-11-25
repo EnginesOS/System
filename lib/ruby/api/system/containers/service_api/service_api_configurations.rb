@@ -1,5 +1,5 @@
 module ServiceApiConfigurations
-
+  @@script_timeout=5
  
   def retrieve_configurator(c, params)
     return log_error_mesg('service not running ',params) if c.is_running? == false
@@ -7,7 +7,7 @@ module ServiceApiConfigurations
     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
       begin
-    Timeout.timeout(4) do 
+    Timeout.timeout(@@script_timeout) do 
       thr = Thread.new { result = SystemUtils.execute_command(cmd) }
       thr.join
     end
@@ -31,7 +31,7 @@ module ServiceApiConfigurations
       cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' +  @container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
       result = {}
     begin
-  Timeout.timeout(4) do 
+  Timeout.timeout(@@script_timeout) do 
       thr = Thread.new { result = SystemUtils.execute_command(cmd) }
       thr.join
     end
