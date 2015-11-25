@@ -4,8 +4,8 @@ module ServiceConfigurations
   def retrieve_service_configuration(config)
     #     c = ConfigurationsApi.new(self)
     #     r = c.
-    r= retrieve_configuration(config)
-    return log_error_mesg('Configration failed ' +  c.last_error.to_s, r) unless r.is_a?(Hash)
+    r = retrieve_configuration(config)
+    return log_error_mesg('Configration failed ' +  last_error.to_s, r) unless r.is_a?(Hash)
     return r
   end
 
@@ -16,6 +16,8 @@ module ServiceConfigurations
   def get_pending_service_configurations_hashes(service_hash)
     service_manager.get_pending_service_configurations_hashes(service_hash)
   end
+  
+  
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
@@ -32,7 +34,7 @@ module ServiceConfigurations
     return log_error_mesg('Failed to Load Service', service_param) unless service.is_a?(ManagedService)
     if service.is_running?
       ret_val = service.retrieve_configurator(service_param)
-      return log_error_mesg('failed to retrieve configuration', ret_val) unless ret_val.is_a?(Hash)
+      return log_error_mesg('failed to retrieve configuration', service) unless ret_val.is_a?(Hash)
     else
       return get_service_configuration(service_param)
     end
@@ -42,6 +44,10 @@ module ServiceConfigurations
   
   private
    
+  def get_service_configuration(service_param)
+    service_manager.get_service_configuration(service_param)
+  end
+  
   def update_configuration_on_service(service_param)
      return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
      service = loadManagedService(service_param[:service_name])
