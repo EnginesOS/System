@@ -9,7 +9,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 class ServiceManager  < ErrorsApi
   
   require_relative 'result_checks.rb'
-  require_relative 'sm_service_definitions.rb'
+  require_relative 'service_definitions.rb'
   require_relative 'sm_service_control.rb'
   require_relative 'sm_engine_services.rb'
   require_relative 'sm_service_forced_methods.rb'
@@ -20,7 +20,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_attach_static_services.rb'
   require_relative 'sm_attached_services.rb'
   require_relative 'sm_service_info.rb'
-  require_relative 'service_configurations.rb'
+  require_relative 'sm_service_configurations.rb'
   require_relative 'registry_client.rb'
   
 #  attr_accessor :system_registry_client
