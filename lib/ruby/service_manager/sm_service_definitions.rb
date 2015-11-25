@@ -1,6 +1,6 @@
 class SmServiceDefinitions
 
-  def ServiceDefinitions.is_soft_service?(service_hash)
+  def self.is_soft_service?(service_hash)
 
     soft = SoftwareServiceDefinition.is_soft_service?(service_hash)
        return  SystemUtils.log_error_mesg('Failed to get software status for ',service_hash)  if soft.nil?
@@ -10,9 +10,9 @@ class SmServiceDefinitions
       service_hash[:soft_service]  
     rescue StandardError => e
       SystemUtils.log_exception(e)
-  end
-
-  def ServiceDefinitions.set_top_level_service_params(service_hash, container_name)
+  end 
+ # WTF why not  SoftwareServiceDefinition.set_top_level_service_params(service_hash, container_name)
+  def self.set_top_level_service_params(service_hash, container_name)
      container_name = service_hash[:parent_engine] if service_hash.key?(:parent_engine)
      container_name = service_hash[:engine_name] if container_name == nil    
      return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
@@ -46,9 +46,9 @@ class SmServiceDefinitions
          SystemUtils.log_exception(e)
    end
 
- def ServiceDefinitions.is_service_persistant?(service_hash)
+ def self.is_service_persistant?(service_hash)
   # unless service_hash.key?(:persistant) alway s check dont trust service_hash
-     persist = ServiceDefinitions.software_service_persistance(service_hash)
+     persist = self.software_service_persistance(service_hash)
     return  SystemUtils.log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
      service_hash[:persistant] = persist
    #end
@@ -60,7 +60,7 @@ class SmServiceDefinitions
  #load softwwareservicedefinition for serivce in service_hash and
  #@return boolean indicating the persistance
  #@return nil if no software definition found
- def ServiceDefinitions.software_service_persistance(service_hash)
+ def self.software_service_persistance(service_hash)
    service_definition = self.software_service_definition(service_hash)
    return service_definition[:persistant] unless service_definition.nil?              
    return nil 
@@ -70,7 +70,7 @@ class SmServiceDefinitions
  
  
  #Find the assigned service container_name from teh service definition file
- def ServiceDefinitions.get_software_service_container_name(params)
+ def self.get_software_service_container_name(params)
    SoftwareServiceDefinition.get_software_service_container_name(params)
 #   server_service =  self.software_service_definition(params)
 #   return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
@@ -80,7 +80,7 @@ class SmServiceDefinitions
    SystemUtils.log_exception(e)
  end
  
-  def ServiceDefinitions.software_service_definition(params)
+  def self.software_service_definition(params)
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
   rescue Exception=>e
     p :error
