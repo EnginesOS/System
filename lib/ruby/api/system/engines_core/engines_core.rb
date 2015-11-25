@@ -8,7 +8,7 @@ require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
-require '/opt/engines/lib/ruby/service_manager/sm_service_definitions.rb'
+require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service.rb'
