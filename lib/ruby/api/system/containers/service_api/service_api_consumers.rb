@@ -18,7 +18,7 @@ module ServiceApiConsumers
     engines_core.get_registered_against_service(params)
   end
 
-  def add_consumer_to_service
+  def add_consumer_to_service(service_hash)
 
     cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
     result = {}
