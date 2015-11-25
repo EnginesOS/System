@@ -20,7 +20,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_attach_static_services.rb'
   require_relative 'sm_attached_services.rb'
   require_relative 'sm_service_info.rb'
-  require_relative 'sm_service_configurations.rb'
+  require_relative 'service_configurations.rb'
   require_relative 'registry_client.rb'
   
 #  attr_accessor :system_registry_client
@@ -35,7 +35,6 @@ class ServiceManager  < ErrorsApi
   include SMSubservices
   include SmServiceInfo
   include SmServiceForcedMethods
-
   include SmRegistryTree
   include SmOrphanServices
   include SmEngineServices

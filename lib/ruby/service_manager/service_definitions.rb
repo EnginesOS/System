@@ -1,4 +1,4 @@
-class SmServiceDefinitions
+class ServiceDefinitions
 
   def self.is_soft_service?(service_hash)
 

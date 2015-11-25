@@ -1,4 +1,4 @@
-module SmServiceConfigurations
+module SMServiceConfigurations
   def update_service_configuration(config_hash)
     #load service definition and from configurators definition and if saveable save
     service_definition = ServiceDefinitions.software_service_definition(config_hash)
