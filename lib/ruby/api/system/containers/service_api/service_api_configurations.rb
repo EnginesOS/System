@@ -26,8 +26,8 @@ module ServiceApiConfigurations
   end
 
   def run_configurator(configurator_params, container)
-      return log_error_mesg('service not running ',configurator_params) unless is_running?
-      return log_error_mesg('service missing cont_userid ',configurator_params) if check_cont_uid == false
+      return log_error_mesg('service not running ',configurator_params) unless container.is_running?
+      return log_error_mesg('service missing cont_userid ',configurator_params) if container.check_cont_uid == false
       cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
       result = {}
     begin
