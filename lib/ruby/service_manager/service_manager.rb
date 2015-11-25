@@ -3,26 +3,24 @@ require 'rubytree'
 require_relative 'system_registry/system_registry_client.rb'
 require_relative '../templater/templater.rb'
 require_relative '../system/system_access.rb'
-require_relative 'service_definitions.rb'
-
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'
 
 class ServiceManager  < ErrorsApi
   
   require_relative 'result_checks.rb'
-  
-  require_relative 'non_persistant_services.rb'
-  require_relative 'engine_service_readers.rb'
-  require_relative 'service_container_actions.rb'
-  require_relative 'registry_tree.rb'
-  require_relative 'orphan_services.rb'
-  require_relative 'subservices.rb'
-  require_relative 'service_readers.rb'
-  require_relative 'load_container_services.rb'
-  require_relative 'attached_services.rb'
-  require_relative 'service_writers.rb'
-  require_relative 'managed_service_configurations.rb'
+  require_relative 'service_definitions.rb'
+  require_relative 'sm_service_control.rb'
+  require_relative 'sm_engine_services.rb'
+  require_relative 'sm_service_forced_methods.rb'
+  require_relative 'sm_registry_tree.rb'
+  require_relative 'sm_orphan_services.rb'
+  require_relative 'sm_subservices.rb'
+  require_relative 'sm_service_info.rb'
+  require_relative 'sm_attach_static_services.rb'
+  require_relative 'sm_attached_services.rb'
+  require_relative 'sm_service_info.rb'
+  require_relative 'sm_service_configurations.rb'
   require_relative 'registry_client.rb'
   
 #  attr_accessor :system_registry_client
@@ -33,17 +31,19 @@ class ServiceManager  < ErrorsApi
   end
   
 
-  
+ 
+  include SMSubservices
+  include SmServiceInfo
+  include SmServiceForcedMethods
+  include SmRegistryTree
+  include SmOrphanServices
+  include SmEngineServices
+  include SMAttachedServices
+  include SmAttachStaticServices
   include RegistryClient
-  include ManagedServiceConfigurations
-  include RegistryTree
-  include AttachedServices
-  include OrphanServices
-  include Subservices
-  include NonPersistantServices
-  include EngineServiceReaders
-  include ServiceReaders
-  include LoadContainerServices
-  include ServiceWriters
+  include SmServiceControl
+  include SmServiceConfigurations
+
+
 
 end

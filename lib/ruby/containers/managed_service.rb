@@ -26,6 +26,11 @@ class ManagedService < ManagedContainer
     return @ctype
   end
 
+  def is_soft_service?
+      return true if @soft_service.is_a?(FalseClass)
+      return false
+  end
+
   def state
     read_state
   end

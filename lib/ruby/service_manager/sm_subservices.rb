@@ -1,4 +1,4 @@
-module Subservices
+module SMSubservices
  
   def all_subservices_registered_to(service_type)
     test_subservices_result(@subservices_registry.all_subservices_registered_to(service_type))
