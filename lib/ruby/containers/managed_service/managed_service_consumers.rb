@@ -61,39 +61,14 @@ module ManagedServiceConsumers
   private
 
   def  add_consumer_to_service(service_hash)
-    return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
-    cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
-    result = {}
-    begin
-  Timeout.timeout(@@script_timeout) do 
-    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
-    thr.join
-    end
-      rescue Timeout::Error
-        log_error_mesg('Timeout on adding consumer to service ',cmd)
-        return {}
-     end
-    return true if result[:result] == 0
-    log_error_mesg('Failed add_consumer_to_service',result)
+    @container_api.add_consumer_to_service(service_hash)
   end
 
   def rm_consumer_from_service(service_hash)
-    return log_error_mesg('No uid service not running ', service_hash) unless check_cont_uid
     return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
-    cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
-    result = {}
-    begin
-  Timeout.timeout(@@script_timeout) do 
-    thr = Thread.new {result = SystemUtils.execute_command(cmd) }
-    thr.join
-      end
-        rescue Timeout::Error
-          log_error_mesg('Timeout on removing consumer from service',cmd)
-          return {}
-       end
-    return true  if result[:result] == 0
-    log_error_mesg('Failed rm_consumer_from_service', result)
+    @container_api.rm_consumer_from_service(service_hash)
   end
+
 
 end
