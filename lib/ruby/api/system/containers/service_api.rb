@@ -1,5 +1,7 @@
 class ServiceApi < ContainerApi
-
+  # Fixme and move timeouts to a static conf
+  @@configurator_timeout = 10
+  @@consumer_timeout=4
   require_relative 'service_api/service_api_image_actions.rb'
   include ServiceApiImageActions
   require_relative 'service_api/service_api_configurations.rb'

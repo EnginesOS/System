@@ -1,15 +1,15 @@
 module ServiceApiConfigurations
-  @@script_timeout=5
+ 
   def retrieve_configurator(c, params)
     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
     begin
-      Timeout.timeout(@@script_timeout) do
+      Timeout.timeout(@@configurator_timeout) do
         thr = Thread.new { result = SystemUtils.execute_command(cmd) }
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on  retrieving Configuration',cmd)
+      log_error_mesg('Timeout on retrieving Configuration',cmd)
       return {}
     end
 
