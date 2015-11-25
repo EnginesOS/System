@@ -1,6 +1,6 @@
-require_relative 'result_checks.rb'
+require_relative 'sm_result_checks.rb'
 require_relative 'service_container_actions.rb'
-module OrphanServices
+module SmOrphanServices
 
 def orphanate_service(params)
   p :Orphanate
