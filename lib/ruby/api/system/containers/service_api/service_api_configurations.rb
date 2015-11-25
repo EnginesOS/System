@@ -1,5 +1,5 @@
 module ServiceApiConfigurations
- 
+  @@configurator_timeout = 10
   def retrieve_configurator(c, params)
     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
