@@ -27,7 +27,7 @@ class ManagedService < ManagedContainer
   end
 
   def is_soft_service?
-      return true if @soft_service.is_a?(falseClass)
+      return true if @soft_service.is_a?(FalseClass)
       return false
   end
 
