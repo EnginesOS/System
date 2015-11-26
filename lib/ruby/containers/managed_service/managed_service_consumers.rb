@@ -1,5 +1,5 @@
 module ManagedServiceConsumers
-  @@script_timeout=5
+  
   def remove_consumer(service_hash)
     return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
     return true if !is_running? && @soft_service
