@@ -1,6 +1,8 @@
 #!/bin/bash
 /opt/engines/bin/set_ip.sh
 
+ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" " >/opt/engines/etc/net/management
+
 echo Clearing Flags
 cp /etc/os-release /opt/engines/etc/os-release-host
 rm -f /opt/engines/run/system/flags/reboot_required 
