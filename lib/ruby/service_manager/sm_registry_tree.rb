@@ -1,6 +1,6 @@
 require_relative 'result_checks.rb'
 require_relative 'registry_client.rb'
-module RegistryTree
+module SmRegistryTree
   #@return [Tree::TreeNode] representing the orphaned services tree as dettached and frozen from the parent Tree
    #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
    def get_orphaned_services_tree

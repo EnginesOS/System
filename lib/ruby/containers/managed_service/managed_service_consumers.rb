@@ -1,4 +1,5 @@
 module ManagedServiceConsumers
+  @@script_timeout=5
   def remove_consumer(service_hash)
     return log_error_mesg('remove consumer nil service hash ', '') if service_hash.nil?
     return true if !is_running? && @soft_service
@@ -60,25 +61,14 @@ module ManagedServiceConsumers
   private
 
   def  add_consumer_to_service(service_hash)
-    return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
-    cmd = 'docker exec -u ' + @cont_userid.to_s + ' ' + @container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
-    result = {}
-    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
-    thr.join
-    return true if result[:result] == 0
-    log_error_mesg('Failed add_consumer_to_service',result)
+    @container_api.add_consumer_to_service(self, service_hash)
   end
 
   def rm_consumer_from_service(service_hash)
-    return log_error_mesg('No uid service not running ', service_hash) unless check_cont_uid
     return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
-    cmd = 'docker exec -u ' + @cont_userid + ' ' + @container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
-    result = {}
-    thr = Thread.new {result = SystemUtils.execute_command(cmd) }
-    thr.join
-    return true  if result[:result] == 0
-    log_error_mesg('Failed rm_consumer_from_service', result)
+    @container_api.rm_consumer_from_service(self, service_hash)
   end
+
 
 end

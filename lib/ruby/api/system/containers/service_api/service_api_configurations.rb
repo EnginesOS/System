@@ -1,20 +1,42 @@
 module ServiceApiConfigurations
-
- 
+  @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    return log_error_mesg('service not running ',params) if c.is_running? == false
-    return log_error_mesg('service missing cont_userid ',params) if c.check_cont_uid == false
     cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
-    thr = Thread.new { result = SystemUtils.execute_command(cmd) }
-    thr.join
+    begin
+      Timeout.timeout(@@configurator_timeout) do
+        thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+        thr.join
+      end
+    rescue Timeout::Error
+      log_error_mesg('Timeout on retrieving Configuration',cmd)
+      return {}
+    end
+
     if result[:result] == 0
       variables = SystemUtils.hash_string_to_hash(result[:stdout])
       params[:variables] = variables
       return params
     end
-    log_error_mesg('Failed retrieve_configurator',result)
+    log_error_mesg('Error on retrieving Configuration',result)
     return {}
+  end
+
+  def run_configurator(container, configurator_params)
+
+    cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
+    result = {}
+    begin
+      Timeout.timeout(@@configurator_timeout) do
+        thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+        thr.join
+      end
+    rescue Timeout::Error
+      log_error_mesg('Timeout on running configurator',cmd)
+      return {}
+    end
+    @last_error = result[:stderr] # Dont log just set
+    return result
   end
 
   def update_service_configuration(configuration)

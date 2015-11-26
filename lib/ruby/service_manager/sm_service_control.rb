@@ -1,6 +1,4 @@
-module ServiceWriters
-  
-
+module SmServiceControl
   #@ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
   #@ All are added to the ManagesEngine/Service Tree
@@ -8,14 +6,14 @@ module ServiceWriters
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash, no_engine = false)
     clear_error
-   
+
     #register with Engine
     unless ServiceDefinitions.is_soft_service?(service_hash)
       test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
-        # FIXME not checked because of builder createing services prior to engine 
+      # FIXME not checked because of builder createing services prior to engine
     end
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
-      # add to service and register with service
+    # add to service and register with service
     if ServiceDefinitions.is_service_persistant?(service_hash)
       return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(system_registry_client.add_to_services_registry(service_hash))
@@ -37,9 +35,9 @@ module ServiceWriters
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
     return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-    return log_error_mesg('failed to remove from managed service',service_hash) unless remove_from_managed_service(service_hash) || service_query.key?(:force)
-    return log_error_mesg('failed to remove managed service from services registry', service_hash) unless test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
-      return true    
+    return log_error_mesg('Failed to remove from managed service',service_hash) unless remove_from_managed_service(service_hash) || service_query.key?(:force)
+    return log_error_mesg('Failed to remove managed service from services registry', service_hash) unless test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
+    return true
   rescue StandardError => e
     log_exception(e)
   end
@@ -50,7 +48,7 @@ module ServiceWriters
     if test_registry_result(system_registry_client.update_attached_service(params))
       return add_to_managed_service(params) if remove_from_managed_service(params)
       # this calls add_to_managed_service(params) plus adds to reg
-      @last_error='Filed to remove ' + system_registry_client.last_error.to_s
+      @last_error='Failed to remove ' + system_registry_client.last_error.to_s
     else
       @last_error = system_registry_client.last_error.to_s
     end
@@ -59,44 +57,4 @@ module ServiceWriters
     log_exception(e)
   end
 
-  #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
-  #@ if :remove_all_data is true all data is deleted and all persistant services removed
-  #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
-  #@return true on success and false on fail
-  def rm_remove_engine_services(params)
-    p :REMOVE_engine_services
-    clear_error
-    p params
-    services = test_registry_result(system_registry_client.get_engine_persistant_services(params))
-    p :persistant_services_FOR_REMOVAL
-    p services
-    services.each do | service |
-      if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
-        service[:remove_all_data] = params[:remove_all_data]
-        unless delete_service(service)
-          log_error_mesg('Failed to remove service ',service)
-          next
-        end
-      else
-        unless orphanate_service(service)
-          log_error_mesg('Failed to orphan service ',service)
-          next
-        end
-      end
-      system_registry_client.remove_from_managed_engines_registry(service)
-    end
-    return true
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-
-  
-
-  def remove_engine_from_managed_engines_registry(params)
-    r = system_registry_client.remove_from_managed_engines_registry(params)
-    return r
-  rescue StandardError => e
-    log_exception(e)
-  end
 end
