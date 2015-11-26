@@ -27,7 +27,7 @@ module ServiceApiConfigurations
     cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = {}
     begin
-      Timeout.timeout(@@script_timeout) do
+      Timeout.timeout(@@configurator_timeout) do
         thr = Thread.new { result = SystemUtils.execute_command(cmd) }
         thr.join
       end
