@@ -18,6 +18,7 @@ def create_dns_service_hash(engine)
   end
   service_hash[:variables][:name] = service_hash[:variables][:hostname]
   service_hash[:variables][:ip] = engine.get_ip_str.to_s
+    p service_hash.to_s
 
   return service_hash
 end
