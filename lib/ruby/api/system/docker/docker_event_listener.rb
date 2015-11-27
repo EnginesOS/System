@@ -6,7 +6,7 @@ module DockerEventListener
     
     event_wait = Thread.new do
       p :starting_wait
-     sleep 5
+     sleep 11
      container.task_complete  
     end
      
