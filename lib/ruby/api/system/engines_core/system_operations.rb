@@ -3,7 +3,7 @@ module SystemOperations
     test_system_api_result(@system_api.restart_system)
   end
 
-  def restart_system
+  def restart_mgmt
     test_system_api_result(@system_api.restart_mgmt)
   end
 
