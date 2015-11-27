@@ -1,15 +1,15 @@
 #!/bin/bash
 /opt/engines/bin/set_ip.sh
 
-docker_ip=`ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
-rm -r /opt/engines/etc/net/management
+docker_ip=`ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d\" \"`
+rm -f /opt/engines/etc/net/management
 
 #FIXME below is a kludge
 
 if test -z "$docker_ip
  then
    sleep 5
-       docker_ip=`ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
+       docker_ip=`ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d\" \"`
  fi
  
  if test -z "$docker_ip
