@@ -2,7 +2,7 @@ module ManagedContainerControls
   def destroy_container
     return false unless has_api?
     prep_task(:destroy)
-    return task_complete if super
+    return true if super
     task_failed('destroy')
   end
 
@@ -17,7 +17,7 @@ module ManagedContainerControls
       task_failed('setup')
       log_error_mesg('Cannot create container as container exists ',state)
     end
-    return task_complete if ret_val
+    return true if ret_val
     task_failed('setup')
   end
 
@@ -30,7 +30,7 @@ module ManagedContainerControls
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistant_services(self)
-    task_complete
+    true
   rescue StandardError => e
     log_exception(e)
   end
@@ -39,7 +39,7 @@ module ManagedContainerControls
     prep_task(:recreate)
     return task_failed('destroy/recreate') unless destroy_container
     return task_failed('create/recreate') unless create_container
-    task_complete
+    true
   end
 
   def unpause_container
@@ -48,7 +48,7 @@ module ManagedContainerControls
     return task_failed('unpause') unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    task_complete
+    true
   end
 
   def pause_container
@@ -56,7 +56,7 @@ module ManagedContainerControls
     prep_task(:pause)
     return task_failed('pause') unless super
     @container_api.deregister_non_persistant_services(self)
-    task_complete
+    true
   end
 
   def stop_container
@@ -65,7 +65,7 @@ module ManagedContainerControls
     clear_error
     @container_api.deregister_non_persistant_services(self)
     return task_failed('stop') unless super
-    task_complete
+    true
   end
 
   def start_container
@@ -75,14 +75,14 @@ module ManagedContainerControls
     @restart_required = false
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
-    task_complete
+    true
   end
 
   def restart_container
     in_progress(:restart)
     return task_failed('restart/stop') unless stop_container
     return task_failed('restart/start') unless start_container
-    task_complete
+    true
   end
 
   def rebuild_container
@@ -95,7 +95,7 @@ module ManagedContainerControls
       #add_nginx_service if @deployment_type == 'web'
       @container_api.register_non_persistant_services(self)
     end
-    return task_complete if ret_val
+    return true if ret_val
     task_failed('rebuild')
   end
   
