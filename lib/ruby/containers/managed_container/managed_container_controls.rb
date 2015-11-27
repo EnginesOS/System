@@ -62,7 +62,6 @@ module ManagedContainerControls
   def stop_container
     return false unless has_api?
     prep_task(:stop)
-    clear_error
     @container_api.deregister_non_persistant_services(self)
     return task_failed('stop') unless super
     true
@@ -103,5 +102,6 @@ module ManagedContainerControls
   def prep_task(action_sym)
     in_progress(action_sym)
     clear_error
+    save_state
   end
 end
