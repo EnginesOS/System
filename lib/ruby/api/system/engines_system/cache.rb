@@ -5,6 +5,8 @@ module Cache
     return  nil unless @engines_conf_cache[ident.to_sym].is_a?(Hash)
     return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
     @engines_conf_cache[ident.to_sym][:engine] = nil
+       p :Stale_info 
+       p @engines_conf_cache[ident.to_sym][:engine]
 return  nil
   end
 
