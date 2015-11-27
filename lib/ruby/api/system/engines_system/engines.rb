@@ -75,9 +75,10 @@ module Engines
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
     yaml_file = File.read(yam_file_name)
+    ts = File.mtime(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
-    cache_engine(engine_name,managed_engine)
+    cache_engine(engine_name, managed_engine, ts)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?

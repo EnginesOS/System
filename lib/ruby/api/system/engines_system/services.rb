@@ -40,7 +40,7 @@ module Services
     s = engine_from_cache('/services/' + service_name)
     return s unless s.nil?
     s = _loadManagedService(service_name,  '/services/')
-    cache_engine('/services/' + service_name, s)
+    
     return s
   end
 
@@ -54,10 +54,11 @@ module Services
       return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
     end
     yaml_file = File.read(yam1_file_name)
+    ts = File.mtime(yam_file_name)
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
-
+    cache_engine('/services/' + service_name, managed_service, ts)
     managed_service
   rescue StandardError => e
     if service_name.nil? == false
