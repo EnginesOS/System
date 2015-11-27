@@ -91,4 +91,10 @@ module Engines
     end
     log_exception(e)
   end
+  
+
+  def delete_engine(container_name)
+    rm_engine_from_cache(engine_name)
+  end
+  
 end
