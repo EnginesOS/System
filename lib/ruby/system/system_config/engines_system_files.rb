@@ -1,12 +1,15 @@
 module EnginesSystemFiles
-  @ReleaseFile= '/opt/engines/release'
+  @@ReleaseFile= '/opt/engines/release'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@EnginesInternalCA = '/opt/engines/etc/ssl/ca/certs/system_CA.pem'
-
   @@SystemPreferencesFile = '/opt/engines/etc/preferences/settings.yaml'
   @@engines_ssh_private_keyfile = '/home/engines/.ssh/sshaccess'
+  
+  def SystemConfig.ReleaseFile
+    @@ReleaseFile
+  end
   def SystemConfig.EnginesInternalCA
     return @@EnginesInternalCA
   end

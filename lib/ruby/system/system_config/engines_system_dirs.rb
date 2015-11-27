@@ -12,7 +12,7 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
 
-  @@ReleaseFile= '/opt/engines/release'
+ 
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
