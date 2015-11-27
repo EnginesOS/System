@@ -1,4 +1,5 @@
 set_hostname
+get_hostname
 restart_mgmt
 restart_system
 deb_update_status
@@ -9,3 +10,4 @@ regen_private
 update_engines_system_software
 update_engines_console_password
 free_docker_lib_space
+

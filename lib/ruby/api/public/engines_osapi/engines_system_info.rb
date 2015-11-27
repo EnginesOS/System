@@ -18,5 +18,9 @@ module EnginesSystemInfo
   def build_status
     SystemStatus.build_status
   end
+  
+  def system_hostname
+    return @core_api.system_hostname
+  end
 
 end
