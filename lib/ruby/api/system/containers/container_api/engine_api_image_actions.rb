@@ -1,7 +1,7 @@
 module EngineApiImageActions
   def delete_image(container)
     clear_error
-    @system_api.delete_engine(container.container_name)
+    @system_api.rm_engine_from_cache(container.container_name)
     return  ContainerStateFiles.delete_container_configs(container) if test_docker_api_result(@docker_api.delete_image(container))
     # only delete if del all otherwise backup
     # NO Image well delete the rest
