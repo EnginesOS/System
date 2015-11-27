@@ -101,7 +101,7 @@ module ManagedContainerControls
   
   private
   def prep_task(action_sym)
-    in_progress(:action_sym)
+    in_progress(action_sym)
     clear_error
   end
 end
