@@ -14,7 +14,7 @@ module EnginesSystemFiles
   #  def SystemConfig.generate_ssh_private_keyfile
   #    return  @@generate_ssh_private_keyfile
   #  end
-  def self.NoRemoteExceptionLoggingFlagFile
+  def SystemConfig.NoRemoteExceptionLoggingFlagFile
     return @@NoRemoteExceptionLoggingFlagFile
   end
 

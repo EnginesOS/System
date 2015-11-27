@@ -1,15 +1,15 @@
 class SystemConfig
 
   require_relative 'system_config/engines_system_flags.rb'
-  include EnginesSystemFlags
+  extend SystemConfig::EnginesSystemFlags
 
   require_relative 'system_config/builder_settings.rb'
-  include BuilderSettings
+  extend SystemConfig::BuilderSettings
   require_relative 'system_config/engines_system_dirs.rb'
-  include EnginesSystemDirs
+  extend SystemConfig::EnginesSystemDirs
 
   require_relative 'system_config/engines_system_files.rb'
-  include EnginesSystemFiles
+  extend EnginesSystemFiles
 
   @@api_version = '0.0'
   @@engines_system_version = '0.0'
@@ -71,51 +71,13 @@ class SystemConfig
     return @@SMTPHost
   end
 
-  #  def  SystemConfig.ReleaseFile
-  #    return @@ReleaseFile
-  #  end
-  #
-  #  def SystemConfig.ServiceMapTemplateDir
-  #    return @@ServiceMapTemplateDir
-  #  end
-  #
-  #  def SystemConfig.ServiceTemplateDir
-  #    return @@ServiceTemplateDir
-  #  end
-
   def SystemConfig.internal_domain
     return @@internal_domain
   end
 
-  #  def SystemConfig.galleriesDir
-  #    return @@galleriesDir
-  #  end
-  #
-  #  def SystemConfig.ContainersDir
-  #    return @@ContainersDir
-  #  end
-  #
-  #  def SystemConfig.LocalFSVolHome
-  #    return @@LocalFSVolHome
-  #  end
-  #
-  #  def SystemConfig.CONTFSVolHome
-  #    return @@CONTFSVolHome
-  #  end
 
   def SystemConfig.DBHost
     return @@DBHost
   end
 
-  #  def SystemConfig.DeploymentTemplates
-  #    return @@DeploymentTemplates
-  #  end
-  #
-  #  def SystemConfig.CidDir
-  #    return @@CidDir
-  #  end
-  #
-  #  def SystemConfig.DeploymentDir
-  #    return @@DeploymentDir
-  #  end
 end
