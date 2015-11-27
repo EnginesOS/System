@@ -5,7 +5,7 @@ module DockerEventListener
      # delay one sec  to avoid rave condition between cmd completeion and actual docker process completing 
     
     event_wait = Thread.new do
-      p :starting
+      p :starting_wait
      sleep 5
      container.task_complete  
     end
