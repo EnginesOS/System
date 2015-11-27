@@ -62,6 +62,7 @@ module ContainerControls
       expire_engine_info
       @container_id = read_container_id
       @cont_userid = running_user
+      expire_engine_info
       return true
     end
     @container_id = -1

@@ -32,7 +32,7 @@ module EnginesSystemFlags
     return   @@SystemUpdatedFlag
   end
 
-  def self.EnginesUpdateStatusFile
+  def SystemConfig.EnginesUpdateStatusFile
     @@EnginesUpdateStatusFile
   end
 

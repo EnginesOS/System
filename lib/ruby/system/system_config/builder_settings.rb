@@ -56,5 +56,7 @@ module BuilderSettings
   def SystemConfig.BuildRunningParamsFile
     return @@BuildRunningParamsFile
   end
-
+  def SystemConfig.DefaultBuildReportTemplateFile
+     return @@DefaultBuildReportTemplateFile
+   end
 end
