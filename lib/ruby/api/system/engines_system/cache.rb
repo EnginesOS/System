@@ -21,9 +21,9 @@ return  nil
 
   def get_engine_ts(engine)
     
-    return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
+    return log_error_mesg(' Engine name', engine) if engine?
     
-    yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine_name + '/running.yaml'
+    yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     return -1 unless File.exist?(yam_file_name)
     File.mtime(yam_file_name)
   end
