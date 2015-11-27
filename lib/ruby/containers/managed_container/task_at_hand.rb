@@ -37,6 +37,7 @@ module TaskAtHand
 
   def task_complete
     @last_task =  @task_at_hand
+    p :task_complete
     @task_at_hand = nil
     expire_engine_info
     save_state
