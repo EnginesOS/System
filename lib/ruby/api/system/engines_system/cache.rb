@@ -20,8 +20,8 @@ return  nil
   end
 
   def get_engine_ts(engine)
-    p :get_engine_ts
-    p engine
+   # p :get_engine_ts
+    #p engine
     return log_error_mesg(' Engine name', engine) if engine.nil?
     
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
