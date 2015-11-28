@@ -55,6 +55,7 @@ module TaskAtHand
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close
+
   end
 
   def task_at_hand
@@ -67,7 +68,8 @@ p     File.read(fn)
 
   def clear_task_at_hand
     @task_at_hand = nil
-    File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    File.delete(fn) if File.exist?(fn)
   end
 
   def task_failed(msg)
