@@ -6,8 +6,7 @@ module DockerContainerActions
     commandargs = DockerCmdOptions.container_commandline_args(container)
     commandargs = 'docker run  -d ' + commandargs
     SystemUtils.debug_output('create cont', commandargs)
-    return wait_for_docker_event(:create, container) if run_docker_cmd(commandargs, container)
-    return false
+    run_docker_cmd(commandargs, container)
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
     log_exception(e)
@@ -16,8 +15,7 @@ module DockerContainerActions
   def start_container(container)
     clear_error
     commandargs = 'docker start ' + container.container_name
-    return wait_for_docker_event(:start, container) if run_docker_cmd(commandargs, container)
-    return false
+    run_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -25,8 +23,7 @@ module DockerContainerActions
   def stop_container(container)
     clear_error
     commandargs = 'docker stop ' + container.container_name
-    return wait_for_docker_event(:stop, container) if run_docker_cmd(commandargs, container)
-    return false
+    run_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -34,8 +31,7 @@ module DockerContainerActions
   def pause_container(container)
     clear_error
     commandargs = 'docker pause ' + container.container_name
-    return wait_for_docker_event(:pause, container) if run_docker_cmd(commandargs, container)
-    return false
+    run_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -43,8 +39,7 @@ module DockerContainerActions
   def unpause_container(container)
     clear_error
     commandargs = 'docker unpause ' + container.container_name
-    return wait_for_docker_event(:unpause, container) if run_docker_cmd(commandargs, container)
-    return false
+    run_docker_cmd(commandargs, container)
   rescue StandardError => e
     log_exception(e)
   end

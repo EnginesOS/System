@@ -11,6 +11,17 @@ module DockerEvents
       event_name = status
       data = nil
     end
+  case event_name
+      when 'start'
+      when 'stop'
+      when 'pause'  
+      when 'unpause'
+      when 'create'
+      when 'destroy'
+      
+     else
+       return 
+     end
 
     puts hash['from'].to_s + ' had event ' +  event_name
     p :__
@@ -20,14 +31,9 @@ module DockerEvents
     return nil if c.nil?
     p :Event_on
     p c.container_name
-    c.expire_engine_info
-    case event_name
-    when 'stop'
-    when 'pause'
-    when 'create'
-    when ''
-    end
-
+    c.task_complete(event_name)
+   
+      
   rescue StandardError =>e
     log_exception(e)
   end
