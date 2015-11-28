@@ -1,4 +1,5 @@
 module ContainerChangeMonitor
+  @change_register = nil
   
   def inform_container_monitor(container_name,ctype,event_name)
     add_changed(container_name,ctype,event_name)
