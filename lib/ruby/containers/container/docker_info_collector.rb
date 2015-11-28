@@ -53,7 +53,7 @@ module DockerInfoCollector
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
     @docker_info_cache = @last_result if result
     @docker_info_cache = false unless result
-    Thread.new { sleep 4 ; expire_engine_info }
+   # Thread.new { sleep 4 ; expire_engine_info }
     return result
   end
 
