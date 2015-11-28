@@ -16,7 +16,7 @@ client.read_timeout=36000
      hash = parser.parse(chunk) do |hash|
     # puts hash.inspect
        p :___   
-       event_name = hash['status'].gsub(/:*.$/,'')
+       event_name = hash['status'].gsub(/:.*$/,'')
         
      puts hash['from'].to_s + ' had event ' +  event_name 
      p :__
