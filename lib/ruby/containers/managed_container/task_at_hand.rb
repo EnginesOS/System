@@ -34,7 +34,11 @@ module TaskAtHand
       desired_state('nocontainer')
     end
     si = read_state
-    set_task_at_hand(state) if si !=  @setState 
+    if si ==  @setState
+      return clear_task_at_hand
+    else    
+      set_task_at_hand(state)
+    end 
     
     STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
   end
@@ -52,17 +56,7 @@ module TaskAtHand
     return true
   end
 
-  def set_task_at_hand(state)
-p :set_taskah
-    @task_at_hand = state
-    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-    f.write(state)
-    f.close
-    Thread.new do
-      sleep 60
-      clear_task_at_hand
-    end
-  end
+
 
   def task_at_hand
     #DONT SET IF ALREASDY THERE
@@ -81,6 +75,7 @@ p :set_taskah
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
      p :Clear_Task
+     return true
   end
   
   def wait_for_task(timeout=25)
@@ -110,5 +105,27 @@ p :set_taskah
     p msg.to_s
     task_complete(:failed)
     return false
+  end
+  
+  def wait_for_container_task(timeout=30)
+     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+      return true unless File.exist?(fn)
+      loop = 0
+      while File.exist?(fn) 
+        sleep(0.5)
+        loop += 1
+         return false if loop > timeout * 2
+      end
+      return true
+   end
+  
+  private
+  def set_task_at_hand(state)
+p :set_taskah
+    @task_at_hand = state
+    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+    f.write(state)
+    f.close
+    Thread.new { wait_for_container_task }
   end
 end

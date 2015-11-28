@@ -6,15 +6,14 @@ module ContainerActions
   end
   
  def wait_for_container_task(c_type,container_name,timeout=30)
-   fn = SystemConfig.RunDir + '/' + c_type + 's/' + container_name + '/task_at_hand'
-    return true unless File.exist?(fn)
-    loop = 0
-    while File.exist?(fn) 
-      sleep(0.5)
-      loop += 1
-       return false if loop > timeout * 2
-    end
-    return true
+   if ctype== 'container'
+     c = loadManagedEngine(container_name)
+   else
+      c = loadManagedService(container_name)
+   end
+  return c.wait_for_container_task(timeout) unless c.nil?
+  return false
+   
  end
  
 end
