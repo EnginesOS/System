@@ -30,4 +30,11 @@ return  nil
     return -1 unless File.exist?(yam_file_name)
     File.mtime(yam_file_name)
   end
+  
+  def container_from_cache(container_name)
+    c = engine_from_cache('/services/' + container_name)
+    return c unless c.nil?
+    return engine_from_cache(container_name)
+  end
+  
 end
