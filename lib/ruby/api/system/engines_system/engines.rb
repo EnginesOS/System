@@ -94,7 +94,7 @@ module Engines
   
 
   def delete_engine(container_name)
-    rm_engine_from_cache(engine_name)
+    rm_engine_from_cache(container_name)
   end
   
 end
