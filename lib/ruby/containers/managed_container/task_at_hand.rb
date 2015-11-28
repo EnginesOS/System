@@ -40,6 +40,8 @@ module TaskAtHand
     p :task_complete
     @task_at_hand = nil
     expire_engine_info
+    p :last_task
+    p @last_task
     save_state unless @last_task == :delete
     return true
   end
