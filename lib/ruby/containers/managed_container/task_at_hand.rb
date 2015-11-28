@@ -52,24 +52,26 @@ module TaskAtHand
   def set_task_at_hand(state)
 
     @task_at_hand = state
-#    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-#    f.write(state)
-#    f.close
+    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+    f.write(state)
+    f.close
 
   end
 
   def task_at_hand
-#    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-#    return nil unless File.exist?(fn)
-#    p :read_tah
-#p     File.read(fn)
-    @task_at_hand 
+    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    return nil unless File.exist?(fn)
+    p :read_tah
+     r = File.read(fn)
+     p r
+     r
+#    @task_at_hand 
   end
 
   def clear_task_at_hand
     @task_at_hand = nil
-#    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-#    File.delete(fn) if File.exist?(fn)
+    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    File.delete(fn) if File.exist?(fn)
   end
 
   def task_failed(msg)
