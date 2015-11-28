@@ -6,15 +6,16 @@ module ContainerChangeMonitor
   end
   
   def add_changed(container_name,ctype,event_name)
-    change_register[ctype][container_name] = event_name
+    register  = change_register
+   register[ctype][container_name] = event_name
     
   end
   
   def change_register
     if @change_register == nil
       @change_register = {}
-      @change_register['services'] = {}
-      @change_register['containers'] = {}
+      @change_register['service'] = {}
+      @change_register['container'] = {}
   end
   return @change_register 
   end
