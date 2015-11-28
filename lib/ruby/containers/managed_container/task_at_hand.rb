@@ -6,6 +6,7 @@ module TaskAtHand
 
   def in_progress(state)
     @task_at_hand = state
+   
     current_state = @setState
     case state
     when :create
