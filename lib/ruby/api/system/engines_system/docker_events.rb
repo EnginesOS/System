@@ -3,8 +3,8 @@ module DockerEvents
 
   def container_event(hash)
     return unless hash.key?('from')
-    p :container_event
-    p hash
+    #p :container_event
+   # p hash
     status = hash['status']
     s = status.split(':')
     if s.count > 1
@@ -44,14 +44,14 @@ module DockerEvents
   inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
 end
  def inform_container(container_name,event_name)
-   puts container_name + ' had event ' +  event_name
-   p :__
+ #  puts container_name + ' had event ' +  event_name
+  # p :__
 
     c = container_from_cache(container_name)
     
     return nil if c.nil?
-    p :Event_on
-    p c.container_name
+   # p :Event_on
+   # p c.container_name
     c.task_complete(event_name)
    
       
