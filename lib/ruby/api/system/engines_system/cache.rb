@@ -32,9 +32,11 @@ return  nil
   end
   
   def container_from_cache(container_name)
+    p :container_from_cache
+    p container_name.to_s
     return nil if container_name.nil?
-    c = engine_from_cache('/services/' + container_name)
-    return c unless c.nil?
+#    c = engine_from_cache('/services/' + container_name)
+#    return c unless c.nil?
     return engine_from_cache(container_name)
   end
   

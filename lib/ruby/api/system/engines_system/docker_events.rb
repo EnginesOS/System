@@ -11,23 +11,32 @@ module DockerEvents
       event_name = status
       data = nil
     end
+  container_name = hash['from'].to_s
+
+   
   case event_name
       when 'start'
+    inform_container(container_name,event_name)
       when 'stop'
+    inform_container(container_name,event_name)
       when 'pause'  
+    inform_container(container_name,event_name)
       when 'unpause'
+    inform_container(container_name,event_name)
       when 'create'
+    inform_container(container_name,event_name)
       when 'destroy'
+    inform_container(container_name,event_name)
       
      else
        return 
      end
-
-    puts hash['from'].to_s + ' had event ' +  event_name
-    p :__
-    container_name = hash['from']
-
+end
+ def inform_container(container_name,event_name)
+   puts container_name + ' had event ' +  event_name
+   p :__
     c = container_from_cache(container_name)
+    
     return nil if c.nil?
     p :Event_on
     p c.container_name
