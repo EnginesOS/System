@@ -35,7 +35,7 @@ end
  def inform_container(container_name,event_name)
    puts container_name + ' had event ' +  event_name
    p :__
-   if container_name.begin_with?('engines/')
+   if container_name.start_with?('engines/')
     container_name.sub!(/engines/,'services')
      container_name.sub!(/:.*/,'')
    end 
