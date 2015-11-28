@@ -32,6 +32,7 @@ return  nil
   end
   
   def container_from_cache(container_name)
+    return nil if container_name.nil?
     c = engine_from_cache('/services/' + container_name)
     return c unless c.nil?
     return engine_from_cache(container_name)

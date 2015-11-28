@@ -20,7 +20,7 @@ module DockerEvents
     return nil if c.nil?
     p :Event_on
     p c.container_name
-    c.expire_info
+    c.expire_engine_info
     case event_name
     when 'stop'
     when 'pause'
