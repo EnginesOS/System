@@ -35,7 +35,7 @@ class ManagedContainer < Container
   end
 
   def post_load
-    @last_task = @task_at_hand = nil
+    #@last_task = @task_at_hand = nil
     super
   end
 
