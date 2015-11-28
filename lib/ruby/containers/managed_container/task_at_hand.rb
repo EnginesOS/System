@@ -90,6 +90,7 @@ p :set_taskah
     while ! task_at_hand.nil?
       sleep(0.5)
       loops+=1
+      p :wft_loop
       p task_at_hand
       if loops > timeout * 2
         return false
