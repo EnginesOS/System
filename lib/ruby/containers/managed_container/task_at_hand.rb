@@ -43,6 +43,8 @@ module TaskAtHand
     p :last_task
     p @last_task
     save_state unless @last_task == :delete
+    # FixMe Kludge unless docker event listener
+    ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
     return true
   end
 
