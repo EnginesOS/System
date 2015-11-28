@@ -16,7 +16,7 @@ module ManagedContainerStatus
         @last_error = 'state nil'
       end
     end
-    if state != @setState && @task_at_hand.nil?
+    if state != @setState && task_at_hand.nil?
       puts caller.inspect
       @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
     else
@@ -35,7 +35,7 @@ module ManagedContainerStatus
   end
 
   def is_error?    
-    return false unless @task_at_hand.nil?
+    return false unless task_at_hand.nil?
     state = read_state
     return true if @setState != state
     return false

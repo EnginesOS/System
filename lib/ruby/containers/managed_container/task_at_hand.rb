@@ -5,7 +5,7 @@ module TaskAtHand
   end
 
   def in_progress(state)
-    @task_at_hand = state
+    set_task_at_hand(state)
    
     current_state = @setState
     case state
@@ -37,9 +37,9 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    @last_task =  @task_at_hand
+    @last_task =  task_at_hand
     p :task_complete
-    @task_at_hand = nil
+    clear_task_at_hand
     expire_engine_info
     p :last_task
     p @last_task
@@ -48,7 +48,24 @@ module TaskAtHand
     ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
     return true
   end
-
+  def set_task_at_hand
+  
+  @task_at_hand = state
+  f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+  f.write(state)
+  f.close
+  end
+  
+  def task_at_hand
+    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    return nil unless File.exist?(fn)
+    File.read(rn)
+  end
+  
+  def clear_task_at_hand
+    @task_at_hand = nil
+  end
+  
   def task_failed(msg)
     p :TASK_FAILES______Doing 
     p @task_at_hand

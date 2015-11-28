@@ -26,7 +26,7 @@ class ManagedContainer < Container
   @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
-  attr_accessor :task_at_hand, :restart_required, :rebuild_required
+  attr_accessor  :restart_required, :rebuild_required
 
   # Note desired state is teh next step and not the final result desired state is stepped through
   def log_error_mesg(msg, e_object)
@@ -35,7 +35,7 @@ class ManagedContainer < Container
   end
 
   def post_load
-    @last_task =  @task_at_hand = nil
+    @last_task = @task_at_hand = nil
     super
   end
 
