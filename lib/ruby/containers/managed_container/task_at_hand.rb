@@ -34,7 +34,7 @@ module TaskAtHand
       desired_state('nocontainer')
     end
     
-    set_task_at_hand(state) if current_state !=  @setState 
+    set_task_at_hand(state) if read_state !=  @setState 
     
     STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s
   end
