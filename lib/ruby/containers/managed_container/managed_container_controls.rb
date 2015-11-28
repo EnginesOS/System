@@ -1,6 +1,6 @@
 module ManagedContainerControls
   def destroy_container
-    return true if read_state == 'nocontainer'
+
     return false unless has_api?
     return false unless prep_task(:destroy)
     return true if super
@@ -9,7 +9,7 @@ module ManagedContainerControls
 
   def setup_container
     return false unless has_api?
-    return false unless prep_task(:stop)
+    return false unless prep_task(:create)
     ret_val = false
     unless has_container?
       ret_val = @container_api.setup_container(self)
@@ -23,7 +23,7 @@ module ManagedContainerControls
   end
 
   def create_container
-    return log_error_mesg('Cannot create container as container exists ', self) if has_container?
+   
     return false unless has_api?
     return false unless prep_task(:create)
     return task_failed('create') unless super
@@ -46,7 +46,7 @@ module ManagedContainerControls
   end
 
   def unpause_container
-    return true if read_state == 'running'
+    
     return false unless has_api?
     return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
@@ -56,7 +56,7 @@ module ManagedContainerControls
   end
 
   def pause_container
-    return true if read_state == 'paused'
+ 
     return false unless has_api?
     return false unless prep_task(:pause)
     return task_failed('pause') unless super
@@ -65,7 +65,7 @@ module ManagedContainerControls
   end
 
   def stop_container
-    return true if read_state == 'stopped'
+
     return false unless has_api?
     return false unless prep_task(:stop)
     @container_api.deregister_non_persistant_services(self)
@@ -74,7 +74,7 @@ module ManagedContainerControls
   end
 
   def start_container
-    return true if read_state == 'running'
+   
     return false unless has_api?    
     return false unless prep_task(:start)
     return task_failed('start') unless super
