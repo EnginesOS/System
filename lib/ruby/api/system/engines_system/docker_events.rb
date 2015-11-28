@@ -13,32 +13,36 @@ module DockerEvents
     end
   container_name = hash['from'].to_s
 
+  if container_name.start_with?('engines/')    
+   c_name = container_name.sub(/engines/,'services')
+    c_name.sub!(/:.*/,'')
+    ctype = 'service'
+  else    
+    ctype = 'container'
+    c_name = container_name
+  end 
    
   case event_name
       when 'start'
-    inform_container(container_name,event_name)
+    inform_container(c_name,event_name)
       when 'stop'
-    inform_container(container_name,event_name)
+    inform_container(c_name,event_name)
       when 'pause'  
-    inform_container(container_name,event_name)
+    inform_container(c_name,event_name)
       when 'unpause'
-    inform_container(container_name,event_name)
+    inform_container(c_name,event_name)
       when 'create'
-    inform_container(container_name,event_name)
+    inform_container(c_name,event_name)
       when 'destroy'
-    inform_container(container_name,event_name)
-      
-     else
-       return 
+    inform_container(c_name,event_name)
+
      end
+     inform_container_monitor(container_name,ctype,event_name)
 end
  def inform_container(container_name,event_name)
    puts container_name + ' had event ' +  event_name
    p :__
-   if container_name.start_with?('engines/')
-    container_name.sub!(/engines/,'services')
-     container_name.sub!(/:.*/,'')
-   end 
+
     c = container_from_cache(container_name)
     
     return nil if c.nil?
