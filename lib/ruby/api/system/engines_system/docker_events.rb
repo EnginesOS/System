@@ -16,8 +16,10 @@ module DockerEvents
     p :__
     container_name = hash['from']
 
-    c = container_from_cache(container_name, event_name)
+    c = container_from_cache(container_name)
     return nil if c.nil?
+    p :Event_on
+    p c.container_name
     c.expire_info
     case event_name
     when 'stop'
