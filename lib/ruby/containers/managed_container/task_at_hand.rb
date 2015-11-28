@@ -58,7 +58,10 @@ p :set_taskah
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close
-
+    Thread.new do
+      sleep 60
+      clear_task_at_hand
+    end
   end
 
   def task_at_hand
