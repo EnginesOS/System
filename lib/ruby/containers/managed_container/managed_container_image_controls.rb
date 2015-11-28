@@ -4,9 +4,7 @@ module ManagedContainerImageControls
     ret_val = false
     clear_error
     in_progress(:delete)
-    r =  super
-    @last_task =  @task_at_hand
-    @task_at_hand = nil
+    r =  super   
     return r
   end
 
