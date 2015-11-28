@@ -1,5 +1,5 @@
 module DockerEvents
-require '/opt/engines/lib/ruby/api/docker/docker_api/docker_event_watcher.rb'
+require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
 
 
      def container_event(hash)
