@@ -53,7 +53,7 @@ module TaskAtHand
   end
 
   def set_task_at_hand(state)
-
+p :set_taskah
     @task_at_hand = state
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
