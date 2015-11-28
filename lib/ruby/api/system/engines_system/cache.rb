@@ -42,7 +42,7 @@ return  nil
   end
   
   def cache_update_ts(container, ts) 
-    if container.ctype = 'service'
+    if container.ctype == 'service'
      ident = 'services/' + container.container_name
     else
       ident = container.container_name
