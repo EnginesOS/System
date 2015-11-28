@@ -13,7 +13,7 @@ module ContainerControls
   def stop_container
     expire_engine_info
     r = true
-    return true if read_state == 'stopped'
+    return true if read_state == 'stopped' 
     return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'
     r = false  unless @container_api.stop_container(self)
     expire_engine_info
