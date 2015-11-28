@@ -18,6 +18,8 @@ module ManagedContainerStatus
     end
     if state != @setState && @task_at_hand.nil?
       @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+    else
+      @last_error = ''
     end
     return state
   rescue Exception=>e
