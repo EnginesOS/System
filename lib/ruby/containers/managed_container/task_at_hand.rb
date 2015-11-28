@@ -60,7 +60,7 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-    File.read(rn)
+    File.read(fn)
   end
 
   def clear_task_at_hand
