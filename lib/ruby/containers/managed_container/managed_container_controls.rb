@@ -102,7 +102,8 @@ module ManagedContainerControls
   def prep_task(action_sym)
     
     return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
-    
+    p :current_tah
+    p task_at_hand
     in_progress(action_sym)
     clear_error
     return save_state
