@@ -15,7 +15,12 @@ return  nil
     @engines_conf_cache.delete(engine_name.to_sym)
   end
 
-  def cache_engine(ident, engine, ts)
+  def cache_engine( engine, ts)
+    unless engine.ctype == 'service' 
+      ident = engine.container_name
+    else
+      ident ='services/' + engine.container_name
+    end 
   @engines_conf_cache[ident.to_sym] = {}
     @engines_conf_cache[ident.to_sym][:engine] = engine
     @engines_conf_cache[ident.to_sym][:ts] =  ts
@@ -47,7 +52,9 @@ return  nil
     else
       ident = container.container_name
     end
-    @engines_conf_cache[ident.to_sym][:ts] = ts
+    id = ident.to_sym
+    return false unless  @engines_conf_cache.key?(id) && ! @engines_conf_cache[id].nil?
+    @engines_conf_cache[id][:ts] = ts
      return true
   end
   

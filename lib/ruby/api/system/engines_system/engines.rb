@@ -78,7 +78,7 @@ module Engines
     ts = File.mtime(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
-    cache_engine(engine_name, managed_engine, ts)
+    cache_engine( managed_engine, ts)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?
