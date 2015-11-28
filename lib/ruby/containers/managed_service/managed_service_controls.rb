@@ -33,21 +33,22 @@ def create_service()
    end
  
    if create_container
-     save_state()
+     #save_state()
+     #return false unless super
      service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
      if service_configurations.is_a?(Array)
        service_configurations.each do |configuration|
          run_configurator(configuration)
        end
      end
-     register_with_dns
+    # register_with_dns
      @container_api.load_and_attach_nonpersistant_services(self)
-     @container_api.register_non_persistant_services(self)
+   #  @container_api.register_non_persistant_services(self)
      reregister_consumers
      return true
    else
       save_state()
-     return log_error_mesg('Failed to create service',self)
+     return log_error_mesg('Failed to create service',last_error)
    end
  end
 
