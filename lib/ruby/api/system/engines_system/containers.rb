@@ -61,7 +61,7 @@ module Containers
     f.puts(serialized_object)
     f.flush()
     f.close
-    File.mtime(statefile)
+    ts =  File.mtime(statefile)
     cache_update_ts(container, ts)
     
     return true
