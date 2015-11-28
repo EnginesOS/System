@@ -1,14 +1,14 @@
 module ManagedContainerControls
   def destroy_container
     return false unless has_api?
-    prep_task(:destroy)
+    return false unless prep_task(:destroy)
     return true if super
     task_failed('destroy')
   end
 
   def setup_container
-    prep_task(:stop)
     return false unless has_api?
+    return false unless prep_task(:stop)
     ret_val = false
     unless has_container?
       ret_val = @container_api.setup_container(self)
@@ -23,7 +23,7 @@ module ManagedContainerControls
 
   def create_container
     return false unless has_api?
-    prep_task(:create)
+    return false unless prep_task(:create)
     return task_failed('create') unless super
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
@@ -36,7 +36,7 @@ module ManagedContainerControls
   end
 
   def recreate_container
-    prep_task(:recreate)
+    return false unless prep_task(:recreate)
     return task_failed('destroy/recreate') unless destroy_container
     return task_failed('create/recreate') unless create_container
     true
@@ -44,7 +44,7 @@ module ManagedContainerControls
 
   def unpause_container
     return false unless has_api?
-    prep_task(:unpause)
+    return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
     register_with_dns # MUst register each time as IP Changes
     @container_api.register_non_persistant_services(self)
@@ -53,7 +53,7 @@ module ManagedContainerControls
 
   def pause_container
     return false unless has_api?
-    prep_task(:pause)
+    return false unless prep_task(:pause)
     return task_failed('pause') unless super
     @container_api.deregister_non_persistant_services(self)
     true
@@ -61,7 +61,7 @@ module ManagedContainerControls
 
   def stop_container
     return false unless has_api?
-    prep_task(:stop)
+    return false unless prep_task(:stop)
     @container_api.deregister_non_persistant_services(self)
     return task_failed('stop') unless super
     true
@@ -69,7 +69,7 @@ module ManagedContainerControls
 
   def start_container
     return false unless has_api?    
-    prep_task(:start)
+    return false unless prep_task(:start)
     return task_failed('start') unless super
     @restart_required = false
     register_with_dns # MUst register each time as IP Changes
@@ -78,7 +78,7 @@ module ManagedContainerControls
   end
 
   def restart_container
-    prep_task(:restart)
+    return false unless prep_task(:restart)
     return task_failed('restart/stop') unless stop_container
     return task_failed('restart/start') unless start_container
     true
@@ -86,7 +86,7 @@ module ManagedContainerControls
 
   def rebuild_container
     return false unless has_api?
-    prep_task(:rebuild)
+    return false unless prep_task(:rebuild)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -100,8 +100,11 @@ module ManagedContainerControls
   
   private
   def prep_task(action_sym)
+    
+    return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
+    
     in_progress(action_sym)
     clear_error
-    save_state
+    return save_state
   end
 end
