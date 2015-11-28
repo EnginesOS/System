@@ -8,7 +8,7 @@ module ContainerActions
  def wait_for_container_task(c_type,container_name,timeout=30)
    fn = SystemConfig.RunDir + '/' + c_type + 's/' + container_name + '/task_at_hand'
     return true unless File.exist?(fn)
-    looop = 0
+    loop = 0
     while File.exist?(fn) 
       sleep(0.5)
       loop += 1
