@@ -1,19 +1,7 @@
-class DockerApiTest
+require 'uri'
+require 'yajl/http_stream'
 
-require_relative 'docker_api.rb'
-
-api = DockerApi.new()
-
- def received_chuck(chunk)
-   p chunk
- end
-
-def test
-  api.get_event_stream(self)
+uri = URI.parse("/var/run/docker.sock/events")
+Yajl::HttpStream.get(uri, :symbolize_keys => true) do |hash|
+  puts hash.inspect
 end
-
-end
-  
-test = DockerApiTest.new
-Thread.new {test.test}
-sleep 1000
