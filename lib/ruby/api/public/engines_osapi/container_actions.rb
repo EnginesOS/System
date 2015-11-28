@@ -9,7 +9,7 @@ module ContainerActions
    if ctype == 'container'
      c = loadManagedEngine(container_name)
    else
-      c = EnginesOSapi.loadManagedService(container_name,self)
+      c = getManagedService(container_name)
    end
   return c.wait_for_container_task(timeout) unless c.nil?
   return false
