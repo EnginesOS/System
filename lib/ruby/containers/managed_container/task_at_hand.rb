@@ -72,6 +72,7 @@ module TaskAtHand
     @task_at_hand = nil
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
+     p :Clear_Task
   end
   
   def wait_for_task(timeout=25)
