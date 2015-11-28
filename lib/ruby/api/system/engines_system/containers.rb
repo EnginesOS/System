@@ -61,6 +61,8 @@ module Containers
     f.puts(serialized_object)
     f.flush()
     f.close
+    File.mtime(statefile)
+    cache_update_ts(container.container_name, ts)
     
     return true
   rescue StandardError => e

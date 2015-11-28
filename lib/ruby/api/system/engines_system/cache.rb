@@ -7,6 +7,7 @@ module Cache
     @engines_conf_cache[ident.to_sym][:engine] = nil
        p :Stale_info 
        p @engines_conf_cache[ident.to_sym][:engine]
+       
 return  nil
   end
 
@@ -38,6 +39,10 @@ return  nil
 #    c = engine_from_cache('/services/' + container_name)
 #    return c unless c.nil?
     return engine_from_cache(container_name)
+  end
+  
+  def cache_update_ts(container_name,ts)
+    @engines_conf_cache[container_name.to_sym][:ts] =  ts
   end
   
 end
