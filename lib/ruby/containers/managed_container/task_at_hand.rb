@@ -67,6 +67,7 @@ p     File.read(fn)
 
   def clear_task_at_hand
     @task_at_hand = nil
+    File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
   end
 
   def task_failed(msg)
