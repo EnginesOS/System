@@ -12,7 +12,9 @@ client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
    resp.read_body do |chunk|
      #p chunk
      hash = parser.parse(chunk) do |hash|
-     puts hash.inspect       
+     puts hash.inspect   
+     p hash.to_s
+     p :hash
      end 
 
 
