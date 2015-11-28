@@ -518,7 +518,9 @@ if c_type == "container"
     res =  "command:" + command + " unknown"
     print_usage
 
-  end
+end
+
+engines_api.wait_for_container_task(c_type,container_name)
 
   if res !=nil && res.is_a?(EnginesOSapiResult)
     if res.was_success == false
@@ -590,5 +592,6 @@ if container_name == "all"
   end
 else
   do_cmd(c_type,container_name,command)
+  
 end
 
