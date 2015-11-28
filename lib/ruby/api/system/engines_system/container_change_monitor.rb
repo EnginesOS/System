@@ -18,7 +18,7 @@ module ContainerChangeMonitor
   return @change_register 
   end
   
-  def get_changed
+  def get_changed_containers
     ret = @change_register.dup
     @change_register = nil
     return ret

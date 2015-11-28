@@ -23,4 +23,7 @@ module EnginesSystemInfo
     return @core_api.system_hostname
   end
 
+  def get_changed_containers
+    return @core_api.get_changed_containers
+   end
 end

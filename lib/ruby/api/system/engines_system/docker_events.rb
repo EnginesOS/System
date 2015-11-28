@@ -2,6 +2,8 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
 
   def container_event(hash)
+    p :container_event
+    p hash
     status = hash['status']
     s = status.split(':')
     if s.count > 1
@@ -37,7 +39,8 @@ module DockerEvents
     inform_container(c_name,event_name)
 
      end
-     inform_container_monitor(container_name,ctype,event_name)
+     
+     inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
 end
  def inform_container(container_name,event_name)
    puts container_name + ' had event ' +  event_name

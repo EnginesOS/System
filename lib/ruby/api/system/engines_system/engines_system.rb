@@ -28,7 +28,10 @@ class SystemApi < ErrorsApi
   
   require_relative 'docker_events.rb'
   include DockerEvents
-
+  
+  require_relative 'container_change_monitor.rb'
+  ContainerChangeMonitor
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
