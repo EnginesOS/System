@@ -10,9 +10,9 @@ module Cache
        p @engines_conf_cache[ident.to_sym][:ts]
          p :read_ts
          p get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
-       p @engines_conf_cache[ident.to_sym][:engine]
+      # p @engines_conf_cache[ident.to_sym][:engine]
 
-         # FOXME refresh cache         
+         #  refresh cache  Done by the caller as load add s to cache       
 @engines_conf_cache[ident.to_sym][:engine] = nil
        
 return  nil
