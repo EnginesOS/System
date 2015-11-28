@@ -6,7 +6,9 @@ module Cache
     return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
     @engines_conf_cache[ident.to_sym][:engine] = nil
        p :Stale_info 
+       p :saved_ts
        p @engines_conf_cache[ident.to_sym][:ts]
+         p :read_ts
          p get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
        p @engines_conf_cache[ident.to_sym][:engine]
        
@@ -32,7 +34,7 @@ return  nil
   def get_engine_ts(engine)
    # p :get_engine_ts
     #p engine
-    return log_error_mesg(' Engine name', engine) if engine.nil?
+    return log_error_mesg('Get ts passed nil Engine ', engine) if engine.nil?
     
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     return -1 unless File.exist?(yam_file_name)
