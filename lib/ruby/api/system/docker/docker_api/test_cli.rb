@@ -1,6 +1,6 @@
 require 'uri'
 
-
+require 'socket'
 socket = UNIXSocket.new('/var/run/docker.sock')
 socket.puts('GET /events')
 parser = Yajl::Parser.new
