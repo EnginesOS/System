@@ -1,4 +1,4 @@
-class DockerApi
+class DockerApi  < ErrorsApi
   
   require_relative 'docker_connection.rb'
   

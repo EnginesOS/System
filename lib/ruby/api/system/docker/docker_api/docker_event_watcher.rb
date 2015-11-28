@@ -1,4 +1,4 @@
-class DockerEventWatcher
+class DockerEventWatcher  < ErrorsApi
 
 require 'yajl'
 require 'net_x/http_unix'
@@ -36,8 +36,10 @@ require 'socket'
 
 
    end
+
  }
-  
+   rescue StandardError => e
+     log_exception(e)
 end 
 
   end
