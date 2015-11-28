@@ -1,22 +1,23 @@
 module TaskAtHand
   def desired_state(state, si)
+    current_set_state = @setState
     @setState = state
     save_state
-    
+
        if si ==  state
          return clear_task_at_hand
        else    
          set_task_at_hand(state)
        end 
        
-       STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
+       STDERR.puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
   end
 
   def in_progress(state)
   
     si = read_state
 
-    current_state = @setState
+   
     case state
     when :create      
       return desired_state('running', si) if si == 'nocontainer' 
