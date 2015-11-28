@@ -40,7 +40,7 @@ module DockerEvents
 
      end
      
-  ContainerChangeMonitor::inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
+  inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
 end
  def inform_container(container_name,event_name)
    puts container_name + ' had event ' +  event_name

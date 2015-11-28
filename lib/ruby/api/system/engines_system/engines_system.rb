@@ -30,7 +30,7 @@ class SystemApi < ErrorsApi
   include DockerEvents
   
   require_relative 'container_change_monitor.rb'
-  ContainerChangeMonitor
+  include ContainerChangeMonitor
   
   def initialize(api)
     @engines_api = api
