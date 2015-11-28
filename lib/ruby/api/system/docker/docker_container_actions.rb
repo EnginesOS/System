@@ -59,7 +59,6 @@ module DockerContainerActions
       log_error_mesg(container.last_error, container)
       return false if image_exist?(container.image)
     end
-    wait_for_docker_event(:rm, container)
     clean_up_dangling_images
     return true
   rescue StandardError => e
