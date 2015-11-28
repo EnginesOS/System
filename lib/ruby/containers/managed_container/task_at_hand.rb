@@ -82,7 +82,7 @@ module TaskAtHand
     p :WITH
     p @last_error.to_s
     p msg.to_s
-    task_complete
+    task_complete(:failed)
     return false
   end
 end
