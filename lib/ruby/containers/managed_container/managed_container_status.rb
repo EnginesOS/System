@@ -16,8 +16,8 @@ module ManagedContainerStatus
         @last_error = 'state nil'
       end
     end
-    if state != @setState
-      @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+    if state != @setState && @task_at_hand.nil?
+      @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
     end
     return state
   rescue Exception=>e
@@ -31,7 +31,7 @@ module ManagedContainerStatus
     @container_api.is_startup_complete(self)
   end
 
-  def is_error?
+  def is_error?    
     return false unless @task_at_hand.nil?
     state = read_state
     return true if @setState != state
