@@ -1,46 +1,48 @@
 module TaskAtHand
-  def desired_state(state)
+  def desired_state(state, si)
     @setState = state
     save_state
+    
+       if si ==  state
+         return clear_task_at_hand
+       else    
+         set_task_at_hand(state)
+       end 
+       
+       STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
   end
 
   def in_progress(state)
-    set_task_at_hand(state)
+  
+    si = read_state
 
     current_state = @setState
     case state
-    when :create
-      desired_state('running')
+    when :create      
+      return desired_state('running', si) if si == 'nocontainer' 
     when :stop
-      desired_state('stopped')
+      return   desired_state('stopped', si) if si == 'running'
     when :start
-      desired_state('running')
+      return   desired_state('running', si) if si == 'stopped'
     when :pause
-      desired_state('paused')
+      return  desired_state('paused', si) if si == 'running'
     when :restart
-      desired_state('stopped')
+      return   desired_state('stopped', si) if si == 'running'
     when :unpause
-      desired_state('running')
+      return   desired_state('running', si) if si == 'paused'
     when :recreate
-      desired_state('nocontainer')
+      return   desired_state('running', si) if si == 'stopped' || si == 'nocontainer'
     when :rebuild
-      desired_state('nocontainer')
+      return   desired_state('running', si) if si == 'stopped' || si == 'nocontainer'
     when :build
-      desired_state('running')
+      return   desired_state('running', si) if si == 'nocontainer'
     when :delete
-      desired_state('nocontainer')
+      return   desired_state('nocontainer', si) if si == 'stopped'
       #  desired_state('noimage')
     when :destroy
-      desired_state('nocontainer')
+      return   desired_state('nocontainer', si) if si == 'nocontainer'
     end
-    si = read_state
-    if si ==  @setState
-      return clear_task_at_hand
-    else    
-      set_task_at_hand(state)
-    end 
-    
-    STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
+   
   end
 
   def task_complete(action)
