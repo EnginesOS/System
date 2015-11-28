@@ -10,7 +10,7 @@ require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher
      
   def start_docker_event_listener
     docker_event_listener = DockerEventWatcher.new(self)
-    docker_event_listener.start
+    Thread.new {  docker_event_listener.start}
   end
   
 end
