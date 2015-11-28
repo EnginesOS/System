@@ -1,7 +1,7 @@
-require 'json'
+require 'yajl'
 
 def convert_json_message_to_hash(request)
-    require 'json'
+    require 'yajl'
    hash_request = JSON.parse(request)
     return  symbolize_top_level_keys(hash_request)
   rescue 

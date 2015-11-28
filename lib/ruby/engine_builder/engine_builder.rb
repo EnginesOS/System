@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'git'
 require 'fileutils'
-require 'json'
+require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 class EngineBuilder < ErrorsApi
