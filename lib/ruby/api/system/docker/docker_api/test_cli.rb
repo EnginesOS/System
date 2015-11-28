@@ -8,12 +8,11 @@ parser = Yajl::Parser.new
 req = Net::HTTP::Get.new('/events')
 client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
  client.request(req) { |resp|
-p resp
+#p resp
    resp.read_body do |chunk|
-     p chunk
+     #p chunk
      hash = parser.parse(chunk) do |hash|
-     puts hash.inspect
-       
+     puts hash.inspect       
      end 
 
 
