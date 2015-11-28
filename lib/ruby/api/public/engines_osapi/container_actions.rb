@@ -5,8 +5,8 @@ module ContainerActions
     log_exception_and_fail('get_container_network_metrics', e)
   end
   
- def wait_for_container_task(c_type,container_name,timeout=30)
-   if ctype== 'container'
+ def wait_for_container_task(ctype,container_name,timeout=30)
+   if ctype == 'container'
      c = loadManagedEngine(container_name)
    else
       c = loadManagedService(container_name)
