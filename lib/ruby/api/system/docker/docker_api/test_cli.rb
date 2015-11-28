@@ -1,4 +1,4 @@
-require 'uri'
+require 'yajl'
 
 require 'socket'
 socket = UNIXSocket.new('/var/run/docker.sock')
