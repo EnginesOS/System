@@ -69,6 +69,8 @@ module ManagedContainerControls
        @setState = 'nocontainer'
        return true
      end
+     p :stop_read_sta
+     p read_state
     return false unless has_api?
     return false unless prep_task(:stop)
     @container_api.deregister_non_persistant_services(self)
