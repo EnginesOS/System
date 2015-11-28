@@ -33,6 +33,9 @@ module TaskAtHand
     when :destroy
       desired_state('nocontainer')
     end
+    
+    set_task_at_hand(state) if current_state !=  @setState 
+    
     STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' + @task_at_hand.to_s
   end
 
@@ -59,6 +62,8 @@ module TaskAtHand
   end
 
   def task_at_hand
+    #DONT SET IF ALREASDY THERE
+    
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
     p :read_tah
