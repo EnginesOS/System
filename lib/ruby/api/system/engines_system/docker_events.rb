@@ -2,6 +2,7 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
 
   def container_event(hash)
+    return unless hash.key?('from')
     p :container_event
     p hash
     status = hash['status']
