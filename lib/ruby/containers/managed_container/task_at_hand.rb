@@ -63,7 +63,7 @@ module TaskAtHand
     return nil unless File.exist?(fn)
     p :read_tah
      r = File.read(fn)
-     p r
+     puts '_' + r.to_s + '_'
      r
 #    @task_at_hand 
   end
