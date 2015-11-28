@@ -62,7 +62,7 @@ module Containers
     f.flush()
     f.close
     File.mtime(statefile)
-    cache_update_ts(container.container_name, ts)
+    cache_update_ts(container, ts)
     
     return true
   rescue StandardError => e

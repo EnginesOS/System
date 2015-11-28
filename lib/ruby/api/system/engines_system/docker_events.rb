@@ -35,6 +35,10 @@ end
  def inform_container(container_name,event_name)
    puts container_name + ' had event ' +  event_name
    p :__
+   if container_name.begin_with?('engines/')
+    container_name.sub!(/engines/,'services')
+     container_name.sub!(/:.*/,'')
+   end 
     c = container_from_cache(container_name)
     
     return nil if c.nil?

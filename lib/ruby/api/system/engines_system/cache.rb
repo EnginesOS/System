@@ -41,8 +41,14 @@ return  nil
     return engine_from_cache(container_name)
   end
   
-  def cache_update_ts(container_name,ts)
-    @engines_conf_cache[container_name.to_sym][:ts] =  ts
+  def cache_update_ts(container, ts) 
+    if container.ctype = 'service'
+     ident = 'services/' + container.container_name
+    else
+      ident = container.container_name
+    end
+    @engines_conf_cache[ident.to_sym][:ts] = ts
+     return true
   end
   
 end
