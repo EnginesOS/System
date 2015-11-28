@@ -33,10 +33,10 @@ module TaskAtHand
     when :destroy
       desired_state('nocontainer')
     end
+    si = read_state
+    set_task_at_hand(state) if si !=  @setState 
     
-    set_task_at_hand(state) if read_state !=  @setState 
-    
-    STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s
+    STDERR.puts 'Task at Hand:' + state.to_s + '  Current state:' + current_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
   end
 
   def task_complete(action)
