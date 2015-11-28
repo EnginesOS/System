@@ -40,6 +40,7 @@ module ManagedContainerControls
   def recreate_container
     return false unless prep_task(:recreate)
     return task_failed('destroy/recreate') unless destroy_container
+    wait_for_task
     return task_failed('create/recreate') unless create_container
     true
   end
@@ -86,6 +87,7 @@ module ManagedContainerControls
   def restart_container
     return false unless prep_task(:restart)
     return task_failed('restart/stop') unless stop_container
+    wait_for_task
     return task_failed('restart/start') unless start_container
     true
   end
