@@ -27,6 +27,7 @@ module ManagedContainerControls
     return false unless has_api?
     return false unless prep_task(:create)
     return task_failed('create') unless super
+    p :create_suupre_ran
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
