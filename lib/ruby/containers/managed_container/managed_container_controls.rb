@@ -90,8 +90,7 @@ module ManagedContainerControls
     true
   end
 
-  def restart_container
-  
+  def restart_container  
     return task_failed('restart/stop') unless stop_container
     wait_for_task
     return task_failed('restart/start') unless start_container

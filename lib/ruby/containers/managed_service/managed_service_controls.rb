@@ -12,7 +12,7 @@ module ManagedServiceControls
   end
   
 def create_service()
-   SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' +container_name)
+   SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
    envs = @container_api.load_and_attach_persistant_services(self)
    shared_envs = @container_api.load_and_attach_shared_services(self)
    if shared_envs.is_a?(Array)
@@ -31,7 +31,7 @@ def create_service()
        @environments = envs
      end
    end
- 
+  p :creatrine_service_containe
    if create_container
       p :service_container_created
      service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
@@ -49,6 +49,8 @@ def create_service()
       save_state()
      return log_error_mesg('Failed to create service',last_error)
    end
+rescue StandardError =>e
+  log_exception(e)
  end
 
  def recreate
