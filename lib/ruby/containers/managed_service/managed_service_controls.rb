@@ -33,8 +33,7 @@ def create_service()
    end
  
    if create_container
-     #save_state()
-     return false unless super
+      p :service_container_created
      service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
      if service_configurations.is_a?(Array)
        service_configurations.each do |configuration|
