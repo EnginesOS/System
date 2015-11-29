@@ -1,47 +1,47 @@
 module TaskAtHand
-  def desired_state(state, si)
+  def desired_state(state, curr_state)
     current_set_state = @setState
     @setState = state
     save_state
 
-       if si ==  state
+       if curr_state ==  state
          return clear_task_at_hand
        else    
          set_task_at_hand(state)
        end 
        
-       STDERR.puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
+       STDERR.puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
   end
 
   def in_progress(action)
   
-    si = read_state
+    curr_state= read_state
 
    
     case action
     when :create      
-      return desired_state('running', si) if si == 'nocontainer' 
+      return desired_state('running', curr_state) if curr_state== 'nocontainer' 
     when :stop
-      return   desired_state('stopped', si) if si == 'running'
+      return   desired_state('stopped', curr_state) if curr_state== 'running'
     when :start
-      return   desired_state('running', si) if si == 'stopped'
+      return   desired_state('running', curr_state) if curr_state== 'stopped'
     when :pause
-      return  desired_state('paused', si) if si == 'running'
+      return  desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
-      return   desired_state('stopped', si) if si == 'running'
+      return   desired_state('stopped', curr_state) if curr_state== 'running'
     when :unpause
-      return   desired_state('running', si) if si == 'paused'
+      return   desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
-      return   desired_state('running', si) if si == 'stopped' || si == 'nocontainer'
+      return   desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :rebuild
-      return   desired_state('running', si) if si == 'stopped' || si == 'nocontainer'
+      return   desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
-      return   desired_state('running', si) if si == 'nocontainer'
+      return   desired_state('running', curr_state) if curr_state== 'nocontainer'
     when :delete
-      return   desired_state('nocontainer', si) if si == 'stopped'
+      return   desired_state('nocontainer', curr_state) if curr_state== 'stopped'
       #  desired_state('noimage')
     when :destroy
-      return   desired_state('nocontainer', si) if si == 'nocontainer'
+      return   desired_state('nocontainer', curr_state) if curr_state== 'nocontainer'
     end
     # Perhaps ?return clear_task_at_hand
   end
@@ -62,20 +62,17 @@ module TaskAtHand
 
 
   def task_at_hand
-    #DONT SET IF ALREASDY THERE
-    
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-    
-    p :read_tah
     task = File.read(fn)
      r = read_state(raw=true)
     if tasks_final_state(task) == r 
       clear_task_at_hand
       return nil
     end
-     puts '_' + task.to_s + '_' + '_' + r + '_'
     task
+  rescue StandardError
+    return nil
    # @task_at_hand 
   end
 
@@ -83,8 +80,8 @@ module TaskAtHand
     @task_at_hand = nil
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
-     p :Clear_Task
-     return true
+    rescue StandardError
+    return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
   def wait_for_task(timeout=25)
@@ -101,6 +98,8 @@ module TaskAtHand
       end
     end
     return true
+    rescue StandardError
+      return false
   end
 
   def task_failed(msg)
@@ -127,6 +126,7 @@ module TaskAtHand
       end
       return true
    end
+   
   def tasks_final_state(task)
     case task
         when :create      
@@ -161,6 +161,10 @@ p :set_taskah
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close
-    Thread.new { wait_for_container_task }
+    # clear task if still there after 60 s
+    Thread.new do
+      clear_task_at_hand  unless wait_for_container_task(60) 
+      
+    end
   end
 end
