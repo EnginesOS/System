@@ -43,8 +43,7 @@ module TaskAtHand
     when :destroy
       return   desired_state('nocontainer', si) if si == 'nocontainer'
     end
-    # Perhaps ? 
-    diockreturn clear_task_at_hand
+    # Perhaps ?return clear_task_at_hand
   end
 
   def task_complete(action)
