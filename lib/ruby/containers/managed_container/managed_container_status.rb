@@ -3,6 +3,10 @@ module ManagedContainerStatus
     return true if @ctype == 'service'
     return false
   end
+  
+  def raw_state
+    super.read_state
+  end
 
   def read_state
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
