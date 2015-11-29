@@ -4,11 +4,9 @@ module ManagedContainerStatus
     return false
   end
   
-  def raw_state
-    super.read_state
-  end
-
-  def read_state
+  
+# raw=true means dont check state for error
+  def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
     if docker_info.is_a?(FalseClass)
       #log_error_mesg('Failed to inspect container', self) not an error just no image
@@ -20,6 +18,8 @@ module ManagedContainerStatus
         @last_error = 'state nil'
       end
     end
+    return state if raw == true
+    
     if state != @setState && task_at_hand.nil?     
       @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
     else
