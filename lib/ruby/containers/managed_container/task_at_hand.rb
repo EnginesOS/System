@@ -70,7 +70,7 @@ module TaskAtHand
     p :read_tah
     task = File.read(fn)
      
-    if tasks_final_state(task) == read_state
+    if tasks_final_state(task) == raw_state
       clear_task_at_hand
       return nil
     end
