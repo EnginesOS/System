@@ -69,12 +69,12 @@ module TaskAtHand
     
     p :read_tah
     task = File.read(fn)
-     
-    if tasks_final_state(task) == read_state(raw=true)
+     r = read_state(raw=true)
+    if tasks_final_state(task) == r 
       clear_task_at_hand
       return nil
     end
-     puts '_' + task.to_s + '_'
+     puts '_' + task.to_s + '_' + '_' + r + '_'
     task
    # @task_at_hand 
   end
