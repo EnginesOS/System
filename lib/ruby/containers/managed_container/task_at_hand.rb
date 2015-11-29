@@ -144,7 +144,7 @@ module TaskAtHand
         when :recreate
           return    'running'
         when :rebuild
-          return    'running'
+          return    'nocontainer'
         when :build
           return    'running'
         when :delete
