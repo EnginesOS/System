@@ -13,12 +13,12 @@ module TaskAtHand
        STDERR.puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + si
   end
 
-  def in_progress(state)
+  def in_progress(action)
   
     si = read_state
 
    
-    case state
+    case action
     when :create      
       return desired_state('running', si) if si == 'nocontainer' 
     when :stop
@@ -128,7 +128,7 @@ module TaskAtHand
       return true
    end
   def tasks_final_state(task)
-    case state
+    case task
         when :create      
           return 'running'
         when :stop
