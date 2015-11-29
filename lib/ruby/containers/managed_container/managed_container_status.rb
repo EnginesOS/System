@@ -12,7 +12,7 @@ module ManagedContainerStatus
       #log_error_mesg('Failed to inspect container', self) not an error just no image
       state = 'nocontainer'
     else
-      state = super
+      state = super()
       if state.nil? #Kludge
         state = 'nocontainer'
         @last_error = 'state nil'
