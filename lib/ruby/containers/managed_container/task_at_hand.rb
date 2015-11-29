@@ -43,7 +43,8 @@ module TaskAtHand
     when :destroy
       return   desired_state('nocontainer', si) if si == 'nocontainer'
     end
-   
+    # Perhaps ? 
+    diockreturn clear_task_at_hand
   end
 
   def task_complete(action)
@@ -66,10 +67,16 @@ module TaskAtHand
     
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
+    
     p :read_tah
-     r = File.read(fn)
-     puts '_' + r.to_s + '_'
-     r
+    task = File.read(fn)
+     
+    if tasks_final_state(task) == read_state
+      clear_task_at_hand
+      return nil
+    end
+     puts '_' + task.to_s + '_'
+    task
    # @task_at_hand 
   end
 
@@ -121,7 +128,33 @@ module TaskAtHand
       end
       return true
    end
-  
+  def tasks_final_state(task)
+    case state
+        when :create      
+          return 'running'
+        when :stop
+          return  'stopped'
+        when :start
+          return    'running'
+        when :pause
+          return   'paused'
+        when :restart
+          return    'stopped'
+        when :unpause
+          return    'running'
+        when :recreate
+          return    'running'
+        when :rebuild
+          return    'running'
+        when :build
+          return    'running'
+        when :delete
+          return    'nocontainer'
+        when :destroy
+          return   'destroyed'
+        end
+  end
+   
   private
   def set_task_at_hand(state)
 p :set_taskah
