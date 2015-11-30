@@ -3,13 +3,13 @@ module ContainerStatus
     info = docker_info
     state = 'nocontainer'
     return state unless info.is_a?(Array)
-    if info[0]['State']
-      if info[0]['State']['Running']
+    if info['State']
+      if info['State']['Running']
         state = 'running'
-        if info[0]['State']['Paused']
+        if info['State']['Paused']
           state= 'paused'
         end
-      elsif info[0]['State']['Running'] == false
+      elsif info['State']['Running'] == false
         state = 'stopped'
       else
         state = 'nocontainer'

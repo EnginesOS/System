@@ -21,7 +21,7 @@ module DockerInfoCollector
   # @ return false on inspect container error
   def get_ip_str
      expire_engine_info
-    return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+    return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
     return false
   rescue
     return nil
@@ -41,7 +41,7 @@ module DockerInfoCollector
   def running_user
     info = docker_info
     return -1 if info.is_a?(FalseClass)
-    return  info[0]['Config']['User'] unless info.is_a?(FalseClass)
+    return  info['Config']['User'] unless info.is_a?(FalseClass)
   rescue StandardError => e
     return log_exception(e)
   end
