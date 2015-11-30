@@ -520,7 +520,12 @@ if c_type == "container"
 
 end
 
-engines_api.wait_for_container_task(c_type,container_name)
+if engines_api.wait_for_container_task(c_type,container_name) == false
+  clear_container_task(c_type,container_name)
+  fn = '/opt/engines/run/' + c_type +'s/' + container_name +  '/task_at_hand'
+     File.delete(fn) if File.exist?(fn)
+  p 'Failed to reciece response from docker'
+end
 
   if res !=nil && res.is_a?(EnginesOSapiResult)
     if res.was_success == false
