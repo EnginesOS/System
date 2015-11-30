@@ -1,7 +1,7 @@
 module TaskAtHand
   def desired_state(state, curr_state)
     current_set_state = @setState
-    @setState = state
+    @setState = state.to_s
     save_state
 
        if curr_state ==  state
@@ -183,8 +183,13 @@ p :set_taskah
     f.close
     # clear task if still there after 60 s
     Thread.new do
-      clear_task_at_hand  unless wait_for_container_task(60) 
-      
+      begin
+       return if wait_for_container_task(60)         
+        clear_task_at_hand
+      ensure
+        clear_task_at_hand
+      end  
+    
     end
     rescue StandardError => e 
       log_exception(e)
