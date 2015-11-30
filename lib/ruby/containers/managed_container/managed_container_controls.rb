@@ -25,6 +25,7 @@ module ManagedContainerControls
   def create_container
    
     return false unless has_api?
+    p :teask_preping
     return false unless prep_task(:create)
     p :teask_preped
     return task_failed('create') unless super

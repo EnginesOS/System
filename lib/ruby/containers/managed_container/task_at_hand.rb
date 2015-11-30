@@ -43,6 +43,7 @@ module TaskAtHand
     when :destroy
       return   desired_state('nocontainer', curr_state) if curr_state== 'nocontainer'
     end
+    log_error_mesg('not in matching state want ' + action + 'but in ',current_state) 
     # Perhaps ?return clear_task_at_hand
   end
 
