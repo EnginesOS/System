@@ -77,7 +77,7 @@ module TaskAtHand
     return nil unless File.exist?(fn)
     task = File.read(fn)
      r = read_state(raw=true)
-    if tasks_final_state(task) == r 
+    if tasks_final_state(task) == r.to_sym
       clear_task_at_hand
       return nil
     end
