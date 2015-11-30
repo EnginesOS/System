@@ -53,6 +53,7 @@ module Containers
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
+    log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
       File.rename(statefile, statefile_bak)
@@ -62,15 +63,53 @@ module Containers
     f.flush()
     f.close
     ts =  File.mtime(statefile)
+    unlock_container_conf_file(state_dir)
     cache_engine( container, ts) unless cache_update_ts(container, ts)
     
     return true
+  
   rescue StandardError => e
+    unlock_container_conf_file(state_dir)
     container.last_error = last_error
     # FIXME: Need to rename back if failure
     SystemUtils.log_exception(e)
+    ensure
+        unlock_container_conf_file(state_dir)
   end
 
+  
+  def unlock_container_conf_file(state_dir)
+    File.delete(state_dir + '/lock') if  File.exists(state_dir + '/lock')
+  end
+  
+ def is_container_conf_file_locked?(state_dir)
+   lock_fn = state_dir + '/lock'
+   return false unless  File.exists(lock_fn) 
+         loop = 0 
+         while  File.exists(lock_fn)
+           sleep(0.2)
+           loop != 1
+           return true if loop > 5  
+         end    
+ end
+ 
+  def lock_container_conf_file(state_dir)
+    lock_fn = state_dir + '/lock'
+    if  File.exists(lock_fn)
+      loop = 0 
+      while  File.exists(lock_fn)
+        sleep(0.2)
+        loop != 1
+        return false if loop > 10  
+      end
+    else
+     lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
+      lock.puts(pid)
+      lock.close()
+      return true
+    end
+    
+  end
   def is_startup_complete(container)
     clear_error
     return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
