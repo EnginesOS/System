@@ -51,7 +51,7 @@ module Services
     return log_error_mesg("no System api to attach ", @engines_api.to_s) if @engines_api.service_api.nil?
     
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
-    return log_error_mesg('Engine File Locked',yam_file_name) if is_container_conf_file_locked?(SSystemConfig.RunDir + service_type_dir + service_name)
+    return log_error_mesg('Engine File Locked',yam_file_name) if is_container_conf_file_locked?(SystemConfig.RunDir + service_type_dir + service_name)
     unless File.exist?(yam1_file_name)
       return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir)
     end
