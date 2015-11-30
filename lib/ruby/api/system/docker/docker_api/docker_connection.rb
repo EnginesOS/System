@@ -4,8 +4,7 @@ class DockerConnection
   require 'net_x/http_unix'
   require 'socket'
   
-  attr_accessor :docker_socket
-                :response_parser
+  attr_accessor :docker_socket,:response_parser
   def initialize
     @response_parser = Yajl::Parser.new
       
