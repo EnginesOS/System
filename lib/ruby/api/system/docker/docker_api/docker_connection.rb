@@ -19,6 +19,7 @@ class DockerConnection
     p :test_inspect 
     p container.container_name
     p container.container_id.to_s
+    return nil if container.container_id == -1
     request='/containers/' + container.container_id.to_s + '/json'
    return make_request(request)
   end
