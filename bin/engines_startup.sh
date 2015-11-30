@@ -18,7 +18,7 @@ if test -z "$docker_ip
   exit
   fi
  
- echo $docker_ip > /opt/engines/etc/net/management
+ echo -n $docker_ip > /opt/engines/etc/net/management
  chmod oug-w /opt/engines/etc/net/management
 
 echo Clearing Flags
