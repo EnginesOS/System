@@ -34,7 +34,7 @@ module MemoryStatistics
     mem_stats[:totals][:peak_sum] = 0
     containers.each do | container|
       p :collect_containers_memory_stats 
-      p container
+      p container.container_name
       
       next if container.setState != "running"
       next unless container.is_running?
