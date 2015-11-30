@@ -95,7 +95,7 @@ module TaskAtHand
     rescue StandardError => e 
     log_exception(e)
     return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
-  endnocontainer
+  end
   
   def wait_for_task(timeout=25)
     loops=0
