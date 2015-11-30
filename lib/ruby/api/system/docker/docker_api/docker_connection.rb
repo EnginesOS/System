@@ -17,7 +17,7 @@ class DockerConnection
   end
   
   def test_inspect(container)
-    request='/containers/' + container.cont_id + '/json'
+    request='/containers/' + container.container_id + '/json'
    return make_request(request)
   end
   
