@@ -521,7 +521,7 @@ if c_type == "container"
 end
 
 if engines_api.wait_for_container_task(c_type,container_name) == false
-  clear_container_task(c_type,container_name)
+ 
   fn = '/opt/engines/run/' + c_type +'s/' + container_name +  '/task_at_hand'
      File.delete(fn) if File.exist?(fn)
   p 'Failed to reciece response from docker'
@@ -539,6 +539,10 @@ end
     end
 
   end
+ensure
+  return if c_type.nil? || container_name.nil?
+fn = '/opt/engines/run/' + c_type +'s/' + container_name +  '/task_at_hand'
+    File.delete(fn) if File.exist?(fn)
 end
 
 if Process.euid != 21000
