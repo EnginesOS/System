@@ -25,29 +25,29 @@ module TaskAtHand
     when :create      
       return desired_state('running', curr_state) if curr_state== 'nocontainer' 
     when :stop
-      return   desired_state('stopped', curr_state) if curr_state== 'running'
+      return desired_state('stopped', curr_state) if curr_state== 'running'
     when :start
-      return   desired_state('running', curr_state) if curr_state== 'stopped'
+      return desired_state('running', curr_state) if curr_state== 'stopped'
     when :pause
-      return  desired_state('paused', curr_state) if curr_state== 'running'
+      return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
-      return   desired_state('stopped', curr_state) if curr_state== 'running'
+      return desired_state('stopped', curr_state) if curr_state== 'running'
     when :unpause
-      return   desired_state('running', curr_state) if curr_state== 'paused'
+      return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
-      return   desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :rebuild
-      return   desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
-      return   desired_state('running', curr_state) if curr_state== 'nocontainer'
+      return desired_state('running', curr_state) if curr_state== 'nocontainer'
     when :delete
-      return   desired_state('nocontainer', curr_state) if curr_state== 'stopped'
+      return desired_state('nocontainer', curr_state) if curr_state== 'stopped'
       #  desired_state('noimage')
     when :destroy
-      return   desired_state('nocontainer', curr_state) if curr_state== 'nocontainer'
+      return desired_state('nocontainer', curr_state) if curr_state== 'nocontainer'
     end
     log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
-    return true if  tasks_final_state(action) == curr_state
+    return true if tasks_final_state(action).to_sym == curr_state
     return false
     
     # Perhaps ?return clear_task_at_hand
