@@ -18,7 +18,7 @@ module TaskAtHand
 
   def in_progress(action)
   
-    curr_state= read_state
+    curr_state = read_state
 
    
     case action
@@ -47,7 +47,7 @@ module TaskAtHand
       return desired_state('nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
-    return true if tasks_final_state(action).to_sym == curr_state
+    return true if tasks_final_state(action) == curr_state
     return false
     
     # Perhaps ?return clear_task_at_hand
@@ -77,7 +77,7 @@ module TaskAtHand
     return nil unless File.exist?(fn)
     task = File.read(fn)
      r = read_state(raw=true)
-    if tasks_final_state(task) == r.to_sym
+    if tasks_final_state(task) == r
       clear_task_at_hand
       return nil
     end

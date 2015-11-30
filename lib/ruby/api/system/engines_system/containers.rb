@@ -102,7 +102,7 @@ module Containers
         loop != 1
         return false if loop > 10  
       end
-    else
+    else    
      lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
       lock.puts(Process.pid.to_s)
       lock.close()
