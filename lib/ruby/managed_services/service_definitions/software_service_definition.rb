@@ -1,4 +1,4 @@
-require 'json'
+require 'yajl'
 
 class SoftwareServiceDefinition
   attr_reader :accepts,

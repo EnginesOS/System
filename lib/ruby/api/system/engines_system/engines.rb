@@ -74,10 +74,12 @@ module Engines
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
+    return log_error_mesg('Engine File Locked',yam_file_name) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
     yaml_file = File.read(yam_file_name)
+    ts = File.mtime(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return false if managed_engine.nil? || managed_engine == false
-    cache_engine(engine_name,managed_engine)
+    cache_engine( managed_engine, ts)
     return managed_engine
   rescue StandardError => e
     unless engine_name.nil?
@@ -90,4 +92,10 @@ module Engines
     end
     log_exception(e)
   end
+  
+
+  def delete_engine(container_name)
+    rm_engine_from_cache(container_name)
+  end
+  
 end

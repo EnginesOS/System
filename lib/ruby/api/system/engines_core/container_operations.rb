@@ -19,6 +19,10 @@ module ContainerOperations
       return 'container' #FIXME poor assumption
     end
   end
+  
+  def get_changed_containers
+    @system_api.get_changed_containers
+  end
 
   def web_sites_for(container)
     clear_error

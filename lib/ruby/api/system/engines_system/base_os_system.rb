@@ -6,6 +6,7 @@ module BaseOsSystem
   end
 
   def restart_system
+    
     res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_system.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'

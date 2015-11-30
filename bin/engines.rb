@@ -518,7 +518,14 @@ if c_type == "container"
     res =  "command:" + command + " unknown"
     print_usage
 
-  end
+end
+
+if engines_api.wait_for_container_task(c_type,container_name) == false
+ 
+  fn = '/opt/engines/run/' + c_type +'s/' + container_name +  '/task_at_hand'
+     File.delete(fn) if File.exist?(fn)
+  p 'Failed to reciece response from docker'
+end
 
   if res !=nil && res.is_a?(EnginesOSapiResult)
     if res.was_success == false
@@ -532,6 +539,10 @@ if c_type == "container"
     end
 
   end
+ensure
+  return if c_type.nil? || container_name.nil?
+fn = '/opt/engines/run/' + c_type +'s/' + container_name +  '/task_at_hand'
+    File.delete(fn) if File.exist?(fn)
 end
 
 if Process.euid != 21000
@@ -590,5 +601,6 @@ if container_name == "all"
   end
 else
   do_cmd(c_type,container_name,command)
+  
 end
 

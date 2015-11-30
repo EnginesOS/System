@@ -1,12 +1,12 @@
 module ServiceActions
   def createService(service_name)
     n_service = getManagedService(service_name)
-    return failed(service_name, n_service.last_error, 'Create Service') if n_service.nil?
+    return failed(service_name, n_service.last_error, 'Load Error on Create Service') if n_service.nil?
     return n_service if n_service.is_a?(EnginesOSapiResult)
     return success(service_name, 'Create Service') if n_service.create_service
-    failed(service_name, n_service.last_error, 'Create Service')
+    failed(service_name, n_service.last_error, 'Failed to Create Service')
   rescue StandardError => e
-    log_exception_and_fail('Create Service', e)
+    log_exception_and_fail('Create Service exceptions', e)
   end
 
   def recreateService(service_name)

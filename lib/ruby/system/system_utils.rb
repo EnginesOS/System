@@ -9,7 +9,7 @@ class SystemUtils
 
   def SystemUtils.log_output(object, level)
     if SystemUtils.level < level
-      STDERR.puts 'Error ' + object.to_s if level == 10
+      STDERR.puts 'Error[' + Process.pid.to_s + ']:'+ object.to_s if level == 10
       puts 'Error ' + object.to_s
     end
     return false

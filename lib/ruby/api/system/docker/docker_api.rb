@@ -1,8 +1,6 @@
 class DockerApi < ErrorsApi
   require_relative 'docker_cmd_options'
-  require_relative 'docker_event_listener.rb'
-  include DockerEventListener 
-  
+
   require_relative 'docker_images.rb'
   include DockerImages
   

@@ -20,6 +20,10 @@ class BlueprintApi < ErrorsApi
     json_hash = JSON.parse(blueprint_file.read)
     blueprint_file.close
     return json_hash
+    rescue StandardError => e
+        log_error_mesg('Blueprint Parse Failure', statefile)
+    log_exception(e)
+    return {}
   end
 
   def load_blueprint(container)
@@ -32,5 +36,6 @@ class BlueprintApi < ErrorsApi
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', statefile)
     log_exception(e)
+    return {}
   end
 end

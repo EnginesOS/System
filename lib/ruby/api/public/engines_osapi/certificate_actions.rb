@@ -10,7 +10,7 @@ module CertificateActions
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return failed('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
-    return success('Sucess', 'upload Cert' + params[:domain_name]) if @core_api.upload_ssl_certificate(params)
+    return success('Success', 'upload Cert' + params[:domain_name]) if @core_api.upload_ssl_certificate(params)
     return failed('Failed to install cert:',  @core_api.last_error, params.to_s)
   end
 
