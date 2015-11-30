@@ -12,6 +12,8 @@ module TaskAtHand
        
        puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
        return true
+    rescue StandardError => e 
+      log_exception(e)
   end
 
   def in_progress(action)
@@ -46,6 +48,8 @@ module TaskAtHand
     end
     log_error_mesg('not in matching state want ' + action + 'but in ',current_state) 
     # Perhaps ?return clear_task_at_hand
+    rescue StandardError => e 
+      log_exception(e)
   end
 
   def task_complete(action)
@@ -59,6 +63,8 @@ module TaskAtHand
     # FixMe Kludge unless docker event listener
     ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
     return true
+    rescue StandardError => e 
+      log_exception(e)
   end
 
 
@@ -73,7 +79,8 @@ module TaskAtHand
       return nil
     end
     task
-  rescue StandardError
+  rescue StandardError => e 
+    log_exception(e)
     return nil
    # @task_at_hand 
   end
@@ -82,7 +89,8 @@ module TaskAtHand
     @task_at_hand = nil
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
-    rescue StandardError
+    rescue StandardError => e 
+    log_exception(e)
     return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
@@ -100,7 +108,8 @@ module TaskAtHand
       end
     end
     return true
-    rescue StandardError
+    rescue StandardError => e 
+    log_exception(e)
       return false
   end
 
@@ -115,6 +124,8 @@ module TaskAtHand
     p msg.to_s
     task_complete(:failed)
     return false
+  rescue StandardError => e 
+    log_exception(e)
   end
   
   def wait_for_container_task(timeout=30)
@@ -127,6 +138,8 @@ module TaskAtHand
          return false if loop > timeout * 2
       end
       return true
+    rescue StandardError => e 
+      log_exception(e)
    end
    
   def tasks_final_state(task)
@@ -154,6 +167,8 @@ module TaskAtHand
         when :destroy
           return   'destroyed'
         end
+    rescue StandardError => e 
+      log_exception(e)
   end
    
   private
@@ -168,5 +183,7 @@ p :set_taskah
       clear_task_at_hand  unless wait_for_container_task(60) 
       
     end
+    rescue StandardError => e 
+      log_exception(e)
   end
 end
