@@ -7,7 +7,7 @@ module BaseOsSystem
 
   def restart_system
     GC.start
-    ObjectSpace.dump(@system_api,output: File.open('var/log/apache2/system.json','w'))
+    ObjectSpace.dump(@system_api,output: File.open('/var/log/apache2/system.json','w'))
     ObjectSpace.dump(self, output: File.open('/var/log/apache2/engines.json','w'))
     ObjectSpace.dump_all(output: File.open('/var/log/apache2/heap.json','w'))
     ObjectSpace.dump(@registry_handler,output: File.open('/var/log/apache2/registry_handler.json','w'))
