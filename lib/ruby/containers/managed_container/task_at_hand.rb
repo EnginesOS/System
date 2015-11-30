@@ -11,6 +11,7 @@ module TaskAtHand
        end 
        
        STDERR.puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
+       return true
   end
 
   def in_progress(action)
