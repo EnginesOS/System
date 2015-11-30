@@ -98,7 +98,7 @@ class SystemStatus
     result[:is_rebooting] = SystemStatus.is_rebooting?
     result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
     result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
-
+    result[:needs_reboot] = SystemStatus.needs_reboot?
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
