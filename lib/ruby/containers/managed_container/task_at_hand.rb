@@ -46,9 +46,10 @@ module TaskAtHand
     when :destroy
       return desired_state('nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
-    log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
+   
     return true if tasks_final_state(action) == curr_state
-    return false
+    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
+     
     
     # Perhaps ?return clear_task_at_hand
     rescue StandardError => e 

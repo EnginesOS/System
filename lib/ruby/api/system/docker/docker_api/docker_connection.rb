@@ -1,31 +1,36 @@
 class DockerConnection
   #require 'rest-client'
-  require 'streamly'
+  require 'yajl'
+  require 'net_x/http_unix'
+  require 'socket'
+  
+  attr_accessor :docker_socket
+                :response_parser
   def initialize
+    @response_parser = Yajl::Parser.new
+      
+      #socket = UNIXSocket.new('/var/run/docker.sock')
     
+    @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
+    @docker_socket.continue_timeout = 60
+    @docker_socket.read_timeout = 60
   end
   
-  def request_stream(address,params,handler)
-    Streamly.post address , params do |body_chunk|
-      handler.received_chuck(body_chunk)
-      # do something with body_chunk
-    end
-    
+  def test_inspect(container)
+    request='/containers/' + container.cont_id + '/json'
+   return make_request(request)
+  end
+  
+  
+  def make_request(uri)
+  req = Net::HTTP::Get.new(uri)
+  resp = docker_socket.request(req)
+  p resp
+  chunk = resp.read_body 
+  hash = response_parser.parse(chunk) 
+  return hash        
   end
   
   private
-  
-  def parse_rest_response(r)
-    return false if r.code > 399
-    return true if r.to_s   == '' ||  r.to_s   == 'true'
-    return false if r.to_s  == 'false'
-    res = JSON.parse(r, :create_additions => true)
-    # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
-    return res
-  rescue  StandardError => e
-    STDERR.puts e.to_s
-    STDERR.puts "Failed to parse rest response _" + res.to_s + "_"
-    return false
-  end
-  
+
 end
