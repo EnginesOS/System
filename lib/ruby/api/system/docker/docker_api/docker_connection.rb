@@ -21,6 +21,8 @@ class DockerConnection
     p container.container_id.to_s
     return nil if container.container_id == -1
     request='/containers/' + container.container_id.to_s + '/json'
+      p :requesting
+      p request
    return make_request(request)
   end
   
