@@ -26,6 +26,7 @@ module ManagedContainerControls
    
     return false unless has_api?
     return false unless prep_task(:create)
+    p :teask_preped
     return task_failed('create') unless super
     p :create_suupre_ran
     state = read_state
