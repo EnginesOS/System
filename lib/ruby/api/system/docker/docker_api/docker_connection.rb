@@ -31,6 +31,8 @@ class DockerConnection
   p resp
   chunk = resp.read_body 
   hash = response_parser.parse(chunk) 
+  p :hash
+  p hash
   return hash        
   end
   
