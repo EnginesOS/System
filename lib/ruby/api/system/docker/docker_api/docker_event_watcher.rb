@@ -25,11 +25,11 @@ require 'socket'
      #p chunk
      hash = parser.parse(chunk) do |hash|
     # puts hash.inspect
-       p :___   
-       event_name = hash['status'].gsub(/:.*$/,'')
+    #   p :___   
+    #   event_name = hash['status'].gsub(/:.*$/,'')
      
-     puts hash['from'].to_s + ' had event ' +  event_name 
-     p :__
+   #  puts hash['from'].to_s + ' had event ' +  event_name 
+   #  p :__
        @system_api.container_event(hash)
       
     end 
