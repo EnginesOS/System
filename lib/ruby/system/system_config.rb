@@ -1,12 +1,12 @@
 class SystemConfig
 
   require_relative 'system_config/engines_system_flags.rb'
-  extend SystemConfig::EnginesSystemFlags
+  extend EnginesSystemFlags
 
   require_relative 'system_config/builder_settings.rb'
-  extend SystemConfig::BuilderSettings
+  extend BuilderSettings
   require_relative 'system_config/engines_system_dirs.rb'
-  extend SystemConfig::EnginesSystemDirs
+  extend EnginesSystemDirs
 
   require_relative 'system_config/engines_system_files.rb'
   extend EnginesSystemFiles
