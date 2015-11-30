@@ -17,7 +17,10 @@ class DockerConnection
   end
   
   def test_inspect(container)
-    request='/containers/' + container.container_id + '/json'
+    p :test_inspect 
+    p container.container_name
+    p container.container_id.to_s
+    request='/containers/' + container.container_id.to_s + '/json'
    return make_request(request)
   end
   
