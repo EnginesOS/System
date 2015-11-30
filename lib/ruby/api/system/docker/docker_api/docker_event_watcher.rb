@@ -29,8 +29,8 @@ require 'socket'
     #   event_name = hash['status'].gsub(/:.*$/,'')
      
    #  puts hash['from'].to_s + ' had event ' +  event_name 
-   #  p :__
-       @system_api.container_event(hash)
+   #  p :__return unless hash.key?('from')
+      @system_api.container_event(hash)  if hash.key?('from')
       
     end 
 
