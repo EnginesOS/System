@@ -46,7 +46,7 @@ module TaskAtHand
     when :destroy
       return   desired_state('nocontainer', curr_state) if curr_state== 'nocontainer'
     end
-    log_error_mesg('not in matching state want ' + action.to_s + 'but in ',curr_state.to_s)
+    log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
     return true if  tasks_final_state(action) == curr_state
     return false
     
@@ -95,7 +95,7 @@ module TaskAtHand
     rescue StandardError => e 
     log_exception(e)
     return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
-  end
+  endnocontainer
   
   def wait_for_task(timeout=25)
     loops=0
@@ -156,13 +156,13 @@ module TaskAtHand
         when :pause
           return   'paused'
         when :restart
-          return    'stopped'
+          return    'running'
         when :unpause
           return    'running'
         when :recreate
           return    'running'
         when :rebuild
-          return    'nocontainer'
+          return    'running'
         when :build
           return    'running'
         when :delete
