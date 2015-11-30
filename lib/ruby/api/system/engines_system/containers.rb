@@ -79,14 +79,14 @@ module Containers
 
   
   def unlock_container_conf_file(state_dir)
-    File.delete(state_dir + '/lock') if  File.exists(state_dir + '/lock')
+    File.delete(state_dir + '/lock') if  File.exists?(state_dir + '/lock')
   end
   
  def is_container_conf_file_locked?(state_dir)
    lock_fn = state_dir + '/lock'
-   return false unless  File.exists(lock_fn) 
+   return false unless  File.exists?(lock_fn) 
          loop = 0 
-         while  File.exists(lock_fn)
+         while  File.exists?(lock_fn)
            sleep(0.2)
            loop != 1
            return true if loop > 5  
@@ -95,9 +95,9 @@ module Containers
  
   def lock_container_conf_file(state_dir)
     lock_fn = state_dir + '/lock'
-    if  File.exists(lock_fn)
+    if  File.exists?(lock_fn)
       loop = 0 
-      while  File.exists(lock_fn)
+      while  File.exists?(lock_fn)
         sleep(0.2)
         loop != 1
         return false if loop > 10  
