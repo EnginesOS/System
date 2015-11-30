@@ -104,7 +104,7 @@ module Containers
       end
     else
      lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
-      lock.puts(pid)
+      lock.puts(Process.pid.to_s)
       lock.close()
       return true
     end
