@@ -156,7 +156,7 @@ module TaskAtHand
         when :pause
           return   'paused'
         when :restart
-          return    'running'
+          return    'stopped'
         when :unpause
           return    'running'
         when :recreate
