@@ -10,7 +10,7 @@ module BaseOsSystem
     ObjectSpace.dump(@system_api,output: File.open('var/log/apache2/system.json','w'))
     ObjectSpace.dump(self, output: File.open('/var/log/apache2/engines.json','w'))
     ObjectSpace.dump_all(output: File.open('/var/log/apache2/heap.json','w'))
-    ObjectSpace.dump( @registry_handler,output: File.open('/var/log/apache2/registry_handler.json','w'))
+    ObjectSpace.dump(@registry_handler,output: File.open('/var/log/apache2/registry_handler.json','w'))
     ObjectSpace.dump(@container_api,output: File.open('/var/log/apache2/container_api.json','w'))
     ObjectSpace.dump(@service_api,output: File.open('/var/log/apache2/service_api.json','w'))
     ObjectSpace.dump(@docker_api,output: File.open('/var/log/apache2/docker_api.json','w'))
