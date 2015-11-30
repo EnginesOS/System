@@ -122,8 +122,7 @@ module ManagedContainerControls
    return false unless in_progress(action_sym)
    p :inproes_run
     clear_error
-     save_state
-     return true
+     return save_state
   rescue StandardError  => e
     log_excepion(e)
   end
