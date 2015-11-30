@@ -121,7 +121,7 @@ module TaskAtHand
     p :TASK_FAILES______Doing
     p @task_at_hand
 
-    @last_error = @container_api.last_error
+    @last_error = @container_api.last_error unless @container_api.nil?
     p :WITH
     p @last_error.to_s
     p msg.to_s
