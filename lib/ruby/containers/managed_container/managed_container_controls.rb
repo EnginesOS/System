@@ -124,6 +124,6 @@ module ManagedContainerControls
     clear_error
      return save_state
   rescue StandardError  => e
-    log_excepion(e)
+    log_exception(e)
   end
 end
