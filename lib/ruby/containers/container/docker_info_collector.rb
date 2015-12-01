@@ -29,6 +29,10 @@ module DockerInfoCollector
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def set_cont_id
+    @container_id =  read_container_id if @container_id.to_s == '-1'    
+  end
 
   def read_container_id
     ContainerStateFiles.read_container_id(self)
