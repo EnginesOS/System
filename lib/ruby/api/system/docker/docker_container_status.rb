@@ -20,7 +20,7 @@ module DockerContainerStatus
   end
 
   def inspect_container(container)
-    @docker_comms.test_inspect(container)
+    @docker_comms.inspect_container(container)
   end
 #  def inspect_container(container)
 #    clear_error
