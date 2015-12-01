@@ -42,7 +42,7 @@ class DockerConnection < ErrorsApi
 #    end
   p chunk
   puts 'chunk is a ' + chunk.class.name
-  rash = nil
+  rhash = nil
   c = 0 
   response_parser.parse(chunk) do |hash |
    p :hash
