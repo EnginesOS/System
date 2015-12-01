@@ -11,10 +11,10 @@ class SystemConfig
   require_relative 'system_config/engines_system_files.rb'
   extend EnginesSystemFiles
 
-  @@api_version = '0.0'
-  @@engines_system_version = '0.0'
+  @@api_version = '0.1'
+  @@engines_system_version = '0.1'
   @@RegistryPort = 21027
-  @@default_webport=8000
+  @@default_webport = 8000
 
   #  @@RunDir = '/opt/engines/run/'
   #  @@CidDir = '/opt/engines/run/cid/'
