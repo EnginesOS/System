@@ -1,5 +1,7 @@
 module EnginesCorePreferences
   def set_default_domain(params)
+    p :set_default_domain
+    p params
     preferences = SystemPreferences.new
     preferences.set_default_domain(params)
   end
