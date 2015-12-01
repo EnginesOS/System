@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'git'
 require 'fileutils'
-require 'json'
+require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 class EngineBuilder < ErrorsApi
@@ -253,8 +253,10 @@ class EngineBuilder < ErrorsApi
 
   def build_init
     log_build_output('Building Image')
+    log_build_output('Cancelable:true')
     cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     res = run_system(cmd)
+    log_build_output('Cancelable:false')
     return true if res
     log_error_mesg('build init failed ', res)
   rescue StandardError => e

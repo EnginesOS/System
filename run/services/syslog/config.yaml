@@ -16,6 +16,11 @@ volumes:
   remotepath: "/etc/syslog-ng/conf.d/"
   localpath: "/opt/engines/etc/syslog/conf/"
   mapping_permissions: rw
+ logs: !ruby/object:Volume
+  name: config
+  remotepath: "var/log/rmt/"
+  localpath: "/var/lib/engines/syslog/rmt/"
+  mapping_permissions: rw
 port: 
 mapped_ports:
 repo: na

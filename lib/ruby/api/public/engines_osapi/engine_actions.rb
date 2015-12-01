@@ -112,11 +112,14 @@ module EngineActions
   def get_engine_blueprint(engine_name)
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(EnginesOSapiResult)
-      return failed(engine_name, 'no Engine', 'Load Engine Blueprint')
+     # FIXME ONCE Gui is fixed
+     # return failed(engine_name, 'no Engine', 'Load Engine Blueprint')
+      return {}
     end
     retval = engine.load_blueprint
-    if retval == false
-      return failed(engine_name, engine.last_error, 'Load Engine Blueprint')
+    if retval == false 
+      return {} # FIXME ONCE Gui is fixed
+     # return failed(engine_name, engine.last_error, 'Load Engine Blueprint')
     end
     return retval
   rescue StandardError => e

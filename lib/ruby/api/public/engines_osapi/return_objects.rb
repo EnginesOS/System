@@ -13,7 +13,7 @@ module ReturnObjects
     EnginesOSapiResult.failed(item_name, mesg, cmd)
   end
 
-  def self.failed(item_name, mesg, cmd)
+  def EnginesOSapi.failed(item_name, mesg, cmd)
     p :engines_os_api_fail_on_static
     p item_name
     p mesg + ':'
@@ -26,7 +26,7 @@ module ReturnObjects
     failed('Exception', e_str, cmd)
   end
 
-  def self.log_exception_and_fail(cmd, e)
+  def EnginesOSapi.log_exception_and_fail(cmd, e)
     e_str = SystemUtils.log_exception(e)
     failed('Exception', e_str, cmd)
   end

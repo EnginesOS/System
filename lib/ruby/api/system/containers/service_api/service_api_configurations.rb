@@ -1,7 +1,8 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
+   # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
+    cmd = 'docker exec  ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do
@@ -23,8 +24,8 @@ module ServiceApiConfigurations
   end
 
   def run_configurator(container, configurator_params)
-
-    cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
+    cmd = 'docker exec ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
+    #cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.service_hash_variables_as_str(configurator_params).to_s + '\''
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do

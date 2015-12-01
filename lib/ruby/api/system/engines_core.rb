@@ -24,8 +24,10 @@ class EnginesCore < ErrorsApi
   require_relative 'blueprint_api.rb'
   require_relative 'system_preferences.rb'
   require_relative 'memory_statistics.rb'
-
+  require 'objspace'
   def initialize
+    
+  ObjectSpace.trace_object_allocations_start
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new

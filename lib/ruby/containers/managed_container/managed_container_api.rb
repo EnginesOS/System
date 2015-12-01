@@ -5,6 +5,7 @@ module ManagedContainerApi
     @docker_info_cache = false
     @container_api.save_container(self)
     @docker_info_cache = info
+    return true
   end
 
   def save_blueprint blueprint

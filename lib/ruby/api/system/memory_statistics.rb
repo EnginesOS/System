@@ -8,6 +8,7 @@ module MemoryStatistics
   end
 
   def self.total_memory_statistics(api)
+    p :total_mem_stats
     engines_memory_statistics = {}
     engines = api.getManagedEngines
     services = api.getManagedServices
@@ -32,6 +33,9 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     containers.each do | container|
+      p :collect_containers_memory_stats 
+      p container.container_name
+      
       next if container.setState != "running"
       next unless container.is_running?
       container_sym = container.container_name.to_sym

@@ -39,4 +39,4 @@ last_result:
 setState: running
 nginxored: false
 conf_register_site: false
-conf_register_dns: true
+conf_register_dns: false

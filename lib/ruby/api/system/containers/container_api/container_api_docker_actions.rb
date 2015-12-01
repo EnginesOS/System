@@ -26,6 +26,7 @@ module ContainerApiDockerActions
   def inspect_container(container)
     clear_error
     test_docker_api_result(@docker_api.inspect_container(container))
+   # @docker_api.test_inspect_container(container)
   end
 
   def stop_container(container)

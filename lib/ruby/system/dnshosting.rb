@@ -1,5 +1,5 @@
 require 'socket'
-require 'json'
+require 'yajl'
 require 'open-uri'
 
 # require '/opt/engines/lib/ruby/system/SystemUtils.rb'

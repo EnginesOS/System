@@ -3,21 +3,27 @@ module ManagedContainerStatus
     return true if @ctype == 'service'
     return false
   end
-
-  def read_state
+  
+  
+# raw=true means dont check state for error
+  def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
     if docker_info.is_a?(FalseClass)
       #log_error_mesg('Failed to inspect container', self) not an error just no image
       state = 'nocontainer'
     else
-      state = super
+      state = super()
       if state.nil? #Kludge
         state = 'nocontainer'
         @last_error = 'state nil'
       end
     end
-    if state != @setState
-      @last_error = @last_error.to_s + ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+    return state if raw == true
+    
+    if state != @setState && task_at_hand.nil?     
+      @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+    else
+      @last_error = ''
     end
     return state
   rescue Exception=>e
@@ -31,8 +37,8 @@ module ManagedContainerStatus
     @container_api.is_startup_complete(self)
   end
 
-  def is_error?
-    return false unless @task_at_hand.nil?
+  def is_error?    
+    return false unless task_at_hand.nil?
     state = read_state
     return true if @setState != state
     return false

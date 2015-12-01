@@ -43,14 +43,15 @@ class SystemService < ManagedService
 
     return false  if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
-      @container_api.inspect_container(self)
-      @docker_info = @last_result
+    #  @container_api.inspect_container(self)
+      @docker_info =  @container_api.inspect_container(self)
+     # @docker_info = @last_result
       if @docker_info.is_a?(FalseClass)
         unless has_image?
           SystemUtils.log_output('pulling system service' + container_name.to_s,10)
           pull_image
         end
-        SystemUtils.log_output('creating system service' + container_name.to_s,10)
+        SystemUtils.log_output('Creating system service' + container_name.to_s,10)
         return log_error_mesg('Failed to Create System Service',self) if @container_api.create_container(self)
         return log_error_mesg('System Service Failed to start',self) unless @container_api.inspect_container(self)
         @docker_info = @last_result
@@ -60,7 +61,7 @@ class SystemService < ManagedService
         end
       end
     end
-    Thread.new { sleep 3 ; @docker_info = nil }
+    Thread.new { sleep 5 ; @docker_info = nil }
     p :system_service_inspected_container
     return @docker_info
   end

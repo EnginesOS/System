@@ -18,5 +18,12 @@ module EnginesSystemInfo
   def build_status
     SystemStatus.build_status
   end
+  
+  def system_hostname
+    return @core_api.system_hostname
+  end
 
+  def get_changed_containers
+    return @core_api.get_changed_containers
+   end
 end

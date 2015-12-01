@@ -25,10 +25,17 @@ class SystemApi < ErrorsApi
   include SshKeys
   require_relative 'system_settings.rb'
   include SystemSettings
-
+  
+  require_relative 'docker_events.rb'
+  include DockerEvents
+  
+  require_relative 'container_change_monitor.rb'
+  include ContainerChangeMonitor
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
+      start_docker_event_listener
   end
 
   def system_image_free_space

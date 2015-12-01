@@ -5,7 +5,8 @@ module DockerInfoCollector
     return false if @docker_info_cache.nil?
     #    p @docker_info_cache.class.name
     #    p @docker_info_cache.to_s
-    return JSON.parse(@docker_info_cache)
+   # return JSON.parse(@docker_info_cache)
+    @docker_info_cache
   rescue StandardError => e
     p @docker_info_cache.to_s
     log_exception(e)
@@ -20,19 +21,32 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-    # expire_engine_info
-    return docker_info[0]['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+     expire_engine_info
+     p '______IP_ADDDDDDD'
+      p docker_info['NetworkSettings']['IPAddress']
+    return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
     return false
   rescue
     return nil
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def set_cont_id
+    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == ''
+  end
+  
+  
+  def clear_cid
+    @container_id = nil
+    save_state
+  end
 
   def read_container_id
-    info = docker_info
-    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
-    return -1
+    ContainerStateFiles.read_container_id(self)
+#    info = docker_info
+#    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
+#    return -1
   rescue StandardError => e
     log_exception(e)
   end
@@ -40,7 +54,7 @@ module DockerInfoCollector
   def running_user
     info = docker_info
     return -1 if info.is_a?(FalseClass)
-    return  info[0]['Config']['User'] unless info.is_a?(FalseClass)
+    return  info['Config']['User'] unless info.is_a?(FalseClass)
   rescue StandardError => e
     return log_exception(e)
   end
@@ -51,9 +65,10 @@ module DockerInfoCollector
     result = false
     return false if @docker_info_cache == false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
-    @docker_info_cache = @last_result if result
-    @docker_info_cache = false unless result
-    Thread.new { sleep 4 ; expire_engine_info }
+    #@docker_info_cache = @last_result if result
+    @docker_info_cache =  result
+    #@docker_info_cache = false unless result
+   # Thread.new { sleep 4 ; expire_engine_info }
     return result
   end
 
