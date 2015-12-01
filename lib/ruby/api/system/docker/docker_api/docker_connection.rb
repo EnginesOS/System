@@ -1,4 +1,4 @@
-class DockerConnection
+class DockerConnection < ErrorsApi
   #require 'rest-client'
   require 'yajl'
   require 'net_x/http_unix'
@@ -35,11 +35,15 @@ class DockerConnection
   req = Net::HTTP::Get.new(uri)
   resp = docker_socket.request(req)
   p resp
+    chunks = ''
   chunk = resp.read_body 
+    resp.read_body do |chunk|
+      chunks += chunk
+    end
   p chunk
-  puts 'chunk is a ' + chunk.class.name
+  puts 'chunk is a ' + chunks.class.name
   
-  hash = response_parser.parse(chunk) 
+  hash = response_parser.parse(chunks) 
   p :hash
   p hash
   return hash        
