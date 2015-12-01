@@ -18,8 +18,8 @@ class DockerConnection
   def test_inspect(container)
     p :test_inspect 
     p container.container_name
-    p container.container_id.to_s
-    return nil if container.container_id.to_s == '-1'
+    puts 'id_' + container.container_id.to_s + '_' 
+    return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
       p :requesting
       p request
