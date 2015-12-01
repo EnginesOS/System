@@ -36,7 +36,7 @@ class DockerConnection < ErrorsApi
   resp = docker_socket.request(req)
   p resp
     chunks = ''
-  chunk = resp.read_body 
+#  chunk = resp.read_body 
     resp.read_body do |chunk|
       chunks += chunk
     end
