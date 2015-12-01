@@ -25,13 +25,13 @@ class DockerConnection < ErrorsApi
     request='/containers/' + container.container_id.to_s + '/json'
 #      p :requesting
 #      p request
-   return make_request(request)       
+   return make_request(request, container)       
     rescue StandardError =>e
       log_exception(e)
   end
   
   
-  def make_request(uri)
+  def make_request(uri, container)
   req = Net::HTTP::Get.new(uri)
   resp = docker_socket.request(req)
 #  p resp
@@ -45,6 +45,7 @@ class DockerConnection < ErrorsApi
   rhash = nil
   hashes = []
   chunk.gsub!(/\\\"/,'')
+  return clear_cid if chunk.start_with?('no such id: ')
   response_parser.parse(chunk) do |hash |
 #   p :hash
 #   p hash
@@ -60,4 +61,9 @@ class DockerConnection < ErrorsApi
   
   private
 
+  def clear_cid(container)
+    File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid') 
+    container.clear_cid
+
+  end
 end

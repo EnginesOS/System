@@ -35,6 +35,12 @@ module DockerInfoCollector
   def set_cont_id
     @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == ''
   end
+  
+  
+  def clear_cid
+    @container_id = nil
+    save_state
+  end
 
   def read_container_id
     ContainerStateFiles.read_container_id(self)
