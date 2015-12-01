@@ -185,6 +185,9 @@ module TaskAtHand
       return true
     end
     return false
+    # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
+  rescue
+    return true 
   end
   
   def set_task_at_hand(state)
