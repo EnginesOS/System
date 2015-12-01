@@ -36,14 +36,14 @@ class DockerConnection < ErrorsApi
   resp = docker_socket.request(req)
   p resp
     chunks = ''
-#  chunk = resp.read_body 
-    resp.read_body do |chunk|
-      chunks += chunk
-    end
+  chunk = resp.read_body 
+#    resp.read_body do |chunk|
+#      chunks += chunk
+#    end
   p chunk
-  puts 'chunk is a ' + chunks.class.name
+  puts 'chunk is a ' + chunk.class.name
   
-  hash = response_parser.parse(chunks) 
+  hash = response_parser.parse(chunk) 
   p :hash
   p hash
   return hash        
