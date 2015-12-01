@@ -42,10 +42,16 @@ class DockerConnection < ErrorsApi
 #    end
   p chunk
   puts 'chunk is a ' + chunk.class.name
-  
-  hash = response_parser.parse(chunk) 
-  p :hash
-  p hash
+  rash = nil
+  c = 0 
+  response_parser.parse(chunk) do |hash |
+   p :hash
+   p hash
+   rhash = hash if c == 0
+   c = 1 
+  end 
+  p :rhash
+  p rhash
   return hash        
   rescue StandardError =>e
     log_exception(e)
