@@ -12,7 +12,9 @@ class DockerConnection
     
     @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     @docker_socket.continue_timeout = 60
-    @docker_socket.read_timeout = 60
+    @docker_socket.read_timeout = 60       
+    rescue StandardError =>e
+      log_exception(e)
   end
   
   def test_inspect(container)
@@ -23,7 +25,9 @@ class DockerConnection
     request='/containers/' + container.container_id.to_s + '/json'
       p :requesting
       p request
-   return make_request(request)
+   return make_request(request)       
+    rescue StandardError =>e
+      log_exception(e)
   end
   
   
@@ -33,10 +37,14 @@ class DockerConnection
   p resp
   chunk = resp.read_body 
   p chunk
+  puts 'chunk is a ' + chunk.class.name
+  
   hash = response_parser.parse(chunk) 
   p :hash
   p hash
   return hash        
+  rescue StandardError =>e
+    log_exception(e)
   end
   
   private
