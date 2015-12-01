@@ -17,14 +17,14 @@ class DockerConnection < ErrorsApi
       log_exception(e)
   end
   
-  def test_inspect(container)
-    p :test_inspect 
-    p container.container_name
+  def inspect_containt(container)
+#    p :test_inspect 
+#    p container.container_name
     puts 'id_' + container.container_id.to_s + '_' 
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
-      p :requesting
-      p request
+#      p :requesting
+#      p request
    return make_request(request)       
     rescue StandardError =>e
       log_exception(e)
@@ -34,25 +34,24 @@ class DockerConnection < ErrorsApi
   def make_request(uri)
   req = Net::HTTP::Get.new(uri)
   resp = docker_socket.request(req)
-  p resp
-    chunks = ''
+#  p resp
+#    chunks = ''
   chunk = resp.read_body 
 #    resp.read_body do |chunk|
 #      chunks += chunk
 #    end
-  p chunk
-  puts 'chunk is a ' + chunk.class.name
+#  p chunk
+#  puts 'chunk is a ' + chunk.class.name
   rhash = nil
   hashes = []
   chunk.gsub!(/\\\"/,'')
   response_parser.parse(chunk) do |hash |
-   p :hash
-   p hash
-    hashes.push(hash)
-   
+#   p :hash
+#   p hash
+    hashes.push(hash)   
   end 
-  p :rhash
-  p hashes[0]
+#  p :rhash
+#  p hashes[0]
   return hashes[0]        
   rescue StandardError =>e
     log_exception(e)
