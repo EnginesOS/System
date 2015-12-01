@@ -28,7 +28,9 @@ class ContainerStateFiles
 
   def self.read_container_id(container)
     cidfile = ContainerStateFiles.container_cid_file(container)
-    return File.read(cidfile) if File.exist?(cidfile)
+    return -1 unless  File.exist?(cidfile)
+    r = File.read(cidfile) 
+    r.gsub(/\s+/, '').strip
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return '-1'
