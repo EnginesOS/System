@@ -32,6 +32,7 @@ class DockerConnection
   resp = docker_socket.request(req)
   p resp
   chunk = resp.read_body 
+  p chunk
   hash = response_parser.parse(chunk) 
   p :hash
   p hash
