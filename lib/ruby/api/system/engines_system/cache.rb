@@ -38,11 +38,11 @@ return  nil
 
   def get_engine_ts(engine)
     p :get_engine_ts
-    p engine
+   
     if engine.nil?
       
       @engines_conf_cache.each do |entry|
-        p entry.to_s
+        p entry[:engine].container_name
       end
     return log_error_mesg('Get ts passed nil Engine ', engine)
     end
