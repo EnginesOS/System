@@ -2,7 +2,11 @@ module ContainerStatus
   def read_state
     info = docker_info
     state = 'nocontainer'
+    p :read_state
+   p info.class.name
     return state unless info.is_a?(Hash)
+     p :STATE
+    p info['State']['Running']
     if info['State']
       if info['State']['Running']
         state = 'running'
