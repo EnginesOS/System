@@ -17,7 +17,7 @@ class DockerConnection < ErrorsApi
       log_exception(e)
   end
   
-  def inspect_containt(container)
+  def inspect_container(container)
 #    p :test_inspect 
 #    p container.container_name
     puts 'id_' + container.container_id.to_s + '_' 

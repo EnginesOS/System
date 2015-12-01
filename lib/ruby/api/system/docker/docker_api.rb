@@ -15,14 +15,7 @@ class DockerApi < ErrorsApi
   @docker_comms = DockerConnection.new
   end
   
-  def test_inspect_container(container)
-    r = @docker_comms.test_inspect(container)
-    p :test_docker
-    p r.class.name.to_s
-    p r.to_s
-    r
-  end
-  
+ 
   
 
 end
