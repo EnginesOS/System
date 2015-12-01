@@ -5,7 +5,8 @@ module DockerInfoCollector
     return false if @docker_info_cache.nil?
     #    p @docker_info_cache.class.name
     #    p @docker_info_cache.to_s
-    return JSON.parse(@docker_info_cache)
+   # return JSON.parse(@docker_info_cache)
+    @docker_info_cache
   rescue StandardError => e
     p @docker_info_cache.to_s
     log_exception(e)
