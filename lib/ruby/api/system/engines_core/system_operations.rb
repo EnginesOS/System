@@ -1,13 +1,13 @@
 module SystemOperations
   def restart_system
-    GC.start
-        ObjectSpace.dump(@system_api.freeze,output: File.open('/var/log/apache2/system.json','w'))
-        ObjectSpace.dump(self.freeze, output: File.open('/var/log/apache2/engines.json','w'))
-        ObjectSpace.dump_all(output: File.open('/var/log/apache2/heap.json','w'))
-        ObjectSpace.dump(@registry_handler.freeze,output: File.open('/var/log/apache2/registry_handler.json','w'))
-        ObjectSpace.dump(@container_api.freeze,output: File.open('/var/log/apache2/container_api.json','w'))
-        ObjectSpace.dump(@service_api.freeze,output: File.open('/var/log/apache2/service_api.json','w'))
-        ObjectSpace.dump(@docker_api.freeze,output: File.open('/var/log/apache2/docker_api.json','w'))
+  #  GC.start
+#        ObjectSpace.dump(@system_api.freeze,output: File.open('/var/log/apache2/system.json','w'))
+#        ObjectSpace.dump(self.freeze, output: File.open('/var/log/apache2/engines.json','w'))
+#        ObjectSpace.dump_all(output: File.open('/var/log/apache2/heap.json','w'))
+#        ObjectSpace.dump(@registry_handler.freeze,output: File.open('/var/log/apache2/registry_handler.json','w'))
+#        ObjectSpace.dump(@container_api.freeze,output: File.open('/var/log/apache2/container_api.json','w'))
+#        ObjectSpace.dump(@service_api.freeze,output: File.open('/var/log/apache2/service_api.json','w'))
+#        ObjectSpace.dump(@docker_api.freeze,output: File.open('/var/log/apache2/docker_api.json','w'))
     test_system_api_result(@system_api.restart_system)
   end
 

@@ -27,7 +27,7 @@ class EnginesCore < ErrorsApi
   require 'objspace'
   def initialize
     
-  ObjectSpace.trace_object_allocations_start
+ # ObjectSpace.trace_object_allocations_start
     Signal.trap('HUP', proc { api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new
