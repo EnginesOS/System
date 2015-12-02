@@ -30,7 +30,7 @@ module DockerEvents
       end 
   end
   
-  return false if container_name.nil
+  return false if container_name.nil?
   
   case event_name
       when 'start'
