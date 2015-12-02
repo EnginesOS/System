@@ -1,4 +1,5 @@
 module TaskAtHand
+  @task_timeout=300
   def desired_state(state, curr_state)
     current_set_state = @setState
     @setState = state.to_s
@@ -19,8 +20,6 @@ module TaskAtHand
   def in_progress(action)
   
     curr_state = read_state
-
-   
     case action
     when :create      
       return desired_state('running', curr_state) if curr_state== 'nocontainer' 
@@ -76,6 +75,7 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
+   return nil if task_has_expired?
     task = File.read(fn)
      r = read_state(raw=true)
     if tasks_final_state(task) == r
@@ -176,6 +176,20 @@ module TaskAtHand
   end
    
   private
+  
+  def task_has_expired?
+    mtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    mtime += @task_timeout
+    if mtime < Time.now
+      File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+      return true
+    end
+    return false
+    # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
+  rescue
+    return true 
+  end
+  
   def set_task_at_hand(state)
 p :set_taskah
     @task_at_hand = state
@@ -183,15 +197,14 @@ p :set_taskah
     f.write(state)
     f.close
     # clear task if still there after 60 s
-    Thread.new do
-      begin
-       return if wait_for_container_task(60)         
-        clear_task_at_hand
-      ensure
-        clear_task_at_hand
-      end  
-    
-    end
+#    Thread.new do
+#      begin
+#       return if wait_for_container_task(60)         
+#        clear_task_at_hand
+#      ensure
+#        clear_task_at_hand
+#      end     
+#    end
     rescue StandardError => e 
       log_exception(e)
   end
