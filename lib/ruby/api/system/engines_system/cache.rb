@@ -27,7 +27,7 @@ return  nil
 
   def cache_engine( engine, ts)
 
-      ident =  get_ident(container)
+      ident =  get_ident(engine)
 
   @engines_conf_cache[ident.to_sym] = {}
     @engines_conf_cache[ident.to_sym][:engine] = engine
