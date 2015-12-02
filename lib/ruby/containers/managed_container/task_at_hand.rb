@@ -95,7 +95,7 @@ module TaskAtHand
     File.delete(fn) if File.exist?(fn)
     rescue StandardError => e 
     log_exception(e)
-    return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
+    return true  #possbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
   def wait_for_task(timeout=25)

@@ -2,29 +2,36 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
 
   def container_event(hash)
-    return unless hash.key?('from')
-    #p :container_event
-   # p hash
+    
     status = hash['status']
-    s = status.split(':')
-    if s.count > 1
-      event_name = s[0]
-      data = status
-    else
-      event_name = status
-      data = nil
-    end
-  container_name = hash['from'].to_s
-
-  if container_name.start_with?('engines/')    
-   c_name = container_name.sub(/engines/,'services')
-    c_name.sub!(/:.*/,'')
-    ctype = 'service'
-  else    
-    ctype = 'container'
-    c_name = container_name
-  end 
-   
+       s = status.split(':')
+       if s.count > 1
+         event_name = s[0]
+         data = status
+       else
+         event_name = status
+         data = nil
+       end
+       
+   unless hash.key?('from')
+    #p :container_event
+    p hash
+    id = hash['Id']
+     container_name = container_name_from_id(id)
+   else   
+        container_name = hash['from'].to_s
+     if container_name.start_with?('engines/')    
+       c_name = container_name.sub(/engines/,'services')
+        c_name.sub!(/:.*/,'')
+        ctype = 'service'
+      else    
+        ctype = 'container'
+        c_name = container_name
+      end 
+  end
+  
+  return false if container_name.nil
+  
   case event_name
       when 'start'
     inform_container(c_name,event_name)
