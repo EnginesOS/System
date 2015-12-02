@@ -54,9 +54,9 @@ return  nil
    
     if engine.nil?
       
-      @engines_conf_cache.each do |entry|
-        p entry[:engine].container_name
-      end
+#      @engines_conf_cache.each do |entry|
+#        p entry[:engine].container_name
+#      end
     return log_error_mesg('Get ts passed nil Engine ', engine)
     end
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
