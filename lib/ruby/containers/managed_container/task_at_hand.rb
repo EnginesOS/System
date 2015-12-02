@@ -47,7 +47,11 @@ module TaskAtHand
     end
    
     if tasks_final_state(action) == curr_state
-      return save_state # sync gui with relaty it started but then stopped before gui updated      
+      return save_state # sync gui with relaty it started but then stopped before gui updated
+    else
+      puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
+      puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
+      puts 'and finale state is ' + tasks_final_state(action)
     end
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
      
