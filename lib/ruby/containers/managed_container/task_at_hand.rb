@@ -5,7 +5,7 @@ module TaskAtHand
     @setState = state.to_s
     save_state
 
-       if curr_state ==  state
+       if current_set_state ==  state.to_s
          return clear_task_at_hand
        else    
          set_task_at_hand(state)
@@ -46,7 +46,17 @@ module TaskAtHand
       return desired_state('nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
    
-    return true if tasks_final_state(action) == curr_state
+    if tasks_final_state(action) == curr_state
+      puts 'already their'
+      @setState = curr_state
+      save_state
+      return curr_state
+      # sync gui with relaty it started but then stopped before gui updated
+    else
+      puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
+      puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
+      puts 'and finale state is ' + tasks_final_state(action)
+    end
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
      
     
@@ -95,7 +105,7 @@ module TaskAtHand
     File.delete(fn) if File.exist?(fn)
     rescue StandardError => e 
     log_exception(e)
-    return true  #posbile exception such file (another process alsop got the eot mesg and removed) 
+    return true  #possbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
   def wait_for_task(timeout=25)

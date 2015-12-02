@@ -22,28 +22,41 @@ return  nil
   def rm_engine_from_cache(engine_name)
     p :RM_FROM_CACHE
     @engines_conf_cache.delete(engine_name.to_sym)
+   
   end
 
   def cache_engine( engine, ts)
-    unless engine.ctype == 'service' 
-      ident = engine.container_name
-    else
-      ident ='services/' + engine.container_name
-    end 
+
+      ident =  get_ident(engine)
+
   @engines_conf_cache[ident.to_sym] = {}
     @engines_conf_cache[ident.to_sym][:engine] = engine
     @engines_conf_cache[ident.to_sym][:ts] =  ts
+    @engines_conf_cache[engine.container_id] = ident
+     
     #Thread.new { sleep 5; @engines_conf_cache[ident.to_sym] = nil }
   end
 
+  def get_ident(container)
+    if container.ctype == 'service'
+             ident = 'services/' + container.container_name
+             else
+               ident = container.container_name
+         end
+  end
+  
+  def container_name_from_id(id)
+    @engines_conf_cache[id]
+  end
+  
   def get_engine_ts(engine)
     p :get_engine_ts
    
     if engine.nil?
       
-      @engines_conf_cache.each do |entry|
-        p entry[:engine].container_name
-      end
+#      @engines_conf_cache.each do |entry|
+#        p entry[:engine].container_name
+#      end
     return log_error_mesg('Get ts passed nil Engine ', engine)
     end
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
@@ -51,24 +64,20 @@ return  nil
     File.mtime(yam_file_name)
   end
   
-  def container_from_cache(container_name)
+  def container_from_cache(container_ident)
     p :container_from_cache
-    p container_name.to_s
-    return nil if container_name.nil?
+    p container_ident.to_s
+    return nil if container_ident.nil?
 #    c = engine_from_cache('/services/' + container_name)
 #    return c unless c.nil?
-    return engine_from_cache(container_name)
+    return engine_from_cache(container_ident)
   end
   
   def cache_update_ts(container, ts) 
-    if container.ctype == 'service'
-     ident = 'services/' + container.container_name
-    else
-      ident = container.container_name
-    end
-    id = ident.to_sym
-    return false unless  @engines_conf_cache.key?(id) && ! @engines_conf_cache[id].nil?
-    @engines_conf_cache[id][:ts] = ts
+    ident =  get_ident(container)
+    name_key = ident.to_sym
+    return false unless  @engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
+    @engines_conf_cache[name_key][:ts] = ts
      return true
   end
   

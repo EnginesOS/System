@@ -30,7 +30,7 @@ require 'socket'
      
    #  puts hash['from'].to_s + ' had event ' +  event_name 
    #  p :__return unless hash.key?('from')
-      @system_api.container_event(hash)  if hash.key?('from')
+      @system_api.container_event(hash) # if hash.key?('from')
       
     end 
 

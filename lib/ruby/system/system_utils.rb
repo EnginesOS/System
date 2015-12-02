@@ -44,7 +44,7 @@ class SystemUtils
   end
 
   def SystemUtils.version
-    return SystemUtils.system_release + '.' + SystemConfig.api_version + '.' + SystemConfig.engines_system_version
+    return SystemUtils.system_release + '-' + SystemConfig.api_version.to_s + '-' + SystemConfig.engines_system_versionto_s
   end
 
   def SystemUtils.symbolize_keys(hash)
