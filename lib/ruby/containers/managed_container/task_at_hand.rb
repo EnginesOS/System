@@ -5,7 +5,7 @@ module TaskAtHand
     @setState = state.to_s
     save_state
 
-       if curr_state ==  state
+       if current_set_state ==  state.to_s
          return clear_task_at_hand
        else    
          set_task_at_hand(state)
@@ -48,8 +48,8 @@ module TaskAtHand
    
     if tasks_final_state(action) == curr_state
       puts 'already their'
-      return true
-      return save_state # sync gui with relaty it started but then stopped before gui updated
+      return curr_state
+      # sync gui with relaty it started but then stopped before gui updated
     else
       puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
       puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
