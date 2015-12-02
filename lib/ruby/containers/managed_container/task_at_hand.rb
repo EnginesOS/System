@@ -47,6 +47,8 @@ module TaskAtHand
     end
    
     if tasks_final_state(action) == curr_state
+      puts 'already their'
+      return true
       return save_state # sync gui with relaty it started but then stopped before gui updated
     else
       puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
