@@ -48,6 +48,7 @@ module TaskAtHand
    
     if tasks_final_state(action) == curr_state
       puts 'already their'
+      @setState = curr_state
       save_state
       return curr_state
       # sync gui with relaty it started but then stopped before gui updated
