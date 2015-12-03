@@ -21,7 +21,7 @@ module TaskAtHand
     p :in_p
     p action
     p action.class.name
-    
+    curr_state.sub!(/\:->\:/,'')
     curr_state = read_state
     case action
     when :create      
