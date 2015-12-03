@@ -10,7 +10,7 @@ nginx		nginx		22005 _nginx
 mysql		mysql		22006 _mysql_server
 volmgr		volmgr		22007	_volmanager
 mongo		mongo		22008 _mongo
-bind		bind		22009 +dns
+bind		bind		22009 _dns
 proftpd		proftpd	22010 _ftp
 courier  courier			22011 
 syslog	 syslog			22012 _syslog
