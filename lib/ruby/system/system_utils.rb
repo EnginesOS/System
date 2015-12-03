@@ -1,5 +1,5 @@
 class SystemUtils
-  @@debug=false
+  @@debug=true
   @@level=0
 
   attr_reader :debug, :level, :last_error
