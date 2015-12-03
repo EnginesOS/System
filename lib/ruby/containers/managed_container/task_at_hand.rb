@@ -21,8 +21,12 @@ module TaskAtHand
     p :in_p
     p action
     p action.class.name
-    curr_state.sub!(/\:->\:/,'')
+    
     curr_state = read_state
+    
+    # FIX ME Finx the source 0 :->:
+    curr_state.sub!(/\:->\:/,'')
+    
     case action
     when :create      
       return desired_state('running', curr_state) if curr_state== 'nocontainer' 
