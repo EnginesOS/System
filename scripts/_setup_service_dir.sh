@@ -5,7 +5,7 @@
 chgrp containers  /opt/engines/run/services/$1/run
 chmod g+w  /opt/engines/run/services/$1/run
 
-uid=`grep $1 /opt/engines/etc/container_uids |awk '{print $3}'`
+uid=`grep " $1" /opt/engines/etc/container_uids |awk '{print $3}'`
 
 mkdir -p /var/log/engines/services/$1
 chown -R $uid /var/log/engines/services/$1
