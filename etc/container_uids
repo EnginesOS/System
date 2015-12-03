@@ -1,38 +1,38 @@
-#User		Group		UID	#informalname (used to pick up uid from contianername)
+#User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #services
-mgmt		engines	21000
-rma			rma			22001
-postgres	postgres	22002 pq_sql
-postfix		postfix		22003 smtp
-email		email	22003
-pmgr		pmgr		22004 
-nginx		nginx		22005
-mysql		mysql		22006 mysql_server
-volmgr		volmgr		22007	volmanager
-mongo		mongo		22008
-bind		bind		22009 dns
-proftpd			proftpd	22010 ftp
-courier courier			22011 
-syslog		syslog			22012
-dovecot		imap			22013 imap
-#vmail					22014
-backup		backup		22015
-cron		cron			22016
-auth	auth		22017
-nfs		nfs		22018	
-samba	samba	22019
-dyndns	dyndns	22021
-cert_auth 	cert_auth    22022
-registry registry	22023
-wwwstats	wwwstats	22024
-dhcpd	dhcpd	22025
-avahi	avahi	22026
+mgmt		engines	21000 _mgmt
+rma			rma			22001 
+postgres	postgres	22002 pq_sql _pgsql_server
+postfix		postfix		22003 _smtp
+email		email	22003 _mail
+pmgr		pmgr		22004  
+nginx		nginx		22005 _nginx
+mysql		mysql		22006 _mysql_server
+volmgr		volmgr		22007	_volmanager
+mongo		mongo		22008 _mongo
+bind		bind		22009 +dns
+proftpd		proftpd	22010 _ftp
+courier  courier			22011 
+syslog	 syslog			22012 _syslog
+dovecot	 imap			22013 _imap
+#vmail				22014
+backup	 backup		22015	_backup
+cron	 cron			22016	_cron
+auth	 auth		22017	_uth
+nfs		 nfs		22018		_nfs
+samba	 samba	22019	_samba
+dyndns	 dyndns	22021	_dyndns
+cert_auth 	  cert_auth    22022	_cert_auth
+registry  registry	22023 _registry
+wwwstats	wwwstats	22024 _wwwstats
+dhcpd	 dhcpd	22025	_dhcpd
+avahi	 avahi	22026	_avahi
 #Frameworks
-www-data	www-data	22671
-ruby	ruby			22672
-node	node			22673
-python	python			22674
-rstudio rstudio			22675
+www-data	 www-data	22671
+ruby	 ruby			22672
+node	 node			22673
+python	 python			22674
+rstudio  rstudio			22675
 #23000 -> applications assigned by volume manager
 
 containers	N/A			22020
