@@ -21,9 +21,9 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-     expire_engine_info
-     p '______IP_ADDDDDDD'
-      p docker_info['NetworkSettings']['IPAddress']
+#     expire_engine_info
+#     p '______IP_ADDDDDDD'
+#      p docker_info['NetworkSettings']['IPAddress']
     return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
     return false
   rescue
