@@ -37,6 +37,25 @@ class SystemApi < ErrorsApi
     @engines_conf_cache = {}
       start_docker_event_listener
   end
+  
+  
+  def get_engines_states
+    result = {}
+    engines = @engines_api.list_managed_engines
+    engines.each do |engine|
+      result[engine.container_name.to_sym] = engine.state.to_sym
+    end
+    return result
+  end
+  
+  def get_services_states
+    result = {}
+    services =  @engines_api.list_managed_services
+        services.each do |service|
+          result[service.container_name.to_sym] = service.state.to_sym
+        end
+        return result
+   end
 
   def system_image_free_space
     result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/free_docker_lib_space.sh')
