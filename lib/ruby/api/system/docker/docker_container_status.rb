@@ -22,11 +22,5 @@ module DockerContainerStatus
   def inspect_container(container)
     @docker_comms.inspect_container(container)
   end
-#  def inspect_container(container)
-#    clear_error
-#    commandargs = ' docker inspect ' + container.container_name
-#    run_docker_cmd(commandargs, container, false)
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
+
 end

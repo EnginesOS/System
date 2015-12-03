@@ -13,9 +13,6 @@ class DockerApi < ErrorsApi
   require_relative 'docker_api/docker_connection.rb'
   def initialize()
   @docker_comms = DockerConnection.new
-  end
-  
- 
-  
+  end 
 
 end
