@@ -18,7 +18,10 @@ module TaskAtHand
   end
 
   def in_progress(action)
-  
+    p :in_p
+    p action
+    p action.class.name
+    
     curr_state = read_state
     case action
     when :create      
@@ -57,7 +60,7 @@ module TaskAtHand
       puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
       puts 'and finale state is ' + tasks_final_state(action)
     end
-    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
+    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state.to_s )
      
     
     # Perhaps ?return clear_task_at_hand
