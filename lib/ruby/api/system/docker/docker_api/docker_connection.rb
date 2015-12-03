@@ -20,7 +20,7 @@ class DockerConnection < ErrorsApi
   def inspect_container(container)
 #    p :test_inspect 
 #    p container.container_name
-    puts 'id_' + container.container_id.to_s + '_' 
+   # puts 'id_' + container.container_id.to_s + '_' 
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
 #      p :requesting
@@ -37,22 +37,15 @@ class DockerConnection < ErrorsApi
 #  p resp
 #    chunks = ''
   chunk = resp.read_body 
-#    resp.read_body do |chunk|
-#      chunks += chunk
-#    end
-#  p chunk
-#  puts 'chunk is a ' + chunk.class.name
   rhash = nil
   hashes = []
   chunk.gsub!(/\\\"/,'')
   return clear_cid(container) if chunk.start_with?('no such id: ')
   response_parser.parse(chunk) do |hash |
-#   p :hash
-#   p hash
     hashes.push(hash)   
   end 
-#  p :rhash
-#  p hashes[0]
+# 
+#   hashes[1] is a timestamp
   return hashes[0]        
   rescue StandardError =>e
     log_exception(e)
