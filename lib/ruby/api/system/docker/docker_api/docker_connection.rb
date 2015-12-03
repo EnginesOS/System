@@ -45,7 +45,7 @@ class DockerConnection < ErrorsApi
   rhash = nil
   hashes = []
   chunk.gsub!(/\\\"/,'')
-  return clear_cid if chunk.start_with?('no such id: ')
+  return clear_cid(container) if chunk.start_with?('no such id: ')
   response_parser.parse(chunk) do |hash |
 #   p :hash
 #   p hash
