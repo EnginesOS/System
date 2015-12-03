@@ -25,7 +25,8 @@ module TaskAtHand
     p action.class.name
     
     curr_state = read_state
-    
+    p :read_state
+    p curr_state
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     
@@ -66,7 +67,7 @@ module TaskAtHand
       puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
       puts 'and finale state is ' + tasks_final_state(action)
     end
-    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state.to_s )
+    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
      
     
     # Perhaps ?return clear_task_at_hand
