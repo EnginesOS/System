@@ -75,7 +75,7 @@ module FirstRunDNS
 
   end
   def validate_dns_params(params)
-    return log_error_mesg('Can have empty default domain',params) if params[:default_domain].nil?
+    return log_error_mesg('Can have empty default domain',params) if params[:domain_name].nil?
      return true
   end
 end
