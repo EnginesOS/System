@@ -4,14 +4,14 @@ module TaskAtHand
     current_set_state = @setState
     @setState = state.to_s   
 
-#       if current_set_state ==  state.to_s
+       if current_set_state ==  curr_state
 #         p :alreadt       
 #         
-#         return clear_task_at_hand
-#       else    
+         return clear_task_at_hand
+       else    
          set_task_at_hand(state)
          save_state
-#       end 
+       end 
        
        puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
        return true
