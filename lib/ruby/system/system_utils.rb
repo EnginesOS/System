@@ -251,7 +251,7 @@ class SystemUtils
   end
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
-   # return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
+    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
    # return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
