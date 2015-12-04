@@ -10,6 +10,7 @@ module EngineApiDependancies
         if service.has_container?
           if service.is_active?
             return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
+          else
             return log_error_mesg('Failed to start ', service_name) if !service.start_container
           end
           return log_error_mesg('Failed to create ', service_name) if !service.create_container
@@ -17,9 +18,9 @@ module EngineApiDependancies
       end
       retries = 0
       while !has_service_started?(service_name)
-        sleep 15
+        sleep 2
         retries += 1
-        return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 3
+        return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 150
       end
     end
     return true

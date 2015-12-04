@@ -1,25 +1,30 @@
 module ContainerStatus
   def read_state
     info = docker_info
-    state = 'nocontainer'
-   # p :read_state
- #  p info.class.name
+
+
     return state unless info.is_a?(Hash)
-  #   p :STATE
-   # p info['State']['Running']
-    if info['State']
+
+    if info.key?('State')
       if info['State']['Running']
-        state = 'running'
-        if info['State']['Paused']
-          state= 'paused'
+        return 'running'
+        if  info['State']['Paused']
+          return 'paused'
         end
       elsif info['State']['Running'] == false
-        state = 'stopped'
+        return 'stopped'
+      elsif info['State']['Status'] == 'exited'
+        return 'stopped'
       else
-        state = 'nocontainer'
+        p :info
+        p info['State'].to_s
+        return 'nocontainer'
       end
     end
-    return state
+    p 'no_matching state_info'
+    p info.class.name
+    p info['State'].to_s
+    return 'nocontainer'
   rescue StandardError => e
     log_exception(e)
   end

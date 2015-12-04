@@ -68,10 +68,11 @@ module ManagedContainerControls
   end
 
   def stop_container
-    if read_state == 'nocontainer'
-       @setState = 'nocontainer'
-       return true
-     end
+    # allow stopping of nocontainer is dealt with higher up now
+#    if read_state == 'nocontainer'
+#       @setState = 'nocontainer'
+#       return true
+#     end
      p :stop_read_sta
      p read_state
     return false unless has_api?

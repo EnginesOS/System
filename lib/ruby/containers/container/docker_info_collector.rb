@@ -45,9 +45,9 @@ module DockerInfoCollector
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id
    r = ContainerStateFiles.read_container_id(self)
-   return r unless r == -1
-    sleep 1
-    ContainerStateFiles.read_container_id(self)
+   return r #unless r == -1
+#    sleep 1
+#    ContainerStateFiles.read_container_id(self)
 #    info = docker_info
 #    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
 #    return -1
@@ -71,6 +71,7 @@ module DockerInfoCollector
     result = false
     return false if @docker_info_cache == false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
+    log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
     @docker_info_cache =  result
     #@docker_info_cache = false unless result
