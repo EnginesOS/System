@@ -1,6 +1,6 @@
 class SystemUtils
-  @@debug=true
-  @@level=0
+  @@debug=false
+  @@level=5
 
   attr_reader :debug, :level, :last_error
   def SystemUtils.debug_output(label, object = nil)
