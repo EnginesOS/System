@@ -33,26 +33,28 @@ module FirstRunDNS
       domain_hash[:self_hosted] = false
       elsif params[:networking] == 'dynamic_dns'
       domain_hash[:self_hosted] = false
-      configure_dyndns_service(params)
-        
+      configure_dyndns_service(params)        
     end
-   
-   def configure_dyndns_service(params)
-     config_hash = {}
-     config_hash[:service_name] = 'dyndns'
-     config_hash[:configurator_name] = 'dyndns_settings'
-     config_hash[:variables] = {}
-     config_hash[:variables][:provider] = params[:dynamic_dns_provider]
-     config_hash[:variables][:domain_name] = params[:domain_name]
-     config_hash[:variables][:login] = params[:dynamic_dns_username]
-     config_hash[:variables][:password] = params[:dynamic_dns_password]
-     return true if @api.update_service_configuration(config_hash)
-     return log_error_mesg('Failed to apply DynDNS ', config_hash)
-   end
-    
+  
     return domain_hash
   end
-
+  
+  def configure_dyndns_service(params)
+      config_hash = {}
+      config_hash[:service_name] = 'dyndns'
+      config_hash[:configurator_name] = 'dyndns_settings'
+      config_hash[:variables] = {}
+      config_hash[:variables][:provider] = params[:dynamic_dns_provider]
+      config_hash[:variables][:domain_name] = params[:domain_name]
+      config_hash[:variables][:login] = params[:dynamic_dns_username]
+      config_hash[:variables][:password] = params[:dynamic_dns_password]
+      return log_error_mesg('Failed to apply DynDNS ', config_hash) unless @api.update_service_configuration(config_hash)
+      dyndns_service  =  @api.loadManagedService('dyndns')
+      dyndns_service.create
+      return true if dyndns_service.is_running?
+      false
+    end
+    
   def set_default_email_domain(domain_name)
     config_hash = {}
     config_hash[:service_name] = 'smtp'
@@ -74,6 +76,8 @@ module FirstRunDNS
     return set_default_email_domain(domain_hash[:default_domain])
 
   end
+  
+
   def validate_dns_params(params)
     return log_error_mesg('Can have empty default domain',params) if params[:domain_name].nil?
      return true
