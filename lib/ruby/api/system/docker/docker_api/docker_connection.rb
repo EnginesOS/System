@@ -20,7 +20,7 @@ class DockerConnection < ErrorsApi
   def inspect_container(container)
 #    p :test_inspect 
 #    p container.container_name
-    puts 'id_' + container.container_id.to_s + '_' 
+   # puts 'id_' + container.container_id.to_s + '_' 
     container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
@@ -45,10 +45,8 @@ class DockerConnection < ErrorsApi
   response_parser.parse(chunk) do |hash |
     hashes.push(hash)   
   end 
-# 
+
 #   hashes[1] is a timestamp
-  p :make_requ
-  p hashes
   return hashes[0]        
   rescue StandardError => e
     log_exception(e)
