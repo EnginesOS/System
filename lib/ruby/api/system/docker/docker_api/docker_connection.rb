@@ -47,6 +47,8 @@ class DockerConnection < ErrorsApi
   end 
 # 
 #   hashes[1] is a timestamp
+  p :make_requ
+  p hashes
   return hashes[0]        
   rescue StandardError => e
     log_exception(e)
