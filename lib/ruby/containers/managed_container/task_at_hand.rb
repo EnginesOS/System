@@ -2,14 +2,16 @@ module TaskAtHand
   @task_timeout=300
   def desired_state(state, curr_state)
     current_set_state = @setState
-    @setState = state.to_s
-    save_state
+    @setState = state.to_s   
 
-       if current_set_state ==  state.to_s
-         return clear_task_at_hand
-       else    
+#       if current_set_state ==  curr_state
+##         p :alreadt       
+##         
+#         return clear_task_at_hand
+#       else    
          set_task_at_hand(state)
-       end 
+         save_state
+#       end 
        
        puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
        return true
@@ -18,8 +20,16 @@ module TaskAtHand
   end
 
   def in_progress(action)
-  
+    p :in_p
+    p action
+    p action.class.name
+    
     curr_state = read_state
+    p :read_state
+    p curr_state
+    # FIX ME Finx the source 0 :->:
+    curr_state.sub!(/\:->\:/,'')
+    
     case action
     when :create      
       return desired_state('running', curr_state) if curr_state== 'nocontainer' 
@@ -57,7 +67,7 @@ module TaskAtHand
       puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
       puts 'and finale state is ' + tasks_final_state(action)
     end
-    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ',curr_state.to_s)
+    return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
      
     
     # Perhaps ?return clear_task_at_hand
@@ -66,10 +76,10 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    @last_task =  task_at_hand
-    p :task_complete
-    clear_task_at_hand
+    @last_task =  action
+   # p :task_complete
     expire_engine_info
+    clear_task_at_hand    
     p :last_task
     p @last_task
     save_state unless @last_task == :delete
@@ -104,7 +114,8 @@ module TaskAtHand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
     rescue StandardError => e 
-    log_exception(e)
+   # log_exception(e) Dont log exception 
+      # well perhaps a perms or disk error but definitly not no such file
     return true  #possbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
@@ -177,7 +188,7 @@ module TaskAtHand
         when :build
           return    'running'
         when :delete
-          return    'nocontainer'
+          return  'nocontainer'
         when :destroy
           return   'destroyed'
         end

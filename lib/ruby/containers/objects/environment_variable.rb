@@ -16,7 +16,7 @@ class EnvironmentVariable
   end
   attr_reader :ask_at_build_time,
   :name,
-  :build_time_only,
+  :build_time_only,  
   :mandatory,
   :label,
   :immutable,

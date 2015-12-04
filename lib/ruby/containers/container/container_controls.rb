@@ -58,9 +58,10 @@ module ContainerControls
   def create_container
     #expire_engine_info
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
-    if @container_api.create_container(self)
+    r = @container_api.create_container(self)
+    unless r == false 
       expire_engine_info
-      @container_id = read_container_id
+      @container_id = r
       @cont_userid = running_user
    #   expire_engine_info
       return true

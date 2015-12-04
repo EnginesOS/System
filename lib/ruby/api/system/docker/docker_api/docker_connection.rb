@@ -20,11 +20,12 @@ class DockerConnection < ErrorsApi
   def inspect_container(container)
 #    p :test_inspect 
 #    p container.container_name
-    puts 'id_' + container.container_id.to_s + '_' 
+   # puts 'id_' + container.container_id.to_s + '_' 
+    container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
-#      p :requesting
-#      p request
+      p :requesting
+      p request
    return make_request(request, container)       
     rescue StandardError =>e
       log_exception(e)
@@ -36,25 +37,20 @@ class DockerConnection < ErrorsApi
   resp = docker_socket.request(req)
 #  p resp
 #    chunks = ''
+    puts resp.code       # => '200'
+    puts resp.message    # => 'OK'
   chunk = resp.read_body 
-#    resp.read_body do |chunk|
-#      chunks += chunk
-#    end
-#  p chunk
-#  puts 'chunk is a ' + chunk.class.name
   rhash = nil
   hashes = []
   chunk.gsub!(/\\\"/,'')
-  return clear_cid if chunk.start_with?('no such id: ')
+  return clear_cid(container) if chunk.start_with?('no such id: ')
   response_parser.parse(chunk) do |hash |
-#   p :hash
-#   p hash
     hashes.push(hash)   
   end 
-#  p :rhash
-#  p hashes[0]
+
+#   hashes[1] is a timestamp
   return hashes[0]        
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
     return hashes[0]        
   end
@@ -62,7 +58,7 @@ class DockerConnection < ErrorsApi
   private
 
   def clear_cid(container)
-    @last_error = 'Cleared Cid'
+  puts '++++++++++++++++++++++++++Cleared Cid'
     File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid') 
     container.clear_cid
     return false 
