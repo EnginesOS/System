@@ -50,7 +50,7 @@ module FirstRunDNS
       config_hash[:variables][:password] = params[:dynamic_dns_password]
       return log_error_mesg('Failed to apply DynDNS ', config_hash) unless @api.update_service_configuration(config_hash)
       dyndns_service  =  @api.loadManagedService('dyndns')
-      dyndns_service.create
+      dyndns_service.create_service
       return true if dyndns_service.is_running?
       false
     end
