@@ -9,7 +9,7 @@ module ContainerStatus
    # p info['State']['Running']
     if info.key?('State')
       if info['State']['Running']
-        state = 'running'
+        return 'running'
         if  info['State']['Paused']
           return 'paused'
         end
