@@ -21,6 +21,7 @@ class DockerConnection < ErrorsApi
 #    p :test_inspect 
 #    p container.container_name
    # puts 'id_' + container.container_id.to_s + '_' 
+    container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
 #      p :requesting
@@ -47,7 +48,7 @@ class DockerConnection < ErrorsApi
 # 
 #   hashes[1] is a timestamp
   return hashes[0]        
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
     return hashes[0]        
   end
@@ -55,7 +56,7 @@ class DockerConnection < ErrorsApi
   private
 
   def clear_cid(container)
-    @last_error = 'Cleared Cid'
+    @last_error = '++++++++++++++++++++++++++Cleared Cid'
     File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid') 
     container.clear_cid
     return false 
