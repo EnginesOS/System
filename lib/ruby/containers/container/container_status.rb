@@ -22,6 +22,7 @@ module ContainerStatus
       end
     end
     p :not_state_info
+    p info.to_s
     return 'nocontainer'
   rescue StandardError => e
     log_exception(e)
