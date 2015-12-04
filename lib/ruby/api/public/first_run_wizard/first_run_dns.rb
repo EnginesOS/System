@@ -69,7 +69,7 @@ module FirstRunDNS
     return log_error_mesg('Fail to add domain ' + @api.last_error, domain_hash) unless @api.add_domain_service(domain_hash)
     domain_hash = {}
     domain_hash[:default_domain] = @first_run_params[:domain_name]
-    return false unless apply_hostname(@first_run_params)
+    return false unless apply_hostname(domain_hash)
     return log_error_mesg('Fail to set default domain ' + @api.last_error, domain_hash.to_s) unless @api.set_default_domain(domain_hash)
     return set_default_email_domain(domain_hash[:default_domain])
 

@@ -114,7 +114,8 @@ module TaskAtHand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
     rescue StandardError => e 
-    log_exception(e)
+   # log_exception(e) Dont log exception 
+      # well perhaps a perms or disk error but definitly not no such file
     return true  #possbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
