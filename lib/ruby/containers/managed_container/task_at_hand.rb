@@ -76,10 +76,10 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    @last_task =  task_at_hand
+    @last_task =  action
     p :task_complete
-    clear_task_at_hand
     expire_engine_info
+    clear_task_at_hand    
     p :last_task
     p @last_task
     save_state unless @last_task == :delete
