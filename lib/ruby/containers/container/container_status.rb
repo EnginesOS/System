@@ -7,7 +7,7 @@ module ContainerStatus
     return state unless info.is_a?(Hash)
   #   p :STATE
    # p info['State']['Running']
-    unless info['State'].nil?
+    if info.key?('State')
       if info['State']['Running']
         state = 'running'
         if  info['State']['Paused']
