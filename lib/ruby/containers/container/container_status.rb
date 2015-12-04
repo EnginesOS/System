@@ -11,15 +11,18 @@ module ContainerStatus
       if info['State']['Running']
         state = 'running'
         if info['State']['Paused']
-          state= 'paused'
+          return 'paused'
         end
       elsif info['State']['Running'] == false
-        state = 'stopped'
+        return 'stopped'
       else
-        state = 'nocontainer'
+        p :info
+        p info['State'].to_s
+        return 'nocontainer'
       end
     end
-    return state
+    p :not_state_info
+    return 'nocontainer'
   rescue StandardError => e
     log_exception(e)
   end

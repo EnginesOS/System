@@ -9,13 +9,14 @@ module ManagedContainerStatus
   def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
     if docker_info.is_a?(FalseClass)
+      p :info_false
       #log_error_mesg('Failed to inspect container', self) not an error just no image
       state = 'nocontainer'
     else
       state = super()
       if state.nil? #Kludge
         state = 'nocontainer'
-        @last_error = 'state nil'
+        @last_error = 'mc got nil from super in read_state'
       end
     end
     return state if raw == true

@@ -188,7 +188,7 @@ module TaskAtHand
         when :build
           return    'running'
         when :delete
-          return    'nocontainer'
+          return  'nocontainer'
         when :destroy
           return   'destroyed'
         end
