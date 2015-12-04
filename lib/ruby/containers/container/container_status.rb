@@ -7,10 +7,10 @@ module ContainerStatus
     return state unless info.is_a?(Hash)
   #   p :STATE
    # p info['State']['Running']
-    if info['State']
+    unless info['State'].nil?
       if info['State']['Running']
         state = 'running'
-        if info['State']['Paused']
+        if  info['State']['Paused']
           return 'paused'
         end
       elsif info['State']['Running'] == false
@@ -21,7 +21,7 @@ module ContainerStatus
         return 'nocontainer'
       end
     end
-    p :not_state_info
+    p :no_state_info
     p info.to_s
     return 'nocontainer'
   rescue StandardError => e
