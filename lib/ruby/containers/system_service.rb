@@ -61,7 +61,7 @@ class SystemService < ManagedService
         end
       end
     end
-    Thread.new { sleep 5 ; @docker_info = nil }
+   # Thread.new { sleep 5 ; @docker_info = nil }
     p :system_service_inspected_container
     return @docker_info
   end
