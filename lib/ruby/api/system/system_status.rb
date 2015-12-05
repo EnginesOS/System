@@ -26,7 +26,7 @@ class SystemStatus
     r = File.exist?(SystemConfig.EnginesSystemUpdatingFlag)
     p :update_status
     p r
-    r
+    return true
   end
 
   def self.base_system_has_updated?
