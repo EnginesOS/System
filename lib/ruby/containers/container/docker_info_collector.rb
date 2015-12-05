@@ -71,7 +71,7 @@ module DockerInfoCollector
     result = false
     return false if @docker_info_cache == false
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
-    log_error_mesg('collect false from ', self)
+    #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
     @docker_info_cache =  result
     #@docker_info_cache = false unless result

@@ -37,6 +37,8 @@ class DockerConnection < ErrorsApi
   resp = docker_socket.request(req)
 #  p resp
 #    chunks = ''
+    puts resp.code       # => '200'
+    puts resp.message    # => 'OK'
   chunk = resp.read_body 
   rhash = nil
   hashes = []
