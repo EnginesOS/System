@@ -23,7 +23,10 @@ class SystemStatus
   end
 
   def self.is_engines_system_updating?
-    return File.exist?(SystemConfig.EnginesSystemUpdatingFlag)
+    r = File.exist?(SystemConfig.EnginesSystemUpdatingFlag)
+    p :update_status
+    p r
+    r
   end
 
   def self.base_system_has_updated?
