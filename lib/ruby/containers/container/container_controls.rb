@@ -1,6 +1,6 @@
 module ContainerControls
   def start_container
-   # expire_engine_info
+    expire_engine_info
     r = true
     return true if read_state == 'running'
     return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
@@ -11,7 +11,7 @@ module ContainerControls
   end
 
   def stop_container
-   # expire_engine_info
+    expire_engine_info
     r = true
     return true if read_state == 'stopped' 
     return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'
@@ -22,7 +22,7 @@ module ContainerControls
   end
 
   def pause_container
-  #  expire_engine_info
+   expire_engine_info
     r = true
     return true if read_state == 'paused'
     return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
@@ -33,7 +33,7 @@ module ContainerControls
   end
 
   def unpause_container
-   # expire_engine_info
+    expire_engine_info
     r = true
     return true if read_state == 'running'
     return log_error_mesg('Can\'t  unpause as no paused', self) unless is_paused?
@@ -44,7 +44,7 @@ module ContainerControls
   end
 
   def destroy_container
-  #  expire_engine_info
+    expire_engine_info
     r = true
     return true if read_state == 'nocontainer'
     return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
@@ -56,7 +56,7 @@ module ContainerControls
   end
 
   def create_container
-    #expire_engine_info
+    expire_engine_info
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
     r = @container_api.create_container(self)
     unless r == false 
