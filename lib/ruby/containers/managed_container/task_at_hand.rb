@@ -13,20 +13,20 @@ module TaskAtHand
          save_state
 #       end 
        
-       puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
+     #  puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
        return true
     rescue StandardError => e 
       log_exception(e)
   end
 
   def in_progress(action)
-    p :in_p
-    p action
-    p action.class.name
+#    p :in_p
+#    p action
+#    p action.class.name
     
     curr_state = read_state
-    p :read_state
-    p curr_state
+#    p :read_state
+#    p curr_state
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     
@@ -80,8 +80,8 @@ module TaskAtHand
    # p :task_complete
     expire_engine_info
     clear_task_at_hand    
-    p :last_task
-    p @last_task
+  #  p :last_task
+  #  p @last_task
     save_state unless @last_task == :delete
     # FixMe Kludge unless docker event listener
     ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
@@ -121,7 +121,7 @@ module TaskAtHand
   
   def wait_for_task(timeout=25)
     loops=0
-    p :wait_for_task
+  #  p :wait_for_task
     p task_at_hand
     while ! task_at_hand.nil?
       sleep(0.5)
@@ -212,7 +212,7 @@ module TaskAtHand
   end
   
   def set_task_at_hand(state)
-p :set_taskah
+#p :set_taskah
     @task_at_hand = state
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
