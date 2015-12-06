@@ -32,6 +32,11 @@ module DockerEvents
   
   return false if container_name.nil?
   
+#  p :cont_event
+#     p event_name
+#     p :on
+#     p c_name
+     
   case event_name
       when 'start'
     inform_container(c_name,event_name)
@@ -45,7 +50,11 @@ module DockerEvents
     inform_container(c_name,event_name)
       when 'destroy'
     inform_container(c_name,event_name)
-
+#  else
+#    p :un_tracked_event
+#    p event_name
+#    p :on
+#    p c_name
      end
      
   inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
