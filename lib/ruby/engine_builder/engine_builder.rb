@@ -258,7 +258,7 @@ class EngineBuilder < ErrorsApi
     res = run_system(cmd)
     log_build_output('Cancelable:false')
     return true if res
-    log_error_mesg('build init failed ', res)
+    log_error_mesg('build Image failed ', res)
   rescue StandardError => e
     log_exception(e)
   end
