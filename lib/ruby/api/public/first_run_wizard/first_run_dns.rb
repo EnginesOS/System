@@ -24,7 +24,7 @@ module FirstRunDNS
       domain_hash[:self_hosted] = true
       domain_hash[:internal_only] = true 
       domain_hash[:domain_name] = 'local'
-      
+      params[:domain_name] = domain_hash[:domain_name] 
     elsif params[:networking] == 'self_hosted_dns'
       domain_hash[:self_hosted] = true
       domain_hash[:internal_only] = true if params[:self_dns_local_only] == '1'
