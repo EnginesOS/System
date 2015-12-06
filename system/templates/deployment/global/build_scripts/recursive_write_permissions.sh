@@ -17,18 +17,9 @@ for directory in $*
              chmod -R gu+rw /home/app/$directory 
           else
           chmod -R gu+rw /home/app/$directory
-             for dir in `find  /home/app/$directory -type d  `
-               do
-                  #adir=`echo $dir | sed "/ /s//_+_/g" ` 
-                    if test -n $dir
-                        then
-                              dirs=`echo $dirs $dir `
-                        fi
-               done
-         if test -n '$dirs' 
-              then
-              chmod gu+x $dirs 
-        fi
+          
         fi
         
+        find /home/app/$directory -type d -print0 | xargs -0 chmod 753
+        find /home/app/$directory -type f -print0 | xargs -0 chmod 642
         done
