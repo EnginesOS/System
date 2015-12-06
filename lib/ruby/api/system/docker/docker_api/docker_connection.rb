@@ -24,8 +24,8 @@ class DockerConnection < ErrorsApi
     container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
-      p :requesting
-      p request
+    #  p :requesting
+     # p request
    return make_request(request, container)       
     rescue StandardError =>e
       log_exception(e)
@@ -37,8 +37,8 @@ class DockerConnection < ErrorsApi
   resp = docker_socket.request(req)
 #  p resp
 #    chunks = ''
-    puts resp.code       # => '200'
-    puts resp.message    # => 'OK'
+  #  puts resp.code       # => '200'
+ #   puts resp.message    # => 'OK'
   chunk = resp.read_body 
   rhash = nil
   hashes = []
