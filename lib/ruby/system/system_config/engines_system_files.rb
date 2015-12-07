@@ -37,8 +37,6 @@ module EnginesSystemFiles
     return @@engines_ssh_private_keyfile
   end
 
- 
-
   def SystemConfig.DomainsFile
     return @@DomainsFile
   end
