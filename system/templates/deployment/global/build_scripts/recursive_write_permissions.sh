@@ -20,6 +20,6 @@ for directory in $*
           
         fi
         
-        find /home/app/$directory -type d -print0 | xargs -0 chmod 753
-        find /home/app/$directory -type f -print0 | xargs -0 chmod 642
+        find /home/app/$directory -type d -print0 | xargs -0 chmod 755
+        find /home/app/$directory -type f -print0 | xargs -0 chmod 644
         done
