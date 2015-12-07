@@ -1,10 +1,15 @@
 ADD home/start.bash /home/start.bash
 RUN ln -s /home/app /var/www
-USER www-data
-VOLUME /var/log/
-WORKDIR /home/app
-CMD ["/home/start.bash"]
+ENV ContUser www-data
 
+
+WORKDIR /home/app
+VOLUME /var/log/
+RUN ln -s /home/app /var/www
+#do this after chmods and chowns
+ADD home/start.bash /home/start.bash
+USER $ContUser
+CMD ["/home/start.bash"]
 
 
 #lock down gems Do I need to ? Long process
