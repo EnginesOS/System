@@ -5,7 +5,7 @@ module FrameworkModules
     rakes = ''
     @blueprint_reader.rake_actions.each do |rake_action|
       rake_cmd = rake_action[:action]
-      next unless @builder.first_build == false && rake_action[:always_run]
+      next if @builder.first_build == false && ! rake_action[:always_run]
       rakes += rake_cmd + ' ' unless rake_cmd.nil?
     end
     write_build_script('run_rake_tasks.sh ' + rakes )
