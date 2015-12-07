@@ -43,7 +43,7 @@ class SystemApi < ErrorsApi
     result = {}
     engines = @engines_api.getManagedEngines #list_managed_engines
     engines.each do |engine|
-      result[engine.container_name.to_sym] = engine.state.to_sym
+      result[engine.container_name.to_sym] = engine.read_state.to_sym
     end
     p :get_engines_states
     p result
@@ -54,7 +54,7 @@ class SystemApi < ErrorsApi
     result = {}
     services =  @engines_api.getManagedServices # list_managed_services
         services.each do |service|
-          result[service.container_name.to_sym] = service.state.to_sym
+          result[service.container_name.to_sym] = service.read_state.to_sym
         end
 p :get_services_states
    p result
