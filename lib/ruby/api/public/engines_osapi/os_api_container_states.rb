@@ -1,4 +1,4 @@
-module ContainerStates
+module OsApiContainerStates
   
   def get_engines_states
     r =  @core_api.get_engines_states
