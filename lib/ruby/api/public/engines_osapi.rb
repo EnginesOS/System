@@ -8,8 +8,8 @@ require_relative 'first_run_wizard.rb'
 
 class EnginesOSapi
 
-  require_relative 'engines_osapi/container_states.rb'
-  include ContainerStates
+  require_relative 'engines_osapi/os_api_container_states.rb.rb'
+  include OsApiContainerStates
   require_relative 'engines_osapi/available_services_actions.rb'
   include AvailableServicesActions
   require_relative 'engines_osapi/certificate_actions.rb'
