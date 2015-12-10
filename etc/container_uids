@@ -4,7 +4,7 @@ mgmt		engines	21000 _mgmt
 rma			rma			22001 
 postgres	postgres	22002 pq_sql _pgsql_server
 postfix		postfix		22003 _smtp
-email		email	22003 _mail
+email		email	22003 _email
 pmgr		pmgr		22004  
 nginx		nginx		22005 _nginx
 mysql		mysql		22006 _mysql_server

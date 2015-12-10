@@ -43,7 +43,7 @@ module ManagedServiceConsumers
     unless @persistant
       result = add_consumer_to_service(service_hash)
     else
-      if service_hash[:fresh] == false || ! service_hash.key?(:fresh)
+      if service_hash.key?(:fresh) && service_hash[:fresh] == true
         result = true
       else
         service_hash[:fresh] = true  if service_hash[:persistant] == true
@@ -61,6 +61,7 @@ module ManagedServiceConsumers
   private
 
   def  add_consumer_to_service(service_hash)
+  
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
     @container_api.add_consumer_to_service(self, service_hash)
   end
