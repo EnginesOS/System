@@ -25,15 +25,15 @@ def create_service()
    end
    if envs.is_a?(Array)
      if@environments.is_a?(Array)
-       SystemUtils.debug_output( :envs, @environments)
+      
        @environments =  EnvironmentVariable.merge_envs(envs,@environments)    
      else
        @environments = envs
      end
    end
-  p :creatrine_service_containe
+
    if create_container
-      p :service_container_created
+
      service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
      if service_configurations.is_a?(Array)
        service_configurations.each do |configuration|

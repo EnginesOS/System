@@ -36,7 +36,7 @@ module PersistantServiceBuilder
       result = add_file_service(service_hash)
       return log_error_mesg('failed to create fs',self) unless result
     end
-    p :attach_service
+    p :builder_attach_service
     p service_hash
     @templater.fill_in_dynamic_vars(service_hash)
 

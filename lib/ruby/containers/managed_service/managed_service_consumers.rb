@@ -43,10 +43,10 @@ module ManagedServiceConsumers
     unless @persistant
       result = add_consumer_to_service(service_hash)
     else
-      if service_hash.key?(:fresh) && service_hash[:fresh] == true
+      if service_hash.key?(:fresh) && service_hash[:fresh] == false
         result = true
       else
-        service_hash[:fresh] = true  if service_hash[:persistant] == true
+        service_hash[:fresh] = false  if service_hash[:persistant] == true
         result = add_consumer_to_service(service_hash)
       end
     end
