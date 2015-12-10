@@ -6,7 +6,7 @@ module SmServiceControl
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash, no_engine = false)
     clear_error
-    SystemUtils.debug_output(  :create_and_register_service, service_hash)
+    SystemUtils.debug_output(  :sm_create_and_register_service, service_hash)
     #register with Engine
     unless ServiceDefinitions.is_soft_service?(service_hash) 
       test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
