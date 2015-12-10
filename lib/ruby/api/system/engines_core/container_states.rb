@@ -1,9 +1,7 @@
 module ContainerStates
   def get_engines_states
-  r=   @system_api.get_engines_states
-    p :get_engines_states
-            p r
-            r
+     @system_api.get_engines_states
+   
    end
    
    def get_services_states
