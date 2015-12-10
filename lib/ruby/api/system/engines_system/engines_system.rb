@@ -45,8 +45,7 @@ class SystemApi < ErrorsApi
     engines.each do |engine|
       result[engine.container_name.to_sym] = engine.read_state.to_sym
     end
-    p :get_engines_states
-    p result
+
     return result
   end
   
@@ -56,8 +55,7 @@ class SystemApi < ErrorsApi
         services.each do |service|
           result[service.container_name.to_sym] = service.read_state.to_sym
         end
-p :get_services_states
-   p result
+
         return result
    end
 
