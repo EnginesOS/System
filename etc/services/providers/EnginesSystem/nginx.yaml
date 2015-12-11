@@ -101,6 +101,7 @@ consumer_params:
   label: Engine Count
   regex_validator: "[0-9]"
   tooltip: "1"
+  field_type: text_field  
   hint: "Count of Engines to server 1-9"
   placeholder: " "
   mandatory: true
