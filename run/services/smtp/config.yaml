@@ -23,6 +23,11 @@ mapped_ports:
   port: 465
   publicFacing: true
   external: 465
+- !ruby/object:WorkPort
+  name: subs_mtp
+  port: 587
+  publicFacing: true
+  external: 587
 repo: na
 last_result:
 setState: running
