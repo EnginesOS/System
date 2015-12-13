@@ -66,10 +66,11 @@ class Templater
   def resolve_build_variable(match)
     name = match.sub!(/_Engines_Builder\(/, '')
     name.sub!(/[\)]/, '')
+    # FIXME Check exists and return error/ better that exception catch all
     var_method = @builder_public.method(name.to_sym)
     var_method.call
-  rescue StandardError
-    return 'no match for ' + name.to_s
+  rescue StandardError => e
+    return 'no match for _Engines_Builder(' + name.to_s + e.to_s + e.backtrace.to_s
   end
 
   def resolve_engines_variable(match)
