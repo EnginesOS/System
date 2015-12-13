@@ -21,8 +21,8 @@ immutable: false
 attach_post_build: true
 attach_requires_restart: false
 configurators:
- backup_notification:
-  name: backup_notification
+ backup_notification_email:
+  name: backup_notification_email
   label: email 
   description: Backup notification email 
   params:
