@@ -11,7 +11,28 @@ module EngineServiceOperations
   rescue StandardError => e
     log_exception(e)
   end
-
+  
+  def service_persistant_services(service_name)
+    params = {}
+    params[:parent_engine] = service_name
+    params[:persistant] = true
+    params[:container_type] ='service'
+    p :engine_persistant_services
+    p params
+    return check_sm_result(service_manager.get_engine_persistant_services(params))
+  rescue StandardError => e
+    log_exception(e)
+  end
+  
+  def service_attached_services(service_name)
+     params = {}
+     params[:parent_engine] = service_name
+     params[:container_type] = 'service'
+     return service_manager.find_engine_services_hashes(params)
+   rescue StandardError => e
+     log_exception(e)
+   end
+  
   def engine_attached_services(container_name)
     params = {}
     params[:parent_engine] = container_name

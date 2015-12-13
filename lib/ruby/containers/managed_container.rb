@@ -21,7 +21,8 @@ class ManagedContainer < Container
   include ManagedContainerWebSites
   require_relative 'managed_container/managed_container_api.rb'
   include ManagedContainerApi
-
+  require_relative 'managed_container/persistant_services.rb'
+    include PersistantServices
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
