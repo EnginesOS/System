@@ -24,7 +24,7 @@ mapped_ports:
   publicFacing: true
   external: 465
 - !ruby/object:WorkPort
-  name: subs_mtp
+  name: subs_smtp
   port: 587
   publicFacing: true
   external: 587

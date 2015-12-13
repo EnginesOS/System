@@ -21,6 +21,22 @@ immutable: false
 attach_post_build: true
 attach_requires_restart: false
 configurators:
+ backup_notification:
+  name: backup_notification
+  label: email 
+  description: Backup notification email 
+  params:
+   backup_email:
+    name: backup_email
+    regex_invalid_message: "muse be an email"
+    label: Backup System email notifcations
+    regex_validator: ".*[@]"
+    tooltip: " "
+    field_type: text_field
+    hint: ""
+    placeholder: "email address "
+    mandatory: true
+    comment: " "
  system_backup:
   name: system_backup
   label: System Backup
