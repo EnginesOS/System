@@ -6,7 +6,7 @@ module PersistantServices
     if services.is_a?(Array)
       n=0
       services.each do |service|
-        retval += ' ' + service_to_str(service_hash) #+ SystemUtils.service_hash_variables_as_str(service)
+        retval += ' ' + service_to_str(service) + SystemUtils.service_hash_variables_as_str(service)
       end
     elsif services.is_a?(Hash)
       retval = service_to_str(service_hash) #SystemUtils.service_hash_variables_as_str(services)
