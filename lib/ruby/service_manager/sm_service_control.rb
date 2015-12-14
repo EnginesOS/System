@@ -39,6 +39,7 @@ module SmServiceControl
     return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash
     service_hash[:remove_all_data] = service_query[:remove_all_data]
     return log_error_mesg('Failed to remove from managed service',service_hash) unless remove_from_managed_service(service_hash) || service_query.key?(:force)
+    return log_error_mesg('Failed to remove from managed service registry',service_hash) unless remove_from_managed_engines_registry(service_hash)
     return log_error_mesg('Failed to remove managed service from services registry', service_hash) unless test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
     return true
   rescue StandardError => e
