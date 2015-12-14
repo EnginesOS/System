@@ -23,7 +23,7 @@ def service_to_str(service_hash)
   service_hash[:variables].each do |variable|
     retval += ',' + variable[0].to_s + '%'  + variable[1].to_s
   end
-  retval+= ' '
+  retval+= ''
   retval
     
 end

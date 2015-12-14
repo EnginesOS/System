@@ -61,6 +61,6 @@ class ManagedEngine < ManagedContainer
 
 
   def engine_attached_services
-    return @container_api.engine_attached_services(@container_name)
+    return @container_api.engine_attached_services(self)
   end
 end
