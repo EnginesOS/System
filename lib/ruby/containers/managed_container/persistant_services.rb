@@ -16,7 +16,7 @@ module PersistantServices
     end
     p :engine_persistant_services
     p retval
-    return 'sources=' + retval
+    return  retval
   end
   
   # patha-pathb-servicetype.service_handle.param1.param2.param3
