@@ -5,10 +5,8 @@ module ContainerStates
    end
    
    def get_services_states
-   r =  @system_api.get_services_states
-     p :get_services_states
-        p r
-        r
+    @system_api.get_services_states
+
    end
  
 end

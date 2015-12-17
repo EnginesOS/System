@@ -121,6 +121,12 @@ module DockerCmdOptions
     volume_option += ' -v ' + container_log_dir(container) + '/vlog:/var/log/:rw' if incontainer_logdir != '/var/log' && incontainer_logdir != '/var/log/'
     volume_option += ' -v ' + service_sshkey_local_dir(container) + ':' + service_sshkey_container_dir(container) + ':rw' if container.is_service?
     volume_option += ' -v ' + SystemConfig.EnginesInternalCA + ':/usr/local/share/ca-certificates/engines_internal_ca.crt:ro ' unless container.no_ca_map
+     if container.large_temp
+       #FIXME use container for tmp to enforce a 1GB limit ?
+       temp_dir_name = container.ctype + '/' + container.container_name
+       volume_option += ' -v ' + dirname + ':/tmp:rw ' 
+       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)       
+     end
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
         unless volume.nil?

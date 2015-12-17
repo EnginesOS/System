@@ -47,6 +47,7 @@ mapped_ports: []
 last_result:
 setState: running
 nginxored: false
+large_temp: true
 conf_register_site: false
 conf_register_dns: true
 dependant_on:
