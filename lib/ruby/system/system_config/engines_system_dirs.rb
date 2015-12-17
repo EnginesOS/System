@@ -11,13 +11,17 @@ module EnginesSystemDirs
   @@SystemLogRoot = '/var/log/engines/'
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
-
+  @@EnginesTemp='opt/engines/tmp'
  
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   def SystemConfig.ServiceMapTemplateDir
     return @@ServiceMapTemplateDir
+  end
+  
+  def SystemConfig.EnginesTemp
+    return @@EnginesTemp
   end
 
   def SystemConfig.ServiceTemplateDir
