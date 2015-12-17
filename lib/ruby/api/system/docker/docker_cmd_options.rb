@@ -124,7 +124,7 @@ module DockerCmdOptions
      if container.large_temp
        #FIXME use container for tmp to enforce a 1GB limit ?
        temp_dir_name = container.ctype + '/' + container.container_name
-       volume_option += ' -v ' + dirname + ':/tmp:rw ' 
+       volume_option += ' -v ' + temp_dir_name + ':/tmp:rw ' 
        SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
        p        volume_option
      end
