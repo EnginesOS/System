@@ -58,20 +58,9 @@ class ManagedEngine < ManagedContainer
     false
   end
 
-  def engine_persistant_services
-    services = @container_api.engine_persistant_services(@container_name)
-    retval = ''
-    if services.is_a?(Array)
-      services.each do |service|
-        retval += ' ' + SystemUtils.service_hash_variables_as_str(service)
-      end
-    elsif services.is_a?(Hash)
-      retval = SystemUtils.service_hash_variables_as_str(services)
-    end
-    return retval
-  end
+
 
   def engine_attached_services
-    return @container_api.engine_attached_services(@container_name)
+    return @container_api.engine_attached_services(self)
   end
 end
