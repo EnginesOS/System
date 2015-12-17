@@ -21,3 +21,8 @@
 		then	
 			/build_scripts/finalise_environment.sh
 	fi
+	
+	if ! test -z "$VOLDIR"
+	then
+		ln -s $VOLDIR /data
+	fi

@@ -25,6 +25,8 @@ sleep 15
 /opt/engines/bin/eservice start mgmt >> /var/log/engines/engines_system_update_$ts.log
 docker start mgmt >> /var/log/engines/engines_system_update_$ts.log
  
+ /opt/engines/system/updates/scripts/
+ 
 touch /opt/engines/run/system/flags/update_engines_run
 rm /opt/engines/run/system/flags/update_engines_running
 

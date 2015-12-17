@@ -31,5 +31,12 @@ module EngineApiServiceRegistration
     service_hash = create_nginx_service_hash(container)
     engines_core.create_and_register_service(service_hash)
   end
+  
+  def engine_persistant_services(container)
+   
+    return engines_core.engine_persistant_services(container.container_name) if container.ctype != 'service'
+    return engines_core.service_persistant_services(container.container_name)
+  end
+  
 
 end
