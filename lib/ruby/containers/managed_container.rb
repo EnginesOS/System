@@ -27,6 +27,7 @@ class ManagedContainer < Container
   @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
+  @large_temp = false
   attr_accessor  :restart_required, :rebuild_required
 
   # Note desired state is teh next step and not the final result desired state is stepped through
@@ -58,7 +59,8 @@ class ManagedContainer < Container
   :hostname,\
   :domain_name,\
   :ctype,
-  :conf_self_start
+  :conf_self_start,
+  :large_temp
 
   def engine_name
     @container_name
