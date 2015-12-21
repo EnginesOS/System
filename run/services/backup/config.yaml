@@ -12,11 +12,6 @@ domain_name:
 environments: []
 image: engines/backup:_Engines_System(release)
 volumes:
- Configs: !ruby/object:Volume
-  name: Configs
-  remotepath: "/home/backup/.duply/"
-  localpath: "/opt/engines/etc/backup/configs"
-  mapping_permissions: "rw"
  Volumes: !ruby/object:Volume
   name: Volumes
   remotepath: "/backup_src/volumes/"

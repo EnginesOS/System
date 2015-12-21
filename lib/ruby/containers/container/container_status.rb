@@ -2,8 +2,7 @@ module ContainerStatus
   def read_state
     info = docker_info
 
-
-    return state unless info.is_a?(Hash)
+    return 'nocontainer' unless info.is_a?(Hash)
 
     if info.key?('State')
       if info['State']['Running']
