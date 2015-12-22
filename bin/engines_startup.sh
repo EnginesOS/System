@@ -1,13 +1,9 @@
 #!/bin/bash
 /opt/engines/bin/set_ip.sh
 
-docker_db_state=`strings /var/lib/docker/network/files/local-kv.db`
+sudo /opt/engines/scripts/_check_local-kv.sh
 
-	if test -z "$docker_db_state"
-		then
-			rm /var/lib/docker/network/files/local-kv.db
-	fi
- 
+
  chmod oug-w /opt/engines/etc/net/management
 
 echo Clearing Flags
