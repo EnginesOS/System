@@ -5,7 +5,7 @@ type_path: imap
 ctype: service
 persistant: true
 last_error: 
-memory: '128'
+memory: '192'
 hostname: imap
 domain_name: 
 environments:
