@@ -1,8 +1,9 @@
 #!/bin/bash
 /opt/engines/bin/set_ip.sh
 
+sudo /opt/engines/scripts/_check_local-kv.sh
 
- 
+
  chmod oug-w /opt/engines/etc/net/management
 
 echo Clearing Flags
