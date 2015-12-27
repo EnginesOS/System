@@ -37,6 +37,11 @@ volumes:
   remotepath: "/backup_src/logs"
   localpath: "/var/log/engines/"
   mapping_permissions: "ro"
+ BackupKeys: !ruby/object:Volume
+  name: BackupKeys
+  remotepath: "/home/backup/.gnupg"
+  localpath: "/opt/engines/etc/backup/keys/"
+  mapping_permissions: "rw"
 port: 
 mapped_ports: []
 last_result:
