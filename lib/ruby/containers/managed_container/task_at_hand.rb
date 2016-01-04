@@ -1,9 +1,9 @@
 module TaskAtHand
-  @task_timeout=300
+  @task_timeout = 300
   def desired_state(state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
-
+    @two_step_in_progress = false
 #       if current_set_state ==  curr_state
 ##         p :alreadt       
 ##         
@@ -23,7 +23,7 @@ module TaskAtHand
 #    p :in_p
 #    p action
 #    p action.class.name
-    
+    @two_step_in_progress = false
     curr_state = read_state
 #    p :read_state
 #    p curr_state
@@ -40,12 +40,15 @@ module TaskAtHand
     when :pause
       return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
+      @two_step_in_progress = true
       return desired_state('stopped', curr_state) if curr_state== 'running'
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
+      @two_step_in_progress = true
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :rebuild
+      @two_step_in_progress = true
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
@@ -55,20 +58,22 @@ module TaskAtHand
     when :destroy
       return desired_state('nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
-   
-    if tasks_final_state(action) == curr_state
-      puts 'already their'
-      @setState = curr_state
-      save_state
-      return curr_state
-      # sync gui with relaty it started but then stopped before gui updated
-    else
-      puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
-      puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
-      puts 'and finale state is ' + tasks_final_state(action)
-    end
+    
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
-     
+   
+#    if tasks_final_state(action) == curr_state
+#      puts 'already their'
+#      @setState = curr_state
+#      save_state
+#      return curr_state
+#      # sync gui with relaty it started but then stopped before gui updated
+#    else
+#      puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
+#      puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
+#      puts 'and finale state is ' + tasks_final_state(action)
+#    end
+   
+#     
     
     # Perhaps ?return clear_task_at_hand
     rescue StandardError => e 
@@ -113,6 +118,16 @@ module TaskAtHand
     @task_at_hand = nil
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     File.delete(fn) if File.exist?(fn)
+    if @two_step_in_progress == true
+      f = File.new(ContainerStateFiles.container_state_dir(self) + '/in_progress','w+')
+          f.write(' ')
+          f.close
+      @two_step_in_progress = false
+    else
+      fn = ContainerStateFiles.container_state_dir(self) + '/in_progress'
+      File.delete(fn) if File.exist?(fn)
+    end
+    
     rescue StandardError => e 
    # log_exception(e) Dont log exception 
       # well perhaps a perms or disk error but definitly not no such file
