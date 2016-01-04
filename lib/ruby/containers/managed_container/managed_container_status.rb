@@ -39,7 +39,8 @@ module ManagedContainerStatus
   end
 
   def is_error?    
-    return false unless task_at_hand.nil?
+    return false unless task_at_hand.nil? 
+    return false if in_two_step?
     state = read_state
     return true if @setState != state
     return false
@@ -63,6 +64,10 @@ module ManagedContainerStatus
   def rebuild_reason
     return false unless has_api?
     @container_api.rebuild_reason(self)
+  end
+  
+  def in_two_step?
+    return File.exist?(ContainerStateFiles.container_state_dir(self) + '/in_progress')
   end
 
 end

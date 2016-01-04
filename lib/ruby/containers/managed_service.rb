@@ -7,6 +7,8 @@ class ManagedService < ManagedContainer
   include    ManagedServiceConfigurations
   require_relative 'managed_service/managed_service_consumers.rb'
   include    ManagedServiceConsumers
+  require_relative 'managed_service/managed_service_readers.rb'
+  include    ManagedServiceReaders
   require_relative 'managed_service/managed_service_container_info.rb'
   include    ManagedServiceContainerInfo
   require_relative 'managed_service/managed_service_controls.rb'

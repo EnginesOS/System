@@ -303,4 +303,22 @@ consumer_params:
    sources:
     field_type: hidden
     name: sources
-    value: _Engines_Builder(engine_persistant_services)  
+    value: _Engines_Builder(engine_persistant_services)
+readers:
+ backup_keys:
+  name: backup_pass
+  title: "Back up encryption key password"
+  values: 
+    key_pass_phrase: 
+     name: key_pass_phrase
+     label: Password
+     type: text
+ public_key:
+  name: public_key
+  label: "Backup's Public Keyfile"
+  values:
+    public_key:
+     name: public_key
+     type: binary_file
+     label: none
+     

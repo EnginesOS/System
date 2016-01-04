@@ -6,7 +6,7 @@ ctype: service
 persistant: false
 conf_self_start: true
 last_error: 
-memory: '128'
+memory: '196'
 hostname: backup
 domain_name: 
 environments: []
