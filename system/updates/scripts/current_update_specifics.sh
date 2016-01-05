@@ -2,6 +2,10 @@
 ts=`date +%d%m%Y_%H:%M:%S`
 release=`cat /opt/engines/release`
 
+. /opt/engines/system/updates/routines/script_keys.sh
+
+refresh_mgmt_keys
+
 #as a matter of course
 docker pull engines/volbuilder:$release
 
