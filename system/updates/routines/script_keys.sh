@@ -15,7 +15,7 @@ function regenerate_keys {
 for script_name in `cat /opt/engines/etc/ssh/key_names`
 	
 do			
-				create_mgmt_script_key  $script_name >>/tmp/engines_install.log
+				create_mgmt_script_key  $script_name 
 
 		done 
 		
@@ -34,7 +34,7 @@ function refresh_mgmt_keys {
 		do
 			if ! test -f ~/.ssh/mgmt/${script_name}.pub
 			 then			
-				create_mgmt_script_key  $script_name >>/tmp/engines_install.log
+				create_mgmt_script_key  $script_name
 			fi
 		done 
 
