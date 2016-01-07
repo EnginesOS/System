@@ -11,24 +11,35 @@ function create_mgmt_script_key {
 }
 
 
-function setup_mgmt_keys {
+function regenerate_keys {
+for script_name in `cat /opt/engines/etc/ssh/key_names`
+	
+do			
+				create_mgmt_script_key  $script_name 
+
+		done 
+		
+if test -f ~/.ssh/authorized_keys.system
+ 		then 	
+ 			cat ~/.ssh/authorized_keys.system > ~/.ssh/authorized_keys
+ 		fi
+ chmod og-rw  /home/engines/.ssh/authorized_keys
+}
+
+function refresh_mgmt_keys {
 
 
-	if test -f ~/.ssh/authorized_keys.system
-	 then
-		rm ~/.ssh/authorized_keys.system
-	fi
 	#set_hostname restart_mgmt restart_system deb_update_status update_system access_system update_system_access regen_private update_engines_system_software update_engines_console_password
 	for script_name in `cat /opt/engines/etc/ssh/key_names`
-		do			
-			create_mgmt_script_key  $script_name >>/tmp/engines_install.log
+		do
+			if ! test -f ~/.ssh/mgmt/${script_name}.pub
+			 then			
+				create_mgmt_script_key  $script_name
+			fi
 		done 
 
- 	if test -f ~/.ssh/authorized_keys
- 		then
- 			cp ~/.ssh/authorized_keys /home/engines/.ssh/authorized_keys.console_access
- 			cat  /home/engines/.ssh/authorized_keys.console_access ~/.ssh/authorized_keys.system > ~/.ssh/authorized_keys
- 		else 
+ 	if test -f ~/.ssh/authorized_keys.system
+ 		then 	
  			cat ~/.ssh/authorized_keys.system > ~/.ssh/authorized_keys
  		fi
  chmod og-rw  /home/engines/.ssh/authorized_keys

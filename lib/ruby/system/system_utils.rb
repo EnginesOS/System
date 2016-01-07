@@ -258,6 +258,13 @@ class SystemUtils
   end
 
   def SystemUtils.service_hash_variables_as_str(service_hash)
+    json_str = service_hash[:variables].to_json
+     #json_str['publisher_namespace'] = service_hash[:publisher_namespace] 
+     #json_str['type_path'] = service_hash[:type_path]
+
+             p "AS_JSON++++++++++++++++++"
+             p json_str
+    
     argument = String.new
     if service_hash.key?(:publisher_namespace)
       argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'

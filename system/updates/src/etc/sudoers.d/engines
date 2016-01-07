@@ -1,0 +1,22 @@
+
+
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_system_update.sh
+engines ALL = (root) NOPASSWD: /bin/hostname
+engines ALL = (root) NOPASSWD: /sbin/reboot
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_key_dir.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_dir.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_restart_system.sh
+
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/restart_system.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_install_cert.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_install_ca.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_engines_system_software.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_engines_console_password.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_apt-get_update.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_base_os.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_mv_update_script.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/updates/to_run/_pre_start.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_check_local-kv.sh
+dhcp ALL = (root) NOPASSWD: /opt/engines/scripts/_refresh_local_hosted_domains.sh
+#Must have tailing empty line 
+#NEW

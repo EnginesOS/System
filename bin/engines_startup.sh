@@ -3,6 +3,11 @@
 
 sudo /opt/engines/scripts/_check_local-kv.sh
 
+if test -f /opt/engines/system/flags/replace_keys
+ then
+  /opt/engines/bin/replace_keys.sh
+  rm /opt/engines/system/flags/replace_keys
+ fi
 
  chmod oug-w /opt/engines/etc/net/management
 
@@ -41,7 +46,7 @@ if test -z "$docker_ip
   else
    echo -n $docker_ip > /opt/engines/etc/net/management
   fi
- 
+
 
 /opt/engines/bin/eservices check_and_act 
 
