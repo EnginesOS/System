@@ -14,4 +14,19 @@ module Service_ApiReaders
       @last_error = result[:stderr] # Dont log just set
       return result
     end
+    
+  def get_readers(container)
+    
+    service_def = SoftwareServiceDefinition.find(container.type_path, container.publisher_namespace )
+              
+    return {} unless service_def.key?(:actionators) 
+    return {} unless service_def[:actionators].is_a?(Hash?)
+    return {} unless  service_def[:actionators].key?(:readers)
+    return service_def[:actionators][:readers]
+           
+   end
+rescue StandardError => e
+  log_exception(e)
+  return {}
+   
 end
