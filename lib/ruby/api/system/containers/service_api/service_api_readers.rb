@@ -8,7 +8,7 @@ module Service_ApiReaders
           thr.join
         end
       rescue Timeout::Error
-        log_error_mesg('Timeout on running configurator',cmd)
+        log_error_mesg('Timeout on running reader',cmd)
         return {}
       end
       @last_error = result[:stderr] # Dont log just set
