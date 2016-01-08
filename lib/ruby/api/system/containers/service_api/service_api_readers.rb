@@ -1,4 +1,4 @@
-module Service_ApiReaders
+module ServiceApiReaders
   def retrieve_reader(container, reader_name)
       cmd = 'docker exec ' +  container.container_name.to_s + ' /home/readers/' + reader_name + '.sh \''       
       result = {}
