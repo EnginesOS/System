@@ -9,6 +9,10 @@ module TemplateActions
     return @core_api.get_resolved_string(env_value)
   end
 
+  def  get_resolved_engine_string(env_value, engine)
+    return @core_api.get_resolved_engine_string(env_value, engine)
+  end
+  
   def templated_software_service_definition(params)
     # ret_val = software_service_definition(params)
     @core_api.fillin_template_for_service_def(params)

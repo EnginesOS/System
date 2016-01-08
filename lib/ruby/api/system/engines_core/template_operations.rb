@@ -28,4 +28,15 @@ module TemplateOperations
 
     log_exception(e)
   end
+  
+  def get_resolved_engine_string(env_value, container)
+    templater = Templater.new(SystemAccess.new,container)
+        env_value = templater.apply_system_variables(env_value)
+        return env_value
+      rescue StandardError => e
+    
+        log_exception(e)
+  
+  end
+  
 end
