@@ -1,6 +1,7 @@
 module EngineApiDependancies
 
   def start_dependancies(container)
+    return true unless container.dependant_on.is_a?(Array)
     container.dependant_on.each do |service_name|
       p :checking
       p service_name
