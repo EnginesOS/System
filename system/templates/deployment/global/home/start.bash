@@ -8,12 +8,14 @@
  	  echo  "."
  		sleep 4
  	 done
+ 	 echo "Volume setup to Complete "
   fi
 if test -f $VOLDIR/.dynamic_persistance
   then
 	if ! test -f /home/app/.dynamic_persistance_restored
 	then
  		/home/engines/scripts/restore_dynamic_persistance.sh
+ 		 echo "Dyamic persistance restore Complete "
  	fi
  fi
 

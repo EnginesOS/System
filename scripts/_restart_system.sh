@@ -8,5 +8,5 @@ if test -f /opt/engines/run/system/flags/restart_disabled
 	echo '30 secs to shutdown'
 sleep 30
 
-docker stop `docker ps |awk '{print $1}'` 
+docker stop `docker ps |awk '{print $1}' |grep -v CONTAI ` 
 shutdown -r now
