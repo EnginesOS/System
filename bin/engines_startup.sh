@@ -18,15 +18,13 @@ rm -f /opt/engines/run/system/flags/engines_rebooting
 rm -f /opt/engines/run/system/flags/building_params 
 cp /etc/os-release /opt/engines/etc/os-release-host
 #rm -f /opt/engines/run/system/flags/
-/opt/engines/bin/eservice start dns
+
 
 	grep dhcp /etc/network/interfaces
 	 if test $? -eq 0
 	  then
 	 		/opt/engines/scripts/_refresh_local_hosted_domains.sh `/opt/engines/bin/get_ip.sh`
 	  fi
-docker start registry
-eservice start dns
 
 docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
 rm -f /opt/engines/etc/net/management
@@ -46,6 +44,21 @@ if test -z "$docker_ip
   else
    echo -n $docker_ip > /opt/engines/etc/net/management
   fi
+
+docker start registry
+/opt/engines/bin/eservice start dns
+/opt/engines/bin/eservice start mysql_server
+
+/opt/engines/bin/eservice start nginx
+
+#this dance ensures auth gets pub key from ftp
+#really only needs to happen firts time ftp is enabled 
+/opt/engines/bin/eservice start ftp
+/opt/engines/bin/eservice start auth
+# restart ftp in case dont have access keys from auth
+/opt/engines/bin/eservice stop ftp
+/opt/engines/bin/eservice start ftp
+
 
 
 /opt/engines/bin/eservices check_and_act 
