@@ -19,9 +19,9 @@ module Service_ApiReaders
     
     service_def = SoftwareServiceDefinition.find(container.type_path, container.publisher_namespace )
               
-    return {} unless service_def.key?(:actionators) 
-    return {} unless service_def[:actionators].is_a?(Hash?)
-    return {} unless  service_def[:actionators].key?(:readers)
+    return [] unless service_def.key?(:actionators) 
+    return [] unless service_def[:actionators].is_a?(Hash?)
+    return [] unless  service_def[:actionators].key?(:readers)
     return service_def[:actionators][:readers]
            
    end
