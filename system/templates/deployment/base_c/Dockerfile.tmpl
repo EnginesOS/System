@@ -8,7 +8,8 @@ RUN	apt-get update -y ;\
 	usermod -G containers -a www-data  #grant access to /run/flags etc
 	
 ENV ContUser www-data
-RUN  chown $ContUser /opt
+
+RUN  chown $ContUser /opt $HOME
 
 
 

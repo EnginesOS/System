@@ -31,13 +31,13 @@ rm -f /opt/engines/etc/net/management
 
 #FIXME below is a kludge
 
-if test -z "$docker_ip
+if test -z "$docker_ip"
  then
    sleep 5
        docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
  fi
  
- if test -z "$docker_ip
+ if test -z "$docker_ip"
  then
   echo Panic no IP address on docker0
   exit
