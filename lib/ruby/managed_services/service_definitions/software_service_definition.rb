@@ -88,7 +88,7 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
-    filename=dir + '/' + service_type + '/' + service_type+ '.yaml'
+    filename=dir + '/' + service_type + '/' + service_type+ '.yaml' 
     if File.exist?(filename)
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
@@ -111,7 +111,7 @@ class SoftwareServiceDefinition
         if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?('.') ==false
           search_dir(root + '/' + service_dir_entry,service_type)
         else
-          if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '/' + service_type  + '.yaml'  + '.yaml' )
+          if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '/' + service_type  + '.yaml'   )
             return load(dir,service_type)
           end
         end
