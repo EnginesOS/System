@@ -111,7 +111,7 @@ class SoftwareServiceDefinition
         if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?('.') ==false
           search_dir(root + '/' + service_dir_entry,service_type)
         else
-          if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '.yaml' )
+          if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '/' + service_type  + '.yaml'  + '.yaml' )
             return load(dir,service_type)
           end
         end
