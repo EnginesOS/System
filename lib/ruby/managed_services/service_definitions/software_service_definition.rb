@@ -88,12 +88,12 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
-    filename=dir + '/' + service_type + '.yaml'
+    filename=dir + '/' + service_type + '/' + service_type+ '.yaml'
     if File.exist?(filename)
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    SystemUtils.log_error_mesg('No Such Definitions File',dir.to_s + '/' + service_type.to_s)
+    SystemUtils.log_error_mesg('No Such Definitions File',dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s)
     return nil
   rescue Exception=>e
     SystemUtils.log_error_mesg('Error With',dir.to_s + '/' + service_type.to_s)
