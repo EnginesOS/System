@@ -60,6 +60,11 @@ class BuilderPublic
     @builder.blueprint
   end
 
+   def logs
+     @builder.running_logs
+   end
+   
+  
   def data_gid
     @builder.data_gid
   end
