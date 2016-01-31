@@ -62,8 +62,8 @@ echo Install to $destination
 				#echo $path_to_extracted
 				cd /tmp/$destination
 				#pwd
-				#echo "$extraction_command ../$package_name"				
-				$extraction_command ../$package_name
+				#echo "$extraction_command /tmp/$package_name"				
+				$extraction_command /tmp/$package_name
 				
 				path_to_extracted=$destination
 				cd /tmp
