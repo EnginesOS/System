@@ -65,6 +65,7 @@ echo Install to $destination
 				#echo "$extraction_command ../$package_name"				
 				$extraction_command ../$package_name
 				destination=app
+				path_to_extracted=app
 				cd /tmp
 				#pwd
 		else
