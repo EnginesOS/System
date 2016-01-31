@@ -56,16 +56,16 @@ echo Install to $destination
 	#echo "$path_to_extracted"
 	if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
 		then
-				path_to_extracted=app
-				mkdir /tmp/app
+				path_to_extracted=$destination
+				mkdir -p /tmp/$destination
 				#pwd
 				#echo $path_to_extracted
-				cd /tmp/app
+				cd /tmp/$destination
 				#pwd
 				#echo "$extraction_command ../$package_name"				
 				$extraction_command ../$package_name
-				destination=/home/app
-				path_to_extracted=app
+				
+				path_to_extracted=$destination
 				cd /tmp
 				#pwd
 		else
