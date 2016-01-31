@@ -1,0 +1,10 @@
+FROM  engines/openjdk:_Engines_System(release)
+ADD build_scripts /build_scripts
+ADD home home
+ENV ContUser www-data
+ENV CONTFSVolHome /home/fs/
+ADD engines home/engines
+#ADD home/app/webapps/ /usr/share/tomcat7/webapps
+RUN /usr/sbin/usermod -u 22671 www-data;\
+	usermod -a -G data-user www-data 
+	RUN  chown $ContUser /opt	
