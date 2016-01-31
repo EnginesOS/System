@@ -35,6 +35,7 @@ class EngineBuilder < ErrorsApi
   class BuildError < StandardError
     attr_reader :parent_exception, :method_name
     def initialize(parent)
+      @container=nil
       @parent_exception = parent
     end
   end
@@ -167,6 +168,7 @@ class EngineBuilder < ErrorsApi
     @service_builder.release_orphans
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
+    @container = mc
     build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(mc, build_report)
     cnt = 0
@@ -485,6 +487,11 @@ class EngineBuilder < ErrorsApi
   end
 
   #app_is_persistant
+  
+  def running_logs()
+    return @container.logs unless @container.nil?
+      return nil          
+  end
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
