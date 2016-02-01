@@ -34,7 +34,7 @@ module LocalFileServiceBuilder
   def add_file_service(service_hash)
     p 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s
     #  Default to engine
-    @app_is_persistant = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
+    @app_is_persistent = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
     service_hash = Volume.complete_service_hash(service_hash)
     p :complete_service_hash
     p service_hash

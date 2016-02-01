@@ -89,8 +89,8 @@
 					<li><a href="#method-i-write_files_for_docker">#write_files_for_docker</a>
 					<li><a href="#method-i-write_os_packages">#write_os_packages</a>
 					<li><a href="#method-i-write_pear_list">#write_pear_list</a>
-					<li><a href="#method-i-write_persistant_dirs">#write_persistant_dirs</a>
-					<li><a href="#method-i-write_persistant_files">#write_persistant_files</a>
+					<li><a href="#method-i-write_persistent_dirs">#write_persistent_dirs</a>
+					<li><a href="#method-i-write_persistent_files">#write_persistent_files</a>
 					<li><a href="#method-i-write_rake_list">#write_rake_list</a>
 					<li><a href="#method-i-write_run_install_script">#write_run_install_script</a>
 					<li><a href="#method-i-write_sed_strings">#write_sed_strings</a>
@@ -1122,8 +1122,8 @@
   <span class="ruby-identifier">chown_home_app</span>
   <span class="ruby-identifier">write_worker_commands</span>            
   <span class="ruby-identifier">write_sed_strings</span>
-  <span class="ruby-identifier">write_persistant_dirs</span>
-  <span class="ruby-identifier">write_persistant_files</span>
+  <span class="ruby-identifier">write_persistent_dirs</span>
+  <span class="ruby-identifier">write_persistent_files</span>
   <span class="ruby-identifier">insert_framework_frag_in_dockerfile</span>(<span
 								class="ruby-string">&quot;builder.mid.tmpl&quot;</span>)
   <span class="ruby-ivar">@docker_file</span>.<span
@@ -1341,10 +1341,10 @@
 			</div>
 
 
-			<div id="method-i-write_persistant_dirs" class="method-detail ">
+			<div id="method-i-write_persistent_dirs" class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">write_persistant_dirs</span><span
+					<span class="method-name">write_persistent_dirs</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1358,19 +1358,19 @@
 
 
 
-					<div class="method-source-code" id="write_persistant_dirs-source">
+					<div class="method-source-code" id="write_persistent_dirs-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/DockerFileBuilder.rb, line 155</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">write_persistant_dirs</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">write_persistent_dirs</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">log_build_output</span>(<span
-								class="ruby-string">&quot;setup persistant Dirs&quot;</span>)
+								class="ruby-string">&quot;setup persistent Dirs&quot;</span>)
 
     <span class="ruby-identifier">n</span>=<span class="ruby-value">0</span>
     <span class="ruby-ivar">@docker_file</span>.<span
 								class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;#Persistant Dirs&quot;</span>)
     <span class="ruby-ivar">@blueprint_reader</span>.<span
-								class="ruby-identifier">persistant_dirs</span>.<span
+								class="ruby-identifier">persistent_dirs</span>.<span
 								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
 								class="ruby-operator">|</span><span class="ruby-identifier">path</span><span
 								class="ruby-operator">|</span>
@@ -1436,10 +1436,10 @@
 			</div>
 
 
-			<div id="method-i-write_persistant_files" class="method-detail ">
+			<div id="method-i-write_persistent_files" class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">write_persistant_files</span><span
+					<span class="method-name">write_persistent_files</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1453,10 +1453,10 @@
 
 
 
-					<div class="method-source-code" id="write_persistant_files-source">
+					<div class="method-source-code" id="write_persistent_files-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/DockerFileBuilder.rb, line 207</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">write_persistant_files</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">write_persistent_files</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@docker_file</span>.<span
 								class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;#Persistant Files&quot;</span>)
@@ -1464,11 +1464,11 @@
 								class="ruby-string">&quot;set setup_env&quot;</span>)
     <span class="ruby-identifier">src_paths</span> = <span
 								class="ruby-ivar">@blueprint_reader</span>.<span
-								class="ruby-identifier">persistant_files</span>[<span
+								class="ruby-identifier">persistent_files</span>[<span
 								class="ruby-value">:src_paths</span>]
     <span class="ruby-identifier">dest_paths</span> =  <span
 								class="ruby-ivar">@blueprint_reader</span>.<span
-								class="ruby-identifier">persistant_files</span>[<span
+								class="ruby-identifier">persistent_files</span>[<span
 								class="ruby-value">:dest_paths</span>]
 
     <span class="ruby-identifier">src_paths</span>.<span

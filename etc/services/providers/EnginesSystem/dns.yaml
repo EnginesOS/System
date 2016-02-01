@@ -12,7 +12,7 @@ service_container: dns
 publisher_namespace: EnginesSystem
 immutable: true
 dedicated: false
-persistant: false
+persistent: false
 priority: 10
 service_handle_field: hostname
 attach_post_build: true

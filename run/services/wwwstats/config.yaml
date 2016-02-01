@@ -3,7 +3,7 @@ container_name: wwwstats
 publisher_namespace: EnginesSystem
 type_path: wwwstats
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '48'
 hostname: wwwstats

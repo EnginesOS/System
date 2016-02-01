@@ -53,9 +53,9 @@ class ManagedService < ManagedContainer
     @databases = dbs
     @framework = framework
     @runtime = runtime
-    @persistant = false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
+    @persistent = false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
   end
-  attr_reader :persistant, :type_path, :publisher_namespace
+  attr_reader :persistent, :type_path, :publisher_namespace
 
   def destroy
     log_error_mesg('Cannot call destroy on a service',self)

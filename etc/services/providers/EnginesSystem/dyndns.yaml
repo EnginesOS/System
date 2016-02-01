@@ -9,7 +9,7 @@ type_path: dyndns
 service_container: dyndns
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: hostname
 immutable: false
 attach_post_build: true

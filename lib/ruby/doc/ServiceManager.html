@@ -83,7 +83,7 @@
 					<li><a href="#method-i-find_engine_services_hashes">#find_engine_services_hashes</a>
 					<li><a href="#method-i-find_service_consumers">#find_service_consumers</a>
 					<li><a href="#method-i-get_all_engines_type_path_node">#get_all_engines_type_path_node</a>
-					<li><a href="#method-i-get_engine_persistant_services">#get_engine_persistant_services</a>
+					<li><a href="#method-i-get_engine_persistent_services">#get_engine_persistent_services</a>
 					<li><a href="#method-i-get_managed_engine_tree">#get_managed_engine_tree</a>
 					<li><a href="#method-i-get_orphaned_services_tree">#get_orphaned_services_tree</a>
 					<li><a href="#method-i-get_service_content">#get_service_content</a>
@@ -927,11 +927,11 @@
 			</div>
 
 
-			<div id="method-i-get_engine_persistant_services"
+			<div id="method-i-get_engine_persistent_services"
 				class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">get_engine_persistant_services</span><span
+					<span class="method-name">get_engine_persistent_services</span><span
 						class="method-args">(params)</span> <span
 						class="method-click-advice">click to toggle source</span>
 
@@ -946,10 +946,10 @@
 
 
 					<div class="method-source-code"
-						id="get_engine_persistant_services-source">
+						id="get_engine_persistent_services-source">
 						<pre>
 							<span class="ruby-comment"># File managed_services/service_manager/ServiceManager.rb, line 411</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_engine_persistant_services</span>(<span
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_engine_persistent_services</span>(<span
 								class="ruby-identifier">params</span>) <span
 								class="ruby-comment">#params is :engine_name</span>
   <span class="ruby-identifier">services</span> = <span
@@ -966,7 +966,7 @@
 								class="ruby-operator">|</span>
      <span class="ruby-identifier">matches</span> = <span
 								class="ruby-identifier">get_matched_leafs</span>(<span
-								class="ruby-identifier">service</span>,<span class="ruby-value">:persistant</span>,<span
+								class="ruby-identifier">service</span>,<span class="ruby-value">:persistent</span>,<span
 								class="ruby-keyword">true</span>)
      <span class="ruby-constant">SystemUtils</span>.<span
 								class="ruby-identifier">debug_output</span>(<span
@@ -1819,7 +1819,7 @@
 								class="ruby-identifier">params</span>[<span class="ruby-value">:remove_all_application_data</span>] <span
 								class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
          <span class="ruby-identifier">services</span> = <span
-								class="ruby-identifier">get_engine_persistant_services</span>(<span
+								class="ruby-identifier">get_engine_persistent_services</span>(<span
 								class="ruby-identifier">params</span>)
          <span class="ruby-identifier">services</span>.<span
 								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span

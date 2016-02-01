@@ -73,9 +73,9 @@ module AvailableServices
     if engine.is_a?(ManagedEngine)
       params = {}
       params[:engine_name] = engine.container_name
-      persistant_services = get_engine_persistant_services(params)
-      return nil if persistant_services.is_a?(FalseClass)
-      persistant_services.each do |service|
+      persistent_services = get_engine_persistent_services(params)
+      return nil if persistent_services.is_a?(FalseClass)
+      persistent_services.each do |service|
         type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
       end

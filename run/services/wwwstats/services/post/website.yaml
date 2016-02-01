@@ -4,7 +4,7 @@ type_path: nginx
 service_handle: email_admin
 service_container_name: nginx
 container_type: service
-persistant: false
+persistent: false
 variables:
  proto: https
  port: 8000

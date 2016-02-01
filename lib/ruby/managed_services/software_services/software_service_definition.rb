@@ -14,7 +14,7 @@ require_relative '../service_definitions/software_service_definition.rb'
 #              :service_type,
 #              :publisher_namespace,
 #              :service_container,
-#              :persistant,
+#              :persistent,
 #              :target_environment_variables
 #
 #

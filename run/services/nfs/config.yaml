@@ -3,7 +3,7 @@ container_name: nfs
 ctype: service
 publisher_namespace: EnginesSystem
 type_path: filesystem/service/nfs
-persistant: true
+persistent: true
 last_error: 
 memory: '36'
 hostname: nfs

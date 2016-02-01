@@ -5,7 +5,7 @@ module ManagedServiceConsumers
     return true if !is_running? && @soft_service
     return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false
-    return rm_consumer_from_service(service_hash) unless @persistant
+    return rm_consumer_from_service(service_hash) unless @persistent
     return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
     log_error_mesg('Not persitant or service hash missing remove data',service_hash)
   end
@@ -22,31 +22,31 @@ module ManagedServiceConsumers
   end
 
   def reregister_consumers
-    return true if @persistant == true
+    return true if @persistent == true
     return log_error_mesg('Cant register consumers as not running ',self)  if is_running? == false
     registered_hashes = registered_consumers
     return true if registered_hashes == nil
     registered_hashes.each do |service_hash|
-      add_consumer_to_service(service_hash) if service_hash[:persistant] == false
+      add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
     return true
   end
 
   def add_consumer(service_hash)
     return log_error_mesg('add consumer passed nil service_hash ','') unless service_hash.is_a?(Hash)
-    service_hash[:persistant] = @persistant
+    service_hash[:persistent] = @persistent
     result = false
-    # add/create persistant if fresh == true on not at all or if running create for no persistant
+    # add/create persistent if fresh == true on not at all or if running create for no persistent
     return true if !is_running? && @soft_service
 
     return log_error_mesg('service not running' ,self) unless is_running?
-    unless @persistant
+    unless @persistent
       result = add_consumer_to_service(service_hash)
     else
       if service_hash.key?(:fresh) && service_hash[:fresh] == false
         result = true
       else
-        service_hash[:fresh] = false  if service_hash[:persistant] == true
+        service_hash[:fresh] = false  if service_hash[:persistent] == true
         result = add_consumer_to_service(service_hash)
       end
     end

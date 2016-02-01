@@ -1,7 +1,7 @@
 --- !ruby/object:ManagedService
 container_name: email
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '90'
 hostname: email

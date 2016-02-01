@@ -9,8 +9,8 @@ class BluePrintReader
     @os_packages = []
   end
 
-  attr_reader :persistant_files,
-  :persistant_dirs,
+  attr_reader :persistent_files,
+  :persistent_dirs,
   :last_error,
   :mapped_ports,
   :environments,
@@ -68,8 +68,8 @@ class BluePrintReader
     read_os_packages
     read_app_packages
     read_rake_list
-    read_persistant_files
-    read_persistant_dirs
+    read_persistent_files
+    read_persistent_dirs
     read_web_port_overide
     return true
   rescue StandardError => e
@@ -91,21 +91,21 @@ class BluePrintReader
     end
   end
 
-  def read_persistant_dirs
+  def read_persistent_dirs
     log_build_output('Read Persistant Dirs')
-    @persistant_dirs = []
+    @persistent_dirs = []
     pds = @blueprint[:software][:persistent_directories]
     return true unless pds.is_a?(Array) # not an error just nada
     pds.each do |dir|
-      @persistant_dirs.push(dir[:path])
+      @persistent_dirs.push(dir[:path])
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
-  def read_persistant_files
+  def read_persistent_files
     log_build_output('Read Persistant Files')
-    @persistant_files = {}
+    @persistent_files = {}
     src_paths = []
     pfs = @blueprint[:software][:persistent_files]
     return true unless pfs.is_a?(Array) # not an error just nada
@@ -113,7 +113,7 @@ class BluePrintReader
       path = clean_path(file[:path])
       src_paths.push(path)
     end
-    @persistant_files[:src_paths] = src_paths
+    @persistent_files[:src_paths] = src_paths
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end

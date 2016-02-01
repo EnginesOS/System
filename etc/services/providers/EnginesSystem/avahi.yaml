@@ -12,7 +12,7 @@ service_container: avahi
 publisher_namespace: EnginesSystem
 immutable: true
 dedicated: false
-persistant: false
+persistent: false
 priority: 1
 service_handle_field: hostname
 attach_post_build: true

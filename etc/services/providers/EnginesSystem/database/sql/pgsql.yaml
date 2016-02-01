@@ -11,7 +11,7 @@ publisher_namespace: EnginesSystem
 type_path: database/sql/pgsql
 service_container: pgsql_server
 dedicated: false
-persistant: true
+persistent: true
 exclusive: true
 immutable: false
 shareable: true

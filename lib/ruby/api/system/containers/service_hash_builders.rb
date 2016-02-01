@@ -4,7 +4,7 @@ def create_dns_service_hash(engine)
   service_hash = {}
   service_hash[:publisher_namespace] = 'EnginesSystem'
   service_hash[:type_path] = 'dns'
-  service_hash[:persistant] = false
+  service_hash[:persistent] = false
   service_hash[:service_container_name] = 'dns'
   service_hash[:parent_engine] = engine.container_name
   service_hash[:container_type] = engine.ctype
@@ -27,7 +27,7 @@ def create_zeroconf_service_hash(engine)
   service_hash = {}
   service_hash[:publisher_namespace] = 'EnginesSystem'
   service_hash[:type_path] = 'avahi'
-  service_hash[:persistant] = false
+  service_hash[:persistent] = false
   service_hash[:service_container_name] = 'avahi'
   service_hash[:parent_engine] = engine.container_name
   service_hash[:container_type] = engine.ctype
@@ -63,7 +63,7 @@ def create_nginx_service_hash(engine)
   #    p :proto
   #    p proto
   service_hash = {}
-  service_hash[:persistant] = false
+  service_hash[:persistent] = false
   service_hash[:service_container_name] = 'nginx'
   service_hash[:type_path] = 'nginx'
   service_hash[:publisher_namespace] = 'EnginesSystem'

@@ -9,7 +9,7 @@ type_path: filesystem/service/dropbox
 publisher_namespace: EnginesSystem
 service_container: dropbox
 service_handle_field: name
-persistant: true
+persistent: true
 dedicated: false
 setup_params:
 consumer_params:

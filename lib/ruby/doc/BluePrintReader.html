@@ -88,8 +88,8 @@
 					<li><a href="#method-i-read_lang_fw_values">#read_lang_fw_values</a>
 					<li><a href="#method-i-read_os_packages">#read_os_packages</a>
 					<li><a href="#method-i-read_pear_list">#read_pear_list</a>
-					<li><a href="#method-i-read_persistant_dirs">#read_persistant_dirs</a>
-					<li><a href="#method-i-read_persistant_files">#read_persistant_files</a>
+					<li><a href="#method-i-read_persistent_dirs">#read_persistent_dirs</a>
+					<li><a href="#method-i-read_persistent_files">#read_persistent_files</a>
 					<li><a href="#method-i-read_rake_list">#read_rake_list</a>
 					<li><a href="#method-i-read_sed_strings">#read_sed_strings</a>
 					<li><a href="#method-i-read_services">#read_services</a>
@@ -244,18 +244,18 @@
 				<div class="method-description"></div>
 			</div>
 
-			<div id="attribute-i-persistant_dirs" class="method-detail">
+			<div id="attribute-i-persistent_dirs" class="method-detail">
 				<div class="method-heading attribute-method-heading">
-					<span class="method-name">persistant_dirs</span><span
+					<span class="method-name">persistent_dirs</span><span
 						class="attribute-access-type">[R]</span>
 				</div>
 
 				<div class="method-description"></div>
 			</div>
 
-			<div id="attribute-i-persistant_files" class="method-detail">
+			<div id="attribute-i-persistent_files" class="method-detail">
 				<div class="method-heading attribute-method-heading">
-					<span class="method-name">persistant_files</span><span
+					<span class="method-name">persistent_files</span><span
 						class="attribute-access-type">[R]</span>
 				</div>
 
@@ -755,8 +755,8 @@
        <span class="ruby-identifier">read_os_packages</span>
        <span class="ruby-identifier">read_app_packages</span>
        <span class="ruby-identifier">read_rake_list</span>
-       <span class="ruby-identifier">read_persistant_files</span>
-       <span class="ruby-identifier">read_persistant_dirs</span>
+       <span class="ruby-identifier">read_persistent_files</span>
+       <span class="ruby-identifier">read_persistent_dirs</span>
        <span class="ruby-identifier">read_web_port_overide</span>
      <span class="ruby-keyword">rescue</span> <span
 								class="ruby-constant">Exception</span>=<span
@@ -1349,10 +1349,10 @@
 			</div>
 
 
-			<div id="method-i-read_persistant_dirs" class="method-detail ">
+			<div id="method-i-read_persistent_dirs" class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">read_persistant_dirs</span><span
+					<span class="method-name">read_persistent_dirs</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1366,15 +1366,15 @@
 
 
 
-					<div class="method-source-code" id="read_persistant_dirs-source">
+					<div class="method-source-code" id="read_persistent_dirs-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/BluePrintReader.rb, line 99</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_persistant_dirs</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_persistent_dirs</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">log_build_output</span>(<span
 								class="ruby-string">&quot;Read Persistant Dirs&quot;</span>)
 
-    <span class="ruby-ivar">@persistant_dirs</span> = <span
+    <span class="ruby-ivar">@persistent_dirs</span> = <span
 								class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
 
     <span class="ruby-identifier">pds</span> =   <span class="ruby-ivar">@blueprint</span>[<span
@@ -1384,7 +1384,7 @@
 								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
 								class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span
 								class="ruby-operator">|</span>
-      <span class="ruby-ivar">@persistant_dirs</span>.<span
+      <span class="ruby-ivar">@persistent_dirs</span>.<span
 								class="ruby-identifier">push</span>(<span
 								class="ruby-identifier">dir</span>[<span class="ruby-value">:path</span>])
 
@@ -1409,10 +1409,10 @@
 			</div>
 
 
-			<div id="method-i-read_persistant_files" class="method-detail ">
+			<div id="method-i-read_persistent_files" class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">read_persistant_files</span><span
+					<span class="method-name">read_persistent_files</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1426,15 +1426,15 @@
 
 
 
-					<div class="method-source-code" id="read_persistant_files-source">
+					<div class="method-source-code" id="read_persistent_files-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/BluePrintReader.rb, line 118</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_persistant_files</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_persistent_files</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">log_build_output</span>(<span
 								class="ruby-string">&quot;Read Persistant Files&quot;</span>)
 
-    <span class="ruby-ivar">@persistant_files</span> = <span
+    <span class="ruby-ivar">@persistent_files</span> = <span
 								class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
     <span class="ruby-identifier">src_paths</span> = <span
 								class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
@@ -1467,7 +1467,7 @@
     <span class="ruby-identifier">p</span> <span class="ruby-value">:dest_paths</span>
     <span class="ruby-identifier">p</span> <span class="ruby-identifier">dest_paths</span>
 
-    <span class="ruby-ivar">@persistant_files</span>[<span
+    <span class="ruby-ivar">@persistent_files</span>[<span
 								class="ruby-value">:src_paths</span>]= <span
 								class="ruby-identifier">src_paths</span>
 

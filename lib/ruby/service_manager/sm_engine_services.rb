@@ -13,32 +13,32 @@ module SmEngineServices
     test_registry_result(system_registry_client.find_engine_service_hash(params))
   end
 
-  #@return [Array] of all service_hashs marked persistance true for :engine_name
+  #@return [Array] of all service_hashs marked persistence true for :engine_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_engine_persistant_services(params)
-    test_registry_result(system_registry_client.get_engine_persistant_services(params))
+  def get_engine_persistent_services(params)
+    test_registry_result(system_registry_client.get_engine_persistent_services(params))
   end
 
-  #@return [Array] of all service_hashs marked persistance false for :engine_name
+  #@return [Array] of all service_hashs marked persistence false for :engine_name
   # required keys
   # :engine_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_engine_nonpersistant_services(params)
-    test_registry_result(system_registry_client.get_engine_nonpersistant_services(params))
+  def get_engine_nonpersistent_services(params)
+    test_registry_result(system_registry_client.get_engine_nonpersistent_services(params))
   end
 
-  #service manager get non persistant services for engine_name
+  #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and remove hash
   #remove from service registry even if container is down
-  def deregister_non_persistant_services(engine)
+  def deregister_non_persistent_services(engine)
     clear_error
     params = {}
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
-    services = get_engine_nonpersistant_services(params)
-    #  p :deregister_non_persistant_services
+    services = get_engine_nonpersistent_services(params)
+    #  p :deregister_non_persistent_services
     #     p services.to_s
     return false  unless services.is_a?(Array)
     services.each do |service_hash|
@@ -50,20 +50,20 @@ module SmEngineServices
     log_exception(e)
   end
 
-  #service manager get non persistant services for engine_name
+  #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
-  def register_non_persistant_services(engine)
+  def register_non_persistent_services(engine)
     clear_error
     params = {}
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
-    services = get_engine_nonpersistant_services(params)
-    #  p :register_non_persistant_services
+    services = get_engine_nonpersistent_services(params)
+    #  p :register_non_persistent_services
     #   p services.to_s
     return log_error_mesg("No Services for " + params.to_s, services)  unless services.is_a?(Array)
     services.each do |service_hash|
-      register_non_persistant_service(service_hash)
+      register_non_persistent_service(service_hash)
     end
     return true
   rescue StandardError => e
@@ -77,16 +77,16 @@ module SmEngineServices
     log_exception(e)
   end
 
-  #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
-  #@ if :remove_all_data is true all data is deleted and all persistant services removed
+  #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
+  #@ if :remove_all_data is true all data is deleted and all persistent services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine_services(params)
     #   p :REMOVE_engine_services
     clear_error
     #    p params
-    services = test_registry_result(system_registry_client.get_engine_persistant_services(params))
-    #   p :persistant_services_FOR_REMOVAL
+    services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
+    #   p :persistent_services_FOR_REMOVAL
     #   p services
     services.each do | service |
       if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])

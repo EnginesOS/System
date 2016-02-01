@@ -94,7 +94,7 @@
 					<li><a href="#method-i-get_build_report">#get_build_report</a>
 					<li><a href="#method-i-get_container_memory_stats">#get_container_memory_stats</a>
 					<li><a href="#method-i-get_container_network_metrics">#get_container_network_metrics</a>
-					<li><a href="#method-i-get_engine_persistant_services">#get_engine_persistant_services</a>
+					<li><a href="#method-i-get_engine_persistent_services">#get_engine_persistent_services</a>
 					<li><a href="#method-i-get_managed_engine_tree">#get_managed_engine_tree</a>
 					<li><a href="#method-i-get_orphaned_services_tree">#get_orphaned_services_tree</a>
 					<li><a href="#method-i-get_system_load_info">#get_system_load_info</a>
@@ -1155,11 +1155,11 @@
 			</div>
 
 
-			<div id="method-i-get_engine_persistant_services"
+			<div id="method-i-get_engine_persistent_services"
 				class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">get_engine_persistant_services</span><span
+					<span class="method-name">get_engine_persistent_services</span><span
 						class="method-args">(params)</span> <span
 						class="method-click-advice">click to toggle source</span>
 
@@ -1174,15 +1174,15 @@
 
 
 					<div class="method-source-code"
-						id="get_engine_persistant_services-source">
+						id="get_engine_persistent_services-source">
 						<pre>
 							<span class="ruby-comment"># File api/system/EnginesCore.rb, line 325</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_engine_persistant_services</span>(<span
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_engine_persistent_services</span>(<span
 								class="ruby-identifier">params</span>)
   <span class="ruby-identifier">sm</span> = <span
 								class="ruby-identifier">loadServiceManager</span>()
           <span class="ruby-keyword">return</span> <span
-								class="ruby-identifier">sm</span>.<span class="ruby-identifier">get_engine_persistant_services</span>(<span
+								class="ruby-identifier">sm</span>.<span class="ruby-identifier">get_engine_persistent_services</span>(<span
 								class="ruby-identifier">params</span>)
     <span class="ruby-keyword">end</span>
 						</pre>
@@ -1945,10 +1945,10 @@
 								class="ruby-identifier">engine</span>.<span
 								class="ruby-identifier">containerName</span>
        
-      <span class="ruby-identifier">persistant_services</span> =  <span
-								class="ruby-identifier">get_engine_persistant_services</span>(<span
+      <span class="ruby-identifier">persistent_services</span> =  <span
+								class="ruby-identifier">get_engine_persistent_services</span>(<span
 								class="ruby-identifier">params</span>)
-      <span class="ruby-identifier">persistant_services</span>.<span
+      <span class="ruby-identifier">persistent_services</span>.<span
 								class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span
 								class="ruby-operator">|</span><span class="ruby-identifier">service</span><span
 								class="ruby-operator">|</span>

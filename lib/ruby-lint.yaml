@@ -133,11 +133,11 @@ requires:
  - /opt/engines/lib/ruby/engine_builder/docker_file_builder/docker_file_builder.rb
  - /opt/engines/lib/ruby/engine_builder/docker_file_builder/framework_modules.rb
  - /opt/engines/lib/ruby/engine_builder/service_builder/service_builder.rb
- - /opt/engines/lib/ruby/engine_builder/service_builder/non_persistant_service_builder.rb
+ - /opt/engines/lib/ruby/engine_builder/service_builder/non_persistent_service_builder.rb
  - /opt/engines/lib/ruby/engine_builder/service_builder/service_roll_back.rb
  - /opt/engines/lib/ruby/engine_builder/service_builder/service_checks.rb
  - /opt/engines/lib/ruby/engine_builder/service_builder/local_file_service_builder.rb
- - /opt/engines/lib/ruby/engine_builder/service_builder/persistant_service_builder.rb
+ - /opt/engines/lib/ruby/engine_builder/service_builder/persistent_service_builder.rb
  - /opt/engines/lib/ruby/engine_builder/service_builder/orphan_service_builder.rb
  - /opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb
  - /opt/engines/lib/ruby/managed_services/software_services/SoftwareService.rb

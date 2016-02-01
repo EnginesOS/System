@@ -7,7 +7,7 @@ type_path: mgmt
 service_container: auth
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: engine
 immutable: false
 attach_post_build: true

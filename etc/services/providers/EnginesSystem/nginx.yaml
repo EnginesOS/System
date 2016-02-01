@@ -11,7 +11,7 @@ type_path: nginx
 publisher_namespace: EnginesSystem
 service_container: nginx
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: fqdn
 immutable: false
 attach_post_build: true

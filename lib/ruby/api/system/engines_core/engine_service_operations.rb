@@ -1,25 +1,25 @@
 module EngineServiceOperations
   require_relative 'service_manager_access.rb'
-  def engine_persistant_services(container_name)
+  def engine_persistent_services(container_name)
     params = {}
     params[:parent_engine] = container_name
-    params[:persistant] = true
+    params[:persistent] = true
     params[:container_type] ='container'
-    p :engine_persistant_services
+    p :engine_persistent_services
     p params
-    return check_sm_result(service_manager.get_engine_persistant_services(params))
+    return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
     log_exception(e)
   end
   
-  def service_persistant_services(service_name)
+  def service_persistent_services(service_name)
     params = {}
     params[:parent_engine] = service_name
-    params[:persistant] = true
+    params[:persistent] = true
     params[:container_type] ='service'
-    p :engine_persistant_services
+    p :engine_persistent_services
     p params
-    return check_sm_result(service_manager.get_engine_persistant_services(params))
+    return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
     log_exception(e)
   end
@@ -47,9 +47,9 @@ module EngineServiceOperations
     check_sm_result(service_manager.service_is_registered?(service_hash))
   end
 
-  def get_engine_persistant_services(service_hash)
+  def get_engine_persistent_services(service_hash)
     return false unless check_engine_hash(service_hash)
-    check_sm_result(service_manager.get_engine_persistant_services(service_hash))
+    check_sm_result(service_manager.get_engine_persistent_services(service_hash))
   end
 
   def find_engine_services(service_query)

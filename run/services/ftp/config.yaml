@@ -3,7 +3,7 @@ container_name: ftp
 ctype: service
 publisher_namespace: EnginesSystem
 type_path: filesystem/service/ftp
-persistant: true
+persistent: true
 last_error: 
 memory: '56'
 hostname: ftp

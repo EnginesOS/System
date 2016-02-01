@@ -3,7 +3,7 @@ container_name: imap
 publisher_namespace: EnginesSystem
 type_path: imap
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '192'
 hostname: imap

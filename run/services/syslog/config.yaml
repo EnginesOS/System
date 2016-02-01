@@ -3,7 +3,7 @@ container_name: syslog
 publisher_namespace: EnginesSystem
 type_path: syslog
 ctype: service
-persistant: false
+persistent: false
 last_error: 
 memory: '32'
 hostname: syslog

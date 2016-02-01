@@ -8,7 +8,7 @@ type_path: filesystem/service/ftp
 service_container: ftp
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: true
+persistent: true
 service_handle_field: username
 immutable: false
 attach_post_build: true

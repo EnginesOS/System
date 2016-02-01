@@ -2,7 +2,7 @@
 container_name: cert_auth
 ctype: service
 conf_self_start: true
-persistant: false
+persistent: false
 publisher_namespace: EnginesSystem
 type_path: cert_auth
 last_error: 

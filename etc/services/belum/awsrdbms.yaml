@@ -12,7 +12,7 @@ service_handle_field: database_name
 type_path: database/sql/awsrdbms
 service_container: awsdb
 dedicated: false
-persistant: true
+persistent: true
 exclusive: true
 image_name: engines/awsdb
 setup_params:
