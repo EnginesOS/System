@@ -489,7 +489,7 @@ class EngineBuilder < ErrorsApi
   #app_is_persistent
   
   def running_logs()
-    return @container.logs unless @container.nil?
+    return @container.logs_container unless @container.nil?
       return nil          
   end
 
