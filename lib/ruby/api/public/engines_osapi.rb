@@ -72,6 +72,7 @@ class EnginesOSapi
     names = list_apps
     names.concat(list_services)
     names.concat(list_system_services)
+    names
   end
 
   def reserved_hostnames
