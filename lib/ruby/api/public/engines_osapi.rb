@@ -74,7 +74,7 @@ class EnginesOSapi
     names.concat(@core_api.list_system_services)
     names
     rescue StandardError => e
-      log_exception(e)
+    failed('Gui', 'reserved_engine_names', 'failed')
 
   end
 
@@ -90,7 +90,7 @@ class EnginesOSapi
     return success('Gui', 'First Run') if first_run.sucess
     failed('Gui', 'First Run', first_run.error.to_s)
   rescue StandardError => e
-    log_exception(e)
+
     failed('Gui', 'First Run', 'failed')
   end
 
