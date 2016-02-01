@@ -3,7 +3,7 @@ container_name: mysql_server
 publisher_namespace: EnginesSystem
 type_path: database/sql/mysql
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '256'
 hostname: mysql

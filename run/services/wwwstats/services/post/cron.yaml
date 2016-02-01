@@ -4,7 +4,7 @@ type_path: cron
 service_handle: www_stats_cron
 service_container_name: cron
 container_type: service
-persistant: false
+persistent: false
 variables:
  cron_job: "01 00 * * * /home/run_analysis.sh"
  title: "webalizer_run"

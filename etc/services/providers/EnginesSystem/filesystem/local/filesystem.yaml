@@ -10,7 +10,7 @@ description: "Provides Persistant File Storage"
 type_path: filesystem/local/filesystem
 service_container: volmanager
 publisher_namespace: EnginesSystem
-persistant: true
+persistent: true
 dedicated: false
 immutable: false
 shareable: true

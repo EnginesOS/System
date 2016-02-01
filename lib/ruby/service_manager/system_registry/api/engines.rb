@@ -9,14 +9,14 @@ module Engines
     rest_get('/v0/system_registry/engine/services/',{:params => params })
   end
 
-  def get_engine_nonpersistant_services(params)
-    params[:persistant] = false
-    rest_get('/v0/system_registry/engine/services/nonpersistant/',{:params => params })
+  def get_engine_nonpersistent_services(params)
+    params[:persistent] = false
+    rest_get('/v0/system_registry/engine/services/nonpersistent/',{:params => params })
   end
 
-  def get_engine_persistant_services(params)
-    params[:persistant] = true
-    rest_get('/v0/system_registry/engine/services/persistant/',{:params => params })
+  def get_engine_persistent_services(params)
+    params[:persistent] = true
+    rest_get('/v0/system_registry/engine/services/persistent/',{:params => params })
   end
 
   def add_to_managed_engines_registry(service_hash)

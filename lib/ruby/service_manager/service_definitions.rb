@@ -20,7 +20,7 @@ class ServiceDefinitions
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
      return SystemUtils.log_error_mesg('NO Service Definition File Found for:',service_hash) if service_def.nil?
      service_hash[:service_container_name] = service_def[:service_container]
-     service_hash[:persistant] = service_def[:persistant]
+     service_hash[:persistent] = service_def[:persistent]
      service_hash[:parent_engine] = container_name      
      service_hash[:container_type] = 'container' if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
      service_hash[:variables] = {} unless service_hash.has_key?(:variables)
@@ -46,13 +46,13 @@ class ServiceDefinitions
          SystemUtils.log_exception(e)
    end
 
- def self.is_service_persistant?(service_hash)
-  # unless service_hash.key?(:persistant) alway s check dont trust service_hash
+ def self.is_service_persistent?(service_hash)
+  # unless service_hash.key?(:persistent) alway s check dont trust service_hash
      persist = self.software_service_persistance(service_hash)
     return  SystemUtils.log_error_mesg('Failed to get persistance status for ',service_hash)  if persist.nil?
-     service_hash[:persistant] = persist
+     service_hash[:persistent] = persist
    #end
-   service_hash[:persistant]  
+   service_hash[:persistent]  
  rescue StandardError => e
    SystemUtils.log_exception(e)
  end
@@ -62,7 +62,7 @@ class ServiceDefinitions
  #@return nil if no software definition found
  def self.software_service_persistance(service_hash)
    service_definition = self.software_service_definition(service_hash)
-   return service_definition[:persistant] unless service_definition.nil?              
+   return service_definition[:persistent] unless service_definition.nil?              
    return nil 
    rescue StandardError => e
    SystemUtils.log_exception(e)

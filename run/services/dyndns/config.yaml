@@ -1,7 +1,7 @@
 --- !ruby/object:ManagedService
 container_name: dyndns
 ctype: service
-persistant: false
+persistent: false
 conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: dyndns

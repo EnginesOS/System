@@ -98,10 +98,10 @@ def do_cmd(c_type,container_name,command)
           end
         end
 
-when "persistant_services"
+when "persistent_services"
   params = Hash.new()
   params[:engine_name] =   container_name
-    result = engines_api.get_engine_persistant_services(params)
+    result = engines_api.get_engine_persistent_services(params)
     p result.to_s
 
 #remove the service matching the service_hash from the tree

@@ -236,7 +236,7 @@
   <span class="ruby-ivar">@framework</span>=<span
 								class="ruby-identifier">framework</span>
   <span class="ruby-ivar">@runtime</span>=<span class="ruby-identifier">runtime</span>
-  <span class="ruby-ivar">@persistant</span>=<span class="ruby-keyword">false</span>  <span
+  <span class="ruby-ivar">@persistent</span>=<span class="ruby-keyword">false</span>  <span
 								class="ruby-comment">#Persistant means niether service or engine need to be up/running or even exist for this service to exist</span>
 <span class="ruby-keyword">end</span>
 						</pre>
@@ -292,7 +292,7 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_running</span> <span
 								class="ruby-operator">==</span><span class="ruby-keyword">true</span>   <span
-								class="ruby-operator">||</span> <span class="ruby-ivar">@persistant</span> <span
+								class="ruby-operator">||</span> <span class="ruby-ivar">@persistent</span> <span
 								class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
     <span class="ruby-identifier">result</span> = <span
 								class="ruby-identifier">add_consumer_to_service</span>(<span
@@ -723,13 +723,13 @@
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_running</span> <span
 								class="ruby-operator">==</span><span class="ruby-keyword">true</span>   <span
 								class="ruby-operator">&amp;&amp;</span> ( <span
-								class="ruby-ivar">@persistant</span> <span class="ruby-operator">==</span> <span
+								class="ruby-ivar">@persistent</span> <span class="ruby-operator">==</span> <span
 								class="ruby-keyword">false</span>      <span
 								class="ruby-operator">||</span> ( <span class="ruby-identifier">service_hash</span>.<span
-								class="ruby-identifier">has_key?</span>(<span class="ruby-value">:delete_persistant</span>)  <span
+								class="ruby-identifier">has_key?</span>(<span class="ruby-value">:delete_persistent</span>)  <span
 								class="ruby-operator">&amp;&amp;</span> <span
 								class="ruby-identifier">service_hash</span>[<span
-								class="ruby-value">:delete_persistant</span>] <span
+								class="ruby-value">:delete_persistent</span>] <span
 								class="ruby-operator">==</span> <span class="ruby-keyword">true</span> ))
     <span class="ruby-identifier">p</span> <span class="ruby-value">:removing_consumer</span>
     <span class="ruby-identifier">result</span> = <span

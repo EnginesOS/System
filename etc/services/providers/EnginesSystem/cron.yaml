@@ -11,7 +11,7 @@ type_path: cron
 service_container: cron
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: title
 immutable: false
 attach_post_build: true

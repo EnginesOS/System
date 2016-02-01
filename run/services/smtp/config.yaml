@@ -3,7 +3,7 @@ container_name: smtp
 publisher_namespace: EnginesSystem
 type_path: smtp
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '32'
 hostname: smtp

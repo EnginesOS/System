@@ -52,7 +52,7 @@ end
   end
 
   
-  #@return an [Array] of service_hashs of Orphaned persistant services matching @params [Hash]
+  #@return an [Array] of service_hashs of Orphaned persistent services matching @params [Hash]
    # required keys
    # :publisher_namespace
    # optional

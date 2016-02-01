@@ -11,7 +11,7 @@ publisher_namespace: EnginesSystem
 type_path: nosql_database
 service_container: mongo_server
 dedicated: false
-persistant: true
+persistent: true
 exclusive: true
 image_name: engines/mongo_server
 service_handle_field: database_name

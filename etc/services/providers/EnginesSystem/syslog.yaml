@@ -14,7 +14,7 @@ immutable: false
 attach_post_build: false
 attach_requires_restart: false
 dedicated: false
-persistant: true
+persistent: true
 exclusive: true
 shareable: true
 service_handle_field: container_name

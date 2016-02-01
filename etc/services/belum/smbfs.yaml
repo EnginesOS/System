@@ -7,7 +7,7 @@ description: "Windows Sharing of Persistant File Storage"
 type_path: filesystem/remote/smbfs
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: true
+persistent: true
 service_handle_field: name
 setup_params:
 consumer_params:

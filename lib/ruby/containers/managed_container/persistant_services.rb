@@ -1,7 +1,7 @@
 module PersistantServices
   
-  def engine_persistant_services
-    services = @container_api.engine_persistant_services(self)
+  def engine_persistent_services
+    services = @container_api.engine_persistent_services(self)
     retval = ''
     if services.is_a?(Array)
       n=0
@@ -14,7 +14,7 @@ module PersistantServices
     elsif services.is_a?(Hash)
       retval = service_to_str(service_hash) #SystemUtils.service_hash_variables_as_str(services)
     end
-    p :engine_persistant_services
+    p :engine_persistent_services
     p retval
     return  retval
   end

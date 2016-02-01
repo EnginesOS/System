@@ -13,7 +13,7 @@ module ManagedServiceControls
   
 def create_service()
    SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
-   envs = @container_api.load_and_attach_persistant_services(self)
+   envs = @container_api.load_and_attach_persistent_services(self)
    shared_envs = @container_api.load_and_attach_shared_services(self)
    if shared_envs.is_a?(Array)
      if envs.is_a?(Array) == false
@@ -41,8 +41,8 @@ def create_service()
        end
      end
     # register_with_dns
-     @container_api.load_and_attach_nonpersistant_services(self)
-   #  @container_api.register_non_persistant_services(self)
+     @container_api.load_and_attach_nonpersistent_services(self)
+   #  @container_api.register_non_persistent_services(self)
      reregister_consumers
      return true
    else

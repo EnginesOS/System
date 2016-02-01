@@ -86,8 +86,8 @@
 					<li><a href="#method-i-create_httaccess">#create_httaccess</a>
 					<li><a href="#method-i-create_install_script">#create_install_script</a>
 					<li><a href="#method-i-create_managed_container">#create_managed_container</a>
-					<li><a href="#method-i-create_non_persistant_services">#create_non_persistant_services</a>
-					<li><a href="#method-i-create_persistant_services">#create_persistant_services</a>
+					<li><a href="#method-i-create_non_persistent_services">#create_non_persistent_services</a>
+					<li><a href="#method-i-create_persistent_services">#create_persistent_services</a>
 					<li><a href="#method-i-create_php_ini">#create_php_ini</a>
 					<li><a href="#method-i-create_post_install_script">#create_post_install_script</a>
 					<li><a href="#method-i-create_scritps">#create_scritps</a>
@@ -670,7 +670,7 @@
 
     <span class="ruby-identifier">read_web_user</span>
 
-    <span class="ruby-identifier">create_persistant_services</span>
+    <span class="ruby-identifier">create_persistent_services</span>
 
     <span class="ruby-ivar">@blueprint_reader</span>.<span
 								class="ruby-identifier">environments</span>.<span
@@ -805,7 +805,7 @@
 								class="ruby-identifier">create_managed_container</span>()
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">mc</span> <span
 								class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
-        <span class="ruby-identifier">create_non_persistant_services</span>
+        <span class="ruby-identifier">create_non_persistent_services</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">log_build_output</span>(<span
@@ -1408,11 +1408,11 @@
 			</div>
 
 
-			<div id="method-i-create_non_persistant_services"
+			<div id="method-i-create_non_persistent_services"
 				class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">create_non_persistant_services</span><span
+					<span class="method-name">create_non_persistent_services</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1427,10 +1427,10 @@
 
 
 					<div class="method-source-code"
-						id="create_non_persistant_services-source">
+						id="create_non_persistent_services-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/EngineBuilder.rb, line 660</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_non_persistant_services</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_non_persistent_services</span>
   <span class="ruby-ivar">@blueprint_reader</span>.<span
 								class="ruby-identifier">services</span>.<span
 								class="ruby-identifier">each</span>() <span class="ruby-keyword">do</span> <span
@@ -1453,7 +1453,7 @@
 								class="ruby-keyword">false</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">service_def</span>[<span
-								class="ruby-value">:persistant</span>] <span
+								class="ruby-value">:persistent</span>] <span
 								class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
       <span class="ruby-keyword">next</span>
     <span class="ruby-keyword">end</span>
@@ -1489,10 +1489,10 @@
 			</div>
 
 
-			<div id="method-i-create_persistant_services" class="method-detail ">
+			<div id="method-i-create_persistent_services" class="method-detail ">
 
 				<div class="method-heading">
-					<span class="method-name">create_persistant_services</span><span
+					<span class="method-name">create_persistent_services</span><span
 						class="method-args">()</span> <span class="method-click-advice">click
 						to toggle source</span>
 
@@ -1507,10 +1507,10 @@
 
 
 					<div class="method-source-code"
-						id="create_persistant_services-source">
+						id="create_persistent_services-source">
 						<pre>
 							<span class="ruby-comment"># File engine_builder/EngineBuilder.rb, line 705</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_persistant_services</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_persistent_services</span>
 
   <span class="ruby-identifier">service_cnt</span>=<span
 								class="ruby-value">0</span>
@@ -1538,14 +1538,14 @@
 								class="ruby-keyword">false</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">service_def</span>[<span
-								class="ruby-value">:persistant</span>] <span
+								class="ruby-value">:persistent</span>] <span
 								class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
       <span class="ruby-operator">+</span><span class="ruby-operator">+</span><span
 								class="ruby-identifier">service_cnt</span>
       <span class="ruby-keyword">next</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">service_hash</span>[<span
-								class="ruby-value">:persistant</span>] =<span
+								class="ruby-value">:persistent</span>] =<span
 								class="ruby-keyword">true</span>
     <span class="ruby-keyword">end</span>
 
@@ -2452,8 +2452,8 @@
 							<span class="ruby-comment"># File engine_builder/EngineBuilder.rb, line 528</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">post_failed_build_clean_up</span>
   <span class="ruby-comment">#remove containers</span>
-  <span class="ruby-comment">#remove persistant services (if created/new)</span>
-  <span class="ruby-comment">#deregister non persistant services (if created)</span>
+  <span class="ruby-comment">#remove persistent services (if created/new)</span>
+  <span class="ruby-comment">#deregister non persistent services (if created)</span>
   <span class="ruby-identifier">p</span> <span class="ruby-value">:Clean_up_Failed_build</span>
   <span class="ruby-ivar">@blueprint_reader</span>.<span
 								class="ruby-identifier">services</span>.<span
@@ -2464,12 +2464,12 @@
 								class="ruby-value">:fresh</span>] <span class="ruby-operator">==</span> <span
 								class="ruby-keyword">true</span>
       <span class="ruby-identifier">service_hash</span>[<span
-								class="ruby-value">:delete_persistant</span>]=<span
+								class="ruby-value">:delete_persistent</span>]=<span
 								class="ruby-keyword">true</span>
       <span class="ruby-ivar">@core_api</span>.<span
 								class="ruby-identifier">dettach_service</span>(<span
 								class="ruby-identifier">service_hash</span>) <span
-								class="ruby-comment">#true is delete persistant</span>
+								class="ruby-comment">#true is delete persistent</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">close_all</span>

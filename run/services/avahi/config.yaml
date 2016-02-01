@@ -3,7 +3,7 @@ container_name: avahi
 publisher_namespace: EnginesSystem
 type_path: avahi
 ctype: service
-persistant: false
+persistent: false
 conf_self_start: true
 last_error: 
 memory: '32'

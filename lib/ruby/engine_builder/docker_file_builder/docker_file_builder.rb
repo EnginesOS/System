@@ -49,8 +49,8 @@ class DockerFileBuilder
     write_database_seed
     # write_worker_commands
     write_sed_strings
-    write_persistant_dirs
-    write_persistant_files
+    write_persistent_dirs
+    write_persistent_files
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_line('')
     write_rake_list
@@ -64,7 +64,7 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_run_install_script
     set_user('0')
-    setup_persitant_app if @build_params[:app_is_persistant]
+    setup_persitant_app if @build_params[:app_is_persistent]
     prepare_persitant_source
     write_data_permissions
     finalise_files
@@ -141,15 +141,15 @@ class DockerFileBuilder
     SystemUtils.log_exception(e)
   end
 
-  def write_persistant_dirs
-    log_build_output('setup persistant Dirs')
+  def write_persistent_dirs
+    log_build_output('setup persistent Dirs')
     paths = ''
     write_line('#Persistant Dirs')
-    @blueprint_reader.persistant_dirs.each do |path|
+    @blueprint_reader.persistent_dirs.each do |path|
       path.chomp!('/')
       paths += path + ' ' unless path.nil?
     end
-    write_build_script('persistant_dirs.sh  ' + paths)
+    write_build_script('persistent_dirs.sh  ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -173,11 +173,11 @@ class DockerFileBuilder
     end
   end
 
-  def write_persistant_files
+  def write_persistent_files
     write_line('#Persistant Files')
     log_build_output('set setup_env')
     paths = ''
-    src_paths = @blueprint_reader.persistant_files[:src_paths]
+    src_paths = @blueprint_reader.persistent_files[:src_paths]
     return if src_paths.nil?
     src_paths.each do |path|
       dir = File.dirname(path)
@@ -189,7 +189,7 @@ class DockerFileBuilder
       end
       paths += path + ' '
     end
-    write_build_script('persistant_files.sh   ' + paths)
+    write_build_script('persistent_files.sh   ' + paths)
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

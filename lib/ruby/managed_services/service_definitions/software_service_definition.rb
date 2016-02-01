@@ -12,7 +12,7 @@ class SoftwareServiceDefinition
   :service_type,
   :publisher_namespace,
   :service_container,
-  :persistant,
+  :persistent,
   :target_environment_variables,
   :service_handle_field
   def SoftwareServiceDefinition.from_yaml( yaml )
@@ -123,13 +123,13 @@ class SoftwareServiceDefinition
     SystemUtils.log_exception(e)
   end
 
-  def SoftwareServiceDefinition.is_persistant?(params)
+  def SoftwareServiceDefinition.is_persistent?(params)
     service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
     if service == nil
       return nil
     end
-    return false unless service.key?(:persistant)
-    return service[:persistant]
+    return false unless service.key?(:persistent)
+    return service[:persistent]
   end
   
 def SoftwareServiceDefinition.is_soft_service?(service_hash)

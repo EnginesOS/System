@@ -3,7 +3,7 @@ container_name: nginx
 publisher_namespace: EnginesSystem
 type_path: nginx
 ctype: service
-persistant: false
+persistent: false
 publisher_namespace: EnginesSystem
 type_path: nginx
 last_error: 

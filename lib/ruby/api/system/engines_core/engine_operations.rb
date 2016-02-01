@@ -2,7 +2,7 @@ module EnginesOperations
   require_relative 'service_manager_access.rb'
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
-  #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
+  #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
   def delete_engine(params)
    # return log_error_mesg('Failed to remove engine as has container ',params) if 

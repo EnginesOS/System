@@ -2,7 +2,7 @@ require_relative '../../service_manager/service_definitions.rb'
 
 class ServiceBuilder < ErrorsApi
 
-  attr_reader :volumes, :app_is_persistant
+  attr_reader :volumes, :app_is_persistent
 
   require_relative 'orphan_service_builder.rb'
   include OrphansServiceBuilder
@@ -12,9 +12,9 @@ class ServiceBuilder < ErrorsApi
   include ServiceRollBack
   require_relative 'service_checks.rb'
   include ServiceChecks
-  require_relative 'persistant_service_builder.rb'
+  require_relative 'persistent_service_builder.rb'
   include PersistantServiceBuilder
-  require_relative 'non_persistant_service_builder.rb'
+  require_relative 'non_persistent_service_builder.rb'
   include NonPersistantServiceBuilder
   def initialize(core_api, templater, engine_name, attached_services)
     @engine_name = engine_name
@@ -23,7 +23,7 @@ class ServiceBuilder < ErrorsApi
     @attached_services =  attached_services
     @volumes = {}
     @orphans = []
-    @app_is_persistant = false
+    @app_is_persistent = false
   end
 
 end

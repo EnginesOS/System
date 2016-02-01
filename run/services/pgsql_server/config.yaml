@@ -3,7 +3,7 @@ container_name: pgsql_server
 publisher_namespace: EnginesSystem
 type_path: database/sql/pgsql
 ctype: service
-persistant: true
+persistent: true
 last_error: 
 memory: '160'
 hostname: pgsql

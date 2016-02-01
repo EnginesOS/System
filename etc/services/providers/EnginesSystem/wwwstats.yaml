@@ -11,7 +11,7 @@ service_container: wwwstats
 publisher_namespace: EnginesSystem
 immutable: false
 dedicated: false
-persistant: false
+persistent: false
 priority: 0
 service_handle_field: fqdn
 immutable: false
