@@ -20,9 +20,10 @@ module ServiceActions
   end
 
   def list_services
-    @core_api.list_managed_services
+    @core_api.
   rescue StandardError => e
     log_exception_and_fail('list_services', e)
+    return []
   end
 
   def getManagedServices
@@ -93,6 +94,10 @@ module ServiceActions
     services = []
     services.push('registry')
     return services
+    rescue StandardError => e
+      log_exception_and_fail('set_engine_hostname_details ', e)
+    
+    return []
   end
 
   def set_service_hostname_properties(params)

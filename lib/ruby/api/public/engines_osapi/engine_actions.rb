@@ -3,6 +3,7 @@ module EngineActions
     @core_api.list_managed_engines
   rescue StandardError => e
     log_exception_and_fail('list_apps', e)
+    return []
   end
 
   def getManagedEngines

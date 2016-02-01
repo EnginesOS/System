@@ -70,12 +70,13 @@ class EnginesOSapi
 
   def reserved_engine_names
     names = list_apps
-    names.concat(@core_api.list_services)
-    names.concat(@core_api.list_system_services)
+    names.concat(list_services)
+    names.concat(list_system_services)
     names
     rescue StandardError => e
+       SystemUtils.log_exception(e)
     failed('Gui', 'reserved_engine_names', 'failed')
-
+    return []
   end
 
   def reserved_hostnames
