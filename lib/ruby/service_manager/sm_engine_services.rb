@@ -13,14 +13,14 @@ module SmEngineServices
     test_registry_result(system_registry_client.find_engine_service_hash(params))
   end
 
-  #@return [Array] of all service_hashs marked persistance true for :engine_name
+  #@return [Array] of all service_hashs marked persistence true for :engine_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     test_registry_result(system_registry_client.get_engine_persistent_services(params))
   end
 
-  #@return [Array] of all service_hashs marked persistance false for :engine_name
+  #@return [Array] of all service_hashs marked persistence false for :engine_name
   # required keys
   # :engine_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method

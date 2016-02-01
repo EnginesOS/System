@@ -10,12 +10,12 @@
  	 done
  	 echo "Volume setup to Complete "
   fi
-if test -f $VOLDIR/.dynamic_persistance
+if test -f $VOLDIR/.dynamic_persistence
   then
-	if ! test -f /home/app/.dynamic_persistance_restored
+	if ! test -f /home/app/.dynamic_persistence_restored
 	then
- 		/home/engines/scripts/restore_dynamic_persistance.sh
- 		 echo "Dyamic persistance restore Complete "
+ 		/home/engines/scripts/restore_dynamic_persistence.sh
+ 		 echo "Dyamic persistence restore Complete "
  	fi
  fi
 

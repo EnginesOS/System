@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-for path in `cat $VOLDIR/.dynamic_persistance`
+for path in `cat $VOLDIR/.dynamic_persistence`
       do
       path=`echo $path | sed "/[.][.]/s///g" | sed "/[&;><|]/s///g"` 
     
@@ -13,4 +13,4 @@ for path in `cat $VOLDIR/.dynamic_persistance`
 		fi	
 	done
 	
-	touch /home/app/.dynamic_persistance_restored
+	touch /home/app/.dynamic_persistence_restored
