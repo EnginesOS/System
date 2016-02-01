@@ -20,7 +20,8 @@ module ServiceActions
   end
 
   def list_services
-    @core_api.
+    @core_api.list_services
+    
   rescue StandardError => e
     log_exception_and_fail('list_services', e)
     return []
