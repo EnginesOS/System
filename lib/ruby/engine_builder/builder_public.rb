@@ -61,6 +61,7 @@ class BuilderPublic
   end
 
    def logs
+     sleep(2)
      @builder.running_logs
    end
    
