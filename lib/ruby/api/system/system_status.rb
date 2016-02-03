@@ -24,8 +24,6 @@ class SystemStatus
 
   def self.is_engines_system_updating?
     r = File.exist?(SystemConfig.EnginesSystemUpdatingFlag)
-    p :update_status
-    p r
     r
   end
 
