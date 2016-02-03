@@ -2,7 +2,7 @@
  touch /opt/engines/run/system/flags/engines_rebooting
  if ! test -f /etc/engines_reboot_disabled
  	then
-		sudo nohup /opt/engines/scripts/_restart_system.sh  &
+		sudo  /opt/engines/scripts/_restart_system.sh  &
 		echo restarting
 		exit
 	fi
