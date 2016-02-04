@@ -1,6 +1,6 @@
 module SmAttachStaticServices
   #@returns boolean
-  #load persistant and non persistant service definitions off disk and registers them
+  #load persistent and non persistent service definitions off disk and registers them
   def load_and_attach_services(dirname,container)
     clear_error
     container.environments  = [] if container.environments .nil?
@@ -18,7 +18,7 @@ module SmAttachStaticServices
         templater.proccess_templated_service_hash(service_hash)
         SystemUtils.debug_output(  :templated_service_hash, service_hash)
         
-        if service_hash[:persistant] == false || test_registry_result(system_registry_client.service_is_registered?(service_hash)) == false
+        if service_hash[:persistent] == false || test_registry_result(system_registry_client.service_is_registered?(service_hash)) == false
           SystemUtils.debug_output(  :creating_static, service_hash)
           create_and_register_service(service_hash)
         else

@@ -24,13 +24,13 @@ module ManagedServiceActions
     @core_api.get_registered_against_service(params)
   end
 
-  # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistant_services(params)
-    @core_api.get_active_persistant_services(params)
+  def get_active_persistent_services(params)
+    @core_api.get_active_persistent_services(params)
   end
 
-  # @return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     @core_api.get_orphaned_services(params)
@@ -61,8 +61,8 @@ module ManagedServiceActions
     return s
   end
 
-  def get_engine_persistant_services(params)
-    @core_api.get_engine_persistant_services(params)
+  def get_engine_persistent_services(params)
+    @core_api.get_engine_persistent_services(params)
   end
 
   # @returns [EnginesOSapiResult]

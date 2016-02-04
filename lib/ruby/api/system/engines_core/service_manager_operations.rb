@@ -1,12 +1,12 @@
 module ServiceManagerOperations
 
   require_relative 'service_manager_access.rb'
-  def register_non_persistant_services(engine)
-    service_manager.register_non_persistant_services(engine)
+  def register_non_persistent_services(engine)
+    service_manager.register_non_persistent_services(engine)
   end
 
-  def deregister_non_persistant_services(engine)
-    service_manager.deregister_non_persistant_services(engine)
+  def deregister_non_persistent_services(engine)
+    service_manager.deregister_non_persistent_services(engine)
   end
 
   def load_and_attach_services(dirname, container)
@@ -36,7 +36,7 @@ module ServiceManagerOperations
 
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
-    return sites if hashes == false
+    return sites unless hashes.is_a?(Array)    
     hashes.each do |service_hash|
       sites.push(service_hash[:variables][:fqdn])
     end

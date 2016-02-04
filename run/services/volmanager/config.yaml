@@ -3,7 +3,7 @@ publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem
 container_name: volmanager
 ctype: service
-persistant: true
+persistent: true
 conf_self_start: true
 last_error: 
 memory: '16'

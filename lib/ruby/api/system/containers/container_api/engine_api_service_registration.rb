@@ -13,13 +13,13 @@ module EngineApiServiceRegistration
   end
 
   # Called by Managed Containers
-  def register_non_persistant_services(engine)
-    engines_core.register_non_persistant_services(engine)
+  def register_non_persistent_services(engine)
+    engines_core.register_non_persistent_services(engine)
   end
 
   # Called by Managed Containers
-  def deregister_non_persistant_services(engine)
-    engines_core.deregister_non_persistant_services(engine)
+  def deregister_non_persistent_services(engine)
+    engines_core.deregister_non_persistent_services(engine)
   end
 
   def remove_nginx_service(container)
@@ -32,10 +32,10 @@ module EngineApiServiceRegistration
     engines_core.create_and_register_service(service_hash)
   end
   
-  def engine_persistant_services(container)
+  def engine_persistent_services(container)
    
-    return engines_core.engine_persistant_services(container.container_name) if container.ctype != 'service'
-    return engines_core.service_persistant_services(container.container_name)
+    return engines_core.engine_persistent_services(container.container_name) if container.ctype != 'service'
+    return engines_core.service_persistent_services(container.container_name)
   end
   
 

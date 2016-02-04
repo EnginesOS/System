@@ -15,7 +15,7 @@ type_path: backup
 service_container: backup
 publisher_namespace: EnginesSystem
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: backup_name
 immutable: false
 attach_post_build: true
@@ -303,7 +303,7 @@ consumer_params:
    sources:
     field_type: hidden
     name: sources
-    value: _Engines_Builder(engine_persistant_services)
+    value: _Engines_Builder(engine_persistent_services)
 actionators:
  readers:
   backup_keys: 

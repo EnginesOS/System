@@ -6,7 +6,7 @@ title: "Replication of DB Service"
 description: "Provides replication of Database"
 publisher_namespace: EnginesSystem
 type_path: replicate
-persistant: true
+persistent: true
 dedicated: true
 service_handle_field: name
 setup_params:

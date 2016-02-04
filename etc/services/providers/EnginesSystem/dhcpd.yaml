@@ -7,7 +7,7 @@ type_path: dhcpd
 publisher_namespace: EnginesSystem
 service_container: dhcpd
 dedicated: false
-persistant: false
+persistent: false
 service_handle_field: subnet
 immutable: false
 attach_post_build: true

@@ -1,17 +1,17 @@
 module PersistantServiceBuilder
-  def create_persistant_services(services, environ, use_existing)
+  def create_persistent_services(services, environ, use_existing)
     services.each do |service_hash|
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition',self) if service_def.nil?
-      if service_def[:persistant]
-        service_hash[:persistant] = true
-        return false unless process_persistant_service(service_hash, environ, use_existing)
+      if service_def[:persistent]
+        service_hash[:persistent] = true
+        return false unless process_persistent_service(service_hash, environ, use_existing)
       end
     end
     return true
   end
 
-  def process_persistant_service(service_hash, environ, use_existing)
+  def process_persistent_service(service_hash, environ, use_existing)
     service_hash = ServiceDefinitions.set_top_level_service_params(service_hash, @engine_name)
     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
     existing = match_service_to_existing(service_hash, use_existing)

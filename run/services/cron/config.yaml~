@@ -2,7 +2,7 @@
 container_name: cron
 ctype: service
 conf_self_start: true
-persistant: false
+persistent: false
 publisher_namespace: EnginesSystem
 type_path: cron
 last_error: 

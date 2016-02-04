@@ -3,7 +3,7 @@ container_name: backup
 publisher_namespace: EnginesSystem
 type_path: backup
 ctype: service
-persistant: false
+persistent: false
 conf_self_start: true
 last_error: 
 memory: '196'

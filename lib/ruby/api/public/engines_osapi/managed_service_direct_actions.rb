@@ -3,7 +3,7 @@ module ManagedServiceDirectActions
   # @params service_hash
   # this method is called to register the service hash with service
   # nothing is written to the service registry
-  # effectivitly activating non persistant services
+  # effectivitly activating non persistent services
   def register_attached_service(service_query)
     p :register_attached_service
     p service_query

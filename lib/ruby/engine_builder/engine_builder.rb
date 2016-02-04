@@ -31,7 +31,7 @@ class EngineBuilder < ErrorsApi
   :data_uid,
   :data_gid
 
-  attr_accessor :app_is_persistant
+  attr_accessor :app_is_persistent
   class BuildError < StandardError
     attr_reader :parent_exception, :method_name
     def initialize(parent)
@@ -49,7 +49,7 @@ class EngineBuilder < ErrorsApi
     @build_params[:engine_name].freeze
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
-    @app_is_persistant = false
+    @app_is_persistent = false
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true
     @attached_services = []
@@ -121,7 +121,7 @@ class EngineBuilder < ErrorsApi
 
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
-    return build_failed(@service_builder.last_error) unless @service_builder.create_persistant_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
+    return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
     apply_templates_to_environments
     create_engines_config_files
     index = 0
@@ -130,7 +130,7 @@ class EngineBuilder < ErrorsApi
       @blueprint_reader.sed_strings[:sed_str][index] = sed_string
       index += 1
     end
-    @build_params[:app_is_persistant] = @service_builder.app_is_persistant
+    @build_params[:app_is_persistent] = @service_builder.app_is_persistent
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
     return post_failed_build_clean_up unless dockerfile_builder.write_files_for_docker
 
@@ -163,7 +163,7 @@ class EngineBuilder < ErrorsApi
       log_build_output('Creating Deploy Image')
       mc = create_managed_container
       return post_failed_build_clean_up if mc == false
-      @service_builder.create_non_persistant_services(@blueprint_reader.services)
+      @service_builder.create_non_persistent_services(@blueprint_reader.services)
     end
     @service_builder.release_orphans
     @result_mesg = 'Build Successful'
@@ -342,8 +342,8 @@ class EngineBuilder < ErrorsApi
   def post_failed_build_clean_up
     return close_all if @rebuild
     # remove containers
-    # remove persistant services (if created/new)
-    # deregister non persistant services (if created)
+    # remove persistent services (if created/new)
+    # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
     p :Clean_up_Failed_build
@@ -486,10 +486,10 @@ class EngineBuilder < ErrorsApi
     close_all
   end
 
-  #app_is_persistant
+  #app_is_persistent
   
   def running_logs()
-    return @container.logs unless @container.nil?
+    return @container.logs_container unless @container.nil?
       return nil          
   end
 

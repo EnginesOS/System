@@ -78,7 +78,7 @@ class BuildController
   #    @container_name.freeze
   #    @build_name = File.basename(@repo_name).sub(/\.git$/, '')
   #    @web_port = SystemConfig.default_webport
-  #    @app_is_persistant = false
+  #    @app_is_persistent = false
   #    @result_mesg = 'Aborted Due to Errors'
   #    @first_build = true
   #    @attached_services = []attr_accessor

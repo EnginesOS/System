@@ -3,7 +3,7 @@ container_name: mongo_server
 ctype: service
 publisher_namespace: EnginesSystem
 type_path: database/nosql/mongo
-persistant: true
+persistent: true
 last_error: 
 memory: '128'
 hostname: mongo

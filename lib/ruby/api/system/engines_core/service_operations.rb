@@ -22,10 +22,10 @@ module ServiceOperations
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-  # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistant_services(params)
-    service_manager.get_active_persistant_services(params)
+  def get_active_persistent_services(params)
+    service_manager.get_active_persistent_services(params)
   end
 
   #Attach the service defined in service_hash [Hash]

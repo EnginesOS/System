@@ -1,9 +1,9 @@
 module SmServiceForcedMethods
   require_relative 'service_container_actions.rb'
-  def register_non_persistant_service(service_hash)
+  def register_non_persistent_service(service_hash)
        ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
        clear_error
-      return log_error_mesg('Failed to create persistant service ',service_hash) unless add_to_managed_service(service_hash)
+      return log_error_mesg('Failed to create persistent service ',service_hash) unless add_to_managed_service(service_hash)
       return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(system_registry_client.add_to_services_registry(service_hash))
        return true 
        rescue StandardError => e
@@ -11,9 +11,9 @@ module SmServiceForcedMethods
      end
      
  
-  def deregister_non_persistant_service(service_hash)
+  def deregister_non_persistent_service(service_hash)
     clear_error
-   return log_error_mesg('Failed to create persistant service ',service_hash) unless remove_from_managed_service(service_hash)
+   return log_error_mesg('Failed to create persistent service ',service_hash) unless remove_from_managed_service(service_hash)
     return log_error_mesg('Failed to deregsiter service from managed service registry',service_hash) unless test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
     return true   
     rescue StandardError => e

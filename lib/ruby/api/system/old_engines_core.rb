@@ -308,9 +308,9 @@ class EnginesCore < ErrorsApi
     check_sm_result(service_manager.service_is_registered?(service_hash))
   end
 
-  def get_engine_persistant_services(service_hash)
+  def get_engine_persistent_services(service_hash)
     return false unless check_engine_hash(service_hash)
-    check_sm_result(service_manager.get_engine_persistant_services(service_hash))
+    check_sm_result(service_manager.get_engine_persistent_services(service_hash))
   end
 
   def managed_service_tree
@@ -451,14 +451,14 @@ class EnginesCore < ErrorsApi
     return true
   end
 
-  def engine_persistant_services(container_name)
+  def engine_persistent_services(container_name)
     params = {}
     params[:parent_engine] = container_name
-    params[:persistant] = true
+    params[:persistent] = true
     params[:container_type] ='container'
-    p :engine_persistant_services
+    p :engine_persistent_services
     p params
-    return check_sm_result(service_manager.get_engine_persistant_services(params))
+    return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
     log_exception(e)
   end
@@ -511,9 +511,9 @@ class EnginesCore < ErrorsApi
     if engine.is_a?(ManagedEngine)
       params = {}
       params[:engine_name] = engine.container_name
-      persistant_services = get_engine_persistant_services(params)
-      return nil if persistant_services.is_a?(FalseClass)
-      persistant_services.each do |service|
+      persistent_services = get_engine_persistent_services(params)
+      return nil if persistent_services.is_a?(FalseClass)
+      persistent_services.each do |service|
         type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
       end
@@ -684,7 +684,7 @@ class EnginesCore < ErrorsApi
   end
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
-  #Retrieves all persistant service registered to :engine_name and destroys the underlying service (fs db etc)
+  #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
 
   def delete_engine(params)
@@ -776,7 +776,7 @@ class EnginesCore < ErrorsApi
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
-  #@return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  #@return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   #:path_type :publisher_namespace
   def get_orphaned_services(service_hash)
     return false unless check_service_hash(service_hash)
@@ -804,9 +804,9 @@ class EnginesCore < ErrorsApi
     @system_api.api_shutdown
   end
 
-  # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistant_services(params)
-    service_manager.get_active_persistant_services(params)
+  def get_active_persistent_services(params)
+    service_manager.get_active_persistent_services(params)
   end
 end

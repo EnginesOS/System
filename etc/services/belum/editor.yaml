@@ -8,7 +8,7 @@ description: "Editor "
 type_path: editor 
 publisher_namespace: EnginesSystem
 dedicated: true
-persistant: true
+persistent: true
 image_name: engines/editor
 service_handle_field: name
 setup_params:
