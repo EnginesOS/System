@@ -36,6 +36,10 @@ class BuilderPublic
     hostname + '.' + domain_name
   end
 
+  def domain
+    return domain_name
+  end
+  
   def web_port
     @builder.web_port
   end
