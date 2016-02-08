@@ -82,12 +82,14 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_failed(errmesg)
+    SystemStatus.build_failed(@build_params)
     log_build_errors(errmesg)
     @result_mesg = 'Error.' + errmesg
     post_failed_build_clean_up
   end
 
   def build_container
+    
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
     space /= 1024
