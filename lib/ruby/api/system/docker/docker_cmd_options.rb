@@ -4,7 +4,7 @@ module DockerCmdOptions
     port_options = get_port_options(container)
     volume_option = get_volume_option(container)
     arguments = get_container_arguments(container)
-    
+
     return false if volume_option == false || environment_options == false || port_options == false
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/start.bash' unless container.conf_self_start
@@ -31,7 +31,7 @@ module DockerCmdOptions
   end
 
   private
-  
+
   def get_container_arguments(container)
     return nil if container.arguments.nil?
     return nil unless container.arguments.is_a?(Array)
@@ -39,9 +39,9 @@ module DockerCmdOptions
     arguments.each  do |arg|
       retval = retval + ' ' + arg.to_s
     end
-    
+
     return retval
-    
+
   end
 
   def self.service_sshkey_local_dir(container)
@@ -136,13 +136,13 @@ module DockerCmdOptions
     volume_option += ' -v ' + container_log_dir(container) + '/vlog:/var/log/:rw' if incontainer_logdir != '/var/log' && incontainer_logdir != '/var/log/'
     volume_option += ' -v ' + service_sshkey_local_dir(container) + ':' + service_sshkey_container_dir(container) + ':rw' if container.is_service?
     volume_option += ' -v ' + SystemConfig.EnginesInternalCA + ':/usr/local/share/ca-certificates/engines_internal_ca.crt:ro ' unless container.no_ca_map
-     if container.large_temp
-       #FIXME use container for tmp to enforce a 1GB limit ?
-       temp_dir_name =   container.ctype + '/' + container.container_name
-       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw ' 
-       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
-       p        volume_option
-     end
+    if container.large_temp
+      #FIXME use container for tmp to enforce a 1GB limit ?
+      temp_dir_name =   container.ctype + '/' + container.container_name
+      volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw '
+      SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
+      p        volume_option
+    end
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
         unless volume.nil?
