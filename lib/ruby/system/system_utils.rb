@@ -264,22 +264,22 @@ class SystemUtils
 
         #     p "AS_JSON++++++++++++++++++"
          #    p json_str
-    return json_str
-#    argument = String.new
-#    if service_hash.key?(:publisher_namespace)
-#      argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
-#    end
-#    service_variables = service_hash[:variables]
-#    sources = ''
-#    return argument if service_variables.nil?
-#    service_variables.each_pair do |key,value|
-#      if key == :sources
-#        sources = value
-#        next
-#      end
-#      argument+= key.to_s + '=\'' + value.to_s + '\':'
-#    end
-#    argument += ' ' + sources
-#    return argument
+    #return json_str
+    argument = String.new
+    if service_hash.key?(:publisher_namespace)
+      argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
+    end
+    service_variables = service_hash[:variables]
+    sources = ''
+    return argument if service_variables.nil?
+    service_variables.each_pair do |key,value|
+      if key == :sources
+        sources = value
+        next
+      end
+      argument+= key.to_s + '=\'' + value.to_s + '\':'
+    end
+    argument += ' ' + sources
+    return argument
   end
 end
