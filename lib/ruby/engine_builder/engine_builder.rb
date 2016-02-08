@@ -82,6 +82,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_failed(errmesg)
+    @build_params[:error_mesg] = errmesg
     SystemStatus.build_failed(@build_params)
     log_build_errors(errmesg)
     @result_mesg = 'Error.' + errmesg
