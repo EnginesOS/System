@@ -36,6 +36,10 @@ class BuilderPublic
     hostname + '.' + domain_name
   end
 
+  def domain
+    return domain_name
+  end
+  
   def web_port
     @builder.web_port
   end
@@ -61,6 +65,8 @@ class BuilderPublic
   end
 
    def logs
+     sleep(4)
+     p :slept4
      @builder.running_logs
    end
    

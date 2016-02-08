@@ -15,6 +15,7 @@ echo file $path is in $dir
   		    echo "touch  /home/$path"
     		touch  /home/$path
     	fi
+    	
     echo mkdir -p $VOLDIR/$dir
 	mkdir -p $VOLDIR/$dir
 	echo "mv /home/$path /$VOLDIR/$dir"

@@ -50,23 +50,15 @@ return  nil
   end
   
   def get_engine_ts(engine)
-    p :get_engine_ts
-   
-    if engine.nil?
-      
-#      @engines_conf_cache.each do |entry|
-#        p entry[:engine].container_name
-#      end
-    return log_error_mesg('Get ts passed nil Engine ', engine)
-    end
+    return log_error_mesg('Get ts passed nil Engine ', engine) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     return -1 unless File.exist?(yam_file_name)
     File.mtime(yam_file_name)
   end
   
   def container_from_cache(container_ident)
-    p :container_from_cache
-    p container_ident.to_s
+   # p :container_from_cache
+  #  p container_ident.to_s
     return nil if container_ident.nil?
 #    c = engine_from_cache('/services/' + container_name)
 #    return c unless c.nil?
