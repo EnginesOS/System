@@ -5,7 +5,7 @@ type_path: syslog
 ctype: service
 persistent: false
 last_error: 
-memory: '32'
+memory: '64'
 hostname: syslog
 domain_name: 
 environments: []
@@ -15,6 +15,12 @@ arguments:
   - 'kzwfDzHXPhrYFOp2qsG7f1eL61fSiqscIg5BnZs7zj8WET3b8zYA70VjPxz9cAxv'
 port: 
 mapped_ports:
+- !ruby/object:WorkPort
+  name: syslog
+  port: 514
+  publicFacing: true
+  proto_type: udp
+  external: 514
 repo: na
 last_result: 
 setState: running
