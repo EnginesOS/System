@@ -3,7 +3,7 @@ module Cache
 
     return  nil unless @engines_conf_cache.key?(ident.to_sym)   
     return  nil unless @engines_conf_cache[ident.to_sym].is_a?(Hash)
-   
+ p engines_conf_cache[ident.to_sym][:engine]
     return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
    
        p :Stale_info 
