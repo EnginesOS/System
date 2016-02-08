@@ -32,7 +32,7 @@ module DockerCmdOptions
 
   private
 
-  def get_container_arguments(container)
+  def self.get_container_arguments(container)
     return nil if container.arguments.nil?
     return nil unless container.arguments.is_a?(Array)
     retval = ''
