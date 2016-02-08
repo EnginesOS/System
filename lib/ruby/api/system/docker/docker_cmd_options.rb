@@ -3,6 +3,8 @@ module DockerCmdOptions
     environment_options = get_environment_options(container)
     port_options = get_port_options(container)
     volume_option = get_volume_option(container)
+    arguments = get_container_arguments(container)
+    
     return false if volume_option == false || environment_options == false || port_options == false
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/start.bash' unless container.conf_self_start
@@ -14,7 +16,8 @@ module DockerCmdOptions
     ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' + \
     '--name ' + container.container_name + \
     '  -t ' + container.image + ' ' + \
-    start_cmd
+    start_cmd +\
+    arguments.to_s
 
     return commandargs
   rescue StandardError => e
@@ -28,6 +31,18 @@ module DockerCmdOptions
   end
 
   private
+  
+  def get_container_arguments(container)
+    return nil if container.arguments.nil?
+    return nil unless container.arguments.is_a?(Array)
+    retval = ''
+    arguments.each  do |arg|
+      retval = retval + ' ' + arg.to_s
+    end
+    
+    return retval
+    
+  end
 
   def self.service_sshkey_local_dir(container)
     '/opt/engines/etc/ssh/keys/services/' + container.container_name
