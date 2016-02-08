@@ -1,5 +1,4 @@
 module EnginesApiSystem
- 
   def web_sites_for(container)
     engines_core.web_sites_for(container)
   end
@@ -15,7 +14,7 @@ module EnginesApiSystem
   def save_container(container)
     test_system_api_result(@system_api.save_container(container))
   end
-  
+
   def have_enough_ram?(container)
     free_ram = MemoryStatistics.avaiable_ram
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
