@@ -36,6 +36,10 @@ class BuilderPublic
     hostname + '.' + domain_name
   end
 
+  def domain
+    return domain_name
+  end
+
   def web_port
     @builder.web_port
   end
@@ -60,17 +64,19 @@ class BuilderPublic
     @builder.blueprint
   end
 
-   def logs
-     @builder.running_logs
-   end
-   
-  
+  def logs
+    sleep(4)
+    p :slept4
+    @builder.running_logs
+  end
+
   def data_gid
     @builder.data_gid
   end
+
   def  group_uid
     @builder.data_gid
-  
+
   end
 
   def data_uid

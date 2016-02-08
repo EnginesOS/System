@@ -5,7 +5,7 @@ class SystemStatus
 
   def self.get_management_ip
     ip  = File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
-    return '172.17.42.1' if ip.nil?  
+    return '172.17.42.1' if ip.nil?
     return ip
   end
 
@@ -24,8 +24,6 @@ class SystemStatus
 
   def self.is_engines_system_updating?
     r = File.exist?(SystemConfig.EnginesSystemUpdatingFlag)
-    p :update_status
-    p r
     r
   end
 
