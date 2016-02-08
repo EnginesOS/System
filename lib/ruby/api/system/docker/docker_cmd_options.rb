@@ -37,7 +37,7 @@ module DockerCmdOptions
     return nil if container.arguments.nil?
     return nil unless container.arguments.is_a?(Array)
     retval = ''
-    arguments.each  do |arg|
+    container.arguments.each  do |arg|
       retval = retval + ' ' + arg.to_s
     end
 
