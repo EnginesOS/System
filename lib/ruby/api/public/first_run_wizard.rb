@@ -20,7 +20,7 @@ class FirstRunWizard <ErrorsApi
     p :applyin
     p @first_run_params
     return false unless validate_params(@first_run_params)
-    return false unless set_passwords
+   # return false unless set_passwords
     return false unless  setup_dns
     return false unless setup_certs
     @sucess = true
