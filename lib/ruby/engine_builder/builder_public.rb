@@ -66,7 +66,6 @@ class BuilderPublic
 
   def logs
     sleep(4)
-    p :slept4
     @builder.running_logs
   end
 
