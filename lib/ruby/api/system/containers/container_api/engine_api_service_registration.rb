@@ -1,5 +1,4 @@
 module EngineApiServiceRegistration
- 
   def register_with_dns(container)
     service_hash = create_dns_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
@@ -31,12 +30,11 @@ module EngineApiServiceRegistration
     service_hash = create_nginx_service_hash(container)
     engines_core.create_and_register_service(service_hash)
   end
-  
+
   def engine_persistent_services(container)
-   
+
     return engines_core.engine_persistent_services(container.container_name) if container.ctype != 'service'
     return engines_core.service_persistent_services(container.container_name)
   end
-  
 
 end

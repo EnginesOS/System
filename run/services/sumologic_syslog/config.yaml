@@ -1,0 +1,32 @@
+--- !ruby/object:ManagedService
+container_name: sumologic_syslog
+publisher_namespace: SumoLogic
+type_path: syslog
+ctype: service
+persistent: false
+last_error: 
+memory: '64'
+hostname: syslog
+domain_name: 
+environments: []
+image: sumologic/collector:latest-syslog
+arguments:
+  - 'su3YGbWw7JmBA6'
+  - 'kzwfDzHXPhrYFOp2qsG7f1eL61fSiqscIg5BnZs7zj8WET3b8zYA70VjPxz9cAxv'
+port: 
+mapped_ports:
+- !ruby/object:WorkPort
+  name: syslog
+  port: 514
+  publicFacing: true
+  proto_type: udp
+  external: 514
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"

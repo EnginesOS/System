@@ -262,9 +262,9 @@ class SystemUtils
      #json_str['publisher_namespace'] = service_hash[:publisher_namespace] 
      #json_str['type_path'] = service_hash[:type_path]
 
-             p "AS_JSON++++++++++++++++++"
-             p json_str
-   # return json_str
+        #     p "AS_JSON++++++++++++++++++"
+         #    p json_str
+    #return json_str
     argument = String.new
     if service_hash.key?(:publisher_namespace)
       argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'

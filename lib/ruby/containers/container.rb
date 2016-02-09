@@ -38,7 +38,8 @@ class Container < ErrorsApi
   attr_accessor :last_error,\
   :container_api,
   :last_result,
-  :container_id
+  :container_id,
+  :arguments
 
   def eports
     @mapped_ports

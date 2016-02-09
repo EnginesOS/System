@@ -11,7 +11,6 @@ module EngineApiStatusFlags
   def restart_reason(container)
     return false unless File.exist?(ContainerStateFiles.restart_flag_file(container))
     return File.read(ContainerStateFiles.restart_flag_file(container))
-
   end
 
   def rebuild_reason(container)
