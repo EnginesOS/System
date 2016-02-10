@@ -14,3 +14,4 @@ if test -h /opt/engines/run/services/$1
 ln -s /opt/engines/run/services-available/$1/$2 /opt/engines/run/services/$1
 chgrp -R containers /opt/engines/run/services-available/$1/
 chmod g+rwx /opt/engines/run/services-available/$1/
+chmod g+rwx /opt/engines/run/services-available/$1
