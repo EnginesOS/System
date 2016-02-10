@@ -6,7 +6,7 @@ ctype: service
 persistent: false
 last_error: 
 memory: '32'
-hostname: asyslog
+hostname: syslog
 domain_name: 
 environments: []
 image: engines/syslog:_Engines_System(release)
