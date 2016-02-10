@@ -4,6 +4,10 @@ module Services
     ret_val = []
     Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
+      p :contdir
+      p contdir
+      p :yfn
+             p yfn
       if File.exist?(yfn) == true
         managed_service = loadManagedService(contdir)
         if managed_service.is_a?(ManagedService)
