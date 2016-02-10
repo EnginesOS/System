@@ -16,14 +16,18 @@ module Services
     return ret_val
   rescue StandardError => e
     log_exception(e)
-
+    return ret_val
   end
 
   def list_managed_services
     clear_error
     ret_val = []
     Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
+      p :contdir
+      p contdir
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
+        p :yfn
+        p yfn
       ret_val.push(contdir) if File.exist?(yfn)
     end
     return ret_val
