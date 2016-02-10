@@ -2,7 +2,7 @@ module Services
   def getManagedServices
 
     ret_val = []
-    Dir.glob(SystemConfig.RunDir + '/services/*').each do |contdir|
+    Dir.foreach(SystemConfig.RunDir + '/services/') do |contdir|
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
       p :contdir
       p contdir
@@ -26,7 +26,7 @@ module Services
   def list_managed_services
     clear_error
     ret_val = []
-    Dir.glob(SystemConfig.RunDir + '/services/*').each do |contdir|
+    Dir.foreach(SystemConfig.RunDir + '/services/') do |contdir|
       p :contdir
       p contdir
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
