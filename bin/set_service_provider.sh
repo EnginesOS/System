@@ -4,7 +4,7 @@
  #then
  #	echo "$1 not configured as multi provider capable"
  #	exit
- 3fi
+ #fi
  
 #if test -h /opt/engines/run/services/$1
  #then
