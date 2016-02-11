@@ -2,19 +2,19 @@ require 'yajl'
 
 class SoftwareServiceDefinition
   attr_reader :accepts,
-  :author,
-  :title,
-  :description,
-  :service_name,
-  :consumer_params,
-  :setup_params,
-  :dedicated,
-  :service_type,
-  :publisher_namespace,
-  :service_container,
-  :persistent,
-  :target_environment_variables,
-  :service_handle_field
+#  :author,
+#  :title,
+#  :description,
+#  :service_name,
+#  :consumer_params,
+#  :setup_params,
+#  :dedicated,
+#  :service_type,
+#  :publisher_namespace,
+#  :service_container,
+#  :persistent,
+#  :target_environment_variables,
+#  :service_handle_field
   def SoftwareServiceDefinition.from_yaml( yaml )
     begin
       # p yaml.path
@@ -77,7 +77,7 @@ class SoftwareServiceDefinition
         SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
         return nil
       end
-      return service_def.to_h
+      return service_def #.to_h
     end
     SystemUtils.log_error_mesg('No Dir',dir)
     return nil
