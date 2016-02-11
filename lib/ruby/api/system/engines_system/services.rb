@@ -2,8 +2,12 @@ module Services
   def getManagedServices
 
     ret_val = []
-    Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
+    Dir.foreach(SystemConfig.RunDir + '/services/') do |contdir|
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
+#      p :contdir
+#      p contdir
+#      p :yfn
+#             p yfn
       if File.exist?(yfn) == true
         managed_service = loadManagedService(contdir)
         if managed_service.is_a?(ManagedService)
@@ -16,14 +20,18 @@ module Services
     return ret_val
   rescue StandardError => e
     log_exception(e)
-
+    return ret_val
   end
 
   def list_managed_services
     clear_error
     ret_val = []
-    Dir.entries(SystemConfig.RunDir + '/services/').each do |contdir|
+    Dir.foreach(SystemConfig.RunDir + '/services/') do |contdir|
+#      p :contdir
+#      p contdir
       yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
+#        p :yfn
+#        p yfn
       ret_val.push(contdir) if File.exist?(yfn)
     end
     return ret_val

@@ -21,6 +21,12 @@ mapped_ports:
   publicFacing: true
   proto_type: udp
   external: 514
+- !ruby/object:WorkPort
+  name: syslog
+  port: 514
+  publicFacing: true
+  proto_type: tcp
+  external: 514
 repo: na
 last_result: 
 setState: running
