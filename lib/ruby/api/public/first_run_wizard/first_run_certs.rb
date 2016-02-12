@@ -30,7 +30,7 @@ module FirstRunCerts
     service_param[:variables][:city] = params[:ssl_city]
     service_param[:variables][:organisation] = params[:ssl_organisation_name]
     service_param[:variables][:person] = params[:ssl_person_name]
-    service_param[:variables][:domainname] = params[:default_domain]
+    service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
     return true if @api.create_and_register_service(service_param)
     return log_error_mesg('create_default_cert ', @api.last_error)
