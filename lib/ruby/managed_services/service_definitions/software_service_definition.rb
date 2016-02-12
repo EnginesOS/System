@@ -46,6 +46,8 @@ class SoftwareServiceDefinition
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     if  service_def != nil
       service_environment_variables = service_def[:target_environment_variables]
+        p :SERVICE_ENVIRONMENT_VARIABLES
+        p service_environment_variables
       #            p service_environment_variables.to_s
       if service_environment_variables != nil
         service_environment_variables.values.each do |env_variable_pair|
@@ -62,6 +64,8 @@ class SoftwareServiceDefinition
     else
       SystemUtils.log_error_mesg('Failed to load service definition',service_hash)
     end
+    p :COMPLETE_SERVICE_ENVS
+    p retval
     return retval
 
   end
