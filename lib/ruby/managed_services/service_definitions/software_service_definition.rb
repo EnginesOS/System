@@ -19,7 +19,7 @@ class SoftwareServiceDefinition
     begin
       # p yaml.path
       serviceDefinition = SystemUtils.symbolize_keys(YAML::load( yaml ))
-      serviceDefinition[:persistent] =  serviceDefinition[:persistant]
+      serviceDefinition[:persistent] =  serviceDefinition[:persistant] unless serviceDefinition.key?(:persistent) 
       return serviceDefinition        
     rescue Exception=>e
       SystemUtils.log_error_mesg('Problem loading Yaml',yaml)
