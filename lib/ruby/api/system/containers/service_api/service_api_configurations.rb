@@ -15,8 +15,9 @@ module ServiceApiConfigurations
     end
 
     if result[:result] == 0
-      variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      params[:variables] = variables
+      #variables = SystemUtils.hash_string_to_hash(result[:stdout])
+      variables_hash = JSON.parse( result[:stdout], :create_additons => true )
+      params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
     end
     log_error_mesg('Error on retrieving Configuration',result)
