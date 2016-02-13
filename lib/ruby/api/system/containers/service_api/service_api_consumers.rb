@@ -24,7 +24,7 @@ module ServiceApiConsumers
 
    # cmd = 'docker exec -u ' + c.cont_userid.to_s + ' ' + c.container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
  
-    cmd = 'docker exec  ' + c.container_name.to_s  + ' /home/add_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash)
+    cmd = 'docker exec  ' + c.container_name.to_s  + ' /home/add_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) +'\''
     SystemUtils.debug_output(  :add_consumer_to_service, cmd)
     result = {}
     begin
@@ -43,7 +43,7 @@ module ServiceApiConsumers
   def rm_consumer_from_service(c, service_hash)
 
 #    cmd = 'docker exec -u ' + c.cont_userid + ' ' + c.container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash) + '\''
-    cmd = 'docker exec  ' + c.container_name + ' /home/rm_service.sh ' + SystemUtils.service_hash_variables_as_str(service_hash) 
+    cmd = 'docker exec  ' + c.container_name + ' /home/rm_service.sh \'' + SystemUtils.service_hash_variables_as_str(service_hash)  +'\''
     result = {}
     begin
       Timeout.timeout(@@consumer_timeout) do

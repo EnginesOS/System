@@ -9,7 +9,7 @@ module FirstRunCerts
     config_param[:variables][:city] = ca_params[:ssl_city]
     config_param[:variables][:organisation] = ca_params[:ssl_organisation_name]
     config_param[:variables][:person] = ca_params[:ssl_person_name]
-    config_param[:variables][:domainname] = ca_params[:default_domain]
+    config_param[:variables][:domainname] =  ca_params[:domain_name] #ca_params[:default_domain]
     return true if @api.update_service_configuration(config_param)
     return log_error_mesg('create_ca ', @api.last_error)
   end
@@ -30,7 +30,7 @@ module FirstRunCerts
     service_param[:variables][:city] = params[:ssl_city]
     service_param[:variables][:organisation] = params[:ssl_organisation_name]
     service_param[:variables][:person] = params[:ssl_person_name]
-    service_param[:variables][:domainname] = params[:default_domain]
+    service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
     return true if @api.create_and_register_service(service_param)
     return log_error_mesg('create_default_cert ', @api.last_error)
