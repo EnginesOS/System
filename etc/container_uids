@@ -18,7 +18,7 @@ dovecot	 imap			22013 _imap
 #vmail				22014
 backup	 backup		22015	_backup
 cron	 cron			22016	_cron
-auth	 auth		22017	_uth
+auth	 auth		22017	_auth
 nfs		 nfs		22018		_nfs
 samba	 samba	22019	_samba
 dyndns	 dyndns	22021	_dyndns
