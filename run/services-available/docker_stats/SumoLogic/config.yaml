@@ -9,8 +9,28 @@ memory: '126'
 hostname: docker_stats
 domain_name: 
 environments: []
-image: sumologic/collector:latest-syslog
+image: engines/sumologic-dockerstats:_Engines_System(release)
+arguments:
 port: 
+volumes:
+ socket: !ruby/object:Volume
+  name: socket
+  remotepath: "/var/run/docker.sock"
+  localpath: "/var/run/docker.sock"
+  mapping_permissions: ro
+mapped_ports:
+- !ruby/object:WorkPort
+  name: syslog
+  port: 514
+  publicFacing: true
+  proto_type: udp
+  external: 514
+- !ruby/object:WorkPort
+  name: syslog
+  port: 514
+  publicFacing: true
+  proto_type: tcp
+  external: 514
 repo: na
 last_result: 
 setState: running
