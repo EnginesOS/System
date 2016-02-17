@@ -1,0 +1,22 @@
+--- !ruby/object:ManagedService
+container_name: docker_stats
+publisher_namespace: SumoLogic
+type_path: docker_stats
+ctype: service
+persistent: false
+last_error: 
+memory: '126'
+hostname: docker_stats
+domain_name: 
+environments: []
+image: sumologic/collector:latest-syslog
+port: 
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"
