@@ -1,12 +1,12 @@
 --- !ruby/object:ManagedService
 container_name: docker_stats
 publisher_namespace: SumoLogic
-type_path: docker_stats
+type_path: dockerstats
 ctype: service
 persistent: false
 last_error: 
 memory: '126'
-hostname: docker_stats
+hostname: dockerstats
 domain_name: 
 environments: []
 image: engines/sumologic-dockerstats:_Engines_System(release)
