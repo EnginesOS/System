@@ -5,7 +5,7 @@ type_path: dockerstats
 ctype: service
 persistent: false
 last_error: 
-memory: '146'
+memory: '196'
 hostname: dockerstats
 domain_name: 
 environments: []

@@ -1,6 +1,6 @@
 --- !ruby/object:ManagedService
 container_name: wwwstats
-publisher_namespace: EnginesSystem
+publisher_namespace: SumoLogic
 type_path: wwwstats
 ctype: service
 persistent: true
