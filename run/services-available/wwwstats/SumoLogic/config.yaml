@@ -9,7 +9,7 @@ memory: '128'
 hostname: wwwstats
 domain_name: 
 environments: []
-image: engines/sumologic-wwwstats:$release
+image: engines/sumologic-wwwstats:_Engines_System(release)
 volumes:
  config: !ruby/object:Volume
   name: weblogs

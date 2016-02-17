@@ -9,7 +9,7 @@ memory: '126'
 hostname: syslog
 domain_name: 
 environments: []
-image: engines/sumologic-syslog:$release
+image: engines/sumologic-syslog:_Engines_System(release)
 port: 
 mapped_ports:
 - !ruby/object:WorkPort
