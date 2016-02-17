@@ -18,19 +18,6 @@ volumes:
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
   mapping_permissions: ro
-mapped_ports:
-- !ruby/object:WorkPort
-  name: syslog
-  port: 514
-  publicFacing: true
-  proto_type: udp
-  external: 514
-- !ruby/object:WorkPort
-  name: syslog
-  port: 514
-  publicFacing: true
-  proto_type: tcp
-  external: 514
 repo: na
 last_result: 
 setState: running
