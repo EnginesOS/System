@@ -1,0 +1,29 @@
+--- !ruby/object:ManagedService
+container_name: wwwstats
+publisher_namespace: EnginesSystem
+type_path: wwwstats
+ctype: service
+persistent: true
+last_error: 
+memory: '128'
+hostname: wwwstats
+domain_name: 
+environments: []
+image: engines/sumologic-wwwstats:_Engines_System(release)
+volumes:
+ config: !ruby/object:Volume
+  name: weblogs
+  remotepath: "/var/log/www/"
+  localpath: "/var/log/engines/services/nginx/nginx/"
+  mapping_permissions: ro
+port: 
+mapped_ports:
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: false
+conf_register_dns: false
+conf_self_start: true
+dependant_on:
+

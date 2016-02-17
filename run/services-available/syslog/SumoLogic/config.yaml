@@ -1,5 +1,5 @@
 --- !ruby/object:ManagedService
-container_name: sumologic_syslog
+container_name: syslog
 publisher_namespace: SumoLogic
 type_path: syslog
 ctype: service
@@ -9,10 +9,7 @@ memory: '126'
 hostname: syslog
 domain_name: 
 environments: []
-image: sumologic/collector:latest-syslog
-arguments:
-  - 'su3YGbWw7JmBA6'
-  - 'kzwfDzHXPhrYFOp2qsG7f1eL61fSiqscIg5BnZs7zj8WET3b8zYA70VjPxz9cAxv'
+image: engines/sumologic-syslog:_Engines_System(release)
 port: 
 mapped_ports:
 - !ruby/object:WorkPort
