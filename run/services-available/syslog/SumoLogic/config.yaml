@@ -1,5 +1,5 @@
 --- !ruby/object:ManagedService
-container_name: sumologic_syslog
+container_name: syslog
 publisher_namespace: SumoLogic
 type_path: syslog
 ctype: service
