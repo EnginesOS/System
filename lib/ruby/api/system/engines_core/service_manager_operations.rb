@@ -30,15 +30,19 @@ module ServiceManagerOperations
   end
 
   def taken_hostnames
-    query= {}
-    query[:type_path]='nginx'
-    query[:publisher_namespace] = "EnginesSystem"
+#    query= {}
+#    query[:type_path]='nginx'
+#    query[:publisher_namespace] = "EnginesSystem"
 
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
+    p :nginx_reg
+    p hashes
     return sites unless hashes.is_a?(Array)    
+    
     hashes.each do |service_hash|
       sites.push(service_hash[:variables][:fqdn])
+        p service_hash[:variables][:fqdn]
     end
     return sites
   rescue StandardError => e
