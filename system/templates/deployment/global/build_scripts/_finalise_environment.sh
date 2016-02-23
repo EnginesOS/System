@@ -4,12 +4,15 @@
 	grep :$data_gid: /etc/group >/dev/null
 	if test $? -ne 0
 	 then
-		groupadd -g $data_gid writegrp
+		groupadd -g $data_gid writegrp 
 	fi
-	
+echo "	id $ContUser | grep $data_gid '"
+ id $ContUser | grep $data_gid 
+ 
 	id $ContUser | grep $data_gid >/dev/null	
 	if test $? -ne 0
 	 then
+	echo "add contuser to data group"
 		usermod -G $data_gid -a $ContUser
 	fi
 	chown -R  $data_uid.$data_gid  /home/app
@@ -26,3 +29,6 @@
 	then
 		ln -s $VOLDIR /data
 	fi
+	
+chown $ContUser $HOME
+chmod g-w $HOME
