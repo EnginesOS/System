@@ -80,7 +80,7 @@ end
     Thread.new {  docker_event_listener.start}
 
   rescue StandardError =>e
-    log_ecxception(e)
+    log_exception(e)
 
   end
 end
