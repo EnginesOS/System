@@ -8,7 +8,8 @@ module ContainerChangeMonitor
   
   def add_changed(container_name,ctype,event_name)
     register  = change_register
-   register[ctype][container_name] = event_name
+    register[ctype][container_name] = event_name unless register[ctype][container_name].nil?
+  
     
   end
   
