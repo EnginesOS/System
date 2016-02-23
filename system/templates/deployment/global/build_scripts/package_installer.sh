@@ -80,12 +80,21 @@ echo Install to $destination
   	mkdir -p  "/home/app"
  fi
  
+ #for single file
  if test ! -d "./$path_to_extracted"
    then 
    	echo "creating destination $destination"
    		mkdir -p $destination
  	fi
+ #
 # echo "./$path_to_extracted" $destination
 # ls -la .
 # ls -la $destination
- mv "./$path_to_extracted" $destination
+
+if test -d  $destination
+ then
+    # extract into
+ 	cp -rp "./$path_to_extracted" $destination
+ else
+ 	mv "./$path_to_extracted" $destination
+fi
