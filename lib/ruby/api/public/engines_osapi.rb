@@ -80,6 +80,8 @@ class EnginesOSapi
   end
 
   def reserved_hostnames
+    
+    p :reserved_hostnames
     @core_api.taken_hostnames
   end
 
