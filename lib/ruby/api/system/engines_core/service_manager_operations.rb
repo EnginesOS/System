@@ -33,10 +33,10 @@ module ServiceManagerOperations
 #    query= {}
 #    query[:type_path]='nginx'
 #    query[:publisher_namespace] = "EnginesSystem"
-
+    p :nginx_reg
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
-    p :nginx_reg
+    p :taken_hostnames
     p hashes
     return sites unless hashes.is_a?(Array)    
     
