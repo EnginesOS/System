@@ -100,6 +100,7 @@ mkdir -p /var/log/apache2/ >/dev/null
 		then
 		/etc/init.d/apache2 start
 			 /home/blocking.sh &
+			 echo  " $!" >> /run/apache2/apache2.pid
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
 	fi	
