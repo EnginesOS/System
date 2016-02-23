@@ -35,7 +35,7 @@ class BluePrintReader
   :web_port,
   :services,
   :deployment_type,
-  :database_seed
+  :database_seed,
   :blocking_worker
 
   def log_build_output(line)
@@ -282,7 +282,7 @@ class BluePrintReader
     return true unless workers.is_a?(Array) # not an error just nada
 
     workers.each do |worker|
-      if worker[:name] = @blueprint[:blocking_worker_name]
+      if worker[:name] = @blueprint[:software][:blocking_worker_name]
         p :blocking_worker
         p worker
         @blocking_worker = worker[:command]

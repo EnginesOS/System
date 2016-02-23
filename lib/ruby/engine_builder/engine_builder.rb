@@ -638,7 +638,7 @@ end
       FileUtils.mkdir_p(scripts_path)
     end
     if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-      content = ""#!/bin/bash\n"
+      content = "#!/bin/bash\n"
       content += "cd /home/app\n"
       @blueprint_reader.worker_commands.each do |command|
         content += command + "\n"
@@ -649,7 +649,7 @@ end
     
     return true if @blueprint_reader.blocking_worker.nil?
     
-    content = ""#!/bin/bash\n"
+    content = "#!/bin/bash\n"
     content += "cd /home/app\n"
     content += @blueprint_reader.blocking_worker.to_s
     content += "\n"
