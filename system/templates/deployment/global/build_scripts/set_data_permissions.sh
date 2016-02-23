@@ -7,8 +7,8 @@ id data-user | cut -f2 -d: |grep $data_uid >/dev/null
 
 chown -R $data_uid.$data_gid /home/app /home/fs_src
 chmod -R 770 /home/fs_src
-
-
+chown $ContUser $HOME
+chmod g-w $HOME
 
 
 ##!/bin/sh
