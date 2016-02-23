@@ -95,7 +95,7 @@ if test -d  $destination
  then
     # extract into
     echo "cp -rp ./$path_to_extracted $destination"
- 	cp -rp "./$path_to_extracted" $destination
+ 	cp -rp "./$path_to_extracted/." $destination
  else
  echo "./$path_to_extracted $destination"
  	mv "./$path_to_extracted" $destination
