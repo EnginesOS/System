@@ -96,10 +96,10 @@ if test -f /home/app/Rack.sh
 
 mkdir -p /var/log/apache2/ >/dev/null
 
-	if test -f /home/blocking.sh
+	if test -f /home/engines/scripts/blocking.sh 
 		then
 		/etc/init.d/apache2 start
-			 /home/blocking.sh &
+			 /home/engines/scripts/blocking.sh  &
 			 echo  " $!" >> /run/apache2/apache2.pid
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
