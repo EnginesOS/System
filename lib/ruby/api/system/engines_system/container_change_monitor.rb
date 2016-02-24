@@ -8,10 +8,9 @@ module ContainerChangeMonitor
   
   def add_changed(container_name,ctype,event_name)
     register  = change_register
-    return log_error_mesg("inform_container_monitor no such ctype",ctype) if register[ctype].nil?
-    
+    return if ctype.nil?
+    return unless register.key?(ctype)    
     register[ctype][container_name] = event_name unless register[ctype][container_name].nil?
-  
     
   end
   
