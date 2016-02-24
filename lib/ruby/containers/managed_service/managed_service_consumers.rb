@@ -6,8 +6,9 @@ module ManagedServiceConsumers
     return log_error_mesg('Cannot remove consumer if Service is not running ', service_hash) unless is_running?
     return log_error_mesg('service missing cont_userid ', service_hash) if check_cont_uid == false
     return rm_consumer_from_service(service_hash) unless @persistent
-    return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data)  && service_hash[:remove_all_data]
-    log_error_mesg('Not persitant or service hash missing remove data',service_hash)
+    return true if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == false
+    return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data]
+    log_error_mesg('No remove_all_data key',service_hash)
   end
 
   #  def service_manager
