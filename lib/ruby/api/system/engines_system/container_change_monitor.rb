@@ -10,8 +10,7 @@ module ContainerChangeMonitor
     register  = change_register
     return if ctype.nil?
     return unless register.key?(ctype)    
-    register[ctype][container_name] = event_name unless register[ctype][container_name].nil?
-    
+    register[ctype][container_name] = event_name # unless register[ctype][container_name].nil?    
   end
   
   def change_register
