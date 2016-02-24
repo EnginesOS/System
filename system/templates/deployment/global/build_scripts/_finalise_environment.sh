@@ -20,6 +20,7 @@ echo "	id $ContUser | grep $data_gid '"
 	 mkdir -p ~$ContUser/.ssh
      chown -R $ContUser ~$ContUser/.ssh
  
+ 	
 	if test -f /build_scripts/finalise_environment.sh
 		then	
 			/build_scripts/finalise_environment.sh
@@ -30,5 +31,5 @@ echo "	id $ContUser | grep $data_gid '"
 		ln -s $VOLDIR /data
 	fi
 	
-chown $ContUser $HOME
+chown -R  $ContUser $HOME
 chmod g-w $HOME
