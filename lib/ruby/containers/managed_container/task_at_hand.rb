@@ -1,8 +1,19 @@
 module TaskAtHand
-  @task_timeout = 300
+  @task_timeout = 20
   @task_queue = []
-  @tasks_timout = {}
-  
+  @task_timeouts = {}
+  @task_timeouts[:stop]= 60
+  @task_timeouts[:start]= 30
+  @task_timeouts[:restart]= 90
+  @task_timeouts[:recreate]= 300
+  @task_timeouts[:create]= 300
+  @task_timeouts[:build]= 90
+  @task_timeouts[:rebuild]= 120
+  @task_timeouts[:pause]= 20
+  @task_timeouts[:unpause]= 20
+  @task_timeouts[:destroy]= 30
+  @task_timeouts[:delete]= 40
+     
   def desired_state(state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
@@ -45,14 +56,17 @@ module TaskAtHand
       return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
       @two_step_in_progress = true
+      @steps = [:stop,:start]
       return desired_state('stopped', curr_state) if curr_state== 'running'
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
+      @steps = [:destroy,:create]
       @two_step_in_progress = true
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :rebuild
       @two_step_in_progress = true
+      @steps = [:destroy,:build]
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
@@ -125,16 +139,16 @@ module TaskAtHand
 
   def clear_task_at_hand
     @task_at_hand = nil
-    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-    File.delete(fn) if File.exist?(fn)
+
     if @two_step_in_progress == true
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/in_progress','w+')
-          f.write(' ')
+      
+      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+          f.write(@steps[1].to_s)
           f.close
       @two_step_in_progress = false
     else
-      fn = ContainerStateFiles.container_state_dir(self) + '/in_progress'
-      File.delete(fn) if File.exist?(fn)
+       fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+       File.delete(fn) if File.exist?(fn)
     end
     
     rescue StandardError => e 
@@ -225,7 +239,7 @@ module TaskAtHand
      
   def task_has_expired?(task)
     mtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')    
-    mtime += @task_timeout
+    mtime += task_set_timeout(task)
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       return true
