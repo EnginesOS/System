@@ -1,8 +1,12 @@
 module ManagedContainerControls
-  def destroy_container
+  def destroy_container(reinstall=false)
 
     return false unless has_api?
-    return false unless prep_task(:destroy)
+    if reinstall == true
+      return false unless prep_task(:reinstall)
+    else
+     return false unless prep_task(:destroy)
+    end
     return true if super
     task_failed('destroy')
   end

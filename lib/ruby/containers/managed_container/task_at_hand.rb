@@ -68,6 +68,10 @@ module TaskAtHand
       @two_step_in_progress = true
       @steps = [:destroy,:build]
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      when :reinstall
+          @two_step_in_progress = true
+          @steps = [:destroy,:build]
+          return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
     when :delete
@@ -221,6 +225,8 @@ module TaskAtHand
             return    'stopped'
           when :unpause
             return    'running'
+          when :reinstall
+            return    'running'  
           when :recreate
             return    'running'
           when :rebuild

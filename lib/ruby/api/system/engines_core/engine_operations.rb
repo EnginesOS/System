@@ -30,10 +30,10 @@ module EnginesOperations
      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
     end 
     
-    if reinstall == true
-      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
-      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-    end
+#    if reinstall == true
+#      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
+#      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+#    end
     
     if engine.delete_image || engine.has_image? == false
       p :engine_image_deleted
@@ -57,7 +57,7 @@ module EnginesOperations
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
-    engine.destroy_container if engine.has_container?
+    engine.destroy_container(true) if engine.has_container?
     params = {}
     params[:engine_name] = engine.container_name
     params[:reinstall] = true
