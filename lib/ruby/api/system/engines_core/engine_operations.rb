@@ -9,11 +9,13 @@ module EnginesOperations
     params[:container_type] = 'container' # Force This
     return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
-    remove_engine(engine_name)
+    reinstall = false
+    reinstall = params[:reinstall] = true if params.key?(:reinstall)
+    remove_engine(engine_name, reinstall)
     return true
   end
 
-  def remove_engine(engine_name)
+  def remove_engine(engine_name, reinstall = false)
     engine = loadManagedEngine(engine_name)
     params = {}
     params[:engine_name] = engine_name
@@ -23,6 +25,10 @@ module EnginesOperations
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
     end
+    if reinstall == true 
+     return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params)
+     return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    end 
    
     if engine.delete_image || engine.has_image? == false
       p :engine_image_deleted
