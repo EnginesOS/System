@@ -18,11 +18,11 @@ module TaskAtHand
     current_set_state = @setState
     @setState = state.to_s   
     @two_step_in_progress = false
-       if current_set_state ==  curr_state
-         p :alreadt                
-         save_state
-         return clear_task_at_hand
-       end  
+#       if current_set_state ==  curr_state
+#         p :alreadt                
+#         save_state
+#         return clear_task_at_hand
+#       end  
          
    set_task_at_hand(state)
    save_state
@@ -140,8 +140,7 @@ module TaskAtHand
   def clear_task_at_hand
     @task_at_hand = nil
 
-    if @two_step_in_progress == true
-      
+    if @two_step_in_progress == true      
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@steps[1].to_s)
           f.close
