@@ -251,6 +251,9 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
+    p :timeout
+    p task
+    p @task_timeouts[task]
     return @task_timeout unless @task_timeouts.key?(task)
     return @task_timeouts[task]
   end
