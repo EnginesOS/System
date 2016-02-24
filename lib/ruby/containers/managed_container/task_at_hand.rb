@@ -1,16 +1,20 @@
 module TaskAtHand
   @task_timeout = 300
+  @task_queue = []
+  @tasks_timout = {}
+  
   def desired_state(state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
     @two_step_in_progress = false
-#       if current_set_state ==  curr_state
-##         p :alreadt       
-##         
-#         return clear_task_at_hand
-#       else    
-         set_task_at_hand(state)
+       if current_set_state ==  curr_state
+         p :alreadt                
          save_state
+         return clear_task_at_hand
+       end  
+         
+   set_task_at_hand(state)
+   save_state
 #       end 
        
      #  puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
@@ -100,8 +104,13 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-   return nil if task_has_expired?
+ 
     task = File.read(fn)
+    if task_has_expired?(task)
+      clear_task_at_hand
+      return nil
+    end
+    
      r = read_state(raw=true)
     if tasks_final_state(task) == r
       clear_task_at_hand
@@ -168,7 +177,7 @@ module TaskAtHand
     log_exception(e)
   end
   
-  def wait_for_container_task(timeout=30)
+  def wait_for_container_task(timeout=90)
      fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
       return true unless File.exist?(fn)
       loop = 0
@@ -182,39 +191,40 @@ module TaskAtHand
       log_exception(e)
    end
    
-  def tasks_final_state(task)
-    case task
-        when :create      
-          return 'running'
-        when :stop
-          return  'stopped'
-        when :start
-          return    'running'
-        when :pause
-          return   'paused'
-        when :restart
-          return    'stopped'
-        when :unpause
-          return    'running'
-        when :recreate
-          return    'running'
-        when :rebuild
-          return    'running'
-        when :build
-          return    'running'
-        when :delete
-          return  'nocontainer'
-        when :destroy
-          return   'destroyed'
-        end
-    rescue StandardError => e 
-      log_exception(e)
-  end
-   
+  
   private
   
-  def task_has_expired?
-    mtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+  def tasks_final_state(task)
+      case task
+          when :create      
+            return 'running'
+          when :stop
+            return  'stopped'
+          when :start
+            return    'running'
+          when :pause
+            return   'paused'
+          when :restart
+            return    'stopped'
+          when :unpause
+            return    'running'
+          when :recreate
+            return    'running'
+          when :rebuild
+            return    'running'
+          when :build
+            return    'running'
+          when :delete
+            return  'nocontainer'
+          when :destroy
+            return   'destroyed'
+          end
+      rescue StandardError => e 
+        log_exception(e)
+    end
+     
+  def task_has_expired?(task)
+    mtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')    
     mtime += @task_timeout
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
@@ -226,21 +236,16 @@ module TaskAtHand
     return true 
   end
   
+  def task_set_timeout(task)
+    return @task_timeout unless @task_timeouts.key?(task)
+    return @task_timeouts[task]
+  end
+  
   def set_task_at_hand(state)
-#p :set_taskah
     @task_at_hand = state
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close
-    # clear task if still there after 60 s
-#    Thread.new do
-#      begin
-#       return if wait_for_container_task(60)         
-#        clear_task_at_hand
-#      ensure
-#        clear_task_at_hand
-#      end     
-#    end
     rescue StandardError => e 
       log_exception(e)
   end
