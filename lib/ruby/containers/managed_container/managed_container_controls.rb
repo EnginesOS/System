@@ -7,7 +7,7 @@ module ManagedContainerControls
     else
      return false unless prep_task(:destroy)
     end
-    return true if super
+    return true if super()
     task_failed('destroy')
   end
 

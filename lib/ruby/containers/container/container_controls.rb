@@ -43,7 +43,7 @@ module ContainerControls
     return log_error_mesg('Can\'t UnPause Container', @container_api.last_error)
   end
 
-  def destroy_container
+  def destroy_container()
     expire_engine_info
     r = true
     return true if read_state == 'nocontainer'
