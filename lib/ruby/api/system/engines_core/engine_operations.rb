@@ -60,6 +60,7 @@ module EnginesOperations
     engine.destroy_container if engine.has_container?
     params = {}
     params[:engine_name] = engine.container_name
+    params[:reinstall] = true
     delete_engine(params)
     builder = BuildController.new(self)
     builder.reinstall_engine(engine)
