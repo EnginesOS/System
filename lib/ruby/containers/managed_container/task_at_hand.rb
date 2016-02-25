@@ -123,7 +123,7 @@ module TaskAtHand
     return if action == 'create'
     @last_task =  action
    p :task_complete
-   p action
+   puts action.to_s + ' as action for task ' +  @task_at_hand.to_s
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
@@ -166,6 +166,7 @@ module TaskAtHand
     if  @steps_to_go > 0     
       p 'Multistep Task ' + @task_at_hand.to_s
       @task_at_hand = @steps[@steps_to_go - 1]
+      p 'Multistep Task ' + @task_at_hand.to_s
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@task_at_hand.to_s)
           f.close
@@ -278,7 +279,7 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-    p :timeout
+    p :timeout_for_task
     p task
     p @task_timeouts[task.to_sym]
     return @task_timeout unless @task_timeouts.key?(task.to_sym)
