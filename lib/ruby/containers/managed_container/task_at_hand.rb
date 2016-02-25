@@ -55,31 +55,41 @@ module TaskAtHand
     when :pause
       return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
+      if curr_state == 'running'
       @steps = [:start,:stop]
       @steps_to_go = 2
-      return desired_state('stopped', curr_state) if curr_state== 'running'
+      return desired_state('stopped', curr_state) 
+    end
+      return desired_state('running')
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
         @steps = [:create,:destroy]
         @steps_to_go = 2 
+        return desired_state('nocontainer', curr_state)
       end      
-      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+     
     when :rebuild
       
       if curr_state== 'stopped'
             @steps = [:create,:destroy]
             @steps_to_go = 2 
+            @steps = [:destroy,:create]
+        return desired_state('nocontainer', curr_state) 
           end      
-      @steps = [:destroy,:create]
-      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+     
+    
+      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+      
       when :reinstall
       if curr_state== 'stopped'
               @steps = [:create,:destroy]
               @steps_to_go = 2 
-            end      
-          return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+              return desired_state('nocontainer', curr_state)
+            end            
+          return desired_state('running', curr_state) if  curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
     when :delete
