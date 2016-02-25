@@ -8,9 +8,17 @@ class SystemDebug
   @@orphans = 2
   @@environment = 4
   @@templater = 8
+  @@docker = 16
   @@builder = 32
   @@execute = 64
+  @@system = 128
   
+  def self.system
+    return @@system
+  end
+  def self.docker
+    return @@docker
+  end  
   def self.services
     return @@services
   end

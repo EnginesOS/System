@@ -104,7 +104,7 @@ class BuildController
     build_complete(@build_params)
     return @engine
   rescue StandardError => e
-    build_failed(params, e)
+    build_failed(@build_params, e)
     SystemUtils.log_exception(e)
   end
 

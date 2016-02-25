@@ -133,7 +133,7 @@ class SystemUtils
       rescue Errno::EIO
         retval[:stdout] += oline.chop
         retval[:stdout] += stdout.read_nonblock(256)
-        SystemUtils.debug_output('read stderr', oline)
+        SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
         retry

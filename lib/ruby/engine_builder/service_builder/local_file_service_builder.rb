@@ -10,7 +10,7 @@ module LocalFileServiceBuilder
     end
     mapped_vols = get_volbuild_volmaps container
     command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
-    SystemUtils.debug_output('Run volume builder',command)
+    SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
     p command
     #run_system(command)
     result = SystemUtils.execute_command(command)
@@ -68,7 +68,7 @@ module LocalFileServiceBuilder
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
     unless container.volumes.nil?
       container.volumes.each_value do |vol|
-        SystemUtils.debug_output('build vol maps ' +  vol.name.to_s , vol)
+        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol.name.to_s , vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs/' + vol.name + ':rw'
       end
     end

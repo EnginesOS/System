@@ -22,7 +22,7 @@ module Engines
     clear_error
     protocol = params[:http_protocol]
     return false if protocol.nil?
-    SystemUtils.debug_output('Changing protocol to _', protocol)
+    SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
     if protocol.include?('HTTPS only')
       engine.enable_https_only
     elsif protocol.include?('HTTP only')
@@ -39,7 +39,7 @@ module Engines
 
     hostname = params[:host_name]
     domain_name = params[:domain_name]
-    SystemUtils.debug_output('Changing Domainame to ', domain_name)
+    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
     save_container(container)

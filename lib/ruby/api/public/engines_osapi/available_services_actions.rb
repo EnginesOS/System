@@ -27,7 +27,7 @@ module AvailableServicesActions
   end
 
   def list_attached_services_for(object_name, identifier)
-    SystemUtils.debug_output('list_attached_services_for', object_name + ' ' + identifier)
+    SystemDebug.debug(SystemDebug.services,'list_attached_services_for', object_name + ' ' + identifier)
     @core_api.list_attached_services_for(object_name, identifier)
   end
 

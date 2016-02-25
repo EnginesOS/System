@@ -76,6 +76,6 @@ def create_nginx_service_hash(engine)
   service_hash[:variables][:fqdn] = engine.fqdn
   service_hash[:variables][:port] = engine.web_port.to_s
   service_hash[:variables][:proto] = proto
-  SystemUtils.debug_output('create nginx Hash',service_hash)
+  SystemDebug.debug(SystemDebug.services,'create nginx Hash',service_hash)
   return service_hash
 end

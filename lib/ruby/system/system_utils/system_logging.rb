@@ -9,10 +9,6 @@ module SystemLogging
      end
      return false
    end
-   
-  def SystemUtils.debug_output(label, object = nil)
-     STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
-   end
  
   
  
