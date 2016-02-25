@@ -1,14 +1,7 @@
 module SystemLogging
   attr_reader :debug, :level, :last_error
 
-  def SystemUtils.last_error
-    return @@last_error
-  end
 
-  def SystemUtils.log_level
-    return @@level
-  end
-  
   def SystemUtils.log_output(object, level)
      if SystemUtils.level < level
        STDERR.puts 'Error[' + Process.pid.to_s + ']:'+ object.to_s if level == 10

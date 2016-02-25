@@ -1,6 +1,13 @@
 class SystemUtils
 
   @@level=0
+  def SystemUtils.last_error
+    return @@last_error
+  end
+
+  def SystemUtils.log_level
+    return @@level
+  end
   
   require_relative 'system_debug.rb'
 
