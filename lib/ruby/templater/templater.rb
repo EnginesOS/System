@@ -97,7 +97,7 @@ class Templater
     else
       SystemUtils.log_error_mesg('nil system access', template)
     end
-    unless @builder_public.nil?
+    unless @builder_public.nil? || @builder_public == false
       template = apply_build_variables(template)
       if @builder_public.respond_to?('blueprint')\
       && @builder_public.blueprint.nil? == false

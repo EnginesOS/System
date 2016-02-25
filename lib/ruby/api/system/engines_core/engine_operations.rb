@@ -9,11 +9,13 @@ module EnginesOperations
     params[:container_type] = 'container' # Force This
     return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
     engine_name = params[:engine_name]
-    remove_engine(engine_name)
+    reinstall = false
+    reinstall = params[:reinstall] = true if params.key?(:reinstall)
+    remove_engine(engine_name, reinstall)
     return true
   end
 
-  def remove_engine(engine_name)
+  def remove_engine(engine_name, reinstall = false)
     engine = loadManagedEngine(engine_name)
     params = {}
     params[:engine_name] = engine_name
@@ -23,7 +25,16 @@ module EnginesOperations
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
     end
-   
+    if reinstall == true 
+     return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params)
+     return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    end 
+    
+#    if reinstall == true
+#      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
+#      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+#    end
+    
     if engine.delete_image || engine.has_image? == false
       p :engine_image_deleted
       return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
@@ -46,12 +57,14 @@ module EnginesOperations
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
-    engine.destroy_container if engine.has_container?
+    engine.destroy_container(true) if engine.has_container?
     params = {}
     params[:engine_name] = engine.container_name
+    params[:reinstall] = true
     delete_engine(params)
     builder = BuildController.new(self)
-    builder.reinstall_engine(engine)
+    engine.reinstall_engine(builder)
+
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)
