@@ -76,7 +76,6 @@ module TaskAtHand
       if curr_state== 'stopped'
             @steps = [:create,:destroy]
             @steps_to_go = 2 
-            @steps = [:destroy,:create]
         return desired_state('nocontainer', curr_state) 
           end      
      
@@ -163,11 +162,13 @@ module TaskAtHand
 
     @steps_to_go -= 1
     if  @steps_to_go > 0     
+      p 'Multistep Task ' + @task_at_hand.to_s
       @task_at_hand = @steps[@steps_to_go - 1]
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@task_at_hand.to_s)
           f.close
     else
+       p 'cleared Task ' + @task_at_hand.to_s
       @task_at_hand = nil
        fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
        File.delete(fn) if File.exist?(fn)
@@ -277,9 +278,9 @@ module TaskAtHand
   def task_set_timeout(task)
     p :timeout
     p task
-    p @task_timeouts[task]
-    return @task_timeout unless @task_timeouts.key?(task)
-    return @task_timeouts[task]
+    p @task_timeouts[task.to_sym]
+    return @task_timeout unless @task_timeouts.key?(task.to_sym)
+    return @task_timeouts[task.to_sym]
   end
   
   def set_task_at_hand(state)
