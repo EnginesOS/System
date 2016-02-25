@@ -63,7 +63,8 @@ module EnginesOperations
     params[:reinstall] = true
     delete_engine(params)
     builder = BuildController.new(self)
-    builder.reinstall_engine(engine)
+    engine.reinstall_engine(builder)
+
   rescue  StandardError => e
     @last_error = e.to_s
     log_exception(e)

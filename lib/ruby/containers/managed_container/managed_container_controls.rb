@@ -1,4 +1,12 @@
 module ManagedContainerControls
+  
+  def reinstall_engine(builder)
+    return false unless has_api?
+    return false unless prep_task(:build)
+  builder.reinstall_engine(self)
+  
+  end
+  
   def destroy_container(reinstall=false)
 
     return false unless has_api?
