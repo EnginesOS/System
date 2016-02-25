@@ -1,6 +1,9 @@
 module CertificateActions
   def get_system_ca
+    return "No CA found" unless file.exists?(SystemConfig.EnginesInternalCA)
+    
     File.read(SystemConfig.EnginesInternalCA)
+    
   rescue StandardError => e
     failed('Failed to load CA', e.to_s, 'system ca')
   end
