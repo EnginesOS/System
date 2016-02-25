@@ -49,7 +49,7 @@ module TaskAtHand
       @steps_to_go = 2
       return desired_state('stopped', curr_state) 
     end
-      return desired_state('running')
+      return desired_state('running', curr_state)
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
@@ -63,7 +63,7 @@ module TaskAtHand
     when :rebuild
       
       if curr_state== 'stopped'
-            @steps = [:create,:create,:destroy]
+            @steps = [:start,:create,:destroy]
             @steps_to_go = 3
         return desired_state('nocontainer', curr_state) 
           end      
@@ -114,7 +114,8 @@ module TaskAtHand
 
     @last_task =  action
    p :task_complete
-   puts action.to_s + ' as action for task ' +  task_at_hand.to_s
+   puts action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go'
+    p @steps 
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
