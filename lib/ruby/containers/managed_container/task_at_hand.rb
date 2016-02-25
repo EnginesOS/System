@@ -120,6 +120,7 @@ module TaskAtHand
   end
 
   def task_complete(action)
+    return if action == 'create'
     @last_task =  action
    p :task_complete
    p action
