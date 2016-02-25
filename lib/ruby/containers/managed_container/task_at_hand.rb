@@ -38,7 +38,7 @@ module TaskAtHand
 #    p :in_p
 #    p action
 #    p action.class.name
-    @two_step_in_progress = false
+    @steps_to_go = 1
     curr_state = read_state
 #    p :read_state
 #    p curr_state
@@ -55,22 +55,30 @@ module TaskAtHand
     when :pause
       return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
-      @two_step_in_progress = true
-      @steps = [:stop,:start]
+      @steps = [:start,:stop]
+      @steps_to_go = 2
       return desired_state('stopped', curr_state) if curr_state== 'running'
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
-      @steps = [:destroy,:create]
-      @two_step_in_progress = true
+      if curr_state== 'stopped'
+        @steps = [:create,:destroy]
+        @steps_to_go = 2 
+      end      
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :rebuild
-      @two_step_in_progress = true
+      
+      if curr_state== 'stopped'
+            @steps = [:create,:destroy]
+            @steps_to_go = 2 
+          end      
       @steps = [:destroy,:create]
       return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
       when :reinstall
-          @two_step_in_progress = true
-          @steps = [:destroy,:build]
+      if curr_state== 'stopped'
+              @steps = [:create,:destroy]
+              @steps_to_go = 2 
+            end      
           return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
@@ -142,14 +150,15 @@ module TaskAtHand
   end
 
   def clear_task_at_hand
-    @task_at_hand = nil
 
-    if @two_step_in_progress == true      
+    @steps_to_go -= 1
+    if  @steps_to_go > 0     
+      @task_at_hand = @steps[@steps_to_go - 1]
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-          f.write(@steps[1].to_s)
+          f.write(@task_at_hand.to_s)
           f.close
-      @two_step_in_progress = false
     else
+      @task_at_hand = nil
        fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
        File.delete(fn) if File.exist?(fn)
     end
