@@ -31,7 +31,7 @@ module TaskAtHand
       @steps_to_go = 1
     else
       @steps_to_go = 1  if @steps_to_go <= 0
-     fi
+    end
     curr_state = read_state
 #    p :read_state
 #    p curr_state
