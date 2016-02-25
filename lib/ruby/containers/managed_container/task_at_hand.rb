@@ -27,7 +27,7 @@ module TaskAtHand
 #    p :in_p
 #    p action
 #    p action.class.name
-    @steps_to_go = 1  if @steps_to_go == 0
+    @steps_to_go = 1  if @steps_to_go <= 0
     curr_state = read_state
 #    p :read_state
 #    p curr_state
