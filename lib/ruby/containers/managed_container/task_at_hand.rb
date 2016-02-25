@@ -1,18 +1,7 @@
 module TaskAtHand
   @task_timeout = 20
   @task_queue = []
-  @task_timeouts = {}
-  @task_timeouts[:stop]= 60
-  @task_timeouts[:start]= 30
-  @task_timeouts[:restart]= 90
-  @task_timeouts[:recreate]= 300
-  @task_timeouts[:create]= 300
-  @task_timeouts[:build]= 90
-  @task_timeouts[:rebuild]= 120
-  @task_timeouts[:pause]= 20
-  @task_timeouts[:unpause]= 20
-  @task_timeouts[:destroy]= 30
-  @task_timeouts[:delete]= 40
+
      
   def desired_state(state, curr_state)
     current_set_state = @setState
@@ -38,7 +27,11 @@ module TaskAtHand
 #    p :in_p
 #    p action
 #    p action.class.name
-    @steps_to_go = 1
+    if @steps_to_go.nil?
+      @steps_to_go = 1
+    else
+      @steps_to_go = 1  if @steps_to_go <= 0
+    end
     curr_state = read_state
 #    p :read_state
 #    p curr_state
@@ -55,31 +48,40 @@ module TaskAtHand
     when :pause
       return desired_state('paused', curr_state) if curr_state== 'running'
     when :restart
+      if curr_state == 'running'
       @steps = [:start,:stop]
       @steps_to_go = 2
-      return desired_state('stopped', curr_state) if curr_state== 'running'
+      return desired_state('stopped', curr_state) 
+    end
+      return desired_state('running', curr_state)
     when :unpause
       return desired_state('running', curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
         @steps = [:create,:destroy]
         @steps_to_go = 2 
+        return desired_state('nocontainer', curr_state)
       end      
-      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+     
     when :rebuild
       
       if curr_state== 'stopped'
-            @steps = [:create,:destroy]
-            @steps_to_go = 2 
+            @steps = [:start,:create,:destroy]
+            @steps_to_go = 3
+        return desired_state('nocontainer', curr_state) 
           end      
-      @steps = [:destroy,:create]
-      return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+     
+    
+      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+      
       when :reinstall
       if curr_state== 'stopped'
               @steps = [:create,:destroy]
               @steps_to_go = 2 
-            end      
-          return desired_state('running', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+              return desired_state('nocontainer', curr_state)
+            end            
+          return desired_state('running', curr_state) if  curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
     when :delete
@@ -111,8 +113,13 @@ module TaskAtHand
   end
 
   def task_complete(action)
+   # return if action == 'create'
+    
+
     @last_task =  action
-   # p :task_complete
+   p :task_complete
+   puts action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go'
+    p @steps 
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
@@ -153,11 +160,14 @@ module TaskAtHand
 
     @steps_to_go -= 1
     if  @steps_to_go > 0     
+      p 'Multistep Task ' + @task_at_hand.to_s
       @task_at_hand = @steps[@steps_to_go - 1]
+      p 'Multistep Task ' + @task_at_hand.to_s
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@task_at_hand.to_s)
           f.close
     else
+       p 'cleared Task ' + @task_at_hand.to_s
       @task_at_hand = nil
        fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
        File.delete(fn) if File.exist?(fn)
@@ -265,11 +275,23 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-    p :timeout
-    p task
-    p @task_timeouts[task]
-    return @task_timeout unless @task_timeouts.key?(task)
-    return @task_timeouts[task]
+    @task_timeouts = {}
+    @task_timeouts[:stop]= 60
+    @task_timeouts[:start]= 30
+    @task_timeouts[:restart]= 90
+    @task_timeouts[:recreate]= 300
+    @task_timeouts[:create]= 300
+    @task_timeouts[:build]= 90
+    @task_timeouts[:rebuild]= 120
+    @task_timeouts[:pause]= 20
+    @task_timeouts[:unpause]= 20
+    @task_timeouts[:destroy]= 30
+    @task_timeouts[:delete]= 40
+    p :timeout_set_for_task
+    p task.to_sym
+    p @task_timeouts[task.to_sym].to_s
+    return @task_timeouts unless @task_timeouts.key?(task.to_sym)
+    return @task_timeouts[task.to_sym]
   end
   
   def set_task_at_hand(state)
