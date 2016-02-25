@@ -8,7 +8,9 @@ class SystemUtils
   def SystemUtils.log_level
     return @@level
   end
-  
+  def SystemUtils.level
+     return @@level
+   end
   require_relative 'system_debug.rb'
 
   require_relative 'system_utils/system_logging.rb'
