@@ -74,8 +74,8 @@ module TaskAtHand
     when :rebuild
       
       if curr_state== 'stopped'
-            @steps = [:create,:destroy]
-            @steps_to_go = 2 
+            @steps = [:create,:create,:destroy]
+            @steps_to_go = 3
         return desired_state('nocontainer', curr_state) 
           end      
      
@@ -120,10 +120,12 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    return if action == 'create'
+   # return if action == 'create'
+    
+
     @last_task =  action
    p :task_complete
-   puts action.to_s + ' as action for task ' +  @task_at_hand.to_s
+   puts action.to_s + ' as action for task ' +  task_at_hand.to_s
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
@@ -280,8 +282,8 @@ module TaskAtHand
   
   def task_set_timeout(task)
     p :timeout_for_task
-    p task
-    p @task_timeouts[task.to_sym]
+    p task.to_sym
+    p @task_timeouts[task.to_sym].to_s
     return @task_timeout unless @task_timeouts.key?(task.to_sym)
     return @task_timeouts[task.to_sym]
   end
