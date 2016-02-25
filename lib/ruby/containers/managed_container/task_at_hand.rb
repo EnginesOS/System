@@ -1,18 +1,7 @@
 module TaskAtHand
   @task_timeout = 20
   @task_queue = []
-  @task_timeouts = {}
-  @task_timeouts[:stop]= 60
-  @task_timeouts[:start]= 30
-  @task_timeouts[:restart]= 90
-  @task_timeouts[:recreate]= 300
-  @task_timeouts[:create]= 300
-  @task_timeouts[:build]= 90
-  @task_timeouts[:rebuild]= 120
-  @task_timeouts[:pause]= 20
-  @task_timeouts[:unpause]= 20
-  @task_timeouts[:destroy]= 30
-  @task_timeouts[:delete]= 40
+
      
   def desired_state(state, curr_state)
     current_set_state = @setState
@@ -281,10 +270,22 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-    p :timeout_for_task
+    @task_timeouts = {}
+    @task_timeouts[:stop]= 60
+    @task_timeouts[:start]= 30
+    @task_timeouts[:restart]= 90
+    @task_timeouts[:recreate]= 300
+    @task_timeouts[:create]= 300
+    @task_timeouts[:build]= 90
+    @task_timeouts[:rebuild]= 120
+    @task_timeouts[:pause]= 20
+    @task_timeouts[:unpause]= 20
+    @task_timeouts[:destroy]= 30
+    @task_timeouts[:delete]= 40
+    p :timeout_set_for_task
     p task.to_sym
     p @task_timeouts[task.to_sym].to_s
-    return @task_timeout unless @task_timeouts.key?(task.to_sym)
+    return @task_timeouts unless @task_timeouts.key?(task.to_sym)
     return @task_timeouts[task.to_sym]
   end
   
