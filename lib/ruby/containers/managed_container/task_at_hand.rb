@@ -121,7 +121,8 @@ module TaskAtHand
 
   def task_complete(action)
     @last_task =  action
-   # p :task_complete
+   p :task_complete
+   p action
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
