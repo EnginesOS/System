@@ -113,7 +113,7 @@ module TaskAtHand
   end
 
   def task_complete(action)
-   # return if action == 'create'
+    return if action == 'create'
     
 
     @last_task =  action
