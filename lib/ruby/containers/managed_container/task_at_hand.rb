@@ -1,5 +1,5 @@
 module TaskAtHand
-  @task_timeout = 20
+  @default_task_timeout = 20
   @task_queue = []
 
      
@@ -277,7 +277,7 @@ module TaskAtHand
     @task_timeouts[:destroy]= 30
     @task_timeouts[:delete]= 40
    # SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
-    return @task_timeouts unless @task_timeouts.key?(task.to_sym)
+    return @default_task_timeout unless @task_timeouts.key?(task.to_sym)
     return @task_timeouts[task.to_sym]
   end
   
