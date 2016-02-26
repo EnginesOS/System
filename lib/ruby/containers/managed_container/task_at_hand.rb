@@ -270,6 +270,7 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
+    @default_task_timeout = 20
     @task_timeouts = {}
     @task_timeouts[task.to_sym] =  @default_task_timeout  unless @task_timeouts.key?(task.to_sym)
     @task_timeouts[:stop]= 60
@@ -285,8 +286,8 @@ module TaskAtHand
     @task_timeouts[:delete]= 40
   @task_timeouts[:running]= 40
     SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s + 'secs')
-   return  @default_task_timeout
-  #  return @task_timeouts[task.to_sym]
+# return  @default_task_timeout
+   return @task_timeouts[task.to_sym]
   end
   
   def set_task_at_hand(state)
