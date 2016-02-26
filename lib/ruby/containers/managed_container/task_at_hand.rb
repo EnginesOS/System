@@ -52,7 +52,7 @@ module TaskAtHand
       if curr_state== 'stopped'
         @steps = [:create,:destroy]
         @steps_to_go = 2 
-        return desired_state('nocontainer', curr_state)
+        return desired_state('running', curr_state)
       end      
       return desired_state('running', curr_state) if  curr_state== 'nocontainer'
      
@@ -61,7 +61,7 @@ module TaskAtHand
       if curr_state== 'stopped'
             @steps = [:start,:create,:destroy]
             @steps_to_go = 3
-        return desired_state('nocontainer', curr_state) 
+        return desired_state('running', curr_state) 
           end      
      
     
