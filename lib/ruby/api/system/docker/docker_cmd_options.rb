@@ -142,7 +142,7 @@ module DockerCmdOptions
       temp_dir_name =   container.ctype + '/' + container.container_name
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw '
       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
-      SystemDebug.debug(SystemDebug.service, 'vol options',      volume_option)
+      SystemDebug.debug(SystemDebug.services, 'vol options',      volume_option)
     end
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
