@@ -86,7 +86,7 @@ class EnginesOSapi
 
   def set_first_run_parameters(params_from_gui)
     params = params_from_gui.dup
-    SystemDebug.debug(SystemDebug.firstrun,params)
+    SystemDebug.debug(SystemDebug.first_run,params)
     first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
     return success('Gui', 'First Run') if first_run.sucess
