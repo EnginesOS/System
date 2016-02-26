@@ -167,7 +167,11 @@ module TaskAtHand
     timeout = task_set_timeout(task)
   #  p :wait_for_task
     SystemDebug.debug(SystemDebug.engine_tasks,  :wait_for_task, task_at_hand)
-    while ! task_at_hand.nil?
+    
+   return true if task_at_hand.nil?
+      
+      fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+      while   fmtime ==   File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       sleep(0.5)
       loops+=1
       SystemDebug.debug(SystemDebug.engine_tasks, :wft_loop, ' ', task_at_hand)
