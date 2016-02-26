@@ -1,7 +1,7 @@
 module TaskAtHand
   @default_task_timeout = 20
   @task_queue = []
-
+  @task_timeouts = {}
      
   def desired_state(state, curr_state)
     current_set_state = @setState
@@ -251,8 +251,9 @@ module TaskAtHand
     end
      
   def task_has_expired?(task)
-    mtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')    
-    mtime += task_set_timeout(task)
+    fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')    
+    mtime = fmtime  + task_set_timeout(task)
+    SystemDebug.debug(SystemDebug.engine_tasks, mtime ,fmtime, Time.now)
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       return true
@@ -264,7 +265,8 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-    @task_timeouts = {}
+
+    @task_timeouts[task.to_sym] =  @default_task_timeout  unless @task_timeouts.key?(task.to_sym)
     @task_timeouts[:stop]= 60
     @task_timeouts[:start]= 30
     @task_timeouts[:restart]= 90
@@ -276,8 +278,8 @@ module TaskAtHand
     @task_timeouts[:unpause]= 20
     @task_timeouts[:destroy]= 30
     @task_timeouts[:delete]= 40
-   # SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
-    return @default_task_timeout unless @task_timeouts.key?(task.to_sym)
+    SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
+   
     return @task_timeouts[task.to_sym]
   end
   
