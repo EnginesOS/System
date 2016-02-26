@@ -1,10 +1,15 @@
 module SystemExceptions
   
-  def SystemUtils.log_exception(e)
-      e_str = e.to_s
+  def SystemUtils.log_exception(*args)
+    e = args[0]
+      e_str = '  '
       e.backtrace.each do |bt|
         e_str += bt + " \n"
       end
+
+     args.each do |arg|
+       e_str += arg.to_s + ' '
+     end
       @@last_error = e_str
       SystemUtils.log_output(e_str, 10)
       e_str +="\n\n"
