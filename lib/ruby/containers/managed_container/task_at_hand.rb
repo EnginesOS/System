@@ -253,7 +253,7 @@ module TaskAtHand
   def task_has_expired?(task)
     fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')    
     mtime = fmtime  + task_set_timeout(task)
-    SystemDebug.debug(SystemDebug.engine_tasks, mtime ,fmtime, Time.now)
+    SystemDebug.debug(SystemDebug.engine_tasks, "mtime fmttime now", mtime ,fmtime, Time.now)
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       return true
