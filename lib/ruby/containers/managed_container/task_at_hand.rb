@@ -129,7 +129,7 @@ module TaskAtHand
  
     task = File.read(fn)
     if task_has_expired?(task)
-      clear_task_at_hand
+      expire_task_at_had
       return nil
     end
     
@@ -145,6 +145,10 @@ module TaskAtHand
    # @task_at_hand 
   end
 
+  def expire_task_at_had
+    SystemDebug.debug(SystemDebug.engine_tasks, 'expire Task ' + @task_at_hand.to_s )
+    clear_task_at_hand
+  end
   def clear_task_at_hand
 
     @steps_to_go -= 1
@@ -272,7 +276,7 @@ module TaskAtHand
     @task_timeouts[:unpause]= 20
     @task_timeouts[:destroy]= 30
     @task_timeouts[:delete]= 40
-    SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
+   # SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
     return @task_timeouts unless @task_timeouts.key?(task.to_sym)
     return @task_timeouts[task.to_sym]
   end
