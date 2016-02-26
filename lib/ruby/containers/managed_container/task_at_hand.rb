@@ -22,8 +22,9 @@ module TaskAtHand
 
     if @steps_to_go.nil?
       @steps_to_go = 1
-    else
-      @steps_to_go = 1  if @steps_to_go <= 0
+    elsif @steps_to_go <= 0
+      @steps_to_go = 1  
+      
     end
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
@@ -61,7 +62,7 @@ module TaskAtHand
       if curr_state== 'stopped'
             @steps = [:create,:destroy]
             @steps_to_go = 2
-        return desired_state('running', curr_state) 
+            return desired_state('nocontainer', curr_state) 
           end      
      
     
@@ -85,19 +86,7 @@ module TaskAtHand
     
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
    
-#    if tasks_final_state(action) == curr_state
-#      puts 'already their'
-#      @setState = curr_state
-#      save_state
-#      return curr_state
-#      # sync gui with relaty it started but then stopped before gui updated
-#    else
-#      puts 'Cant take from ' +  curr_state.to_s + ' to ' + action.to_s
-#      puts 'curr_state is a ' + curr_state.class.name + ' action is a ' + action.class.name
-#      puts 'and finale state is ' + tasks_final_state(action)
-#    end
-   
-#     
+  
     
     # Perhaps ?return clear_task_at_hand
     rescue StandardError => e 
@@ -172,8 +161,9 @@ module TaskAtHand
     return true  #possbile exception such file (another process alsop got the eot mesg and removed) 
   end
   
-  def wait_for_task(timeout=25)
+  def wait_for_task(task)
     loops=0
+    timeout = task_set_timeout(task)
   #  p :wait_for_task
     SystemDebug.debug(SystemDebug.engine_tasks,  :wait_for_task, task_at_hand)
     while ! task_at_hand.nil?
@@ -275,10 +265,10 @@ module TaskAtHand
     @task_timeouts[task.to_sym] =  @default_task_timeout  unless @task_timeouts.key?(task.to_sym)
     @task_timeouts[:stop]= 60
     @task_timeouts[:start]= 30
-    @task_timeouts[:restart]= 90
-    @task_timeouts[:recreate]= 300
-    @task_timeouts[:create]= 300
-    @task_timeouts[:build]= 90
+    @task_timeouts[:restart]= 60
+    @task_timeouts[:recreate]= 90
+    @task_timeouts[:create]= 90
+    @task_timeouts[:build]= 300
     @task_timeouts[:rebuild]= 120
     @task_timeouts[:pause]= 20
     @task_timeouts[:unpause]= 20
