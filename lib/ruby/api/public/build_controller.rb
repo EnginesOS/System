@@ -34,7 +34,7 @@ class BuildController
     @engine = @engine_builder.build_from_blue_print
     
     @build_error = @engine_builder.last_error
-    puts :build_error + self.build_error.to_s unless self.build_error.nil?
+    SystemDebug.debug(SystemDebug.builder, :build_error + self.build_error.to_s) unless self.build_error.nil?
     
     build_failed(params, @build_error) if @engine.nil? || @engine == false
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)

@@ -329,7 +329,6 @@ class BluePrintReader
     @mapped_ports = []
     log_build_output('Read Work Ports')
     ports = @blueprint[:software][:ports]
-    puts('Ports Json' + ports.to_s)
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
       portnum = port[:port]
@@ -338,7 +337,7 @@ class BluePrintReader
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       # FIXME: when public ports supported
-      puts 'Port ' + portnum.to_s + ':' + external.to_s
+        SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
       @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
     end
     return true

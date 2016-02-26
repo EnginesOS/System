@@ -53,7 +53,7 @@ class DockerConnection < ErrorsApi
   private
 
   def clear_cid(container)
-  puts '++++++++++++++++++++++++++Cleared Cid'
+    SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
     File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid') 
     container.clear_cid
     return false 
