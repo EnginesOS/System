@@ -2,7 +2,7 @@ module SystemExceptions
   
   def SystemUtils.log_exception(*args)
     e = args[0]
-      e_str = '  '
+      e_str = '  BT'
       e.backtrace.each do |bt|
         e_str += bt + " \n"
       end

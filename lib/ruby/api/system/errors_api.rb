@@ -16,7 +16,7 @@ class ErrorsApi
   def log_exception(*args)
     e = args[0]
     @last_error = e.to_s + e.backtrace.to_s
-    mesg = ''
+    mesg = @last_error 
     args.each do |arg|
       mesg += arg.to_s + ' '
     end

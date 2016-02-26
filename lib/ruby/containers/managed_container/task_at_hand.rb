@@ -74,6 +74,7 @@ module TaskAtHand
               @steps_to_go = 2
               return desired_state('running', curr_state)
             end            
+      @steps_to_go = 2
           return desired_state('running', curr_state) if  curr_state== 'nocontainer'
     when :build
       return desired_state('running', curr_state) if curr_state== 'nocontainer'
