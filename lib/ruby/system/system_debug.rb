@@ -2,7 +2,7 @@ class SystemDebug
   
   
               
-  @@debug_flags = @@engine_tasks  | @@execute
+ 
   
   @@services = 1
   @@orphans = 2
@@ -14,9 +14,12 @@ class SystemDebug
   @@system = 128
   @@engine_tasks = 256
   
+  @@debug_flags = @@engine_tasks  | @@execute
+  
   def self.engine_tasks
       return @@engine_tasks
     end
+    
   def self.system
     return @@system
   end
