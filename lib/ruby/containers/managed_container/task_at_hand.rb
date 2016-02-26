@@ -1,7 +1,7 @@
 module TaskAtHand
   @default_task_timeout = 20
   @task_queue = []
-  @task_timeouts = {}
+
      
   def desired_state(state, curr_state)
     current_set_state = @setState
@@ -266,7 +266,7 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-
+    @task_timeouts = {}
     @task_timeouts[task.to_sym] =  @default_task_timeout  unless @task_timeouts.key?(task.to_sym)
     @task_timeouts[:stop]= 60
     @task_timeouts[:start]= 30
