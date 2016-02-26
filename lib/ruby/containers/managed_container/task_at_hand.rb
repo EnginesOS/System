@@ -278,6 +278,7 @@ module TaskAtHand
     @task_timeouts[:unpause]= 20
     @task_timeouts[:destroy]= 30
     @task_timeouts[:delete]= 40
+  @task_timeouts[:running]= 40
     SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
    
     return @task_timeouts[task.to_sym]
