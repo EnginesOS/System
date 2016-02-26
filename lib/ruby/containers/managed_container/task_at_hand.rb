@@ -117,7 +117,7 @@ module TaskAtHand
     
 
     @last_task =  action
-    SystemDebug.debug(SystemDebug.engines_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go ',@steps) 
+    SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go ',@steps) 
     expire_engine_info
     clear_task_at_hand    
   #  p :last_task
@@ -158,14 +158,14 @@ module TaskAtHand
 
     @steps_to_go -= 1
     if  @steps_to_go > 0     
-      SystemDebug.debug(SystemDebug.engines_tasks, 'Multistep Task ' + @task_at_hand.to_s )
+      SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
       @task_at_hand = @steps[@steps_to_go - 1]
-      SystemDebug.debug(SystemDebug.engines_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
+      SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@task_at_hand.to_s)
           f.close
     else
-      SystemDebug.debug(SystemDebug.engines_tasks, 'cleared Task ' + @task_at_hand.to_s)
+      SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
        fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
        File.delete(fn) if File.exist?(fn)
@@ -184,7 +184,7 @@ module TaskAtHand
     while ! task_at_hand.nil?
       sleep(0.5)
       loops+=1
-      SystemDebug.debug(SystemDebug.engines_tasks, :wft_loop, ' ', task_at_hand)
+      SystemDebug.debug(SystemDebug.engine_tasks, :wft_loop, ' ', task_at_hand)
       if loops > timeout * 2
         return false
       end
@@ -197,10 +197,10 @@ module TaskAtHand
 
   def task_failed(msg)
     clear_task_at_hand
-    SystemDebug.debug(SystemDebug.engines_tasks,:TASK_FAILES______Doing, @task_at_hand)
+    SystemDebug.debug(SystemDebug.engine_tasks,:TASK_FAILES______Doing, @task_at_hand)
 
     @last_error = @container_api.last_error unless @container_api.nil?
-    SystemDebug.debug(SystemDebug.engines_tasks, :WITH, @last_error.to_s, msg.to_s)
+    SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     return false
   rescue StandardError => e 
@@ -281,7 +281,7 @@ module TaskAtHand
     @task_timeouts[:unpause]= 20
     @task_timeouts[:destroy]= 30
     @task_timeouts[:delete]= 40
-    SystemDebug.debug(SystemDebug.engines_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
+    SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s)
     return @task_timeouts unless @task_timeouts.key?(task.to_sym)
     return @task_timeouts[task.to_sym]
   end
