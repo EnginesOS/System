@@ -71,7 +71,7 @@ module TaskAtHand
       if curr_state== 'stopped'
               @steps = [:create,:destroy]
               @steps_to_go = 2
-              return desired_state('nocontainer', curr_state)
+              return desired_state('running', curr_state)
             end            
           return desired_state('running', curr_state) if  curr_state== 'nocontainer'
     when :build
@@ -152,9 +152,9 @@ module TaskAtHand
       SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
       @task_at_hand = @steps[@steps_to_go - 1]
       SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-          f.write(@task_at_hand.to_s)
-          f.close
+#      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+#          f.write(@task_at_hand.to_s)
+#          f.close
     else
       SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
