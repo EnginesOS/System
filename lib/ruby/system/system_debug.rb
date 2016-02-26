@@ -2,7 +2,7 @@ class SystemDebug
   
   
               
-  @@debug_flags=0
+  @@debug_flags = @@engine_tasks  | @@execute
   
   @@services = 1
   @@orphans = 2
@@ -12,7 +12,11 @@ class SystemDebug
   @@builder = 32
   @@execute = 64
   @@system = 128
+  @@engine_tasks = 256
   
+  def self.engine_tasks
+      return @@engine_tasks
+    end
   def self.system
     return @@system
   end

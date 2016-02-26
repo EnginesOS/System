@@ -60,10 +60,6 @@ class SystemUtils
     }
   end
 
-  
-
-
-
 
   #Execute @param cmd [String]
   #if sucessful exit code == 0 @return
@@ -111,7 +107,7 @@ class SystemUtils
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
-    p cmd
+   
     retval = {}
 
     retval[:stdout] = ''
@@ -186,7 +182,7 @@ class SystemUtils
     version_str = '15.1'
     version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"") unless  os_data_hash['VERSION_ID'].nil?
     vers = version_str.split('.')
-    os_data_hash['Major Version'] =  vers[0]
+    os_data_hash['Major Version'] = vers[0]
     os_data_hash['Minor Version'] = vers[1]
     os_data_hash['Patch Version'] = vers[2] if vers.count > 2
     # FIXME catch sub numbers as in 14.04.1
