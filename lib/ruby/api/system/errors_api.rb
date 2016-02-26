@@ -15,12 +15,13 @@ class ErrorsApi
 
   def log_exception(*args)
     e = args[0]
+  SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
     @last_error = e.to_s + e.backtrace.to_s
-    mesg = @last_error 
+    mesg = @last_error + ':'
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
-  mesg += e.backtrace.to_s
+
     SystemUtils.log_error_mesg(mesg)
   end
 end
