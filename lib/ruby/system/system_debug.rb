@@ -13,13 +13,31 @@ class SystemDebug
   @@execute = 64
   @@system = 128
   @@engine_tasks = 256
+  @@first_run = 512
+  @@containers = 1024
+  @@cache = 2048
+  @@update = 4096
+  @@registry = 8192
   
-  @@debug_flags = @@engine_tasks  | @@execute
-  
+  @@debug_flags = @@engine_tasks 
+  def self.update
+      return @@update
+    end
+  def self.registry
+      return @@registry
+    end 
+  def self.cache
+      return @@cache
+    end
   def self.engine_tasks
       return @@engine_tasks
     end
-    
+  def self.containers
+        return @@containers
+      end
+  def self.first_run
+      return @@first_run
+    end  
   def self.system
     return @@system
   end

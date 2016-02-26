@@ -18,14 +18,9 @@ class DockerConnection < ErrorsApi
   end
   
   def inspect_container(container)
-#    p :test_inspect 
-#    p container.container_name
-   # puts 'id_' + container.container_id.to_s + '_' 
     container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     return nil if container.container_id.to_s == '-1' || container.container_id.nil?
     request='/containers/' + container.container_id.to_s + '/json'
-    #  p :requesting
-     # p request
    return make_request(request, container)       
     rescue StandardError =>e
       log_exception(e)
@@ -35,7 +30,7 @@ class DockerConnection < ErrorsApi
   def make_request(uri, container)
   req = Net::HTTP::Get.new(uri)
   resp = docker_socket.request(req)
-#  p resp
+#FIXMe check the value of resp.code
 #    chunks = ''
   #  puts resp.code       # => '200'
  #   puts resp.message    # => 'OK'

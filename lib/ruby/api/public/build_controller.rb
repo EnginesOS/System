@@ -20,14 +20,13 @@ class BuildController
   end
 
   def abort_build
-    p :abort_build
+    SystemDebug.debug(SystemDebug.builder, :abort_build)
 
     @core_api.abort_build 
   end
   
   def build_engine(params)
-#    p :builder_params
-#    p params
+    SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)

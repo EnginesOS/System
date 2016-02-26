@@ -7,34 +7,26 @@ module TaskAtHand
     current_set_state = @setState
     @setState = state.to_s   
     @two_step_in_progress = false
-#       if current_set_state ==  curr_state
-#         p :alreadt                
-#         save_state
-#         return clear_task_at_hand
-#       end  
-         
+
    set_task_at_hand(state)
    save_state
 #       end 
        
-     #  puts 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state
+    SystemDebug.debug(SystemDebug.engine_tasks,  'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
        return true
     rescue StandardError => e 
       log_exception(e)
   end
 
   def in_progress(action)
-#    p :in_p
-#    p action
-#    p action.class.name
+
     if @steps_to_go.nil?
       @steps_to_go = 1
     else
       @steps_to_go = 1  if @steps_to_go <= 0
     end
     curr_state = read_state
-#    p :read_state
-#    p curr_state
+    SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     
@@ -120,8 +112,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go ',@steps) 
     expire_engine_info
     clear_task_at_hand    
-  #  p :last_task
-  #  p @last_task
+    SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task)
     save_state unless @last_task == :delete
     # FixMe Kludge unless docker event listener
     ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
@@ -180,7 +171,7 @@ module TaskAtHand
   def wait_for_task(timeout=25)
     loops=0
   #  p :wait_for_task
-    p task_at_hand
+    SystemDebug.debug(SystemDebug.engine_tasks,  :wait_for_task, task_at_hand)
     while ! task_at_hand.nil?
       sleep(0.5)
       loops+=1

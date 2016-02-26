@@ -44,8 +44,7 @@ module ServiceActions
   def getManagedService(service_name)
     managed_service = @core_api.loadManagedService(service_name)
     return managed_service if managed_service.is_a?(ManagedService)
-    p 'Fail to Load Service configuration:'
-    p service_name
+    SystemDebug.debug(SystemDebug.services,'Fail to Load Service configuration:', service_name)
     failed(service_name, 'Fail to Load Service configuration:', service_name.to_s)
   rescue StandardError => e
     log_exception_and_fail('getManagedService', e)

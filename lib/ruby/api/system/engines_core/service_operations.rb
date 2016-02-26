@@ -32,8 +32,7 @@ module ServiceOperations
   #@return boolean indicating sucess
   def create_and_register_service(service_hash)
     service_hash = SystemUtils.symbolize_keys(service_hash)
-    p :attach_ing_create_and_egister_service
-    p service_hash
+    SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
     return log_error_mesg('register failed', service_hash) unless create_and_register_managed_service(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       engine = loadManagedEngine(service_hash[:parent_engine])

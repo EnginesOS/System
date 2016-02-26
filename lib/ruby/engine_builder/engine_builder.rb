@@ -313,8 +313,6 @@ class EngineBuilder < ErrorsApi
         @web_port = i[1].strip
       SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
       end
-      p @web_port
-      puts(@web_port)
     end
   rescue StandardError => e
     log_exception(e)
@@ -347,7 +345,7 @@ class EngineBuilder < ErrorsApi
     # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
-    p :Clean_up_Failed_build
+    SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     if @mc.is_a?(ManagedContainer)
@@ -361,7 +359,7 @@ class EngineBuilder < ErrorsApi
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
-      p 'Roll Back Complete'
+    SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
     return false
   end

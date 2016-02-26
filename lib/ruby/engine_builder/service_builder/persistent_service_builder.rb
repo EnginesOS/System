@@ -36,13 +36,11 @@ module PersistantServiceBuilder
       result = add_file_service(service_hash)
       return log_error_mesg('failed to create fs',self) unless result
     end
-    p :builder_attach_service
-    p service_hash
+    SystemDebug.debug(SystemDebug.builder,:builder_attach_service, service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
 
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
-    p :with_env
-    p service_hash
+    SystemDebug.debug(SystemDebug.builder, :with_env, service_hash)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
     if @core_api.create_and_register_service(service_hash)
       @attached_services.push(service_hash)
@@ -56,15 +54,13 @@ module PersistantServiceBuilder
     return false if use_existing.nil?
 
     use_existing.each do |existing_service|
-      p :create_type
-      p existing_service[:create_type]
+      SystemDebug.debug(SystemDebug.builder, :create_type, existing_service[:create_type])
       next if existing_service[:create_type] == 'new'
       next if existing_service[:create_type].nil?
-      p existing_service[:type_path] + " and " + service_hash[:type_path]
-      p existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace]
+      SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
       if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
       && existing_service[:type_path] == service_hash[:type_path]
-        p :comparing
+        SystemDebug.debug(SystemDebug.builder, :comparing_services)
         # FIX ME run a check here on service hash
         return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
@@ -75,12 +71,12 @@ module PersistantServiceBuilder
 
   def use_active_service(service_hash, existing_service )
     s = @core_api.get_service_entry(existing_service)
-    p :usering_active_Serviec
+  
 
     s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     s[:fresh] = false
     s[:shared] = true
-    p s
+    SystemDebug.debug(SystemDebug.builder, :usering_active_Serviec, s)
     return s
   end
 

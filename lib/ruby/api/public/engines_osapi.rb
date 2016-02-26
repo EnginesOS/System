@@ -55,8 +55,7 @@ class EnginesOSapi
   attr_reader :core_api, :last_error
   def shutdown(why)
 
-    p :SYSTEM_SHUTDOWN_VIA
-    p why
+    SystemDebug.debug(SystemDebug.system, :SYSTEM_SHUTDOWN_VIA, why)
 
   end
 
@@ -81,13 +80,13 @@ class EnginesOSapi
 
   def reserved_hostnames
     
-    p :reserved_hostnames
+    SystemDebug.debug(SystemDebug.system, :reserved_hostnames)
     @core_api.taken_hostnames
   end
 
   def set_first_run_parameters(params_from_gui)
     params = params_from_gui.dup
-    p params
+    SystemDebug.debug(SystemDebug.firstrun,params)
     first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
     return success('Gui', 'First Run') if first_run.sucess

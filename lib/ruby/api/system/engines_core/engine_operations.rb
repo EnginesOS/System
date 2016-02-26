@@ -36,7 +36,7 @@ module EnginesOperations
 #    end
     
     if engine.delete_image || engine.has_image? == false
-      p :engine_image_deleted
+      SystemDebug.debug(SystemDebug.contaners,:engine_image_deleted)
       return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
     end
@@ -46,8 +46,7 @@ module EnginesOperations
   def delete_image_dependancies(params)
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
-    p :delete_image_dependancies
-    p params
+    SystemDebug.debug(SystemDebug.containers,  :delete_image_dependancies, params)
     return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
     return true
   rescue StandardError => e

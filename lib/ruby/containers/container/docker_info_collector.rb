@@ -3,9 +3,7 @@ module DockerInfoCollector
     collect_docker_info if @docker_info_cache.nil?
     return false if @docker_info_cache.is_a?(FalseClass)
     return false if @docker_info_cache.nil?
-    #    p @docker_info_cache.class.name
-    #    p @docker_info_cache.to_s
-   # return JSON.parse(@docker_info_cache)
+
     @docker_info_cache
   rescue StandardError => e
     p @docker_info_cache.to_s
@@ -21,9 +19,7 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-#     expire_engine_info
-#     p '______IP_ADDDDDDD'
-#      p docker_info['NetworkSettings']['IPAddress']
+#
     return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
     return false
   rescue

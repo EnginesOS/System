@@ -38,8 +38,6 @@ module SmEngineServices
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    #  p :deregister_non_persistent_services
-    #     p services.to_s
     return false  unless services.is_a?(Array)
     services.each do |service_hash|
       test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
@@ -59,8 +57,6 @@ module SmEngineServices
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    #  p :register_non_persistent_services
-    #   p services.to_s
     return log_error_mesg("No Services for " + params.to_s, services)  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistent_service(service_hash)
@@ -82,12 +78,8 @@ module SmEngineServices
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def rm_remove_engine_services(params)
-    #   p :REMOVE_engine_services
     clear_error
-    #    p params
     services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
-    #   p :persistent_services_FOR_REMOVAL
-    #   p services
     services.each do | service |
       if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]

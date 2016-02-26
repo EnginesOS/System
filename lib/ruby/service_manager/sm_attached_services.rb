@@ -28,8 +28,7 @@ module SMAttachedServices
         SystemDebug.debug(SystemDebug.services,  :looking_for_database,identifier)
         return attached_database_services(identifier)
       end
-      p :no_object_name_match
-      p objectName
+      SystemDebug.debug(SystemDebug.services, :no_object_name_match, objectName)
       return nil
     rescue Exception=>e
       puts e.message

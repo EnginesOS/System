@@ -12,7 +12,7 @@ module CoreBuildController
     
     System.execute_cmd('/opt/engines/scripts/kill_docker_builder.sh')
     
-    p  @current_builder
+    SystemDebug.debug(SystemDebug.builder, @current_builder)
     @current_builder.abort_build() unless @current_builder.nil?      
   end
     

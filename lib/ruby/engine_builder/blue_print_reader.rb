@@ -144,8 +144,7 @@ class BluePrintReader
   end
 
   def add_service(service_hash)
-    p :add_service
-    p service_hash
+    SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
     @builder.templater.fill_in_dynamic_vars(service_hash)
     @services.push(service_hash)
     return true
@@ -165,7 +164,7 @@ class BluePrintReader
   def read_lang_fw_values
     log_build_output('Read Framework Settings')
     @framework = @blueprint[:software][:framework]
-    p @framework
+    
     @runtime = @blueprint[:software][:language]
     @memory = @blueprint[:software][:required_memory]
   rescue StandardError => e
@@ -241,12 +240,11 @@ class BluePrintReader
     @recursive_chmods = []
     log_build_output('set permissions recussive')
     chmods = @blueprint[:software][:file_write_permissions]
-    p :Single_Chmods
+
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       if chmod[:recursive] == true
         directory = clean_path(chmod[:path])
-        p directory
         @recursive_chmods.push(directory)
       end
       # FIXME: need to strip any ../ and any preceeding ./ in clean_path
@@ -261,11 +259,9 @@ class BluePrintReader
     @single_chmods = []
     log_build_output('set permissions  single')
     chmods = @blueprint[:software][:file_write_permissions]
-    p :Recursive_Chmods
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       if !chmod.key(:recursive) || chmod[:recursive] == false
-        p chmod[:path]
         directory = clean_path(chmod[:path])
         @single_chmods.push(directory)
       end
@@ -283,8 +279,6 @@ class BluePrintReader
 
     workers.each do |worker|
       if worker[:name] = @blueprint[:software][:blocking_worker_name]
-        p :blocking_worker
-        p worker
         @blocking_worker = worker[:command]
       else
         @worker_commands.push(worker[:command])
@@ -367,8 +361,7 @@ class BluePrintReader
       immutable = env[:immutable]
       # lookup_system_values = env[:lookup_system_values]
       if @builder.set_environments.nil? == false
-        p :looking_for_
-        p name
+        SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
         if ask && @builder.set_environments.key?(name)
           entered_value = @builder.set_environments[name]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
