@@ -110,7 +110,7 @@ class EnginesCore < ErrorsApi
   attr_reader :container_api, :service_api
 
   def api_shutdown
-    p :BEING_SHUTDOWN
+    SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
 
     @registry_handler.api_shutdown
     

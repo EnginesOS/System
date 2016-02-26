@@ -33,16 +33,15 @@ module ServiceManagerOperations
 #    query= {}
 #    query[:type_path]='nginx'
 #    query[:publisher_namespace] = "EnginesSystem"
-    p :nginx_reg
+    SystemDebug.debug(SystemDebug.services,  :nginx_reg)
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
-    p :taken_hostnames
-    p hashes
+    SystemDebug.debug(SystemDebug.services,  :taken_hostnames, hashes)
     return sites unless hashes.is_a?(Array)    
     
     hashes.each do |service_hash|
       sites.push(service_hash[:variables][:fqdn])
-        p service_hash[:variables][:fqdn]
+      SystemDebug.debug(SystemDebug.services,  service_hash[:variables][:fqdn])
     end
     return sites
   rescue StandardError => e

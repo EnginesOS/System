@@ -3,8 +3,7 @@ module ServiceChecks
 
     @attached_services.each do |service_hash|
       service_name = SoftwareServiceDefinition.get_software_service_container_name(service_hash)
-      p :checking_service
-      p service_name.to_s
+      SystemDebug.debug(SystemDebug.builder,:checking_service, service_name.to_s)
       return service_not_running(service_name) unless @core_api.is_service_running?(service_name)
     end
     return true

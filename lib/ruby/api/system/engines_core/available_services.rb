@@ -33,8 +33,7 @@ module AvailableServices
             end
           end
         rescue StandardError => e
-          log_exception(e)
-          puts dir.to_s + '/' + service_dir_entry
+          log_exception(e, dir.to_s + '/' + service_dir_entry)
           next
         end
       end

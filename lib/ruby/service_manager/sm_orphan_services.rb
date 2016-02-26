@@ -3,7 +3,7 @@ require_relative 'service_container_actions.rb'
 module SmOrphanServices
 
 def orphanate_service(params)
-  p :Orphanate
+  SystemDebug.debug(SystemDebug.orphans, :Orphanate)
    test_registry_result(system_registry_client.orphanate_service(params))   
   rescue StandardError => e
     log_exception(e)
@@ -15,7 +15,7 @@ def release_orphan(params)
 end
 
   def rollback_orphaned_service(service_hash)
-    test_registry_result(system_registry_client.rollback_orphaned_service(params))   
+    test_registry_result(system_registry_client.rollback_orphaned_service(service_hash))   
   end
   
 #@returns [Hash] suitable for use  to attach as a service

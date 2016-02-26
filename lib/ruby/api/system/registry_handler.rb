@@ -23,10 +23,10 @@ class RegistryHandler < ErrorsApi
     while registry_service.is_startup_complete? == false
       sleep 1
       wait += 1
-      p :wait_for_start
+      SystemDebug.debug(SystemDebug.registry,:wait_for_start)
       return force_recreate if wait > 120
     end
-    p :restarted_registry
+    SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     #      }
     #      restart_thread.join
     return true
@@ -64,10 +64,10 @@ class RegistryHandler < ErrorsApi
     while !registry_service.is_startup_complete?
       sleep 1
       wait += 1
-      p :wait_for_start_up
+      SystemDebug.debug(SystemDebug.registry, :wait_for_start_up)
       break if wait > 5
     end
-    p :registry_is_up
+    SystemDebug.debug(SystemDebug.registry, :registry_is_up)
     return registry_service.get_ip_str
   rescue StandardError => e
     log_exception(e)
@@ -84,7 +84,7 @@ class RegistryHandler < ErrorsApi
     while !registry_service.is_startup_complete?
       sleep 1
       wait += 1
-      p :recreate_wait
+      SystemDebug.debug(SystemDebug.registry, :recreate_wait)
       return false if wait > 60
     end
     return true

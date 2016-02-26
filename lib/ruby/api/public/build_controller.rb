@@ -20,22 +20,22 @@ class BuildController
   end
 
   def abort_build
-    p :abort_build
+    SystemDebug.debug(SystemDebug.builder, :abort_build)
 
     @core_api.abort_build 
   end
   
   def build_engine(params)
-    p :builder_params
-    p params
+    SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
 
     @engine = @engine_builder.build_from_blue_print
+    
     @build_error = @engine_builder.last_error
-    p :build_error
-    p self.build_error
+    SystemDebug.debug(SystemDebug.builder, :build_error + self.build_error.to_s) unless self.build_error.nil?
+    
     build_failed(params, @build_error) if @engine.nil? || @engine == false
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)
     build_complete(@build_params)
@@ -103,7 +103,7 @@ class BuildController
     build_complete(@build_params)
     return @engine
   rescue StandardError => e
-    build_failed(params, e)
+    build_failed(@build_params, e)
     SystemUtils.log_exception(e)
   end
 

@@ -112,13 +112,13 @@ module DockerCmdOptions
     return '/var/log' if container.framework.nil? || container.framework.length == 0
     container_logdetails_file_name = false
     framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
-    SystemUtils.debug_output('Frame logs details', framework_logdetails_file_name)
+    SystemDebug.debug(SystemDebug.docker,'Frame logs details', framework_logdetails_file_name)
     if File.exist?(framework_logdetails_file_name)
       container_logdetails_file_name = framework_logdetails_file_name
     else
       container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/LOG_DIR'
     end
-    SystemUtils.debug_output('Container log details', container_logdetails_file_name)
+    SystemDebug.debug(SystemDebug.docker,'Container log details', container_logdetails_file_name)
     begin
       container_logdetails = File.read(container_logdetails_file_name)
     rescue
@@ -142,7 +142,7 @@ module DockerCmdOptions
       temp_dir_name =   container.ctype + '/' + container.container_name
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw '
       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
-      p        volume_option
+      SystemDebug.debug(SystemDebug.service, 'vol options',      volume_option)
     end
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|

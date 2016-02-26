@@ -1,37 +1,26 @@
 class SystemUtils
-  @@debug=false
+
   @@level=0
-
-  attr_reader :debug, :level, :last_error
-  def SystemUtils.debug_output(label, object = nil)
-    STDERR.puts  label.to_s + ":" + object.to_s  if SystemUtils.debug == true
+  def SystemUtils.last_error
+    return @@last_error
   end
 
-  def SystemUtils.log_output(object, level)
-    if SystemUtils.level < level
-      STDERR.puts 'Error[' + Process.pid.to_s + ']:'+ object.to_s if level == 10
-      puts 'Error ' + object.to_s
-    end
-    return false
+  def SystemUtils.log_level
+    return @@level
   end
+  def SystemUtils.level
+     return @@level
+   end
+  require_relative 'system_debug.rb'
 
-  def SystemUtils.debug_state?
-    return @@debug
-  end
+  require_relative 'system_utils/system_logging.rb'
+  include SystemLogging
+  require_relative 'system_utils/system_exceptions.rb'
+  include SystemExceptions
+  
 
-  #@Logs to passeenger std out the @msg followed by @object.to_s
-  #Logs are written to apache/error.log
-  # error mesg is truncated to 512 bytes
-  # returns nothing
-  def SystemUtils.log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 512)
-    SystemUtils.log_output('ERROR:' + msg.to_s + ':->:' + obj_str ,10)
-  end
-
-  def SystemUtils.log_error(object)
-    SystemUtils.log_output(object, 10)
-  end
-
+  
+ 
   def SystemUtils.get_service_pubkey(service, cmd)
     cmd_line = 'docker exec ' + service + ' /home/get_pubkey.sh ' + cmd
     SystemUtils.run_command(cmd_line).strip!
@@ -71,56 +60,6 @@ class SystemUtils
     }
   end
 
-  def SystemUtils.log_exception(e)
-    e_str = e.to_s
-    e.backtrace.each do |bt|
-      e_str += bt + " \n"
-    end
-    @@last_error = e_str
-    SystemUtils.log_output(e_str, 10)
-    e_str +="\n\n"
-    elof = File.open("/tmp/exceptions.log","a+")
-    elof.write(e_str)
-    elof.close
-    SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-
-  end
-
-  def SystemUtils.log_exception_to_bugcatcher(e)
-    require "net/http"
-    require "uri"
-    p :bug_catcher
-    res = SystemUtils.execute_command('hostname')
-    hostname = res[:stdout]
-    error_log_hash = {}
-    error_log_hash[:message] = e.to_s
-    e_str = e.to_s
-    e.backtrace.each do |bt|
-      e_str += bt + " \n"
-    end
-    error_log_hash[:backtrace] = e_str
-    # error_log_hash[:request_params] = hostname
-    error_log_hash[:return_url] = 'system'
-    error_log_hash[:user_comment] = ''
-    error_log_hash[:user_email] = 'backend@engines.onl'
-    uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")
-    response = Net::HTTP.post_form(uri, error_log_hash)
-    return true
-  rescue
-    return false
-  end
-
-  def SystemUtils.last_error
-    return @@last_error
-  end
-
-  def SystemUtils.level
-    return @@level
-  end
-
-  def SystemUtils.debug
-    return @@debug
-  end
 
   #Execute @param cmd [String]
   #if sucessful exit code == 0 @return
@@ -131,7 +70,7 @@ class SystemUtils
     begin
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
-      SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
+      SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       return true if $?.to_i == 0
       SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
       return res
@@ -167,8 +106,8 @@ class SystemUtils
   def SystemUtils.execute_command(cmd)
     @@last_error = ''
     require 'open3'
-    SystemUtils.debug_output('exec command ', cmd)
-    p cmd
+    SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
+   
     retval = {}
 
     retval[:stdout] = ''
@@ -190,7 +129,7 @@ class SystemUtils
       rescue Errno::EIO
         retval[:stdout] += oline.chop
         retval[:stdout] += stdout.read_nonblock(256)
-        SystemUtils.debug_output('read stderr', oline)
+        SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
         retry
@@ -221,7 +160,7 @@ class SystemUtils
     begin
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
-      SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
+      SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       return res
     rescue Exception=>e
       SystemUtils.log_exception(e)
@@ -243,7 +182,7 @@ class SystemUtils
     version_str = '15.1'
     version_str = os_data_hash['VERSION_ID'].gsub(/\"/,"") unless  os_data_hash['VERSION_ID'].nil?
     vers = version_str.split('.')
-    os_data_hash['Major Version'] =  vers[0]
+    os_data_hash['Major Version'] = vers[0]
     os_data_hash['Minor Version'] = vers[1]
     os_data_hash['Patch Version'] = vers[2] if vers.count > 2
     # FIXME catch sub numbers as in 14.04.1
@@ -259,27 +198,7 @@ class SystemUtils
 
   def SystemUtils.service_hash_variables_as_str(service_hash)
     json_str = service_hash[:variables].to_json
-     #json_str['publisher_namespace'] = service_hash[:publisher_namespace] 
-     #json_str['type_path'] = service_hash[:type_path]
-
-        #     p "AS_JSON++++++++++++++++++"
-         #    p json_str
     return json_str
-#    argument = String.new
-#    if service_hash.key?(:publisher_namespace)
-#      argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
-#    end
-#    service_variables = service_hash[:variables]
-#    sources = ''
-#    return argument if service_variables.nil?
-#    service_variables.each_pair do |key,value|
-#      if key == :sources
-#        sources = value
-#        next
-#      end
-#      argument+= key.to_s + '=\'' + value.to_s + '\':'
-#    end
-#    argument += ' ' + sources
-#    return argument
+
   end
 end

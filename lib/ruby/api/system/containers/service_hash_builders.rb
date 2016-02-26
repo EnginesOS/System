@@ -18,7 +18,7 @@ def create_dns_service_hash(engine)
   end
   service_hash[:variables][:name] = service_hash[:variables][:hostname]
   service_hash[:variables][:ip] = engine.get_ip_str.to_s
-    p service_hash.to_s
+  SystemDebug.debug(SystemDebug.services,  service_hash.to_s)
 
   return service_hash
 end
@@ -41,8 +41,7 @@ def create_zeroconf_service_hash(engine)
   end
   service_hash[:variables][:name] = service_hash[:variables][:hostname]
 
-  p :created_zeroconfdns_service_hash
-  p service_hash
+  SystemDebug.debug(SystemDebug.containers,  :created_zeroconfdns_service_hash, service_hash)
   return service_hash
 end
 
@@ -59,9 +58,7 @@ def create_nginx_service_hash(engine)
   when :http_only
     proto = 'http'
   end
-  #
-  #    p :proto
-  #    p proto
+
   service_hash = {}
   service_hash[:persistent] = false
   service_hash[:service_container_name] = 'nginx'
@@ -76,6 +73,6 @@ def create_nginx_service_hash(engine)
   service_hash[:variables][:fqdn] = engine.fqdn
   service_hash[:variables][:port] = engine.web_port.to_s
   service_hash[:variables][:proto] = proto
-  SystemUtils.debug_output('create nginx Hash',service_hash)
+  SystemDebug.debug(SystemDebug.services,'create nginx Hash',service_hash)
   return service_hash
 end

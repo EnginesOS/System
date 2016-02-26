@@ -37,11 +37,11 @@ module ManagedContainerControls
   def create_container
    
     return false unless has_api?
-    p :teask_preping
+    SystemDebug.debug(SystemDebug.containers, :teask_preping)
     return false unless prep_task(:create)
-    p :teask_preped
+    SystemDebug.debug(SystemDebug.containers,  :teask_preped)
     return task_failed('create') unless super
-    p :create_suupre_ran
+    SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
@@ -85,8 +85,7 @@ module ManagedContainerControls
 #       @setState = 'nocontainer'
 #       return true
 #     end
-     p :stop_read_sta
-     p read_state
+    SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
     return false unless prep_task(:stop)
     @container_api.deregister_non_persistent_services(self)
@@ -130,10 +129,9 @@ module ManagedContainerControls
   def prep_task(action_sym)
 
     return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
-    p :current_tah_prep_task
-    p task_at_hand
+    SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
    return false unless in_progress(action_sym)
-   p :inproes_run
+    SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
      return save_state
   rescue StandardError  => e

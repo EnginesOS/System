@@ -13,8 +13,14 @@ class ErrorsApi
     @last_error = ''
   end
 
-  def log_exception(e)
+  def log_exception(*args)
+    e = args[0]
     @last_error = e.to_s + e.backtrace.to_s
-    SystemUtils.log_exception(e)
+    mesg = ''
+    args.each do |arg|
+      mesg += arg.to_s + ' '
+    end
+  mesg += e.backtrace.to_s
+    SystemUtils.log_error_mesg(mesg)
   end
 end

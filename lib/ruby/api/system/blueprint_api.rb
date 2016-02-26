@@ -2,7 +2,7 @@ class BlueprintApi < ErrorsApi
   def save_blueprint(blueprint, container)
     clear_error
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
-    puts blueprint.class.name
+    SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
     state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
