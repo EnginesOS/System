@@ -22,6 +22,6 @@ class ErrorsApi
       mesg += arg.to_s + ' '
     end
 
-    SystemUtils.log_error_mesg(mesg)
+    SystemUtils.log_error_mesg('EXCEPTION:',mesg)
   end
 end
