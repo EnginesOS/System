@@ -1,9 +1,6 @@
 class SystemDebug
   
-  
-              
- 
-  
+
   @@services = 1
   @@orphans = 2
   @@environment = 4
