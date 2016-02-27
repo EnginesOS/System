@@ -17,7 +17,7 @@ module SystemLogging
    #Logs are written to apache/error.log
    # error mesg is truncated to 512 bytes
    # returns nothing
-   def SystemUtils.log_error_mesg(msg, *object)
+   def SystemUtils.log_error_mesg(msg, *objects)
      objects.each do |object|     
         obj_str += object.to_s.slice(0, 512) + ':#:'
      end
