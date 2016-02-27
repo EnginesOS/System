@@ -1,6 +1,10 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
+def initialize
+  super
+  init_task_at_hand
+end
 #require 'objspace' ??
 
 class ManagedContainer < Container

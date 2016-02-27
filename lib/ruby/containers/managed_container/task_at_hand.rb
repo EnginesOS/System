@@ -3,14 +3,15 @@ module TaskAtHand
   @task_queue = []
   
      
-  
+  def init_task_at_hand
+    @steps = [] 
+  end
     
-  def desired_state(steps, state, curr_state)
+  def desired_state(step, state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
-    @two_step_in_progress = false
 
-   set_task_at_hand(steps[0])
+   set_task_at_hand(step)
    save_state
 #       end 
        
@@ -23,8 +24,7 @@ module TaskAtHand
   def in_progress(action)
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
-      @steps_to_go = 1
-      @steps = [] unless @steps.is_a?(Array)
+      @steps_to_go = 1    
       @steps[0] = action 
     end
     curr_state = read_state
@@ -52,7 +52,7 @@ module TaskAtHand
       return desired_state(step, 'running', curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
-        @steps = [:create,:destroy]
+        @steps = [:destroy,:create]
         @steps_to_go = 2 
         return desired_state(step, 'running', curr_state)
       end      
