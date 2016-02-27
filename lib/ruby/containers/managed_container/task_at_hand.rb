@@ -96,12 +96,13 @@ module TaskAtHand
   end
 
   def task_complete(action)
+    expire_engine_info
     return if action == 'create'
     
 
     @last_task =  action
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go ',@steps) 
-    expire_engine_info
+
     clear_task_at_hand    
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task)
     save_state unless @last_task == :delete
@@ -131,6 +132,7 @@ module TaskAtHand
     end
     task
   rescue StandardError => e 
+    return nil unless File.exist?(fn)
     log_exception(e)
     return nil
    # @task_at_hand 
