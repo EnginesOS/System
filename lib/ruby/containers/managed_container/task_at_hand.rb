@@ -1,8 +1,12 @@
 module TaskAtHand
   @default_task_timeout = 20
   @task_queue = []
-  @steps = []
+  
      
+    def initialize
+      @steps = []
+    end
+    
   def desired_state(steps, state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
@@ -22,6 +26,7 @@ module TaskAtHand
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1
+      
       @steps[0] = action 
     end
     curr_state = read_state
