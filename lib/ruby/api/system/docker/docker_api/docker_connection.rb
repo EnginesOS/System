@@ -21,7 +21,7 @@ class DockerConnection < ErrorsApi
   def inspect_container(container)
    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.nil?
-      request='/containers/json?filter=name=' + container.container_name
+      request='/containers/json?name=' + container.container_name
     else
       request='/containers/' + container.container_id.to_s + '/json'
     end
