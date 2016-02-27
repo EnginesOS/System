@@ -1,6 +1,6 @@
 module DockerInfoCollector
   def docker_info
-    collect_docker_info #if @docker_info_cache.nil?
+    collect_docker_info if @docker_info_cache.nil?
     return false if @docker_info_cache.is_a?(FalseClass)
     return false if @docker_info_cache.nil?
 
