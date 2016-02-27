@@ -25,13 +25,14 @@ module TaskAtHand
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1    
+      @steps = [] 
       @steps[0] = action 
     end
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
-
+  @last_task = action
     case action
     when :create      
       return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer' 
@@ -100,7 +101,6 @@ module TaskAtHand
     return if action == 'create'
     
 
-    @last_task =  action
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + 'steps to go ',@steps) 
 
     clear_task_at_hand    
