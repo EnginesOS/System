@@ -3,59 +3,62 @@ class DockerConnection < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
-  
+
   attr_accessor :docker_socket,:response_parser
+
   def initialize
     @response_parser = Yajl::Parser.new
-      
-      #socket = UNIXSocket.new('/var/run/docker.sock')
-    
+
+    #socket = UNIXSocket.new('/var/run/docker.sock')
+
     @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     @docker_socket.continue_timeout = 60
-    @docker_socket.read_timeout = 60       
-    rescue StandardError =>e
-      log_exception(e)
+    @docker_socket.read_timeout = 60
+  rescue StandardError =>e
+    log_exception(e)
   end
-  
+
   def inspect_container(container)
     container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
-    return nil if container.container_id.to_s == '-1' || container.container_id.nil?
-    request='/containers/' + container.container_id.to_s + '/json'
-   return make_request(request, container)       
-    rescue StandardError =>e
-      log_exception(e)
+    if container.container_id.to_s == '-1' || container.container_id.nil?
+      request='/containers/json?filter=name=' + container.container_name
+    else
+      request='/containers/' + container.container_id.to_s + '/json'
+    end
+    return make_request(request, container)
+  rescue StandardError =>e
+    log_exception(e)
   end
-  
-  
-  def make_request(uri, container)
-  req = Net::HTTP::Get.new(uri)
-  resp = docker_socket.request(req)
-#FIXMe check the value of resp.code
-#    chunks = ''
-  #  puts resp.code       # => '200'
- #   puts resp.message    # => 'OK'
-  chunk = resp.read_body 
-  rhash = nil
-  hashes = []
-  chunk.gsub!(/\\\"/,'')
-  return clear_cid(container) if chunk.start_with?('no such id: ')
-  response_parser.parse(chunk) do |hash |
-    hashes.push(hash)   
-  end 
 
-#   hashes[1] is a timestamp
-  return hashes[0]        
+  def make_request(uri, container)
+    req = Net::HTTP::Get.new(uri)
+    resp = docker_socket.request(req)
+    #FIXMe check the value of resp.code
+    #    chunks = ''
+    #  puts resp.code       # => '200'
+    #   puts resp.message    # => 'OK'
+    chunk = resp.read_body
+    rhash = nil
+    hashes = []
+    chunk.gsub!(/\\\"/,'')
+    return clear_cid(container) if chunk.start_with?('no such id: ')
+    response_parser.parse(chunk) do |hash |
+      hashes.push(hash)
+    end
+
+    #   hashes[1] is a timestamp
+    return hashes[0]
   rescue StandardError => e
     log_exception(e)
-    return hashes[0]        
+    return hashes[0]
   end
-  
+
   private
 
   def clear_cid(container)
     SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
-    File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid') 
+    File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid')
     container.clear_cid
-    return false 
+    return false
   end
 end
