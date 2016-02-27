@@ -177,7 +177,7 @@ module TaskAtHand
    return true if task_at_hand.nil?
       
       fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-      while   fmtime ==   File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+      while   fmtime ==  File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       sleep(0.5)
       loops+=1
       SystemDebug.debug(SystemDebug.engine_tasks, :wft_loop, ' ', task_at_hand)
@@ -185,8 +185,9 @@ module TaskAtHand
         return false
       end
     end
-    return true
+    return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     rescue StandardError => e 
+      return true unless 
     log_exception(e)
       return false
   end
