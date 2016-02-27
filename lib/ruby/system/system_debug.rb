@@ -15,8 +15,8 @@ class SystemDebug
   @@cache = 2048
   @@update = 4096
   @@registry = 8192
-  
-  @@debug_flags = @@engine_tasks |@@first_run |@@docker
+  @@all = 8589934591
+  @@debug_flags = @@engine_tasks |@@first_run |@@docker |@@all
   def self.update
       return @@update
     end
