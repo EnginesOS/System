@@ -37,6 +37,7 @@ class DockerConnection < ErrorsApi
     #    chunks = ''
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
+    SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
     return nil unless  resp.code  == '200'
     chunk = resp.read_body
     rhash = nil

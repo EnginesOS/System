@@ -19,7 +19,7 @@ class SystemDebug
   @@update = 4096
   @@registry = 8192
   
-  @@debug_flags = @@engine_tasks |@@first_run
+  @@debug_flags = @@engine_tasks |@@first_run |@@docker
   def self.update
       return @@update
     end

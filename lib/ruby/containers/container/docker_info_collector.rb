@@ -57,7 +57,7 @@ module DockerInfoCollector
     return -1 if info.is_a?(FalseClass)
     return  info['Config']['User'] unless info.is_a?(FalseClass)
   rescue StandardError => e
-    return log_exception(e)
+    return log_exception(e,info)
   end
   protected
 
