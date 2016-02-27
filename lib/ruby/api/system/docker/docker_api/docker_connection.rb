@@ -37,6 +37,7 @@ class DockerConnection < ErrorsApi
     #    chunks = ''
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
+    return nil unless  resp.code  == '200'
     chunk = resp.read_body
     rhash = nil
     hashes = []
@@ -50,7 +51,7 @@ class DockerConnection < ErrorsApi
     return hashes[0]
   rescue StandardError => e
     log_exception(e)
-    return hashes[0]
+    return nil
   end
 
   private
