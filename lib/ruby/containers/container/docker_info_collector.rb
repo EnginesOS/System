@@ -54,8 +54,10 @@ module DockerInfoCollector
 
   def running_user
     info = docker_info
-    return -1 if info.is_a?(FalseClass)
-    return  info['Config']['User'] unless info.is_a?(FalseClass)
+    return -1 unless info.is_a?(Hash)
+    return -1 unless info.key?('Config')
+    return -1 unless info['Config'].key?('User')
+    return  info['Config']['User'] 
   rescue StandardError => e
     return log_exception(e,info)
   end
