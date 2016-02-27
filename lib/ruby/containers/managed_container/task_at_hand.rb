@@ -3,12 +3,12 @@ module TaskAtHand
   @task_queue = []
 
      
-  def desired_state(state, curr_state)
+  def desired_state(steps, state, curr_state)
     current_set_state = @setState
     @setState = state.to_s   
     @two_step_in_progress = false
 
-   set_task_at_hand(state)
+   set_task_at_hand(steps[0])
    save_state
 #       end 
        
@@ -19,12 +19,9 @@ module TaskAtHand
   end
 
   def in_progress(action)
-
-    if @steps_to_go.nil?
-      @steps_to_go = 1
-    elsif @steps_to_go <= 0
-      @steps_to_go = 1  
-      
+    step = action
+    if @steps_to_go.nil? || @steps_to_go <= 0
+      @steps_to_go = 1     
     end
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
@@ -33,56 +30,56 @@ module TaskAtHand
     
     case action
     when :create      
-      return desired_state('running', curr_state) if curr_state== 'nocontainer' 
+      return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer' 
     when :stop
-      return desired_state('stopped', curr_state) if curr_state== 'running'
+      return desired_state(step, 'stopped', curr_state) if curr_state== 'running'
     when :start
-      return desired_state('running', curr_state) if curr_state== 'stopped'
+      return desired_state(step, 'running', curr_state) if curr_state== 'stopped'
     when :pause
-      return desired_state('paused', curr_state) if curr_state== 'running'
+      return desired_state(step, 'paused', curr_state) if curr_state== 'running'
     when :restart
       if curr_state == 'running'
-      @steps = [:start,:stop]
+      @steps = [:stop,:start]
       @steps_to_go = 2
-      return desired_state('stopped', curr_state) 
+      return desired_state(step, 'stopped', curr_state) 
     end
-      return desired_state('running', curr_state)
+      return desired_state(step, 'running', curr_state)
     when :unpause
-      return desired_state('running', curr_state) if curr_state== 'paused'
+      return desired_state(step, 'running', curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
         @steps = [:create,:destroy]
         @steps_to_go = 2 
-        return desired_state('running', curr_state)
+        return desired_state(step, 'running', curr_state)
       end      
-      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+      return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
      
     when :rebuild
       
       if curr_state== 'stopped'
-            @steps = [:create,:destroy]
+            @steps = [:destroy,:create]
             @steps_to_go = 2
-            return desired_state('nocontainer', curr_state) 
+            return desired_state(step, 'running', curr_state) 
           end      
      
     
-      return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+      return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
       
       when :reinstall
       if curr_state== 'stopped'
-              @steps = [:create,:destroy]
+              @steps =  [:destroy,:create]
               @steps_to_go = 2
-              return desired_state('running', curr_state)
+              return desired_state(step, 'running', curr_state)
             end            
       @steps_to_go = 2
-          return desired_state('running', curr_state) if  curr_state== 'nocontainer'
+          return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
     when :build
-      return desired_state('running', curr_state) if curr_state== 'nocontainer'
+      return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer'
     when :delete
-      return desired_state('nocontainer', curr_state) if curr_state== 'stopped'
-      #  desired_state('noimage')
+      return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped'
+      #  desired_state(@steps, 'noimage')
     when :destroy
-      return desired_state('nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
@@ -119,7 +116,7 @@ module TaskAtHand
  
     task = File.read(fn)
     if task_has_expired?(task)
-      expire_task_at_had
+      expire_task_at_hand
       return nil
     end
     
@@ -135,7 +132,7 @@ module TaskAtHand
    # @task_at_hand 
   end
 
-  def expire_task_at_had
+  def expire_task_at_hand
     SystemDebug.debug(SystemDebug.engine_tasks, 'expire Task ' + @task_at_hand.to_s )
     clear_task_at_hand
   end
@@ -144,11 +141,12 @@ module TaskAtHand
     @steps_to_go -= 1
     if  @steps_to_go > 0     
       SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
-      @task_at_hand = @steps[@steps_to_go - 1]
+      @steps.pop(0)
+      @task_at_hand = @steps[0]
       SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
-#      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-#          f.write(@task_at_hand.to_s)
-#          f.close
+      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+          f.write(@task_at_hand.to_s)
+          f.close
     else
       SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
