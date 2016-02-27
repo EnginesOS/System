@@ -1,10 +1,7 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
-def initialize
-  super
-  init_task_at_hand
-end
+
 #require 'objspace' ??
 
 class ManagedContainer < Container
@@ -34,6 +31,11 @@ class ManagedContainer < Container
   @large_temp = false
   attr_accessor  :restart_required, :rebuild_required
 
+  def initialize
+    super
+    init_task_at_hand
+  end
+  
   # Note desired state is teh next step and not the final result desired state is stepped through
   def log_error_mesg(msg, e_object)
     #task_failed(msg)
