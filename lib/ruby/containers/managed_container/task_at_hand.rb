@@ -105,9 +105,9 @@ module TaskAtHand
 
     clear_task_at_hand    
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task)
-    save_state unless @last_task == :delete
+   return save_state unless @last_task == :delete && @steps_to_go == 0
     # FixMe Kludge unless docker event listener
-    ContainerStateFiles.delete_container_configs(container) if @last_task == :delete
+    ContainerStateFiles.delete_container_configs(container) 
     return true
     rescue StandardError => e 
       log_exception(e)
