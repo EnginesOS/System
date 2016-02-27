@@ -44,8 +44,10 @@ module DockerInfoCollector
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
     info =  @container_api.inspect_container(self) # docker_info
-    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
-    return -1
+    return -1 unless info.is_a?(Hash) # Array) && docker_info[0].is_a?(Hash)
+    SystemDebug.debug(SystemDebug.containers, ' read_container_id ' ,info)
+    @container_id = info['Id']
+    return  @container_id
   rescue StandardError => e
    
     
@@ -70,7 +72,7 @@ module DockerInfoCollector
     result = @container_api.inspect_container(self) if @docker_info_cache.nil?
     #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
-    @docker_info_cache =  result
+    @docker_info_cache =  result    
     #@docker_info_cache = false unless result
    # Thread.new { sleep 4 ; expire_engine_info }
     return result
