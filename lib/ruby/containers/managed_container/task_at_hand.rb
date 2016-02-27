@@ -1,7 +1,7 @@
 module TaskAtHand
   @default_task_timeout = 20
   @task_queue = []
-
+  @steps = []
      
   def desired_state(steps, state, curr_state)
     current_set_state = @setState
@@ -22,13 +22,13 @@ module TaskAtHand
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1
-      @steps[0] = action
+      @steps[0] = action 
     end
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
-    
+
     case action
     when :create      
       return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer' 
@@ -142,8 +142,10 @@ module TaskAtHand
     @steps_to_go -= 1
     if  @steps_to_go > 0     
       SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
-      @steps.pop(0)
-      @task_at_hand = @steps[0]
+     if @steps.is_a?(Array)
+       @steps.pop(0)
+       @task_at_hand = @steps[0]
+    end
       SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
           f.write(@task_at_hand.to_s)
