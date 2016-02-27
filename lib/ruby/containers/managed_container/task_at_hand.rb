@@ -21,7 +21,8 @@ module TaskAtHand
   def in_progress(action)
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
-      @steps_to_go = 1     
+      @steps_to_go = 1
+      @steps[0] = action
     end
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
