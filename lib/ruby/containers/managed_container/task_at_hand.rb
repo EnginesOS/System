@@ -3,9 +3,7 @@ module TaskAtHand
   @task_queue = []
   
      
-    def initialize
-      @steps = []
-    end
+  
     
   def desired_state(steps, state, curr_state)
     current_set_state = @setState
@@ -26,7 +24,7 @@ module TaskAtHand
     step = action
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1
-      
+      @steps = [] unless @steps.is_a?(Array)
       @steps[0] = action 
     end
     curr_state = read_state
