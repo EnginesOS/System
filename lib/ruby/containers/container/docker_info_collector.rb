@@ -40,7 +40,7 @@ module DockerInfoCollector
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id
    r = ContainerStateFiles.read_container_id(self)
-   return r #unless r == -1
+   return r unless r == -1
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
     info = docker_info
