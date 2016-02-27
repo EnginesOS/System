@@ -23,7 +23,7 @@ module SystemExceptions
     def SystemUtils.log_exception_to_bugcatcher(e)
       require "net/http"
       require "uri"
-      SystemDebug.debug(SystemDebug.system, :bug_catcher)
+      SystemDebug.debug(SystemDebug.system, :bug_catcher, e, e.backtrace)
       res = SystemUtils.execute_command('hostname')
       hostname = res[:stdout]
       error_log_hash = {}
