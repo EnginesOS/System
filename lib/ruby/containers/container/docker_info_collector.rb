@@ -72,7 +72,7 @@ module DockerInfoCollector
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
     if  @docker_info_cache == false
       @container_id = -1
-      @docker_info_cache = nil if setState != 'nocontainer'
+      @docker_info_cache = nil if @setState != 'nocontainer'
     end
     #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
