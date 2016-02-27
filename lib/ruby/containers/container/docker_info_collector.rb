@@ -43,7 +43,7 @@ module DockerInfoCollector
    return r unless r == -1
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
-    info = docker_info
+    info =  @container_api.inspect_container(self) # docker_info
     return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
     return -1
   rescue StandardError => e
