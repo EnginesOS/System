@@ -51,6 +51,9 @@ class EnginesOSapi
   include UpdateActions
   require_relative 'engines_osapi/return_objects.rb'
   include ReturnObjects
+  require_relative 'engines_osapi/os_api_actionatora.rb'
+   include OsApiActionators
+  
   require 'objspace'
   attr_reader :core_api, :last_error
   def shutdown(why)

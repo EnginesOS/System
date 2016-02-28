@@ -1,4 +1,4 @@
-module Actionators
+module OsApiActionators
   def list_actionators(service)
     if service.is_a?(Hash)
       SoftwareServiceDefinition.software_service_definition(service)
