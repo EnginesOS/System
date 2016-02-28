@@ -14,19 +14,20 @@ class DockerConnection < ErrorsApi
     @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     @docker_socket.continue_timeout = 60
     @docker_socket.read_timeout = 60
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
   end
   
   def container_id_from_name(container)
     request='/containers/json?filter=name=' + container.container_name
     info = make_request(request, container)
-    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info, info['Id']   )
+    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info   )
     return false unless info.is_a(Array)
-    return false unless  info[0]['Names'] = '/' + container.container_name
+    return false unless info[0]['Names'] = '/' + container.container_name
     id = info[0]['Id']    
       return id
-rescue 
+rescue StandardError => e
+  log_exception(e)
   return false  
 end
 
@@ -35,7 +36,8 @@ def inspect_container_by_name(container)
     return false if id false
      request='/containers/' + id.to_s + '/json'
     return make_request(request, container)
-    rescue
+    rescue StandardError  => e
+  log_exception(e)
   return false
     end
 
@@ -47,7 +49,7 @@ def inspect_container_by_name(container)
       request='/containers/' + container.container_id.to_s + '/json'
     end
     return make_request(request, container)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
   end
 
@@ -85,5 +87,8 @@ def inspect_container_by_name(container)
     File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid')
     container.clear_cid
     return false
+    rescue StandardError => e
+      log_exception(e)
+      return nil
   end
 end
