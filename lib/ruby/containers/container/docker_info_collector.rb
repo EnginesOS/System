@@ -75,7 +75,7 @@ module DockerInfoCollector
       @docker_info_cache = nil if @setState != 'nocontainer'
     elsif @docker_info_cache.is_a?(Array)
       @docker_info_cache =  @docker_info_cache[0]
-      if @container_id.to_s == '' || @container_id = -1      
+      if @container_id.to_s == '' || @container_id == -1      
         @container_id = @docker_info_cache['Id']
       end
     end
