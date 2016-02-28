@@ -69,7 +69,7 @@ module DockerInfoCollector
   def collect_docker_info
     return false unless has_api?
     result = false
-   # return false if @docker_info_cache == false 
+    return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
     if @docker_info_cache == false
       @container_id = -1

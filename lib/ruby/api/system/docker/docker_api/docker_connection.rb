@@ -19,11 +19,11 @@ class DockerConnection < ErrorsApi
   end
   
   def container_id_from_name(container)
-    request='/containers/json?name=/' + container.container_name
+    request='/containers/json?son?all=false&name=/' + container.container_name
     info = make_request(request, container)
     SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info   )
     return false unless info.is_a?(Array)
-    return false unless info[0]['Names'] = '/' + container.container_name
+    return false unless info[0]['Names'][0] = '/' + container.container_name
     id = info[0]['Id']    
       return id
 rescue StandardError => e
