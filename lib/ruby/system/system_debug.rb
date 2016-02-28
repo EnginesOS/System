@@ -1,9 +1,6 @@
 class SystemDebug
   
-  
-              
- 
-  
+
   @@services = 1
   @@orphans = 2
   @@environment = 4
@@ -18,8 +15,8 @@ class SystemDebug
   @@cache = 2048
   @@update = 4096
   @@registry = 8192
-  
-  @@debug_flags = @@engine_tasks |@@first_run
+  @@all = 131072
+  @@debug_flags = @@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update||@@registry
   def self.update
       return @@update
     end

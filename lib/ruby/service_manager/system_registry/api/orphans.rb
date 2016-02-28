@@ -11,7 +11,7 @@ module Orphans
   #      t_st_result(send_request('rebirth_orphan', params))
   #    end
   def rollback_orphaned_service(params)
-    rest_post('/v0/system_registry/services/orphans/return',service_query_hash )
+    rest_post('/v0/system_registry/services/orphans/return',params )
   end
 
   def retrieve_orphan(params)

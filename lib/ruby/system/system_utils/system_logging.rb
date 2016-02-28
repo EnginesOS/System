@@ -4,8 +4,11 @@ module SystemLogging
 
   def SystemUtils.log_output(object, level)
      if SystemUtils.level < level
-       STDERR.puts 'Error[' + Process.pid.to_s + ']:'+ object.to_s if level == 10
-       puts 'Error ' + object.to_s
+       if level == 10
+          STDERR.puts 'Error[' + Process.pid.to_s + ']:' + object.to_s
+       else 
+          puts 'Info[' + Process.pid.to_s + ']:' + object.to_s
+       end
      end
      return false
    end
@@ -17,9 +20,12 @@ module SystemLogging
    #Logs are written to apache/error.log
    # error mesg is truncated to 512 bytes
    # returns nothing
-   def SystemUtils.log_error_mesg(msg, object)
-     obj_str = object.to_s.slice(0, 512)
-     SystemUtils.log_output('ERROR:' + msg.to_s + ':->:' + obj_str ,10)
+   def SystemUtils.log_error_mesg(msg, *objects)
+     obj_str= ''
+     objects.each do |object|     
+        obj_str += object.to_s.slice(0, 512) + ':#:'
+     end
+     SystemUtils.log_output( msg.to_s + ':->:' + obj_str ,10)
    end
  
    def SystemUtils.log_error(object)

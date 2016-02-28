@@ -1,6 +1,6 @@
 module DockerInfoCollector
   def docker_info
-    collect_docker_info if @docker_info_cache.nil?
+    collect_docker_info if @docker_info_cache.nil? 
     return false if @docker_info_cache.is_a?(FalseClass)
     return false if @docker_info_cache.nil?
 
@@ -39,13 +39,21 @@ module DockerInfoCollector
 
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id
-   r = ContainerStateFiles.read_container_id(self)
-   return r #unless r == -1
+    @container_id = ContainerStateFiles.read_container_id(self)
+   if @container_id == -1
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
-#    info = docker_info
-#    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
-#    return -1
+    info =  @container_api.inspect_container(self) # docker_info
+    SystemDebug.debug(SystemDebug.containers, ' read_container_id ' ,info)
+     if info.is_a?(Array)
+       @container_id = info[0]['Id']
+     save_container
+     else
+     @container_id  = -1   
+   end
+    
+    return  @container_id
+  end
   rescue StandardError => e
    
     
@@ -54,24 +62,34 @@ module DockerInfoCollector
 
   def running_user
     info = docker_info
-    return -1 if info.is_a?(FalseClass)
-    return  info['Config']['User'] unless info.is_a?(FalseClass)
+    return -1 unless info.is_a?(Hash)
+    return -1 unless info.key?('Config')
+    return -1 unless info['Config'].key?('User')
+    return  info['Config']['User'] 
   rescue StandardError => e
-    return log_exception(e)
+    return log_exception(e,info)
   end
   protected
 
   def collect_docker_info
     return false unless has_api?
     result = false
-    return false if @docker_info_cache == false
-    result = @container_api.inspect_container(self) if @docker_info_cache.nil?
+    return false if @docker_info_cache == false 
+    @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
+    if @docker_info_cache == false
+      @container_id = -1
+    elsif @docker_info_cache.is_a?(Array)
+      @docker_info_cache =  @docker_info_cache[0]
+      if @container_id.to_s == '' || @container_id == -1      
+        @container_id = @docker_info_cache['Id']
+      end
+    end
     #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
-    @docker_info_cache =  result
+    # result    
     #@docker_info_cache = false unless result
    # Thread.new { sleep 4 ; expire_engine_info }
-    return result
+    return @docker_info_cache
   end
 
 end

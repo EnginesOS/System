@@ -33,7 +33,8 @@ class Container < ErrorsApi
   :web_port,\
   :volumes,\
   :mapped_ports,\
-  :environments
+  :environments,\
+  :setState
 
   attr_accessor :last_error,\
   :container_api,
