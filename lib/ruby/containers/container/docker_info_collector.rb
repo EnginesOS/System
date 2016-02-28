@@ -44,9 +44,10 @@ module DockerInfoCollector
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
     info =  @container_api.inspect_container(self) # docker_info
-    return -1 unless info.is_a?(Hash) # Array) && docker_info[0].is_a?(Hash)
     SystemDebug.debug(SystemDebug.containers, ' read_container_id ' ,info)
-    @container_id = info['Id']
+    return -1 unless info.is_a?(Array) # Array) && docker_info[0].is_a?(Hash)   
+    @container_id = info[0]['Id']
+    save_container
     return  @container_id
   rescue StandardError => e
    
