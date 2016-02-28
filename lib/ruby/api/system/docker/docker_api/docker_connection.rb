@@ -25,8 +25,8 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, containers_info   )
     return false unless containers_info.is_a?(Array)
     containers_info.each do |info|
-    if info[0]['Names'][0] == '/' + container.container_name
-    id = info[0]['Id']    
+    if info['Names'][0] == '/' + container.container_name
+    id = info['Id']    
   SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,id   )
       return id
       end
