@@ -187,7 +187,7 @@ module TaskAtHand
     end
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     rescue StandardError => e 
-      return true unless 
+      return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     log_exception(e)
       return false
   end
