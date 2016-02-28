@@ -25,7 +25,7 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, containers_info   )
     return -1 unless containers_info.is_a?(Array)
     containers_info.each do |info|
-      SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
+    #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
     if info['Names'][0] == '/' + container.container_name
     id = info['Id']    
   SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,id   )
@@ -67,14 +67,14 @@ def inspect_container_by_name(container)
     #    chunks = ''
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
-    SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
+  #  SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
     return log_error_mesg("no OK response from docker", resp, resp.read_body) unless  resp.code  == '200'
     chunk = resp.read_body
 
     rhash = nil
     hashes = []
     chunk.gsub!(/\\\"/,'')
-    SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
+    #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if chunk.start_with?('no such id: ')
     response_parser.parse(chunk) do |hash |
       hashes.push(hash)
