@@ -83,7 +83,7 @@ def inspect_container_by_name(container)
     #   hashes[1] is a timestamp
     return hashes[0]
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,chunk)
     return nil
   end
 
