@@ -22,13 +22,13 @@ class DockerConnection < ErrorsApi
    # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/json?filter=Names=/' + container.container_name
     containers_info = make_request(request, container)
-    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, containers_info   )
+    SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,request, containers_info   )
     return -1 unless containers_info.is_a?(Array)
     containers_info.each do |info|
     #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
     if info['Names'][0] == '/' + container.container_name
     id = info['Id']    
-  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,id   )
+  SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,id   )
       return id
       end
     end
@@ -42,7 +42,9 @@ def inspect_container_by_name(container)
     id = container_id_from_name(container)
     return false if id == -1
      request='/containers/' + id.to_s + '/json'
-    return make_request(request, container)
+    r =  make_request(request, container)
+  SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
+    return r
     rescue StandardError  => e
   log_exception(e)
   return false
