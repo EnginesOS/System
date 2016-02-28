@@ -8,7 +8,12 @@ module TemplateActions
   def get_resolved_string(env_value)
     return @core_api.get_resolved_string(env_value)
   end
-
+  
+  def  get_resolved_service_string(env_value, service)
+    return get_resolved_engine_string(env_value, service)
+    #return @core_api.get_resolved_service_string(env_value, engine)
+  end
+  
   def  get_resolved_engine_string(env_value, engine)
     return @core_api.get_resolved_engine_string(env_value, engine)
   end
