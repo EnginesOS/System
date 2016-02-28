@@ -21,7 +21,7 @@ class DockerConnection < ErrorsApi
   def container_id_from_name(container)
     request='/containers/json?filter=name=' + container.container_name
     info = make_request(request, container)
-    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info)
+    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info, info['Id']   )
     return false unless info.is_a(Array)
 
     id = id[0]
@@ -66,7 +66,7 @@ def inspect_container_by_name(container)
     rhash = nil
     hashes = []
     chunk.gsub!(/\\\"/,'')
-   SystemDebug.debug(SystemDebug.docker,'Read ', chunk)
+   
     return clear_cid(container) if chunk.start_with?('no such id: ')
     response_parser.parse(chunk) do |hash |
       hashes.push(hash)
