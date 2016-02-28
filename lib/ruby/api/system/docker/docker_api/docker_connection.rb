@@ -17,11 +17,32 @@ class DockerConnection < ErrorsApi
   rescue StandardError =>e
     log_exception(e)
   end
+  
+  def container_id_from_name(container)
+    request='/containers/json?filter=name=' + container.container_name
+    info = make_request(request, container)
+    return false unless info.is_a(Array)
+    SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info)
+    id = id[0]
+    id = info['Id']    
+      return id
+rescue 
+  return false  
+end
+
+def inspect_container_by_name(container)
+    id = container_id_from_name(container)
+    return false if id false
+     request='/containers/json?filter=name=' + container.container_name
+    return make_request(request, container)
+    rescue
+  return false
+    end
 
   def inspect_container(container)
    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.nil?
-      request='/containers/json?filter=name=' + container.container_name
+      return inspect_container_by_name(container)
     else
       request='/containers/' + container.container_id.to_s + '/json'
     end
