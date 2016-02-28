@@ -51,7 +51,7 @@ class EnginesOSapi
   include UpdateActions
   require_relative 'engines_osapi/return_objects.rb'
   include ReturnObjects
-  require_relative 'engines_osapi/os_api_actionatora.rb'
+  require_relative 'engines_osapi/os_api_actionators.rb'
    include OsApiActionators
   
   require 'objspace'
