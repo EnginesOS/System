@@ -50,6 +50,8 @@ if test -z "$docker_ip"
 
 docker start registry
 /opt/engines/bin/eservice start dns
+#FIXMe use startup complete flag
+sleep 10
 /opt/engines/bin/eservice start mysql_server
 
 /opt/engines/bin/eservice start nginx
