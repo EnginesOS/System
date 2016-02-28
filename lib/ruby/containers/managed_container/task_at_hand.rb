@@ -84,6 +84,7 @@ module TaskAtHand
       return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped'
       #  desired_state(@steps, 'noimage')
     when :destroy
+      @steps =  [:delete_image]
       return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
@@ -105,7 +106,7 @@ module TaskAtHand
 
     clear_task_at_hand    
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task)
-   return save_state unless @last_task == :delete && @steps_to_go == 0
+   return save_state unless @last_task == :delete_image && @steps_to_go == 0
     # FixMe Kludge unless docker event listener
     ContainerStateFiles.delete_container_configs(container) 
     return true
