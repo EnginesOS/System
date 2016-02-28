@@ -42,7 +42,7 @@ def inspect_container_by_name(container)
 
   def inspect_container(container)
    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
-    if container.container_id.to_s == '-1' || container.container_id.nil?
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       return inspect_container_by_name(container)
     else
       request='/containers/' + container.container_id.to_s + '/json'
