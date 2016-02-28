@@ -101,8 +101,8 @@ module TaskAtHand
     expire_engine_info
     return if action == 'create'
     
-
-    SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + (@steps_to_go - 1).to_s + 'step completed ',@steps) 
+    @steps_to_go = 0 if @steps_to_go.nil?
+    SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps) 
 
     clear_task_at_hand    
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task)
