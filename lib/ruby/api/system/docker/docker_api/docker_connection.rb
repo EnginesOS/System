@@ -34,7 +34,7 @@ end
 def inspect_container_by_name(container)
     id = container_id_from_name(container)
     return false if id false
-     request='/containers/json?filter=name=' + container.container_name
+     request='/containers/json?name=' + container.container_name
     return make_request(request, container)
     rescue
   return false
