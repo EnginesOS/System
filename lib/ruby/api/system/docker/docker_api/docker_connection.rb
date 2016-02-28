@@ -62,10 +62,11 @@ def inspect_container_by_name(container)
     SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
     return log_error_mesg("no OK response from docker", resp, resp.read_body) unless  resp.code  == '200'
     chunk = resp.read_body
+
     rhash = nil
     hashes = []
     chunk.gsub!(/\\\"/,'')
-  #  SystemDebug.debug(SystemDebug.docker,'Read ', chunk)
+   SystemDebug.debug(SystemDebug.docker,'Read ', chunk)
     return clear_cid(container) if chunk.start_with?('no such id: ')
     response_parser.parse(chunk) do |hash |
       hashes.push(hash)
