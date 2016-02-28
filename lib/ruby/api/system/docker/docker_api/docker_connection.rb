@@ -21,8 +21,9 @@ class DockerConnection < ErrorsApi
   def container_id_from_name(container)
     request='/containers/json?filter=name=' + container.container_name
     info = make_request(request, container)
-    return false unless info.is_a(Array)
     SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,request, info)
+    return false unless info.is_a(Array)
+
     id = id[0]
     id = info['Id']    
       return id
