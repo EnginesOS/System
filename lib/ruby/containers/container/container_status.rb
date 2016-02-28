@@ -16,11 +16,11 @@ module ContainerStatus
       elsif info['State']['Status'] == 'exited'
         return 'stopped'
       else
-        SystemDebug.debug(SystemDebug.containers, :info, info['State'].to_s)
+        SystemDebug.debug(SystemDebug.containers, :info, info)
         return 'nocontainer'
       end
     end
-    SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info['State'].to_s)
+    SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
     return 'nocontainer'
   rescue StandardError => e
     log_exception(e)
