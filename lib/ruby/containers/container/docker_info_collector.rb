@@ -47,10 +47,16 @@ module DockerInfoCollector
    
 #    ContainerStateFiles.read_container_id(self)
      info  =  @container_api.inspect_container_by_name(self) # docker_info
+     return @container_api if info.nil
    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Array)
-       @container_id = info[0]['Id']
+      SystemDebug.debug(SystemDebug.containers,'array')
+       info = info[0]
+   end 
+    if info.is_a?(Hash)
+     @container_id = info['Id'] if info.key('Id')
     end
+    
      SystemDebug.debug(SystemDebug.containers,@container_id)
     return @container_id
 #     save_container
