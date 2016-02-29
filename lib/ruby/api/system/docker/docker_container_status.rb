@@ -29,7 +29,7 @@ module DockerContainerStatus
     cmdline = 'docker inspect ' + container.container_name
     result = SystemUtils.execute_command(cmdline)
     res = JSON.parse(result[:stdout], :create_additions => true)
-      return SystemUtils.deal_with_jason(res)
+      return res #SystemUtils.deal_with_jason(res)
     rescue StandardError => e
         log_exception(e,container.container_)
         return 'error inspect_container_by_name  ' + e.to_s
