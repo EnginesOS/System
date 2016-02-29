@@ -23,8 +23,8 @@ module ContainerApiDockerActions
     @docker_api.image_exist?(container_name)
   end
 
- def container_id_from_name(container) 
-   @docker_api.container_id_from_name(container) 
+ def inspect_container_by_name(container) 
+   @docker_api.inspect_container_by_name(container) 
    # docker_info
 #    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
 #     if info.is_a?(Array)
