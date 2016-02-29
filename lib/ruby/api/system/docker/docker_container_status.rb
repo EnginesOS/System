@@ -25,5 +25,22 @@ module DockerContainerStatus
   def container_id_from_name(container)
     @docker_comms.container_id_from_name(container)
   end
-
+  def inspect_container_by_name(container)
+    cmdline = 'docker inspect ' + container.container_name
+    result = SystemUtils.execute_command(cmdline)
+    res = JSON.parse(result[:stdout], :create_additions => true)
+      return deal_with_jason(res)
+    rescue StandardError => e
+        log_exception(e,container.container_)
+        return 'error inspect_container_by_name  ' + e.to_s
+  end
+  def deal_with_jason(res)
+    return symbolize_keys(res) if res.is_a?(Hash)
+    return symbolize_keys_array_members(res) if res.is_a?(Array)
+    return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
+    return boolean_if_true_false_str(res) if res.is_a?(String)
+    return res
+  rescue  StandardError => e
+    STDERR.puts e.to_s
+  end
 end

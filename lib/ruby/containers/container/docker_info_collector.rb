@@ -43,11 +43,13 @@ module DockerInfoCollector
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
    if @container_id == -1 && setState != 'nocontainer'
 #    sleep 1
+     @container_api.inspect_container_by_name
 #    ContainerStateFiles.read_container_id(self)
-     @container_id  =  @container_api.container_id_from_name(self) # docker_info
-#    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
-#     if info.is_a?(Array)
-#       @container_id = info[0]['Id']
+     info  =  @container_api.inspect_container_by_name(self) # docker_info
+   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+    if info.is_a?(Hash)
+       @container_id = info['Id']
+    end
 #     save_container
 #     else
 #     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
