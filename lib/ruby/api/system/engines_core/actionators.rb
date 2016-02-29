@@ -16,6 +16,7 @@ module Actionators
       return  false
     end
      unless service_def[:actionators].is_a?(Array)
+       SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
        return service_def[:actionators]
      end
     SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
