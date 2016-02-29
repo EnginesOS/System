@@ -34,7 +34,8 @@ module DockerInfoCollector
     
   def clear_cid
     @container_id = nil
-    save_state
+    ContainerStateFiles.clear_cid_file(self)
+    save_state   
   end
 
   # Kludge until using docker socker to create (thne get id back on build completion)
