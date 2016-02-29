@@ -20,15 +20,16 @@ class DockerConnection < ErrorsApi
   
   def container_id_from_name(container)
    # request='/containers/json?son?all=false&name=/' + container.container_name
-    request='/containers/json?filter=Names=/' + container.container_name
+    request='/containers/json' #?filter=Names=/' + container.container_name
     containers_info = make_request(request, container)
-    SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,request, containers_info   )
+    SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
     return -1 unless containers_info.is_a?(Array)
     containers_info.each do |info|
     #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
     if info['Names'][0] == '/' + container.container_name
+      SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info['Names'][0],info['Id']    )
     id = info['Id']    
-  SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,id   )
+
       return id
       end
     end
@@ -53,7 +54,8 @@ def inspect_container_by_name(container)
   def inspect_container(container)
    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-      return inspect_container_by_name(container)
+     # return inspect_container_by_name(container)
+      return false
     else
       request='/containers/' + container.container_id.to_s + '/json'
     end

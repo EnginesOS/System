@@ -41,23 +41,22 @@ module DockerInfoCollector
   def read_container_id
     @container_id = ContainerStateFiles.read_container_id(self)
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
-   if @container_id == -1
+   if @container_id == -1 && setState != 'nocontainer'
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
-    info =  @container_api.inspect_container(self) # docker_info
-    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
-     if info.is_a?(Array)
-       @container_id = info[0]['Id']
-     save_container
-     else
-     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
-     @container_id  = -1   
-   end       
+     @container_id  =  @container_api.container_id_from_name(self) # docker_info
+#    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+#     if info.is_a?(Array)
+#       @container_id = info[0]['Id']
+#     save_container
+#     else
+#     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
+#     @container_id  = -1   
+#   end       
   end
+  
   return  @container_id
-  rescue StandardError => e
-   
-    
+  rescue StandardError => e      
     log_exception(e)
   end
 
@@ -74,17 +73,16 @@ module DockerInfoCollector
 
   def collect_docker_info
     return false unless has_api?
-    result = false
     return false if @docker_info_cache == false 
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
-    if @docker_info_cache == false
-      @container_id = -1
-    elsif @docker_info_cache.is_a?(Array)
-      @docker_info_cache =  @docker_info_cache[0]
-      if @container_id.to_s == '' || @container_id == -1      
-        @container_id = @docker_info_cache['Id']
-      end
-    end
+#    if @docker_info_cache == false
+#      @container_id = -1
+##    elsif @docker_info_cache.is_a?(Array)
+##      @docker_info_cache =  @docker_info_cache[0]
+##      if @container_id.to_s == '' || @container_id == -1      
+##        @container_id = @docker_info_cache['Id']
+##      end
+#    end
     #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
     # result    

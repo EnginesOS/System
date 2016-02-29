@@ -18,12 +18,12 @@ class Container < ErrorsApi
   @conf_register_dns = true
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
-    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
+    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml, container_name) if container.nil?
     container.container_api = container_api
     container.post_load
     return container
   rescue Exception => e
-    SystemUtils.log_exception(e)
+    SystemUtils.log_exception(e,yaml)
   end
 
   attr_reader :container_id,\
