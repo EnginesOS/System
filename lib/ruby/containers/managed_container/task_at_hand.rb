@@ -84,8 +84,7 @@ module TaskAtHand
     when :delete  
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
       #  desired_state(@steps, 'noimage')
-    when :destroy  
-      @steps =  [:delete_image]
+    when :destroy      
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
