@@ -6,6 +6,7 @@ module Actionators
       service_def = SoftwareServiceDefinition.find(service.type_path,service.publisher_namespace)
     end
     SystemDebug.debug(SystemDebug.actions,'service_def',service_def)
+    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators])
      unless service_def.is_a?(Hash)
        log_error_mesg('list_actionators not a service def ',service_def)
        return false
@@ -17,7 +18,7 @@ module Actionators
      unless service_def[:actionators].is_a?(Array)
        return service_def[:actionators]
      end
-    SystemDebug.debug(SystemDebug.actions,service,service_def[:actionators],service_def)
+    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
     return service_def[:actionators]
       
     rescue StandardError => e
