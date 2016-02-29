@@ -15,8 +15,13 @@ class SystemDebug
   @@cache = 2048
   @@update = 4096
   @@registry = 8192
-  @@all = 131072
-  @@debug_flags = @@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update||@@registry
+
+  @@actions = 16384
+  @@debug_flags = @@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
+  def self.actions
+       return @@actions
+     end
+  
   def self.update
       return @@update
     end
