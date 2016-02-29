@@ -263,7 +263,7 @@ module TaskAtHand
     return false
     # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.engine_tasks, e, e.backtrace)
+   # SystemDebug.debug(SystemDebug.engine_tasks, e, e.backtrace)
     return true 
   end
   

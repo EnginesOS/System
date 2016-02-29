@@ -59,10 +59,11 @@ module ContainerControls
     expire_engine_info
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
     r = @container_api.create_container(self)
+    SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     unless r == false 
       expire_engine_info
       @container_id = r
-      SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
+    
       @cont_userid = running_user
       expire_engine_info
       return true
