@@ -16,8 +16,11 @@ module OsApiActionators
     end
      unless service_def[:actionators].is_a?(Array)
        log_error_mesg('list_actionators not an array',service_def[:actionators])
-       return []
+         retval =[]
+           retval.push(service_def[:actionators])
+       return retval
      end
+    SystemDebug.debug(SystemDebug.actions,service,service_def[:actionators],service_def)
     return service_def[:actionators]
       
     rescue StandardError => e
@@ -25,6 +28,7 @@ module OsApiActionators
   end
   
   def perform_service_action(service_name,actionator_name,params)
+    SystemDebug.debug(SystemDebug.actions,service_name,actionator_name,params)
    return EnginesOSapiResult.failed('list_actionators' + service_name,params.to_s ,actionator_name)
     rescue StandardError => e
         log_exception_and_fail('perform_service_action', e)
