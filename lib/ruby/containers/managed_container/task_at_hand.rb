@@ -88,6 +88,10 @@ module TaskAtHand
       return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
+    if tasks_final_state(action).to_s == curr_state && action != 'restart'
+      setState = curr_state
+      return save_state
+    end
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
    
   
