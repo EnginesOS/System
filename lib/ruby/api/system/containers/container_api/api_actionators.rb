@@ -1,10 +1,14 @@
 module ApiActionators
  def perform_action(constainer, actionator_name, params)
-  cmd ='docker exec /home/actionators/' + actionator_name + ' ' +list_params(params)
+   SystemDebug.debug(SystemDebug.actions,constainer, actionator_name, params)
+  cmd ='docker exec /home/actionators/' + actionator_name + ' ' + list_params(params)
+
   if @docker_api.execute_docker_cmd(cmdline, constainer)
+    SystemDebug.debug(SystemDebug.actions,'perform_action',container.last_result)
    return container.last_result
   else
     @last_error  = container.last_error 
+    SystemDebug.debug(SystemDebug.actions,'perform_action',container.last_error)
     return false
   end
   
