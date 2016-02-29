@@ -46,8 +46,8 @@ module DockerInfoCollector
    
 #    ContainerStateFiles.read_container_id(self)
      info  =  @container_api.inspect_container_by_name(self) # docker_info
-   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info.info['Id'],info[0]['Id'])
-    if info.is_a?(Hash)
+   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info['Id'],info[0]['Id'])
+    if info.is_a?(Array)
        @container_id = info[0]['Id']
     end
      SystemDebug.debug(SystemDebug.containers,@container_id)
