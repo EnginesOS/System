@@ -3,8 +3,8 @@ module ApiActionators
    SystemDebug.debug(SystemDebug.actions,constainer.container_name, actionator_name, params)
   cmd ='docker exec /home/actionators/' + actionator_name.to_s + ' ' + list_params(params).to_s
 
-  if @docker_api.execute_docker_cmd(cmdline, constainer)
-    SystemDebug.debug(SystemDebug.actions,'perform_action',container.last_result)
+  if @docker_api.execute_docker_cmd(cmd, constainer)
+    SystemDebug.debug(SystemDebug.actions,'perform_action',cmd,container.last_result)
    return container.last_result
   else
     @last_error  = container.last_error 
