@@ -7,15 +7,15 @@ module OsApiActionators
     end
    
      unless service_def.is_a?(Hash)
-       log_error_mesg('list_actionators',service_def)
+       log_error_mesg('list_actionators not a service def ',service_def)
        return []
   end
     unless service_def.key?(:actionators)
-      log_error_mesg('list_actionators',service_def)
+      log_error_mesg('list_actionators no actionators',service_def)
       return []
     end
      unless service_def[:actionators].is_a?(Array)
-       log_error_mesg('list_actionators',service_def[:actionators])
+       log_error_mesg('list_actionators not an array',service_def[:actionators])
        return []
      end
     return service_def[:actionators]
