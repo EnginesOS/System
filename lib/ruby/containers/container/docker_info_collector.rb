@@ -57,7 +57,8 @@ module DockerInfoCollector
    # SystemUtils.deal_with_jason(info)
    # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Hash)
-     @container_id = info['Id'] if info.key('Id')
+      SystemDebug.debug(SystemDebug.containers,'array')
+     @container_id = info['Id'] if info.key?('Id')
     end
     
      SystemDebug.debug(SystemDebug.containers,@container_id)
