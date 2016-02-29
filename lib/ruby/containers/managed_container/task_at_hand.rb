@@ -33,63 +33,63 @@ module TaskAtHand
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
   @last_task = action
+  final_state = tasks_final_state(action)
     case action
-    when :create      
-      return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer' 
-    when :stop
-      return desired_state(step, 'stopped', curr_state) if curr_state== 'running'
-    when :start
-      return desired_state(step, 'running', curr_state) if curr_state== 'stopped'
-    when :pause
-      return desired_state(step, 'paused', curr_state) if curr_state== 'running'
-    when :restart
+    when :create    
+      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer' 
+    when :stop  
+      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+    when :start  
+      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+    when :pause  
+      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+    when :restart  
       if curr_state == 'running'
       @steps = [:stop,:start]
       @steps_to_go = 2
-      return desired_state(step, 'stopped', curr_state) 
+      return desired_state(step, final_state, curr_state) 
     end
-      return desired_state(step, 'running', curr_state)
-    when :unpause
-      return desired_state(step, 'running', curr_state) if curr_state== 'paused'
-    when :recreate
+      return desired_state(step, final_state, curr_state)
+    when :unpause  
+      return desired_state(step, final_state, curr_state) if curr_state== 'paused'
+    when :recreate  
       if curr_state== 'stopped'
         @steps = [:destroy,:create]
         @steps_to_go = 2 
-        return desired_state(step, 'running', curr_state)
+        return desired_state(step, final_state, curr_state)
       end      
-      return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
+      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
      
     when :rebuild
-      
-      if curr_state== 'stopped'
+      if curr_stat e== 'stopped'
             @steps = [:destroy,:create]
             @steps_to_go = 2
-            return desired_state(step, 'running', curr_state) 
+            return desired_state(step, final_state, curr_state) 
           end      
      
     
-      return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
+      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
       
-      when :reinstall
+      when :reinstall  
       if curr_state== 'stopped'
               @steps =  [:destroy,:create]
               @steps_to_go = 2
-              return desired_state(step, 'running', curr_state)
+              return desired_state(step, final_state, curr_state)
             end            
     
-          return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
-    when :build
-      return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer'
-    when :delete
-      return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped'
+          return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
+    when :build  
+      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+    when :delete  
+      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
       #  desired_state(@steps, 'noimage')
-    when :destroy
+    when :destroy  
       @steps =  [:delete_image]
-      return desired_state(step, 'nocontainer', curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      return desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
-    if tasks_final_state(action).to_s == curr_state && action != 'restart'
-      setState = curr_state
+    if tasks_final_state(action) == curr_state && action != 'restart'
+      @setState = curr_state
       return save_state
     end
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
