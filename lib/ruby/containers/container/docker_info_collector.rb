@@ -41,7 +41,7 @@ module DockerInfoCollector
   def read_container_id
     @container_id = ContainerStateFiles.read_container_id(self)
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
-   if @container_id == -1
+   if @container_id == -1 && setState != 'nocontainer'
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
      @container_id  =  @container_api.container_id_from_name(self) # docker_info
