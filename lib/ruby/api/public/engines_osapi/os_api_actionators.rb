@@ -2,7 +2,7 @@ module OsApiActionators
   def list_actionators(service)
 a = @core_api.list_actionators(service)
 return a if a.is_a?(Array)
-return EnginesOSapiResult.failed(@last_error,'list_actionators') 
+return EnginesOSapiResult.failed(@last_error,'list_actionators',a) 
     rescue StandardError => e
         log_exception_and_fail('list_actionators', e)
   end
