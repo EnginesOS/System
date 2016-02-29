@@ -21,7 +21,7 @@ module Actionators
     return service_def[:actionators]
       
     rescue StandardError => e
-        log_exception_and_fail('list_actionators', e)
+        log_exception(e,'list_actionators',service)
   end
   
   def perform_service_action(service_name,actionator_name,params)
