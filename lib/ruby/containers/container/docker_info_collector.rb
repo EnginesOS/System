@@ -29,12 +29,13 @@ module DockerInfoCollector
   end
   
   def set_cont_id
-    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == ''
+    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
   end
     
   def clear_cid
     @container_id = nil
-    save_state
+    ContainerStateFiles.clear_cid_file(self)
+    save_state   
   end
 
   # Kludge until using docker socker to create (thne get id back on build completion)
@@ -43,11 +44,21 @@ module DockerInfoCollector
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
    if @container_id == -1 && setState != 'nocontainer'
 #    sleep 1
+   
 #    ContainerStateFiles.read_container_id(self)
-     @container_id  =  @container_api.container_id_from_name(self) # docker_info
-#    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
-#     if info.is_a?(Array)
-#       @container_id = info[0]['Id']
+     info  =  @container_api.inspect_container_by_name(self) # docker_info
+     return @container_api if info.nil
+   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+    if info.is_a?(Array)
+      SystemDebug.debug(SystemDebug.containers,'array')
+       info = info[0]
+   end 
+    if info.is_a?(Hash)
+     @container_id = info['Id'] if info.key('Id')
+    end
+    
+     SystemDebug.debug(SystemDebug.containers,@container_id)
+    return @container_id
 #     save_container
 #     else
 #     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)

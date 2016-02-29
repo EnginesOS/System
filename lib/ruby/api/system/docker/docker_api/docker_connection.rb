@@ -95,7 +95,7 @@ def inspect_container_by_name(container)
 
   def clear_cid(container)
     SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
-    File.delete(SystemConfig.CidDir + '/' + container.container_name + '.cid')  if File.exists?(SystemConfig.CidDir + '/' + container.container_name + '.cid')
+   
     container.clear_cid
     return false
     rescue StandardError => e

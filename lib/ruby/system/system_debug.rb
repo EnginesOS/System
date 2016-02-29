@@ -17,7 +17,7 @@ class SystemDebug
   @@registry = 8192
 
   @@actions = 16384
-  @@debug_flags = @@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
+  @@debug_flags = @@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   def self.actions
        return @@actions
      end
