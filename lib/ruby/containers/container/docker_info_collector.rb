@@ -44,20 +44,19 @@ module DockerInfoCollector
    if @container_id == -1
 #    sleep 1
 #    ContainerStateFiles.read_container_id(self)
-    info =  @container_api.inspect_container(self) # docker_info
-    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
-     if info.is_a?(Array)
-       @container_id = info[0]['Id']
-     save_container
-     else
-     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
-     @container_id  = -1   
-   end       
+     @container_id  =  @container_api.container_id_from_name(self) # docker_info
+#    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+#     if info.is_a?(Array)
+#       @container_id = info[0]['Id']
+#     save_container
+#     else
+#     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
+#     @container_id  = -1   
+#   end       
   end
+    save_container  unless @container_id == -1
   return  @container_id
-  rescue StandardError => e
-   
-    
+  rescue StandardError => e      
     log_exception(e)
   end
 
