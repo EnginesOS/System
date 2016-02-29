@@ -5,9 +5,19 @@ module OsApiActionators
     else
       service_def = SoftwareServiceDefinition.find(service.type_path,service.publisher_namespace)
     end
-    return [] unless service_def.is_a?(Hash)
-    return [] unless service_def.key?(:actionators)
-    return [] unless service_def[:actionators].is_a?(Array)
+   
+     unless service_def.is_a?(Hash)
+       log_error_mesg('list_actionators',service_def)
+       return []
+  end
+    unless service_def.key?(:actionators)
+      log_error_mesg('list_actionators',service_def)
+      return []
+    end
+     unless service_def[:actionators].is_a?(Array)
+       log_error_mesg('list_actionators',service_def[:actionators])
+       return []
+     end
     return service_def[:actionators]
       
     rescue StandardError => e
