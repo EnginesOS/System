@@ -46,15 +46,17 @@ module DockerEvents
       when 'destroy'
     inform_container(c_name,event_name)
   else
-    SystemDebug.debug(SystemDebug.engine_tasks, :'Untraked event',event_name,c_name,ctype )
+    SystemDebug.debug(SystemDebug.engine_tasks, 'Untraked event',event_name,c_name,ctype )
     
      end
      
   inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
 end
  def inform_container(container_name,event_name)
+   SystemDebug.debug(SystemDebug.engine_tasks, 'recevied inform_container',container_name,event_name)
     c = container_from_cache(container_name)   
     return nil if c.nil?
+   SystemDebug.debug(SystemDebug.engine_tasks, 'informed _container',container_name,event_name)
     c.task_complete(event_name)
   
   rescue StandardError =>e
