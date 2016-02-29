@@ -22,5 +22,8 @@ module DockerContainerStatus
   def inspect_container(container)
     @docker_comms.inspect_container(container)
   end
+  def container_id_from_name(container)
+    @docker_comms.container_id_from_name(container)
+  end
 
 end
