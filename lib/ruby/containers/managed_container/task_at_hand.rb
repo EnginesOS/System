@@ -22,12 +22,13 @@ module TaskAtHand
   end
 
   def in_progress(action)
-    step = action
+    
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1    
       @steps = [] 
       @steps[0] = action 
     end
+  step = @steps[0]
     curr_state = read_state
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
@@ -54,15 +55,15 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate  
       if curr_state== 'stopped'
-        @steps = [:destroy,:create]
+        @steps = [:delete,:create]
         @steps_to_go = 2 
         return desired_state(step, final_state, curr_state)
       end      
       return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
      
     when :rebuild
-      if curr_stat e== 'stopped'
-            @steps = [:destroy,:create]
+      if curr_state == 'stopped'
+            @steps = [:delete,:build]
             @steps_to_go = 2
             return desired_state(step, final_state, curr_state) 
           end      
@@ -71,8 +72,8 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
       
       when :reinstall  
-      if curr_state== 'stopped'
-              @steps =  [:destroy,:create]
+      if curr_state == 'stopped'
+              @steps =  [:delete,:build]
               @steps_to_go = 2
               return desired_state(step, final_state, curr_state)
             end            
