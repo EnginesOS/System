@@ -1,4 +1,5 @@
 module Containers
+  @@lock_timeout  = 2
   # FIXME: Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container_name)
     ret_val = {}
@@ -96,8 +97,9 @@ module Containers
  
   def lock_container_conf_file(state_dir)
     lock_fn = state_dir + '/lock'
-    if  File.exists?(lock_fn)
+    if  File.exists?(lock_fn) && lock_has_expired(lock_fn) == false
       loop = 0 
+
       while  File.exists?(lock_fn)
         sleep(0.2)
         loop += 1
@@ -105,7 +107,7 @@ module Containers
           pid = File.read(lock_fn)
           log_error_mesg("cleared lock in ",state_dir,' pid ',pid)
           File.delete(lock_fn)
-          return true 
+          break
         end
       end
     else    
@@ -126,4 +128,10 @@ module Containers
     SystemUtils.log_exception(e)
   end
 
+  def lock_has_expired(lock_fn)
+    return true if File.mtime(lock_fn) <  Time.now + @@lock_timeout
+    return false
+    rescue StandardError => e
+      return true
+  end
 end
