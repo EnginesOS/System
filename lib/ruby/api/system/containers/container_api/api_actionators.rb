@@ -20,7 +20,7 @@ module ApiActionators
 
   def perform_action(c,actionator_name, params)
       # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + list_params(params).to_s
+      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + ' ' + list_params(params).to_s
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
@@ -46,11 +46,12 @@ module ApiActionators
 
 
 def list_params(params)
-  return '' if params.nil?
+  return ' ' if params.nil?
   r = ' '
    params.each do |param|
      r += param.to_s + ' '
    end
+   return r
 end
 
 end
