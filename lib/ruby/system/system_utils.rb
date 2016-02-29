@@ -195,7 +195,15 @@ class SystemUtils
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
-
+def  SystemUtils.deal_with_jason(res)
+   return symbolize_keys(res) if res.is_a?(Hash)
+   return symbolize_keys_array_members(res) if res.is_a?(Array)
+   return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
+   return boolean_if_true_false_str(res) if res.is_a?(String)
+   return res
+ rescue  StandardError => e
+   STDERR.puts e.to_s
+ end
   def SystemUtils.service_hash_variables_as_str(service_hash)
     json_str = service_hash[:variables].to_json
     return json_str
