@@ -27,8 +27,9 @@ class DockerConnection < ErrorsApi
     containers_info.each do |info|
     #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
     if info['Names'][0] == '/' + container.container_name
+      SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info['Names'][0],info['Id']    )
     id = info['Id']    
-  SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,id   )
+
       return id
       end
     end
