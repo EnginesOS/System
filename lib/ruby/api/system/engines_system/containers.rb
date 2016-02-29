@@ -100,7 +100,7 @@ module Containers
       loop = 0 
       while  File.exists?(lock_fn)
         sleep(0.2)
-        loop != 1
+        loop += 1
         return false if loop > 10  
       end
     else    
