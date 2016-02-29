@@ -46,7 +46,7 @@ class ManagedContainer < Container
     i = @container_id
     super
     if @container_id != -1 && @container_id != i
-      save_container
+      save_state
     end
 
   end
