@@ -50,6 +50,8 @@ module DockerInfoCollector
     if info.is_a?(Hash)
        @container_id = info['Id']
     end
+     SystemDebug.debug(SystemDebug.containers,@container_id)
+    return @container_id
 #     save_container
 #     else
 #     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
