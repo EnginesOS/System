@@ -101,15 +101,23 @@ module Containers
       while  File.exists?(lock_fn)
         sleep(0.2)
         loop += 1
-        return false if loop > 10  
+        if loop > 10
+          pid = File.read(lock_fn)
+          log_error_mesg("cleared lock in ",state_dir,' pid ',pid)
+          File.delete(lock_fn)
+          return true 
+        end
       end
     else    
      lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
       lock.puts(Process.pid.to_s)
       lock.close()
       return true
-    end
     
+    end
+    rescue StandardError => e
+    log_error_mesg('locking exception', lock_fn,e)
+          return true
   end
   def is_startup_complete(container)
     clear_error

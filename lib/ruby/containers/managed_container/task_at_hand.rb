@@ -55,7 +55,7 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate  
       if curr_state== 'stopped'
-        @steps = [:delete,:create]
+        @steps = [:destroy,:create]
         @steps_to_go = 2 
         return desired_state(step, final_state, curr_state)
       end      
@@ -63,7 +63,7 @@ module TaskAtHand
      
     when :rebuild
       if curr_state == 'stopped'
-            @steps = [:delete,:build]
+            @steps = [:destroy,:build]
             @steps_to_go = 2
             return desired_state(step, final_state, curr_state) 
           end      
@@ -73,7 +73,7 @@ module TaskAtHand
       
       when :reinstall  
       if curr_state == 'stopped'
-              @steps =  [:delete,:build]
+              @steps =  [:destroy,:build]
               @steps_to_go = 2
               return desired_state(step, final_state, curr_state)
             end            
