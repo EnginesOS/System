@@ -28,12 +28,12 @@ module Actionators
   
   def perform_service_action(service_name,actionator_name,params)
     SystemDebug.debug(SystemDebug.actions,service_name,actionator_name,params)
-   service =  loadManagedService(service_name)
+   service = loadManagedService(service_name)
   return service.perform_action(actionator_name,params) if service.is_running?
-   @last_error = "Service no running"
+   @last_error = "Service not running"
    return false
     rescue StandardError => e
-        log_exception_and_fail('perform_service_action', e)
+        log_exception( e,'perform_service_action',service_name,actionator_name,params)
   end
   
 end
