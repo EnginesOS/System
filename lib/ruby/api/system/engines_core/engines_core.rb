@@ -87,6 +87,9 @@ class EnginesCore < ErrorsApi
   require_relative 'core_build_controller.rb'  
   include CoreBuildController
   
+  require_relative 'actionators.rb'
+   include Actionators
+  
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'
   require_relative '../docker/docker_api.rb'
