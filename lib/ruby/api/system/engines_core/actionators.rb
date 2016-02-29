@@ -5,7 +5,7 @@ module Actionators
     else
       service_def = SoftwareServiceDefinition.find(service.type_path,service.publisher_namespace)
     end
-   
+    SystemDebug.debug(SystemDebug.actions,'service_def',service_def)
      unless service_def.is_a?(Hash)
        log_error_mesg('list_actionators not a service def ',service_def)
        return false
