@@ -72,7 +72,12 @@ def inspect_container_by_name(container)
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
   #  SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
-    return log_error_mesg("no OK response from docker", resp, resp.read_body) unless  resp.code  == '200'
+    if  resp.code  == '404'
+      chunk = resp.read_body
+      clear_cid(container) if chunk.start_with?('no such id: ')
+    return log_error_mesg("no  such id response from docker", resp, resp.read_body) 
+  end
+    return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
     chunk = resp.read_body
 
     rhash = nil
