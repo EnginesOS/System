@@ -43,8 +43,12 @@ class ManagedContainer < Container
   end
 
   def post_load
-    #@last_task = @task_at_hand = nil
+    i = @container_id
     super
+    if @container_id != -1 && @container_id != i
+      save_container
+    end
+
   end
 
   def repo

@@ -54,7 +54,7 @@ module DockerInfoCollector
 #     @container_id  = -1   
 #   end       
   end
-    save_container  unless @container_id == -1
+  
   return  @container_id
   rescue StandardError => e      
     log_exception(e)
