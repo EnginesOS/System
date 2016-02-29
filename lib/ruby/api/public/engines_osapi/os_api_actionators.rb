@@ -18,6 +18,7 @@ module OsApiActionators
        log_error_mesg('list_actionators not an array',service_def[:actionators])
        return []
      end
+    SystemDebug.debug(SystemDebug.actions,service,service_def[:actionators],service_def)
     return service_def[:actionators]
       
     rescue StandardError => e
