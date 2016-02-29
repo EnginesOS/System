@@ -35,6 +35,7 @@ module DockerInfoCollector
   def clear_cid
     @container_id = nil
     ContainerStateFiles.clear_cid_file(self)
+    SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state   
   end
 
