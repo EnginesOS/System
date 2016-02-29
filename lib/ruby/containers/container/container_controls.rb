@@ -62,6 +62,7 @@ module ContainerControls
     unless r == false 
       expire_engine_info
       @container_id = r
+      SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
       @cont_userid = running_user
       expire_engine_info
       return true

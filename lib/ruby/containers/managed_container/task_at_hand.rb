@@ -1,5 +1,5 @@
 module TaskAtHand
-  @default_task_timeout = 20
+  @@default_task_timeout = 20
   @task_queue = []
   
      
@@ -76,7 +76,7 @@ module TaskAtHand
               @steps_to_go = 2
               return desired_state(step, 'running', curr_state)
             end            
-      @steps_to_go = 2
+    
           return desired_state(step, 'running', curr_state) if  curr_state== 'nocontainer'
     when :build
       return desired_state(step, 'running', curr_state) if curr_state== 'nocontainer'
@@ -268,16 +268,16 @@ module TaskAtHand
   end
   
   def task_set_timeout(task)
-    @default_task_timeout = 20
+ 
     @task_timeouts = {}
-    @task_timeouts[task.to_sym] =  @default_task_timeout  unless @task_timeouts.key?(task.to_sym)
-    @task_timeouts[:stop]= 60
+    @task_timeouts[task.to_sym] =  @@default_task_timeout  unless @task_timeouts.key?(task.to_sym)
+    @task_timeouts[:stop]= 30
     @task_timeouts[:start]= 30
     @task_timeouts[:restart]= 60
     @task_timeouts[:recreate]= 90
     @task_timeouts[:create]= 90
     @task_timeouts[:build]= 300
-    @task_timeouts[:rebuild]= 120
+    @task_timeouts[:rebuild]= 300
     @task_timeouts[:pause]= 20
     @task_timeouts[:unpause]= 20
     @task_timeouts[:destroy]= 30

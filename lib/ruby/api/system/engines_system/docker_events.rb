@@ -45,6 +45,7 @@ module DockerEvents
     inform_container(c_name,event_name)
       when 'destroy'
     inform_container(c_name,event_name)
+  else
     SystemDebug.debug(SystemDebug.engine_tasks, :'Untraked event',event_name,c_name,ctype )
     
      end
