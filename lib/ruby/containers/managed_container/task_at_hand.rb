@@ -251,7 +251,7 @@ module TaskAtHand
           when :delete
             return  'nocontainer'
           when :destroy
-            return   'destroyed'
+            return   'nocontainer'
           end
       rescue StandardError => e 
         log_exception(e)
