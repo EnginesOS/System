@@ -6,7 +6,7 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 require_relative 'engines_osapi_result.rb'
 require_relative 'first_run_wizard.rb'
 
-class EnginesOSapi
+class EnginesOSapi < ErrorsApi
 
   require_relative 'engines_osapi/os_api_container_states.rb'
   include OsApiContainerStates
