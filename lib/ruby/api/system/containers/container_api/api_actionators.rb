@@ -1,7 +1,7 @@
 module ApiActionators
  def perform_action(constainer, actionator_name, params)
-   SystemDebug.debug(SystemDebug.actions,constainer, actionator_name, params)
-  cmd ='docker exec /home/actionators/' + actionator_name + ' ' + list_params(params)
+   SystemDebug.debug(SystemDebug.actions,constainer.container_name, actionator_name, params)
+  cmd ='docker exec /home/actionators/' + actionator_name.to_s + ' ' + list_params(params).to_s
 
   if @docker_api.execute_docker_cmd(cmdline, constainer)
     SystemDebug.debug(SystemDebug.actions,'perform_action',container.last_result)
