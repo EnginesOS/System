@@ -21,8 +21,8 @@ module DockerEvents
    else   
         container_name = hash['from'].to_s
      if container_name.start_with?('engines/')    
-       c_name = container_name.sub(/engines/,'services')
-        c_name.sub!(/:.*/,'')
+       c_name = container_name.sub(/engines\//,'')
+   #     c_name.sub!(/:.*/,'')
         ctype = 'service'
       else    
         ctype = 'container'
@@ -31,29 +31,37 @@ module DockerEvents
   end
   
   return false if container_name.nil?
-
+  tracked = true
   case event_name
       when 'start'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'stop'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'pause'  
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'unpause'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'create'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'destroy'
-    inform_container(c_name,event_name)
-    SystemDebug.debug(SystemDebug.engine_tasks, :'Untraked event',event_name,c_name,ctype )
-    
+    inform_container(c_name,ctype,event_name)
+  else
+    SystemDebug.debug(SystemDebug.engine_tasks, 'Untracked event',event_name,c_name,ctype )
+    tracked = false
      end
      
-  inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
+  inform_container_monitor(container_name,ctype,event_name) if tracked #unless event_name.start_with?('exec_')
 end
- def inform_container(container_name,event_name)
+
+ def inform_container(container_name,ctype,event_name)
+   SystemDebug.debug(SystemDebug.engine_tasks, 'recevied inform_container',container_name,event_name)
     c = container_from_cache(container_name)   
-    return nil if c.nil?
+    if c.nil?
+      c = loadManagedEngine(container_name)  if ctype == 'container'
+      c = loadManagedService(container_name)  if ctype == 'service'
+    end
+    return false if c.nil?
+   SystemDebug.debug(SystemDebug.engine_tasks, 'informed _container',container_name,event_name)
     c.task_complete(event_name)
   
   rescue StandardError =>e

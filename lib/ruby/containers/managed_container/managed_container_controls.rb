@@ -41,6 +41,7 @@ module ManagedContainerControls
     return false unless prep_task(:create)
     SystemDebug.debug(SystemDebug.containers,  :teask_preped)
     return task_failed('create') unless super
+    save_state #save new containerid)
     SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
