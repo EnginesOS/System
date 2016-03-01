@@ -45,7 +45,11 @@ def inspect_container_by_name(container)
      request='/containers/' + id.to_s + '/json'
     r =  make_request(request, container)
   SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-    return r
+  return false  if r.is_a?(FalseClass)
+  return r if r.is_a?(Hash)
+  return r[0] if r.is_a?(Array)
+ 
+    
     rescue StandardError  => e
   log_exception(e)
   return false
