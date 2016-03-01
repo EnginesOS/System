@@ -106,6 +106,9 @@ module DockerInfoCollector
     # result    
     #@docker_info_cache = false unless result
    # Thread.new { sleep 4 ; expire_engine_info }
+    if  @docker_info_cache.is_a?(Array)
+      @docker_info_cache = @docker_info_cache[0]
+  end
     return @docker_info_cache
   end
 
