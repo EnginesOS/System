@@ -61,6 +61,7 @@ end
       c = loadManagedService(container_name)  if ctype == 'service'
     end
     return false if c.nil?
+   return false if c.is_a?(FalseClass)
    SystemDebug.debug(SystemDebug.engine_tasks, 'informed _container',container_name,event_name)
     c.task_complete(event_name)
   
