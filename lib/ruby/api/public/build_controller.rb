@@ -93,7 +93,9 @@ class BuildController
     @build_params[:memory] = engine.memory
     @build_params[:repository_url] = engine.repository
     @build_params[:variables]  = engine.environments
+    @build_params[:reinstall] = true
     SystemStatus.build_starting(@build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Statrting resinstall with params ' + @build_params)
     @engine_builder = get_engine_builder(@build_params)
     return build_failed(params, 'No Builder') unless @engine_builder.is_a?(EngineBuilder)
     @engine = @engine_builder.build_from_blue_print
