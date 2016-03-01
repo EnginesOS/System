@@ -44,7 +44,7 @@ module ManagedContainerControls
     return task_failed('create') unless super
     save_state #save new containerid)
     SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-    
+    sleep 2
     state = read_state
     return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
