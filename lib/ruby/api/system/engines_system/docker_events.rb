@@ -31,6 +31,7 @@ module DockerEvents
   end
   
   return false if container_name.nil?
+  return false unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
   tracked = true
   case event_name
       when 'start'
@@ -49,7 +50,7 @@ module DockerEvents
     SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name,c_name,ctype )
     tracked = false
      end
-  return false unless File.exist?(SystemConfig.RunDir + '/ctype/' + c_name + '/running.yaml')
+ 
   inform_container_monitor(container_name,ctype,event_name) if tracked #unless event_name.start_with?('exec_')
 end
 
