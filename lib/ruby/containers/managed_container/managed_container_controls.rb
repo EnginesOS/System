@@ -44,8 +44,10 @@ module ManagedContainerControls
     return task_failed('create') unless super
     save_state #save new containerid)
     SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
     expire_engine_info
     state = read_state
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
     return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
