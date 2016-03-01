@@ -49,7 +49,7 @@ module DockerEvents
     SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name,c_name,ctype )
     tracked = false
      end
-     
+  return false unless File.exist?(SystemConfig.RunDir + '/ctype/' + c_name + '/running.yaml')
   inform_container_monitor(container_name,ctype,event_name) if tracked #unless event_name.start_with?('exec_')
 end
 
@@ -64,7 +64,7 @@ end
    return false if c.is_a?(FalseClass)
    SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
     c.task_complete(event_name)
-  
+  return true
   rescue StandardError =>e
     log_exception(e)
   end

@@ -21,6 +21,7 @@ module EnginesOperations
     params[:engine_name] = engine_name
     params[:container_type] = 'container' # Force This
     params[:parent_engine] =  engine_name
+    params[:reinstall] = reinstall
     unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
@@ -34,12 +35,12 @@ module EnginesOperations
 #      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
 #      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
 #    end
-    
-    if engine.delete_image || engine.has_image? == false
+    engine.delete_image if engine.has_image? == true &&  reinstall == false
+
       SystemDebug.debug(SystemDebug.contaners,:engine_image_deleted)
       return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-    end
+
     log_error_mesg('Failed to delete image',params)
   end
 
