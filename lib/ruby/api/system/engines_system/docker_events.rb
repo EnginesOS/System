@@ -22,7 +22,7 @@ module DockerEvents
         container_name = hash['from'].to_s
      if container_name.start_with?('engines/')    
        c_name = container_name.sub(/engines\//,'')
-   #     c_name.sub!(/:.*/,'')
+        c_name.sub!(/:.*/,'')
         ctype = 'service'
       else    
         ctype = 'container'
