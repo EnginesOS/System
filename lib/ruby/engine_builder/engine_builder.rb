@@ -348,16 +348,18 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
+    unless @build_params[:reinstall].is_a?(TrueClass)
     if @mc.is_a?(ManagedContainer)
       @mc.stop_container if @mc.is_running?
       @mc.destroy_container if @mc.has_container?
       
-      @mc.delete_image if @mc.has_image? &&  ! @build_params[:reinstall].is_a?(TrueClass)
+      @mc.delete_image if @mc.has_image? 
     end
-    unless @build_params[:reinstall].is_a?(TrueClass)
+    
       return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
       return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
     end
+    
     #    params = {}
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
