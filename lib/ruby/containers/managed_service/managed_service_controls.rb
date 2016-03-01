@@ -49,6 +49,7 @@ def create_service()
       save_state()
      return log_error_mesg('Failed to create service',last_error)
    end
+    
 rescue StandardError =>e
   log_exception(e)
  end

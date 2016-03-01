@@ -61,7 +61,8 @@ module ContainerControls
     @container_id = -1
     r = @container_api.create_container(self)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
-    return r
+    return true unless r.is_a?(FalseClass)
+    return false
 #    unless r == false 
 #      expire_engine_info
 #      @container_id = r
