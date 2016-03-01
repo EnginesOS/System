@@ -68,6 +68,7 @@ class SystemDebug
   def self.debug(*args)
     mask = args[0]
    self.print_debug(args) unless mask & @@debug_flags == 0
+   return true
   end
   
   def self.print_debug(args)
