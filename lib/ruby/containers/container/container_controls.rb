@@ -60,7 +60,7 @@ module ContainerControls
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
     @container_id = -1
     r = @container_api.create_container(self)
-    SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
+   # SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     return true unless r.is_a?(FalseClass)
     return false
 #    unless r == false 
