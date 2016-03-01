@@ -46,6 +46,8 @@ module Services
     ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
     cache_engine(s, ts)
     return s
+  rescue StandardError => e
+    return nil
   end
 
   def _loadManagedService(service_name, service_type_dir)
