@@ -21,8 +21,8 @@ module DockerEvents
    else   
         container_name = hash['from'].to_s
      if container_name.start_with?('engines/')    
-       c_name = container_name.sub(/engines/,'services')
-        c_name.sub!(/:.*/,'')
+       c_name = container_name.sub(/engines\//,'')
+   #     c_name.sub!(/:.*/,'')
         ctype = 'service'
       else    
         ctype = 'container'
@@ -57,6 +57,7 @@ end
    SystemDebug.debug(SystemDebug.engine_tasks, 'recevied inform_container',container_name,event_name)
     c = container_from_cache(container_name)   
     if c.nil?
+      containter_name.gesub()
       c = loadManagedEngine(container_name)  if ctype == 'container'
       c = loadManagedService(container_name)  if ctype == 'service'
     end
