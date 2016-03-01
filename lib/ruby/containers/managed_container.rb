@@ -39,7 +39,7 @@ class ManagedContainer < Container
   end
   
   # Note desired state is teh next step and not the final result desired state is stepped through
-  def log_error_mesg(msg, e_object)
+  def log_error_mesg(msg, *objects)
     #task_failed(msg)
     super
   end
