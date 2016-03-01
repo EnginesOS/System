@@ -38,6 +38,7 @@ module ContainerApiDockerActions
  
   def inspect_container(container)
     clear_error
+    return  test_docker_api_result(@docker_api.inspect_container_by_name(container)) if container.container_id == -1
     test_docker_api_result(@docker_api.inspect_container(container))
    # @docker_api.test_inspect_container(container)
   end
