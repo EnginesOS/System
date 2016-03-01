@@ -21,7 +21,7 @@ class BlueprintApi < ErrorsApi
     blueprint_file.close
     return json_hash
     rescue StandardError => e
-        log_error_mesg('Blueprint Parse Failure', statefile)
+        log_error_mesg('Blueprint Parse Failure', blueprint_file)
     log_exception(e)
     return {}
   end
