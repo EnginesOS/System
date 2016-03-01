@@ -57,7 +57,6 @@ end
    SystemDebug.debug(SystemDebug.engine_tasks, 'recevied inform_container',container_name,event_name)
     c = container_from_cache(container_name)   
     if c.nil?
-      containter_name.gesub()
       c = loadManagedEngine(container_name)  if ctype == 'container'
       c = loadManagedService(container_name)  if ctype == 'service'
     end
