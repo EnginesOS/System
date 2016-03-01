@@ -41,6 +41,8 @@ module ManagedContainerControls
     return false unless prep_task(:create)
     SystemDebug.debug(SystemDebug.containers,  :teask_preped)
     expire_engine_info
+    @container_id = -1
+    save_state
     return task_failed('create') unless super
     save_state #save new containerid)
     SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
