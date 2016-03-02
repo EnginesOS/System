@@ -26,6 +26,7 @@ module TaskAtHand
     final_state = tasks_final_state(action)
     if final_state == curr_state && action != 'restart'
       @setState = curr_state
+      @container_id ==  -1 if curr_state == 'nocontainer'
       return save_state
     end
     

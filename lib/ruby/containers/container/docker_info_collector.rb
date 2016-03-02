@@ -29,7 +29,10 @@ module DockerInfoCollector
   end
   
   def set_cont_id
-    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+    if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+      @container_id =  read_container_id 
+      save_state
+    end
   end
     
   def clear_cid
