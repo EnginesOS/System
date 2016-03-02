@@ -62,22 +62,18 @@ module DockerInfoCollector
     if info.is_a?(Array)
       SystemDebug.debug(SystemDebug.containers,'array')
        info = info[0]
+       
    end 
     SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info) 
    # SystemUtils.deal_with_jason(info)
    # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Hash)
       SystemDebug.debug(SystemDebug.containers,'hash')
-     @container_id = info['Id'] if info.key?('Id')
     end
-    
+   return -1 if info .key?('RepoTags') #No container by that name and it will return images by that name WTF
+    @container_id = info['Id'] if info.key?('Id')
      SystemDebug.debug(SystemDebug.containers,@container_id)
-    return @container_id
-#     save_container
-#     else
-#     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
-#     @container_id  = -1   
-#   end       
+     
   end
   
   return  @container_id
