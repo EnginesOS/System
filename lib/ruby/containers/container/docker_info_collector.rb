@@ -57,7 +57,7 @@ module DockerInfoCollector
    
 #    ContainerStateFiles.read_container_id(self)
      info  =  @container_api.inspect_container_by_name(self) # docker_info
-     return @container_api if info.nil?
+     return  -1 if info.nil?
    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Array)
       SystemDebug.debug(SystemDebug.containers,'array')
@@ -70,7 +70,8 @@ module DockerInfoCollector
     if info.is_a?(Hash)
       SystemDebug.debug(SystemDebug.containers,'hash')
     end
-   return -1 if info .key?('RepoTags') #No container by that name and it will return images by that name WTF
+ 
+   return -1 if info.key?('RepoTags') #No container by that name and it will return images by that name WTF
     @container_id = info['Id'] if info.key?('Id')
      SystemDebug.debug(SystemDebug.containers,@container_id)
      
