@@ -120,7 +120,7 @@ module ManagedContainerControls
 
   def rebuild_container
     return false unless has_api?
-    return false unless prep_task(:rebuild)
+    return false unless prep_task(:reinstall)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true

@@ -46,7 +46,10 @@ module ContainerControls
   def destroy_container()
     expire_engine_info
     r = true
-    return true if read_state == 'nocontainer'
+    if read_state == 'nocontainer'
+      @container_id = '-1'
+      return true 
+    end
     return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
     r = false unless @container_api.destroy_container(self)
     @container_id = '-1'

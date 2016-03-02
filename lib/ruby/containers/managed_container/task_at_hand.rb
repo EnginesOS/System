@@ -61,14 +61,12 @@ module TaskAtHand
       end      
       return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
      
-    when :rebuild
-      if curr_state == 'stopped'
-            @steps = [:destroy,:build]
-            @steps_to_go = 2
+    when :build
+      if curr_state == 'noncontainer'
+            @steps = [:build]
+            @steps_to_go = 1
             return desired_state(step, final_state, curr_state) 
-          end      
-     
-    
+          end       
       return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
       
       when :reinstall  
@@ -260,10 +258,10 @@ module TaskAtHand
   def task_has_expired?(task)
     fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')          
     mtime = fmtime  + task_set_timeout(task)
-    SystemDebug.debug(SystemDebug.engine_tasks,mtime,fmtime,task,task_set_timeout(task))
+    #SystemDebug.debug(SystemDebug.engine_tasks,mtime,fmtime,task,task_set_timeout(task))
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-      SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task)
+      SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ' , task_set_timeout(task))
       return true
     end
     return false
