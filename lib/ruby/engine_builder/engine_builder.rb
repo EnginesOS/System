@@ -90,7 +90,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Statrting build with params ' + @build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Statrting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
     space /= 1024
