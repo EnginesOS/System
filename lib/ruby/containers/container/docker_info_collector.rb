@@ -1,8 +1,14 @@
 module DockerInfoCollector
   def docker_info
-    collect_docker_info if @docker_info_cache.nil? 
-    return false if @docker_info_cache.is_a?(FalseClass)
-    return false if @docker_info_cache.nil?
+    
+   if @docker_info_cache.is_a?(FalseClass)
+     return collect_docker_info if @setState != 'nocontainer'
+    return false 
+   end
+   
+   collect_docker_info if @docker_info_cache.nil?  
+    
+   return false if @docker_info_cache.nil?
 
     @docker_info_cache
   rescue StandardError => e
@@ -61,7 +67,7 @@ module DockerInfoCollector
    # SystemUtils.deal_with_jason(info)
    # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Hash)
-      SystemDebug.debug(SystemDebug.containers,'array')
+      SystemDebug.debug(SystemDebug.containers,'hash')
      @container_id = info['Id'] if info.key?('Id')
     end
     
