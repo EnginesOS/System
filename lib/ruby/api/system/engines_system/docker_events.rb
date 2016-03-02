@@ -30,7 +30,8 @@ module DockerEvents
       end 
   end
   
-  return false if container_name.nil?
+  return false if c_name.nil?
+  return false if ctype.nil?
   return false unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
   tracked = true
   case event_name
