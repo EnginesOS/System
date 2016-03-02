@@ -17,7 +17,8 @@ class SystemDebug
   @@actions = 16384
   @@container_events = 32768
   @@all_debug_flags = @@container_events |@@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
-  @@debug_flags = @@execute  |@@engine_tasks | @@builder |@@containers |@@docker
+ # @@debug_flags = @@execute  |@@engine_tasks | @@builder |@@containers |@@docker
+  @@debug_flags = 0
   def self.container_events
     return @@actions
   end
