@@ -98,8 +98,8 @@ module DockerInfoCollector
 
   def collect_docker_info
     return false unless has_api?
-    SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
-    return false if @docker_info_cache == false 
+   # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
+    return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
     SystemDebug.debug(SystemDebug.containers,  :collect_docker_info,@docker_info_cache )
 #    if @docker_info_cache == false
