@@ -3,6 +3,8 @@ touch /opt/engines/run/system/flags/update_engines_running
 chown engines /opt/engines/run/system/flags/update_engines_running 
 cd /opt/engines
 git pull
+cd /opt/engines/etc/serivces
+git pull
  cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
  chmod og-rw /etc/sudoers.d/engines 
  
@@ -16,5 +18,7 @@ for script in $update_scripts
  		cp /opt/engines/system/updates/to_run/$script /opt/engines/system/updates/have_run/$script
  	fi
  done
- 
+
+
+
 exit $?
