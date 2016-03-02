@@ -10,9 +10,13 @@ no_ca_map: true
 domain_name: 
 environments:
 - !ruby/object:EnvironmentVariable
+ name: BUG_REPORTS_SERVER
+ value: http://buglog.prod.engines.org
+ setatrun: false
+- !ruby/object:EnvironmentVariable
  name: ContUser
  value: engines
- setatrun: false
+ setatrun: false 
 image: engines/mgmt:_Engines_System(release)
 volumes:
  icons_dir: !ruby/object:Volume
