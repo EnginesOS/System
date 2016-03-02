@@ -21,7 +21,7 @@ module ContainerStatus
       end
     end
    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
-    return 'unkown'
+    return 'nocontainer'
   rescue StandardError => e
     log_exception(e)
   end
