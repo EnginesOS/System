@@ -8,8 +8,9 @@ module ManagedContainerControls
   end
   
   def destroy_container(reinstall=false)
-
+  
     return false unless has_api?
+    
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
@@ -40,11 +41,18 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     return false unless prep_task(:create)
     SystemDebug.debug(SystemDebug.containers,  :teask_preped)
+    expire_engine_info
+    @container_id = -1
+
+    save_state
     return task_failed('create') unless super
     save_state #save new containerid)
     SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+    expire_engine_info
     state = read_state
-    return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+    return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistent_services(self)
@@ -114,7 +122,7 @@ module ManagedContainerControls
 
   def rebuild_container
     return false unless has_api?
-    return false unless prep_task(:rebuild)
+    return false unless prep_task(:reinstall)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -128,8 +136,11 @@ module ManagedContainerControls
   
   private
   def prep_task(action_sym)
-
-    return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
+  
+     unless task_at_hand.nil?
+       SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+      # return log_error_mesg("Action in Progress", task_at_hand)      
+     end
     SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
    return false unless in_progress(action_sym)
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)

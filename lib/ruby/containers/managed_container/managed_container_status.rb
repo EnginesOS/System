@@ -3,7 +3,17 @@ module ManagedContainerStatus
     return true if @ctype == 'service'
     return false
   end
-  
+  def read_state
+    state = super
+   
+    if state == 'na'     
+      expire_engine_info
+      SystemDebug.debug(SystemDebug.containers, container_name,'in na',  :info, @docker_info_cache)
+      return 'nocontainer'
+    end
+    
+    return state
+  end
   
 # raw=true means dont check state for error
   def read_state(raw=false)

@@ -34,7 +34,7 @@ class BuildController
     @engine = @engine_builder.build_from_blue_print
     
     @build_error = @engine_builder.last_error
-    SystemDebug.debug(SystemDebug.builder, :build_error + self.build_error.to_s) unless self.build_error.nil?
+    SystemDebug.debug(SystemDebug.builder, :build_error,  @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     
     build_failed(params, @build_error) if @engine.nil? || @engine == false
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)
@@ -93,7 +93,9 @@ class BuildController
     @build_params[:memory] = engine.memory
     @build_params[:repository_url] = engine.repository
     @build_params[:variables]  = engine.environments
+    @build_params[:reinstall] = true
     SystemStatus.build_starting(@build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Starting resinstall with params ', @build_params)
     @engine_builder = get_engine_builder(@build_params)
     return build_failed(params, 'No Builder') unless @engine_builder.is_a?(EngineBuilder)
     @engine = @engine_builder.build_from_blue_print

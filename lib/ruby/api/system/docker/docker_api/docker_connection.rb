@@ -45,6 +45,9 @@ def inspect_container_by_name(container)
      request='/containers/' + id.to_s + '/json'
     r =  make_request(request, container)
   SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
+  return false  if r.is_a?(FalseClass)
+  r = r[0] if r.is_a?(Array)
+  return false if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
     return r
     rescue StandardError  => e
   log_exception(e)

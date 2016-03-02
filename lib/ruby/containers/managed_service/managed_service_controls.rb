@@ -49,13 +49,14 @@ def create_service()
       save_state()
      return log_error_mesg('Failed to create service',last_error)
    end
+    
 rescue StandardError =>e
   log_exception(e)
  end
 
  def recreate
  
-   if  destroy_container
+   if destroy_container
      return true if create_service
      save_state()
      return log_error_mesg('Failed to create service in recreate',self)

@@ -1,8 +1,14 @@
 module DockerInfoCollector
   def docker_info
-    collect_docker_info if @docker_info_cache.nil? 
-    return false if @docker_info_cache.is_a?(FalseClass)
-    return false if @docker_info_cache.nil?
+    
+   if @docker_info_cache.is_a?(FalseClass)
+     return collect_docker_info if @setState != 'nocontainer'
+    return false 
+   end
+   
+   collect_docker_info if @docker_info_cache.nil?  
+    
+   return false if @docker_info_cache.nil?
 
     @docker_info_cache
   rescue StandardError => e
@@ -29,11 +35,14 @@ module DockerInfoCollector
   end
   
   def set_cont_id
-    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+    if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+      @container_id =  read_container_id 
+      save_state unless @container_id.to_s == '-1' 
+    end
   end
     
   def clear_cid
-    @container_id = nil
+    @container_id =  -1
     ContainerStateFiles.clear_cid_file(self)
     SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state   
@@ -48,27 +57,24 @@ module DockerInfoCollector
    
 #    ContainerStateFiles.read_container_id(self)
      info  =  @container_api.inspect_container_by_name(self) # docker_info
-     return @container_api if info.nil?
+     return  -1 if info.nil?
    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Array)
       SystemDebug.debug(SystemDebug.containers,'array')
        info = info[0]
+       return  -1 if info.nil?
    end 
     SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info) 
    # SystemUtils.deal_with_jason(info)
    # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
     if info.is_a?(Hash)
-      SystemDebug.debug(SystemDebug.containers,'array')
-     @container_id = info['Id'] if info.key?('Id')
+      SystemDebug.debug(SystemDebug.containers,'hash')
     end
-    
+ 
+   return -1 if info.key?('RepoTags') #No container by that name and it will return images by that name WTF
+    @container_id = info['Id'] if info.key?('Id')
      SystemDebug.debug(SystemDebug.containers,@container_id)
-    return @container_id
-#     save_container
-#     else
-#     SystemDebug.debug(SystemDebug.containers, ' DockerInfoCollector:Meth ' ,info)
-#     @container_id  = -1   
-#   end       
+     
   end
   
   return  @container_id
@@ -89,8 +95,10 @@ module DockerInfoCollector
 
   def collect_docker_info
     return false unless has_api?
-    return false if @docker_info_cache == false 
+   # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
+    return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
+    SystemDebug.debug(SystemDebug.containers,  :collect_docker_info,@docker_info_cache )
 #    if @docker_info_cache == false
 #      @container_id = -1
 ##    elsif @docker_info_cache.is_a?(Array)
@@ -104,6 +112,9 @@ module DockerInfoCollector
     # result    
     #@docker_info_cache = false unless result
    # Thread.new { sleep 4 ; expire_engine_info }
+    if  @docker_info_cache.is_a?(Array)
+      @docker_info_cache = @docker_info_cache[0]
+  end
     return @docker_info_cache
   end
 
