@@ -22,6 +22,12 @@ module TaskAtHand
   end
 
   def in_progress(action)
+    curr_state = read_state
+    final_state = tasks_final_state(action)
+    if tasks_final == curr_state && action != 'restart'
+      @setState = curr_state
+      return save_state
+    end
     
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1    
@@ -29,12 +35,12 @@ module TaskAtHand
       @steps[0] = action 
     end
   step = @steps[0]
-    curr_state = read_state
+  
     SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
   @last_task = action
-  final_state = tasks_final_state(action)
+ 
     case action
     when :create    
       return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer' 
@@ -86,10 +92,7 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
     
-    if tasks_final_state(action) == curr_state && action != 'restart'
-      @setState = curr_state
-      return save_state
-    end
+
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
    
   

@@ -10,7 +10,7 @@ module ManagedContainerControls
   def destroy_container(reinstall=false)
   
     return false unless has_api?
-    return clear_cid if read_state == 'nocontainer'
+    
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
