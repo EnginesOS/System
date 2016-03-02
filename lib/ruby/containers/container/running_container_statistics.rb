@@ -1,7 +1,7 @@
 module RunningContainerStatistics
   def stats
     #expire_engine_info
-    return false unless docker_info.is_a?(Array)
+    
     return false unless docker_info.is_a?(Hash)
     return false unless docker_info['State'].is_a?(Hash)
     started = docker_info['State']['StartedAt']
