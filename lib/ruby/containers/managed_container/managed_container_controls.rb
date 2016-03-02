@@ -43,6 +43,7 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,  :teask_preped)
     expire_engine_info
     @container_id = -1
+
     save_state
     return task_failed('create') unless super
     save_state #save new containerid)
@@ -135,8 +136,11 @@ module ManagedContainerControls
   
   private
   def prep_task(action_sym)
-
-    return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
+  
+     unless task_at_hand.nil?
+       SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+      # return log_error_mesg("Action in Progress", task_at_hand)      
+     end
     SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
    return false unless in_progress(action_sym)
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)

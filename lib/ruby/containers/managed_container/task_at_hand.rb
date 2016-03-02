@@ -96,7 +96,7 @@ module TaskAtHand
 
     return log_error_mesg('not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
    
-  
+  return true
     
     # Perhaps ?return clear_task_at_hand
     rescue StandardError => e 
