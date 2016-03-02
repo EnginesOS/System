@@ -24,7 +24,7 @@ module TaskAtHand
   def in_progress(action)
     curr_state = read_state
     final_state = tasks_final_state(action)
-    if tasks_final == curr_state && action != 'restart'
+    if final_state == curr_state && action != 'restart'
       @setState = curr_state
       return save_state
     end
