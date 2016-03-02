@@ -31,12 +31,12 @@ module DockerInfoCollector
   def set_cont_id
     if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
       @container_id =  read_container_id 
-      save_state
+      save_state unless @container_id.to_s == '-1' 
     end
   end
     
   def clear_cid
-    @container_id = nil
+    @container_id =  -1
     ContainerStateFiles.clear_cid_file(self)
     SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state   
