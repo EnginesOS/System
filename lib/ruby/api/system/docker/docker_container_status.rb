@@ -1,6 +1,6 @@
 module DockerContainerStatus
   require_relative 'docker_exec.rb'
-  def ps_container(container)
+  def old_ps_container(container)
     cmdline = 'docker top ' + container.container_name + ' axl'
     result = SystemUtils.execute_command(cmdline)
     SystemDebug.debug(SystemDebug.containers, 'PS  container ',container.container_name  ,result[:stdout],result)
