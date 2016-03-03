@@ -29,7 +29,8 @@ lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d"
 ext_ip=`curl -s http://ipecho.net/plain`
 if ! test -n $ext_ip
  then
-   ext_ip=`curl -s http://ipecho.net/plain`
+   ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
+  # `curl -s http://ipecho.net/plain`
  fi
   
 echo please visit https://$lan_ip:10443/ or https://${ext_ip}:10443/
