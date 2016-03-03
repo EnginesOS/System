@@ -1,4 +1,6 @@
 module SystemVersion
   
-  api_version
+  def api_version
+    return @@api_version 
+  end
 end

@@ -49,9 +49,9 @@ module MemoryStatistics
 
   def self.container_memory_stats(container)
     ret_val = {}
-    if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = ContainerStateFiles.read_container_id(container)
-    end
+#    if container && container.container_id.nil? || container.container_id == '-1'
+#      container_id = container.container_id #ContainerStateFiles.read_container_id(container)
+#    end
     #   return self.empty_container_result  unless container.is_active?
 
     if container && container.container_id.nil? == false && container.container_id != '-1'

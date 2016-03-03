@@ -39,6 +39,15 @@ rescue StandardError => e
   return false  
 end
 
+def ps_container(container)
+  id = container.container_id
+  id = container_id_from_name(container) if id == -1
+  request = '/containers/'  + id + '/top?ps_args=aux'
+  r =  make_request(request, container)
+  SystemDebug.debug(SystemDebug.containers,'ps_container',container.container_name,r)
+  return r
+end
+
 def inspect_container_by_name(container)
     id = container_id_from_name(container)
     return false if id == -1

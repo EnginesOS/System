@@ -11,8 +11,8 @@ ENV CONTFSVolHome /home/fs/
 
 RUN chown 2666 `find /var /usr/share /usr/local /home -user ruby`;\
  /usr/sbin/usermod -u 2666 ruby
-
-ENV ContUser ruby
+  
+ENV ContUser www-data
 ENV RAILS_ENV production
 EXPOSE 3000
 

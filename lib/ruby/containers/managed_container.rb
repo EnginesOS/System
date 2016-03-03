@@ -50,7 +50,13 @@ class ManagedContainer < Container
     if @container_id != -1 && @container_id != i
       save_state
     end
-
+  end
+  
+  def container_id
+    return @container_id unless @container_id == -1 
+    return @container_id if setState == 'noncontainer'
+    @container_id = read_container_id
+    return @container_id  
   end
 
   def repo
