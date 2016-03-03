@@ -4,8 +4,7 @@ def execute_docker_cmd(cmdline, container)
     docker_exec = 'docker exec -u ' + container.cont_userid + ' '
     cmdline.gsub!(/docker exec/, docker_exec)
   end
-  p :docker_exec
-  p cmdline
+  SystemDebug.debug(SystemDebug.docker, :docker_exec, cmdline)
   run_docker_cmd(cmdline, container)
 end
 

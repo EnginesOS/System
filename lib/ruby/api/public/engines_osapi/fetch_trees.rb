@@ -12,7 +12,7 @@ module FetchTrees
   end
 
   def fetch_managed_service_tree
-    p :managed_service_tree
+    SystemDebug.debug(SystemDebug.builder, :managed_service_tree)
     @core_api.managed_service_tree
   end
 

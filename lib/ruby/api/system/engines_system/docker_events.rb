@@ -15,13 +15,13 @@ module DockerEvents
        
    unless hash.key?('from')
     #p :container_event
-    p hash
+     SystemDebug.debug(SystemDebug.docker, hash)
     id = hash['Id']
      container_name = container_name_from_id(id)
    else   
         container_name = hash['from'].to_s
      if container_name.start_with?('engines/')    
-       c_name = container_name.sub(/engines/,'services')
+       c_name = container_name.sub(/engines\//,'')
         c_name.sub!(/:.*/,'')
         ctype = 'service'
       else    
@@ -30,47 +30,43 @@ module DockerEvents
       end 
   end
   
-  return false if container_name.nil?
-  
-#  p :cont_event
-#     p event_name
-#     p :on
-#     p c_name
-     
+  return false if c_name.nil?
+  return false if ctype.nil?
+  return false unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
+  tracked = true
   case event_name
       when 'start'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'stop'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'pause'  
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'unpause'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'create'
-    inform_container(c_name,event_name)
+    inform_container(c_name,ctype,event_name)
       when 'destroy'
-    inform_container(c_name,event_name)
-#  else
-#    p :un_tracked_event
-#    p event_name
-#    p :on
-#    p c_name
+    inform_container(c_name,ctype,event_name)
+  else
+    SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name,c_name,ctype )
+    tracked = false
      end
-     
-  inform_container_monitor(container_name,ctype,event_name) #unless event_name.start_with?('exec_')
+ 
+  inform_container_monitor(container_name,ctype,event_name) if tracked #unless event_name.start_with?('exec_')
 end
- def inform_container(container_name,event_name)
- #  puts container_name + ' had event ' +  event_name
-  # p :__
 
-    c = container_from_cache(container_name)
-    
-    return nil if c.nil?
-   # p :Event_on
-   # p c.container_name
+ def inform_container(container_name,ctype,event_name)
+   SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container',container_name,event_name)
+    c = container_from_cache(container_name)   
+    if c.nil?
+      c = loadManagedEngine(container_name)  if ctype == 'container'
+      c = loadManagedService(container_name)  if ctype == 'service'
+    end
+    return false if c.nil?
+   return false if c.is_a?(FalseClass)
+   SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
     c.task_complete(event_name)
-   
-      
+  return true
   rescue StandardError =>e
     log_exception(e)
   end
@@ -80,7 +76,7 @@ end
     Thread.new {  docker_event_listener.start}
 
   rescue StandardError =>e
-    log_ecxception(e)
+    log_exception(e)
 
   end
 end

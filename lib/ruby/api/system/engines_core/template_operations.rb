@@ -5,9 +5,9 @@ module TemplateOperations
     container = loadManagedEngine(service_hash[:parent_engine])
     if container == false
       log_error_mesg('container load error', service_hash)
+    else
+      SystemDebug.debug(SystemDebug.templater,  :filling_in_template_on, container.container_name)
     end
-    p :filling_in_template_on
-    p container.container_name
     templater = Templater.new(SystemAccess.new, container)
     templater.fill_in_service_def_values(service_def)
     #FIXME make service_handle_field unique

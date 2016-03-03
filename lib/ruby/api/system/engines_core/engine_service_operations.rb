@@ -5,8 +5,7 @@ module EngineServiceOperations
     params[:parent_engine] = container_name
     params[:persistent] = true
     params[:container_type] ='container'
-    p :engine_persistent_services
-    p params
+    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
     log_exception(e)
@@ -17,8 +16,7 @@ module EngineServiceOperations
     params[:parent_engine] = service_name
     params[:persistent] = true
     params[:container_type] ='service'
-    p :engine_persistent_services
-    p params
+    SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
     return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
     log_exception(e)

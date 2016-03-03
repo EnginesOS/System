@@ -6,7 +6,7 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 require_relative 'engines_osapi_result.rb'
 require_relative 'first_run_wizard.rb'
 
-class EnginesOSapi
+class EnginesOSapi < ErrorsApi
 
   require_relative 'engines_osapi/os_api_container_states.rb'
   include OsApiContainerStates
@@ -51,12 +51,14 @@ class EnginesOSapi
   include UpdateActions
   require_relative 'engines_osapi/return_objects.rb'
   include ReturnObjects
+  require_relative 'engines_osapi/os_api_actionators.rb'
+   include OsApiActionators
+  
   require 'objspace'
   attr_reader :core_api, :last_error
   def shutdown(why)
 
-    p :SYSTEM_SHUTDOWN_VIA
-    p why
+    SystemDebug.debug(SystemDebug.system, :SYSTEM_SHUTDOWN_VIA, why)
 
   end
 
@@ -80,12 +82,14 @@ class EnginesOSapi
   end
 
   def reserved_hostnames
+    
+    SystemDebug.debug(SystemDebug.system, :reserved_hostnames)
     @core_api.taken_hostnames
   end
 
   def set_first_run_parameters(params_from_gui)
     params = params_from_gui.dup
-    p params
+    SystemDebug.debug(SystemDebug.first_run,params)
     first_run = FirstRunWizard.new(params)
     first_run.apply(@core_api)
     return success('Gui', 'First Run') if first_run.sucess

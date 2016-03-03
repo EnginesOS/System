@@ -16,11 +16,11 @@ module EngineBuildActions
   end
 
   def abort_build
-    p "Thread nil" if @build_thread.nil?
+    SystemDebug.debug(SystemDebug.builder, "Thread nil") if @build_thread.nil?
   return  @core_api.abort_build() if @build_thread.nil?
-  p "Stopping Thread " if @build_thread.alive?
+    SystemDebug.debug(SystemDebug.builder,"Stopping Thread ") if @build_thread.alive?
     @build_thread.stop if @build_thread.alive?
-    p :astooped_thr_but_bui
+    SystemDebug.debug(SystemDebug.builder,:astooped_thr_but_bui)
     return @core_api.abort_build()
     
   end
@@ -38,7 +38,7 @@ module EngineBuildActions
   end
 
   def build_engine_from_docker_image(params)
-    p params[:host_name]
+    SystemDebug.debug(SystemDebug.builder,params[:host_name])
     build_controller = BuildController.new(@core_api)
     build_controller.build_from_docker(params)
 

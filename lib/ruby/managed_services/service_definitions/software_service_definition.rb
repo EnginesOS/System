@@ -47,26 +47,19 @@ class SoftwareServiceDefinition
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     if  service_def != nil
       service_environment_variables = service_def[:target_environment_variables]
-        p :SERVICE_ENVIRONMENT_VARIABLES
-        p service_environment_variables
-      #            p service_environment_variables.to_s
+      SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
       if service_environment_variables != nil
         service_environment_variables.values.each do |env_variable_pair|
           env_name = env_variable_pair[:environment_name]
           value_name = env_variable_pair[:variable_name]
-          #                 p :hunting
-          #                 p env_variable_pair[:variable_name]
           value=service_hash[:variables][value_name.to_sym]
-          #               p service_hash
-          #               p env_variable_pair
           retval.push( EnvironmentVariable.new(env_name,value,false,true,false,service_hash[:type_path] + env_name,false)) # env_name , value
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end
     else
       SystemUtils.log_error_mesg('Failed to load service definition',service_hash)
     end
-    p :COMPLETE_SERVICE_ENVS
-    p retval
+  SystemDebug.debug(SystemDebug.builder, :COMPLETE_SERVICE_ENVS, retval)
     return retval
 
   end

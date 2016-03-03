@@ -1,6 +1,7 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
+
 #require 'objspace' ??
 
 class ManagedContainer < Container
@@ -23,6 +24,8 @@ class ManagedContainer < Container
   include ManagedContainerApi
   require_relative 'managed_container/persistent_services.rb'
     include PersistantServices
+  require_relative 'managed_container/managed_container_actionators.rb'
+     include ManagedContainerActionators
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
@@ -30,15 +33,30 @@ class ManagedContainer < Container
   @large_temp = false
   attr_accessor  :restart_required, :rebuild_required
 
+  def initialize
+    super
+    init_task_at_hand
+  end
+  
   # Note desired state is teh next step and not the final result desired state is stepped through
-  def log_error_mesg(msg, e_object)
+  def log_error_mesg(msg, *objects)
     #task_failed(msg)
     super
   end
 
   def post_load
-    #@last_task = @task_at_hand = nil
+    i = @container_id
     super
+    if @container_id != -1 && @container_id != i
+      save_state
+    end
+  end
+  
+  def container_id
+    return @container_id unless @container_id == -1 
+    return @container_id if setState == 'noncontainer'
+    @container_id = read_container_id
+    return @container_id  
   end
 
   def repo
@@ -51,7 +69,6 @@ class ManagedContainer < Container
   :data_uid,\
   :data_gid,\
   :cont_userid,\
-  :setState,\
   :protocol,\
   :deployment_type,\
   :dependant_on,\

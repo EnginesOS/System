@@ -10,8 +10,8 @@ module LocalFileServiceBuilder
     end
     mapped_vols = get_volbuild_volmaps container
     command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
-    SystemUtils.debug_output('Run volume builder',command)
-    p command
+    SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
+
     #run_system(command)
     result = SystemUtils.execute_command(command)
     if result[:result] != 0
@@ -32,12 +32,11 @@ module LocalFileServiceBuilder
   end
 
   def add_file_service(service_hash)
-    p 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s
+    SystemDebug.debug(SystemDebug.builder, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
     #  Default to engine
     @app_is_persistent = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
     service_hash = Volume.complete_service_hash(service_hash)
-    p :complete_service_hash
-    p service_hash
+    SystemDebug.debug(SystemDebug.builder,:complete_service_hash, service_hash)
     #    service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     #    if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
     #      service_hash[:variables][:engine_path] = '/home/app/'
@@ -68,7 +67,7 @@ module LocalFileServiceBuilder
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
     unless container.volumes.nil?
       container.volumes.each_value do |vol|
-        SystemUtils.debug_output('build vol maps ' +  vol.name.to_s , vol)
+        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol.name.to_s , vol)
         volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs/' + vol.name + ':rw'
       end
     end

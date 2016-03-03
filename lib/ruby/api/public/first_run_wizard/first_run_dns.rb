@@ -13,7 +13,7 @@ module FirstRunDNS
   def get_domain_params(params)
     domain_hash = {}
     domain_hash[:domain_name] = params[:domain_name]
-    domain_hash[:type]  = params[:networking]
+   # domain_hash[:type]  = params[:networking]
       #values for        params[:networking] 
       # zeroconf 
       # self_hosted_dns

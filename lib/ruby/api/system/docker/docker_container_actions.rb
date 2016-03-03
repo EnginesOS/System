@@ -5,8 +5,8 @@ module DockerContainerActions
     clear_error
     commandargs = DockerCmdOptions.container_commandline_args(container)
     commandargs = 'docker run  -d ' + commandargs
-    puts "Create Container " + commandargs
-    SystemUtils.debug_output('create cont', commandargs)
+
+    SystemDebug.debug(SystemDebug.docker,'create cont', commandargs)
      docker_cmd_w(commandargs, container)       
   rescue StandardError => e
     container.last_error = ('Failed To Create ')

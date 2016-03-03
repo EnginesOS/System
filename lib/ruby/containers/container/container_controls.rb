@@ -43,10 +43,13 @@ module ContainerControls
     return log_error_mesg('Can\'t UnPause Container', @container_api.last_error)
   end
 
-  def destroy_container
+  def destroy_container()
     expire_engine_info
     r = true
-    return true if read_state == 'nocontainer'
+    if read_state == 'nocontainer'
+      @container_id = '-1'
+      return true 
+    end
     return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
     r = false unless @container_api.destroy_container(self)
     @container_id = '-1'
@@ -58,17 +61,23 @@ module ContainerControls
   def create_container
     expire_engine_info
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
-    r = @container_api.create_container(self)
-    unless r == false 
-      expire_engine_info
-      @container_id = r
-      @cont_userid = running_user
-      expire_engine_info
-      return true
-    end
     @container_id = -1
-    @cont_userid = ''
+    r = @container_api.create_container(self)
+   # 
+    return true unless r.is_a?(FalseClass)
+    SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     return false
+#    unless r == false 
+#      expire_engine_info
+#      @container_id = r
+#    
+#      @cont_userid = running_user
+#      expire_engine_info
+#      return true
+#    end
+#    @container_id = -1
+#    @cont_userid = ''
+#    return false
   rescue => e
     log_exception(e)
   end

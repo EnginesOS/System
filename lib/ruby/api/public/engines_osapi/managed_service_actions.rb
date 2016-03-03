@@ -2,8 +2,7 @@ module ManagedServiceActions
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def dettach_service(params)
-    p :dettach_service
-    p params
+    SystemDebug.debug(SystemDebug.services,:dettach_service, params)
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
     failed(params[:parent_engine].to_s,@core_api.last_error, params[:parent_engine].to_s)
   end
@@ -55,7 +54,7 @@ module ManagedServiceActions
 
   # @ returns  complete service hash matching PNS,SP,PE,SH
   def  retrieve_service_hash(query_hash)
-    p query_hash
+    SystemDebug.debug(SystemDebug.services, query_hash)
     s = @core_api.retrieve_service_hash(query_hash)
     return failed(query_hash[:parent_engine],@core_api.last_error, query_hash.to_s) if s.is_a?(FalseClass)
     return s
@@ -73,7 +72,7 @@ module ManagedServiceActions
   end
 
   def attach_existing_service_to_engine(params_hash)
-    p params_hash
+    SystemDebug.debug(SystemDebug.services, params_hash)
     success("OK","OK")
   end
 

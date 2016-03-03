@@ -5,7 +5,7 @@ type_path: wwwstats
 ctype: service
 persistent: true
 last_error: 
-memory: '128'
+memory: '168'
 hostname: wwwstats
 domain_name: 
 environments: []

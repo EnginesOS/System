@@ -1,11 +1,15 @@
 module DockerInfoCollector
   def docker_info
-    collect_docker_info if @docker_info_cache.nil?
-    return false if @docker_info_cache.is_a?(FalseClass)
-    return false if @docker_info_cache.nil?
-    #    p @docker_info_cache.class.name
-    #    p @docker_info_cache.to_s
-   # return JSON.parse(@docker_info_cache)
+    
+   if @docker_info_cache.is_a?(FalseClass)
+     return collect_docker_info if @setState != 'nocontainer'
+    return false 
+   end
+   
+   collect_docker_info if @docker_info_cache.nil?  
+    
+   return false if @docker_info_cache.nil?
+
     @docker_info_cache
   rescue StandardError => e
     p @docker_info_cache.to_s
@@ -21,9 +25,7 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-#     expire_engine_info
-#     p '______IP_ADDDDDDD'
-#      p docker_info['NetworkSettings']['IPAddress']
+#
     return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
     return false
   rescue
@@ -33,49 +35,88 @@ module DockerInfoCollector
   end
   
   def set_cont_id
-    @container_id =  read_container_id if @container_id.to_s == '-1'  || @container_id.to_s == ''
+    if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+      @container_id =  read_container_id 
+      save_state unless @container_id.to_s == '-1' 
+    end
   end
     
   def clear_cid
-    @container_id = nil
-    save_state
+    @container_id =  -1
+    ContainerStateFiles.clear_cid_file(self)
+    SystemDebug.debug(SystemDebug.containers, 'clear cid')
+    save_state   
   end
 
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id
-   r = ContainerStateFiles.read_container_id(self)
-   return r #unless r == -1
+    cid = @container_id
+    @container_id = ContainerStateFiles.read_container_id(self)
+    SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
+   if @container_id == -1 && setState != 'nocontainer'
 #    sleep 1
-#    ContainerStateFiles.read_container_id(self)
-#    info = docker_info
-#    return info[0]['Id'] unless info.is_a?(FalseClass) # Array) && docker_info[0].is_a?(Hash)
-#    return -1
-  rescue StandardError => e
    
-    
+#    ContainerStateFiles.read_container_id(self)
+     info  =  @container_api.inspect_container_by_name(self) # docker_info
+     return  -1 if info.nil?
+   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+    if info.is_a?(Array)
+      SystemDebug.debug(SystemDebug.containers,'array')
+       info = info[0]
+       return  -1 if info.nil?
+   end 
+    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info) 
+   # SystemUtils.deal_with_jason(info)
+   # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+    if info.is_a?(Hash)
+      SystemDebug.debug(SystemDebug.containers,'hash')
+    end
+ 
+   return -1 if info.key?('RepoTags') #No container by that name and it will return images by that name WTF
+    @container_id = info['Id'] if info.key?('Id')
+     SystemDebug.debug(SystemDebug.containers,@container_id)
+     
+  end
+  save_state unless cid == @container_id
+  return  @container_id
+  rescue StandardError => e      
     log_exception(e)
   end
 
   def running_user
     info = docker_info
-    return -1 if info.is_a?(FalseClass)
-    return  info['Config']['User'] unless info.is_a?(FalseClass)
+    return -1 unless info.is_a?(Hash)
+    return -1 unless info.key?('Config')
+    return -1 unless info['Config'].key?('User')
+    return  info['Config']['User'] 
   rescue StandardError => e
-    return log_exception(e)
+    return log_exception(e,info)
   end
   protected
 
   def collect_docker_info
     return false unless has_api?
-    result = false
-    return false if @docker_info_cache == false
-    result = @container_api.inspect_container(self) if @docker_info_cache.nil?
+   # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
+    return false if @docker_info_cache == false && @setState == 'nocontainer'
+    @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
+    SystemDebug.debug(SystemDebug.containers,  :collect_docker_info,@docker_info_cache )
+#    if @docker_info_cache == false
+#      @container_id = -1
+##    elsif @docker_info_cache.is_a?(Array)
+##      @docker_info_cache =  @docker_info_cache[0]
+##      if @container_id.to_s == '' || @container_id == -1      
+##        @container_id = @docker_info_cache['Id']
+##      end
+#    end
     #log_error_mesg('collect false from ', self)
     #@docker_info_cache = @last_result if result
-    @docker_info_cache =  result
+    # result    
     #@docker_info_cache = false unless result
    # Thread.new { sleep 4 ; expire_engine_info }
-    return result
+    if  @docker_info_cache.is_a?(Array)
+      @docker_info_cache = @docker_info_cache[0]
+  end
+    return @docker_info_cache
   end
 
 end

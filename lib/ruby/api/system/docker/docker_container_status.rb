@@ -1,9 +1,11 @@
 module DockerContainerStatus
   require_relative 'docker_exec.rb'
   def ps_container(container)
-    cmdline = 'docker top ' + container.container_name + ' axl'
-    result = SystemUtils.execute_command(cmdline)
-    return result[:stdout].to_s + ' ' + result[:stderr].to_s
+    @docker_comms.ps_container(container)
+#    cmdline = 'docker top ' + container.container_name + ' axl'
+#    result = SystemUtils.execute_command(cmdline)
+#    SystemDebug.debug(SystemDebug.containers, 'PS  container ',container.container_name  ,result[:stdout],result)
+#    return result[:stdout].to_s + ' ' + result[:stderr].to_s
   rescue StandardError => e
     log_exception(e)
     return "Error"
@@ -22,5 +24,17 @@ module DockerContainerStatus
   def inspect_container(container)
     @docker_comms.inspect_container(container)
   end
-
+  def container_id_from_name(container)
+    @docker_comms.container_id_from_name(container)
+  end
+  def inspect_container_by_name(container)
+    cmdline = 'docker inspect ' + container.container_name
+    result = SystemUtils.execute_command(cmdline)
+    res = JSON.parse(result[:stdout], :create_additions => true)
+      return res #SystemUtils.deal_with_jason(res)
+    rescue StandardError => e
+        log_exception(e,container.container_)
+        return 'error inspect_container_by_name  ' + e.to_s
+  end
+ 
 end

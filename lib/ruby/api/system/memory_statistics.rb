@@ -8,7 +8,7 @@ module MemoryStatistics
   end
 
   def self.total_memory_statistics(api)
-    p :total_mem_stats
+    SystemDebug.debug(SystemDebug.system, :total_mem_stats)
     engines_memory_statistics = {}
     engines = api.getManagedEngines
     services = api.getManagedServices
@@ -33,8 +33,8 @@ module MemoryStatistics
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
     containers.each do | container|
-      p :collect_containers_memory_stats 
-      p container.container_name
+      SystemDebug.debug(SystemDebug.system, :collect_containers_memory_stats )
+      SystemDebug.debug(SystemDebug.system, container.container_name)
       
       next if container.setState != "running"
       next unless container.is_running?
@@ -49,9 +49,9 @@ module MemoryStatistics
 
   def self.container_memory_stats(container)
     ret_val = {}
-    if container && container.container_id.nil? || container.container_id == '-1'
-      container_id = ContainerStateFiles.read_container_id(container)
-    end
+#    if container && container.container_id.nil? || container.container_id == '-1'
+#      container_id = container.container_id #ContainerStateFiles.read_container_id(container)
+#    end
     #   return self.empty_container_result  unless container.is_active?
 
     if container && container.container_id.nil? == false && container.container_id != '-1'

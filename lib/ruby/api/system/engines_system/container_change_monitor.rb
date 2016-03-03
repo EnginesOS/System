@@ -2,14 +2,16 @@ module ContainerChangeMonitor
   @change_register = nil
   
   def inform_container_monitor(container_name,ctype,event_name)
+    SystemDebug.debug(SystemDebug.container_events,:inform_container_monitor,container_name,ctype,event_name)
      return if event_name.start_with?('exec_')
     add_changed(container_name,ctype,event_name)
   end
   
   def add_changed(container_name,ctype,event_name)
     register  = change_register
-   register[ctype][container_name] = event_name
-    
+    return if ctype.nil?
+    return unless register.key?(ctype)    
+    register[ctype][container_name] = event_name # unless register[ctype][container_name].nil?    
   end
   
   def change_register

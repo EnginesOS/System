@@ -3,8 +3,7 @@ module EngineApiDependancies
   def start_dependancies(container)
     return true unless container.dependant_on.is_a?(Array)
     container.dependant_on.each do |service_name|
-      p :checking
-      p service_name
+      SystemDebug.debug(SystemDebug.containers, :checking_depends,  service_name)
       service = engines_core.loadManagedService(service_name)
       return log_error_mesg('Failed to load ', service_name) unless service
       unless service.is_running?

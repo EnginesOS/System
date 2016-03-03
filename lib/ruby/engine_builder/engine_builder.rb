@@ -90,11 +90,11 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_container
-    
+    SystemDebug.debug(SystemDebug.builder,  ' Statrting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
     space /= 1024
-    p ' free space /var/lib/docker only ' + space.to_s + 'MB'
+    SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
      return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
     
@@ -119,8 +119,7 @@ class EngineBuilder < ErrorsApi
     read_web_user
 
     @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
-    p :ports
-    p @build_params[:mapped_ports]
+    SystemDebug.debug(SystemDebug.builder,   :ports, @build_params[:mapped_ports])
 
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
@@ -270,8 +269,10 @@ class EngineBuilder < ErrorsApi
 
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
-    return true if managed_container.create_container
+    mc = managed_container.create_container
+    return true if mc
     log_build_errors('Failed to Launch')
+    log_error_mesg('Failed to Launch ', mc)
   rescue StandardError => e
     log_exception(e)
   end
@@ -312,11 +313,8 @@ class EngineBuilder < ErrorsApi
       if line.include?('PORT')
         i = line.split('=')
         @web_port = i[1].strip
-        p :web_port_line
-        p line
+      SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
       end
-      p @web_port
-      puts(@web_port)
     end
   rescue StandardError => e
     log_exception(e)
@@ -349,21 +347,26 @@ class EngineBuilder < ErrorsApi
     # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service
-    p :Clean_up_Failed_build
+    SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
+    unless @build_params[:reinstall].is_a?(TrueClass)
     if @mc.is_a?(ManagedContainer)
       @mc.stop_container if @mc.is_running?
       @mc.destroy_container if @mc.has_container?
-      @mc.delete_image if @mc.has_image?
+      
+      @mc.delete_image if @mc.has_image? 
     end
-    return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
-    return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
+    
+      return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
+      return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
+    end
+    
     #    params = {}
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
-      p 'Roll Back Complete'
+    SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
     return false
   end
@@ -416,8 +419,7 @@ class EngineBuilder < ErrorsApi
     && @blueprint[:software][:custom_install_script].nil? == false\
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.InstallScript, content)
-      p :create_install_script
+      write_software_file(SystemConfig.InstallScript, content)     
       File.chmod(0755, basedir + SystemConfig.InstallScript)
     end
   end
@@ -449,8 +451,6 @@ class EngineBuilder < ErrorsApi
   end
 
   def create_apache_config
-    p :apache_httpd_configurations
-    p  @blueprint[:software][:apache_httpd_configurations]
     if @blueprint[:software].key?(:apache_httpd_configurations) \
     && @blueprint[:software][:apache_httpd_configurations].nil? == false \
     && @blueprint[:software][:apache_httpd_configurations].length > 0
@@ -578,8 +578,7 @@ end
   private
 
   def process_supplied_envs(custom_env)
-    p :custom_env
-    p custom_env
+    SystemDebug.debug(SystemDebug.builder,  :custom_env, custom_env)
     if custom_env.nil?
       @set_environments = {}
       @environments = []
@@ -589,8 +588,7 @@ end
       @set_environments = {}
     else
       custom_env_hash = custom_env
-      p :Merged_custom_env
-      p custom_env_hash
+      SystemDebug.debug(SystemDebug.builder,   :Merged_custom_env, custom_env_hash)
       @set_environments = custom_env_hash
       @environments = []
     end
@@ -638,7 +636,7 @@ end
       FileUtils.mkdir_p(scripts_path)
     end
     if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-      content = ""#!/bin/bash\n"
+      content = "#!/bin/bash\n"
       content += "cd /home/app\n"
       @blueprint_reader.worker_commands.each do |command|
         content += command + "\n"
@@ -646,6 +644,16 @@ end
       write_software_file(scripts_path + 'pre-running.sh', content)
       File.chmod(0755, basedir + scripts_path + 'pre-running.sh')
     end
+    
+    return true if @blueprint_reader.blocking_worker.nil?
+    
+    content = "#!/bin/bash\n"
+    content += "cd /home/app\n"
+    content += @blueprint_reader.blocking_worker.to_s
+    content += "\n"
+    write_software_file(scripts_path + 'blocking.sh', content)
+    File.chmod(0755, basedir + scripts_path + 'blocking.sh')
+    
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -659,10 +667,10 @@ end
   end
 
   def read_base_image_from_dockerfile
-    # FROM  engines/php:release
+
     dockerfile = File.open(basedir + '/Dockerfile', 'r')
     from_line = dockerfile.gets("\n", 100)
-    from_line.gsub(/FROM[ ]./, '')
+    from_line.gsub(/^FROM[ ]./, '')
   rescue StandardError => e
     log_build_errors(e)
     return nil
@@ -724,7 +732,7 @@ end
         log_build_errors(error_mesg)
         log_error_mesg(error_mesg, self)
       end
-      p :build_suceeded
+      SystemDebug.debug(SystemDebug.builder,   :build_suceeded)
       return true
     end
   end

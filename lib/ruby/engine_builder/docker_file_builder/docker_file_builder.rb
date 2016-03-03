@@ -131,8 +131,7 @@ class DockerFileBuilder
     @blueprint_reader.environments.each do |env|
       write_line('#Blueprint ENVs')
       if env.value && env.value.nil? == false && env.value.to_s.length > 0
-        p :env_val
-        p env.value
+        SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
         env.value = env.value.sub(/ /, '\\ ')
       end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
@@ -182,8 +181,7 @@ class DockerFileBuilder
     src_paths.each do |path|
       dir = File.dirname(path)
       file = File.basename(path)
-      p :dir
-      p dir
+      SystemDebug.debug(SystemDebug.builder,:dir, dir)
       if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
         path = 'app/' + file
       end

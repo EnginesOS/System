@@ -53,8 +53,8 @@ requires:
  - /opt/engines/lib/ruby/api/system/dns_api.rb
  - /opt/engines/lib/ruby/api/system/docker/docker_api.rb
  - /opt/engines/lib/ruby/api/system/docker/docker_cmd_options.rb
- - /opt/engines/lib/ruby/api/system/docker/docker_event_listener.rb
- - /opt/engines/lib/ruby/api/system/engines_core.rb
+ - /opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb 
+ - /opt/engines/lib/ruby/api/system/engines_core/engines_core.rb
  - /opt/engines/lib/ruby/api/system/errors_api.rb
  - /opt/engines/lib/ruby/api/system/memory_statistics.rb
  - /opt/engines/lib/ruby/api/system/engines_core/engines_core.rb

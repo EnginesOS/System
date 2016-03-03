@@ -1,9 +1,22 @@
 module ManagedContainerControls
-  def destroy_container
-
+  
+  def reinstall_engine(builder)
     return false unless has_api?
-    return false unless prep_task(:destroy)
-    return true if super
+    return false unless prep_task(:build)
+  builder.reinstall_engine(self)
+  
+  end
+  
+  def destroy_container(reinstall=false)
+  
+    return false unless has_api?
+    
+    if reinstall == true
+      return false unless prep_task(:reinstall)
+    else
+     return false unless prep_task(:destroy)
+    end
+    return clear_cid if super()
     task_failed('destroy')
   end
 
@@ -25,13 +38,21 @@ module ManagedContainerControls
   def create_container
    
     return false unless has_api?
-    p :teask_preping
+    SystemDebug.debug(SystemDebug.containers, :teask_preping)
     return false unless prep_task(:create)
-    p :teask_preped
+    SystemDebug.debug(SystemDebug.containers,  :teask_preped)
+    expire_engine_info
+    @container_id = -1
+
+    save_state
     return task_failed('create') unless super
-    p :create_suupre_ran
+    save_state #save new containerid)
+    SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+    expire_engine_info
     state = read_state
-    return log_error_mesg('No longer running ' + state + ':' + @setState, self) unless state == 'running'
+    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+    return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running'
     register_with_dns # MUst register each time as IP Changes
     add_nginx_service if @deployment_type == 'web'
     @container_api.register_non_persistent_services(self)
@@ -43,7 +64,7 @@ module ManagedContainerControls
   def recreate_container
    
     return task_failed('destroy/recreate') unless destroy_container
-    wait_for_task
+    wait_for_task('destroy')
     return task_failed('create/recreate') unless create_container
     true
   end
@@ -73,8 +94,7 @@ module ManagedContainerControls
 #       @setState = 'nocontainer'
 #       return true
 #     end
-     p :stop_read_sta
-     p read_state
+    SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
     return false unless prep_task(:stop)
     @container_api.deregister_non_persistent_services(self)
@@ -95,14 +115,14 @@ module ManagedContainerControls
 
   def restart_container  
     return task_failed('restart/stop') unless stop_container
-    wait_for_task
+    wait_for_task('stop')
     return task_failed('restart/start') unless start_container
     true
   end
 
   def rebuild_container
     return false unless has_api?
-    return false unless prep_task(:rebuild)
+    return false unless prep_task(:reinstall)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
     if ret_val == true
@@ -116,12 +136,14 @@ module ManagedContainerControls
   
   private
   def prep_task(action_sym)
-
-    return log_error_mesg("Action in Progress", task_at_hand) unless task_at_hand.nil? 
-    p :current_tah_prep_task
-    p task_at_hand
+  
+     unless task_at_hand.nil?
+       SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+      # return log_error_mesg("Action in Progress", task_at_hand)      
+     end
+    SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
    return false unless in_progress(action_sym)
-   p :inproes_run
+    SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
      return save_state
   rescue StandardError  => e

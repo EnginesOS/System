@@ -3,7 +3,7 @@ module DockerImages
   require_relative 'docker_exec.rb'
   def pull_image(image_name)
     cmd = 'docker pull ' + image_name
-    SystemUtils.debug_output('Pull Image', cmd)
+    SystemDebug.debug(SystemDebug.docker,'Pull Image', cmd)
     result = SystemUtils.execute_command(cmd)
     @last_error = result[:stdout]
     if result[:result] != 0

@@ -7,7 +7,7 @@ module Cache
 
     return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
    
-       p :Stale_info 
+SystemDebug.debug(SystemDebug.cache, :Stale_info )
 #       p :saved_ts
 #       p @engines_conf_cache[ident.to_sym][:ts]
 #         p :read_ts
@@ -21,7 +21,7 @@ return  nil
   end
 
   def rm_engine_from_cache(engine_name)
-    p :RM_FROM_CACHE
+    SystemDebug.debug(SystemDebug.cache, :RM_FROM_CACHE, engine_name)
     @engines_conf_cache.delete(engine_name.to_sym)
    
   end

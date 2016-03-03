@@ -1,11 +1,8 @@
 FROM  engines/passenger:_Engines_System(release)
 
-
-
 ADD build_scripts /build_scripts
 ADD home home
 ENV CONTFSVolHome /home/fs/
-
 
 ENV ContUser ruby
 ENV RAILS_ENV production

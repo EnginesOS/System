@@ -10,7 +10,6 @@ chmod -R 770 /home/fs_src
 
 
 
-
 ##!/bin/sh
 #id data-user | cut -f2 -d: |grep $data_uid >/dev/null	
 #	if test $? -ne 0

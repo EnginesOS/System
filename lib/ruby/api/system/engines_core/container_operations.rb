@@ -39,7 +39,7 @@ module ContainerOperations
     sites = find_engine_services(params)
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
-      p site.to_s unless  site.is_a?(Hash)
+      SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)
       next unless site.is_a?(Hash) && site[:variables].is_a?(Hash)
       if site[:variables][:proto] == 'http_https'
         protocol = 'https'

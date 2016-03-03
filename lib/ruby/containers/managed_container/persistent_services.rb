@@ -14,8 +14,7 @@ module PersistantServices
     elsif services.is_a?(Hash)
       retval = service_to_str(service_hash) #SystemUtils.service_hash_variables_as_str(services)
     end
-    p :engine_persistent_services
-    p retval
+      SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, retval)
     return  retval
   end
   
@@ -28,8 +27,7 @@ def service_to_str(service_hash)
   service_hash[:variables].each do |variable|
     retval += ',' + variable[1].to_s
   end
-  p :service_to_str
-  p retval
+  SystemDebug.debug(SystemDebug.services,  :service_to_str, retval)
   retval
     
 end

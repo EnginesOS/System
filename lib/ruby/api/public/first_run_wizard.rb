@@ -17,9 +17,8 @@ class FirstRunWizard <ErrorsApi
 
   def apply(api)
     @api = api
-    p :applyin
-    p @first_run_params
-    return false unless validate_params(@first_run_params)
+    SystemDebug.debug(SystemDebug.first_run,:applyin, @first_run_params)
+    return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
    # return false unless set_passwords
     return false unless  setup_dns
     return false unless setup_certs
