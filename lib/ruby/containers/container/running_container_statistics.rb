@@ -9,8 +9,10 @@ module RunningContainerStatistics
     ps_json = ps_container
     cpu_time =[0,0,0]
     vss = 0
-    rss = 0
-    pcnt  = ps_json["Processes"].count
+    rss = 0  
+    return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.nil?
+    processes = ps_json["Processes"]
+    pcnt  = processes.count
     ps_json["Processes"].each do |process|
       vss += process[4]
       rss += process[5]
