@@ -64,7 +64,11 @@ module Containers
     f.puts(serialized_object)
     f.flush()
     f.close
+    begin
     ts =  File.mtime(statefile)
+    rescue StandardError => e
+      ts = Time.now
+    end
     unlock_container_conf_file(state_dir)
     cache_engine( container, ts) unless cache_update_ts(container, ts)
     
