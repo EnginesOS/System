@@ -19,8 +19,8 @@ module RunningContainerStatistics
     processes = ps_json["Processes"]
     pcnt  = processes.count
     ps_json["Processes"].each do |process|
-      vss += process[4]
-      rss += process[5]
+      vss += process[4].to_i
+      rss += process[5].to_i
       time_f = process[9]
       cpu_time = add_time(cpu_time, time_f)
     end
