@@ -68,7 +68,7 @@ module RunningContainerStatistics
 
   private 
   def add_time(cpu_time, time_field)
-c_HMS = time_f.split(':')
+c_HMS = time_field.split(':')
 h = 0
 m = 0
 s = 0
