@@ -7,10 +7,14 @@ module RunningContainerStatistics
     started = docker_info['State']['StartedAt']
     stopped = docker_info['State']['FinishedAt']
     ps_json = ps_container
+    SystemDebug.debug(SystemDebug.containers,'ps_container json result',container.container_name,ps_json)
     cpu_time =[0,0,0]
     vss = 0
     rss = 0  
+    cpu = 0
+  
     return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.nil?
+    ps_json =  ps_json[0] unless ps_json.is_a?(Hash)
     processes = ps_json["Processes"]
     pcnt  = processes.count
     ps_json["Processes"].each do |process|
