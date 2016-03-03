@@ -50,6 +50,7 @@ module DockerInfoCollector
 
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id
+    cid = @container_id
     @container_id = ContainerStateFiles.read_container_id(self)
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
    if @container_id == -1 && setState != 'nocontainer'
@@ -76,7 +77,7 @@ module DockerInfoCollector
      SystemDebug.debug(SystemDebug.containers,@container_id)
      
   end
-  
+  save_state unless cid == @container_id
   return  @container_id
   rescue StandardError => e      
     log_exception(e)
