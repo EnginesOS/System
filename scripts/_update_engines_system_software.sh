@@ -6,7 +6,13 @@ cd /opt/engines/etc/services
 git pull
 
 cd /opt/engines
-git pull
+r=`git pull`
+echo $r |grep -i "already"
+if test $? -eq 0
+ then
+echo "up to date"
+exit
+fi
 
  cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
  chmod og-rw /etc/sudoers.d/engines 
