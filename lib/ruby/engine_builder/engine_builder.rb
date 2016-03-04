@@ -95,14 +95,13 @@ class EngineBuilder < ErrorsApi
     space = @core_api.system_image_free_space
     space /= 1024
     SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
-     return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
+    return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
-    
+
     free_ram = MemoryStatistics.avaiable_ram
     ram_needed = SystemConfig.MinimumFreeRam + @build_params[:memory].to_i
     return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
     log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
-     
 
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
@@ -313,7 +312,7 @@ class EngineBuilder < ErrorsApi
       if line.include?('PORT')
         i = line.split('=')
         @web_port = i[1].strip
-      SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
+        SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
       end
     end
   rescue StandardError => e
@@ -351,17 +350,17 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
-    if @mc.is_a?(ManagedContainer)
-      @mc.stop_container if @mc.is_running?
-      @mc.destroy_container if @mc.has_container?
-      
-      @mc.delete_image if @mc.has_image? 
-    end
-    
+      if @mc.is_a?(ManagedContainer)
+        @mc.stop_container if @mc.is_running?
+        @mc.destroy_container if @mc.has_container?
+
+        @mc.delete_image if @mc.has_image?
+      end
+
       return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
       return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
     end
-    
+
     #    params = {}
     #    params[:engine_name] = @build_name
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
@@ -419,7 +418,7 @@ class EngineBuilder < ErrorsApi
     && @blueprint[:software][:custom_install_script].nil? == false\
     && @blueprint[:software][:custom_install_script].length > 0
       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.InstallScript, content)     
+      write_software_file(SystemConfig.InstallScript, content)
       File.chmod(0755, basedir + SystemConfig.InstallScript)
     end
   end
@@ -490,10 +489,10 @@ class EngineBuilder < ErrorsApi
   end
 
   #app_is_persistent
-  
+
   def running_logs()
     return @container.logs_container unless @container.nil?
-      return nil          
+    return nil
   end
 
   def create_managed_container
@@ -549,11 +548,11 @@ class EngineBuilder < ErrorsApi
   rescue
     return
   end
-  
+
   def abort_build
     post_failed_build_clean_up
     return true
-end
+  end
 
   def log_build_output(line)
     @log_file.puts(line)
@@ -644,16 +643,16 @@ end
       write_software_file(scripts_path + 'pre-running.sh', content)
       File.chmod(0755, basedir + scripts_path + 'pre-running.sh')
     end
-    
+
     return true if @blueprint_reader.blocking_worker.nil?
-    
+
     content = "#!/bin/bash\n"
     content += "cd /home/app\n"
     content += @blueprint_reader.blocking_worker.to_s
     content += "\n"
     write_software_file(scripts_path + 'blocking.sh', content)
     File.chmod(0755, basedir + scripts_path + 'blocking.sh')
-    
+
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

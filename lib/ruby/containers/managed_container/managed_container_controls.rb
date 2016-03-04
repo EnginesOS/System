@@ -1,20 +1,19 @@
 module ManagedContainerControls
-  
   def reinstall_engine(builder)
     return false unless has_api?
     return false unless prep_task(:build)
-  builder.reinstall_engine(self)
-  
+    builder.reinstall_engine(self)
+
   end
-  
+
   def destroy_container(reinstall=false)
-  
+
     return false unless has_api?
-    
+
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
-     return false unless prep_task(:destroy)
+      return false unless prep_task(:destroy)
     end
     return clear_cid if super()
     task_failed('destroy')
@@ -36,7 +35,7 @@ module ManagedContainerControls
   end
 
   def create_container
-   
+
     return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     return false unless prep_task(:create)
@@ -62,7 +61,7 @@ module ManagedContainerControls
   end
 
   def recreate_container
-   
+
     return task_failed('destroy/recreate') unless destroy_container
     wait_for_task('destroy')
     return task_failed('create/recreate') unless create_container
@@ -70,7 +69,7 @@ module ManagedContainerControls
   end
 
   def unpause_container
-    
+
     return false unless has_api?
     return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
@@ -80,7 +79,7 @@ module ManagedContainerControls
   end
 
   def pause_container
- 
+
     return false unless has_api?
     return false unless prep_task(:pause)
     return task_failed('pause') unless super
@@ -90,10 +89,10 @@ module ManagedContainerControls
 
   def stop_container
     # allow stopping of nocontainer is dealt with higher up now
-#    if read_state == 'nocontainer'
-#       @setState = 'nocontainer'
-#       return true
-#     end
+    #    if read_state == 'nocontainer'
+    #       @setState = 'nocontainer'
+    #       return true
+    #     end
     SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
     return false unless prep_task(:stop)
@@ -103,8 +102,8 @@ module ManagedContainerControls
   end
 
   def start_container
-   
-    return false unless has_api?    
+
+    return false unless has_api?
     return false unless prep_task(:start)
     return task_failed('start') unless super
     @restart_required = false
@@ -113,7 +112,7 @@ module ManagedContainerControls
     true
   end
 
-  def restart_container  
+  def restart_container
     return task_failed('restart/stop') unless stop_container
     wait_for_task('stop')
     return task_failed('restart/start') unless start_container
@@ -133,19 +132,20 @@ module ManagedContainerControls
     return true if ret_val
     task_failed('rebuild')
   end
-  
+
   private
+
   def prep_task(action_sym)
-  
-     unless task_at_hand.nil?
-       SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
-      # return log_error_mesg("Action in Progress", task_at_hand)      
-     end
+
+    unless task_at_hand.nil?
+      SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+      # return log_error_mesg("Action in Progress", task_at_hand)
+    end
     SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
-   return false unless in_progress(action_sym)
+    return false unless in_progress(action_sym)
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
-     return save_state
+    return save_state
   rescue StandardError  => e
     log_exception(e)
   end

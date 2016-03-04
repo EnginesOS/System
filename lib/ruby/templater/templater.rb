@@ -8,7 +8,7 @@ class Templater
   end
 
   def resolve_system_variable(match)
- 
+
     name = match.sub!(/_Engines_System\(/, '')
     name.sub!(/[\)]/, '')
     var_method = @system_access.method(name.to_sym)
@@ -105,8 +105,8 @@ class Templater
       end
       if @builder_public.engine_environment.nil? == false && @builder_public.engine_environment.count > 0
         template = apply_engines_variables(template)
-#      else
-#        SystemUtils.log_error_mesg('nil or empty engines variables ' + template.to_s, @builder_public.engine_environment.to_s)
+        #      else
+        #        SystemUtils.log_error_mesg('nil or empty engines variables ' + template.to_s, @builder_public.engine_environment.to_s)
       end
     end
     return template
@@ -141,7 +141,7 @@ class Templater
   end
 
   def apply_build_variables(template)
-    return template if template.is_a?(String) == false     
+    return template if template.is_a?(String) == false
     template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { |match|
       resolve_build_variable(match)
     }
@@ -154,7 +154,7 @@ class Templater
     service_hash[:variables].each do |variable|
       SystemDebug.debug(SystemDebug.templater, :variable, variable)
       if variable[1].nil? == false && variable[1].is_a?(String) && variable[1].include?('_Engines')
-      SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
+        SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
         result = process_templated_string(variable[1])
         service_hash[:variables][variable[0]] = result
       end

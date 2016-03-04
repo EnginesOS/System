@@ -1,4 +1,11 @@
 #!/bin/bash
+
+if test -f  ~/.complete_update
+then
+   /opt/engines/bin/finish_update.sh
+fi 
+
+
 /opt/engines/bin/set_ip.sh
 
 sudo /opt/engines/scripts/_check_local-kv.sh
@@ -8,6 +15,7 @@ if test -f /opt/engines/system/flags/replace_keys
   /opt/engines/bin/replace_keys.sh
   rm /opt/engines/system/flags/replace_keys
  fi
+
 
  chmod oug-w /opt/engines/etc/net/management
 
@@ -72,11 +80,7 @@ sleep 10
 
 if test -f  ~/.complete_install
 then
-   /opt/engines/installers/finish_install.sh
+   /opt/engines/system/install/complete_install.sh
 fi 
 
-if test -f  ~/.complete_update
-then
-   /opt/engines/updaters/finish_update.sh
-fi 
 
