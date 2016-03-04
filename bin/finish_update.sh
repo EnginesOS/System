@@ -3,7 +3,7 @@
 system_updates_dir=/opt/engines/system/updates/to_run/engines
 
 
-update_ids=`ls /opt/engines/system/updates/to_run/engines |grep keep`
+update_ids=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
 
 for update_id in $update_ids
  do
@@ -14,6 +14,7 @@ if ! test -d  $system_updates_dir/$update_id
  then
    exit
   fi
+ 
  
  if test -f  $system_updates_dir/$update_id/services
   then
