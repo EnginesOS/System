@@ -22,7 +22,7 @@ chown engines ~engines/.complete_update
 
 #FIX ME and use a list for freash keys only
 . /opt/engines/system/updates/routines/script_keys.sh
-refresh_mgmt_keys
+#refresh_mgmt_keys
 
 /opt/engines/bin/finish_system_update.sh
 
