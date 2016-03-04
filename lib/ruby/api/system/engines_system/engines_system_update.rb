@@ -24,6 +24,7 @@ module EnginesSystemUpdate
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging                                                                                                                      update_engines_system_software.sh
     @last_error = result[:stdout]
     return true if result[:result] == 0
+      p result
     return false
   end
 end
