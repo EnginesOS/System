@@ -2,7 +2,8 @@
 
 function wait_for_debug {
 if ! test -z "$DEBUG"
-echo "Stopped by Sleeping for 500 seconds to allow debuging"
+ then
+		echo "Stopped by Sleeping for 500 seconds to allow debuging"
   	 	sleep 500
   	 fi
  }
@@ -93,8 +94,9 @@ if test -f /home/startwebapp.sh
   then
   	cd /home/app
   	~/.meteor &
+  	pid=$!
   	touch /engines/var/run/flags/startup_complete
-  	echo $! > /run/meteor.pid
+  	echo $pid > /run/meteor.pid
   	PID_FILE=/run/meteor.pid
   	. /home/trap.sh
   	wait 
