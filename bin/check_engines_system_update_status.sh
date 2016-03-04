@@ -5,7 +5,7 @@ cd /opt/engines
  
 release=`cat /opt/engines/release`
 status=` git remote show origin $release`
-echo $status |grep  'local out of date' >/dev/null
+echo $status | grep -v pushes |grep  'local out of date' >/dev/null
 if test $? -eq 0
  then
   echo $status > /opt/engines/run/system/flags/update_pending

@@ -4,12 +4,16 @@ module EnginesSystemUpdate
   end
 
   def update_engines_system_software
-#    result = SystemUtils.execute_command('sudo /opt/engines/scripts/_update_engines_system_software.sh ')
-#    if result[:result] == -1
-#      @last_error = result[:stderr]
-#      FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
-#      return false
-#    end
+    result = SystemUtils.execute_command('sudo /opt/engines/bin/check_engines_system_update_status.sh ')
+    if result[:result] == -1
+      @last_error = 'update_engines_system_software' + result[:stderr]
+      FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
+      return false  
+    end
+    if  result[:stdout].start_with?('System Up to Date')
+      @last_error = result[:stdout]
+        return false
+    end
     # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
 #    if Rails.env.production?
 #      if result[:stdout].include?('Already up-to-date') && File.exist?('/opt/engines/run/system/flags/test_engines_update') == false
