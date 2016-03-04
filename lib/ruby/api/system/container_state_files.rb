@@ -29,7 +29,7 @@ class ContainerStateFiles
   def self.read_container_id(container)
     cidfile = ContainerStateFiles.container_cid_file(container)
     return -1 unless  File.exist?(cidfile)
-    r = File.read(cidfile) 
+    r = File.read(cidfile)
     r.gsub(/\s+/, '').strip
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -89,7 +89,7 @@ class ContainerStateFiles
     SystemUtils.log_exception(e)
   end
 
-  def self.destroy_container(container)   
+  def self.destroy_container(container)
     return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
     return true # File may or may not exist
   rescue StandardError => e
