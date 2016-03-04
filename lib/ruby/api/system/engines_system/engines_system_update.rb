@@ -18,14 +18,7 @@ module EnginesSystemUpdate
     else
       SystemDebug.debug(SystemDebug.update,  result[:stdout],result[:stderr])
     end
-    # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
-#    if Rails.env.production?
-#      if result[:stdout].include?('Already up-to-date') && File.exist?('/opt/engines/run/system/flags/test_engines_update') == false
-#        @last_error = result[:stdout]
-#        FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
-#        return false
-#      end
-#    end
+
     res = Thread.new { result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/update_engines_system_software.sh')
       if result[:result] == -1
       @last_error = result[:stdout].to_s + 'Error:' + result[:stderr].to_s
