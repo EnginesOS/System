@@ -39,7 +39,7 @@ if ! test -d  $system_updates_dir/$update_id
  		  
  		 fi
  fi
- it test -d $system_updates_dir/$update_id 
+ if test -d $system_updates_dir/$update_id 
   then
   	mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines
  fi
@@ -47,5 +47,5 @@ if ! test -d  $system_updates_dir/$update_id
   done
   
  
-  	rm ~/.complete_update
+  
   
