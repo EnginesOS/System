@@ -28,7 +28,7 @@ chown engines ~engines/.complete_update
 /opt/engines/bin/finish_system_update.sh
 
 engines_updates=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
-it ! test -z "$engines_updates"
+if ! test -z "$engines_updates"
  then
 	chown engines $engines_updates
  fi

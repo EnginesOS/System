@@ -5,6 +5,7 @@ module EnginesSystemUpdate
 
   def update_engines_system_software
     result = SystemUtils.execute_command('sudo /opt/engines/bin/check_engines_system_update_status.sh ')
+    SystemDebug.debug(SystemDebug.update,'update_engines_system_software ',  result[:stdout],result[:stderr])
     if result[:result] == -1
       @last_error = 'update_engines_system_software' + result[:stderr]
       FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
