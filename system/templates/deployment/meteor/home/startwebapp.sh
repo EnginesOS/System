@@ -3,7 +3,7 @@
  if test $FRAMEWORK == 'meteor'
   then
   	cd /home/app
-  	~/.meteor &
+  	~node/.meteor/meteor &
   	pid=$!
   	touch /engines/var/run/flags/startup_complete
   	echo $pid > /run/meteor.pid
