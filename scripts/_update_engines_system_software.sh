@@ -11,7 +11,7 @@ git pull
  cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
  chmod og-rw /etc/sudoers.d/engines 
  
-update_scripts=`ls /opt/engines/system/updates/to_run`
+update_scripts=`ls /opt/engines/system/updates/to_run |grep -v keep`
 if ! test -z  $update_scripts
  then
 	echo " $update_scripts" >> ~engines/.complete_update
@@ -24,6 +24,9 @@ chown engines ~engines/.complete_update
 . /opt/engines/system/updates/routines/script_keys.sh
 refresh_mgmt_keys
 
+/opt/engines/bin/finish_system_update.sh
+
+chown engines `ls /opt/engines/system/updates/to_run/engines`
 
 sudo su -l engines /opt/engines/bin/finish_update.sh
 
