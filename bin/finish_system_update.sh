@@ -14,7 +14,7 @@ for update_id in $update_ids
 
 export update_id
 
-if ! test -d  /opt/engines/system/updates/engines/$update_id
+if ! test -d  /opt/engines/system/updates/system/$update_id
  then
    exit
   fi
