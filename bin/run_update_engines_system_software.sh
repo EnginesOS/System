@@ -31,5 +31,5 @@ docker start mgmt >> /var/log/engines/engines_system_update_$ts.log
  
 touch /opt/engines/run/system/flags/update_engines_run
 rm /opt/engines/run/system/flags/update_engines_running
-
+rm /opt/engines/run/system/flags/update_pending
 #/opt/engines/bin/follow_start.sh
