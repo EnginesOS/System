@@ -34,11 +34,11 @@ if ! test -d  $system_updates_dir/$update_id
  		 echo Problem with $update_id
  		 cat  $system_updates_dir/$update_id/update_log
  		 mv  $system_updates_dir/$update_id /opt/engines/system/updates/failed/engines
- 		 else
- 		   mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines
+ 		 exit
+ 		  
  		 fi
  fi
- 
+  mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines
 
 
   done

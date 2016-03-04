@@ -25,11 +25,11 @@ if ! test -d  $system_updates_dir/$update_id
   	cat $system_updates_dir/$update_id/update_log
   		mv  $system_updates_dir/$update_id /opt/engines/system/updates/failed/system
    else    
-  	mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/system
+  
   	echo Success sytem update $update_id
   fi
  fi
- 
+ 	mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/system
 
   done
   
