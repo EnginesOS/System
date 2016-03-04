@@ -30,12 +30,11 @@ fi
 engines_updates=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
 if ! test -z "$engines_updates"
  then
- c=`pwd`
- 	cd /opt/engines/system/updates/to_run/engines
- 	echo chown engines $engines_updates in $c 
- 	
-	chown engines $engines_updates
-	cd $c
+ 	for engine_update in $engines_updates
+ 	 do
+ 	 	chown engines /opt/engines/system/updates/to_run/engines/$engine_update
+ 	    echo chown engines /opt/engines/system/updates/to_run/engines/$engine_update 
+	done
  fi
  su -l engines /opt/engines/bin/finish_update.sh
 
