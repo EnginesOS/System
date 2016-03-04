@@ -13,7 +13,7 @@ module ContainerControls
   def stop_container
     #expire_engine_info
     r = true
-    return true if read_state == 'stopped' 
+    return true if read_state == 'stopped'
     return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'
     r = false  unless @container_api.stop_container(self)
     expire_engine_info
@@ -22,7 +22,7 @@ module ContainerControls
   end
 
   def pause_container
-   #expire_engine_info
+    #expire_engine_info
     r = true
     return true if read_state == 'paused'
     return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
@@ -48,7 +48,7 @@ module ContainerControls
     r = true
     if read_state == 'nocontainer'
       @container_id = '-1'
-      return true 
+      return true
     end
     return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
     r = false unless @container_api.destroy_container(self)
@@ -63,21 +63,21 @@ module ContainerControls
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
     @container_id = -1
     r = @container_api.create_container(self)
-   # 
+    #
     return true unless r.is_a?(FalseClass)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     return false
-#    unless r == false 
-#      expire_engine_info
-#      @container_id = r
-#    
-#      @cont_userid = running_user
-#      expire_engine_info
-#      return true
-#    end
-#    @container_id = -1
-#    @cont_userid = ''
-#    return false
+    #    unless r == false
+    #      expire_engine_info
+    #      @container_id = r
+    #
+    #      @cont_userid = running_user
+    #      expire_engine_info
+    #      return true
+    #    end
+    #    @container_id = -1
+    #    @cont_userid = ''
+    #    return false
   rescue => e
     log_exception(e)
   end
