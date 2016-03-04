@@ -18,7 +18,7 @@ if ! test -z  "$update_scripts"
 	echo " $update_scripts" >> ~engines/.complete_update
 fi
 
-chown engines ~engines/.complete_update
+
 
 
 #FIX ME and use a list for freash keys only
@@ -30,9 +30,13 @@ chown engines ~engines/.complete_update
 engines_updates=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
 if ! test -z "$engines_updates"
  then
-	chown engines $engines_updates
+ 	for engine_update in $engines_updates
+ 	 do
+ 	 	chown engines /opt/engines/system/updates/to_run/engines/$engine_update
+ 	    echo chown engines /opt/engines/system/updates/to_run/engines/$engine_update 
+	done
  fi
-sudo su -l engines /opt/engines/bin/finish_update.sh
+ su -l engines /opt/engines/bin/finish_update.sh
 
 
 exit 0

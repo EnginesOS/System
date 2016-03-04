@@ -164,7 +164,7 @@ class BluePrintReader
   def read_lang_fw_values
     log_build_output('Read Framework Settings')
     @framework = @blueprint[:software][:framework]
-    
+
     @runtime = @blueprint[:software][:language]
     @memory = @blueprint[:software][:required_memory]
   rescue StandardError => e
@@ -282,7 +282,7 @@ class BluePrintReader
         @blocking_worker = worker[:command]
       else
         @worker_commands.push(worker[:command])
-      end     
+      end
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -337,7 +337,7 @@ class BluePrintReader
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       # FIXME: when public ports supported
-        SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
+      SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
       @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
     end
     return true
