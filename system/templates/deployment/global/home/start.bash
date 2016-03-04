@@ -79,6 +79,20 @@ if test -f /home/startwebapp.sh
 		exit
 	fi
 	
+
+ if test $FRAMEWORK == 'meteor'
+  then
+  	cd /home/app
+  	~/.meteor &
+  	touch /engines/var/run/flags/startup_complete
+  	echo $! > /run/meteor.pid
+  	PID_FILE=/run/meteor.pid
+  	. /home/trap.sh
+  	wait 
+  	rm /engines/var/run/flags/startup_complete
+  	exit
+  fi
+
 #Apache based below here
 
 PID_FILE=/run/apache2/apache2.pid
