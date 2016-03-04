@@ -76,7 +76,7 @@ if test -f /home/engines/scripts/custom_start.sh
 		if test "$result" = "exit"
 			then 
 			wait_for_debug
-				exit
+			exit
 		fi
 		
 	fi
@@ -90,20 +90,7 @@ if test -f /home/startwebapp.sh
 	fi
 	
 
- if test $FRAMEWORK == 'meteor'
-  then
-  	cd /home/app
-  	~/.meteor &
-  	pid=$!
-  	touch /engines/var/run/flags/startup_complete
-  	echo $pid > /run/meteor.pid
-  	PID_FILE=/run/meteor.pid
-  	. /home/trap.sh
-  	wait 
-  	 wait_for_debug
-  	rm /engines/var/run/flags/startup_complete
-  	exit
-  fi
+
 
 #Apache based below here
 
