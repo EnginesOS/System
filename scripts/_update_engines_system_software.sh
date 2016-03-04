@@ -12,7 +12,7 @@ git pull
  chmod og-rw /etc/sudoers.d/engines 
  
 update_scripts=`ls /opt/engines/system/updates/to_run |grep -v keep`
-if ! test -z  "update_scripts"
+if ! test -z  "$update_scripts"
  then
 	echo " $update_scripts" >> ~engines/.complete_update
 fi
@@ -26,8 +26,11 @@ chown engines ~engines/.complete_update
 
 /opt/engines/bin/finish_system_update.sh
 
-chown engines `ls /opt/engines/system/updates/to_run/engines`
-
+engines_updates=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
+it ! test -z "$engines_updates"
+ then
+	chown engines $engines_updates
+ fi
 sudo su -l engines /opt/engines/bin/finish_update.sh
 
 

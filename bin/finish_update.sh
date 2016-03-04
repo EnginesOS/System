@@ -3,7 +3,7 @@
 system_updates_dir=/opt/engines/system/updates/to_run/engines
 
 
-update_ids=`ls /opt/engines/system/updates/to_run/engines`
+update_ids=`ls /opt/engines/system/updates/to_run/engines |grep keep`
 
 for update_id in $update_ids
  do
@@ -29,7 +29,7 @@ if ! test -d  $system_updates_dir/$update_id
   if test -f  $system_updates_dir/$update_id/updater.sh
    then
  		 $system_updates_dir/$update_id/updater.sh >>  $system_updates_dir/$update_id/update_log
- 		if test $? -eq 0
+ 		if test $? -ne 0
  		 then
  		 echo Problem with $update_id
  		 cat  $system_updates_dir/$update_id/update_log
