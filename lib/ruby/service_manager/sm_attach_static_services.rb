@@ -17,7 +17,7 @@ module SmAttachStaticServices
         templater =  Templater.new(SystemAccess.new,container)
         templater.proccess_templated_service_hash(service_hash)
         SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
-        
+
         if service_hash[:persistent] == false || test_registry_result(system_registry_client.service_is_registered?(service_hash)) == false
           SystemDebug.debug(SystemDebug.services,  :creating_static, service_hash)
           create_and_register_service(service_hash)
