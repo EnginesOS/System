@@ -35,4 +35,4 @@ it ! test -z "$engines_updates"
 sudo su -l engines /opt/engines/bin/finish_update.sh
 
 
-exit $?
+exit 0
