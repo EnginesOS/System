@@ -22,7 +22,7 @@ module EnginesSystemUpdate
     SystemDebug.debug(SystemDebug.update, :ran, 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_engines_system_software engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/update_engines_system_software.sh')
     #Thread.new { SystemUtils.execute_command('/opt/engines/bin/update_engines_system_software.sh')}
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging                                                                                                                      update_engines_system_software.sh
-    @last_error = result[:stdout]
+    @last_error = result[:stdout].to_s + 'Error:' + result[:stderr].to_s
     return true if result[:result] == 0
       p result
     return false
