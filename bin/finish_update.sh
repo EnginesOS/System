@@ -22,6 +22,8 @@ if ! test -d  $system_updates_dir/$update_id
   		for service in $services
   		 do
   		 	eservice stop $service >> $system_updates_dir/$update_id/update_log
+  		 	image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
+  			docker pull $image
   		 	eservice recreate $service  >>  $system_updates_dir/$update_id/update_log
   		 done
   fi
