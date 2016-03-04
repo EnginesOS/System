@@ -12,16 +12,20 @@ git pull
  chmod og-rw /etc/sudoers.d/engines 
  
 update_scripts=`ls /opt/engines/system/updates/to_run`
-for script in $update_scripts
- do
- 	if ! test -f /opt/engines/system/updates/have_run/$script
- 		then
- 		/opt/engines/system/updates/to_run/$script
- 		echo ran /opt/engines/system/updates/to_run/$script
- 		cp /opt/engines/system/updates/to_run/$script /opt/engines/system/updates/have_run/$script
- 	fi
- done
+if ! test -z  $update_scripts
+ then
+	echo " $update_scripts" >> ~engines/.complete_update
+fi
 
+chown engines ~engines/.complete_update
+
+
+#FIX ME and use a list for freash keys only
+. /opt/engines/system/updates/routines/script_keys.sh
+refresh_mgmt_keys
+
+
+sudo su -l engines /opt/engines/bin/finish_update.sh
 
 
 exit $?
