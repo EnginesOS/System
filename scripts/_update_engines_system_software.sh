@@ -3,7 +3,7 @@ touch /opt/engines/run/system/flags/update_engines_running
 chown engines /opt/engines/run/system/flags/update_engines_running 
 
 cd /opt/engines/etc/services
-git pull
+git pull >/dev/null
 
 cd /opt/engines
 git pull
