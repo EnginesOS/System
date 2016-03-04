@@ -20,7 +20,7 @@ class SystemDebug
   #if File.exist?(debug_flag)
    # require(debug_flags)
   #else
-  @@debug_flags = @@execute  |@@engine_tasks | @@builder |@@containers |@@docker
+  @@debug_flags = @@execute  |@@engine_tasks | @@builder |@@containers |@@docker | @@update
   #end
 #  @@debug_flags = 0
   def self.container_events

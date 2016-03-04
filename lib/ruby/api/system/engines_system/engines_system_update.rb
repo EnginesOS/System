@@ -12,7 +12,10 @@ module EnginesSystemUpdate
     end
     if  result[:stdout].start_with?('System Up to Date')
       @last_error = result[:stdout]
+      FileUtils.rm_f(SystemConfig.EnginesSystemUpdatingFlag)
         return false
+    else
+      SystemDebug.debug(SystemDebug.update,  result[:stdout],result[:stderr])
     end
     # FIXME: The following carp was added to support gui debug please remove all rails references once gui is sorted
 #    if Rails.env.production?
