@@ -23,6 +23,7 @@ class ManagedEngine < ManagedContainer
     @deployment_type = runtime_params.deployment_type
     @host_network=false
     @web_port = build_params[:web_port]
+     @web_root = runtime_params.web_root
     @last_result = ''
     @container_api = core_api
     @setState = 'running'
@@ -33,7 +34,7 @@ class ManagedEngine < ManagedContainer
 
   end
 
-  attr_reader :plugins_path, :extract_plugins
+  attr_reader :plugins_path, :extract_plugins,:web_root
 
   def lock_values
     @ctype = 'container' if @ctype.nil?
