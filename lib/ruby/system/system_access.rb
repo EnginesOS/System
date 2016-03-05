@@ -13,7 +13,9 @@ class SystemAccess
   def mysql_host
     return SystemConfig.DBHost
   end
-
+  def mongo_host
+     return 'mongo'
+   end
   def smtp_host
     return SystemConfig.SMTPHost
   end
