@@ -270,7 +270,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Launching Engine')
     mc = managed_container.create_container
     return true if mc
-    log_build_errors('Failed to Launch')
+    log_build_errors('Failed to Launch:' + mc.logs_container.to_s )
     log_error_mesg('Failed to Launch ', mc)
   rescue StandardError => e
     log_exception(e)
