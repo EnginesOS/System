@@ -6,8 +6,8 @@
   	meteor &
   	pid=$!
   	touch /engines/var/run/flags/startup_complete
-  	echo $pid > /run/meteor.pid
-  	PID_FILE=/run/meteor.pid
+  	echo $pid > /tmp/meteor.pid
+  	PID_FILE=/tmp/meteor.pid
   	. /home/trap.sh
   	wait 
   	rm /engines/var/run/flags/startup_complete
