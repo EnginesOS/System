@@ -81,7 +81,7 @@ class BluePrintReader
   end
   
   def read_web_root
-    @web_root = @blueprint[:software]['web_root_directory'] if @blueprint[:software].key?('web_root_directory')
+    @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
   end
 
