@@ -5,8 +5,6 @@ ts=`date +%d-%m-%Y-%H:%M`
 touch /var/log/updates/engines_system_update_$ts.log
 
 
-
-
 sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/updates/engines_system_update_$ts.log
 echo "Restarting"
 sleep 5
@@ -18,14 +16,14 @@ sleep 5
 #  sudo /opt/engines/scripts/_mv_update_script $?
 # fi
 
-docker stop registry >> /var/log/engines/updates/engines_system_update_$ts.log
-docker start registry >> /var/log/engines/updates/engines_system_update_$ts.log
+#docker stop registry >> /var/log/engines/updates/engines_system_update_$ts.log
+#docker start registry >> /var/log/engines/updates/engines_system_update_$ts.log
 sleep 15
 
 #/opt/engines/system/updates/scripts/current_update_specifics.sh
 
-/opt/engines/bin/eservice start mgmt >> /var/log/engines/updates/engines_system_update_$ts.log
-docker start mgmt >> /var/log/engines/updates/engines_system_update_$ts.log
+#/opt/engines/bin/eservice start mgmt >> /var/log/engines/updates/engines_system_update_$ts.log
+#docker start mgmt >> /var/log/engines/updates/engines_system_update_$ts.log
  
  
  
