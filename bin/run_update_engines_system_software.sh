@@ -6,8 +6,6 @@ touch /var/log/updates/engines_system_update_$ts.log
 
 
 
-#/opt/engines/bin/eservice stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
-
 
 sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/updates/engines_system_update_$ts.log
 echo "Restarting"
