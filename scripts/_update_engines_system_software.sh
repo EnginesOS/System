@@ -1,6 +1,8 @@
 #!/bin/bash
 
-
+echo "Restarting"
+sleep 5
+docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
 
 cd /opt/engines/etc/services
 git pull >/dev/null

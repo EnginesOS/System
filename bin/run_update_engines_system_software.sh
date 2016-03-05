@@ -4,13 +4,15 @@ touch /opt/engines/run/system/flags/update_engines_running
 ts=`date +%d-%m-%Y-%H:%M`
 touch /var/log/updates/engines_system_update_$ts.log
 
-echo "Restarting"
-sleep 5
+
 
 #/opt/engines/bin/eservice stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
-docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
+
 
 sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/updates/engines_system_update_$ts.log
+echo "Restarting"
+sleep 5
+#docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
 
 #if test -f /opt/engines/system/updates/to_run/pre_start.sh
 # then
