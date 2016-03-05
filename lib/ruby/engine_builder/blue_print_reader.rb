@@ -74,13 +74,14 @@ class BluePrintReader
     read_persistent_dirs
     read_web_port_overide
     read_web_root
+   
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
   
   def read_web_root
-    @web_root = @blueprint[:software]['web_root_directory'] if @blueprint[:software].key('web_root_directory')
+    @web_root = @blueprint[:software]['web_root_directory'] if @blueprint[:software].key?('web_root_directory')
      
   end
 

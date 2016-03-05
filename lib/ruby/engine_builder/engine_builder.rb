@@ -29,7 +29,8 @@ class EngineBuilder < ErrorsApi
   :result_mesg,
   :build_params,
   :data_uid,
-  :data_gid
+  :data_gid,
+  :build_error
 
   attr_accessor :app_is_persistent
   class BuildError < StandardError
@@ -567,6 +568,7 @@ class EngineBuilder < ErrorsApi
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error. Aborted Due to:' + line.to_s
+    @build_error = @result_mesg 
     return false
   end
 
