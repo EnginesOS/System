@@ -1,0 +1,17 @@
+FROM  engines/lua:_Engines_System(release)
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+ENV CONTFSVolHome /home/fs/
+RUN	apt-get update -y ;\
+	/usr/sbin/usermod -u 22671 www-data;\
+	usermod -G containers -a www-data  #grant access to /run/flags etc
+	
+ENV ContUser www-data
+
+RUN  chown $ContUser /opt $HOME
+
+
+
+
+
