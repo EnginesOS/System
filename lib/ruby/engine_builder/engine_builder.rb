@@ -181,6 +181,7 @@ class EngineBuilder < ErrorsApi
       if cnt == 120
         log_build_output('') # force EOL to end the ...
         log_build_output('Startup still running')
+       
         break
       end
       if lcnt == 5
@@ -193,7 +194,7 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
-      log_build_output('Engine Stopped')
+      log_build_output('Engine Stopped:', mc.logs_container)
       @result_mesg = 'Engine Stopped!'
     end
 
@@ -270,8 +271,7 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return true if mc
-    log_build_errors('Failed to Launch:' + mc.logs_container.to_s )
+    return true if mc   
     log_error_mesg('Failed to Launch ', mc)
   rescue StandardError => e
     log_exception(e)
