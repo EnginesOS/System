@@ -11,7 +11,7 @@
 	
 	for path in $*
       do
-      echo $path |grep ^/usr/local/
+      echo $path |grep ^/usr/local/ >/dev/null
       if test $? -eq 0
        then
          path=`echo $path | sed "/\/usr\/local\//s///"`
@@ -19,17 +19,18 @@
        else
         prefix=/home/
       fi 
+      echo Prefix: $prefix
       path=`echo $path | sed "/[.][.]/s///g"` 
-      echo $path
+      echo Path: $path
  path=`echo $path | sed "/\/$/s///"`
 		dirname=`dirname "$path" `
 		mkdir -p "$VOLDIR/$dirname"
 		echo mkdir -p "$VOLDIR/$dirname"
-		touch  "$VOLDIR/at1"
+		#touch  "$VOLDIR/at1"
    			if [ ! -d "$prefix/$path" ]
      			then 
        			    mkdir -p "$prefix/$path" 
-   					echo mkdir -p "$prefix/$path" 
+   					echo Make Dir: mkdir -p "$prefix/$path" 
    			fi
 
 		mv "$prefix/$path" "$VOLDIR/$dirname" 
