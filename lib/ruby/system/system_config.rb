@@ -35,6 +35,12 @@ class SystemConfig
   @@internal_domain = 'engines.internal'
 
   @@MinimumFreeRam = 64
+  @@MinimumBuildRam  = @@MinimumFreeRam + 128
+  def self.MinimumBuildRam
+     @@MinimumBuildRam
+   end
+  
+  
   @@MinimumFreeImageSpace = 2000
   def self.MinimumFreeImageSpace
     @@MinimumFreeImageSpace
