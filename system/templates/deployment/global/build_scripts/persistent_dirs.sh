@@ -33,7 +33,7 @@
    			fi
 
 		mv "$prefix/$path" "$VOLDIR/$dirname" 
-	echo "$prefix/$path" "$VOLDIR/$dirname" 
+	echo "mv $prefix / $path" "$VOLDIR / $dirname" 
 		ln -s "$VOLDIR/$path" "$prefix/$path"
 		echo ln -s "$VOLDIR/$path" "$prefix/$path"
 	done
