@@ -344,10 +344,11 @@ class BluePrintReader
       external = port[:external]
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
+      type = 'both' if type == 'TCP and UDP'
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
       @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
-    end
+    end 
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)

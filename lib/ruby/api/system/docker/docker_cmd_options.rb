@@ -93,8 +93,6 @@ module DockerCmdOptions
             eportoption += eport.port.to_s
             if eport.proto_type.nil?
               eport.proto_type = 'tcp'
-            elsif eport.proto_type.downcase.include?('and')
-              eport.proto_type = 'both'
             else
               eportoption += '/' + eport.proto_type + ' '
             end
