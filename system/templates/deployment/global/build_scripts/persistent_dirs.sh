@@ -8,8 +8,17 @@
 	#dirname = /some/were/to/
 	# mv /home/$path $VOLDIR/$dirname
 	#ln -s $voldir/$dirname /home/some/were/to/path
+	
 	for path in $*
       do
+      echo $path |grep ^/usr/local/
+      if test $? -eq 0
+       then
+         path=`echo $path | sed "/\/usr\/local\//s///"`
+       	prefix=/usr/local/
+       else
+        prefix=/home/
+      fi 
       path=`echo $path | sed "/[.][.]/s///g"` 
       echo $path
  path=`echo $path | sed "/\/$/s///"`
@@ -17,14 +26,14 @@
 		mkdir -p "$VOLDIR/$dirname"
 		echo mkdir -p "$VOLDIR/$dirname"
 		touch  "$VOLDIR/at1"
-   			if [ ! -d "/home/$path" ]
+   			if [ ! -d "$prefix/$path" ]
      			then 
-       			    mkdir -p "/home/$path" 
-   					echo mkdir -p "/home/$path" 
+       			    mkdir -p "$prefix/$path" 
+   					echo mkdir -p "$prefix/$path" 
    			fi
 
-		mv "/home/$path" "$VOLDIR/$dirname" 
-	echo "/home/$path" "$VOLDIR/$dirname" 
-		ln -s "$VOLDIR/$path" "/home/$path"
-		echo ln -s "$VOLDIR/$path" "/home/$path"
+		mv "$prefix/$path" "$VOLDIR/$dirname" 
+	echo "$prefix/$path" "$VOLDIR/$dirname" 
+		ln -s "$VOLDIR/$path" "$prefix/$path"
+		echo ln -s "$VOLDIR/$path" "$prefix/$path"
 	done
