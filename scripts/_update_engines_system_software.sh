@@ -1,12 +1,14 @@
 #!/bin/bash
 
 echo "Restarting"
-sleep 5
+
 #docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
 
+echo "update service defs"
 cd /opt/engines/etc/services
 git pull >/dev/null
 
+echo "update System"
 cd /opt/engines
 git pull
 
