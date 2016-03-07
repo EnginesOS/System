@@ -16,8 +16,8 @@ docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log
 #  sudo /opt/engines/scripts/_mv_update_script $?
 # fi
 
-#docker stop registry >> /var/log/engines/updates/engines_system_update_$ts.log
-#docker start registry >> /var/log/engines/updates/engines_system_update_$ts.log
+docker stop registry >> /var/log/engines/updates/engines_system_update_$ts.log
+docker start registry >> /var/log/engines/updates/engines_system_update_$ts.log
 sleep 15
 
 #/opt/engines/system/updates/scripts/current_update_specifics.sh
