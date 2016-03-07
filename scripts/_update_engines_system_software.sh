@@ -1,23 +1,19 @@
 #!/bin/bash
-touch /opt/engines/run/system/flags/update_engines_running 
-chown engines /opt/engines/run/system/flags/update_engines_running 
 
+echo "Updating files"
+
+
+echo "update service defs"
 cd /opt/engines/etc/services
 git pull >/dev/null
 
+echo "update System"
 cd /opt/engines
 git pull
 
 
  cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
  chmod og-rw /etc/sudoers.d/engines 
- 
-update_scripts=`ls /opt/engines/system/updates/to_run |grep -v keep`
-if ! test -z  "$update_scripts"
- then
-	echo " $update_scripts" >> ~engines/.complete_update
-fi
-
 
 
 

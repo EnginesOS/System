@@ -29,7 +29,8 @@ class EngineBuilder < ErrorsApi
   :result_mesg,
   :build_params,
   :data_uid,
-  :data_gid
+  :data_gid,
+  :build_error
 
   attr_accessor :app_is_persistent
   class BuildError < StandardError
@@ -99,7 +100,7 @@ class EngineBuilder < ErrorsApi
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
 
     free_ram = MemoryStatistics.avaiable_ram
-    ram_needed = SystemConfig.MinimumFreeRam + @build_params[:memory].to_i
+    ram_needed = SystemConfig.MinimumBuildRam + @build_params[:memory].to_i
     return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
     log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
 
@@ -180,6 +181,7 @@ class EngineBuilder < ErrorsApi
       if cnt == 120
         log_build_output('') # force EOL to end the ...
         log_build_output('Startup still running')
+       
         break
       end
       if lcnt == 5
@@ -192,7 +194,7 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
-      log_build_output('Engine Stopped')
+      log_build_output('Engine Stopped:', mc.logs_container)
       @result_mesg = 'Engine Stopped!'
     end
 
@@ -269,8 +271,7 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return true if mc
-    log_build_errors('Failed to Launch')
+    return true if mc   
     log_error_mesg('Failed to Launch ', mc)
   rescue StandardError => e
     log_exception(e)
@@ -567,6 +568,7 @@ class EngineBuilder < ErrorsApi
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error. Aborted Due to:' + line.to_s
+    @build_error = @result_mesg
     return false
   end
 

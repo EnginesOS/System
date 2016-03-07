@@ -36,7 +36,8 @@ class BluePrintReader
   :services,
   :deployment_type,
   :database_seed,
-  :blocking_worker
+  :blocking_worker,
+  :web_root
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -72,9 +73,16 @@ class BluePrintReader
     read_persistent_files
     read_persistent_dirs
     read_web_port_overide
+    read_web_root
+   
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
+  end
+  
+  def read_web_root
+    @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
+    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
   end
 
   def read_deployment_type
@@ -336,10 +344,11 @@ class BluePrintReader
       external = port[:external]
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
+      type = 'both' if type == 'TCP and UDP'
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
       @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
-    end
+    end 
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function wait_for_debug {
+if ! test -z "$DEBUG"
+ then
+		echo "Stopped by Sleeping for 500 seconds to allow debuging"
+  	 	sleep 500
+  	 fi
+ }
+  	 
   if test  ! -f /engines/var/run/flags/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "
@@ -67,7 +75,8 @@ if test -f /home/engines/scripts/custom_start.sh
 		result=`/home/engines/scripts/custom_start.sh`
 		if test "$result" = "exit"
 			then 
-				exit
+			wait_for_debug
+			exit
 		fi
 		
 	fi
@@ -76,9 +85,13 @@ if test -f /home/engines/scripts/custom_start.sh
 if test -f /home/startwebapp.sh 
 	then
 		/home/startwebapp.sh 
+		 wait_for_debug
 		exit
 	fi
 	
+
+
+
 #Apache based below here
 
 PID_FILE=/run/apache2/apache2.pid
@@ -107,4 +120,5 @@ mkdir -p /var/log/apache2/ >/dev/null
 		
 touch /engines/var/run/flags/startup_complete
  wait 
+  wait_for_debug
  rm /engines/var/run/flags/startup_complete
