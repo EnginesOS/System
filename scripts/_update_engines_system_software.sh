@@ -14,13 +14,6 @@ git pull
 
  cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
  chmod og-rw /etc/sudoers.d/engines 
- 
-#update_scripts=`ls /opt/engines/system/updates/to_run |grep -v keep`
-#if ! test -z  "$update_scripts"
-# then
-#	echo " $update_scripts" >> ~engines/.complete_update
-#fi
-
 
 
 

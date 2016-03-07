@@ -1,10 +1,6 @@
 #!/bin/sh
 touch /opt/engines/run/system/flags/update_engines_running 
 
-ts=`date +%d-%m-%Y-%H:%M`
-touch /var/log/updates/engines_system_update_$ts.log
-
-
 sudo /opt/engines/scripts/_update_engines_system_software.sh 
 
 echo "Restarting"
