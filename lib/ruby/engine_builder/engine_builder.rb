@@ -103,7 +103,7 @@ class EngineBuilder < ErrorsApi
     if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam 
     ram_needed = SystemConfig.MinimumBuildRam 
     else
-      @ram_needed = build_params[:memory].to_i
+      ram_needed = @build_params[:memory].to_i
     end
     return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
     log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
