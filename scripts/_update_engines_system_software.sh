@@ -1,8 +1,7 @@
 #!/bin/bash
 
-echo "Restarting"
+echo "Updating files"
 
-#docker stop mgmt >> /var/log/engines/updates/engines_system_update_$ts.log 
 
 echo "update service defs"
 cd /opt/engines/etc/services
