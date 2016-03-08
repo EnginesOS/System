@@ -13,6 +13,11 @@ module BuilderSettings
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
   @@SetupParamsScript = '/bin/bash /home/setup_params.sh'
+  @@ActionatorDir = '/home/actionators/'
+  
+  def SystemConfig.ActionatorDir
+  @@ActionatorDir
+end
   def SystemConfig.SetupParamsScript
     return @@SetupParamsScript
   end
