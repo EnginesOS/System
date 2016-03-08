@@ -13,7 +13,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'config_file_writer.rb'
   require_relative 'service_builder/service_builder.rb'
 
-  require_relative 'configure_services_backup.rb'
+  require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup  
   
   include BuildReport
