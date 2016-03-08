@@ -2,7 +2,7 @@ require_relative '../../service_manager/service_definitions.rb'
 
 class ServiceBuilder < ErrorsApi
 
-  attr_reader :volumes, :app_is_persistent
+  attr_reader :volumes, :app_is_persistent, :attached_services
 
   require_relative 'orphan_service_builder.rb'
   include OrphansServiceBuilder
