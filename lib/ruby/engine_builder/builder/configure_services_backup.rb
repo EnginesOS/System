@@ -11,7 +11,7 @@ module ConfigureServicesBackup
     destdir = SystemConfig.BackupScriptsRoot + '/' + service[:publisher_namespace] + '/' + service[:type_path] + '/'
 
       Dir.entries(script_src_dir).each do |script_src_file |
-        next if script_src_file.start_with?('.')
+        next unless File.file?(script_src_file)        
         script_src = File.read(script_src_file)
         write_software_script_file(destdir + script_src_file, script_src)      
       end
