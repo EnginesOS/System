@@ -12,6 +12,10 @@ class EngineBuilder < ErrorsApi
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
   require_relative 'service_builder/service_builder.rb'
+
+  require_relative 'configure_services_backup.rb'
+  include ConfigureServicesBackup  
+  
   include BuildReport
   
   require_relative 'builder/engine_scripts_builder.rb'
@@ -94,7 +98,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Statrting build with params ',  @build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
     space /= 1024
@@ -131,6 +135,7 @@ class EngineBuilder < ErrorsApi
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
     return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
+    configure_services_backup(@service_builder.attached_services)
     apply_templates_to_environments
     create_engines_config_files
     index = 0

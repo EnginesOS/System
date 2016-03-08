@@ -7,6 +7,8 @@ module EngineScriptsBuilder
      create_post_install_script
      write_worker_commands
      create_actionator_scripts
+  rescue Exception => e
+    SystemUtils.log_exception(e)
    end
  
    def create_start_script
@@ -14,9 +16,11 @@ module EngineScriptsBuilder
      && @blueprint[:software][:custom_start_script].nil? == false\
      && @blueprint[:software][:custom_start_script].length > 0
        content = @blueprint[:software][:custom_start_script].gsub(/\r/, '')
-       write_software_file(SystemConfig.StartScript, content)
-       File.chmod(0755, basedir + SystemConfig.StartScript)
+       write_software_script_file(SystemConfig.StartScript, content)
+      
      end
+   rescue Exception => e
+     SystemUtils.log_exception(e)
    end
  
    def create_install_script
@@ -24,9 +28,11 @@ module EngineScriptsBuilder
      && @blueprint[:software][:custom_install_script].nil? == false\
      && @blueprint[:software][:custom_install_script].length > 0
        content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-       write_software_file(SystemConfig.InstallScript, content)
-       File.chmod(0755, basedir + SystemConfig.InstallScript)
+       write_software_script_file(SystemConfig.InstallScript, content)
+      
      end
+   rescue Exception => e
+     SystemUtils.log_exception(e)
    end
  
    def create_post_install_script
@@ -35,10 +41,12 @@ module EngineScriptsBuilder
      && @blueprint[:software][:custom_post_install_script].nil? == false \
      && @blueprint[:software][:custom_post_install_script].length > 0
        content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
-       write_software_file(SystemConfig.PostInstallScript, content)
-       File.chmod(0755, basedir + SystemConfig.PostInstallScript)
+       write_software_script_file(SystemConfig.PostInstallScript, content)
+      
        @has_post_install = true
      end
+     rescue Exception => e
+          SystemUtils.log_exception(e)
    end
   
   def create_actionator_scripts
@@ -47,8 +55,8 @@ module EngineScriptsBuilder
     @blueprint.actionators.each do |actionator| 
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
        content = actionator[:content]
-      write_software_file(filename, content)
-      File.chmod(0755, basedir + filename)
+      write_software_script_file(filename, content)
+      
     end
     return true
     rescue StandardError => e
@@ -67,8 +75,8 @@ module EngineScriptsBuilder
        @blueprint_reader.worker_commands.each do |command|
          content += command + "\n"
        end
-       write_software_file(scripts_path + 'pre-running.sh', content)
-       File.chmod(0755, basedir + scripts_path + 'pre-running.sh')
+       write_software_script_file(scripts_path + 'pre-running.sh', content)
+    
      end
  
      return true if @blueprint_reader.blocking_worker.nil?
@@ -77,11 +85,20 @@ module EngineScriptsBuilder
      content += "cd /home/app\n"
      content += @blueprint_reader.blocking_worker.to_s
      content += "\n"
-     write_software_file(scripts_path + 'blocking.sh', content)
-     File.chmod(0755, basedir + scripts_path + 'blocking.sh')
+    write_software_script_file(scripts_path + 'blocking.sh', content)
+    # File.chmod(0755, basedir + scripts_path + 'blocking.sh')
  
    rescue Exception => e
      SystemUtils.log_exception(e)
+   end
+   
+   private
+   
+   def write_software_script_file(scripts_path,content)
+     write_software_file(scripts_path, content)
+     File.chmod(0755, basedir + scripts_path )
+     rescue Exception => e
+          SystemUtils.log_exception(e)
    end
 
 end
