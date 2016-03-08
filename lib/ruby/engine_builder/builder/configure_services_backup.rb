@@ -9,8 +9,9 @@ module ConfigureServicesBackup
 
   def install_backup_scripts(service, script_src_dir)
     destdir = SystemConfig.BackupScriptsRoot + '/' + service[:publisher_namespace] + '/' + service[:type_path] + '/'
-      
-      Dir(destdir).glob('*.rb').each do |script_src_file |
+
+      Dir.entries(script_src_dir).each do |script_src_file |
+        next if script_src_file.start_with?('.')
         script_src = File.read(script_src_file)
         write_software_script_file(destdir + script_src_file, script_src)      
       end
