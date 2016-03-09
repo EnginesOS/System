@@ -13,7 +13,8 @@ module ConfigureServicesBackup
     
       Dir.entries(script_src_dir).each do |script_src_file |
         next unless File.file?(script_src_file)        
-        script_src = File.read(script_src_file)      
+        script_src = File.read(script_src_file)  
+        SystemDebug.debug(SystemDebug.builder,script_src_file,destdir )
         write_software_script_file(destdir + script_src_file, script_src)      
       end
   end
