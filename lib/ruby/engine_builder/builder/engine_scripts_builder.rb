@@ -63,7 +63,7 @@ module EngineScriptsBuilder
     end
     return true
     rescue StandardError => e
-      
+    SystemUtils.log_exception(e)
   end
   
   def write_worker_commands

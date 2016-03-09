@@ -389,6 +389,7 @@ class BluePrintReader
     log_build_output('Read Actionators')
     if @blueprint[:software].key?(:actionators)   
     @actionators = @blueprint[:software][:actionators]
+      SystemDebug.debug(SystemDebug.builder,@actionators)
     else
       @actionators = nil
     end
