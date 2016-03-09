@@ -283,12 +283,14 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return true if mc   
-    log_error_mesg('Failed to Launch ', mc)
+    return log_error_mesg('Failed to Launch ', mc) unless mc 
+    save_engine_configuration  
+    return mc
   rescue StandardError => e
     log_exception(e)
   end
-
+  
+ 
   def setup_global_defaults
     log_build_output('Setup global defaults')
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
@@ -480,6 +482,7 @@ class EngineBuilder < ErrorsApi
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
     log_build_output('Launching ' + @mc.to_s)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
+   
     log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
     return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
     flag_restart_required(@mc) if @has_post_install == true

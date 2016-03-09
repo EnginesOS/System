@@ -1,5 +1,24 @@
 module Actionators
-  def list_actionators(service)
+
+    def list_engine_actionators(engine)
+    return @system_api.load_actionators(container)
+    
+      rescue StandardError => e
+          log_exception(e,'list_actionators',engine)
+    end
+    
+    def perform_engine_action(engine_name,actionator_name,params)
+      SystemDebug.debug(SystemDebug.actions,engine_name,actionator_name,params)
+     engine = loadManagedEngine(engine_name)
+    return engine.perform_action(actionator_name,params) if engine.is_running?
+     @last_error = "Engine not running"
+     return false
+      rescue StandardError => e
+          log_exception( e,'perform_engine_action',engine_name,actionator_name,params)
+    end
+    
+  
+  def list_service_actionators(service)
     if service.is_a?(Hash)
       SoftwareServiceDefinition.software_service_definition(service)
     else

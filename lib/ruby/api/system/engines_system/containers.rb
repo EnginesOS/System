@@ -138,4 +138,29 @@ module Containers
     rescue StandardError => e
       return true
   end
+
+  
+def write_actionators(container, actionators)
+  return true if actionators.nil?
+  Dir.mkdir_p(ContainerStateFiles.actionator_dir(container)) unless Dir.exist?(ContainerStateFiles.actionator_dir(container))
+  serialized_object = YAML.dump(actionators)
+  
+  f = File.new(ContainerStateFiles.actionator_dir(container) + 'actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+      f.puts(serialized_object)
+      f.flush()
+      f.close
+rescue StandardError => e
+  log_exception(e)
+end
+
+def load_actionators(container)
+  return {} unless File.exist?(ContainerStateFiles.actionator_dir(container) + 'actionators.yaml')
+    yaml =  File.read(ContainerStateFiles.actionator_dir(container) + 'actionators.yaml')
+  actionators = YAML::load(yaml)
+  return actionators if actionators.is_a?(Hash)    
+    return {}
+  rescue StandardError => e
+    log_exception(e)  
+end
+  
 end
