@@ -157,7 +157,7 @@ def load_engine_actionators(container)
   return [] unless File.exist?(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
     yaml =  File.read(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
   actionators = YAML::load(yaml)
-  return actionators.values if actionators.is_a?(Hash)    
+  return actionators if actionators.is_a?(Hash)    
     return []
   rescue StandardError => e
     log_exception(e)  
