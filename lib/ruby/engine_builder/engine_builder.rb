@@ -15,6 +15,8 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup  
+  require_relative 'builder/save_engine_configuration.rb'
+  include SaveEngineConfiguration
   
   include BuildReport
   
