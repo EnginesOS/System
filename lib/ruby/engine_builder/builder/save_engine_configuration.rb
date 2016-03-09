@@ -13,7 +13,7 @@ def write_actionators(actionators)
   FileUtils.mkdir_p(ContainerStateFiles.actionator_dir(@mc)) unless Dir.exist?(ContainerStateFiles.actionator_dir(@mc))
   serialized_object = YAML.dump(actionators)
   
-  f = File.new(ContainerStateFiles.actionator_dir(@mc) + 'actionators.yml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+  f = File.new(ContainerStateFiles.actionator_dir(@mc) + '/actionators.yml', File::CREAT | File::TRUNC | File::RDWR, 0644)
       f.puts(serialized_object)
       f.flush()
       f.close
