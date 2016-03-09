@@ -135,7 +135,7 @@ class EngineBuilder < ErrorsApi
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
     return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
-    configure_services_backup(@service_builder.attached_services)
+   
     apply_templates_to_environments
     create_engines_config_files
     index = 0

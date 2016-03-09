@@ -7,6 +7,8 @@ module EngineScriptsBuilder
      create_post_install_script
      write_worker_commands
      create_actionator_scripts
+     configure_services_backup(@service_builder.attached_services)
+    
   rescue Exception => e
     SystemUtils.log_exception(e)
    end
