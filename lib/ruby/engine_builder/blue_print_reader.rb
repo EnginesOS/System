@@ -37,7 +37,8 @@ class BluePrintReader
   :deployment_type,
   :database_seed,
   :blocking_worker,
-  :web_root
+  :web_root,
+  :actionators
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -74,7 +75,7 @@ class BluePrintReader
     read_persistent_dirs
     read_web_port_overide
     read_web_root
-   
+    read_actionators
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -384,4 +385,18 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
+  def read_actionators
+    log_build_output('Read Actionators')
+    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+    if @blueprint[:software].key?(:actionators)   
+    @actionators = @blueprint[:software][:actionators]
+      SystemDebug.debug(SystemDebug.builder,@actionators)
+    else
+      SystemDebug.debug(SystemDebug.builder,'No actionators')
+      @actionators = nil
+    end
+    rescue StandardError => e
+    @actionators = nil
+        SystemUtils.log_exception(e)
+      end 
 end

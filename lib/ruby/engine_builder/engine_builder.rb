@@ -12,7 +12,16 @@ class EngineBuilder < ErrorsApi
   require_relative 'build_report.rb'
   require_relative 'config_file_writer.rb'
   require_relative 'service_builder/service_builder.rb'
+
+  require_relative 'builder/configure_services_backup.rb'
+  include ConfigureServicesBackup  
+  require_relative 'builder/save_engine_configuration.rb'
+  include SaveEngineConfiguration
+  
   include BuildReport
+  
+  require_relative 'builder/engine_scripts_builder.rb'
+  include EngineScriptsBuilder
 
   require_relative '../templater/templater.rb'
 
@@ -91,7 +100,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Statrting build with params ',  @build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
     space /= 1024
@@ -100,7 +109,11 @@ class EngineBuilder < ErrorsApi
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
 
     free_ram = MemoryStatistics.avaiable_ram
-    ram_needed = SystemConfig.MinimumBuildRam + @build_params[:memory].to_i
+    if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam 
+    ram_needed = SystemConfig.MinimumBuildRam 
+    else
+      ram_needed = @build_params[:memory].to_i
+    end
     return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
     log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
 
@@ -124,6 +137,7 @@ class EngineBuilder < ErrorsApi
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
     return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
+   
     apply_templates_to_environments
     create_engines_config_files
     index = 0
@@ -271,12 +285,14 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return true if mc   
-    log_error_mesg('Failed to Launch ', mc)
+    return log_error_mesg('Failed to Launch ', mc) unless mc 
+    save_engine_configuration  
+    return mc
   rescue StandardError => e
     log_exception(e)
   end
-
+  
+ 
   def setup_global_defaults
     log_build_output('Setup global defaults')
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
@@ -396,45 +412,7 @@ class EngineBuilder < ErrorsApi
     end
   end
 
-  def create_scripts
-    FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
-    create_start_script
-    create_install_script
-    create_post_install_script
-    write_worker_commands
-  end
-
-  def create_start_script
-    if @blueprint[:software].key?(:custom_start_script) \
-    && @blueprint[:software][:custom_start_script].nil? == false\
-    && @blueprint[:software][:custom_start_script].length > 0
-      content = @blueprint[:software][:custom_start_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.StartScript, content)
-      File.chmod(0755, basedir + SystemConfig.StartScript)
-    end
-  end
-
-  def create_install_script
-    if @blueprint[:software].key?(:custom_install_script) \
-    && @blueprint[:software][:custom_install_script].nil? == false\
-    && @blueprint[:software][:custom_install_script].length > 0
-      content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.InstallScript, content)
-      File.chmod(0755, basedir + SystemConfig.InstallScript)
-    end
-  end
-
-  def create_post_install_script
-
-    if @blueprint[:software].key?(:custom_post_install_script) \
-    && @blueprint[:software][:custom_post_install_script].nil? == false \
-    && @blueprint[:software][:custom_post_install_script].length > 0
-      content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
-      write_software_file(SystemConfig.PostInstallScript, content)
-      File.chmod(0755, basedir + SystemConfig.PostInstallScript)
-      @has_post_install = true
-    end
-  end
+ 
 
   def create_php_ini
     FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomPHPiniFile))
@@ -506,6 +484,7 @@ class EngineBuilder < ErrorsApi
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
     log_build_output('Launching ' + @mc.to_s)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
+   
     log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
     return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
     flag_restart_required(@mc) if @has_post_install == true
@@ -630,34 +609,7 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-  def write_worker_commands
-    log_build_output('Dockerfile:Worker Commands')
-    scripts_path =  '/home/engines/scripts/'
-    if Dir.exist?(scripts_path) == false
-      FileUtils.mkdir_p(scripts_path)
-    end
-    if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-      content = "#!/bin/bash\n"
-      content += "cd /home/app\n"
-      @blueprint_reader.worker_commands.each do |command|
-        content += command + "\n"
-      end
-      write_software_file(scripts_path + 'pre-running.sh', content)
-      File.chmod(0755, basedir + scripts_path + 'pre-running.sh')
-    end
-
-    return true if @blueprint_reader.blocking_worker.nil?
-
-    content = "#!/bin/bash\n"
-    content += "cd /home/app\n"
-    content += @blueprint_reader.blocking_worker.to_s
-    content += "\n"
-    write_software_file(scripts_path + 'blocking.sh', content)
-    File.chmod(0755, basedir + scripts_path + 'blocking.sh')
-
-  rescue Exception => e
-    SystemUtils.log_exception(e)
-  end
+ 
 
   protected
 

@@ -13,6 +13,21 @@ module BuilderSettings
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
   @@SetupParamsScript = '/bin/bash /home/setup_params.sh'
+  @@ActionatorDir = '/home/actionators/'
+  @@BackupScriptsRoot = '/home/services/'
+  @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
+   
+   def SystemConfig.BackupScriptsSrcRoot
+     @@BackupScriptsSrcRoot
+   end
+  def SystemConfig.BackupScriptsRoot
+    @@BackupScriptsRoot
+  end
+  
+  def SystemConfig.ActionatorDir
+    @@ActionatorDir
+  end
+
   def SystemConfig.SetupParamsScript
     return @@SetupParamsScript
   end
