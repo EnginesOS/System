@@ -23,13 +23,13 @@ for directory in $*
         dirs=`find /home/app/$directory -type d -print0`
         if ! test -z "$dirs" 
           then
-         	echo -n $dirs | xargs  chmod 755
+         	find /home/app/$directory -type d -print0 | xargs -0 chmod 755
          fi
          
         files=`find /home/app/$directory -type f -print0`
         if ! test -z "$files" 
           then
-         	echo -n  $files | xargs  chmod 644
+         	find /home/app/$directory -type f -print0 | xargs -0 chmod 644
          fi
        
         done
