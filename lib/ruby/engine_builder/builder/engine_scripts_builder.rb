@@ -52,7 +52,7 @@ module EngineScriptsBuilder
    end
   
   def create_actionator_scripts
-    SystemDebug.debug(SystemDebug.builder,"creating actionators ",@blueprint_reader.actionators)
+    SystemDebug.debug(SystemDebug.builder,"creating actionators ",@blueprint_reader.actionators, @blueprint_reader.actionators.class.Name)
     return true if @blueprint_reader.actionators.nil?
     
     @blueprint_reader.actionators.each do |actionator| 
