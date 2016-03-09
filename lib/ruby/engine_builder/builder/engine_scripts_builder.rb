@@ -54,6 +54,7 @@ module EngineScriptsBuilder
     
     @blueprint.actionators.each do |actionator| 
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
+      SystemDebug.debug(SystemDebug.builder,"creating actionator " ,  actionator[:name])
        content = actionator[:content]
       write_software_script_file(filename, content)
       
