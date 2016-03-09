@@ -52,10 +52,10 @@ module EngineScriptsBuilder
    end
   
   def create_actionator_scripts
-    SystemDebug.debug(SystemDebug.builder,"creating actionators ")
-    return true if @blueprint.actionators.nil?
+    SystemDebug.debug(SystemDebug.builder,"creating actionators ",@blueprint_reader.actionators)
+    return true if @blueprint_reader.actionators.nil?
     
-    @blueprint.actionators.each do |actionator| 
+    @blueprint_reader.actionators.each do |actionator| 
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
       SystemDebug.debug(SystemDebug.builder,"creating actionator " ,  actionator[:name])
        content = actionator[:content]
