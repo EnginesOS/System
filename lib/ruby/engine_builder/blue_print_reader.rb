@@ -387,10 +387,12 @@ class BluePrintReader
   end
   def read_actionators
     log_build_output('Read Actionators')
+    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
     if @blueprint[:software].key?(:actionators)   
     @actionators = @blueprint[:software][:actionators]
       SystemDebug.debug(SystemDebug.builder,@actionators)
     else
+      SystemDebug.debug(SystemDebug.builder,'No actionators')
       @actionators = nil
     end
     rescue StandardError => e
