@@ -1,5 +1,5 @@
 module SaveEngineConfiguration
-   def save_engine_configuraton
+   def save_engine_configuration
    
   write_actionators(@blueprint_reader.actionators)
   write_services
