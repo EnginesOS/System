@@ -153,7 +153,7 @@ rescue StandardError => e
   log_exception(e)
 end
 
-def load_actionators(container)
+def load_engine_actionators(container)
   return [] unless File.exist?(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
     yaml =  File.read(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
   actionators = YAML::load(yaml)
