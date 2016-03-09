@@ -75,7 +75,7 @@ class BluePrintReader
     read_persistent_dirs
     read_web_port_overide
     read_web_root
-   
+    read_actionators
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -387,8 +387,7 @@ class BluePrintReader
   end
   def read_actionators
     log_build_output('Read Actionators')
-    if @blueprint[:software].key?(:actionators)
-   
+    if @blueprint[:software].key?(:actionators)   
     @actionators = @blueprint[:software][:actionators]
     else
       @actionators = nil
