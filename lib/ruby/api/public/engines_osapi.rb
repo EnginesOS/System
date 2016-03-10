@@ -15,14 +15,20 @@ class EnginesOSapi < ErrorsApi
   require_relative 'engines_osapi/certificate_actions.rb'
   include CertificateActions
   require_relative 'engines_osapi/container_actions.rb'
+  
   include ContainerActions
-  require_relative 'engines_osapi/domainname_actions.rb'
+  
+  require_relative 'engines_osapi/domainname_actions.rb'  
   include DomainnameActions
-  require_relative 'engines_osapi/engine_actions.rb'
+  
+  require_relative 'engines_osapi/engine_actions.rb'    
   include EngineActions
-  require_relative 'engines_osapi/engine_build_actions.rb'
+  
+  require_relative 'engines_osapi/engine_build_actions.rb'  
   include EngineBuildActions
-
+  
+  require_relative 'engines_osapi/eservice_import_export.rb'  
+  include ServiceImportExport
   require_relative 'engines_osapi/engines_system_info.rb'
   include EnginesSystemInfo
   require_relative 'engines_osapi/fetch_trees.rb'
