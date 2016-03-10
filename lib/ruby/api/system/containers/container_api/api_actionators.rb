@@ -20,7 +20,7 @@ module ApiActionators
 
   def perform_action(c,actionator_name, params)
       # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + list_params(params).to_s
+      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh \'' + list_params(params).to_json + '\''
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
