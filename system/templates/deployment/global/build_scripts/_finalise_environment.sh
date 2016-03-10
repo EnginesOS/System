@@ -32,4 +32,4 @@ echo "	id $ContUser | grep $data_gid '"
 	fi
 	
 chown -R  $ContUser $HOME
-chmod g-w $HOME
+#chmod g-w $HOME
