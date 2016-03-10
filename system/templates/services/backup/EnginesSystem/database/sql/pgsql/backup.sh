@@ -1,7 +1,8 @@
 #!/bin/bash
-export  PGPASSWORD='$dbpasswd'
+export  PGPASSWORD=$dbpasswd
 
 pg_dump  -h $dbhost -Fc -U $dbuser  $dbname 2>/tmp/pg_sqldump.errs
+export  PGPASSWORD=''
 if test $? -ne 0
  then 
  	cat  /tmp/pg_sqldump.errs

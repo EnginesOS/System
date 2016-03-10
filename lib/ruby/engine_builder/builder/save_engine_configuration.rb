@@ -1,10 +1,9 @@
 module SaveEngineConfiguration
-   def save_engine_configuration
-   
-  write_actionators(@mc, @blueprint_reader.actionators)
-  write_services(@mc, @blueprint_reader.attached_services)
-  write_variables(@mc, @blueprint_reader.actionators)
-  
+   def save_engine_built_configuration(mc)
+        
+  write_actionators(mc, @blueprint_reader.actionators)
+  write_services(mc, @service_builder.attached_services)
+  write_variables(mc, @blueprint_reader.environments)    
   
 end
 
@@ -22,13 +21,13 @@ rescue StandardError => e
 end
 
 
- def  write_services
+ def  write_services(mc, attached_services)
    
    
    
  end
  
- def write_variables
+ def write_variables(mc, environments)    
  end
 
 end
