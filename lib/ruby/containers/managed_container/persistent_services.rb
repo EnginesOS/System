@@ -22,6 +22,10 @@ module PersistantServices
   
 end
 
+def export_service(service_hash)
+  @container_api.export_service(service_hash)
+end
+
 def service_to_str(service_hash)
   retval = service_hash[:publisher_namespace].to_s + '/' + service_hash[:type_path].to_s 
   service_hash[:variables].each do |variable|
