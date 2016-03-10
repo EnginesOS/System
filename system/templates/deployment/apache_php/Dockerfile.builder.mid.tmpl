@@ -25,6 +25,6 @@ RUN	chmod -R g+r /home/app;\
 #	mv /tmp/apache2.conf /etc/apache2/apache2.conf
 #	
 RUN /build_scripts/configure_apache.sh
-ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+#ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
 
 USER $ContUser

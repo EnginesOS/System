@@ -23,7 +23,10 @@ class EnginesCore < ErrorsApi
 
   require_relative 'container_config_loader.rb'
   include ContainerConfigLoader
-
+  
+  require_relative 'core_service_import_export.rb'  
+  include CoreServiceImportExport
+  
   require_relative 'container_states.rb'
   include ContainerStates
   

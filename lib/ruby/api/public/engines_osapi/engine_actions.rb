@@ -1,4 +1,5 @@
 module EngineActions
+  
   def list_apps
     @core_api.list_managed_engines
   rescue StandardError => e

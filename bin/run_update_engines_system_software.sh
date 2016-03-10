@@ -1,35 +1,30 @@
 #!/bin/sh
 touch /opt/engines/run/system/flags/update_engines_running 
 
-ts=`date +%d-%m-%Y-%H:%M`
-touch /var/log/engines/engines_system_update_$ts.log
+sudo /opt/engines/scripts/_update_engines_system_software.sh 
 
 echo "Restarting"
 sleep 5
+docker stop mgmt 
 
-#/opt/engines/bin/eservice stop mgmt >> /var/log/engines/engines_system_update_$ts.log 
-docker stop mgmt >> /var/log/engines/engines_system_update_$ts.log 
+#if test -f /opt/engines/system/updates/to_run/pre_start.sh
+# then
+#  /opt/engines/system/updates/to_run/pre_start.sh 
+#  sudo /opt/engines/scripts/_mv_update_script $?
+# fi
 
-sudo /opt/engines/scripts/_update_engines_system_software.sh >> /var/log/engines/engines_system_update_$ts.log
-
-if test -f /opt/engines/system/updates/to_run/pre_start.sh
- then
-  /opt/engines/system/updates/to_run/pre_start.sh >> /var/log/engines/engines_system_update_$ts.log
-  sudo /opt/engines/scripts/_mv_update_script $?
- fi
-
-docker stop registry >> /var/log/engines/engines_system_update_$ts.log
-docker start registry >> /var/log/engines/engines_system_update_$ts.log
+docker stop registry
+docker start registry 
 sleep 15
 
-/opt/engines/system/updates/scripts/current_update_specifics.sh
+#/opt/engines/system/updates/scripts/current_update_specifics.sh
 
-/opt/engines/bin/eservice start mgmt >> /var/log/engines/engines_system_update_$ts.log
-docker start mgmt >> /var/log/engines/engines_system_update_$ts.log
+#/opt/engines/bin/eservice start mgmt 
+docker start mgmt 
  
  
  
 touch /opt/engines/run/system/flags/update_engines_run
 rm /opt/engines/run/system/flags/update_engines_running
-
+rm /opt/engines/run/system/flags/update_pending
 #/opt/engines/bin/follow_start.sh
