@@ -2,7 +2,7 @@ WORKDIR /home/app
 
 USER 0
 RUN /build_scripts/configure_apache.sh
-ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
+ENV DATABASE_URL $rails_flavor://$dbuser:$dbpasswd@$dbhost/$dbname
 RUN /build_scripts/create_database_yml.sh
 
 USER $ContUser
