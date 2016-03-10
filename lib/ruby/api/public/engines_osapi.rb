@@ -27,7 +27,7 @@ class EnginesOSapi < ErrorsApi
   require_relative 'engines_osapi/engine_build_actions.rb'  
   include EngineBuildActions
   
-  require_relative 'engines_osapi/eservice_import_export.rb'  
+  require_relative 'engines_osapi/service_import_export.rb'  
   include ServiceImportExport
   require_relative 'engines_osapi/engines_system_info.rb'
   include EnginesSystemInfo
