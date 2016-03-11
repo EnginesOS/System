@@ -1,11 +1,12 @@
 #!/bin/bash
 
 function wait_for_debug {
-if ! test -z "$DEBUG"
+if ! test -z "$Engines_Debug_Run"
  then
 		echo "Stopped by Sleeping for 500 seconds to allow debuging"
   	 	sleep 500
   	 fi
+  	 
  }
   	 
   if test  ! -f /engines/var/run/flags/volume_setup_complete
