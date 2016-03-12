@@ -100,7 +100,7 @@ class SystemDebug
   end
 
   def self.print_debug(args)
-    mesg = 'Debug:' + caller.to_+s + ':'
+    mesg = 'Debug:' + caller.to_s + ':'
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
