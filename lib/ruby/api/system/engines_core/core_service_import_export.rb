@@ -14,7 +14,7 @@ module CoreServiceImportExport
     engine.export_service(service_hash)
   end
 
-  def import_service(service_hash, data)
+  def import_service(params)
 
   end
 
