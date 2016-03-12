@@ -4,8 +4,8 @@ module ServiceImportExport
     @core_api.export_service(service_hash) 
   end
   
-  def import_service(service_hash) 
-    @core_api.import_service(service_hash) 
+  def import_service(params) 
+    @core_api.import_service(params) 
     end
     
 
