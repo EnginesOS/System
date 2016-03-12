@@ -21,7 +21,10 @@ module PersistantServices
   # patha-pathb-servicetype.service_handle.param1.param2.param3
   
 end
-
+  def import_service(service_hash)  
+    @container_api.import_service(service_hash)
+  end
+  
 def export_service(service_hash)
   @container_api.export_service(service_hash)
 end

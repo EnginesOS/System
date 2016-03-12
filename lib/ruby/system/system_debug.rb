@@ -16,15 +16,20 @@ class SystemDebug
   @@registry = 8192
   @@actions = 16384
   @@container_events = 32768
+  @@export_import = 65536
   @@all_debug_flags = @@container_events |@@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   #if File.exist?(debug_flag)
   # require(debug_flags)
   #else
-  @@debug_flags = @@execute  |@@engine_tasks | @@builder |@@containers |@@docker | @@update|@@actions
+  @@debug_flags = @@export_import | @@execute  |@@engine_tasks | @@builder |@@containers |@@docker | @@update|@@actions
   #end
   #  @@debug_flags = 0
+  def self.export_import
+     return @@export_import
+   end
+   
   def self.container_events
-    return @@actions
+    return @@container_events
   end
 
   def self.actions
