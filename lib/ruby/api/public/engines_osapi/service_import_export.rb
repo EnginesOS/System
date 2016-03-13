@@ -3,7 +3,7 @@ module ServiceImportExport
   def export_service(service_hash) 
     SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash) 
    r = @core_api.export_service(service_hash)
-    return failed(params.to_s, @last_error, 'export service') unless t.is_a?(String) 
+    return failed(params.to_s, @last_error, 'export service') if r.is_a?(FalseClas) 
     return r 
   end
   
