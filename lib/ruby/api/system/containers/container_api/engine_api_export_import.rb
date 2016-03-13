@@ -2,9 +2,9 @@ module EngineApiExportImport
   def export_service(service_hash)
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
-    SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+
     cmd = 'docker exec  ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/backup.sh ' 
-      
+    SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
         begin
           result = {}
           Timeout.timeout(@@action_timeout) do
