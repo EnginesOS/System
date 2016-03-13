@@ -5,7 +5,7 @@ module CoreServiceImportExport
 #    return false unless service_hash[:persistent] == true
     return false unless service_hash.key?(:parent_engine) == true
 
-    if service_hash[:container_type] == container
+    if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
       engine = loadManagedService(service_hash[:parent_engine])
