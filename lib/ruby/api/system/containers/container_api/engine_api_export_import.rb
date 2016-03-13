@@ -9,11 +9,11 @@ module EngineApiExportImport
         begin
           result = {}
           Timeout.timeout(@@export_timeout) do
-            thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+            thr = Thread.new { result = SystemUtils.execute_command(cmd, true) }
             thr.join
             SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,result)
             return result[:stdout] if result[:result] == 0
-            return log_error("failed to export ",service_hash,result)
+            return log_error_mesg("failed to export ",service_hash,result)
           end
         rescue Timeout::Error
           return log_error_mesg('Export Timeout on Running Action ',cmd)

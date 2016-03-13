@@ -103,7 +103,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd)
+  def SystemUtils.execute_command(cmd, binary=false)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -118,10 +118,13 @@ class SystemUtils
       oline = ''
       stderr_is_open = true
       begin
+        
         stdout.each do |line|
-          line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings
-          oline = line
-          line.gsub!(/\/r/,'')
+          unless binary
+            line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings
+            oline = line
+            line.gsub!(/\/r/,'')
+          end
           retval[:stdout] += line
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
