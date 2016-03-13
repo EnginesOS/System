@@ -1,8 +1,8 @@
 module CoreServiceImportExport
   def export_service(service_hash)
     SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash) 
-    return false unless service_hash.key?(:persistent)
-    return false unless service_hash[:persistent] == true
+#    return false unless service_hash.key?(:persistent)
+#    return false unless service_hash[:persistent] == true
     return false unless service_hash.key?(:parent_engine) == true
 
     if service_hash[:container_type] == container
