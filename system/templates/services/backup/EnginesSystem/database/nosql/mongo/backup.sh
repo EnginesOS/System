@@ -1,3 +1,5 @@
 #!/bin/bash
-
-mongodump  --authenticationDatabase admin --password $dbpasswd -u $dbuser -d  $dbname
+cd /tmp
+mongodump  -h mongo --password $dbpasswd -u $dbuser -d  $dbname
+tar -cpf - dump
+rm -r dump
