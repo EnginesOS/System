@@ -21,9 +21,9 @@ class SystemDebug
   #if File.exist?(debug_flag)
   # require(debug_flags)
   #else
-  @@debug_flags = @@export_import | @@execute  |@@engine_tasks | @@builder |@@containers |@@docker | @@update|@@actions
+  #@@debug_flags = @@export_import | @@execute  |@@engine_tasks | @@builder |@@containers |@@docker | @@update|@@actions
   #end
-  #  @@debug_flags = 0
+    @@debug_flags = 0
   def self.export_import
      return @@export_import
    end
