@@ -32,6 +32,9 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api/api_actionators.rb'
   include ApiActionators
   
+  require_relative 'container_api/engine_api_export_import.rb'
+  include EngineApiExportImport
+  
   def initialize(_docker_api, _system_api, _engines_core)
     @docker_api = _docker_api
     @system_api = _system_api

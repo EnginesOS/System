@@ -21,10 +21,7 @@ module PersistantServices
   # patha-pathb-servicetype.service_handle.param1.param2.param3
   
 end
-
-def export_service(service_hash)
-  @container_api.export_service(service_hash)
-end
+ 
 
 def service_to_str(service_hash)
   retval = service_hash[:publisher_namespace].to_s + '/' + service_hash[:type_path].to_s 
