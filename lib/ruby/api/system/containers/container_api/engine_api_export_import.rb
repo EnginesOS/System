@@ -15,15 +15,13 @@ module EngineApiExportImport
             return log_error("failed to export ",service_hash,result)
           end
         rescue Timeout::Error
-          log_error_mesg('Export Timeout on Running Action ',cmd)
-          return false
+          return log_error_mesg('Export Timeout on Running Action ',cmd)
         end
   rescue StandardError => e
     log_exception(e,'export service',service_hash)
 end
 
-  def import_service(params)
-  
+  def import_service(params)  
     rescue StandardError => e
       log_exception(e,'import service',params)
   end

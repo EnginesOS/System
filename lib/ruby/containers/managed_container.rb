@@ -26,6 +26,10 @@ class ManagedContainer < Container
     include PersistantServices
   require_relative 'managed_container/managed_container_actionators.rb'
      include ManagedContainerActionators
+  
+     include ManagedContainerExportImportService
+  require_relative 'managed_container/managed_container_export_import_service.rb'
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
