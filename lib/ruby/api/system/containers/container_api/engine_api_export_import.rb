@@ -1,4 +1,5 @@
 module EngineApiExportImport
+  @@export_timeout=120
   def export_service(service_hash)
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
@@ -7,7 +8,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
         begin
           result = {}
-          Timeout.timeout(@@action_timeout) do
+          Timeout.timeout(@@export_timeout) do
             thr = Thread.new { result = SystemUtils.execute_command(cmd) }
             thr.join
             SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,result)
