@@ -38,7 +38,9 @@ module PersistantServiceBuilder
     end
     SystemDebug.debug(SystemDebug.builder,:builder_attach_service, service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
-
+    
+    constants = SoftwareServiceDefinition.service_constants(service_hash)
+    environ.concat(constants)
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
     SystemDebug.debug(SystemDebug.builder, :with_env, service_hash)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
