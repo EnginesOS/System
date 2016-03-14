@@ -32,7 +32,7 @@ cat $Archive | tar -xpf  - 2>/tmp/extract.err
            exit 0
            else
             rm -r $VOLDIR/*
-            cp -rp /big_tmp/$dirname.bak/ $VOLDIR
+            cp -rp /big_tmp/$dirname.bak/. $VOLDIR
             cat  /tmp/extract.err
             echo  Rolled back >&2
          fi
