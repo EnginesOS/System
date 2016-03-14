@@ -18,7 +18,7 @@ module CoreServiceImportExport
   end
 
   def import_service(params)
-    SystemDebug.debug(SystemDebug.export_import, :export_service, params)
+   
     return log_error_mesg("imported failed No service Connection",params) unless params.key?(:service_connection)
     
     service_hash =  params[:service_connection]

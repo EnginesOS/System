@@ -24,8 +24,9 @@ end
 
    
   def import_service_data(params)  
-    SystemDebug.debug(SystemDebug.export_import, :import_service, params)
+   
     service_hash = params[:service_connection]
+    SystemDebug.debug(SystemDebug.export_import, :import_service, service_hash)
        cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
    if params[:import_method] == 'replace' 
      cmd = 'docker exec  -i ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/replace.sh ' 
@@ -39,7 +40,7 @@ end
              Timeout.timeout(@@export_timeout) do
                thr = Thread.new { result = SystemUtils.execute_command(cmd, true, params[:data]) }
                thr.join
-               SystemDebug.debug(SystemDebug.export_import, :import_service,params,'result code =' ,result[:result])
+               SystemDebug.debug(SystemDebug.export_import, :import_service,'result code =' ,result[:result])
                return true if result[:result] == 0
                return log_error_mesg("failed to export ",params,result)
              end
