@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Archive=/tmp/archive 
+Archive=/big_tmp/archive 
 cd /tmp
 cat - > $Archive
 
@@ -18,7 +18,7 @@ if test $? -eq 0
 	   exit 0
 	   else
 	
-	    cat  tmp/extract.err
+	    cat  /tmp/extract.err
 	    echo  Rolled back >&2
 	 fi 
 

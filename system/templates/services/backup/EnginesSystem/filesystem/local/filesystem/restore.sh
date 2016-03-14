@@ -1,5 +1,5 @@
 #!/bin/bash
-Archive=/tmp/archive 
+Archive=/big_tmp/archive 
 cd /home/fs
 dirname=`basename $VOLDIR `
 cp -rp $VOLDIR /home/fs/$dirname.bak
