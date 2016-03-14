@@ -3,7 +3,8 @@ Archive=/big_tmp/archive
 cd /home/fs
 dirname=`basename $VOLDIR `
 cp -rp $VOLDIR /big_tmp/$dirname.bak
-
+ rm -r $VOLDIR/*
+ 
 if test -f  /tmp/extract.err
  then
 rm /tmp/extract.err
@@ -32,6 +33,7 @@ cat $Archive | tar -xpf  - 2>/tmp/extract.err
            else
             rm -r $VOLDIR/*
             cp -rp /big_tmp/$dirname.bak/ $VOLDIR
+             rm -r /big_tmp/$dirname.bak
             cat  /tmp/extract.err
             echo  Rolled back >&2
          fi
