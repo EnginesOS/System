@@ -23,7 +23,7 @@ module CoreServiceImportExport
     
     service_hash =  params[:service_connection]
     return log_error_mesg("imported failed No service Connection",params) unless service_hash.is_a?(Hash)
-    
+    SystemUtils.symbolize_keys(service_hash)
     if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
