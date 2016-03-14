@@ -9,7 +9,8 @@ module ServiceImportExport
   
   def import_service(params) 
     SystemDebug.debug(SystemDebug.export_import, :input_service,params) 
-    SystemUtils.symbolize_keys(params)
+    #SystemUtils.symbolize_keys(params)
+    SystemUtils.deal_with_jason(params)
   return  success(params.to_s,  'import service') if @core_api.import_service(params)
     return failed(params.to_s, @last_error, 'import service')  
      
