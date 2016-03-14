@@ -26,7 +26,7 @@ end
   def import_service_data(params)  
    
     service_hash = params[:service_connection]
-    SystemDebug.debug(SystemDebug.export_import, :import_service, service_hash)
+    SystemDebug.debug(SystemDebug.export_import, :import_service, service_hash,params[:import_method])
        cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
    if params[:import_method] == 'replace' 
      cmd = 'docker exec  -i ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/replace.sh ' 
