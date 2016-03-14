@@ -120,6 +120,7 @@ class SystemUtils
       begin
        unless data.is_a?(FalseClass)
          _stdin.write(data)
+         _stdin.close
        end
         
         stdout.each do |line|
