@@ -45,9 +45,10 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.service_constants(service_hash)
     retval = Array.new
         service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
     return retval if service_def.nil?
     return retval unless service_def.key?(:constants)
-    
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
     constants = service_def[:constants]
       return retval unless constants.is_a?(Array)
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, constants)
