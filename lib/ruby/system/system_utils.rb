@@ -120,9 +120,7 @@ class SystemUtils
       begin
        unless data.is_a?(FalseClass)
          _stdin.write(data)
-         _stdin.close_write
- 
-        
+
        end
         
         stdout.each do |line|
@@ -150,6 +148,7 @@ class SystemUtils
           retval[:stderr] += stderr.read_nonblock(1000)
         end
       end
+      _stdin.close_write
       return retval
     end
     return retval
