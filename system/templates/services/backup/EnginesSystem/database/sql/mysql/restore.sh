@@ -10,7 +10,7 @@ if test $? -eq 0
   extract="|gzip -d "
   fi
   
-	cat $Archive $extract | mysql -h $dbhost -u $dbuser --password $dbpasswd $dbname 2> /tmp/extract.err
+	cat $Archive $extract | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
 	if test $? -eq 0
 	  then
 	   rm  $Archive

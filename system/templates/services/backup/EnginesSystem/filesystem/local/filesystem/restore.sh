@@ -2,7 +2,7 @@
 Archive=/big_tmp/archive 
 cd /home/fs
 dirname=`basename $VOLDIR `
-cp -rp $VOLDIR /home/fs/$dirname.bak
+cp -rp $VOLDIR /big_tmp/$dirname.bak
 
 cat - > $Archive
 cd /
@@ -16,11 +16,11 @@ if test $? -eq 0
 	if test $? -eq 0
 	  then
 	   rm  $Archive
-	   rm /home/fs/$dirname.bak
+	   rm -r /big_tmp/$dirname.bak
 	   exit 0
 	   else
 	    rm -r $VOLDIR
-	    mv /home/fs/$dirname.bak $VOLDIR
+	    mv /big_tmp/$dirname.bak $VOLDIR
 	    cat  /tmp/extract.err
 	    echo  Rolled back >&2
 	 fi 
