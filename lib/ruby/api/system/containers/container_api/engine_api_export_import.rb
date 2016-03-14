@@ -40,7 +40,7 @@ end
                thr = Thread.new { result = SystemUtils.execute_command(cmd, true, params[:data]) }
                thr.join
                SystemDebug.debug(SystemDebug.export_import, :import_service,params,'result code =' ,result[:result])
-               return result[:stdout] if result[:result] == 0
+               return true if result[:result] == 0
                return log_error_mesg("failed to export ",params,result)
              end
            rescue Timeout::Error
