@@ -19,10 +19,10 @@ module CoreServiceImportExport
 
   def import_service(params)
     SystemDebug.debug(SystemDebug.export_import, :export_service, params)
-    if service_hash[:container_type] == 'container'
-      engine = loadManagedEngine(service_hash[:parent_engine])
+    if params[:container_type] == 'container'
+      engine = loadManagedEngine(params[:parent_engine])
     else
-      engine = loadManagedService(service_hash[:parent_engine])
+      engine = loadManagedService(params[:parent_engine])
     end
 
       return engine.import_service_data(params)
