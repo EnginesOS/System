@@ -43,11 +43,11 @@ class SoftwareServiceDefinition
   end
   
   def SoftwareServiceDefinition.service_constants(service_hash)
-    retval = Array.new
+    ret_val = []
         service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
-    return retval if service_def.nil?
-    return retval unless service_def.key?(:constants)
+    return ret_val if service_def.nil?
+    return ret_val unless service_def.key?(:constants)
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
     constants = service_def[:constants]
       return retval unless constants.is_a?(Hash)
@@ -55,7 +55,10 @@ class SoftwareServiceDefinition
     constants.values.each do |env_variable_pair|      
       name = env_variable_pair[:name]
       value = env_variable_pair[:value]      
-    retval.push( EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + env_name,true)) # env_name , value 
+     # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
+        env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + env_name,true)
+      SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:new_env,env)
+      ret_val.push( env) # env_name , value 
   end
       ret_val
     rescue StandardError => e
