@@ -37,7 +37,7 @@ end
            begin
              result = {}
              Timeout.timeout(@@export_timeout) do
-               thr = Thread.new { result = SystemUtils.execute_command_withdata(cmd, true, params[:data]) }
+               thr = Thread.new { result = SystemUtils.execute_command(cmd, true, params[:data]) }
                thr.join
                SystemDebug.debug(SystemDebug.export_import, :import_service,params,'result code =' ,result[:result])
                return result[:stdout] if result[:result] == 0
