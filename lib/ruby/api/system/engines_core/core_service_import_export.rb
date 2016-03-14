@@ -24,8 +24,8 @@ module CoreServiceImportExport
     else
       engine = loadManagedService(params[:parent_engine])
     end
-
-      return engine.import_service_data(params)
+    return log_error_mesg("imported failed to load",params[:parent_engine] ,  params[:container_type]  ) if engine.nil?
+     return engine.import_service_data(params)
 
 
     return false
