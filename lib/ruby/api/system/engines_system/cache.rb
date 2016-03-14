@@ -4,8 +4,12 @@ module Cache
     return nil unless @engines_conf_cache.key?(ident.to_sym)   
     return nil unless @engines_conf_cache[ident.to_sym].is_a?(Hash)
     return nil if @engines_conf_cache[ident.to_sym][:engine].nil?
-
-    return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
+    ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
+      if ts == -1
+        rm_engine_from_cache(ident)
+        return nil
+      end
+    return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  == ts 
    
 SystemDebug.debug(SystemDebug.cache, :Stale_info )
 #       p :saved_ts
