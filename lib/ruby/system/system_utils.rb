@@ -103,7 +103,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd, binary=false)
+  def SystemUtils.execute_command(cmd, binary=false, data = false)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -118,6 +118,9 @@ class SystemUtils
       oline = ''
       stderr_is_open = true
       begin
+       unless data.is_a?(FalseClass)
+         _stdin.write(data)
+       end
         
         stdout.each do |line|
           unless binary
