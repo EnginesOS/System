@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-tar -cpf - $VOLDIR  2>  /tmp/tar.errors.txt
+tar -cpf - $VOLDIR |gzip -c 2>  /tmp/tar.errors.txt
 
 if test $? -ne 0
  then
- cat /tmp/tar.errors.txt
+ cat /tmp/tar.errors.txt >&2
 exit -1
  fi
 exit 0

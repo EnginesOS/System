@@ -3,8 +3,7 @@ Archive=/big_tmp/archive
 cd /home/fs
 dirname=`basename $VOLDIR `
 cp -rp $VOLDIR /big_tmp/$dirname.bak
- rm -r $VOLDIR/*
- 
+
 if test -f  /tmp/extract.err
  then
 rm /tmp/extract.err

@@ -5,7 +5,7 @@ publisher_namespace: EnginesSystem
 type_path: database/nosql/mongo
 persistent: true
 last_error: 
-memory: '128'
+memory: '168'
 hostname: mongo
 domain_name: 
 environments: []

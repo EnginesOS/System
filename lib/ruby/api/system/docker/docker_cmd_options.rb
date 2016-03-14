@@ -141,8 +141,11 @@ module DockerCmdOptions
       #FIXME use container for tmp to enforce a 1GB limit ?
       temp_dir_name =   container.ctype + '/' + container.container_name
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw '
+      SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)    
+    else
+      temp_dir_name =   container.ctype + '/' + container.container_name
+      volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/big_tmp:rw '
       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
-      SystemDebug.debug(SystemDebug.services, 'vol options',      volume_option)
     end
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
@@ -156,6 +159,7 @@ module DockerCmdOptions
       p :panic_vols_not_a_hash_but
       p container.volumes.class.name
     end
+    SystemDebug.debug(SystemDebug.services, 'vol options',      volume_option)
     return volume_option
   rescue StandardError => e
     SystemUtils.log_exception(e)

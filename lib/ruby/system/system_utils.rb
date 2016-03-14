@@ -103,7 +103,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd, binary=false)
+  def SystemUtils.execute_command(cmd, binary=false, data = false)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -114,10 +114,18 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
 
+    unless data.is_a?(FalseClass)
+         t = File.new('/tmp/import','w+')
+         t.write(data)
+         t.close
+         cmd = 'cat /tmp/import | ' + cmd
+  
+         end
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       oline = ''
       stderr_is_open = true
       begin
+     
         
         stdout.each do |line|
           unless binary
@@ -144,10 +152,15 @@ class SystemUtils
           retval[:stderr] += stderr.read_nonblock(1000)
         end
       end
+      File.delete('/tmp/import') if File.exist?('/tmp/import')
+ 
       return retval
     end
+    File.delete('/tmp/import') if File.exist?('/tmp/import')
+
     return retval
   rescue Exception=>e
+    File.delete('/tmp/import') if File.exist?('/tmp/import')
     SystemUtils.log_exception(e)
     SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ', retval)
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s

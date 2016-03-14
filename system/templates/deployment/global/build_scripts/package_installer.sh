@@ -100,3 +100,11 @@ if test -d  $destination
  echo "./$path_to_extracted $destination"
  	mv "./$path_to_extracted" $destination
 fi
+if test -f /tmp/$path_to_extracted
+ then
+	rm /tmp/$path_to_extracted
+fi
+if test -f tmp/$package_name
+ then
+rm /tmp/$package_name
+fi
