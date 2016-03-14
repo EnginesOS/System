@@ -25,11 +25,12 @@ end
    
   def import_service_data(params)  
     SystemDebug.debug(SystemDebug.export_import, :import_service, params)
-       cmd_dir = SystemConfig.BackupScriptsRoot + '/' + params[:publisher_namespace] + '/' + params[:type_path] + '/' + params[:service_handle] + '/'
+    service_hash = params[:service_connection]
+       cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
    if params[:import_method] == 'replace' 
-     cmd = 'docker exec  ' + params[:parent_engine] + ' ' + cmd_dir + '/replace.sh ' 
+     cmd = 'docker exec  ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/replace.sh ' 
    else
-     cmd = 'docker exec  ' + params[:parent_engine] + ' ' + cmd_dir + '/restore.sh ' 
+     cmd = 'docker exec  ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/restore.sh ' 
    end
        
        SystemDebug.debug(SystemDebug.export_import, :import_service, cmd)
