@@ -270,7 +270,7 @@ module TaskAtHand
     return true
   end
 
-  require_relative 'task_timouts.rb'
+  require_relative 'task_timeouts.rb'
   def task_set_timeout(task)
     TaskTimeouts.task_set_timeout(task)
    
