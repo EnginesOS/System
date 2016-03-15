@@ -44,7 +44,7 @@ class ServiceManager  < ErrorsApi
   include RegistryClient
   include SmServiceControl
   include SmServiceConfigurations
-
+  include SharedServices
 
 
 end
