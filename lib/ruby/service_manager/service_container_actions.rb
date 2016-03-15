@@ -8,7 +8,10 @@ def add_to_managed_service(service_hash)
   return log_error_mesg('Failed to load service to add :' +  @core_api.last_error.to_s, service_hash) if service.nil? || service.is_a?(FalseClass)
   return log_error_mesg('Cant add to service if service is stopped ',service_hash) unless (service.is_running? | service.is_soft_service?)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
-  result = service.add_consumer(service_hash) if service.is_running? 
+  return log_error_mesg('Failed to add Consumser to Service, as service not running',service_hash) unless service.is_running?
+  SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service)
+   result = service.add_consumer(service_hash) 
+
   return log_error_mesg('Failed to add Consumser to Service :' +  @core_api.last_error.to_s + ':' + service.last_error.to_s,service_hash) unless result
   return result
 rescue StandardError => e
