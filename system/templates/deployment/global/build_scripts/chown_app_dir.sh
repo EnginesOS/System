@@ -8,8 +8,7 @@ if [ ! -d /home/app ]
   fi
   
  mkdir -p /home/fs ; mkdir -p /home/fs/local 
- chown -R $ContUser /home/app /home/fs/local
- chown 21000 /home/fs 
+ chown -R $ContUser /home/app /home/fs /home/fs/local   
 
  
 #echo PACKAGE_INSTALLER_RUN "$PACKAGE_INSTALLER_RUN"
