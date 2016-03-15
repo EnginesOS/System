@@ -31,7 +31,7 @@ echo "	id $ContUser | grep $data_gid '"
 		ln -s $VOLDIR /data
 	fi
 
-
+chown 21000 /home/fs
     
 chown -R  $ContUser $HOME
 #chmod g-w $HOME
