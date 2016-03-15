@@ -16,7 +16,7 @@ service_hash[:shared] = true
     log_exception(e)
  end
  
- def get_service_entry(service_query)
+ def remove_shared_service_from_engine(service_query)
    
    ahash = getfrom_engine_service_resgistry(service_query)
    return log_error_mesg("Failed to load from registry",service_query) unless ahash.is_a?(Hash)
