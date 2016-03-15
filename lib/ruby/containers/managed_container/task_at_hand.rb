@@ -1,5 +1,5 @@
 module TaskAtHand
-  @@default_task_timeout = 20
+
   @task_queue = []
   def init_task_at_hand
     @steps = []
@@ -270,25 +270,10 @@ module TaskAtHand
     return true
   end
 
+  require_relative 'task_timouts.rb'
   def task_set_timeout(task)
-
-    @task_timeouts = {}
-    @task_timeouts[task.to_sym] =  @@default_task_timeout  unless @task_timeouts.key?(task.to_sym)
-    @task_timeouts[:stop]= 30
-    @task_timeouts[:start]= 30
-    @task_timeouts[:restart]= 60
-    @task_timeouts[:recreate]= 90
-    @task_timeouts[:create]= 90
-    @task_timeouts[:build]= 300
-    @task_timeouts[:rebuild]= 300
-    @task_timeouts[:pause]= 20
-    @task_timeouts[:unpause]= 20
-    @task_timeouts[:destroy]= 30
-    @task_timeouts[:delete]= 40
-    @task_timeouts[:running]= 40
-    #  SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s + 'secs')
-    # return  @default_task_timeout
-    return @task_timeouts[task.to_sym]
+    TaskTimeouts.task_set_timeout(task)
+   
   end
 
   def set_task_at_hand(state)
