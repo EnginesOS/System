@@ -144,7 +144,7 @@ module DockerCmdOptions
       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)    
     else
       temp_dir_name =   container.ctype + '/' + container.container_name
-      volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/big_tmp:rw '
+      volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp/big:rw '
       SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
     end
     if container.volumes.is_a?(Hash)
@@ -159,6 +159,7 @@ module DockerCmdOptions
       p :panic_vols_not_a_hash_but
       p container.volumes.class.name
     end
+    
     SystemDebug.debug(SystemDebug.services, 'vol options',      volume_option)
     return volume_option
   rescue StandardError => e

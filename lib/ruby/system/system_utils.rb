@@ -220,8 +220,8 @@ def  SystemUtils.deal_with_jason(res)
  rescue  StandardError => e
    STDERR.puts e.to_s
  end
-  def SystemUtils.service_hash_variables_as_str(service_hash)
-    json_str = service_hash[:variables].to_json
+  def SystemUtils.hash_variables_as_json_str(service_hash_variables)
+    json_str = service_hash_variables.to_json
     return json_str
 
   end
