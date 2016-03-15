@@ -5,7 +5,7 @@ module CoreServiceImportExport
     #    return false unless service_hash[:persistent] == true
     return false unless service_hash.key?(:parent_engine) == true
     ahash = service_manager.find_engine_service_hash(service_hash)
-    return log_error_mesg("cannot import into share service",params) if ahash[:shared] == true
+    return log_error_mesg("cannot import into share service",service_hash) if ahash[:shared] == true
     if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
