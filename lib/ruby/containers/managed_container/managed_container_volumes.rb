@@ -12,5 +12,15 @@ end
     log_exception(e,service_hash)
   end
 
+def del_volume(service_hash)
+  if service_hash[:shared] == true
+      @volumes.delete(service_hash[:service_container_name] + '_' + service_hash[:variables][:service_name])
+        else
+      @volumes.delete(service_hash[:variables][:name])
+    save_state
+  end
+  rescue StandardError => e
+      log_exception(e,service_hash)
+end
 
 end
