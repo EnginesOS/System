@@ -36,7 +36,7 @@ module SharedServices
     ahash = find_engine_service_hash(service_query)
     return log_error_mesg("Failed to load from registry",service_query) unless ahash.is_a?(Hash)
     return log_error_mesg("Not a Shared Service",service_query,ahash) unless ahash[:shared] == true
-    return dettach_shared_volume(ahash) if shared_service[:type_path] == 'filesystem/local/filesystem'     
+    return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'     
     return test_registry_result(system_registry_client.remove_from_managed_engines_registry(ahash))
       
   rescue StandardError => e
