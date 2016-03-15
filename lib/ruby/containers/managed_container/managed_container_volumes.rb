@@ -3,7 +3,7 @@ module ManagedContainerVolumes
     permissions = PermissionRights.new(service_hash[:parent_engine] , '', '')
     vol = Volume.new(service_hash) #service_hash[:variables][:name], SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:name], service_hash[:variables][:engine_path], 'rw', permissions)
     if service_hash[:shared] == true
-    @volumes[service_hash[:parent_engine] + '_' + service_hash[:service_name]] = vol
+    @volumes[service_hash[:service_container_name] + '_' + service_hash[:variables][:service_name]] = vol
       else
     @volumes[service_hash[:variables][:name]] = vol
 end
