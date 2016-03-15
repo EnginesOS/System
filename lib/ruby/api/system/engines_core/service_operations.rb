@@ -77,7 +77,7 @@ module ServiceOperations
     clear_error
     return false unless check_engine_service_hash(service_hash)
     
-    ahash = service_menager.find_engine_service_hash(service_hash)
+    ahash = service_manager.find_engine_service_hash(service_hash)
        return log_error_mesg("Cannot update a shared service",params) if ahash[:shared] == true
          
     check_sm_result(service_manager.update_attached_service(service_hash))
