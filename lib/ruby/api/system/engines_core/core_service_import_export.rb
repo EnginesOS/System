@@ -4,7 +4,8 @@ module CoreServiceImportExport
     #    return false unless service_hash.key?(:persistent)
     #    return false unless service_hash[:persistent] == true
     return false unless service_hash.key?(:parent_engine) == true
-
+    ahash = service_menager.find_engine_service_hash(service_hash)
+    return log_error_mesg("cannot import into share service",params) if ahash[:shared] == true
     if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
@@ -24,6 +25,8 @@ module CoreServiceImportExport
     service_hash =  params[:service_connection]
     return log_error_mesg("imported failed No service Connection",params) unless service_hash.is_a?(Hash)
    SystemUtils.symbolize_keys(service_hash)
+    ahash = service_menager.find_engine_service_hash(service_hash)
+    return log_error_mesg("cannot import into share service",params) if ahash[:shared] == true
     SystemDebug.debug(SystemDebug.export_import, :export_service_hahs, service_hash)
     if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
