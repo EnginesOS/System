@@ -1,5 +1,6 @@
 class TaskTimeouts
   @@default_task_timeout =  20
+  @@task_timeouts = {}
   @@task_timeouts[:stop]= 30
   @@task_timeouts[:start]= 30
   @@task_timeouts[:restart]= 60
