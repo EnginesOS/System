@@ -1,15 +1,17 @@
 module SharedServices
-  def attach_existing_service_to_engine(service_query)
-
-    service_hash =  get_service_entry(service_query)
-    return log_error_mesg('Failed to find service to share', service_query) if service_hash.nil?
-    SystemDebug.debug(SystemDebug.services,'sm using existing service', service_hash)
-    merge_variables(service_query,service_hash)  if service_query.key?(:variables)
-    service_hash[:shared] = true
-    SystemDebug.debug(SystemDebug.services,'sm regsitring ', service_hash)
-    return test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+  def attach_existing_service_to_engine(shared_service)
+  service_query = shared_service.dup
+    service_query[:parent_engine] = shared_service[:service_container_name]
+    existing_service_hash =  get_service_entry(service_query)
+    return log_error_mesg('Failed to find service to share', shared_service) unless existing_service_hash.is_a?(Hash)
+    SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
+    merge_variables(shared_service,existing_service_hash)  
+    shared_service[:shared] = true
+      
+    SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
+    return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,shared_service)
   end
 
   def remove_shared_service_from_engine(service_query)
@@ -24,9 +26,10 @@ module SharedServices
 
   private
 
-  def merge_variables(service_query,service_hash)
-    service_query[:variables].each_pair.each do |name, value |
-      service_hash[:variables][name] = value
+  def merge_variables(shared_service,existing_service_hash)
+    shared_service[:variables] = {} unless shared_service.key?(:variables)
+    existing_service_hash[:variables].each_pair.each do |name, value |
+      shared_service[:variables][name] = value unless shared_service[:variables].key?(name)
     end
   end
 
