@@ -10,7 +10,10 @@ class VolumeService < ManagedService
   end
 
   def add_volume(service_hash)
-    dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] + '/' + service_hash[:service_handle]
+    dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine]   
+    make_fs_root_dir(dest)  unless Dir.exist?(dest)
+    
+    dest +=  '/' + service_hash[:service_handle]
     FileUtils.mkdir_p(dest) unless Dir.exist?(dest)
   rescue  Exception=>e
     log_exception(e)
@@ -21,7 +24,7 @@ class VolumeService < ManagedService
     retval =  SystemUtils.run_system(cmd)
     cmd = 'docker rm volbuilder'
     retval =  SystemUtils.run_system(cmd)
-    return FileUtils.rm_rf( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine]) if retval
+    return FileUtils.rm_rf( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] +  '/' + service_hash[:service_handle]) if retval
     log_error_mesg('Failed to Delete FS:' + retval.to_s ,service_hash)
   rescue  Exception=>e
     SystemUtils.log_exception(e)
@@ -29,5 +32,14 @@ class VolumeService < ManagedService
 
   def reregister_consumers
 
+  end
+  
+  private 
+  def make_fs_root_dir(dest)
+    
+         FileUtils.mkdir_p(dest)
+         FileUtils.chmod('ug=wrx,o=rx',dest)
+         FileUtils.chown(nil,22020,dest)
+      
   end
 end
