@@ -8,7 +8,7 @@ module EngineServiceOperations
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,container_name)
   end
   
   def service_persistent_services(service_name)
@@ -19,7 +19,7 @@ module EngineServiceOperations
     SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
     return check_sm_result(service_manager.get_engine_persistent_services(params))
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,service_name)
   end
   
   def service_attached_services(service_name)
@@ -28,7 +28,7 @@ module EngineServiceOperations
      params[:container_type] = 'service'
      return service_manager.find_engine_services_hashes(params)
    rescue StandardError => e
-     log_exception(e)
+     log_exception(e,service_name)
    end
   
   def engine_attached_services(container_name)
@@ -37,29 +37,37 @@ module EngineServiceOperations
     params[:container_type] = 'container'
     return service_manager.find_engine_services_hashes(params)
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,container_name)
   end
 
   def  service_is_registered?(service_hash)
     return false unless check_service_hash(service_hash)
     check_sm_result(service_manager.service_is_registered?(service_hash))
+    rescue StandardError => e
+      log_exception(e,service_hash)
   end
 
   def get_engine_persistent_services(service_hash)
     return false unless check_engine_hash(service_hash)
     check_sm_result(service_manager.get_engine_persistent_services(service_hash))
+    rescue StandardError => e
+      log_exception(e,service_hash)
   end
 
   def find_engine_services(service_query)
     return false unless check_engine_hash(service_query)
     check_sm_result(service_manager.find_engine_services_hashes(service_query))
+    rescue StandardError => e
+      log_exception(e,service_query)
     #return sm.find_engine_services(params)
   end
   
   def attach_existing_service_to_engine(params)
      SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
     return false unless check_engine_hash(params)
-    check_sm_result(service_manager.attach_existing_service_to_engine(service_query))
+    check_sm_result(service_manager.attach_existing_service_to_engine(params))
+    rescue StandardError => e
+      log_exception(e,params)
  
    end
 
