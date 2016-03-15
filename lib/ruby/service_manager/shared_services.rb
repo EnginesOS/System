@@ -27,7 +27,7 @@ module SharedServices
     
   def remove_shared_service_from_engine(service_query)
 
-    ahash = get_from_engine_service_registry(service_query)
+    ahash = find_engine_service_hash(service_query)
     return log_error_mesg("Failed to load from registry",service_query) unless ahash.is_a?(Hash)
     return log_error_mesg("Not a Shared Service",service_query,ahash) unless ahash[:shared] == true
     return test_registry_result(system_registry_client.remove_from_managed_engines_registry(ahash))
