@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Archive=/big_tmp/archive 
+Archive=/tmp/big/archive 
 cd /tmp
 cat - > $Archive
 

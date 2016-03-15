@@ -1,8 +1,8 @@
 #!/bin/bash
-Archive=/big_tmp/archive
+Archive=/tmp/big/archive
 cd /home/fs
 dirname=`basename $VOLDIR `
-cp -rp $VOLDIR /big_tmp/$dirname.bak
+cp -rp $VOLDIR /tmp/big/$dirname.bak
  rm -r $VOLDIR/*
  
 if test -f  /tmp/extract.err
@@ -28,12 +28,12 @@ cat $Archive | tar -xpf  - 2>/tmp/extract.err
         if test $? -eq 0
           then
            rm  $Archive
-           rm -r /big_tmp/$dirname.bak
+           rm -r /tmp/big/$dirname.bak
            exit 0
            else
             rm -r $VOLDIR/*
-            cp -rp /big_tmp/$dirname.bak/. $VOLDIR
-             rm -r /big_tmp/$dirname.bak
+            cp -rp /tmp/big/$dirname.bak/. $VOLDIR
+             rm -r /tmp/big/$dirname.bak
             cat  /tmp/extract.err
             echo  Rolled back >&2
          fi
