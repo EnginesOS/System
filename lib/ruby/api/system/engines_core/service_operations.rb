@@ -44,7 +44,7 @@ module ServiceOperations
   rescue StandardError => e
     log_exception(e)
   end
-
+ 
   def dettach_service(service_hash)
     return false unless check_service_hash(service_hash)
     check_sm_result(service_manager.delete_service(service_hash))
