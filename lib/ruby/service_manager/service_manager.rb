@@ -22,6 +22,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_service_info.rb'
   require_relative 'sm_service_configurations.rb'
   require_relative 'registry_client.rb'
+  require_relative 'shared_services.rb'
   
 #  attr_accessor :system_registry_client
   #@ call initialise Service Registry Tree which conects to the registry server
