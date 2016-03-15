@@ -71,9 +71,11 @@ module ManagedServiceActions
     failed(params[:parent_engine], @core_api.last_error, params[:parent_engine])
   end
 
-  def attach_existing_service_to_engine(params_hash)
-    SystemDebug.debug(SystemDebug.services, params_hash)
-    success("OK","OK")
+  def attach_existing_service_to_engine(params)
+    SystemDebug.debug(SystemDebug.services,'attach existing service', params)
+    return success(params[:parent_engine], 'attach existing service') if  @core_api.attach_existing_service_to_engine(params)
+        failed(params[:parent_engine], @core_api.last_error, params[:parent_engine])
+
   end
 
 end

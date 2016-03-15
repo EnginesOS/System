@@ -55,5 +55,12 @@ module EngineServiceOperations
     check_sm_result(service_manager.find_engine_services_hashes(service_query))
     #return sm.find_engine_services(params)
   end
+  
+  def attach_existing_service_to_engine(params)
+     SystemDebug.debug(SystemDebug.services,'attach existing service', params)
+    return false unless check_engine_hash(params)
+    check_sm_result(service_manager.attach_existing_service_to_engine(service_query))
+ 
+   end
 
 end

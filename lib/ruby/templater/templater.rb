@@ -150,7 +150,7 @@ class Templater
 
   def fill_in_dynamic_vars(service_hash)
     SystemDebug.debug(SystemDebug.templater, 'FILLING_+@+#+@+@+@+@+@+')
-    return false if service_hash.key?(:variables) == false || service_hash[:variables].nil? == true
+    service_hash[:variables] = {} if service_hash.key?(:variables) == false || service_hash[:variables].nil? == true
     service_hash[:variables].each do |variable|
       SystemDebug.debug(SystemDebug.templater, :variable, variable)
       if variable[1].nil? == false && variable[1].is_a?(String) && variable[1].include?('_Engines')
