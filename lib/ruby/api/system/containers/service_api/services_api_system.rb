@@ -3,7 +3,7 @@ module ServiceApiSystem
     #setup_service_dirs
     super
   end
-  def setup_service_dirs
+  def setup_service_dirs(container)
     SystemUtils.execute_command('/opt/engines/scripts/setup_service_dir.sh ' + container.container_name)
   end 
   def container_services_dir(container)
