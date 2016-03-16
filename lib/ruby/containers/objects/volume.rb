@@ -49,15 +49,28 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     else
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
     end
+    
     service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
-    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src) && service_hash[:variables][:volume_src].to_s != ''
 
+    unless service_hash[:variables].key?(:volume_src) 
+      service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
+    end
     service_hash[:variables][:volume_src].strip!
-    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
 
+   
+   if service_hash[:variables][:volume_src].to_s == ''
+     service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
+   end
+
+   if service_hash[:shared] == true
+     service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
+   else    
+    service_hash[:variables][:volume_src] = self.default_volume_name(service_hash) + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
+     end
     unless service_hash[:variables].key?(:permissions)
       service_hash[:variables][:permissions] = PermissionRights.new(service_hash[:parent_engine] , '', '')
     end
+    SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
     service_hash
   end
 
@@ -73,5 +86,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     backup_hash[:source_type] = 'fs'
     backup_hash[:source_name] = @name
   end
+  
+  
+  def self.default_volume_name(service_hash)
+   SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s 
+end
 
 end

@@ -1,5 +1,5 @@
 module TaskAtHand
-  @@default_task_timeout = 20
+
   @task_queue = []
   def init_task_at_hand
     @steps = []
@@ -111,7 +111,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
-    ContainerStateFiles.delete_container_configs(container)
+    delete_engine
     return true
   rescue StandardError => e
     log_exception(e)
@@ -270,25 +270,10 @@ module TaskAtHand
     return true
   end
 
+  require_relative 'task_timeouts.rb'
   def task_set_timeout(task)
-
-    @task_timeouts = {}
-    @task_timeouts[task.to_sym] =  @@default_task_timeout  unless @task_timeouts.key?(task.to_sym)
-    @task_timeouts[:stop]= 30
-    @task_timeouts[:start]= 30
-    @task_timeouts[:restart]= 60
-    @task_timeouts[:recreate]= 90
-    @task_timeouts[:create]= 90
-    @task_timeouts[:build]= 300
-    @task_timeouts[:rebuild]= 300
-    @task_timeouts[:pause]= 20
-    @task_timeouts[:unpause]= 20
-    @task_timeouts[:destroy]= 30
-    @task_timeouts[:delete]= 40
-    @task_timeouts[:running]= 40
-    #  SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s + 'secs')
-    # return  @default_task_timeout
-    return @task_timeouts[task.to_sym]
+    TaskTimeouts.task_set_timeout(task)
+   
   end
 
   def set_task_at_hand(state)
