@@ -50,10 +50,16 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
     end
     service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
-      
-    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s unless service_hash[:variables].key?(:volume_src) && service_hash[:variables][:volume_src].to_s != ''
-
+    unless service_hash[:variables].key?(:volume_src) 
+      service_hash[:variables][:volume_src] = default_volume_name(service_hash)
+    end
     service_hash[:variables][:volume_src].strip!
+      
+   
+   if service_hash[:variables][:volume_src].to_s != ''
+     service_hash[:variables][:volume_src] = default_volume_name(service_hash)
+   end
+   
     service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
 
     unless service_hash[:variables].key?(:permissions)
@@ -74,5 +80,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     backup_hash[:source_type] = 'fs'
     backup_hash[:source_name] = @name
   end
+  
+  private
+  def default_volume_name(service_hash)
+   SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s 
+end
 
 end
