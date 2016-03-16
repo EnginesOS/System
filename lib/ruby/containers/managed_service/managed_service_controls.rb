@@ -31,6 +31,7 @@ def create_service()
        @environments = envs
      end
    end
+  @container_api.setup_service_dirs(self)
 
    if create_container
 
