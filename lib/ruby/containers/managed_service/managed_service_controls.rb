@@ -14,7 +14,7 @@ module ManagedServiceControls
 def create_service()
    SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
   setup_service_keys if @system_keys.is_a?(Array)
-  SystemDebug.debug(SystemDebug.containers, :keys,  @system_keys )
+  SystemDebug.debug(SystemDebug.containers, :keys_set,  @system_keys )
  
    
    envs = @container_api.load_and_attach_persistent_services(self)
@@ -77,6 +77,7 @@ rescue StandardError =>e
        @system_keys.each do |key|
          keys += ' ' + key.to_s
        end
+   SystemDebug.debug(SystemDebug.containers, :keys, keys )
     SystemUtils.run_command('/opt/engines/scripts/setup_service_keys.sh ' + container_name  + keys)
  end
 

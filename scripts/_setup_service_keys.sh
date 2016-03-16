@@ -5,7 +5,7 @@ rm ~/.ssh/_${service}_keys
 for key in $*
  do 
 	ssh-keygen -f /opt/engines/etc/ssh/keys/services/$service/$key -N ''
-	uid=`/opt/engines/scripts/get_service_uid.sh $key`
+	uid=`/opt/engines/scripts/get_service_uid.sh $service`
 	chown /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	chmod og-rwx /opt/engines/etc/ssh/keys/services/$service/$key
 	pubkey=`cat /opt/engines/etc/ssh/keys/services/$service/$key.pub`
