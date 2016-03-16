@@ -10,8 +10,11 @@ module PersistantServices
       service_details.push(service_detail)
     end
     retval = SystemUtils.hash_variables_as_json_str(service_details)
+    SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, retval)
     retval.gsub!(/\"\[/,'[')
+    SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, retval)
     retval.gsub!(/\]\"/,']')
+    SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, retval)
 #    if services.is_a?(Array)
 #      n=0
 #      services.each do |service|
