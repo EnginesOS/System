@@ -10,6 +10,8 @@ module PersistantServices
       service_details.push(service_detail)
     end
     retval = SystemUtils.hash_variables_as_json_str(service_details)
+    retval.gsub!(/\"[/,'[')
+    retval.gsub!(/]\"/,']')
 #    if services.is_a?(Array)
 #      n=0
 #      services.each do |service|
