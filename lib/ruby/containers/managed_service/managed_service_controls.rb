@@ -14,7 +14,7 @@ module ManagedServiceControls
 def create_service()
    SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
   setup_service_keys if @system_keys.is_a?(Array)
-    
+  SystemDebug.debug(SystemDebug.containers, :keys,  @system_keys )
  
    
    envs = @container_api.load_and_attach_persistent_services(self)
