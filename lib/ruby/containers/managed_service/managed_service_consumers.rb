@@ -8,7 +8,8 @@ module ManagedServiceConsumers
     return rm_consumer_from_service(service_hash) unless @persistent
     return true if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == false
     return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data]
-    log_error_mesg('No remove_all_data key',service_hash)
+    #log_error_mesg('No remove_all_data key',service_hash)
+      return true
   end
 
   #  def service_manager
