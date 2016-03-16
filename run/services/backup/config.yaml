@@ -11,6 +11,8 @@ hostname: backup
 domain_name: 
 environments: []
 image: engines/backup:_Engines_System(release)
+system_keys:
+- "run_backup_on_engine"
 volumes:
  Volumes: !ruby/object:Volume
   name: Volumes
