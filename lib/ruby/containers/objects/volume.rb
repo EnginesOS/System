@@ -62,7 +62,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
      service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
    end
 
-    service_hash[:variables][:volume_src] = SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine]  + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
+    service_hash[:variables][:volume_src] = self.default_volume_name(service_hash) + '/' + service_hash[:variables][:volume_src] unless service_hash[:variables][:volume_src].start_with?(SystemConfig.LocalFSVolHome)
 
     unless service_hash[:variables].key?(:permissions)
       service_hash[:variables][:permissions] = PermissionRights.new(service_hash[:parent_engine] , '', '')
