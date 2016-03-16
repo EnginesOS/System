@@ -3,7 +3,7 @@ module PersistantServices
   def engine_persistent_services
     services = @container_api.engine_persistent_services(self)
     retval = ''
-    retval = service_to_str(services)
+    retval = SystemUtils.hash_variables_as_json_str(services)
 #    if services.is_a?(Array)
 #      n=0
 #      services.each do |service|
