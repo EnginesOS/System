@@ -111,7 +111,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
-    ContainerStateFiles.delete_container_configs(container)
+    delete_engine
     return true
   rescue StandardError => e
     log_exception(e)

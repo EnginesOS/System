@@ -43,7 +43,7 @@ module EnginesOperations
       SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
       return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-
+      engine.delete_engine
     log_error_mesg('Failed to delete image',params)
   end
 
