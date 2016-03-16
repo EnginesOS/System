@@ -1,5 +1,12 @@
 #!/bin/bash
 service=$1
+
+if ! test -d  ~engines/.ssh/${service}
+ then
+	mkdir -p ~engines/.ssh/${service}
+	chown engines ~engines/.ssh/${service}
+ fi
+ 
 shift
 rm ~/.ssh/_${service}_keys
 for key in $*
@@ -9,5 +16,6 @@ for key in $*
 	chown /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	chmod og-rwx /opt/engines/etc/ssh/keys/services/$service/$key
 	pubkey=`cat /opt/engines/etc/ssh/keys/services/$service/$key.pub`
- 	echo "command=\"/opt/engines/scripts/services/$service/${key}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >>  ~/.ssh/${service}_${key}
+ 	echo "command=\"/opt/engines/scripts/services/$service/${key}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >>  ~engines/.ssh/${service}/${key}
+ 	chown engines ~engines/.ssh/${service}/${key}
  	done
