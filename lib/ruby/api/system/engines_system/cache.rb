@@ -57,8 +57,9 @@ return  nil
   def get_engine_ts(engine)
     return log_error_mesg('Get ts passed nil Engine ', engine) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
-    return -1 unless File.exist?(yam_file_name)
-    File.mtime(yam_file_name)
+    return  File.mtime(yam_file_name) if File.exist?(yam_file_name)
+   # return 0 if Dir.exist?(SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name)
+    return -1
   end
   
   def container_from_cache(container_ident)
