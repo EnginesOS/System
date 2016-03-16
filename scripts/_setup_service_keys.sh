@@ -9,5 +9,5 @@ for key in $*
 	chown /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	chmod og-rwx /opt/engines/etc/ssh/keys/services/$service/$key
 	pubkey=`cat /opt/engines/etc/ssh/keys/services/$service/$key.pub`
- 	echo "command=\"/opt/engines/scripts/services/${key}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >>  ~/.ssh/${service}_${key}
+ 	echo "command=\"/opt/engines/scripts/services/$service/${key}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >>  ~/.ssh/${service}_${key}
  	done
