@@ -8,8 +8,9 @@ module EnginesApiSystem
   end
   def delete_engine(container)
     @system_api.delete_engine(container)
+    ContainerStateFiles.delete_container_configs(container)
   end
-  ContainerStateFiles.delete_container_configs(container)
+
   def get_container_network_metrics(container)
     test_system_api_result(@system_api.get_container_network_metrics(container.container_name))
   end
