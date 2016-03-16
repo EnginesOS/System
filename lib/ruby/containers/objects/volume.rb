@@ -54,14 +54,14 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     p :vol_src
       p service_hash[:variables][:volume_src]
     unless service_hash[:variables].key?(:volume_src) 
-      service_hash[:variables][:volume_src] = default_volume_name(service_hash)
+      service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
     end
     service_hash[:variables][:volume_src].strip!
     p :vol_src
       p service_hash[:variables][:volume_src]
    
    if service_hash[:variables][:volume_src].to_s == ''
-     service_hash[:variables][:volume_src] = default_volume_name(service_hash)
+     service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
    end
    p :vol_src
    p service_hash[:variables][:volume_src]
@@ -87,8 +87,8 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     backup_hash[:source_name] = @name
   end
   
-  private
-  def default_volume_name(service_hash)
+  
+  def self.default_volume_name(service_hash)
    SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s 
 end
 
