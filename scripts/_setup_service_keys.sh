@@ -11,6 +11,7 @@ shift
 rm ~/.ssh/_${service}_keys
 for key in $*
  do 
+    rm /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	ssh-keygen -f /opt/engines/etc/ssh/keys/services/$service/$key -N ''
 	uid=`/opt/engines/scripts/get_service_uid.sh $service`
 	chown /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
