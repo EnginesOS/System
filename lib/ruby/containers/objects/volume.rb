@@ -60,7 +60,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     p :vol_src
       p service_hash[:variables][:volume_src]
    
-   if service_hash[:variables][:volume_src].to_s != ''
+   if service_hash[:variables][:volume_src].to_s == ''
      service_hash[:variables][:volume_src] = default_volume_name(service_hash)
    end
    p :vol_src
