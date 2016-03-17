@@ -1,6 +1,6 @@
 module SharedServices
   def attach_existing_service_to_engine(shared_service_params)
-    existing_service = shared_service_params[ :existing_service_params]    
+    existing_service = shared_service_params[ :existing_service]    
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service_params)
     SystemDebug.debug(SystemDebug.services,'sm using existing service', shared_service_params,existing_service,shared_service)
