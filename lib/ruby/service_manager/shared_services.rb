@@ -3,6 +3,7 @@ module SharedServices
     existing_service = shared_service_params[ :existing_service_params]    
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service_params)
+    SystemDebug.debug(SystemDebug.services,'sm using existing service', shared_service_params,existing_service,shared_service)
     service_query = shared_service.dup
     
     service_query[:parent_engine] = existing_service[:parent_engine]
