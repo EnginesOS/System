@@ -1,7 +1,11 @@
 module SharedServices
-  def attach_existing_service_to_engine(shared_service)
-  service_query = shared_service.dup
-    service_query[:parent_engine] = shared_service[:service_container_name]
+  def attach_existing_service_to_engine(shared_service_params)
+    existing_service = shared_service_params[ :existing_service_params]    
+    shared_service = shared_service_params.dup
+    shared_service.delete(:existing_service_params)
+    service_query = shared_service.dup
+    
+    service_query[:parent_engine] = existing_service[:parent_engine]
     existing_service_hash =  get_service_entry(service_query)
     return log_error_mesg('Failed to find service to share', shared_service) unless existing_service_hash.is_a?(Hash)
     SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
