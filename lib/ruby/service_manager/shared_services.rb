@@ -16,6 +16,10 @@ module SharedServices
     SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
     merge_variables(shared_service,existing_service_hash)  
     shared_service[:shared] = true
+    shared_service[:service_handle] = shared_service[:service_handle] + ':' + existing_service[:service_handle]
+    shared_service[:container_type] = existing_service[:container_type] 
+    shared_service[:container_type] = existing_service[:container_type] 
+    shared_service[:service_container_name] = existing_service[:service_container_name]
       
     SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
     return attach_shared_volume(shared_service) if shared_service[:type_path] == 'filesystem/local/filesystem'     
