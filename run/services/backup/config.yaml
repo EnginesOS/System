@@ -19,11 +19,6 @@ volumes:
   remotepath: "/backup_src/volumes/"
   localpath: "/var/lib/engines/"
   mapping_permissions: "ro"
- Engines:  !ruby/object:Volume
-  name: Engines
-  remotepath: "/backup_src/engines/"
-  localpath: "/opt/engines/"
-  mapping_permissions: "ro"
  Destinations: !ruby/object:Volume
   name: Destinations
   remotepath: "/var/lib/engines/local_backup_dests/"
