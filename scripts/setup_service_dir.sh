@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo /opt/engines/scripts/_setup_service_dir.sh $1
+sudo -n /opt/engines/scripts/_setup_service_dir.sh $1
