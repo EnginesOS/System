@@ -3,7 +3,7 @@ module Shares
     require_relative 'rset.rb'
 
   
-    def shares_registry
+    def shares_registry_tree
       rest_get('/v0/system_registry/shares/tree', nil)
     end
  

@@ -27,7 +27,7 @@ module SmRegistryTree
    
   #@return [Tree::TreeNode] representing the share servuces tree as dettached and frozen from the parent Tree
      #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-     def get_shares_tree
-       test_and_lock_registry_result(system_registry_client.shares_registry)
+     def shares_tree
+       test_and_lock_registry_result(system_registry_client.shares_registry_tree)
      end
 end
