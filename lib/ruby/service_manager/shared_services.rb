@@ -22,8 +22,11 @@ module SharedServices
     shared_service[:service_container_name] = existing_service[:service_container_name]
       
     SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
-    return attach_shared_volume(shared_service) if shared_service[:type_path] == 'filesystem/local/filesystem'     
-    test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))
+      if shared_service[:type_path] == 'filesystem/local/filesystem'
+        return false unless attach_shared_volume(shared_service)
+      end
+    test_registry_result(system_registry_client.add_share_to_managed_engines_registry(shared_service))
+      
   rescue StandardError => e
     log_exception(e,shared_service)
   end
@@ -31,13 +34,12 @@ module SharedServices
   def attach_shared_volume(shared_service)
   engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
     #used by the builder whn no engine to add volume to def
-     unless engine.is_a?(ManagedEngine)
-       Volume.complete_service_hash(shared_service)
-       return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))
-     end
-
-  return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))  if engine.add_volume(shared_service)
-    return false
+     if  engine.is_a?(ManagedEngine)
+       return log_error_mesg("Failed to add volume to Engine",engine,shared_service) unless engine.add_volume(shared_service)
+     else
+       Volume.complete_service_hash(shared_service)      
+     end  
+    return true
     rescue StandardError => e
       log_exception(e,shared_service)
   end

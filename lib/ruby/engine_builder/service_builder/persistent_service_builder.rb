@@ -83,7 +83,7 @@ module PersistantServiceBuilder
     return s
   end
 
-  def  attach_existing_service_to_engine(service_hash, existing)
+  def attach_existing_service_to_engine(service_hash, existing)
     params =  service_hash.dup
     params[ :existing_service] = existing
     trim_to_editable_variables(params)
@@ -100,5 +100,7 @@ module PersistantServiceBuilder
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end
+    recuse StandardError => e
+    log_exception(e,params,variables)
   end
 end
