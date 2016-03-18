@@ -1,12 +1,25 @@
 module SharedServices
-  def attach_existing_service_to_engine(shared_service)
-  service_query = shared_service.dup
-    service_query[:parent_engine] = shared_service[:service_container_name]
+  def attach_existing_service_to_engine(shared_service_params)
+    existing_service = shared_service_params[ :existing_service]    
+    shared_service = shared_service_params.dup
+    shared_service.delete(:existing_service)
+    shared_service[:service_owner] =  existing_service[:parent_engine]
+    shared_service[:service_owner_handle] =  existing_service[:service_handle]
+    SystemDebug.debug(SystemDebug.services,'sm using existing service', shared_service_params,existing_service,shared_service)
+    service_query = shared_service.dup
+    
+    service_query[:service_handle] = existing_service[:service_handle]
+    service_query[:parent_engine] = existing_service[:parent_engine]
+      
     existing_service_hash =  get_service_entry(service_query)
-    return log_error_mesg('Failed to find service to share', shared_service) unless existing_service_hash.is_a?(Hash)
+    return log_error_mesg('Failed to find service to share', service_query) unless existing_service_hash.is_a?(Hash)
     SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
     merge_variables(shared_service,existing_service_hash)  
     shared_service[:shared] = true
+    shared_service[:service_handle] = shared_service[:parent_engine] + ':' + existing_service[:service_handle]
+    shared_service[:container_type] = existing_service[:container_type] 
+    shared_service[:container_type] = existing_service[:container_type] 
+    shared_service[:service_container_name] = existing_service[:service_container_name]
       
     SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
     return attach_shared_volume(shared_service) if shared_service[:type_path] == 'filesystem/local/filesystem'     
@@ -17,7 +30,11 @@ module SharedServices
   
   def attach_shared_volume(shared_service)
   engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
-    return log_error_mesg("failed to attach share volume parent engine not loaded",shared_service[:parent_engine]) unless engine.is_a?(ManagedEngine)
+    #used by the builder whn no engine to add volume to def
+     unless engine.is_a?(ManagedEngine)
+       Volume.complete_service_hash(shared_service)
+       return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))
+     end
 
   return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))  if engine.add_volume(shared_service)
     return false

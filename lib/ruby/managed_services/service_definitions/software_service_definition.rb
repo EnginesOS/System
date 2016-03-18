@@ -42,6 +42,17 @@ class SoftwareServiceDefinition
     SystemUtils.log_exception(e)
   end
   
+  def SoftwareServiceDefinition.consumer_params(service_hash)
+    ret_val = []
+            service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+        SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
+        return ret_val if service_def.nil?
+        return ret_val unless service_def.key?(:consumer_params)
+        consumer_params = service_def[:consumer_params]
+         return retval unless consumer_params.is_a?(Hash)
+         return consumer_params
+        
+end
   def SoftwareServiceDefinition.service_constants(service_hash)
     ret_val = []
         service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
