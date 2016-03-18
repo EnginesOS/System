@@ -16,12 +16,12 @@ module PersistantServiceBuilder
     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
     existing = match_service_to_existing(service_hash, use_existing)
     if existing.is_a?(Hash)
-     # service_hash 
+      # service_hash
       service_hash[:shared] = true
       service_hash[:fresh] = false
       @first_build = false
       return attach_existing_service_to_engine(service_hash, existing)
-    
+
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       service_hash = use_orphan(service_hash)
@@ -40,7 +40,7 @@ module PersistantServiceBuilder
     end
     SystemDebug.debug(SystemDebug.builder,:builder_attach_service, service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
-    
+
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
@@ -75,7 +75,6 @@ module PersistantServiceBuilder
 
   def use_active_service(service_hash, existing_service )
     s = @core_api.get_service_entry(existing_service)
-  
 
     s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     s[:fresh] = false
@@ -87,10 +86,19 @@ module PersistantServiceBuilder
   def  attach_existing_service_to_engine(service_hash, existing)
     params =  service_hash.dup
     params[ :existing_service] = existing
+    trim_to_editable_variables(params)
     if @core_api.attach_existing_service_to_engine(params)
-    @attached_services.push(service_hash)
-    return true
+      @attached_services.push(service_hash)
+      return true
+    end
+    return log_error_mesg('failed to attach_existing_service_to_engine(params)',params)
   end
-  return log_error_mesg('failed to attach_existing_service_to_engine(params)',params) 
+
+  def trim_to_editable_variables(params)
+    variables = SoftwareServiceDefinition.consumer_params(params)
+    variables.each do |variable |
+      key = variable[:name]
+      params[:variables].delete(key) if variable[:immutable] == true
+    end
   end
 end
