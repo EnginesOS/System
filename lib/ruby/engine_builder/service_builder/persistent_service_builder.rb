@@ -100,5 +100,7 @@ module PersistantServiceBuilder
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end
+    recuse StandardError => e
+    log_exception(e,params,variables)
   end
 end
