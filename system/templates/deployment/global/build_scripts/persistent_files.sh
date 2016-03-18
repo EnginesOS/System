@@ -19,7 +19,8 @@ echo file $path is in $dir
     echo mkdir -p $VOLDIR/$dir
 	mkdir -p $VOLDIR/$dir
 	echo "mv /home/$path /$VOLDIR/$dir"
-	mv /home/$path /$VOLDIR/$dir
+	mv /home/$path /$VOLDIR/$dir	
 	echo "ln -s  $VOLDIR/$path /home/$path"
 	ln -s  $VOLDIR/$path /home/$path
+	chmod oug-w "$prefix/$path"
 done
