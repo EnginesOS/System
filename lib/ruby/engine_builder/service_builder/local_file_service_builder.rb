@@ -37,8 +37,11 @@ module LocalFileServiceBuilder
     @app_is_persistent = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
     service_hash = Volume.complete_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.builder,:complete_VOLUME_service_hash, service_hash)
-  
+    if service_hash[:share] == true
+    @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
+  else
     @volumes[service_hash[:variables][:service_name]] = Volume.new(service_hash)
+end
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)

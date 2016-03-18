@@ -30,7 +30,11 @@ module SharedServices
   
   def attach_shared_volume(shared_service)
   engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
-    return log_error_mesg("failed to attach share volume parent engine not loaded",shared_service[:parent_engine]) unless engine.is_a?(ManagedEngine)
+    #used by the builder whn no engine to add volume to def
+     unless engine.is_a?(ManagedEngine)
+       Volume.complete_service_hash(shared_service)
+       return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))
+     end
 
   return test_registry_result(system_registry_client.add_to_managed_engines_registry(shared_service))  if engine.add_volume(shared_service)
     return false

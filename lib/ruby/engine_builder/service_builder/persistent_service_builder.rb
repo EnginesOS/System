@@ -91,6 +91,6 @@ module PersistantServiceBuilder
     @attached_services.push(service_hash)
     return true
   end
-  return log_error_mesg('failed to attach_existing_service_to_engine(params)',service_hash) unless result
+  return log_error_mesg('failed to attach_existing_service_to_engine(params)',params) 
   end
 end
