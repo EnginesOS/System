@@ -9,7 +9,9 @@ module Shares
  
     def add_share_to_managed_engines_registry(shared_service)
       add_to_managed_engines_registry(shared_service)
-      rest_post('/v0/system_registry/shares/add',shared_service )
+  r =    rest_post('/v0/system_registry/shares/add',shared_service )
+  p :add_share_to_managed_engines_registry
+  p r
       
     end
 end
