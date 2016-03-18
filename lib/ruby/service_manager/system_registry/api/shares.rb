@@ -9,7 +9,7 @@ module Shares
  
     def add_share_to_managed_engines_registry(shared_service)
       return false unless add_to_managed_engines_registry(shared_service)
-      rest_post('/v0/system_registry/shares/add',shared_service )
+      rest_post('/v0/shares_registry/add',shared_service )
       
     end
 end
