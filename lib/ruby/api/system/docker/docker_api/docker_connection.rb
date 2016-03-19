@@ -4,16 +4,14 @@ class DockerConnection < ErrorsApi
   require 'net_x/http_unix'
   require 'socket'
 
-  attr_accessor :docker_socket,:response_parser
+  attr_accessor :response_parser
 
   def initialize
     @response_parser = Yajl::Parser.new
 
     #socket = UNIXSocket.new('/var/run/docker.sock')
 
-    @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    @docker_socket.continue_timeout = 60
-    @docker_socket.read_timeout = 60
+    @docker_socket = docker_socket
   rescue StandardError => e
     log_exception(e)
   end
@@ -110,6 +108,17 @@ class DockerConnection < ErrorsApi
 
   private
 
+  def docker_socket
+    return @docker_socket unless @docker_socket.nil?
+    @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
+        @docker_socket.continue_timeout = 60
+        @docker_socket.read_timeout = 60
+        return @docker_socket
+    rescue StandardError => e
+       log_exception(e,'Error opening unix:///var/run/docker.sock')
+       return nil
+  end
+  
   def clear_cid(container)
     SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
 
