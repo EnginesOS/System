@@ -4,8 +4,12 @@ module Cache
     return nil unless @engines_conf_cache.key?(ident.to_sym)   
     return nil unless @engines_conf_cache[ident.to_sym].is_a?(Hash)
     return nil if @engines_conf_cache[ident.to_sym][:engine].nil?
-
-    return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  ==  get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
+    ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
+      if ts == -1
+        rm_engine_from_cache(ident)
+        return nil
+      end
+    return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  == ts 
    
 SystemDebug.debug(SystemDebug.cache, :Stale_info )
 #       p :saved_ts
@@ -53,8 +57,9 @@ return  nil
   def get_engine_ts(engine)
     return log_error_mesg('Get ts passed nil Engine ', engine) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
-    return -1 unless File.exist?(yam_file_name)
-    File.mtime(yam_file_name)
+    return  File.mtime(yam_file_name) if File.exist?(yam_file_name)
+   # return 0 if Dir.exist?(SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name)
+    return -1
   end
   
   def container_from_cache(container_ident)

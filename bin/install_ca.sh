@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-sudo /opt/engines/scripts/_install_ca.sh 
+sudo -n /opt/engines/scripts/_install_ca.sh 

@@ -1,7 +1,7 @@
 #!/bin/sh
 touch /opt/engines/run/system/flags/update_engines_running 
 
-sudo /opt/engines/scripts/_update_engines_system_software.sh 
+sudo -n /opt/engines/scripts/_update_engines_system_software.sh 
 
 echo "Restarting"
 sleep 5

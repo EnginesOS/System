@@ -13,6 +13,10 @@ module ManagedServiceControls
   
 def create_service()
    SystemUtils.run_command('/opt/engines/scripts/setup_service_dir.sh ' + container_name)
+  setup_service_keys if @system_keys.is_a?(Array)
+  SystemDebug.debug(SystemDebug.containers, :keys_set,  @system_keys )
+ 
+   
    envs = @container_api.load_and_attach_persistent_services(self)
    shared_envs = @container_api.load_and_attach_shared_services(self)
    if shared_envs.is_a?(Array)
@@ -31,6 +35,7 @@ def create_service()
        @environments = envs
      end
    end
+  @container_api.setup_service_dirs(self)
 
    if create_container
 
@@ -64,6 +69,16 @@ rescue StandardError =>e
      save_state()
      return log_error_mesg('Failed to destroy service in recreate',self)
    end
+ end
+ 
+ private
+ def setup_service_keys
+   keys = ''
+       @system_keys.each do |key|
+         keys += ' ' + key.to_s
+       end
+   SystemDebug.debug(SystemDebug.containers, :keys, keys )
+    SystemUtils.run_command('/opt/engines/scripts/setup_service_keys.sh ' + container_name  + keys)
  end
 
  

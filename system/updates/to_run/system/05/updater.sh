@@ -10,3 +10,6 @@ for service in $to_map
 		cp $service_def mapping/ManagedEngine
     done
     
+    exit 0
+    
+    apt-get install -y  linux-image-virtual apt-transport-https    linux-image-extra-$(uname -r) lvm2 thin-provisioning-tools

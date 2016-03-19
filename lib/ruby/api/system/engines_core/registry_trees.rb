@@ -16,4 +16,9 @@ module RegistryTrees
     check_sm_result(service_manager.service_configurations_tree)
   end
 
+  def get_shares_tree
+    p :get_shares_tree
+    p service_manager.shares_tree
+    check_sm_result(service_manager.shares_tree)
+  end
 end

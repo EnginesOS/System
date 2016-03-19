@@ -18,6 +18,10 @@ module ManagedContainerControls
     return clear_cid if super()
     task_failed('destroy')
   end
+  
+  def delete_engine
+    @container_api.delete_engine(self)
+  end
 
   def setup_container
     return false unless has_api?

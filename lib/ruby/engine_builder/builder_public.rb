@@ -8,6 +8,10 @@ class BuilderPublic
   def engine_name
     @builder.build_params[:engine_name]
   end
+  
+  def environments
+    @builder.environments
+  end
 
   def memory
     @builder.build_params[:memory]

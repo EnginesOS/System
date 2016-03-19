@@ -103,7 +103,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd)
+  def SystemUtils.execute_command(cmd, binary=false, data = false)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -114,14 +114,25 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
 
+    unless data.is_a?(FalseClass)
+         t = File.new('/tmp/import','w+')
+         t.write(data)
+         t.close
+         cmd = 'cat /tmp/import | ' + cmd
+  
+         end
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       oline = ''
       stderr_is_open = true
       begin
+     
+        
         stdout.each do |line|
-          line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings
-          oline = line
-          line.gsub!(/\/r/,'')
+          unless binary
+            line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings
+            oline = line
+            line.gsub!(/\/r/,'')
+          end
           retval[:stdout] += line
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
@@ -141,10 +152,15 @@ class SystemUtils
           retval[:stderr] += stderr.read_nonblock(1000)
         end
       end
+      File.delete('/tmp/import') if File.exist?('/tmp/import')
+ 
       return retval
     end
+    File.delete('/tmp/import') if File.exist?('/tmp/import')
+
     return retval
   rescue Exception=>e
+    File.delete('/tmp/import') if File.exist?('/tmp/import')
     SystemUtils.log_exception(e)
     SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ', retval)
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
@@ -204,8 +220,8 @@ def  SystemUtils.deal_with_jason(res)
  rescue  StandardError => e
    STDERR.puts e.to_s
  end
-  def SystemUtils.service_hash_variables_as_str(service_hash)
-    json_str = service_hash[:variables].to_json
+  def SystemUtils.hash_variables_as_json_str(service_hash_variables)
+    json_str = service_hash_variables.to_json
     return json_str
 
   end

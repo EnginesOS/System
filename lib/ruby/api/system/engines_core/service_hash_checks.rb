@@ -22,6 +22,7 @@ module ServiceHashChecks
   end
 
   def check_engine_service_hash(service_hash)
+        
     return false unless check_engine_service_query(service_hash)
     return log_error_mesg('No service variables', service_hash) unless service_hash.key?(:variables)
     return true

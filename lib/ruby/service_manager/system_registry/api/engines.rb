@@ -20,6 +20,7 @@ module Engines
   end
 
   def add_to_managed_engines_registry(service_hash)
+    SystemDebug.debug(SystemDebug.services,'sm add_to_managed_engines_registry ', service_hash)
     rest_post('/v0/system_registry/engine/services/add',service_hash )
   end
 

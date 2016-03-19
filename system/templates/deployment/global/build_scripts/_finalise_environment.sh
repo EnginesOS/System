@@ -30,6 +30,8 @@ echo "	id $ContUser | grep $data_gid '"
 	then
 		ln -s $VOLDIR /data
 	fi
-	
+
+
+    
 chown -R  $ContUser $HOME
 #chmod g-w $HOME

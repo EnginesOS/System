@@ -94,8 +94,10 @@ module Engines
   end
   
 
-  def delete_engine(container_name)
-    rm_engine_from_cache(container_name)
+  def delete_engine(container)
+    
+    rm_engine_from_cache(container.container_name)
+    ContainerStateFiles.delete_container_configs(container)
   end
   
 end

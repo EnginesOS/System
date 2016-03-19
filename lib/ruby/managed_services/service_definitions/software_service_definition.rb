@@ -41,7 +41,43 @@ class SoftwareServiceDefinition
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-
+  
+  def SoftwareServiceDefinition.consumer_params(service_hash)
+    ret_val = []
+            service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+        SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
+        return ret_val if service_def.nil?
+        return ret_val unless service_def.key?(:consumer_params)
+        consumer_params = service_def[:consumer_params]
+         return retval unless consumer_params.is_a?(Hash)
+         return consumer_params
+        
+end
+  def SoftwareServiceDefinition.service_constants(service_hash)
+    ret_val = []
+        service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
+    return ret_val if service_def.nil?
+    return ret_val unless service_def.key?(:constants)
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
+    constants = service_def[:constants]
+      return retval unless constants.is_a?(Hash)
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, constants)
+    constants.values.each do |env_variable_pair|  
+      SystemDebug.debug(SystemDebug.services,:env_variable_pair, env_variable_pair)
+      name = env_variable_pair[:name]
+      value = env_variable_pair[:value]      
+     # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
+        env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + name,true)
+      SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:new_env,env)
+      ret_val.push( env) # env_name , value 
+  end
+      ret_val
+    rescue StandardError => e
+       SystemUtils.log_exception(e) 
+      
+  end
+  
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])

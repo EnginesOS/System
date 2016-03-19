@@ -19,4 +19,8 @@ module FetchTrees
   def get_orphaned_services_tree
     @core_api.get_orphaned_services_tree
   end
+  
+  def get_shares_tree
+    @core_api.get_shares_tree    
+  end
 end

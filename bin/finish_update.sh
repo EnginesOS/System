@@ -43,7 +43,14 @@ if ! test -d  $system_updates_dir/$update_id
  fi
  if test -d $system_updates_dir/$update_id 
   then
-  	mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines
+  	if ! test -d /opt/engines/system/updates/has_run/engines/$update_id 
+  	 then
+  		mv  $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines
+  	else
+  		ts=`date +%d-%m-%Y-%H:%M`
+  		cp -rp $system_updates_dir/$update_id /opt/engines/system/updates/has_run/engines/$update_id.$ts
+  		rm -r $system_updates_dir/$update_id
+  	fi
  fi
 
   done

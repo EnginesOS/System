@@ -8,7 +8,7 @@ fi
 
 /opt/engines/bin/set_ip.sh
 
-sudo /opt/engines/scripts/_check_local-kv.sh
+sudo -n /opt/engines/scripts/_check_local-kv.sh
 
 if test -f /opt/engines/system/flags/replace_keys
  then
