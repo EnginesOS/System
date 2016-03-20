@@ -52,6 +52,7 @@ module FirstRunDNS
       dyndns_service  =  @api.loadManagedService('dyndns')
       dyndns_service.create_service
       return true if dyndns_service.is_running?
+    dyndns_service.start_container
       false
     end
     
