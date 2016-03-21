@@ -68,7 +68,7 @@ class BuilderPublic
     @builder.blueprint
   end
 
-  def logs
+  def logs_container
     sleep(4)
     @builder.running_logs
   end

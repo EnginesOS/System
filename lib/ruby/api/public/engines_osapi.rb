@@ -101,8 +101,8 @@ class EnginesOSapi < ErrorsApi
     return success('Gui', 'First Run') if first_run.sucess
     failed('Gui', 'First Run', first_run.error.to_s)
   rescue StandardError => e
-
-    failed('Gui', 'First Run', 'failed')
+    log_exception_and_fail('Gui First Run failed', e)
+   
   end
 
   def last_api_error
