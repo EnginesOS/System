@@ -22,5 +22,5 @@ echo file $path is in $dir
 	mv /home/$path /$VOLDIR/$dir	
 	echo "ln -s  $VOLDIR/$path /home/$path"
 	ln -s  $VOLDIR/$path /home/$path
-	chmod oug-w "/home/$path"
+	#chmod oug-w "/home/$path"
 done
