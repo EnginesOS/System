@@ -168,6 +168,8 @@ class DockerFileBuilder
  
     if @blueprint_reader.database_seed.nil? == false
       ConfigFileWriter.write_templated_file(@templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
+      p :written_seef
+      p @blueprint_reader.database_seed
     #  seed_file = File.new(@builder.basedir + '/home/database_seed', 'w')
     #  seed_file.write(@blueprint_reader.database_seed)
     #  seed_file.close
