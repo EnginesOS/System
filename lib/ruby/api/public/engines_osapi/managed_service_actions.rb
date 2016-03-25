@@ -2,7 +2,7 @@ module ManagedServiceActions
   # @returns [EnginesOSapiResult]
   # expects a service_hash as @params
   def dettach_service(params)
-    SystemDebug.debug(SystemDebug.services,:dettach_service, params)
+   
     return success(params[:parent_engine].to_s, 'detach service') if @core_api.dettach_service(params)
     failed(params[:parent_engine].to_s,@core_api.last_error, params[:parent_engine].to_s)
     rescue StandardError => e
