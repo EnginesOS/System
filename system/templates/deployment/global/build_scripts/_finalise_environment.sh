@@ -33,8 +33,8 @@ echo "	id $ContUser | grep $data_gid '"
 	
 	if test -f /home/database_seed
 	 then
-	  service_path=`head -1 /home/database_seed | sed "/s/#///"`
-	  cat /home/database_seed | /home/services/$service_path/restore.sh	  
+	  service_path=`head -1 /home/database_seed | sed "/#/s///"`
+	  cat /home/database_seed | grep -v  ^\# | /home/services/$service_path/restore.sh	  
 	 fi
 
 
