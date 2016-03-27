@@ -1,6 +1,6 @@
 FROM  engines/php:_Engines_System(release)
 ENV ContUser www-data
-
+ENV WWW_ROOT /home/app
 ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
