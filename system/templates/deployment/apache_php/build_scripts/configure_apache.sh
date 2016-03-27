@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/WWW_ROOT/$WWW_ROOT/" > /tmp/.000-default.conf
+cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/WWW_DIR/$WWW_DIR" > /tmp/.000-default.conf
 cat  /tmp/.000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf-2
 cp /tmp/.000-default.conf-2 /etc/apache2/sites-enabled/000-default.conf 
 echo  ServerName $fqdn > /tmp/apache2.conf

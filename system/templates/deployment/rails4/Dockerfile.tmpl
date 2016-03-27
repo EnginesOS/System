@@ -3,7 +3,7 @@ FROM  engines/passenger:_Engines_System(release)
 ADD build_scripts /build_scripts
 ADD home home
 ENV CONTFSVolHome /home/fs/
-ENV WWW_ROOT /home/app/public
+ENV WWW_DIR public
 ENV ContUser ruby
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
