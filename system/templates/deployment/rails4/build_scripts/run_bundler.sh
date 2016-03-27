@@ -1,6 +1,6 @@
 #!/bin/bash
 
- echo "Rails.application.routes.default_url_options[:host] = \'$fqdn\'" >> config/environment.rb
+ echo "Rails.application.routes.default_url_options[:host] = '$fqdn'" >> config/environment.rb
 
 if ! test -f /tmp/.bundled
  then
