@@ -29,7 +29,7 @@ class SystemApi < ErrorsApi
   include ContainerLocking  
   require_relative 'docker_events.rb'
   include DockerEvents
-  require 'container_network_metrics.rb'
+  require_relative 'container_network_metrics.rb'
   include  ContainerNetworkMetrics
   require_relative 'container_change_monitor.rb'
   include ContainerChangeMonitor
