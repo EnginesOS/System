@@ -25,10 +25,12 @@ class SystemApi < ErrorsApi
   include SshKeys
   require_relative 'system_settings.rb'
   include SystemSettings
-  
+  require_relative 'container_locking.rb'
+  include ContainerLocking  
   require_relative 'docker_events.rb'
   include DockerEvents
-  
+  require_relative 'container_network_metrics.rb'
+  include  ContainerNetworkMetrics
   require_relative 'container_change_monitor.rb'
   include ContainerChangeMonitor
   
