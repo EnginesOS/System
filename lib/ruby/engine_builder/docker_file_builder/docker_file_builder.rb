@@ -136,6 +136,8 @@ class DockerFileBuilder
       end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
+     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
+     
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
