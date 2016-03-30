@@ -1,4 +1,5 @@
 #!/bin/bash
+cp /etc/apache2/sites-enabled/000-default.conf /tmp/000-default.conf.orig
 www_dir=''
  if ! test -z  $WWW_DIR
   then
