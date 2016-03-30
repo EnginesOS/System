@@ -31,7 +31,7 @@ module TemplateOperations
   
   def get_resolved_engine_string(env_value, container)
     templater = Templater.new(SystemAccess.new,container)
-        value = templater.apply_system_variables(env_value)
+        value = templater.apply_build_variables(env_value)
     SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
         return value
       rescue StandardError => e
