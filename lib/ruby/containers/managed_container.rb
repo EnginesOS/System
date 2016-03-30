@@ -75,6 +75,7 @@ class ManagedContainer < Container
   :data_gid,\
   :cont_userid,\
   :protocol,\
+  :preffered_protocol,\
   :deployment_type,\
   :dependant_on,\
   :no_ca_map,\
