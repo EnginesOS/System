@@ -6,6 +6,11 @@ module ManagedContainerControls
 
   end
 
+  def update_memory(new_memory)
+     super
+     update_environment('Memory',memory)
+   end
+   
   def destroy_container(reinstall=false)
 
     return false unless has_api?

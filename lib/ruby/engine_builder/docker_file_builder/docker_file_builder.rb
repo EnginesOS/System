@@ -354,7 +354,7 @@ class DockerFileBuilder
     # stef = File.open(get_basedir + '/home/stack.env','w')
     write_line('')
     write_line('#Stack Env')
-    write_env('Memory' ,@blueprint_reader.memory.to_s)
+    write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)

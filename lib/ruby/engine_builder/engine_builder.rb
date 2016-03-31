@@ -59,6 +59,7 @@ class EngineBuilder < ErrorsApi
     @build_params[:engine_name].freeze
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
+    @memory = @build_params[:memory]
     @app_is_persistent = false
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true
