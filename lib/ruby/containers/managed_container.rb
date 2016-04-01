@@ -26,7 +26,8 @@ class ManagedContainer < Container
     include PersistantServices
   require_relative 'managed_container/managed_container_actionators.rb'
      include ManagedContainerActionators
-  
+  require_relative 'managed_container/managed_container_environment.rb'
+  include ManagedContainerEnvironment
     
   require_relative 'managed_container/managed_container_export_import_service.rb'
   include ManagedContainerExportImportService
