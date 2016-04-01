@@ -6,7 +6,8 @@ module ManagedContainerEnvironment
     @environments.each do |environment|
     if environment.name == key        
       SystemDebug.debug(SystemDebug.containers, :update_environment, "Cahnged")
-      environment.value = value
+      return false if environment.immutable == true
+      environment.value = value 
       return true
     end
     end
