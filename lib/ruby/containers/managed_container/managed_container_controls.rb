@@ -61,9 +61,10 @@ module ManagedContainerControls
     state = read_state
     SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
     return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running'
-    register_with_dns # MUst register each time as IP Changes
+#    register_with_dns # MUst register each time as IP Changes
+#    add_nginx_service if @deployment_type == 'web'
+#    @container_api.register_non_persistent_services(self)
     add_nginx_service if @deployment_type == 'web'
-    @container_api.register_non_persistent_services(self)
     true
   rescue StandardError => e
     log_exception(e)
@@ -76,14 +77,20 @@ module ManagedContainerControls
     return task_failed('create/recreate') unless create_container
     true
   end
+  
+  def on_start()
+    p :ONSTART_CALLED
+    register_with_dns # MUst register each time as IP Changes    
+    @container_api.register_non_persistent_services(self)
+  end
 
   def unpause_container
 
     return false unless has_api?
     return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
-    register_with_dns # MUst register each time as IP Changes
-    @container_api.register_non_persistent_services(self)
+   # register_with_dns # MUst register each time as IP Changes
+   # @container_api.register_non_persistent_services(self)
     true
   end
 
@@ -116,8 +123,8 @@ module ManagedContainerControls
     return false unless prep_task(:start)
     return task_failed('start') unless super
     @restart_required = false
-    register_with_dns # MUst register each time as IP Changes
-    @container_api.register_non_persistent_services(self)
+  #  register_with_dns # MUst register each time as IP Changes
+  #  @container_api.register_non_persistent_services(self)
     true
   end
 
@@ -133,11 +140,11 @@ module ManagedContainerControls
     return false unless prep_task(:reinstall)
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
-    if ret_val == true
-      register_with_dns # MUst register each time as IP Changes
-      #add_nginx_service if @deployment_type == 'web'
-      @container_api.register_non_persistent_services(self)
-    end
+#    if ret_val == true
+#      register_with_dns # MUst register each time as IP Changes
+#      #add_nginx_service if @deployment_type == 'web'
+#      @container_api.register_non_persistent_services(self)
+#    end
     return true if ret_val
     task_failed('rebuild')
   end
