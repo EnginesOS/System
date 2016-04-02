@@ -79,6 +79,7 @@ module ManagedContainerControls
   end
   
   def on_start()
+    p :ONSTART_CALLED
     register_with_dns # MUst register each time as IP Changes    
     @container_api.register_non_persistent_services(self)
   end
