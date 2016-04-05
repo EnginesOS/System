@@ -41,7 +41,8 @@ module ServiceOperations
   end
  
   def dettach_service(service_hash)
-    return false unless check_service_hash(service_hash)
+   return log_error_mesg('Invalid Service hash','dettach_service' ,service_hash) unless check_service_hash(service_hash)
+    SystemDebug.debug(SystemDebug.services,:dettach_service, service_hash)
     check_sm_result(service_manager.delete_service(service_hash))
   rescue StandardError => e
     log_exception(e)

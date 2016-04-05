@@ -21,10 +21,13 @@ if ! test -d  $system_updates_dir/$update_id
   	services=`cat  $system_updates_dir/$update_id/services`
   		for service in $services
   		 do
-  		 	eservice stop $service >> $system_updates_dir/$update_id/update_log
-  		 	image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
-  			docker pull $image
-  		 	eservice recreate $service  >>  $system_updates_dir/$update_id/update_log
+  		 	/opt/engines/bin/eservice stop $service >> $system_updates_dir/$update_id/update_log
+  		 	if  test `/opt/engines/bin/eservice  status $service |grep running |cut -f2 -d:` = "running"
+  		 	 then  		 	 
+  		 		image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
+  				docker pull $image
+  		 		/opt/engines/bin/eservice recreate $service  >>  $system_updates_dir/$update_id/update_log
+  		 	fi
   		 done
   fi
   

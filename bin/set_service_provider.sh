@@ -19,7 +19,7 @@
  		echo "Not such Service $1 from $2"
  		exit -1
  	fi
-In additio$1/$2 /opt/engines/run/services/$1
+cp -r /opt/engines/run/services-available/$1/$2 /opt/engines/run/services/$1
 chgrp -R containers /opt/engines/run/services/$1
 chmod g+rwx /opt/engines/run/services/$1
 

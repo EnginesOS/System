@@ -3,6 +3,7 @@ script=$0
 Script_Dir=`dirname $0`
 Archive=/tmp/big/archive 
 cd /tmp
+mkdir -p /tmp/big/
 cat - > $Archive
 
 $Script_Dir/backup.sh > /tmp/big/backup.sql

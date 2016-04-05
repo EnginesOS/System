@@ -136,6 +136,8 @@ class DockerFileBuilder
       end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
+     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
+     
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -166,8 +168,10 @@ class DockerFileBuilder
 
   def write_database_seed
  
-    if @blueprint_reader.database_seed.nil? == false
-      ConfigFileWriter.write_templated_file(@templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
+    if @blueprint_reader.database_seed.nil? == false && @blueprint_reader.database_seed != ''
+      ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
+#      p :written_seef
+#      p @blueprint_reader.database_seed
     #  seed_file = File.new(@builder.basedir + '/home/database_seed', 'w')
     #  seed_file.write(@blueprint_reader.database_seed)
     #  seed_file.close
@@ -350,7 +354,7 @@ class DockerFileBuilder
     # stef = File.open(get_basedir + '/home/stack.env','w')
     write_line('')
     write_line('#Stack Env')
-    write_env('Memory' ,@blueprint_reader.memory.to_s)
+    write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)

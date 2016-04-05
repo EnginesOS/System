@@ -31,11 +31,12 @@ module TemplateOperations
   
   def get_resolved_engine_string(env_value, container)
     templater = Templater.new(SystemAccess.new,container)
-        env_value = templater.apply_system_variables(env_value)
-        return env_value
+        value = templater.apply_build_variables(env_value)
+    SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
+        return value
       rescue StandardError => e
     
-        log_exception(e)
+        log_exception(e,env_value,container)
   
   end
   

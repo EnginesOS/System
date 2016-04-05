@@ -31,7 +31,7 @@ class BuilderPublic
 
   def http_protocol
     if @builder.build_params[:http_protocol] == 'http_https'
-      return 'http'
+      return 'https'
     end
     return @builder.build_params[:http_protocol]
   end

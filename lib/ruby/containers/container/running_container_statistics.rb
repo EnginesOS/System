@@ -14,8 +14,9 @@ module RunningContainerStatistics
     cpu = 0
 
     return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.nil?
+  return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.is_a?(FalseClass)
     ps_json =  ps_json[0] unless ps_json.is_a?(Hash)
-    return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.nil?
+
     processes = ps_json["Processes"]
     pcnt  = processes.count
     ps_json["Processes"].each do |process|
