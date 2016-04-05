@@ -1,6 +1,6 @@
 module CertificateActions
   def get_system_ca
-    return "No CA found" unless file.exists?(SystemConfig.EnginesInternalCA)
+    return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)
     
     File.read(SystemConfig.EnginesInternalCA)
     
