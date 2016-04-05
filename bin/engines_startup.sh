@@ -5,6 +5,7 @@ then
    /opt/engines/bin/finish_update.sh  
 fi 
 
+release=`cat /opt/engines/release`
 
 /opt/engines/bin/set_ip.sh  
 
@@ -56,10 +57,33 @@ if test -z "$docker_ip"
    echo -n $docker_ip  2>&1 /opt/engines/etc/net/management
   fi
 
-docker start registry 
+
+if test -f /usr/bin/pulseaudio
+ then
+ 	/usr/bin/pulseaudio -D
+ fi
+ 
+ 	
+
+
+docker start registry
+#pull dns prior to start so download time (if any) is not included in the start timeout below
+docker pull engines/dns:$release 
+
 /opt/engines/bin/eservice start dns 
-#FIXMe use startup complete flag
-sleep 10
+count=0
+
+ while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
+  do 
+  	sleep 5
+  	count=`expr $count + 5`
+  		if test $count -gt 120
+  		 then
+  		  echo "ERROR failed to start DNS
+  		fi
+  done 
+
+
 /opt/engines/bin/eservice start mysql_server 
 
 /opt/engines/bin/eservice start nginx 
