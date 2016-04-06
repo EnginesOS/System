@@ -79,7 +79,7 @@ count=0
   	count=`expr $count + 5`
   		if test $count -gt 120
   		 then
-  		  echo "ERROR failed to start DNS
+  		  echo "ERROR failed to start DNS "
   		fi
   done 
 
