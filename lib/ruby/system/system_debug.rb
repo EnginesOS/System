@@ -21,9 +21,14 @@ class SystemDebug
   #if File.exist?(debug_flag)
   # require(debug_flags)
   #else
-   @@debug_flags =@@templater| @@services | @@export_import |@@builder|@@containers |@@execute
+  if File.exist?('/opt/engines/etc/debug/debug_flags.rb')
+    @@debug_flags = 0
+    require '/opt/engines/etc/debug/debug_flags.rb'
+  else
+    @@debug_flags = @@templater| @@services | @@export_import |@@builder|@@containers |@@execute
+  end
   #end
-  #@@debug_flags = 0
+  #
   def self.export_import
      return @@export_import
    end
