@@ -11,6 +11,7 @@ module ContainerActions
    else
       c = getManagedService(container_name)
    end
+   return false if c.is_a?(EnginesOSapiResult)
   return c.wait_for_container_task(timeout) unless c.nil?
   return false
    

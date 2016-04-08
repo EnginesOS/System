@@ -18,6 +18,7 @@ require 'socket'
    client.read_timeout=360000
    
   client.request(req) { |resp|
+    chunk = ''
    resp.read_body do |chunk|
      hash = parser.parse(chunk) do |hash|
       @system_api.container_event(hash) # if hash.key?('from')     
@@ -25,7 +26,7 @@ require 'socket'
    end
  }
    rescue StandardError => e
-     log_exception(e)
+     log_exception(e,chunk)
 end 
 
   end
