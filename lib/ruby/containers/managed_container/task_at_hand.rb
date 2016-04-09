@@ -102,9 +102,9 @@ module TaskAtHand
 
   def task_complete(action)
     expire_engine_info
-    return on_start if action == 'create'
-    on_start if action == 'start'
-    on_start if action == 'unpause'
+    return on_start(create) if action == 'create'
+    on_start('start') if action == 'start'
+    on_start('unpause') if action == 'unpause'
 
 
     @steps_to_go = 0 if @steps_to_go.nil?
