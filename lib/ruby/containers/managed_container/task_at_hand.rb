@@ -100,13 +100,26 @@ module TaskAtHand
     log_exception(e)
   end
 
-  def task_complete(action)
+  def process_container_event(action)
     expire_engine_info
+    
     return on_start(create) if action == 'create'
+    
     on_start('start') if action == 'start'
     on_start('unpause') if action == 'unpause'
-
-
+    on_stop('die') if action == 'die'
+    on_stop('stop') if action == 'stop'
+    on_stop('pause') if action == 'pause'
+    out_of_mem('oom') if action == 'oom'
+    
+    
+    
+    task_at_hand(action)
+    
+  end
+  
+  def task_at_hand(action)
+    
     @steps_to_go = 0 if @steps_to_go.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
 
