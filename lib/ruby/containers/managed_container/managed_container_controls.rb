@@ -81,11 +81,21 @@ module ManagedContainerControls
   def on_start(what)
     p :ONSTART_CALLED
     p what
+    @out_of_memory = false
     return if what == 'create'
     register_with_dns # MUst register each time as IP Changes    
     @container_api.register_non_persistent_services(self)
   end
 
+  def on_stop(what)
+    p :ONStop_CALLED
+    p what
+    @out_of_memory = true
+    @had_out_memory = true
+    deregister_with_dns # MUst register each time as IP Changes    
+    @container_api.deregister_non_persistent_services(self)
+  end
+  
   def unpause_container
 
     return false unless has_api?

@@ -17,6 +17,7 @@ class SystemDebug
   @@actions = 16384
   @@container_events = 32768
   @@export_import = 65536
+ # @@events = 131072
   @@all_debug_flags = @@container_events |@@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   #if File.exist?(debug_flag)
   # require(debug_flags)
@@ -29,10 +30,13 @@ class SystemDebug
   end
   #end
   #
+##  def self.events
+ #    return @@events
+ #  end
   def self.export_import
-     return @@export_import
-   end
-   
+      return @@export_import
+    end
+     
   def self.container_events
     return @@container_events
   end
