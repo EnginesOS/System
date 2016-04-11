@@ -102,8 +102,8 @@ module TaskAtHand
 
   def process_container_event(action)
     expire_engine_info
-    
-    return on_start(create) if action == 'create'
+    SystemDebug.debug(SystemDebug.container_events, :events, @container_name,  action)
+    return on_start(action) if action == 'create'
     
     on_start('start') if action == 'start'
     on_start('unpause') if action == 'unpause'
