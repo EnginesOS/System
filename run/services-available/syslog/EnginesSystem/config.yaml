@@ -18,7 +18,7 @@ volumes:
   mapping_permissions: rw
  logs: !ruby/object:Volume
   name: config
-  remotepath: "var/log/rmt/"
+  remotepath: "/var/log/rmt/"
   localpath: "/var/lib/engines/syslog/rmt/"
   mapping_permissions: rw
 port: 
