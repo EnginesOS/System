@@ -1,7 +1,7 @@
 --- !ruby/object:ManagedService
-container_name: logview
+container_name: log_viewer
 publisher_namespace: EnginesSystem
-type_path: logview
+type_path: log_viewer
 ctype: service
 persistent: false
 last_error: 
