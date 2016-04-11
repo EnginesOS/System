@@ -9,7 +9,7 @@ memory: '32'
 hostname: logview
 domain_name: 
 environments: []
-image: engines/syslog:_Engines_System(release)
+image: engines/logview:_Engines_System(release)
 volumes:
  syslog: !ruby/object:Volume
   name: syslog
@@ -35,7 +35,7 @@ port:
 mapped_ports:
 repo: na
 last_result: 
-setState: running
+setState: stopped
 nginxored: false
 conf_register_site: true
 conf_register_dns: true
