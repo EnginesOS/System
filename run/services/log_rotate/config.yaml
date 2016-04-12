@@ -29,7 +29,7 @@ volumes:
  system_services: !ruby/object:Volume
   name: system_services
   remotepath: "/var/log/engines/system_services/"
-  localpath: "/var/log/engines system_/services/"
+  localpath: "/var/log/engines/system_services/"
   mapping_permissions: rw
 port: 
 mapped_ports:
