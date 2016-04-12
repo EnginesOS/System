@@ -111,11 +111,7 @@ module TaskAtHand
     on_stop('stop') if action == 'stop'
     on_stop('pause') if action == 'pause'
     out_of_mem('oom') if action == 'oom'
-    
-    
-    
-    task_complete(action)
-    
+
   end
   
   def task_complete(action)

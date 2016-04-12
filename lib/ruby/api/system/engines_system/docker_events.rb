@@ -59,7 +59,7 @@ end
 
 def inform_container_tracking(container_name,ctype,event_name)
   c = get_event_container(container_name,ctype)
-  c.task_at_hand(event_name)
+  c.task_complete(event_name)
   inform_container_monitor(container_name,ctype,event_name) 
 end
 
