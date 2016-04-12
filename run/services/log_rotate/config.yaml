@@ -18,14 +18,19 @@ volumes:
   mapping_permissions: rw
  engines: !ruby/object:Volume
   name: engines
-  remotepath: "/var/log/engines/containers/"
-  localpath: "/var/lib/engines/syslog/engines/"
-  mapping_permissions: ro
+  remotepath: "/var/log/engines/engines/"
+  localpath: "/var/log/engines/containers/"
+  mapping_permissions: rw
  services: !ruby/object:Volume
   name: services
   remotepath: "/var/log/engines/services/"
-  localpath: "/var/lib/engines/syslog/services/"
-  mapping_permissions: ro
+  localpath: "/var/log/engines/services/"
+  mapping_permissions: rw
+ system_services: !ruby/object:Volume
+  name: system_services
+  remotepath: "/var/log/engines/system_services/"
+  localpath: "/var/log/engines system_/services/"
+  mapping_permissions: rw
 port: 
 mapped_ports:
 repo: na
