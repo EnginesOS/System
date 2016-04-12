@@ -114,11 +114,11 @@ module TaskAtHand
     
     
     
-    task_at_hand_action(action)
+    task_complete(action)
     
   end
   
-  def task_at_hand_action(action)
+  def task_complete(action)
     
     @steps_to_go = 0 if @steps_to_go.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
