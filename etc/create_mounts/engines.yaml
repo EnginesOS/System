@@ -1,0 +1,10 @@
+cacerts: !ruby/object:Volume
+ name: cacerts
+ remotepath: /usr/local/share/ca-certificates/engines_internal_ca.crt
+ localpath: /opt/engines/etc/ssl/ca/certs/system_CA.pem
+ mapping_permissions: "ro"
+tz_map: !ruby/object:Volume
+ name: tz_map
+ remotepath: /etc/localtime
+ localpath: /etc/localtime
+ mapping_permissions: "ro"  

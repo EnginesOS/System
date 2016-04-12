@@ -3,6 +3,7 @@ container_name: log_rotate
 publisher_namespace: EnginesSystem
 type_path: log_rotate
 ctype: service
+service_type: transient
 persistent: false
 last_error: 
 memory: '32'
