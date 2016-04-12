@@ -1,0 +1,40 @@
+--- !ruby/object:ManagedService
+container_name: log_rotate
+publisher_namespace: EnginesSystem
+type_path: log_rotate
+ctype: service
+persistent: false
+last_error: 
+memory: '32'
+hostname: logrotate
+domain_name: 
+environments: []
+image: engines/logrotate:_Engines_System(release)
+volumes:
+ syslog: !ruby/object:Volume
+  name: syslog
+  remotepath: "/var/log/syslog/"
+  localpath: "/var/lib/engines/syslog/rmt/"
+  mapping_permissions: rw
+ engines: !ruby/object:Volume
+  name: engines
+  remotepath: "/var/log/engines/containers/"
+  localpath: "/var/lib/engines/syslog/engines/"
+  mapping_permissions: ro
+ services: !ruby/object:Volume
+  name: services
+  remotepath: "/var/log/engines/services/"
+  localpath: "/var/lib/engines/syslog/services/"
+  mapping_permissions: ro
+port: 
+mapped_ports:
+repo: na
+last_result: 
+setState: stopped
+nginxored: false
+conf_register_site: true
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"
+- "nginx"
