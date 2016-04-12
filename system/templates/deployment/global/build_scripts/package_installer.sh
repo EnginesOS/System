@@ -97,7 +97,7 @@ if test -d  $destination
     echo "cp -rp ./$path_to_extracted/. $destination"
     if test -f  ./$path_to_extracted 
      then
-     	cp -rp "./$path_to_extracted $destination
+     	cp -rp "./$path_to_extracted" $destination
      else
  		cp -rp "./$path_to_extracted/." $destination
  	 fi
