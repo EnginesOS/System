@@ -51,7 +51,9 @@ return  nil
     p id
     p @engines_conf_cache[id]
    ident = @engines_conf_cache[id]
-   ident.gsub(/services\//,'')
+   ident.gsub!(/services\//,'')
+   p ident
+   ident
   end
   
   def get_engine_ts(engine)
