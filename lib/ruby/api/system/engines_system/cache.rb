@@ -47,6 +47,8 @@ return  nil
   end
   
   def container_name_from_id(id)
+    p :container_name_from_id
+    p @engines_conf_cache[id]
     @engines_conf_cache[id]
   end
   

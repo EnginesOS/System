@@ -30,15 +30,16 @@ module DockerEvents
         c_name = container_name
       end 
     unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
-      id = event_hash['Id']
-      SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
+      id = event_hash['Id']     
       c_name = container_name_from_id(id)
+      SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
     end    
   end 
   SystemDebug.debug(SystemDebug.container_events, event_hash,'name:',c_name,'type:',ctype)
   return false if c_name.nil?
   ctype = 'container' if ctype.nil?
-   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
+   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')     
+       
      SystemDebug.debug(SystemDebug.container_events, 'no container file',SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml', event_hash)
      return false  # unless event_name == 'create'
    end
@@ -73,7 +74,7 @@ end
 def inform_container_tracking(container_name,ctype,event_name)
   SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
   c = get_event_container(container_name,ctype)
-  c.task_complete(event_name)
+  c.task_complete(event_name) unless c.is_a?(FalseClass)
   inform_container_monitor(container_name,ctype,event_name)
   rescue StandardError =>e
      log_exception(e)
