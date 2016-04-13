@@ -15,7 +15,7 @@ module DockerEvents
        
    unless event_hash.key?('from')
     #p :container_event
-     SystemDebug.debug(SystemDebug.container_events, event_hash)
+     SystemDebug.debug(SystemDebug.container_events, 'no from looking up by id', event_hash)
     id = hash['Id']
      container_name = container_name_from_id(id)
    else   
@@ -29,10 +29,13 @@ module DockerEvents
         c_name = container_name
       end 
   end
-  
+  SystemDebug.debug(SystemDebug.container_events, event_hash,'name:',c_name,'type:',ctype)
   return false if c_name.nil?
-  return false if ctype.nil?
-  return false unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
+  ctype = 'container' if ctype.nil?
+   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
+     SystemDebug.debug(SystemDebug.container_events, 'no container file',SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml', event_hash)
+     return false  # unless event_name == 'create'
+   end
   tracked = true
   inform_container(c_name,ctype,event_name)
   
@@ -58,6 +61,7 @@ module DockerEvents
 end
 
 def inform_container_tracking(container_name,ctype,event_name)
+  SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
   c = get_event_container(container_name,ctype)
   c.task_complete(event_name)
   inform_container_monitor(container_name,ctype,event_name) 
