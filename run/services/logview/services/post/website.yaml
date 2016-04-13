@@ -7,6 +7,6 @@ container_type: service
 persistent: false
 variables:
  proto: https
- port: 80
+ port: 8000
  fqdn: logview._Engines_System(default_domain)
  internal_dir: /
