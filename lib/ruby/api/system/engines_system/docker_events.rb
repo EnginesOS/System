@@ -17,7 +17,7 @@ module DockerEvents
     #p :container_event
      SystemDebug.debug(SystemDebug.container_events, 'no from looking up by id', event_hash)
     id = event_hash['Id']
-     container_name = container_name_from_id(id)
+     c_name = container_name_from_id(id)
    else   
         container_name = event_hash['from'].to_s
      if container_name.start_with?('engines/')    
