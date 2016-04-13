@@ -40,7 +40,7 @@ module Services
   end
 
   def loadManagedService(service_name)
-    s = engine_from_cache('/services/' + service_name)
+    s = engine_from_cache('services/' + service_name)
     return s unless s.nil?
     s = _loadManagedService(service_name,  '/services/')
     ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
