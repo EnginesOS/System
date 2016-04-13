@@ -30,7 +30,7 @@ module DockerEvents
       end 
     unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
       id = event_hash['Id']
-      container_name = container_name_from_id(id)
+      c_name = container_name_from_id(id)
     end
   end 
   SystemDebug.debug(SystemDebug.container_events, event_hash,'name:',c_name,'type:',ctype)
