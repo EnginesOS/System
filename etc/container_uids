@@ -28,6 +28,8 @@ wwwstats	wwwstats	22024 _wwwstats
 dhcpd	 dhcpd	22025	_dhcpd
 avahi	 avahi	22026	_avahi
 logview logview 22027 _log_viewer
+logrotate logrotate 22028	_logrotate
+
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672
