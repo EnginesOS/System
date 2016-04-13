@@ -1,4 +1,14 @@
 module ManagedContainerOnAction
+  
+  def on_start(what)
+    SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
+    @out_of_memory = false
+    save_state
+   #return if what == 'create'
+    register_with_dns # MUst register each time as IP Changes    
+    @container_api.register_non_persistent_services(self)
+  end
+  
   def on_create(event_hash)
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)    
         @container_id = event_hash['Id']

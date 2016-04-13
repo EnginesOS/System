@@ -17,7 +17,7 @@ def create_service()
   SystemDebug.debug(SystemDebug.containers, :keys_set,  @system_keys )
  
    
-   envs = @container_api.load_and_attach_persistent_services(self)
+   envs = @container_api.load_and_attach_pre_services(self)
    shared_envs = @container_api.load_and_attach_shared_services(self)
    if shared_envs.is_a?(Array)
      if envs.is_a?(Array) == false
@@ -46,7 +46,7 @@ def create_service()
        end
      end
     # register_with_dns
-     @container_api.load_and_attach_nonpersistent_services(self)
+     @container_api.load_and_attach_post_services(self)
    #  @container_api.register_non_persistent_services(self)
      reregister_consumers
      return true

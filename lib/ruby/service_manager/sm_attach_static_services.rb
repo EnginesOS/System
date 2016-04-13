@@ -11,7 +11,7 @@ module SmAttachStaticServices
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
-
+      SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       ServiceDefinitions.set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
         templater =  Templater.new(SystemAccess.new,container)

@@ -78,14 +78,7 @@ module ManagedContainerControls
     true
   end
   
-  def on_start(what)
-    SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
-    @out_of_memory = false
-    save_state
-   #return if what == 'create'
-    register_with_dns # MUst register each time as IP Changes    
-    @container_api.register_non_persistent_services(self)
-  end
+
 
   
   

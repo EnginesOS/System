@@ -18,5 +18,8 @@ class ServiceApi < ContainerApi
   
   require_relative 'service_api/service_api_readers.rb'
   include ServiceApiReaders
-   
+  
+  require_relative 'service_api/service_api_load_services.rb'
+  include ServiceApiLoadServices
+  
 end
