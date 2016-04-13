@@ -105,12 +105,12 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.container_events, :events, @container_name,  action)
     return on_start(action) if action == 'create'
     
-    on_start('start') if action == 'start'
-    on_start('unpause') if action == 'unpause'
-    on_stop('die') if action == 'die'
-    on_stop('stop') if action == 'stop'
-    on_stop('pause') if action == 'pause'
-    out_of_mem('oom') if action == 'oom'
+    return  on_start('start') if action == 'start'
+    return on_start('unpause') if action == 'unpause'
+    return on_stop('die') if action == 'die'
+    return on_stop('stop') if action == 'stop'
+    return  on_stop('pause') if action == 'pause'
+    return  out_of_mem('oom') if action == 'oom'
 
   end
   

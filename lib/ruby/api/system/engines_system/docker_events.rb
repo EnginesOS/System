@@ -15,7 +15,7 @@ module DockerEvents
        
    unless event_hash.key?('from')
     #p :container_event
-     SystemDebug.debug(SystemDebug.docker, event_hash)
+     SystemDebug.debug(SystemDebug.container_events, event_hash)
     id = hash['Id']
      container_name = container_name_from_id(id)
    else   
