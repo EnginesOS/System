@@ -1,12 +1,12 @@
-parent_engine: log_viewer
+parent_engine: logview
 publisher_namespace: EnginesSystem
 type_path: nginx
-service_handle: log_viewer
+service_handle: logview
 service_container_name: nginx
 container_type: service
 persistent: false
 variables:
  proto: https
  port: 80
- fqdn: logviewer._Engines_System(default_domain)
+ fqdn: logview._Engines_System(default_domain)
  internal_dir: /
