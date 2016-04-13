@@ -87,6 +87,17 @@ module ManagedContainerControls
     @container_api.register_non_persistent_services(self)
   end
 
+  def on_create(event_hash)
+      p :ONcreate_CALLED
+      p what
+      @container_id = event_hash['Id']
+        save_state
+      @out_of_memory = false
+     #return if what == 'create'
+    #  register_with_dns # MUst register each time as IP Changes    
+     # @container_api.register_non_persistent_services(self)
+    end
+    
   def on_stop(what)
     p :ONStop_CALLED
     p what

@@ -100,17 +100,17 @@ module TaskAtHand
     log_exception(e)
   end
 
-  def process_container_event(action)
+  def process_container_event(event,event_hash)
     expire_engine_info
     SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  action)
-    return on_start(action) if action == 'create'
+    return on_create(event_hash) if event == 'create'
     
-    return  on_start('start') if action == 'start'
-    return on_start('unpause') if action == 'unpause'
-    return on_stop('die') if action == 'die'
-    return on_stop('stop') if action == 'stop'
-    return  on_stop('pause') if action == 'pause'
-    return  out_of_mem('oom') if action == 'oom'
+    return  on_start('start') if event == 'start'
+    return on_start('unpause') if event == 'unpause'
+    return on_stop('die') if event == 'die'
+    return on_stop('stop') if event == 'stop'
+    return  on_stop('pause') if event == 'pause'
+    return  out_of_mem('oom') if event == 'oom'
 
   end
   

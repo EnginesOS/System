@@ -16,7 +16,7 @@ module DockerEvents
    unless event_hash.key?('from')
     #p :container_event
      SystemDebug.debug(SystemDebug.container_events, 'no from looking up by id', event_hash)
-    id = hash['Id']
+    id = event_hash['Id']
      container_name = container_name_from_id(id)
    else   
         container_name = event_hash['from'].to_s
@@ -37,7 +37,7 @@ module DockerEvents
      return false  # unless event_name == 'create'
    end
   tracked = true
-  inform_container(c_name,ctype,event_name)
+  inform_container(c_name,ctype,event_name,event_hash)
   
   case event_name
       when 'start'
@@ -87,12 +87,12 @@ def get_event_container(container_name,ctype)
 
 end
 
- def inform_container(container_name,ctype,event_name)
+ def inform_container(container_name,ctype,event_name,event_hash)
    SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container',container_name,event_name)
     c = get_event_container(container_name,ctype)
    return false if c.is_a?(FalseClass)
    SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
-    c.process_container_event(event_name)
+    c.process_container_event(event_hash,event_name)
   return true
   rescue StandardError =>e
     log_exception(e)
