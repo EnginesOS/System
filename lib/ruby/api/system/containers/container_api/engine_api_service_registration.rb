@@ -4,8 +4,13 @@ module EngineApiServiceRegistration
     return false if service_hash.is_a?(Hash) == false
     return engines_core.create_and_register_service(service_hash)
   end
-  def deregister_with_dns(container)
+  def deregister_with_dns(container)deregister_with_dns
     service_hash = create_dns_service_hash(container)
+    return false if service_hash.is_a?(Hash) == false
+    return engines_core.dettach_service(service_hash)
+  end
+  def deregister_with_zeroconf(container)
+    service_hash = create_zeroconf_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
     return engines_core.dettach_service(service_hash)
   end
@@ -14,7 +19,6 @@ module EngineApiServiceRegistration
     return false if service_hash.is_a?(Hash) == false
     return engines_core.create_and_register_service(service_hash)
   end
-
   # Called by Managed Containers
   def register_non_persistent_services(engine)
     engines_core.register_non_persistent_services(engine)
