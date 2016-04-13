@@ -79,8 +79,7 @@ module ManagedContainerControls
   end
   
   def on_start(what)
-    p :ONSTART_CALLED
-    p what
+    SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
     @out_of_memory = false
    #return if what == 'create'
     register_with_dns # MUst register each time as IP Changes    
@@ -88,8 +87,8 @@ module ManagedContainerControls
   end
 
   def on_create(event_hash)
-      p :ONcreate_CALLED
-      p what
+    SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+    
       @container_id = event_hash['Id']
         save_state
       @out_of_memory = false
@@ -99,15 +98,14 @@ module ManagedContainerControls
     end
     
   def on_stop(what)
-    p :ONStop_CALLED
-    p what
+    SystemDebug.debug(SystemDebug.container_events,:ONStop_CALLED,what)
     @out_of_memory = true
     @had_out_memory = true
     deregister_with_dns # MUst register each time as IP Changes    
     @container_api.deregister_non_persistent_services(self)
   end
   def out_of_mem(what)
-    p :ONStop_CALLED
+    p :out_of_mem
     p what
     @out_of_memory = true
     @had_out_memory = true
