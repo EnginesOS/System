@@ -102,7 +102,7 @@ module TaskAtHand
 
   def process_container_event(event,event_hash)
     expire_engine_info
-    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  action)
+    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event,event_hash)
     return on_create(event_hash) if event == 'create'
     
     return  on_start('start') if event == 'start'
