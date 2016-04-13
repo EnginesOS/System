@@ -58,13 +58,20 @@ module DockerEvents
     SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name,c_name,ctype )
     tracked = false
      end  
+     
+    rescue StandardError => e
+       log_exception(e, event_hash)
+
 end
 
 def inform_container_tracking(container_name,ctype,event_name)
   SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
   c = get_event_container(container_name,ctype)
   c.task_complete(event_name)
-  inform_container_monitor(container_name,ctype,event_name) 
+  inform_container_monitor(container_name,ctype,event_name)
+  rescue StandardError =>e
+     log_exception(e)
+
 end
 
 def get_event_container(container_name,ctype)
@@ -75,6 +82,9 @@ def get_event_container(container_name,ctype)
      end
        return false if c.nil?
       return c
+  rescue StandardError =>e
+     log_exception(e)
+
 end
 
  def inform_container(container_name,ctype,event_name)

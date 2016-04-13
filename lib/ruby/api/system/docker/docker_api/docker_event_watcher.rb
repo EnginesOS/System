@@ -21,6 +21,7 @@ require 'socket'
     chunk = ''
    resp.read_body do |chunk|
      hash = parser.parse(chunk) do |hash|
+       p hash
       @system_api.container_event(hash) # if hash.key?('from')     
     end 
    end
