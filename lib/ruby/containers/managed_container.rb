@@ -32,6 +32,9 @@ class ManagedContainer < Container
   require_relative 'managed_container/managed_container_export_import_service.rb'
   include ManagedContainerExportImportService
   
+  require_relative 'managed_container/managed_container_on_action.rb'
+  include ManagedContainerOnAction
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
