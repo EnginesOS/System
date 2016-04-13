@@ -50,7 +50,8 @@ return  nil
     p :container_name_from_id
     p id
     p @engines_conf_cache[id]
-    @engines_conf_cache[id]
+   ident = @engines_conf_cache[id]
+   ident.gsub(/services\//,'')
   end
   
   def get_engine_ts(engine)
