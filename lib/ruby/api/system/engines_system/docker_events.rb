@@ -16,7 +16,7 @@ module DockerEvents
    unless event_hash.key?('from')
     #p :container_event
     
-    id = event_hash['Id']
+    id = event_hash['id']
      c_name = container_name_from_id(id)
      SystemDebug.debug(SystemDebug.container_events, ' from looking up by id', c_name, event_hash)
    else   
@@ -30,7 +30,7 @@ module DockerEvents
         c_name = container_name
       end 
     unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
-      id = event_hash['Id']     
+      id = event_hash['id']     
       c_name = container_name_from_id(id)
       SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
     end    
