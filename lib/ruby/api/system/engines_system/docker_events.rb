@@ -92,7 +92,7 @@ end
     c = get_event_container(container_name,ctype)
    return false if c.is_a?(FalseClass)
    SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
-    c.process_container_event(event_hash,event_name)
+    c.process_container_event(event_name,event_hash)
   return true
   rescue StandardError =>e
     log_exception(e)
