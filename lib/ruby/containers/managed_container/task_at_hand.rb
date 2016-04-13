@@ -108,6 +108,7 @@ module TaskAtHand
     return  on_start('start') if event == 'start'
     return on_start('unpause') if event == 'unpause'
     return on_stop('die') if event == 'die'
+    return on_stop('die') if event == 'kill'
     return on_stop('stop') if event == 'stop'
     return  on_stop('pause') if event == 'pause'
     return  out_of_mem('oom') if event == 'oom'

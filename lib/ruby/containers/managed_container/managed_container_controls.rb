@@ -81,42 +81,45 @@ module ManagedContainerControls
   def on_start(what)
     SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
     @out_of_memory = false
+    save_state
    #return if what == 'create'
     register_with_dns # MUst register each time as IP Changes    
     @container_api.register_non_persistent_services(self)
   end
 
   def on_create(event_hash)
-    SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
-    
+    SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)    
       @container_id = event_hash['Id']
+    @out_of_memory = false
+    @had_out_memory =false
         save_state
-      @out_of_memory = false
      #return if what == 'create'
-    #  register_with_dns # MUst register each time as IP Changes    
-     # @container_api.register_non_persistent_services(self)
+      register_with_dns # MUst register each time as IP Changes    
+      @container_api.register_non_persistent_services(self)
     end
     
   def on_stop(what)
     SystemDebug.debug(SystemDebug.container_events,:ONStop_CALLED,what)
-    @out_of_memory = true
-    @had_out_memory = true
-   # deregister_with_dns # MUst register each time as IP Changes    
+    @had_out_memory = @out_of_memory
+    @out_of_memory = false
+    save_state
+   deregister_with_dns # MUst register each time as IP Changes    
     @container_api.deregister_non_persistent_services(self)
   end
   def out_of_mem(what)
     p :out_of_mem
     p what
     @out_of_memory = true
-    @had_out_memory = true
-    
+    @had_out_memory = true    
+    save_state
   end
+  
   def unpause_container
 
     return false unless has_api?
     return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
-   # register_with_dns # MUst register each time as IP Changes
+    register_with_dns # MUst register each time as IP Changes
    # @container_api.register_non_persistent_services(self)
     true
   end
@@ -126,7 +129,7 @@ module ManagedContainerControls
     return false unless has_api?
     return false unless prep_task(:pause)
     return task_failed('pause') unless super
-    @container_api.deregister_non_persistent_services(self)
+   # @container_api.deregister_non_persistent_services(self)
     true
   end
 
@@ -139,7 +142,7 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
     return false unless prep_task(:stop)
-    @container_api.deregister_non_persistent_services(self)
+   # @container_api.deregister_non_persistent_services(self)
     return task_failed('stop') unless super
     true
   end
