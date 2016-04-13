@@ -7,20 +7,16 @@ module Cache
     ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
       if ts == -1
         rm_engine_from_cache(ident)
+        SystemDebug.debug(SystemDebug.cache, :Expire_in_CACHE, ident)
         return nil
       end
+SystemDebug.debug(SystemDebug.cache, :FROM_CACHE, ident)
     return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  == ts 
    
-SystemDebug.debug(SystemDebug.cache, :Stale_info )
-#       p :saved_ts
-#       p @engines_conf_cache[ident.to_sym][:ts]
-#         p :read_ts
-#         p get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
-#      # p @engines_conf_cache[ident.to_sym][:engine]
-
-         #  refresh cache  Done by the caller as load add s to cache       
+SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
+      
 @engines_conf_cache[ident.to_sym][:engine] = nil
-       
+
 return  nil
   end
 
