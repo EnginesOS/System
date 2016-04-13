@@ -119,7 +119,7 @@ module ManagedContainerControls
     return false unless has_api?
     return false unless prep_task(:unpause)
     return task_failed('unpause') unless super
-    register_with_dns # MUst register each time as IP Changes
+    #register_with_dns # MUst register each time as IP Changes
    # @container_api.register_non_persistent_services(self)
     true
   end
