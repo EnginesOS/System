@@ -38,8 +38,7 @@ module DockerEvents
   SystemDebug.debug(SystemDebug.container_events, event_hash,'name:',c_name,'type:',ctype)
   return false if c_name.nil?
   ctype = 'container' if ctype.nil?
-   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')     
-       
+   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')            
      SystemDebug.debug(SystemDebug.container_events, 'no container file',SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml', event_hash)
      return false  # unless event_name == 'create'
    end
