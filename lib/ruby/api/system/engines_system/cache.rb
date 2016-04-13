@@ -33,7 +33,7 @@ return  nil
   def cache_engine( engine, ts)
 
       ident =  get_ident(engine)
-    SystemDebug.debug(SystemDebug.cache, :ADD_TO_CACHE, engine_name,engine.container_id)
+    SystemDebug.debug(SystemDebug.cache, :ADD_TO_CACHE, ident, engine.container_name,engine.container_id)
     @engines_conf_cache[ident.to_sym] = {}
     @engines_conf_cache[ident.to_sym][:engine] = engine
     @engines_conf_cache[ident.to_sym][:ts] =  ts
