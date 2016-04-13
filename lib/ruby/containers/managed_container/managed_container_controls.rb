@@ -101,7 +101,7 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.container_events,:ONStop_CALLED,what)
     @out_of_memory = true
     @had_out_memory = true
-    deregister_with_dns # MUst register each time as IP Changes    
+   # deregister_with_dns # MUst register each time as IP Changes    
     @container_api.deregister_non_persistent_services(self)
   end
   def out_of_mem(what)

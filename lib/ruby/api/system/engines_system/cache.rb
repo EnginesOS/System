@@ -51,6 +51,7 @@ return  nil
     p id
     p @engines_conf_cache[id]
    ident = @engines_conf_cache[id]
+   return nil if ident.nil?
    ident.gsub!(/services\//,'')
    p ident
    ident
