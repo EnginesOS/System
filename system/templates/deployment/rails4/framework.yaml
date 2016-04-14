@@ -1,0 +1,5 @@
+framework: rails4
+user: www-data
+port: 8000
+log_dirs:
+- /home/app/log
