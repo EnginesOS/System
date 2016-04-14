@@ -60,7 +60,7 @@ module ManagedContainerControls
     expire_engine_info
     state = read_state
     SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
-    return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running' 
+   # return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running' 
 #    register_with_dns # MUst register each time as IP Changes
 #    add_nginx_service if @deployment_type == 'web'
 #    @container_api.register_non_persistent_services(self)
