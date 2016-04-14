@@ -12,7 +12,7 @@ module DockerEvents
          event_name = status
          data = nil
        end
-  SystemDebug.debug(SystemDebug.containers, 'c name:',event_hash['from'],'event type:',event_name)    
+  SystemDebug.debug(SystemDebug.container_events, 'c name:',event_hash['from'],'event type:',event_name)    
        return false if event_name.nil?
        return true if event_name.start_with?('exec_')
        
