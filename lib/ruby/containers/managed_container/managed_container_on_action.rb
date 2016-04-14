@@ -21,6 +21,7 @@ module ManagedContainerOnAction
         register_with_dns # MUst register each time as IP Changes    
         add_nginx_service if @deployment_type == 'web'
         @container_api.register_non_persistent_services(self)
+    SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)    
     rescue StandardError => e
        log_exception(e)
       end

@@ -19,6 +19,7 @@ module ManagedContainerOnAction
   
   def on_create(event_hash)
 super
+    SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS,event_hash)    
     @container_api.load_and_attach_post_services(self)
     service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
           if service_configurations.is_a?(Array)
@@ -28,6 +29,7 @@ super
           end
 
     reregister_consumers
+SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS_compl,event_hash)  
 rescue StandardError => e
    log_exception(e)
       end
