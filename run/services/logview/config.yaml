@@ -7,6 +7,7 @@ persistent: false
 last_error: 
 memory: '32'
 hostname: logview
+soft_service: true
 domain_name: 
 environments: []
 image: engines/logview:_Engines_System(release)
