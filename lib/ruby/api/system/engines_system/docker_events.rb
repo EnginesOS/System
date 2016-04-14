@@ -50,19 +50,19 @@ module DockerEvents
   
   case event_name
       when 'start'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'stop'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'pause'  
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'unpause'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'create'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'destroy'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
       when 'killed'
-    inform_container_tracking(container_name,ctype,event_name) 
+    inform_container_tracking(c_name,ctype,event_name) 
   else
     SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name,c_name,ctype )
     tracked = false
