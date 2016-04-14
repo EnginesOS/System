@@ -7,6 +7,8 @@ module ManagedContainerOnAction
    #return if what == 'create'
     register_with_dns # MUst register each time as IP Changes    
     @container_api.register_non_persistent_services(self)
+    rescue StandardError => e
+       log_exception(e)
   end
   
   def on_create(event_hash)
@@ -19,6 +21,8 @@ module ManagedContainerOnAction
         register_with_dns # MUst register each time as IP Changes    
         add_nginx_service if @deployment_type == 'web'
         @container_api.register_non_persistent_services(self)
+    rescue StandardError => e
+       log_exception(e)
       end
       
     def on_stop(what)
@@ -28,6 +32,8 @@ module ManagedContainerOnAction
       save_state
    #  deregister_with_dns # MUst register each time as IP Changes    
       @container_api.deregister_non_persistent_services(self)
+      rescue StandardError => e
+         log_exception(e)
     end
     
     def out_of_mem(what)
@@ -36,6 +42,8 @@ module ManagedContainerOnAction
       @out_of_memory = true
       @had_out_memory = true    
       save_state
+      rescue StandardError => e
+         log_exception(e)
     end
     
 end

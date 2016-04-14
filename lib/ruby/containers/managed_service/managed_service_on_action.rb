@@ -8,11 +8,13 @@ module ManagedContainerOnAction
          end
        end
        
-      # register_with_dns
-       @container_api.load_and_attach_post_services(self)
-     #  @container_api.register_non_persistent_services(self)
+      # register_with_dnsload_and_attach_post_services
+      # @container_api.load_and_attach_post_services(self)
+    #  @container_api.register_non_persistent_services(self)
        reregister_consumers
   super
+  rescue StandardError => e
+     log_exception(e)
   end
   
   def on_create(event_hash)
@@ -24,7 +26,10 @@ super
               run_configurator(configuration)
             end
           end
+
     reregister_consumers
+rescue StandardError => e
+   log_exception(e)
       end
       
     def on_stop(what)

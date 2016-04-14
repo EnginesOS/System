@@ -112,7 +112,8 @@ module TaskAtHand
     return on_stop('stop') if event == 'stop'
     return  on_stop('pause') if event == 'pause'
     return  out_of_mem('oom') if event == 'oom'
-
+    rescue StandardError => e
+       log_exception(e)
   end
   
   def task_complete(action)
