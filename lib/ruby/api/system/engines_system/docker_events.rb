@@ -12,6 +12,9 @@ module DockerEvents
          event_name = status
          data = nil
        end
+      
+       return false if event_name.nil?
+       return true if event_name.start_with?('exec_')
        
    unless event_hash.key?('from')
     #p :container_event
