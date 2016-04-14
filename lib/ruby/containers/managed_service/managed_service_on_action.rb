@@ -1,4 +1,4 @@
-module ManagedContainerOnAction
+module ManagedServiceOnAction
   
   def on_start(event_hash)
     SystemDebug.debug(SystemDebug.container_events,:ON_start_MS,event_hash)    

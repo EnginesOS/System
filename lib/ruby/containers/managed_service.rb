@@ -15,7 +15,8 @@ class ManagedService < ManagedContainer
   include    ManagedServiceControls
   require_relative 'managed_service/managed_service_image_controls.rb'
   include    ManagedServiceImageControls
-
+  require_relative 'managed_service/managed_service_on_action.rb'
+  include ManagedServiceOnAction
   @ctype='service'
   @soft_service  = false
   def lock_values
