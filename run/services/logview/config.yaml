@@ -14,7 +14,7 @@ image: engines/logview:_Engines_System(release)
 volumes:
  syslog: !ruby/object:Volume
   name: syslog
-  remotepath: "/var/log/syslog/"
+  remotepath: "/var/log/engines/syslog/"
   localpath: "/var/lib/engines/syslog/rmt/"
   mapping_permissions: ro
  engines: !ruby/object:Volume
