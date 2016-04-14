@@ -1,0 +1,12 @@
+parent_engine: syslog
+publisher_namespace: EnginesSystem
+type_path: logview
+service_handle: mail_warn_logview
+service_container_name: logview
+container_type: service
+persistent: false
+variables:
+ log_file_path: mail.warn
+ log_type: syslog
+ log_name: 'Mail warn Log'
+ ctype: service

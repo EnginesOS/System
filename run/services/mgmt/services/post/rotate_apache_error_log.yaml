@@ -7,5 +7,5 @@ container_type: service
 persistent: true
 variables:
  log_file_path: /services/mgmt/apache2/error.log
- cycle: weekly
+ cycle: daily
  rotate: 52
