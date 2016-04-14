@@ -5,8 +5,11 @@ module SmAttachStaticServices
     clear_error
     container.environments  = [] if container.environments .nil?
     curr_service_file = ''
+    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')    
     Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
+      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)    
+
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
