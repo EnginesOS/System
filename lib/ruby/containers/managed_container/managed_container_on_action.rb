@@ -17,6 +17,7 @@ module ManagedContainerOnAction
           save_state
        #return if what == 'create'
         register_with_dns # MUst register each time as IP Changes    
+        add_nginx_service if @deployment_type == 'web'
         @container_api.register_non_persistent_services(self)
       end
       
