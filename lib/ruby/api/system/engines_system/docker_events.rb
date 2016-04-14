@@ -38,7 +38,7 @@ module DockerEvents
       SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
     end    
   end 
-  SystemDebug.debug(SystemDebug.container_events, event_hash,'name:',c_name,'type:',ctype)
+  SystemDebug.debug(SystemDebug.containers, 'c name:',c_name,'event type:',event_name)
   return false if c_name.nil?
   ctype = 'container' if ctype.nil?
    unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')            
