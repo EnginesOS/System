@@ -1,0 +1,3 @@
+#/containers/services/container_name/provider_namespace/type_path/service_handle/register
+#/containers/services/container_name/provider_namespace/type_path/service_handle/deregister
+#/containers/services/container_name/provider_namespace/type_path/service_handle//reregister

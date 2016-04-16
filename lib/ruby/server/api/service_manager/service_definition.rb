@@ -1,0 +1,2 @@
+#/service_manager/service_definition/provider_namespace/type_path/ List
+#/service_manager/service_definition/providernamespace/type_path GET

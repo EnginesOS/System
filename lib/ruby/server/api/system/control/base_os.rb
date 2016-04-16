@@ -1,0 +1,31 @@
+
+  
+ # /system/control/base_os/restart
+ # /system/control/base_os/update
+ # /system/control/base_os/shutdown
+get '/v0/system/control/base_os/restart' do
+  restart = @@core_api.restart_system
+  unless restart.is_a?(FalseClass)
+    return restart.to_json
+  else
+    return log_error('restart')
+  end
+end
+
+put '/v0/system/control/base_os/shutdown' do
+  shutdown = params['reason'] #symbolize_keys(params)
+  unless @@core_api.shutdown(shutdown).is_a?(FalseClass)
+    return status(202)
+  else
+    return log_error('shutdown', params)
+  end
+end
+
+get '/v0/system/control/base_os/update' do
+  system_update = @@core_api.system_update
+  unless system_update.is_a?(FalseClass)
+    return system_update.to_json
+  else
+    return log_error('system_update')
+  end
+end
