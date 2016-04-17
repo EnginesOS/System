@@ -7,7 +7,7 @@ def self.symbolize_keys(hash)
     else key
     end
     new_value = case value
-    when Hash then RegistryUtils.symbolize_keys(value)
+    when Hash then self.symbolize_keys(value)
     when Array then
       newval = []
       value.each do |array_val|
@@ -24,7 +24,7 @@ def self.symbolize_keys(hash)
   }
 end
 
-def boolean_if_true_false_str(r)
+def self.boolean_if_true_false_str(r)
   if  r == 'true'
     return true
   elsif r == 'false'
