@@ -12,7 +12,6 @@ engines ALL = (root) NOPASSWD: /opt/engines/bin/set_service_provider.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_restart_system.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/restart_system.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_install_cert.sh
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_remove_cert.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_install_ca.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_engines_system_software.sh
 engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_engines_console_password.sh
