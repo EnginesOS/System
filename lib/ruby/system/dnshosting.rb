@@ -68,7 +68,8 @@ module DNSHosting
   end
 
   def self.rm_domain(params)
-    domain = params[:domain_name]
+    domain = params
+    domain = params[:domain_name] unless domain.is_a?(String)      
     domains = load_domains
     if domains.key?(domain)
       domains.delete(domain)
