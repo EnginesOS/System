@@ -3,7 +3,7 @@
   #/system/status/first_run_has_run
 
 get '/v0/system/status/first_run_has_run' do
-  first_run_required = @@core_api.first_run_required
+  first_run_required = @@core_api.first_run_required?
   unless first_run_required.is_a?(FalseClass)
     return first_run_required.to_json
   else
