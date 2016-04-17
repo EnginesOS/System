@@ -24,9 +24,9 @@ module CertificateActions
   end
 
   def list_certs
-    return @system_api.list_certs(domain)
+    return @system_api.list_certs()
       rescue StandardError => e
-          return log_exception(e,'Failed to list certs',domain)
+          return log_exception(e,'Failed to list certs')
   end
   
 end
