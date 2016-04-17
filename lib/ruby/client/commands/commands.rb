@@ -16,3 +16,4 @@ when 'system'
   require_relative 'system/commands.rb'
 
 end
+command_useage
