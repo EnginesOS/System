@@ -18,6 +18,8 @@ module Certificates
   def list_certs
     certs = []  
     Dir.glob( SystemConfig.CertificatesDir + '/*.crt').each do |cert_file|
+      p :cert
+      p cert_file
       certs.push(cert_file)
     end
     certs
