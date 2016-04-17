@@ -128,7 +128,7 @@ def perform_get
   exit
 end
 
-def perform_post(params) 
+def perform_post(params=nil) 
   p @route
   rest_post(@route,params)  
   exit
