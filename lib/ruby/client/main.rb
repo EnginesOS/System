@@ -9,11 +9,13 @@ def command_useage
 end
 
 def perform_get  
+  p @route
   rest_get(@route) 
   exit
 end
 
 def perform_post(params) 
+  p @route
   rest_post(@route,params)  
   exit
 end
