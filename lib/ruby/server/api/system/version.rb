@@ -6,7 +6,7 @@
 
 get '/v0/version/release' do
   SystemDebug.debug(SystemDebug.server, :release)
-  release = @@core_api.get_engines_system_release
+  release = SystemStatus.get_engines_system_release
   SystemDebug.debug(SystemDebug.server, :release,release)
   unless release.is_a?(FalseClass)
     return release.to_json
