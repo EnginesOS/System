@@ -15,6 +15,15 @@ get '/v0/system/cert/system_ca' do
   end
 end
 
+get '/v0/system/cert/default' do
+  cert = @@core_api.get_cert('engines')
+  unless cert.is_a?(FalseClass)
+    return cert.to_json
+  else
+    return log_error('system_ca')
+  end
+end
+
 get '/v0/system/certs/' do
   certs = @@core_api.list_certs
    return log_error('list certs', params) if certs.is_a?(FalseClass)
