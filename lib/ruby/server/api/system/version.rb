@@ -38,7 +38,7 @@ get '/v0/system/version/system' do
   end
 end
 
-require '/opt/engines/lib/ruby/api/system/system_utils.rb'
+require '/opt/engines/lib/ruby/system/system_utils.rb'
 
 get '/v0/system/version/base_os' do
   base_os = SystemUtils.get_os_release_data
