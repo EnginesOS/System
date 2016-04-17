@@ -16,8 +16,9 @@ def perform_post(params)
   rest_post(@route,params)  
 end
 
+require 'rest-client'
 def rest_get(path,params=nil)
-  require 'rest-client'
+
   begin
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
@@ -30,6 +31,7 @@ def rest_get(path,params=nil)
 end
 
 def rest_post(path,params)
+
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.post(base_url + path, params)
