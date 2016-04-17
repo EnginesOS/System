@@ -5,10 +5,13 @@ when 'set'
   case ARGV[3]
   when 'default_domain'
     @route += '/' + ARGV[3]
+    params[:default_domain] =  ARGV[4]
   when 'default_site'
     @route += '/' + ARGV[3]
+    params[:default_site] =  ARGV[4]
   when 'hostname'
     @route += '/' + ARGV[3]
+    params[:hostname] =  ARGV[4]
 end
   perform_post(ARGV[3])
   
