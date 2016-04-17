@@ -15,9 +15,10 @@
   
   require_relative 'api/routes.rb'
   
-  get '/v0/system/*' do
+  get '/v0/*' do
     p :No_Such_GET
     p :params
+    status(404)
   end
   
   
