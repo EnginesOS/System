@@ -8,6 +8,22 @@ def command_useage
  exit
 end
 
+ def read_stdin_data
+   stdin_data = ""
+   
+   require 'timeout'
+   status = Timeout::timeout(10) do
+  while STDIN.gets
+    stdin_data += $_
+  end
+   end
+   stdin_data
+ rescue Timeout::Error
+   puts "Timeout on data read from stdin"  
+ rescue StandardError => e
+   log_exception(e)
+ end
+ 
 def perform_get  
   p @route
   rest_get(@route) 
