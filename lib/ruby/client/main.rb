@@ -129,6 +129,8 @@ def perform_get
 end
 
 def perform_post(params=nil) 
+  
+  params = params.to_json unless params.nil?
   p @route
   rest_post(@route,params)  
   exit
