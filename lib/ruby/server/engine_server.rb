@@ -1,5 +1,5 @@
-require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-class EngineServer < ErrorsApi
+#require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+class EngineServer #< ErrorsApi
   
   require 'sinatra'
   require 'yajl'
@@ -33,9 +33,9 @@ class EngineServer < ErrorsApi
   end
   
 rescue StandardError => e
-  log_error(e)
+  #log_error(e)
   p e
   p e.backtrace.to_s
-  status(501)
+  #status(501)
     
 end
