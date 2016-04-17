@@ -10,7 +10,7 @@ get '/v0/system/config/default_domain' do
 end
 
 post '/v0/system/config/default_domain' do
-  default_domain = params['default_domain']
+  default_domain = params[:default_domain]
   return status(202) if @@core_api.set_default_domain(default_domain)
   log_error('default_domain', params)
   return status(404)
@@ -27,7 +27,7 @@ get '/v0/system/config/default_site' do
 end
 
 post '/v0/system/config/default_site' do
-  default_site = params['default_site']
+  default_site = params[:default_site]
     p params
     p default_site
   return status(202) if @@core_api.set_default_site(default_site)
@@ -36,7 +36,7 @@ post '/v0/system/config/default_site' do
 end
 
 post '/v0/system/config/hostname' do
-  hostname = params['hostname']
+  hostname = params[:hostname]
   return status(202) if @@core_api.set_hostname(hostname)
   log_error('hostname', params)
   return status(404)
