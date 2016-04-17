@@ -131,6 +131,7 @@ class EnginesCore < ErrorsApi
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
      first_run.apply(self)
+     @last_error = first_run.last_error unless first_run.sucess
      return first_run.sucess
   end
   
