@@ -41,7 +41,7 @@
     p :ERROR
     p args
     body args.to_s
-    status(404)
+    status(501)
   end
   
 rescue StandardError => e
