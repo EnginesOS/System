@@ -8,7 +8,7 @@ module CertificateActions
 
   end
 
-  def upload_certificate(params)
+  def upload_ssl_certificate(params)
     return log_error_mesg('invalid parameter', 'upload Cert ', params.to_s) unless params.is_a?(Hash)
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return log_error_mesg('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
