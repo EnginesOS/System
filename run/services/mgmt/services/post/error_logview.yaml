@@ -7,6 +7,6 @@ container_type: service
 persistent: false
 variables:
  log_file_path: /apache2/access.log
- log_type: raw
+ log_type: apache_error_log
  log_name: 'Mgmt Error log'
  ctype: service
