@@ -60,7 +60,7 @@ post '/v0/system/config/remote_exception_logging/enable' do
   end
 end
 
-post '/v0/system/config/disable_remote_exception_logging' do
+post '/v0/system/config/remote_exception_logging/disable' do
 
 unless @@core_api.disable_remote_exception_logging
   return status(202)
