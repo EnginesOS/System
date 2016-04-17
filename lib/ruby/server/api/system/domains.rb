@@ -23,7 +23,7 @@ post '/v0/system/domains/' do
     return log_error('add_domain', params)
   end
 end  
-  del '/v0/system/domains/domain_name/' do
+post '/v0/system/domains/domain_name/' do
     unless @@core_api.remove_domain(params).is_a?(FalseClass)
       return status(202)
     else
