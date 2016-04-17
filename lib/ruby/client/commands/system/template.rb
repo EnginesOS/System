@@ -1,7 +1,7 @@
 
 
- command_useage unless ARGV[3].is_a?(String)
+ command_useage unless ARGV[2].is_a?(String)
 
 params={}
-  params[:string] =  ARGV[3]
+  params[:string] =  ARGV[2]
 perform_post(params)
