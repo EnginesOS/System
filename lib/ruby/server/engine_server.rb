@@ -7,6 +7,10 @@ class EngineServer < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
+  set :sessions, true
+  set :logging, true
+  set :run, true
+   
   @@core_api = EnginesCore.new
   
   require_relative 'api/routes.rb'
