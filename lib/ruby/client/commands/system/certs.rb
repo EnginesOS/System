@@ -28,7 +28,7 @@ params[:password] = pass unless pass.nil?
 perform_post(params)
 
 when 'remove'
-@route += '/' + ARGV[2] + '/' + ARGV[3]
+@route += '/' + ARGV[3]
 perform_delete
 end
 
