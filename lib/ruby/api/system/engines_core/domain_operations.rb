@@ -87,6 +87,7 @@ module DomainOperations
   end
 
   def remove_domain(params)
+    domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
     return false if params.is_a?(FalseClass)
