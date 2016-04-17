@@ -15,6 +15,13 @@ module Certificates
     return false
   end
   
+  def remove_cert(domain)
+    res = SystemUtils.execute_command('/opt/engines/bin/rm_cert.sh ' + params[:domain_name]  )
+        return true if res[:result] == 0
+        @last_error = res[:stderr]
+        return false
+  
+  end
   def list_certs
     certs = []  
       p :certs_from

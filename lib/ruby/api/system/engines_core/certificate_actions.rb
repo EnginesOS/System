@@ -22,7 +22,11 @@ module CertificateActions
     rescue StandardError => e
         return log_exception(e,'Failed to load cert',domain)
   end
-
+  def remove_cert(domain)
+     return @system_api.remove_cert(domain)
+     rescue StandardError => e
+         return log_exception(e,'Failed to remove cert',domain)
+   end
   def list_certs
     return @system_api.list_certs()
       rescue StandardError => e
