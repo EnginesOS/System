@@ -50,14 +50,24 @@ get '/v0/system/config/hostname' do
   end
 end
 
-post '/v0/system/config/remote_exception_logging' do
-  remote_exception_logging = params['enable'] #symbolize_keys(params)
-  unless enable_remote_exception_logging(remote_exception_logging)
+post '/v0/system/config/remote_exception_logging/enable' do
+ 
+  unless @@core_api.enable_remote_exception_logging
     return status(202)
   else
     log_error('remote_exception_logging', params)
     return status(404)
   end
+end
+
+post '/v0/system/config/disable_remote_exception_logging' do
+
+unless @@core_api.disable_remote_exception_logging
+  return status(202)
+else
+  log_error('remote_exception_logging', params)
+  return status(404)
+end
 end
 
 get '/v0/system/config/remote_exception_logging' do

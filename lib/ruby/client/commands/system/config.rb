@@ -9,11 +9,12 @@ when 'set'
     @route += '/' + ARGV[3]
   when 'hostname'
     @route += '/' + ARGV[3]
-  when 'remote_exception_logging'
-    @route += '/' + ARGV[3]
-  end
+end
   perform_post(ARGV[3])
-
+  
+when 'remote_exception_logging'
+  @route += '/' + ARGV[2] + '/' + ARGV[3]
+  
 when 'default_domain'
   @route += '/' + ARGV[2]
 when 'default_site'
