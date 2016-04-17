@@ -28,6 +28,10 @@ module DomainOperations
     SystemUtils.log_exception(e)
   end
 
+  def domain_name(domain_name)
+    domains = load_domains
+       domains[domain_name] 
+  end
   private
 
   def add_domain(params)
