@@ -1,14 +1,14 @@
 
-get '/v0/system/domain/domain_name' do
-  domain_name = @@core_api.domain_name(params)
+get '/v0/system/domain/:id' do
+  domain_name = @@core_api.domain_name(params[:id])
   unless domain_name.is_a?(FalseClass)
     return domain_name.to_json
   else
-    return log_error('generate_key')
+    return log_error('domain_name')
   end
 end
 
-post '/v0/system/domain/domain_name' do
+post '/v0/system/domain/:id' do
   unless @@core_api.update_domain(params).is_a?(FalseClass)
     return status(202)
   else
@@ -23,8 +23,8 @@ post '/v0/system/domains/' do
     return log_error('add_domain', params)
   end
 end  
-post '/v0/system/domains/domain_name/' do
-    unless @@core_api.remove_domain(params).is_a?(FalseClass)
+delete '/v0/system/domains/:id' do
+    unless @@core_api.remove_domain(params[:id]).is_a?(FalseClass)
       return status(202)
     else
       return log_error('remove_domain')
