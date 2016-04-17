@@ -4,7 +4,7 @@ module EnginesSystemInfo
   end
 
   def first_run_required?
-    FirstRunWizard.required?
+    @core_api.first_run_required?
   end
 
   def  is_remote_exception_logging?
