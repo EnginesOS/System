@@ -15,8 +15,8 @@ when 'config'
 when 'domains'
   require_relative 'domains.rb'
   
-when 'first_run' 
-  require_relative 'first_run.rb'
+when 'do_first_run' 
+  require_relative 'do_first_run.rb'
   
 when 'metrics'
   require_relative 'metrics.rb'
