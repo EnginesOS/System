@@ -12,9 +12,11 @@ class SystemPreferences
   def set_default_domain(params)
     @preferences[:default_domain] = params[:default_domain]
     save_preferences
-    return EnginesOSapiResult.success(params[:default_domain], :default_domain)
+    
+    return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)
   rescue StandardError => e
-    EnginesOSapiResult.failed(params[:default_domain], e.to_s ,:default_domain)
+    log_exception(e)
+   return false # EnginesOSapiResult.failed(params[:default_domain], e.to_s ,:default_domain)
   end
 
   def get_default_domain
