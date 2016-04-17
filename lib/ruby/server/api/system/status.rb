@@ -12,7 +12,7 @@ get '/v0/status/first_run_has_run' do
 end
 
 get '/v0/system/status' do
-  status = @@core_api.system_status
+  status = SystemStatus.system_status
   unless status.is_a?(FalseClass)
     return status.to_json
   else
