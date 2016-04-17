@@ -12,10 +12,14 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp='/opt/engines/tmp'
- 
+  @@CertificatesDir='/opt/engines/etc/ssl/certs/'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
+  
+  def SystemConfig.CertificatesDir
+    return @@CertificateDir
+  end
   def SystemConfig.ServiceMapTemplateDir
     return @@ServiceMapTemplateDir
   end

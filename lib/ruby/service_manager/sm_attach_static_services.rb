@@ -47,7 +47,7 @@ module SmAttachStaticServices
       end
     end
     return true
-  rescue Exception=>e
+  rescue StandardError =>e
     puts e.message
     log_error_mesg('Parse error on ' + curr_service_file,container)
     log_exception(e)

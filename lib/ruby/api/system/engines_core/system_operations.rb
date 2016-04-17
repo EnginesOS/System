@@ -54,9 +54,6 @@ module SystemOperations
     SystemUtils.run_system(cmd)
   end
 
-  def upload_ssl_certificate(params)
-    @system_api.upload_ssl_certificate(params)
-  end
 
   def system_image_free_space
     @system_api.system_image_free_space

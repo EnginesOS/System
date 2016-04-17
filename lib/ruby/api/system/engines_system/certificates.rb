@@ -14,5 +14,21 @@ module Certificates
     @last_error = res[:stderr]
     return false
   end
+  
+  def list_certs
+    certs = []  
+    Dir.glob( SystemConfig.CertificatesDir + '/*.crt').each do |cert_file|
+      certs.push(cert_file)
+    end
+    certs
+    rescue StandardError =>e     
+        log_exception(e)
+  end
+  
+  def get_cert(domain)
+    File.read(SystemConfig.CertificatesDir + '/' + domain.to_s + '.crt')
+    rescue StandardError =>e     
+           log_exception(e)
 
+  end
 end
