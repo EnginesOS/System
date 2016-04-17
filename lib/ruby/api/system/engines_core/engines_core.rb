@@ -92,6 +92,10 @@ class EnginesCore < ErrorsApi
   
   require_relative 'actionators.rb'
    include Actionators
+   
+  require_relative 'engines_core_version.rb'
+  include EnginesCoreVersion
+   
   
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'

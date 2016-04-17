@@ -21,6 +21,7 @@ get '/v0/system/version/api' do
     return log_error('api')
   end
 end
+
 get '/v0/system/version/ident' do
   ident = @@core_api.version_string
   unless ident.is_a?(FalseClass)
@@ -29,6 +30,7 @@ get '/v0/system/version/ident' do
     return log_error('ident')
   end
 end
+
 get '/v0/system/version/system' do
   system = @@core_api.system_version 
   unless system.is_a?(FalseClass)
