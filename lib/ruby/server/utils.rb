@@ -23,6 +23,17 @@ def self.symbolize_keys(hash)
     result
   }
 end
+
+def boolean_if_true_false_str(r)
+  if  r == 'true'
+    return true
+  elsif r == 'false'
+    return false
+  end
+  return r
+rescue  StandardError => e
+  STDERR.puts e.to_s
+end
 #def log_exception(e)
 #   e_str = e.to_s()
 #   e.backtrace.each do |bt|
