@@ -127,7 +127,7 @@ class EnginesCore < ErrorsApi
   end
 
   def first_run_required?
-    require_relative 'first_run_wizard.rb'
+    require_relative '../first_run_wizard.rb'
     FirstRunWizard.required?
   end
   
