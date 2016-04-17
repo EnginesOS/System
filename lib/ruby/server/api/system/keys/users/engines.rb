@@ -8,7 +8,7 @@ get '/v0/system/keys/user/engines/generate' do
   end
 end
 
-put '/v0/system/keys/user/engines/' do
+post '/v0/system/keys/user/engines/' do
   update_key = params['public_key'] #symbolize_keys(params)
   unless @@core_api.update_public_key(update_key).is_a?(FalseClass)
     return status(202)

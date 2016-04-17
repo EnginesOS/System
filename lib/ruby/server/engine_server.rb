@@ -1,5 +1,5 @@
-#require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-class EngineServer #< ErrorsApi
+require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+class EngineServer < ErrorsApi
   
   require 'sinatra'
   require 'yajl'
@@ -10,6 +10,8 @@ class EngineServer #< ErrorsApi
   @@core_api = EnginesCore.new
   
   require_relative 'api/routes.rb'
+  
+  
   
   def log_exception(e)
     e_str = e.to_s()

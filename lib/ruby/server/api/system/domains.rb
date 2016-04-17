@@ -8,7 +8,7 @@ get '/v0/system/domain/domain_name' do
   end
 end
 
-put '/v0/system/domain/domain_name' do
+post '/v0/system/domain/domain_name' do
   unless @@core_api.update_domain(params).is_a?(FalseClass)
     return status(202)
   else
@@ -16,7 +16,7 @@ put '/v0/system/domain/domain_name' do
   end
 end  
 
-put '/v0/system/domains/' do
+post '/v0/system/domains/' do
   unless @@core_api.add_domain(params).is_a?(FalseClass)
     return status(202)
   else
@@ -31,7 +31,7 @@ end
     end
 end
 
-list '/v0/system/domains/' do
+get '/v0/system/domains/' do
    domains = @@core_api.list_domains()
    return log_error('list_domains') if domains.is_a?(FalseClass)
    domains.to_json

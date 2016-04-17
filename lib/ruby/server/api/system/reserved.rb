@@ -12,7 +12,7 @@ get '/v0/system/reserved/ports' do
   end
 end
 
-get '/v0/system/reserved/hostnames ' do
+get '/v0/system/reserved/hostnames' do
   reserved_hostnames = @@core_api.reserved_hostnames
   unless reserved_hostnames.is_a?(FalseClass)
     return reserved_hostnames.to_json

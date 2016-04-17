@@ -21,7 +21,7 @@ get '/v0/system/certs/' do
   certs.to_json
 end
 
-del '/v0/system/cert/cert_name' do
+post '/v0/system/cert/cert_name' do
   unless @@core_api.remove_cert(params).is_a?(FalseClass)
     return status(202)
   else
@@ -39,7 +39,7 @@ get '/v0/system/cert/cert_name' do
   end
 end
 
-put '/v0/system//system/certs/' do
+post '/v0/system//system/certs/' do
   return status(202) if @@core_api.upload_ssl_certificate(params)
   log_error('upload_ssl_certificate', params)
   return status(404)

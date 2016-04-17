@@ -12,7 +12,7 @@ get '/v0/system/control/base_os/restart' do
   end
 end
 
-put '/v0/system/control/base_os/shutdown' do
+post '/v0/system/control/base_os/shutdown' do
   shutdown = params['reason'] #symbolize_keys(params)
   unless @@core_api.shutdown(shutdown).is_a?(FalseClass)
     return status(202)

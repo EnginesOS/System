@@ -9,7 +9,7 @@ get '/v0/system/config/default_domain' do
   end
 end
 
-put '/v0/system/config/default_domain' do
+post '/v0/system/config/default_domain' do
   default_domain = params['default_domain']
   return status(202) if @@core_api.set_default_domain(default_domain)
   log_error('default_domain', params)
@@ -26,14 +26,14 @@ get '/v0/system/config/default_site' do
   end
 end
 
-put '/v0/system/config/default_site' do
+post '/v0/system/config/default_site' do
   default_site = params['default_site']
   return status(202) if @@core_api.set_default_site(default_site)
   log_error('default_site', params)
   return status(404)
 end
 
-put '/v0/system/config/hostname' do
+post '/v0/system/config/hostname' do
   hostname = params['hostname']
   return status(202) if @@core_api.set_hostname(hostname)
   log_error('hostname', params)
@@ -50,7 +50,7 @@ get '/v0/system/config/hostname' do
   end
 end
 
-put '/v0/system/config/remote_exception_logging' do
+post '/v0/system/config/remote_exception_logging' do
   remote_exception_logging = params['enable'] #symbolize_keys(params)
   unless enable_remote_exception_logging(remote_exception_logging)
     return status(202)

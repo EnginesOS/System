@@ -2,7 +2,7 @@
   
   #/system/do_first_run P
 
-put '/v0/system/do_first_run' do
+post '/v0/system/do_first_run' do
 
   unless @@core_api.set_first_run_parameters(params).is_a?(FalseClass)
     return status(202)
