@@ -30,9 +30,9 @@ class SystemDebug
   end
   #end
   #
-##  def self.events
- #    return @@events
- #  end
+  def self.server
+     return @@server
+   end
   def self.export_import
       return @@export_import
     end
