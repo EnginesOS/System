@@ -11,6 +11,10 @@ class EngineServer < ErrorsApi
   
   require_relative 'api/routes.rb'
   
+  get '/v0/system/*' do
+    p :No_Such_GET
+    p :params
+  end
   
   
   def log_exception(e)
