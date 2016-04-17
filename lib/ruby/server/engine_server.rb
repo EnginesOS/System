@@ -40,7 +40,7 @@
   def log_error(*args)
     p :ERROR
     p args
-    p 
+    body args.to_s
     status(404)
   end
   
