@@ -93,6 +93,8 @@ module DomainOperations
     return false if params.is_a?(FalseClass)
     return false if params.nil?
     return false if DNSHosting.rm_domain(domain_name) == false
+    p :rm_domain
+    p params
     return true if params[:self_hosted] == false
     service_hash = {}
     service_hash[:parent_engine] = 'system'
