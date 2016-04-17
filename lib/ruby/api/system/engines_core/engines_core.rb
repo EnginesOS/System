@@ -126,6 +126,10 @@ class EnginesCore < ErrorsApi
     
   end
 
+  def first_run_required?
+    FirstRunWizard.required?
+  end
+  
   def software_service_definition(params)
     clear_error
     return false unless check_service_hash(params)
