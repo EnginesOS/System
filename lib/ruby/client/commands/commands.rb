@@ -1,3 +1,4 @@
+@route += '/' + ARGV[0]
 case ARGV[0]
 when 'containers'
   require_relative 'commands/containers/commands.rb'

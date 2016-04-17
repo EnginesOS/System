@@ -1,3 +1,4 @@
+@route += '/' + ARGV[2]
 case ARGV[2]
 when 'base_os'
   require_relative 'base_os.rb'
