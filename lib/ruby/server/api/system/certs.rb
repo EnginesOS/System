@@ -21,7 +21,7 @@ get '/v0/system/certs/' do
   certs.to_json
 end
 
-delete '/v0/system/cert/:id' do
+delete '/v0/system/certs/:id' do
   unless @@core_api.remove_cert(params[:id]).is_a?(FalseClass)
     return status(202)
   else
