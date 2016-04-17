@@ -126,6 +126,7 @@ class EnginesCore < ErrorsApi
     
   end
   def set_first_run_parameters(params_from_gui)
+    require_relative 'first_run_wizard.rb'
      params = params_from_gui.dup
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
