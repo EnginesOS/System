@@ -95,7 +95,9 @@ class EnginesCore < ErrorsApi
    
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
-   
+  
+  require_relative 'certificate_actions.rb'
+  include CertificateActions
   
   require_relative '../containers/container_api.rb'
   require_relative '../containers/service_api.rb'
@@ -190,6 +192,8 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
+
+  
   protected
 
   def shutdown
