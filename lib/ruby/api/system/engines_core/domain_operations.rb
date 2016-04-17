@@ -29,7 +29,7 @@ module DomainOperations
   end
 
   def domain_name(domain_name)
-    domains = load_domains
+    domains = DNSHosting.load_domains
        domains[domain_name] 
   end
   private
