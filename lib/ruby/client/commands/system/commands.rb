@@ -12,6 +12,9 @@ require_relative 'certs.rb'
 when 'config'
   require_relative 'config.rb'
   
+when 'domain'
+  require_relative 'domain.rb'  
+  
 when 'domains'
   require_relative 'domains.rb'
   
