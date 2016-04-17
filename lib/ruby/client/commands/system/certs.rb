@@ -1,13 +1,18 @@
-@route += '/' + ARGV[2]
-case ARGV[2]
-when 'system_ca'
+if ARGV.count == 3
+  @route += '/'
+  perform_get
+end
 
-when 'list'
+
+case ARGV[2]
+
+
+when 'add'
 @route += '/' + ARGV[2]
-when 'view'
-@route += '/' + ARGV[2]
+perform_post(params)
 when 'remove'
 @route += '/' + ARGV[2]
-when 'update'
-@route += '/' + ARGV[2]
+perform_delete
 end
+
+
