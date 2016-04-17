@@ -18,7 +18,7 @@ module EnginesSystemDirs
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   
   def SystemConfig.CertificatesDir
-    return @@CertificateDir
+    return @@CertificatesDir
   end
   def SystemConfig.ServiceMapTemplateDir
     return @@ServiceMapTemplateDir
