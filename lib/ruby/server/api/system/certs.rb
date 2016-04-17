@@ -6,7 +6,7 @@
 #/system/cert/cert_name Get
 
 
-get '/v0/system/certs/system_ca' do
+get '/v0/system/cert/system_ca' do
   system_ca = @@core_api.get_system_ca
   unless system_ca.is_a?(FalseClass)
     return system_ca.to_json
