@@ -17,7 +17,7 @@ end
 
 get '/v0/system/certs/' do
   certs = @@core_api.list_certs
-   return log_error('list certs', params) if domains.is_a?(FalseClass)
+   return log_error('list certs', params) if certs.is_a?(FalseClass)
   certs.to_json
 end
 
