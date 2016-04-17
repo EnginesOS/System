@@ -16,7 +16,7 @@ module Certificates
   end
   
   def remove_cert(domain)
-    res = SystemUtils.execute_command('/opt/engines/bin/rm_cert.sh ' + domain )
+    res = SystemUtils.execute_command('/opt/engines/bin/remove_cert.sh ' + domain )
         return true if res[:result] == 0
         @last_error = res[:stderr]
         return false
