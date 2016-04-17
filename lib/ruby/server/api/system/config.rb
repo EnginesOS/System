@@ -72,7 +72,7 @@ end
 
 get '/v0/system/config/remote_exception_logging' do
   remote_exception_logging = SystemStatus.is_remote_exception_logging?
-  return remote_exception_logging
+  return remote_exception_logging.json
     #status(202)
 #  else
 #    log_error('remote_exception_logging')
