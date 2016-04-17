@@ -44,7 +44,7 @@ get '/v0/system/cert/:id' do
 end
 
 post '/v0/system/certs/' do
-  return status(202) if @@core_api.upload_ssl_certificate(params)
+  return status(202) if @@core_api.upload_ssl_certificate(Utils.symbolize_keys(params))
   log_error('upload_ssl_certificate', params)
   return status(404)
 end
