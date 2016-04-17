@@ -9,11 +9,13 @@ def command_useage
 end
 
 def perform_get  
-  rest_get(@route)  
+  rest_get(@route) 
+  exit
 end
 
 def perform_post(params) 
   rest_post(@route,params)  
+  exit
 end
 
 require 'rest-client'
@@ -24,7 +26,7 @@ def rest_get(path,params=nil)
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.get(@base_url + path, params)
       p r
-    exit
+
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
