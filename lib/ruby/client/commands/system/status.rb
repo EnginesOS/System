@@ -1,3 +1,4 @@
+p ARGV.count
 if ARGV.count < 3
   perform_get
 end 
