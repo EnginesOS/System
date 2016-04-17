@@ -1,7 +1,7 @@
 case ARGV[2]
 
 when 'set'
-
+params = []
   case ARGV[3]
   when 'default_domain'
     @route += '/' + ARGV[3]
@@ -13,7 +13,7 @@ when 'set'
     @route += '/' + ARGV[3]
     params[:hostname] =  ARGV[4]
 end
-  perform_post(ARGV[3])
+  perform_post(params)
   
 when 'remote_exception_logging'
   @route += '/' + ARGV[2] 
