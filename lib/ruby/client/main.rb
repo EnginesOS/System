@@ -34,7 +34,7 @@ def rest_post(path,params)
 
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.post(base_url + path, params)
+    r = RestClient.post(@base_url + path, params)
     p r
     exit
   rescue StandardError => e
