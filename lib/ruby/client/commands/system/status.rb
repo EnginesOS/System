@@ -7,7 +7,7 @@ end
 
 case ARGV[2]
 
-when 'first_run'
-@route += '/' + 'first_run_has_run'
+when 'first_run_required'
+@route += '/' + 'first_run_required'
   perform_get
 end
