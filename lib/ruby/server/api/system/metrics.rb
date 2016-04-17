@@ -1,7 +1,7 @@
 
 
-get '/v0/system/metrics/memory/' do
-  memory_info = @@core_api.get_system_memory_info
+get '/v0/system/metrics/memory' do
+  memory_info = MemoryStatistics.get_system_memory_info #@@core_api.get_system_memory_info
   unless memory_info.is_a?(FalseClass)
     return memory_info.to_json
   else
@@ -10,7 +10,7 @@ get '/v0/system/metrics/memory/' do
 end
 
 get '/v0/system/metrics/load' do
-  load_info = @@core_api.get_system_load_info
+  load_info = SystemStatus.get_system_load_info
   unless load_info.is_a?(FalseClass)
     return load_info.to_json
   else
@@ -19,7 +19,7 @@ get '/v0/system/metrics/load' do
 end
 
 get '/v0/system/metrics/memory/statistics' do
-  memory_statistics = @@core_api.get_memory_statistics
+  memory_statistics = MemoryStatistics.total_memory_statistics(@@core_api)
   unless memory_statistics.is_a?(FalseClass)
     return memory_statistics.to_json
   else

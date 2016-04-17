@@ -137,6 +137,7 @@ class EnginesCore < ErrorsApi
     return []
   end 
   
+  
   def list_system_services
   services = []
      services.push('registry')
@@ -152,6 +153,9 @@ class EnginesCore < ErrorsApi
     ports.push(808)
     ports
   end
+ def  get_disk_statistics
+   'belum'
+ end
   
   def first_run_required?
     require_relative '../first_run_wizard.rb'
