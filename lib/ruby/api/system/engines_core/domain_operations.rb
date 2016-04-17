@@ -32,7 +32,7 @@ module DomainOperations
     domains = DNSHosting.load_domains
        domains[domain_name] 
   end
-  private
+ 
 
   def add_domain(params)
     return false unless DNSHosting.add_domain(params)
@@ -102,7 +102,7 @@ module DomainOperations
   rescue StandardError => e
     log_exception(e)
   end
-
+private
   def get_ip_for_hosted_dns(internal)
     return DNSHosting.get_local_ip if internal
     open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
