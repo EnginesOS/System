@@ -16,6 +16,7 @@ when 'remote_exception_logging'
   @route += '/' + ARGV[2] 
   if ARGV.count == 4
     @route += '/' + ARGV[3]
+    perform_post()
    end
   
 when 'default_domain'
