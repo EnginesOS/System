@@ -10,7 +10,9 @@ class SystemPreferences
   end
 
   def set_default_domain(params)
-    @preferences[:default_domain] = params[:default_domain]
+    domain_name = params
+    domain_name = params[:default_domain] unless domain_name.is_a?(String)
+    @preferences[:default_domain] = domain_name # params[:default_domain]
     save_preferences
     
     return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)

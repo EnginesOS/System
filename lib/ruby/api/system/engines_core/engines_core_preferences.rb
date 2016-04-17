@@ -12,11 +12,13 @@ module EnginesCorePreferences
   end
 
   def set_default_site(params)
+    default_site_url = params
+    default_site_url =  params[:default_site_url] unless  params.is_a?(String)
     service_param = {}
     service_param[:service_name] = 'nginx'
     service_param[:configurator_name] = 'default_site'
     service_param[:vaiables] = {}
-    service_param[:vaiables][:default_site_url] = params[:default_site_url]
+    service_param[:vaiables][:default_site_url] = 
     update_service_configuration(service_param)
   end
 
