@@ -1,7 +1,7 @@
 case ARGV[2]
 
 when 'set'
-params = []
+params = {}
   case ARGV[3]
   when 'default_domain'
     @route += '/' + ARGV[3]
