@@ -6,7 +6,7 @@ when 'list'
   perform_get
 when 'remove'
   @route += '/' + ARGV[3]
-  perform_get
+  perform_delete
 when 'add'
 @route += '/'
   params_data = read_stdin_data
