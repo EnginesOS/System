@@ -3,7 +3,7 @@ if Process.euid != 21000
   exit
 end
 
-def useage
+def command_useage
  p "Inccorect usage"
  exit
 end
