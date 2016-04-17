@@ -37,7 +37,7 @@ def perform_post(params)
 end
 def perform_delete(params=nil) 
   p @route
-  rest_post(@route,params)  
+  rest_delete(@route,params)  
   exit
 end
 require 'rest-client'
