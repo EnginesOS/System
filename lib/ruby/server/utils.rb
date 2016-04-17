@@ -1,12 +1,6 @@
-class RegistryUtils
-  
-  def RegistryUtils.boolean_if_true_false_str(r)
-    return true if r == 'true'
-    return false if r == 'false'
-    return r
-  end
+class Utils
 
-def RegistryUtils.symbolize_keys(hash)
+def self.symbolize_keys(hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
     when String then key.to_sym
@@ -29,17 +23,17 @@ def RegistryUtils.symbolize_keys(hash)
     result
   }
 end
-def RegistryUtils.log_exception(e)
-   e_str = e.to_s()
-   e.backtrace.each do |bt|
-     e_str += bt + ' \n'
-   end
-   @@last_error = e_str
-   SystemUtils.log_output(e_str, 10)
-   f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
-   f.puts(e_str)
-   f.close
-  return false
- end
-
+#def log_exception(e)
+#   e_str = e.to_s()
+#   e.backtrace.each do |bt|
+#     e_str += bt + ' \n'
+#   end
+#   @@last_error = e_str
+#   SystemUtils.log_output(e_str, 10)
+#   f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+#   f.puts(e_str)
+#   f.close
+#  return false
+# end
 end
+

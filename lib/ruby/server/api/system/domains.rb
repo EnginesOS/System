@@ -3,12 +3,13 @@
 
 
 post '/v0/system/domains/' do
-  unless @@core_api.add_domain(params).is_a?(FalseClass)
+  unless @@core_api.add_domain(Utils.symbolize_keys(params)).is_a?(FalseClass)
     return status(202)
   else
     return log_error('add_domain', params)
   end
 end  
+
 delete '/v0/system/domains/:id' do
     unless @@core_api.remove_domain(params[:id]).is_a?(FalseClass)
       return status(202)
