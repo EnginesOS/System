@@ -1,4 +1,5 @@
-class EngineServer
+require '/opt/engines/lib/ruby/system/errors_api.rb'
+class EngineServer < ErrorsApi
   
   require 'sinatra'
   require 'yajl'
