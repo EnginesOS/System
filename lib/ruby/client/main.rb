@@ -175,7 +175,7 @@ def rest_delete(path, params=nil)
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
 end
-@base_url = 'http://127.0.0.1:4567'
+@base_url = 'http://mgmt.engines.internal:4567'
 @route="/v0"
 require_relative 'commands/commands.rb'
 
