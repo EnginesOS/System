@@ -17,12 +17,12 @@ end
 
 get '/v0/system/certs/' do
   certs = @@core_api.list_certs
-   return log_error('update_public_key', params) if domains.is_a?(FalseClass)
+   return log_error('list certs', params) if domains.is_a?(FalseClass)
   certs.to_json
 end
 
-post '/v0/system/cert/cert_name' do
-  unless @@core_api.remove_cert(params).is_a?(FalseClass)
+delete '/v0/system/cert/:id' do
+  unless @@core_api.remove_cert(params[:id]).is_a?(FalseClass)
     return status(202)
   else
     return log_error('remove_cert')
@@ -30,8 +30,8 @@ post '/v0/system/cert/cert_name' do
 end
 
 
-get '/v0/system/cert/cert_name' do
-  cert = @@core_api.get_cert()
+get '/v0/system/cert/:id' do
+  cert = @@core_api.get_cert(params[:id])
   unless cert.is_a?(FalseClass)
     return cert.to_json
   else
@@ -39,7 +39,7 @@ get '/v0/system/cert/cert_name' do
   end
 end
 
-post '/v0/system//system/certs/' do
+post '/v0/system/certs/' do
   return status(202) if @@core_api.upload_ssl_certificate(params)
   log_error('upload_ssl_certificate', params)
   return status(404)

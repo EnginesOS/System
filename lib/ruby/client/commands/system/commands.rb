@@ -9,6 +9,9 @@ require_relative 'keys/commands.rb'
 when 'certs'
 require_relative 'certs.rb'
 
+when 'cert'
+require_relative 'cert.rb'
+
 when 'config'
   require_relative 'config.rb'
   
