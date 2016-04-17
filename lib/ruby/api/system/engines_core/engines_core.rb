@@ -126,6 +126,33 @@ class EnginesCore < ErrorsApi
     
   end
 
+  def reserved_engine_names
+    names = list_managed_engines
+    names.concat(list_managed_services)
+    names.concat(list_system_services)
+    names
+    rescue StandardError => e
+       SystemUtils.log_exception(e)
+    failed('Gui', 'reserved_engine_names', 'failed')
+    return []
+  end 
+  
+  def list_system_services
+  services = []
+     services.push('registry')
+     return services
+  end
+  
+  def reserved_ports
+    ports = []
+     ports.push(443)
+    ports.push(10443)
+    ports.push(80)
+    ports.push(22)
+    ports.push(808)
+    ports
+  end
+  
   def first_run_required?
     require_relative '../first_run_wizard.rb'
     FirstRunWizard.required?
