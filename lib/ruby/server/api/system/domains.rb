@@ -1,5 +1,5 @@
 
-get '/v0/system/domain/:id' do
+get '/v0/system/domains/:id' do
   domain_name = @@core_api.domain_name(params[:id])
   unless domain_name.is_a?(FalseClass)
     return domain_name.to_json
