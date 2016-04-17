@@ -67,9 +67,9 @@ module DNSHosting
     SystemUtils.log_exception(e)
   end
 
-  def self.rm_domain(params)
-    domain = params
-    domain = params[:domain_name] unless domain.is_a?(String)      
+  def self.rm_domain(domain)
+  #  domain = params
+  #  domain = params[:domain_name] unless domain.is_a?(String)      
     domains = load_domains
     if domains.key?(domain)
       domains.delete(domain)
