@@ -52,7 +52,7 @@ end
 
 post '/v0/system/config/remote_exception_logging/enable' do
  
-  unless @@core_api.enable_remote_exception_logging
+  unless @@core_api.enable_remote_exception_logging.is_a?(FalseClass)
     return status(202)
   else
     log_error('remote_exception_logging', params)
@@ -62,7 +62,7 @@ end
 
 post '/v0/system/config/remote_exception_logging/disable' do
 
-unless @@core_api.disable_remote_exception_logging
+unless @@core_api.disable_remote_exception_logging.is_a?(FalseClass)
   return status(202)
 else
   log_error('remote_exception_logging', params)
