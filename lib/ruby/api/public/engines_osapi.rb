@@ -87,12 +87,14 @@ class EnginesOSapi < ErrorsApi
   end
 
   def set_first_run_parameters(params_from_gui)
-    params = params_from_gui.dup
-    SystemDebug.debug(SystemDebug.first_run,params)
-    first_run = FirstRunWizard.new(params)
-    first_run.apply(@core_api)
-    return success('Gui', 'First Run') if first_run.sucess
-    failed('Gui', 'First Run', first_run.error.to_s)
+   r @core_api.set_first_run_parameters(params_from_gui)
+
+#    params = params_from_gui.dup
+#    SystemDebug.debug(SystemDebug.first_run,params)
+#    first_run = FirstRunWizard.new(params)
+#    first_run.apply(@core_api)
+    return success('Gui', 'First Run') if r
+    failed('Gui', 'First Run', @core_api.error.to_s)
   rescue StandardError => e
     log_exception_and_fail('Gui First Run failed', e)
    

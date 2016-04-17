@@ -125,7 +125,14 @@ class EnginesCore < ErrorsApi
     @registry_handler.api_shutdown
     
   end
-
+  def set_first_run_parameters(params_from_gui)
+     params = params_from_gui.dup
+     SystemDebug.debug(SystemDebug.first_run,params)
+     first_run = FirstRunWizard.new(params)
+     first_run.apply(self)
+     return first_run.sucess
+  end
+  
   def reserved_engine_names
     names = list_managed_engines
     names.concat(list_managed_services)
