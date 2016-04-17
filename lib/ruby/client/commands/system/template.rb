@@ -1,4 +1,4 @@
-@route += '/' + ARGV[2]
+
 
  command_useage unless ARGV[3].is_a?(String)
 
