@@ -21,7 +21,7 @@ class FirstRunWizard <ErrorsApi
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
    # return false unless set_passwords
     #FIX ME check what the key is supposed to be
-   # return false unless mysql_password_configurator(@first_run_params[:gui_password])
+ #??return false unless mysql_password_configurator(@first_run_params[:gui_password])
     return false unless  setup_dns
     return false unless setup_certs
     @sucess = true

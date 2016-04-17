@@ -8,6 +8,7 @@ module AvailableServicesActions
     @core_api.load_avail_services_for_type(type)
   end
 
+ 
   # @ retruns [SoftwareServiceDefinition]
   # for type_path [String] and service_provider[String]
   def get_service_definition(type_path, service_provider)
@@ -22,9 +23,6 @@ module AvailableServicesActions
     failed(params[:type_path] + ':' + params[:publisher_namespace], @core_api.last_error, 'get software_service_definition')
   end
 
-  def load_avail_services_for_type(typename)
-    @core_api.load_avail_services_for_type(typename)
-  end
 
   def list_attached_services_for(object_name, identifier)
     SystemDebug.debug(SystemDebug.services,'list_attached_services_for', object_name + ' ' + identifier)
