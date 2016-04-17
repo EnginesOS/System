@@ -9,6 +9,7 @@ def perform_get
   
 end
 def rest_get(path,params=nil)
+  require 'rest-client'
   begin
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
