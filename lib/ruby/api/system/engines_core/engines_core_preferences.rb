@@ -10,6 +10,14 @@ module EnginesCorePreferences
     preferences = SystemPreferences.new
     preferences.get_default_domain
   end
+  def set_hostname(hostname)      
+      service_param = {}
+      service_param[:service_name] = 'mgmt'
+      service_param[:configurator_name] = 'hostname'
+      service_param[:vaiables] = {}
+      service_param[:vaiables][:hostname] = hostname
+      update_service_configuration(service_param)
+    end
 
   def set_default_site(params)
     default_site_url = params

@@ -28,8 +28,6 @@ end
 
 post '/v0/system/config/default_site' do
   default_site = params[:default_site]
-    p params
-    p default_site
   return status(202) if @@core_api.set_default_site(default_site)
   log_error('default_site', params)
   return status(404)
