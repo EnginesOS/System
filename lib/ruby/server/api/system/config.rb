@@ -34,7 +34,7 @@ post '/v0/system/config/default_site' do
 end
 
 post '/v0/system/config/hostname' do
-  hostname = params[:hostname]
+  hostname = params[:host_name]
   return status(202) if @@core_api.set_hostname(hostname)
   log_error('hostname', params)
   return status(404)

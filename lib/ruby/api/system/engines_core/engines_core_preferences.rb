@@ -16,6 +16,7 @@ module EnginesCorePreferences
       service_param[:configurator_name] = 'hostname'
       service_param[:vaiables] = {}
       service_param[:vaiables][:hostname] = hostname
+    service_param[:vaiables][:domain_name] = default_domain
       update_service_configuration(service_param)
     end
 

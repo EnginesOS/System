@@ -11,7 +11,7 @@ params = {}
     params[:default_site] =  ARGV[4]
   when 'hostname'
     @route += '/' + ARGV[3]
-    params[:hostname] =  ARGV[4]
+    params[:host_name] =  ARGV[4]
 end
   perform_post(params)
   
