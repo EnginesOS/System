@@ -5,8 +5,9 @@
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-  require '/opt/engines/lib/ruby/api/system/system_status.rb'
+  
 
+  
   set :sessions, true
   set :logging, true
   set :run, true
