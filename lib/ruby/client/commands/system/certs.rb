@@ -8,7 +8,7 @@ case ARGV[2]
 
 
 when 'add'
-
+@route += '/'
 if ARGV.count < 6
   command_useage('missing arguments')
 end
