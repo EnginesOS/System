@@ -31,7 +31,7 @@ post '/v0/system/domains/domain_name/' do
     end
 end
 
-get '/v0/system/domains/' do
+get '/v0/system/domains' do
    domains = @@core_api.list_domains()
    return log_error('list_domains') if domains.is_a?(FalseClass)
    domains.to_json
