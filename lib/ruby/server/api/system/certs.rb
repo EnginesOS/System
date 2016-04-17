@@ -31,8 +31,12 @@ end
 
 
 get '/v0/system/cert/:id' do
-  cert = @@core_api.get_cert(params[:id])
-  unless cert.is_a?(FalseClass)
+   if params[:id] == 'system_ca'
+     cert = @@core_api.get_system_ca
+   else
+      cert = @@core_api.get_cert(params[:id])
+   end
+   unless cert.is_a?(FalseClass)
     return cert.to_json
   else
     return log_error('cert')
