@@ -41,7 +41,7 @@ post '/v0/system/config/hostname' do
 end
 
 get '/v0/system/config/hostname' do
-  hostname = @@core_api.hostname
+  hostname = @@core_api.system_hostname
   unless hostname.is_a?(FalseClass)
     return hostname.to_json
   else
@@ -61,7 +61,7 @@ post '/v0/system/config/remote_exception_logging' do
 end
 
 get '/v0/system/config/remote_exception_logging' do
-  remote_exception_logging = @@core_api.is_remote_exception_logging?
+  remote_exception_logging = SystemStatus.is_remote_exception_logging?
   unless remote_exception_logging.is_a?(FalseClass)
     status(202)
   else
