@@ -13,7 +13,10 @@ end
   perform_post(ARGV[3])
   
 when 'remote_exception_logging'
-  @route += '/' + ARGV[2] + '/' + ARGV[3]
+  @route += '/' + ARGV[2] 
+  if ARGV.count == 4
+    @route += '/' + ARGV[3]
+   end
   
 when 'default_domain'
   @route += '/' + ARGV[2]
