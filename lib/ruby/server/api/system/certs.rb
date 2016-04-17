@@ -15,7 +15,7 @@ get '/v0/system/certs/system_ca' do
   end
 end
 
-list '/v0/system/certs/' do
+get '/v0/system/certs/' do
   certs = @@core_api.list_certs
    return log_error('update_public_key', params) if domains.is_a?(FalseClass)
   certs.to_json
