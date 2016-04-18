@@ -79,7 +79,7 @@ module EnginesOperations
   def set_engine_runtime_properties(params)
     engine_name = params[:engine_name]
     engine = loadManagedEngine(engine_name)
-    if engine.is_a?(EnginesOSapiResult)
+    if engine.is_a?(false)
       @last_error = engine.result_mesg
       return false
     end
