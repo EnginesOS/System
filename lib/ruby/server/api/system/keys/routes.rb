@@ -1,1 +1,1 @@
-require_relative 'users.rb' 
+require_relative 'user.rb' 
