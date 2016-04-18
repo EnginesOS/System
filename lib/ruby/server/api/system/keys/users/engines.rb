@@ -1,5 +1,5 @@
 
-get '/v0/system/keys/user/engines/generate' do
+get '/v0/system/keys/user/[:id]/generate' do
   generated_key = @@core_api.generate_engines_user_ssh_key
   unless generated_key.is_a?(FalseClass)
     return generated_key.to_json
@@ -8,7 +8,7 @@ get '/v0/system/keys/user/engines/generate' do
   end
 end
 
-post '/v0/system/keys/user/engines/' do
+post '/v0/system/keys/user/[:id]' do
   update_key = params['public_key'] #symbolize_keys(params)
   unless @@core_api.update_public_key(update_key).is_a?(FalseClass)
     return status(202)
@@ -17,7 +17,7 @@ post '/v0/system/keys/user/engines/' do
   end
 end
 
-get '/v0/system/keys/user/engines/' do
+get '/v0/system/keys/user/[:id]' do
   public_key = @@core_api.get_public_key
   unless public_key.is_a?(FalseClass)
     return public_key.to_json
