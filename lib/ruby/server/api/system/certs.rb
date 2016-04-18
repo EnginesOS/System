@@ -54,7 +54,7 @@ end
 post '/v0/system/certs/default' do
   nparams = Utils.symbolize_keys(params)
   nparams[:set_as_default] = true
-  return status(202) if @@core_api.upload_ssl_certificate(pnarams)
+  return status(202) if @@core_api.upload_ssl_certificate(nparams)
   log_error('upload_default_ssl_certificate', nparams)
   return status(404)
 end
