@@ -3,7 +3,6 @@ case ARGV[0]
 when 'containers'
   require_relative 'containers/commands.rb'
 when 'engines'
-@route += '/containers/' 
   require_relative 'containers/engines/commands.rb'
 when 'engine'
   require_relative 'containers/engine/commands.rb' 
