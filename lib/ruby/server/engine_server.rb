@@ -40,7 +40,7 @@ require_relative 'utils.rb'
   def log_error(*args)
     p :ERROR
     p args
-    body args.to_s
+    body args.to_s + ':' + @@core_api.last_error
     status(404)
   end
   
