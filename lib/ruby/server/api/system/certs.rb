@@ -52,10 +52,10 @@ get '/v0/system/cert/:id' do
   end
 end
 post '/v0/system/certs/default' do
-  params = Utils.symbolize_keys(params)
-  params[:set_as_default] = true
-  return status(202) if @@core_api.upload_ssl_certificate(params)
-  log_error('upload_default_ssl_certificate', params)
+  nparams = Utils.symbolize_keys(params)
+  nparams[:set_as_default] = true
+  return status(202) if @@core_api.upload_ssl_certificate(pnarams)
+  log_error('upload_default_ssl_certificate', nparams)
   return status(404)
 end
 
