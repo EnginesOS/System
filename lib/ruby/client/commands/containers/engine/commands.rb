@@ -15,6 +15,9 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'properties'
+  @route += '/'
+  require_relative 'properties.rb'
 when 'template'
 params = {}
   params[:string] = ARGV[3]
