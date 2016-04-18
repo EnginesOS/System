@@ -45,7 +45,7 @@ require_relative 'utils.rb'
   end
   
   def get_engine(engine)
-    eng = @@core_api.LoadManagedEngine(engine)
+    eng = @@core_api.loadManagedEngine(engine)
     return eng if eng.is_a?(ManagedEngine)
     log_error('Load ' + engine)
     end 
