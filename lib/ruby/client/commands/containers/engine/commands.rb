@@ -18,7 +18,7 @@ case ARGV[2]
 when 'template'
 params = {}
   params[:string] = ARGV[3]
-    perform_post
+    perform_post(params)
 when 'destroy'
 
   perform_delete
