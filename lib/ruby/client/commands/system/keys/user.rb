@@ -7,6 +7,7 @@ when 'generate'
 when 'set'
 params = {} 
 params[:public_key] = read_stdin_data
+route += '/engines' 
  perform_post(params)
  p :post
   p params
