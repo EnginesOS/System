@@ -8,7 +8,7 @@ module Certificates
     key_file.write(params[:key])
     key_file.close
     flag = ''
-    flag = ' -d' if params[:set_as_default] == true
+    flag = ' -d ' if params[:set_as_default] == true
     res = SystemUtils.execute_command('/opt/engines/bin/install_cert.sh ' + flag  + params[:domain_name]  )
     return true if res[:result] == 0
     @last_error = res[:stderr]
