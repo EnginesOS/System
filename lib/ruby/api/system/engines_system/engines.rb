@@ -22,7 +22,7 @@ module Engines
     clear_error
     protocol = params[:http_protocol]
     return false if protocol.nil?
-    protocol.to_lower
+    protocol.downcase
     protocol.gsub!(/ /,"_")
     SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
     if protocol.include?('https_only')
