@@ -11,3 +11,5 @@ params = {}
 when 'view'
 @route += '/engines'
 end
+
+peform_get
