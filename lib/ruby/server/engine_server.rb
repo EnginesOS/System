@@ -45,7 +45,7 @@ begin
   def get_engine(engine)
     eng = @@core_api.loadManagedEngine(engine)
     return eng if eng.is_a?(ManagedEngine)
-    log_error('Load ' + engine)
+    log_error('Load failed !!!' + engine)
   end
 
 rescue StandardError => e
