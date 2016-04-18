@@ -138,7 +138,7 @@ class BuildController
     @core_api.build_stoped()   
     SystemUtils.log_error_mesg(err.to_s,params)
     SystemStatus.build_failed(params)
-    EnginesOSapiResult.failed(params[:engine_name], err, caller_locations(1,1)[0].label)
+    log_error_mesg(params[:engine_name], err, caller_locations(1,1)[0].label)
   end
   
   def build_complete(build_params)
