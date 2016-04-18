@@ -92,7 +92,7 @@ end
 
 delete '/v0/containers/engine/:id/destroy' do
   engine = get_engine(params[:id])
-  r = engine.destroy_contianer
+  r = engine.destroy_container
   unless r.is_a?(FalseClass)
     return r
   else
