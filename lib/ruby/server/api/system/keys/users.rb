@@ -1,5 +1,5 @@
 
-get '/v0/system/keys/user/[:id]/generate' do
+get '/v0/system/keys/user/engines/generate' do
   generated_key = @@core_api.generate_engines_user_ssh_key
   unless generated_key.is_a?(FalseClass)
     return generated_key.to_json
