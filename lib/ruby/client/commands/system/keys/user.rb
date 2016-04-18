@@ -4,9 +4,10 @@ case ARGV[3]
 when 'generate'
 @route += '/' + ARGV[4] + '/generate'
  
-when 'update'
+when 'set'
 params = {} 
- perform_post(param)
+params[:public_key] = read_stdin_data
+ perform_post(params)
   
 else
 @route += '/' + ARGV[3]
