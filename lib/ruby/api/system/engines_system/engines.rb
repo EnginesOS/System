@@ -32,6 +32,7 @@ module Engines
     elsif protocol.include?('https_and_http')
       engine.enable_http_and_https
     end
+    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
