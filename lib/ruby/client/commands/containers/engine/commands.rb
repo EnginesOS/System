@@ -1,7 +1,7 @@
 @route += '/containers/' + ARGV[0] + '/' + ARGV[1]
-preform_get if ARGV.count == 2
+perform_get if ARGV.count == 2
 
 @route += '/' + ARGV[2]
 
 
-preform_get 
+perform_get 
