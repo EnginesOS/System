@@ -124,7 +124,7 @@ module EnginesOperations
   end
 
   def set_engine_network_properties (engine, params)
-    test_system_api_result(@system_api.set_engine_network_properties(engine,params))
+    @system_api.set_engine_network_properties(engine,params)
   end
 
 end
