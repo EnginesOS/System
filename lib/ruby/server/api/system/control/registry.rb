@@ -1,7 +1,7 @@
 
   #/system/control/regsitry/restart
   
-get '/v0/system/control/regsitry/restart' do
+get '/v0/system/control/registry/restart' do
   restart_registry = @@core_api.force_registry_restart
   unless restart_registry.is_a?(FalseClass)
     return restart_registry.to_json
