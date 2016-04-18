@@ -8,7 +8,10 @@ module SshKeys
   end
 
   def update_public_key(key)
+    p :update_public_key
     SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/update_system_access.sh ' + key)
+    rescue StandardError => e
+        SystemUtils.log_exception(e)
   end
 
   def regen_system_ssh_key
