@@ -8,7 +8,7 @@ get '/v0/system/control/engines_system/update' do
   unless update.is_a?(FalseClass)
     return update.to_json
   else
-    return log_error('update')
+    return log_error('Might just be update to date update')
   end
 end
 get '/v0/system/control/engines_system/restart' do
