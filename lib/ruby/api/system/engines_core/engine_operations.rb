@@ -77,8 +77,10 @@ module EnginesOperations
   end
 
   def set_engine_runtime_properties(params)
+    p :set_engine_runtime_properties 
+    p params
     engine_name = params[:engine_name]
-      p :set_engine_runtime_properties 
+   
     engine = loadManagedEngine(engine_name)
     if engine.is_a?(FalseClass)
       return false
@@ -127,7 +129,9 @@ module EnginesOperations
     log_exception(e)
   end
 
-  def set_engine_network_properties (engine, params)
+  def set_engine_network_properties(engine, params)
+    p :set_engine_network_properties
+    
     @system_api.set_engine_network_properties(engine,params)
   end
 
