@@ -14,7 +14,6 @@ end
 
 case ARGV[2]
 when 'properties'
-  @route += '/'
   require_relative 'properties.rb'
 when 'template'
   params = {}
