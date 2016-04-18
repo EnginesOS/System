@@ -85,11 +85,13 @@ module EnginesOperations
     end
     if engine.is_active?
       @last_error = 'Container is active'
+      p 'Error Container is active'
       return false
     end
     if params.key?(:memory)
       if params[:memory] == engine.memory
         @last_error = 'No Change in Memory Value'
+        p 'Error o Change in Memory Value'
         return false
       end
       if engine.update_memory(params[:memory]) == false
@@ -116,8 +118,10 @@ module EnginesOperations
     end
     if engine.has_container?
       return log_error_mesg(engine.last_error,engine) if !engine.destroy_container
+      p :destroyed
     end
     return log_error_mesg(engine.last_error,engine) if !engine.create_container
+    p :created
     return true
   rescue StandardError => e
     log_exception(e)
