@@ -14,5 +14,11 @@ module SshKeys
   def regen_system_ssh_key
     SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/regen_private.sh ')
   end
+  
+  def get_public_key
+    File.read('/home/engines/.ssh/console_access.pub')
+  rescue StandardError => e
+    log_exception(e)
+  end
 
 end

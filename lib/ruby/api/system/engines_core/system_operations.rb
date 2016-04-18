@@ -53,7 +53,10 @@ module SystemOperations
     SystemDebug.debug(SystemDebug.system,'ssh_pw', cmd)
     SystemUtils.run_system(cmd)
   end
-
+  
+  def get_public_key
+    @system_api.get_public_key
+  end
 
   def system_image_free_space
     @system_api.system_image_free_space
