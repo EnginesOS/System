@@ -4,21 +4,25 @@ perform_get if ARGV.count == 2
 
 
 case ARGV[2]
-when 'destroy'
-@route += '/' + ARGV[2]
-  perform_delete
-when 'delete_image'
-@route += '/' + ARGV[2]
-perform_delete
-
 when 'mem_stat'
 @route += '/metrics/memory'
-
+perform_get  
 when 'net_stat'
 @route += '/metrics/network'
-
+perform_get  
 end
 
 @route += '/' + ARGV[2]
+
+case ARGV[2]
+when 'destroy'
+
+  perform_delete
+when 'delete_image'
+
+perform_delete
+end
+
+
 perform_get  
 
