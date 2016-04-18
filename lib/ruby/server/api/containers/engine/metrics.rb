@@ -1,5 +1,5 @@
 get '/v0/containers/engine/:id/metrics/network' do
- r = get_container_network_metrics(params[:id]) 
+ r = @@core_api.get_container_network_metrics(params[:id]) 
   unless r.is_a?(FalseClass)
     return r
   else
