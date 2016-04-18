@@ -322,7 +322,7 @@ class DockerFileBuilder
 
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
-      destination = '/home/app/' + destination.to_s  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
+      destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
       destination = '/home/app' if destination.to_s == '/home/app/'  || destination == '/'  || destination == './'  || destination == ''
 
       path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''

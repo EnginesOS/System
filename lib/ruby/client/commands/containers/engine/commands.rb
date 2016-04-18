@@ -8,6 +8,14 @@ when 'destroy'
   perform_delete
 when 'delete_image'
 perform_delete
+
+when 'mem_stat'
+@route += '/metrics/memory'
+
+when 'net_stat'
+@route += '/metrics/network'
+
 end
 
-perform_get 
+perform_get  
+
