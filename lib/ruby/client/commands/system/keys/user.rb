@@ -8,7 +8,8 @@ when 'set'
 params = {} 
 params[:public_key] = read_stdin_data
  perform_post(params)
-  
+ p :post
+  p params
 else
 @route += '/' + ARGV[3]
 end
