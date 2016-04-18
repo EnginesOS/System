@@ -2,7 +2,6 @@
 
 case ARGV[1]
 when 'changed'
-@route += '/'
 perform_get
 
 end
