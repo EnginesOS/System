@@ -16,7 +16,8 @@ module SshKeys
   end
   
   def get_public_key
-    File.read('/home/engines/.ssh/console_access.pub')
+    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/public_key engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/public_key.sh ')
+#/home/engines/.ssh/console_access.pub
   rescue StandardError => e
     log_exception(e)
   end
