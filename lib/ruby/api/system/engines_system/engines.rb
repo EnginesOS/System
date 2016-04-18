@@ -22,12 +22,14 @@ module Engines
     clear_error
     protocol = params[:http_protocol]
     return false if protocol.nil?
+    protocol.to_lower
+    protocol.gsub!(/ /,"_")
     SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
-    if protocol.include?('HTTPS only')
+    if protocol.include?('https_only')
       engine.enable_https_only
-    elsif protocol.include?('HTTP only')
+    elsif protocol.include?('http_only')
       engine.enable_http_only
-    elsif protocol.include?('HTTPS and HTTP')
+    elsif protocol.include?('https_and_http')
       engine.enable_http_and_https
     end
   rescue StandardError => e
