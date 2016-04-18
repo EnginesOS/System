@@ -15,6 +15,10 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'template'
+params = {}
+  params[:string] = ARGV[3]
+    perform_post
 when 'destroy'
 
   perform_delete
