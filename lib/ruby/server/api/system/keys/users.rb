@@ -19,6 +19,8 @@ end
 
 get '/v0/system/keys/user/[:id]' do
   public_key = @@core_api.get_public_key
+  p :pulb
+  p public_key
   unless public_key.is_a?(FalseClass)
     return public_key.to_json
   else
