@@ -192,7 +192,7 @@ class EnginesCore < ErrorsApi
     test_system_api_result(@system_api.save_build_report(container,build_report))
   end
 
-  def container_memory_stats
+  def container_memory_stats(engine)
  
   MemoryStatistics.container_memory_stats(engine)
     end
