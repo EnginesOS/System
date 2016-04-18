@@ -36,7 +36,7 @@ end
     end
 end
   get '/v0/containers/engine/:id/build_report' do
-    r = get_build_report(params[:id])
+    r = @@core_api.get_build_report(params[:id])
       unless r.is_a?(FalseClass)
       return r.to_json
     else
