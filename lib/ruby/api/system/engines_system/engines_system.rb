@@ -77,7 +77,8 @@ class SystemApi < ErrorsApi
     return false
   end
 
-  def api_shutdown
+  def api_shutdown(reason)
+     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
     res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/halt_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/halt_system.sh') }
   end
