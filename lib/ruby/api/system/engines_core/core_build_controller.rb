@@ -1,5 +1,5 @@
 module CoreBuildController
-  
+  require_relative '../build_controller.rb'
   def build_started(controller)
     @current_builder = controller
   end
