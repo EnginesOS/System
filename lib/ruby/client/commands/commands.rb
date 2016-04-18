@@ -1,4 +1,4 @@
-@route += '/' + ARGV[0]
+
 case ARGV[0]
 when 'containers'
   require_relative 'containers/commands.rb'
@@ -6,13 +6,10 @@ when 'engines'
 @route += '/containers/' 
   require_relative 'containers/engines/commands.rb'
 when 'engine'
-@route += '/containers/' 
   require_relative 'containers/engine/commands.rb' 
 when 'services'
-@route += '/containers/' 
   require_relative 'containers/services/commands.rb'
 when 'service'
-@route += '/containers/' 
   require_relative 'containers/service/commands.rb' 
 when 'registry'
   require_relative 'registry/commands.rb'
