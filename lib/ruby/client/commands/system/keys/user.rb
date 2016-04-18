@@ -8,8 +8,8 @@ when 'update'
 params = {} 
  perform_post(param)
   
-when 'view'
-@route += '/engines'
+else
+@route += '/ARGV[3]'
 end
 
 perform_get
