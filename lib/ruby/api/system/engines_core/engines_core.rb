@@ -194,11 +194,11 @@ class EnginesCore < ErrorsApi
 
 
   
-  protected
+
 
   def shutdown
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown
   end
-
+  protected
 end

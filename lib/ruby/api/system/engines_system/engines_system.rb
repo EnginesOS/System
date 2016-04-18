@@ -79,5 +79,6 @@ class SystemApi < ErrorsApi
 
   def api_shutdown
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
+    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/halt_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/halt_system.sh') }
   end
 end
