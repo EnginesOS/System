@@ -5,7 +5,7 @@
 #/registry/orphans
 #/registry/shares
 
-get '/v0/system/registry/engines/' do
+get '/v0/registry/engines/' do
   engines = @@core_api.get_managed_engine_tree
   unless engines.is_a?(FalseClass)
     return engines.to_json
@@ -14,7 +14,7 @@ get '/v0/system/registry/engines/' do
   end
 end
 
-get '/v0/system/registry/configurations/' do
+get '/v0/registry/configurations/' do
   configurations = @@core_api.get_configurations_tree
   unless configurations.is_a?(FalseClass)
     return configurations.to_json
@@ -23,7 +23,7 @@ get '/v0/system/registry/configurations/' do
   end
 end
 
-get '/v0/system/registry/services/' do
+get '/v0/registry/services/' do
   services = @@core_api.managed_service_tree
   unless services.is_a?(FalseClass)
     return services.to_json
@@ -32,7 +32,7 @@ get '/v0/system/registry/services/' do
   end
 end
 
-get '/v0/system/registry/orphans/' do
+get '/v0/registry/orphans/' do
   orphans = @@core_api.get_orphaned_services_tree
 unless orphans.is_a?(FalseClass)
   return orphans.to_json
@@ -40,7 +40,7 @@ else
   return log_error('orphans')
 end
 end
-  get '/v0/system//registry/shares/' do
+  get '/v0/registry/shares/' do
     shares = @@core_api.get_shares_tree
     unless shares.is_a?(FalseClass)
       return shares.to_json
