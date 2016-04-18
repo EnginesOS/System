@@ -13,7 +13,7 @@ post '/v0/containers/engine/:id/properties/network' do
 end
 
 post '/v0/containers/engine/:id/properties/runtime' do
-  engine = load_engine(params[:id])
+  engine = get_engine(params[:id])
   r =  set_engine_network_properties(engine, Utils.symbolize_keys(params))
    return log_error('set run time properties', params) if r.is_a?(FalseClass)
    r.to_json
