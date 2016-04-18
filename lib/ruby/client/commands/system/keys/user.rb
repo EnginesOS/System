@@ -2,7 +2,7 @@ puts 'argv3' +  ARGV[3].to_s
 case ARGV[3]
  
 when 'generate'
-@route += '/' + ARGV[4] = '/generate'
+@route += '/' + ARGV[4] + '/generate'
  
 when 'update'
 params = {} 
