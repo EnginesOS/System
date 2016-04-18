@@ -1,6 +1,6 @@
 case ARGV[3]
 when 'restart'
-@route += '/' + ARGV[2]
+@route += '/' + ARGV[3]
 perform_get
 when 'update'
   
