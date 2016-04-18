@@ -1,6 +1,5 @@
+#/system/control/regsitry/restart
 
-  #/system/control/regsitry/restart
-  
 get '/v0/system/control/registry/restart' do
   restart_registry = @@core_api.force_registry_restart
   unless restart_registry.is_a?(FalseClass)

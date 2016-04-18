@@ -6,8 +6,8 @@ end
 @route +=  ARGV[1]
 case ARGV[1]
 when 'state'
-perform_get
+  perform_get
 when 'container_name'
-perform_get
+  perform_get
 
 end

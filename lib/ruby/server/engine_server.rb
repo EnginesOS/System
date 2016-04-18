@@ -1,28 +1,25 @@
-
-
-  begin 
+begin
   require 'sinatra'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-  
-require_relative 'utils.rb'
-  
+
+  require_relative 'utils.rb'
+
   set :sessions, true
   set :logging, true
   set :run, true
-   
+
   @@core_api = EnginesCore.new
-  
+
   require_relative 'api/routes.rb'
-  
+
   get '/v0/*' do
     p :No_Such_GET
     p :params
     status(404)
   end
-  
-  
+
   def log_exception(e)
     e_str = e.to_s()
     e.backtrace.each do |bt|
@@ -36,7 +33,7 @@ require_relative 'utils.rb'
     f.close
     return false
   end
-  
+
   def log_error(*args)
     p :ERROR
     p args
@@ -44,18 +41,17 @@ require_relative 'utils.rb'
     body args.to_s + ':' + @@core_api.last_error.to_s
     status(404)
   end
-  
+
   def get_engine(engine)
     eng = @@core_api.loadManagedEngine(engine)
     return eng if eng.is_a?(ManagedEngine)
     log_error('Load ' + engine)
-    end 
-      
-      
+  end
+
 rescue StandardError => e
   #log_error(e)
   p e
   p e.backtrace.to_s
   #status(501)
-    
+
 end

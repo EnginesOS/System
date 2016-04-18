@@ -1,7 +1,7 @@
 case ARGV[2]
 
 when 'set'
-params = {}
+  params = {}
   case ARGV[3]
   when 'default_domain'
     @route += '/' + ARGV[3]
@@ -12,16 +12,16 @@ params = {}
   when 'hostname'
     @route += '/' + ARGV[3]
     params[:host_name] =  ARGV[4]
-end
+  end
   perform_post(params)
-  
+
 when 'remote_exception_logging'
-  @route += '/' + ARGV[2] 
+  @route += '/' + ARGV[2]
   if ARGV.count == 4
     @route += '/' + ARGV[3]
     perform_post()
-   end
-  
+  end
+
 when 'default_domain'
   @route += '/' + ARGV[2]
 when 'default_site'

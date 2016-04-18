@@ -1,6 +1,4 @@
-
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
-
 
 get '/v0/system/version/release' do
   SystemDebug.debug(SystemDebug.server, :release)
@@ -32,7 +30,7 @@ get '/v0/system/version/ident' do
 end
 
 get '/v0/system/version/system' do
-  system = @@core_api.system_version 
+  system = @@core_api.system_version
   unless system.is_a?(FalseClass)
     return system.to_json
   else
@@ -50,6 +48,4 @@ get '/v0/system/version/base_os' do
     return log_error('base_os')
   end
 end
-
-
 

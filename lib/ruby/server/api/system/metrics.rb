@@ -1,5 +1,3 @@
-
-
 get '/v0/system/metrics/memory' do
   memory_info = MemoryStatistics.get_system_memory_info #@@core_api.get_system_memory_info
   unless memory_info.is_a?(FalseClass)

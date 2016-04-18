@@ -1,4 +1,3 @@
-
 #
 #/containers/changed LIST
 #/containers/name/network_metrics  ?
@@ -11,6 +10,4 @@ get '/v0/containers/changed/' do
     return log_error('containers/changed')
   end
 end
-
-
 

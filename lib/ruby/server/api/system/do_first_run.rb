@@ -1,6 +1,4 @@
-
-  
-  #/system/do_first_run P
+#/system/do_first_run P
 
 post '/v0/system/do_first_run' do
 

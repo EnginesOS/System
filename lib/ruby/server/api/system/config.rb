@@ -1,4 +1,3 @@
-
 get '/v0/system/config/default_domain' do
   default_domain = @@core_api.get_default_domain
   unless default_domain.is_a?(FalseClass)
@@ -51,7 +50,7 @@ get '/v0/system/config/hostname' do
 end
 
 post '/v0/system/config/remote_exception_logging/enable' do
- 
+
   unless @@core_api.enable_remote_exception_logging.is_a?(FalseClass)
     return status(202)
   else
@@ -62,21 +61,21 @@ end
 
 post '/v0/system/config/remote_exception_logging/disable' do
 
-unless @@core_api.disable_remote_exception_logging.is_a?(FalseClass)
-  return status(202)
-else
-  log_error('remote_exception_logging', params)
-  return status(404)
-end
+  unless @@core_api.disable_remote_exception_logging.is_a?(FalseClass)
+    return status(202)
+  else
+    log_error('remote_exception_logging', params)
+    return status(404)
+  end
 end
 
 get '/v0/system/config/remote_exception_logging' do
   remote_exception_logging = SystemStatus.is_remote_exception_logging?
   return remote_exception_logging.to_json
-    #status(202)
-#  else
-#    log_error('remote_exception_logging')
-#    return  status(404)
-  #  end  
+  #status(202)
+  #  else
+  #    log_error('remote_exception_logging')
+  #    return  status(404)
+  #  end
 end
 

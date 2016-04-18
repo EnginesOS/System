@@ -1,8 +1,6 @@
-
-  
- # /system/control/base_os/restart
- # /system/control/base_os/update
- # /system/control/base_os/shutdown
+# /system/control/base_os/restart
+# /system/control/base_os/update
+# /system/control/base_os/shutdown
 get '/v0/system/control/base_os/restart' do
   restart = @@core_api.restart_system
   unless restart.is_a?(FalseClass)

@@ -2,6 +2,6 @@
 
 case ARGV[1]
 when 'changed'
-perform_get
+  perform_get
 
 end

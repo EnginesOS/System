@@ -2,7 +2,6 @@
 #/containers/engines/container_name
 #/containers/engines/
 
-
 get '/v0/containers/engines/' do
   engines = @@core_api.getManagedEngines
   unless engines.is_a?(FalseClass)
@@ -11,7 +10,6 @@ get '/v0/containers/engines/' do
     return log_error('engines')
   end
 end
-
 
 get '/v0/containers/engines/container_name' do
   container_names = @@core_api.list_managed_engines

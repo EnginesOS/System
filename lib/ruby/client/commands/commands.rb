@@ -1,15 +1,14 @@
-
 case ARGV[0]
 when 'containers'
   require_relative 'containers/commands.rb'
 when 'engines'
   require_relative 'containers/engines/commands.rb'
 when 'engine'
-  require_relative 'containers/engine/commands.rb' 
+  require_relative 'containers/engine/commands.rb'
 when 'services'
   require_relative 'containers/services/commands.rb'
 when 'service'
-  require_relative 'containers/service/commands.rb' 
+  require_relative 'containers/service/commands.rb'
 when 'registry'
   require_relative 'registry/commands.rb'
 when 'engines_builder'

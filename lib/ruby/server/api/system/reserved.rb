@@ -1,8 +1,6 @@
-
-  
-  #/system/reserved/engine_names List
-  #/system/reserved/hostnames List
-  #/system/reserved/ports
+#/system/reserved/engine_names List
+#/system/reserved/hostnames List
+#/system/reserved/ports
 get '/v0/system/reserved/ports' do
   reserved_ports = @@core_api.reserved_ports
   unless reserved_ports.is_a?(FalseClass)

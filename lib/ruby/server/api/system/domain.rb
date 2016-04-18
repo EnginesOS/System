@@ -1,4 +1,3 @@
-
 get '/v0/system/domain/:id' do
   domain_name = @@core_api.domain_name(params[:id])
   unless domain_name.is_a?(FalseClass)
@@ -14,6 +13,5 @@ post '/v0/system/domain/:id' do
   else
     return log_error('update_domain', params)
   end
-end  
-
+end
 

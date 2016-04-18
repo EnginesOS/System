@@ -1,4 +1,3 @@
-
 command_useage unless ARGV[2].is_a?(String)
 
 @route += '/' + ARGV[2]

@@ -4,9 +4,9 @@ module ContainerSetup
   end
 
   def post_load
-    expire_engine_info 
+    expire_engine_info
     set_cont_id
-    set_running_user   
+    set_running_user
     lock_values
   end
 end

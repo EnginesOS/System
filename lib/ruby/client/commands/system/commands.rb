@@ -2,39 +2,39 @@
 case ARGV[1]
 when 'control'
   require_relative 'control/commands.rb'
-  
+
 when 'keys'
-require_relative 'keys/commands.rb'
+  require_relative 'keys/commands.rb'
 
 when 'certs'
-require_relative 'certs.rb'
+  require_relative 'certs.rb'
 
 when 'cert'
-require_relative 'cert.rb'
+  require_relative 'cert.rb'
 
 when 'config'
   require_relative 'config.rb'
-  
+
 when 'domain'
-  require_relative 'domain.rb'  
-  
+  require_relative 'domain.rb'
+
 when 'domains'
   require_relative 'domains.rb'
-  
-when 'do_first_run' 
+
+when 'do_first_run'
   require_relative 'do_first_run.rb'
-  
+
 when 'metrics'
   require_relative 'metrics.rb'
-  
+
 when 'reserved'
   require_relative 'reserved.rb'
-  
+
 when 'status'
-require_relative 'status.rb'
+  require_relative 'status.rb'
 
 when 'template'
-require_relative 'template.rb'
+  require_relative 'template.rb'
 
 when 'version'
   require_relative 'version.rb'

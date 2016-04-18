@@ -1,4 +1,3 @@
-
 case ARGV[2]
 when 'view'
   @route += '/' + ARGV[3]
