@@ -9,7 +9,7 @@ params = {}
  perform_post(param)
   
 else
-@route += '/ARGV[3]'
+@route += '/' + ARGV[3]
 end
 
 perform_get
