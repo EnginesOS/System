@@ -14,7 +14,7 @@ end
 
 
 get '/v0/containers/engines/container_name' do
-  container_names = @@core_api.list_apps
+  container_names = @@core_api.list_managed_engines
   unless container_names.is_a?(FalseClass)
     return container_names.to_json
   else
