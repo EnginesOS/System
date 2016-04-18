@@ -44,6 +44,13 @@ require_relative 'utils.rb'
     status(404)
   end
   
+  def get_engine(engine)
+    eng = @@core_api.LoadManagedEngine(engine)
+    return eng if eng.is_a?(ManagedEngine)
+    log_error('Load ' + engine)
+    end 
+      
+      
 rescue StandardError => e
   #log_error(e)
   p e
