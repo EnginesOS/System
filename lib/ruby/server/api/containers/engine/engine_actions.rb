@@ -12,7 +12,7 @@
 #
 get '/v0/containers/engine/:id/create' do
   engine = get_engine(params[:id])
-  r = engine.create_contianer
+  r = engine.create_container
   unless r.is_a?(FalseClass)
     return r
   else
