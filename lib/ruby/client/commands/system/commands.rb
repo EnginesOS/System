@@ -1,4 +1,4 @@
-@route += ARGV[0] + '/' + ARGV[1]
+@route += '/' + ARGV[0] + '/' + ARGV[1]
 case ARGV[1]
 when 'control'
   require_relative 'control/commands.rb'
