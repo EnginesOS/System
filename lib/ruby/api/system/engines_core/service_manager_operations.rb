@@ -9,6 +9,11 @@ module ServiceManagerOperations
     service_manager.deregister_non_persistent_services(engine)
   end
   def find_engine_service_hash(params)
+    params[:container_type] = 'container'
+    service_manager.find_engine_service_hash(params)
+  end
+  def find_service_service_hash(params)
+    params[:container_type] = 'service'
     service_manager.find_engine_service_hash(params)
   end
   def list_non_persistent_services(engine)
