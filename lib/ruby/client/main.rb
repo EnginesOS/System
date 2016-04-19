@@ -14,6 +14,7 @@ def parse_rest_response(r)
   return false if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
+  return r.to_s if @raw 
   res = JSON.parse(r, :create_additions => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
@@ -177,6 +178,7 @@ def rest_delete(path, params=nil)
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
 end
+@raw = false
 @base_url = 'http://mgmt.engines.internal:4567'
 @route="/v0"
 require_relative 'commands/commands.rb'

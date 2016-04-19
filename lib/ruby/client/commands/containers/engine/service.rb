@@ -10,6 +10,7 @@ when 'deregister'
 when 'reregister'
  cmd = ARGV[4]
 when 'export'
+  @raw = true
  cmd = ARGV[4]
 when 'import'
  cmd = ARGV[4]
