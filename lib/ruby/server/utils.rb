@@ -49,5 +49,16 @@ class Utils
   #   f.close
   #  return false
   # end
+  def service_hash_from_params(params)
+splats = params['splat']
+  type_path = File.dirname(splats[0])       
+   service_handle = File.basename(splats[0])  
+        hash = {}
+        hash[:publisher_namespace] = params['ns']
+        hash[:parent_engine] = params['id']
+        hash[:type_path] = type_path
+        hash[:service_handle] = service_handle
+        hash  
+end
 end
 
