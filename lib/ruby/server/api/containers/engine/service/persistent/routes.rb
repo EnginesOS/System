@@ -4,9 +4,9 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/export' do
   hash = Utils.service_hash_from_params(params)
   engine = get_engine(params[:id])
   return false if engine.is_a?(FalseClass)
-   r = engine.export_service_data(hash)
+   rdata = engine.export_service_data(hash)
     p :exporting
- r.class.name
+ p r.class.name
   unless r.is_a?(FalseClass)
     return r.to_json
   else
