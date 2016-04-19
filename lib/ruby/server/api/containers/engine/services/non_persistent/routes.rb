@@ -19,7 +19,7 @@ hash = {}
         hash[:publisher_namespace] = params['ns']
         hash[:parent_engine] = params['id']
         hash[:type_path] = splats[0]    
-
+p hash
           
   r = @@core_api.find_engine_service_hash(hash)
 
