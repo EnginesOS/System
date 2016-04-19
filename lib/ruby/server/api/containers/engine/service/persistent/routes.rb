@@ -30,7 +30,7 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
 end
 get '/v0/containers/engine/:id/service/persistent/:ns/*/replace' do
   
-  hash = []
+  hash = {}
    hash[:service_connection] =  Utils.service_hash_from_params(params)
    engine = get_engine(params[:id])
   hash[:import_method] == :replace  
