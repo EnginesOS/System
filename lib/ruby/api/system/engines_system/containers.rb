@@ -80,6 +80,7 @@ module Containers
     p :ACI
     p action
     p  actionators[action]
+    p actionators.keys
     return actionators[action]
   end
 
