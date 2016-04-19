@@ -49,7 +49,7 @@ class Utils
   #   f.close
   #  return false
   # end
-  def service_hash_from_params(params)
+  def self.service_hash_from_params(params)
 splats = params['splat']
   type_path = File.dirname(splats[0])       
    service_handle = File.basename(splats[0])  
