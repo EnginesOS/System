@@ -12,15 +12,15 @@ end
 
 
 get '/v0/containers/engine/:id/services/non_persistent/:ns/*' do
-  splats = params[:splat]
+  splats = params['splat']
     
       p params
      
       service_handle = splats[0].gsub(/^\/[A-Z_a-z].*\//,'')      
       type_path = splats[0].gsub('/' + '\/' +  service_handle +'/','')
       hash = []
-        hash[:publisher_namespace] = params[:ns]
-        hash[:parent_engine] = params[:id]
+        hash[:publisher_namespace] = params['ns']
+        hash[:parent_engine] = params['id']
         hash[:type_path] = type_path
         hash[:service_handle] = service_handle
           
