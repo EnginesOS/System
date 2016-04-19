@@ -151,23 +151,32 @@ def rest_get(path,params=nil)
     r = RestClient.get(@base_url + path, params)
 
     STDERR.puts r.headers[:content_type]
-     if @raw
-       STDERR.puts r.body.b
-     else
-       p r.body
-     end
-
+      write_response(r)
+    
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
 end
 
+def write_response(r)
+  if r.nil?  
+   STDERR.puts 'nil response'
+   return
+  end
+  if r.headers[:content_type] = 'application/octet-stream'
+       puts r.body.b
+    STDERR.puts "as_binary"
+      else
+        p r.body
+      end
+
+end
 def rest_post(path, params=nil)
 
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.post(@base_url + path, params)
-    p r.body
+    write_response(r)
     exit
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -178,13 +187,13 @@ def rest_delete(path, params=nil)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.delete(@base_url + path, params)
-    p r.body
+    write_response(r)
     exit
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
 end
-@raw = false
+
 @base_url = 'http://mgmt.engines.internal:4567'
 @route="/v0"
 require_relative 'commands/commands.rb'
