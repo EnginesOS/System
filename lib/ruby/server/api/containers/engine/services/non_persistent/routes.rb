@@ -29,6 +29,6 @@ hash = {}
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('pause')
+    return log_error(' find_engine_service_hash')
   end
 end
