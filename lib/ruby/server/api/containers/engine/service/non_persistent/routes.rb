@@ -4,7 +4,7 @@ get '/v0/containers/engine/:id/service/non_persistent/:ns/*' do
     
       p params
      
-      service_handle = splats[0].gsub(/^\/[A-Z_a-z].*\//,'')  
+      service_handle = splats[0].gsub(/^[A-Z_a-z].*\//,'')  
       p     service_handle
       
       type_path = splats[0].gsub('/' + '\/' +  service_handle +'/','')
