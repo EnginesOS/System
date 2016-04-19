@@ -21,7 +21,7 @@ hash = {}
         hash[:type_path] = splats[0]    
 p hash
           
-  r = @@core_api.find_engine_services_hashes(hash)
+  r = @@core_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json
