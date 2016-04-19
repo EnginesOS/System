@@ -196,7 +196,13 @@ class EnginesCore < ErrorsApi
  
   MemoryStatistics.container_memory_stats(engine)
     end
-
+    
+  def build_engine(params)
+    build_controller = BuildController.new(self)
+    @build_thread = Thread.new { build_controller.build_engine(params) }
+    return true if @build_thread.alive?
+    return log_error(params[:engine_name], 'Build Failed to start')
+  end
 
   def shutdown(reason)
     # FIXME: @registry_handler.api_dissconnect

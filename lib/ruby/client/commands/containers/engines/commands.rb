@@ -7,6 +7,8 @@ end
 case ARGV[1]
 when 'state'
   perform_get
+when 'build'
+  require_relative 'build.rb'  
 when 'container_name'
   perform_get
 
