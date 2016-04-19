@@ -1,5 +1,8 @@
 class Utils
   def self.symbolize_keys(hash)
+    hash.remove('splat')
+    hash.remove('captures')
+    
     return log_error('cannot symbolse nil ')  if hash.nil?
     hash.inject({}){|result, (key, value)|
       new_key = case key
