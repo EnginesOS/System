@@ -149,7 +149,7 @@ def rest_get(path,params=nil)
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.get(@base_url + path, params)
-    
+    p r.headers[:content_type]
      if @raw
        puts r.b 
      else
