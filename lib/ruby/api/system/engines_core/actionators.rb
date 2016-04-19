@@ -1,7 +1,7 @@
 module Actionators
 
   def get_engine_actionator(engine, action)
-    return @system_api.load_engine_actionators(engine, action)
+    return @system_api.get_engine_actionator(engine, action)
   end
   
     def list_engine_actionators(engine)
