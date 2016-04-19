@@ -18,7 +18,7 @@ get '/v0/containers/engine/:id/services/non_persistent/:ns/*' do
      
       service_handle = splats[0].gsub(/^\/[A-Z_a-z].*\//,'')      
       type_path = splats[0].gsub('/' + '\/' +  service_handle +'/','')
-      hash = []
+hash = {}
         hash[:publisher_namespace] = params['ns']
         hash[:parent_engine] = params['id']
         hash[:type_path] = type_path
