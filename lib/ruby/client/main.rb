@@ -149,11 +149,12 @@ def rest_get(path,params=nil)
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.get(@base_url + path, params)
-    p r.headers[:content_type]
+
+    STDERR.puts r.headers[:content_type]
      if @raw
-       puts r.b 
+       STDERR.puts r.body.b
      else
-       p r
+       p r.body
      end
 
   rescue StandardError => e
@@ -166,7 +167,7 @@ def rest_post(path, params=nil)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.post(@base_url + path, params)
-    p r
+    p r.body
     exit
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -177,7 +178,7 @@ def rest_delete(path, params=nil)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.delete(@base_url + path, params)
-    p r
+    p r.body
     exit
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
