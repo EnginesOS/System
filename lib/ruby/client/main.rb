@@ -19,7 +19,7 @@ def parse_rest_response(r)
   return deal_with_jason(res)
 rescue  StandardError => e
   STDERR.puts e.to_s
-  STDERR.puts "Failed to parse rest response _" + res.to_s + "_"
+  STDERR.puts "Failed to parse rest response _" + r.to_s + "_"
   return false
 end
 
