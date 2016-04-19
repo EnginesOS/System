@@ -75,7 +75,10 @@ module Containers
   end
   
   def get_engine_actionator(container,action)
+    
     actionators = load_engine_actionators(container)
+    p :ACI
+    p action
     return actionators[action]
   end
 
