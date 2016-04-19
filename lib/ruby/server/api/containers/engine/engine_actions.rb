@@ -100,7 +100,7 @@ delete '/v0/containers/engine/:id/destroy' do
   end
 end
 
-delete '/v0/containers/engine/:id/delete_image' do
+delete '/v0/containers/engine/:id/delete' do
   r =  @@core_api.remove_engine(params[:id])
 
   unless r.is_a?(FalseClass)
