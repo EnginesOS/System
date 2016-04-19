@@ -1,6 +1,6 @@
 
 get '/v0/containers/engine/:id/service/persistent/:ns/*/export' do
-  
+  content_type 'application/octet-stream'
   hash = Utils.service_hash_from_params(params)
   engine = get_engine(params[:id])
   return false if engine.is_a?(FalseClass)
