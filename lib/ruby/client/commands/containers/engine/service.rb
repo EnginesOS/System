@@ -12,7 +12,15 @@ when 'reregister'
 when 'export'
  cmd = ARGV[4]
 when 'import'
- cmd = ARGV[4]
+@route += '/' + ARGV[4]
+params = []
+  params[:data] = read_stdin_data
+perform_post(params)
+when 'replace'
+@route += '/' + ARGV[4]
+params = []
+  params[:data] = read_stdin_data
+  perform_post(params)
 end
 
 if cmd.nil?
