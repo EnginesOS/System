@@ -1,14 +1,10 @@
 
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*' do
   splats = params['splat']
-    
-      p params
-     
-      service_handle = File.dirname(splats[0])  
-      p     service_handle
-      
-      type_path = File.basename(splats[0])  
-      p type_path
+         
+  type_path = File.dirname(splats[0])       
+   service_handle = File.basename(splats[0])  
+
 hash = {}
         hash[:publisher_namespace] = params['ns']
         hash[:parent_engine] = params['id']
