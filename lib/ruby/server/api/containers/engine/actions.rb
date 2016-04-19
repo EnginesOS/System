@@ -18,10 +18,15 @@ get '/v0/containers/engine/:id/action/:action_id' do
   else
     return log_error('remove_domain')
   end
-end
+end 
 
 post '/v0/containers/engine/:id/action/:action_id' do
-  domains = @@core_api.list_domains()
-  return log_error('list_domains') if domains.is_a?(FalseClass)
-  domains.to_json
-end
+  engine = get_engine(params[:id])
+   return false if engine.is_a?(FalseClass)
+   action = @@core_api.perform_engine_action(engine, params[:action_id], Utils.symbolize_keys(params))
+  unless action.is_a?(FalseClass) 
+      action.to_json
+  else
+    return log_error('remove_domain')
+  end
+end 
