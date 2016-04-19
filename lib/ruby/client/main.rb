@@ -149,7 +149,12 @@ def rest_get(path,params=nil)
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.get(@base_url + path, params)
-      p r
+    
+     if @raw
+       puts r.b 
+     else
+       p r
+     end
 
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
