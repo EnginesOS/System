@@ -25,3 +25,11 @@ get '/v0/containers/services/state' do
     return log_error('states')
   end
 end
+get '/v0/containers/services/system' do
+  states = @@core_api.list_system_services
+  unless states.is_a?(FalseClass)
+    return states.to_json
+  else
+    return log_error('states')
+  end
+end
