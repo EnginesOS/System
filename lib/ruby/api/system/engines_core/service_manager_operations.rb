@@ -8,7 +8,12 @@ module ServiceManagerOperations
   def deregister_non_persistent_services(engine)
     service_manager.deregister_non_persistent_services(engine)
   end
-
+  def find_engine_service_hash(params)
+    service_manager.find_engine_service_hash(params)
+  end
+  def list_non_persistent_services(engine)
+      service_manager.list_non_persistent_services(engine)
+    end
   def load_and_attach_services(dirname, container)
     service_manager.load_and_attach_services(dirname, container)
   end

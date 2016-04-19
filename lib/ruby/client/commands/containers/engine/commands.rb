@@ -14,6 +14,11 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'service'
+require_relative 'service.rb'
+when 'services'
+require_relative 'services.rb'
+
 when 'actions'
 @route += '/'
 when 'action'

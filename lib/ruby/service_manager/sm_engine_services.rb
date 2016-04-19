@@ -7,7 +7,7 @@ module SmEngineServices
     test_registry_result(system_registry_client.find_engine_services_hashes(params))
   end
   #
-
+  
   def find_engine_service_hash(params)
     clear_error
     test_registry_result(system_registry_client.find_engine_service_hash(params))
@@ -47,7 +47,16 @@ module SmEngineServices
   rescue StandardError => e
     log_exception(e)
   end
-
+  def list_non_persistent_services(engine)
+      clear_error
+      params = {}
+  params[:parent_engine] = engine.container_name
+  params[:container_type] = engine.ctype
+  services = get_engine_nonpersistent_services(params)
+return services
+    rescue StandardError => e
+      log_exception(e)
+  end
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
