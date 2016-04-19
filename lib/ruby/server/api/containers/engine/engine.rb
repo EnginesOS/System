@@ -16,6 +16,7 @@ end
 
 get '/v0/containers/engine/:id/state' do
   engine = get_engine(params[:id])
+ return false if engine.is_a?(FalseClass)
   r = engine.read_state
   unless r.is_a?(FalseClass)
     return r.to_json
@@ -26,6 +27,7 @@ end
 
 get '/v0/containers/engine/:id/blueprint' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.load_blueprint
   unless r.is_a?(FalseClass)
     return r.to_json

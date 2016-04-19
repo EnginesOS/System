@@ -13,6 +13,7 @@
 get '/v0/containers/engine/:id/create' do
   engine = get_engine(params[:id])
   r = engine.create_container
+  return false if engine.is_a?(FalseClass)
   unless r.is_a?(FalseClass)
     return r
   else
@@ -22,6 +23,7 @@ end
 
 get '/v0/containers/engine/:id/recreate' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.recreate_container
   unless r.is_a?(FalseClass)
     return r
@@ -32,6 +34,7 @@ end
 
 get '/v0/containers/engine/:id/stop' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.stop_container
   unless r.is_a?(FalseClass)
     return r
@@ -42,6 +45,7 @@ end
 
 get '/v0/containers/engine/:id/start' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.start_container
   unless r.is_a?(FalseClass)
     return r
@@ -52,6 +56,7 @@ end
 
 get '/v0/containers/engine/:id/restart' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.restart.is_a?(FalseClass)
   unless r
     return r
@@ -62,6 +67,7 @@ end
 
 get '/v0/containers/engine/:id/pause' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.pause_container
   unless r.is_a?(FalseClass)
     return r
@@ -72,6 +78,7 @@ end
 
 get '/v0/containers/engine/:id/unpause' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.unpause_container
   unless r.is_a?(FalseClass)
     return r
@@ -92,6 +99,7 @@ end
 
 delete '/v0/containers/engine/:id/destroy' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.destroy_container
   unless r.is_a?(FalseClass)
     return r

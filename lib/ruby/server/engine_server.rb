@@ -46,6 +46,7 @@ begin
     eng = @@core_api.loadManagedEngine(engine)
     return eng if eng.is_a?(ManagedEngine)
     log_error('Load failed !!!' + engine)
+    return false
   end
 
 rescue StandardError => e
