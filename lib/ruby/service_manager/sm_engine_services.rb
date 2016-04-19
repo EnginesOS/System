@@ -52,9 +52,9 @@ module SmEngineServices
       params = {}
   params[:parent_engine] = engine.container_name
   params[:container_type] = engine.ctype
-    p params
+
   services = get_engine_nonpersistent_services(params)
-   p services
+
 return services
     rescue StandardError => e
       log_exception(e)
