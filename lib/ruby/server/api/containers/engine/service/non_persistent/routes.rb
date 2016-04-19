@@ -4,7 +4,7 @@ get '/v0/containers/engine/:id/service/non_persistent/:ns/*/register' do
   hash = Utils.service_hash_from_params(params)
 
   r = @@core_api.find_engine_service_hash(hash)
-
+  p hash
   unless r.is_a?(FalseClass)
     return r.to_json
   else
@@ -15,7 +15,7 @@ end
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*/reregister' do
   
   hash = Utils.service_hash_from_params(params)
-
+  p hash
   r = @@core_api.find_engine_service_hash(hash)
 
   unless r.is_a?(FalseClass)
@@ -28,7 +28,7 @@ end
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*/deregister' do
   
   hash = Utils.service_hash_from_params(params)
-
+ p hash
   r = @@core_api.find_engine_service_hash(hash)
 
   unless r.is_a?(FalseClass)
