@@ -4,7 +4,7 @@ get '/v0/containers/engine/:id/services/non_persistent/' do
   r = @@core_api.list_non_persistent_services(engine)
 
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error('pause')
   end
@@ -27,7 +27,7 @@ get '/v0/containers/engine/:id/services/non_persistent/:ns/*' do
   r = @@core_api.find_engine_service_hash(hash)
 
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error('pause')
   end
