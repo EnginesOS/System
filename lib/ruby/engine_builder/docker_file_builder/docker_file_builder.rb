@@ -387,8 +387,12 @@ class DockerFileBuilder
   end
 
   def write_env(name,value, build_only = false)
-    write_line('ENV ' + name + ' \'' + value + '\'')
-    @env_file.puts(name + '=' + '\'' + value +'\'')
+    
+    p :nil_env_name if name.nil?
+    puts 'nil_env_value for ' + name if value.nil?
+    
+    write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
+    @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
   end
 
   def write_build_script(cmd)
