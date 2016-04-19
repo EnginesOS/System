@@ -1,20 +1,20 @@
-@route += '/'
+@route += '/' + ARGV[3] + '/'
 
 cmd = nil
 
-case ARGV[3]
+case ARGV[4]
 when 'register'
-  cmd = ARGV[3]
+  cmd = ARGV[4]
 when 'deregister'
- cmd = ARGV[3]
+ cmd = ARGV[4]
 when 'reregister'
- cmd = ARGV[3]
+ cmd = ARGV[4]
 end
 
 if cmd.nil?
-  n = 3
-else
   n = 4
+else
+  n = 5
 end
 
 len = ARGV.count

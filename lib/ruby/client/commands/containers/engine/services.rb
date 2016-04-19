@@ -1,9 +1,9 @@
-@route += '/'
+@route += '/' + ARGV[3] + '/'
 if ARGV.count == 4
   perform_get
 end
 
-n = 5
+n = 3
 len = ARGV.count
 while n < len
   @route += '/' + ARGV[n]
