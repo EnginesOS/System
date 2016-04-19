@@ -1,7 +1,7 @@
 
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*' do
   
-  hash = service_hash_from_params(params)
+  hash = Utils.service_hash_from_params(params)
 
   r = @@core_api.find_engine_service_hash(hash)
 
@@ -14,7 +14,7 @@ end
 
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*/register' do
   
-  hash = service_hash_from_params(params)
+  hash = Utils.service_hash_from_params(params)
 
   r = @@core_api.find_engine_service_hash(hash)
 
@@ -27,7 +27,7 @@ end
 
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*/reregister' do
   
-  hash = service_hash_from_params(params)
+  hash = Utils.service_hash_from_params(params)
 
   r = @@core_api.find_engine_service_hash(hash)
 
@@ -40,7 +40,7 @@ end
 
 get '/v0/containers/engine/:id/service/non_persistent/:ns/*/deregister' do
   
-  hash = service_hash_from_params(params)
+  hash = Utils.service_hash_from_params(params)
 
   r = @@core_api.find_engine_service_hash(hash)
 
