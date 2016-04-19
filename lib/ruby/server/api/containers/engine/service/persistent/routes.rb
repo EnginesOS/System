@@ -16,7 +16,7 @@ end
 
 get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
   
-  hash = []
+  hash = {}
   hash[:service_connection] =  Utils.service_hash_from_params(params)
   engine = get_engine(params[:id])
   hash[:data]  = params[:data]
