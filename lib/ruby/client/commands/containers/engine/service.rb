@@ -9,6 +9,10 @@ when 'deregister'
  cmd = ARGV[4]
 when 'reregister'
  cmd = ARGV[4]
+when 'export'
+ cmd = ARGV[4]
+when 'import'
+ cmd = ARGV[4]
 end
 
 if cmd.nil?
