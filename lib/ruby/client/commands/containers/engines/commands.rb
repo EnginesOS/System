@@ -8,6 +8,7 @@ case ARGV[1]
 when 'state'
   perform_get
 when 'build'
+  p :Build
   require_relative 'build.rb'  
 when 'container_name'
   perform_get
