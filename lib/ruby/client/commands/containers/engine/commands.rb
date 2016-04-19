@@ -8,9 +8,7 @@ when 'mem_stat'
 when 'net_stat'
   @route += '/metrics/network'
   perform_get
-when 'action'
-  require_relative 'action.rb'  
-  perform_get
+
 end
 
 @route += '/' + ARGV[2]
@@ -18,6 +16,8 @@ end
 case ARGV[2]
 when 'actions'
 @route += '/'
+when 'action'
+  require_relative 'action.rb'  
 
 when 'properties'
   require_relative 'properties.rb'
