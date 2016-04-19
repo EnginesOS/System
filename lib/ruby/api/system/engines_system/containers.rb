@@ -73,6 +73,11 @@ module Containers
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def get_engine_actionator(container,action)
+    actionators = load_engine_actionators(container)
+    return actionators[action]
+  end
 
   def load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')

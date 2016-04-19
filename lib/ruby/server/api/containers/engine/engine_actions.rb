@@ -12,6 +12,7 @@
 #
 get '/v0/containers/engine/:id/create' do
   engine = get_engine(params[:id])
+  return false if engine.is_a?(FalseClass)
   r = engine.create_container
   return false if engine.is_a?(FalseClass)
   unless r.is_a?(FalseClass)

@@ -1,16 +1,20 @@
 module Actionators
 
+  def get_engine_actionator(engine, action)
+    return @system_api.load_engine_actionators(engine, action)
+  end
+  
     def list_engine_actionators(engine)
     return @system_api.load_engine_actionators(engine)
     
       rescue StandardError => e
-          log_exception(e,'list_actionators',engine)
+          log_exception(e,'list_actionators', engine)
     end
     
-    def perform_engine_action(engine_name,actionator_name,params)
-      SystemDebug.debug(SystemDebug.actions,engine_name,actionator_name,params)
+    def perform_engine_action(engine_name, actionator_name, params)
+      SystemDebug.debug(SystemDebug.actions, engine_name, actionator_name,params)
      engine = loadManagedEngine(engine_name)
-    return engine.perform_action(actionator_name,params) if engine.is_running?
+    return engine.perform_action(actionator_name, params) if engine.is_running?
      @last_error = "Engine not running"
      return false
       rescue StandardError => e

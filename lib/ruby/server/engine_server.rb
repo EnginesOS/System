@@ -40,6 +40,7 @@ begin
     STDERR.puts args.to_s + '::' + @@core_api.last_error.to_s
     body args.to_s + ':' + @@core_api.last_error.to_s
     status(404)
+    return false
   end
 
   def get_engine(engine)

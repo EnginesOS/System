@@ -8,14 +8,16 @@ when 'mem_stat'
 when 'net_stat'
   @route += '/metrics/network'
   perform_get
+
 end
 
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'action'
+  require_relative 'action.rb'
 when 'properties'
   require_relative 'properties.rb'
-
 when 'template'
   params = {}
   params[:string] = ARGV[3]
