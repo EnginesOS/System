@@ -1,1 +1,1 @@
-@route += '/' + ARGV[4] + '/' + ARGV[3]
+@route += '/' + ARGV[3]
