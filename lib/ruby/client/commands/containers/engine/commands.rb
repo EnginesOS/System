@@ -14,6 +14,8 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'actions'
+@route += '/'
 when 'action'
   require_relative 'action.rb'
 when 'properties'
