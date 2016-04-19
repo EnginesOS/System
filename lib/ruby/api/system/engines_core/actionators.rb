@@ -11,9 +11,9 @@ module Actionators
           log_exception(e,'list_actionators', engine)
     end
     
-    def perform_engine_action(engine_name, actionator_name, params)
-      SystemDebug.debug(SystemDebug.actions, engine_name, actionator_name,params)
-     engine = loadManagedEngine(engine_name)
+    def perform_engine_action(engine, actionator_name, params)
+      SystemDebug.debug(SystemDebug.actions, engine, actionator_name,params)
+    # engine = loadManagedEngine(engine_name)
     return engine.perform_action(actionator_name, params) if engine.is_running?
      @last_error = "Engine not running"
      return false
