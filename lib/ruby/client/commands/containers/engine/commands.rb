@@ -23,7 +23,7 @@ when 'template'
 when 'destroy'
 
   perform_delete
-when 'delete_image'
+when 'delete'
 
   perform_delete
 end
