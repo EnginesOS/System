@@ -77,10 +77,7 @@ module Containers
   def get_engine_actionator(container,action)
     
     actionators = load_engine_actionators(container)
-    p :ACI
-    p action
-    p  actionators[action]
-    p actionators.keys
+
     return actionators[action.to_sym]
   end
 
