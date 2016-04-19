@@ -1,7 +1,7 @@
 class Utils
   def self.symbolize_keys(hash)
-    hash.remove('splat')
-    hash.remove('captures')
+    hash.delete('splat')
+    hash.delete('captures')
     
     return log_error('cannot symbolse nil ')  if hash.nil?
     hash.inject({}){|result, (key, value)|
