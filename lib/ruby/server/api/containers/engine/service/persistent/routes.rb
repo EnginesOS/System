@@ -36,7 +36,7 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/replace' do
   hash[:import_method] == :replace  
   hash[:data] = params[:data]
   return false if engine.is_a?(FalseClass)
-  r = engine.import_replace_service_data(hash)
+  r = engine.import_service_data(hash)
   unless r.is_a?(FalseClass)
     return r.to_json
   else
