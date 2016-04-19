@@ -81,7 +81,7 @@ module Containers
     p action
     p  actionators[action]
     p actionators.keys
-    return actionators[action]
+    return actionators[action.to_sym]
   end
 
   def load_engine_actionators(container)
