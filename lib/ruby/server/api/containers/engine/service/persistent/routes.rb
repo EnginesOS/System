@@ -16,7 +16,8 @@ end
 
 get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
   
-  hash = Utils.service_hash_from_params(params)
+  hash = []
+  hash[:service_connection] =  Utils.service_hash_from_params(params)
   engine = get_engine(params[:id])
   hash[:data]  = params[:data]
   return false if engine.is_a?(FalseClass)
@@ -29,8 +30,9 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
 end
 get '/v0/containers/engine/:id/service/persistent/:ns/*/replace' do
   
-  hash = Utils.service_hash_from_params(params)
-  engine = get_engine(params[:id])
+  hash = []
+   hash[:service_connection] =  Utils.service_hash_from_params(params)
+   engine = get_engine(params[:id])
   hash[:import_method] == :replace  
   hash[:data] = params[:data]
   return false if engine.is_a?(FalseClass)
