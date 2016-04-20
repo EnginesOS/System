@@ -23,9 +23,7 @@ get '/v0/containers/service/:id/configuration/:configurator_name' do
   end
 end 
 
-post '/v0/containers/service/:id/configuration/:configurator_name' do
-  service = get_service(params[:id])
-   return false if service.is_a?(FalseClass)
+post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   cparams = Utils.symbolize_keys(params)
   p :CPRA
   p cparams
