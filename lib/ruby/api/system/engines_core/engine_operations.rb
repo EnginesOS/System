@@ -77,37 +77,42 @@ module EnginesOperations
   end
 
   def set_engine_runtime_properties(params)
-    p :set_engine_runtime_properties 
-    p params
-    engine_name = params[:engine_name]
-   
-    engine = loadManagedEngine(engine_name)
-    if engine.is_a?(FalseClass)
-      return false
-    end
-    if engine.is_active?
+     p :set_engine_runtime_properties 
+     p params
+     engine_name = params[:engine_name]
+    
+    container = loadManagedEngine(engine_name)
+     if container.is_a?(FalseClass)
+       return false
+     end
+    set_container_runtime_properties(container,params)
+  end
+  
+  def set_container_runtime_properties(container,params)
+     
+    if container.is_active?
       @last_error = 'Container is active'
       p 'Error Container is active'
       return false
     end
     if params.key?(:memory)
-      if params[:memory] == engine.memory
+      if params[:memory] == container.memory
         @last_error = 'No Change in Memory Value'
         p 'Error o Change in Memory Value'
         return false
       end
-      if engine.update_memory(params[:memory]) == false
-        @last_error = engine.last_error
+      if container.update_memory(params[:memory]) == false
+        @last_error = container.last_error
         return false
       end
     end
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
      
-     engine.environments.each do |env|
+      container.environments.each do |env|
 #         new_variables.each do |new_env|
                new_variables.each_pair do |new_env_name, new_env_value|
-                 engine.update_environment(new_env_name, new_env_value)
+                 container.update_environment(new_env_name, new_env_value)
                end
      end
 #          if  env.name == new_env_name
@@ -118,21 +123,24 @@ module EnginesOperations
 #        end
 #      end
     end
-    if engine.has_container?
-      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container
+    if container.has_container?
+      return log_error_mesg(container.last_error,container) if !container.destroy_container
       p :destroyed
     end
-    return log_error_mesg(engine.last_error,engine) if !engine.create_container
+    return log_error_mesg(container.last_error,container) if !container.create_container
     p :created
     return true
   rescue StandardError => e
     log_exception(e)
   end
 
-  def set_engine_network_properties(engine, params)
-    p :set_engine_network_properties
-    
-    @system_api.set_engine_network_properties(engine,params)
+  def set_engine_network_properties(container, params)
+    set_container_network_properties(container, params)
   end
+  def set_container_network_properties(container, params)
+     p :set_engine_network_properties
+     
+     @system_api.set_engine_network_properties(container,params)
+   end
 
 end
