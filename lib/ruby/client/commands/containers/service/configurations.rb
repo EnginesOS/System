@@ -1,13 +1,13 @@
-@route += '/' + ARGV[3] + '/'
-if ARGV.count == 4
+@route += '/' + ARGV[2] + '/'
+if ARGV.count == 3
   perform_get
 end
 
-case  ARGV[4]
+case  ARGV[3]
 when 'run'
-@route += '/' + ARGV[5]
+@route += '/' + ARGV[4]
 params = read_stdin_data
 perform_post(params)
 end
-@route += '/' + ARGV[4]
+@route += '/' + ARGV[3]
 perform_get
