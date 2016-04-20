@@ -27,10 +27,9 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   aparams = Utils.symbolize_keys(params)
   cparams = require_params(aparams, :configurator_name, :service_name) # , :variables)
   vars = require_params(aparams, :variables)
-  p vars
-  p :from 
-  p aparams
-  cparams.merge!(require_params(params, :variables)[:variables])
+  return log_error('no variables') unless vars.is_a?(Hash)
+  
+  cparams.merge!(var[:variables]) 
 
 #  cparams = {}
 #  cparams[:configurator_name] = params[:configurator_name]

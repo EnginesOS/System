@@ -132,9 +132,10 @@ def perform_get
 end
 
 def perform_post(params=nil) 
-    
+  post_params = {}
+    post_params[:varables] = params
   p @route
-  rest_post(@route,params)  
+  rest_post(@route,post_params)  
   exit
 end
 def perform_delete(params=nil) 

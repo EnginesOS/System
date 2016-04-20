@@ -22,8 +22,6 @@ class Utils
         self.boolean_if_true_false_str(value)
       else value
       end
-      p :NK
-      p new_key
       result[new_key] = new_value
       result
     }
