@@ -13,7 +13,7 @@ get '/v0/containers/service/:id/configuration/:config_id' do
   service = get_service(params[:id])
   return false if service.is_a?(FalseClass)
   
-  config = service.retrieve_configurator(Utils.symbolize_keys(configurator_params))
+  config = service.retrieve_configurator(Utils.symbolize_keys(params))
  
     unless config.is_a?(FalseClass) 
       config.to_json
