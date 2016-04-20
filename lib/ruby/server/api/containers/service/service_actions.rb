@@ -48,7 +48,7 @@ end
 get '/v0/containers/service/:id/restart' do
   service = get_service(params[:id])
   return false if service.is_a?(FalseClass)
-  r = service.restart.is_a?(FalseClass)
+  r = service.restart_container.is_a?(FalseClass)
   unless r
     return r
   else

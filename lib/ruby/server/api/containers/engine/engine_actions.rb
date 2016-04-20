@@ -58,7 +58,7 @@ end
 get '/v0/containers/engine/:id/restart' do
   engine = get_engine(params[:id])
   return false if engine.is_a?(FalseClass)
-  r = engine.restart.is_a?(FalseClass)
+  r = engine.restart_container.is_a?(FalseClass)
   unless r
     return r
   else
