@@ -23,7 +23,7 @@ begin
   def require_params(params, *keys)
     cparams =  {}
       for key in keys
-        cpraram[key] = params[key]
+        cparams[key] = params[key]
       end
       cparams
   #  cparams = {}
@@ -33,7 +33,7 @@ def accept_params(params , *keys)
   cparams = {}
   params = Utils.symbolize_keys(params)
       for key in keys
-        cparams[key] = from_params[key]
+        cparams[key] = params[key]
       end
 cparams
   #  cparams = {}
