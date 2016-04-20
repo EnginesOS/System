@@ -34,7 +34,7 @@ begin
 #    cparams.merge!(vars)
   end
   def required_params(params, keys)
-    mparams = params[:api_vars]
+    mparams = params['api_vars']
     Utils.symbolize_keys(mparams)
       return nil if mparams.nil?
     match_params(mparams, keys)   
