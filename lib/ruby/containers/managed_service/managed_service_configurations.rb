@@ -11,5 +11,7 @@ module ManagedServiceConfigurations
     return log_error_mesg('service missing cont_userid ',params) if check_cont_uid == false
     @container_api.retrieve_configurator(self, configurator_params)
   end
-
+  def get_service_configurations
+      @container_api.get_service_configurations_hashes({service_name: @container_name})
+end
 end

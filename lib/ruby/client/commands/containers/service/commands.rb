@@ -24,6 +24,9 @@ when 'actions'
 when 'action'
   require_relative 'action.rb'  
 
+when 'configurations'
+require_relative 'configurations.rb'
+  
 when 'properties'
   require_relative 'properties.rb'
 when 'template'
