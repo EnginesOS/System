@@ -1,5 +1,6 @@
 
 if ARGV.count == 3
+  @route += '/' 
   perform_get
 end
 
