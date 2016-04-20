@@ -20,18 +20,33 @@ begin
     status(404)
   end
   
-  def required_params(params, *keys)
+  def assemble_params(params, address_params, accept_params )
+    
+    a_params = address_params(params, address_params)
+    r_params required_params(params,accept_params)
+    a_params.merge!(r_params)
+#    address_params = [:engine_name]
+#    accept_params = [:all]
+#    cparams = assemble_params(params, address_params, accept_params )
+#    cparams = address_params(params,  :engine_name) # , :variables)
+#    vars = params[:api_vars]
+#    Utils.symbolize_keys(vars)
+#    cparams.merge!(vars)
+  end
+  def required_params(params, keys)
     mparams = params[:api_vars]
     Utils.symbolize_keys(mparams)
       return nil if mparams.nil?
-    match_params(mparams, *keys)   
+    match_params(mparams, keys)   
   end
   
-  def address_params(params, *keys)
-    match_params(params, *keys)
+  def address_params(params, keys)
+    match_params(params, keys)
   end
   
-  def match_params(params, *keys)
+  def match_params(params, keys)
+    return params if keys == :all
+     
     cparams =  {}
             for key in keys
               cparams[key] = params[key]
