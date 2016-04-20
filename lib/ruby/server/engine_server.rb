@@ -35,9 +35,11 @@ begin
   end
   def required_params(params, keys)
     mparams = params['api_vars']
-    Utils.symbolize_keys(mparams)
-      return nil if mparams.nil?
-   match_params(mparams, keys)
+    m_params = Utils.symbolize_keys(mparams)
+    p :POST_SYM
+    p
+      return nil if m_params.nil?
+   match_params(m_params, keys)
  #   Utils.symbolize_keys(matched)
   end
   
