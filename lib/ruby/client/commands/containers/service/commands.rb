@@ -25,7 +25,10 @@ when 'action'
   require_relative 'action.rb'  
 
 when 'configurations'
-require_relative 'configurations.rb'
+@route += '/' 
+perform_get
+when 'configuration'
+require_relative 'configuration.rb'
   
 when 'properties'
   require_relative 'properties.rb'
