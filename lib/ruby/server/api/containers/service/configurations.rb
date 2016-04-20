@@ -31,7 +31,7 @@ post '/v0/containers/service/:id/configuration/:configurator_name' do
   p cparams
   #cparams[:configurator_name] = params[:configurator_name]
   #params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).
-   r = @core_api.update_service_configuration(cparams)
+   r = @@core_api.update_service_configuration(cparams)
   unless r.is_a?(FalseClass) 
       r.to_json
   else
