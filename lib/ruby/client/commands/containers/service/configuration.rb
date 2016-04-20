@@ -1,6 +1,3 @@
-if ARGV.count == 3
-  perform_get
-end
 
 case  ARGV[3]
 when 'run'
