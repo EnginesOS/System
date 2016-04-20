@@ -1,6 +1,6 @@
 post '/v0/containers/engines/build' do
-
-  r = @@core_api.build_engine(Utils.symbolize_keys(params))
+  cparams =  assemble_params(params, [], :all)
+  r = @@core_api.build_engine(cparams)
   
   return log_error('build engine', params) if r.is_a?(FalseClass)
   r.to_json

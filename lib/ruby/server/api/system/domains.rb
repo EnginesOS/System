@@ -1,13 +1,14 @@
 post '/v0/system/domains/' do
-  unless @@core_api.add_domain(Utils.symbolize_keys(params)).is_a?(FalseClass)
+  cparams =  assemble_params(params, [], :all)
+  unless @@core_api.add_domain(cparams).is_a?(FalseClass)
     return status(202)
   else
     return log_error('add_domain', params)
   end
 end
 
-delete '/v0/system/domains/:id' do
-  unless @@core_api.remove_domain(params[:id]).is_a?(FalseClass)
+delete '/v0/system/domains/:domain_name' do
+  unless @@core_api.remove_domain(params[:domain_name]).is_a?(FalseClass)
     return status(202)
   else
     return log_error('remove_domain')
