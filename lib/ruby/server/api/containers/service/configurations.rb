@@ -27,7 +27,8 @@ post '/v0/containers/service/:id/configuration/:configurator_name' do
   service = get_service(params[:id])
    return false if service.is_a?(FalseClass)
   cparams = Utils.symbolize_keys(params)
-  
+  p :CPRA
+  p cparams
   #cparams[:configurator_name] = params[:configurator_name]
   #params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).
    r = service.run_configurator(cparams)
