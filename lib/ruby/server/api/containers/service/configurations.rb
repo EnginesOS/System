@@ -24,7 +24,7 @@ get '/v0/containers/service/:id/configuration/:configurator_name' do
 end 
 
 post '/v0/containers/service/:id/configuration/:configurator_name' do
-  service = get_engine(params[:id])
+  service = get_service(params[:id])
    return false if service.is_a?(FalseClass)
   cparams = Utils.symbolize_keys(params)
   
