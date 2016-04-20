@@ -20,15 +20,25 @@ begin
     status(404)
   end
   
-  def require_params(params, *keys)
-    cparams =  {}
-      for key in keys
-        cparams[key] = params[key]
-      end
-      cparams
-  #  cparams = {}
-  #  cparams[:configurator_name] = params[:configurator_name]
+  def required_params(params, *keys)
+    mparams = params[:api_vars]
+    Utils.symbolize_keys(mparams)
+      return nil if mparams.nil?
+    match_params(mparams, *keys)   
   end
+  
+  def address_params(params, *keys)
+    match_params(params, *keys)
+  end
+  
+  def match_params(params, *keys)
+    cparams =  {}
+            for key in keys
+              cparams[key] = params[key]
+            end
+            cparams
+  end
+  
 def accept_params(params , *keys)
   cparams = {}
       for key in keys

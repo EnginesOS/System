@@ -133,7 +133,7 @@ end
 
 def perform_post(params=nil) 
   post_params = {}
-    post_params[:varables] = params
+    post_params[:api_vars] = params
   p @route
   rest_post(@route,post_params)  
   exit
