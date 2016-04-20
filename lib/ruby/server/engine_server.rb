@@ -37,7 +37,8 @@ begin
     mparams = params['api_vars']
     Utils.symbolize_keys(mparams)
       return nil if mparams.nil?
-    match_params(mparams, keys)   
+   match_params(mparams, keys)
+ #   Utils.symbolize_keys(matched)
   end
   
   def address_params(params, keys)
@@ -45,7 +46,7 @@ begin
   end
   
   def match_params(params, keys)
-    return params if keys == :all
+    return  params if keys == :all
      
     cparams =  {}
             for key in keys
