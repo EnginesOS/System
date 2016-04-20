@@ -46,14 +46,14 @@ begin
   def get_engine(engine_name)
     eng = @@core_api.loadManagedEngine(engine_name)
     return eng if eng.is_a?(ManagedEngine)
-    log_error('Load failed !!!' + engine)
+    log_error('Load failed !!!' + engine_name)
     return false
   end
   
   def get_service(service_name)
     service = @@core_api.loadManagedService(service_name)
       return service if service.is_a?(ManagedService)
-      log_error('Load failed !!!' + service)
+      log_error('Load failed !!!' + service_name)
       return false
     end
 rescue StandardError => e
