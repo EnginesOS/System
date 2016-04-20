@@ -23,7 +23,7 @@ begin
   def assemble_params(params, address_params, accept_params )
     
     a_params = address_params(params, address_params)
-    r_params required_params(params,accept_params)
+    r_params = required_params(params,accept_params)
     a_params.merge!(r_params)
 #    address_params = [:engine_name]
 #    accept_params = [:all]
