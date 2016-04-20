@@ -24,7 +24,7 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
 end 
 
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
-  params = Utils.symbolize_keys(params)
+  aparams = Utils.symbolize_keys(params)
   cparams = require_params(params, :configurator_name, :service_name) # , :variables)
   vars = require_params(params, :variables)
   p vars
