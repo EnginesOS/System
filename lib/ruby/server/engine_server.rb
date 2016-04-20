@@ -19,6 +19,25 @@ begin
     p :params
     status(404)
   end
+  
+  def require_params(params, *keys)
+    cparams =  {}
+      for key in keys
+        cpraram[key] = params[key]
+      end
+      cparams
+  #  cparams = {}
+  #  cparams[:configurator_name] = params[:configurator_name]
+  end
+def accept_params(params , *keys)
+  cparams = {}
+      for key in keys
+        cparams[key] = from_params[key]
+      end
+cparams
+  #  cparams = {}
+  #  cparams[:configurator_name] = params[:configurator_name]
+  end
 
   def log_exception(e)
     e_str = e.to_s()

@@ -1,5 +1,5 @@
-get '/v0/containers/service/:id/configurations/' do
-  service = get_service(params[:id])
+get '/v0/containers/service/:service_name/configurations/' do
+  service = get_service(params[:service_name])
   return false if service.is_a?(FalseClass)
   list = service.get_service_configurations()
     unless list.is_a?(FalseClass)
@@ -9,8 +9,8 @@ get '/v0/containers/service/:id/configurations/' do
   end
 end
 
-get '/v0/containers/service/:id/configuration/:configurator_name' do
-  service = get_service(params[:id])
+get '/v0/containers/service/:service_name/configuration/:configurator_name' do
+  service = get_service(params[:service_name])
   return false if service.is_a?(FalseClass)
   cparams = {}
   cparams[:configurator_name] = params[:configurator_name]
@@ -24,10 +24,12 @@ get '/v0/containers/service/:id/configuration/:configurator_name' do
 end 
 
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
-  cparams = {}
-    cparams[:configurator_name] = params[:configurator_name]
-  cparams[:service_name] = params[:service_name]         
-  cparams[:variables] = Utils.symbolize_keys(params)
+  cparams = require_params(params, :configurator_name, :service_name) # , :variables)
+  cparams.concat(accept_params(params, :variables))
+#  cparams = {}
+#  cparams[:configurator_name] = params[:configurator_name]
+#  cparams[:service_name] = params[:service_name]         
+#  cparams[:variables] = Utils.symbolize_keys(params)
   p :CPRA
   p cparams
   #cparams[:configurator_name] = params[:configurator_name]
