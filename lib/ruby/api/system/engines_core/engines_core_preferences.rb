@@ -14,9 +14,9 @@ module EnginesCorePreferences
       service_param = {}
       service_param[:service_name] = 'mgmt'
       service_param[:configurator_name] = 'hostname'
-      service_param[:vaiables] = {}
-      service_param[:vaiables][:hostname] = hostname
-    service_param[:vaiables][:domain_name] = get_default_domain
+      service_param[:variables] = {}
+      service_param[:variables][:hostname] = hostname
+      service_param[:variables][:domain_name] = get_default_domain
       update_service_configuration(service_param)
     end
 
@@ -26,8 +26,8 @@ module EnginesCorePreferences
     service_param = {}
     service_param[:service_name] = 'nginx'
     service_param[:configurator_name] = 'default_site'
-    service_param[:vaiables] = {}
-    service_param[:vaiables][:default_site_url] = default_site_url
+    service_param[:variables] = {}
+    service_param[:variables][:default_site_url] = default_site_url
     update_service_configuration(service_param)
   end
 
