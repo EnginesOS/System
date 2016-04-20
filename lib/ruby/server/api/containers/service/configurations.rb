@@ -29,7 +29,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   vars = require_params(aparams, :variables)
   p vars
   p :from 
-  p params
+  p aparams
   cparams.merge!(require_params(params, :variables)[:variables])
 
 #  cparams = {}
