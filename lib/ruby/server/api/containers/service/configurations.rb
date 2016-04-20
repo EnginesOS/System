@@ -9,11 +9,12 @@ get '/v0/containers/service/:id/configurations/' do
   end
 end
 
-get '/v0/containers/service/:id/configuration/:config_id' do
+get '/v0/containers/service/:id/configuration/:configurator_name' do
   service = get_service(params[:id])
   return false if service.is_a?(FalseClass)
-  
-  config = service.retrieve_configurator(Utils.symbolize_keys(params))
+  cparams = {}
+  cparams[:configurator_name] = params[:configurator_name]
+  config = service.retrieve_configurator(cparams)
  
     unless config.is_a?(FalseClass) 
       config.to_json
@@ -22,10 +23,12 @@ get '/v0/containers/service/:id/configuration/:config_id' do
   end
 end 
 
-post '/v0/containers/service/:id/configuration/:config_id' do
+post '/v0/containers/service/:id/configuration/:configurator_name' do
   service = get_engine(params[:id])
    return false if service.is_a?(FalseClass)
-   r = service.run_configurator(Utils.symbolize_keys(params))
+  cparams = {}
+  cparams[:configurator_name] = params[:configurator_name]
+   r = service.run_configurator(cparams)
   unless r.is_a?(FalseClass) 
       r.to_json
   else
