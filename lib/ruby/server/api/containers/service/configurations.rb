@@ -24,7 +24,10 @@ get '/v0/containers/service/:id/configuration/:configurator_name' do
 end 
 
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
-  cparams = Utils.symbolize_keys(params)
+  cparams = {}
+    cparams[:configurator_name] = params[:configurator_name]
+  cparams[:service_name] = params[:service_name]         
+  cparams[:variables] = Utils.symbolize_keys(params)
   p :CPRA
   p cparams
   #cparams[:configurator_name] = params[:configurator_name]
