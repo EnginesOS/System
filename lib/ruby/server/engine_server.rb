@@ -31,7 +31,7 @@ begin
   end
 def accept_params(params , *keys)
   cparams = {}
-  params = Utils.symbolize_keys(params)
+
       for key in keys
         cparams[key] = params[key]
       end
