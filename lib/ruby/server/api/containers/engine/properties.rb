@@ -16,7 +16,8 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   cparams = address_params(params,  :engine_name) # , :variables)
     vars = params[:api_vars]
   Utils.symbolize_keys(vars)
-   cparams.merge(vars)   
+   cparams.merge!(vars)   
+  p cparams
   r =   @@core_api.set_engine_runtime_properties(cparams) #Utils.symbolize_keys(params))
   return log_error('set run time properties', params) if r.is_a?(FalseClass)
   r.to_json

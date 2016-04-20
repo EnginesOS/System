@@ -12,10 +12,14 @@ post '/v0/containers/service/:id/properties/network' do
   r.to_json
 end
 
-post '/v0/containers/service/:id/properties/runtime' do
-  service = get_service(params[:id])
-  params[:engine_name] = params[:id]
-  r =   @@core_api.set_container_runtime_properties(service, Utils.symbolize_keys(params))
+post '/v0/containers/service/:service_name/properties/runtime' do
+  service = get_service(params[:service_name])
+  cparams = address_params(params,  :service_name) # , :variables)
+  vars = params[:api_vars]
+  Utils.symbolize_keys(vars)
+  cparams.merge!(vars)
+  p cparams
+  r =   @@core_api.set_container_runtime_properties(service, cparams)
   return log_error('set run time properties', params) if r.is_a?(FalseClass)
   r.to_json
 end
