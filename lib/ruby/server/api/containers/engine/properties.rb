@@ -20,6 +20,7 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
 #  Utils.symbolize_keys(vars)
 #  cparams.merge!(vars)
   cparams =  assemble_params(params, [:engine_name], :all) #accept_params )
+    p :CPATA
   p cparams
   r =   @@core_api.set_engine_runtime_properties(cparams) #Utils.symbolize_keys(params))
   return log_error('set run time properties', params) if r.is_a?(FalseClass)
