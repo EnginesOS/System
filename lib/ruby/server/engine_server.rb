@@ -31,7 +31,6 @@ begin
   end
 def accept_params(params , *keys)
   cparams = {}
-
       for key in keys
         cparams[key] = params[key]
       end

@@ -25,8 +25,8 @@ end
 
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   aparams = Utils.symbolize_keys(params)
-  cparams = require_params(params, :configurator_name, :service_name) # , :variables)
-  vars = require_params(params, :variables)
+  cparams = require_params(aparams, :configurator_name, :service_name) # , :variables)
+  vars = require_params(aparams, :variables)
   p vars
   p :from 
   p params
