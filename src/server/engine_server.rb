@@ -26,7 +26,7 @@ begin
     
     r_params = required_params(params,required_params)
     
-    a_params = accept_params(params,required_params)
+    a_params = accepted_params(params,required_params)
     
     ad_params.merge!(r_params)
     ad_params.merge!(a_params)
