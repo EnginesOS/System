@@ -1,5 +1,5 @@
 
-get '/v0/containers/service/:service_name/services/non_persistent/' do
+get '/v0/containers/service/:service_name/service/non_persistent/' do
   service = get_service(params[:service_name])
   r = @@core_api.list_non_persistent_services(service)
 
@@ -11,7 +11,7 @@ get '/v0/containers/service/:service_name/services/non_persistent/' do
 end
 
 
-get '/v0/containers/service/:service_name/services/non_persistent/:ns/*' do
+get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
   splats = params['splat']
     
 
