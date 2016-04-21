@@ -4,8 +4,8 @@
 get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
   service = get_service(params[:service_name])
     return false if service.is_a?(FalseClass)
-    
-  r = service.registered_consumer(params)
+ cparams =  address_params(params, [:service_name,'service_handle'])
+  r = service.registered_consumer(cparams)
 
   unless r.is_a?(FalseClass)
     return r.to_json
