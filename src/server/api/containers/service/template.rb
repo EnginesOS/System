@@ -1,6 +1,7 @@
 #/containers/engine/container_name/template
 
 post '/v0/containers/service/:service_name/template' do
+  p params
   service = get_service(params[:service_name])
   cparams =  assemble_params(params, [:service_name],  [:string]) 
     p cparams
