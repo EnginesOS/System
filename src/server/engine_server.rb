@@ -19,53 +19,78 @@ begin
     p :params
     status(404)
   end
-  
-  def assemble_params(params, address_params, accept_params )
+
+  def assemble_params(params, address_params, required_params, accept_params=nil )
+
+    ad_params = address_params(params, address_params)
     
-    a_params = address_params(params, address_params)
-    r_params = required_params(params,accept_params)
-    a_params.merge!(r_params)
-#    address_params = [:engine_name]
-#    accept_params = [:all]
-#    cparams = assemble_params(params, address_params, accept_params )
-#    cparams = address_params(params,  :engine_name) # , :variables)
-#    vars = params[:api_vars]
-#    Utils.symbolize_keys(vars)
-#    cparams.merge!(vars)
+    r_params = required_params(params,required_params)
+    
+    a_params = accept_params(params,required_params)
+    
+    ad_params.merge!(r_params)
+    ad_params.merge!(a_params)
+    #    address_params = [:engine_name]
+    #    accept_params = [:all]
+    #    cparams = assemble_params(params, address_params, accept_params )
+    #    cparams = address_params(params,  :engine_name) # , :variables)
+    #    vars = params[:api_vars]
+    #    Utils.symbolize_keys(vars)
+    #    cparams.merge!(vars)
   end
+
   def required_params(params, keys)
     mparams = params['api_vars']
     m_params = Utils.symbolize_keys(mparams)
     p :POST_SYM
     p
-      return nil if m_params.nil?
-   match_params(m_params, keys)
- #   Utils.symbolize_keys(matched)
+    return nil if m_params.nil?
+    match_params(m_params, keys, true)
+    #   Utils.symbolize_keys(matched)
   end
+
+  def accepted_params(params, keys)
+     mparams = params['api_vars']
+     m_params = Utils.symbolize_keys(mparams)
+     p :POST_SYM
+     p
+     return nil if m_params.nil?
+     match_params(m_params, keys )
+     #   Utils.symbolize_keys(matched)
+   end
   
   def address_params(params, keys)
     match_params(params, keys)
   end
-  
-  def match_params(params, keys)
+
+  def match_params(params, keys, required = false)
     return  params if keys == :all
-     
+    
     cparams =  {}
-            for key in keys
-              # return missing_param key unless param.key?(key)
-              cparams[key.to_sym] = params[key]
-            end
-            cparams
-  end
-  
-def accept_params(params , *keys)
-  cparams = {}
+    return cparams if keys.nil?
+     
+    if keys.is_a?(Array)
       for key in keys
-        cparams[key] = params[key]
+        # return missing_param key unless param.key?(key)
+        if required
+          return false unless cparams.key?(key)
+        end
+        cparams[key.to_sym] = params[key]        
       end
-cparams
-  #  cparams = {}
-  #  cparams[:configurator_name] = params[:configurator_name]
+    else
+      cparams[keys.to_sym] = params[keys]
+    end
+    cparams
+  end
+
+  def accept_params(params , *keys)
+    cparams = {}
+    for key in keys
+      cparams[key] = params[key]
+    end
+    cparams
+    #  cparams = {}
+    #  cparams[:configurator_name] = params[:configurator_name]
   end
 
   def log_exception(e)
@@ -97,13 +122,13 @@ cparams
     log_error('Load failed !!!' + engine_name)
     return false
   end
-  
+
   def get_service(service_name)
     service = @@core_api.loadManagedService(service_name)
-      return service if service.is_a?(ManagedService)
-      log_error('Load failed !!!' + service_name)
-      return false
-    end
+    return service if service.is_a?(ManagedService)
+    log_error('Load failed !!!' + service_name)
+    return false
+  end
 rescue StandardError => e
   #log_error(e)
   p e
