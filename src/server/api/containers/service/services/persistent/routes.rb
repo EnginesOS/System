@@ -16,7 +16,6 @@ hash = {}
         hash[:parent_engine] = params[:service_name]
         hash[:type_path] = splats[0]    
         hash[:ctype] = 'service'    
-          p :pseris
 p hash
           
   r = @@core_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
