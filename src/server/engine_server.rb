@@ -26,10 +26,10 @@ begin
     
     r_params = required_params(params,required_params)
     
-    a_params = accepted_params(params,required_params)
+   # a_params = accepted_params(params,required_params)
     
     ad_params.merge!(r_params)
-    ad_params.merge!(a_params)
+   # ad_params.merge!(a_params)
     #    address_params = [:engine_name]
     #    accept_params = [:all]
     #    cparams = assemble_params(params, address_params, accept_params )
@@ -81,6 +81,9 @@ begin
       cparams[keys.to_sym] = params[keys]
     end
     cparams
+rescue StandardError => e
+  p e
+  p e.backtrace
   end
 
   def accept_params(params , *keys)
