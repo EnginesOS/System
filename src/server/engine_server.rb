@@ -52,7 +52,7 @@ begin
      
     cparams =  {}
             for key in keys
-              cparams[key] = params[key]
+              cparams[key.to_sym] = params[key]
             end
             cparams
   end
