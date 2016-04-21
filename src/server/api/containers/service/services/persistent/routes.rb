@@ -7,6 +7,9 @@ get '/v0/containers/service/:service_name/services/persistent/' do
     return log_error('pause')
   end
 end
+
+
+
 get '/v0/containers/service/:service_name/services/persistent/:ns/*' do
   splats = params['splat']
     
