@@ -125,6 +125,10 @@ end
    log_exception(e)
  end
  
+def read_stdin_json
+  JSON.parse(read_stdin_data)
+end
+ 
 def perform_get  
   p @route
   rest_get(@route) 
