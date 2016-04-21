@@ -24,6 +24,11 @@ when 'actions'
 when 'action'
   require_relative 'action.rb'  
 
+when 'consumers'
+require_relative 'consumers.rb'
+when 'consumer'
+require_relative 'consumer.rb'
+  
 when 'configurations'
 @route += '/' 
 perform_get

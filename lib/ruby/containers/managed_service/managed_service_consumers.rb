@@ -23,6 +23,15 @@ module ManagedServiceConsumers
     @container_api.get_registered_against_service(params)
   end
 
+  def registered_consumer(params)
+    service_params = {}
+    service_params[:publisher_namespace] = @publisher_namespace
+    service_params[:type_path] = @type_path
+    service_params[:parent_engine]
+    service_params[:service_handle]
+    @container_api.get_registered_consumer(service_params)
+  end
+  
   def reregister_consumers
     return true if @persistent == true
     return log_error_mesg('Cant register consumers as not running ',self)  if is_running? == false
