@@ -12,13 +12,15 @@ end
 
 
 get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
-  splats = params['splat']
+  #splats = params['splat']
+    p :raw_params
   hash = Utils.service_hash_from_params(params)
 
 #hash = {}
 #        hash[:publisher_namespace] = params[:ns]
         hash[:ctype] = 'service_name'
- #       hash[:type_path] = splats[0]    
+ #       hash[:type_path] = splats[0]
+          p :compute_hah    
 p hash
           
   r = @@core_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
