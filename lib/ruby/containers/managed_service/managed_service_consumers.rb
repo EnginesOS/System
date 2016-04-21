@@ -31,6 +31,7 @@ module ManagedServiceConsumers
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
     p :service_params
     p service_params
+    p params
     @container_api.get_registered_consumer(service_params)
   end
   
