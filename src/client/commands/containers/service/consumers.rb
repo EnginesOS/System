@@ -1,5 +1,5 @@
 @route += '/'
-case ARGV
+case ARGV.count
 when 3
   perform_get 
 when 4
