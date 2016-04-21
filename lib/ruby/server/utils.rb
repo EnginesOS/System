@@ -55,7 +55,7 @@ splats = params['splat']
    service_handle = File.basename(splats[0])  
         hash = {}
         hash[:publisher_namespace] = params['ns']
-        hash[:parent_engine] = params['id']
+        hash[:parent_engine] = params['engine_name']
         hash[:type_path] = type_path
         hash[:service_handle] = service_handle
         hash  

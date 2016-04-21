@@ -1,8 +1,8 @@
 
-get '/v0/containers/engine/:id/service/persistent/:ns/*/export' do
+get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/export' do
   content_type 'application/octet-stream'
   hash = Utils.service_hash_from_params(params)
-  engine = get_engine(params[:id])
+  engine = get_engine(params[:engine_name])
   return false if engine.is_a?(FalseClass)
    r = engine.export_service_data(hash)
 
@@ -14,11 +14,11 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/export' do
   end
 end
 
-get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
+get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
   
   hash = {}
   hash[:service_connection] =  Utils.service_hash_from_params(params)
-  engine = get_engine(params[:id])
+  engine = get_engine(params[:engine_name])
   hash[:data]  = params[:data]
   return false if engine.is_a?(FalseClass)
   r = engine.import_service_data(hash)
@@ -28,11 +28,11 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/import' do
     return log_error(' import_service_')
   end
 end
-get '/v0/containers/engine/:id/service/persistent/:ns/*/replace' do
+get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/replace' do
   
   hash = {}
    hash[:service_connection] =  Utils.service_hash_from_params(params)
-   engine = get_engine(params[:id])
+   engine = get_engine(params[:engine_name])
   hash[:import_method] == :replace  
   hash[:data] = params[:data]
   return false if engine.is_a?(FalseClass)
@@ -45,7 +45,7 @@ get '/v0/containers/engine/:id/service/persistent/:ns/*/replace' do
 end
 
 
-get '/v0/containers/engine/:id/service/persistent/:ns/*' do
+get '/v0/containers/engine/:engine_name/service/persistent/:ns/*' do
   
   hash = Utils.service_hash_from_params(params)
 

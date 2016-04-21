@@ -1,6 +1,6 @@
 
-get '/v0/containers/engine/:id/services/non_persistent/' do
-  engine = get_engine(params[:id])
+get '/v0/containers/engine/:engine_name/services/non_persistent/' do
+  engine = get_engine(params[:engine_name])
   r = @@core_api.list_non_persistent_services(engine)
 
   unless r.is_a?(FalseClass)
@@ -11,13 +11,13 @@ get '/v0/containers/engine/:id/services/non_persistent/' do
 end
 
 
-get '/v0/containers/engine/:id/services/non_persistent/:ns/*' do
+get '/v0/containers/engine/:engine_name/services/non_persistent/:ns/*' do
   splats = params['splat']
     
 
 hash = {}
-        hash[:publisher_namespace] = params['ns']
-        hash[:parent_engine] = params['id']
+        hash[:publisher_namespace] = params[:ns]
+        hash[:parent_engine] = params[:engine_name]
         hash[:type_path] = splats[0]    
 p hash
           

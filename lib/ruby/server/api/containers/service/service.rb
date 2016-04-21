@@ -5,8 +5,8 @@
 #/containers/engine/container_name/build_report
 #/containers/engine/container_name/blueprint
 
-get '/v0/containers/service/:id' do
-  service = get_service(params[:id])
+get '/v0/containers/service/:service_name' do
+  service = get_service(params[:service_name])
   unless service.is_a?(FalseClass)
     return service.to_json
   else
@@ -14,8 +14,8 @@ get '/v0/containers/service/:id' do
   end
 end
 
-get '/v0/containers/service/:id/state' do
-  service = get_service(params[:id])
+get '/v0/containers/service/:service_name/state' do
+  service = get_service(params[:service_name])
  return false if service.is_a?(FalseClass)
   r = service.read_state
   unless r.is_a?(FalseClass)

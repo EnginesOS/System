@@ -1,6 +1,6 @@
-get '/v0/containers/engine/:id/services/persistent/' do
-  #engine = get_engine(params[:id])
-  r = @@core_api.engine_persistent_services(params[:id])
+get '/v0/containers/engine/:engine_name/services/persistent/' do
+
+  r = @@core_api.engine_persistent_services(params[:engine_name])
   unless r.is_a?(FalseClass)
     return r.to_json
   else
@@ -12,8 +12,8 @@ get '/v0/containers/engine/:id/services/persistent/:ns/*' do
     
 
 hash = {}
-        hash[:publisher_namespace] = params['ns']
-        hash[:parent_engine] = params['id']
+        hash[:publisher_namespace] = params[:ns]
+        hash[:parent_engine] = params[:engine_name]
         hash[:type_path] = splats[0]    
         hash[:ctype] = 'container'    
 p hash

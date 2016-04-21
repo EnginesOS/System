@@ -28,19 +28,19 @@ get '/v0/system/certs/' do
   certs.to_json
 end
 
-delete '/v0/system/certs/:id' do
-  unless @@core_api.remove_cert(params[:id]).is_a?(FalseClass)
+delete '/v0/system/certs/:cert_name' do
+  unless @@core_api.remove_cert(params[:cert_name]).is_a?(FalseClass)
     return status(202)
   else
     return log_error('remove_cert')
   end
 end
 
-get '/v0/system/cert/:id' do
-  if params[:id] == 'system_ca'
+get '/v0/system/cert/:cert_name' do
+  if params[:cert_name] == 'system_ca'
     cert = @@core_api.get_system_ca
   else
-    cert = @@core_api.get_cert(params[:id])
+    cert = @@core_api.get_cert(params[:cert_name])
   end
   unless cert.is_a?(FalseClass)
     return cert.to_json
