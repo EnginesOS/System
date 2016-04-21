@@ -59,8 +59,14 @@ splats = params['splat']
         hash[:parent_engine] = params['service_name'] if  hash[:parent_engine].nil?
   # return missing_params engine_name|service_name if  hash[:parent_engine].nil?
         hash[:type_path] = type_path
+        hash[:container_type] = 'container'
         hash[:service_handle] = service_handle
         hash  
+end
+def self.service_service_hash_from_params(params)
+    hash = self.service_hash_from_params(params)
+    hash[:container_type] = 'service'
+     return hash  
 end
 end
 
