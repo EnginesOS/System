@@ -1,8 +1,13 @@
 @route += '/'
-perform_get if ARGV.count == 3
-   
+case ARGV
+when 3
+  perform_get 
+when 4
+  @route += '/'+ ARGV[3] + '/'
+ 
+end
   
-@route += '/'  + ARGV[3]
+
 
 perform_get
   

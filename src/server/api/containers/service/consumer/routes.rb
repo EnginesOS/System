@@ -1,7 +1,7 @@
 
 
 
-get '/v0/containers/service/:service_name/consumers/:parent_engine/:service_handle' do
+get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
   service = get_service(params[:service_name])
     return false if service.is_a?(FalseClass)
     
