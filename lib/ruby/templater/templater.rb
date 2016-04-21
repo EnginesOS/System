@@ -11,7 +11,11 @@ class Templater
 
     name = match.sub!(/_Engines_System\(/, '')
     name.sub!(/[\)]/, '')
+    begin
     var_method = @system_access.method(name.to_sym)
+    rescue 
+      return ''
+    end
     val = var_method.call
     return val
   rescue StandardError => e
