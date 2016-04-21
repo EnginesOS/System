@@ -1,3 +1,3 @@
-@route += '/'  + ARGV[4] + '/' + ARGV[5]
+@route += '/'  + ARGV[3] + '/' + ARGV[4]
 
 perform_get
