@@ -52,6 +52,7 @@ begin
      
     cparams =  {}
             for key in keys
+              # return missing_param key unless param.key?(key)
               cparams[key.to_sym] = params[key]
             end
             cparams

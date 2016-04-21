@@ -14,6 +14,7 @@ end
 get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
   #splats = params['splat']
     p :raw_params
+    p params
   hash = Utils.service_hash_from_params(params)
 
 #hash = {}
