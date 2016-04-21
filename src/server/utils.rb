@@ -56,7 +56,7 @@ splats = params['splat']
         hash = {}
         hash[:publisher_namespace] = params['ns']
         hash[:parent_engine] = params['engine_name']
-hash[:parent_engine] = params['service_name'] if  hash[:parent_engine].nil?
+        hash[:parent_engine] = params['service_name'] if  hash[:parent_engine].nil?
   # return missing_params engine_name|service_name if  hash[:parent_engine].nil?
         hash[:type_path] = type_path
         hash[:service_handle] = service_handle

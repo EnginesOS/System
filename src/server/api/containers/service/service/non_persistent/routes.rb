@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
 
 #hash = {}
 #        hash[:publisher_namespace] = params[:ns]
-        hash[:ctype] = 'service_name'
+        hash[:ctype] = 'service'
  #       hash[:type_path] = splats[0]
           p :compute_hah    
 p hash
