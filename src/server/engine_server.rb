@@ -37,6 +37,8 @@ begin
     #    vars = params[:api_vars]
     #    Utils.symbolize_keys(vars)
     #    cparams.merge!(vars)
+    p :assembled
+    p ad_params
   end
 
   def required_params(params, keys)
