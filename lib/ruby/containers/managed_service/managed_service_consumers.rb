@@ -29,7 +29,8 @@ module ManagedServiceConsumers
     service_params[:type_path] = @type_path
     service_params[:parent_engine] = params[:parent_engine] 
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
-
+    p :service_params
+    p service_params
     @container_api.get_registered_consumer(service_params)
   end
   
