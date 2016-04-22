@@ -21,7 +21,7 @@ get '/v0/containers/engine/:engine_name/state' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('engine')
+    return log_error(engine.last_error)
   end
 end
 
@@ -32,7 +32,7 @@ get '/v0/containers/engine/:engine_name/blueprint' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('blueprint')
+    return log_error(engine.last_error)
   end
 end
 get '/v0/containers/engine/:engine_name/build_report' do

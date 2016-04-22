@@ -29,7 +29,7 @@ get '/v0/containers/engine/:engine_name/recreate' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('recreate')
+    return log_error(engine.last_error)
   end
 end
 
@@ -40,7 +40,7 @@ get '/v0/containers/engine/:engine_name/stop' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('stop')
+    return log_error(engine.last_error)
   end
 end
 
@@ -51,7 +51,7 @@ get '/v0/containers/engine/:engine_name/start' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('start')
+    return log_error(engine.last_error)
   end
 end
 
@@ -62,7 +62,7 @@ get '/v0/containers/engine/:engine_name/restart' do
   unless r
     return r
   else
-    return log_error('restart')
+    return log_error(engine.last_error)
   end
 end
 
@@ -73,7 +73,7 @@ get '/v0/containers/engine/:engine_name/pause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('pause')
+    return log_error(engine.last_error)
   end
 end
 
@@ -84,7 +84,7 @@ get '/v0/containers/engine/:engine_name/unpause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('unpause')
+    return log_error(engine.last_error)
   end
 end
 
@@ -105,7 +105,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('destroy')
+    return log_error(engine.last_error)
   end
 end
 
