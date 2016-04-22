@@ -47,6 +47,18 @@ module SmEngineServices
   rescue StandardError => e
     log_exception(e)
   end
+  def list_persistent_services(engine)
+      clear_error
+      params = {}
+  params[:parent_engine] = engine.container_name
+  params[:container_type] = engine.ctype
+
+  services = get_engine_persistent_services(params)
+
+return services
+    rescue StandardError => e
+      log_exception(e)
+  end 
   def list_non_persistent_services(engine)
       clear_error
       params = {}
