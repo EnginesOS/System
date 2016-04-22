@@ -1,6 +1,6 @@
 class Utils
   require_relative 'utils/service_hash.rb'
-  requite_relative 'utils/params.rb'
+  require_relative 'utils/params.rb'
   def self.symbolize_keys(hash)
    # hash.delete('splat')
    # hash.delete('captures')
