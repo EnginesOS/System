@@ -10,7 +10,7 @@
 #  end
 #end
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' do
+get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/register' do
   
   hash = Utils.service_service_hash_from_params(params)
   
@@ -24,7 +24,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' d
   end
 end
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister' do
+get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/reregister' do
   
   hash = Utils.service_service_hash_from_params(params)
  
@@ -37,7 +37,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister'
   end
 end
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister' do
+get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/deregister' do
   
   hash = Utils.service_service_hash_from_params(params)
  
