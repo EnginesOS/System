@@ -54,7 +54,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
   #splats = params['splat']
     p :raw_params
     p params
-  hash = Utils.ServiceHash.service_service_hash_from_params(params)
+  hash = Utils::ServiceHash.service_service_hash_from_params(params)
 
 #hash = {}
 #        hash[:publisher_namespace] = params[:ns]
