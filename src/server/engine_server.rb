@@ -74,12 +74,11 @@ begin
     if keys.is_a?(Array)
       for key in keys
         # return missing_param key unless param.key?(key)
-        if required
-          return false unless cparams.key?(key)
-        end
+        return false  unless check_required(params, key,required )     
         cparams[key.to_sym] = params[key]        
       end
     else
+      return false  unless  check_required(params, key,required)
       cparams[keys.to_sym] = params[keys]
     end
     cparams
@@ -87,6 +86,14 @@ rescue StandardError => e
   p e
   p e.backtrace
   end
+
+ def check_required(params, key, is_required)
+   return true unless is_required
+   return true if params.key?(key)
+   p :missing_key
+   p key
+   return false
+end
 
   def accept_params(params , *keys)
     cparams = {}

@@ -70,7 +70,7 @@ end
 def self.service_service_hash_from_params(params)
     hash = self.service_hash_from_params(params)
     hash[:parent_engine] = params['service_name'] 
-    hash[:container_type] = 'service'
+    hash[:container_type] = 'Service'
      return hash  
 end
 
