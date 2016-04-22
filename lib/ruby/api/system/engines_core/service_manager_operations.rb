@@ -23,6 +23,9 @@ module ServiceManagerOperations
     params[:container_type] = 'service'
     service_manager.find_engine_service_hash(params)
   end
+  def list_persistent_services(engine)
+      service_manager.list_persistent_services(engine)
+    end
   def list_non_persistent_services(engine)
       service_manager.list_non_persistent_services(engine)
     end
