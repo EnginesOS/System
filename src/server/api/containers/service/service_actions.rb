@@ -8,7 +8,7 @@ get '/v0/containers/service/:service_name/create' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('create')
+    return log_error(service.last_error)
   end
 end
 
@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/recreate' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('recreate')
+    return log_error(service.last_error)
   end
 end
 
@@ -30,7 +30,7 @@ get '/v0/containers/service/:service_name/stop' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('stop')
+    return log_error(service.last_error)
   end
 end
 
@@ -41,7 +41,7 @@ get '/v0/containers/service/:service_name/start' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('start')
+    return log_error(service.last_error)
   end
 end
 
@@ -52,7 +52,7 @@ get '/v0/containers/service/:service_name/restart' do
   unless r
     return r
   else
-    return log_error('restart')
+    return log_error(service.last_error)
   end
 end
 
@@ -63,7 +63,7 @@ get '/v0/containers/service/:service_name/pause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('pause')
+    return log_error(service.last_error)
   end
 end
 
@@ -74,7 +74,7 @@ get '/v0/containers/service/:service_name/unpause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('unpause')
+    return log_error(service.last_error)
   end
 end
 
@@ -87,7 +87,7 @@ delete '/v0/containers/service/:service_name/destroy' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('destroy')
+    return log_error(service.last_error)
   end
 end
 
