@@ -122,10 +122,18 @@ end
   def log_error(*args)
     p :ERROR
     p args
+    error_mesg = {}
+    error_mesg[:route] = request.fullpath
+    error_mesg[:mesg] = args[0] unless args.count == 0
+    error_mesg[:args] = args.to_s unless args.count == 0
+    error_mesg[:api_error] =  @@core_api.last_error.to_s
+
+    
+    
     STDERR.puts args.to_s + '::' + @@core_api.last_error.to_s
-    body args.to_s + ':' + @@core_api.last_error.to_s
+  #  body args.to_s + ':' + @@core_api.last_error.to_s
     status(404)
-    return false
+    return error_mesg.to_json
   end
 
   def get_engine(engine_name)
