@@ -25,21 +25,8 @@ end
 
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
  # aparams = Utils.symbolize_keys(params)
-  cparams =  assemble_params(params, [:service_name, :configurator_name], [:variables])
-#  cparams = address_params(params, :configurator_name, :service_name) # , :variables)
-#  vars = required_params(params, :variables)
-#  return log_error('no variables') unless vars.is_a?(Hash)
-#  
-#  cparams.merge!(var[:variables]) 
-#
-##  cparams = {}
-##  cparams[:configurator_name] = params[:configurator_name]
-##  cparams[:service_name] = params[:service_name]         
-##  cparams[:variables] = Utils.symbolize_keys(params)
-  p :CPRA
-  p cparams
-  #cparams[:configurator_name] = params[:configurator_name]
-  #params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).
+  cparams =  Utils::Params.assemble_params(params, [:service_name, :configurator_name], [:variables])
+
    r = @@core_api.update_service_configuration(cparams)
   unless r.is_a?(FalseClass) 
       r.to_json

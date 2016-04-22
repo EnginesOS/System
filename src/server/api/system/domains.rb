@@ -1,5 +1,5 @@
 post '/v0/system/domains/' do
-  cparams =  assemble_params(params, [], :all)
+  cparams =  Utils::Params.assemble_params(params, [], :all)
   unless @@core_api.add_domain(cparams).is_a?(FalseClass)
     return status(202)
   else

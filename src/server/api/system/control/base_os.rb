@@ -11,7 +11,7 @@ get '/v0/system/control/base_os/restart' do
 end
 
 post '/v0/system/control/base_os/shutdown' do
-  cparams =  assemble_params(params, [],  [:reason]) 
+  cparams =  Utils::Params.assemble_params(params, [],  [:reason]) 
   shutdown = cparams[:reason] #symbolize_keys(params)
   unless @@core_api.shutdown(shutdown).is_a?(FalseClass)
     return status(202)

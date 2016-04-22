@@ -23,7 +23,7 @@ end
 post '/v0/containers/service/:service_name/action/:action_name' do
   service = get_service(params[:service_name])
    return false if service.is_a?(FalseClass)
-  cparams =  assemble_params(params, [:service_name], :all)
+  cparams =  Utils::Params.assemble_params(params, [:service_name], :all)
    action = @@core_api.perform_service_action(service, params[:action_name], cparams)
   unless action.is_a?(FalseClass) 
       action.to_json

@@ -49,7 +49,7 @@ get '/v0/system/cert/:cert_name' do
   end
 end
 post '/v0/system/certs/default' do
-  cparams =  assemble_params(params, [], :all)
+  cparams =  Utils::Params.assemble_params(params, [], :all)
  
   cparams[:set_as_default] = true
   return status(202) if @@core_api.upload_ssl_certificate(cparams)
@@ -58,7 +58,7 @@ post '/v0/system/certs/default' do
 end
 
 post '/v0/system/certs/' do
-  cparams =  assemble_params(params, [], :all)
+  cparams =  Utils::Params.assemble_params(params, [], :all)
   return status(202) if @@core_api.upload_ssl_certificate(cparams)
   log_error('upload_ssl_certificate', cparams)
   return status(404)

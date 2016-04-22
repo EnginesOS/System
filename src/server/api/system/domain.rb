@@ -8,7 +8,7 @@ get '/v0/system/domain/:domain_name' do
 end
 
 post '/v0/system/domain/:domain_name' do
-  cparams =  assemble_params(params, [:domain_name], :all)
+  cparams =  Utils::Params.assemble_params(params, [:domain_name], :all)
   unless @@core_api.update_domain(cparams).is_a?(FalseClass)
     return status(202)
   else

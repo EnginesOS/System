@@ -8,7 +8,7 @@ get '/v0/system/keys/user/:user_name/generate' do
 end
 
 post '/v0/system/keys/user/:user_name' do
-  cparams =  assemble_params(params, [:user_name],  :public_key) 
+  cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 
   update_key = cparams[:public_key] #symbolize_keys(params)
   unless @@core_api.update_public_key(update_key).is_a?(FalseClass)
     return status(202)

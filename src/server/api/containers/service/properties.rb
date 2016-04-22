@@ -6,7 +6,7 @@ post '/v0/containers/service/:service_name/properties/network' do
   service = get_service(params[:service_name])
   p :LOADED
   return log_error('set network properties', params) if service.is_a?(FalseClass)
-  cparams =  assemble_params(params, [:service_name],  :all) 
+  cparams =  Utils::Params.assemble_params(params, [:service_name],  :all) 
   r = @@core_api.set_container_network_properties(service, cparams)
 
   return log_error('set network properties', params) if r.is_a?(FalseClass)
@@ -15,12 +15,12 @@ end
 
 post '/v0/containers/service/:service_name/properties/runtime' do
   service = get_service(params[:service_name])
-#  cparams = address_params(params,  :service_name) # , :variables)
+#  cparams = Utils::Params.address_params(params,  :service_name) # , :variables)
 #  vars = params[:api_vars]
 #  Utils.symbolize_keys(vars)
 #  cparams.merge!(vars)
 #  p cparams
-  cparams =  assemble_params(params, [:service_name],  :all) 
+  cparams =  Utils::Params.assemble_params(params, [:service_name],  :all) 
   r =   @@core_api.set_container_runtime_properties(service, cparams)
   return log_error('set run time properties', params) if r.is_a?(FalseClass)
   r.to_json

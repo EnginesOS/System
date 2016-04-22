@@ -24,7 +24,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
    return false if engine.is_a?(FalseClass)
    
-  cparams =  assemble_params(params, [:engine_name], :all)
+  cparams =  Utils::Params.assemble_params(params, [:engine_name], :all)
    action = @@core_api.perform_engine_action(engine, params[:action_name], cparams)
   unless action.is_a?(FalseClass) 
       action.to_json

@@ -1,7 +1,7 @@
 get '/v0/containers/service/:service_name/consumers/:parent_engine' do
   service = get_service(params[:service_name])
     return false if service.is_a?(FalseClass)
-  cparams =  address_params(params, [:service_name,:parent_engine])
+  cparams =  Utils::Params.address_params(params, [:service_name,:parent_engine])
   r = service.registered_consumer(cparams)
 
   unless r.is_a?(FalseClass)
