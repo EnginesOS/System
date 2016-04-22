@@ -119,7 +119,9 @@ class EnginesCore < ErrorsApi
   end
 
   #why readers on these apis
-  attr_reader :container_api, :service_api
+#  attr_reader :container_api, :service_api
+  
+  
 
   def api_shutdown
     SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
@@ -149,11 +151,7 @@ class EnginesCore < ErrorsApi
   end 
   
   
-  def list_system_services
-  services = []
-     services.push('registry')
-     return services
-  end
+
   
   def reserved_ports
     ports = []

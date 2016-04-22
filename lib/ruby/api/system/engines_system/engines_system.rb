@@ -40,6 +40,11 @@ class SystemApi < ErrorsApi
       start_docker_event_listener
   end
   
+  def list_system_services
+  services = []
+     services.push('registry')
+     return services
+  end
   
   def get_engines_states
     result = {}

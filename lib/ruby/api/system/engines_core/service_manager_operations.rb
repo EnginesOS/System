@@ -12,6 +12,7 @@ module ServiceManagerOperations
     params[:container_type] = 'container'
     service_manager.find_engine_service_hash(params)
   end
+  
   def  find_engine_services_hashes(hash) 
     hash[:container_type] = 'service'  
       p :hash

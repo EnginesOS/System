@@ -23,9 +23,9 @@ module SystemOperations
     test_system_api_result(@system_api.update_system)
   end
 
-  def generate_engines_user_ssh_key
-    test_system_api_result(@system_api.regen_system_ssh_key)
-  end
+#  def generate_engines_user_ssh_key
+#    test_system_api_result(@system_api.regen_system_ssh_key)
+#  end
 
   def update_public_key(key)
     test_system_api_result(@system_api.update_public_key(key))
