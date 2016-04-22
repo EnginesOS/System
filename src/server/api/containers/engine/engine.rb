@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name' do
   unless engine.is_a?(FalseClass)
     return engine.to_json
   else
-    return log_error('engine')
+    return log_error(params[:engine_name])
   end
 end
 
@@ -40,6 +40,6 @@ get '/v0/containers/engine/:engine_name/build_report' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('build_report')
+    return log_error('no build_report')
   end
 end

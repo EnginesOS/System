@@ -5,7 +5,7 @@ get '/v0/containers/service/:service_name/actions/' do
     unless list.is_a?(FalseClass)
       list.to_json
   else
-    return log_error('service actions', params)
+    return log_error(service.log_error)
   end
 end
 
@@ -16,7 +16,7 @@ get '/v0/containers/service/:service_name/action/:action_name' do
     unless action.is_a?(FalseClass) 
       action.to_json
   else
-    return log_error('action')
+    return log_error(service.log_error)
   end
 end 
 
@@ -28,6 +28,6 @@ post '/v0/containers/service/:service_name/action/:action_name' do
   unless action.is_a?(FalseClass) 
       action.to_json
   else
-    return log_error('action')
+    return log_error(service.log_error)
   end
 end 

@@ -5,7 +5,7 @@ get '/v0/containers/engine/:engine_name/actions/' do
     unless list.is_a?(FalseClass)
       list.to_json
   else
-    return log_error('add_domain', params)
+    return log_error(engine.last_error)
   end
 end
 
@@ -16,7 +16,7 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
     unless action.is_a?(FalseClass) 
       action.to_json
   else
-    return log_error('remove_domain')
+    return log_error(engine.last_error)
   end
 end 
 
@@ -29,6 +29,6 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
   unless action.is_a?(FalseClass) 
       action.to_json
   else
-    return log_error('remove_domain')
+    return log_error(engine.last_error)
   end
 end 

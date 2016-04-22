@@ -5,7 +5,7 @@ get '/v0/containers/service/:service_name/configurations/' do
     unless list.is_a?(FalseClass)
       list.to_json
   else
-    return log_error('configurations', params)
+    return log_error(service.log_error, params)
   end
 end
 
@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
     unless config.is_a?(FalseClass) 
       config.to_json
   else
-    return log_error('get configuration')
+    return log_error(service.log_error)
   end
 end 
 
@@ -31,6 +31,6 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   unless r.is_a?(FalseClass) 
       r.to_json
   else
-    return log_error('post configuration')
+    return log_error(service.log_error)
   end
 end 
