@@ -105,13 +105,15 @@ end
     #  cparams[:configurator_name] = params[:configurator_name]
   end
 
-  def log_exception(e)
+  def log_exception(e, *args)
     e_str = e.to_s()
     e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
-    @@last_error = e_str
+    e_str += ':' + args.to_s  
+    @@last_error = e_str.to_s
     STDERR.puts e_str
+    
     SystemUtils.log_output(e_str, 10)
     f = File.open('/tmp/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
@@ -127,7 +129,7 @@ end
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
     error_mesg[:api_error] =  @@core_api.last_error.to_s
-
+    error_mesg[:last_error] =  @@last_error.to_s
     
     
     STDERR.puts args.to_s + '::' + @@core_api.last_error.to_s
