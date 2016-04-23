@@ -1,101 +1,103 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class EnginesApi < ErrorsApi
   
-  def initialize(core_api , system_api)
-    
+  def initialize(core_api , system_api)    
     @core_api = core_api
     @system_api = system_api
-    @service_manager = core_api.service_manager
-    
+    @service_manager = core_api.service_manager    
   end
+  
  #methods called by api sinatra server routes
   require_relative 'containers/containers.rb'
   #containers/
   #get_changed_containers #ex
   include Containers
   
-  #containers/engine
-  loadManagedEngine   #vc engines system
-  get_resolved_engine_string #ex
+  require_relative 'containers/service_hash.rb'
+  #find_service_service_hash
+  #find_service_service_hashes
+  #find_engine_service_hash
+  #find_engine_service_hashes
+  include ContainersServiceHash
   
-  set_container_network_properties #ex
-  set_engine_runtime_properties #ex
-  
-  container_memory_stats #ex
-  get_container_network_metrics #ex
-  
-  get_build_report #ex
-  reinstall_engine #ex
-  remove_engine #ex
-  
-  list_engine_actionators #ex
-  get_engine_actionator #ex
-  perform_engine_action #ex
-  #containers/engine/service/non_persistent
-  find_engine_service_hash #vc sm
-  force_register_attached_service  #ex 
-  force_reregister_attached_service  #ex 
-  force_deregister_attached_service  #ex
-  #containers/engine/service/non_persistent
-  find_engine_service_hash#vc sm
-  
-  #containers/engine/services/non_persistent
-  find_engine_service_hash#vc sm
-  list_non_persistent_services #ex sm
 
-  #containers/engine/services/persistent
-  engine_persistent_services #vc ec
-  find_engine_service_hash #vc sm
+  
+  require_relative 'containers/properties.rb'
+ # set_container_network_properties #ex
+ # set_container_runtime_properties #ex
+  include ContainersProperties
+  
+  require_relative 'containers/metrics.rb'
+ # container_memory_stats #ex
+ # get_container_network_metrics #ex
+  include ContainersMetrics
+  
+  require_relative 'containers/engines/engine.rb'
+  #containers/engine
+#  loadManagedEngine   #vc engines system
+#  get_resolved_engine_string #ex
+#  get_build_report #ex
+#  reinstall_engine #ex
+  include Engine
+  
+  
+  
+  require_relative 'containers/engines/actionators.rb'
+  #container/engines/actionators
+  #list_engine_actionators#EX
+  #get_engine_actionator#EX
+  #perform_engine_action#EX
+  include EngineActionators
+  
+ 
+  #containers/engine/service(s)/non_persistent
+require_relative 'containers/non_persistent_services.rb'
+  #force_register_attached_service  #ex 
+  #force_reregister_attached_service  #ex 
+  #force_deregister_attached_service  #ex  
+  #list_non_persistent_services 
+  include ContainersNonPersistentServices
+
+  require_relative 'containers/persistent_services.rb'
+  #list_persistent_services(engine)
+  include ContainersPersistentServices
   
   require_relative 'containers/engines/engines.rb'
   #containers/engines
   #build_engine #ex bis
 #  getManagedEngines# es
  # list_managed_engines #  es
+ # should not be remove_engine but delete_engine(params)
   include Engines
   
   
 
+  require_relative 'conainers/services/service.rb'  
   #containers/service
-  loadManagedService # es
+#  loadManagedService # es
+#  get_resolved_engine_string #EX
+#  get_resolved_service_hash # WRONG NAME
+#  remove_service  
+#  update_service_configuration#EX
+  include Service
   
-  get_resolved_engine_string #EX
-  get_resolved_service_hash # WRONG NAME
-  
-  remove_service
-  
-  set_container_network_properties#EX
-  set_container_runtime_properties#EX
-  
-  get_container_network_metrics#EX
-  container_memory_stats#EX
-  
-  update_service_configuration#EX
-  
-  list_service_actionators#EX
-  get_service_actionator#EX
-  perform_service_action#EX
+  require_relative 'containers/services/actionators.rb'
+  #container/services/actionators
+  #list_service_actionators#EX
+  #get_service_actionator#EX
+  #perform_service_action#EX
+  include ServiceActionators
   
   #container/services/services/persistent  
-  engine_persistent_services
-  find_engine_service_hash
+  #engine_persistent_services
   
-  #container/services/services/non_persistent
-  list_non_persistent_services
-  find_engine_service_hash
+
+ 
   
-  #container/services/service/persistent  
-  find_engine_service_hash
-  
-  #container/services/service/non_persistent
-  list_non_persistent_services
-  find_engine_service_hash
-  
-  #container/services/service/consumer
-  stuf
-  
-  #container/services/service/consumers
-  stuf
+
+    
+  #container/services/service/consumer(s)
+  #calls service directly
   
   
   require_relative 'services/services.rb'

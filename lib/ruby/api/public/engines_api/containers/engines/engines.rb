@@ -10,4 +10,12 @@ module Engines
     @core_api.build_engine(params)
       end
       
+#  def remove_engine(engine_name, reinstall = false) was used but it wrong on this level
+#    @core_api.remove_engine(engine_name, reinstall)
+#  end
+  
+  def delete_engine(params)
+    @core_api.delete_engine(params)
+  end
+  
 end

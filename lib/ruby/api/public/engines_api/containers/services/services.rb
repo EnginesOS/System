@@ -14,5 +14,9 @@ module Services
   def list_system_services
     @system_api.list_system_services
   end
-
+  
+  def remove_service(service)
+    
+  end
+  
 end
