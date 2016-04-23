@@ -6,7 +6,7 @@ module SystemStatus
     FirstRunWizard.required?
   end
   def system_status
-    require_relative '../../.first_run_required?()./system/system_status.rb'
+    require_relative '../../../system/system_status.rb'
     SystemStatus.system_status
   end 
    
