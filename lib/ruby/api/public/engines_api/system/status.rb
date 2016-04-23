@@ -1,4 +1,4 @@
-module SystemStatus
+module Status
   
  
   def first_run_required?

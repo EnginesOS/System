@@ -206,7 +206,7 @@ require_relative 'containers/non_persistent_services.rb'
   #system/status
 #  first_run_required? #x
 #  SystemStatus.system_status
-  include SystemStatus
+  include Status
   
   
   require_relative 'system/templater'
