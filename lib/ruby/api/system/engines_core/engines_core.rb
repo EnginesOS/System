@@ -121,7 +121,7 @@ class EnginesCore < ErrorsApi
   #why readers on these apis
 #  attr_reader :container_api, :service_api
   
-  attr_reader :system_api
+  attr_reader :system_api, :service_manager
   
 
   def api_shutdown
