@@ -6,7 +6,7 @@ get '/v0/system/control/base_os/restart' do
   unless restart.is_a?(FalseClass)
     return restart.to_json
   else
-    return log_error('restart')
+    return log_error(request)
   end
 end
 
@@ -16,7 +16,7 @@ post '/v0/system/control/base_os/shutdown' do
   unless @@engines_api.shutdown(shutdown).is_a?(FalseClass)
     return status(202)
   else
-    return log_error('shutdown', params)
+    return log_error(request, cparams)
   end
 end
 
@@ -25,6 +25,6 @@ get '/v0/system/control/base_os/update' do
   unless system_update.is_a?(FalseClass)
     return system_update.to_json
   else
-    return log_error('system_update')
+    return log_error(request)
   end
 end

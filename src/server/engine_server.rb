@@ -42,7 +42,7 @@ begin
     return false
   end
 
-  def log_error(*args)
+  def log_error(request, *args)
     p :ERROR
     p args
     error_mesg = {}

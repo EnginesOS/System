@@ -4,12 +4,12 @@
 post '/v0/containers/engine/:engine_name/properties/network' do
 
   engine = get_engine(params[:engine_name])
-  return log_error('failed to load ') unless engine.is_a?(ManagedEngine)
+  return log_error(request ,'failed to load ') unless engine.is_a?(ManagedEngine)
   
   cparams =  Utils::Params.assemble_params(params, [:engine_name], :all) # [:memory, :environment_variables]) 
   r = @@engines_api.set_container_network_properties(engine, cparams)
 
-  return log_error(engine.last_error) if r.is_a?(FalseClass)
+  return log_error(request ,engine.last_error) if r.is_a?(FalseClass)
   r.to_json
 end
 
@@ -18,6 +18,6 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   cparams =  Utils::Params.assemble_params(params, [:engine_name], [:memory, :environment_variables]) # :all) 
 
   r =   @@engines_api.set_engine_runtime_properties(cparams) #Utils.symbolize_keys(params))
-  return log_error('set run time properties', cparams) if r.is_a?(FalseClass)
+  return log_error(request , cparams) if r.is_a?(FalseClass)
   r.to_json
 end

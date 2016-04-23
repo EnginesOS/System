@@ -7,7 +7,7 @@ get '/v0/system/version/release' do
   unless release.is_a?(FalseClass)
     return release.to_json
   else
-    return log_error('release')
+    return log_error(request)
   end
 end
 
@@ -16,7 +16,7 @@ get '/v0/system/version/api' do
   unless api.is_a?(FalseClass)
     return api.to_json
   else
-    return log_error('api')
+    return log_error(request)
   end
 end
 
@@ -25,7 +25,7 @@ get '/v0/system/version/ident' do
   unless ident.is_a?(FalseClass)
     return ident.to_json
   else
-    return log_error('ident')
+    return log_error(request)
   end
 end
 
@@ -34,7 +34,7 @@ get '/v0/system/version/system' do
   unless system.is_a?(FalseClass)
     return system.to_json
   else
-    return log_error('system')
+    return log_error(request)
   end
 end
 
@@ -45,7 +45,7 @@ get '/v0/system/version/base_os' do
   unless base_os.is_a?(FalseClass)
     return base_os.to_json
   else
-    return log_error('base_os')
+    return log_error(request)
   end
 end
 

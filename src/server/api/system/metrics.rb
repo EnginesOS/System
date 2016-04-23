@@ -3,7 +3,7 @@ get '/v0/system/metrics/memory' do
   unless memory_info.is_a?(FalseClass)
     return memory_info.to_json
   else
-    return log_error('memory_info')
+    return log_error(request)
   end
 end
 
@@ -12,7 +12,7 @@ get '/v0/system/metrics/load' do
   unless load_info.is_a?(FalseClass)
     return load_info.to_json
   else
-    return log_error('load_info')
+    return log_error(request)
   end
 end
 
@@ -21,7 +21,7 @@ get '/v0/system/metrics/memory/statistics' do
   unless memory_statistics.is_a?(FalseClass)
     return memory_statistics.to_json
   else
-    return log_error('memory_statistics')
+    return log_error(request)
   end
 end
 
@@ -30,7 +30,7 @@ get '/v0/system/metrics/disks' do
   unless disk_statistics.is_a?(FalseClass)
     return disk_statistics.to_json
   else
-    return log_error('disk_statistics')
+    return log_error(request)
   end
 end
 

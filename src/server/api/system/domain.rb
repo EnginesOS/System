@@ -3,7 +3,7 @@ get '/v0/system/domain/:domain_name' do
   unless domain_name.is_a?(FalseClass)
     return domain_name.to_json
   else
-    return log_error('domain_name')
+    return log_error(request)
   end
 end
 
@@ -12,7 +12,7 @@ post '/v0/system/domain/:domain_name' do
   unless @@engines_api.update_domain(cparams).is_a?(FalseClass)
     return status(202)
   else
-    return log_error('update_domain', cparams)
+    return log_error(request, cparams)
   end
 end
 

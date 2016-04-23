@@ -5,7 +5,7 @@ get '/v0/system/control/registry/restart' do
   unless restart_registry.is_a?(FalseClass)
     return restart_registry.to_json
   else
-    return log_error('restart_registry')
+    return log_error(request)
   end
 end
 #  get '/v0/system/control/regsitry/update' do

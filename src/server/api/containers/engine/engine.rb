@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name' do
   unless engine.is_a?(FalseClass)
     return engine.to_json
   else
-    return log_error(params[:engine_name])
+    return log_error(request, params[:engine_name])
   end
 end
 
@@ -21,7 +21,7 @@ get '/v0/containers/engine/:engine_name/state' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -32,7 +32,7 @@ get '/v0/containers/engine/:engine_name/blueprint' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 get '/v0/containers/engine/:engine_name/build_report' do
@@ -40,6 +40,6 @@ get '/v0/containers/engine/:engine_name/build_report' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('no build_report')
+    return log_error(request)
   end
 end

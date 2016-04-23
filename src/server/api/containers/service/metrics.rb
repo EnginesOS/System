@@ -3,7 +3,7 @@ get '/v0/containers/service/:service_name/metrics/network' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('pause')
+    return log_error(request)
   end
 end
 
@@ -14,6 +14,6 @@ get '/v0/containers/service/:service_name/metrics/memory' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('pause')
+    return log_error(request)
   end
 end

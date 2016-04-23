@@ -4,7 +4,7 @@ get '/v0/containers/services/' do
   unless engines.is_a?(FalseClass)
     return engines.to_json
   else
-    return log_error('services')
+    return log_error(request)
   end
 end
 
@@ -13,7 +13,7 @@ get '/v0/containers/services/container_name' do
   unless container_names.is_a?(FalseClass)
     return container_names.to_json
   else
-    return log_error('container_name')
+    return log_error(request)
   end
 end
 
@@ -22,7 +22,7 @@ get '/v0/containers/services/state' do
   unless states.is_a?(FalseClass)
     return states.to_json
   else
-    return log_error('states')
+    return log_error(request)
   end
 end
 get '/v0/containers/services/system' do
@@ -30,6 +30,6 @@ get '/v0/containers/services/system' do
   unless states.is_a?(FalseClass)
     return states.to_json
   else
-    return log_error('states')
+    return log_error(request)
   end
 end

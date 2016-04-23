@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name' do
   unless service.is_a?(FalseClass)
     return service.to_json
   else
-    return log_error('service')
+    return log_error(request)
   end
 end
 
@@ -21,7 +21,7 @@ get '/v0/containers/service/:service_name/state' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error('engine')
+    return log_error(request)
   end
 end
 

@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*/export' do
     return r.b
     #.to_json
   else
-    return log_error(service.last_error)
+    return log_error(request, service.last_error)
   end
 end
 
@@ -25,7 +25,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*/import' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(service.last_error)
+    return log_error(request, service.last_error)
   end
 end
 get '/v0/containers/engine/:service_name/service/persistent/:ns/*/replace' do
@@ -40,7 +40,7 @@ get '/v0/containers/engine/:service_name/service/persistent/:ns/*/replace' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(service.last_error)
+    return log_error(request, service.last_error)
   end
 end
 
@@ -54,6 +54,6 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end

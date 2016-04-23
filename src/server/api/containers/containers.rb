@@ -7,7 +7,7 @@ get '/v0/containers/changed/' do
   unless changed.is_a?(FalseClass)
     return changed.to_json
   else
-    return log_error('containers/changed')
+    return log_error(request)
   end
 end
 

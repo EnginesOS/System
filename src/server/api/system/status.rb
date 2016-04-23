@@ -12,6 +12,6 @@ get '/v0/system/status' do
   unless status.is_a?(FalseClass)
     return status.to_json
   else
-    return log_error('status')
+    return log_error(request)
   end
 end

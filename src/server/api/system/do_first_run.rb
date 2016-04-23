@@ -5,6 +5,6 @@ post '/v0/system/do_first_run' do
   unless @@engines_api.set_first_run_parameters(cparams).is_a?(FalseClass)
     return status(202)
   else
-    return log_error('set_first_run_parameters', @@engines_api.last_error)
+    return log_error(request, @@engines_api.last_error)
   end
 end

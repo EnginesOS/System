@@ -40,7 +40,7 @@ get '/v0/containers/engine/:engine_name/stop' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -51,7 +51,7 @@ get '/v0/containers/engine/:engine_name/start' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -62,7 +62,7 @@ get '/v0/containers/engine/:engine_name/restart' do
   unless r
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -73,7 +73,7 @@ get '/v0/containers/engine/:engine_name/pause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -84,7 +84,7 @@ get '/v0/containers/engine/:engine_name/unpause' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -105,7 +105,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error(engine.last_error)
+    return log_error(request, engine.last_error)
   end
 end
 
@@ -115,7 +115,7 @@ delete '/v0/containers/engine/:engine_name/delete' do
   unless r.is_a?(FalseClass)
     return r
   else
-    return log_error('delete_image')
+    return log_error(request, 'delete_image')
   end
 
 end

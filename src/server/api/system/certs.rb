@@ -9,7 +9,7 @@ get '/v0/system/cert/system_ca' do
   unless system_ca.is_a?(FalseClass)
     return system_ca.to_json
   else
-    return log_error('system_ca')
+    return log_error(request)
   end
 end
 
@@ -18,7 +18,7 @@ get '/v0/system/cert/default' do
   unless cert.is_a?(FalseClass)
     return cert.to_json
   else
-    return log_error('system_ca')
+    return log_error(request)
   end
 end
 
@@ -32,7 +32,7 @@ delete '/v0/system/certs/:cert_name' do
   unless @@engines_api.remove_cert(params[:cert_name]).is_a?(FalseClass)
     return status(202)
   else
-    return log_error('remove_cert')
+    return log_error(request)
   end
 end
 
@@ -45,7 +45,7 @@ get '/v0/system/cert/:cert_name' do
   unless cert.is_a?(FalseClass)
     return cert.to_json
   else
-    return log_error('cert')
+    return log_error(request)
   end
 end
 post '/v0/system/certs/default' do
@@ -53,14 +53,14 @@ post '/v0/system/certs/default' do
  
   cparams[:set_as_default] = true
   return status(202) if @@engines_api.upload_ssl_certificate(cparams)
-  log_error('upload_default_ssl_certificate', cparams)
+  log_error(request, cparams)
   return status(404)
 end
 
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
   return status(202) if @@engines_api.upload_ssl_certificate(cparams)
-  log_error('upload_ssl_certificate', cparams)
+  log_error(request, cparams)
   return status(404)
 end
 

@@ -3,7 +3,7 @@ get '/v0/system/config/default_domain' do
   unless default_domain.is_a?(FalseClass)
     return default_domain.to_json
   else
-    log_error('get default domain')
+    log_error(request)
     status(404)
   end
 end
@@ -12,7 +12,7 @@ post '/v0/system/config/default_domain' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_domain])
   default_domain = cparams[:default_domain]
   return status(202) if @@engines_api.set_default_domain(default_domain)
-  log_error('default_domain', params)
+  log_error(request, cparams)
   return status(404)
 end
 
@@ -21,7 +21,7 @@ get '/v0/system/config/default_site' do
   unless default_site.is_a?(FalseClass)
     return default_site.to_json
   else
-    log_error('get default site')
+    log_error(request)
     status(404)
   end
 end
@@ -30,7 +30,7 @@ post '/v0/system/config/default_site' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_site])
   default_domain = cparams[:default_site]
   return status(202) if @@engines_api.set_default_site(default_site)
-  log_error('default_site', params)
+  log_error(request, cparams)
   return status(404)
 end
 
@@ -38,7 +38,7 @@ post '/v0/system/config/hostname' do
   cparams =  Utils::Params.assemble_params(params, [], [:host_name])
   hostname = cparams[:host_name]
   return status(202) if @@engines_api.set_hostname(hostname)
-  log_error('hostname', params)
+  log_error(request, cparams)
   return status(404)
 end
 
@@ -47,7 +47,7 @@ get '/v0/system/config/hostname' do
   unless hostname.is_a?(FalseClass)
     return hostname.to_json
   else
-    log_error('hostname')
+    log_error(request)
     return  status(404)
   end
 end
@@ -57,7 +57,7 @@ post '/v0/system/config/remote_exception_logging/enable' do
   unless @@engines_api.enable_remote_exception_logging.is_a?(FalseClass)
     return status(202)
   else
-    log_error('remote_exception_logging', params)
+    log_error(request)
     return status(404)
   end
 end
@@ -67,7 +67,7 @@ post '/v0/system/config/remote_exception_logging/disable' do
   unless @@engines_api.disable_remote_exception_logging.is_a?(FalseClass)
     return status(202)
   else
-    log_error('remote_exception_logging', params)
+    log_error(request)
     return status(404)
   end
 end

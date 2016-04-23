@@ -10,7 +10,7 @@ get '/v0/registry/engines/' do
   unless engines.is_a?(FalseClass)
     return engines.to_json
   else
-    return log_error('get_managed_engine_tree')
+    return log_error(request)
   end
 end
 
@@ -19,7 +19,7 @@ get '/v0/registry/configurations/' do
   unless configurations.is_a?(FalseClass)
     return configurations.to_json
   else
-    return log_error('configurations tree')
+    return log_error(request)
   end
 end
 
@@ -28,7 +28,7 @@ get '/v0/registry/services/' do
   unless services.is_a?(FalseClass)
     return services.to_json
   else
-    return log_error('services/ tree' )
+    return log_error(request)
   end
 end
 
@@ -37,7 +37,7 @@ get '/v0/registry/orphans/' do
 unless orphans.is_a?(FalseClass)
   return orphans.to_json
 else
-  return log_error('orphans trdd')
+  return log_error(request)
 end
 end
   get '/v0/registry/shares/' do
@@ -45,6 +45,6 @@ end
     unless shares.is_a?(FalseClass)
       return shares.to_json
     else
-      return log_error('shares tree ')
+      return log_error(request)
     end
   end

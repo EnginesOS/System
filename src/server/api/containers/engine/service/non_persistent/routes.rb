@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' d
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end
 
@@ -22,7 +22,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister'
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end
 
@@ -35,7 +35,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister'
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end
 
@@ -49,6 +49,6 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end

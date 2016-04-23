@@ -4,7 +4,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(params[:engine_name])
+    return log_error(request, params[:engine_name])
   end
 end
 get '/v0/containers/engine/:id/services/persistent/:ns/*' do
@@ -23,6 +23,6 @@ p hash
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hash)
+    return log_error(request, hash)
   end
 end
