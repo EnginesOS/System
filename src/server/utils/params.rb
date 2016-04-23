@@ -26,7 +26,7 @@ module Params
     mparams = params['api_vars']
     m_params = Utils.symbolize_keys(mparams)
     p :POST_SYM
-    p
+    p  m_params 
     return nil if m_params.nil?
     self.match_params(m_params, keys, true)
     #   Utils.symbolize_keys(matched)
@@ -43,9 +43,7 @@ module Params
    end
   
   def self.address_params(params, keys)
-    p = self.match_params(params, keys)
-    return p if p.is_a?(Hash)
-    return {}    
+     self.match_params(params, keys)    
   end
 
   def self.match_params(params, keys, required = false)
@@ -57,11 +55,12 @@ module Params
     if keys.is_a?(Array)
       for key in keys
         # return missing_param key unless param.key?(key)
+
         return false  unless self.check_required(params, key,required )     
         cparams[key.to_sym] = params[key]        
       end
     else
-      return false  unless  self.check_required(params, key,required)
+      return false  unless  self.check_required(params, keys,required)
       cparams[keys.to_sym] = params[keys]
     end
     cparams
