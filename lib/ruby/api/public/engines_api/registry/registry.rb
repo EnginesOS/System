@@ -1,4 +1,4 @@
-module Registry
+module SytemControlRegistry
   def get_orphaned_services_tree
     @service_manager.get_orphaned_services_tree
   end

@@ -134,7 +134,7 @@ require_relative 'containers/non_persistent_services.rb'
   
   require_relative 'system/control/registry.rb'
   #force_registry_restart
-    include SystemControlregistry
+    include SystemControlRegistry
     
   
   require_relative 'system/keys.rb'
