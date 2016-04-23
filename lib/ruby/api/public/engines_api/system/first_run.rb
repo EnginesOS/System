@@ -5,7 +5,7 @@ module SystemFirstRun
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
      first_run.apply(@core_api)
-     log_error(first_run.last_error) unless first_run.sucess
+     log_error(request, first_run.last_error) unless first_run.sucess
      return first_run.sucess
   end
 end
