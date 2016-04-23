@@ -1,4 +1,4 @@
-module SystemConfig
+module Config
   
   def set_default_domain(params)
      SystemDebug.debug(SystemDebug.system,  :set_default_domain, params)

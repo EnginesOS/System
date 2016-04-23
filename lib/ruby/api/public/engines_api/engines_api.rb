@@ -169,7 +169,7 @@ require_relative 'containers/non_persistent_services.rb'
 #  enable_remote_exception_logging#EX
 #  disable_remote_exception_logging   #EX
 #  is_remote_exception_logging? #EX
-  include SystemConfig
+  include Config
   
   require_relative 'system/first_run.rb'
   #system/firsrun
