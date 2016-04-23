@@ -156,7 +156,7 @@ require_relative 'containers/non_persistent_services.rb'
 #  list_certs #EX
 #  remove_cert #EX
 #  upload_ssl_certificate #EX
-  include 'SystemCertificates'
+  include SystemCertificates
   
   require_relative 'system/config.rb'
   #system/config #EX
