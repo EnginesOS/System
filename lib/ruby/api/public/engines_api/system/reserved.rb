@@ -11,6 +11,9 @@ module SystemReserved
       return []
     end 
     
+    def taken_hostnames
+      @core_api.taken_hostnames
+    end
     
     def list_system_services
     services = []
