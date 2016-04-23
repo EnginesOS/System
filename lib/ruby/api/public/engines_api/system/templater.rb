@@ -1,5 +1,5 @@
 module SystemTemplater
-  require '../../templater/templater.b'
+  require '/opt/engines/lib/ruby/templater/templater.rb'
   def get_resolved_string(env_value)
  
      templater = Templater.new(SystemAccess.new,nil)
