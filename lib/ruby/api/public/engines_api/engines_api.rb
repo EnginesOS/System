@@ -100,7 +100,7 @@ require_relative 'containers/non_persistent_services.rb'
   #calls service directly
   
   
-  require_relative 'services/services.rb'
+  require_relative 'containers/services/services.rb'
   #containers/services
 #  getManagedServices
 #  list_managed_services
