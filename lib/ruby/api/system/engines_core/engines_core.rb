@@ -115,7 +115,7 @@ class EnginesCore < ErrorsApi
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
-    @service_manager = create_service_manager
+    @service_manager = ServiceManager.new(self) # create_service_manager
   end
 
   #why readers on these apis
