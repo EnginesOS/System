@@ -28,7 +28,7 @@ end
 
 post '/v0/system/config/default_site' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_site])
-  default_domain = cparams[:default_site]
+  default_site = cparams[:default_site]
   return status(202) if @@engines_api.set_default_site(default_site)
   log_error(request, cparams)
   return status(404)
