@@ -5,6 +5,10 @@ module PublicApiEngines
   def getManagedEngines
     @system_api.getManagedEngines
   end
+  
+  def get_engines_states
+    @system_api.get_engines_states
+  end
    
   def  build_engine(params)
     @core_api.build_engine(params)
