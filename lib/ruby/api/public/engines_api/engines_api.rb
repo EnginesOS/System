@@ -72,7 +72,7 @@ require_relative 'containers/non_persistent_services.rb'
   
   
 
-  require_relative 'conainers/services/service.rb'  
+  require_relative 'containers/services/service.rb'  
   #containers/service
 #  loadManagedService # es
 #  get_resolved_engine_string #EX
