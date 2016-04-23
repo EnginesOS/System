@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
-class EnginesApi < ErrorsApi
+class PublicApi < ErrorsApi
   def initialize(core_api )
     @core_api = core_api
     @system_api = @core_api.system_api

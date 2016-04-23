@@ -13,7 +13,7 @@ begin
   set :run, true
 
  core_api = EnginesCore.new
- @@engines_api = EnginesApi.new(core_api)
+ @@engines_api = PlublicApi.new(core_api)
  
   
   @@last_error =''
