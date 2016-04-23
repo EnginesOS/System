@@ -4,7 +4,7 @@ module SystemFirstRun
     params = params_from_gui.dup
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
-     first_run.apply(self)
+     first_run.apply(@core_api)
      log_error(first_run.last_error) unless first_run.sucess
      return first_run.sucess
   end
