@@ -1,8 +1,8 @@
 module Params
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
 
-    a_params = self.address_params(params, address_params)
-    
+    a_params = self.address_params(params, address_params)       
+      
     r_params = self.required_params(params,required_params)
     a_params.merge!(r_params)
     
@@ -43,7 +43,9 @@ module Params
    end
   
   def self.address_params(params, keys)
-    self.match_params(params, keys)
+    p = self.match_params(params, keys)
+    return p if p.is_a?(Hash)
+    return {}    
   end
 
   def self.match_params(params, keys, required = false)
