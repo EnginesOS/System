@@ -1,4 +1,4 @@
-module Containers
+module PublicApiContainers
 # @return [Array]
 #  get Array of containers with changed state changed  
   def get_changed_containers

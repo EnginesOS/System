@@ -11,24 +11,24 @@ class PublicApi < ErrorsApi
   require_relative 'containers/containers.rb'
   #containers/
   #get_changed_containers #ex
-  include Containers
+  include PublicApiContainers
 
   require_relative 'containers/service_hash.rb'
   #find_service_service_hash
   #find_service_service_hashes
   #find_engine_service_hash
   #find_engine_service_hashes
-  include ContainersServiceHash
+  include PublicApiContainersServiceHash
 
   require_relative 'containers/properties.rb'
   # set_container_network_properties #ex
   # set_container_runtime_properties #ex
-  include ContainersProperties
+  include PublicApiContainersProperties
 
   require_relative 'containers/metrics.rb'
   # container_memory_stats #ex
   # get_container_network_metrics #ex
-  include ContainersMetrics
+  include PublicApiContainersMetrics
 
   require_relative 'containers/engines/engine.rb'
   #containers/engine
@@ -36,14 +36,14 @@ class PublicApi < ErrorsApi
   #  get_resolved_engine_string #ex
   #  get_build_report #ex
   #  reinstall_engine #ex
-  include PublicApiEngine
+  include PublicApiPublicApiEngine
 
   require_relative 'containers/engines/actionators.rb'
   #container/engines/actionators
   #list_engine_actionators#EX
   #get_engine_actionator#EX
   #perform_engine_action#EX
-  include EngineActionators
+  include PublicApiEngineActionators
 
   #containers/engine/service(s)/non_persistent
   require_relative 'containers/non_persistent_services.rb'
@@ -51,11 +51,11 @@ class PublicApi < ErrorsApi
   #force_reregister_attached_service  #ex
   #force_deregister_attached_service  #ex
   #list_non_persistent_services
-  include ContainersNonPersistentServices
+  include PublicApiContainersNonPersistentServices
 
   require_relative 'containers/persistent_services.rb'
   #list_persistent_services(engine)
-  include ContainersPersistentServices
+  include PublicApiContainersPersistentServices
 
   require_relative 'containers/engines/engines.rb'
   #containers/engines
@@ -63,7 +63,7 @@ class PublicApi < ErrorsApi
   #  getManagedEngines# es
   # list_managed_engines #  es
   # should not be remove_engine but delete_engine(params)
-  include Engines
+  include PublicApiEngines
 
   require_relative 'containers/services/service.rb'
   #containers/service
@@ -72,14 +72,14 @@ class PublicApi < ErrorsApi
   #  get_resolved_service_hash # WRONG NAME
   #  remove_service
   #  update_service_configuration#EX
-  include Service
+  include PublicApiService
 
   require_relative 'containers/services/actionators.rb'
   #container/services/actionators
   #list_service_actionators#EX
   #get_service_actionator#EX
   #perform_service_action#EX
-  include ServiceActionators
+  include PublicApiServiceActionators
 
   #container/services/services/persistent
   #engine_persistent_services
@@ -93,7 +93,7 @@ class PublicApi < ErrorsApi
   #  list_managed_services
   #  get_services_states
   #  list_system_services
-  include Services
+  include PublicApiServices
 
   require_relative 'registry/registry.rb'
   #resistry
@@ -102,7 +102,7 @@ class PublicApi < ErrorsApi
   #  managed_service_tree#ex#ex
   #  get_orphaned_services_tree#ex
   #  get_shares_tree #ex
-  include Registry
+  include PublicApiRegistry
 
   #service_manager
 
@@ -110,24 +110,24 @@ class PublicApi < ErrorsApi
   #restart_system
   #shutdown
   #system_update
-  include SystemControlBaseOS
+  include PublicApiSystemControlBaseOS
 
   require_relative 'system/control/engines_system.rb'
   #update_engines_system_software
   #restart_mgmt
   #recreate_mgmt
-  include SystemControlEnginesSystem
+  include PublicApiSystemControlEnginesSystem
 
   require_relative 'system/control/registry.rb'
   #force_registry_restart
-  include SystemControlRegistry
+  include PublicApiSystemControlRegistry
 
   require_relative 'system/keys.rb'
   #system/keys
   #  generate_engines_user_ssh_key
   #  update_public_key
   #  get_public_key
-  include SystemKeys
+  include PublicApiSystemKeys
 
   #system/builder
 
@@ -138,7 +138,7 @@ class PublicApi < ErrorsApi
   #  list_certs #EX
   #  remove_cert #EX
   #  upload_ssl_certificate #EX
-  include SystemCertificates
+  include PublicApiSystemCertificates
 
   require_relative 'system/config.rb'
   #system/config #EX
@@ -151,12 +151,12 @@ class PublicApi < ErrorsApi
   #  enable_remote_exception_logging#EX
   #  disable_remote_exception_logging   #EX
   #  is_remote_exception_logging? #EX
-  include Config
+  include PublicApiConfig
 
   require_relative 'system/first_run.rb'
   #system/firsrun
   # set_first_run_parameters ex
-  include SystemFirstRun
+  include PublicApiSystemFirstRun
 
   #system/domain(s)
   require_relative 'system/domains.rb'
@@ -165,7 +165,7 @@ class PublicApi < ErrorsApi
   #  add_domain #nex
   #  remove_domain #nex
   #  list_domains #nex
-  include SystemDomains
+  include PublicApiSystemDomains
 
   #system/metrics
   require_relative 'system/metrics.rb'
@@ -173,25 +173,25 @@ class PublicApi < ErrorsApi
   #  SystemStatus.get_system_load_info
   #  MemoryStatistics.total_memory_statistics(@@engines_api)
   #  get_disk_statistics
-  include SystemMetrics
+  include PublicApiSystemMetrics
 
   require_relative 'system/reserved.rb'
   #system/reserved
   #  reserved_ports
   #  taken_hostnames
   #  reserved_engine_names
-  include SystemReserved
+  include PublicApiSystemReserved
 
   require_relative 'system/status.rb'
   #system/status
   #  first_run_required? #x
   #  SystemStatus.system_status
-  include Status
+  include PublicApiStatus
 
   require_relative 'system/templater'
   #system/template ex
   #get_resolved_string ex
-  include SystemTemplater
+  include PublicApiSystemTemplater
 
   require_relative 'system/versions.rb'
   #system/versions
@@ -200,6 +200,6 @@ class PublicApi < ErrorsApi
   #  version_string
   #  system_version
   #  SystemUtils.get_os_release_data
-  include SystemVersions
+  include PublicApiSystemVersions
 
 end

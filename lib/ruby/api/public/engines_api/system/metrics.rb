@@ -1,4 +1,4 @@
-module SystemMetrics
+module PublicApiSystemMetrics
   
   require_relative '/opt/engines/lib/ruby/api/system/memory_statistics.rb'
   require_relative '/opt/engines/lib/ruby/api/system/system_status.rb'

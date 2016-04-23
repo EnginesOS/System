@@ -1,4 +1,4 @@
-module Service
+module PublicApiService
   
  def loadManagedService(service_name)
    @system_api.loadManagedService(service_name)

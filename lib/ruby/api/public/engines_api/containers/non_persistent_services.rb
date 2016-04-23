@@ -1,4 +1,4 @@
-module ContainersNonPersistentServices
+module PublicApiContainersNonPersistentServices
  def force_register_attached_service(service_hash)
    @service_manager.register_non_persistent_service(service_hash)
  end

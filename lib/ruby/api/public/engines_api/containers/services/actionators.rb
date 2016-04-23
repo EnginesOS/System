@@ -1,4 +1,4 @@
-module ServiceActionators
+module PublicApiServiceActionators
 
 def   list_service_actionators(service)
       @system_api.list_service_actionators(service)

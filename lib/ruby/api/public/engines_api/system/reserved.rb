@@ -1,4 +1,4 @@
-module SystemReserved
+module PublicApiSystemReserved
   
   def reserved_engine_names
       names = list_managed_engines

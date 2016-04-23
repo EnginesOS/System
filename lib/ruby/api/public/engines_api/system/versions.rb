@@ -1,4 +1,4 @@
-module SystemVersions
+module PublicApiSystemVersions
   # @return [String]
   # return system release string current|master|beta-rc|...
   def  get_engines_system_release

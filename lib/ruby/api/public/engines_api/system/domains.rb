@@ -1,4 +1,4 @@
-module SystemDomains
+module PublicApiSystemDomains
   
   def add_domain(params)
   @core_api.add_domain(params)

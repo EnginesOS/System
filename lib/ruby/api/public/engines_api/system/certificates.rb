@@ -1,4 +1,4 @@
-module SystemCertificates
+module PublicApiSystemCertificates
   
 def get_system_ca
 return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)

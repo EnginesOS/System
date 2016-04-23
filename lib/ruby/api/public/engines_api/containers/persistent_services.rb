@@ -1,4 +1,4 @@
-module ContainersPersistentServices
+module PublicApiContainersPersistentServices
  
     
    def list_persistent_services(engine)

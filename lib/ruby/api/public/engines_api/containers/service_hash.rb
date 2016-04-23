@@ -1,4 +1,4 @@
-module ContainersServiceHash
+module PublicApiContainersServiceHash
   
   def find_engine_service_hash(query_hash)
     @service_manager.find_engine_service_hash(query_hash)

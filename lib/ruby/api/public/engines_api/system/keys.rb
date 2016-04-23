@@ -1,4 +1,4 @@
-module SystemKeys
+module PublicApiSystemKeys
  
   def get_public_key
      @system_api.get_public_key

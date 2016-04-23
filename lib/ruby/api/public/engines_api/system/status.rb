@@ -1,4 +1,4 @@
-module Status
+module PublicApiStatus
   
  
   def first_run_required?

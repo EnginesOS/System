@@ -1,4 +1,4 @@
-module Services
+module PublicApiServices
   def getManagedServices
     @system_api.getManagedServices
   end

@@ -1,4 +1,4 @@
-module SystemControlEnginesSystem
+module PublicApiSystemControlEnginesSystem
   def update_engines_system_software
   @core_api.update_engines_system_software
   end

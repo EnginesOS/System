@@ -1,4 +1,4 @@
-module SystemControlBaseOS
+module PublicApiSystemControlBaseOS
   
   def update_system
      @system_api.update_system
