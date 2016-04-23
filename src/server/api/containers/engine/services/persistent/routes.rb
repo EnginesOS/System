@@ -1,6 +1,6 @@
 get '/v0/containers/engine/:engine_name/services/persistent/' do
 
-  r = @@core_api.engine_persistent_services(params[:engine_name])
+  r = @@engines_api.engine_persistent_services(params[:engine_name])
   unless r.is_a?(FalseClass)
     return r.to_json
   else
@@ -18,7 +18,7 @@ hash = {}
         hash[:ctype] = 'container'    
 p hash
           
-  r = @@core_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
+  r = @@engines_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json

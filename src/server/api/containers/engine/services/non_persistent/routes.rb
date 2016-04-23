@@ -1,7 +1,7 @@
 
 get '/v0/containers/engine/:engine_name/services/non_persistent/' do
   engine = get_engine(params[:engine_name])
-  r = @@core_api.list_non_persistent_services(engine)
+  r = @@engines_api.list_non_persistent_services(engine)
 
   unless r.is_a?(FalseClass)
     return r.to_json
@@ -21,7 +21,7 @@ hash = {}
         hash[:type_path] = splats[0]    
 p hash
           
-  r = @@core_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
+  r = @@engines_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json

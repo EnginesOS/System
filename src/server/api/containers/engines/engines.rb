@@ -3,7 +3,7 @@
 #/containers/engines/
 
 get '/v0/containers/engines/' do
-  engines = @@core_api.getManagedEngines
+  engines = @@engines_api.getManagedEngines
   unless engines.is_a?(FalseClass)
     return engines.to_json
   else
@@ -12,7 +12,7 @@ get '/v0/containers/engines/' do
 end
 
 get '/v0/containers/engines/container_name' do
-  container_names = @@core_api.list_managed_engines
+  container_names = @@engines_api.list_managed_engines
   unless container_names.is_a?(FalseClass)
     return container_names.to_json
   else
@@ -21,7 +21,7 @@ get '/v0/containers/engines/container_name' do
 end
 
 get '/v0/containers/engines/state' do
-  states = @@core_api.get_engines_states
+  states = @@engines_api.get_engines_states
   unless states.is_a?(FalseClass)
     return states.to_json
   else

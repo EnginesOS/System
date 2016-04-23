@@ -3,7 +3,7 @@
 #/containers/name/network_metrics  ?
 #
 get '/v0/containers/changed/' do
-  changed = @@core_api.get_changed_containers
+  changed = @@engines_api.get_changed_containers
   unless changed.is_a?(FalseClass)
     return changed.to_json
   else

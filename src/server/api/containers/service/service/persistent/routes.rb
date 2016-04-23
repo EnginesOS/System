@@ -49,7 +49,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
 
-  r = @@core_api.find_service_service_hash(hash)
+  r = @@engines_api.find_service_service_hash(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json

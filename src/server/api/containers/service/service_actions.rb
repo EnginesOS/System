@@ -92,7 +92,7 @@ delete '/v0/containers/service/:service_name/destroy' do
 end
 
 delete '/v0/containers/service/:service_name/delete' do
-  r =  @@core_api.remove_service(params[:service_name])
+  r =  @@engines_api.remove_service(params[:service_name])
   unless r.is_a?(FalseClass)
     return r
   else

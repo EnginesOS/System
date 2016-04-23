@@ -49,7 +49,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:ns/*' do
   
   hash = Utils.engine_service_hash_from_params(params)
 
-  r = @@core_api.find_engine_service_hash(hash)
+  r = @@engines_api.find_engine_service_hash(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json

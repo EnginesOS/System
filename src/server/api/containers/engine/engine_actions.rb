@@ -90,7 +90,7 @@ end
 
 get '/v0/containers/engine/:engine_name/reinstall' do
   engine = get_engine(params[:engine_name])
-  r = @@core_api.reinstall_engine(engine)
+  r = @@engines_api.reinstall_engine(engine)
   unless r.is_a?(FalseClass)
     return r
   else
@@ -110,7 +110,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
 end
 
 delete '/v0/containers/engine/:engine_name/delete' do
-  r =  @@core_api.remove_engine(params[:engine_name])
+  r =  @@engines_api.remove_engine(params[:engine_name])
 
   unless r.is_a?(FalseClass)
     return r

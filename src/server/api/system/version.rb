@@ -12,7 +12,7 @@ get '/v0/system/version/release' do
 end
 
 get '/v0/system/version/api' do
-  api = @@core_api.api_version
+  api = @@engines_api.api_version
   unless api.is_a?(FalseClass)
     return api.to_json
   else
@@ -21,7 +21,7 @@ get '/v0/system/version/api' do
 end
 
 get '/v0/system/version/ident' do
-  ident = @@core_api.version_string
+  ident = @@engines_api.version_string
   unless ident.is_a?(FalseClass)
     return ident.to_json
   else
@@ -30,7 +30,7 @@ get '/v0/system/version/ident' do
 end
 
 get '/v0/system/version/system' do
-  system = @@core_api.system_version
+  system = @@engines_api.system_version
   unless system.is_a?(FalseClass)
     return system.to_json
   else

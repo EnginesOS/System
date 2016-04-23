@@ -1,9 +1,9 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class EnginesApi < ErrorsApi
   
-  def initialize(core_api , system_api)    
+  def initialize(core_api )    
     @core_api = core_api
-    @system_api = system_api
+    @system_api = @core_api.system_api
     @service_manager = core_api.service_manager    
   end
   
@@ -191,7 +191,7 @@ require_relative 'containers/non_persistent_services.rb'
   require_relative 'system/metrics.rb'
 #  MemoryStatistics.get_system_memory_info
 #  SystemStatus.get_system_load_info
-#  MemoryStatistics.total_memory_statistics(@@core_api)
+#  MemoryStatistics.total_memory_statistics(@@engines_api)
 #  get_disk_statistics
   include SystemMetrics
   
