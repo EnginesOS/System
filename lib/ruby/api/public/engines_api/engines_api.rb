@@ -36,7 +36,7 @@ class PublicApi < ErrorsApi
   #  get_resolved_engine_string #ex
   #  get_build_report #ex
   #  reinstall_engine #ex
-  include PublicApiPublicApiEngine
+  include PublicApiEngine
 
   require_relative 'containers/engines/actionators.rb'
   #container/engines/actionators
