@@ -1,7 +1,7 @@
 module SystemMetrics
   
-  require_relative '../system/memory_statistics.rb'
-  require_relative '../system/system_status.rb'
+  require_relative '../../system/memory_statistics.rb'
+  require_relative '../../system/system_status.rb'
   
   def get_system_memory_info
   MemoryStatistics.get_system_memory_info
