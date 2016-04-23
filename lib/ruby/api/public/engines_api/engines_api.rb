@@ -202,7 +202,7 @@ require_relative 'containers/non_persistent_services.rb'
 #  reserved_engine_names
   include SystemReserved
   
-  require_relative 'system/system_status.rb'
+  require_relative 'system/status.rb'
   #system/status
 #  first_run_required? #x
 #  SystemStatus.system_status
