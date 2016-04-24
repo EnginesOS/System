@@ -1,5 +1,5 @@
 module PublicApiEngine
- def loadManagedEngine   #vc engines system
+ def loadManagedEngine(engine_name)   #vc engines system
    @system_api.loadManagedEngine(engine_name)
  end
    def get_resolved_engine_string #ex
