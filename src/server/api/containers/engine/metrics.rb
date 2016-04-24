@@ -1,5 +1,6 @@
 get '/v0/containers/engine/:engine_name/metrics/network' do
-  r = @@engines_api.get_container_network_metrics(params[:engine_name])
+  engine = get_engine(params[:engine_name])
+  r = @@engines_api.get_container_network_metrics(engine)
   unless r.is_a?(FalseClass)
     return r.to_json
   else

@@ -9,7 +9,7 @@ module PublicApiContainersNonPersistentServices
    @service_manager.deregister_non_persistent_service(service_hash)
  end
     
-   def list_non_persistent_services
+   def list_non_persistent_services(engine)
      @service_manager.list_non_persistent_service(engine)
    end
 end
