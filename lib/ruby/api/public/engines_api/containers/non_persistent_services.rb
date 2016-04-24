@@ -10,6 +10,6 @@ module PublicApiContainersNonPersistentServices
  end
     
    def list_non_persistent_services(engine)
-     @service_manager.list_non_persistent_service(engine)
+     @service_manager.list_non_persistent_services(engine)
    end
 end
