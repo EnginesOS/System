@@ -3,7 +3,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' d
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
- service_hash =  @@engines_api.find_engine_service_hash(params)
+ service_hash =  @@engines_api.find_engine_service_hash(hash)
   return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
   r = @@engines_api.force_register_attached_service(service_hash)
 
