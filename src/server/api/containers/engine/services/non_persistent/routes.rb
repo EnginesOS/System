@@ -19,13 +19,13 @@ hash = {}
         hash[:publisher_namespace] = params[:ns]
         hash[:parent_engine] = params[:engine_name]
         hash[:type_path] = splats[0]    
-p hash
+
           
   r = @@engines_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(hrequest, ash)
+    return log_error(request, hash)
   end
 end
