@@ -1,6 +1,6 @@
 get '/v0/containers/engine/:engine_name/services/persistent/' do
-
-  r = @@engines_api.list_persistent_services(params[:engine_name])
+  engine = get_engine(params[:engine_name])
+  r = @@engines_api.list_persistent_services(engine)
   unless r.is_a?(FalseClass)
     return r.to_json
   else
