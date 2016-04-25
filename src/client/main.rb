@@ -182,10 +182,11 @@ end
 def rest_post(path, params=nil, content_type=nil)
 
   begin
-   content_type(content_type ) unless content_type == nil
+  
     
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.post(@base_url + path, params)
+    r.content_type(content_type ) unless content_type == nil
     write_response(r)
     exit
   rescue StandardError => e
