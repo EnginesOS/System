@@ -1,2 +1,2 @@
-require_relative 'persistent/routes.rb'
-require_relative 'non_persistent/routes.rb'
+require_relative 'non_persistent_services.rb'
+require_relative 'persistent_services.rb'
