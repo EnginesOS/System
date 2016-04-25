@@ -136,13 +136,14 @@ def perform_get
   exit
 end
 
-def perform_post(params=nil) 
+def perform_post(params=nil, content_type=nil) 
   post_params = {}
     post_params[:api_vars] = params
   p @route
-  rest_post(@route,post_params)  
+  rest_post(@route,post_params, content_type)  
   exit
 end
+
 def perform_delete(params=nil) 
   p @route
   rest_delete(@route,params)  
@@ -178,9 +179,11 @@ def write_response(r)
       end
 
 end
-def rest_post(path, params=nil)
+def rest_post(path, params=nil, content_type=nil)
 
   begin
+   content_type(content_type ) unless content_type == nil
+    
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.post(@base_url + path, params)
     write_response(r)

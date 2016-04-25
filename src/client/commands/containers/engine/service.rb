@@ -15,12 +15,12 @@ when 'import'
 @route += '/' + ARGV[4]
 params = {}
   params[:data] = read_stdin_data
-perform_post(params)
+perform_post(params,'application/octet-stream')
 when 'replace'
 @route += '/' + ARGV[4]
 params = {}
   params[:data] = read_stdin_data
-  perform_post(params)
+  perform_post(params,'application/octet-stream')
 end
 
 if cmd.nil?
