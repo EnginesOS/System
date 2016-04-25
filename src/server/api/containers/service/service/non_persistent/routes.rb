@@ -13,7 +13,7 @@
 get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/register' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
-
+  return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
  service_hash = @@engines_api.find_service_service_hash(hash)
   r = @@engines_api.force_register_attached_service(hash)
 
@@ -28,6 +28,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/reregiste
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   service_hash = @@engines_api.find_service_service_hash(hash)
+  return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
   r = @@engines_api.force_reregister_attached_service(service_hash)
 
   unless r.is_a?(FalseClass)
@@ -41,7 +42,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/deregiste
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   service_hash = @@engines_api.find_service_service_hash(hash)
- 
+  return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
  r = @@engines_api.force_deregister_attached_service(service_hash)
   unless r.is_a?(FalseClass)
     return r.to_json
@@ -68,7 +69,7 @@ p hash
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request)
+    return log_error(request, 'service not found', hash)
   end
   
   
