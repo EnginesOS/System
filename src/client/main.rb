@@ -140,6 +140,7 @@ def perform_post(params=nil, content_type=nil)
   post_params = {}
     post_params[:api_vars] = params
   p @route
+  content_type = 'text/html' if content_type == nil
   rest_post(@route,post_params, content_type)  
   exit
 end
@@ -179,14 +180,14 @@ def write_response(r)
       end
 
 end
-def rest_post(path, params=nil, content_type=nil)
+def rest_post(path, params, content_type )
 
   begin
   
     
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.post(@base_url + path, params)
-    r.content_type(content_type ) unless content_type == nil
+    r = RestClient.post(@base_url + path, params, :content_type => content_type )
+  
     write_response(r)
     exit
   rescue StandardError => e
