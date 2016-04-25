@@ -118,7 +118,7 @@ end
     stdin_data += $_
   end
    end
-   puts "READ " + stdin_data.length.to_s + ' bytes'
+   puts "Read " + stdin_data.length.to_s + ' bytes'
    stdin_data
  rescue Timeout::Error
    puts "Timeout on data read from stdin"  
@@ -185,6 +185,7 @@ def rest_post(path, params=nil)
     write_response(r)
     exit
   rescue StandardError => e
+    params[:data] = nil
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
 end
