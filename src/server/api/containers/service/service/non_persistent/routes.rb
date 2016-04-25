@@ -16,7 +16,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/register'
   
  service_hash = @@engines_api.find_service_service_hash(hash)
   return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
-  r = @@engines_api.force_register_attached_service(hash)
+  r = @@engines_api.force_register_attached_service(service_hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json

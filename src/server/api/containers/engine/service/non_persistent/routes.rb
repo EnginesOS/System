@@ -35,7 +35,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister'
   
  service_hash =  @@engines_api.find_engine_service_hash(service_hash)
   return log_error(request, 'Service not found', hash) if service_hash.is_a?(FalseClass)
- r = @@engines_api.force_deregister_attached_service(hash)
+ r = @@engines_api.force_deregister_attached_service(service_hash)
   unless r.is_a?(FalseClass)
     return r.to_json
   else
