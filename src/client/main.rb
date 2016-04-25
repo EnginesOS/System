@@ -164,6 +164,7 @@ def rest_get(path,params=nil)
   rescue StandardError => e
 
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+   
   end
 end
 
@@ -193,6 +194,7 @@ def rest_post(path, params, content_type )
   rescue StandardError => e
     params[:api_vars][:data] = nil
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    STDERR.puts r.to_s
   end
 end
 def rest_delete(path, params=nil)
