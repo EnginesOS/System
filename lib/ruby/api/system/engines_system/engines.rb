@@ -45,10 +45,19 @@ module Engines
 
   def set_engine_hostname_details(container, params)
     clear_error
-
-    hostname = params[:host_name]
+    p :set_engine_network_properties
+    p engine.container_name
+    p params
+    #FIXME [:hostname]  silly host_name from gui drop it
+    if params.key?(:host_name)
+      hostname = params[:host_name]
+    else
+      hostname = params[:hostname] 
+    end
+    
     domain_name = params[:domain_name]
     SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
+    
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
     save_container(container)
