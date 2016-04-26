@@ -46,7 +46,7 @@ module Engines
   def set_engine_hostname_details(container, params)
     clear_error
     p :set_engine_network_properties
-    p engine.container_name
+    p container.container_name
     p params
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
