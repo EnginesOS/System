@@ -5,7 +5,7 @@ module PublicApiEngine
    def get_resolved_engine_string #ex
      @core_api.get_resolved_engine_string(env_value, engine)
    end
-    def get_build_report #ex
+    def get_build_report(engine_name)
       @core_api.get_build_report(engine_name)
     end
     
