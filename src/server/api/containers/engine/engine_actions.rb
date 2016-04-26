@@ -16,7 +16,7 @@ get '/v0/containers/engine/:engine_name/create' do
   r = engine.create_container
   return false if engine.is_a?(FalseClass)
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error('create')
   end
@@ -27,7 +27,7 @@ get '/v0/containers/engine/:engine_name/recreate' do
   return false if engine.is_a?(FalseClass)
   r = engine.recreate_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(engine.last_error)
   end
@@ -38,7 +38,7 @@ get '/v0/containers/engine/:engine_name/stop' do
   return false if engine.is_a?(FalseClass)
   r = engine.stop_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -49,7 +49,7 @@ get '/v0/containers/engine/:engine_name/start' do
   return false if engine.is_a?(FalseClass)
   r = engine.start_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -60,7 +60,7 @@ get '/v0/containers/engine/:engine_name/restart' do
   return false if engine.is_a?(FalseClass)
   r = engine.restart_container.is_a?(FalseClass)
   unless r
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -71,7 +71,7 @@ get '/v0/containers/engine/:engine_name/pause' do
   return false if engine.is_a?(FalseClass)
   r = engine.pause_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -82,7 +82,7 @@ get '/v0/containers/engine/:engine_name/unpause' do
   return false if engine.is_a?(FalseClass)
   r = engine.unpause_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -92,7 +92,7 @@ get '/v0/containers/engine/:engine_name/reinstall' do
   engine = get_engine(params[:engine_name])
   r = @@engines_api.reinstall_engine(engine)
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error('reinstall')
   end
@@ -103,7 +103,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   return false if engine.is_a?(FalseClass)
   r = engine.destroy_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, engine.last_error)
   end
@@ -113,7 +113,7 @@ delete '/v0/containers/engine/:engine_name/delete' do
   r =  @@engines_api.remove_engine(params[:engine_name])
 
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, 'delete_image')
   end

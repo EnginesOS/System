@@ -6,7 +6,7 @@ get '/v0/containers/service/:service_name/create' do
   r = service.create_container
   return false if service.is_a?(FalseClass)
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request,service.last_error)
   end
@@ -17,7 +17,7 @@ get '/v0/containers/service/:service_name/recreate' do
   return false if service.is_a?(FalseClass)
   r = service.recreate_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request,service.last_error)
   end
@@ -28,7 +28,7 @@ get '/v0/containers/service/:service_name/stop' do
   return false if service.is_a?(FalseClass)
   r = service.stop_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request,service.last_error)
   end
@@ -39,7 +39,7 @@ get '/v0/containers/service/:service_name/start' do
   return false if service.is_a?(FalseClass)
   r = service.start_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, service.last_error)
   end
@@ -50,7 +50,7 @@ get '/v0/containers/service/:service_name/restart' do
   return false if service.is_a?(FalseClass)
   r = service.restart_container.is_a?(FalseClass)
   unless r
-    return r
+    return r.to_json
   else
     return log_error(request, service.last_error)
   end
@@ -61,7 +61,7 @@ get '/v0/containers/service/:service_name/pause' do
   return false if service.is_a?(FalseClass)
   r = service.pause_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, service.last_error)
   end
@@ -72,7 +72,7 @@ get '/v0/containers/service/:service_name/unpause' do
   return false if service.is_a?(FalseClass)
   r = service.unpause_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, service.last_error)
   end
@@ -85,7 +85,7 @@ delete '/v0/containers/service/:service_name/destroy' do
   return false if service.is_a?(FalseClass)
   r = service.destroy_container
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request, service.last_error)
   end
@@ -94,7 +94,7 @@ end
 delete '/v0/containers/service/:service_name/delete' do
   r =  @@engines_api.remove_service(params[:service_name])
   unless r.is_a?(FalseClass)
-    return r
+    return r.to_json
   else
     return log_error(request)
   end

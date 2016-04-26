@@ -46,7 +46,11 @@ begin
     p :ERROR
     p args
     error_mesg = {}
-    error_mesg[:route] = request.fullpath
+      if request.is_a?(String)
+        error_mesg[:route] = request
+      else        
+        error_mesg[:route] = request.fullpath        
+      end
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
     error_mesg[:api_error] =  @@engines_api.last_error.to_s
