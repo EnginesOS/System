@@ -14,12 +14,18 @@ module Engines
 
   def set_engine_network_properties(engine, params)
     clear_error
+    p :set_engine_network_properties
+    p engine.container_name
+    p params
     return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
     return false
   end
 
   def set_engine_web_protocol_properties(engine, params)
     clear_error
+    p :set_engine_web_protocol_properties
+    p engine.container_name
+    p params
     protocol = params[:http_protocol]
     return false if protocol.nil?
     protocol.downcase
