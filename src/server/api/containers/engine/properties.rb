@@ -16,8 +16,8 @@ end
 post '/v0/containers/engine/:engine_name/properties/runtime' do
 
   cparams =  Utils::Params.assemble_params(params, [:engine_name], [:memory, :environment_variables]) # :all) 
-
-  r =   @@engines_api.set_container_runtime_properties(cparams) #Utils.symbolize_keys(params))
+  engine = get_engine(params[:engine_name])
+  r =   @@engines_api.set_container_runtime_properties(engine, cparams) #Utils.symbolize_keys(params))
   return log_error(request , cparams) if r.is_a?(FalseClass)
   r.to_json
 end
