@@ -1,7 +1,7 @@
 get '/v0/containers/engine/:engine_name/actions/' do
   engine = get_engine(params[:engine_name])
   return false if engine.is_a?(FalseClass)
-  list = @@engines_api.list_engine_actionators(engine)
+  list = @@engines_api.load_engine_actionators(engine)
     unless list.is_a?(FalseClass)
       list.to_json
   else

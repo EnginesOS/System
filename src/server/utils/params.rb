@@ -17,10 +17,10 @@ module Params
     #    vars = params[:api_vars]
     #    Utils.symbolize_keys(vars)
     #    cparams.merge!(vars)
-    p ':assembled r_params + o_params + a_params'
-    p r_params
-    p o_params
-    p a_params
+#    p ':assembled r_params + o_params + a_params'
+#    p r_params
+#    p o_params
+#    p a_params
     a_params
   end
 
