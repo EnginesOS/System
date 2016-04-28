@@ -33,25 +33,31 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   has_data = true
   stream :keep_open do |out|
-    while has_data == true do
-    begin
-
-  
-    bytes = build_log_file.read_nonblock(100)            
-    out << bytes
-     
- rescue IO::WaitReadable
-      out << bytes
-      retry
-rescue EOFError
-  p :eof
-out  << bytes 
-build_log_file.close
-      has_data = false
-    rescue IOError
-      has_data = false
-   end
+    connections << out
+    out.callback {
+           #delete the connection 
+           connections.delete(out)
+         }
+    while has_data == true 
+      begin
+        bytes = build_log_file.read_nonblock(100)            
+        out << bytes     
+      rescue IO::WaitReadable
+        out << bytes
+        retry
+      rescue EOFError
+        p :eof
+        out  << bytes 
+        build_log_file.close
+        has_data = false
+      rescue IOError
+        has_data = false
+        out  << bytes 
+        build_log_file.close
+        out.close
+      end
     end
+    
   end
- break;
+
 end
