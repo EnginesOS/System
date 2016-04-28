@@ -21,7 +21,7 @@ end
       
       while
        begin 
-         bytes = build_log_file.read_nonblock
+         bytes = build_log_file.read_nonblock(100)
          rescue IO::WaitReadable
                 retry
          rescue EOFError
