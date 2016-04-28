@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/consumers/:parent_engine' do
     p params
   cparams =  Utils::Params.address_params(params, [:service_name,:parent_engine])
     p cparams
-  r = service.registered_consumer(cparams)
+  r = service.registered_consumers(cparams)
 
   unless r.is_a?(FalseClass)
     return r.to_json
