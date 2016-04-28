@@ -28,13 +28,14 @@ get '/v0/engine_builder/last_build/params' do
       return log_error(request)
     end
   end
-  out = nil
+  out_h = nil
 get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   stream :keep_open do |out|
+    out_h = out
       settings.connections << out
       out.callback { settings.connections.delete(out) }
     end
-  r = @@engines_api.follow_build(out)
+  r = @@engines_api.follow_build(out_h)
 #  r = @@engines_api.follow_build
   unless r.is_a?(FalseClass)
     return r.to_json
