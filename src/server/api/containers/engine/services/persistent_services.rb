@@ -10,13 +10,13 @@ end
 get '/v0/containers/engine/:id/services/persistent/:ns/*' do
   splats = params['splat']
     
-
-hash = {}
-        hash[:publisher_namespace] = params[:ns]
-        hash[:parent_engine] = params[:engine_name]
-        hash[:type_path] = splats[0]    
-        hash[:ctype] = 'container'    
-p hash
+  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+#hash = {}
+#        hash[:publisher_namespace] = params[:ns]
+#        hash[:parent_engine] = params[:engine_name]
+#        hash[:type_path] = splats[0]    
+#        hash[:ctype] = 'container'    
+#p hash
           
   r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
