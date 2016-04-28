@@ -33,7 +33,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   has_data = true
   stream :keep_open do |out|
-   
+    EventMachine::PeriodicTimer.new(20) { out << "data: \n\n" }
     while has_data == true 
       begin
         bytes = build_log_file.read_nonblock(100)            
