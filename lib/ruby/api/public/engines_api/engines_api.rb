@@ -140,6 +140,9 @@ class PublicApi < ErrorsApi
   #  upload_ssl_certificate #EX
   include PublicApiSystemCertificates
 
+  require_relative 'builder/builder.rb'
+  include PublicApiBuilder
+  
   require_relative 'system/config.rb'
   #system/config #EX
   #  get_default_domain #EX
