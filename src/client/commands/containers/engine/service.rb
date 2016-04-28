@@ -1,4 +1,5 @@
 @route += '/' + ARGV[3] + '/'
+params = {}
 STDERR.puts  @route 
 cmd = nil
 post = false
@@ -15,11 +16,9 @@ when 'import'
 cmd = ARGV[4]
 post = true
 STDERR.puts  @route 
-params = {}
 params[:data] = read_stdin_data  
 when 'replace'
 @route += '/' + ARGV[4]
-params = {}
   params[:data] = read_stdin_data
   perform_post(params,'application/octet-stream')
 end
@@ -39,6 +38,7 @@ end
 @route += '/' + cmd unless cmd.nil?
 
 if post == true
+  STDERR.puts  @route 
   perform_post(params,'application/octet-stream')
 else 
 perform_get
