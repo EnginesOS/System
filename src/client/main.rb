@@ -139,7 +139,8 @@ end
 def perform_post(params=nil, content_type=nil) 
   post_params = {}
     post_params[:api_vars] = params
-  p @route
+      
+  p @route unless content_type == 'application/octet-stream'
  
   rest_post(@route,post_params, content_type)  
   exit
