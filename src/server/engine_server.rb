@@ -20,8 +20,10 @@ begin
   require_relative 'api/routes.rb'
   
   get '/v0/*' do
-    p :No_Such_GET
-    p :params
+    STDERR.puts :No_Such_GET
+    STDERR.puts request.to_s
+    STDERR.puts 'params'
+    STDERR.puts params
     status(404)
   end
 
