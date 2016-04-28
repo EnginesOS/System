@@ -31,7 +31,7 @@ get '/v0/engine_builder/last_build/params' do
  
 get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
-  
+  bytes = ''
   stream :keep_open do |out|
     begin
     loop do
@@ -43,7 +43,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
       retry
 rescue EOFError
   p :eof
-out.write(bytes)
+out  << bytes 
 build_log_file.close
    end
   end
