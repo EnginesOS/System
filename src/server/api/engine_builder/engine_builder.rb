@@ -33,6 +33,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   stream :keep_open do |out|
     out_h = out
       settings.connections << out
+    @@engines_api.follow_build(out_h)
       p out.to_s
       out.callback { settings.connections.delete(out) }
     end
