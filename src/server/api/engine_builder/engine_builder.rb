@@ -36,7 +36,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
     begin
     loop do
   
-    bytes = build_log_file.read_nonblock             
+    bytes = build_log_file.read_nonblock(100)            
     out << bytes
       end
  rescue IO::WaitReadable
