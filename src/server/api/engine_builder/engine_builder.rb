@@ -39,7 +39,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
     bytes = build_log_file.read_nonblock             
     out << bytes
       end
-# rescue IO::WaitReadable
+ rescue IO::WaitReadable
       retry
 rescue EOFError
 out.write(bytes)
