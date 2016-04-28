@@ -14,7 +14,7 @@ end
 get '/v0/containers/engine/:engine_name/services/non_persistent/:ns/*' do
   splats = params['splat']
     
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
 #hash = {}
 #        hash[:publisher_namespace] = params[:ns]
 #        hash[:parent_engine] = params[:engine_name]
