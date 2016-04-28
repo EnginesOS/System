@@ -4,7 +4,7 @@ module BuilderSettings
   @@BuildRunningParamsFile = '/opt/engines/run/system/flags/building_params'
   @@BuildFailedFile = '/opt/engines/run/system/flags/last_build_fail'
   @@DefaultBuildReportTemplateFile = '/opt/engines/system/templates/deployment/global/default_built_report_template'
-
+  @@BuildOutputFile = '/home/engines/deployment/deployed/build.out'
   @@PreStartScript = '/home/engines/scripts/pre-runnning.sh'
   @@InstallScript = '/home/engines/scripts/custom_install.sh'
   @@StartScript = '/home/engines/scripts/custom_start.sh'
@@ -17,6 +17,9 @@ module BuilderSettings
   @@BackupScriptsRoot = '/home/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
    
+  def SystemConfig.BuildOutputFile
+    @@BuildOutputFile
+  end
    def SystemConfig.BackupScriptsSrcRoot
      @@BackupScriptsSrcRoot
    end
