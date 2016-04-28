@@ -7,8 +7,11 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
     return log_error(request, params[:engine_name])
   end
 end
+
+
+
 get '/v0/containers/engine/:id/services/persistent/:ns/*' do
-  splats = params['splat']
+
     
   hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
 #hash = {}
@@ -16,7 +19,7 @@ get '/v0/containers/engine/:id/services/persistent/:ns/*' do
 #        hash[:parent_engine] = params[:engine_name]
 #        hash[:type_path] = splats[0]    
 #        hash[:ctype] = 'container'    
-#p hash
+p hash
           
   r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 

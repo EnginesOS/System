@@ -12,7 +12,7 @@ end
 
 
 get '/v0/containers/service/:service_name/services/non_persistent/:ns/*' do
-  splats = params['splat']
+  
     
   hash = Utils::ServiceHash.service_service_hash_from_params(params, true)
 #hash = {}
