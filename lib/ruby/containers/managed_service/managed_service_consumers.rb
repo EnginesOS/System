@@ -23,7 +23,7 @@ module ManagedServiceConsumers
       return @container_api.get_registered_against_service(params)
     end
     
-    @container_api.get_registered_consumer(service_params)
+    @container_api.get_registered_consumer(params)
    
   end
 
