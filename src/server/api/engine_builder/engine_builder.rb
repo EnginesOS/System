@@ -47,11 +47,13 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         out << bytes     
       rescue IO::WaitReadable
         out << bytes
-        sleep 1
+        out.flush
+        p :retry
         retry
       rescue EOFError
         p :eof  
         out  << bytes
+        out.flush
         sleep 100 
         build_log_file.close
         has_data = false
