@@ -31,9 +31,9 @@ get '/v0/engine_builder/last_build/params' do
  
 get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
-
+  has_data = true
   stream :keep_open do |out|
-    loop do
+    while has_data == true do
     begin
 
   
@@ -41,14 +41,15 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
     out << bytes
      
  rescue IO::WaitReadable
+      out << bytes
       retry
 rescue EOFError
   p :eof
 out  << bytes 
 build_log_file.close
-
+      has_data = false
     rescue IOError
-      break;
+      has_data = false
    end
     end
   end
