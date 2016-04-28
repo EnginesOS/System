@@ -28,7 +28,7 @@ get '/v0/engine_builder/last_build/params' do
       return log_error(request)
     end
   end
-  
+  out = nil
 get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   stream :keep_open do |out|
       settings.connections << out
