@@ -40,13 +40,14 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
                    retry
             rescue EOFError
            out << bytes
-            return 'OK'
+            break
             build_log_file.close
           rescue => e
     out << bytes
            
             build_log_file.close
-            return 'Maybe ' + e.to_s
+      break
+        
           
   out << bytes
  
