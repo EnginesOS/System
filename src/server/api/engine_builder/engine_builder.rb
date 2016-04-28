@@ -42,12 +42,10 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
  rescue IO::WaitReadable
       retry
 rescue EOFError
+  p :eof
 out.write(bytes)
 build_log_file.close
-      
-rescue StandardError => e
-    return log_error(request,e)
-
-    end
+   end
   end
+ 
 end
