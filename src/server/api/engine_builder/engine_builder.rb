@@ -51,7 +51,8 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         retry
       rescue EOFError
         p :eof  
-        out  << bytes 
+        out  << bytes
+        sleep 100 
         build_log_file.close
         has_data = false
         kal.kill
