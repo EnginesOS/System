@@ -46,6 +46,7 @@ rescue EOFError
   p :eof
 out  << bytes 
 build_log_file.close
+break
    end
     end
   end
