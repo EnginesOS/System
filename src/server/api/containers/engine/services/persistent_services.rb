@@ -10,7 +10,7 @@ end
 
 
 
-get '/v0/containers/engine/:id/services/persistent/:ns/*' do
+get '/v0/containers/engine/:engine_name/services/persistent/:ns/*' do
 
     
   hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
