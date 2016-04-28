@@ -21,7 +21,7 @@ begin
   
   get '/v0/*' do
     STDERR.puts :No_Such_GET
-    STDERR.puts request.to_s
+    STDERR.puts request.fullpath.to_s  
     STDERR.puts 'params'
     STDERR.puts params
     status(404)
