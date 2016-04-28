@@ -22,7 +22,7 @@ hash = {}
           p :np_services_splat
 p hash
           
-  r = @@engines_api.find_engine_service_hash(hash) #find_engine_services_hashes(hash)
+  r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(FalseClass)
     return r.to_json
