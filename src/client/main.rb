@@ -131,7 +131,7 @@ def read_stdin_json
 end
  
 def perform_get  
-  p @route
+  STDERR.puts  @route 
   rest_get(@route) 
   exit
 end
@@ -140,14 +140,14 @@ def perform_post(params=nil, content_type=nil)
   post_params = {}
     post_params[:api_vars] = params
       
-  p @route unless content_type == 'application/octet-stream'
+  STDERR.puts  @route 
  
   rest_post(@route,post_params, content_type)  
   exit
 end
 
 def perform_delete(params=nil) 
-  p @route
+  STDERR.puts  @route 
   rest_delete(@route,params)  
   exit
 end
@@ -188,11 +188,11 @@ def rest_post(path, params, content_type )
   
     
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    unless content_type == nil
-      p 'ct ' + content_type
+    unless content_type.nil?
+      STDERR.puts  'ct ' + content_type
     r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
     else
-      p "no_ct"
+      STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params)
     end
   
@@ -217,7 +217,7 @@ def rest_delete(path, params=nil)
 end
 
 @base_url = 'http://mgmt.engines.internal:4567'
-@route="/v0"
+@route = "/v0"
 require_relative 'commands/commands.rb'
 
 #require_relative 'rset.rb'
