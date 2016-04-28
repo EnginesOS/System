@@ -8,15 +8,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
   end
 end
 
-get '/v0/containers/engine/:engine_name/services/persistent/:ns' do
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
-  r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)  
-    unless r.is_a?(FalseClass)
-      return r.to_json
-    else
-      return log_error(request, hash)
-    end
-end
+
 
 get '/v0/containers/engine/:engine_name/services/persistent/:ns/*' do
 
