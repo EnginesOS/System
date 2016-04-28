@@ -20,8 +20,11 @@ module ManagedServiceConsumers
       params = {}
       params[:publisher_namespace] = @publisher_namespace
       params[:type_path] = @type_path
+      return @container_api.get_registered_against_service(params)
     end
-    @container_api.get_registered_against_service(params)
+    
+    @container_api.get_registered_consumer(service_params)
+   
   end
 
   def registered_consumer(params)
