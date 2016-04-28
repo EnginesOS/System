@@ -1,6 +1,6 @@
 
 
-get '/v0/builder/status' do
+get '/v0/engine_builder/status' do
  r = @@engines_api.build_status
 
   unless r.is_a?(FalseClass)
@@ -10,7 +10,7 @@ get '/v0/builder/status' do
   end
 end
 
-get '/v0/builder/last_build/log' do
+get '/v0/engine_builder/last_build/log' do
   r = @@engines_api.last_build_log
   unless r.is_a?(FalseClass)
     return r.to_json
@@ -19,7 +19,7 @@ get '/v0/builder/last_build/log' do
   end
 end
 
-get '/v0/builder/last_build/params' do
+get '/v0/engine_builder/last_build/params' do
   r = @@engines_api.last_build_params
 
   unless r.is_a?(FalseClass)
@@ -29,7 +29,7 @@ get '/v0/builder/last_build/params' do
     end
   end
   
-get '/v0/builder/follow', provides: 'text/event-stream'  do
+get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   stream :keep_open do |out|
       settings.connections << out
       out.callback { settings.connections.delete(out) }
