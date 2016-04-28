@@ -53,5 +53,5 @@ build_log_file.close
    end
     end
   end
- 
+ break;
 end
