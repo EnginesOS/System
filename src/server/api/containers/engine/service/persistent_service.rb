@@ -14,7 +14,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/export' do
   end
 end
 
-get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
+post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
   p params
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
@@ -28,7 +28,8 @@ get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
     return log_error(request, engine.last_error)
   end
 end
-get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/replace' do
+
+post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/replace' do
   p params
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
