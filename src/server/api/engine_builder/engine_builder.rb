@@ -47,6 +47,8 @@ rescue EOFError
 out  << bytes 
 build_log_file.close
 
+    rescue IOError
+      break;
    end
     end
   end
