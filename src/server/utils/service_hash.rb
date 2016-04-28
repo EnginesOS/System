@@ -14,14 +14,14 @@ end
 end
 
 def self.engine_service_hash_from_params(params, search = false)
- hash = self.service_hash_from_params(params)
+ hash = self.service_hash_from_params(params, search)
  hash[:parent_engine] = params['engine_name']
  hash[:container_type] = 'container'
  hash
 end
 
 def self.service_service_hash_from_params(params, search = false)
-   hash = self.service_hash_from_params(params)
+   hash = self.service_hash_from_params(params, search)
    hash[:parent_engine] = params['service_name'] 
    hash[:container_type] = 'service'
     return hash  
