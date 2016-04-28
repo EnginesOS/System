@@ -46,6 +46,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         out  << bytes 
         build_log_file.close
         has_data = false
+        out.close
       rescue IOError
         has_data = false
         out  << bytes 
