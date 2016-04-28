@@ -33,6 +33,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   
   stream :keep_open do |out|
+    loop do
     begin
     bytes = build_log_file.read_nonblock
             rescue IO::WaitReadable
@@ -53,5 +54,6 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
 rescue StandardError => e
     return log_error(request,e)
 end
+    end
   end
 end
