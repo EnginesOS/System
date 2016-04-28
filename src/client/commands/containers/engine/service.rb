@@ -1,5 +1,5 @@
 @route += '/' + ARGV[3] + '/'
-
+STDERR.puts  @route 
 cmd = nil
 
 case ARGV[4]
@@ -13,6 +13,7 @@ when 'export'
  cmd = ARGV[4]
 when 'import'
 @route += '/' + ARGV[4]
+STDERR.puts  @route 
 params = {}
   params[:data] = read_stdin_data
 perform_post(params,'application/octet-stream')
