@@ -136,6 +136,9 @@ def perform_get
   exit
 end
 
+ 
+
+
 def perform_post(params=nil, content_type=nil) 
   post_params = {}
     post_params[:api_vars] = params
@@ -160,6 +163,9 @@ def rest_get(path,params=nil)
     r = RestClient.get(@base_url + path, params)
 
     STDERR.puts r.headers[:content_type]
+      if  r.headers[:content_type].start_with('text/event-stream')
+        handle_stream(r)
+      end
       write_response(r)
     
   rescue StandardError => e
@@ -168,6 +174,8 @@ def rest_get(path,params=nil)
    
   end
 end
+
+
 
 def write_response(r)
   if r.nil?  
