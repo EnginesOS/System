@@ -34,12 +34,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
   has_data = true
   stream :keep_open do |out|
     
-      kal = Thread.new {
-      
-      sleep 5
-    out << "data: \n\n" 
-    
-      }
+
   
     while has_data == true 
       begin
@@ -51,6 +46,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
       rescue EOFError
         p :eof  
         out  << bytes
+        retry if File.exist?(SystemConfig.BuildRunningParamsFile)
         build_log_file.close
         has_data = false
         kal.kill
