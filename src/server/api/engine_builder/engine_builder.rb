@@ -49,17 +49,17 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         p :eof  
         out  << bytes
         bytes = ''
-        sleep 1
+        sleep 2
         retry if File.exist?(SystemConfig.BuildRunningParamsFile)
         build_log_file.close
         has_data = false
-        kal.kill
+
         out.close
       rescue IOError
         has_data = false
         out  << bytes 
         build_log_file.close
-        kal.kill
+
         out.close
       end
     end
