@@ -10,6 +10,16 @@ get '/v0/engine_builder/status' do
   end
 end
 
+get '/v0/engine_builder/params' do
+  r = @@engines_api.current_build_params
+  unless r.is_a?(FalseClass)
+     return r.to_json
+   else
+     return log_error(request)
+   end
+ end
+
+
 get '/v0/engine_builder/last_build/log' do
   r = @@engines_api.last_build_log
   unless r.is_a?(FalseClass)

@@ -14,6 +14,9 @@ module PublicApiBuilder
     SystemStatus.build_status
 end
 
+def current_build_params
+  SystemStatus.current_build_params
+end
 #writes stream from build.out to out
 #returns 'OK' of FalseClass (latter BuilderApiError
   def follow_build(out)
