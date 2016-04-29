@@ -40,12 +40,16 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
       begin
         bytes = build_log_file.read_nonblock(1000)            
         out << bytes     
+        bytes = ''
       rescue IO::WaitReadable
-        out << bytes
+        out << bytes     
+        bytes = ''
         retry
       rescue EOFError
         p :eof  
         out  << bytes
+        bytes = ''
+        sleep 1
         retry if File.exist?(SystemConfig.BuildRunningParamsFile)
         build_log_file.close
         has_data = false
