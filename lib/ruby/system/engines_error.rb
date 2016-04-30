@@ -8,7 +8,8 @@ class EnginesError # < FalseClass
     @sub_system = 'global'
   end
   
-  def to_json
+  def to_json(opt)
+    p opt
     '{"error_type":"' + @error_type + '","error_mesg":"' + @error_mesg + '","sub_system":"' + @sub_system + '","source":"' + @source + '"}'
 end
 end
