@@ -1,5 +1,5 @@
 require '/opt/engines/lib/ruby/system/engines_error.rb'
-class EnginesSystemError < EnginesError
+class EnginesSystemError #< EnginesError
  
   def initialize(message, type = :fail)
     @error_mesg = message
