@@ -2,7 +2,7 @@ get '/v0/containers/engine/:engine_name/actions/' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(FalseClass)
   list = @@engines_api.list_engine_actionators(engine)
-    unless list.is_a?(FalseClass)
+    unless list.is_a?(EnginesError)
       list.to_json
   else
     return log_error(request, list, engine.last_error)
@@ -13,7 +13,7 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(FalseClass)
   action = @@engines_api.get_engine_actionator(engine, params[:action_name])
-    unless action.is_a?(FalseClass) 
+    unless action.is_a?(EnginesError) 
       action.to_json
   else
     return log_error(request, action, engine.last_error)
@@ -26,7 +26,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
    
   cparams =  Utils::Params.assemble_params(params, [:engine_name], :all)
    action = @@engines_api.perform_engine_action(engine, params[:action_name], cparams)
-  unless action.is_a?(FalseClass) 
+  unless action.is_a?(EnginesError) 
       action.to_json
   else
     return log_error(request, action, engine.last_error)
