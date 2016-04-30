@@ -13,6 +13,7 @@ require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service.rb'
   require_relative 'engines_core_errors.rb'
+ include EnginesCoreErrors
 
   # require_relative '../dns_api.rb'
 

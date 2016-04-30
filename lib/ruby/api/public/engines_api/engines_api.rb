@@ -205,4 +205,7 @@ class PublicApi < ErrorsApi
   #  SystemUtils.get_os_release_data
   include PublicApiSystemVersions
 
+  require_relative 'engines_public_api_errors.rb'
+  include EnginesPublicApiErrors
+  
 end
