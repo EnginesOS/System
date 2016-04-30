@@ -1,4 +1,4 @@
-require_relative 'engines_error.rb'
+require '/opt/engines/lib/ruby/system/engines_error.rb'
 # @All class that report errors children of this
 class ErrorsApi
   attr_reader :last_error
