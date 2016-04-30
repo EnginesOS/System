@@ -1,4 +1,4 @@
-class EnginesError < FalseClass
+class EnginesError # < FalseClass
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
   def initialize(message, type )
