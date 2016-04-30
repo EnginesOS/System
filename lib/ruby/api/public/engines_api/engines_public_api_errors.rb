@@ -1,4 +1,4 @@
-require_relative 'engines_core_error.rb'
+require_relative 'engines_public_api_error.rb'
 module EnginesPublicApiErrors
 
 def log_warn_mesg(mesg,*objs)
