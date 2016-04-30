@@ -1,6 +1,6 @@
 
 module EnginesSystemErrors
-
+  require_relative 'engines_system_error.rb'
 def log_warn_mesg(mesg,*objs)
   return EnginesSystemError.new(mesg.to_s,:warning)
 end
