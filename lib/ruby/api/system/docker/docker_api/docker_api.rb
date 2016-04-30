@@ -1,5 +1,5 @@
 class DockerApi  < ErrorsApi
-  
+  require_relative ' engines_docker_api_error.rb'
   require_relative 'docker_connection.rb'
   require_relative 'docker_api_create_options.rb'
   include DockerApiCreateOptions

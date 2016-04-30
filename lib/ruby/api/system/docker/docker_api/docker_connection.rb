@@ -32,9 +32,8 @@ class DockerConnection < ErrorsApi
       end
     end
     return -1
-  rescue StandardError => e
+  rescue StandardError => e    
     log_exception(e)
-    return false
   end
 
   def ps_container(container)
@@ -58,7 +57,6 @@ class DockerConnection < ErrorsApi
     return r
   rescue StandardError  => e
     log_exception(e)
-    return false
   end
 
   def inspect_container(container)
@@ -103,7 +101,6 @@ class DockerConnection < ErrorsApi
     return hashes[0]
   rescue StandardError => e
     log_exception(e,chunk)
-    return nil
   end
 
   private
@@ -116,7 +113,6 @@ class DockerConnection < ErrorsApi
         return @docker_socket
     rescue StandardError => e
        log_exception(e,'Error opening unix:///var/run/docker.sock')
-       return nil
   end
   
   def clear_cid(container)
@@ -126,6 +122,19 @@ class DockerConnection < ErrorsApi
     return false
   rescue StandardError => e
     log_exception(e)
-    return nil
+  end
+  
+def log_warn_mesg(mesg,*objs)
+  return EnginesDockerApiError.new(e.to_s,:warning)
+end
+
+  def log_error_mesg(mesg,*objs)
+    super
+    return EnginesDockerApiError.new(e.to_s,:failure)
+  end
+  
+  def log_exception(e,*objs)
+    super
+    return EnginesDockerApiError.new(e.to_s,:exception)
   end
 end

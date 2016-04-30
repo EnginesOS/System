@@ -1,5 +1,7 @@
 class DockerApi < ErrorsApi
+  require_relative 'docker_errors.rb'
   require_relative 'docker_cmd_options'
+  require_relative 'engines_docker_error.rb'
 
   require_relative 'docker_images.rb'
   include DockerImages
