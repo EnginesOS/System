@@ -68,16 +68,16 @@ begin
 
   def get_engine(engine_name)
     eng = @@engines_api.loadManagedEngine(engine_name)
-    return eng if eng.is_a?(ManagedEngine)
-    log_error('Load failed !!!' + engine_name)
-    return false
+#    return eng if eng.is_a?(ManagedEngine)
+#    log_error('Load failed !!!' + engine_name)
+    return eng
   end
 
   def get_service(service_name)
     service = @@engines_api.loadManagedService(service_name)
-    return service if service.is_a?(ManagedService)
-    log_error('Load failed !!!' + service_name)
-    return false
+#    return service if service.is_a?(ManagedService)
+#    log_error('Load failed !!!' + service_name)
+    return service
   end
 rescue StandardError => e
   #log_error(e)
