@@ -8,18 +8,18 @@ module DomainOperations
     # cycle through engines and serices turning on zero_conf where conf_zero_conf=true
     # also self host .local regardless so windows can point to dns and pretend to understand
     # bonjournoe without happing it installed and there fore bypass the cname issue with windows
-    return true if add_domain(params)
-    log_error_mesg(@last_error, params)
+    return  add_domain(params)
+
   end
 
   def update_domain_service(params)
-    return true if update_domain(params)
-    log_error_mesg(@last_error, params)
+    return  update_domain(params)
+   
   end
 
   def remove_domain_service(params)
-    return true if remove_domain(params)
-    log_error_mesg(@last_error, params)
+    return remove_domain(params)
+  
   end
 
   def list_domains
@@ -35,7 +35,7 @@ module DomainOperations
  
 
   def add_domain(params)
-    return false unless DNSHosting.add_domain(params)
+    return r unless ( r = DNSHosting.add_domain(params))
     return true unless params[:self_hosted]
     service_hash = {}
     service_hash[:parent_engine] = 'system'
@@ -51,17 +51,17 @@ module DomainOperations
     else
       service_hash[:variables][:ip_type] = 'gw'
     end
-    return true if @service_manager.create_and_register_service(service_hash)
-    @last_error = @service_manager.last_error
-    return false
+    return @service_manager.create_and_register_service(service_hash)
+
   rescue StandardError => e
     log_error_mesg('Add self hosted domain exception', params.to_s)
     log_exception(e)
   end
 
   def update_domain(params)
+    r = ''
     old_domain_name = params[:original_domain_name]
-    return false unless DNSHosting.update_domain(old_domain_name, params)
+    return r unless ( r = DNSHosting.update_domain(old_domain_name, params))
     return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
@@ -87,14 +87,13 @@ module DomainOperations
   end
 
   def remove_domain(params)
+    r = ''
     domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
-    return false if params.is_a?(FalseClass)
-    return false if params.nil?
-    return false if DNSHosting.rm_domain(domain_name) == false
-    p :rm_domain
-    p params
+    return log_error_mesg('Domain not found' + domain_name) if params.is_a?(FalseClass)
+    return log_error_mesg('no params') if params.nil?
+    return r unless ( r = DNSHosting.rm_domain(domain_name) )
     return true if params[:self_hosted] == false
     service_hash = {}
     service_hash[:parent_engine] = 'system'

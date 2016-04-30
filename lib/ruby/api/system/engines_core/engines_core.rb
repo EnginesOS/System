@@ -12,6 +12,7 @@ require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service.rb'
+  require_relative 'engines_core_errors.rb'
 
   # require_relative '../dns_api.rb'
 
@@ -174,7 +175,8 @@ class EnginesCore < ErrorsApi
   
   def software_service_definition(params)
     clear_error
-    return false unless check_service_hash(params)
+    r = ''
+    return r unless (r = check_service_hash(params))
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
   rescue StandardError => e
     p :error

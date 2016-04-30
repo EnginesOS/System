@@ -51,7 +51,7 @@ class DockerConnection < ErrorsApi
     request='/containers/' + id.to_s + '/json'
     r =  make_request(request, container)
     SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-    return false  if r.is_a?(FalseClass)
+    return r  if r.is_a?(FalseClass)
     r = r[0] if r.is_a?(Array)
     return false if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
     return r
@@ -63,9 +63,9 @@ class DockerConnection < ErrorsApi
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       # return inspect_container_by_name(container)
-      return false
+      return EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request='/containers/' + container.container_id.to_s + '/json'
+      request = '/containers/' + container.container_id.to_s + '/json'
     end
     return make_request(request, container)
   rescue StandardError => e

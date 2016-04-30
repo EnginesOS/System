@@ -205,8 +205,8 @@ module TaskAtHand
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
   rescue StandardError => e
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-    log_exception(e)
-    return false
+  return  log_exception(e)
+  
   end
 
   def task_failed(msg)
@@ -228,7 +228,7 @@ module TaskAtHand
     while File.exist?(fn)
       sleep(0.5)
       loop += 1
-      return false if loop > timeout * 2
+      return log_error_mesg('timeout expire') if loop > timeout * 2
     end
     return true
   rescue StandardError => e

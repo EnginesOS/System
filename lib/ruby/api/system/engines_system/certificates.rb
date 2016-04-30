@@ -12,14 +12,14 @@ module Certificates
     res = SystemUtils.execute_command('/opt/engines/bin/install_cert.sh ' + flag  + params[:domain_name]  )
     return true if res[:result] == 0
     @last_error = res[:stderr]
-    return false
+    return log_error_mesg(res[:stderr])
   end
   
   def remove_cert(domain)
     res = SystemUtils.execute_command('/opt/engines/bin/remove_cert.sh ' + domain )
         return true if res[:result] == 0
         @last_error = res[:stderr]
-        return false
+        return  log_error_mesg(res[:stderr])
   
   end
   def list_certs
@@ -38,6 +38,8 @@ module Certificates
   end
   
   def get_cert(domain)
+    
+    return log_error_mesg('Certificate file not found ' + domain.to_s) unless File.exist?(SystemConfig.CertificatesDir + '/' + domain.to_s + '.crt')
     File.read(SystemConfig.CertificatesDir + '/' + domain.to_s + '.crt')
     rescue StandardError =>e     
            log_exception(e)

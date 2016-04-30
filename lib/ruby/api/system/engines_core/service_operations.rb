@@ -8,17 +8,20 @@ module ServiceOperations
   end
 
   def force_reregister_attached_service(service_query)
-    return false unless check_service_hash(service_query)
+    r = ''
+    return r unless (r = check_service_hash(service_query))
     check_sm_result(service_manager.force_reregister_attached_service(service_query))
   end
 
   def force_deregister_attached_service(service_query)
-    return false unless check_service_hash(service_query)
+    r = ''
+    return r unless (r = check_service_hash(service_query))
     check_sm_result(service_manager.force_deregister_attached_service(service_query))
   end
 
   def force_register_attached_service(service_query)
-    return false unless check_service_hash(service_query)
+    r = ''
+    return r unless (r = check_service_hash(service_query))
     check_sm_result(service_manager.force_register_attached_service(service_query))
   end
 
@@ -31,9 +34,10 @@ module ServiceOperations
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def create_and_register_service(service_hash)
+    r = ''
     service_hash = SystemUtils.symbolize_keys(service_hash)
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
-    return log_error_mesg('register failed', service_hash) unless create_and_register_managed_service(service_hash)
+    return r unless ( r = create_and_register_managed_service(service_hash))
   
     return true
   rescue StandardError => e
@@ -41,7 +45,8 @@ module ServiceOperations
   end
  
   def dettach_service(service_hash)
-   return log_error_mesg('Invalid Service hash','dettach_service' ,service_hash) unless check_service_hash(service_hash)
+    r = ''
+   return r unless (r = check_service_hash(service_hash))
     SystemDebug.debug(SystemDebug.services,:dettach_service, service_hash)
     check_sm_result(service_manager.delete_service(service_hash))
   rescue StandardError => e
@@ -59,20 +64,23 @@ module ServiceOperations
 
   #returns
   def find_service_consumers(service_query)
-    return false unless check_service_hash(service_query)
+    r = ''
+    return r unless (r = check_service_hash(service_query))
     check_sm_result(service_manager.find_service_consumers(service_query))
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(service_hash)
+    r = ''
     clear_error
-    return false unless check_service_hash(service_hash)
+    return r unless (r = check_service_hash(service_hash))
     check_sm_result(service_manager.get_registered_against_service(service_hash))
   end
 
   def update_attached_service(service_hash)
     clear_error
-    return false unless check_engine_service_hash(service_hash)
+    r = ''
+    return false unless (r = check_engine_service_hash(service_hash))
     
     ahash = service_manager.find_engine_service_hash(service_hash)
        return log_error_mesg("Cannot update a shared service",service_hash) if ahash[:shared] == true
@@ -84,22 +92,23 @@ module ServiceOperations
 
   def create_and_register_managed_service(service_hash)
   
-      
+
+    r = ''
 
     SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
       
-    return log_error_mesg('Service Hash missing details',service_hash) unless check_engine_service_hash(service_hash)
+    return r unless ( r = check_engine_service_hash(service_hash))
     return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
               engine = loadManagedEngine(service_hash[:parent_engine])
-              #return log_error_mesg('No such Engine',service_hash) unless engine.is_a?(ManagedEngine)          
+              return engine unless engine.is_a?(ManagedEngine)          
               engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
             end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
-    return log_error_mesg('register failed', service_hash) unless check_sm_result(service_manager.create_and_register_service(service_hash))
-    return true
+    return  check_sm_result(service_manager.create_and_register_service(service_hash))
+
   end
 
 end

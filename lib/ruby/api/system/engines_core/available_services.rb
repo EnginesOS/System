@@ -81,12 +81,11 @@ module AvailableServices
     else
       p :load_avail_component_services_for_engine_got_a
       p engine.to_s
-      return nil
+      return EnginesCoreError.new('No Availble components', :warning)
     end
     return retval
   rescue StandardError => e
     log_exception(e)
-    return nil
   end
 
   def list_attached_services_for(objectName, identifier)

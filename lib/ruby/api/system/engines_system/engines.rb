@@ -17,8 +17,9 @@ module Engines
     p :set_engine_network_properties
     p engine.container_name
     p params
-    return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
-    return false
+    r = ''
+    return set_engine_hostname_details(engine, params) if ( r = set_engine_web_protocol_properties(engine, params))
+    return r
   end
 
   def set_engine_web_protocol_properties(engine, params)
@@ -27,7 +28,7 @@ module Engines
     p engine.container_name
     p params
     protocol = params[:http_protocol]
-    return false if protocol.nil?
+    return log_error_mesg('no protocol field') if protocol.nil?
     protocol.downcase
     protocol.gsub!(/ /,"_")
     SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
@@ -96,7 +97,7 @@ module Engines
     yaml_file = File.read(yam_file_name)
     ts = File.mtime(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
-    return false if managed_engine.nil? || managed_engine == false        
+    return engine if managed_engine.nil? || managed_engine.is_a?(FalseClass)
     cache_engine(managed_engine, ts)
     return managed_engine
   rescue StandardError => e

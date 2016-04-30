@@ -36,7 +36,7 @@ class BuildController
     @build_error = @engine_builder.last_error
     SystemDebug.debug(SystemDebug.builder, :build_error,  @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     
-    build_failed(params, @build_error) if @engine.nil? || @engine == false
+    build_failed(params, @build_error) if @engine.nil? || @engine.is_a?(FalseClass)
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)
     build_complete(@build_params)
     return @engine

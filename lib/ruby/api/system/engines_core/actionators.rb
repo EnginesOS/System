@@ -16,7 +16,7 @@ module Actionators
     # engine = loadManagedEngine(engine_name)
     return engine.perform_action(actionator_name, params) if engine.is_running?
      @last_error = "Engine not running"
-     return false
+     return  EnginesCoreError.new('Engine not running',:warning)
       rescue StandardError => e
           log_exception( e,'perform_engine_action',engine_name,actionator_name,params)
     end
@@ -31,12 +31,11 @@ module Actionators
   #  SystemDebug.debug(SystemDebug.actions,'service_def',service_def)
     #  SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators])
      unless service_def.is_a?(Hash)
-       log_error_mesg('list_actionators not a service def ',service_def)
-       return false
+       return log_error_mesg('list_actionators not a service def ',service_def)
+
   end
     unless service_def.key?(:actionators)
-      log_error_mesg('list_actionators no actionators',service_def)
-      return  false
+      return log_error_mesg('list_actionators no actionators',service_def)
     end
      unless service_def[:actionators].is_a?(Array)
        #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
@@ -54,7 +53,8 @@ module Actionators
    service = loadManagedService(service_name)
   return service.perform_action(actionator_name,params) if service.is_running?
    @last_error = "Service not running"
-   return false
+    return  EnginesCoreError.new('Service not running',:warning)
+
     rescue StandardError => e
         log_exception( e,'perform_service_action',service_name,actionator_name,params)
   end

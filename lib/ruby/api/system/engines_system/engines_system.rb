@@ -4,7 +4,7 @@ class SystemApi < ErrorsApi
   require "/opt/engines/lib/ruby/containers/managed_engine.rb"
   require "/opt/engines/lib/ruby/containers/managed_service.rb"
   require "/opt/engines/lib/ruby/containers/system_service.rb"
-
+  require_relative 'engines_core_errors.rb'
   require_relative 'base_os_system.rb'
   include BaseOsSystem
   require_relative 'build_report.rb'
