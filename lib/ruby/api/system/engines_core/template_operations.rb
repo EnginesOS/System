@@ -4,7 +4,7 @@ module TemplateOperations
     return r unless ( r = check_service_hash(service_hash))
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
-    return container if container.is_a?(FalseClass) 
+    return container if container.is_a?(EnginesError) 
 #      log_error_mesg('container load error', service_hash)
 #    else
 #      SystemDebug.debug(SystemDebug.templater,  :filling_in_template_on, container.container_name)

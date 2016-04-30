@@ -9,7 +9,7 @@ end
 
 get '/v0/system/status' do
   status = SystemStatus.system_status
-  unless status.is_a?(FalseClass)
+  unless status.is_a?(EnginesError)
     return status.to_json
   else
     return log_error(request,status )

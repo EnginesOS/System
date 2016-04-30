@@ -1,8 +1,8 @@
 get '/v0/containers/service/:service_name/configurations/' do
   service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(FalseClass)
+  return log_error(request, service, params) if service.is_a?(EnginesError)
   list = service.get_service_configurations()
-    unless list.is_a?(FalseClass)
+    unless list.is_a?(EnginesError)
       list.to_json
   else
     return log_error(request, list, service.last_error)
@@ -11,12 +11,12 @@ end
 
 get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(FalseClass)
+  return log_error(request, service, params) if service.is_a?(EnginesError)
   cparams = {}
   cparams[:configurator_name] = params[:configurator_name]
   config = service.retrieve_configurator(cparams)
  
-    unless config.is_a?(FalseClass) 
+    unless config.is_a?(EnginesError) 
       config.to_json
   else
     return log_error(request, config, service.last_error)

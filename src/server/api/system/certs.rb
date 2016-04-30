@@ -6,7 +6,7 @@
 
 get '/v0/system/cert/system_ca' do
   system_ca = @@engines_api.get_system_ca
-  unless system_ca.is_a?(FalseClass)
+  unless system_ca.is_a?(EnginesError)
     return system_ca.to_json
   else
     return log_error(request, system_ca)
@@ -15,7 +15,7 @@ end
 
 get '/v0/system/cert/default' do
   cert = @@engines_api.get_cert('engines')
-  unless cert.is_a?(FalseClass)
+  unless cert.is_a?(EnginesError)
     return cert.to_json
   else
     return log_error(request, cert)
@@ -24,13 +24,13 @@ end
 
 get '/v0/system/certs/' do
   certs = @@engines_api.list_certs
-  return log_error('list certs', certs, params) if certs.is_a?(FalseClass)
+  return log_error('list certs', certs, params) if certs.is_a?(EnginesError)
   certs.to_json
 end
 
 delete '/v0/system/certs/:cert_name' do
   r = @@engines_api.remove_cert(params[:cert_name])
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return status(202)
   else
     return log_error(request, r)
@@ -43,7 +43,7 @@ get '/v0/system/cert/:cert_name' do
   else
     cert = @@engines_api.get_cert(params[:cert_name])
   end
-  unless cert.is_a?(FalseClass)
+  unless cert.is_a?(EnginesError)
     return cert.to_json
   else
     return log_error(request, cert)
@@ -62,7 +62,7 @@ end
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
     r = @@engines_api.upload_ssl_certificate(cparams)
-  return status(202) if 
+  return status(202) if r
   log_error(request, r, cparams)
   return status(404)
 end

@@ -1,10 +1,10 @@
 
 get '/v0/containers/service/:service_name/services/non_persistent/' do
   service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(FalseClass)
+  return log_error(request, service, params) if service.is_a?(EnginesError)
   r = @@engines_api.list_non_persistent_services(service)
   p :np_services_index
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return r.to_json
   else
     return log_error(request, r)
@@ -25,7 +25,7 @@ p hash
           
   r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return r.to_json
   else
     return log_error(request, r, hash)

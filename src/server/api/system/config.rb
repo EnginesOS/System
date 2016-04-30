@@ -1,6 +1,6 @@
 get '/v0/system/config/default_domain' do
   default_domain = @@engines_api.get_default_domain
-  unless default_domain.is_a?(FalseClass)
+  unless default_domain.is_a?(EnginesError)
     return default_domain.to_json
   else
     log_error(request, default_domain)
@@ -19,7 +19,7 @@ end
 
 get '/v0/system/config/default_site' do
   default_site = @@engines_api.get_default_site
-  unless default_site.is_a?(FalseClass)
+  unless default_site.is_a?(EnginesError)
     return default_site.to_json
   else
     log_error(request, default_site)
@@ -47,7 +47,7 @@ end
 
 get '/v0/system/config/hostname' do
   hostname = @@engines_api.system_hostname
-  unless hostname.is_a?(FalseClass)
+  unless hostname.is_a?(EnginesError)
     return hostname.to_json
   else
     log_error(request, hostname)
@@ -57,7 +57,7 @@ end
 
 post '/v0/system/config/remote_exception_logging/enable' do
   r = @@engines_api.enable_remote_exception_logging
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return status(202)
   else
     log_error(request, r)
@@ -67,7 +67,7 @@ end
 
 post '/v0/system/config/remote_exception_logging/disable' do
   r = @@engines_api.disable_remote_exception_logging
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return status(202)
   else
     log_error(request, r)

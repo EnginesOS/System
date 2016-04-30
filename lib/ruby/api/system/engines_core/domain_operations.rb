@@ -91,7 +91,7 @@ module DomainOperations
     domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
-    return log_error_mesg('Domain not found' + domain_name) if params.is_a?(FalseClass)
+    return log_error_mesg('Domain not found' + domain_name) if params.nil?
     return log_error_mesg('no params') if params.nil?
     return r unless ( r = DNSHosting.rm_domain(domain_name) )
     return true if params[:self_hosted] == false

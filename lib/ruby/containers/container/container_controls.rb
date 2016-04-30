@@ -64,7 +64,7 @@ module ContainerControls
     @container_id = -1
     r = @container_api.create_container(self)
     #
-    return true unless r.is_a?(FalseClass)
+    return true unless r.is_a?(EnginesError)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     return false
     #    unless r == false

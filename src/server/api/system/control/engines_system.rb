@@ -5,7 +5,7 @@
 
 get '/v0/system/control/engines_system/update' do
   update = @@engines_api.update_engines_system_software
-  unless update.is_a?(FalseClass)
+  unless update.is_a?(EnginesError)
     return update.to_json
   else
     return log_error(request, update, 'Might just be update to date update')
@@ -13,7 +13,7 @@ get '/v0/system/control/engines_system/update' do
 end
 get '/v0/system/control/engines_system/restart' do
   restart = @@engines_api.restart_mgmt
-  unless restart.is_a?(FalseClass)
+  unless restart.is_a?(EnginesError)
     return restart.to_json
   else
     return log_error(request, restart)
@@ -22,7 +22,7 @@ end
 
 get '/v0/system/control/engines_system/recreate' do
   recreate = @@engines_api.recreate_mgmt
-  unless recreate.is_a?(FalseClass)
+  unless recreate.is_a?(EnginesError)
     return recreate.to_json
   else
     return log_error(request, recreate)

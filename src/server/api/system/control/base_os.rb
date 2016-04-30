@@ -3,7 +3,7 @@
 # /system/control/base_os/shutdown
 get '/v0/system/control/base_os/restart' do
   restart = @@engines_api.restart_system
-  unless restart.is_a?(FalseClass)
+  unless restart.is_a?(EnginesError)
     return restart.to_json
   else
     return log_error(request, restart)
@@ -14,7 +14,7 @@ post '/v0/system/control/base_os/shutdown' do
   cparams =  Utils::Params.assemble_params(params, [],  [:reason]) 
   shutdown = cparams[:reason] #symbolize_keys(params)
     r = @@engines_api.shutdown(shutdown)
-  unless r.is_a?(FalseClass)
+  unless r.is_a?(EnginesError)
     return status(202)
   else
     return log_error(request, r, cparams)
@@ -23,7 +23,7 @@ end
 
 get '/v0/system/control/base_os/update' do
   system_update = @@engines_api.system_update
-  unless system_update.is_a?(FalseClass)
+  unless system_update.is_a?(EnginesError)
     return system_update.to_json
   else
     return log_error(request, system_update)

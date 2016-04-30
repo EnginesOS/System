@@ -10,9 +10,8 @@ module CoreServiceImportExport
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
       engine = loadManagedService(service_hash[:parent_engine])
-
     end
-    return engine if engine.is_a?(FalseClass)
+    return engine if engine.is_a?(EnginesError)
     engine.export_service_data(service_hash)
   rescue StandardError => e
     log_exception(e,'export service',service_hash)
@@ -33,11 +32,9 @@ module CoreServiceImportExport
     else
       engine = loadManagedService(service_hash[:parent_engine])
     end
-    return engine  if engine.is_a?(FalseClass)
+    return engine  if engine.is_a?(EnginesError)
      return engine.import_service_data(params)
 
-
-    return false
   rescue StandardError => e
     log_exception(e,'import service',params)
   end

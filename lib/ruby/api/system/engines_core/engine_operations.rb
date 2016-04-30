@@ -65,7 +65,7 @@ module EnginesOperations
   def reinstall_engine(engine)
     clear_error
     r =   engine.destroy_container(true) if engine.has_container?
-    return r if r.is_a?(FalseClass)
+    return r if r.is_a?(EnginesError)
     params = {}
     params[:engine_name] = engine.container_name
     params[:reinstall] = true
@@ -84,7 +84,7 @@ module EnginesOperations
      engine_name = params[:engine_name]
     
     container = loadManagedEngine(engine_name)
-     if container.is_a?(FalseClass)
+     if container.is_a?(EnginesError)
        return container
      end
     set_container_runtime_properties(container,params)
