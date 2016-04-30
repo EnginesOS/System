@@ -6,7 +6,7 @@ get '/v0/engine_builder/status' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request)
+    return log_error(request, r)
   end
 end
 
@@ -15,7 +15,7 @@ get '/v0/engine_builder/params' do
   unless r.is_a?(FalseClass)
      return r.to_json
    else
-     return log_error(request)
+     return log_error(request, r)
    end
  end
 
@@ -25,7 +25,7 @@ get '/v0/engine_builder/last_build/log' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request)
+    return log_error(request, r)
   end
 end
 
@@ -35,7 +35,7 @@ get '/v0/engine_builder/last_build/params' do
   unless r.is_a?(FalseClass)
       return r.to_json
     else
-      return log_error(request)
+      return log_error(request, r)
     end
   end
  

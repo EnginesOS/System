@@ -3,7 +3,7 @@
 
 get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
   service = get_service(params[:service_name])
-    return false if service.is_a?(FalseClass)
+  return log_error(request, service, params) if service.is_a?(FalseClass)
     p :params
     p params
  cparams =  Utils::Params.address_params(params, [:service_name,:service_handle,:parent_engine])
@@ -13,6 +13,6 @@ get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handl
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request, service.last_error)
+    return log_error(request, r, service.last_error)
   end
 end

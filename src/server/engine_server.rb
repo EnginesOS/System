@@ -44,7 +44,7 @@ begin
     return false
   end
 
-  def log_error(request, *args)
+  def log_error(request, error_object, *args)
     p :ERROR
     p args
     error_mesg = {}
@@ -53,6 +53,7 @@ begin
       else        
         error_mesg[:route] = request.fullpath        
       end
+    error_mesg[:error_object] = error_object
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
     error_mesg[:api_error] =  @@engines_api.last_error.to_s

@@ -8,7 +8,7 @@ get '/v0/system/control/engines_system/update' do
   unless update.is_a?(FalseClass)
     return update.to_json
   else
-    return log_error(request, 'Might just be update to date update')
+    return log_error(request, update, 'Might just be update to date update')
   end
 end
 get '/v0/system/control/engines_system/restart' do
@@ -16,7 +16,7 @@ get '/v0/system/control/engines_system/restart' do
   unless restart.is_a?(FalseClass)
     return restart.to_json
   else
-    return log_error(request)
+    return log_error(request, restart)
   end
 end
 
@@ -25,6 +25,6 @@ get '/v0/system/control/engines_system/recreate' do
   unless recreate.is_a?(FalseClass)
     return recreate.to_json
   else
-    return log_error(request)
+    return log_error(request, recreate)
   end
 end

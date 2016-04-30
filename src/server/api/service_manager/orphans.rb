@@ -6,7 +6,7 @@ get '/v0/service_manager/orphan_services' do
 unless orphans.is_a?(FalseClass)
   return orphans.to_json
 else
-  return log_error(request)
+  return log_error(request, orphans)
 end
 end
 
@@ -15,7 +15,7 @@ get '/v0/service_manager/orphan_services/:ns/:type_path' do
 unless r.is_a?(FalseClass)
   return r.to_json
 else
-  return log_error(request)
+  return log_error(request, r)
 end
 end
 
@@ -26,6 +26,6 @@ delete '/v0/service_manager/orphan_services/:ns/:type_path/:service_handle' do
 unless r.is_a?(FalseClass)
   return r.to_json
 else
-  return log_error(request)
+  return log_error(request, r)
 end
 end

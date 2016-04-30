@@ -10,29 +10,29 @@ get '/v0/containers/engine/:engine_name' do
   unless engine.is_a?(FalseClass)
     return engine.to_json
   else
-    return log_error(request, params[:engine_name])
+    return log_error(request,engine, params[:engine_name])
   end
 end
 
 get '/v0/containers/engine/:engine_name/state' do
   engine = get_engine(params[:engine_name])
- return false if engine.is_a?(FalseClass)
+  return log_error(request, engine, params) if engine.is_a?(FalseClass)
   r = engine.read_state
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request, engine.last_error)
+    return log_error(request, r, engine.last_error)
   end
 end
 
 get '/v0/containers/engine/:engine_name/blueprint' do
   engine = get_engine(params[:engine_name])
-  return false if engine.is_a?(FalseClass)
+  return log_error(request, engine, params) if engine.is_a?(FalseClass)
   r = engine.load_blueprint
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request, engine.last_error)
+    return log_error(request, r, engine.last_error)
   end
 end
 get '/v0/containers/engine/:engine_name/build_report' do
@@ -40,6 +40,6 @@ get '/v0/containers/engine/:engine_name/build_report' do
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request)
+    return log_error(request, r)
   end
 end

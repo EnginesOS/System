@@ -7,7 +7,7 @@ get '/v0/containers/engines/' do
   unless engines.is_a?(FalseClass)
     return engines.to_json
   else
-    return log_error(request)
+    return log_error(request, engines)
   end
 end
 
@@ -16,7 +16,7 @@ get '/v0/containers/engines/container_name' do
   unless container_names.is_a?(FalseClass)
     return container_names.to_json
   else
-    return log_error(request)
+    return log_error(request, container_names)
   end
 end
 
@@ -25,6 +25,6 @@ get '/v0/containers/engines/state' do
   unless states.is_a?(FalseClass)
     return states.to_json
   else
-    return log_error(request)
+    return log_error(request, states)
   end
 end

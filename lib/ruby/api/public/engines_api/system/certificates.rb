@@ -13,8 +13,8 @@ end
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return log_error_mesg('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
-    return true if @system_api.upload_ssl_certificate(params)
-    return log_error_mesg('Failed to install cert:',  @system_api.last_error, params.to_s)
+    return  @system_api.upload_ssl_certificate(params)
+  
   end
   
   def get_cert(domain)

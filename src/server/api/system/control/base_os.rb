@@ -6,17 +6,18 @@ get '/v0/system/control/base_os/restart' do
   unless restart.is_a?(FalseClass)
     return restart.to_json
   else
-    return log_error(request)
+    return log_error(request, restart)
   end
 end
 
 post '/v0/system/control/base_os/shutdown' do
   cparams =  Utils::Params.assemble_params(params, [],  [:reason]) 
   shutdown = cparams[:reason] #symbolize_keys(params)
-  unless @@engines_api.shutdown(shutdown).is_a?(FalseClass)
+    r = @@engines_api.shutdown(shutdown)
+  unless r.is_a?(FalseClass)
     return status(202)
   else
-    return log_error(request, cparams)
+    return log_error(request, r, cparams)
   end
 end
 
@@ -25,6 +26,6 @@ get '/v0/system/control/base_os/update' do
   unless system_update.is_a?(FalseClass)
     return system_update.to_json
   else
-    return log_error(request)
+    return log_error(request, system_update)
   end
 end

@@ -1,10 +1,11 @@
 get '/v0/containers/engine/:engine_name/services/persistent/' do
   engine = get_engine(params[:engine_name])
+  return log_error(request, engine, params) if engine.is_a?(FalseClass)
   r = @@engines_api.list_persistent_services(engine)
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request, params[:engine_name])
+    return log_error(request, r, params[:engine_name])
   end
 end
 
@@ -26,6 +27,6 @@ p hash
   unless r.is_a?(FalseClass)
     return r.to_json
   else
-    return log_error(request, hash)
+    return log_error(request, r, hash)
   end
 end

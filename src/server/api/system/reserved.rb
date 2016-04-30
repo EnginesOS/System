@@ -6,7 +6,7 @@ get '/v0/system/reserved/ports' do
   unless reserved_ports.is_a?(FalseClass)
     return reserved_ports.to_json
   else
-    return log_error(request)
+    return log_error(request, reserved_ports)
   end
 end
 
@@ -15,7 +15,7 @@ get '/v0/system/reserved/hostnames' do
   unless reserved_hostnames.is_a?(FalseClass)
     return reserved_hostnames.to_json
   else
-    return log_error(request)
+    return log_error(request, reserved_hostnames)
   end
 end
 
@@ -24,6 +24,6 @@ get '/v0/system/reserved/engine_names' do
   unless engine_names.is_a?(FalseClass)
     return engine_names.to_json
   else
-    return log_error(request)
+    return log_error(request, engine_names)
   end
 end

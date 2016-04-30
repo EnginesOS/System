@@ -5,6 +5,6 @@ post '/v0/containers/engine/:engine_name/template' do
     return false if engine.is_a?(FalseClass)
   cparams =  Utils::Params.assemble_params(params, [:engine_name], :string)
   resolved_string = @@engines_api.get_resolved_engine_string(cparams[:string],engine)
-  return log_error(request, cparams) if resolved_string.is_a?(FalseClass)
+  return log_error(request, resolved_string, cparams) if resolved_string.is_a?(FalseClass)
   resolved_string.to_json
 end

@@ -3,16 +3,17 @@ get '/v0/system/domain/:domain_name' do
   unless domain_name.is_a?(FalseClass)
     return domain_name.to_json
   else
-    return log_error(request)
+    return log_error(request, domain_name)
   end
 end
 
 post '/v0/system/domain/:domain_name' do
   cparams =  Utils::Params.assemble_params(params, [:domain_name], :all)
-  unless @@engines_api.update_domain(cparams).is_a?(FalseClass)
+  r = @@engines_api.update_domain(cparams)
+  unless r.is_a?(FalseClass)
     return status(202)
   else
-    return log_error(request, cparams)
+    return log_error(request, r, cparams)
   end
 end
 

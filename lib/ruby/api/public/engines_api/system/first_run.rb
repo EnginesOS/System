@@ -5,7 +5,7 @@ module PublicApiSystemFirstRun
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
      first_run.apply(@core_api)
-     return false unless first_run.sucess
+     return log_error_message(first_run.last_error) unless first_run.sucess
      return first_run.sucess
   end
 end
