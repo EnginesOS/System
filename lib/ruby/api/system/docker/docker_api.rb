@@ -11,7 +11,9 @@ class DockerApi < ErrorsApi
   
   require_relative 'docker_container_actions.rb'
    include DockerContainerActions
- 
+  require_relative 'docker_container_actions.rb'
+  require_relative 'docker_errors.rb'
+  include DockerErrors
   require_relative 'docker_api/docker_connection.rb'
   def initialize()
   @docker_comms = DockerConnection.new
