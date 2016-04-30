@@ -1,4 +1,4 @@
-require 'engines_docker_error.rb'
+require_relative 'engines_docker_error.rb'
 module DockerErrors
 
 def log_warn_mesg(mesg,*objs)
