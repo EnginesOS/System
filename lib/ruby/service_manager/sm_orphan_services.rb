@@ -29,8 +29,7 @@ end
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
-  return true if res.is_a?(Hash)
-  return false
+  return res
 end
 
   def retrieve_orphan(params)

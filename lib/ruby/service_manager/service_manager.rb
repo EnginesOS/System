@@ -23,7 +23,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_service_configurations.rb'
   require_relative 'registry_client.rb'
   require_relative 'shared_services.rb'
-  
+  require_relative 'engines_service_manager_error.rb'
 #  attr_accessor :system_registry_client
   #@ call initialise Service Registry Tree which conects to the registry server
   def initialize(core_api)
@@ -32,7 +32,7 @@ class ServiceManager  < ErrorsApi
   end
   
 
- 
+  include EnginesSerivceManagerErrors
   include SMSubservices
   include SmServiceInfo
   include SmServiceForcedMethods

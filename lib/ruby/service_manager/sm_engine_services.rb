@@ -38,7 +38,7 @@ module SmEngineServices
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    return false  unless services.is_a?(Array)
+    return services  unless services.is_a?(Array)
     services.each do |service_hash|
       test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
       remove_from_managed_service(service_hash)
@@ -80,7 +80,7 @@ return services
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    return log_error_mesg("No Services for " + params.to_s, services)  unless services.is_a?(Array)
+    return services  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistent_service(service_hash)
     end
@@ -106,14 +106,14 @@ return services
     services.each do | service |
       if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        unless delete_service(service)
-          log_error_mesg('Failed to remove service ',service)
-          next
+        if (r = delete_service(service)).is_a?(EnginesError)
+         return r
+        #  next
         end
       else
-        unless orphanate_service(service)
-          log_error_mesg('Failed to orphan service ',service)
-          next
+        unless (r = orphanate_service(service)).is_a?(EnginesError)
+          return r
+        #  next
         end
       end
       system_registry_client.remove_from_managed_engines_registry(service)

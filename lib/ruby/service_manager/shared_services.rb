@@ -34,18 +34,16 @@ module SharedServices
   def attach_shared_volume(shared_service)
   engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
     #used by the builder whn no engine to add volume to def
-     if  engine.is_a?(ManagedEngine)
-       return log_error_mesg("Failed to add volume to Engine",engine,shared_service) unless engine.add_volume(shared_service)
-     else
+     return engine unless  engine.is_a?(ManagedEngine)
        Volume.complete_service_hash(shared_service)      
-     end  
     return true
     rescue StandardError => e
       log_exception(e,shared_service)
   end
+  
   def dettach_shared_volume(service_hash)
    engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
-     return log_error_mesg("failed to attach share volume parent engine not loaded",service_hash[:parent_engine]) unless engine.is_a?(ManagedEngine)
+     return engine unless engine.is_a?(ManagedEngine)
    
     return test_registry_result(system_registry_client.remove_from_managed_engines_registry(service_hash)) if engine.del_volume(service_hash)
   end
@@ -53,7 +51,7 @@ module SharedServices
   def remove_shared_service_from_engine(service_query)
 
     ahash = find_engine_service_hash(service_query)
-    return log_error_mesg("Failed to load from registry",service_query) unless ahash.is_a?(Hash)
+    return ahash unless ahash.is_a?(Hash)
     return log_error_mesg("Not a Shared Service",service_query,ahash) unless ahash[:shared] == true
     return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'     
     return test_registry_result(system_registry_client.remove_from_managed_engines_registry(ahash))
