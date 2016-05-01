@@ -73,7 +73,7 @@ class SystemStatus
     File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+ 
   end
 
   def self.build_status
@@ -83,7 +83,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.get_engines_system_release
@@ -104,7 +104,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   # called by per session and post update
@@ -118,7 +118,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.current_build_params
@@ -132,7 +132,7 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.last_build_params
@@ -146,7 +146,7 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+  
   end
 
   def self.last_build_failure_params
@@ -160,7 +160,7 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.is_remote_exception_logging?
@@ -198,9 +198,8 @@ class SystemStatus
     result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
     return result[:stdout]
   rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return result[:stderr] unless result.nil?
-    return false
+      SystemUtils.log_exception(e)
+  
   end
 
   def self.is_engines_system_upto_date?
@@ -213,8 +212,6 @@ class SystemStatus
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return result[:stderr] unless result.nil?
-    return false
   end
 
 end

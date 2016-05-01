@@ -18,7 +18,7 @@ class SystemPreferences
     return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)
   rescue StandardError => e
     log_exception(e)
-   return false # EnginesOSapiResult.failed(params[:default_domain], e.to_s ,:default_domain)
+  
   end
 
   def get_default_domain
@@ -26,7 +26,7 @@ class SystemPreferences
     return @preferences[:default_domain]
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return 'err'
+
   end
 
   def save_preferences

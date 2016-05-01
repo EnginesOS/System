@@ -26,10 +26,12 @@ module SystemLogging
         obj_str += object.to_s.slice(0, 512) + ':#:'
      end
      SystemUtils.log_output( msg.to_s + ':->:' + obj_str ,10)
+     return EnginesError.new(msg.to_s,:error)
    end
  
    def SystemUtils.log_error(object)
      SystemUtils.log_output(object, 10)
+    
    end
 
 end

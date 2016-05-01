@@ -6,7 +6,8 @@ class DNSApi < ErrorsApi
   end
 
   def add_domain(params)
-    return false unless DNSHosting.add_domain(params)
+    r = ''
+    return r unless ( r = DNSHosting.add_domain(params))
     return true unless params[:self_hosted]
     service_hash = {}
     service_hash[:parent_engine] = 'system'
@@ -30,8 +31,9 @@ class DNSApi < ErrorsApi
   end
 
   def update_domain(params)
+    r = ''
     old_domain_name = params[:original_domain_name]
-    return false unless DNSHosting.update_domain(old_domain_name, params)
+    return r unless ( r = DNSHosting.update_domain(old_domain_name, params))
     return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
@@ -59,7 +61,8 @@ class DNSApi < ErrorsApi
   end
 
   def remove_domain(params)
-    return false if DNSHosting.rm_domain(params) == false
+    r = ''
+    return r unless (r = DNSHosting.rm_domain(params))
     return true if params[:self_hosted] == false
     service_hash = {}
     service_hash[:parent_engine] = 'system'

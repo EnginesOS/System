@@ -28,8 +28,8 @@ module ApiActionators
           thr.join
         end
       rescue Timeout::Error
-        log_error_mesg('Timeout on Running Action ',cmd)
-        return {}
+        return  log_error_mesg('Timeout on Running Action ',cmd)
+       
       end
   
       if result[:result] == 0
@@ -38,9 +38,8 @@ module ApiActionators
 #        params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
         return result[:stdout]
       end
-      log_error_mesg('Error on retrieving Configuration',result)
-    @last_error = c.last_error 
-      return false
+    return  log_error_mesg('Error on retrieving Configuration ' + result[:stderr] ,result)
+   
     end
 
 

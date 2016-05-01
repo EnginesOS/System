@@ -40,5 +40,6 @@ class FirstRunWizard <ErrorsApi
     return false
   end
   # FIXME: and put in it's own class or even service
+  
 
 end

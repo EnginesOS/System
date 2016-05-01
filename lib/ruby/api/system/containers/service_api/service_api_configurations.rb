@@ -10,8 +10,7 @@ module ServiceApiConfigurations
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on retrieving Configuration',cmd)
-      return {}
+      return log_error_mesg('Timeout on retrieving Configuration',cmd)
     end
 
     if result[:result] == 0
@@ -20,8 +19,8 @@ module ServiceApiConfigurations
       params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
     end
-    log_error_mesg('Error on retrieving Configuration',result)
-    return {}
+    return log_error_mesg('Error on retrieving Configuration',result)
+
   end
 
   def run_configurator(container, configurator_params)
@@ -36,8 +35,8 @@ module ServiceApiConfigurations
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on running configurator',cmd)
-      return {}
+     return log_error_mesg('Timeout on running configurator',cmd)
+     
     end
     @last_error = result[:stderr] # Dont log just set
     return result

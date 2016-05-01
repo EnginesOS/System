@@ -38,8 +38,8 @@ def docker_cmd_w(cmdline, container, log_error = true)
     return result[:sdout]
   else
     container.last_error = result[:result].to_s + ':' + result[:stderr].to_s
-    log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)  if log_error
-    return false
+   return log_error_mesg('execute_docker_cmd ' + cmdline + ' on ' + container.container_name, result)  if log_error
+
   end
 rescue StandardError => e
   log_exception(e)

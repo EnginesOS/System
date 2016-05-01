@@ -23,7 +23,6 @@ class BlueprintApi < ErrorsApi
     rescue StandardError => e
         SystemUtils.log_error_mesg('Blueprint Parse Failure', blueprint_file)
     SystemUtils.log_exception(e)
-    return {}
   end
 
   def load_blueprint(container)
@@ -36,6 +35,5 @@ class BlueprintApi < ErrorsApi
   rescue StandardError => e
     log_error_mesg('Blueprint Parse Failure', statefile)
     log_exception(e)
-    return {}
   end
 end

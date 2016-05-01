@@ -37,8 +37,9 @@ module FirstRunCerts
   end
 
   def setup_certs
-    return false unless create_ca(@first_run_params)
-    return false unless create_default_cert(@first_run_params)
+    r = ''
+    return r unless ( r = create_ca(@first_run_params))
+    return r unless  ( r = create_default_cert(@first_run_params))
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/bin/install_ca.sh')
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/bin/install_cert.sh engines')
 

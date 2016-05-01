@@ -21,8 +21,8 @@ module DockerCmdOptions
 
     return commandargs
   rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return e.to_s
+      return SystemUtils.log_exception(e)
+
   end
 
   def self.get_networking_args(container)
@@ -78,7 +78,7 @@ module DockerCmdOptions
     return e_option
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return e.to_s
+  
   end
 
   def self.get_port_options(container)
@@ -105,7 +105,7 @@ module DockerCmdOptions
     return eportoption
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return e.to_s
+
   end
 
   def self.get_container_logdir(container)

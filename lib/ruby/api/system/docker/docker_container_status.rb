@@ -4,7 +4,7 @@ module DockerContainerStatus
     @docker_comms.ps_container(container)
   rescue StandardError => e
     log_exception(e)
-    return "Error"
+
   end
 
   def logs_container(container, count)
@@ -14,7 +14,7 @@ module DockerContainerStatus
     return result[:stderr].to_s + ' ' + result[:stdout].to_s
   rescue StandardError => e
     log_exception(e)
-    return 'error retriving logs ' + e.to_s
+   
   end
 
   def inspect_container(container)
@@ -32,7 +32,7 @@ module DockerContainerStatus
     return res #SystemUtils.deal_with_jason(res)
   rescue StandardError => e
     log_exception(e,container.container_)
-    return 'error inspect_container_by_name  ' + e.to_s
+
   end
 
 end
