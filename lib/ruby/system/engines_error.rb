@@ -4,7 +4,7 @@ class EnginesError # < FalseClass
   def initialize(message, type )
     @error_mesg = message
     @error_type = type
-    @source = caller[2].to_s + ':' + caller[3].to_s + ':' + caller[4].to_s
+    @source = caller.to_s # + ':' + caller[3].to_s + ':' + caller[4].to_s
     @sub_system = 'global'
   end
   
