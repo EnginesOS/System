@@ -5,9 +5,9 @@ class EnginesError # < FalseClass
     @error_mesg = message
     @error_type = type
     @sub_system = 'global'
-    
-    @source =  caller[3].to_s 
-    @source += ':' + caller[4].to_s if caller.count >4
+    @source = []
+    @source[0] = caller[3].to_s 
+    @source[1] = caller[4].to_s if caller.count > 4
 
   end
   

@@ -101,8 +101,8 @@ class EnginesCore < ErrorsApi
   require_relative 'certificate_actions.rb'
   include CertificateActions
   
-  require_relative '../containers/container_api.rb'
-  require_relative '../containers/service_api.rb'
+  require_relative '../containers/container_api/container_api.rb'
+  require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
@@ -133,7 +133,7 @@ class EnginesCore < ErrorsApi
     
   end
   def set_first_run_parameters(params_from_gui)
-    require_relative '../first_run_wizard.rb'
+    require_relative '../first_run_wizard/first_run_wizard.rb'
      params = params_from_gui.dup
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
@@ -170,7 +170,7 @@ class EnginesCore < ErrorsApi
  end
   
   def first_run_required?
-    require_relative '../first_run_wizard.rb'
+    require_relative '../first_run_wizard/first_run_wizard.rb'
     FirstRunWizard.required?
   end
   

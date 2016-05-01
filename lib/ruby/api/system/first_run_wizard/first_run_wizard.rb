@@ -1,14 +1,17 @@
 class FirstRunWizard <ErrorsApi
   attr_reader  :error, :sucess
 
-  require_relative 'first_run_wizard/first_run_certs.rb'
-  require_relative 'first_run_wizard/first_run_dns.rb'
-  require_relative 'first_run_wizard/first_run_passwords.rb'
-  require_relative 'first_run_wizard/first_run_params_validation.rb'
+  require_relative 'first_run_certs.rb'
+  require_relative 'first_run_dns.rb'
+  require_relative 'first_run_passwords.rb'
+  require_relative 'first_run_params_validation.rb'
   include FirstRunCerts
   include FirstRunDNS
   include FirstRunPasswords
   include FirstRunParamsValidation
+  require_relative 'engines_first_run_errors.rb'
+  include EnginesFirstRunErrors
+  
   
   def initialize(params)
     @sucess = false

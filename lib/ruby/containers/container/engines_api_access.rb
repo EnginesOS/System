@@ -12,6 +12,7 @@ module EnginesApiAccess
   def ps_container
     #expire_engine_info
     return false unless has_api?
+    return log_error_mesg('Can\'t ps stopped container','') unless running?
     @container_api.ps_container(self)
   end
 

@@ -7,7 +7,7 @@ module ManagedServiceImageControls
   def pull_image
     return @container_api.pull_image(@repository + '/' + image) unless @repository.nil? || @repository == ''
     return @container_api.pull_image(image) if image.include?('/')
-    return false
+    return log_error_mesg('no repo' + image)
   end
 
 end
