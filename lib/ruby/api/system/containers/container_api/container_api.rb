@@ -2,13 +2,13 @@ class ContainerApi < ErrorsApi
   require_relative '../../container_state_files.rb'
   require_relative '../service_hash_builders.rb'
 
-  require_relative 'container_api/engine_api_errors.rb'
+  require_relative 'engine_api_errors.rb'
   include EngineApiErrors
   
-  require_relative 'container_api/api_result_checks.rb'
+  require_relative 'api_result_checks.rb'
   include ApiResultChecks
 
-  require_relative 'container_api/container_api_docker_actions.rb'
+  require_relative 'container_api_docker_actions.rb'
   include ContainerApiDockerActions
 
   require_relative 'engine_api_blueprint.rb'
