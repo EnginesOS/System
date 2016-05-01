@@ -4,8 +4,11 @@ class EnginesError # < FalseClass
   def initialize(message, type )
     @error_mesg = message
     @error_type = type
-    @source = caller.to_s # + ':' + caller[3].to_s + ':' + caller[4].to_s
     @sub_system = 'global'
+    
+    @source =  caller[3].to_s 
+    @source += ':' + caller[4].to_s if caller.count >4
+
   end
   
   def to_json(opt)
