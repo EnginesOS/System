@@ -32,7 +32,7 @@ class ServiceManager  < ErrorsApi
   end
   
 
-  include EnginesSerivceManagerErrors
+  include EnginesServiceManagerErrors
   include SMSubservices
   include SmServiceInfo
   include SmServiceForcedMethods

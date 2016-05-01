@@ -1,5 +1,5 @@
 
-module EnginesSerivceManagerErrors
+module EnginesServiceManagerErrors
   require_relative 'engines_service_manager_error.rb'
 def log_warn_mesg(mesg,*objs)
   return EnginesServiceManagerError.new(mesg.to_s,:warning)
