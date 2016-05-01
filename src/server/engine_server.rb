@@ -57,8 +57,7 @@ begin
     error_mesg[:error_object] = error_object
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
-    error_mesg[:api_error] =  @@engines_api.last_error.to_s
-    error_mesg[:last_error] =  @@last_error.to_s
+
     
     
     STDERR.puts args.to_s + '::' + @@engines_api.last_error.to_s
