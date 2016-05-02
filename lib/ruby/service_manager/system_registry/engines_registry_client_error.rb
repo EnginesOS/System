@@ -3,6 +3,7 @@ class EnginesRegistryClientError < EnginesError
  
   def initialize(message, type, *objs )
     super
+    @params = *objs
         @sub_system = 'engines_registry_client'
       end
       

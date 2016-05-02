@@ -6,12 +6,12 @@ def log_warn_mesg(mesg,*objs)
 end
 
   def log_error_mesg(mesg,*objs)
-    super
+
     return EnginesSystemError.new(mesg.to_s,:failure)
   end
   
   def log_exception(e,*objs)
-    super
+ 
     return EnginesSystemError.new(e.to_s,:exception)
   end
 end
