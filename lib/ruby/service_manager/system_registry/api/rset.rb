@@ -43,7 +43,7 @@ def parse_error(r)
   res = JSON.parse(r, :create_additions => true)
   EnginesRegistryError.new(r)
   rescue  StandardError => e
-  return log_exception(e, r)
+  return log_error_mesg("Parse Error on error response object ", r.to_s)
 end
 
 def parse_rest_response(r)
