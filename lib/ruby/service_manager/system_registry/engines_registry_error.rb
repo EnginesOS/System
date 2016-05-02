@@ -4,9 +4,9 @@ class EnginesRegistryError < EnginesError
   
     def initialize(error_hash)
       if error_hash.is_a?(Hash)
-        message = error_hash[:error_mesg]
-        type = error_hash[:error_type]
-        @params = error_hash[:params]
+        message = error_hash['error_mesg']
+        type = error_hash['error_type']
+        @params = error_hash['params']
           p :MESS    
            p  message
            p error_hash.to_s
