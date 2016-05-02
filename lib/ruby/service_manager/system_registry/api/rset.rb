@@ -6,7 +6,9 @@ def rest_get(path,params)
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
   rescue StandardError => e
+    STDERR.puts('get exception ' + e.to_s)
     log_exception(e, params)
+
   end
 end
 
