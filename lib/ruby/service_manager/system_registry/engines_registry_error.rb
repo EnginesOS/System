@@ -13,12 +13,12 @@ class EnginesRegistryError < EnginesError
       else
         message = hash.to_s
         type = :error
-        objs = []
+        @params = []
       end
       
-    super(message, type, *objs )
+    super(message, type)
         @sub_system = 'engines_registry'
-        @registry_source = error_hash[:source]
+        @registry_source = error_hash['source']
       end
       
   def to_json(opt)
