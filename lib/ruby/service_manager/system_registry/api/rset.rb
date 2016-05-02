@@ -5,8 +5,9 @@ def rest_get(path,params)
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
-  rescue StandardError => e
-    STDERR.puts('get exception ' + e.to_s)
+   rescue RestClient::ExceptionWithResponse => e   
+     parse_error(e.response)
+  rescue StandardError => e       
     log_exception(e, params)
 
   end
@@ -16,6 +17,8 @@ def rest_post(path,params)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.post(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e   
+      parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
   end
@@ -25,6 +28,8 @@ def rest_put(path,params)
   begin
     #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e   
+      parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
   end
@@ -34,6 +39,8 @@ def rest_delete(path,params)
   begin
     # STDERR.puts('Del Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.delete(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e   
+      parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
   end
