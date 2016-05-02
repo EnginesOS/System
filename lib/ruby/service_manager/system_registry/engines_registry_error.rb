@@ -9,6 +9,7 @@ class EnginesRegistryError < EnginesError
         @params = error_hash[:params]
           p :MESS    
            p  message
+           p error_hash.to_s
       else
         message = hash.to_s
         type = :error
