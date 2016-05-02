@@ -42,6 +42,7 @@ end
   #@returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
     clear_error
+    r = ''
     service_hash = retrieve_orphan(service_query_hash)
      if service_query_hash[:remove_all_data] == false
        service_hash[:remove_all_data] = false
@@ -50,7 +51,8 @@ end
      end
 
     return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
-    return test_registry_result(system_registry_client.release_orphan(service_hash)) if remove_from_managed_service(service_hash)  
+    return test_registry_result(system_registry_client.release_orphan(service_hash)) if ( r = remove_from_managed_service(service_hash))  
+      return r
     rescue StandardError => e
       log_exception(e)
   end

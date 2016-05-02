@@ -1,5 +1,6 @@
 module SharedServices
   def attach_existing_service_to_engine(shared_service_params)
+    r = ''
     existing_service = shared_service_params[ :existing_service]    
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
@@ -23,7 +24,7 @@ module SharedServices
       
     SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
       if shared_service[:type_path] == 'filesystem/local/filesystem'
-        return false unless attach_shared_volume(shared_service)
+        return r unless (r = attach_shared_volume(shared_service))
       end
     test_registry_result(system_registry_client.add_share_to_managed_engines_registry(shared_service))
       
