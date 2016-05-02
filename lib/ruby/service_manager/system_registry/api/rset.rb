@@ -49,10 +49,14 @@ end
 private
 
 def parse_error(r)
+  STDERR.puts(r.to_s)
   res = JSON.parse(r, :create_additions => true)
   EnginesRegistryError.new(res)
   rescue  StandardError => e
+  STDERR.puts(r.to_s)
+  STDERR.puts(e.to_s)
   return log_error_mesg("Parse Error on error response object ", r.to_s)
+  
 end
 
 
