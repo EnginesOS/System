@@ -41,7 +41,7 @@ def read_stdin_data
    stdin_data += $_
  end
   end
-  puts "Read " + stdin_data.length.to_s + ' bytes'
+  puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   stdin_data
 rescue Timeout::Error
   puts "Timeout on data read from stdin"  
