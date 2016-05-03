@@ -1,9 +1,7 @@
 TESTS=engines state container_name build builder
 
 tests:
-	for test in $$TESTS ; do\
-		make $test;\
-	done
+	$(foreach test,$(TESTS),  make $(test);)
 	
 engines:
 	engines_tool engines 

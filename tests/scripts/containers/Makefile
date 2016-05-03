@@ -1,9 +1,8 @@
 TESTS=changed
 
 tests:
-	for test in $$TESTS ; do\
-		make $test;\
-	done
+	$(foreach test,$(TESTS),  make $(test);)
+
 	
 changed:
 	engines_tool changed
