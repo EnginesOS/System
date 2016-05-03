@@ -1,2 +1,2 @@
 #!/bin/bash
-ruby /opt/engines/tests/src/engines_test_expects.rb
+ruby /opt/engines/tests/src/engines_test_expects.rb $*
