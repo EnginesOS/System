@@ -41,7 +41,7 @@ def read_stdin_data
    stdin_data += $_
  end
   end
-  puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
+ # puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   stdin_data
 rescue Timeout::Error
   puts "Timeout on data read from stdin"  
@@ -63,7 +63,7 @@ end
 
 @data=read_stdin_data
 
-if @data.start_with?("Incorrect usage")
+if @data.include?("Incorrect usage")
   p 'Test Error ' + @data.to_s
   return false 
 end
