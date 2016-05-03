@@ -4,7 +4,7 @@ if Process.euid != 21000
 end
 
 def command_useage(mesg=nil)
- p "Inccorect usage"
+ p "Incorrect usage"
  p mesg
  exit
 end

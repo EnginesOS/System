@@ -63,6 +63,11 @@ end
 
 @data=read_stdin_data
 
+if @data.start_with?("Incorrect usage")
+  p 'Test Error ' + @data.to_s
+  return false 
+end
+
 case type
 when 'json'
  r = check_json(key, value)
@@ -74,4 +79,9 @@ when 'text'
   r = check_text(key, value)
 end
   
-puts r.to_s
+if r == false
+
+puts 'Failed'
+else
+  puts 'OK'
+end
