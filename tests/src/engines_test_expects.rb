@@ -65,7 +65,7 @@ end
 
 if @data.include?("Incorrect usage")
   p 'Test Error ' + @data.to_s
- exit 127
+ exit -1
 end
 
 case type
@@ -82,6 +82,7 @@ end
 if r == false
 
 puts 'Failed'
+  exit -1
 else
   puts 'OK'
 end
