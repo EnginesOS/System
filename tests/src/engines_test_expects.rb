@@ -17,7 +17,14 @@ def check_boolean(value)
   end  
   return false
 end
-
+def check_json_array(key, value)
+  hash = JSON.parse(@data)
+  return true if hash.is_a?(Array)
+  return false
+  rescue
+    return false
+end
+  
 def check_json(key, value)
   hash = JSON.parse(@data)
   return true if key.nil?
@@ -77,8 +84,14 @@ when 'bool'
   
 when 'text'
   r = check_text(key, value)
-end
+
   
+when 'jason_array'
+  r = check_json_array(key, value)
+  
+end
+
+
 if r == false
 
 puts 'Failed'
