@@ -1,28 +1,4 @@
-key=nil
-value=nil
-type=ARGV[0]
 
-if ARGV.count == 2
-  value=ARGV[1]
-elsif ARGV.count > 2
-value = ARGV[2]
-key = ARGV[1]
-end
-
-@data=read_stdin_data
-
-case type
-when 'json'
- r = check_json(key, value)
-  
-when 'bool'
-  r = check_boolean(value)
-  
-when 'text'
-  r = check_text(key, value)
-end
-  
-puts r.to_s
 
 def check_text(key, value)
    if key == nil || key == 'is'
@@ -72,3 +48,30 @@ rescue Timeout::Error
 rescue StandardError => e
   log_exception(e)
 end
+
+
+key=nil
+value=nil
+type=ARGV[0]
+
+if ARGV.count == 2
+  value=ARGV[1]
+elsif ARGV.count > 2
+value = ARGV[2]
+key = ARGV[1]
+end
+
+@data=read_stdin_data
+
+case type
+when 'json'
+ r = check_json(key, value)
+  
+when 'bool'
+  r = check_boolean(value)
+  
+when 'text'
+  r = check_text(key, value)
+end
+  
+puts r.to_s
