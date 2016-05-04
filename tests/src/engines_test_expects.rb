@@ -3,12 +3,15 @@ require 'json'
 def check_length(check, len)
   case 
     when 'eq'
+    puts 'eq' + @data.length.to_s
     return true if @data.length == len
        
     when 'gt'
+    puts 'gt' + @data.length.to_s
     return true if @data.length > len
       
   end
+  p @data.length.to_s
   return false
   end
     
