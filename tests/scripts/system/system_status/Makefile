@@ -1,7 +1,7 @@
 TESTS=status first_run_required
 
 tests:
-	$(foreach test,$(TESTS), echo -n $(test); make $(test);)
+	$(foreach test,$(TESTS), echo -n $(test):; make $(test);)
 	
 status:
 	@engines_tool system status |engines_test_expects json is_rebooting false
