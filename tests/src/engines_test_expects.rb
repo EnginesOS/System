@@ -35,7 +35,8 @@ def check_json(key, value)
     return true if hash[key] == value
   end
 return false
-rescue
+rescue StandardError =>e
+  p e.to_s
   return false
 end
 
