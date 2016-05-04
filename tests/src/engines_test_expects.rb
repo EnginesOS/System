@@ -96,8 +96,11 @@ end
 
 
 if r == false
-
+if type.nil?
+ puts 'Failed:Got ' + @data.to_s + " but expected:" + type
+else
 puts 'Failed:Got ' + @data.to_s + " but expected:" + value.to_s
+end
   exit -1
 else
   puts 'OK'
