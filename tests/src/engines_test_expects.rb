@@ -56,7 +56,7 @@ def check_json(key, value)
   if value.nil?
     return true if hash.key?(key)
   else
-    return true if hash[key] == value
+    return true if hash[key].to_s == value
   end
   
 return false
