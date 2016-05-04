@@ -70,7 +70,7 @@ key = ARGV[1]
 end
 
 @data=read_stdin_data
-
+@data.strip!
 if @data.include?("Incorrect usage")
   p 'Test Error ' + @data.to_s
  exit -1
