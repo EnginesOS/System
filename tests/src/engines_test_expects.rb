@@ -37,6 +37,11 @@ def check_boolean(value)
 end
 def check_array(key, value)
   hash = JSON.parse(@data)
+  unless key.nil?
+    return false unless hash.is_a?(Array)
+    return true if hash.include?(key)
+    return false
+  end
   return true if hash.is_a?(Array)
   return false
   rescue
@@ -61,7 +66,7 @@ def check_json(key, value)
   
 return false
 rescue StandardError =>e
-  p e.to_s
+
   return false
 end
 
