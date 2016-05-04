@@ -1,4 +1,4 @@
-
+require 'json'
 
 def check_text(key, value)
    if key == nil || key == 'is'
