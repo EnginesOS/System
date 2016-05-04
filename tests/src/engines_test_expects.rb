@@ -39,6 +39,7 @@ def check_array(key, value)
   hash = JSON.parse(@data)
   unless key.nil?
     return false unless hash.is_a?(Array)
+    p :t
     return true if hash.include?(key)
     return false
   end
