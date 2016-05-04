@@ -15,9 +15,10 @@ def check_boolean(value)
   else
     return true if @data == value
   end  
+ 
   return false
 end
-def check_json_array(key, value)
+def check_array(key, value)
   hash = JSON.parse(@data)
   return true if hash.is_a?(Array)
   return false
@@ -86,15 +87,15 @@ when 'text'
   r = check_text(key, value)
 
   
-when 'jason_array'
-  r = check_json_array(key, value)
+when 'array'
+  r = check_array(key, value)
   
 end
 
 
 if r == false
 
-puts 'Failed'
+puts 'Failed:Got ' + @data.to_s + " but expected:" + value
   exit -1
 else
   puts 'OK'
