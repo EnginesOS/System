@@ -37,10 +37,9 @@ def check_boolean(value)
 end
 def check_array(key, value)
   hash = JSON.parse(@data)
-  unless key.nil?
+  unless value.nil?
     return false unless hash.is_a?(Array)
-    p :t
-    return true if hash.include?(key)
+    return true if hash.include?(value)
     return false
   end
   return true if hash.is_a?(Array)
