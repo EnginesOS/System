@@ -1,5 +1,19 @@
 require 'json'
 
+def check_length(check, len)
+  case 
+    when 'eq'
+    return true if @data.length == len
+       
+    when 'gt'
+    return true if @data.length > len
+      
+  end
+  return false
+  end
+    
+  
+
 def check_text(key, value)
    if key == nil || key == 'is'
      return true if @data = value    
@@ -95,7 +109,10 @@ when 'bool'
   
 when 'text'
   r = check_text(key, value)
-
+  
+  when 'text_len'
+    value = Integer.new(value)
+  r = check_length(key, value)
   
 when 'array'
   r = check_array(key, value)
