@@ -14,7 +14,7 @@ class SystemAccess
     return SystemConfig.DBHost
   end
   def mongo_host
-     return 'mongo'
+     return 'mongo.engines.internal'
    end
   def smtp_host
     return SystemConfig.SMTPHost

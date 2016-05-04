@@ -189,6 +189,7 @@ def write_response(r)
       else
         #puts r.body
         STDOUT.write(r.body)
+        puts ''
       end
 
 end

@@ -14,19 +14,19 @@ default_domain:
 	engines_tool system template '_Engines_System(default_domain)' |engines_test_expects text
 
 smtp_host:
-	engines_tool system template '_Engines_System(smtp_host)' |engines_test_expects text
+	engines_tool system template '_Engines_System(smtp_host)' |engines_test_expects text smtp.engines.internal
  
 pgsql_host:
-	engines_tool system template '_Engines_System(pgsql_host)' |engines_test_expects text
+	engines_tool system template '_Engines_System(pgsql_host)' |engines_test_expects text pgsql.engines.internal
 
 mysql_host:
-	engines_tool system template '_Engines_System(mysql_host)' |engines_test_expects text
+	engines_tool system template '_Engines_System(mysql_host)' |engines_test_expects text mysql.engines.internal
 
 mongo_host:
-	engines_tool system template '_Engines_System(mongo_host)' |engines_test_expects text
+	engines_tool system template '_Engines_System(mongo_host)' |engines_test_expects text mongo.engines.internal
 
 timezone_country_city:
-	engines_tool system template '_Engines_System(timezone_country_city)' |engines_test_expects text
+	engines_tool system template '_Engines_System(timezone_country_city)' |engines_test_expects text Australia/Sydney
 
 hrs_from_gmt:
-	engines_tool system template '_Engines_System(hrs_from_gmt)' |engines_test_expects text
+	engines_tool system template '_Engines_System(hrs_from_gmt)' |engines_test_expects text +10
