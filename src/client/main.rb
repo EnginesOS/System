@@ -187,7 +187,8 @@ def write_response(r)
        puts r.body.b
     STDERR.puts "as_binary"
       else
-        p r.body
+        #puts r.body
+        STDOUT.write(r.body)
       end
 
 end

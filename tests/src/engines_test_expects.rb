@@ -27,6 +27,7 @@ def check_array(key, value)
 end
   
 def check_json(key, value)
+  
   hash = JSON.parse(@data)
 
   if key.nil?
