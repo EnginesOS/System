@@ -111,7 +111,7 @@ when 'text'
   r = check_text(key, value)
   
   when 'text_len'
-    value = Integer.new(value)
+    value =  value.to_i
   r = check_length(key, value)
   
 when 'array'
