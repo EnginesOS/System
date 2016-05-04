@@ -28,9 +28,9 @@ end
 
 def check_boolean(value)
   if value.nil?
-    return true if @data == 'false' || @data == 'true'
+    return true if @data.to_s == 'false' || @data.to_s == 'true'
   else
-    return true if @data == value
+    return true if @data.to_s == value
   end  
  
   return false
