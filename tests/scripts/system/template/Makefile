@@ -1,17 +1,17 @@
-TESTS=pubkey random default_domain smtp_host pgsql_host mysql_host mongo_host timezone_country_city hrs_from_gmt
+TESTS=publickey random default_domain smtp_host pgsql_host mysql_host mongo_host timezone_country_city hrs_from_gmt
 
 
 tests:
 	$(foreach test,$(TESTS),  make $(test);)
 	
 publickey:
-	engines_tool system template '_Engines_System(publickey)' |engines_test_expects text
+	engines_tool system template '_Engines_System(publickey)' |engines_test_expects text gt 10
 
 random:
-	engines_tool system template '_Engines_System(random(10))' |engines_test_expects text
+	engines_tool system template '_Engines_System(random(10))' |engines_test_expects text eq 10
 
 default_domain:
-	engines_tool system template '_Engines_System(default_domain)' |engines_test_expects text
+	engines_tool system template '_Engines_System(default_domain)' |engines_test_expects text gt 4
 
 smtp_host:
 	engines_tool system template '_Engines_System(smtp_host)' |engines_test_expects text smtp.engines.internal
