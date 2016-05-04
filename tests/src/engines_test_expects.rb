@@ -30,6 +30,7 @@ def check_json(key, value)
   hash = JSON.parse(@data)
   return true if key.nil?
   if value.nil?
+    p hash.key?(key).to_s
     return true if hash.key?(key)
   else
     return true if hash[key] == value
