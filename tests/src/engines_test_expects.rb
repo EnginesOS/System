@@ -1,7 +1,7 @@
 require 'json'
 
 def check_length(check, len)
-  case 
+  case check
     when 'eq'
     puts 'eq' + @data.length.to_s
     return true if @data.length == len +2  
