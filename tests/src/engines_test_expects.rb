@@ -90,12 +90,14 @@ when 'text'
 when 'array'
   r = check_array(key, value)
   
+else
+  p 'Unrecognised expect type:' + type.to_s
 end
 
 
 if r == false
 
-puts 'Failed:Got ' + @data.to_s + " but expected:" + value
+puts 'Failed:Got ' + @data.to_s + " but expected:" + value.to_s
   exit -1
 else
   puts 'OK'
