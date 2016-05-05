@@ -103,9 +103,10 @@ key = ARGV[1]
 end
 
 @data=read_stdin_data
+return nil if @data.nil?
 @data.strip!
 if @data.include?("Incorrect usage")
-  p 'Test Error ' + @data.to_s
+  p 'Error with Test entry ' + @data.to_s
  exit -1
 end
 
