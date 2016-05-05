@@ -15,7 +15,12 @@ def check_length(check, len)
   return false
   end
     
-  
+def check_regex(key, value)
+    
+     return true unless @data.match(value).nil?     
+
+   return false
+end
 
 def check_text(key, value)
    if key == nil || key == 'is'
@@ -124,6 +129,9 @@ when 'text'
   when 'text_len'
     value =  value.to_i
   r = check_length(key, value)
+  
+  when 'regex'
+  r = check_regex(value)
   
 when 'array'
   r = check_array(key, value)
