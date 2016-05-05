@@ -1,4 +1,4 @@
 TESTS=
 
 tests:
-	$(foreach test,$(TESTS),  make $(test);)
+	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)

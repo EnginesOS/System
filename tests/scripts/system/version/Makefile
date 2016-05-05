@@ -1,7 +1,7 @@
 TESTS=release api ident system base_os
 
 tests:
-	$(foreach test,$(TESTS),  make $(test);)
+	$(foreach test,$(TESTS),   echo -n $(test):; make -s $(test);)
 	
 release:
 	engines_tool system version release |engines_test_expects text is current

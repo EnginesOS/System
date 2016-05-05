@@ -1,7 +1,7 @@
 TESTS=memory load mem_stats disk
 
 tests:	
-	$(foreach test,$(TESTS), echo -n $(test); make $(test);)
+	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 memory:
 	engines_tool system metrics memory|engines_test_expects json total

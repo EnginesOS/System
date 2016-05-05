@@ -2,7 +2,7 @@ TESTS=publickey random default_domain smtp_host pgsql_host mysql_host mongo_host
 
 
 tests:
-	$(foreach test,$(TESTS),  make $(test);)
+	@$(foreach test,$(TESTS),  echo -n $(test):; make -s $(test);)
 	
 publickey:
 	engines_tool system template '_Engines_System(publickey)' |engines_test_expects text_len gt 10

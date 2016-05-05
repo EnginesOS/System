@@ -1,7 +1,7 @@
 TESTS=engines state container_name build builder
 
 tests:
-	$(foreach test,$(TESTS),  make $(test);)
+	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 engines:
 	engines_tool engines |engines_test_expects json_array
