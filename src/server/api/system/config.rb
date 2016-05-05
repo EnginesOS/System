@@ -51,7 +51,7 @@ get '/v0/system/config/hostname' do
     return hostname.to_json
   else
     log_error(request, hostname)
-    return  status(404)
+    return status(404)
   end
 end
 
