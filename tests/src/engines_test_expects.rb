@@ -83,9 +83,10 @@ def read_stdin_data
  # puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
   stdin_data.strip!
-  stdin_data
+ return stdin_data
+ 
 rescue Timeout::Error
-  puts "Timeout on data read from stdin"  
+  STDERR.puts "Timeout on data read from stdin"  
 rescue StandardError => e
   log_exception(e)
 end
