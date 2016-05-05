@@ -118,7 +118,7 @@ end
     stdin_data += $_
   end
    end
-   STDERR.puts "Read " + stdin_data.length.to_s + ' bytes'
+   #STDERR.puts "Read " + stdin_data.length.to_s + ' bytes'
    stdin_data
  rescue Timeout::Error
    puts "Timeout on data read from stdin"  
@@ -131,7 +131,7 @@ def read_stdin_json
 end
  
 def perform_get  
-  STDERR.puts  @route 
+  #STDERR.puts  @route 
   rest_get(@route) 
   exit
 end
@@ -143,14 +143,14 @@ def perform_post(params=nil, content_type=nil)
   post_params = {}
     post_params[:api_vars] = params
       
-  STDERR.puts  @route 
+  #  STDERR.puts  @route 
  
   rest_post(@route,post_params, content_type)  
   exit
 end
 
 def perform_delete(params=nil) 
-  STDERR.puts  @route 
+  #STDERR.puts  @route 
   rest_delete(@route,params)  
   exit
 end
@@ -200,10 +200,10 @@ def rest_post(path, params, content_type )
     
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
-      STDERR.puts  'ct ' + content_type
+   #   STDERR.puts  'ct ' + content_type
     r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
     else
-      STDERR.puts  "no_ct"
+     # STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params)
     end
   
