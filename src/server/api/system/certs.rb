@@ -31,7 +31,8 @@ end
 delete '/v0/system/certs/:cert_name' do
   r = @@engines_api.remove_cert(params[:cert_name])
   unless r.is_a?(EnginesError)
-    return status(202)
+     status(202)
+     return r.to_json
   else
     return log_error(request, r)
   end
@@ -54,7 +55,10 @@ post '/v0/system/certs/default' do
  
   cparams[:set_as_default] = true
     r = @@engines_api.upload_ssl_certificate(cparams)
-  return status(202) if r
+  if r
+       status(202)
+       return r.to_json
+     end
   log_error(request, r, cparams)
   return status(404)
 end
@@ -62,7 +66,10 @@ end
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
     r = @@engines_api.upload_ssl_certificate(cparams)
-  return status(202) if r
+  if r
+       status(202)
+       return r.to_json
+     end
   log_error(request, r, cparams)
   return status(404)
 end

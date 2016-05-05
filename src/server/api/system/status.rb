@@ -3,6 +3,7 @@
 
 get '/v0/system/status/first_run_required' do
   first_run_required = @@engines_api.first_run_required?
+  status(202)
   return first_run_required.to_json # no checky as true or false
 
 end
@@ -10,6 +11,7 @@ end
 get '/v0/system/status' do
   status = SystemStatus.system_status
   unless status.is_a?(EnginesError)
+    status(202)
     return status.to_json
   else
     return log_error(request,status )
