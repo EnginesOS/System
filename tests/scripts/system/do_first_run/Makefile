@@ -5,7 +5,6 @@ tests:
 	
 hosted_dns:
 	#clear_first_ran
-	#rm ca
 	cat external_ip_self_hosted_dns.json | engines_tool system do_first_run | engines_test_expects bool true
 
 selfhosted_dns:
@@ -14,7 +13,7 @@ selfhosted_dns:
 dyndns:
 	cat dyndns.json | engines_tool system do_first_run | engines_test_expects bool true
 	
-zero_conf:
+zeroconf:
 	cat zeroconf.json  | engines_tool system do_first_run | engines_test_expects bool true
 	
 external:
