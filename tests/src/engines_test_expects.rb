@@ -75,13 +75,13 @@ def read_stdin_data
   stdin_data = ""
   
   require 'timeout'
-  status = Timeout::timeout(10) do
+  status = Timeout::timeout(60) do
  while STDIN.gets
    stdin_data += $_
  end
   end
  # puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
-  
+  return nil if stdin_data.nil?
   stdin_data.strip!
   stdin_data
 rescue Timeout::Error
@@ -102,9 +102,9 @@ value = ARGV[2]
 key = ARGV[1]
 end
 
-@data=read_stdin_data
-return nil if @data.nil?
-@data.strip!
+@data = read_stdin_data
+
+
 if @data.include?("Incorrect usage")
   p 'Error with Test entry ' + @data.to_s
  exit -1
