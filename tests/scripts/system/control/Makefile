@@ -1,6 +1,5 @@
-TESTS=
+SUBDIRS=base_os engines_system registry
 
 tests:
-	for test in $$TESTS ; do\
-		make $test;\
-	done
+	@$(foreach dir,$(SUBDIRS), cd $(dir); echo $(dir); make -s tests; cd ..;)
+	
