@@ -162,7 +162,7 @@ def rest_get(path,params=nil)
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.get(@base_url + path, params)
 
-    STDERR.puts r.headers[:content_type]
+    #   STDERR.puts r.headers[:content_type]
 #      if  r.headers[:content_type].start_with?('text/event-stream')
 #        #handle_stream(r)
 #        write_response(r)
@@ -185,7 +185,7 @@ def write_response(r)
   end
   if r.headers[:content_type] == 'application/octet-stream'
        puts r.body.b
-    STDERR.puts "as_binary"
+    # STDERR.puts "as_binary"
       else
         #puts r.body
         STDOUT.write(r.body)
