@@ -1,4 +1,4 @@
-p 'arg3' +  ARGV[3]
+
 case ARGV[3]
 when 'restart'
   @route += '/' + ARGV[3]
