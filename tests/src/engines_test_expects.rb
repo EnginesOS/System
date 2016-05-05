@@ -15,9 +15,9 @@ def check_length(check, len)
   return false
   end
     
-def check_regex(key, value)
+def check_regex(exp)
     
-     return true unless @data.match(value).nil?     
+     return true unless @data.match(exp).nil?     
 
    return false
 end
@@ -115,6 +115,7 @@ if @data.include?("Incorrect usage")
   p 'Error with Test entry ' + @data.to_s
  exit -1
 end
+r = false
 
 case type
 when 'json'
