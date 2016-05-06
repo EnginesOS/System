@@ -71,7 +71,7 @@ def check_json(key, value)
   
 return false
 rescue StandardError =>e
-
+ STDERR.puts 'Json Parse Error ' + e.to_s
   return false
 end
 
