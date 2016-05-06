@@ -10,6 +10,13 @@ def command_useage(mesg=nil)
 end
 
 
+def parse_error(r)
+  puts r
+  exit (-1)
+ 
+  
+end
+
 def parse_rest_response(r)
   return false if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
@@ -168,7 +175,8 @@ def rest_get(path,params=nil)
 #        write_response(r)
 #      end
       write_response(r)
-    
+    rescue RestClient::ExceptionWithResponse => e   
+        parse_error(e.response)
   rescue StandardError => e
 
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -209,6 +217,8 @@ def rest_post(path, params, content_type )
   
     write_response(r)
     exit
+    rescue RestClient::ExceptionWithResponse => e   
+        parse_error(e.response)
   rescue StandardError => e
     params[:api_vars][:data] = nil
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
@@ -222,6 +232,8 @@ def rest_delete(path, params=nil)
     r = RestClient.delete(@base_url + path, params)
     write_response(r)
     exit
+    rescue RestClient::ExceptionWithResponse => e   
+        parse_error(e.response)
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
@@ -232,7 +244,6 @@ end
 require_relative 'commands/commands.rb'
 
 #require_relative 'rset.rb'
-
 
 
 
