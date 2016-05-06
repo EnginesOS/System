@@ -11,7 +11,7 @@ end
 
 
 def parse_error(r)
-  puts r
+  STDOUT.puts r.to_s
   exit (-1)
  
   

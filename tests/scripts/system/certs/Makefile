@@ -24,7 +24,7 @@ default:
 remove:
 	engines_tool system certs remove testingcert.com  | engines_test_expects bool true	
 		echo -n " Checking:"
-		engines_tool system cert testingcert.com | engines_test_expects text null
+		engines_tool system cert testingcert.com | engines_test_expects json error_object
 
 system_ca:
 	engines_tool system cert system_ca | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
