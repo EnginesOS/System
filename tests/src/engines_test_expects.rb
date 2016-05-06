@@ -139,12 +139,13 @@ when 'array'
   
 else
   p 'Unrecognised expect type:' + type.to_s
+  exit(-1)
 end
 
 
 if r == false
 if type.nil?
- puts 'Failed:Got ' + @data.to_s + " but expected:" + type
+ puts 'Failed:Got ' + @data.to_s + " but expected:" + type.to_s
 else
 puts 'Failed:Got ' + @data.to_s + " but expected:" + value.to_s
 end
