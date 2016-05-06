@@ -53,6 +53,22 @@ def check_array(key, value)
     return false
 end
   
+def hash_has_key(key, hash)
+  if key.contain?(',')
+    
+  end
+  return true if hash.key?(key)
+  
+end
+
+def hash_key_value(key, hash, value)
+  if key.contain?(',')
+     
+   end
+  return false unless hash.key?(key)
+  return hash[key].to_s 
+end
+
 def check_json(key, value)
   
   hash = JSON.parse(@data)
@@ -63,10 +79,11 @@ def check_json(key, value)
   end
   
   return true if key.nil?
-  if value.nil?
-    return true if hash.key?(key)
+  
+  if value.nil?    
+    return true if hash_has_key(key, hash)
   else
-    return true if hash[key].to_s == value
+    return true if hash_key_value(key, hash) == value
   end
   
 return false
@@ -99,6 +116,14 @@ end
 
 key=nil
 value=nil
+
+if ARGV[0] == 'not'
+  @invert = true
+  ARGV.delete_at(0)
+else
+  @invert = false
+end
+
 type=ARGV[0]
 
 if ARGV.count == 2
@@ -142,6 +167,9 @@ else
   exit(-1)
 end
 
+if @invert
+  r = !r
+end
 
 if r == false
 if type.nil?
