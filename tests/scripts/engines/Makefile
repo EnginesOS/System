@@ -4,13 +4,13 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 engines:
-	engines_tool engines |engines_test_expects json_array
+	engines_tool engines |engines_test_expects array
 	
 state:
-	engines_tool engines state|engines_test_expects json_array
+	engines_tool engines state|engines_test_expects array
 	
 container_name:
-	engines_tool engines container_name |engines_test_expects json_array
+	engines_tool engines container_name |engines_test_expects array
 	
 build:
 	cat build_test.json | engines_tool engines build  |engines_test_expects boolean true
@@ -18,4 +18,4 @@ build:
 builder:
 	engines_tool engines builder status |engines_test_expects json
 	engines_tool engines builder follow |engines_test_expects text
-	engines_tool engines builder last |engines_test_expects json
+	engines_tool engines builder last   |engines_test_expects json
