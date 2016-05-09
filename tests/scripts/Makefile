@@ -3,3 +3,4 @@ SUBDIRS=system engines engine containers services service engine_builder registr
 tests:
 	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
 	
+	

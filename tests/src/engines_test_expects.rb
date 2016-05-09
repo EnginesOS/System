@@ -53,17 +53,29 @@ def check_array(key, value)
     return false
 end
   
-def hash_has_key(key, hash)
+def hash_has_key(search_key, hash)
   if key.contain?(',')
-    
+    keys = search_key.split(',')
+         keys.each do |key |
+           return false unless hash.is_a?(Hash)
+           return false unless hash.key?(key)
+           hash = hash[key]   
+         end
+        return true
   end
   return true if hash.key?(key)
-  
+  return false
 end
 
-def hash_key_value(key, hash, value)
-  if key.contain?(',')
-     
+def hash_key_value(search_key, hash)
+  if search_key.contain?(',')
+     keys = search_key.split(',')
+     keys.each do |key |
+       return false unless hash.is_a?(Hash)
+       return false unless hash.key?(key)
+       hash = hash[key]      
+     end     
+     return hash
    end
   return false unless hash.key?(key)
   return hash[key].to_s 
@@ -127,7 +139,7 @@ end
 type=ARGV[0]
 
 if ARGV.count == 2
-  value=ARGV[1]
+  value = ARGV[1]
 elsif ARGV.count > 2
 value = ARGV[2]
 key = ARGV[1]
@@ -167,9 +179,7 @@ else
   exit(-1)
 end
 
-if @invert
-  r = !r
-end
+r = !r if @invert 
 
 if r == false
 if type.nil?
