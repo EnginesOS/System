@@ -120,7 +120,7 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
     rparams[:remove_all_data] = true  if splats[0] == 'all'
     rparams[:remove_all_data] = false  if splats[0] == 'none'
 else
-rparams[:remove_all_data] = false 
+    rparams[:remove_all_data] = false 
     end 
     
   r =  @@engines_api.delete_engine(rparams)
