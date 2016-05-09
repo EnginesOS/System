@@ -20,8 +20,8 @@ get '/v0/containers/service/:service_name/services/non_persistent/:ns/*' do
 #        hash[:publisher_namespace] = params[:ns]
 #        hash[:parent_engine] = params[:service_name]
 #        hash[:type_path] = splats[0]    
-          p :np_services_splat
-p hash
+       #   p :np_services_splat
+#p hash
           
   r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
