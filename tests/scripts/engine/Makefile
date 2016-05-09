@@ -54,14 +54,14 @@ build_report:
 
 properties_net:
 	engines_tool engine testengine stop
-	cat network_properties | engines_tool engine testengine properties network | engines_test_expects boolean true
+	cat network_properties.json | engines_tool engine testengine properties network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text is running
 	
 	
 properties_run:
 	engines_tool engine testengine stop
-	cat network_properties | engines_tool engine testengine properties network | engines_test_expects boolean true
+	cat network_properties.json | engines_tool engine testengine properties network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text is running
 	echo -n " Checking:"
