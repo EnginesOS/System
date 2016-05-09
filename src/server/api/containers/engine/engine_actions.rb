@@ -111,7 +111,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
 end
 
 delete '/v0/containers/engine/:engine_name/delete' do
-  r =  @@engines_api.remove_engine(params[:engine_name])
+  r =  @@engines_api.delete_engine(params[:engine_name])
 
   unless r.is_a?(EnginesError)
     return r.to_json
