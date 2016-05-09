@@ -63,7 +63,7 @@ def hash_has_key(search_key, hash)
          end
         return true
   end
-  return true if hash.key?(key)
+  return true if hash.key?(search_key)
   return false
 end
 
@@ -77,8 +77,8 @@ def hash_key_value(search_key, hash)
      end     
      return hash
    end
-  return false unless hash.key?(key)
-  return hash[key].to_s 
+  return false unless hash.key?(search_key)
+  return hash[search_key].to_s 
 end
 
 def check_json(key, value)
