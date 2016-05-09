@@ -54,7 +54,7 @@ def check_array(key, value)
 end
   
 def hash_has_key(search_key, hash)
-  if search_key.contain?(',')
+  if search_key.include?(',')
     keys = search_key.split(',')
          keys.each do |key |
            return false unless hash.is_a?(Hash)
@@ -68,7 +68,7 @@ def hash_has_key(search_key, hash)
 end
 
 def hash_key_value(search_key, hash)
-  if search_key.contain?(',')
+  if search_key.include?(',')
      keys = search_key.split(',')
      keys.each do |key |
        return false unless hash.is_a?(Hash)

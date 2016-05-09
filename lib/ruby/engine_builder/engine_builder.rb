@@ -211,8 +211,8 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
-      log_build_output('Engine Stopped:', mc.logs_container)
-      @result_mesg = 'Engine Stopped!'
+      log_build_output('Engine Stopped:' + mc.logs_container.to_s)
+      @result_mesg = 'Engine Stopped! ' + mc.logs_container.to_s
     end
 
     close_all
