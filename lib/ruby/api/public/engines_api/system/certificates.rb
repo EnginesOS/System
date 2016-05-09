@@ -1,8 +1,8 @@
 module PublicApiSystemCertificates
   
 def get_system_ca
-return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)
-File.read(SystemConfig.EnginesInternalCA)
+return "No CA found" unless File.exists?(' /opt/engines/etc/ca/engines_internal_ca.crt') # DO USE SystemConfig.EnginesInternalCA
+File.read( '/opt/engines/etc/ca/engines_internal_ca.crt') #SystemConfig.EnginesInternalCA)
 
 rescue StandardError => e
 return log_exception(e,'Failed to load CA')
