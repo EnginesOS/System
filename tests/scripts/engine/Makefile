@@ -16,17 +16,17 @@ state:
 	engines_tool engine testengine state 	|engines_test_expects text is running
 	
 stop:
-	engines_tool engine testengine stop  |engines_test_expects boolean true
+	engines_tool engine testengine stop  |engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state | engines_test_expects text is stopped
 	
 start:
-	engines_tool engine testengine start | engines_test_expects boolean true
+	engines_tool engine testengine start | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state | engines_test_expects text is running
 	
 pause:
-	engines_tool engine testengine pause | engines_test_expects boolean true
+	engines_tool engine testengine pause | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state | engines_test_expects text is paused
 	
@@ -36,7 +36,7 @@ unpause:
 	engines_tool engine testengine state | engines_test_expects text is running
 	
 template:
-	engines_tool engine testengine template _Engines_Builder(engine_name) | engines_test_expects text is testengine
+	engines_tool engine testengine template '_Engines_Builder(engine_name)' | engines_test_expects text is testengine
 	
 mem_stat:
 	engines_tool engine testengine mem_stat | engines_test_expects json maximum

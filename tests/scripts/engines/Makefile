@@ -7,7 +7,7 @@ engines:
 	engines_tool engines |engines_test_expects array
 	
 state:
-	engines_tool engines state|engines_test_expects array
+	engines_tool engines state|engines_test_expects json
 	
 container_name:
 	engines_tool engines container_name |engines_test_expects array
@@ -16,6 +16,6 @@ build:
 	cat build_test_engine.json | engines_tool engines build  |engines_test_expects bool true
 	
 builder:
-	engines_tool engines builder status |engines_test_expects json
-	engines_tool engines builder follow |engines_test_expects text
-	engines_tool engines builder last   |engines_test_expects json
+	engines_tool engine_builder status |engines_test_expects json
+	engines_tool engine_builder follow |engines_test_expects text
+	engines_tool engine_builder last   |engines_test_expects json
