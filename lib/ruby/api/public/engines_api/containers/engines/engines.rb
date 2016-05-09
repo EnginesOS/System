@@ -21,7 +21,7 @@ module PublicApiEngines
   def delete_engine(params)
   #  params[:remove_all_data] = true
       p :DELETE_ENGINE
-      P params
+      p params
     @core_api.delete_engine(params)
   end
   
