@@ -1,7 +1,7 @@
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
-	recreate reinstall destroy delete
+	 destroy recreate reinstall delete
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
@@ -66,4 +66,28 @@ properties_run:
 	engines_tool engine testengine state  | engines_test_expects text is running
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text 577
-	 
+	
+destroy:
+	engines_tool engine testengine stop  | engines_test_expects bool true
+	engines_tool engine testengine destroy  | engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool engine testengine state | engines_test_expects text is nocontainer
+	
+recreate:
+	engines_tool engine testengine recreate | engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool engine testengine state | engines_test_expects text is running
+	
+reinstall:
+	engines_tool engine testengine stop  | engines_test_expects bool true
+	engines_tool engine testengine destroy  | engines_test_expects bool true
+	engines_tool engine testengine reinstall | engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool engine testengine state | engines_test_expects text is running
+	
+delete:
+	engines_tool engine testengine stop  | engines_test_expects bool true
+	engines_tool engine testengine destroy  | engines_test_expects bool true
+	engines_tool engine testengine delete none | engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool engine testengine state | engines_test_expects json error_object,error_mesg
