@@ -31,7 +31,7 @@ pause:
 	engines_tool engine testengine state | engines_test_expects text is paused
 	
 unpause:
-	engines_tool engine testengine unpause | engines_test_expects boolean true
+	engines_tool engine testengine unpause | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state | engines_test_expects text is running
 	
