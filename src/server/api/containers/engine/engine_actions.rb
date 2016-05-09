@@ -110,9 +110,19 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   end
 end
 
-delete '/v0/containers/engine/:engine_name/delete' do
-  r =  @@engines_api.delete_engine(params[:engine_name])
+delete '/v0/containers/engine/:engine_name/delete/*' do
 
+ 
+  rparams = {}
+  rparams[:engine_name] = params[:engine_name]
+    unless splats.nil? || splats.count == 0
+    rparams[:remove_all_data] = true  if splats[0] == 'all'
+    rparams[:remove_all_data] = false  if splats[0] == 'none'
+else
+rparams[:remove_all_data] = false 
+    end 
+    
+  r =  @@engines_api.delete_engine(rparams)
   unless r.is_a?(EnginesError)
     return r.to_json
   else
