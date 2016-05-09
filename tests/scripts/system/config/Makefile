@@ -23,9 +23,12 @@ default_site:
 	engines_tool system config default_site | engines_test_expects text mysite.com.au
 
 remote_exception_logging:
-	 engines_tool system config remote_exception_logging | engines_test_expects bool true	
+	 engines_tool system config remote_exception_logging | engines_test_expects bool 	
 	 
 set_remote_exception_logging:	 
 	 engines_tool system config remote_exception_logging disable | engines_test_expects bool true
 	 echo -n ' verify setting"
 	 engines_tool system config remote_exception_logging | engines_test_expects bool false	
+	  engines_tool system config remote_exception_logging enable | engines_test_expects bool true
+	 echo -n ' verify setting"
+	 engines_tool system config remote_exception_logging | engines_test_expects bool true	

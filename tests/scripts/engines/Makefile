@@ -13,7 +13,7 @@ container_name:
 	engines_tool engines container_name |engines_test_expects array
 	
 build:
-	cat build_test_engine.json | engines_tool engines build  |engines_test_expects boolean true
+	cat build_test_engine.json | engines_tool engines build  |engines_test_expects bool true
 	
 builder:
 	engines_tool engines builder status |engines_test_expects json
