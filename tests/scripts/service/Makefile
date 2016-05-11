@@ -2,7 +2,7 @@
 	
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	  create dependacies properties_net properties_run\
-	 services consumers\
+	 services consumers configurations\
 	 destroy  recreate 
 	 #actions
 
