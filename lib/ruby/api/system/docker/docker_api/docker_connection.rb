@@ -4,6 +4,9 @@ class DockerConnection < ErrorsApi
   require 'net_x/http_unix'
   require 'socket'
 
+  require 'docker_api_errors.rb'
+  include EnginesDockerApiErrors
+  
   attr_accessor :response_parser
 
   def initialize
@@ -47,13 +50,13 @@ class DockerConnection < ErrorsApi
 
   def inspect_container_by_name(container)
     id = container_id_from_name(container)
-    return false if id == -1
+    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
     request='/containers/' + id.to_s + '/json'
     r =  make_request(request, container)
     SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-    return r  if r.is_a?(FalseClass)
+    return r  if r.is_a?(EnginesError)
     r = r[0] if r.is_a?(Array)
-    return false if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
+    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
     return r
   rescue StandardError  => e
     log_exception(e)
@@ -124,17 +127,18 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
   
-def log_warn_mesg(mesg,*objs)
-  return EnginesDockerApiError.new(e.to_s,:warning)
-end
-
-  def log_error_mesg(mesg,*objs)
-    super
-    return EnginesDockerApiError.new(e.to_s,:failure)
-  end
-  
-  def log_exception(e,*objs)
-    super
-    return EnginesDockerApiError.new(e.to_s,:exception)
-  end
+  #now in sep module
+#def log_warn_mesg(mesg,*objs)
+#  return EnginesDockerApiError.new(e.to_s,:warning)
+#end
+#
+#  def log_error_mesg(mesg,*objs)
+#    super
+#    return EnginesDockerApiError.new(e.to_s,:failure)
+#  end
+#  
+#  def log_exception(e,*objs)
+#    super
+#    return EnginesDockerApiError.new(e.to_s,:exception)
+#  end
 end
