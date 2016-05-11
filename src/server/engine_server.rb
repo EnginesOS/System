@@ -13,7 +13,8 @@ begin
   set :logging, true
   set :run, true
 
- 
+  core_api = EnginesCore.new   
+     @@engines_api = PublicApi.new(core_api)
  
   
   @@last_error =''
@@ -28,11 +29,11 @@ begin
   end
 
   def engines_api
-    unless @@engines_api
+    unless @engines_api
     core_api = EnginesCore.new   
-    @@engines_api = PublicApi.new(core_api)
+    @engines_api = PublicApi.new(core_api)
     end
-    return @@engines_api
+    return @engines_api
   end
 
   def log_exception(e, *args)
