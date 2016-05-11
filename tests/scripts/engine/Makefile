@@ -61,7 +61,7 @@ properties_net:
 	
 properties_run:
 	engines_tool engine testengine stop | engines_test_expects bool true
-	cat network_properties.json | engines_tool engine testengine properties network | engines_test_expects bool true
+	cat runtimt_properties.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text is running
 	echo -n " Checking:"
