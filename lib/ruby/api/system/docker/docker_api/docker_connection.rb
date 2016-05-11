@@ -4,7 +4,7 @@ class DockerConnection < ErrorsApi
   require 'net_x/http_unix'
   require 'socket'
 
-  require 'docker_api_errors.rb'
+  require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
   
   attr_accessor :response_parser
