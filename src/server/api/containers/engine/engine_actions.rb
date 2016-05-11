@@ -91,7 +91,7 @@ end
 get '/v0/containers/engine/:engine_name/reinstall' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
-  r = @@engines_api.reinstall_engine(engine)
+  r = engines_api.reinstall_engine(engine)
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -123,7 +123,7 @@ else
     rparams[:remove_all_data] = false 
     end 
     
-  r =  @@engines_api.delete_engine(rparams)
+  r =  engines_api.delete_engine(rparams)
   unless r.is_a?(EnginesError)
     return r.to_json
   else

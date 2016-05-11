@@ -13,7 +13,7 @@ get '/v0/system/version/release' do
 end
 
 get '/v0/system/version/api' do
-  api = @@engines_api.api_version
+  api = engines_api.api_version
   unless api.is_a?(EnginesError)
     status(202)
     return api.to_json
@@ -23,7 +23,7 @@ get '/v0/system/version/api' do
 end
 
 get '/v0/system/version/ident' do
-  ident = @@engines_api.version_string
+  ident = engines_api.version_string
   unless ident.is_a?(EnginesError)
     status(202)
     return ident.to_json
@@ -33,7 +33,7 @@ get '/v0/system/version/ident' do
 end
 
 get '/v0/system/version/system' do
-  system = @@engines_api.system_version
+  system = engines_api.system_version
   unless system.is_a?(EnginesError)
     status(202)
     return system.to_json

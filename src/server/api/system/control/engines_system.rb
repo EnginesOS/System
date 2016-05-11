@@ -4,7 +4,7 @@
 #/system/control/engines_system/recreate
 
 get '/v0/system/control/engines_system/update' do
-  update = @@engines_api.update_engines_system_software
+  update = engines_api.update_engines_system_software
   unless update.is_a?(EnginesError)
     status(202)
     return update.to_json
@@ -13,7 +13,7 @@ get '/v0/system/control/engines_system/update' do
   end
 end
 get '/v0/system/control/engines_system/restart' do
-  restart = @@engines_api.restart_mgmt
+  restart = engines_api.restart_mgmt
   unless restart.is_a?(EnginesError)
     status(202)
     return restart.to_json
@@ -23,7 +23,7 @@ get '/v0/system/control/engines_system/restart' do
 end
 
 get '/v0/system/control/engines_system/recreate' do
-  recreate = @@engines_api.recreate_mgmt
+  recreate = engines_api.recreate_mgmt
   unless recreate.is_a?(EnginesError)
     status(202)
     return recreate.to_json

@@ -50,7 +50,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:ns/*' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
 
-  r = @@engines_api.find_engine_service_hash(hash)
+  r = engines_api.find_engine_service_hash(hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json

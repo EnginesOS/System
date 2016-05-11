@@ -2,7 +2,7 @@
 #/system/status/first_run_has_run
 
 get '/v0/system/status/first_run_required' do
-  first_run_required = @@engines_api.first_run_required?
+  first_run_required = engines_api.first_run_required?
   status(202)
   return first_run_required.to_json # no checky as true or false
 

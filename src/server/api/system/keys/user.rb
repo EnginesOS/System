@@ -1,5 +1,5 @@
 get '/v0/system/keys/user/:user_name/generate' do
-  generated_key = @@engines_api.generate_engines_user_ssh_key
+  generated_key = engines_api.generate_engines_user_ssh_key
   unless generated_key.is_a?(EnginesError)
     status(202)
     return generated_key.to_json
@@ -11,7 +11,7 @@ end
 post '/v0/system/keys/user/:user_name' do
   cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 
   update_key = cparams[:public_key] #symbolize_keys(params)
-    r = @@engines_api.update_public_key(update_key)
+    r = engines_api.update_public_key(update_key)
   unless r.is_a?(EnginesError)
   status(202)
   return r.to_json
@@ -21,7 +21,7 @@ post '/v0/system/keys/user/:user_name' do
 end
 
 get '/v0/system/keys/user/:user_name' do
-  public_key = @@engines_api.get_public_key
+  public_key = engines_api.get_public_key
   unless public_key.is_a?(EnginesError)
     status(202)
     return public_key.to_json

@@ -1,7 +1,7 @@
 #/system/control/regsitry/restart
 
 get '/v0/system/control/registry/restart' do
-  restart_registry = @@engines_api.force_registry_restart
+  restart_registry = engines_api.force_registry_restart
   unless restart_registry.is_a?(EnginesError)
     status(202)
     return restart_registry.to_json
@@ -10,7 +10,7 @@ get '/v0/system/control/registry/restart' do
   end
 end
 #  get '/v0/system/control/regsitry/update' do
-#    update = @@engines_api.update_registry
+#    update = engines_api.update_registry
 #    unless update.is_a?(FalseClass)
 #      return update.to_json
 #    else

@@ -1,7 +1,7 @@
 
 
 get '/v0/engine_builder/status' do
- r = @@engines_api.build_status
+ r = engines_api.build_status
 
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -11,7 +11,7 @@ get '/v0/engine_builder/status' do
 end
 
 get '/v0/engine_builder/params' do
-  r = @@engines_api.current_build_params
+  r = engines_api.current_build_params
   unless r.is_a?(EnginesError)
      return r.to_json
    else
@@ -21,7 +21,7 @@ get '/v0/engine_builder/params' do
 
 
 get '/v0/engine_builder/last_build/log' do
-  r = @@engines_api.last_build_log
+  r = engines_api.last_build_log
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -30,7 +30,7 @@ get '/v0/engine_builder/last_build/log' do
 end
 
 get '/v0/engine_builder/last_build/params' do
-  r = @@engines_api.last_build_params
+  r = engines_api.last_build_params
 
   unless r.is_a?(EnginesError)
       return r.to_json

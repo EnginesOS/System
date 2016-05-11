@@ -1,7 +1,7 @@
 get '/v0/containers/service/:service_name/services/persistent/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
-  r = @@engines_api.list_persistent_services(service)
+  r = engines_api.list_persistent_services(service)
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -22,7 +22,7 @@ get '/v0/containers/service/:service_name/services/persistent/:ns/*' do
 #        hash[:ctype] = 'service'    
 p hash
           
-  r = @@engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
+  r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json

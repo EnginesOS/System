@@ -13,8 +13,7 @@ begin
   set :logging, true
   set :run, true
 
-  core_api = EnginesCore.new   
-     @@engines_api = PublicApi.new(core_api)
+
  
   
   @@last_error =''
@@ -32,6 +31,7 @@ begin
     unless @engines_api
     core_api = EnginesCore.new   
     @engines_api = PublicApi.new(core_api)
+    STDERR.puts('created engines_api')
     end
     return @engines_api
   end
@@ -67,21 +67,21 @@ begin
 
     
     
-    STDERR.puts args.to_s + '::' + @@engines_api.last_error.to_s
-  #  body args.to_s + ':' + @@engines_api.last_error.to_s
+    STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
+  #  body args.to_s + ':' + engines_api.last_error.to_s
     status(404)
     return error_mesg.to_json
   end
 
   def get_engine(engine_name)
-    eng = @@engines_api.loadManagedEngine(engine_name)
+    eng = engines_api.loadManagedEngine(engine_name)
 #    return eng if eng.is_a?(ManagedEngine)
 #    log_error('Load failed !!!' + engine_name)
     return eng
   end
 
   def get_service(service_name)
-    service = @@engines_api.loadManagedService(service_name)
+    service = engines_api.loadManagedService(service_name)
 #    return service if service.is_a?(ManagedService)
 #    log_error('Load failed !!!' + service_name)
     return service

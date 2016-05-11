@@ -1,5 +1,5 @@
 get '/v0/system/metrics/memory' do
-  memory_info = MemoryStatistics.get_system_memory_info #@@engines_api.get_system_memory_info
+  memory_info = MemoryStatistics.get_system_memory_info #engines_api.get_system_memory_info
   unless memory_info.is_a?(EnginesError)
     status(202)
     return memory_info.to_json
@@ -19,7 +19,7 @@ get '/v0/system/metrics/load' do
 end
 
 get '/v0/system/metrics/memory/statistics' do
-  memory_statistics = MemoryStatistics.total_memory_statistics(@@engines_api)
+  memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
   unless memory_statistics.is_a?(EnginesError)
     status(202)
     return memory_statistics.to_json
@@ -29,7 +29,7 @@ get '/v0/system/metrics/memory/statistics' do
 end
 
 get '/v0/system/metrics/disks' do
-  disk_statistics = @@engines_api.get_disk_statistics
+  disk_statistics = engines_api.get_disk_statistics
   status(202)
   unless disk_statistics.is_a?(EnginesError)
     return disk_statistics.to_json

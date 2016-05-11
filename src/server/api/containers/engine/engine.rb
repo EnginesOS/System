@@ -36,7 +36,7 @@ get '/v0/containers/engine/:engine_name/blueprint' do
   end
 end
 get '/v0/containers/engine/:engine_name/build_report' do
-  r = @@engines_api.get_build_report(params[:engine_name])
+  r = engines_api.get_build_report(params[:engine_name])
   unless r.is_a?(EnginesError)
     return r.to_json
   else

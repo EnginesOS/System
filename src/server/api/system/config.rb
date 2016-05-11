@@ -1,5 +1,5 @@
 get '/v0/system/config/default_domain' do
-  default_domain = @@engines_api.get_default_domain
+  default_domain = engines_api.get_default_domain
   unless default_domain.is_a?(EnginesError)
     status(202)
     return default_domain.to_json
@@ -12,7 +12,7 @@ end
 post '/v0/system/config/default_domain' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_domain])
   default_domain = cparams[:default_domain]
-    r = @@engines_api.set_default_domain(default_domain)
+    r = engines_api.set_default_domain(default_domain)
     if r
       status(202)
       return r.to_json
@@ -22,7 +22,7 @@ post '/v0/system/config/default_domain' do
 end
 
 get '/v0/system/config/default_site' do
-  default_site = @@engines_api.get_default_site
+  default_site = engines_api.get_default_site
   unless default_site.is_a?(EnginesError)
     status(202)
     return default_site.to_json
@@ -35,7 +35,7 @@ end
 post '/v0/system/config/default_site' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_site])
   default_site = cparams[:default_site]
-    r = @@engines_api.set_default_site(default_site)
+    r = engines_api.set_default_site(default_site)
   if r
        status(202)
        return r.to_json
@@ -47,7 +47,7 @@ end
 post '/v0/system/config/hostname' do
   cparams =  Utils::Params.assemble_params(params, [], [:host_name])
   hostname = cparams[:host_name]
-    r = @@engines_api.set_hostname(hostname)
+    r = engines_api.set_hostname(hostname)
   if r
        status(202)
        return r.to_json
@@ -57,7 +57,7 @@ post '/v0/system/config/hostname' do
 end
 
 get '/v0/system/config/hostname' do
-  hostname = @@engines_api.system_hostname
+  hostname = engines_api.system_hostname
   unless hostname.is_a?(EnginesError)
     status(202)
     return hostname.to_json
@@ -68,7 +68,7 @@ get '/v0/system/config/hostname' do
 end
 
 post '/v0/system/config/remote_exception_logging/enable' do
-  r = @@engines_api.enable_remote_exception_logging
+  r = engines_api.enable_remote_exception_logging
   unless r.is_a?(EnginesError)
     status(202)
     return r.to_json
@@ -79,7 +79,7 @@ post '/v0/system/config/remote_exception_logging/enable' do
 end
 
 post '/v0/system/config/remote_exception_logging/disable' do
-  r = @@engines_api.disable_remote_exception_logging
+  r = engines_api.disable_remote_exception_logging
   unless r.is_a?(EnginesError)
      status(202)
      return r.to_json

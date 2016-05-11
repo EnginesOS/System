@@ -52,7 +52,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)
-  r = @@engines_api.find_service_service_hash(hash)
+  r = engines_api.find_service_service_hash(hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json

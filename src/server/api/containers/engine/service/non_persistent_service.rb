@@ -3,9 +3,9 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' d
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
- service_hash =  @@engines_api.find_engine_service_hash(hash)
+ service_hash =  engines_api.find_engine_service_hash(hash)
   return service_hash  if service_hash.is_a?(EnginesError)
-  r = @@engines_api.force_register_attached_service(service_hash)
+  r = engines_api.force_register_attached_service(service_hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -18,9 +18,9 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister'
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
- service_hash =  @@engines_api.find_engine_service_hash(hash)
+ service_hash =  engines_api.find_engine_service_hash(hash)
   return service_hash if service_hash.is_a?(EnginesError)
-  r = @@engines_api.force_reregister_attached_service(service_hash)
+  r = engines_api.force_reregister_attached_service(service_hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -33,9 +33,9 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister'
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
- service_hash =  @@engines_api.find_engine_service_hash(hash)
+ service_hash =  engines_api.find_engine_service_hash(hash)
   return service_hash if service_hash.is_a?(EnginesError)
- r = @@engines_api.force_deregister_attached_service(service_hash)
+ r = engines_api.force_deregister_attached_service(service_hash)
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -49,7 +49,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*' do
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
  
-  r = @@engines_api.find_engine_service_hash(hash)
+  r = engines_api.find_engine_service_hash(hash)
 
   unless r.is_a?(EnginesError)
     return r.to_json
