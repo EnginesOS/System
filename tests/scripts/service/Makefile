@@ -1,9 +1,10 @@
-
+#note the order of the tests is important create before dependancies
 	
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	  create dependacies properties_net properties_run\
-	actions services consumers\
+	 services consumers\
 	 destroy  recreate 
+	 #actions
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
@@ -59,11 +60,11 @@ properties_net:
 	
 properties_run:
 	engines_tool service email stop | engines_test_expects bool true
-	cat runtime_properties.json | engines_tool engine email properties runtime | engines_test_expects bool true
+	cat runtime_properties.json | engines_tool service email properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool service email state  | engines_test_expects text is running
 	echo -n " Checking:"
-	engines_tool service email state  | engines_test_expects text 577
+	engines_tool service email   | engines_test_expects text 577
 	
 destroy:
 	engines_tool service email stop  | engines_test_expects bool true

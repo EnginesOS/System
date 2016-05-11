@@ -17,9 +17,18 @@ service_non_persistent:
 	engines_tool engine testengine service non_persistent EnginesSystem dns testengine | engines_test_expects json  service_handle testengine 
 
 service_non_persistent_deregister:
-
-
+	engines_tool engine testengine service non_persistent deregister EnginesSystem dns testengine|engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service dns consumer testengine testengine |engines_test_expects  json error_object 
+	
 service_non_persistent_register:
-
+	engines_tool engine testengine service non_persistent register EnginesSystem dns testengine|engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service dns consumer testengine testengine |engines_test_expects  json type_path dns
 
 service_non_persistent_reregister:
+	engines_tool engine testengine service non_persistent reregister EnginesSystem dns testengine|engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service dns consumer testengine testengine |engines_test_expects  json type_path dns
+
+"

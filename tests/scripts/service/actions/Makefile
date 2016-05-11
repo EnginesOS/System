@@ -1,21 +1,16 @@
-TESTS=prepare actions action action_perform clean_up
+TESTS=actions action action_perform 
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
-prepare:
-	cat prosody_build_params.json | engines_tool engines build
+
 	
 actions:
-	engines_tool engine prosody actions | engines_test_expects json list_users
+	engines_tool service email actions | engines_test_expects json list_addresses
 	
 action:
-	engines_tool engine prosody action | engines_test_expects json name list_users
+	engines_tool  service email action list_addresses  | engines_test_expects json name list_addresses
 
 action_perform:
- 	echo '{"username":"test","password":"pass"}' | engines_tool engine prosody action perform add_user  | engines_test_expects test "Successfully added test"
+ 	echo ""| engines_tool engine prosody action perform list_addresses  | engines_test_expects test "@"
  	
-clean_up:
-	engines_tool engine prosody stop 
-	engines_tool engine prosody destroy 
-	engines_tool engine prosody delete all
