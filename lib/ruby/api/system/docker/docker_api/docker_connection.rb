@@ -83,9 +83,8 @@ class DockerConnection < ErrorsApi
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
     #  SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
-    if  resp.code  == '404'
-      chunk = resp.read_body
-      clear_cid(container) if chunk.start_with?('no such id: ')
+    if  resp.code  == '404' 
+      clear_cid(container) if resp.read_body.start_with?('no such id: ')
       return log_error_mesg("no  such id response from docker", resp, resp.read_body)
     end
     return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
