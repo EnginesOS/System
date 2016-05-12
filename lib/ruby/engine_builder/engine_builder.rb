@@ -452,7 +452,7 @@ class EngineBuilder < ErrorsApi
     lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count
-      retval += lines[n]
+      retval += lines[n].to_s
     end
     return retval
   end

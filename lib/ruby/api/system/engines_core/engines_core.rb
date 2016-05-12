@@ -109,7 +109,7 @@ class EnginesCore < ErrorsApi
   require_relative '../registry_handler.rb'
   require_relative 'engines_core_error.rb'
   def initialize
-    Signal.trap('HUP', proc { api_shutdown })
+    Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  # will change to to docker_api and not self
@@ -132,6 +132,13 @@ class EnginesCore < ErrorsApi
     @registry_handler.api_shutdown
     
   end
+  
+  def dump_stats
+    file = File.open("/tmp/heap.dump", 'w')
+    ObjectSpace.dump_all(output: file)
+    file.close
+  end
+  
   def set_first_run_parameters(params_from_gui)
     require_relative '../first_run_wizard/first_run_wizard.rb'
      params = params_from_gui.dup
