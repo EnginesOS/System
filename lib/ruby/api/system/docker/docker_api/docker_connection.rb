@@ -11,7 +11,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @response_parser = Yajl::Parser.new
-
+   
     #socket = UNIXSocket.new('/var/run/docker.sock')
 
     @docker_socket = docker_socket
@@ -90,17 +90,17 @@ class DockerConnection < ErrorsApi
     return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
     chunk = resp.read_body
 
-    rhash = nil
-    hashes = []
+
+    @hashes = []
     chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if chunk.start_with?('no such id: ')
     response_parser.parse(chunk) do |hash |
-      hashes.push(hash)
+      @hashes.push(hash)
     end
 
     #   hashes[1] is a timestamp
-    return hashes[0]
+    return @hashes[0]
   rescue StandardError => e
     log_exception(e,chunk)
   end
