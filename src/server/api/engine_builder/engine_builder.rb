@@ -56,8 +56,9 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         bytes = ''
         retry
       rescue EOFError
-        bytes = '.' if bytes == ''
+       
         out  << bytes
+        out  << '.'
         bytes = ''
         sleep 2
         retry if File.exist?(SystemConfig.BuildRunningParamsFile)
