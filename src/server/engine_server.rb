@@ -14,11 +14,12 @@ begin
   set :run, true
 
 
- unless @@engines_api
+ #unless @@engines_api
    core_api = EnginesCore.new   
        @@engines_api = PublicApi.new(core_api)
- end
- 
+# end
+       
+  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   @@last_error =''
   require_relative 'api/routes.rb'
   
