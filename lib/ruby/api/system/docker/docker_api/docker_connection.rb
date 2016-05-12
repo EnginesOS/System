@@ -88,14 +88,14 @@ class DockerConnection < ErrorsApi
       return log_error_mesg("no  such id response from docker", resp, resp.read_body)
     end
     return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
-    chunk = resp.read_body
+    @chunk = resp.read_body
 
 
     @hashes = []
     chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
-    return clear_cid(container) if chunk.start_with?('no such id: ')
-    response_parser.parse(chunk) do |hash |
+    return clear_cid(container) if @chunk.start_with?('no such id: ')
+    response_parser.parse(@chunk) do |hash |
       @hashes.push(hash)
     end
 
