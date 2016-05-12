@@ -11,7 +11,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @response_parser = Yajl::Parser.new
-    @hashes = []
+   
     #socket = UNIXSocket.new('/var/run/docker.sock')
 
     @docker_socket = docker_socket
