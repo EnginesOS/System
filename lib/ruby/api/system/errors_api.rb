@@ -23,8 +23,8 @@ class ErrorsApi
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
-  # STDERR.puts(e.to_s + e.backtrace.to_s)
-
+  STDERR.puts(e.to_s + e.backtrace.to_s)
+    
     SystemUtils.log_error_mesg('EXCEPTION:',mesg)
     return EnginesError.new(mesg.to_s,:exception)
   end
