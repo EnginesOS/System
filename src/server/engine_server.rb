@@ -38,7 +38,15 @@ begin
 #    @engines_api = PublicApi.new(core_api)
 #    STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 #    end
+    STDERR.puts('API SIZE ' + ObjectSpace.memsize_of(@@engines_api).to_s)
+    total = 0
+    
+    ObjectSpace.reachable_objects_from(@@engines_api).each do |obj|
+      total += ObjectSpace.memsize_of(obj)
+    end
+    STDERR.puts('API TOTAL SIZE:' +  total.to_s)
     return @@engines_api
+    
   end
 
   def log_exception(e, *args)
@@ -82,7 +90,7 @@ begin
     eng = engines_api.loadManagedEngine(engine_name)
 #    return eng if eng.is_a?(ManagedEngine)
 #    log_error('Load failed !!!' + engine_name)
-    STDERR.puts('api ' + ObjectSpace.memsize_of(engines_api).to_s)
+
     return eng
   end
 
@@ -90,7 +98,7 @@ begin
     service = engines_api.loadManagedService(service_name)
 #    return service if service.is_a?(ManagedService)
 #    log_error('Load failed !!!' + service_name)
-    STDERR.puts('api ' + ObjectSpace.memsize_of(engines_api).to_s)
+   
     return service
   end
 rescue StandardError => e
