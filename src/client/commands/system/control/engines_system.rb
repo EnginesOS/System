@@ -6,6 +6,8 @@ when 'update'
   @route += '/' + ARGV[3]
 when 'recreate'
   @route += '/' + ARGV[3]
-end
 
+when 'heap_stats'
+  @route += '/' + ARGV[3]
+end
 perform_get
