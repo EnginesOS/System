@@ -74,7 +74,6 @@ module EnginesOperations
     engine.reinstall_engine(builder)
 
   rescue  StandardError => e
-    @last_error = e.to_s
     log_exception(e)
   end
 
@@ -93,12 +92,10 @@ module EnginesOperations
   def set_container_runtime_properties(container,params)
      
     if container.is_active?
-      @last_error = 'Container is active'
       return EnginesCoreError.new('Container is active', :warning)
     end
     if params.key?(:memory)
       if params[:memory] == container.memory
-        @last_error = 'No Change in Memory Value'
         return EnginesCoreError.new('Error no Change in Memory Value', :warning)
       end
      return container.update_memory(params[:memory]) 
