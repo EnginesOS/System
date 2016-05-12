@@ -65,6 +65,7 @@ properties_run:
 	engines_tool service email state  | engines_test_expects text is running
 	echo -n " Checking:"
 	engines_tool service email   | engines_test_expects text 577
+	cat revert_runtime_properties.json | engines_tool service email properties runtime | engines_test_expects bool true
 	
 destroy:
 	engines_tool service email stop  | engines_test_expects bool true
