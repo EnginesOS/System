@@ -5,7 +5,7 @@ module CoreBuildController
   end
   
   def build_stoped()
-    STDERR.puts('BUILD STOPPED')
+    #STDERR.puts('BUILD STOPPED')
     @build_thread.terminate unless @build_thread.nil?
     
     @build_thread = nil
