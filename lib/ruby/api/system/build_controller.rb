@@ -8,7 +8,7 @@ class BuildController
 
   def initialize(api)
     @core_api = api
-    @core_api.build_started(self)
+    #@core_api.build_started(self)
     @build_log_stream = nil
     @build_error_stream = nil
     @engine = nil
