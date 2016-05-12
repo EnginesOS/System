@@ -4,8 +4,8 @@ tests:
 	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
 	
 clear_last:
-	make clear_engines
-	make clear_services
+	make -ks clear_services
+	make -ks clear_engines
 	
 clear_engines:
 	engines_tool engine testengine stop | engines_test_expects bool true
