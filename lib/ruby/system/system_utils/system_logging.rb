@@ -18,11 +18,8 @@ module SystemLogging
    # error mesg is truncated to 512 bytes
    # returns nothing
    def SystemUtils.log_error_mesg(msg, *objects)
-     obj_str= ''
-     objects.each do |object|     
-        obj_str += object.to_s.slice(0, 512) + ':#:'
-     end
-     SystemUtils.log_output( msg.to_s + ':->:' + obj_str ,10)
+
+     SystemUtils.log_output( msg.to_s + ':->:' + objects.to_s ,10)
      return EnginesError.new(msg.to_s,:error)
    end
  
