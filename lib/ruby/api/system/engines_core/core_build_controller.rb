@@ -5,7 +5,9 @@ module CoreBuildController
   end
   
   def build_stoped()
-      @current_builder = nil
+     # @current_builder = nil
+    @build_thread.terminate unless @build_thread.nil?
+    @build_thread = nil
     end
     
   def abort_build()

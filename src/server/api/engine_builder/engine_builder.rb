@@ -56,7 +56,7 @@ get '/v0/engine_builder/follow', provides: 'text/event-stream'  do
         bytes = ''
         retry
       rescue EOFError
-        p :eof  
+        bytes = '.' if bytes.nil?
         out  << bytes
         bytes = ''
         sleep 2
