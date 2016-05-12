@@ -134,6 +134,7 @@ class EnginesCore < ErrorsApi
   end
   
   def dump_heap_stats
+    ObjectSpace.garbage_collect
     STDERR.puts('dumping heap')
     file = File.open("/tmp/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
