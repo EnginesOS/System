@@ -174,7 +174,7 @@ class PublicApi < ErrorsApi
   require_relative 'system/metrics.rb'
   #  MemoryStatistics.get_system_memory_info
   #  SystemStatus.get_system_load_info
-  #  MemoryStatistics.total_memory_statistics(@@engines_api)
+  #  MemoryStatistics.total_memory_statistics(engines_api)
   #  get_disk_statistics
   include PublicApiSystemMetrics
 

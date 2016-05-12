@@ -14,8 +14,11 @@ begin
   set :run, true
 
 
+ unless @@engines_api
+   core_api = EnginesCore.new   
+       @@engines_api = PublicApi.new(core_api)
+ end
  
-  
   @@last_error =''
   require_relative 'api/routes.rb'
   
@@ -28,12 +31,12 @@ begin
   end
 
   def engines_api
-    unless @engines_api
-    core_api = EnginesCore.new   
-    @engines_api = PublicApi.new(core_api)
-    STDERR.puts('created engines_api')
-    end
-    return @engines_api
+#    unless @@engines_api
+#    core_api = EnginesCore.new   
+#    @engines_api = PublicApi.new(core_api)
+#    STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+#    end
+    return @@engines_api
   end
 
   def log_exception(e, *args)
