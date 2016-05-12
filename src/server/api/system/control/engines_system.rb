@@ -31,3 +31,14 @@ get '/v0/system/control/engines_system/recreate' do
     return log_error(request, recreate)
   end
 end
+
+ get '/v0/system/control/engines_system/heap_stats' do
+      dump_stats = engines_apidump_heap_stats
+      unless dump_stats.is_a?(EnginesError)
+        status(202)
+        return dump_stats.to_json
+      else
+        return log_error(request, dump_stats)
+      end
+  
+end

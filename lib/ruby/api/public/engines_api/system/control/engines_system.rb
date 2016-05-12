@@ -8,4 +8,7 @@ module PublicApiSystemControlEnginesSystem
   def recreate_mgmt
   @core_api.recreate_mgmt
   end
+  def dump_heap_stats
+    @core_api.dump_heap_stats
+  end
 end
