@@ -89,10 +89,10 @@ class DockerConnection < ErrorsApi
     end
     return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
     @chunk = resp.read_body
-#     while @hashes.count > 0
-#        @hashes.delete_at(0)
-#      end
-    @hashes = [] 
+     while @hashes.count > 0
+        @hashes.delete_at(0)
+      end
+      
     chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if @chunk.start_with?('no such id: ')
