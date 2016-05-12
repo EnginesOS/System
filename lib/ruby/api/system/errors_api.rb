@@ -5,7 +5,7 @@ class ErrorsApi
   @last_error = ''
   @debug = false
   def log_error_mesg(msg, *objects)
-    @last_error = msg.to_s + ':' + objects.to_s.slice(0, 256)
+    @last_error = msg.to_s  # + ':' + objects.to_s.slice(0, 256)
     msg.to_s += caller_locations(1,3) if @debug
     SystemUtils.log_error_mesg(msg, objects)
     return EnginesError.new(msg.to_s,:error)
