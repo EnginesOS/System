@@ -91,16 +91,17 @@ class DockerConnection < ErrorsApi
     @chunk = resp.read_body
 
 
-    @hashes = []
+   # @hashes = []
     chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if @chunk.start_with?('no such id: ')
     response_parser.parse(@chunk) do |hash |
-      @hashes.push(hash)
+     # @hashes.push(hash) only need the first as  hashes[1] is a timestamp
+      return hash
     end
 
     #   hashes[1] is a timestamp
-    return @hashes[0]
+    #return @hashes[0]
   rescue StandardError => e
     log_exception(e,chunk)
   end
