@@ -93,7 +93,7 @@ class DockerConnection < ErrorsApi
 #        @hashes.delete_at(0)
 #      end
     hashes = []
-    chunk.gsub!(/\\\"/,'')
+    @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if @chunk.start_with?('no such id: ')
     response_parser.parse(@chunk) do |hash |
