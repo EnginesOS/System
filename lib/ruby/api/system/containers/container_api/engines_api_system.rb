@@ -36,7 +36,9 @@ module EnginesApiSystem
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     r = @docker_api.create_container(container)
+    STDERR.puts(' DOCKER api CREATE ' + r)
     return log_error_mesg('Failed to Container ' + @docker_api.last_error, self) if r == false
+    
     return r if ContainerStateFiles.create_container_dirs(container)
     log_error_mesg('Failed to create state files', self)
     return r
