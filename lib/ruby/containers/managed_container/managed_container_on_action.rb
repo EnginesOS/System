@@ -5,7 +5,8 @@ module ManagedContainerOnAction
     @out_of_memory = false
     save_state
    #return if what == 'create'
-    register_with_dns # MUst register each time as IP Changes    
+    register_with_dns # MUst register each time as IP Changes   
+    add_nginx_service if @deployment_type == 'web' 
     @container_api.register_non_persistent_services(self)
     rescue StandardError => e
        log_exception(e)
@@ -13,14 +14,14 @@ module ManagedContainerOnAction
   
   def on_create(event_hash)
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)    
-        @container_id = event_hash['Id']
+        @container_id = event_hash['id']
       @out_of_memory = false
       @had_out_memory =false
           save_state
        #return if what == 'create'
-        register_with_dns # MUst register each time as IP Changes    
-        add_nginx_service if @deployment_type == 'web'
-        @container_api.register_non_persistent_services(self)
+        #register_with_dns # MUst register each time as IP Changes    
+        
+       # @container_api.register_non_persistent_services(self)
     SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)    
     rescue StandardError => e
        log_exception(e)
