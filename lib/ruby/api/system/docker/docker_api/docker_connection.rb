@@ -103,7 +103,7 @@ class DockerConnection < ErrorsApi
     #   hashes[1] is a timestamp
     return hashes[0]
   rescue StandardError => e
-    log_exception(e,chunk)
+    log_exception(e,@chunk)
   end
 
   private

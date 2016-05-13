@@ -11,8 +11,8 @@ end
   end
   
   def log_exception(e,*objs)
-    super
-    return EnginesDockerApiError.new(mesg.to_s,:exception)
+    super    
+    return EnginesDockerApiError.new(e.to_s,:exception)
   end
   
 end
