@@ -17,6 +17,6 @@ build:
 	
 builder:
 	engines_tool engine_builder status |engines_test_expects json is_building true
-	engines_tool engine_builder follow |engines_test_expects  regex '.*Build Finished.*'
+	engines_tool engine_builder follow |engines_test_expects  regex '*Build Successful*'
 	engines_tool engine_builder last_build params  |engines_test_expects json
-	engines_tool engine_builder last_build log  | engines_test_expects regex '.*Build Finished.*'
+	engines_tool engine_builder last_build log  | engines_test_expects regex '*Build Successful*'
