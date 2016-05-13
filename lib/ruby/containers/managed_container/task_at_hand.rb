@@ -42,6 +42,8 @@ module TaskAtHand
 
     case action
     when :create
+              @steps = [:create,:start]
+             @steps_to_go = 2
       return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
