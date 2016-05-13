@@ -28,7 +28,8 @@ def rest_put(path,params)
   begin
     #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e   
+    rescue RestClient::ExceptionWithResponse => e
+      STDERR.puts(e.repsonse + ' ' + path.to_s + ' ' + params.to_s)   
       parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
