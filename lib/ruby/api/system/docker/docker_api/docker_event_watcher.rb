@@ -78,7 +78,7 @@ require 'socket'
     r = ''
    resp.read_body do |chunk|
      hash = parser.parse(chunk) do |hash|
-       p hash
+      
        @event_listeners.values.each do |listener |
         
        log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError) 
