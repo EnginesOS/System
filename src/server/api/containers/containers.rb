@@ -12,7 +12,7 @@ get '/v0/containers/changed/' do
 end
   
   get '/v0/containers/events/', provides: 'text/event-stream' do
-    p :containers_events
+
     stream :keep_open do |out|
       stream = engines_api.container_events_stream
       has_data = true
@@ -20,33 +20,23 @@ end
       
       while has_data == true 
         begin
-          bytes = stream.rd.read_nonblock(10024)   
+          bytes = stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)        
-          out << jason_event
+          out << jason_event.to_json
 
           STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
         rescue IO::WaitReadable
-          out << bytes     
-          bytes = ''
           sleep 0.21
           retry
-        rescue EOFError
-         
-          out  << bytes
-          out  << '.'
-          bytes = ''
+        rescue EOFError          
           sleep 0.12
           retry
 
         rescue IOError
           has_data = false
-          out  << bytes 
-
           stream.stop
-          out.close
-          
         end
       end
       stream.stop
