@@ -6,6 +6,7 @@ module EngineApiEvents
 end
 
 def write_event(hash)
+  STDERR.puts(hash.to_s)
   @wr.write(hash)
   @wr.flush
 
