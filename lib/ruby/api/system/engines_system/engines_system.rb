@@ -43,7 +43,7 @@ class SystemApi < ErrorsApi
     @engines_api = api
     @engines_conf_cache = {}
     @docker_event_listener = start_docker_event_listener
-    @docker_event_listener.add_event_listener([self,:container_event])
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym])
   end
   
   def list_system_services
