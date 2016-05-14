@@ -25,11 +25,11 @@ require 'yajl'
 require 'net_x/http_unix'
 require 'socket'
 
- def initialize(system)
+ def initialize()
  #@system_api = system
  # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
    @event_listeners = {}
-   add_event_listener([system, :container_event])
+  # add_event_listener([system, :container_event])
  end
  
  def start
