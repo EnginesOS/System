@@ -10,7 +10,7 @@ def write_event(hash)
   b = @wr.write(hash)
   STDERR.puts 'wrote ' + b.to_s + ' of ' + hash.to_s.length.to_s
   @wr.flush
-  @wr.fsync
+  #@wr.fsync
 
 rescue StandardError => e
   p e.to_s
