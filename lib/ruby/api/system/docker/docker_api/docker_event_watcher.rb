@@ -1,10 +1,10 @@
 class DockerEventWatcher  < ErrorsApi
 
   class EventListener
-    def initialize(listener, mask)
+    def initialize(listener, event_mask)
      @object =  listener[0]
      @method = listener[1]
-     @mask = mask
+     @event_mask = event_mask
     end
     def name
       return @object.object_id
@@ -55,8 +55,10 @@ require 'socket'
 end 
 
 def add_event_listener(listener, event_mask = nil)
-  event = EventListener.new(listener,mask)
-  @event_listeners[event.name] = event 
+  event = EventListener.new(listener,event_mask)
+  @event_listeners[event.name] = event  
+rescue StandardError => e
+log_exception(e,chunk)
 end
 
 
