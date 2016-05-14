@@ -59,7 +59,7 @@ class DockerEventWatcher  < ErrorsApi
           mask |= @@container_exec
         elsif event_hash['status'] == 'commit'
           mask |= @@container_commit        
-          elseif event_hash['status'] == 'delete'
+          elsif event_hash['status'] == 'delete'
             mask |= @@container_delete
           else
            mask |= @@container_action
