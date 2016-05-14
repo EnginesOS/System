@@ -22,12 +22,28 @@ class DockerEventWatcher  < ErrorsApi
     
     @@container_event = 1
     @@engine_action  = 2
-    @@serivce_action = 4
+    @@service_action = 4
+    @@container_exec = 8
+    @@container_action = 16
+    @@image_event = 32
    # @@container_id
     
     def event_mask(event_hash)
       mask = 0
-      mask |= @@container_event if event_hash['Type'] = "container"
+      if event_hash['Type'] = 'container'
+        mask |= @@container_event
+        if event_hash['status'].start_with?('exec')
+          mask |= @@container_exec
+        else
+          mask |= @@container_action
+        end
+      elsif event_hash['Type'] = 'image'
+        mask |= @@image_event
+        elsif event_hash['Type'] = 'network'
+                mask |= @@network_event                
+      end
+        
+       
       return mask
         
       
