@@ -10,8 +10,7 @@ get '/v0/containers/changed/' do
     return log_error(request, changed)
   end
   
-  get '/v0/containers/events/' do
-  #, provides: 'text/event-stream' do
+  get '/v0/containers/events/', provides: 'text/event-stream' do
     p :containers_events
     stream :keep_open do |out|
       stream = engines_api.container_events_stream
