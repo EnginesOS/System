@@ -42,7 +42,8 @@ class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
-      start_docker_event_listener
+    @docker_event_listener = start_docker_event_listener
+    @docker_event_listener.add_listener(self)
   end
   
   def list_system_services

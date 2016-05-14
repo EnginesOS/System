@@ -14,6 +14,9 @@ class DockerEventWatcher  < ErrorsApi
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s)
       return @object.method_defined?(@method).call(hash)
     rescue StandardError => e
+      @object.public_methods.each do |meth|
+        STDERR.puts ('metho ' + meth.to_s)
+      end
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
      return e
     end
