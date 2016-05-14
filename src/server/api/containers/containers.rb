@@ -9,5 +9,40 @@ get '/v0/containers/changed/' do
   else
     return log_error(request, changed)
   end
+  
+  get '/v0/containers/events/', provides: 'text/event-stream' do
+    stream :keep_open do |out|
+      stream = engines_api.container_events_stream
+      has_data = true
+      while has_data == true 
+        begin
+          bytes = stream.read_nonblock(256)            
+          out << bytes     
+          bytes = ''
+        rescue IO::WaitReadable
+          out << bytes     
+          bytes = ''
+          retry
+        rescue EOFError
+         
+          out  << bytes
+          out  << '.'
+          bytes = ''
+          sleep 2
+          retry
+
+        rescue IOError
+          has_data = false
+          out  << bytes 
+          stream.close
+  
+          out.close
+        end
+      end
+    end
+    
+    
+  end
+  
 end
 

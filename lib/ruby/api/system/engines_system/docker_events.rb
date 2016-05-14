@@ -122,4 +122,7 @@ end
     log_exception(e)
 
   end
+  def add_event_listener(listener,mask)
+     @docker_event_listener.add_event_listener(listener,mask)
+  end
 end

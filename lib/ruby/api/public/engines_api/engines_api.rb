@@ -208,4 +208,7 @@ class PublicApi < ErrorsApi
   require_relative 'engines_public_api_errors.rb'
   include EnginesPublicApiErrors
   
+  require_relative 'engine_api_events.rb'
+  include EngineApiEvents
+  
 end
