@@ -31,7 +31,7 @@ end
           out  << bytes
           out  << '.'
           bytes = ''
-          sleep 2
+          sleep 0.12
           retry
 
         rescue IOError
