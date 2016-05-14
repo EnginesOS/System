@@ -24,7 +24,7 @@ end
           jason_event = JSON.parse(bytes)        
           out << jason_event
 
-          STDERR.puts('EVENTS ' + jason_event.to_s)     
+          STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
         rescue IO::WaitReadable
           out << bytes     

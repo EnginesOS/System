@@ -132,6 +132,7 @@ log_exception(e)
 end
 
 def rm_event_listener(listener)
+   STDERR.puts('REMOVED listenter ' + listener.class.name)
   @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
     
 end
