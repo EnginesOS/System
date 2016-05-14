@@ -19,7 +19,8 @@ end
       while has_data == true 
         begin
           bytes = stream.read_nonblock(1024)            
-          out << bytes     
+          out << bytes
+          STDERR.puts(bytes)     
           bytes = ''
         rescue IO::WaitReadable
           out << bytes     
