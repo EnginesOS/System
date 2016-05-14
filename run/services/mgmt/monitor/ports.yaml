@@ -1,6 +1,6 @@
 monitor_ports:
    mgmt:
-    name: 'Management Interface'
+    name: "Management Interface"
     type: tcp
     port: 10443
     timeout: 60

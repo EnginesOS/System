@@ -1,5 +1,6 @@
 class DockerEventWatcher  < ErrorsApi
 
+  
   class EventListener
     def initialize(listener, event_mask)
      @object =  listener[0]
@@ -11,11 +12,30 @@ class DockerEventWatcher  < ErrorsApi
     end
     
     def trigger(hash)
+      return  if  @event_mask != 0 && event_mask(hash) & @event_mask == 0  
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e    
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
      return e
+    end
+    
+    @@container_event = 1
+    @@engine_action  = 2
+    @@serivce_action = 4
+   # @@container_id
+    
+    def event_mask(event_hash)
+      mask = 0
+      mask |= @@container_event if event_hash['Type'] = "container"
+      return mask
+        
+      
+      
+      #type
+      #status
+      #action
+      
     end
   end
 require 'yajl'
