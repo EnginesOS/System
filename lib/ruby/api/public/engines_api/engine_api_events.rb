@@ -7,6 +7,7 @@ end
 
 def write_event(hash)
   @wr.write(hash)
+  @wr.flush
 
 rescue StandardError => e
   return
