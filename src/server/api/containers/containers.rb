@@ -20,7 +20,7 @@ end
         begin
           bytes = stream.read_nonblock(1024)            
           out << bytes
-          out.flush
+          out << '\n'
           STDERR.puts('EVENTS ' + bytes)     
           bytes = ''
         rescue IO::WaitReadable
