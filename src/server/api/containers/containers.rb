@@ -16,10 +16,12 @@ end
     stream :keep_open do |out|
       stream = engines_api.container_events_stream
       has_data = true
+      parser = Yajl::Parser.new
       while has_data == true 
         begin
-          bytes = stream.read_nonblock(1024)    
-          jason_event = JSON.parse(bytes)        
+          bytes = stream.read_nonblock(1024)   
+          jason_event = parser.parse(bytes) 
+          #jason_event = JSON.parse(bytes)        
           out << jason_event
 
           STDERR.puts('EVENTS ' + jason_event.to_s)     
