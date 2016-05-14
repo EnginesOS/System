@@ -1,6 +1,17 @@
 class DockerEventWatcher  < ErrorsApi
 
-  
+  @@container_event = 1
+   @@engine_target  = 2
+   @@service_target = 4
+   @@container_exec = 8
+   @@container_action = 16
+   @@image_event = 32
+   @@container_commit = 64
+@@container_delete = 128
+ @@service_action = @@container_action | @@service_target
+ @@engine_action = @@container_action | @@engine_target
+  # @@container_id
+ 
   class EventListener
     def initialize(listener, event_mask)
      @object =  listener[0]
@@ -14,7 +25,7 @@ class DockerEventWatcher  < ErrorsApi
     def trigger(hash)
       mask = event_mask(hash)
       return  if  @event_mask != 0 && mask & @event_mask == 0  
-      if mask & @engine_target      
+      if mask & @@engine_target      
       hash['container_type'] = 'container'
       hash['container_name'] = event_hash['from'] if event_hash.key?('from')
       else
@@ -29,17 +40,7 @@ class DockerEventWatcher  < ErrorsApi
      return e
     end
     
-    @@container_event = 1
-    @@engine_target  = 2
-    @@service_target = 4
-    @@container_exec = 8
-    @@container_action = 16
-    @@image_event = 32
-    @@container_commit = 64
-@@container_delete = 128
-  @@service_action = @@container_action | @@service_target
-  @@engine_action = @@container_action | @@engine_target
-   # @@container_id
+ 
     
     def event_mask(event_hash)
       mask = 0
