@@ -11,6 +11,8 @@ def write_event(hash)
   @wr.flush
 
 rescue StandardError => e
+  p e.to_s
+  p e.backtrace.to_s
   return
   end
   end
