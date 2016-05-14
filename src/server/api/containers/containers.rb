@@ -20,8 +20,8 @@ end
       while has_data == true 
         begin
           bytes = stream.read_nonblock(1024)   
-          jason_event = parser.parse(bytes) 
-          #jason_event = JSON.parse(bytes)        
+         # jason_event = parser.parse(bytes) 
+          jason_event = JSON.parse(bytes)        
           out << jason_event
 
           STDERR.puts('EVENTS ' + jason_event.to_s)     
