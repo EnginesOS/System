@@ -14,6 +14,7 @@ class DockerEventWatcher  < ErrorsApi
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s)
       return @object.method_defined?(@method).call(hash)
     rescue StandardError => e
+      STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
      return e
     end
   end
