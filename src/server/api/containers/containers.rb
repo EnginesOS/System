@@ -11,6 +11,7 @@ get '/v0/containers/changed/' do
   end
   
   get '/v0/containers/events/', provides: 'text/event-stream' do
+    p :containers_events
     stream :keep_open do |out|
       stream = engines_api.container_events_stream
       has_data = true
