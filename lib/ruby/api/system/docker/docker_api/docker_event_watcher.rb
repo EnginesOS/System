@@ -62,7 +62,7 @@ def add_event_listener(listener, event_mask = nil)
   event = EventListener.new(listener,event_mask)
   @event_listeners[event.name] = event  
 rescue StandardError => e
-log_exception(e,chunk)
+log_exception(e)
 end
 
 
