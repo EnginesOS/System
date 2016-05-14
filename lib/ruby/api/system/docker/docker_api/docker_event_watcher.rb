@@ -6,17 +6,14 @@ class DockerEventWatcher  < ErrorsApi
      @method = listener[1]
      @event_mask = event_mask
     end
-    def name
+    def hash_name
       return @object.object_id
     end
     
     def trigger(hash)
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s)
       return @object.method(@method).call(hash)
-    rescue StandardError => e
-      @object.public_methods.each do |meth|
-        STDERR.puts ('metho ' + meth.to_s)
-      end
+    rescue StandardError => e    
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
      return e
     end
@@ -47,10 +44,12 @@ require 'socket'
      hash = parser.parse(chunk) do |hash|
        p hash
        @event_listeners.values.each do |listener |
+         p :listener
+         p listener
        log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError) 
        end
        
-      @system_api.container_event(hash) # if hash.key?('from')     
+     # @system_api.container_event(hash) # if hash.key?('from')     
     end 
    end
  }
@@ -60,7 +59,7 @@ end
 
 def add_event_listener(listener, event_mask = nil)
   event = EventListener.new(listener,event_mask)
-  @event_listeners[event.name] = event  
+  @event_listeners[event.hash_name] = event  
 rescue StandardError => e
 log_exception(e)
 end
