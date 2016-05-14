@@ -12,8 +12,17 @@ class DockerEventWatcher  < ErrorsApi
     end
     
     def trigger(hash)
-      return  if  @event_mask != 0 && event_mask(hash) & @event_mask == 0  
-      STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s)
+      mask = event_mask(hash)
+      return  if  @event_mask != 0 && mask & @event_mask == 0  
+      if mask & @engine_target > 0      
+      hash['container_type'] = 'container'
+      hash['container_name'] = event_hash['from'] if event_hash.key?('from')
+      else
+        hash['container_name'] = event_hash['from'].sub(/engines\//,'') if event_hash.key?('from')
+        hash['container_type'] = 'service'
+      end
+      
+      STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e    
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
@@ -21,28 +30,44 @@ class DockerEventWatcher  < ErrorsApi
     end
     
     @@container_event = 1
-    @@engine_action  = 2
-    @@service_action = 4
+    @@engine_target  = 2
+    @@service_target = 4
     @@container_exec = 8
     @@container_action = 16
     @@image_event = 32
+    @@container_commit = 64
+@@container_delete = 128
+  @@service_action = @@container_action | @@service_target
+  @@engine_action = @@container_action | @@engine_target
    # @@container_id
     
     def event_mask(event_hash)
       mask = 0
       if event_hash['Type'] = 'container'
         mask |= @@container_event
+        if  event_hash['from'].start_with?('engines/')
+          mask |= @@service_target
+        else
+          mask |= @@engine_target
+        end
+        
         if event_hash['status'].start_with?('exec')
           mask |= @@container_exec
-        else
-          mask |= @@container_action
+        elsif event_hash['status'] == 'commit'
+          mask |= @@container_commit        
+          elseif event_hash['status'] == 'delete'
+            mask |= @@container_delete
+          else
+           mask |= @@container_action
+
         end
       elsif event_hash['Type'] = 'image'
         mask |= @@image_event
         elsif event_hash['Type'] = 'network'
                 mask |= @@network_event                
       end
-        
+       
+      
        
       return mask
         
