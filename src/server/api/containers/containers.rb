@@ -9,6 +9,7 @@ get '/v0/containers/changed/' do
   else
     return log_error(request, changed)
   end
+end
   
   get '/v0/containers/events/', provides: 'text/event-stream' do
     p :containers_events
@@ -45,5 +46,5 @@ get '/v0/containers/changed/' do
     
   end
   
-end
+
 
