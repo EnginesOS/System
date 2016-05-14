@@ -8,7 +8,7 @@ end
 def write_event(hash)
   STDERR.puts(hash.to_s)
   b = @wr.write(hash)
-  STDERR.puts 'wrote ' + b.to_s + ' of ' + hash.to_s.length
+  STDERR.puts 'wrote ' + b.to_s + ' of ' + hash.to_s.length.to_s
   @wr.flush
   @wr.fsync
 
