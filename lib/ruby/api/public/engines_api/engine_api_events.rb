@@ -33,7 +33,7 @@ rescue StandardError => e
     
  def container_events_stream
   
- stream = EventsStreamWriter.new( wr)
+ stream = EventsStreamWriter.new( )
    @system_api.add_event_listener([stream,'write_event'.to_sym],16)
    stream.start
   
