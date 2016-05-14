@@ -48,12 +48,13 @@ class DockerEventWatcher  < ErrorsApi
       mask = 0
       if event_hash['Type'] = 'container'
         mask |= @@container_event
+        if event_hash.key?('from')
         if  event_hash['from'].start_with?('engines/')
           mask |= @@service_target
         else
           mask |= @@engine_target
         end
-        
+        end
         if event_hash['status'].start_with?('exec')
           mask |= @@container_exec
         elsif event_hash['status'] == 'commit'
