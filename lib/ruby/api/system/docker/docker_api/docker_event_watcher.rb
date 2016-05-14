@@ -29,9 +29,9 @@ class DockerEventWatcher  < ErrorsApi
       return  if  @event_mask != 0 && mask & @event_mask == 0  
       if mask & @@engine_target      
       hash['container_type'] = 'container'
-      hash['container_name'] = event_hash['from'] if event_hash.key?('from')
+      hash['container_name'] = hash['from'] if hash.key?('from')
       else
-        hash['container_name'] = event_hash['from'].sub(/engines\//,'') if event_hash.key?('from')
+        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
         hash['container_type'] = 'service'
       end
       
