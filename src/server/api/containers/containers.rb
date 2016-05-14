@@ -18,9 +18,10 @@ end
       has_data = true
       while has_data == true 
         begin
-          bytes = stream.read_nonblock(1024)            
-          out << bytes
-          out << '\n'
+          bytes = stream.read_nonblock(1024)    
+          jason_event = JSON.parse(jason_event.to_s)        
+          out << jason_event
+
           STDERR.puts('EVENTS ' + bytes)     
           bytes = ''
         rescue IO::WaitReadable
