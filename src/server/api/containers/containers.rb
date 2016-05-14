@@ -17,9 +17,10 @@ end
       stream = engines_api.container_events_stream
       has_data = true
       parser = Yajl::Parser.new
+      
       while has_data == true 
         begin
-          bytes = stream.read_nonblock(10024)   
+          bytes = stream.rd.read_nonblock(10024)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)        
           out << jason_event
@@ -42,11 +43,13 @@ end
         rescue IOError
           has_data = false
           out  << bytes 
-          stream.close
-  
+
+          stream.stop
           out.close
+          
         end
       end
+      stream.stop
     end
     
     

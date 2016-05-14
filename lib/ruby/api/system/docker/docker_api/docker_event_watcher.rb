@@ -102,8 +102,8 @@ require 'socket'
 
    req = Net::HTTP::Get.new('/events')
    client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-   client.continue_timeout=360000
-   client.read_timeout=360000
+   client.continue_timeout = 360000
+   client.read_timeout = 360000
    
   client.request(req) { |resp|
     chunk = ''
