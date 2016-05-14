@@ -38,8 +38,8 @@ module DockerEvents
 #      SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
 #    end    
 #  end 
-  c_name = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
-   
+    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
+   return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
 #  return false if c_name.nil?
 #  ctype = 'container' if ctype.nil?
 #   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')            
@@ -74,6 +74,12 @@ module DockerEvents
 
 end
 
+def no_container(event_hash)
+  #FIXME track non system containers here
+  #use to clear post build crash
+  #alert if present when not building
+  return true
+end
 def inform_container_tracking(container_name,ctype,event_name)
   SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
   c = get_event_container(container_name,ctype)
