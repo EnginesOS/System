@@ -1,5 +1,7 @@
 class DockerEventWatcher  < ErrorsApi
 
+  
+  class EventListener
   @@container_event = 1
    @@engine_target  = 2
    @@service_target = 4
@@ -12,7 +14,7 @@ class DockerEventWatcher  < ErrorsApi
  @@engine_action = @@container_action | @@engine_target
   # @@container_id
  
-  class EventListener
+  
     def initialize(listener, event_mask)
      @object =  listener[0]
      @method = listener[1]
