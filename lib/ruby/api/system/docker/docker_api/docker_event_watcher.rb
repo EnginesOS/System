@@ -14,7 +14,7 @@ class DockerEventWatcher  < ErrorsApi
     def trigger(hash)
       mask = event_mask(hash)
       return  if  @event_mask != 0 && mask & @event_mask == 0  
-      if mask & @engine_target > 0      
+      if mask & @engine_target      
       hash['container_type'] = 'container'
       hash['container_name'] = event_hash['from'] if event_hash.key?('from')
       else
