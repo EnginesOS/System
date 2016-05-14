@@ -24,6 +24,7 @@ end
         rescue IO::WaitReadable
           out << bytes     
           bytes = ''
+          sleep 0.21
           retry
         rescue EOFError
          
