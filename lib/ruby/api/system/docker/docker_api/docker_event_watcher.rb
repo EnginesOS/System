@@ -51,13 +51,12 @@ class DockerEventWatcher  < ErrorsApi
         if event_hash.key?('from')
         if  event_hash['from'].start_with?('engines/')
           mask |= @@service_target
-          p :SERVICE_TAR
+        
         else
           mask |= @@engine_target
-          p :ENGINES_TARGET
+   
         end
-        else
-          p :NO_FROM
+        
         end
         if event_hash['status'].start_with?('exec')
           mask |= @@container_exec
