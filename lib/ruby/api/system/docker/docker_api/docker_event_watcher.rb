@@ -44,8 +44,7 @@ require 'socket'
      hash = parser.parse(chunk) do |hash|
        p hash
        @event_listeners.values.each do |listener |
-         p :listener
-         p listener
+        
        log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError) 
        end
        
