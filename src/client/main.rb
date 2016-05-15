@@ -162,6 +162,13 @@ def perform_delete(params=nil)
   exit
 end
 require 'rest-client'
+
+def get_stream(path)
+  response = RestClient.get path do |str|
+    p str
+  end
+  
+end
 def rest_get(path,params=nil)
 
   begin
