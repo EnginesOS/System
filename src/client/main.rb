@@ -164,11 +164,26 @@ end
 require 'rest-client'
 
 def get_stream(path)
-  response = RestClient.get @base_url + path do |str|
-    p str
-  end
+  req = Net::HTTP::Get.new(@base_url + path)
   
+  client.request(req) { |resp|
+      chunk = ''
+      r = ''
+     resp.read_body do |chunk|
+       hash = parser.parse(chunk) do |hash|
+        
+       p hash
+         
+       # @system_api.container_event(hash) # if hash.key?('from')     
+      end     
+       end
+      }
+        rescue StandardError => e
+         p e.to_s
+         p chunk.to_s
+         p e.backtrace.to_s  
 end
+
 def rest_get(path,params=nil)
 
   begin
