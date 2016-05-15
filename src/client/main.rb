@@ -116,6 +116,8 @@ rescue  StandardError => e
 end
 
 
+
+
  def read_stdin_data
    stdin_data = ""
    
@@ -164,16 +166,18 @@ end
 require 'rest-client'
 
 def get_stream(path)
+  chunk = ''
+  uri = URI(@base_url + path)
   
-  Net::HTTP.start(@base_url)  do |http|
+  Net::HTTP.start(uri.host, uri.port)  do |http|
   
   
-  req = Net::HTTP::Get.new(path)
+  req = Net::HTTP::Get.new(uri)
   parser = Yajl::Parser.new
   
  # req = Net::HTTP::Get.new(uri)
    http.request(req) { |resp|
-      chunk = ''
+     
       r = ''
      resp.read_body do |chunk|
        hash = parser.parse(chunk) do |hash|
@@ -269,6 +273,8 @@ def rest_delete(path, params=nil)
 end
 
 @base_url = 'http://mgmt.engines.internal:4567'
+@host = 'mgmt.engines.internal'
+@port = '4567'
 @route = "/v0"
 require_relative 'commands/commands.rb'
 
