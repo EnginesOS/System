@@ -14,6 +14,7 @@ end
   get '/v0/containers/events/', provides: 'text/event-stream' do
 
     stream :keep_open do |out|
+     
       stream = engines_api.container_events_stream
       has_data = true
       parser = Yajl::Parser.new
@@ -22,8 +23,10 @@ end
         begin
           bytes = stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
-          jason_event = JSON.parse(bytes)        
+          jason_event = JSON.parse(bytes)   
+          out <<'data:'     
           out << jason_event.to_json
+          out << "\n\n"
 
           STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
