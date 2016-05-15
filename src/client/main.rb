@@ -164,9 +164,15 @@ end
 require 'rest-client'
 
 def get_stream(path)
-  req = Net::HTTP::Get.new(@base_url + path)
   
-  client.request(req) { |resp|
+  Net::HTTP.start(@base_url)  do |http|
+  
+  
+  req = Net::HTTP::Get.new(path)
+  parser = Yajl::Parser.new
+  
+ # req = Net::HTTP::Get.new(uri)
+   http.request(req) { |resp|
       chunk = ''
       r = ''
      resp.read_body do |chunk|
@@ -178,6 +184,7 @@ def get_stream(path)
       end     
        end
       }
+  end
         rescue StandardError => e
          p e.to_s
          p chunk.to_s
