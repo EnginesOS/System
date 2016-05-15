@@ -53,7 +53,7 @@ begin
       end
       
     end
-    @events_stream.stop
+    @events_stream.stop unless @events_stream.nil?
     
   end
   
