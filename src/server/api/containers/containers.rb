@@ -42,7 +42,7 @@ begin
           sleep 0.12
           retry
           rescue Timeout::Error
-            out << "\n\n" unless written
+            out << "\n\n" unless written == true
             written = false
             retry
         rescue IOError
