@@ -170,31 +170,21 @@ def get_stream(path)
   require 'yajl'
   chunk = ''
   uri = URI(@base_url + path)
-  
   Net::HTTP.start(uri.host, uri.port)  do |http|
-  
-  
-  req = Net::HTTP::Get.new(uri)
-  parser = Yajl::Parser.new
-  
- # req = Net::HTTP::Get.new(uri)
-   http.request(req) { |resp|
-     
-      r = ''
-     resp.read_body do |chunk|
-       hash = parser.parse(chunk) do |hash|
-        
-       p hash
-         
-       # @system_api.container_event(hash) # if hash.key?('from')     
-      end     
-       end
-      }
+    req = Net::HTTP::Get.new(uri)
+    parser = Yajl::Parser.new
+    http.request(req) { |resp|
+      resp.read_body do |chunk|
+        hash = parser.parse(chunk) do |hash|
+          p hash
+        end
+      end
+    }
   end
-        rescue StandardError => e
-         p e.to_s
-         p chunk.to_s
-         p e.backtrace.to_s  
+rescue StandardError => e
+  p e.to_s
+  p chunk.to_s
+  p e.backtrace.to_s
 end
 
 def rest_get(path,params=nil)

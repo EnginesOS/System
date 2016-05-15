@@ -17,34 +17,43 @@ end
      
       stream = engines_api.container_events_stream
       has_data = true
+      written = false
       parser = Yajl::Parser.new
       
-      while has_data == true 
-        begin
+      while has_data == true
+begin
+        status = Timeout::timeout(50) do
+        
+         
           bytes = stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)   
           #out <<'data:'     
           out << jason_event.to_json
           out << "\n\n"
-
+          written = true
           STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
+        end
         rescue IO::WaitReadable
           sleep 0.21
           retry
         rescue EOFError          
           sleep 0.12
           retry
-
+          rescue Timeout::Error
+            out << "\n\n" unless written
+            written = false
+            retry
         rescue IOError
           has_data = false
           stream.stop
         end
+     
       end
-      stream.stop
+      
     end
-    
+    stream.stop
     
   end
   
