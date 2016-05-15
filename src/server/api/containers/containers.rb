@@ -15,7 +15,7 @@ end
 
     stream :keep_open do |out|
      
-      stream = engines_api.container_events_stream
+      events_stream = engines_api.container_events_stream
       has_data = true
       written = false
       parser = Yajl::Parser.new
@@ -25,7 +25,7 @@ begin
         status = Timeout::timeout(50) do
         
          
-          bytes = stream.rd.read_nonblock(2048)   
+          bytes = events_stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)   
           #out <<'data:'     
@@ -47,13 +47,13 @@ begin
             retry
         rescue IOError
           has_data = false
-          stream.stop
+  events_stream.stop
         end
      
       end
       
     end
-    stream.stop
+    events_stream.stop
     
   end
   
