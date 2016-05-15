@@ -24,7 +24,7 @@ end
           bytes = stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)   
-          out <<'data:'     
+          #out <<'data:'     
           out << jason_event.to_json
           out << "\n\n"
 
