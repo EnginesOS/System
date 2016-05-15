@@ -164,7 +164,7 @@ end
 require 'rest-client'
 
 def get_stream(path)
-  response = RestClient.get path do |str|
+  response = RestClient.get @base_url + path do |str|
     p str
   end
   
