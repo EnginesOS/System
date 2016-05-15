@@ -19,13 +19,12 @@ end
       has_data = true
       written = false
       parser = Yajl::Parser.new
-      
+     
       while has_data == true
 begin
   require "timeout"
-        status = Timeout::timeout(20) do
         
-         
+          EventMachine::PeriodicTimer.new(20) { out << "\0" }
           bytes = @events_stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)   
@@ -35,18 +34,14 @@ begin
           written = true
           STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
-        end
+        
+        
         rescue IO::WaitReadable
           sleep 0.21
           retry
         rescue EOFError          
           sleep 0.12
-          retry
-          rescue Timeout::Error
-            STDERR.puts 'OUT'
-            out << '{"noop":"yes"}' + "\n" #unless written == true
-            written = false
-            retry
+          retry         
         rescue IOError
           has_data = false
   @events_stream.stop unless @events_stream.nil?
