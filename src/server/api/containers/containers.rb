@@ -22,7 +22,7 @@ end
       
       while has_data == true
 begin
-        status = Timeout::timeout(50) do
+        status = Timeout::timeout(20) do
         
          
           bytes = @events_stream.rd.read_nonblock(2048)   
