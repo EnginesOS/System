@@ -22,6 +22,7 @@ end
       
       while has_data == true
 begin
+  require "timeout"
         status = Timeout::timeout(20) do
         
          
@@ -42,13 +43,13 @@ begin
           sleep 0.12
           retry
           rescue Timeout::Error
-            p 'out'
-            out << "\n\n" unless written == true
+            STDERR.puts 'OUT'
+            out << '{"noop":"yes"}' + "\n" #unless written == true
             written = false
             retry
         rescue IOError
           has_data = false
-  @events_stream.stop
+  @events_stream.stop unless @events_stream.nil?
         end
      
       end
