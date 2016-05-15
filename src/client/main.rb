@@ -1,3 +1,4 @@
+
 if Process.euid != 21000
   p "This program can only be run be the engines user"
   exit
@@ -166,6 +167,7 @@ end
 require 'rest-client'
 
 def get_stream(path)
+  require 'yajl'
   chunk = ''
   uri = URI(@base_url + path)
   
