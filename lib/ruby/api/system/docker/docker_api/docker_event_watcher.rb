@@ -14,6 +14,7 @@ class DockerEventWatcher  < ErrorsApi
   @@container_die = 512
   @@container_event = 1024
   @@container_pull     = 2048
+  @@build_event = 4096
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   # @@container_id
