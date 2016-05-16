@@ -29,7 +29,8 @@ begin
   @@last_error =''
   
    
-    
+  require_relative 'api/routes.rb'
+  
   helpers do
   def engines_api
 #    unless @@engines_api
@@ -100,10 +101,10 @@ begin
    
     return service
   end
-end
-#content_type :json
-require_relative 'api/routes.rb'
 
+#content_type :json
+
+  end
 
 #  use Warden::Manager do |config|
 #      config.scope_defaults :default,
