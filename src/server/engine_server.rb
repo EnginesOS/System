@@ -128,7 +128,7 @@ require_relative 'api/routes.rb'
   end
   
   Warden::Manager.before_failure do |env,opts|
-      env['REQUEST_METHOD'] = 'POST'
+      env['REQUEST_METHOD'] = 'PUT'
   end
   
   # Implement your Warden stratagey to validate and authorize the access_token.
