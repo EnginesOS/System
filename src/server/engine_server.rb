@@ -11,8 +11,8 @@
   
   require_relative 'utils.rb'
   class Application < Sinatra::Base
-    require 'sinatra_warden'
-  register Sinatra::Warden
+#    require 'sinatra_warden'
+#  register Sinatra::Warden
   
   set :sessions, true
   set :logging, true
