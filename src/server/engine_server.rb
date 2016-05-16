@@ -30,7 +30,7 @@ begin
   
   
   before do
-  content_type 'application/json' unless  request.path.end_with?('stream')
+  #content_type 'application/json' unless  request.path.end_with?('stream')
     #
      pass if request.path.start_with?('/v0/login/')
     pass if request.path.start_with?('/unauthenticated')
