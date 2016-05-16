@@ -1,5 +1,6 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 require 'objspace'
+require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 class ManagedService < ManagedContainer
 
