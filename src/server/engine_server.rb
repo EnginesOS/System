@@ -10,7 +10,7 @@ begin
 
   
   require_relative 'utils.rb'
- # class Application < Sinatra::Base
+  class MyApplication < Sinatra::Base
    
   register Sinatra::Warden
   
@@ -98,9 +98,11 @@ begin
    
     return service
   end
+  end
 rescue StandardError => e
   #log_error(e)
   p e
   p e.backtrace.to_s
   #status(501)
+
 end
