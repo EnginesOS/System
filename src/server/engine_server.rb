@@ -6,12 +6,12 @@ begin
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-
+  require 'sinatra_warden'
 
   
   require_relative 'utils.rb'
  # class Application < Sinatra::Base
-    require 'sinatra_warden'
+   
   register Sinatra::Warden
   
   set :sessions, true
