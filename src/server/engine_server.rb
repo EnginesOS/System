@@ -12,6 +12,7 @@ require 'sinatra_warden'
   require_relative 'utils.rb'
   class Application < Sinatra::Base
   register Sinatra::Warden
+  
   set :sessions, true
   set :logging, true
   set :run, true
@@ -26,28 +27,21 @@ require 'sinatra_warden'
   ObjectSpace.trace_object_allocations_start
   @@last_error =''
   require_relative 'api/routes.rb'
-  
-  get '/v0/*' do
-    STDERR.puts :No_Such_GET
-    STDERR.puts request.fullpath.to_s  
-    STDERR.puts 'params'
-    STDERR.puts params
-    status(404)
-  end
 
+  
   def engines_api
 #    unless @@engines_api
 #    core_api = EnginesCore.new   
 #    @engines_api = PublicApi.new(core_api)
 #    STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 #    end
-    STDERR.puts('API SIZE ' + ObjectSpace.memsize_of(@@engines_api).to_s)
-    total = 0
-    
-    ObjectSpace.reachable_objects_from(@@engines_api).each do |obj|
-      total += ObjectSpace.memsize_of(obj)
-    end
-    STDERR.puts('API TOTAL SIZE:' +  total.to_s)
+#    STDERR.puts('API SIZE ' + ObjectSpace.memsize_of(@@engines_api).to_s)
+#    total = 0
+#    
+#    ObjectSpace.reachable_objects_from(@@engines_api).each do |obj|
+#      total += ObjectSpace.memsize_of(obj)
+#    end
+#    STDERR.puts('API TOTAL SIZE:' +  total.to_s)
     return @@engines_api
     
   end
@@ -97,6 +91,7 @@ require 'sinatra_warden'
     return eng
   end
 
+  
   def get_service(service_name)
     service = engines_api.loadManagedService(service_name)
 #    return service if service.is_a?(ManagedService)
