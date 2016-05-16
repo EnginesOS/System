@@ -136,8 +136,7 @@ require_relative 'api/routes.rb'
       def valid?
           # Validate that the access token is properly formatted.
           # Currently only checks that it's actually a string.
-          #request.env["HTTP_ACCESS_TOKEN"].is_a?(String)
-        params['access_token'].is_a?(String)
+          request.env["HTTP_ACCESS_TOKEN"].is_a?(String) | params['access_token'].is_a?(String)
       end
   
       def authenticate!
@@ -146,7 +145,7 @@ require_relative 'api/routes.rb'
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
         #  access_granted = (request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
-        access_granted = (params['access_token'] == 'test_token')
+        access_granted = (params['access_token'] == 'test_token' || request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
   end
