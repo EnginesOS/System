@@ -187,11 +187,17 @@ rescue StandardError => e
   p e.backtrace.to_s
 end
 
+def add_access(params)
+  params = {} if params.nil?
+    params['HTTP_ACCESS_TOKEN'] = 'test_token'
+      params
+end
 def rest_get(path,params=nil)
 
   begin
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
+    params = add_access(params)
     r = RestClient.get(@base_url + path, params)
 
     #   STDERR.puts r.headers[:content_type]
