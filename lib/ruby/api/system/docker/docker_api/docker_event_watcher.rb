@@ -53,10 +53,9 @@ class DockerEventWatcher  < ErrorsApi
       mask = 0
       if event_hash['Type'] = 'container'
         mask |= @@container_event
-        if event_hash.key?('from')
-          STDERR.puts(' FORM LERN +++++++++++++' + event_hash['from'].length.to_s )
-          return  mask |= @@build_event if event_hash['from'].length > 60                     
-        if  event_hash['from'].start_with?('engines/')
+        if event_hash.key?('from')       
+          return  mask |= @@build_event if event_hash['from'].length == 64                     
+        if event_hash['from'].start_with?('engines/')
           mask |= @@service_target        
         else
           mask |= @@engine_target   
