@@ -1,4 +1,4 @@
-
+begin
   require 'sinatra'
   require 'json'
   require 'yajl'
@@ -10,7 +10,7 @@
 
   
   require_relative 'utils.rb'
-  class Application < Sinatra::Base
+ # class Application < Sinatra::Base
 #    require 'sinatra_warden'
 #  register Sinatra::Warden
   
