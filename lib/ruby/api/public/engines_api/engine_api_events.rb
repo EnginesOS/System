@@ -9,7 +9,8 @@ end
 
 def write_event(hash)
   STDERR.puts(hash.to_s + ' is a ' + hash.class.name)
-  b = @wr.write(hash.to_json)
+ @wr.write(hash.to_json)
+  @wr.write("\n\n")
   @wr.flush
   #@wr.fsync
 
