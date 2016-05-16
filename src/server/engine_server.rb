@@ -33,6 +33,7 @@ begin
      content_type 'application/json'
      pass if request.path.start_with?('/v0/login/')
     pass if request.path.start_with?('/unauthenticated')
+    pass if request.path.start_with?('/v0/containers/events/')
     env['warden'].authenticate!(:access_token)
    end
    
