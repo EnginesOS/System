@@ -1,5 +1,5 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-require '/opt/engines/lib/ruby/containers/system_service.rb'
+
 class Container < ErrorsApi
   require_relative 'container/container_setup.rb'
   include ContainerSetup
