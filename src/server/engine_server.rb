@@ -8,7 +8,7 @@ begin
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   require 'warden'
 
-  
+  $token = 'test_token'
   require_relative 'utils.rb'
   class Application < Sinatra::Base
    
@@ -33,7 +33,7 @@ begin
   content_type 'application/json' unless  request.path.end_with?('stream')
     #
      pass if request.path.start_with?('/v0/login/')
-    pass if request.path.start_with?('/unauthenticated')
+    pass if request.path.start_with?('/v0/unauthenticated')
     
     env['warden'].authenticate!(:access_token)
    end
@@ -115,9 +115,15 @@ begin
 
 require_relative 'api/routes.rb'
   
-  post '/unauthenticated' do     
-    p params
+  post '/v0/unauthenticated' do     
     log_error(request,nil,'unauthorised', params).to_json
+  end
+  post '/v0/login/' do
+    u = User.new(:username => params[:username], :password => params[:password])
+    u.save
+    env['warden'].success!(u)
+    $token = 'arandy'
+    $token.to_json
   end
   
   use Warden::Manager do |config|
@@ -147,7 +153,7 @@ require_relative 'api/routes.rb'
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
         #  access_granted = (request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
-        access_granted = (params['access_token'] == 'test_token' || request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
+        access_granted = (params['access_token'] == $token  || request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
   end
