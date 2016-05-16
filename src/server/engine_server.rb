@@ -1,4 +1,4 @@
-begin
+#begin
   require 'sinatra'
   require 'json'
   require 'yajl'
@@ -10,7 +10,7 @@ begin
 
   
   require_relative 'utils.rb'
-  class MyApplication < Sinatra::Base
+  class Application < Sinatra::Base
    
   register Sinatra::Warden
   
@@ -27,9 +27,9 @@ begin
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   ObjectSpace.trace_object_allocations_start
   @@last_error =''
-  require_relative 'api/routes.rb'
-
   
+
+  helper do
   def engines_api
 #    unless @@engines_api
 #    core_api = EnginesCore.new   
@@ -98,7 +98,10 @@ begin
    
     return service
   end
-  end
+end
+
+require_relative 'api/routes.rb'
+
 rescue StandardError => e
   #log_error(e)
   p e
