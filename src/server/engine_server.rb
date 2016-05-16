@@ -28,6 +28,10 @@ begin
   ObjectSpace.trace_object_allocations_start
   @@last_error =''
   
+  
+  before do
+     content_type 'application/json'
+   end
    
     
   helpers do
@@ -101,7 +105,7 @@ begin
     return service
   end
 
-content_type :json
+
 require_relative 'api/routes.rb'
   
   post '/unauthenticated' do     
