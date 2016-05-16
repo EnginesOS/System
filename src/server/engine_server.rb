@@ -31,7 +31,11 @@ begin
   
   before do
      content_type 'application/json'
+     pass if request.path.start_with?('/v0/login/')
+    env['warden'].authenticate!(:access_token)
    end
+   
+   
    
     
   helpers do

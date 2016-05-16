@@ -1,5 +1,6 @@
 put '/login/:user_name/:password' do 
-    engine = get_engine(params[:engine_name]) 
+  access_token = 'test_token'
+  access_token.to_json
 end
 
 put '/logout' do
