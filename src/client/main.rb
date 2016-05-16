@@ -1,4 +1,5 @@
-
+ENV['access_token'] = 'test_token'
+  
 if Process.euid != 21000
   p "This program can only be run be the engines user"
   exit
@@ -169,7 +170,8 @@ require 'rest-client'
 def get_stream(path)
   require 'yajl'
   chunk = ''
-  uri = URI(@base_url + path)
+ 
+  uri = URI(@base_url + path_with_params(path, add_access(nil)))
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
     parser = Yajl::Parser.new
@@ -187,11 +189,17 @@ rescue StandardError => e
   p e.backtrace.to_s
 end
 
+def path_with_params(path, params)
+   encoded_params = URI.encode_www_form(params)
+   [path, encoded_params].join("?")
+end
+
 def add_access(params)
   params = {} if params.nil?
-    params['HTTP_ACCESS_TOKEN'] = 'test_token'
+    params['access_token'] = ENV['access_token']
       params
 end
+
 def rest_get(path,params=nil)
 
   begin
@@ -236,7 +244,7 @@ def rest_post(path, params, content_type )
 
   begin
   
-    
+    params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
    #   STDERR.puts  'ct ' + content_type
@@ -257,7 +265,7 @@ def rest_post(path, params, content_type )
   end
 end
 def rest_delete(path, params=nil)
-
+  params = add_access(params)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     r = RestClient.delete(@base_url + path, params)
