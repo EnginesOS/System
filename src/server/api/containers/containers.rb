@@ -17,21 +17,20 @@ end
      
       @events_stream = engines_api.container_events_stream
       has_data = true
-      written = false
+      timer =  EventMachine::PeriodicTimer.new(20) { out << "\0" }
       parser = Yajl::Parser.new
      
       while has_data == true
 begin
   require "timeout"
         
-          EventMachine::PeriodicTimer.new(20) { out << "\0" }
+        
           bytes = @events_stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
           jason_event = JSON.parse(bytes)   
           #out <<'data:'     
           out << jason_event.to_json
           out << "\n\n"
-          written = true
           STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)     
           bytes = ''
         
@@ -49,9 +48,9 @@ begin
      
       end
       
-    end
+      timer.cancel
     @events_stream.stop unless @events_stream.nil?
-    
+      end
   end
   
 
