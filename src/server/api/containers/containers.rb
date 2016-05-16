@@ -19,12 +19,12 @@ STDERR.puts('EVENYS')
     has_data = true
 
     parser = Yajl::Parser.new
-
+    timer =  EventMachine::PeriodicTimer.new(20) { out << "\0" }
+      
     while has_data == true
       begin
         require "timeout"
-
-        timer =  EventMachine::PeriodicTimer.new(20) { out << "\0" }
+       
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         # jason_event = parser.parse(bytes)
