@@ -7,10 +7,11 @@
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 
-require 'sinatra_warden'
+
   
   require_relative 'utils.rb'
   class Application < Sinatra::Base
+    require 'sinatra_warden'
   register Sinatra::Warden
   
   set :sessions, true
@@ -75,8 +76,6 @@ require 'sinatra_warden'
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
 
-    
-    
     STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
   #  body args.to_s + ':' + engines_api.last_error.to_s
     status(404)
@@ -99,9 +98,9 @@ require 'sinatra_warden'
    
     return service
   end
-rescue StandardError => e
-  #log_error(e)
-  p e
-  p e.backtrace.to_s
-  #status(501)
+#rescue StandardError => e
+#  #log_error(e)
+#  p e
+#  p e.backtrace.to_s
+#  #status(501)
 end
