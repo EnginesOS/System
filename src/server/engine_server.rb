@@ -29,7 +29,7 @@
   @@last_error =''
   
 
-  helper do
+  helpers do
   def engines_api
 #    unless @@engines_api
 #    core_api = EnginesCore.new   
