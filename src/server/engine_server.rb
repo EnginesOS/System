@@ -101,7 +101,7 @@ begin
     return service
   end
 
-#content_type :json
+content_type :json
 require_relative 'api/routes.rb'
   
   post '/unauthenticated' do     
