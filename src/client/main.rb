@@ -264,7 +264,7 @@ def rest_delete(path, params=nil)
   end
 end
 
-@base_url = 'http://mgmt.engines.internal:4567'
+@base_url = 'http://127.0.0.1:4567'
 @host = '127.0.0.1'
 @port = '4567'
 @route = "/v0"
