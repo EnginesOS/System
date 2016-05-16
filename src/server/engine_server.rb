@@ -104,9 +104,9 @@ begin
 #content_type :json
 require_relative 'api/routes.rb'
   
-  post '/unauthenticated' do
-      content_type :json
-      json({ message: "Sorry, this request can not be authenticated. Try again." })
+  post '/unauthenticated' do     
+    
+    log_error(request,nil,'unauthorised').to_json
   end
   
   use Warden::Manager do |config|
