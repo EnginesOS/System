@@ -1,0 +1,17 @@
+monitor_ports:
+   mgmt:
+    name: "Management Interface"
+    type: tcp
+    port: 10443
+    timeout: 60
+    first_action: :recreate
+    final_action: :recreate
+   sshd:
+    name: 'SSH Access'
+    type: tcp
+    port: 22
+    timeout: 60
+    first_action: :restart
+    repeat: 2
+    final_action: :recreate
+  
