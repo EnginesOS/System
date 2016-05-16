@@ -15,6 +15,7 @@ class DockerEventWatcher  < ErrorsApi
   @@container_event = 1024
   @@container_pull     = 2048
   @@build_event = 4096
+    @@container_attach    = 8192
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   # @@container_id
@@ -73,6 +74,8 @@ class DockerEventWatcher  < ErrorsApi
             mask |= @@container_die
           elsif event_hash['status'] == 'kill'
                 mask |= @@container_kill
+          elsif event_hash['attach'] == 'kill'
+                         mask |= @@container_attach    
         else        
            mask |= @@container_action
         end
