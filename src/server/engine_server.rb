@@ -114,8 +114,8 @@ begin
 require_relative 'api/routes.rb'
   
   post '/unauthenticated' do     
-    
-    log_error(request,nil,'unauthorised').to_json
+    p params
+    log_error(request,nil,'unauthorised', params).to_json
   end
   
   use Warden::Manager do |config|
