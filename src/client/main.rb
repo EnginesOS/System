@@ -178,12 +178,12 @@ def get_json_stream(path)
     http.request(req) { |resp|
       resp.read_body do |chunk|
         begin
-          next if chunk == ''
+          next if chunk == '' || chunk == "\n"
           STDERR.puts 'CHUNK__' + chunk.to_s + '__'
         hash = parser.parse(chunk) do |hash|
           p hash        
         end
-          rescue JSON::ParserError => e 
+          rescue StandardError =>e #JSON::ParserError => e 
                     next
                   end
       end
@@ -191,7 +191,7 @@ def get_json_stream(path)
   end
 rescue StandardError => e
   p e.to_s
-  p chunk.to_s
+  p 'CHUNK__' + chunk.to_s
   p e.backtrace.to_s
 end
 
