@@ -3,19 +3,19 @@ class DockerEventWatcher  < ErrorsApi
   
   class EventListener
   @@container_event = 1
-   @@engine_target  = 2
-   @@service_target = 4
-   @@container_exec = 8
-   @@container_action = 16
-   @@image_event = 32
-   @@container_commit = 64
-@@container_delete = 128
-    @@container_kill = 256
-    @@container_die = 512
-    @@container_event = 1024
+  @@engine_target  = 2
+  @@service_target = 4
+  @@container_exec = 8
+  @@container_action = 16
+  @@image_event = 32
+  @@container_commit = 64
+  @@container_delete = 128
+  @@container_kill = 256
+  @@container_die = 512
+  @@container_event = 1024
     
- @@service_action = @@container_action | @@service_target
- @@engine_action = @@container_action | @@engine_target
+  @@service_action = @@container_action | @@service_target
+  @@engine_action = @@container_action | @@engine_target
   # @@container_id
  
   
