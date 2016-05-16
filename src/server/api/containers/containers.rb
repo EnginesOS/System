@@ -27,7 +27,12 @@ begin
         
           bytes = @events_stream.rd.read_nonblock(2048)   
          # jason_event = parser.parse(bytes) 
-          jason_event = JSON.parse(bytes)   
+          begin
+          jason_event = JSON.parse(bytes)
+          rescue  JSON::ParserError => e
+            STDERR.puts('Failed to parse ' + bytes )
+            next 
+          end
           #out <<'data:'     
           out << jason_event.to_json
           out << "\n\n"
