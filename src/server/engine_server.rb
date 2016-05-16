@@ -1,4 +1,4 @@
-begin
+
   require 'sinatra'
   require 'json'
   require 'yajl'
@@ -7,8 +7,11 @@ begin
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 
+require 'sinatra_warden'
+  
   require_relative 'utils.rb'
   class Application < Sinatra::Base
+  register Sinatra::Warden
   set :sessions, true
   set :logging, true
   set :run, true
@@ -106,5 +109,4 @@ rescue StandardError => e
   p e
   p e.backtrace.to_s
   #status(501)
-end
 end
