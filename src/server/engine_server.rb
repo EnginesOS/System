@@ -104,7 +104,11 @@ begin
 #content_type :json
 require_relative 'api/routes.rb'
   
-
+  post '/unauthenticated' do
+      content_type :json
+      json({ message: "Sorry, this request can not be authenticated. Try again." })
+  end
+  
   use Warden::Manager do |config|
       config.scope_defaults :default,
       # Set your authorization strategy
