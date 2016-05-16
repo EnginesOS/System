@@ -14,8 +14,8 @@ end
      status(404)
    end
 
-  index '/v0/*' do
-     STDERR.puts :No_Such_Index
+  post '/v0/*' do
+     STDERR.puts :No_Such_post
      STDERR.puts request.fullpath.to_s  
      STDERR.puts 'params'
      STDERR.puts params
