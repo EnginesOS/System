@@ -37,15 +37,7 @@ class SystemService < ManagedService
   rescue StandardError => e
     log_exception(e)
   end
-    def self.from_yaml(yaml, container_api)
-       container = YAML::load(yaml)
-       return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml, container_name) if container.nil?
-       container.container_api = container_api
-       container.post_load
-       return container
-     rescue Exception => e
-       SystemUtils.log_exception(e,yaml)
-     end
+ 
   def inspect_container
     SystemDebug.debug(SystemDebug.system,:system_service_inspect_container)
 
