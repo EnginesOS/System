@@ -85,7 +85,7 @@ mapped_ports:
   name: ssh
   port: 22
   publicFacing: true
-  external: 828
+  external: 6122
 repo: na
 last_result: 
 setState: running
