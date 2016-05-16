@@ -177,9 +177,13 @@ def get_json_stream(path)
     parser = Yajl::Parser.new
     http.request(req) { |resp|
       resp.read_body do |chunk|
+        begin
         hash = parser.parse(chunk) do |hash|
-          p hash
+          p hash        
         end
+          rescue JSON::ParserError => e 
+                    next
+                  end
       end
     }
   end
