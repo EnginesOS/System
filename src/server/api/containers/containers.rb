@@ -12,7 +12,7 @@ get '/v0/containers/changed/' do
 end
 
 get '/v0/containers/events/', provides: 'text/event-stream' do
-
+STDERR.puts('EVENYS')
   stream :keep_open do |out|
 
     @events_stream = engines_api.container_events_stream
