@@ -244,7 +244,7 @@ def rest_post(path, params, content_type )
 
   begin
   
-   
+    params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
    #   STDERR.puts  'ct ' + content_type
