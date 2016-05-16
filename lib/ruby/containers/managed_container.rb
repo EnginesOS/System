@@ -3,7 +3,8 @@ require_relative 'ManagedContainerObjects.rb'
 
 
 #require 'objspace' ??
-require_relative 'container.rb'
+#require_relative 'container.rb'
+require '/opt/engines/lib/ruby/containers/container.rb'
 class ManagedContainer < Container
  
   require_relative 'managed_container/task_at_hand.rb'
