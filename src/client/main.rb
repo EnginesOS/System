@@ -167,7 +167,7 @@ def perform_delete(params=nil)
 end
 require 'rest-client'
 
-def get_stream(path)
+def get_json_stream(path)
   require 'yajl'
   chunk = ''
  
@@ -180,6 +180,28 @@ def get_stream(path)
         hash = parser.parse(chunk) do |hash|
           p hash
         end
+      end
+    }
+  end
+rescue StandardError => e
+  p e.to_s
+  p chunk.to_s
+  p e.backtrace.to_s
+end
+
+def get_stream(path)
+  #require 'yajl'
+  chunk = ''
+ 
+  uri = URI(@base_url + path_with_params(path, add_access(nil)))
+  Net::HTTP.start(uri.host, uri.port)  do |http|
+    req = Net::HTTP::Get.new(uri)
+  #  parser = Yajl::Parser.new
+    http.request(req) { |resp|
+      resp.read_body do |chunk|
+        #hash = parser.parse(chunk) do |hash|
+          p chunk
+        #end
       end
     }
   end
