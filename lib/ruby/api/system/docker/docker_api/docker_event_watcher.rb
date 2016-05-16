@@ -10,6 +10,10 @@ class DockerEventWatcher  < ErrorsApi
    @@image_event = 32
    @@container_commit = 64
 @@container_delete = 128
+    @@container_kill = 256
+    @@container_die = 512
+    @@container_event = 1024
+    
  @@service_action = @@container_action | @@service_target
  @@engine_action = @@container_action | @@engine_target
   # @@container_id
@@ -49,14 +53,12 @@ class DockerEventWatcher  < ErrorsApi
       if event_hash['Type'] = 'container'
         mask |= @@container_event
         if event_hash.key?('from')
+          return  mask |= @build_event if event_hash['from'].length == 65                     
         if  event_hash['from'].start_with?('engines/')
-          mask |= @@service_target
-        
+          mask |= @@service_target        
         else
-          mask |= @@engine_target
-   
-        end
-        
+          mask |= @@engine_target   
+        end        
         end
         if event_hash['status'].start_with?('exec')
           mask |= @@container_exec
@@ -64,8 +66,11 @@ class DockerEventWatcher  < ErrorsApi
           mask |= @@container_commit        
           elsif event_hash['status'] == 'delete'
             mask |= @@container_delete
-          else
-            
+          elsif event_hash['status'] == 'die'
+            mask |= @@container_die
+          elsif event_hash['status'] == 'kill'
+                mask |= @@container_kill
+        else        
            mask |= @@container_action
         end
       elsif event_hash['Type'] = 'image'
