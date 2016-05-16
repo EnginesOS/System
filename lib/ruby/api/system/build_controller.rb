@@ -102,8 +102,8 @@ class BuildController
     @build_error = @engine_builder.last_error
     return build_failed(@build_params, @build_error) unless @engine.is_a?(ManagedEngine)
     return build_failed(@build_params, @build_error) unless @engine.is_active?
-    build_complete(@build_params)
-    return @engine
+      build_complete(@build_params)
+   # return @engine
   rescue StandardError => e
     build_failed(@build_params, e)
     SystemUtils.log_exception(e)
