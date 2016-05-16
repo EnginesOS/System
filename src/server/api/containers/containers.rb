@@ -11,7 +11,7 @@ get '/v0/containers/changed/' do
   end
 end
 
-get '/v0/containers/events/', provides: 'text/event-stream' do
+get '/v0/containers/events/stream', provides: 'text/event-stream' do
 STDERR.puts('EVENYS')
   stream :keep_open do |out|
 
