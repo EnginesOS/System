@@ -13,7 +13,7 @@ class DockerEventWatcher  < ErrorsApi
   @@container_kill = 256
   @@container_die = 512
   @@container_event = 1024
-    
+  @@container_pull     = 2048
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   # @@container_id
@@ -63,7 +63,9 @@ class DockerEventWatcher  < ErrorsApi
         if event_hash['status'].start_with?('exec')
           mask |= @@container_exec
         elsif event_hash['status'] == 'commit'
-          mask |= @@container_commit        
+          mask |= @@container_commit    
+        elsif event_hash['status'] == 'pull'
+          mask |= @@container_pull       
           elsif event_hash['status'] == 'delete'
             mask |= @@container_delete
           elsif event_hash['status'] == 'die'

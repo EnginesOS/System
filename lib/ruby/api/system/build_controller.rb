@@ -38,8 +38,8 @@ class BuildController
     
     build_failed(params, @build_error) if @engine.nil? || @engine.is_a?(EnginesError)
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)
-    build_complete(@build_params)
-    return @engine
+    return build_complete(@build_params)
+    
   rescue StandardError => e
     build_failed(params, e.to_s)
   end
@@ -145,5 +145,6 @@ class BuildController
   def build_complete(build_params)
     @core_api.build_stoped()
     SystemStatus.build_complete(build_params)    
+    true
   end
 end
