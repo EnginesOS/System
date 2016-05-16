@@ -100,8 +100,8 @@ begin
    
     return service
   end
-  
-content_type :json
+end
+#content_type :json
 require_relative 'api/routes.rb'
 
 
@@ -137,7 +137,7 @@ require_relative 'api/routes.rb'
 #  end
 
 
-end
+
 rescue StandardError => e
   #log_error(e)
   p e
