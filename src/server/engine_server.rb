@@ -98,10 +98,10 @@
    
     return service
   end
-end
+
 
 require_relative 'api/routes.rb'
-
+    end
 rescue StandardError => e
   #log_error(e)
   p e
