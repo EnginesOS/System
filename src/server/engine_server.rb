@@ -8,7 +8,7 @@ begin
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 
   require_relative 'utils.rb'
-
+  class Application < Sinatra::Base
   set :sessions, true
   set :logging, true
   set :run, true
@@ -106,5 +106,5 @@ rescue StandardError => e
   p e
   p e.backtrace.to_s
   #status(501)
-
+end
 end
