@@ -248,7 +248,8 @@ def rest_post(path, params, content_type )
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
    #   STDERR.puts  'ct ' + content_type
-    r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
+ #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
+      r = RestClient.post(@base_url + path, params, :content_type => content_type )
     else
      # STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params)
