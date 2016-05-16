@@ -21,7 +21,7 @@ get '/v0/containers/engines/container_name' do
 end
 
 get '/v0/containers/engines/state' do
-  authorize!('/login')
+  env['warden'].authenticate!(:access_token)
   states = engines_api.get_engines_states
   unless states.is_a?(EnginesError)
     return states.to_json
