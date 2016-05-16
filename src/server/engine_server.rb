@@ -12,7 +12,7 @@ begin
   require_relative 'utils.rb'
   class Application < Sinatra::Base
    
-  register Sinatra::Warden
+ # register Sinatra::Warden
   
   set :sessions, true
   set :logging, true
@@ -29,8 +29,7 @@ begin
   @@last_error =''
   
    
-  require_relative 'api/routes.rb'
-  
+    
   helpers do
   def engines_api
 #    unless @@engines_api
@@ -103,7 +102,7 @@ begin
   end
 
 #content_type :json
-
+require_relative 'api/routes.rb'
   end
 
 #  use Warden::Manager do |config|
