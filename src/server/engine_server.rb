@@ -1,4 +1,4 @@
-#begin
+begin
   require 'sinatra'
   require 'json'
   require 'yajl'
@@ -18,7 +18,7 @@
   set :logging, true
   set :run, true
 
-
+  end
  #unless @@engines_api
    core_api = EnginesCore.new   
        @@engines_api = PublicApi.new(core_api)
@@ -28,7 +28,8 @@
   ObjectSpace.trace_object_allocations_start
   @@last_error =''
   
-
+   
+    
   helpers do
   def engines_api
 #    unless @@engines_api
@@ -99,9 +100,8 @@
     return service
   end
 
-
 require_relative 'api/routes.rb'
-    end
+end
 rescue StandardError => e
   #log_error(e)
   p e
