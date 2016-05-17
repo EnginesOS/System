@@ -76,6 +76,9 @@ if test `system_service.rb system state` = \"nocontainer\"
   then
 	ruby /opt/engines/bin/system_service.rb system start
   fi
+  
+  engines_tool system login test test
+  
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
