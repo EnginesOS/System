@@ -30,4 +30,6 @@ when 'state'
   p service.read_state
 when 'set_state'
   p service.set_state
+when 'status'
+  p service.status
 end

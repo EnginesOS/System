@@ -45,6 +45,7 @@ class ManagedContainer < Container
 
   def initialize
     super
+    @status = {}
     init_task_at_hand
   end
   
@@ -58,6 +59,14 @@ class ManagedContainer < Container
       @setState  
     end
     
+   def status
+    @status[:state] = read_state
+    @status[:set_state] = @setState
+    @status[:progress_to] = task_at_hand
+     @status
+    
+   end
+   
   def post_load
     i = @container_id
     super
