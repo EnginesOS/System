@@ -26,5 +26,8 @@ when 'stop'
   p service.stop_container
 when 'destroy'
   p service.destroy_container
-    
+when 'state'
+  p service.read_state
+when 'set_state'
+  p service.set_state
 end

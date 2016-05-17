@@ -12,7 +12,6 @@ begin
   require_relative 'utils.rb'
   class Application < Sinatra::Base
    
- # register Sinatra::Warden
   
   set :sessions, true
   set :logging, true
@@ -26,20 +25,15 @@ begin
        
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   ObjectSpace.trace_object_allocations_start
-  @@last_error =''
-  
+  @@last_error =''  
   
   before do
-  content_type 'application/json' unless  request.path.end_with?('stream')
-    #
+  content_type 'application/json' unless  request.path.end_with?('stream')    
      pass if request.path.start_with?('/v0/system/login/')
-    pass if request.path.start_with?('/v0/unauthenticated')
-    
+    pass if request.path.start_with?('/v0/unauthenticated')    
     env['warden'].authenticate!(:access_token)
    end
-   
-   
-   
+        
     
   helpers do
   def engines_api

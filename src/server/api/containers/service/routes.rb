@@ -1,3 +1,4 @@
+# @!group Service
 require_relative 'service.rb'
 require_relative 'service_actions.rb'
 require_relative 'metrics.rb'
@@ -9,3 +10,5 @@ require_relative 'services/routes.rb'
 require_relative 'service/routes.rb'
 require_relative 'service_consumer.rb'
 require_relative 'service_consumers.rb'
+
+# @!endgroup

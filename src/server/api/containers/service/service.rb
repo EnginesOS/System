@@ -1,9 +1,6 @@
-#/containers/engines/state
 
-#/containers/engines/container_name
-#/containers/engines/
-#/containers/engine/container_name/build_report
-#/containers/engine/container_name/blueprint
+
+# @!group Service
 
 get '/v0/containers/service/:service_name' do
   service = get_service(params[:service_name])
@@ -24,5 +21,6 @@ get '/v0/containers/service/:service_name/state' do
     return log_error(request, r)
   end
 end
+# @!endgroup
 
 

@@ -1,7 +1,4 @@
-#  /system/control/engines_system/update
-#/system/control/engines_system/restart
-#/system/control/engines_system/update
-#/system/control/engines_system/recreate
+# @!group System Control Engines System
 
 get '/v0/system/control/engines_system/update' do
   update = engines_api.update_engines_system_software
@@ -42,3 +39,4 @@ end
       end
   
 end
+# @!endgroup

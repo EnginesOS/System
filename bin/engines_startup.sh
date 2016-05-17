@@ -1,6 +1,5 @@
 #!/bin/bash
-ruby /opt/engines/bin/system_service.rb system create
-ruby /opt/engines/bin/system_service.rb system  start
+
 if test -f  ~/.complete_update
 then
    /opt/engines/bin/finish_update.sh  
@@ -67,11 +66,17 @@ if test -f /usr/bin/pulseaudio
  	
 
 
-docker start registry
+#docker start registry
+ruby /opt/engines/bin/system_service.rb registry start
+sleep 5
+
+ruby /opt/engines/bin/system_service.rb system create
+ruby /opt/engines/bin/system_service.rb system  start
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
-/opt/engines/bin/eservice start dns 
+#/opt/engines/bin/eservice start dns
+engines_tool service dns start 
 count=0
 
  while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
@@ -85,23 +90,28 @@ count=0
   done 
 
 
-/opt/engines/bin/eservice start mysql_server 
-
-/opt/engines/bin/eservice start nginx 
+#/opt/engines/bin/eservice start mysql_server 
+engines_tool service  mysql_server start
+engines_tool service nginx start
+#/opt/engines/bin/eservice start nginx 
 
 #this dance ensures auth gets pub key from ftp 
-#really only needs to happen firts time ftp is enabled 
-/opt/engines/bin/eservice start ftp 
-/opt/engines/bin/eservice start auth 
+#really only needs to happen firts time ftp is enabled
+ engines_tool service ftp start
+ engines_tool service auth start
+   engines_tool service ftp stop
+   engines_tool service ftp start
+#/opt/engines/bin/eservice start ftp 
+#/opt/engines/bin/eservice start auth 
 # restart ftp in case dont have access keys from auth
-/opt/engines/bin/eservice stop ftp 
-/opt/engines/bin/eservice start ftp 
+#/opt/engines/bin/eservice stop ftp 
+#/opt/engines/bin/eservice start ftp 
 
 
 
-/opt/engines/bin/eservices check_and_act 
+#/opt/engines/bin/eservices check_and_act 
 
-/opt/engines/bin/engines check_and_act  
+#/opt/engines/bin/engines check_and_act  
 
 if test -f  ~/.complete_install
 then

@@ -28,7 +28,7 @@ when 'properties'
   require_relative 'properties.rb'
 when 'template'
   params = {}
-  params[:string] = ARGV[3]
+  params[:template_string] = ARGV[3]
   perform_post(params)
 when 'destroy'
 

@@ -1,6 +1,6 @@
-#module ContainersAPI
+# @!group Containers
 
-# @method get_container_event_strean
+# @method get_container_event_stream
 # @overload get /v0/containers/events/stream
 # Add listener to container events and write event-stream of events as json to client 
 # @return [text/event-stream]
@@ -13,7 +13,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     has_data = true
 
     parser = Yajl::Parser.new
-   # timer =  EventMachine::PeriodicTimer.new(20) { out << "\0" }
       
     while has_data == true
       begin
@@ -48,4 +47,5 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     @events_stream.stop unless @events_stream.nil?
   end
 end
- # end
+
+# @!endgroup

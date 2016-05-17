@@ -1,9 +1,7 @@
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
 get '/v0/system/version/release' do
-  SystemDebug.debug(SystemDebug.server, :release)
   release = SystemStatus.get_engines_system_release
-  SystemDebug.debug(SystemDebug.server, :release,release)
   unless release.is_a?(EnginesError)
     status(202)
     return release.to_json
