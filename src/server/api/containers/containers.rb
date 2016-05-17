@@ -1,4 +1,4 @@
-module ContainersAPI
+#module ContainersAPI
 
 # @method get_container_event_strean
 # @overload get /v0/containers/events/stream
@@ -48,4 +48,4 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     @events_stream.stop unless @events_stream.nil?
   end
 end
-  end
+ # end
