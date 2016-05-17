@@ -66,9 +66,9 @@ if test -f /usr/bin/pulseaudio
  	
 
 
-#docker start registry
-ruby /opt/engines/bin/system_service.rb registry start
-sleep 5
+docker start registry
+#ruby /opt/engines/bin/system_service.rb registry start
+sleep 15
 if test `system_service.rb system state` = \"nocontainer\"
  then
 	ruby /opt/engines/bin/system_service.rb system create

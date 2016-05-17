@@ -1,4 +1,4 @@
-
+# @!group Engine Builder
 
 get '/v0/engine_builder/status' do
  r = engines_api.build_status
@@ -73,8 +73,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
 
         out.close
       end
-    end
-    
+    end    
   end
 
 end
+# @!endgroup

@@ -1,6 +1,4 @@
-#/containers/engines/state
-#/containers/engines/container_name
-#/containers/engines/
+# @!group Engines
 
 get '/v0/containers/engines/' do
   engines = engines_api.getManagedEngines
@@ -28,8 +26,8 @@ get '/v0/containers/engines/status' do
     return log_error(request, states)
   end
 end
-get '/v0/containers/engines/state' do
- 
+
+get '/v0/containers/engines/state' do 
   states = engines_api.get_engines_states
   unless states.is_a?(EnginesError)
     return states.to_json
@@ -37,3 +35,4 @@ get '/v0/containers/engines/state' do
     return log_error(request, states)
   end
 end
+# @!endgroup
