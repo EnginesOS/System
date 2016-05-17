@@ -29,5 +29,5 @@ when 'destroy'
 when 'state'
   p service.read_state
 when 'set_state'
-  p service.set_state
+  p service.state_wanted
 end
