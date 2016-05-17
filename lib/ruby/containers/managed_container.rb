@@ -54,7 +54,7 @@ class ManagedContainer < Container
     super
   end
   
-  def state_wanted
+  def set_state
       @setState  
     end
     
