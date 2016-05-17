@@ -32,7 +32,7 @@ begin
   before do
   content_type 'application/json' unless  request.path.end_with?('stream')
     #
-     pass if request.path.start_with?('/v0/login/')
+     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')
     
     env['warden'].authenticate!(:access_token)
