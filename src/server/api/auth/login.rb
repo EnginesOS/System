@@ -9,3 +9,11 @@ end
 get '/v0/logout' do
   $token = ''
 end
+
+post '/v0/unauthenticated' do     
+    log_error(request,nil,'unauthorised', params).to_json
+  end
+  
+  get  '/v0/unauthenticated' do     
+log_error(request,nil,'unauthorised', params).to_json
+end

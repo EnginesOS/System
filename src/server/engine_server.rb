@@ -115,9 +115,7 @@ begin
 
 require_relative 'api/routes.rb'
   
-  post '/v0/unauthenticated' do     
-    log_error(request,nil,'unauthorised', params).to_json
-  end
+  
 #  post '/v0/login/' do
 #    u = User.new(:username => params[:username], :password => params[:password])
 #    u.save
