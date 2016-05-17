@@ -1,29 +1,25 @@
-
-  
 if Process.euid != 21000
   p "This program can only be run be the engines user"
   exit
 end
 
 def command_useage(mesg=nil)
- p "Incorrect usage"
- p mesg
- exit
+  p "Incorrect usage"
+  p mesg
+  exit
 end
-
 
 def parse_error(r)
   STDOUT.puts r.to_s
   exit (-1)
- 
-  
+
 end
 
 def parse_rest_response(r)
   return false if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  return r.to_s if @raw 
+  return r.to_s if @raw
   res = JSON.parse(r, :create_additions => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
@@ -117,61 +113,56 @@ rescue  StandardError => e
   STDERR.puts e.to_s
 end
 
+def read_stdin_data
+  stdin_data = ""
 
-
-
- def read_stdin_data
-   stdin_data = ""
-   
-   require 'timeout'
-   status = Timeout::timeout(10) do
-  while STDIN.gets
-    stdin_data += $_
+  require 'timeout'
+  status = Timeout::timeout(10) do
+    while STDIN.gets
+      stdin_data += $_
+    end
   end
-   end
-   #STDERR.puts "Read " + stdin_data.length.to_s + ' bytes'
-   stdin_data
- rescue Timeout::Error
-   puts "Timeout on data read from stdin"  
- rescue StandardError => e
-   log_exception(e)
- end
- 
+  #STDERR.puts "Read " + stdin_data.length.to_s + ' bytes'
+  stdin_data
+rescue Timeout::Error
+  puts "Timeout on data read from stdin"
+rescue StandardError => e
+  log_exception(e)
+end
+
 def read_stdin_json
   JSON.parse(read_stdin_data)
 end
- 
-def perform_get  
-  #STDERR.puts  @route 
-  r = rest_get(@route) 
+
+def perform_get
+  #STDERR.puts  @route
+  r = rest_get(@route)
   write_response(r)
   exit
 end
 
- 
-
-
-def perform_post(params=nil, content_type=nil) 
+def perform_post(params=nil, content_type=nil)
   post_params = {}
-    post_params[:api_vars] = params
+  post_params[:api_vars] = params
   add_access(post_params)
-  #  STDERR.puts  @route 
- 
-  rest_post(@route,post_params, content_type)  
+  #  STDERR.puts  @route
+
+  rest_post(@route,post_params, content_type)
   exit
 end
 
-def perform_delete(params=nil) 
-  #STDERR.puts  @route 
-  rest_delete(@route,params)  
+def perform_delete(params=nil)
+  #STDERR.puts  @route
+  rest_delete(@route,params)
   exit
 end
+
 require 'rest-client'
 
 def get_json_stream(path)
   require 'yajl'
   chunk = ''
- 
+
   uri = URI(@base_url + path_with_params(path, add_access(nil)))
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
@@ -180,34 +171,34 @@ def get_json_stream(path)
       resp.read_body do |chunk|
         begin
           next if chunk == '' || chunk == "\n"
-          STDERR.puts 'CHUNK__' + chunk.to_s + '__'
-        hash = parser.parse(chunk) do |hash|
-          p hash        
+          hash = parser.parse(chunk) do |hash|
+            p hash
+          end
+          #dont panic on bad json as it is the \0 keep alive 
+        rescue StandardError => e 
+          next
         end
-          rescue StandardError =>e #JSON::ParserError => e 
-                    next
-                  end
       end
     }
   end
 rescue StandardError => e
-  p e.to_s
-  p 'CHUNK__' + chunk.to_s
+  #Should goto to error hanlder but this is a script
+  p e.to_s  
   p e.backtrace.to_s
 end
 
 def get_stream(path)
   #require 'yajl'
   chunk = ''
- 
+
   uri = URI(@base_url + path_with_params(path, add_access(nil)))
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
-  #  parser = Yajl::Parser.new
+    #  parser = Yajl::Parser.new
     http.request(req) { |resp|
       resp.read_body do |chunk|
         #hash = parser.parse(chunk) do |hash|
-          p chunk
+        p chunk
         #end
       end
     }
@@ -219,81 +210,81 @@ rescue StandardError => e
 end
 
 def path_with_params(path, params)
-   encoded_params = URI.encode_www_form(params)
-   [path, encoded_params].join("?")
+  encoded_params = URI.encode_www_form(params)
+  [path, encoded_params].join("?")
 end
 
 def add_access(params)
   params = {} if params.nil?
-    params['access_token'] = ENV['access_token']
-      params
+  params['access_token'] = ENV['access_token']
+  params
 end
 
 def rest_get(path,params=nil)
 
   begin
     retry_count = 0
-   # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
+    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     params = add_access(params)
     r = RestClient.get(@base_url + path, params)
 
     #   STDERR.puts r.headers[:content_type]
-#      if  r.headers[:content_type].start_with?('text/event-stream')
-#        #handle_stream(r)
-#        write_response(r)
-#      end
-     return r
-    rescue RestClient::ExceptionWithResponse => e   
-        parse_error(e.response)
+    #      if  r.headers[:content_type].start_with?('text/event-stream')
+    #        #handle_stream(r)
+    #        write_response(r)
+    #      end
+    return r
+  rescue RestClient::ExceptionWithResponse => e
+    parse_error(e.response)
   rescue StandardError => e
 
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
-   
+
   end
 end
-
-
 
 def write_response(r)
-  if r.nil?  
-   STDERR.puts 'nil response'
-   return
+  if r.nil?
+    STDERR.puts 'nil response'
+    return
   end
   if r.headers[:content_type] == 'application/octet-stream'
-       puts r.body.b
+    puts r.body.b
     # STDERR.puts "as_binary"
-      else
-        #puts r.body
-        STDOUT.write(r.body)
-        puts ''
-      end
+  else
+    #puts r.body
+    STDOUT.write(r.body)
+    puts ''
+  end
 
 end
+
 def rest_post(path, params, content_type )
 
   begin
-  
+
     params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
-   #   STDERR.puts  'ct ' + content_type
- #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
+      #   STDERR.puts  'ct ' + content_type
+      #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
       r = RestClient.post(@base_url + path, params, :content_type => content_type )
     else
-     # STDERR.puts  "no_ct"
+      # STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params)
     end
-  
+
     write_response(r)
     exit
-    rescue RestClient::ExceptionWithResponse => e   
-        parse_error(e.response)
+  rescue RestClient::ExceptionWithResponse => e
+    parse_error(e.response)
   rescue StandardError => e
     params[:api_vars][:data] = nil
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
     STDERR.puts r.to_s
   end
 end
+
 def rest_delete(path, params=nil)
   params = add_access(params)
   begin
@@ -301,8 +292,8 @@ def rest_delete(path, params=nil)
     r = RestClient.delete(@base_url + path, params)
     write_response(r)
     exit
-    rescue RestClient::ExceptionWithResponse => e   
-        parse_error(e.response)
+  rescue RestClient::ExceptionWithResponse => e
+    parse_error(e.response)
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
@@ -310,10 +301,8 @@ end
 
 def login
   r = rest_get('/v0/system/login/test/test')
-  STDERR.puts('__TOKO_FROM_LOG ' + r.body.to_s + '____')
   ENV['access_token'] = r.body.gsub!(/\"/,'')
 end
-
 
 #ENV['access_token'] = 'test_token'
 @base_url = 'http://127.0.0.1:4567'
@@ -321,11 +310,9 @@ end
 @port = '4567'
 @route = "/v0"
 
-login if ENV['access_token'].nil? 
-  
+login if ENV['access_token'].nil?
+
 require_relative 'commands/commands.rb'
 
 #require_relative 'rset.rb'
-
-
 
