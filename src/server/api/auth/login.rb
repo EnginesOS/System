@@ -15,5 +15,6 @@ post '/v0/unauthenticated' do
   end
   
   get  '/v0/unauthenticated' do     
-log_error(request,nil,'unauthorised', params).to_json
+  log_error(request,nil,'unauthorised', params).to_json
 end
+

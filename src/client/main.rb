@@ -1,4 +1,4 @@
-ENV['access_token'] = 'test_token'
+
   
 if Process.euid != 21000
   p "This program can only be run be the engines user"
@@ -143,7 +143,8 @@ end
  
 def perform_get  
   #STDERR.puts  @route 
-  rest_get(@route) 
+  r = rest_get(@route) 
+  write_response(r)
   exit
 end
 
@@ -241,7 +242,7 @@ def rest_get(path,params=nil)
 #        #handle_stream(r)
 #        write_response(r)
 #      end
-      write_response(r)
+     return r
     rescue RestClient::ExceptionWithResponse => e   
         parse_error(e.response)
   rescue StandardError => e
@@ -307,10 +308,20 @@ def rest_delete(path, params=nil)
   end
 end
 
+def login
+  r = rest_get('/v0/system/login/test/test')
+  ENV['access_token'] = r.body
+end
+
+
+#ENV['access_token'] = 'test_token'
 @base_url = 'http://127.0.0.1:4567'
 @host = '127.0.0.1'
 @port = '4567'
 @route = "/v0"
+
+login if ENV['access_token'].nil? 
+  
 require_relative 'commands/commands.rb'
 
 #require_relative 'rset.rb'
