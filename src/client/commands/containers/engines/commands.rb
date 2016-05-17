@@ -13,3 +13,4 @@ when 'container_name'
   perform_get
 
 end
+perform_get
