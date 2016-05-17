@@ -1,4 +1,12 @@
 #!/bin/bash
+grep follow_sta r~/.bashrc  
+if test $? -ne 0
+then
+	cat ~/.bashrc  |grep -v follow_star  >/tmp/.t
+	mv /tmp/.t ~/.bashrc
+fi
+
+. ~/.bashrc
 
 if test -f  ~/.complete_update
 then
@@ -77,13 +85,13 @@ if test `ruby /opt/engines/bin/system_service.rb system state` = \"nocontainer\"
 	ruby /opt/engines/bin/system_service.rb system start
   fi
   
-  engines_tool system login test test
+  /opt/engines/bin/engines_tool system login test test
   
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
 #/opt/engines/bin/eservice start dns
-engines_tool service dns start 
+/opt/engines/bin/engines_tool service dns start 
 count=0
 
  while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
@@ -98,16 +106,16 @@ count=0
 
 
 #/opt/engines/bin/eservice start mysql_server 
-engines_tool service  mysql_server start
-engines_tool service nginx start
+/opt/engines/bin/engines_tool service  mysql_server start
+/opt/engines/bin/engines_tool service nginx start
 #/opt/engines/bin/eservice start nginx 
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen firts time ftp is enabled
- engines_tool service ftp start
- engines_tool service auth start
-   engines_tool service ftp stop
-   engines_tool service ftp start
+ /opt/engines/bin/engines_tool service ftp start
+ /opt/engines/bin/engines_tool service auth start
+   /opt/engines/bin/engines_tool service ftp stop
+   /opt/engines/bin/engines_tool service ftp start
 #/opt/engines/bin/eservice start ftp 
 #/opt/engines/bin/eservice start auth 
 # restart ftp in case dont have access keys from auth
