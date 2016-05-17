@@ -1,8 +1,9 @@
-put '/login/:user_name/:password' do 
-  access_token = 'test_token'
-  access_token.to_json
+get '/v0/login/:user_name/:password' do 
+  #access_token = 'test_token'
+  $token = 'test_token'
+  $token.to_json
 end
 
-put '/logout' do
-  
+get '/v0/logout' do
+  $token = ''
 end
