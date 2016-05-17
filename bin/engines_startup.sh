@@ -1,5 +1,6 @@
 #!/bin/bash
-
+ruby /opt/engines/bin/system_service.rb system create
+ruby /opt/engines/bin/system_service.rb system  start
 if test -f  ~/.complete_update
 then
    /opt/engines/bin/finish_update.sh  

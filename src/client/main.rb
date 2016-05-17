@@ -228,11 +228,6 @@ def rest_get(path,params=nil)
     params = add_access(params)
     r = RestClient.get(@base_url + path, params)
 
-    #   STDERR.puts r.headers[:content_type]
-    #      if  r.headers[:content_type].start_with?('text/event-stream')
-    #        #handle_stream(r)
-    #        write_response(r)
-    #      end
     return r
   rescue RestClient::ExceptionWithResponse => e
     parse_error(e.response)
