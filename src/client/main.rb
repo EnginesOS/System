@@ -302,6 +302,15 @@ end
 def login
   r = rest_get('/v0/system/login/test/test')
   ENV['access_token'] = r.body.gsub!(/\"/,'')
+  t = File.new('~/.engines_token','w+')
+  t.write(ENV['access_token'])
+  t.close  
+end
+
+def load_token
+  return false unless File.exist('~/.engines_token')
+  ENV['access_token'].File.read('~/.engines_token')
+  ENV['access_token'].strip
 end
 
 #ENV['access_token'] = 'test_token'
@@ -309,6 +318,8 @@ end
 @host = '127.0.0.1'
 @port = '4567'
 @route = "/v0"
+
+load_token
 
 login if ENV['access_token'].nil?
 
