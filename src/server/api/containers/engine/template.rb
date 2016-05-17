@@ -1,5 +1,7 @@
-#/containers/engine/container_name/template
-
+# @method resolve_engine_template
+# @overload post '/v0/containers/engine/:engine_name/template'
+# Resolve Template string :string for engine :engine_name
+# @return [String]
 post '/v0/containers/engine/:engine_name/template' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)

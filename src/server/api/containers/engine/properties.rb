@@ -1,6 +1,7 @@
-#/containers/engine/container_name/runtime_properties
-#/containers/engine/container_name/network_properties
-
+# @method set_engine_network_properties
+# @overload post /v0/containers/engine/:engine_name/properties/network
+# Set the network properties for :engine_name for params
+# @return true.to_json or EnginesError.to_json
 post '/v0/containers/engine/:engine_name/properties/network' do
 
   engine = get_engine(params[:engine_name])
@@ -13,6 +14,10 @@ post '/v0/containers/engine/:engine_name/properties/network' do
   r.to_json
 end
 
+# @method set_engine_runtime_properties
+# @overload post /v0/containers/engine/:engine_name/properties/runtime
+# Set the runtime properties for :engine_name for params
+# @return true.to_json or EnginesError.to_json
 post '/v0/containers/engine/:engine_name/properties/runtime' do
 
   cparams =  Utils::Params.assemble_params(params, [:engine_name], [:memory, :environment_variables]) # :all) 

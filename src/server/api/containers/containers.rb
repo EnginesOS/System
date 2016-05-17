@@ -1,18 +1,12 @@
-#
-#/containers/changed LIST
-#/containers/name/network_metrics  ?
-#
-get '/v0/containers/changed/' do
-  changed = engines_api.get_changed_containers
-  unless changed.is_a?(EnginesError)
-    return changed.to_json
-  else
-    return log_error(request, changed)
-  end
-end
+module ContainersAPI
+
+# @method get_container_event_strean
+# @overload get /v0/containers/events/stream
+# Add listener to container events and write event-stream of events as json to client 
+# @return [text/event-stream]
 
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-STDERR.puts('EVENYS')
+
   stream :keep_open do |out|
 
     @events_stream = engines_api.container_events_stream
@@ -54,4 +48,4 @@ STDERR.puts('EVENYS')
     @events_stream.stop unless @events_stream.nil?
   end
 end
-
+  end
