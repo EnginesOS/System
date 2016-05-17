@@ -75,14 +75,14 @@ if test -f /usr/bin/pulseaudio
 
 
 docker start registry
-#ruby /opt/engines/bin/system_service.rb registry start
+
 sleep 25
-if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
+if test `/home/engines/.rbenv/shims/ruby /opt/engines/bin/system_service.rb system state` = \"nocontainer\"
  then
-	/opt/engines/bin/system_service.rb system create
- elif test `/opt/engines/bin/system_service.rb system state` = \"stopped\"
+	/home/engines/.rbenv/shims/ruby /opt/engines/bin/system_service.rb system create
+ elif test `/home/engines/.rbenv/shims/ruby /opt/engines/bin/system_service.rb system state` = \"stopped\"
   then
-	/opt/engines/bin/system_service.rb system start
+	/home/engines/.rbenv/shims/ruby /opt/engines/bin/system_service.rb system start
   fi
   
   while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
@@ -94,14 +94,14 @@ if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
   		  echo "ERROR failed to start system "
   		fi
   done 
-  /opt/engines/bin/engines_tool system login test test
+ /home/engines/.rbenv/shims/ruby  /opt/engines/bin/engines_tool system login test test
   
   
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
-#/opt/engines/bin/eservice start dns
-/opt/engines/bin/engines_tool service dns start 
+
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool service dns start 
 count=0
 
  while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
@@ -115,30 +115,24 @@ count=0
   done 
 
 
-#/opt/engines/bin/eservice start mysql_server 
-/opt/engines/bin/engines_tool service  mysql_server start
-/opt/engines/bin/engines_tool service nginx start
-#/opt/engines/bin/eservice start nginx 
+
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool service  mysql_server start
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool service nginx start
+
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen firts time ftp is enabled
- /opt/engines/bin/engines_tool service ftp start
- /opt/engines/bin/engines_tool service auth start
-   /opt/engines/bin/engines_tool service ftp stop
-   /opt/engines/bin/engines_tool service ftp start
-#/opt/engines/bin/eservice start ftp 
-#/opt/engines/bin/eservice start auth 
-# restart ftp in case dont have access keys from auth
-#/opt/engines/bin/eservice stop ftp 
-#/opt/engines/bin/eservice start ftp 
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool service ftp start
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool service auth start
+/home/engines/.rbenv/shims/ruby   /opt/engines/bin/engines_tool service ftp stop
+/home/engines/.rbenv/shims/ruby   /opt/engines/bin/engines_tool service ftp start
 
 
-/opt/engines/bin/engines_tool services check_and_act 
-/opt/engines/bin/engines_tool engines check_and_act
+
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool services check_and_act 
+/home/engines/.rbenv/shims/ruby /opt/engines/bin/engines_tool engines check_and_act
  
-#/opt/engines/bin/eservices check_and_act 
 
-#/opt/engines/bin/engines check_and_act  
 
 if test -f  ~/.complete_install
 then
