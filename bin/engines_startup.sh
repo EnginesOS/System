@@ -1,5 +1,5 @@
 #!/bin/bash
-grep follow_sta r~/.bashrc  
+grep follow_sta ~/.bashrc  
 if test $? -ne 0
 then
 	cat ~/.bashrc  |grep -v follow_star  >/tmp/.t
@@ -85,7 +85,17 @@ if test `ruby /opt/engines/bin/system_service.rb system state` = \"nocontainer\"
 	ruby /opt/engines/bin/system_service.rb system start
   fi
   
+  while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
+  do 
+  	sleep 5
+  	count=`expr $count + 5`
+  		if test $count -gt 120
+  		 then
+  		  echo "ERROR failed to start system "
+  		fi
+  done 
   /opt/engines/bin/engines_tool system login test test
+  
   
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
