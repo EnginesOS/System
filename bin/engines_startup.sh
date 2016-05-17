@@ -69,9 +69,13 @@ if test -f /usr/bin/pulseaudio
 #docker start registry
 ruby /opt/engines/bin/system_service.rb registry start
 sleep 5
-
-ruby /opt/engines/bin/system_service.rb system create
-ruby /opt/engines/bin/system_service.rb system  start
+if test `system_service.rb system state` = \"nocontainer\"
+ then
+	ruby /opt/engines/bin/system_service.rb system create
+ elif test `system_service.rb system state` = \"stopped\"
+  then
+	ruby /opt/engines/bin/system_service.rb system start
+  fi
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
