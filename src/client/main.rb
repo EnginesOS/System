@@ -308,7 +308,7 @@ def login
 end
 
 def load_token
-  return false unless File.exist('~/.engines_token')
+  return false unless File.exist?('~/.engines_token')
   ENV['access_token'].File.read('~/.engines_token')
   ENV['access_token'].strip
 end
