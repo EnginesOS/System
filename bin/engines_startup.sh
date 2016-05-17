@@ -26,7 +26,7 @@ if test -f /opt/engines/system/flags/replace_keys
  fi
 
 
- chmod oug-w /opt/engines/etc/net/management  
+ #chmod oug-w /opt/engines/etc/net/management  
 
 echo Clearing Flags
 cp /etc/os-release /opt/engines/etc/os-release-host 
@@ -47,7 +47,7 @@ cp /etc/os-release /opt/engines/etc/os-release-host
 	  fi
 
 docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
-rm -f /opt/engines/etc/net/management 
+#rm -f /opt/engines/etc/net/management 
 
 #FIXME below is a kludge
 
@@ -77,12 +77,12 @@ if test -f /usr/bin/pulseaudio
 docker start registry
 #ruby /opt/engines/bin/system_service.rb registry start
 sleep 25
-if test `ruby /opt/engines/bin/system_service.rb system state` = \"nocontainer\"
+if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
  then
-	ruby /opt/engines/bin/system_service.rb system create
- elif test `ruby /opt/engines/bin/system_service.rb system state` = \"stopped\"
+	/opt/engines/bin/system_service.rb system create
+ elif test `/opt/engines/bin/system_service.rb system state` = \"stopped\"
   then
-	ruby /opt/engines/bin/system_service.rb system start
+	/opt/engines/bin/system_service.rb system start
   fi
   
   while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
@@ -133,7 +133,9 @@ count=0
 #/opt/engines/bin/eservice start ftp 
 
 
-
+/opt/engines/bin/engines_tool services check_and_act 
+/opt/engines/bin/engines_tool engines check_and_act
+ 
 #/opt/engines/bin/eservices check_and_act 
 
 #/opt/engines/bin/engines check_and_act  
