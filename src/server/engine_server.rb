@@ -131,7 +131,7 @@ require_relative 'api/routes.rb'
       # Set your authorization strategy
       strategies: [:access_token],
       # Route to redirect to when warden.authenticate! returns a false answer.
-      action: '/unauthenticated'
+      action: '/v0/unauthenticated'
       config.failure_app = self
   end
   
