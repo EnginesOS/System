@@ -311,7 +311,7 @@ end
 def login
   r = rest_get('/v0/system/login/test/test')
   STDERR.puts('__TOKO_FROM_LOG ' + r.body.to_s + '____')
-  ENV['access_token'] = r.body
+  ENV['access_token'] = r.body.gsub!(/\"/,'')
 end
 
 
