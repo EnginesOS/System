@@ -9,6 +9,17 @@ get '/v0/containers/engine/:engine_name' do
   end
 end
 
+get '/v0/containers/engine/:engine_name/status' do
+  engine = get_engine(params[:engine_name])
+  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  r = engine.read_status
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
+end
+
 get '/v0/containers/engine/:engine_name/state' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)

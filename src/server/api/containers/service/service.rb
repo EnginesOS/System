@@ -11,6 +11,17 @@ get '/v0/containers/service/:service_name' do
   end
 end
 
+get '/v0/containers/service/:service_name/status' do
+  service = get_service(params[:service_name])
+ return log_error(request, service, params) if service.is_a?(EnginesError)
+  r = service.read_status
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r)
+  end
+end
+
 get '/v0/containers/service/:service_name/state' do
   service = get_service(params[:service_name])
  return log_error(request, service, params) if service.is_a?(EnginesError)

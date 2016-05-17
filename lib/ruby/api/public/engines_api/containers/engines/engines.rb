@@ -9,6 +9,11 @@ module PublicApiEngines
   def get_engines_states
     @system_api.get_engines_states
   end
+  
+  
+  def get_engines_status
+    @system_api.get_engines_status
+  end
    
   def  build_engine(params)
     @core_api.build_engine(params)

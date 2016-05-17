@@ -48,6 +48,7 @@ class SystemApi < ErrorsApi
   
   def list_system_services
   services = []
+    services.push('system')
      services.push('registry')
      return services
   end
@@ -56,17 +57,36 @@ class SystemApi < ErrorsApi
     result = {}
     engines = getManagedEngines #list_managed_engines
     engines.each do |engine|
-      result[engine.container_name.to_sym] = engine.read_state.to_sym
+      result[engine.container_name] = engine.read_state
     end
 
     return result
   end
   
+def get_engines_status
+  result = {}
+  engines =  getManagedEngines # list_managed_services
+  engines.each do |engine|
+        result[engine.container_name] = engine.status
+      end
+      return result
+ end
+ 
+def get_services_status
+  result = {}
+  services =  getManagedServices # list_managed_services
+      services.each do |service|
+        result[service.container_name] = service.status
+      end
+
+      return result
+ end
+ 
   def get_services_states
     result = {}
     services =  getManagedServices # list_managed_services
         services.each do |service|
-          result[service.container_name.to_sym] = service.read_state.to_sym
+          result[service.container_name] = service.read_state
         end
 
         return result

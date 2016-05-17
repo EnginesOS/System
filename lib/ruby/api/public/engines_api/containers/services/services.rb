@@ -10,7 +10,11 @@ module PublicApiServices
   def  get_services_states
     @system_api.get_services_states
   end
-
+  
+  def  get_services_status
+      @system_api.get_services_status
+    end
+    
   def list_system_services
     @system_api.list_system_services
   end

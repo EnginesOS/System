@@ -43,7 +43,14 @@ get '/v0/containers/services/state' do
     return log_error(request, states)
   end
 end
-
+get '/v0/containers/services/status' do
+  status = engines_api.get_services_status
+  unless status.is_a?(EnginesError)
+    return status.to_json
+  else
+    return log_error(request, statuses)
+  end
+end
 # @method get_system_services
 # @overload  get '/v0/containers/services/system'
 # returns a Json array of the system services

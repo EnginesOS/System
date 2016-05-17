@@ -19,7 +19,15 @@ get '/v0/containers/engines/container_name' do
     return log_error(request, container_names)
   end
 end
-
+get '/v0/containers/engines/status' do
+ 
+  status = engines_api.get_engines_status
+  unless status.is_a?(EnginesError)
+    return status.to_json
+  else
+    return log_error(request, states)
+  end
+end
 get '/v0/containers/engines/state' do
  
   states = engines_api.get_engines_states
