@@ -1,4 +1,4 @@
-get '/v0/login/:user_name/:password' do 
+get '/v0/system/login/:user_name/:password' do 
   #access_token = 'test_token'
   $token = 'test_token'
  p $token
