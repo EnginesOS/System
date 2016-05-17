@@ -60,10 +60,12 @@ class ManagedContainer < Container
     end
     
    def status
+     @status = {} if @status.nil?
+   
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
-     @status
+    @status
     
    end
    
