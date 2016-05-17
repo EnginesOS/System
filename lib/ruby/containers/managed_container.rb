@@ -53,7 +53,11 @@ class ManagedContainer < Container
     #task_failed(msg)
     super
   end
-
+  
+  def set_state
+      @setState  
+    end
+    
   def post_load
     i = @container_id
     super
