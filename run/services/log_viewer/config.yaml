@@ -1,0 +1,45 @@
+--- !ruby/object:ManagedService
+container_name: log_viewer
+publisher_namespace: EnginesSystem
+type_path: log_viewer
+ctype: service
+persistent: false
+last_error: 
+memory: '32'
+hostname: logview
+domain_name: 
+environments: []
+image: engines/logview:_Engines_System(release)
+volumes:
+ syslog: !ruby/object:Volume
+  name: syslog
+  remotepath: "/var/log/syslog/"
+  localpath: "/var/lib/engines/syslog/rmt/"
+  mapping_permissions: ro
+ engines: !ruby/object:Volume
+  name: engines
+  remotepath: "/var/log/engines/engines/"
+  localpath: "/var/log/engines/containers/"
+  mapping_permissions: ro
+ services: !ruby/object:Volume
+  name: services
+  remotepath: "/var/log/engines/services/"
+  localpath: "/var/log/engines/services/"
+  mapping_permissions: ro
+ system_services: !ruby/object:Volume
+  name: system_services
+  remotepath: "/var/log/engines/system_services/"
+  localpath: "/var/log/engines system_/services/"
+  mapping_permissions: ro
+port: 
+mapped_ports:
+repo: na
+last_result: 
+setState: stopped
+nginxored: false
+conf_register_site: true
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"
+- "nginx"
