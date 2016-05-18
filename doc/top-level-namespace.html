@@ -89,7 +89,7 @@
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Utils.html" title="Utils (class)">Utils</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="User.html" title="User (class)">User</a></span>, <span class='object_link'><a href="Utils.html" title="Utils (class)">Utils</a></span>
     
   
 </p>
@@ -111,7 +111,32 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_container_event_stream-instance_method" title="#get (instance method)">- (text/event-stream) <strong>get</strong>(/v0/containers/events/stream) </a>
+      <a href="top-level-namespace.html#check_and_act_on_containers-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/check_and_act&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>checks statue and if not in set state ok - was in set state fixed returned
+to set state failed could not return to set state error set if failed.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_container_event_stream-instance_method" title="#get (instance method)">- (text/event-stream) <strong>get</strong>(&#39;/v0/containers/events/stream&#39;) </a>
     
 
     
@@ -127,7 +152,8 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Add listener to container events and write event-stream of events as json
-to client.</p>
+to client  stream is in the format 
+{“status”:“stop”,“id”:“50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22”,“from”:“prosody”,“time”:1463529792,“timeNano”:1463529792881164857,“Type”:“container”,“container_type”:“container”,“container_name”:“prosody”.</p>
 </div></span>
   
 </li>
@@ -185,6 +211,30 @@ to client.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>shutdown the base OS with params  :reason.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#update-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>update the base OS.</p>
 </div></span>
   
 </li>
@@ -416,6 +466,37 @@ configured services.</p>
       
     </ul>
   
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#authenticate-instance_method" title="#authenticate (instance method)">- (Object) <strong>authenticate</strong>(attempted_password) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
 
 
 
@@ -424,9 +505,109 @@ configured services.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="get_container_event_stream-instance_method">
+  <h3 class="signature first" id="authenticate-instance_method">
   
-    - (<tt>text/event-stream</tt>) <strong>get</strong>(/v0/containers/events/stream) 
+    - (<tt>Object</tt>) <strong>authenticate</strong>(attempted_password) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22
+23
+24
+25
+26</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/model.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_authenticate'>authenticate</span><span class='lparen'>(</span><span class='id identifier rubyid_attempted_password'>attempted_password</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span> <span class='op'>==</span> <span class='id identifier rubyid_attempted_password'>attempted_password</span>
+    <span class='kw'>true</span>
+  <span class='kw'>else</span>
+    <span class='kw'>false</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="check_and_act_on_containers-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/check_and_act&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>checks statue and if not in set state ok - was in set state fixed returned
+to set state failed could not return to set state error set if failed</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>container_name:{:container_type,:status,:error] :status is ok|fixed|failed</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/containers.rb', line 64</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/check_and_act</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_container_event_stream-instance_method">
+  
+    - (<tt>text/event-stream</tt>) <strong>get</strong>(&#39;/v0/containers/events/stream&#39;) 
   
 
   
@@ -436,7 +617,8 @@ configured services.</p>
   <div class="discussion">
     
 <p>Add listener to container events and write event-stream of events as json
-to client</p>
+to client  stream is in the format 
+{“status”:“stop”,“id”:“50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22”,“from”:“prosody”,“time”:1463529792,“timeNano”:1463529792881164857,“Type”:“container”,“container_type”:“container”,“container_name”:“prosody”</p>
 
 
   </div>
@@ -465,7 +647,6 @@ to client</p>
       <pre class="lines">
 
 
-8
 9
 10
 11
@@ -506,10 +687,11 @@ to client</p>
 46
 47
 48
-49</pre>
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/containers.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/containers.rb', line 9</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/events/stream</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>provides:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>text/event-stream</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
 
@@ -798,17 +980,17 @@ configured services</p>
       <pre class="lines">
 
 
-51
-52
-53
-54
-55
-56
-57
-58</pre>
+58
+59
+60
+61
+62
+63
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/services/routes.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/services/routes.rb', line 58</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/services/system</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_states'>states</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_system_services'>list_system_services</span>
@@ -1290,12 +1472,85 @@ configured services</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="update-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>update the base OS</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>true.to_json|EnginesError.to_json</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 36</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/control/base_os/update</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_system_update'>system_update</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_system_update'>system_update</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_system_update'>system_update</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_system_update'>system_update</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_system_update'>system_update</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Tue May 17 18:03:15 2016 by
+  Generated on Wed May 18 10:01:44 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

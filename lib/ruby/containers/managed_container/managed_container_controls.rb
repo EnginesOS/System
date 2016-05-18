@@ -148,6 +148,23 @@ module ManagedContainerControls
     task_failed('rebuild')
   end
 
+  def correct_current_state
+    case @setState
+    when 'stopped'
+      return stop_container if is_running?      
+    when 'running'
+      return start_container unless is_active?
+      return unpause_container if is_paused?
+    when 'nocontainer'
+      return create_container
+    when 'paused'
+      return pause_container unless is_active?
+    else
+      return 'fail'
+    end
+    
+  end
+  
   private
 
   def prep_task(action_sym)
