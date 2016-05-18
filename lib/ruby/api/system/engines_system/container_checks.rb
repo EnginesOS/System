@@ -34,8 +34,8 @@ result
     
     r = container.correct_current_state
     return r if r.is_a?(EnginesError)
-    
-    return 'fixed'
+    return 'fixed' if  @status[:state] ==  @status[:set_state] && @status[:progress_to].nil?
+    return 'failed'
     
   
   end
