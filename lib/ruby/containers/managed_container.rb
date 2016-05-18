@@ -65,7 +65,7 @@ class ManagedContainer < Container
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
-    unless  @status[:state] =  @status[:set_state] && @status[:progress_to].nil?
+    unless  @status[:state] ==  @status[:set_state] && @status[:progress_to].nil?
       @status[:error] = true
     else
       @status[:error] = false
