@@ -7,3 +7,4 @@ when 'events'
 get_json_stream(@route + '/stream' )
  
 end
+perform_get
