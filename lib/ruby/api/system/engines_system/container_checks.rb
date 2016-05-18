@@ -4,7 +4,7 @@ module ContainerChecks
     services_status = get_services_status
    results = check_and_act(services_status, 'service')
     engines_status = get_engines_status
-    results!.merge(check_and_act(engines_status, 'container'))
+    results.merge!(check_and_act(engines_status, 'container'))
       results
   end
   protected
