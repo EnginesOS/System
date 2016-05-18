@@ -38,7 +38,8 @@ class SystemApi < ErrorsApi
   include  ContainerNetworkMetrics
   require_relative 'container_change_monitor.rb'
   include ContainerChangeMonitor
-  
+  require_relative 'container_checks.rb'
+  include ContainerChecks
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
