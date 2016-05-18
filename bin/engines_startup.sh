@@ -133,12 +133,8 @@ count=0
 #/opt/engines/bin/eservice start ftp 
 
 
-/opt/engines/bin/engines_tool services check_and_act 
-/opt/engines/bin/engines_tool engines check_and_act
- 
-#/opt/engines/bin/eservices check_and_act 
+/opt/engines/bin/engines_tool containers check_and_act 
 
-#/opt/engines/bin/engines check_and_act  
 
 if test -f  ~/.complete_install
 then

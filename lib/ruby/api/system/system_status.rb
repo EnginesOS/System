@@ -180,6 +180,7 @@ class SystemStatus
     run_idle = values[3].split('/')
     ret_val[:running] = run_idle[0]
     ret_val[:idle] = run_idle[1]
+    ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
     ret_val[:one] = -1
