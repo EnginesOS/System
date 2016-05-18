@@ -22,6 +22,7 @@ result
   end
   
   def act_on(container_name, ctype)
+    STDERR.puts('act')
     return 'fail'
   end
 end
