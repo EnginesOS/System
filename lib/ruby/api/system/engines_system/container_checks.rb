@@ -34,7 +34,7 @@ result
     
     r = container.correct_current_state
     return r if r.is_a?(EnginesError)
-    return 'fixed' if  @status[:state] ==  @status[:set_state] && @status[:progress_to].nil?
+    return 'fixed' if  read_state ==  @setState
     return 'failed'
     
   
