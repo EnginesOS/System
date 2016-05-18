@@ -8,6 +8,7 @@ module ContainerChecks
       results
   end
   protected
+  
   def check_and_act(containers_status, ctype)
     result = {}
     containers_status.keys.each do |container_name|
@@ -16,7 +17,8 @@ module ContainerChecks
     else
         result[container_name] = 'ok'
      end       
-    end
+   end
+result
   end
   
   def act_on(container_name, ctype)
