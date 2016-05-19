@@ -14,7 +14,7 @@ module CoreBuildController
     
   def abort_build()
     
-    System.execute_cmd('/opt/engines/scripts/kill_docker_builder.sh')
+    System.execute_cmd('/opt/engines/system/scripts/system/kill_docker_builder.sh')
     
     SystemDebug.debug(SystemDebug.builder, @build_controller)
     @build_controller.abort_build() unless @build_controller.nil?     

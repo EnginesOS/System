@@ -9,14 +9,14 @@ module Certificates
     key_file.close
     flag = ''
     flag = ' -d ' if params[:set_as_default] == true
-    res = SystemUtils.execute_command('/opt/engines/bin/install_cert.sh ' + flag  + params[:domain_name]  )
+    res = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh ' + flag  + params[:domain_name]  )
     return true if res[:result] == 0
     @last_error = res[:stderr]
     return log_error_mesg(res[:stderr])
   end
   
   def remove_cert(domain)
-    res = SystemUtils.execute_command('/opt/engines/bin/remove_cert.sh ' + domain )
+    res = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/remove_cert.sh ' + domain )
         return true if res[:result] == 0
         @last_error = res[:stderr]
         return  log_error_mesg(res[:stderr])

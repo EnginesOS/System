@@ -10,19 +10,19 @@ fi
 
 if test -f  ~/.complete_update
 then
-   /opt/engines/bin/finish_update.sh  
+   /opt/engines/system/scripts/update/finish_update.sh  
 fi 
 
 release=`cat /opt/engines/release`
 
-/opt/engines/bin/set_ip.sh  
+/opt/engines/system/scripts/startup/set_ip.sh  
 
-sudo -n /opt/engines/scripts/_check_local-kv.sh  
+sudo -n /opt/engines/system/scripts/startup/sudo/_check_local-kv.sh  
 
-if test -f /opt/engines/system/flags/replace_keys
+if test -f /opt/engines/system/startup/flags/replace_keys
  then
-  /opt/engines/bin/replace_keys.sh 
-  rm /opt/engines/system/flags/replace_keys 
+  /opt/engines/system/scripts/startup/replace_keys.sh 
+  rm /opt/engines/system/startup/flags/replace_keys 
  fi
 
 
@@ -43,7 +43,7 @@ cp /etc/os-release /opt/engines/etc/os-release-host
 	grep dhcp /etc/network/interfaces
 	 if test $? -eq 0
 	  then
-	 		/opt/engines/scripts/_refresh_local_hosted_domains.sh `/opt/engines/bin/get_ip.sh` 
+	 		/opt/engines/system/scripts/refresh_local_hosted_domains.sh `/opt/engines/system/scripts/get_ip.sh` 
 	  fi
 
 docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
@@ -94,13 +94,13 @@ if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
   		  echo "ERROR failed to start system "
   		fi
   done 
-  /opt/engines/bin/engines_tool system login test test
+ 
+/opt/engines/bin/engines_tool system login test test
   
   
 #pull dns prior to start so download time (if any) is not included in the start timeout below
 docker pull engines/dns:$release 
 
-#/opt/engines/bin/eservice start dns
 /opt/engines/bin/engines_tool service dns start 
 count=0
 
@@ -115,10 +115,10 @@ count=0
   done 
 
 
-#/opt/engines/bin/eservice start mysql_server 
+
 /opt/engines/bin/engines_tool service  mysql_server start
 /opt/engines/bin/engines_tool service nginx start
-#/opt/engines/bin/eservice start nginx 
+
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen firts time ftp is enabled
@@ -126,11 +126,7 @@ count=0
  /opt/engines/bin/engines_tool service auth start
    /opt/engines/bin/engines_tool service ftp stop
    /opt/engines/bin/engines_tool service ftp start
-#/opt/engines/bin/eservice start ftp 
-#/opt/engines/bin/eservice start auth 
-# restart ftp in case dont have access keys from auth
-#/opt/engines/bin/eservice stop ftp 
-#/opt/engines/bin/eservice start ftp 
+
 
 
 /opt/engines/bin/engines_tool containers check_and_act 

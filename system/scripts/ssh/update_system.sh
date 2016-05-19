@@ -1,8 +1,8 @@
 #!/bin/bash
 touch /opt/engines/run/system/flags/update_running
 
-sudo  -n /opt/engines/system/scripts/sudo/_update_base_os.sh
-#/opt/engines/bin/update_engines_system_software.sh
+sudo  -n /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh
+
 
 rm /opt/engines/run/system/flags/update_running
 touch /opt/engines/run/system/flags/update_run

@@ -28,7 +28,7 @@ class SystemConfig
   #  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   #  @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
 
-  #@@generate_ssh_private_keyfile = '/opt/engines/bin/new_engines_user_key.sh'
+
 
   @@SMTPHost = 'smtp.engines.internal'
   @@DBHost = 'mysql.engines.internal'

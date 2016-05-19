@@ -196,7 +196,7 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
+    result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
     return result[:stdout]
   rescue StandardError => e
       SystemUtils.log_exception(e)
@@ -205,7 +205,7 @@ class SystemStatus
 
   def self.is_engines_system_upto_date?
     if self.get_engines_system_release == 'current'
-      result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
+      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
       return true if result[:stdout].include?('Up to Date')
       return false
     else
