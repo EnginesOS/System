@@ -27,7 +27,7 @@ end
 # @return [Hash]
 #  :one :five :fithteen :running :idle
 get '/v0/system/metrics/load' do
-  load_info = SystemStatus.get_system_load_info
+  load_info = engines_api.get_system_load_info
   unless load_info.is_a?(EnginesError)
     status(202)
     return load_info.to_json

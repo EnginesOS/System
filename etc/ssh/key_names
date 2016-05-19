@@ -12,4 +12,7 @@ regen_private
 update_engines_system_software
 update_engines_console_password
 free_docker_lib_space
-
+network_stats
+memory_stats
+load_avgs
+disk_stats

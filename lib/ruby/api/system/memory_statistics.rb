@@ -90,41 +90,5 @@ module MemoryStatistics
     swp /= 2 unless swp == 0 
     (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
   end
-  def self.get_system_memory_info
-    ret_val = {}
-    proc_mem_info_file = File.open('/proc/meminfo')
-    proc_mem_info_file.each_line do |line|
-      values = line.split(' ')
-      case values[0]
-      when 'MemTotal:'
-        ret_val[:total] = values[1].to_i
-      when 'MemFree:'
-        ret_val[:free] = values[1].to_i
-      when 'Buffers:'
-        ret_val[:buffers] = values[1].to_i
-      when 'Cached:'
-        ret_val[:file_cache] = values[1].to_i
-      when 'Active:'
-        ret_val[:active] = values[1].to_i
-      when 'Inactive:'
-        ret_val[:inactive] = values[1].to_i
-      when 'SwapTotal:'
-        ret_val[:swap_total] = values[1].to_i
-      when 'SwapFree:'
-        ret_val[:swap_free] = values[1].to_i
-      end
-    end
-    return ret_val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    ret_val[:total] = e.to_s
-    ret_val[:free] = -1
-    ret_val[:active] = -1
-    ret_val[:inactive] = -1
-    ret_val[:file_cache] = -1
-    ret_val[:buffers] = -1
-    ret_val[:swap_total] = -1
-    ret_val[:swap_free] = -1
-    return ret_val
-  end
+ 
 end
