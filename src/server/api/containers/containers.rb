@@ -14,13 +14,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     has_data = true
 
     parser = Yajl::Parser.new
-      
+    timer = nil
     while has_data == true
       begin
         require "timeout"
-        timer =  EventMachine::PeriodicTimer.new(20) { out << "\n" }
+        timer =  EventMachine::PeriodicTimer.new(20) { out << "\n" } if timer.nil?
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
+        timer = nil
         # jason_event = parser.parse(bytes)
         begin
           jason_event = JSON.parse(bytes)
