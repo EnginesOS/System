@@ -98,9 +98,11 @@ module EnginesServerHost
     return r
   end
 
-  def run_server_script(script_name , script_data=nil)
+  def run_server_script(script_name , script_data=false)
 
-    system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_management_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh')
+    cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_management_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
+
+    SystemUtils.execute_command(cmd, false, script_data)
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   rescue StandardError => e
     log_exception(e)
