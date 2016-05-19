@@ -18,7 +18,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     while has_data == true
       begin
         require "timeout"
-        timer =  EventMachine::PeriodicTimer.new(20) { out << "\0" }
+        timer =  EventMachine::PeriodicTimer.new(20) { out << "\n" }
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         # jason_event = parser.parse(bytes)
