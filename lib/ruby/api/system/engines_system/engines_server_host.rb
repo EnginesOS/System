@@ -83,7 +83,7 @@ module EnginesServerHost
     SystemUtils.log_exception(e)
   end
 
-  def get_net_statistics
+  def get_network_statistics
     stats = run_server_script('network_stats')[:stdout]
     lines = stats.split("\n")
     r = {}
