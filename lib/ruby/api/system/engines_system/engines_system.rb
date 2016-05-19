@@ -40,6 +40,10 @@ class SystemApi < ErrorsApi
   include ContainerChangeMonitor
   require_relative 'container_checks.rb'
   include ContainerChecks
+  
+  require_relative 'engines_server_host.rb'
+  include EnginesServerHost
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
@@ -93,25 +97,5 @@ def get_services_status
         return result
    end
 
-  def system_image_free_space
-    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/free_docker_lib_space.sh')
-    return -1 if result[:result] != 0
-    return result[:stdout].to_i
-  rescue StandardError => e
-    log_exception(e)
-    return -1
-  end
-
-  def restart_mgmt
-    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh') }
-    # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    return true if res.status == 'run'
-    return false
-  end
-
-  def api_shutdown(reason)
-     log_error_mesg("Shutdown Due to:" + reason.to_s)
-    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/halt_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/halt_system.sh') }
-  end
+  
 end

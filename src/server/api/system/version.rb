@@ -1,7 +1,7 @@
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
 # @!group System Version
-
+#
 # @method get_system_version_release
 # @overload get '/v0/system/version/release'
 #
@@ -19,7 +19,7 @@ end
 
 # @method get_system_version_api
 # @overload get '/v0/system/version/api'
-#
+# api version 
 # @return [String]
 #
 
@@ -52,7 +52,7 @@ end
 # @overload get '/v0/system/version/system'
 #
 # @return [String]
-# system version number
+# system version 
 get '/v0/system/version/system' do
   system = engines_api.system_version
   unless system.is_a?(EnginesError)
@@ -82,3 +82,4 @@ get '/v0/system/version/base_os' do
   end
 end
 
+# @!endgroup

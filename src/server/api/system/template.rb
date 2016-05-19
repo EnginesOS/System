@@ -1,5 +1,12 @@
-#/system/template/env P
 
+# @!group System Template
+
+# @method resolve_template
+# @overload post '/v0/system/template'
+# Resolve Template string 
+#  :template_string 
+# 
+# @return [String]
 post '/v0/system/template' do
  # engine = get_engine(params[:engine_name])
   cparams =  Utils::Params.assemble_params(params, [],  :string) 
@@ -9,3 +16,4 @@ post '/v0/system/template' do
   resolved_string.to_json
 
 end
+# @!endgroup

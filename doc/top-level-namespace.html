@@ -102,6 +102,64 @@
 
   
     <h2>
+      System Status
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_status-instance_method" title="#get (instance method)">- (hash) <strong>get</strong>(&#39;/v0/system/status&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>:is_rebooting :is_base_system_updating :is_engines_system_updating
+:needs_reboot.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_status_first_run-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>return true|false.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
       System Version
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -125,7 +183,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>api version.</p>
+</div></span>
   
 </li>
 
@@ -221,7 +281,230 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>system version number.</p>
+<p>system version.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      System Metrics
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_metrics_disk-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>NOT YET.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_metrics_load-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return system load   :one is the one minute load average   :five is the
+five minute load average   :fithteen is the fithteen minute load average  
+:running is the number of preocesses running   :idle is the number of idle
+processes.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_metrics_memory-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return System Memory usage  values are integers and in bytes.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_metrics_memory_statistics-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return memory statistics for all containers  services and applications are
+[Hash]s   container_name::current, :limit.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      System Template
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#resolve_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/system/template&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Resolve Template string   :template_string.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      System Reserved
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_reserved_engine_names-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of taken  and reserved engine_names.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_reserved_hostnames-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of taken fqdn hostnames.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_system_reserved_port-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of integers.</p>
 </div></span>
   
 </li>
@@ -402,57 +685,6 @@ to client  stream is in the format
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#set_engine_network_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Set the network properties for :engine_name for params  :host_name
-:domain_name :protocol :protocol is https_only|http_only|http_and_https.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#set_engine_runtime_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Set the runtime properties for :engine_name for params  :memory
-:environment_variables  :environment_variables to be a Hash[env_name =&gt;
-env_value,].</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
     <h2>
@@ -588,6 +820,66 @@ configured services.</p>
     <span class="summary_desc"><div class='inline'>
 <p>Resolve Template string  for params  :template_string  for service
 :service_name.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      System Properties
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#set_engine_network_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Set the network properties for :engine_name for params  :host_name
+:domain_name :protocol :protocol is https_only|http_only|http_and_https.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#set_engine_runtime_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Set the runtime properties for :engine_name for params  :memory
+:environment_variables  :environment_variables to be a Hash[env_name =&gt;
+env_value,].</p>
 </div></span>
   
 </li>
@@ -1080,6 +1372,530 @@ configured services</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_system_metrics_disk-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>NOT YET</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:device :mount :size :used :free</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67
+68
+69
+70</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/metrics.rb', line 62</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/metrics/disks</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_disk_statistics'>disk_statistics</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_disk_statistics'>get_disk_statistics</span>
+  <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_disk_statistics'>disk_statistics</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_disk_statistics'>disk_statistics</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_disk_statistics'>disk_statistics</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_metrics_load-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return system load</p>
+
+<pre class="code ruby"><code class="ruby">:one is the one minute load average
+:five is the five minute load average
+:fithteen is the fithteen minute load average
+:running is the number of preocesses running
+:idle is the number of idle processes</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:one :five :fithteen :running :idle</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31
+32
+33
+34
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/metrics.rb', line 29</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/metrics/load</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_load_info'>load_info</span> <span class='op'>=</span> <span class='const'>SystemStatus</span><span class='period'>.</span><span class='id identifier rubyid_get_system_load_info'>get_system_load_info</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_load_info'>load_info</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_load_info'>load_info</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_load_info'>load_info</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_metrics_memory-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return System Memory usage</p>
+
+<pre class="code ruby"><code class="ruby">values are integers and in bytes</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:total :free :buffers :file_cache :active :inactive :swap_total :swap_free</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/metrics.rb', line 9</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/metrics/memory</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_memory_info'>memory_info</span> <span class='op'>=</span> <span class='const'>MemoryStatistics</span><span class='period'>.</span><span class='id identifier rubyid_get_system_memory_info'>get_system_memory_info</span> <span class='comment'>#engines_api.get_system_memory_info
+</span>  <span class='kw'>unless</span> <span class='id identifier rubyid_memory_info'>memory_info</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_memory_info'>memory_info</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_memory_info'>memory_info</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_metrics_memory_statistics-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return memory statistics for all containers</p>
+
+<pre class="code ruby"><code class="ruby">services and applications are [Hash]s 
+container_name:{:maximum, :current, :limit}</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:containers {:applications, :services }</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/metrics.rb', line 47</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/metrics/memory/statistics</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_memory_statistics'>memory_statistics</span> <span class='op'>=</span> <span class='const'>MemoryStatistics</span><span class='period'>.</span><span class='id identifier rubyid_total_memory_statistics'>total_memory_statistics</span><span class='lparen'>(</span><span class='id identifier rubyid_engines_api'>engines_api</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_memory_statistics'>memory_statistics</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_memory_statistics'>memory_statistics</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_memory_statistics'>memory_statistics</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_reserved_engine_names-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of taken  and reserved engine_names</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of taken  and reserved engine_names</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/reserved.rb', line 40</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/reserved/engine_names</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine_names'>engine_names</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_reserved_engine_names'>reserved_engine_names</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_engine_names'>engine_names</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_engine_names'>engine_names</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine_names'>engine_names</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_reserved_hostnames-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of taken fqdn hostnames</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of taken fqdn hostnames</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/reserved.rb', line 24</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/reserved/hostnames</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_reserved_hostnames'>reserved_hostnames</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_taken_hostnames'>taken_hostnames</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_reserved_hostnames'>reserved_hostnames</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_reserved_hostnames'>reserved_hostnames</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_reserved_hostnames'>reserved_hostnames</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_reserved_port-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of integers</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of integers</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/reserved.rb', line 9</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/reserved/ports</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_reserved_ports'>reserved_ports</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_reserved_ports'>reserved_ports</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_reserved_ports'>reserved_ports</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_reserved_ports'>reserved_ports</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_reserved_ports'>reserved_ports</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_system_services-instance_method">
   
     - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/services/system&#39;) 
@@ -1146,6 +1962,143 @@ configured services</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_system_status-instance_method">
+  
+    - (<tt>hash</tt>) <strong>get</strong>(&#39;/v0/system/status&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns :is_rebooting :is_base_system_updating :is_engines_system_updating
+:needs_reboot</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:is_rebooting :is_base_system_updating :is_engines_system_updating
+:needs_reboot</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/status.rb', line 20</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/status</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>=</span> <span class='const'>SystemStatus</span><span class='period'>.</span><span class='id identifier rubyid_system_status'>system_status</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_status'>status</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_status'>status</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_status'>status</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_system_status_first_run-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>return true|false</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/status.rb', line 8</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/status/first_run_required</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_first_run_required'>first_run_required</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_first_run_required?'>first_run_required?</span>
+  <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_first_run_required'>first_run_required</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span> <span class='comment'># no checky as true or false
+</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_system_version_api-instance_method">
   
     - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/api&#39;) 
@@ -1157,6 +2110,8 @@ configured services</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>api version</p>
+
 
   </div>
 </div>
@@ -1441,7 +2396,7 @@ configured services</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>system version number</p>
+<p>system version</p>
 
 
   </div>
@@ -1637,6 +2592,77 @@ configured services</p>
   <span class='id identifier rubyid_resolved_string'>resolved_string</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_resolved_engine_string'>get_resolved_engine_string</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:template_string</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="resolve_template-instance_method">
+  
+    - (<tt>String</tt>) <strong>post</strong>(&#39;/v0/system/template&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Resolve Template string</p>
+
+<pre class="code ruby"><code class="ruby"><span class='symbol'>:template_string</span>
+</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/template.rb', line 10</span>
+
+<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/template</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+ <span class='comment'># engine = get_engine(params[:engine_name])
+</span>  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:string</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_resolved_string'>resolved_string</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_resolved_string'>get_resolved_string</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:string</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2042,7 +3068,7 @@ configured services</p>
 </div>
 
     <div id="footer">
-  Generated on Thu May 19 10:18:16 2016 by
+  Generated on Thu May 19 11:03:43 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
