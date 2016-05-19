@@ -19,5 +19,7 @@ module PublicApiSystemMetrics
     @system_api.get_disk_statistics
   end
  
-  
+  def get_network_statistics
+     @system_api.get_network_statistics
+   end
 end
