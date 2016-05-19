@@ -7,7 +7,7 @@
 # @return [Hash]
 #  :total :free :buffers :file_cache :active :inactive :swap_total :swap_free
 get '/v0/system/metrics/memory' do
-  memory_info = MemoryStatistics.get_system_memory_info #engines_api.get_system_memory_info
+  memory_info =  engines_api.get_system_memory_info #engines_api.get_system_memory_info
   unless memory_info.is_a?(EnginesError)
     status(202)
     return memory_info.to_json
