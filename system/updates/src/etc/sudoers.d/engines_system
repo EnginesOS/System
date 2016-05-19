@@ -1,0 +1,5 @@
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_apt-get_update.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_base_os.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/restart_system.sh
+engines ALL = (root) NOPASSWD: /opt/engines/scripts/_halt_system.sh
+#NEW
