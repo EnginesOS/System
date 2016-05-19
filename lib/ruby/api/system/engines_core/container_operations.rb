@@ -5,7 +5,7 @@ module ContainerOperations
   end
 
   def image_exist?(container_name)
-    test_docker_api_result(@docker_api.image_exist?(container_name))
+    @docker_api.image_exist?(container_name)
   rescue StandardError => e
     log_exception(e)
   end

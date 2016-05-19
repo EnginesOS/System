@@ -4,7 +4,7 @@ module ServiceOperations
   def signal_service_process(pid, sig, name)
     clear_error
     container = loadManagedService(name)
-    test_docker_api_result(@docker_api.signal_container_process(pid, sig, container))
+    @docker_api.signal_container_process(pid, sig, container)
   end
 
   def force_reregister_attached_service(service_query)
