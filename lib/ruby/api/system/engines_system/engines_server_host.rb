@@ -1,7 +1,7 @@
 module EnginesServerHost
   
   def system_image_free_space
-      result =   run_server_script('free_docker_lib_space.sh')
+      result =   run_server_script('free_docker_lib_space')
       return -1 if result[:result] != 0
       return result[:stdout].to_i
     rescue StandardError => e
@@ -29,8 +29,7 @@ module EnginesServerHost
       #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh') 
       rescue StandardError => e
            log_exception(e)
-           return -1
-      
+           return -1      
     end
     
 end

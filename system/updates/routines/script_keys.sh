@@ -51,6 +51,10 @@ keys=""
 
 	for key in $keys
 		do
+			if test -f $key
+			  then
+	 			rm -f $key $key.pub
+	 		  fi
 		  ssh-keygen -q -N "" -f $key
 	      cat $key.pub | awk '{ print $1 " " $2}' >$key.p
 	      mv  $key.p $key.pub
