@@ -23,7 +23,7 @@ module EnginesServerHost
 
   def get_system_memory_info
     ret_val = {}
-    proc_mem_info = run_server_script('memory_stats')
+    proc_mem_info = run_server_script('memory_stats')[:stdout]
     proc_mem_info.split("\n").each do |line|
       values = line.split(' ')
       case values[0]
@@ -61,7 +61,7 @@ module EnginesServerHost
 
   def get_system_load_info
     ret_val = {}
-    loadavg_info = run_server_script('load_avgs')
+    loadavg_info = run_server_script('load_avgs')[:stdout]
 
     values = loadavg_info.split(' ')
     ret_val[:one] = values[0]
@@ -84,7 +84,7 @@ module EnginesServerHost
   end
 
   def get_net_statistics
-    stats = run_server_script('network_stats')
+    stats = run_server_script('network_stats')[:stdout]
     lines = stats.split("\n")
     r = {}
     lines.each do
