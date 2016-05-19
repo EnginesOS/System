@@ -21,7 +21,7 @@ do
 	 		  fi
 	 		  
 				create_mgmt_script_key  $script_name 
-
+echo create_mgmt_script_key  $script_name 
 		done 
 		
 if test -f ~/.ssh/authorized_keys.system
