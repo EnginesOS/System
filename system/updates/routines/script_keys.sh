@@ -17,7 +17,7 @@ for script_name in `cat /opt/engines/etc/ssh/key_names`
 do			
 		if test -f ~/.ssh/mgmt/${script_name}
 			  then
-	 			rm -f ~/.ssh/mgmt/${script_name} ~/.ssh/mgmt/${script_name}.pub
+	 			rm -r ~/.ssh/mgmt/${script_name} ~/.ssh/mgmt/${script_name}.pub
 	 		  fi
 	 		  
 				create_mgmt_script_key  $script_name 
