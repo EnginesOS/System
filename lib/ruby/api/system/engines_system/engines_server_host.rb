@@ -98,6 +98,24 @@ module EnginesServerHost
     return r
   end
 
+def get_disk_statistics
+  stats = run_server_script('disk_stats')[:stdout]
+  lines = stats.split("\n")
+  r = {}
+  lines.each do |line|
+    values = line.split(' ')
+    if values.is_a?(Array)     
+      r[values[0]] = {}
+      r[values[0]][:type] = values[1]
+      r[values[0]][:blocks] = values[2]
+      r[values[0]][:used] = values[3]
+      r[values[0]][:available] = values[4]
+      r[values[0]][:usage] = values[5]
+      r[values[0]][:mount] = values[6]
+    end
+  end
+  return r
+end
   def run_server_script(script_name , script_data=false)
 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_management_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
