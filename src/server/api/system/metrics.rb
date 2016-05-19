@@ -75,7 +75,7 @@ end
 # @return [Hash]
 #  :device :mount :size :used :free 
 get '/v0/system/metrics/network' do
-  disk_statistics = engines_api.get_network_statistics
+  net_statistics = engines_api.get_network_statistics
   status(202)
   unless net_statistics.is_a?(EnginesError)
     return net_statistics.to_json
