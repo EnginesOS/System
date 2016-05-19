@@ -66,8 +66,8 @@ class EnginesCore < ErrorsApi
   require_relative 'system_operations.rb'
   include SystemOperations
 
-  require_relative 'result_checks.rb'
-  include ResultChecks
+#  require_relative 'result_checks.rb'
+#  include ResultChecks
 
   require_relative 'domain_operations.rb'
   include DomainOperations
@@ -202,7 +202,7 @@ class EnginesCore < ErrorsApi
   end
 
   def save_build_report(container,build_report)
-    test_system_api_result(@system_api.save_build_report(container,build_report))
+    @system_api.save_build_report(container,build_report)
   end
 
   def container_memory_stats(engine)

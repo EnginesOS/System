@@ -89,7 +89,7 @@ module AvailableServices
   end
 
   def list_attached_services_for(objectName, identifier)
-    check_sm_result(service_manager.list_attached_services_for(objectName, identifier))
+    service_manager.list_attached_services_for(objectName, identifier)
   rescue StandardError => e
     log_exception(e)
   end
@@ -107,7 +107,7 @@ module AvailableServices
   end
 
   def load_software_service(params)
-    service_container = check_sm_result(ServiceDefinitions.get_software_service_container_name(params))
+    service_container = ServiceDefinitions.get_software_service_container_name(params)
     params[:service_container_name] = service_container
     loadManagedService(service_container)
   rescue StandardError => e

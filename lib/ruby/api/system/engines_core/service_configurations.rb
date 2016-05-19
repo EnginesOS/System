@@ -23,7 +23,7 @@ module ServiceConfigurations
     # configurator = ConfigurationsApi.new(self)
     r = ''
     return r unless (r = update_configuration_on_service(service_param))
-    return  check_sm_result(service_manager.update_service_configuration(service_param))
+    return  service_manager.update_service_configuration(service_param)
 
   end
 

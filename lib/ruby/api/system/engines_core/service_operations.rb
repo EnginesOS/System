@@ -10,19 +10,19 @@ module ServiceOperations
   def force_reregister_attached_service(service_query)
     r = ''
     return r unless (r = check_service_hash(service_query))
-    check_sm_result(service_manager.force_reregister_attached_service(service_query))
+    service_manager.force_reregister_attached_service(service_query)
   end
 
   def force_deregister_attached_service(service_query)
     r = ''
     return r unless (r = check_service_hash(service_query))
-    check_sm_result(service_manager.force_deregister_attached_service(service_query))
+    service_manager.force_deregister_attached_service(service_query)
   end
 
   def force_register_attached_service(service_query)
     r = ''
     return r unless (r = check_service_hash(service_query))
-    check_sm_result(service_manager.force_register_attached_service(service_query))
+    service_manager.force_register_attached_service(service_query)
   end
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
@@ -48,25 +48,25 @@ module ServiceOperations
     r = ''
    return r unless (r = check_service_hash(service_hash))
     SystemDebug.debug(SystemDebug.services,:dettach_service, service_hash)
-    check_sm_result(service_manager.delete_service(service_hash))
+    service_manager.delete_service(service_hash)
   rescue StandardError => e
     log_exception(e)
   end
 
   # @ returns  complete service hash matching PNS,SP,PE,SH
   def retrieve_service_hash(query_hash)
-    check_sm_result(service_manager.find_engine_service_hash(query_hash))
+    service_manager.find_engine_service_hash(query_hash)
   end
 
   def list_providers_in_use
-    check_sm_result(service_manager.list_providers_in_use)
+    service_manager.list_providers_in_use
   end
 
   #returns
   def find_service_consumers(service_query)
     r = ''
     return r unless (r = check_service_hash(service_query))
-    check_sm_result(service_manager.find_service_consumers(service_query))
+    service_manager.find_service_consumers(service_query)
   end
 
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
@@ -74,7 +74,7 @@ module ServiceOperations
     r = ''
     clear_error
     return r unless (r = check_service_hash(service_hash))
-    check_sm_result(service_manager.get_registered_against_service(service_hash))
+    service_manager.get_registered_against_service(service_hash)
   end
 
   def update_attached_service(service_hash)
@@ -85,7 +85,7 @@ module ServiceOperations
     ahash = service_manager.find_engine_service_hash(service_hash)
        return log_error_mesg("Cannot update a shared service",service_hash) if ahash[:shared] == true
          
-    check_sm_result(service_manager.update_attached_service(service_hash))
+    service_manager.update_attached_service(service_hash)
   end
 
   protected
@@ -107,7 +107,7 @@ module ServiceOperations
               engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
             end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
-    return  check_sm_result(service_manager.create_and_register_service(service_hash))
+    return  service_manager.create_and_register_service(service_hash)
 
   end
 

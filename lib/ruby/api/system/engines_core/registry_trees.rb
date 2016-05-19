@@ -5,20 +5,20 @@ module RegistryTrees
   end
 
   def managed_service_tree
-    check_sm_result(service_manager.managed_service_tree)
+    service_manager.managed_service_tree
   end
 
   def get_managed_engine_tree
-    check_sm_result(service_manager.get_managed_engine_tree)
+    service_manager.get_managed_engine_tree
   end
 
   def get_configurations_tree
-    check_sm_result(service_manager.service_configurations_tree)
+    service_manager.service_configurations_tree
   end
 
   def get_shares_tree
     p :get_shares_tree
     p service_manager.shares_tree
-    check_sm_result(service_manager.shares_tree)
+    service_manager.shares_tree
   end
 end

@@ -54,9 +54,9 @@ module ContainerOperations
   end
 
   def get_container_network_metrics(engine_name)
-    engine = test_system_api_result(@system_api.loadManagedEngine(engine_name))
+    engine = @system_api.loadManagedEngine(engine_name)
     return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
-    engine = test_system_api_result(@system_api.loadManagedService(engine_name))
+    engine = @system_api.loadManagedService(engine_name)
     return engine.get_container_network_metrics if engine.is_a?(ManagedService)
     log_error_mesg("Failed to load network stats",engine_name)
   end
