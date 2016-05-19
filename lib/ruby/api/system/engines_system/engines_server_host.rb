@@ -87,7 +87,7 @@ module EnginesServerHost
     stats = run_server_script('network_stats')[:stdout]
     lines = stats.split("\n")
     r = {}
-    lines.each do
+    lines.each do |line|
       values = line.split(' ')
       if values.is_a?(Array)
         r[values[0]] = {}
