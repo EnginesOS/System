@@ -170,7 +170,7 @@ def get_json_stream(path)
     http.request(req) { |resp|
       resp.read_body do |chunk|
         begin
-          next if chunk == '' || chunk == "\n"
+          next if chunk == "\0" || chunk == "\n"
           hash = parser.parse(chunk) do |hash|
             p hash
           end
