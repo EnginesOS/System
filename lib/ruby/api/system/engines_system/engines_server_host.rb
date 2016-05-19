@@ -24,7 +24,7 @@ module EnginesServerHost
   def get_system_memory_info
     ret_val = {}
     proc_mem_info = run_server_script('memory_stats')
-    proc_mem_info_file.split("\n").each do |line|
+    proc_mem_info.split("\n").each do |line|
       values = line.split(' ')
       case values[0]
       when 'MemTotal:'
