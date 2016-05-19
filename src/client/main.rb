@@ -176,6 +176,8 @@ def get_json_stream(path)
           end
           #dont panic on bad json as it is the \0 keep alive 
         rescue StandardError => e 
+          p e
+          p chunk
           next
         end
       end
