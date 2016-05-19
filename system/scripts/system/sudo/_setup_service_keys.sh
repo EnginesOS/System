@@ -13,7 +13,7 @@ for key in $*
  do 
     rm /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	ssh-keygen -f /opt/engines/etc/ssh/keys/services/$service/$key -N ''
-	uid=`/opt/engines/scripts/get_service_uid.sh $service`
+	uid=`/opt/engines/system/scripts/system/get_service_uid.sh $service`
 	chown $uid /opt/engines/etc/ssh/keys/services/$service/{$key,$key.pub}
 	chmod og-rwx /opt/engines/etc/ssh/keys/services/$service/$key
 	pubkey=`cat /opt/engines/etc/ssh/keys/services/$service/$key.pub`
