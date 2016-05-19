@@ -176,7 +176,7 @@ class SystemStatus
     values = loadavg_info.split(' ')
     ret_val[:one] = values[0]
     ret_val[:five] = values[1]
-    ret_val[:fithteen] = values[2]
+    ret_val[:fifteen] = values[2]
     run_idle = values[3].split('/')
     ret_val[:running] = run_idle[0]
     ret_val[:idle] = run_idle[1]
@@ -185,7 +185,7 @@ class SystemStatus
     SystemUtils.log_exception(e)
     ret_val[:one] = -1
     ret_val[:five] = -1
-    ret_val[:fithteen] = -1
+    ret_val[:fifteen] = -1
     ret_val[:running] = -1
     ret_val[:idle] = -1
     return ret_val
