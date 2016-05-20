@@ -105,7 +105,9 @@ begin
    
     return service
   end
-
+  def  downcase_keys(hash)
+    hash
+  end
 
 require_relative 'api/routes.rb'
   
