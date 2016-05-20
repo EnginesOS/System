@@ -106,7 +106,8 @@ begin
     return service
   end
   def  downcase_keys(hash)
-    hash
+    return hash unless hash.is_a? Hash
+       hash.map{|k,v| [k.downcase, downcase_keys(v)] }.to_h 
   end
 
 require_relative 'api/routes.rb'
