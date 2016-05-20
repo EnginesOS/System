@@ -45,7 +45,24 @@ class DockerEventWatcher  < ErrorsApi
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
       return e
     end
-
+    
+def state_from_status(status)
+    case status
+    when 'stop'
+      return 'stopped'
+    when 'run'
+      return 'running'
+    when 'pause'
+      return 'paused'
+    when 'unpause'
+      return 'upaused'
+    when 'delete'
+      return 'nocontainer'
+    else
+      return status
+    end
+  end
+  
     def event_mask(event_hash)
       mask = 0
       if event_hash['Type'] = 'container'
@@ -137,20 +154,5 @@ class DockerEventWatcher  < ErrorsApi
 
   end
 
-  def state_from_status(status)
-    case status
-    when 'stop'
-      return 'stopped'
-    when 'run'
-      return 'running'
-    when 'pause'
-      return 'paused'
-    when 'unpause'
-      return 'upaused'
-    when 'delete'
-      return 'nocontainer'
-    else
-      return status
-    end
-  end
+  
 end
