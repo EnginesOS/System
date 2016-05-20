@@ -20,7 +20,7 @@ module EngineApiStatusFlags
 
   def is_startup_complete(container)
     clear_error
-    return test_system_api_result(@system_api.is_startup_complete(container))
+    return @system_api.is_startup_complete(container)
   rescue StandardError => e
     log_exception(e)
   end

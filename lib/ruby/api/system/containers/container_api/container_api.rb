@@ -5,8 +5,8 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_errors.rb'
   include EngineApiErrors
   
-  require_relative 'api_result_checks.rb'
-  include ApiResultChecks
+#  require_relative 'api_result_checks.rb'
+#  include ApiResultChecks
 
   require_relative 'container_api_docker_actions.rb'
   include ContainerApiDockerActions

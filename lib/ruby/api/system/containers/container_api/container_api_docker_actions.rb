@@ -12,12 +12,12 @@ module ContainerApiDockerActions
 
   def unpause_container(container)
     clear_error
-    test_docker_api_result(@docker_api.unpause_container(container))
+    @docker_api.unpause_container(container)
   end
 
   def pause_container(container)
     clear_error
-    test_docker_api_result(@docker_api.pause_container(container))
+    @docker_api.pause_container(container)
   end
 
   def image_exist?(container_name)
@@ -30,30 +30,30 @@ module ContainerApiDockerActions
 
   def inspect_container(container)
     clear_error
-    return  test_docker_api_result(@docker_api.inspect_container_by_name(container)) if container.container_id == -1
-    test_docker_api_result(@docker_api.inspect_container(container))
+    return  @docker_api.inspect_container_by_name(container) if container.container_id == -1
+    @docker_api.inspect_container(container)
     # @docker_api.test_inspect_container(container)
   end
 
   def stop_container(container)
     clear_error
-    test_docker_api_result(@docker_api.stop_container(container))
+    @docker_api.stop_container(container)
   end
 
   def ps_container(container)
-    test_docker_api_result(@docker_api.ps_container(container))
+    @docker_api.ps_container(container)
   end
 
   def logs_container(container, count)
     clear_error
-    test_docker_api_result(@docker_api.logs_container(container, count))
+    @docker_api.logs_container(container, count)
   end
 
   def start_container(container)
     clear_error
     return log_error_mesg("insuficient free memory to start",container) unless have_enough_ram?(container)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
-    test_docker_api_result(@docker_api.start_container(container))
+    @docker_api.start_container(container)
   end
 
   def image_exist?(container_name)

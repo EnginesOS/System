@@ -14,11 +14,11 @@ module EnginesApiSystem
   end
 
   def get_container_network_metrics(container)
-    test_system_api_result(@system_api.get_container_network_metrics(container.container_name))
+    @system_api.get_container_network_metrics(container.container_name)
   end
 
   def save_container(container)
-    test_system_api_result(@system_api.save_container(container))
+    @system_api.save_container(container)
   end
 
   def have_enough_ram?(container)
