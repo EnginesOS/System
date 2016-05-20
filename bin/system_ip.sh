@@ -2,7 +2,7 @@
 
 if test $# -eq 0
 then
-a="-1"
+a="-i"
 else
 a=$1
 fi
