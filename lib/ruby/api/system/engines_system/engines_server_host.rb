@@ -21,6 +21,14 @@ module EnginesServerHost
     res = Thread.new { run_server_script('halt_system') }
   end
 
+   def available_ram    
+     mem_stats = get_system_memory_info
+        swp = 0 
+        swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
+        swp /= 2 unless swp == 0 
+        (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
+   end
+   
   def get_system_memory_info
     ret_val = {}
     proc_mem_info = run_server_script('memory_stats')[:stdout]
