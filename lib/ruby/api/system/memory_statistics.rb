@@ -83,7 +83,7 @@ module MemoryStatistics
     return ret_val
   end
 
-  def self.avaiable_ram
+  def self.available_ram
     mem_stats = self.get_system_memory_info
     swp = 0 
     swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
