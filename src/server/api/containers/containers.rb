@@ -38,7 +38,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         sleep 0.21
         retry
       rescue EOFError
-        sleep 0.12
+        sleep 0.21
         retry
       rescue IOError
         has_data = false
