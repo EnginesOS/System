@@ -6,7 +6,7 @@ module EnginesApiSystem
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
-  
+
   def delete_engine(container)
     SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine,container)
     @system_api.delete_engine(container)
@@ -38,10 +38,10 @@ module EnginesApiSystem
     r = @docker_api.create_container(container)
     STDERR.puts(' DOCKER api CREATE ' + r.to_s)
     return r if r.is_a?(EnginesDockerError)
-    
+
     return true if ContainerStateFiles.create_container_dirs(container)
-   log_error_mesg('Failed to create state files', self)
-   
+    log_error_mesg('Failed to create state files', self)
+
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)
