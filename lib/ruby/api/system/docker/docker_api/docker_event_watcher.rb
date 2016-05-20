@@ -14,7 +14,7 @@ class DockerEventWatcher  < ErrorsApi
     @@container_pull     = 2048
     @@build_event = 4096
     @@container_attach    = 8192
-    
+
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
     # @@container_id
@@ -38,7 +38,7 @@ class DockerEventWatcher  < ErrorsApi
         hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
         hash['container_type'] = 'service'
       end
-
+      hash['state'] = state_from_status( hash['status'] )
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e
@@ -64,8 +64,8 @@ class DockerEventWatcher  < ErrorsApi
           mask |= @@container_commit
         elsif event_hash['status'] == 'pull'
           mask |= @@container_pull
-        elsif event_hash['status'] == 'delete'
-          mask |= @@container_delete
+          #        elsif event_hash['status'] == 'delete'
+          #          mask |= @@container_delete
         elsif event_hash['status'] == 'die'
           mask |= @@container_die
         elsif event_hash['status'] == 'kill'
@@ -83,9 +83,6 @@ class DockerEventWatcher  < ErrorsApi
 
       return mask
 
-      #type
-      #status
-      #action
 
     end
   end
@@ -140,4 +137,20 @@ class DockerEventWatcher  < ErrorsApi
 
   end
 
+  def state_from_status(status)
+    case status
+    when 'stop'
+      return 'stopped'
+    when 'run'
+      return 'running'
+    when 'pause'
+      return 'paused'
+    when 'unpause'
+      return 'upaused'
+    when 'delete'
+      return 'nocontainer'
+    else
+      return status
+    end
+  end
 end
