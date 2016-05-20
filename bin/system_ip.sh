@@ -1,4 +1,8 @@
 #!/bin/bash
+if test $# -eq 0
+then
+	$1='-1'
+fi
 if test $1 = '-i'
 	then
 		docker inspect system |grep  \"IPAddress\": | head -1 | awk '{print $2}' |sed "/\,/s///" |sed "/\"/s///g"
