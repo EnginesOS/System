@@ -75,7 +75,7 @@ get '/v0/system/version/base_os' do
   base_os = SystemUtils.get_os_release_data
 
   unless base_os.is_a?(EnginesError)
-    downcase_keys(base_os)
+    base_os =  downcase_keys(base_os)
     status(202)
     return base_os.to_json
   else
