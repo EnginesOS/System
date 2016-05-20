@@ -55,7 +55,7 @@ def state_from_status(status)
     when 'pause'
       return 'paused'
     when 'unpause'
-      return 'upaused'
+      return 'running'
     when 'delete'
       return 'nocontainer'
     else
