@@ -7,11 +7,7 @@ echo "Restarting"
 sleep 5
 docker stop system 
 
-#if test -f /opt/engines/system/updates/to_run/pre_start.sh
-# then
-#  /opt/engines/system/updates/to_run/pre_start.sh 
-#  sudo /opt/engines/scripts/_mv_update_script $?
-# fi
+
 
 docker stop registry
 docker start registry 

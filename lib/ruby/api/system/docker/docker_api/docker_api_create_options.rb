@@ -56,7 +56,7 @@ module DockerApiCreateOptions
 
   def get_dns_servers
     servers = []
-    servers.push( SystemStatus.get_management_ip)
+    servers.push( SystemStatus.get_base_host_ip)
     servers
   end
 

@@ -12,8 +12,8 @@ cd /opt/engines
 git pull
 
 
- cp /opt/engines/system/updates/src/etc/sudoers.d/engines /etc/sudoers.d/engines 
- chmod og-rw /etc/sudoers.d/engines 
+ cp /opt/engines/system/updates/src/etc/sudoers.d/* /etc/sudoers.d/ 
+ chmod og-rw /etc/sudoers.d/* 
 
 
 
