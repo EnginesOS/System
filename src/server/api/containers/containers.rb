@@ -5,7 +5,7 @@
 # Add listener to container events and write event-stream of events as json to client 
 # @return [text/event-stream]
 # stream is in the format 
-# {"status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
+# {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   stream :keep_open do |out|
