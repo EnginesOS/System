@@ -1,7 +1,7 @@
 #!/bin/bash
 if test $# -eq 0
 then
-	$1='-1'
+	1='-1'
 fi
 if test $1 = '-i'
 	then
