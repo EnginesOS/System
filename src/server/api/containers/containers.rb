@@ -18,7 +18,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     while has_data == true
       begin
         require "timeout"
-        timer =  EventMachine::PeriodicTimer.new(20) { out << "\n" } if timer.nil?
+        timer =  EventMachine::PeriodicTimer.new(5) { out << "\n" } if timer.nil?
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
