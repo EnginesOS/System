@@ -1,24 +1,26 @@
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_key_dir.sh
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_keys.sh
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_setup_service_dir.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/system/sudo/_setup_service_key_dir.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/system/sudo/_setup_service_keys.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/system/sudo/_setup_service_dir.sh
 
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_system_update.sh
-engines ALL = (root) NOPASSWD: /opt/engines/bin/check_engines_system_update_status.sh 
+
+
+
+#host system programs
 engines ALL = (root) NOPASSWD: /bin/hostname
 engines ALL = (root) NOPASSWD: /sbin/reboot
 
 
+#utils
 engines ALL = (root) NOPASSWD: /opt/engines/bin/set_service_provider.sh
 
-
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_update_engines_system_software.sh
-
-
+#Update engines system
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/update/sudo/_update_engines_system_software.sh
 
 
 
-engines ALL = (root) NOPASSWD: /opt/engines/scripts/_check_local-kv.sh
-dhcp ALL = (root) NOPASSWD: /opt/engines/scripts/refresh_local_hosted_domains.sh
+#startup
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/startup/sudo/_check_local-kv.sh
+dhcp ALL = (root) NOPASSWD: /opt/engines/system/scripts/refresh_local_hosted_domains.sh
 
 #Must have tailing empty line 
 

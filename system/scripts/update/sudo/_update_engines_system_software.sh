@@ -21,7 +21,7 @@ git pull
 . /opt/engines/system/updates/routines/script_keys.sh
 #refresh_mgmt_keys
 
-/opt/engines/system/scripts/update/sudo/finish_system_update.sh
+/opt/engines/system/scripts/update/sudo/admin_finish_engines_system_update.sh
 
 engines_updates=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
 if ! test -z "$engines_updates"
@@ -32,7 +32,7 @@ if ! test -z "$engines_updates"
  	    echo chown engines /opt/engines/system/updates/to_run/engines/$engine_update 
 	done
  fi
- su -l engines /opt/engines/system/scripts/update/finish_update.sh
+ su -l engines /opt/engines/system/scripts/update/finish_engines_system_update.sh
 
 
 exit 0

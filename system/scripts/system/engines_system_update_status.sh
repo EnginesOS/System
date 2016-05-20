@@ -30,4 +30,12 @@ cd /opt/engines
   	fi
  fi
 
-/opt/engines/bin/check_engines_system_update_status.sh
+
+		if test -f /opt/engines/run/system/flags/update_pending
+     			then 
+      				cat /opt/engines/run/system/flags/update_pending
+      				exit 127
+ 			else
+  				echo "System Up to Date"
+  				exit 0 
+  			fi

@@ -1,4 +1,5 @@
 #!/bin/bash
+#not a sudo script as such but call from a sudo script
 
 system_updates_dir=/opt/engines/system/updates/to_run/system
 
