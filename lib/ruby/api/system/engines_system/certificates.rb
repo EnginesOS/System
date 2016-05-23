@@ -29,6 +29,8 @@ module Certificates
 
     Dir.glob( SystemConfig.CertificatesDir + '/*.crt').each do |cert_file|
       p :cert
+      cert_file = File.basename(cert_file) 
+      cert_file.sub!(/\.crt/,'')
       p cert_file
       certs.push(cert_file)
     end
