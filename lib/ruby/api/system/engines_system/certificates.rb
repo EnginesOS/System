@@ -47,4 +47,11 @@ module Certificates
            log_exception(e)
 
   end
+    def get_system_ca
+      
+    certs_servivce = loadManagedService('cert_auth')
+    return certs_servivce if certs_servivce.is_a?(EnginesError)
+      certs_servivce.perform_action('system_ca',nil)
+    
+  end
 end

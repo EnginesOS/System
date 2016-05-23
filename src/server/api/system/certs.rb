@@ -13,7 +13,7 @@ get '/v0/system/cert/system_ca' do
 end
 # @method default_certificate
 # @overload get '/v0/system/cert/default'
-# @return
+# @return [String] PEM encoded Public certificate
 get '/v0/system/cert/default' do
   cert = engines_api.get_cert('engines')
   unless cert.is_a?(EnginesError)
@@ -24,7 +24,8 @@ get '/v0/system/cert/default' do
 end
 # @method list_certificate
 # @overload get '/v0/system/certs/'
-# @return
+# @return [Array] of certificate names
+# certificate name is the domain name / hostname the cert was created/uploaded against
 get '/v0/system/certs/' do
   certs = engines_api.list_certs
   return log_error('list certs', certs, params) if certs.is_a?(EnginesError)
@@ -44,7 +45,7 @@ delete '/v0/system/certs/:cert_name' do
 end
 # @method get certificate
 # @overload get '/v0/system/cert/:cert_name'
-# @return cert.to_json|EnginesError.to_json
+# @return [String] PEM encoded Public certificate
 get '/v0/system/cert/:cert_name' do
   if params[:cert_name] == 'system_ca'
     cert = engines_api.get_system_ca
@@ -57,8 +58,11 @@ get '/v0/system/cert/:cert_name' do
     return log_error(request, cert)
   end
 end
-# @method set_default_certificate
+# @method upload_default_certificate
 # @overload post '/v0/system/certs/default'
+# import certificate and key in PEM for domain_name and set as default
+#  :domain_name :certificate :key
+#  optional :password
 # @return true.to_json|EnginesError.to_json
 post '/v0/system/certs/default' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
@@ -72,8 +76,11 @@ post '/v0/system/certs/default' do
   log_error(request, r, cparams)
   return status(404)
 end
-# @method add_certificate 
+# @method upload_certificate 
 # @overload post '/v0/system/certs/'
+# import certificate and key in PEM for domain_name
+#  :domain_name :certificate :key
+#  optional :password
 # @return true.to_json|EnginesError.to_json
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)

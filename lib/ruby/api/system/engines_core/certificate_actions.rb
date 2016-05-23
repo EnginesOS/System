@@ -1,12 +1,13 @@
 module CertificateActions
-  def get_system_ca
-    return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)
-    File.read(SystemConfig.EnginesInternalCA)
-    
-  rescue StandardError => e
-    return log_exception(e,'Failed to load CA')
-
-  end
+#  def get_system_ca
+#    @system_api.get_system_ca
+##    return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)
+##    File.read(SystemConfig.EnginesInternalCA)
+##    
+##  rescue StandardError => e
+##    return log_exception(e,'Failed to load CA')
+#
+#  end
 
   def upload_ssl_certificate(params)
     return log_error_mesg('invalid parameter', 'upload Cert ', params.to_s) unless params.is_a?(Hash)
