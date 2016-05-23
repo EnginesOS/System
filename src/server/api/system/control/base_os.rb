@@ -1,6 +1,6 @@
-# @!group System Control Base OS 
+# @!group  /system/control/base_os/
 
-# @method restart base os
+# @method restart_base_os
 # @overload get '/v0/system/control/base_os/restart'
 #  Restart the base OS
 # @return true.to_json|EnginesError.to_json
@@ -13,7 +13,7 @@ get '/v0/system/control/base_os/restart' do
     return log_error(request, restart)
   end
 end
-# @method shutdown base os
+# @method shutdown_base_os
 # @overload post '/v0/system/control/base_os/shutdown'
 # shutdown the base OS with params
 #  :reason
@@ -29,7 +29,7 @@ post '/v0/system/control/base_os/shutdown' do
     return log_error(request, r, cparams)
   end
 end
-# @method update base os
+# @method update_base_os
 # @overload get '/v0/system/control/base_os/update'
 # update the base OS
 # @return true.to_json|EnginesError.to_json

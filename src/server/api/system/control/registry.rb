@@ -1,5 +1,8 @@
-#/system/control/regsitry/restart
-
+# @!group /system/control/registry/
+# @method restart_registry
+# @overload get '/v0/system/control/registry/restart'
+# restart the registry container
+# @return true.to_json|EnginesError.to_json
 get '/v0/system/control/registry/restart' do
   restart_registry = engines_api.force_registry_restart
   unless restart_registry.is_a?(EnginesError)
@@ -17,3 +20,4 @@ end
 #      return log_error('restart_registry')
 #    end
 #end
+# @!endgroup
