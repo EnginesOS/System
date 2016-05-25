@@ -205,8 +205,8 @@ class PublicApi < ErrorsApi
   #  SystemUtils.get_os_release_data
   include PublicApiSystemVersions
 
-  require_relative 'service_manager/service_definitions.rb'
-  include ServiceDefinitions
+  require_relative 'service_manager/public_api_service_definitions.rb'
+  include PublicApiServiceDefinitions
 
   require_relative 'engines_public_api_errors.rb'
   include EnginesPublicApiErrors

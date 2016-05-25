@@ -1,4 +1,4 @@
-module ServiceDefinitions
+module PublicApiServiceDefinitions
   
   def get_service_definition(params)
     
