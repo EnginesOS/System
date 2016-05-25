@@ -10,10 +10,10 @@ end
 end
 
 get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
-  ps_params =  params
-  ps_params[:type_path] = params['splat'][0] if params.key('splat') && params['splat'].is_a?(Array)
-   
-  cparams =  Utils::Params.assemble_params(ps_params, [:publisher_namespace, :type_path], []) 
+p params
+  params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
+p params  
+  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path], []) 
   r = engines_api.retrieve_orphans(cparams)
 unless r.is_a?(EnginesError)
   return r.to_json
