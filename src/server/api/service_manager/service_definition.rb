@@ -6,7 +6,7 @@
 # @return json|EnginesError.to_json
 
 get '/v0/service_manager/service_definitions/:provider/:type_path' do
-  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace,:type_path], []) 
+  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path], []) 
     p cparams 
     r = engines_api.get_service_definition(cparams)
   unless r.is_a?(EnginesError)
