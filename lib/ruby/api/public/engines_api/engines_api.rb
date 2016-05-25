@@ -214,7 +214,7 @@ class PublicApi < ErrorsApi
   require_relative 'engine_api_events.rb'
   include EngineApiEvents
   
-  require_relative 'public_api_orphans.rb'
+  require_relative 'service_manager/public_api_orphans.rb'
   include PublicApiOrphans
   
 end
