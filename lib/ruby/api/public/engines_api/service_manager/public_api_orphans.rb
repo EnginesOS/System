@@ -1,7 +1,7 @@
 module PublicApiOrphans
   
   def retrieve_orphans(service_hash)
-    @core_api.match_orphan_service(service_hash)    
+    @core_api.get_orphaned_services(service_hash)    
   end
   
   def retrieve_orphan(service_hash)
