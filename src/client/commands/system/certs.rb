@@ -4,6 +4,11 @@ if ARGV.count == 2
 end
 
 case ARGV[2]
+when 'system_ca'
+perform_get
+when 'view'
+perform_get
+
 
 when 'default'
   @route += '/default'

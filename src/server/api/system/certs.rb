@@ -1,4 +1,19 @@
-# @!group /system/certs/
+# @!group /system/cert/
+# @method get certificate
+# @overload get '/v0/system/cert/:cert_name'
+# @return [String] PEM encoded Public certificate
+get '/v0/system/cert/:cert_name' do
+  if params[:cert_name] == 'system_ca'
+    cert = engines_api.get_system_ca
+  else
+    cert = engines_api.get_cert(params[:cert_name])
+  end
+  unless cert.is_a?(EnginesError)
+    return cert.to_json
+  else
+    return log_error(request, cert)
+  end
+end
 # @method system_ca
 # @overload get '/v0/system/cert/system_ca'
 # @return cert.to_json|EnginesError.to_json
@@ -22,6 +37,7 @@ get '/v0/system/cert/default' do
     return log_error(request, cert)
   end
 end
+# @!group /system/certs/
 # @method list_certificate
 # @overload get '/v0/system/certs/'
 # @return [Array] of certificate names
@@ -43,21 +59,7 @@ delete '/v0/system/certs/:cert_name' do
     return log_error(request, r)
   end
 end
-# @method get certificate
-# @overload get '/v0/system/cert/:cert_name'
-# @return [String] PEM encoded Public certificate
-get '/v0/system/cert/:cert_name' do
-  if params[:cert_name] == 'system_ca'
-    cert = engines_api.get_system_ca
-  else
-    cert = engines_api.get_cert(params[:cert_name])
-  end
-  unless cert.is_a?(EnginesError)
-    return cert.to_json
-  else
-    return log_error(request, cert)
-  end
-end
+
 # @method upload_default_certificate
 # @overload post '/v0/system/certs/default'
 # import certificate and key in PEM for domain_name and set as default

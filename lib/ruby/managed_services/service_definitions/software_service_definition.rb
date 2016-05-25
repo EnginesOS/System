@@ -102,23 +102,22 @@ end
 
   def SoftwareServiceDefinition.find(service_type,provider)
     if service_type == nil  || provider == nil
-      return nil
+      return  SystemUtils.log_error_mesg('missing params:' +  service_type.to_s  + '/' + service_type.to_s )
     end
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
-        SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
-        return nil
+        return SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
+
       end
       return service_def #.to_h
     end
-    SystemUtils.log_error_mesg('No Dir',dir)
-    return nil
+    return SystemUtils.log_error_mesg('No Dir',dir)   
   rescue Exception=>e
     SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
     SystemUtils.log_exception(e)
-    return nil
+   
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)
