@@ -6,4 +6,9 @@ when 'orphans'
 require_relative 'orphan_services.rb'
 when 'orphan'
 require_relative 'orphan_service.rb'
+
+when 'persistent_services'
+require_relative 'persistent_services.rb'
+when 'persistent_service'  
+require_relative 'persistent_service.rb'
 end
