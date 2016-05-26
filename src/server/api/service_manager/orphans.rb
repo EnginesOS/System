@@ -1,4 +1,5 @@
 # @!group /service_manager/orphan_services/
+
 # @method get_orphan_services
 # @overload get '/v0/service_manager/orphan_services/'
 # @return Json Array|EnginesError.to_json
