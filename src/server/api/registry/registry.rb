@@ -1,5 +1,5 @@
 
-# @!group /registry/engines/
+# @!group /registry/
 
 # @method get_managed_engine_tree
 # @overload get '/v0/registry/engines/'
