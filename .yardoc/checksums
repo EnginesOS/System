@@ -64,7 +64,7 @@ src/server/api/containers/service/service_actions.rb a7d0da0b0b1e8c2962114c56000
 src/server/api/service_manager/service_definition.rb b4aa55d63b5c26ac41ef661d4c9179617416b663
 src/server/api/service_manager/available_services.rb 77b210d7b3d957eefd2a05aa58ca873d9256defa
 src/server/api/containers/service/service_consumer.rb be00e22d9e4c139adda95906d35994ae4ac16145
-src/server/api/service_manager/persistent_services.rb 784df5486772211a837a588424f11f99b1bf1a67
+src/server/api/service_manager/persistent_services.rb 431c417a3562d06ab47393236043d19aedddba4b
 src/server/api/containers/service/service_consumers.rb e68abc019e5df9d6104dda6389223c368994f50d
 src/server/api/containers/engine/service/persistent_service.rb c678a71decdb16241c1fd29bd4868acc8e763c9e
 src/server/api/containers/service/service/persistent_service.rb 1d5f6d3fd076c99c0664c90e4a6a055754e24075
