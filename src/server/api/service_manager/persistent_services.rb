@@ -1,6 +1,6 @@
 # @!group /service_manager/persistent_services/
 
-get '/v0/service_manager/persistent_service/:publisher_namespace/*' do
+get '/v0/service_manager/persistent_service/:container_type/:publisher_namespace/*' do
  
   splats = params['splat']
   pparams =  {}
@@ -9,8 +9,8 @@ get '/v0/service_manager/persistent_service/:publisher_namespace/*' do
   pparams[:service_handle] = File.basename(pparams[:type_path])
   pparams[:type_path] = File.dirname(pparams[:type_path])
   pparams[:parent_engine] = File.basename(splats[0])
-
-  cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
+pparams[:container_type]  = params[:container_type]
+  cparams =  Utils::Params.assemble_params(pparams, [:container_type, :publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   r = engines_api.retrieve_service_hash(cparams)
 
   unless r.is_a?(EnginesError)
