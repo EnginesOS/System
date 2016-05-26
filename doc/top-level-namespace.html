@@ -111,7 +111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#default_certificate-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) </a>
+      <a href="top-level-namespace.html#default_certificate-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) </a>
     
 
     
@@ -135,7 +135,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) </a>
+      <a href="top-level-namespace.html#get-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) </a>
     
 
     
@@ -159,7 +159,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#system_ca-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) </a>
+      <a href="top-level-namespace.html#system_ca-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) </a>
     
 
     
@@ -174,7 +174,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Cert.to_json|EnginesError.to_json.</p>
+<p>PEM encoded Public certificate.</p>
 </div></span>
   
 </li>
@@ -192,7 +192,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_certificate-instance_method" title="#delete (instance method)">- (Object) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) </a>
+      <a href="top-level-namespace.html#delete_certificate-instance_method" title="#delete (instance method)">- (true|EnginesError) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) </a>
     
 
     
@@ -206,9 +206,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>True.to_json|EnginesError.to_json.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -241,7 +239,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_certificate-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/certs/&#39;) </a>
+      <a href="top-level-namespace.html#upload_certificate-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/certs/&#39;) </a>
     
 
     
@@ -266,7 +264,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_default_certificate-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) </a>
+      <a href="top-level-namespace.html#upload_default_certificate-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) </a>
     
 
     
@@ -291,64 +289,6 @@ created/uploaded against.</p>
     </ul>
   
     <h2>
-      /system/domain/
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/domain/get_domain_name&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>add the domain :domain_name  :domain_name :self_hosted   :internal_only
-(optional).</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/domain/get_domain_name&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>get the details for :domain_name.</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
       /system/config/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -358,7 +298,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#disable_remote_exception_logging-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) </a>
+      <a href="top-level-namespace.html#disable_remote_exception_logging-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) </a>
     
 
     
@@ -382,7 +322,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#enable_remote_exception_logging-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) </a>
+      <a href="top-level-namespace.html#enable_remote_exception_logging-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) </a>
     
 
     
@@ -430,7 +370,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_default_site-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) </a>
+      <a href="top-level-namespace.html#get_default_site-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) </a>
     
 
     
@@ -454,7 +394,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_hostname-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) </a>
+      <a href="top-level-namespace.html#get_hostname-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) </a>
     
 
     
@@ -478,7 +418,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_remote_exception_logging-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) </a>
+      <a href="top-level-namespace.html#get_remote_exception_logging-instance_method" title="#get (instance method)">- (&#39;true&#39;|&#39;false&#39;|EnginesError) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) </a>
     
 
     
@@ -502,7 +442,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_default_domain-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
+      <a href="top-level-namespace.html#set_default_domain-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
     
 
     
@@ -526,7 +466,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_default_site-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) </a>
+      <a href="top-level-namespace.html#set_default_site-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) </a>
     
 
     
@@ -550,7 +490,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_hostname-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) </a>
+      <a href="top-level-namespace.html#set_hostname-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) </a>
     
 
     
@@ -583,7 +523,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_status-instance_method" title="#get (instance method)">- (hash) <strong>get</strong>(&#39;/v0/system/status&#39;) </a>
+      <a href="top-level-namespace.html#get_system_status-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/status&#39;) </a>
     
 
     
@@ -608,7 +548,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_status_first_run-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) </a>
+      <a href="top-level-namespace.html#get_system_status_first_run-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) </a>
     
 
     
@@ -641,7 +581,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_api-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/api&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_api-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/api&#39;) </a>
     
 
     
@@ -665,7 +605,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_base_os-instance_method" title="#get (instance method)">- (hash) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_base_os-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) </a>
     
 
     
@@ -690,7 +630,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_ident-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_ident-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) </a>
     
 
     
@@ -714,7 +654,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_release-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/release&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_release-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/release&#39;) </a>
     
 
     
@@ -738,7 +678,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_system-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/system&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_system-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/system&#39;) </a>
     
 
     
@@ -771,7 +711,31 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#list_domain_names-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
+      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/domains/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>add domain in params.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
     
 
     
@@ -792,6 +756,30 @@ created/uploaded against.</p>
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#list_domain_names-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>list the domains.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
     <h2>
@@ -804,7 +792,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_disk-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_disk-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) </a>
     
 
     
@@ -828,7 +816,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_load-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_load-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) </a>
     
 
     
@@ -855,7 +843,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_memory-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_memory-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) </a>
     
 
     
@@ -879,7 +867,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_memory_statistics-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_memory_statistics-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) </a>
     
 
     
@@ -904,7 +892,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) </a>
     
 
     
@@ -937,7 +925,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#resolve_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/system/template&#39;) </a>
+      <a href="top-level-namespace.html#resolve_template-instance_method" title="#post (instance method)">- (String|EnginesError) <strong>post</strong>(&#39;/v0/system/template&#39;) </a>
     
 
     
@@ -970,7 +958,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_engine_names-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_engine_names-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) </a>
     
 
     
@@ -994,7 +982,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_hostnames-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_hostnames-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) </a>
     
 
     
@@ -1018,7 +1006,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_port-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_port-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) </a>
     
 
     
@@ -1051,7 +1039,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#generate_user_key-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) </a>
+      <a href="top-level-namespace.html#generate_user_key-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) </a>
     
 
     
@@ -1076,7 +1064,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_user_key-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
+      <a href="top-level-namespace.html#get_user_key-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
     
 
     
@@ -1101,7 +1089,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_user_key-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
+      <a href="top-level-namespace.html#upload_user_key-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
     
 
     
@@ -1340,7 +1328,7 @@ to client  stream is in the format
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Restart the base OS.</p>
+<p>@<a href="true|EnginesError">return</a>.</p>
 </div></span>
   
 </li>
@@ -1349,7 +1337,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#shutdown_base_os-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) </a>
+      <a href="top-level-namespace.html#shutdown_base_os-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) </a>
     
 
     
@@ -1373,7 +1361,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#update_base_os-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) </a>
+      <a href="top-level-namespace.html#update_base_os-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) </a>
     
 
     
@@ -1406,7 +1394,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_registry-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_registry-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) </a>
     
 
     
@@ -1439,7 +1427,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_orphan_service-instance_method" title="#delete (instance method)">- (Object) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#delete_orphan_service-instance_method" title="#delete (instance method)">- (true|EnginesError) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -1453,9 +1441,7 @@ to client  stream is in the format
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>True|EnginesError.to_json.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -1463,7 +1449,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#get_orphan_service-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -1477,9 +1463,7 @@ to client  stream is in the format
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Json|EnginesError.to_json.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -1487,7 +1471,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_services-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) </a>
+      <a href="top-level-namespace.html#get_orphan_services-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) </a>
     
 
     
@@ -1501,9 +1485,7 @@ to client  stream is in the format
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Json Array|EnginesError.to_json.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -1520,7 +1502,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_metrics_memory-instance_method" title="#get (instance method)">- (Hash|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) </a>
+      <a href="top-level-namespace.html#get_service_metrics_memory-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) </a>
     
 
     
@@ -1544,7 +1526,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_metrics_network-instance_method" title="#get (instance method)">- (Hash|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) </a>
+      <a href="top-level-namespace.html#get_service_metrics_network-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) </a>
     
 
     
@@ -1940,7 +1922,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_builder_status-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) </a>
+      <a href="top-level-namespace.html#get_builder_status-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) </a>
     
 
     
@@ -1964,7 +1946,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_current_build_params-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) </a>
+      <a href="top-level-namespace.html#get_current_build_params-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) </a>
     
 
     
@@ -1988,7 +1970,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_last_build_log-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) </a>
+      <a href="top-level-namespace.html#get_last_build_log-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) </a>
     
 
     
@@ -2012,7 +1994,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_last_build_param-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) </a>
+      <a href="top-level-namespace.html#get_last_build_param-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) </a>
     
 
     
@@ -2046,7 +2028,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#dump_engines_system_heap_stats-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) </a>
+      <a href="top-level-namespace.html#dump_engines_system_heap_stats-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) </a>
     
 
     
@@ -2072,7 +2054,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#recreate_engines_system-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) </a>
+      <a href="top-level-namespace.html#recreate_engines_system-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) </a>
     
 
     
@@ -2096,7 +2078,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_engines_system-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_engines_system-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) </a>
     
 
     
@@ -2120,7 +2102,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#update_engines_system-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) </a>
+      <a href="top-level-namespace.html#update_engines_system-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) </a>
     
 
     
@@ -2154,7 +2136,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_service_properties_network-instance_method" title="#post (instance method)">- (true|EnginesError.to_json) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) </a>
+      <a href="top-level-namespace.html#set_service_properties_network-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) </a>
     
 
     
@@ -2178,7 +2160,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_service_properties_runtime-instance_method" title="#post (instance method)">- (true|EnginesError.to_json) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) </a>
+      <a href="top-level-namespace.html#set_service_properties_runtime-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) </a>
     
 
     
@@ -2519,7 +2501,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_definition-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) </a>
+      <a href="top-level-namespace.html#get_service_definition-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -2553,7 +2535,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumer-instance_method" title="#get (instance method)">- (Hash|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumer-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -2578,7 +2560,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumers-instance_method" title="#get (instance method)">- (Array|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumers-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) </a>
     
 
     
@@ -2602,7 +2584,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumers_for_engine-instance_method" title="#get (instance method)">- (Array|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumers_for_engine-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) </a>
     
 
     
@@ -2635,7 +2617,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_services_for_type-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) </a>
+      <a href="top-level-namespace.html#get_services_for_type-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -2686,7 +2668,7 @@ do.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Return the persistent services registered to the service (which this
-service consumes) # @return Json Array|EnginesError.to_json.</p>
+service consumes) # @return [Array|EnginesError].</p>
 </div></span>
   
 </li>
@@ -2712,7 +2694,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
     <span class="summary_desc"><div class='inline'>
 <p>Return the persistent services matchedin the :publisher_namespace and
 :type_path registered to the service (which this service consumes) #
-@return Json Array|EnginesError.to_json.</p>
+@return Json [Array|EnginesError].</p>
 </div></span>
   
 </li>
@@ -2730,7 +2712,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_non_persistent_services-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_non_persistent_services-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
     
 
     
@@ -2746,7 +2728,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Return the non persistent services registered to the service (which this
-service consumes) # @return Json Array|EnginesError.to_json.</p>
+service consumes).</p>
 </div></span>
   
 </li>
@@ -2755,7 +2737,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
     
 
     
@@ -2771,8 +2753,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Return the non persistent services matchedin the :publisher_namespace and
-:type_path registered to the service (which this service consumes) #
-@return Json Array|EnginesError.to_json.</p>
+:type_path registered to the service (which this service consumes).</p>
 </div></span>
   
 </li>
@@ -2821,7 +2802,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
       <div class="method_details first">
   <h3 class="signature first" id="add_domain_name-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/domain/get_domain_name&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -2830,10 +2811,7 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>add the domain :domain_name</p>
-
-<pre class="code ruby"><code class="ruby">:domain_name :self_hosted 
-:internal_only (optional)</code></pre>
+<p>add domain in params</p>
 
 
   </div>
@@ -2848,14 +2826,9 @@ service consumes) # @return Json Array|EnginesError.to_json.</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -3083,7 +3056,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="default_certificate-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) 
   
 
   
@@ -3107,7 +3080,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -3154,7 +3127,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_certificate-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) 
   
 
   
@@ -3163,8 +3136,6 @@ is updated prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true.to_json|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -3178,14 +3149,9 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -3227,7 +3193,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_orphan_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -3236,8 +3202,6 @@ is updated prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -3251,14 +3215,9 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -3459,7 +3418,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="disable_remote_exception_logging-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) 
   
 
   
@@ -3477,6 +3436,19 @@ fresh persistent services, no data is preserved beyond this point</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -3516,7 +3488,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="dump_engines_system_heap_stats-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) 
   
 
   
@@ -3525,8 +3497,6 @@ fresh persistent services, no data is preserved beyond this point</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true.to_json|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -3553,14 +3523,9 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -3604,7 +3569,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="enable_remote_exception_logging-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) 
   
 
   
@@ -3622,6 +3587,19 @@ fresh persistent services, no data is preserved beyond this point</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -3792,7 +3770,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="generate_user_key-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) 
   
 
   
@@ -3817,14 +3795,9 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -3866,7 +3839,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="get-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) 
   
 
   
@@ -3890,7 +3863,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -3945,7 +3918,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="get_builder_status-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) 
   
 
   
@@ -3971,14 +3944,9 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4222,7 +4190,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_current_build_params-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) 
   
 
   
@@ -4248,14 +4216,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4370,7 +4333,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_default_site-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) 
   
 
   
@@ -4394,14 +4357,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4445,7 +4403,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_domain_name-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/domain/get_domain_name&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -4469,14 +4427,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>JSON|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4518,7 +4471,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_hostname-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) 
   
 
   
@@ -4542,14 +4495,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4593,7 +4541,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_last_build_log-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) 
   
 
   
@@ -4617,14 +4565,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4664,7 +4607,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_last_build_param-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) 
   
 
   
@@ -4690,14 +4633,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4869,7 +4807,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -4878,8 +4816,6 @@ to client  stream is in the format
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns Json|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -4893,14 +4829,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4962,7 +4893,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_services-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) 
   
 
   
@@ -4971,8 +4902,6 @@ to client  stream is in the format
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns Json Array|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -4986,14 +4915,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json Array|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -5097,7 +5021,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_remote_exception_logging-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) 
+    - (<tt>'true'|'false'|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) 
   
 
   
@@ -5115,6 +5039,19 @@ to client  stream is in the format
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>'true'|'false'|EnginesError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -5436,7 +5373,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumer-instance_method">
   
-    - (<tt>Hash|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -5461,7 +5398,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -5511,7 +5448,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumers-instance_method">
   
-    - (<tt>Array|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) 
   
 
   
@@ -5535,7 +5472,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
       
@@ -5585,7 +5522,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumers_for_engine-instance_method">
   
-    - (<tt>Array|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) 
   
 
   
@@ -5609,7 +5546,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
       
@@ -5667,7 +5604,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_definition-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -5693,14 +5630,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -5744,7 +5676,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_metrics_memory-instance_method">
   
-    - (<tt>Hash|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) 
   
 
   
@@ -5770,7 +5702,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -5818,7 +5750,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_metrics_network-instance_method">
   
-    - (<tt>Hash|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) 
   
 
   
@@ -5844,7 +5776,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -5890,7 +5822,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_service_non_persistent_services-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
   
 
   
@@ -5900,7 +5832,7 @@ to client  stream is in the format
   <div class="discussion">
     
 <p>Return the non persistent services registered to the service (which this
-service consumes) # @return Json Array|EnginesError.to_json</p>
+service consumes)</p>
 
 
   </div>
@@ -5909,6 +5841,19 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -5950,7 +5895,7 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_non_persistent_services_by_type-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
   
 
   
@@ -5960,8 +5905,7 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
   <div class="discussion">
     
 <p>Return the non persistent services matchedin the :publisher_namespace and
-:type_path registered to the service (which this service consumes) #
-@return Json Array|EnginesError.to_json</p>
+:type_path registered to the service (which this service consumes)</p>
 
 
   </div>
@@ -5970,6 +5914,19 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -6037,7 +5994,7 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
   <div class="discussion">
     
 <p>Return the persistent services registered to the service (which this
-service consumes) # @return Json Array|EnginesError.to_json</p>
+service consumes) # @return [Array|EnginesError]</p>
 
 
   </div>
@@ -6096,7 +6053,7 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
     
 <p>Return the persistent services matchedin the :publisher_namespace and
 :type_path registered to the service (which this service consumes) #
-@return Json Array|EnginesError.to_json</p>
+@return Json [Array|EnginesError]</p>
 
 
   </div>
@@ -6294,7 +6251,7 @@ service consumes) # @return Json Array|EnginesError.to_json</p>
       <div class="method_details ">
   <h3 class="signature " id="get_services_for_type-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -6345,14 +6302,9 @@ href=":container_type">params</a></p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json Array|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -6608,7 +6560,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_disk-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) 
   
 
   
@@ -6632,7 +6584,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -6681,7 +6633,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_load-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) 
   
 
   
@@ -6711,7 +6663,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -6760,7 +6712,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_memory-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) 
   
 
   
@@ -6786,7 +6738,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -6835,7 +6787,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_memory_statistics-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) 
   
 
   
@@ -6862,7 +6814,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -6911,7 +6863,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_network-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) 
   
 
   
@@ -6935,7 +6887,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -6984,7 +6936,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_engine_names-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) 
   
 
   
@@ -7008,7 +6960,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
       
@@ -7057,7 +7009,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_hostnames-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) 
   
 
   
@@ -7081,7 +7033,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
       
@@ -7132,7 +7084,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_port-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) 
   
 
   
@@ -7156,7 +7108,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
       
@@ -7271,7 +7223,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_status-instance_method">
   
-    - (<tt>hash</tt>) <strong>get</strong>(&#39;/v0/system/status&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/status&#39;) 
   
 
   
@@ -7296,7 +7248,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -7346,7 +7298,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_status_first_run-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) 
+    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) 
   
 
   
@@ -7370,7 +7322,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
       
       
       
@@ -7408,7 +7360,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_api-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/api&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/api&#39;) 
   
 
   
@@ -7432,7 +7384,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -7476,7 +7428,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_base_os-instance_method">
   
-    - (<tt>hash</tt>) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) 
+    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) 
   
 
   
@@ -7502,7 +7454,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>hash</tt>)</span>
+        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
       
       
       
@@ -7550,7 +7502,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_ident-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) 
   
 
   
@@ -7574,7 +7526,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -7623,7 +7575,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_release-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/release&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/release&#39;) 
   
 
   
@@ -7647,7 +7599,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -7696,7 +7648,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_system-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/system&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/system&#39;) 
   
 
   
@@ -7720,7 +7672,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -7764,7 +7716,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_user_key-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
   
 
   
@@ -7789,14 +7741,9 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -7904,7 +7851,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="list_domain_names-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
+    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -7913,14 +7860,23 @@ created/uploaded against</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>get the details for :domain_name</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="docstring">
+  <div class="discussion">
+    
+<p>list the domains</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-  
+
+</div>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -7928,14 +7884,9 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>Json Array|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -7947,29 +7898,21 @@ created/uploaded against</p>
       <pre class="lines">
 
 
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15</pre>
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 33</span>
 
-<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_add_domain'>add_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
-  <span class='kw'>unless</span>  <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_domains'>domains</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_domains'>list_domains</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_domains'>domains</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_domains'>domains</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_domains'>domains</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -8124,7 +8067,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="recreate_engines_system-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) 
   
 
   
@@ -8133,8 +8076,6 @@ created/uploaded against</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true.to_json|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -8159,14 +8100,9 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -8422,7 +8358,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="resolve_template-instance_method">
   
-    - (<tt>String</tt>) <strong>post</strong>(&#39;/v0/system/template&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/template&#39;) 
   
 
   
@@ -8449,7 +8385,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
@@ -8502,7 +8438,7 @@ prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true.to_json|EnginesError.to_json</p>
+<p>@<a href="true|EnginesError">return</a></p>
 
 
   </div>
@@ -8522,24 +8458,6 @@ prior to the container creation</p>
 
 </div>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'></span>
-      
-      
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -8577,7 +8495,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_engines_system-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) 
   
 
   
@@ -8586,8 +8504,6 @@ prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true.to_json|EnginesError.to_json</p>
-
 
   </div>
 </div>
@@ -8612,14 +8528,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -8661,7 +8572,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_registry-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) 
   
 
   
@@ -8685,14 +8596,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -8804,7 +8710,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_default_domain-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) 
   
 
   
@@ -8831,14 +8737,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -8884,7 +8785,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_default_site-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) 
   
 
   
@@ -8911,14 +8812,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -9121,7 +9017,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_hostname-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) 
   
 
   
@@ -9148,14 +9044,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -9271,7 +9162,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_service_properties_network-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) 
   
 
   
@@ -9304,7 +9195,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -9352,7 +9243,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_service_properties_runtime-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) 
   
 
   
@@ -9388,7 +9279,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -9430,7 +9321,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="shutdown_base_os-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) 
   
 
   
@@ -9457,14 +9348,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -9650,7 +9536,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="system_ca-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) 
+    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) 
   
 
   
@@ -9659,7 +9545,7 @@ prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns cert.to_json|EnginesError.to_json</p>
+<p>Returns PEM encoded Public certificate</p>
 
 
   </div>
@@ -9674,13 +9560,13 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String|EnginesError</tt>)</span>
       
       
       
-        
+        &mdash;
         <div class='inline'>
-<p>cert.to_json|EnginesError.to_json</p>
+<p>PEM encoded Public certificate</p>
 </div>
       
     </li>
@@ -9791,7 +9677,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="update_base_os-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) 
+    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) 
   
 
   
@@ -9815,14 +9701,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -9864,7 +9745,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="update_engines_system-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) 
+    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) 
   
 
   
@@ -9892,14 +9773,9 @@ EnginesError &gt; an error occurred</code></pre>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|false.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -9941,7 +9817,7 @@ EnginesError &gt; an error occurred</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_certificate-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/certs/&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/certs/&#39;) 
   
 
   
@@ -9968,14 +9844,9 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -10019,7 +9890,7 @@ optional :password</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_default_certificate-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) 
   
 
   
@@ -10046,14 +9917,9 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -10101,7 +9967,7 @@ optional :password</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_user_key-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
   
 
   
@@ -10126,14 +9992,9 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -10181,7 +10042,7 @@ optional :password</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu May 26 17:43:10 2016 by
+  Generated on Thu May 26 18:04:27 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
