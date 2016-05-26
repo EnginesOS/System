@@ -1,5 +1,5 @@
 
-get '/v0/containers/service/:service_name/service/persistent/:ns/*/export' do
+get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)
@@ -15,7 +15,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*/export' do
   end
 end
 
-get '/v0/containers/service/:service_name/service/persistent/:ns/*/import' do
+get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/import' do
   
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.service_service_hash_from_params(params)
@@ -30,7 +30,7 @@ get '/v0/containers/service/:service_name/service/persistent/:ns/*/import' do
     return log_error(request, r, service.last_error)
   end
 end
-get '/v0/containers/engine/:service_name/service/persistent/:ns/*/replace' do
+get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/*/replace' do
   
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.service_service_hash_from_params(params)
@@ -48,7 +48,7 @@ get '/v0/containers/engine/:service_name/service/persistent/:ns/*/replace' do
 end
 
 
-get '/v0/containers/service/:service_name/service/persistent/:ns/*' do
+get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)

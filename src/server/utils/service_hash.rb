@@ -3,7 +3,7 @@ module ServiceHash
     splats = params['splat']
 
     hash = {}
-    hash[:publisher_namespace] = params['ns']
+    hash[:publisher_namespace] = params['publisher_namespace']
 
     unless search
       hash[:type_path] = File.dirname(splats[0])

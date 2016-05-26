@@ -10,7 +10,7 @@
 #  end
 #end
 
-get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/register' do
+get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   
@@ -25,7 +25,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/register'
   end
 end
 
-get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/reregister' do
+get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   service_hash = engines_api.find_service_service_hash(hash)
@@ -39,7 +39,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/reregiste
   end
 end
 
-get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/deregister' do
+get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   service_hash = engines_api.find_service_service_hash(hash)
@@ -52,14 +52,14 @@ get '/v0/containers/service/:service_name/service/non_persistent/:ns/*/deregiste
   end
 end
 
-get '/v0/containers/service/:service_name/service/non_persistent/:ns/*' do
+get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*' do
   #splats = params['splat']
     p :raw_params
     p params
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
 
 #hash = {}
-#        hash[:publisher_namespace] = params[:ns]
+#        hash[:publisher_namespace] = params[:publisher_namespace]
         
  #       hash[:type_path] = splats[0]
           p :compute_hah    

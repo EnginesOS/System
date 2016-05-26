@@ -1,5 +1,5 @@
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' do
+get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/register' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
@@ -14,7 +14,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/register' d
   end
 end
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister' do
+get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/reregister' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
@@ -29,7 +29,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/reregister'
   end
 end
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister' do
+get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   
@@ -44,7 +44,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*/deregister'
 end
 
 
-get '/v0/containers/engine/:engine_name/service/non_persistent/:ns/*' do
+get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   

@@ -1,5 +1,5 @@
 
-get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/export' do
+get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
@@ -14,7 +14,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:ns/*/export' do
   end
 end
 
-post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
   p params
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
@@ -29,7 +29,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/import' do
   end
 end
 
-post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/replace' do
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   p params
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
@@ -46,7 +46,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:ns/*/replace' do
 end
 
 
-get '/v0/containers/engine/:engine_name/service/persistent/:ns/*' do
+get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*' do
   
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
 

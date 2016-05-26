@@ -12,12 +12,12 @@ get '/v0/containers/service/:service_name/services/non_persistent/' do
 end
 
 
-get '/v0/containers/service/:service_name/services/non_persistent/:ns/*' do
+get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
   
     
   hash = Utils::ServiceHash.service_service_hash_from_params(params, true)
 #hash = {}
-#        hash[:publisher_namespace] = params[:ns]
+#        hash[:publisher_namespace] = params[:publisher_namespace]
 #        hash[:parent_engine] = params[:service_name]
 #        hash[:type_path] = splats[0]    
        #   p :np_services_splat
