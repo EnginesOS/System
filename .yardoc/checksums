@@ -16,9 +16,9 @@ src/server/utils/service_hash.rb a2a56c61eb9a3d8c76d09588fafdf662006175ab
 src/server/api/system/metrics.rb 2c85e202734885d8971c7c5937314b27570fd887
 src/server/api/system/template.rb 0e316ad51c30adddcea01a92168c0797cd98e3d8
 src/server/api/system/reserved.rb a4dd754522b874eac495e23ac21faed0eefd5932
-src/server/api/system/keys/user.rb 7d063e35d6ab15b3a0438350fc65305d4f9e8bb7
+src/server/api/system/keys/user.rb e50ae9623a7de743b8cc7272f996eb7881e04826
 src/server/api/containers/routes.rb 609313a0aae742a60543c31dc9d8f4813a92960e
-src/server/api/registry/registry.rb e0b890bfd2e40db492221e9ebb3318617f924727
+src/server/api/registry/registry.rb 2911ba76f93da48915645de173489ea9ff083bca
 src/server/api/missing_route_404.rb abb25af47f6b0a4f3a52a87ee4d77999bd885cf6
 src/server/api/system/keys/routes.rb 1b7d61418d4ed5e2779b6069dd51f20c942ad6ec
 src/server/api/system/do_first_run.rb d333987cc096442add70b9f2371eb99cdc4e4270
@@ -29,7 +29,7 @@ src/server/api/service_manager/routes.rb 7f26ba64c5f88747c7da56c2447d3f3a1c54673
 src/server/api/system/control/registry.rb dec00829bf044e6daa8500ff11b212aa79cab917
 src/server/api/service_manager/engines.rb 619e67b091d5f2c34f15726c3a6ad431730a3d59
 src/server/api/service_manager/service.rb cab91ebfb326cfceb8cb92c71051f0470c5417a0
-src/server/api/service_manager/orphans.rb 01e7e76e3c5c4e0c40e7bab43cff7e42c0f8db7d
+src/server/api/service_manager/orphans.rb 5e0699b2ec9d71bb16d2b13e942369f9e09bdb6c
 src/server/api/service_manager/attached.rb 37c9c4e0a015750d929f7abdd9deb64d04f05f2e
 src/server/api/containers/engine/engine.rb 224d024268e227d418400336b856863c59feabdc
 src/server/api/containers/engine/routes.rb ace487fa2f834bd9735fa191dda42b96e64b8fff
@@ -64,7 +64,7 @@ src/server/api/containers/service/service_actions.rb a7d0da0b0b1e8c2962114c56000
 src/server/api/service_manager/service_definition.rb b4aa55d63b5c26ac41ef661d4c9179617416b663
 src/server/api/service_manager/available_services.rb 77b210d7b3d957eefd2a05aa58ca873d9256defa
 src/server/api/containers/service/service_consumer.rb be00e22d9e4c139adda95906d35994ae4ac16145
-src/server/api/service_manager/persistent_services.rb 431c417a3562d06ab47393236043d19aedddba4b
+src/server/api/service_manager/persistent_services.rb abe479c7e4d9f073a183b8842e201a8ea2346c0f
 src/server/api/containers/service/service_consumers.rb e68abc019e5df9d6104dda6389223c368994f50d
 src/server/api/containers/engine/service/persistent_service.rb c678a71decdb16241c1fd29bd4868acc8e763c9e
 src/server/api/containers/service/service/persistent_service.rb 1d5f6d3fd076c99c0664c90e4a6a055754e24075
