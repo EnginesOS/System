@@ -24,13 +24,14 @@ end
 end
 
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
-pparams = Utils::ServiceHash.service_hash_from_params(params, false)
-p pparams
+      
       splats = params['splat']
-      hash[:type_path] = File.dirname(splats[0])
-      hash[:service_handle] = File.basename(hash[:type_path])
-      hash[:type_path] = File.dirname(hash[:type_path])
-      hash[:parent_engine] = File.basename(splats[0])
+  pparams = new {}
+  pparams[:publisher_namespace] = params[:publisher_namespace]
+  pparams[:type_path] = File.dirname(splats[0])
+  pparams[:service_handle] = File.basename(hash[:type_path])
+  pparams[:type_path] = File.dirname(hash[:type_path])
+  pparams[:parent_engine] = File.basename(splats[0])
 
 cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], []) 
 r = engines_api.retrieve_orphan(cparams)
