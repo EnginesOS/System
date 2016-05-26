@@ -25,7 +25,7 @@ end
 
 get '/v0/service_manager/orphan_service/:publisher_namespace/:type_path/*' do
 pparams = Utils::Params.service_hash_from_params(params, false)
-cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle], []) 
+cparams =  Utils::ServiceHash.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle], []) 
 r = engines_api.retrieve_orphan(cparams)
 
 unless r.is_a?(EnginesError)
