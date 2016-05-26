@@ -26,7 +26,7 @@ end
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
       p params
       splats = params['splat']
-  pparams = new {}
+  pparams =  {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
   pparams[:type_path] = File.dirname(splats[0])
   pparams[:service_handle] = File.basename(pparams[:type_path])
