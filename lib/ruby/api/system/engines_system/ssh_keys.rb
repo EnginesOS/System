@@ -9,7 +9,7 @@ module SshKeys
 
   def update_public_key(key)
     p :update_public_key
-    run_server_script('update_system_access', key)
+    run_server_script('update_system_access', key)[:stdout]
     rescue StandardError => e
         SystemUtils.log_exception(e)
   end
@@ -19,7 +19,7 @@ module SshKeys
   end
   
   def get_public_key
-    run_server_script('public_key')
+    run_server_script('public_key')[:stdout]
 #/home/engines/.ssh/console_access.pub
   rescue StandardError => e
     log_exception(e)
