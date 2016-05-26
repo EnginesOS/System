@@ -24,13 +24,13 @@ end
 end
 
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
-      
+      p params
       splats = params['splat']
   pparams = new {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
   pparams[:type_path] = File.dirname(splats[0])
-  pparams[:service_handle] = File.basename(hash[:type_path])
-  pparams[:type_path] = File.dirname(hash[:type_path])
+  pparams[:service_handle] = File.basename(pparams[:type_path])
+  pparams[:type_path] = File.dirname(pparams[:type_path])
   pparams[:parent_engine] = File.basename(splats[0])
 
 cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], []) 
