@@ -11,7 +11,7 @@ get '/v0/service_manager/persistent_service/:publisher_namespace/*' do
   pparams[:parent_engine] = File.basename(splats[0])
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
-  r = engines_api.fets(cparams)
+  r = engines_api.retrieve_service_hash(cparams)
 
   unless r.is_a?(EnginesError)
     return r.to_json
