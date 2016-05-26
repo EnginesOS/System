@@ -1,4 +1,4 @@
-# @!group Engine
+# @!group /containers/engine
 
 # @method resolve_engine_template
 # @overload post '/v0/containers/engine/:engine_name/template'

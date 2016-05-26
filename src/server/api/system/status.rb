@@ -1,4 +1,4 @@
-# @!group System Status
+# @!group /system/status
 
 # @method get_system_status_first_run
 # @overload get '/v0/system/status/first_run_required'

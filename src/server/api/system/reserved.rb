@@ -1,5 +1,5 @@
 
-# @!group System Reserved
+# @!group /system/reserved/
 
 # @method get_system_reserved_port
 # @overload get '/v0/system/reserved/ports'

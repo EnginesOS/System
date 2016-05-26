@@ -1,5 +1,5 @@
 
-# @!group System Template
+# @!group /system/template
 
 # @method resolve_template
 # @overload post '/v0/system/template'

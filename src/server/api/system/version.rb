@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
-# @!group System Version
+# @!group /system/version
 #
 # @method get_system_version_release
 # @overload get '/v0/system/version/release'

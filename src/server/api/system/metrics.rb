@@ -1,4 +1,4 @@
-# @!group System Metrics
+# @!group /system/metrics/
 
 # @method get_system_metrics_memory
 # @overload get '/v0/system/metrics/memory'

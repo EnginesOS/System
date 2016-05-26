@@ -1,6 +1,6 @@
 # @!group /containers/service/:service_name/
 # @method create_service
-# @overload '/v0/containers/service/:service_name/create'
+# @overload get '/v0/containers/service/:service_name/create'
 # create and start the service from the service image
 # the local service image is updated prior to the container creation
 # @return [true|EnginesError.to_json]
@@ -16,7 +16,7 @@ get '/v0/containers/service/:service_name/create' do
   end
 end
 # @method recreate_service
-# @overload '/v0/containers/service/:service_name/recreate'
+# @overload  get '/v0/containers/service/:service_name/recreate'
 # service must be stopped first
 # recreate the services container from the service image and start the service
 # the local service image is updated prior to the container creation
@@ -32,7 +32,7 @@ get '/v0/containers/service/:service_name/recreate' do
   end
 end
 # @method stop_service
-# @overload '/v0/containers/service/:service_name/stop'
+# @overload get '/v0/containers/service/:service_name/stop'
 # stop the service
 # @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/stop' do
@@ -46,7 +46,7 @@ get '/v0/containers/service/:service_name/stop' do
   end
 end
 # @method start_service
-# @overload '/v0/containers/service/:service_name/start'
+# @overload get '/v0/containers/service/:service_name/start'
 # start the service
 # @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/start' do
@@ -60,7 +60,7 @@ get '/v0/containers/service/:service_name/start' do
   end
 end
 # @method restart_service
-# @overload '/v0/containers/service/:service_name/restart'
+# @overload get '/v0/containers/service/:service_name/restart'
 # restart the service
 # @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/restart' do
@@ -74,7 +74,7 @@ get '/v0/containers/service/:service_name/restart' do
   end
 end
 # @method pause_service
-# @overload '/v0/containers/service/:service_name/pause'
+# @overload get '/v0/containers/service/:service_name/pause'
 # pause the service
 # @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/pause' do
@@ -88,7 +88,7 @@ get '/v0/containers/service/:service_name/pause' do
   end
 end
 # @method unpause_service
-# @overload '/v0/containers/service/:service_name/unpause'
+# @overload get '/v0/containers/service/:service_name/unpause'
 # unpause the service
 # @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/unpause' do
@@ -104,7 +104,7 @@ end
 
 
 # @method destroy_service
-# @overload '/v0/containers/service/:service_name/destroy'
+# @overload get '/v0/containers/service/:service_name/destroy'
 # destroy the service container
 # @return [true|EnginesError.to_json]
 delete '/v0/containers/service/:service_name/destroy' do
@@ -119,7 +119,7 @@ delete '/v0/containers/service/:service_name/destroy' do
 end
 
 # @method delete_service
-# @overload '/v0/containers/service/:service_name/delete'
+# @overload get '/v0/containers/service/:service_name/delete'
 # delete the service from the system 
 # the service can be created again with fresh persistent services, no data is preserved beyond this point
 # @return [true|EnginesError.to_json]
