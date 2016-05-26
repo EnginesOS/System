@@ -1135,7 +1135,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_configurations_tree-instance_method" title="#get_configurations_tree (instance method)">- (Object) <strong>get_configurations_tree</strong> </a>
+      <a href="top-level-namespace.html#get_configurations_tree-instance_method" title="#get_configurations_tree (instance method)">- (RubyTree|EnginesError) <strong>get_configurations_tree</strong> </a>
     
 
     
@@ -1159,7 +1159,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_managed_engine_tree-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) </a>
+      <a href="top-level-namespace.html#get_managed_engine_tree-instance_method" title="#get (instance method)">- (RubyTree|EnginesError) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) </a>
     
 
     
@@ -1183,7 +1183,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_managed_service_tree-instance_method" title="#get_managed_service_tree (instance method)">- (Object) <strong>get_managed_service_tree</strong> </a>
+      <a href="top-level-namespace.html#get_managed_service_tree-instance_method" title="#get_managed_service_tree (instance method)">- (RubyTree|EnginesError) <strong>get_managed_service_tree</strong> </a>
     
 
     
@@ -1207,7 +1207,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_services_tree-instance_method" title="#get_orphan_services_tree (instance method)">- (Object) <strong>get_orphan_services_tree</strong> </a>
+      <a href="top-level-namespace.html#get_orphan_services_tree-instance_method" title="#get_orphan_services_tree (instance method)">- (RubyTree|EnginesError) <strong>get_orphan_services_tree</strong> </a>
     
 
     
@@ -1231,7 +1231,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_share_services_tree-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) </a>
+      <a href="top-level-namespace.html#get_share_services_tree-instance_method" title="#get (instance method)">- (RubyTree|EnginesError) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) </a>
     
 
     
@@ -2290,7 +2290,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
+      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
     
 
     
@@ -2315,7 +2315,7 @@ is updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
+      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
     
 
     
@@ -2340,7 +2340,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
+      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
     
 
     
@@ -2364,7 +2364,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
+      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
     
 
     
@@ -2388,7 +2388,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
+      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
     
 
     
@@ -2414,7 +2414,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
     
 
     
@@ -2438,7 +2438,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
+      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
     
 
     
@@ -2462,7 +2462,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
+      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
     
 
     
@@ -2486,7 +2486,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
+      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
     
 
     
@@ -3010,7 +3010,7 @@ return to set state error set if failed</p>
       <div class="method_details ">
   <h3 class="signature " id="create_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
   
 
   
@@ -3035,7 +3035,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -3320,7 +3320,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
   
 
   
@@ -3345,7 +3345,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -3389,7 +3389,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="destroy_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
   
 
   
@@ -3413,7 +3413,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -4020,7 +4020,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="get_configurations_tree-instance_method">
   
-    - (<tt>Object</tt>) <strong>get_configurations_tree</strong> 
+    - (<tt>RubyTree|EnginesError</tt>) <strong>get_configurations_tree</strong> 
   
 
   
@@ -4042,14 +4042,9 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>RubyTree.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4744,7 +4739,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_managed_engine_tree-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) 
+    - (<tt>RubyTree|EnginesError</tt>) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) 
   
 
   
@@ -4768,14 +4763,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>RubyTree.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -4815,7 +4805,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_managed_service_tree-instance_method">
   
-    - (<tt>Object</tt>) <strong>get_managed_service_tree</strong> 
+    - (<tt>RubyTree|EnginesError</tt>) <strong>get_managed_service_tree</strong> 
   
 
   
@@ -4837,14 +4827,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>RubyTree.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -5048,7 +5033,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_services_tree-instance_method">
   
-    - (<tt>Object</tt>) <strong>get_orphan_services_tree</strong> 
+    - (<tt>RubyTree|EnginesError</tt>) <strong>get_orphan_services_tree</strong> 
   
 
   
@@ -5070,14 +5055,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>RubyTree.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -6562,7 +6542,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_share_services_tree-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) 
+    - (<tt>RubyTree|EnginesError</tt>) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) 
   
 
   
@@ -6586,14 +6566,9 @@ configured services</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>RubyTree.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -8004,7 +7979,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="pause_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
   
 
   
@@ -8028,7 +8003,7 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -8233,7 +8208,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="recreate_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) 
   
 
   
@@ -8259,7 +8234,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -8759,7 +8734,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) 
   
 
   
@@ -8783,7 +8758,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -9535,7 +9510,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="start_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
   
 
   
@@ -9559,7 +9534,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -9605,7 +9580,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="stop_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) 
   
 
   
@@ -9629,7 +9604,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -9746,7 +9721,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="unpause_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) 
+    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) 
   
 
   
@@ -9770,7 +9745,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError.to_json</tt>)</span>
+        <span class='type'>(<tt>true|EnginesError</tt>)</span>
       
       
       
@@ -10206,7 +10181,7 @@ optional :password</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu May 26 17:35:26 2016 by
+  Generated on Thu May 26 17:43:10 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

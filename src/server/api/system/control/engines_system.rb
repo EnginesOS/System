@@ -5,7 +5,7 @@
 #  true > update update available and started
 #  false > no udpdate available
 #  EnginesError > an error occurred
-# @return true.to_json|false.to_json|EnginesError.to_json
+# @return [true|false|EnginesError]
 get '/v0/system/control/engines_system/update' do
   update = engines_api.update_engines_system_software
   unless update.is_a?(EnginesError)
@@ -18,7 +18,7 @@ end
 # @method restart_engines_system
 # @overload get '/v0/system/control/engines_system/restart'
 #  Restart the engines system
-# @return true.to_json|EnginesError.to_json
+# @return [true|EnginesError]
 get '/v0/system/control/engines_system/restart' do
   restart = engines_api.restart_mgmt
   unless restart.is_a?(EnginesError)
@@ -31,7 +31,7 @@ end
 # @method recreate_engines_system
 # @overload get '/v0/system/control/engines_system/recreate'
 #  Recreate the engines system container
-# @return true.to_json|EnginesError.to_json
+# @return [true|EnginesError]
 get '/v0/system/control/engines_system/recreate' do
   recreate = engines_api.recreate_mgmt
   unless recreate.is_a?(EnginesError)
@@ -46,7 +46,7 @@ end
 #  dump the heap stats engines system post CG output is written to /tmp/big/heap.dump
 #  admin has access to this via ssh login 
 #  the path is /opt/engines/tmp/system_service/system/heap.dump 
-# @return true.to_json|EnginesError.to_json
+# @return [true|EnginesError]
  get '/v0/system/control/engines_system/heap_stats' do
       dump_stats = engines_api.dump_heap_stats
       unless dump_stats.is_a?(EnginesError)

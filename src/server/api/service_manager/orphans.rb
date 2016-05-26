@@ -2,7 +2,7 @@
 
 # @method get_orphan_services
 # @overload get '/v0/service_manager/orphan_services/'
-# @return Json Array|EnginesError.to_json
+# @return [Array|EnginesError]
 get '/v0/service_manager/orphan_services/' do
   orphans = engines_api.get_orphaned_services
   unless orphans.is_a?(EnginesError)
@@ -13,7 +13,7 @@ get '/v0/service_manager/orphan_services/' do
 end
 # @method get_orphan_services
 # @overload get '/v0/service_manager/orphan_services/:publisher_namespace/:type_path:'
-# @return Json Array|EnginesError.to_json
+# @return [Array|EnginesError]
 get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
   cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path], [])
@@ -26,7 +26,7 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
 end
 # @method get_orphan_service
 # @overload get '/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle'
-# @return Json|EnginesError.to_json
+# @return [Hash|EnginesError]
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
  
   splats = params['splat']
@@ -48,7 +48,7 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
 end
 # @method delete_orphan_service
 # @overload delete '/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle'
-# @return true|EnginesError.to_json
+# @return [true|EnginesError]
 delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   splats = params['splat']
    pparams =  {}

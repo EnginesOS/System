@@ -4,7 +4,7 @@
 # @method get_system_reserved_port
 # @overload get '/v0/system/reserved/ports'
 # 
-# @return [Array]
+# @return [Array|EnginesError]
 #  array of integers 
 get '/v0/system/reserved/ports' do
   reserved_ports = engines_api.reserved_ports
@@ -19,7 +19,7 @@ end
 # @method get_system_reserved_hostnames
 # @overload get '/v0/system/reserved/hostnames'
 # 
-# @return [Array]
+# @return [Array|EnginesError]
 #  array of taken fqdn hostnames 
 get '/v0/system/reserved/hostnames' do
   reserved_hostnames = engines_api.taken_hostnames
@@ -35,7 +35,7 @@ end
 # @method get_system_reserved_engine_names
 # @overload get '/v0/system/reserved/engine_names'
 # 
-# @return [Array]
+# @return [Array|EnginesError]
 #  array of taken  and reserved engine_names
 get '/v0/system/reserved/engine_names' do
   engine_names = engines_api.reserved_engine_names

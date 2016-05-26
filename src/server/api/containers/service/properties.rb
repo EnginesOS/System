@@ -2,7 +2,7 @@
 # @method set_service_properties_network
 # @overload post '/v0/containers/service/:service_name/properties/network'
 #  :domain_name :host_name :protocol
-# @return [true|EnginesError.to_json]
+# @return [true|EnginesError]
 
 post '/v0/containers/service/:service_name/properties/network' do
 
@@ -19,7 +19,7 @@ end
 # @overload  post '/v0/containers/service/:service_name/properties/runtime' 
 #  :memory :environment_variables
 #   '{"memory":"577","environment_variables": [ {"test":"value"},{"test2":"value2"} }'
-# @return [true|EnginesError.to_json]
+# @return [true|EnginesError]
 
 post '/v0/containers/service/:service_name/properties/runtime' do
   service = get_service(params[:service_name])

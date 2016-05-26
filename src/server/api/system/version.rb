@@ -5,7 +5,7 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 # @method get_system_version_release
 # @overload get '/v0/system/version/release'
 #
-# @return [String]
+# @return  [String|EnginesError]
 #  as in current|master|beta-rc etc
 get '/v0/system/version/release' do
   release = SystemStatus.get_engines_system_release
@@ -20,7 +20,7 @@ end
 # @method get_system_version_api
 # @overload get '/v0/system/version/api'
 # api version 
-# @return [String]
+# @return [String|EnginesError]
 #
 
 get '/v0/system/version/api' do
@@ -36,7 +36,7 @@ end
 # @method get_system_version_ident
 # @overload get '/v0/system/version/ident'
 #
-# @return [String]
+# @return [String|EnginesError]
 #  string format $release-$system-$api
 get '/v0/system/version/ident' do
   ident = engines_api.version_string
@@ -51,7 +51,7 @@ end
 # @method get_system_version_system
 # @overload get '/v0/system/version/system'
 #
-# @return [String]
+# @return [String|EnginesError]
 # system version 
 get '/v0/system/version/system' do
   system = engines_api.system_version
@@ -68,7 +68,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 # @method get_system_version_base_os
 # @overload get '/v0/system/version/base_os'
 #
-# @return [hash]
+# @return [Hash|EnginesError]
 # keys set by OS
 #  :NAME :VERSION :ID :ID_LIKE :PRETTY_NAME :VERSION_ID :HOME_URL :SUPPORT_URL :BUG_REPORT_URL
 get '/v0/system/version/base_os' do

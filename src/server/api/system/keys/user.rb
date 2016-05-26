@@ -4,7 +4,7 @@
 # Generate a new ssh access key for :user_name (only valid user is 'engines')
 # replaced the existing ssh key
 # returns the private key
-# @return String|EnginesError.to_json
+# @return [String|EnginesError]
 get '/v0/system/keys/user/:user_name/generate' do
   generated_key = engines_api.generate_engines_user_ssh_key
   unless generated_key.is_a?(EnginesError)
@@ -19,7 +19,7 @@ end
 # @overload post '/v0/system/keys/user/:user_name'
 # Upload new ssh access key for :user_name (only valid user is 'engines')
 # replaced the existing ssh public key
-# @return true|EnginesError.to_json
+# @return [true|EnginesError]
 post '/v0/system/keys/user/:user_name' do
   cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 
   update_key = cparams[:public_key] #symbolize_keys(params)
@@ -35,7 +35,7 @@ end
 # @method get_user_key
 # @overload get '/v0/system/keys/user/:user_name'
 # return public access key for :user_name (only valid user is 'engines')
-# @return String|EnginesError.to_json
+# @return [String|EnginesError]
 get '/v0/system/keys/user/:user_name' do
   public_key = engines_api.get_public_key
   unless public_key.is_a?(EnginesError)

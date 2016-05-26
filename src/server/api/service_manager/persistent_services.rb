@@ -22,7 +22,7 @@
 # @method get_services_for_type
 # @overload get '/v0/service_manager/persistent_services/:publisher_namespace/:type_path'
 # Return array of services attached to the service :publisher_namespace/:type_path
-# @return Json Array|EnginesError.to_json
+# @return [Array|EnginesError]
 get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
  
   splats = params['splat']
