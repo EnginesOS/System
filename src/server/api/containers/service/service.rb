@@ -1,6 +1,6 @@
 
 
-# @!group Service
+# @!group /containers/service/:service_name
 
 get '/v0/containers/service/:service_name' do
   service = get_service(params[:service_name])

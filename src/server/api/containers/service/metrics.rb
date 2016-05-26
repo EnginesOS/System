@@ -1,3 +1,9 @@
+# @!group /containers/service/:service_name/metrics
+# @method get_service_metrics_network
+# @overload get '/v0/containers/service/:service_name/metrics/network'
+# return service network usage
+#  :in :out 
+# @return [Hash|EnginesError.to_json]
 get '/v0/containers/service/:service_name/metrics/network' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -8,7 +14,11 @@ get '/v0/containers/service/:service_name/metrics/network' do
     return log_error(request, r)
   end
 end
-
+# @method get_service_metrics_memory
+# @overload get '/v0/containers/service/:service_name/metrics/memory'
+# return service memory usage
+#    :maximum :current :limit
+# @return [Hash|EnginesError.to_json]
 get '/v0/containers/service/:service_name/metrics/memory' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -20,3 +30,5 @@ get '/v0/containers/service/:service_name/metrics/memory' do
     return log_error(request, r)
   end
 end
+
+# @!endgroup

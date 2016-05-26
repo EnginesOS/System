@@ -1,5 +1,5 @@
 
-# @!group Services
+# @!group /containers/services
 
 
 # @method get_services
@@ -43,6 +43,10 @@ get '/v0/containers/services/state' do
     return log_error(request, states)
   end
 end
+# @method get_services_status
+# @overload get '/v0/containers/services/status'
+# returns a [container_name => service_status,] of the container_name of configured services
+# @return [Hash] 
 get '/v0/containers/services/status' do
   status = engines_api.get_services_status
   unless status.is_a?(EnginesError)

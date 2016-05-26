@@ -1,4 +1,4 @@
-# @!group Containers
+# @!group /containers
 
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'

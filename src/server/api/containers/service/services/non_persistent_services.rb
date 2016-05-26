@@ -1,9 +1,14 @@
 
+# @!group /containers/service/:service_name/services/non_persistent/
+# @method get_service_non_persistent_services
+# @overload get '/v0/containers/service/:service_name/services/non_persistent/'
+# Return the non persistent services registered to the service (which this service consumes)
+# # @return Json Array|EnginesError.to_json
 get '/v0/containers/service/:service_name/services/non_persistent/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = engines_api.list_non_persistent_services(service)
-  p :np_services_index
+
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -11,6 +16,10 @@ get '/v0/containers/service/:service_name/services/non_persistent/' do
   end
 end
 
+# @method get_service_non_persistent_services_by_type
+# @overload get '/v0/containers/service/:service_name/services/non_persistent/'
+# Return the non persistent services matchedin the :publisher_namespace and :type_path registered to the service (which this service consumes)
+# # @return Json Array|EnginesError.to_json
 
 get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
   
@@ -31,3 +40,5 @@ get '/v0/containers/service/:service_name/services/non_persistent/:publisher_nam
     return log_error(request, r, hash)
   end
 end
+
+# @!endgroup

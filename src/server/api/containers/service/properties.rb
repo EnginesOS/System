@@ -1,5 +1,8 @@
-#/containers/engine/container_name/runtime_properties
-#/containers/engine/container_name/network_properties
+# @!group /containers/service/:service_name/properties/
+# @method set_service_properties_network
+# @overload post '/v0/containers/service/:service_name/properties/network'
+#  :domain_name :host_name :protocol
+# @return [true|EnginesError.to_json]
 
 post '/v0/containers/service/:service_name/properties/network' do
 
@@ -12,6 +15,11 @@ post '/v0/containers/service/:service_name/properties/network' do
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   r.to_json
 end
+# @method set_service_properties_runtime
+# @overload  post '/v0/containers/service/:service_name/properties/runtime' 
+#  :memory :environment_variables
+#   '{"memory":"577","environment_variables": [ {"test":"value"},{"test2":"value2"} }'
+# @return [true|EnginesError.to_json]
 
 post '/v0/containers/service/:service_name/properties/runtime' do
   service = get_service(params[:service_name])
@@ -21,3 +29,6 @@ post '/v0/containers/service/:service_name/properties/runtime' do
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   r.to_json
 end
+
+
+# @!endgroup

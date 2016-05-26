@@ -1,5 +1,9 @@
-
-#
+# @!group /containers/service/:service_name/
+# @method create_service
+# @overload '/v0/containers/service/:service_name/create'
+# create and start the service from the service image
+# the local service image is updated prior to the container creation
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/create' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(FalseClass)
@@ -11,7 +15,12 @@ get '/v0/containers/service/:service_name/create' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method recreate_service
+# @overload '/v0/containers/service/:service_name/recreate'
+# service must be stopped first
+# recreate the services container from the service image and start the service
+# the local service image is updated prior to the container creation
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/recreate' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -22,7 +31,10 @@ get '/v0/containers/service/:service_name/recreate' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method stop_service
+# @overload '/v0/containers/service/:service_name/stop'
+# stop the service
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/stop' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -33,7 +45,10 @@ get '/v0/containers/service/:service_name/stop' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method start_service
+# @overload '/v0/containers/service/:service_name/start'
+# start the service
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/start' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -44,7 +59,10 @@ get '/v0/containers/service/:service_name/start' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method restart_service
+# @overload '/v0/containers/service/:service_name/restart'
+# restart the service
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/restart' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -55,7 +73,10 @@ get '/v0/containers/service/:service_name/restart' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method pause_service
+# @overload '/v0/containers/service/:service_name/pause'
+# pause the service
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/pause' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -66,7 +87,10 @@ get '/v0/containers/service/:service_name/pause' do
     return log_error(request, r, service.last_error)
   end
 end
-
+# @method unpause_service
+# @overload '/v0/containers/service/:service_name/unpause'
+# unpause the service
+# @return [true|EnginesError.to_json]
 get '/v0/containers/service/:service_name/unpause' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -79,7 +103,10 @@ get '/v0/containers/service/:service_name/unpause' do
 end
 
 
-
+# @method destroy_service
+# @overload '/v0/containers/service/:service_name/destroy'
+# destroy the service container
+# @return [true|EnginesError.to_json]
 delete '/v0/containers/service/:service_name/destroy' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -91,6 +118,11 @@ delete '/v0/containers/service/:service_name/destroy' do
   end
 end
 
+# @method delete_service
+# @overload '/v0/containers/service/:service_name/delete'
+# delete the service from the system 
+# the service can be created again with fresh persistent services, no data is preserved beyond this point
+# @return [true|EnginesError.to_json]
 delete '/v0/containers/service/:service_name/delete' do
   r =  engines_api.remove_service(params[:service_name])
   unless r.is_a?(EnginesError)
@@ -100,3 +132,5 @@ delete '/v0/containers/service/:service_name/delete' do
   end
 
 end
+
+# @!endgroup

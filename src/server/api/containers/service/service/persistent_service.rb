@@ -1,3 +1,4 @@
+# @!group /containers/service/:service_name/service/non_persistent/
 
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
@@ -60,3 +61,4 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     return log_error(request, r, hash)
   end
 end
+# @!endgroup

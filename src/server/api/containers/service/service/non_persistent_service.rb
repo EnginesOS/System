@@ -62,8 +62,8 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
 #        hash[:publisher_namespace] = params[:publisher_namespace]
         
  #       hash[:type_path] = splats[0]
-          p :compute_hah    
-p hash
+#          p :compute_hah    
+#p hash
  
   r = engines_api.find_service_service_hash(hash) #find_engine_services_hashes(hash)
 
@@ -75,3 +75,4 @@ p hash
   
   
 end
+# @!endgroup
