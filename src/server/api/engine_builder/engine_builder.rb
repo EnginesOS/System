@@ -1,5 +1,10 @@
-# @!group Engine Builder
+# @!group /engine_builder/
 
+# @method get_builder_status
+# @overload get '/v0/engine_builder/status'
+# Return builder status as Json
+#  :is_building :did_build_fail
+# @return Json|EnginesError.to_json
 get '/v0/engine_builder/status' do
  r = engines_api.build_status
 
@@ -10,6 +15,11 @@ get '/v0/engine_builder/status' do
   end
 end
 
+# @method get_current_build_params
+# @overload get '/v0/engine_builder/params'
+# Return current build params 
+#  :repository_url :engine_name :host_name 
+# @return Json|EnginesError.to_json
 get '/v0/engine_builder/params' do
   r = engines_api.current_build_params
   unless r.is_a?(EnginesError)
@@ -19,7 +29,10 @@ get '/v0/engine_builder/params' do
    end
  end
 
-
+# @method get_last_build_log
+# @overload get '/v0/engine_builder/last_build/log'
+# Return last build log as String
+# @return String|EnginesError.to_json
 get '/v0/engine_builder/last_build/log' do
   r = engines_api.last_build_log
   unless r.is_a?(EnginesError)
@@ -28,7 +41,11 @@ get '/v0/engine_builder/last_build/log' do
     return log_error(request, r)
   end
 end
-
+# @method get_last_build_param
+# @overload get '/v0/engine_builder/last_build/params'
+# Return the last build  params as json
+#  :repository_url :engine_name :host_name 
+# @return Json|EnginesError.to_json
 get '/v0/engine_builder/last_build/params' do
   r = engines_api.last_build_params
 
@@ -38,7 +55,10 @@ get '/v0/engine_builder/last_build/params' do
       return log_error(request, r)
     end
   end
- 
+# @method follow_build
+# @overload get '/v0/engine_builder/follow_stream'
+# Follow the current build
+# @return  text/event-stream
 get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   has_data = true
