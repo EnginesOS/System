@@ -574,7 +574,7 @@ created/uploaded against.</p>
     </ul>
   
     <h2>
-      System Status
+      /system/status
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -632,7 +632,7 @@ created/uploaded against.</p>
     </ul>
   
     <h2>
-      System Version
+      /system/version
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -795,7 +795,7 @@ created/uploaded against.</p>
     </ul>
   
     <h2>
-      System Metrics
+      /system/metrics/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -928,7 +928,7 @@ processes.</p>
     </ul>
   
     <h2>
-      System Template
+      /system/template
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -961,7 +961,7 @@ processes.</p>
     </ul>
   
     <h2>
-      System Reserved
+      /system/reserved/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -1649,7 +1649,7 @@ to client  stream is in the format
     </ul>
   
     <h2>
-      Engine
+      /containers/engine
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -1847,7 +1847,7 @@ configured services.</p>
     </ul>
   
     <h2>
-      System Properties
+      /containers/engine/:engine_name/properties/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -2290,7 +2290,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#create_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
     
 
     
@@ -2315,7 +2315,7 @@ is updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
     
 
     
@@ -2340,7 +2340,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#destroy_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
     
 
     
@@ -2364,7 +2364,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#pause_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
     
 
     
@@ -2388,7 +2388,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#recreate_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
     
 
     
@@ -2414,7 +2414,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
     
 
     
@@ -2438,7 +2438,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#start_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
     
 
     
@@ -2462,7 +2462,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#stop_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
     
 
     
@@ -2486,7 +2486,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#unpause_service-instance_method" title="# (instance method)">- (true|EnginesError.to_json) <strong></strong> </a>
+      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true|EnginesError.to_json) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
     
 
     
@@ -3010,7 +3010,7 @@ return to set state error set if failed</p>
       <div class="method_details ">
   <h3 class="signature " id="create_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
   
 
   
@@ -3320,7 +3320,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
   
 
   
@@ -3389,7 +3389,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="destroy_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
   
 
   
@@ -8004,7 +8004,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="pause_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
   
 
   
@@ -8233,7 +8233,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="recreate_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) 
   
 
   
@@ -8759,7 +8759,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) 
   
 
   
@@ -9535,7 +9535,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="start_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
   
 
   
@@ -9605,7 +9605,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="stop_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) 
   
 
   
@@ -9746,7 +9746,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="unpause_service-instance_method">
   
-    - (<tt>true|EnginesError.to_json</tt>) <strong></strong> 
+    - (<tt>true|EnginesError.to_json</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) 
   
 
   
@@ -10206,7 +10206,7 @@ optional :password</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu May 26 17:27:21 2016 by
+  Generated on Thu May 26 17:35:26 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
