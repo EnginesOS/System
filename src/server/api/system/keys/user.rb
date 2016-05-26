@@ -1,3 +1,9 @@
+# @!group /system/keys/user
+# @method generate_user+key
+# @overload get '/v0/system/keys/user/:user_name/generate'
+# get the a new key for :user_name (only valid user is 'engines')
+# 
+# @return String|EnginesError.to_json
 get '/v0/system/keys/user/:user_name/generate' do
   generated_key = engines_api.generate_engines_user_ssh_key
   unless generated_key.is_a?(EnginesError)
@@ -29,3 +35,4 @@ get '/v0/system/keys/user/:user_name' do
     return log_error(request, public_key)
   end
 end
+# @!endgroup

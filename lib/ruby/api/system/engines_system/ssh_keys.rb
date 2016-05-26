@@ -15,7 +15,7 @@ module SshKeys
   end
 
   def regen_system_ssh_key
-    run_server_script('regen_private')
+    run_server_script('regen_private')[:stdout]
   end
   
   def get_public_key

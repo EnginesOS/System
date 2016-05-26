@@ -8,5 +8,5 @@ elsif ARGV[2] == 'delete'
 @route +=   ARGV[3] + '/' + ARGV[4] + '/' + ARGV[5] + '/' + ARGV[6]
 perform_delete
 end 
-p @route
+
 perform_get
