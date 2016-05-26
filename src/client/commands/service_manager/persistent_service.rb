@@ -1,1 +1,1 @@
-@route += '/persistent_service/'
+@route += '/persistent_service/' + ARGV[2] + '/' + ARGV[3]
