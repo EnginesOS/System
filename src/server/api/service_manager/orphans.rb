@@ -23,7 +23,7 @@ else
 end
 end
 
-get '/v0/service_manager/orphan_service/:publisher_namespace/:type_path/*' do
+get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
 pparams = Utils::ServiceHash.service_hash_from_params(params, false)
 cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle], []) 
 r = engines_api.retrieve_orphan(cparams)
@@ -35,7 +35,7 @@ return log_error(request, r)
 end
 end
 
-delete '/v0/service_manager/orphan_service/:publisher_namespace/:type_path/*' do
+delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   pparams = Utils::Params.service_hash_from_params(params, false)
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle], []) 
   service_hash = engines_api.retrieve_orphan(cparams)
