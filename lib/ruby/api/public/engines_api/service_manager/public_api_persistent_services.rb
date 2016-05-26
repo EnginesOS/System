@@ -1,4 +1,4 @@
-module PersistentServices
+module PublicApiPersistentServices
   
   def get_registered_against_service(service_hash)
     return @core_api.get_registered_against_service(service_hash)

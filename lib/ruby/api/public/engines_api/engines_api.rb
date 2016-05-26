@@ -217,4 +217,6 @@ class PublicApi < ErrorsApi
   require_relative 'service_manager/public_api_orphans.rb'
   include PublicApiOrphans
   
+  require_relative 'service_manager/public_api_persistent_services.rb'
+  include  PublicApiPersistentServices
 end
