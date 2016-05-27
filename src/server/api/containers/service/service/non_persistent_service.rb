@@ -1,15 +1,10 @@
-#
-#get '/v0/containers/service/:service_name/service/non_persistent/' do
-#  service = get_service(params[:service_name])
-#  r = engines_api.list_non_persistent_services(service)
-#
-#  unless r.is_a?(FalseClass)
-#    return r.to_json
-#  else
-#    return log_error('pause')
-#  end
-#end
+# @!group /containers/service/:service_name/service/non_persistent/
 
+
+# @method force_register_non_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register' do
+# force register the non persistent service  
+# @return true|false
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -24,7 +19,10 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-
+# @method force_reregister_non_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister' do
+# force reregister the non persistent service  
+# @return true|false
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -38,7 +36,10 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-
+# @method force_deregister_non_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister' do
+# force deregister the non persistent service  
+# @return true|false
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -51,7 +52,9 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-
+# @method get_non_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle' do
+#  @return [Hash]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*' do
   #splats = params['splat']
     p :raw_params
@@ -75,4 +78,18 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   
   
 end
+
+
+#
+#get '/v0/containers/service/:service_name/service/non_persistent/' do
+#  service = get_service(params[:service_name])
+#  r = engines_api.list_non_persistent_services(service)
+#
+#  unless r.is_a?(FalseClass)
+#    return r.to_json
+#  else
+#    return log_error('pause')
+#  end
+#end
+
 # @!endgroup

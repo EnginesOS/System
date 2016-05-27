@@ -16,4 +16,4 @@ system:
 	engines_tool system version system|engines_test_expects text is 0.0
 	
 base_os:
-	engines_tool system version base_os|engines_test_expects json NAME Ubuntu
+	engines_tool system version base_os|engines_test_expects json name Ubuntu
