@@ -3,7 +3,7 @@
 # @method get_service_actions
 # @overload get '/v0/containers/service/:service_name/actions/'
 # return a list of the registered actions
-# @return [Array|EnginesError]
+# @return [Array]
 get '/v0/containers/service/:service_name/actions/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -17,7 +17,7 @@ end
 # @method get_service_action
 # @overload get '/v0/containers/service/:service_name/action/:action_name'
 # return service action 
-# @return [Hash|EnginesError]
+# @return [Hash]
 
 get '/v0/containers/service/:service_name/action/:action_name' do
   service = get_service(params[:service_name])
@@ -33,7 +33,7 @@ end
 # @overload post '/v0/containers/service/:service_name/action/:action_name'
 # preform  service action
 #  post params to include action specific parameters
-# @return [Hash|EnginesError]
+# @return [Hash]
 post '/v0/containers/service/:service_name/action/:action_name' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)

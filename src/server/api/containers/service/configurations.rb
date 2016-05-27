@@ -2,7 +2,7 @@
 
 # @method get_service_configurations
 # @overload get '/v0/containers/service/:service_name/configurations/'
-# @return [Array|EnginesError]
+# @return [Array]
 get '/v0/containers/service/:service_name/configurations/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -15,7 +15,7 @@ get '/v0/containers/service/:service_name/configurations/' do
 end
 # @method get_service_configuration
 # @overload get '/v0/containers/service/:service_name/configuration/:configurator_name'
-# @return [Hash|EnginesError]
+# @return [Hash]
 get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -32,7 +32,7 @@ end
 # @method set_service_configuration
 # @overload post '/v0/containers/service/:service_name/configuration/:configurator_name'
 # Post params to match configurators 
-# @return [Hash|EnginesError]
+# @return [Hash]
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   cparams =  Utils::Params.assemble_params(params, [:service_name, :configurator_name], [:variables])
 

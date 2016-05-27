@@ -1,8 +1,8 @@
 # @!group /system/cert/
 # @method get certificate
-# @overload get '/v0/system/cert/:cert_name'
-# @return [String|EnginesError] PEM encoded Public certificate
-get '/v0/system/cert/:cert_name' do
+# @overload get '/v0/system/certs/:cert_name'
+# @return [String] PEM encoded Public certificate
+get '/v0/system/certs/:cert_name' do
   if params[:cert_name] == 'system_ca'
     cert = engines_api.get_system_ca
   else
@@ -15,10 +15,10 @@ get '/v0/system/cert/:cert_name' do
   end
 end
 # @method system_ca
-# @overload get '/v0/system/cert/system_ca'
-# @return [String|EnginesError] PEM encoded Public certificate
+# @overload get '/v0/system/certs/system_ca'
+# @return [String] PEM encoded Public certificate
 
-get '/v0/system/cert/system_ca' do
+get '/v0/system/certs/system_ca' do
   system_ca = engines_api.get_system_ca
   unless system_ca.is_a?(EnginesError)
     return system_ca.to_json
@@ -27,9 +27,9 @@ get '/v0/system/cert/system_ca' do
   end
 end
 # @method default_certificate
-# @overload get '/v0/system/cert/default'
-# @return [String|EnginesError] PEM encoded Public certificate
-get '/v0/system/cert/default' do
+# @overload get '/v0/system/certs/default'
+# @return [String] PEM encoded Public certificate
+get '/v0/system/certs/default' do
   cert = engines_api.get_cert('engines')
   unless cert.is_a?(EnginesError)
     return cert.to_json
@@ -49,7 +49,8 @@ get '/v0/system/certs/' do
 end
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:cert_name'
-# @return [true|EnginesError]
+# delete certificate :cert_name
+# @return [true]
 delete '/v0/system/certs/:cert_name' do
   r = engines_api.remove_cert(params[:cert_name])
   unless r.is_a?(EnginesError)
@@ -64,8 +65,9 @@ end
 # @overload post '/v0/system/certs/default'
 # import certificate and key in PEM for domain_name and set as default
 #  :domain_name :certificate :key
-#  optional :password
-# @return [true|EnginesError]
+#  optional :passwor
+# @param  :domain_name :certificate :key  :password - optional
+# @return [true]
 post '/v0/system/certs/default' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
  
@@ -83,7 +85,8 @@ end
 # import certificate and key in PEM for domain_name
 #  :domain_name :certificate :key
 #  optional :password
-# @return [true|EnginesError]
+# @param  :domain_name :certificate :key :password - optional
+# @return [true]
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
     r = engines_api.upload_ssl_certificate(cparams)

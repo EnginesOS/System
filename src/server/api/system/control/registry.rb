@@ -2,7 +2,7 @@
 # @method restart_registry
 # @overload get '/v0/system/control/registry/restart'
 # restart the registry container
-# @return [true|EnginesError]
+# @return [true]
 get '/v0/system/control/registry/restart' do
   restart_registry = engines_api.force_registry_restart
   unless restart_registry.is_a?(EnginesError)

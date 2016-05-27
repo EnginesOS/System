@@ -3,7 +3,7 @@
 # @method resolve_engine_template
 # @overload post '/v0/containers/engine/:engine_name/template'
 # Resolve Template string 
-#  :template_string 
+# @param :template_string 
 # for engine :engine_name
 # @return [String]
 post '/v0/containers/engine/:engine_name/template' do

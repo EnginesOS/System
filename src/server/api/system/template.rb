@@ -6,7 +6,7 @@
 # Resolve Template string 
 #  :template_string 
 # 
-# @return [String|EnginesError]
+# @return [String]
 post '/v0/system/template' do
  # engine = get_engine(params[:engine_name])
   cparams =  Utils::Params.assemble_params(params, [],  :string) 

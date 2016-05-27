@@ -3,7 +3,7 @@
 # @method get_service_consumer
 # @overload get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle'
 # return the details on the addressed consumer :service_name :parent_engine :service_handle 
-# @return [Hash|EnginesError]
+# @return [Hash]
 
 get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
   service = get_service(params[:service_name])

@@ -3,7 +3,7 @@
 # @method get_service_non_persistent_services
 # @overload get '/v0/containers/service/:service_name/services/non_persistent/'
 # Return the non persistent services registered to the service (which this service consumes)
-# @return [Array|EnginesError]
+# @return [Array]
 get '/v0/containers/service/:service_name/services/non_persistent/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -19,7 +19,7 @@ end
 # @method get_service_non_persistent_services_by_type
 # @overload get '/v0/containers/service/:service_name/services/non_persistent/'
 # Return the non persistent services matchedin the :publisher_namespace and :type_path registered to the service (which this service consumes)
-# @return [Array|EnginesError]
+# @return [Array]
 
 get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
   

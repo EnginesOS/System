@@ -3,7 +3,7 @@
 # @method get_system_status_first_run
 # @overload get '/v0/system/status/first_run_required'
 # return true|false
-# @return [true|false|EnginesError]
+# @return [true|false]
 
 get '/v0/system/status/first_run_required' do
   first_run_required = engines_api.first_run_required?
@@ -15,7 +15,7 @@ end
 # @method get_system_status
 # @overload get '/v0/system/status'
 # 
-# @return [Hash|EnginesError]
+# @return [Hash]
 #  :is_rebooting :is_base_system_updating :is_engines_system_updating :needs_reboot
 get '/v0/system/status' do
   status = SystemStatus.system_status

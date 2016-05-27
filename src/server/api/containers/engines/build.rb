@@ -2,6 +2,7 @@
 # @method build_engine
 # @overload post '/v0/containers/engines/build'
 # start app build process
+# @param :engine_name :memory :repository_url :variables :mapped_ports :reinstall :web_port :host_name :domain_name :attached_services
 #   :engine_name :memory :repository_url :variables :mapped_ports :reinstall :web_port :host_name :domain_name :attached_services
 # @return [true] 
 post '/v0/containers/engines/build' do

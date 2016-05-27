@@ -2,7 +2,7 @@
 # @method export_persistent_service
 # @overload get '/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
-#  @return [Binary]
+# @return [Binary]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -19,9 +19,9 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   end
 end
 # @method import_persistent_service
-# @overload get '/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
+# @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
 # import the service data gzip optional 
-#  @return [true]
+# @return [true]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/import' do
   
   hash = {}
@@ -38,9 +38,9 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   end
 end
 # @method replace_persistent_service
-# @overload get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
+# @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
 # import the service data gzip optional after dropping/deleting existing data
-#  @return [true]
+# @return [true]
 get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/*/replace' do
   
   hash = {}
@@ -61,7 +61,7 @@ end
 # @method get_persistent_service
 # @overload get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle'
 # get the service
-#  @return [Hash]
+# @return [Hash]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)

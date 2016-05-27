@@ -111,7 +111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#default_certificate-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) </a>
+      <a href="top-level-namespace.html#default_certificate-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/certs/default&#39;) </a>
     
 
     
@@ -135,7 +135,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) </a>
+      <a href="top-level-namespace.html#get-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/certs/:cert_name&#39;) </a>
     
 
     
@@ -159,7 +159,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#system_ca-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) </a>
+      <a href="top-level-namespace.html#system_ca-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/certs/system_ca&#39;) </a>
     
 
     
@@ -192,7 +192,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_certificate-instance_method" title="#delete (instance method)">- (true|EnginesError) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) </a>
+      <a href="top-level-namespace.html#delete_certificate-instance_method" title="#delete (instance method)">- (true) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) </a>
     
 
     
@@ -206,7 +206,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>delete certificate :cert_name.</p>
+</div></span>
   
 </li>
 
@@ -239,7 +241,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_certificate-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/certs/&#39;) </a>
+      <a href="top-level-namespace.html#upload_certificate-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/certs/&#39;) </a>
     
 
     
@@ -264,7 +266,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_default_certificate-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) </a>
+      <a href="top-level-namespace.html#upload_default_certificate-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) </a>
     
 
     
@@ -280,7 +282,88 @@ created/uploaded against.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>import certificate and key in PEM for domain_name and set as default 
-:domain_name :certificate :key  optional :password.</p>
+:domain_name :certificate :key  optional :passwor.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      /system/domains/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/domains/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>add domain in params.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/domains/:domain_name&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get the details for :domain_name.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#list_domain_names-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>list the domains.</p>
 </div></span>
   
 </li>
@@ -298,7 +381,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#disable_remote_exception_logging-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) </a>
+      <a href="top-level-namespace.html#disable_remote_exception_logging-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) </a>
     
 
     
@@ -322,7 +405,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#enable_remote_exception_logging-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) </a>
+      <a href="top-level-namespace.html#enable_remote_exception_logging-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) </a>
     
 
     
@@ -346,7 +429,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_default_domain-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
+      <a href="top-level-namespace.html#get_default_domain-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
     
 
     
@@ -370,7 +453,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_default_site-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) </a>
+      <a href="top-level-namespace.html#get_default_site-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) </a>
     
 
     
@@ -394,7 +477,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_hostname-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) </a>
+      <a href="top-level-namespace.html#get_hostname-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) </a>
     
 
     
@@ -418,7 +501,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_remote_exception_logging-instance_method" title="#get (instance method)">- (&#39;true&#39;|&#39;false&#39;|EnginesError) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) </a>
+      <a href="top-level-namespace.html#get_remote_exception_logging-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) </a>
     
 
     
@@ -442,7 +525,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_default_domain-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
+      <a href="top-level-namespace.html#set_default_domain-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) </a>
     
 
     
@@ -466,7 +549,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_default_site-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) </a>
+      <a href="top-level-namespace.html#set_default_site-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) </a>
     
 
     
@@ -490,7 +573,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_hostname-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) </a>
+      <a href="top-level-namespace.html#set_hostname-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) </a>
     
 
     
@@ -523,7 +606,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_status-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/status&#39;) </a>
+      <a href="top-level-namespace.html#get_system_status-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/status&#39;) </a>
     
 
     
@@ -548,7 +631,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_status_first_run-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) </a>
+      <a href="top-level-namespace.html#get_system_status_first_run-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) </a>
     
 
     
@@ -581,7 +664,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_api-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/api&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_api-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/api&#39;) </a>
     
 
     
@@ -605,7 +688,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_base_os-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_base_os-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) </a>
     
 
     
@@ -630,7 +713,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_ident-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_ident-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) </a>
     
 
     
@@ -654,7 +737,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_release-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/release&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_release-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/release&#39;) </a>
     
 
     
@@ -678,7 +761,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_version_system-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/version/system&#39;) </a>
+      <a href="top-level-namespace.html#get_system_version_system-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/version/system&#39;) </a>
     
 
     
@@ -702,87 +785,6 @@ created/uploaded against.</p>
     </ul>
   
     <h2>
-      /system/domains/
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/domains/&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>add domain in params.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>get the details for :domain_name.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#list_domain_names-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/domains/&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>list the domains.</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
       /system/metrics/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -792,7 +794,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_disk-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_disk-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) </a>
     
 
     
@@ -816,7 +818,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_load-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_load-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) </a>
     
 
     
@@ -843,7 +845,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_memory-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_memory-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) </a>
     
 
     
@@ -867,7 +869,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_memory_statistics-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_memory_statistics-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) </a>
     
 
     
@@ -892,7 +894,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) </a>
+      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) </a>
     
 
     
@@ -925,7 +927,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#resolve_template-instance_method" title="#post (instance method)">- (String|EnginesError) <strong>post</strong>(&#39;/v0/system/template&#39;) </a>
+      <a href="top-level-namespace.html#resolve_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/system/template&#39;) </a>
     
 
     
@@ -958,7 +960,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_engine_names-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_engine_names-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) </a>
     
 
     
@@ -982,7 +984,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_hostnames-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_hostnames-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) </a>
     
 
     
@@ -1006,7 +1008,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_reserved_port-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) </a>
+      <a href="top-level-namespace.html#get_system_reserved_port-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) </a>
     
 
     
@@ -1039,7 +1041,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#generate_user_key-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) </a>
+      <a href="top-level-namespace.html#generate_user_key-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) </a>
     
 
     
@@ -1064,7 +1066,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_user_key-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
+      <a href="top-level-namespace.html#get_user_key-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
     
 
     
@@ -1089,7 +1091,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#upload_user_key-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
+      <a href="top-level-namespace.html#upload_user_key-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) </a>
     
 
     
@@ -1123,7 +1125,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_configurations_tree-instance_method" title="#get_configurations_tree (instance method)">- (RubyTree|EnginesError) <strong>get_configurations_tree</strong> </a>
+      <a href="top-level-namespace.html#get_configurations_tree-instance_method" title="#get_configurations_tree (instance method)">- (RubyTree) <strong>get_configurations_tree</strong> </a>
     
 
     
@@ -1147,7 +1149,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_managed_engine_tree-instance_method" title="#get (instance method)">- (RubyTree|EnginesError) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) </a>
+      <a href="top-level-namespace.html#get_managed_engine_tree-instance_method" title="#get (instance method)">- (RubyTree) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) </a>
     
 
     
@@ -1171,7 +1173,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_managed_service_tree-instance_method" title="#get_managed_service_tree (instance method)">- (RubyTree|EnginesError) <strong>get_managed_service_tree</strong> </a>
+      <a href="top-level-namespace.html#get_managed_service_tree-instance_method" title="#get_managed_service_tree (instance method)">- (RubyTree) <strong>get_managed_service_tree</strong> </a>
     
 
     
@@ -1195,7 +1197,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_services_tree-instance_method" title="#get_orphan_services_tree (instance method)">- (RubyTree|EnginesError) <strong>get_orphan_services_tree</strong> </a>
+      <a href="top-level-namespace.html#get_orphan_services_tree-instance_method" title="#get_orphan_services_tree (instance method)">- (RubyTree) <strong>get_orphan_services_tree</strong> </a>
     
 
     
@@ -1219,7 +1221,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_share_services_tree-instance_method" title="#get (instance method)">- (RubyTree|EnginesError) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) </a>
+      <a href="top-level-namespace.html#get_share_services_tree-instance_method" title="#get (instance method)">- (RubyTree) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) </a>
     
 
     
@@ -1252,7 +1254,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#do_first_run-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/do_first_run&#39;) </a>
+      <a href="top-level-namespace.html#do_first_run-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/do_first_run&#39;) </a>
     
 
     
@@ -1351,7 +1353,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_base_os-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/system/control/base_os/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_base_os-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/system/control/base_os/restart&#39;) </a>
     
 
     
@@ -1366,7 +1368,7 @@ to client  stream is in the format
 
   
     <span class="summary_desc"><div class='inline'>
-<p>@<a href="true|EnginesError">return</a>.</p>
+<p>Restart the base OS.</p>
 </div></span>
   
 </li>
@@ -1375,7 +1377,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#shutdown_base_os-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) </a>
+      <a href="top-level-namespace.html#shutdown_base_os-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) </a>
     
 
     
@@ -1390,7 +1392,7 @@ to client  stream is in the format
 
   
     <span class="summary_desc"><div class='inline'>
-<p>shutdown the base OS with params  :reason.</p>
+<p>shutdown the base OS with params.</p>
 </div></span>
   
 </li>
@@ -1399,7 +1401,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#update_base_os-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) </a>
+      <a href="top-level-namespace.html#update_base_os-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) </a>
     
 
     
@@ -1432,7 +1434,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_registry-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_registry-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) </a>
     
 
     
@@ -1465,7 +1467,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_orphan_service-instance_method" title="#delete (instance method)">- (true|EnginesError) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#delete_orphan_service-instance_method" title="#delete (instance method)">- (true) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -1487,7 +1489,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_service-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#get_orphan_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -1509,7 +1511,7 @@ to client  stream is in the format
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_orphan_services-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) </a>
+      <a href="top-level-namespace.html#get_orphan_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) </a>
     
 
     
@@ -1555,8 +1557,7 @@ to client  stream is in the format
 
   
     <span class="summary_desc"><div class='inline'>
-<p>:engine_name :memory :repository_url :variables :mapped_ports :reinstall
-:web_port :host_name :domain_name :attached_services.</p>
+<p>start app build process.</p>
 </div></span>
   
 </li>
@@ -1663,7 +1664,7 @@ configured engines.</p>
     </ul>
   
     <h2>
-      /containers/service/:service_name/metrics
+      /containers/engine/:engine_name/metrics
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -1672,7 +1673,7 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_metrics_memory-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) </a>
+      <a href="top-level-namespace.html#get_engine_metrics_memory-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/metrics/memory&#39;) </a>
     
 
     
@@ -1687,7 +1688,7 @@ configured engines.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>return service memory usage    :maximum :current :limit.</p>
+<p>return engine memory usage    :maximum :current :limit.</p>
 </div></span>
   
 </li>
@@ -1696,7 +1697,64 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_metrics_network-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) </a>
+      <a href="top-level-namespace.html#get_engine_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/metrics/network&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>return engine network usage  :in :out.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      /containers/service/:service_name/metrics
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_service_metrics_memory-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>return service memory usage   :maximum :current :limit.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_service_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) </a>
     
 
     
@@ -1729,7 +1787,7 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_action-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) </a>
+      <a href="top-level-namespace.html#get_service_action-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) </a>
     
 
     
@@ -1753,7 +1811,7 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_actions-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/actions/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_actions-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/actions/&#39;) </a>
     
 
     
@@ -1777,7 +1835,7 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#preform_service_action-instance_method" title="#post (instance method)">- (Hash|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) </a>
+      <a href="top-level-namespace.html#preform_service_action-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) </a>
     
 
     
@@ -1825,7 +1883,7 @@ configured engines.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Resolve Template string   :template_string  for engine :engine_name.</p>
+<p>Resolve Template string  for engine :engine_name.</p>
 </div></span>
   
 </li>
@@ -2089,7 +2147,7 @@ configured services.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_engine_network_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) </a>
+      <a href="top-level-namespace.html#set_engine_network_properties-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) </a>
     
 
     
@@ -2104,8 +2162,8 @@ configured services.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Set the network properties for :engine_name for params  :host_name
-:domain_name :protocol :protocol is https_only|http_only|http_and_https.</p>
+<p>Set the network properties for :engine_name for params  :protocol is
+https_only|http_only|http_and_https.</p>
 </div></span>
   
 </li>
@@ -2114,7 +2172,7 @@ configured services.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_engine_runtime_properties-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) </a>
+      <a href="top-level-namespace.html#set_engine_runtime_properties-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) </a>
     
 
     
@@ -2129,9 +2187,8 @@ configured services.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Set the runtime properties for :engine_name for params  :memory
-:environment_variables  :environment_variables to be a Hash[env_name =&gt;
-env_value,].</p>
+<p>Set the runtime properties for :engine_name for params 
+:environment_variables to be a Hash[env_name =&gt; env_value,].</p>
 </div></span>
   
 </li>
@@ -2173,7 +2230,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_builder_status-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) </a>
+      <a href="top-level-namespace.html#get_builder_status-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) </a>
     
 
     
@@ -2197,7 +2254,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_current_build_params-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) </a>
+      <a href="top-level-namespace.html#get_current_build_params-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) </a>
     
 
     
@@ -2221,7 +2278,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_last_build_log-instance_method" title="#get (instance method)">- (String|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) </a>
+      <a href="top-level-namespace.html#get_last_build_log-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) </a>
     
 
     
@@ -2245,7 +2302,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_last_build_param-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) </a>
+      <a href="top-level-namespace.html#get_last_build_param-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) </a>
     
 
     
@@ -2279,7 +2336,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#dump_engines_system_heap_stats-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) </a>
+      <a href="top-level-namespace.html#dump_engines_system_heap_stats-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) </a>
     
 
     
@@ -2305,7 +2362,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#recreate_engines_system-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) </a>
+      <a href="top-level-namespace.html#recreate_engines_system-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) </a>
     
 
     
@@ -2329,7 +2386,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_engines_system-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_engines_system-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) </a>
     
 
     
@@ -2353,7 +2410,7 @@ env_value,].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#update_engines_system-instance_method" title="#get (instance method)">- (true|false|EnginesError) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) </a>
+      <a href="top-level-namespace.html#update_engines_system-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) </a>
     
 
     
@@ -2387,7 +2444,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_service_properties_network-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) </a>
+      <a href="top-level-namespace.html#set_service_properties_network-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) </a>
     
 
     
@@ -2411,7 +2468,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_service_properties_runtime-instance_method" title="#post (instance method)">- (true|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) </a>
+      <a href="top-level-namespace.html#set_service_properties_runtime-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) </a>
     
 
     
@@ -2446,7 +2503,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_configuration-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) </a>
+      <a href="top-level-namespace.html#get_service_configuration-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) </a>
     
 
     
@@ -2468,7 +2525,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_configurations-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configurations/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_configurations-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configurations/&#39;) </a>
     
 
     
@@ -2490,7 +2547,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#set_service_configuration-instance_method" title="#post (instance method)">- (Hash|EnginesError) <strong>post</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) </a>
+      <a href="top-level-namespace.html#set_service_configuration-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) </a>
     
 
     
@@ -2523,7 +2580,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
+      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
     
 
     
@@ -2548,7 +2605,7 @@ is updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
+      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
     
 
     
@@ -2573,7 +2630,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
+      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
     
 
     
@@ -2597,7 +2654,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
+      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
     
 
     
@@ -2621,7 +2678,7 @@ fresh persistent services, no data is preserved beyond this point.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
+      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
     
 
     
@@ -2647,7 +2704,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
+      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
     
 
     
@@ -2671,7 +2728,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
+      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
     
 
     
@@ -2695,7 +2752,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
+      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
     
 
     
@@ -2719,7 +2776,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
+      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
     
 
     
@@ -2752,7 +2809,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_definition-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) </a>
+      <a href="top-level-namespace.html#get_service_definition-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -2786,7 +2843,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumer-instance_method" title="#get (instance method)">- (Hash|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumer-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) </a>
     
 
     
@@ -2811,7 +2868,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumers-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumers-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) </a>
     
 
     
@@ -2835,7 +2892,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_consumers_for_engine-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) </a>
+      <a href="top-level-namespace.html#get_service_consumers_for_engine-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) </a>
     
 
     
@@ -2868,7 +2925,7 @@ prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_services_for_type-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) </a>
+      <a href="top-level-namespace.html#get_services_for_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -2883,9 +2940,8 @@ prior to the container creation.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>get
-&#39;/v0/service_manager/persistent_service/:container_type/:publisher_namespace/*&#39;
-do.</p>
+<p>Return array of services attached to the service
+:publisher_namespace/:type_path.</p>
 </div></span>
   
 </li>
@@ -2903,7 +2959,7 @@ do.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#export_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export&#39;) </a>
+      <a href="top-level-namespace.html#export_persistent_service-instance_method" title="#get (instance method)">- (Binary) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export&#39;) </a>
     
 
     
@@ -2918,7 +2974,7 @@ do.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>exports the service data as a gzip  @return [Binary].</p>
+<p>exports the service data as a gzip.</p>
 </div></span>
   
 </li>
@@ -2927,7 +2983,7 @@ do.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#get_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
     
 
     
@@ -2942,7 +2998,7 @@ do.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>get the service  @return [Hash].</p>
+<p>get the service.</p>
 </div></span>
   
 </li>
@@ -2951,7 +3007,7 @@ do.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#import_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import&#39;) </a>
+      <a href="top-level-namespace.html#import_persistent_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import&#39;) </a>
     
 
     
@@ -2966,7 +3022,7 @@ do.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>import the service data gzip optional   @return [true].</p>
+<p>import the service data gzip optional.</p>
 </div></span>
   
 </li>
@@ -2975,7 +3031,7 @@ do.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#replace_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace&#39;) </a>
+      <a href="top-level-namespace.html#replace_persistent_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace&#39;) </a>
     
 
     
@@ -2990,8 +3046,8 @@ do.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>import the service data gzip optional after dropping/deleting existing data
-@return [true].</p>
+<p>import the service data gzip optional after dropping/deleting existing
+data.</p>
 </div></span>
   
 </li>
@@ -3009,7 +3065,7 @@ do.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_persistent_services-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) </a>
     
 
     
@@ -3025,7 +3081,7 @@ do.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Return the persistent services registered to the service (which this
-service consumes) # @return [Array|EnginesError].</p>
+service consumes).</p>
 </div></span>
   
 </li>
@@ -3034,7 +3090,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_persistent_services_by_type-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) </a>
     
 
     
@@ -3050,8 +3106,7 @@ service consumes) # @return [Array|EnginesError].</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Return the persistent services matchedin the :publisher_namespace and
-:type_path registered to the service (which this service consumes) #
-@return Json [Array|EnginesError].</p>
+:type_path registered to the service (which this service consumes).</p>
 </div></span>
   
 </li>
@@ -3069,7 +3124,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_deregister_non_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;do) </a>
+      <a href="top-level-namespace.html#force_deregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) </a>
     
 
     
@@ -3093,7 +3148,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_register_non_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;do) </a>
+      <a href="top-level-namespace.html#force_register_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) </a>
     
 
     
@@ -3117,7 +3172,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_reregister_non_persistent_service-instance_method" title="#get (instance method)">- (Object) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;do) </a>
+      <a href="top-level-namespace.html#force_reregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) </a>
     
 
     
@@ -3141,7 +3196,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_non_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;do) </a>
+      <a href="top-level-namespace.html#get_non_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
     
 
     
@@ -3172,7 +3227,7 @@ service consumes) # @return [Array|EnginesError].</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_non_persistent_services-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_non_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
     
 
     
@@ -3197,7 +3252,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array|EnginesError) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
     
 
     
@@ -3262,7 +3317,7 @@ service consumes).</p>
       <div class="method_details first">
   <h3 class="signature first" id="add_domain_name-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/domains/&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -3286,7 +3341,7 @@ service consumes).</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3314,7 +3369,7 @@ service consumes).</p>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/domain.rb', line 21</span>
 
-<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domain/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_update_domain'>update_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -3379,24 +3434,37 @@ service consumes).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="docstring">
-  <div class="discussion">
-    
-<p>:engine_name :memory :repository_url :variables :mapped_ports :reinstall
-:web_port :host_name :domain_name :attached_services</p>
+<p>start app build process</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-
+  
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:engine_name</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:memory :repository_url :variables :mapped_ports :reinstall :web_port
+:host_name :domain_name :attached_services :engine_name :memory
+:repository_url :variables :mapped_ports :reinstall :web_port :host_name
+:domain_name :attached_services</p>
 </div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -3418,16 +3486,16 @@ service consumes).</p>
       <pre class="lines">
 
 
-6
-7
 8
 9
 10
 11
-12</pre>
+12
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/engines/build.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engines/build.rb', line 8</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engines/build</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
@@ -3517,7 +3585,7 @@ return to set state error set if failed</p>
       <div class="method_details ">
   <h3 class="signature " id="create_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
   
 
   
@@ -3542,7 +3610,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3590,7 +3658,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="default_certificate-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/default&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/certs/default&#39;) 
   
 
   
@@ -3614,7 +3682,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -3645,7 +3713,7 @@ is updated prior to the container creation</p>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 32</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/cert/default</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/default</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cert'>cert</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_cert'>get_cert</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>engines</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_cert'>cert</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_cert'>cert</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -3661,7 +3729,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_certificate-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) 
+    - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/system/certs/:cert_name&#39;) 
   
 
   
@@ -3670,6 +3738,8 @@ is updated prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>delete certificate :cert_name</p>
+
 
   </div>
 </div>
@@ -3683,7 +3753,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3697,7 +3767,6 @@ is updated prior to the container creation</p>
       <pre class="lines">
 
 
-53
 54
 55
 56
@@ -3705,10 +3774,11 @@ is updated prior to the container creation</p>
 58
 59
 60
-61</pre>
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 54</span>
 
 <span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_remove_cert'>remove_cert</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -3727,7 +3797,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_orphan_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
+    - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -3749,7 +3819,7 @@ is updated prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3813,7 +3883,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
   
 
   
@@ -3838,7 +3908,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3882,7 +3952,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="destroy_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
   
 
   
@@ -3906,7 +3976,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3952,7 +4022,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="disable_remote_exception_logging-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/disable&#39;) 
   
 
   
@@ -3976,7 +4046,7 @@ fresh persistent services, no data is preserved beyond this point</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -3990,8 +4060,6 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="lines">
 
 
-113
-114
 115
 116
 117
@@ -3999,10 +4067,12 @@ fresh persistent services, no data is preserved beyond this point</p>
 119
 120
 121
-122</pre>
+122
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 115</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging/disable</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_disable_remote_exception_logging'>disable_remote_exception_logging</span>
@@ -4022,7 +4092,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="do_first_run-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/do_first_run&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/do_first_run&#39;) 
   
 
   
@@ -4051,7 +4121,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -4097,7 +4167,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="dump_engines_system_heap_stats-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/heap_stats&#39;) 
   
 
   
@@ -4132,7 +4202,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -4178,7 +4248,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="enable_remote_exception_logging-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/remote_exception_logging/enable&#39;) 
   
 
   
@@ -4202,7 +4272,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -4216,8 +4286,6 @@ when :networking = &#39;dynamic_dns&#39;
       <pre class="lines">
 
 
-99
-100
 101
 102
 103
@@ -4225,10 +4293,12 @@ when :networking = &#39;dynamic_dns&#39;
 105
 106
 107
-108</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 101</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging/enable</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_enable_remote_exception_logging'>enable_remote_exception_logging</span>
@@ -4248,7 +4318,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="export_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export&#39;) 
+    - (<tt>Binary</tt>) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export&#39;) 
   
 
   
@@ -4259,9 +4329,6 @@ when :networking = &#39;dynamic_dns&#39;
     
 <p>exports the service data as a gzip</p>
 
-<pre class="code ruby"><code class="ruby"><span class='ivar'>@return</span> <span class='lbracket'>[</span><span class='const'>Binary</span><span class='rbracket'>]</span>
-</code></pre>
-
 
   </div>
 </div>
@@ -4269,6 +4336,19 @@ when :networking = &#39;dynamic_dns&#39;
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Binary</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -4444,7 +4524,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="force_deregister_non_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;do) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) 
   
 
   
@@ -4468,14 +4548,9 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|false</p>
-</div>
       
     </li>
   
@@ -4523,7 +4598,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="force_register_non_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;do) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) 
   
 
   
@@ -4547,14 +4622,9 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|false</p>
-</div>
       
     </li>
   
@@ -4606,7 +4676,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="force_reregister_non_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;do) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) 
   
 
   
@@ -4630,14 +4700,9 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true|false</p>
-</div>
       
     </li>
   
@@ -4687,7 +4752,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="generate_user_key-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) 
   
 
   
@@ -4712,7 +4777,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -4756,7 +4821,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="get-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/:cert_name&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/certs/:cert_name&#39;) 
   
 
   
@@ -4780,7 +4845,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -4815,7 +4880,7 @@ when :networking = &#39;dynamic_dns&#39;
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 5</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/cert/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>system_ca</span><span class='tstring_end'>&#39;</span></span>
     <span class='id identifier rubyid_cert'>cert</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_system_ca'>get_system_ca</span>
   <span class='kw'>else</span>
@@ -4835,7 +4900,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="get_builder_status-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/engine_builder/status&#39;) 
   
 
   
@@ -4861,7 +4926,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -4905,7 +4970,7 @@ when :networking = &#39;dynamic_dns&#39;
       <div class="method_details ">
   <h3 class="signature " id="get_configurations_tree-instance_method">
   
-    - (<tt>RubyTree|EnginesError</tt>) <strong>get_configurations_tree</strong> 
+    - (<tt>RubyTree</tt>) <strong>get_configurations_tree</strong> 
   
 
   
@@ -4927,7 +4992,7 @@ when :networking = &#39;dynamic_dns&#39;
     <li>
       
       
-        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
+        <span class='type'>(<tt>RubyTree</tt>)</span>
       
       
       
@@ -5107,7 +5172,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_current_build_params-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/engine_builder/params&#39;) 
   
 
   
@@ -5133,7 +5198,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -5175,7 +5240,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_default_domain-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/config/default_domain&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/config/default_domain&#39;) 
   
 
   
@@ -5199,14 +5264,9 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>String|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -5250,7 +5310,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_default_site-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/config/default_site&#39;) 
   
 
   
@@ -5274,7 +5334,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -5320,7 +5380,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_domain_name-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/domains/:domain_name&#39;) 
   
 
   
@@ -5344,7 +5404,7 @@ to client  stream is in the format
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -5371,13 +5431,161 @@ to client  stream is in the format
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/domain.rb', line 6</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domain/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_domain_name'>domain_name</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_domain_name'>domain_name</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_domain_name'>domain_name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_domain_name'>domain_name</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_domain_name'>domain_name</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_metrics_memory-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/metrics/memory&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>return engine memory usage</p>
+
+<pre class="code ruby"><code class="ruby">:maximum :current :limit</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/metrics.rb', line 22</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/metrics/memory</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_container_memory_stats'>container_memory_stats</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_metrics_network-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/metrics/network&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>return engine network usage</p>
+
+<pre class="code ruby"><code class="ruby">:in :out</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/metrics.rb', line 7</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/metrics/network</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_container_network_metrics'>get_container_network_metrics</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -5654,7 +5862,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_hostname-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/config/hostname&#39;) 
   
 
   
@@ -5678,7 +5886,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -5692,8 +5900,6 @@ configured engines</p>
       <pre class="lines">
 
 
-85
-86
 87
 88
 89
@@ -5701,10 +5907,12 @@ configured engines</p>
 91
 92
 93
-94</pre>
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 87</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/hostname</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_hostname'>hostname</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_system_hostname'>system_hostname</span>
@@ -5724,7 +5932,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_last_build_log-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/log&#39;) 
   
 
   
@@ -5748,7 +5956,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -5790,7 +5998,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_last_build_param-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/engine_builder/last_build/params&#39;) 
   
 
   
@@ -5816,7 +6024,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -5860,7 +6068,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_managed_engine_tree-instance_method">
   
-    - (<tt>RubyTree|EnginesError</tt>) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) 
+    - (<tt>RubyTree</tt>) <strong>get</strong>(&#39;/v0/registry/engines/&#39;) 
   
 
   
@@ -5884,7 +6092,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
+        <span class='type'>(<tt>RubyTree</tt>)</span>
       
       
       
@@ -5926,7 +6134,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_managed_service_tree-instance_method">
   
-    - (<tt>RubyTree|EnginesError</tt>) <strong>get_managed_service_tree</strong> 
+    - (<tt>RubyTree</tt>) <strong>get_managed_service_tree</strong> 
   
 
   
@@ -5948,7 +6156,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
+        <span class='type'>(<tt>RubyTree</tt>)</span>
       
       
       
@@ -5990,7 +6198,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_non_persistent_service-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;do) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
   
 
   
@@ -6093,7 +6301,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_service-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -6115,7 +6323,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -6179,7 +6387,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_services-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/:publisher_namespace/:type_path:&#39;) 
   
 
   
@@ -6201,7 +6409,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -6243,7 +6451,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_orphan_services_tree-instance_method">
   
-    - (<tt>RubyTree|EnginesError</tt>) <strong>get_orphan_services_tree</strong> 
+    - (<tt>RubyTree</tt>) <strong>get_orphan_services_tree</strong> 
   
 
   
@@ -6265,7 +6473,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
+        <span class='type'>(<tt>RubyTree</tt>)</span>
       
       
       
@@ -6307,7 +6515,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
   
 
   
@@ -6318,9 +6526,6 @@ configured engines</p>
     
 <p>get the service</p>
 
-<pre class="code ruby"><code class="ruby"><span class='ivar'>@return</span> <span class='lbracket'>[</span><span class='const'>Hash</span><span class='rbracket'>]</span>
-</code></pre>
-
 
   </div>
 </div>
@@ -6328,6 +6533,19 @@ configured engines</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -6371,7 +6589,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_remote_exception_logging-instance_method">
   
-    - (<tt>'true'|'false'|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/system/config/remote_exception_logging&#39;) 
   
 
   
@@ -6395,7 +6613,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>'true'|'false'|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
       
@@ -6409,8 +6627,6 @@ configured engines</p>
       <pre class="lines">
 
 
-127
-128
 129
 130
 131
@@ -6418,10 +6634,12 @@ configured engines</p>
 133
 134
 135
-136</pre>
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 129</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_remote_exception_logging'>remote_exception_logging</span> <span class='op'>=</span> <span class='const'>SystemStatus</span><span class='period'>.</span><span class='id identifier rubyid_is_remote_exception_logging?'>is_remote_exception_logging?</span>
@@ -6507,7 +6725,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_action-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) 
   
 
   
@@ -6531,7 +6749,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -6577,7 +6795,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_actions-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/actions/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/actions/&#39;) 
   
 
   
@@ -6601,7 +6819,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -6647,7 +6865,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_configuration-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) 
   
 
   
@@ -6669,7 +6887,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -6721,7 +6939,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_configurations-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configurations/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/configurations/&#39;) 
   
 
   
@@ -6743,7 +6961,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -6789,7 +7007,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumer-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle&#39;) 
   
 
   
@@ -6814,7 +7032,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -6864,7 +7082,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumers-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/&#39;) 
   
 
   
@@ -6888,7 +7106,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -6938,7 +7156,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_consumers_for_engine-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/consumers/:parent_engine&#39;) 
   
 
   
@@ -6962,7 +7180,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -7020,7 +7238,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_definition-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/service_manager/service_definitions/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -7046,7 +7264,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -7092,7 +7310,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_metrics_memory-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/memory&#39;) 
   
 
   
@@ -7118,7 +7336,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -7166,7 +7384,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_metrics_network-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/metrics/network&#39;) 
   
 
   
@@ -7192,7 +7410,7 @@ configured engines</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -7238,7 +7456,7 @@ configured engines</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_non_persistent_services-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
   
 
   
@@ -7263,7 +7481,7 @@ service consumes)</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -7311,7 +7529,7 @@ service consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_non_persistent_services_by_type-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
   
 
   
@@ -7336,7 +7554,7 @@ service consumes)</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -7400,7 +7618,7 @@ service consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_persistent_services-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) 
   
 
   
@@ -7410,7 +7628,7 @@ service consumes)</p>
   <div class="discussion">
     
 <p>Return the persistent services registered to the service (which this
-service consumes) # @return [Array|EnginesError]</p>
+service consumes)</p>
 
 
   </div>
@@ -7419,6 +7637,19 @@ service consumes) # @return [Array|EnginesError]</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -7458,7 +7689,7 @@ service consumes) # @return [Array|EnginesError]</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_persistent_services_by_type-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) 
   
 
   
@@ -7468,8 +7699,7 @@ service consumes) # @return [Array|EnginesError]</p>
   <div class="discussion">
     
 <p>Return the persistent services matchedin the :publisher_namespace and
-:type_path registered to the service (which this service consumes) #
-@return Json [Array|EnginesError]</p>
+:type_path registered to the service (which this service consumes)</p>
 
 
   </div>
@@ -7478,6 +7708,19 @@ service consumes) # @return [Array|EnginesError]</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -7809,7 +8052,7 @@ service consumes) # @return [Array|EnginesError]</p>
       <div class="method_details ">
   <h3 class="signature " id="get_services_for_type-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/service_manager/persistent_services/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -7818,33 +8061,7 @@ service consumes) # @return [Array|EnginesError]</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>get
-&#39;/v0/service_manager/persistent_service/:container_type/:publisher_namespace/*&#39;
-do</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_splats'>splats</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>splat</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
-<span class='id identifier rubyid_pparams'>pparams</span> <span class='op'>=</span>  <span class='lbrace'>{</span><span class='rbrace'>}</span>
-<span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='rbracket'>]</span>
-<span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:type_path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='id identifier rubyid_splats'>splats</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:service_handle</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_basename'>basename</span><span class='lparen'>(</span><span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:type_path</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:type_path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:type_path</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:parent_engine</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_basename'>basename</span><span class='lparen'>(</span><span class='id identifier rubyid_splats'>splats</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-</code></pre>
-
-<p><a href=":container_type">pparams</a>  = <a
-href=":container_type">params</a></p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_pparams'>pparams</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:container_type</span><span class='comma'>,</span> <span class='symbol'>:publisher_namespace</span><span class='comma'>,</span> <span class='symbol'>:type_path</span><span class='comma'>,</span> <span class='symbol'>:service_handle</span><span class='comma'>,</span> <span class='symbol'>:parent_engine</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_retrieve_service_hash'>retrieve_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
-
-<span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-<span class='kw'>else</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
-<span class='kw'>end</span>
-</code></pre>
-
-<p>end Return array of services attached to the service
+<p>Return array of services attached to the service
 :publisher_namespace/:type_path</p>
 
 
@@ -7860,7 +8077,7 @@ href=":container_type">params</a></p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -7874,25 +8091,25 @@ href=":container_type">params</a></p>
       <pre class="lines">
 
 
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41</pre>
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/service_manager/persistent_services.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/service_manager/persistent_services.rb', line 8</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/service_manager/persistent_services/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
  
@@ -8052,7 +8269,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_share_services_tree-instance_method">
   
-    - (<tt>RubyTree|EnginesError</tt>) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) 
+    - (<tt>RubyTree</tt>) <strong>get</strong>(&#39;/v0/registry/shares/&#39;) 
   
 
   
@@ -8076,7 +8293,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>RubyTree|EnginesError</tt>)</span>
+        <span class='type'>(<tt>RubyTree</tt>)</span>
       
       
       
@@ -8118,7 +8335,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_disk-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/disks&#39;) 
   
 
   
@@ -8142,7 +8359,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8191,7 +8408,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_load-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/load&#39;) 
   
 
   
@@ -8221,7 +8438,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8270,7 +8487,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_memory-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory&#39;) 
   
 
   
@@ -8296,7 +8513,7 @@ configured services</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8345,7 +8562,7 @@ configured services</p>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_memory_statistics-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/memory/statistics&#39;) 
   
 
   
@@ -8372,7 +8589,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8421,7 +8638,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_network-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) 
   
 
   
@@ -8445,7 +8662,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8494,7 +8711,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_engine_names-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/engine_names&#39;) 
   
 
   
@@ -8518,7 +8735,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -8567,7 +8784,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_hostnames-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/hostnames&#39;) 
   
 
   
@@ -8591,7 +8808,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -8642,7 +8859,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_reserved_port-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/reserved/ports&#39;) 
   
 
   
@@ -8666,7 +8883,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -8781,7 +8998,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_status-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/status&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/status&#39;) 
   
 
   
@@ -8806,7 +9023,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -8856,7 +9073,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_status_first_run-instance_method">
   
-    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/system/status/first_run_required&#39;) 
   
 
   
@@ -8880,7 +9097,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
       
@@ -8918,7 +9135,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_api-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/api&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/api&#39;) 
   
 
   
@@ -8942,7 +9159,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -8986,7 +9203,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_base_os-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/version/base_os&#39;) 
   
 
   
@@ -9012,7 +9229,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -9060,7 +9277,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_ident-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/ident&#39;) 
   
 
   
@@ -9084,7 +9301,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -9133,7 +9350,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_release-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/release&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/release&#39;) 
   
 
   
@@ -9157,7 +9374,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -9206,7 +9423,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_version_system-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/version/system&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/version/system&#39;) 
   
 
   
@@ -9230,7 +9447,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -9274,7 +9491,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_user_key-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
   
 
   
@@ -9299,7 +9516,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -9343,7 +9560,7 @@ container_name:{:maximum, :current, :limit}</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="import_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import&#39;) 
   
 
   
@@ -9354,9 +9571,6 @@ container_name:{:maximum, :current, :limit}</code></pre>
     
 <p>import the service data gzip optional</p>
 
-<pre class="code ruby"><code class="ruby"><span class='ivar'>@return</span> <span class='lbracket'>[</span><span class='kw'>true</span><span class='rbracket'>]</span>
-</code></pre>
-
 
   </div>
 </div>
@@ -9364,6 +9578,19 @@ container_name:{:maximum, :current, :limit}</code></pre>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -9479,7 +9706,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="list_domain_names-instance_method">
   
-    - (<tt>Array|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -9512,7 +9739,7 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'>(<tt>Array|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
@@ -9550,7 +9777,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="pause_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
   
 
   
@@ -9574,7 +9801,7 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -9620,7 +9847,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="preform_service_action-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) 
+    - (<tt>Hash</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/action/:action_name&#39;) 
   
 
   
@@ -9647,7 +9874,7 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -9695,7 +9922,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="recreate_engines_system-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/recreate&#39;) 
   
 
   
@@ -9728,7 +9955,7 @@ created/uploaded against</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -9772,7 +9999,7 @@ created/uploaded against</p>
       <div class="method_details ">
   <h3 class="signature " id="recreate_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) 
   
 
   
@@ -9798,7 +10025,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -9844,7 +10071,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="replace_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace&#39;) 
   
 
   
@@ -9855,9 +10082,6 @@ prior to the container creation</p>
     
 <p>import the service data gzip optional after dropping/deleting existing data</p>
 
-<pre class="code ruby"><code class="ruby"><span class='ivar'>@return</span> <span class='lbracket'>[</span><span class='kw'>true</span><span class='rbracket'>]</span>
-</code></pre>
-
 
   </div>
 </div>
@@ -9865,6 +10089,19 @@ prior to the container creation</p>
   
   
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -9925,12 +10162,7 @@ prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Resolve Template string</p>
-
-<pre class="code ruby"><code class="ruby"><span class='symbol'>:template_string</span>
-</code></pre>
-
-<p>for engine :engine_name</p>
+<p>Resolve Template string  for engine :engine_name</p>
 
 
   </div>
@@ -9938,6 +10170,21 @@ prior to the container creation</p>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:template_string</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -10058,7 +10305,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="resolve_template-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/template&#39;) 
+    - (<tt>String</tt>) <strong>post</strong>(&#39;/v0/system/template&#39;) 
   
 
   
@@ -10085,7 +10332,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -10129,7 +10376,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_base_os-instance_method">
   
-    - (<tt>Object</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/restart&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/restart&#39;) 
   
 
   
@@ -10138,8 +10385,6 @@ prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>@<a href="true|EnginesError">return</a></p>
-
 
   </div>
 </div>
@@ -10158,6 +10403,19 @@ prior to the container creation</p>
 
 </div>
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -10195,7 +10453,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_engines_system-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) 
   
 
   
@@ -10228,7 +10486,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10272,7 +10530,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_registry-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/registry/restart&#39;) 
   
 
   
@@ -10296,7 +10554,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10340,7 +10598,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="restart_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) 
   
 
   
@@ -10364,7 +10622,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10410,7 +10668,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_default_domain-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/default_domain&#39;) 
   
 
   
@@ -10437,7 +10695,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10485,7 +10743,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_default_site-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/default_site&#39;) 
   
 
   
@@ -10505,6 +10763,21 @@ prior to the container creation</p>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:default_site</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -10512,7 +10785,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10526,7 +10799,6 @@ prior to the container creation</p>
       <pre class="lines">
 
 
-54
 55
 56
 57
@@ -10536,10 +10808,11 @@ prior to the container creation</p>
 61
 62
 63
-64</pre>
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 55</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/default_site</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:default_site</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -10560,7 +10833,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_engine_network_properties-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) 
+    - (<tt>true</tt>) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/network) 
   
 
   
@@ -10571,9 +10844,7 @@ prior to the container creation</p>
     
 <p>Set the network properties for :engine_name for params</p>
 
-<pre class="code ruby"><code class="ruby">:host_name :domain_name :protocol</code></pre>
-
-<p>:protocol is https_only|http_only|http_and_https</p>
+<pre class="code ruby"><code class="ruby">:protocol is https_only|http_only|http_and_https</code></pre>
 
 
   </div>
@@ -10581,6 +10852,26 @@ prior to the container creation</p>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:host_name</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:domain_name :protocol</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -10588,14 +10879,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json or EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -10641,7 +10927,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_engine_runtime_properties-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) 
+    - (<tt>true</tt>) <strong>post</strong>(/v0/containers/engine/:engine_name/properties/runtime) 
   
 
   
@@ -10652,8 +10938,7 @@ prior to the container creation</p>
     
 <p>Set the runtime properties for :engine_name for params</p>
 
-<pre class="code ruby"><code class="ruby">:memory :environment_variables
-:environment_variables to be a Hash[env_name =&gt; env_value,]</code></pre>
+<pre class="code ruby"><code class="ruby">:environment_variables to be a Hash[env_name =&gt; env_value,]</code></pre>
 
 
   </div>
@@ -10661,6 +10946,26 @@ prior to the container creation</p>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:memory</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:environment_variables</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -10668,14 +10973,9 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
-      
-        
-        <div class='inline'>
-<p>true.to_json|EnginesError.to_json</p>
-</div>
       
     </li>
   
@@ -10717,7 +11017,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_hostname-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) 
   
 
   
@@ -10737,6 +11037,21 @@ prior to the container creation</p>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:host_name</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -10744,7 +11059,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10758,8 +11073,6 @@ prior to the container creation</p>
       <pre class="lines">
 
 
-70
-71
 72
 73
 74
@@ -10768,10 +11081,12 @@ prior to the container creation</p>
 77
 78
 79
-80</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 72</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/hostname</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:host_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -10792,7 +11107,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_service_configuration-instance_method">
   
-    - (<tt>Hash|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) 
+    - (<tt>Hash</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/configuration/:configurator_name&#39;) 
   
 
   
@@ -10816,7 +11131,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash|EnginesError</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
@@ -10862,7 +11177,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_service_properties_network-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/network&#39;) 
   
 
   
@@ -10895,7 +11210,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -10943,7 +11258,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="set_service_properties_runtime-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/containers/service/:service_name/properties/runtime&#39;) 
   
 
   
@@ -10979,7 +11294,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11021,7 +11336,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="shutdown_base_os-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/control/base_os/shutdown&#39;) 
   
 
   
@@ -11032,15 +11347,32 @@ prior to the container creation</p>
     
 <p>shutdown the base OS with params</p>
 
-<pre class="code ruby"><code class="ruby"><span class='symbol'>:reason</span>
-</code></pre>
-
 
   </div>
 </div>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:reason</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:reason</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -11048,7 +11380,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11062,7 +11394,6 @@ prior to the container creation</p>
       <pre class="lines">
 
 
-21
 22
 23
 24
@@ -11072,10 +11403,11 @@ prior to the container creation</p>
 28
 29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 22</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/control/base_os/shutdown</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='lbracket'>[</span><span class='symbol'>:reason</span><span class='rbracket'>]</span><span class='rparen'>)</span> 
@@ -11096,7 +11428,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="start_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
   
 
   
@@ -11120,7 +11452,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11166,7 +11498,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="stop_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) 
   
 
   
@@ -11190,7 +11522,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11236,7 +11568,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="system_ca-instance_method">
   
-    - (<tt>String|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/cert/system_ca&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/certs/system_ca&#39;) 
   
 
   
@@ -11260,7 +11592,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>String|EnginesError</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -11291,7 +11623,7 @@ prior to the container creation</p>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 21</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/cert/system_ca</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/system_ca</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_system_ca'>system_ca</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_system_ca'>get_system_ca</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_system_ca'>system_ca</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_system_ca'>system_ca</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -11307,7 +11639,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="unpause_service-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) 
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) 
   
 
   
@@ -11331,7 +11663,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11377,7 +11709,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="update_base_os-instance_method">
   
-    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/system/control/base_os/update&#39;) 
   
 
   
@@ -11401,7 +11733,7 @@ prior to the container creation</p>
     <li>
       
       
-        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
       
@@ -11415,7 +11747,6 @@ prior to the container creation</p>
       <pre class="lines">
 
 
-36
 37
 38
 39
@@ -11423,10 +11754,11 @@ prior to the container creation</p>
 41
 42
 43
-44</pre>
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 37</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/control/base_os/update</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_system_update'>system_update</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_system_update'>system_update</span>
@@ -11445,7 +11777,7 @@ prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="update_engines_system-instance_method">
   
-    - (<tt>true|false|EnginesError</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) 
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/update&#39;) 
   
 
   
@@ -11473,7 +11805,7 @@ EnginesError &gt; an error occurred</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>true|false|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true|false</tt>)</span>
       
       
       
@@ -11517,7 +11849,7 @@ EnginesError &gt; an error occurred</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_certificate-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/certs/&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/certs/&#39;) 
   
 
   
@@ -11537,6 +11869,26 @@ optional :password</code></pre>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:domain_name</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:certificate :key :password - optional</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -11544,7 +11896,7 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11558,19 +11910,19 @@ optional :password</code></pre>
       <pre class="lines">
 
 
-87
-88
-89
 90
 91
 92
 93
 94
 95
-96</pre>
+96
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 90</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
@@ -11590,7 +11942,7 @@ optional :password</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_default_certificate-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/certs/default&#39;) 
   
 
   
@@ -11602,7 +11954,7 @@ optional :password</code></pre>
 <p>import certificate and key in PEM for domain_name and set as default</p>
 
 <pre class="code ruby"><code class="ruby">:domain_name :certificate :key
-optional :password</code></pre>
+optional :passwor</code></pre>
 
 
   </div>
@@ -11610,6 +11962,26 @@ optional :password</code></pre>
 <div class="tags">
   
   
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>:domain_name</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:certificate :key  :password - optional</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -11617,7 +11989,7 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11631,8 +12003,6 @@ optional :password</code></pre>
       <pre class="lines">
 
 
-69
-70
 71
 72
 73
@@ -11642,10 +12012,12 @@ optional :password</code></pre>
 77
 78
 79
-80</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 71</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/default</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
@@ -11667,7 +12039,7 @@ optional :password</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="upload_user_key-instance_method">
   
-    - (<tt>true|EnginesError</tt>) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/keys/user/:user_name&#39;) 
   
 
   
@@ -11692,7 +12064,7 @@ optional :password</code></pre>
     <li>
       
       
-        <span class='type'>(<tt>true|EnginesError</tt>)</span>
+        <span class='type'>(<tt>true</tt>)</span>
       
       
       
@@ -11742,7 +12114,7 @@ optional :password</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Fri May 27 12:25:17 2016 by
+  Generated on Fri May 27 14:00:38 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

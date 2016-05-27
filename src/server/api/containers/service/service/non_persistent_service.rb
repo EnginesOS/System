@@ -2,9 +2,9 @@
 
 
 # @method force_register_non_persistent_service
-# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register' do
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register' 
 # force register the non persistent service  
-# @return true|false
+# @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -20,9 +20,9 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   end
 end
 # @method force_reregister_non_persistent_service
-# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister' do
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister' 
 # force reregister the non persistent service  
-# @return true|false
+# @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -37,9 +37,9 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   end
 end
 # @method force_deregister_non_persistent_service
-# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister' do
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister'
 # force deregister the non persistent service  
-# @return true|false
+# @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister' do
   
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
@@ -53,7 +53,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   end
 end
 # @method get_non_persistent_service
-# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle' do
+# @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  @return [Hash]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*' do
   #splats = params['splat']

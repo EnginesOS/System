@@ -7,7 +7,7 @@
 #   :networking = 'dynamic_dns'|'zeroconf'|'self_hosted_dns'|'external_dns'
 #   when :networking = 'dynamic_dns' 
 #   :dynamic_dns_provider  :dynamic_dns_username :dynamic_dns_password
-# @return [true|EnginesError]
+# @return [true]
 post '/v0/system/do_first_run' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
     r = engines_api.set_first_run_parameters(cparams)
