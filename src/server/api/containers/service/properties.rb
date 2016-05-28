@@ -1,7 +1,10 @@
 # @!group /containers/service/:service_name/properties/
 # @method set_service_properties_network
 # @overload post '/v0/containers/service/:service_name/properties/network'
-#  :domain_name :host_name :protocol
+# @param :domain_name 
+# @param :host_name 
+# @param :protocol  https_only|http_only|http_and_https
+#  
 # @return [true]
 
 post '/v0/containers/service/:service_name/properties/network' do
@@ -17,8 +20,8 @@ post '/v0/containers/service/:service_name/properties/network' do
 end
 # @method set_service_properties_runtime
 # @overload  post '/v0/containers/service/:service_name/properties/runtime' 
-#  :memory :environment_variables
-#   '{"memory":"577","environment_variables": [ {"test":"value"},{"test2":"value2"} }'
+# @param :memory 
+# @param :environment_variables Hash[env_name => env_value,]
 # @return [true]
 
 post '/v0/containers/service/:service_name/properties/runtime' do

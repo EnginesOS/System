@@ -1,10 +1,9 @@
 # @!group /engine_builder/
-
+#  
 # @method get_builder_status
 # @overload get '/v0/engine_builder/status'
 # Return builder status as Json
-#  :is_building :did_build_fail
-# @return [Hash]
+# @return [Hash]  :is_building :did_build_fail
 get '/v0/engine_builder/status' do
  r = engines_api.build_status
 
@@ -18,8 +17,7 @@ end
 # @method get_current_build_params
 # @overload get '/v0/engine_builder/params'
 # Return current build params 
-#  :repository_url :engine_name :host_name 
-# @return  [Hash]
+# @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/params' do
   r = engines_api.current_build_params
   unless r.is_a?(EnginesError)
@@ -32,7 +30,7 @@ get '/v0/engine_builder/params' do
 # @method get_last_build_log
 # @overload get '/v0/engine_builder/last_build/log'
 # Return last build log as String
-# @return [String]
+# @return [String] last build log
 get '/v0/engine_builder/last_build/log' do
   r = engines_api.last_build_log
   unless r.is_a?(EnginesError)
@@ -44,8 +42,7 @@ end
 # @method get_last_build_param
 # @overload get '/v0/engine_builder/last_build/params'
 # Return the last build  params as json
-#  :repository_url :engine_name :host_name 
-# @return  [Hash]
+# @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/last_build/params' do
   r = engines_api.last_build_params
 

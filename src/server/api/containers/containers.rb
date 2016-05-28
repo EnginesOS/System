@@ -6,6 +6,7 @@
 # @return [text/event-stream]
 # stream is in the format 
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
+#  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   stream :keep_open do |out|
@@ -54,8 +55,8 @@ end
 # @overload get '/v0/containers/check_and_act'
 # 
 # checks status and if the container is not in the set state attempt to set it
-# @return [Hash]
-#  container_name:{:container_type,:status,:error]
+# @return [Hash] container_name:Hash :container_type,:status,:error
+#  container_name:Hash :container_type,:status,:error
 #  :status is ok|fixed|failed
 # ok - was in set state
 # fixed returned to set state

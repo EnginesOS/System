@@ -1,4 +1,4 @@
-# @!group /system/cert/
+# @!group /system/certs/
 # @method get certificate
 # @overload get '/v0/system/certs/:cert_name'
 # @return [String] PEM encoded Public certificate
@@ -37,7 +37,7 @@ get '/v0/system/certs/default' do
     return log_error(request, cert)
   end
 end
-# @!group /system/certs/
+
 # @method list_certificate
 # @overload get '/v0/system/certs/'
 # @return [Array] of certificate names
@@ -64,9 +64,10 @@ end
 # @method upload_default_certificate
 # @overload post '/v0/system/certs/default'
 # import certificate and key in PEM for domain_name and set as default
-#  :domain_name :certificate :key
-#  optional :passwor
-# @param  :domain_name :certificate :key  :password - optional
+# @param  :domain_name 
+# @param :certificate 
+# @param :key  
+# @param :password - optional
 # @return [true]
 post '/v0/system/certs/default' do
   cparams =  Utils::Params.assemble_params(params, [], :all)
@@ -83,9 +84,10 @@ end
 # @method upload_certificate 
 # @overload post '/v0/system/certs/'
 # import certificate and key in PEM for domain_name
-#  :domain_name :certificate :key
-#  optional :password
-# @param  :domain_name :certificate :key :password - optional
+# @param  :domain_name 
+# @param :certificate 
+# @param :key  
+# @param :password - optional
 # @return [true]
 post '/v0/system/certs/' do
   cparams =  Utils::Params.assemble_params(params, [], :all)

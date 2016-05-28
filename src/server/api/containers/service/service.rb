@@ -3,7 +3,7 @@
 # @!group /containers/service/:service_name
 
 # @method get_service
-# @overload post  get '/v0/containers/service/:service_name' 
+# @overload get '/v0/containers/service/:service_name' 
 # get service
 # @return [Hash]
 get '/v0/containers/service/:service_name' do
@@ -16,10 +16,9 @@ get '/v0/containers/service/:service_name' do
 end
 
 # @method get_service_status
-# @overload post  get '/v0/containers/service/:service_name/status' 
+# @overload get '/v0/containers/service/:service_name/status' 
 # get service status
-#   :state :set_state :progress_to :error
-# @return [Hash]
+# @return [Hash] :state :set_state :progress_to :error
 get '/v0/containers/service/:service_name/status' do
   service = get_service(params[:service_name])
  return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -31,9 +30,9 @@ get '/v0/containers/service/:service_name/status' do
   end
 end
 # @method get_service_state
-# @overload post  get '/v0/containers/service/:service_name/state' 
-# get service statue
-# @return [String]
+# @overload  get '/v0/containers/service/:service_name/state' 
+# get service state
+# @return [String] service state
 get '/v0/containers/service/:service_name/state' do
   service = get_service(params[:service_name])
  return log_error(request, service, params) if service.is_a?(EnginesError)

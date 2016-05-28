@@ -1,11 +1,10 @@
-# @!group /containers/engine
+# @!group /containers/engine/:engine_name
 
 # @method resolve_engine_template
 # @overload post '/v0/containers/engine/:engine_name/template'
-# Resolve Template string 
+# Resolve Template string for engine :engine_name
 # @param :template_string 
-# for engine :engine_name
-# @return [String]
+# @return [String] :template_string with template macros resolved for this engine
 post '/v0/containers/engine/:engine_name/template' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)

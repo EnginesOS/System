@@ -17,9 +17,9 @@ get '/v0/containers/service/:service_name/create' do
 end
 # @method recreate_service
 # @overload  get '/v0/containers/service/:service_name/recreate'
-# service must be stopped first
-# recreate the services container from the service image and start the service
-# the local service image is updated prior to the container creation
+#  The service must be stopped first.
+# Recreate the services container from the service image and start the service
+#  The local service image is updated prior to the container creation
 # @return [true]
 get '/v0/containers/service/:service_name/recreate' do
   service = get_service(params[:service_name])

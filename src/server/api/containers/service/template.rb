@@ -2,10 +2,9 @@
 # @!group /containers/service/:service_name/template
 # @method resolve_service_template
 # @overload post '/v0/containers/service/:service_name/template'
-# Resolve Template string  for params
-#  :template_string 
-# for service :service_name
-# @return [String]
+# Resolve Template string 
+# @param :template_string 
+# @return [String] :template_string with template macros resolved for this service
 post '/v0/containers/service/:service_name/template' do
   service = get_service(params[:service_name])
  return log_error(request, service, params) if service.is_a?(EnginesError)

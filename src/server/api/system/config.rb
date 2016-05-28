@@ -3,7 +3,7 @@
 # @overload get '/v0/system/config/default_domain'
 # get the default system domain
 # 
-# @return [String]
+# @return [String] default_domain
 get '/v0/system/config/default_domain' do
   default_domain = engines_api.get_default_domain
   unless default_domain.is_a?(EnginesError)
@@ -17,7 +17,7 @@ end
 # @method set_default_domain 
 # @overload post '/v0/system/config/default_domain'
 # set the default system domain
-#  :default_domain
+# @param :default_domain
 # @return  [true]
 post '/v0/system/config/default_domain' do
   cparams =  Utils::Params.assemble_params(params, [], [:default_domain])
@@ -33,9 +33,9 @@ end
 # @!group /system/config/
 # @method get_default_site
 # @overload get '/v0/system/config/default_site'
-# get the default system domain
+# get the default system default_site
 # 
-# @return [String]
+# @return [String] default_site
 get '/v0/system/config/default_site' do
   default_site = engines_api.get_default_site
   unless default_site.is_a?(EnginesError)
@@ -49,7 +49,6 @@ end
 # @method set_default_site 
 # @overload post '/v0/system/config/default_site'
 # set the default site
-#  :default_site
 # @param :default_site
 # @return  [true]
 post '/v0/system/config/default_site' do
@@ -66,7 +65,6 @@ end
 # @method set_hostname
 # @overload post '/v0/system/config/hostname'
 # set the hostname
-#  :host_name
 # @param :host_name
 # @return [true]
 post '/v0/system/config/hostname' do
@@ -83,7 +81,7 @@ end
 # @method get_hostname
 # @overload get '/v0/system/config/hostname'
 # get the hostname
-# @return [String]
+# @return [String] hostname
 get '/v0/system/config/hostname' do
   hostname = engines_api.system_hostname
   unless hostname.is_a?(EnginesError)
@@ -125,7 +123,7 @@ end
 # @method get_remote_exception_logging
 # @overload get '/v0/system/config/remote_exception_logging'
 # get the remote_exception_logging setting
-# @return [true|false]
+# @return [true|false] remote_exception_logging setting
 get '/v0/system/config/remote_exception_logging' do
   remote_exception_logging = SystemStatus.is_remote_exception_logging?
   status(202)

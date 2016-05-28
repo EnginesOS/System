@@ -19,6 +19,7 @@ end
 # @overload post '/v0/system/keys/user/:user_name'
 # Upload new ssh access key for :user_name (only valid user is 'engines')
 # replaced the existing ssh public key
+# @param :public_key
 # @return [true]
 post '/v0/system/keys/user/:user_name' do
   cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 

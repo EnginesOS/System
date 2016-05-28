@@ -3,10 +3,21 @@
 # @method do_first_run
 # @overload post '/v0/system/do_first_run'
 # apply first run params
-#   :admin_password  :admin_email :system_hostname :networking :domain_name :self_dns_local_only :ssl_person_name  :ssl_organisation_name  :ssl_city  :ssl_state  :ssl_country
-#   :networking = 'dynamic_dns'|'zeroconf'|'self_hosted_dns'|'external_dns'
-#   when :networking = 'dynamic_dns' 
-#   :dynamic_dns_provider  :dynamic_dns_username :dynamic_dns_password
+# @param :admin_password  
+# @param :admin_email 
+# @param :system_hostname 
+# @param :networking 
+# @param :domain_name 
+# @param :self_dns_local_only 
+# @param :ssl_person_name  
+# @param :ssl_organisation_name  
+# @param :ssl_city  
+# @param:ssl_state 
+# @param :ssl_country
+# @param :networking  dynamic_dns|zeroconf|self_hosted_dns|external_dns
+# @param :dynamic_dns_provider when :networking = dynamic_dns
+# @param :dynamic_dns_username when :networking = dynamic_dns
+# @param :dynamic_dns_password when :networking = dynamic_dns
 # @return [true]
 post '/v0/system/do_first_run' do
   cparams =  Utils::Params.assemble_params(params, [], :all)

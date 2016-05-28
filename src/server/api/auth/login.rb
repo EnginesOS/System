@@ -1,5 +1,9 @@
+# @!group /system/login
+
 # Login with :user_name and :password
-# @returns Authentication token
+# @method login
+# @overload get '/v0/system/login/:user_name/:password'
+# @return [String] Authentication token
 get '/v0/system/login/:user_name/:password' do 
   $token = 'test_token_arandy'
  p $token

@@ -2,9 +2,10 @@
 
 # @method set_engine_network_properties
 # @overload post /v0/containers/engine/:engine_name/properties/network
-# Set the network properties for :engine_name for params
-#  :protocol is https_only|http_only|http_and_https
-# @param :host_name :domain_name :protocol
+# Set the network properties for :engine_name
+# @param :host_name
+# @param :domain_name 
+# @param :protocol  https_only|http_only|http_and_https
 # @return [true]
 
 post '/v0/containers/engine/:engine_name/properties/network' do
@@ -22,9 +23,9 @@ end
 
 # @method set_engine_runtime_properties
 # @overload post /v0/containers/engine/:engine_name/properties/runtime
-# Set the runtime properties for :engine_name for params
-#  :environment_variables to be a Hash[env_name => env_value,]
-# @param :memory :environment_variables
+# Set the runtime properties for :engine_name 
+# @param :memory 
+# @param :environment_variables Hash[env_name => env_value,]
 # @return [true]
 post '/v0/containers/engine/:engine_name/properties/runtime' do
 

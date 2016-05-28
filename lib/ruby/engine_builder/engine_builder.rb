@@ -614,8 +614,6 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
- 
-
   protected
 
   #

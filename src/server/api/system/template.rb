@@ -4,9 +4,8 @@
 # @method resolve_template
 # @overload post '/v0/system/template'
 # Resolve Template string 
-#  :template_string 
-# 
-# @return [String]
+# @param :template_string 
+# @return [String] :template_string with template macros resolved 
 post '/v0/system/template' do
  # engine = get_engine(params[:engine_name])
   cparams =  Utils::Params.assemble_params(params, [],  :string) 
