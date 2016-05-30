@@ -4,7 +4,7 @@
 # return  Hash for service definition addressed by
 #  :publisher_namespace :type_path
 # @return [Hash]
-get '/v0/service_manager/service_definitions/:publisher_namespace/:type_path' do
+get '/v0/service_manager/service_definitions/:publisher_namespace/*' do
   splats = params['splat']
    pparams =  {}
    pparams[:publisher_namespace] = params[:publisher_namespace]
