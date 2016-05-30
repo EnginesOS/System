@@ -1,4 +1,4 @@
-# @!group /service_manager/service_definitions/
+# @!group /service_manager/
 # @method get_service_definition
 # @overload get '/v0/service_manager/service_definitions/:publisher_namespace/:type_path'
 # return  Hash for service definition addressed by

@@ -1,4 +1,4 @@
-# @!group /service_manager/persistent_services/
+# @!group /service_manager/
 
 
 # @method get_services_for_type
