@@ -16,7 +16,11 @@ build:
 	cat build_test_engine.json | engines_tool engines build  |engines_test_expects bool true
 	
 builder:
+	echo -n :build 
 	engines_tool engine_builder status |engines_test_expects json is_building true
+	echo -n :follow
 	engines_tool engine_builder follow |engines_test_expects  regex "*Build Successful*"
+	echo -n :last build Params
 	engines_tool engine_builder last_build params  |engines_test_expects json
+	echo -n :last build log
 	engines_tool engine_builder last_build log  | engines_test_expects regex "*Build Successful*"
