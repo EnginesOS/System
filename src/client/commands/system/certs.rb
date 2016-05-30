@@ -54,4 +54,5 @@ when 'remove'
   @route += '/' + ARGV[3]
   perform_delete
 end
-
+@route += '/' + ARGV[2]
+perform_get
