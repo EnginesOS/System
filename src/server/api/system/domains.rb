@@ -17,9 +17,9 @@ post '/v0/system/domains/' do
   end
 end
 # @method get_domain_name
-# @overload get '/v0/system/domains/:domain_name'
-# get the details for :domain_name
-# @return  [Hash] :domain_name :self_hosted :internal_only
+# @overload delete '/v0/system/domains/:domain_name'
+# delete the domain name :domain_name
+# @return  [true] 
 delete '/v0/system/domains/:domain_name' do
   r = engines_api.remove_domain(params[:domain_name])
   unless r.is_a?(EnginesError)
