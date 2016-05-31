@@ -16,7 +16,7 @@ post '/v0/system/domains/' do
     return log_error(request, r, params)
   end
 end
-# @method get_domain_name
+# @method delete_domain_name
 # @overload delete '/v0/system/domains/:domain_name'
 # delete the domain name :domain_name
 # @return  [true] 
