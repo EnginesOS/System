@@ -1,6 +1,6 @@
 # @!group /system/domains/
 # @method add_domain_name
-# @overload post '/v0/system/domains/get_domain_name'
+# @overload post '/v0/system/domains/'
 # add the domain :domain_name
 # @param :domain_name 
 # @param :self_hosted 

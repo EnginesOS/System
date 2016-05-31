@@ -322,7 +322,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/domains/get_domain_name&#39;) </a>
+      <a href="top-level-namespace.html#add_domain_name-instance_method" title="#post (instance method)">- (true) <strong>post</strong>(&#39;/v0/system/domains/&#39;) </a>
     
 
     
@@ -3347,7 +3347,7 @@ service consumes).</p>
       <div class="method_details first">
   <h3 class="signature first" id="add_domain_name-instance_method">
   
-    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/domains/get_domain_name&#39;) 
+    - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/domains/&#39;) 
   
 
   
@@ -7825,13 +7825,23 @@ configured engines</p>
 13
 14
 15
-16</pre>
+16
+17
+18
+19
+20
+21</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/service_manager/service_definition.rb', line 7</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/service_manager/service_definitions/:publisher_namespace/:type_path</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='comma'>,</span> <span class='symbol'>:type_path</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> 
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/service_manager/service_definitions/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_splats'>splats</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>splat</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+   <span class='id identifier rubyid_pparams'>pparams</span> <span class='op'>=</span>  <span class='lbrace'>{</span><span class='rbrace'>}</span>
+   <span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='rbracket'>]</span>
+   <span class='id identifier rubyid_pparams'>pparams</span><span class='lbracket'>[</span><span class='symbol'>:type_path</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_splats'>splats</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>  
+ 
+   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_pparams'>pparams</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:publisher_namespace</span><span class='comma'>,</span> <span class='symbol'>:type_path</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>  
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_service_definition'>get_service_definition</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
        <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
@@ -13036,7 +13046,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Mon May 30 13:46:16 2016 by
+  Generated on Tue May 31 10:10:51 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

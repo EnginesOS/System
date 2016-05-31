@@ -11,7 +11,7 @@ src/server/api/system/config.rb 67910c6084d07595af8761f89fe308fb9b2a5aab
 src/server/api/system/status.rb e0dc13f05141fbf46768847b60d2d1408d271e13
 src/server/api/system/builder.rb b07ba29e63e26abf5ed6f874c1a9543481a5317c
 src/server/api/system/version.rb 72af9c244bd9ce3aa0e06f07dd482e5f1806b523
-src/server/api/system/domains.rb 119ac19335494f802a9e77316aeb460cbcda8119
+src/server/api/system/domains.rb 51d56e9890d0eb783c74e9a8dd7b28017f286219
 src/server/utils/service_hash.rb a2a56c61eb9a3d8c76d09588fafdf662006175ab
 src/server/api/system/metrics.rb 65371d6f94521488c0fc8b03f0edda12d6066983
 src/server/api/system/template.rb 0ce9a0ae265d960f137378911c81de5c4128e396
@@ -61,10 +61,10 @@ src/server/api/containers/service/configurations.rb 603c5b51c82e9eceea627d46e7d9
 src/server/api/containers/engine/services/routes.rb 0069b51a8ac3f7130d729989d3809cbadbd012e4
 src/server/api/containers/service/services/routes.rb 23d2fcad9814ccf7f5f4003ae2750b40f9eae94d
 src/server/api/containers/service/service_actions.rb ee0b9e60b7113e24c98983c4a83180016a511083
-src/server/api/service_manager/service_definition.rb e36f46783a6137f772e10a87a13fb7aace438924
+src/server/api/service_manager/service_definition.rb 7a2e533772b5243200e05180fac5c69a032f75b7
 src/server/api/service_manager/available_services.rb 77b210d7b3d957eefd2a05aa58ca873d9256defa
 src/server/api/containers/service/service_consumer.rb 66431e32bfcffe8e481749a69bbf4eca42271c2e
-src/server/api/service_manager/persistent_services.rb 49e81993c4c4516ed696ce96ccdd218544a92624
+src/server/api/service_manager/persistent_services.rb 9821fc1731166a603808a0ec5a4cb9a4dec2b6d6
 src/server/api/containers/service/service_consumers.rb 28b92e497e3c6815bb99dd996c8110201841865b
 src/server/api/containers/engine/service/persistent_service.rb c678a71decdb16241c1fd29bd4868acc8e763c9e
 src/server/api/containers/service/service/persistent_service.rb 9288d08628df9f945a031345c4c5d7ae61fd3a6c
