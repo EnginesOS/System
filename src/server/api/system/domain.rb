@@ -12,9 +12,9 @@ get '/v0/system/domains/:domain_name' do
     return log_error(request, domain_name)
   end
 end
-# @method add_domain_name
-# @overload post '/v0/system/domains/get_domain_name'
-# add the domain :domain_name
+# @method update_domain_name
+# @overload post '/v0/system/domains/:domain_name' 
+# update the domain :domain_name
 # @param :domain_name 
 # @param :self_hosted 
 # @param :internal_only optional

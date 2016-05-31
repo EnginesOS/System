@@ -6,12 +6,12 @@ src/server/engine_server.rb cca2e6d4717bccd50084260ecdbe55fe72e16530
 src/server/api/auth/login.rb cdd9f9c09ed4ead492fcf964063168999806d335
 src/server/api/system/certs.rb d9aebc7c82c86427bcacf2ac79a8d2a1515070a0
 src/server/api/system/routes.rb 510868d037c62fa1c6b267937629ea73659aa173
-src/server/api/system/domain.rb 86a29ec75a3698a14e2a0844151ecc0ad499f630
+src/server/api/system/domain.rb b65721a6d0077ffd3ba0052f03a757df5639ac58
 src/server/api/system/config.rb 67910c6084d07595af8761f89fe308fb9b2a5aab
 src/server/api/system/status.rb e0dc13f05141fbf46768847b60d2d1408d271e13
 src/server/api/system/builder.rb b07ba29e63e26abf5ed6f874c1a9543481a5317c
 src/server/api/system/version.rb 72af9c244bd9ce3aa0e06f07dd482e5f1806b523
-src/server/api/system/domains.rb 51d56e9890d0eb783c74e9a8dd7b28017f286219
+src/server/api/system/domains.rb 9a5292fa53e02644a0b44b609db4f6447fa7f8f9
 src/server/utils/service_hash.rb a2a56c61eb9a3d8c76d09588fafdf662006175ab
 src/server/api/system/metrics.rb 65371d6f94521488c0fc8b03f0edda12d6066983
 src/server/api/system/template.rb 0ce9a0ae265d960f137378911c81de5c4128e396
