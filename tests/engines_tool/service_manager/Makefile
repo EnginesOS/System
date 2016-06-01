@@ -1,4 +1,3 @@
-TESTS=
-
+TESTS=orphans
 tests:
-	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
+	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
