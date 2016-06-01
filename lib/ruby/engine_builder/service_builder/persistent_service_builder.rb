@@ -1,7 +1,10 @@
 module PersistantServiceBuilder
   def create_persistent_services(services, environ, use_existing)
-    services.each do | sh |
-      service_hash =  SystemUtils.deal_with_jason(sh)
+    SystemDebug.debug(SystemDebug.builder,:services ,services)
+    services.each do | service_hash |
+      SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
+   #   service_hash =  SystemUtils.deal_with_jason(sh)
+      
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition',self) if service_def.nil?
       if service_def[:persistent]
