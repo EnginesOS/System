@@ -9,7 +9,8 @@
 		"user": "admin",
 		"password": "password"
 	},
-	"attached_services": [{
+	"attached_services": [
+	{
 				"type_path": "database/sql/mysql",
 				"publisher_namespace": "EnginesSystem",
 				"create_type": "new",
@@ -21,6 +22,7 @@
 				"create_type": "new",
 				"parent_engine":"",
 				"service_handle":""
-				}]		
+				}
+				]		
 			 }
 			 

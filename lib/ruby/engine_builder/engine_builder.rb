@@ -138,7 +138,7 @@ class EngineBuilder < ErrorsApi
 
     @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder,   :ports, @build_params[:mapped_ports])
-
+    SystemDebug.debug(SystemDebug.builder,   :attached_services, @build_params[:attached_services])
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
     return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
