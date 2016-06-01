@@ -112,7 +112,6 @@ end
 
 delete '/v0/containers/engine/:engine_name/delete/*' do
 
- 
   rparams = {}
   rparams[:engine_name] = params[:engine_name]
   splats = params['splat']  
