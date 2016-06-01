@@ -1,10 +1,10 @@
 # @!group /service_manager/orphan_services/
 
-# @method get_all_rphan_services
+# @method get_all_orphan_services
 # @overload get '/v0/service_manager/orphan_services/'
 # @return [Array] Orphan Service Hashes 
 get '/v0/service_manager/orphan_services/' do
-  orphans = engines_api.get_orphaned_services
+  orphans = engines_api.get_orphaned_services(params)
   unless orphans.is_a?(EnginesError)
     return orphans.to_json
   else
