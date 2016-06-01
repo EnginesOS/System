@@ -1,4 +1,4 @@
-TESTS=engines state container_name build builder
+TESTS=engines state container_name  builder
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
@@ -13,7 +13,7 @@ container_name:
 	engines_tool engines container_name |engines_test_expects array
 	
 build_plain:
-	cat build_test_engine.json | engines_tool engines build  |engines_test_expects bool true
+	cat build_test_engine_minimum_args.json  | engines_tool engines build  |engines_test_expects bool true
 	make build_check
 	
 builder:
@@ -26,7 +26,7 @@ builder:
 	#build_existing
 	
 build_gui:	
-	cat build_test_engine.json | engines_tool engines build  |engines_test_expects bool true
+	cat build_test_engine_plain_gui_args.json | engines_tool engines build  |engines_test_expects bool true
 	make build_check
 	
 build_check:
