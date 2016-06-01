@@ -1,5 +1,5 @@
 SUBDIRS=system engines engine containers services service engine_builder registry service_manager
-
+ENGINES=selfoss testengine
 tests:
 	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
 	
@@ -8,9 +8,10 @@ clear_last:
 	make -ks clear_engines
 	
 clear_engines:
-	engines_tool engine testengine stop | engines_test_expects bool true
-	engines_tool engine testengine destroy | engines_test_expects  bool true
-	engines_tool engine testengine delete none | engines_test_expects  bool true
+	@$(foreach engine,$(ENGINES),\
+	engines_tool engine $(engine) stop | engines_test_expects bool true;\
+	engines_tool engine $(engine) destroy | engines_test_expects  bool true;\
+	engines_tool engine $(engine) delete none | engines_test_expects  bool true;)
 
 clear_services:
 	engines_tool service email stop | engines_test_expects  bool true
