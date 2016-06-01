@@ -62,7 +62,7 @@ module PersistantServiceBuilder
 
   def match_service_to_existing(service_hash, use_existing)
     return false if use_existing.nil?
-    return log_error(" Existing Attached services should be an array",use_existing) unless use_existing.is_a?(Array)
+    return log_error_mesg(" Existing Attached services should be an array",use_existing) unless use_existing.is_a?(Array)
     use_existing.each do |existing_service|
       STDERR.puts('Match persisten sevi3e' + existing_service.to_s)
       SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
