@@ -1,6 +1,7 @@
 module PersistantServiceBuilder
   def create_persistent_services(services, environ, use_existing)
     SystemDebug.debug(SystemDebug.builder,:services ,services)
+    STDERR.puts('Match persisten sevi3e' + use_existing.to_s)
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
    #   service_hash =  SystemUtils.deal_with_jason(sh)
@@ -63,7 +64,7 @@ module PersistantServiceBuilder
     return false if use_existing.nil?
 
     use_existing.each do |existing_service|
-      STDERR.puts('persisten sevi3e' + existing_service.to_s)
+      STDERR.puts('Match persisten sevi3e' + existing_service.to_s)
       SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
       next if existing_service[:create_type] == 'new'
       next if existing_service[:create_type].nil?

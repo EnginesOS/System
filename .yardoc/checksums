@@ -18,7 +18,7 @@ src/server/api/system/template.rb 0ce9a0ae265d960f137378911c81de5c4128e396
 src/server/api/system/reserved.rb 0d94feaac987c49728378fe5866de4223224a837
 src/server/api/system/keys/user.rb 3ea9694bfcff5bf1a6ed24f03abd034f80303647
 src/server/api/containers/routes.rb 609313a0aae742a60543c31dc9d8f4813a92960e
-src/server/api/registry/registry.rb 6dac0780b57af97108e51857340c02f222c37525
+src/server/api/registry/registry.rb a126a17d4b48370aec026a36686bfbf2ae3edfb8
 src/server/api/missing_route_404.rb abb25af47f6b0a4f3a52a87ee4d77999bd885cf6
 src/server/api/system/keys/routes.rb 1b7d61418d4ed5e2779b6069dd51f20c942ad6ec
 src/server/api/system/do_first_run.rb 283e44c718766157395cd9875e0776bdef175c49
