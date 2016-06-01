@@ -62,7 +62,7 @@ module PersistantServiceBuilder
     return false if use_existing.nil?
 
     use_existing.each do |existing_service|
-      SystemDebug.debug(SystemDebug.builder, :create_type, existing_service[:create_type])
+      SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
       next if existing_service[:create_type] == 'new'
       next if existing_service[:create_type].nil?
       SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
