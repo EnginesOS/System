@@ -14,7 +14,7 @@ get '/v0/registry/engines/' do
   end
 end
 # @method get_configurations_tree
-# @overloadget get '/v0/registry/configurations/'
+# @overload get '/v0/registry/configurations/'
 # Return configurations  registry tree
 # @return [RubyTree]
 get '/v0/registry/configurations/' do
@@ -26,7 +26,7 @@ get '/v0/registry/configurations/' do
   end
 end
 # @method get_managed_service_tree
-# @overloadget get '/v0/registry/services/'
+# @overload get '/v0/registry/services/'
 # Return managed services registry tree
 # @return [RubyTree]
 get '/v0/registry/services/' do
@@ -38,7 +38,7 @@ get '/v0/registry/services/' do
   end
 end
 # @method get_orphan_services_tree
-# @overloadget get '/v0/registry/orphans/'
+# @overload get '/v0/registry/orphans/'
 # Return engines orphan_services registry tree
 # @return  [RubyTree]
 get '/v0/registry/orphans/' do
