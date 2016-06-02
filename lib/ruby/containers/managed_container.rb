@@ -124,11 +124,16 @@ class ManagedContainer < Container
 #    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
 #  end
   def to_h
+  s = self.dup
+  s.environments.each do |env|
+    
+    enva = env.to_h
+    s.environments.delete(env)
+    s.environments.push(enva)
+  end
   
-   self.instance_variables.each_with_object({}) do |var, hash|
-     v =  self.instance_variable_get(var) 
-     v = v.attributes if v.is_a?(EnvironmentVariable)
-     hash[var.to_s.delete("@")] = v 
+   s.instance_variables.each_with_object({}) do |var, hash|
+     hash[var.to_s.delete("@")] = s.instance_variable_get(var) 
   end
     
 end
