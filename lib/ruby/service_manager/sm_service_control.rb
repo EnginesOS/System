@@ -18,7 +18,7 @@ module SmServiceControl
     # add to service and register with service
     if ServiceDefinitions.is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
-      return r unless ( r = add_to_managed_service(service_hash))
+      return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
       return  test_registry_result(system_registry_client.add_to_services_registry(service_hash))
     else
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_nonpersistr, service_hash)
@@ -43,8 +43,8 @@ module SmServiceControl
     
    # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-    return r unless (r = remove_from_managed_service(service_hash)) || service_query.key?(:force)
-    return r unless ( r = system_registry_client.remove_from_managed_engines_registry(service_hash))
+    return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
+    return r if ( r = system_registry_client.remove_from_managed_engines_registry(service_hash)).is_a?(EnginesError)
     return test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
 
   rescue StandardError => e
