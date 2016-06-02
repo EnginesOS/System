@@ -91,5 +91,9 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
   def self.default_volume_name(service_hash)
    SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s 
 end
-
+  def to_h
+     self.instance_variables.each_with_object({}) do |var, hash|
+       hash[var.to_s.delete("@")] = self.instance_variable_get(var) 
+    end
+  end
 end
