@@ -3,7 +3,7 @@
 get '/v0/containers/engine/:engine_name' do
   engine = get_engine(params[:engine_name])
   unless engine.is_a?(EnginesError)
-    return engine.to_json
+    return JSON.generate(engine)
   else
     return log_error(request,engine, params[:engine_name])
   end
