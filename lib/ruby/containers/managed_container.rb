@@ -42,7 +42,7 @@ class ManagedContainer < Container
   @restart_required = false
   @rebuild_required = false
   @large_temp = false
-  attr_accessor  :restart_required, :rebuild_required
+  attr_accessor  :restart_required, :rebuild_required, :environments
 
   def initialize
     super
