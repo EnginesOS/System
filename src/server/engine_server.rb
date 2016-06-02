@@ -91,7 +91,7 @@ begin
 
   def get_engine(engine_name)
     eng = engines_api.loadManagedEngine(engine_name)
-    STDERR.puts("engine class " + eng.class.name + ':' + eng.to_json.to_s)
+   # STDERR.puts("engine class " + eng.class.name + ':' + eng.to_json.to_s)
    return eng # if eng.is_a?(ManagedEngine)
 #    log_error('Load failed !!!', eng, eng.class.name, engine_name)
 
