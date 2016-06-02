@@ -20,7 +20,7 @@ builder:
 	echo -n :build_plain
 	make build_plain
 	echo -n :build_gui
-	build_gui
+	make build_gui
 	
 	#build_orphan
 	#build_existing
