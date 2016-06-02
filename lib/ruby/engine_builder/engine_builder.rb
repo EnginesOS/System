@@ -141,7 +141,7 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder,   :attached_services, @build_params[:attached_services])
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
-    return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
+    return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services]).is_a?(TrueClass)
    
     apply_templates_to_environments
     create_engines_config_files

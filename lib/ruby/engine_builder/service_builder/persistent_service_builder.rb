@@ -10,7 +10,7 @@ module PersistantServiceBuilder
       return log_error_mesg('no matching service definition',self) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
-        return false unless process_persistent_service(service_hash, environ, use_existing)
+        return r unless (r = process_persistent_service(service_hash, environ, use_existing))
       end
     end
     return true
