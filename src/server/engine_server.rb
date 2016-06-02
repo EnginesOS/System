@@ -125,7 +125,7 @@ def managed_containers_to_json(containers)
 end
 
 def managed_container_as_json(container)
-  container.to_h.json
+  container.to_h.to_json
 end
 
 #  post '/v0/login/' do
