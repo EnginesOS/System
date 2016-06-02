@@ -1,6 +1,6 @@
 {
-	"engine_name": "orphanengine",
-	"host_name": "orphanengine",
+	"engine_name": "aorphanengine",
+	"host_name": "aorphanengine",
 	"domain_name": "local",
 	"http_protocol": "http_https",
 	"memory": 64,
