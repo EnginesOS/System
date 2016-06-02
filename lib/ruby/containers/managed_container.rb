@@ -4,9 +4,9 @@ require_relative 'ManagedContainerObjects.rb'
 
 #require 'objspace' ??
 require_relative 'container.rb'
-
+require 'yajl'
 class ManagedContainer < Container
- 
+
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
   require_relative 'managed_container/managed_container_controls.rb'
