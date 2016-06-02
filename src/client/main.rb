@@ -181,7 +181,9 @@ def get_json_stream(path)
           next
         end
       end
+      
     }
+    exit
   end
 rescue StandardError => e
   #Should goto to error hanlder but this is a script
@@ -204,6 +206,7 @@ def get_stream(path)
         #end
       end
     }
+    exit
   end
 rescue StandardError => e
   p e.to_s
