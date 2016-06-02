@@ -5,7 +5,7 @@ module PersistantServiceBuilder
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
    #   service_hash =  SystemUtils.deal_with_jason(sh)
-      STDERR.puts('persisten sevi3e' + service_hash.to_s)
+      STDERR.puts('persisten sevi3e ' + service_hash.to_s)
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition',self) if service_def.nil?
       if service_def[:persistent]
@@ -52,11 +52,10 @@ module PersistantServiceBuilder
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
     SystemDebug.debug(SystemDebug.builder, :with_env, service_hash)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-    unless @core_api.create_and_register_service(service_hash).is_a?(EnginesError)
+    r = @core_api.create_and_register_service(service_hash)
+     return r if r.is_a?(EnginesError)
       @attached_services.push(service_hash)
-    else
-      return log_error_mesg('Core Failed to attach Service ' , service_hash)
-    end
+
     return true
   end
 
