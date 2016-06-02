@@ -50,7 +50,9 @@ class EnvironmentVariable
 
     return dest
   end
-
+  def to_h
+   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+end
   def self.find_env_in(new_env,dest)
     dest.each do  |env|
 
