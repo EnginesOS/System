@@ -52,6 +52,8 @@ def state_from_status(status)
       return 'stopped'
     when 'run'
       return 'running'
+   when 'start'
+        return 'running'
     when 'pause'
       return 'paused'
     when 'unpause'
